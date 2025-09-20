@@ -1,0 +1,12 @@
+﻿- type: entity
+  parent: BaseItem
+  id: Holochip
+  name: holochip
+  description: Here is my money!
+  components:
+  - type: Sprite
+    sprite: Objects/Misc/coins.rsi
+    state: coin_diamond
+  - type: CardMoney
+    value: 100
+

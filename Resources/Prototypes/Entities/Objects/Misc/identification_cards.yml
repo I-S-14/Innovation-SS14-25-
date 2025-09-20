@@ -194,6 +194,16 @@
       params:
         volume: -5
   # Goobstation edit end
+  - type: ActivatableUI
+    key: enum.WithdrawWindowUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.WithdrawWindowUiKey.Key:
+        type: BalanceWithdrawBoundUserInterface
+  - type: UseDelay
+    delay: 2.0
+  - type: CardBalance
+    balance: 1000
 
 #IDs with layers
 

@@ -1,0 +1,29 @@
+﻿<DefaultWindow xmlns="https://spacestation14.io"
+               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+               xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
+               Title="{Loc 'balance-withdraw-ui-header'}">
+    <BoxContainer Orientation="Vertical" SeparationOverride="4" MinWidth="250">
+        <BoxContainer Orientation="Horizontal" SeparationOverride="2">
+            <Label HorizontalExpand="True" Name="WithdrawAccountLabel" Text="{Loc 'withdraw-label-account'}" HorizontalAlignment="Left"/>
+            <Label Name="WithdrawAccountValue" Text="Скрыт" HorizontalAlignment="Right"/>
+        </BoxContainer>
+        <BoxContainer Orientation="Horizontal" SeparationOverride="2">
+            <Label HorizontalExpand="True" Name="WithdrawBalanceLabel" Text="{Loc 'withdraw-label-balance'}" HorizontalAlignment="Left"/>
+            <Label Name="WithdrawBalanceValue" Text="0" HorizontalAlignment="Right"/>
+        </BoxContainer>
+
+        <PanelContainer StyleClasses="LowDivider" Margin="0 4 0 4"/>
+
+        <Label Name="WithdrawLabel" Text="{Loc 'withdraw-label-text'}" StyleClasses="windowTitle"/>
+        <BoxContainer Orientation="Horizontal" SeparationOverride="2">
+            <LineEdit Name="WithdrawValueLineEdit" MinWidth="75" Text="" HorizontalExpand="True" />
+            <Button Name="SetMaxButton" Text="{Loc 'withdraw-button-max'}" Access="Public" StyleClasses="OpenRight"/>
+            <Button Name="Add50Button" Text="+50" Access="Public" StyleClasses="OpenBoth"/>
+            <Button Name="Sub50Button" Text="-50" Access="Public" StyleClasses="OpenLeft"/>
+        </BoxContainer>
+        <BoxContainer Orientation="Horizontal" SeparationOverride="4" HorizontalExpand="True">
+        <Button Name="WithdrawButton" Text="{Loc 'withdraw-button-text'}" Access="Public"  StyleClasses="OpenRight" HorizontalExpand="True"/>
+        <Button Name="LockButton" Text="{Loc 'lock-button-text'}" Access="Public"  StyleClasses="OpenLeft"  HorizontalExpand="True"/>
+        </BoxContainer>
+    </BoxContainer>
+</DefaultWindow>
