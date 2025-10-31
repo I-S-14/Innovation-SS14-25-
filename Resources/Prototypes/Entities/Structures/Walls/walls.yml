@@ -220,14 +220,17 @@
   - type: Airtight
   - type: StaticPrice
     price: 75
+  - type: RadiationBlocker # CorvaxGoob Radiation Overhaul Revert
+    resistance: 2
   - type: BlockWeather
   - type: SunShadowCast
-  # Goobstation
+  # <Goobstation>
   - type: Penetratable
     penetrateDamage: 50
     damagePenalty: 0.1
   - type: ExaminableDamage
     messages: WindowMessages
+  # </Goobstation>
 
 - type: entity
   abstract: true
@@ -352,8 +355,9 @@
     cost: 6
     delay: 8
     fx: EffectRCDDeconstruct8
-  - type: RadiationBlocker # Goobstation
-    resistance: 40
+# CorvaxGoob Radiation Overhaul Revert
+#  - type: RadiationBlocker # Goobstation
+#    resistance: 40
   - type: Destructible
     thresholds:
     - trigger:
@@ -527,8 +531,9 @@
   - type: Construction
     graph: Girder
     node: goldWall
-  - type: RadiationBlocker # Goobstation
-    resistance: 10
+# CorvaxGoob Radiation Overhaul Revert
+#  - type: RadiationBlocker # Goobstation
+#    resistance: 10
   - type: RCDDeconstructable
     cost: 6
     delay: 8
@@ -644,7 +649,8 @@
     key: walls
     base: plasma
   - type: RadiationBlocker
-    resistance: 10
+    resistance: 5 # CorvaxGoob Radiation Overhaul Revert
+    #resistance: 10 # Goobstation - Radiation Overhaul
   - type: CosmicCorruptible # DeltaV - Cosmic Cult
     convertTo: WallCosmicCult
 
@@ -870,11 +876,22 @@
         layer:
         - WallLayer
         density: 2000
-  - type: RustRequiresPathStage # Goobstation
+  # <Goobstation>
+  - type: RustRequiresPathStage
     pathStage: 7 # Toxic blade
-  - type: Penetratable # Goobstation - Better snipers
+  - type: Penetratable
     penetrateDamage: 100
     damagePenalty: 0.25
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 40
+        reagents:
+        - ReagentId: Iron
+          Quantity: 33
+        - ReagentId: Carbon
+          Quantity: 7
+  # </Goobstation>
   - type: CosmicCorruptible # DeltaV - Cosmic Cult
     convertTo: WallCosmicCult
 
@@ -1274,6 +1291,15 @@
     base: solid
   - type: CosmicCorruptible # DeltaV - Cosmic Cult
     convertTo: WallCosmicCult
+  - type: SolutionContainerManager # Goobstation
+    solutions:
+      food:
+        maxVol: 30
+        reagents:
+        - ReagentId: Iron
+          Quantity: 28
+        - ReagentId: Carbon
+          Quantity: 2
 
 - type: entity
   parent: WallDiagonalBase
@@ -1401,7 +1427,8 @@
     key: walls
     base: uranium
   - type: RadiationBlocker
-    resistance: 20
+    resistance: 6 # # CorvaxGoob Radiation Overhaul Revert
+    #resistance: 20 # Goobstation - Radiation Overhaul
   - type: CosmicCorruptible # DeltaV - Cosmic Cult
     convertTo: WallCosmicCult
 

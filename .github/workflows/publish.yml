@@ -5,13 +5,12 @@ concurrency:
 
 on:
   workflow_dispatch:
-  # schedule:
-   # - cron: '0 10 * * *'
+  schedule:
+  - cron: '0 1 * * *'
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
     - name: Install dependencies
       run: sudo apt-get install -y python3-paramiko python3-lxml
