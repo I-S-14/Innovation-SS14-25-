@@ -232,6 +232,9 @@
   - type: Penetratable # Goobstation - Better snipers
     penetrateDamage: 25
     damagePenalty: 0.1
+  - type: InteractionVerbs # EE: Interaction Verbs
+    allowedVerbs:
+    - KnockOn
 
 - type: entity
   id: BaseSecureWindoor
@@ -369,6 +372,8 @@
     node: pwindoor
   - type: StaticPrice
     price: 500
+  - type: RadiationBlocker # CorvaxGoob Radiation Overhaul Revert
+    resistance: 2
   - type: Penetratable # Goobstation - Better snipers
     penetrateDamage: 40
     damagePenalty: 0.1

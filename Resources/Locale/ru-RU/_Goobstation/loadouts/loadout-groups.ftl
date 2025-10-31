@@ -128,11 +128,11 @@ loadout-group-bartender-envirosuit = экокостюм бармена
 loadout-group-lawyer-envirohelm = экошлем адвоката
 loadout-group-lawyer-envirosuit = экокостюм адвоката
 loadout-group-lawyer-envirogloves = экоперчатки адвоката
-# Nanotrasen Representative
-loadout-group-ntr-envirohelm = экошлем представителя Nanotrasen
-loadout-group-ntr-envirosuit = экокостюм представителя Nanotrasen
-loadout-group-ntr-envirogloves = экоперчатки представителя Nanotrasen
-loadout-group-ntr-gloves = перчатки представителя Nanotrasen
+# NanoTrasen Representative
+loadout-group-ntr-envirohelm = экошлем представителя NanoTrasen
+loadout-group-ntr-envirosuit = экокостюм представителя NanoTrasen
+loadout-group-ntr-envirogloves = экоперчатки представителя NanoTrasen
+loadout-group-ntr-gloves = перчатки представителя NanoTrasen
 # Blueshield Officer
 loadout-group-bso-envirohelm = экошлем офицера синего щита
 loadout-group-bso-envirosuit = экокостюм офицера синего щита
