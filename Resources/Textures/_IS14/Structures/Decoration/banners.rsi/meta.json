@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "license": "All Rights Reserved",
+  "copyright": "made for innovation station by melvilla(discord)",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "banner_legal"
+    },
+    {
+      "name": "banner_com"
+    },
+    {
+      "name": "banner_eng"
+    },
+    {
+      "name": "banner_exp_supply"
+    },
+    {
+      "name": "banner_kgb"
+    },
+    {
+      "name": "banner_med"
+    },
+    {
+      "name": "banner_militia"
+    },
+    {
+      "name": "banner_moko"
+    },
+    {
+      "name": "banner_serv"
+    },
+    {
+      "name": "banner_syndicate"
+    }
+  ]
+}
