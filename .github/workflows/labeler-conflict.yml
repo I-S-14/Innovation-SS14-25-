@@ -20,4 +20,5 @@ jobs:
         uses: eps1lon/actions-label-merge-conflict@v3.0.0
         with:
           dirtyLabel: "S: Merge Conflict"
+          repoToken: "${{ secrets.GITHUB_TOKEN }}"
           commentOnDirty: "В этом PR есть конфликты. Пожалуйста, разрешите их, прежде чем мы сможем оценить этот PR."
