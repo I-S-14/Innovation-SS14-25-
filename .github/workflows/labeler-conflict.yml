@@ -8,11 +8,25 @@ on:
       - reopened
       - ready_for_review
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   Label:
     if: ( github.event.pull_request.draft == false )
     runs-on: ubuntu-latest
     steps:
+      - name: Debug: is GITHUB_TOKEN set?
+        run: |
+          if [ -z "$GITHUB_TOKEN" ]; then
+            echo "GITHUB_TOKEN_EMPTY=true"
+          else
+            echo "GITHUB_TOKEN_PRESENT=true"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Check for Merge Conflicts
         uses: eps1lon/actions-label-merge-conflict@v3.0.0
         with:
