@@ -19,10 +19,8 @@ on:
     branches: [ master, staging, stable ]
   merge_group:
   pull_request:
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+    paths:
+      - '**.rsi/**'
 
 jobs:
   validate_rsis:
@@ -39,4 +37,5 @@ jobs:
           pip3 install --ignore-installed --user pillow jsonschema
       - name: Validate RSIs
         run: |
-          python3 RobustToolbox/Schemas/validate_rsis.py Resources/
+          python3 Schemas/validate_rsis.py Resources/
+
