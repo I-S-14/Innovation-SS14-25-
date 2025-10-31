@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "license": "All Right Reserved",
+  "copyright": "Made by Melvilla(discord) for IS14",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "brigmedic"
+    },
+    {
+      "name": "cadet"
+    },
+    {
+      "name": "detective"
+    },
+    {
+      "name": "security_officer"
+    },
+    {
+      "name": "senior_officer"
+    },
+    {
+      "name": "warden"
+    }
+  ]
+}

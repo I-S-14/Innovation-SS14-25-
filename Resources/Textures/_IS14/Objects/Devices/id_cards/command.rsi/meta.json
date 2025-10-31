@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "license": "All Right Reserved",
+  "copyright": "Made by Melvilla(discord) for IS14",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "head_of_security"
+    },
+    {
+      "name": "quartermaster"
+    },
+    {
+      "name": "research_director"
+    },
+    {
+      "name": "secretary"
+    },
+    {
+      "name": "captain"
+    },
+    {
+      "name": "chief_engineer"
+    },
+    {
+      "name": "chief_medical_officer"
+    },
+    {
+      "name": "head_of_personel"
+    }
+  ]
+}

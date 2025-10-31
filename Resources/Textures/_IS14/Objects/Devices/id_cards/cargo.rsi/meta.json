@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "license": "All Right Reserved",
+  "copyright": "Made by Melvilla(discord) for IS14",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "courier"
+    },
+    {
+      "name": "expeditionist"
+    },
+    {
+      "name": "senior_expeditionist"
+    },
+    {
+      "name": "technician"
+    }
+  ]
+}

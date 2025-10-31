@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "license": "All Right Reserved",
+  "copyright": "Made by Melvilla(discord) for IS14",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "administrator"
+    },
+    {
+      "name": "assistant"
+    },
+    {
+      "name": "bartender"
+    },
+    {
+      "name": "botanist"
+    },
+    {
+      "name": "boxer"
+    },
+    {
+      "name": "chaplain"
+    },
+    {
+      "name": "chaplain_assistant"
+    },
+    {
+      "name": "chef"
+    },
+    {
+      "name": "clown"
+    },
+    {
+      "name": "correspondent"
+    },
+    {
+      "name": "janitor"
+    },
+    {
+      "name": "librarian"
+    },
+    {
+      "name": "mime"
+    },
+    {
+      "name": "musican"
+    },
+    {
+      "name": "service_worker"
+    }
+  ]
+}
