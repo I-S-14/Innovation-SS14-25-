@@ -7,6 +7,7 @@ on:
       - synchronize
       - reopened
       - ready_for_review
+  workflow_dispatch: {}   # добавил ручной триггер для теста
 
 permissions:
   contents: read
@@ -14,7 +15,8 @@ permissions:
 
 jobs:
   Label:
-    if: ( github.event.pull_request.draft == false )
+    # временно снимаем условие, чтобы гарантированно запустить джоб
+    if: always()
     runs-on: ubuntu-latest
     steps:
       - name: Debug: is GITHUB_TOKEN set?
