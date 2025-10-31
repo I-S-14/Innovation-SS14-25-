@@ -77,6 +77,7 @@ marking-ArachnidLLegSegments-segments2 = Голень
 
 # UndergarmentBottom
 
+
 # UndergarmentTop
 
 marking-UndergarmentTopBinderA = Биндер
@@ -91,20 +92,25 @@ marking-UndershirtDefaultA = Майка (под одежду)
 marking-UndershirtDefaultA-undershirt = Майка
 marking-UndershirtGrossSleevelessA = Майка (грязная)
 marking-UndershirtGrossSleevelessA-grosssleeveless = Майка
-marking-UndershirtNanotrasenA = Майка (Nanotrasen)
+marking-UndershirtNanotrasenA = Майка (NanoTrasen)
 marking-UndershirtNanotrasenA-nanotrasen = Майка
 marking-UndershirtRolledA = Майка (короткая)
 marking-UndershirtRolledA-rolledundershirt = Майка
 
 # LFoot
 
+
 # RFoot
+
 
 # LHand
 
+
 # RHand
 
+
 # FacialHair
+
 
 # Hair
 
@@ -118,6 +124,7 @@ marking-ArachnidCheliceraeSmall = Малые хелицеры
 marking-ArachnidCheliceraeSmall-small = Хелицеры
 
 # HeadTop
+
 
 # Tail
 

@@ -481,7 +481,7 @@
   loadouts:
   - DetectiveGloves
 
-# Warden
+# Warden & Warden Helper
 
 - type: loadoutGroup
   id: WardenEnvirohelm
@@ -1392,8 +1392,6 @@
   name: loadout-group-security-melee
   loadouts:
   - SecurityMeleeKnife
-  - SecurityMeleePolyBaton
-  - SecurityMeleeSpear
 
 # Zookeeper
 

@@ -134,6 +134,7 @@
 # SPDX-FileCopyrightText: 2025 pheenty <fedorlukin2006@gmail.com>
 # SPDX-FileCopyrightText: 2025 username <113782077+whateverusername0@users.noreply.github.com>
 # SPDX-FileCopyrightText: 2025 whateverusername0 <whateveremail>
+# SPDX-FileCopyrightText: 2025 korczoczek <danielkorczok+git@gmail.com>
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # This is a basic dictionary that maps old entity prototype ids to new ids. This only works for entity prototypes, and
@@ -553,7 +554,7 @@ VehicleSecwayStealObjective: null
 #VehicleKeyJanicart: null Goobstation - Re-add vehicles
 #VehicleKeySecway: null Goobstation - Re-add vehicles
 #VehicleKeyATV: null Goobstation - Re-add vehicles
-VehicleKeySkeleton: null 
+VehicleKeySkeleton: null
 #VehicleKeySyndicateSegway: null Goobstation - Re-add vehicles
 #VehicleKeySkeletonMotorcycle: null Corvax Goobstation - Re-add vehicles
 #VehicleSecway: null Goobstation - Re-add vehicles
@@ -567,8 +568,8 @@ ActionVehicleHorn: null
 #CrateFunSyndicateSegway: null Goobstation - Re-add vehicles
 MobTaxiBot: null
 # MobSupplyBot: null
-SpawnVehicleMotobike: null
-SpawnVehicleATV: null
+#SpawnVehicleMotobike: null Corvax Goobstation - Re-add vehicles
+#SpawnVehicleATV: null Corvax Goobstation - Re-add vehicles
 #SpawnVehicleSecway: null Goobstation - Re-add vehicles
 #SpawnVehicleJanicart: null Goobstation - Re-add vehicles
 #VehicleJanicart: null Goobstation - Re-add vehicles
@@ -1090,3 +1091,17 @@ BarSignWhiskeyEchoesAlignTile: BarSignWhiskeyEchoes
 # CorvaxGoob : LRP Bullshit
 FishBoyFisher: null
 ImmovableRodSkibidi: null
+
+# 2025-06-21
+ClothingNeckHeadphones: ClothingMultipleHeadphones
+
+#2025-10-09 CorvaxGoob
+PlushieNigel: null
+PlushieBrizby: null
+PlushieBaldzby: null
+PlushieMnwaar: null
+PlushieBoggle: null
+PlushieLehmin: null
+
+# 2025-10-09
+FoodDonutJellySlugcat: FoodDonutJellyScurret
