@@ -12,6 +12,9 @@
     },
     {
       "name": "closed"
+    },
+    {
+      "name": "unlit"
     }
   ]
 }
