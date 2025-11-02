@@ -1,0 +1,29 @@
+﻿{
+  "version": 1,
+  "license": "All Rights Reserved",
+  "copyright": "made for innovation station by melvilla (discord)",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "galaxy"
+    },
+    {
+      "name": "memento_ultionis"
+    },
+    {
+      "name": "skull"
+    },
+    {
+      "name": "syndicate"
+    },
+    {
+      "name": "ussp"
+    },
+    {
+      "name": "orange"
+    }
+  ]
+}

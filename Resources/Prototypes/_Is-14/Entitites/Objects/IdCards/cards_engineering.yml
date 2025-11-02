@@ -1,0 +1,56 @@
+- type: entity
+  parent: IS_IdCardBase
+  id: IS_IdCardAtmosphericTechnician
+  name: identification card
+  description: A card necessary to access various areas aboard the station.
+  components:
+  - type: Appearance
+    appearanceDataInit:
+     enum.IdCardVisualLayers.Base:
+       !type:String
+       atmospheric_technician
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Devices/id_cards/engineering.rsi
+
+- type: entity
+  parent: IS_IdCardBase
+  id: IS_IdCardEngineerAssistant
+  name: identification card
+  description: A card necessary to access various areas aboard the station.
+  components:
+  - type: Appearance
+    appearanceDataInit:
+     enum.IdCardVisualLayers.Base:
+       !type:String
+       engineer_assistant
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Devices/id_cards/engineering.rsi
+
+- type: entity
+  parent: IS_IdCardBase
+  id: IS_IdCardEngineer
+  name: identification card
+  description: A card necessary to access various areas aboard the station.
+  components:
+  - type: Appearance
+    appearanceDataInit:
+     enum.IdCardVisualLayers.Base:
+       !type:String
+       engineer
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Devices/id_cards/engineering.rsi
+
+- type: entity
+  parent: IS_IdCardBase
+  id: IS_IdCardSeniorEngineer
+  name: identification card
+  description: A card necessary to access various areas aboard the station.
+  components:
+  - type: Appearance
+    appearanceDataInit:
+     enum.IdCardVisualLayers.Base:
+       !type:String
+       senior_engineer
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Devices/id_cards/engineering.rsi
+

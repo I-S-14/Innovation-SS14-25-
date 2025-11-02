@@ -1,0 +1,84 @@
+- type: entity
+  parent: IS_IdCardBase
+  id: IS_IdCardBrigmedic
+  name: identification card
+  description: A card necessary to access various areas aboard the station.
+  components:
+  - type: Appearance
+    appearanceDataInit:
+     enum.IdCardVisualLayers.Base:
+       !type:String
+       brigmedic
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Devices/id_cards/security.rsi
+
+- type: entity
+  parent: IS_IdCardBase
+  id: IS_IdCardCadet
+  name: identification card
+  description: A card necessary to access various areas aboard the station.
+  components:
+  - type: Appearance
+    appearanceDataInit:
+     enum.IdCardVisualLayers.Base:
+       !type:String
+       cadet
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Devices/id_cards/security.rsi
+
+- type: entity
+  parent: IS_IdCardBase
+  id: IS_IdCardDetective
+  name: identification card
+  description: A card necessary to access various areas aboard the station.
+  components:
+  - type: Appearance
+    appearanceDataInit:
+     enum.IdCardVisualLayers.Base:
+       !type:String
+       detective
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Devices/id_cards/security.rsi
+
+- type: entity
+  parent: IS_IdCardBase
+  id: IS_IdCardSecurityOfficer
+  name: identification card
+  description: A card necessary to access various areas aboard the station.
+  components:
+  - type: Appearance
+    appearanceDataInit:
+     enum.IdCardVisualLayers.Base:
+       !type:String
+       security_officer
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Devices/id_cards/security.rsi
+
+- type: entity
+  parent: IS_IdCardBase
+  id: IS_IdCardSeniorOfficer
+  name: identification card
+  description: A card necessary to access various areas aboard the station.
+  components:
+  - type: Appearance
+    appearanceDataInit:
+     enum.IdCardVisualLayers.Base:
+       !type:String
+       senior_officer
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Devices/id_cards/security.rsi
+
+- type: entity
+  parent: IS_IdCardBase
+  id: IS_IdCardWarden
+  name: identification card
+  description: A card necessary to access various areas aboard the station.
+  components:
+  - type: Appearance
+    appearanceDataInit:
+     enum.IdCardVisualLayers.Base:
+       !type:String
+       warden
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Devices/id_cards/security.rsi
+

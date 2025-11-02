@@ -1,0 +1,55 @@
+- type: entity
+  parent: IS_IdCardBase
+  id: IS_IdCardMentorScientist
+  name: identification card
+  description: A card necessary to access various areas aboard the station.
+  components:
+  - type: Appearance
+    appearanceDataInit:
+     enum.IdCardVisualLayers.Base:
+       !type:String
+       mentor_scientist
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Devices/id_cards/research.rsi
+
+- type: entity
+  parent: IS_IdCardBase
+  id: IS_IdCardResearchAssistant
+  name: identification card
+  description: A card necessary to access various areas aboard the station.
+  components:
+  - type: Appearance
+    appearanceDataInit:
+     enum.IdCardVisualLayers.Base:
+       !type:String
+       research_assistant
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Devices/id_cards/research.rsi
+
+- type: entity
+  parent: IS_IdCardBase
+  id: IS_IdCardRoboticist
+  name: identification card
+  description: A card necessary to access various areas aboard the station.
+  components:
+  - type: Appearance
+    appearanceDataInit:
+     enum.IdCardVisualLayers.Base:
+       !type:String
+       roboticist
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Devices/id_cards/research.rsi
+
+- type: entity
+  parent: IS_IdCardBase
+  id: IS_IdCardScientist
+  name: identification card
+  description: A card necessary to access various areas aboard the station.
+  components:
+  - type: Appearance
+    appearanceDataInit:
+     enum.IdCardVisualLayers.Base:
+       !type:String
+       scientist
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Devices/id_cards/research.rsi

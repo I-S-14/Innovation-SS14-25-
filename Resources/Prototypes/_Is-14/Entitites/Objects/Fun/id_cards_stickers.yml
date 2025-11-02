@@ -1,0 +1,113 @@
+- type: entity
+  id: CardStickerGalaxy
+  name: galaxy card sticker
+  parent: BaseItem
+  description: Make your id card more cool!
+  components:
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Fun/id_stickers.rsi
+    state: galaxy
+  - type: CardSticker
+    cardStickerProto: CardStickerGalaxy
+
+- type: cardSticker
+  id: CardStickerGalaxy
+  name: galaxy sticker
+  icon:
+    sprite: _IS14/Objects/Fun/id_stickers.rsi
+    state: galaxy
+
+- type: entity
+  id: CardStickerMementoUltionis
+  name: memento ultionis card sticker
+  parent: BaseItem
+  description: Make your id card more cool!
+  components:
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Fun/id_stickers.rsi
+    state: memento_ultionis
+  - type: CardSticker
+    cardStickerProto: CardStickerMementoUltionis
+
+- type: cardSticker
+  id: CardStickerMementoUltionis
+  name: memento ultionis sticker
+  icon:
+    sprite: _IS14/Objects/Fun/id_stickers.rsi
+    state: memento_ultionis
+
+- type: entity
+  id: CardStickerSkull
+  name: skull card sticker
+  parent: BaseItem
+  description: Make your id card more cool!
+  components:
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Fun/id_stickers.rsi
+    state: skull
+  - type: CardSticker
+    cardStickerProto: CardStickerSkull
+
+- type: cardSticker
+  id: CardStickerSkull
+  name: skull sticker
+  icon:
+    sprite: _IS14/Objects/Fun/id_stickers.rsi
+    state: skull
+
+- type: entity
+  id: CardStickerSyndicate
+  name: syndicate card sticker
+  parent: BaseItem
+  description: Make your id card more cool!
+  components:
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Fun/id_stickers.rsi
+    state: syndicate
+  - type: CardSticker
+    cardStickerProto: CardStickerSyndicate
+
+- type: cardSticker
+  id: CardStickerSyndicate
+  name: syndicate sticker
+  icon:
+    sprite: _IS14/Objects/Fun/id_stickers.rsi
+    state: syndicate
+
+- type: entity
+  id: CardStickerUSSP
+  name: USSP card sticker
+  parent: BaseItem
+  description: Make your id card more cool!
+  components:
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Fun/id_stickers.rsi
+    state: ussp
+  - type: CardSticker
+    cardStickerProto: CardStickerUSSP
+
+- type: cardSticker
+  id: CardStickerUSSP
+  name: ussp sticker
+  icon:
+    sprite: _IS14/Objects/Fun/id_stickers.rsi
+    state: ussp
+
+- type: entity
+  id: CardStickerOrange
+  name: orange card sticker
+  parent: BaseItem
+  description: Make your id card more cool!
+  components:
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Fun/id_stickers.rsi
+    state: orange
+  - type: CardSticker
+    cardStickerProto: CardStickerOrange
+
+- type: cardSticker
+  id: CardStickerOrange
+  name: orange sticker
+  icon:
+    sprite: _IS14/Objects/Fun/id_stickers.rsi
+    state: orange

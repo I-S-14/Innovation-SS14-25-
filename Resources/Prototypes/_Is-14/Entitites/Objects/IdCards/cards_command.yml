@@ -1,0 +1,111 @@
+- type: entity
+  parent: IS_IdCardBase
+  id: IS_IdCardCaptain
+  name: identification card
+  description: A card necessary to access various areas aboard the station.
+  components:
+  - type: Appearance
+    appearanceDataInit:
+     enum.IdCardVisualLayers.Base:
+       !type:String
+       captain
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Devices/id_cards/command.rsi
+
+- type: entity
+  parent: IS_IdCardBase
+  id: IS_IdCardCE
+  name: identification card
+  description: A card necessary to access various areas aboard the station.
+  components:
+  - type: Appearance
+    appearanceDataInit:
+     enum.IdCardVisualLayers.Base:
+       !type:String
+       chief_engineer
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Devices/id_cards/command.rsi
+
+- type: entity
+  parent: IS_IdCardBase
+  id: IS_IdCardCMO
+  name: identification card
+  description: A card necessary to access various areas aboard the station.
+  components:
+  - type: Appearance
+    appearanceDataInit:
+     enum.IdCardVisualLayers.Base:
+       !type:String
+       chief_medical_officer
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Devices/id_cards/command.rsi
+
+- type: entity
+  parent: IS_IdCardBase
+  id: IS_IdCardHoP
+  name: identification card
+  description: A card necessary to access various areas aboard the station.
+  components:
+  - type: Appearance
+    appearanceDataInit:
+     enum.IdCardVisualLayers.Base:
+       !type:String
+       head_of_personel
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Devices/id_cards/command.rsi
+
+- type: entity
+  parent: IS_IdCardBase
+  id: IS_IdCardHoS
+  name: identification card
+  description: A card necessary to access various areas aboard the station.
+  components:
+  - type: Appearance
+    appearanceDataInit:
+     enum.IdCardVisualLayers.Base:
+       !type:String
+       head_of_security
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Devices/id_cards/command.rsi
+
+- type: entity
+  parent: IS_IdCardBase
+  id: IS_IdCardQM
+  name: identification card
+  description: A card necessary to access various areas aboard the station.
+  components:
+  - type: Appearance
+    appearanceDataInit:
+     enum.IdCardVisualLayers.Base:
+       !type:String
+       quartermaster
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Devices/id_cards/command.rsi
+
+- type: entity
+  parent: IS_IdCardBase
+  id: IS_IdCardRD
+  name: identification card
+  description: A card necessary to access various areas aboard the station.
+  components:
+  - type: Appearance
+    appearanceDataInit:
+     enum.IdCardVisualLayers.Base:
+       !type:String
+       research_director
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Devices/id_cards/command.rsi
+
+- type: entity
+  parent: IS_IdCardBase
+  id: IS_IdCardSecretary
+  name: identification card
+  description: A card necessary to access various areas aboard the station.
+  components:
+  - type: Appearance
+    appearanceDataInit:
+     enum.IdCardVisualLayers.Base:
+       !type:String
+       secretary
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Devices/id_cards/command.rsi
