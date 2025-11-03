@@ -1,5 +1,4 @@
-﻿using Robust.Client.Graphics;
-using Robust.Shared.Prototypes;
+﻿using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
 
 namespace Content.Shared._IS.CardSticker;
