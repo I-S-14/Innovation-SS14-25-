@@ -32,3 +32,11 @@
   components:
   - type: Pda
     id: IS_IdCardSeniorExpeditionist
+
+- type: entity
+  parent: IS_PdaCargoBase
+  id: IS_PdaCargoTechnician
+  name: cargo technician PDA
+  components:
+  - type: Pda
+    id: IS_IdCardCargoTechnician
