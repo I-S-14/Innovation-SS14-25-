@@ -1,0 +1,11 @@
+card-sticker-plasma = СовПлазма
+card-sticker-MIA = militarum intergalactic aggregator
+card-sticker-melon = арбуз
+card-sticker-mashunist = Машьюнисты
+card-sticker-holo = голограмма
+card-sticker-orange = апельсин
+card-sticker-USSP = СССП
+card-sticker-syndicate = CyberSun
+card-sticker-skull = вольные люди
+card-sticker-memento-ultionis = легитимисты
+card-sticker-galaxy = Цдар-Дао
