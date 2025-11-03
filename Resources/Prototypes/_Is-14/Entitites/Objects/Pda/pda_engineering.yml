@@ -1,0 +1,40 @@
+- type: entity
+  parent: IS_PdaBase
+  id: IS_PdaAtmosphericTechnician
+  name: atmospheric technician's PDA
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Devices/pda/Engineering/engineer.rsi
+  - type: Pda
+    id: IS_IdCardAtmosphericTechnician
+
+- type: entity
+  parent: IS_PdaBase
+  id: IS_PdaEngineerAssistant
+  name: engineer assistant's PDA
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Devices/pda/Engineering/engineer.rsi
+  - type: Pda
+    id: IS_IdCardEngineerAssistant
+
+- type: entity
+  parent: IS_PdaBase
+  id: IS_PdaEngineer
+  name: engineer's PDA
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Devices/pda/Engineering/engineer.rsi
+  - type: Pda
+    id: IS_IdCardEngineer
+
+- type: entity
+  parent: IS_PdaBase
+  id: IS_PdaSeniorEngineer
+  name: senior engineer's PDA
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Devices/pda/Engineering/engineer.rsi
+  - type: Pda
+    id: IS_IdCardSeniorEngineer
+

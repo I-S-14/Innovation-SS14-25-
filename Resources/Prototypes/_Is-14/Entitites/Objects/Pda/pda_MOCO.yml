@@ -1,0 +1,9 @@
+- type: entity
+  parent: IS_PdaBase
+  id: IS_PdaOfficerMOCO
+  name: MOCO officer's PDA
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Devices/pda/MOCO/moco.rsi
+  - type: Pda
+    id: IS_IdCardOfficerMOCO

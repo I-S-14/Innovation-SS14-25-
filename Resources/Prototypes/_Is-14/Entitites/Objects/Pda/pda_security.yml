@@ -1,0 +1,60 @@
+- type: entity
+  parent: IS_PdaBase
+  id: IS_PdaBrigmedic
+  name: brigmedic's PDA
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Devices/pda/Security/security.rsi
+  - type: Pda
+    id: IS_IdCardBrigmedic
+
+- type: entity
+  parent: IS_PdaBase
+  id: IS_PdaCadet
+  name: cadet's PDA
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Devices/pda/Security/security.rsi
+  - type: Pda
+    id: IS_IdCardCadet
+
+- type: entity
+  parent: IS_PdaBase
+  id: IS_PdaDetective
+  name: detective's PDA
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Devices/pda/Security/security.rsi
+  - type: Pda
+    id: IS_IdCardDetective
+
+- type: entity
+  parent: IS_PdaBase
+  id: IS_PdaSecurityOfficer
+  name: security officer's PDA
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Devices/pda/Security/security.rsi
+  - type: Pda
+    id: IS_IdCardScientist
+
+- type: entity
+  parent: IS_PdaBase
+  id: IS_PdaSeniorOfficer
+  name: senior officer's PDA
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Devices/pda/Security/security.rsi
+  - type: Pda
+    id: IS_IdCardSeniorOfficer
+
+- type: entity
+  parent: IS_PdaBase
+  id: IS_PdaWarden
+  name: warden's PDA
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Devices/pda/Security/security.rsi
+  - type: Pda
+    id: IS_IdCardWarden
+

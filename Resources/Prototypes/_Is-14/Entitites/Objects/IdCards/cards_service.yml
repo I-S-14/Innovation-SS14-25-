@@ -56,7 +56,7 @@
 
 - type: entity
   parent: IS_IdCardBase
-  id: IS_IdCardBoxer
+  id: IS_IdCardMartialArtist
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -182,7 +182,7 @@
 
 - type: entity
   parent: IS_IdCardBase
-  id: IS_IdCardMusican
+  id: IS_IdCardMusician
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:

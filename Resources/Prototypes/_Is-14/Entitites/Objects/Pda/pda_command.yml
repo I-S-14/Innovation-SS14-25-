@@ -1,0 +1,79 @@
+- type: entity
+  parent: IS_PdaBase
+  id: IS_PdaCaptain
+  name: captain's PDA
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Devices/pda/Command/captain.rsi
+  - type: Pda
+    id: IS_IdCardCaptain
+
+- type: entity
+  parent: IS_PdaBase
+  id: IS_PdaCE
+  name: cheif engineer's PDA
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Devices/pda/Command/CE.rsi
+  - type: Pda
+    id: IS_IdCardCE
+
+- type: entity
+  parent: IS_PdaBase
+  id: IS_PdaCMO
+  name: cheif medical officer's PDA
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Devices/pda/Command/CMO.rsi
+  - type: Pda
+    id: IS_IdCardCMO
+
+- type: entity
+  parent: IS_PdaBase
+  id: IS_PdaHOP
+  name: head of personel's PDA
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Devices/pda/Command/HOP.rsi
+  - type: Pda
+    id: IS_IdCardHoP
+
+- type: entity
+  parent: IS_PdaBase
+  id: IS_PdaHOS
+  name: head of security's PDA
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Devices/pda/Command/HOS.rsi
+  - type: Pda
+    id: IS_IdCardHoS
+
+- type: entity
+  parent: IS_PdaBase
+  id: IS_PdaQM
+  name: quartermaster's PDA
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Devices/pda/Command/QM.rsi
+  - type: Pda
+    id: IS_IdCardQM
+
+- type: entity
+  parent: IS_PdaBase
+  id: IS_PdaRD
+  name: research director's PDA
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Devices/pda/Command/RD.rsi
+  - type: Pda
+    id: IS_IdCardRD
+
+- type: entity
+  parent: IS_PdaBase
+  id: IS_PdaSecretary
+  name: secretary's PDA
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Devices/pda/Command/secretary.rsi
+  - type: Pda
+    id: IS_IdCardRD

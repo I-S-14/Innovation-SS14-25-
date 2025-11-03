@@ -1,0 +1,9 @@
+- type: entity
+  parent: IS_PdaBase
+  id: IS_PdaSyndicate
+  name: syndicate's PDA
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Devices/pda/Syndicate/syndicate.rsi
+  - type: Pda
+    id: IS_IdCardSyndicate
