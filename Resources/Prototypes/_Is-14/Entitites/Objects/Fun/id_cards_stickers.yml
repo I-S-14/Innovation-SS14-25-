@@ -1,3 +1,5 @@
+# ========================== Galaxy
+
 - type: entity
   id: CardStickerGalaxy
   name: galaxy card sticker
@@ -16,6 +18,8 @@
   icon:
     sprite: _IS14/Objects/Fun/id_stickers.rsi
     state: galaxy
+
+# ========================== Memento Ultionis
 
 - type: entity
   id: CardStickerMementoUltionis
@@ -36,6 +40,8 @@
     sprite: _IS14/Objects/Fun/id_stickers.rsi
     state: memento_ultionis
 
+# ========================== Skull
+
 - type: entity
   id: CardStickerSkull
   name: skull card sticker
@@ -54,6 +60,8 @@
   icon:
     sprite: _IS14/Objects/Fun/id_stickers.rsi
     state: skull
+
+# ========================== Syndicate
 
 - type: entity
   id: CardStickerSyndicate
@@ -74,6 +82,8 @@
     sprite: _IS14/Objects/Fun/id_stickers.rsi
     state: syndicate
 
+# ========================== USSP
+
 - type: entity
   id: CardStickerUSSP
   name: USSP card sticker
@@ -93,6 +103,8 @@
     sprite: _IS14/Objects/Fun/id_stickers.rsi
     state: ussp
 
+# ========================== Orange
+
 - type: entity
   id: CardStickerOrange
   name: orange card sticker
@@ -111,3 +123,108 @@
   icon:
     sprite: _IS14/Objects/Fun/id_stickers.rsi
     state: orange
+
+# ========================== Holo
+
+- type: entity
+  id: CardStickerHolo
+  name: holo card sticker
+  parent: BaseItem
+  description: Make your id card more cool!
+  components:
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Fun/id_stickers.rsi
+    state: holo
+  - type: CardSticker
+    cardStickerProto: CardStickerHolo
+
+- type: cardSticker
+  id: CardStickerHolo
+  name: holo sticker
+  icon:
+    sprite: _IS14/Objects/Fun/id_stickers.rsi
+    state: holo
+
+# ========================== Mashunist
+
+- type: entity
+  id: CardStickerMashunist
+  name: mashunist card sticker
+  parent: BaseItem
+  description: Make your id card more cool!
+  components:
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Fun/id_stickers.rsi
+    state: holo
+  - type: CardSticker
+    cardStickerProto: CardStickerMashunist
+
+- type: cardSticker
+  id: CardStickerMashunist
+  name: mashunist sticker
+  icon:
+    sprite: _IS14/Objects/Fun/id_stickers.rsi
+    state: mashunist
+
+# ========================== Melon
+
+- type: entity
+  id: CardStickerMelon
+  name: melon card sticker
+  parent: BaseItem
+  description: Make your id card more cool!
+  components:
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Fun/id_stickers.rsi
+    state: holo
+  - type: CardSticker
+    cardStickerProto: CardStickerMelon
+
+- type: cardSticker
+  id: CardStickerMelon
+  name: melon sticker
+  icon:
+    sprite: _IS14/Objects/Fun/id_stickers.rsi
+    state: melon
+
+# ========================== MIA
+
+- type: entity
+  id: CardStickerMIA
+  name: MIA card sticker
+  parent: BaseItem
+  description: Make your id card more cool!
+  components:
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Fun/id_stickers.rsi
+    state: holo
+  - type: CardSticker
+    cardStickerProto: CardStickerMIA
+
+- type: cardSticker
+  id: CardStickerMIA
+  name: MIA sticker
+  icon:
+    sprite: _IS14/Objects/Fun/id_stickers.rsi
+    state: mia
+
+# ========================== plasma
+
+- type: entity
+  id: CardStickerPlasma
+  name: plasma card sticker
+  parent: BaseItem
+  description: Make your id card more cool!
+  components:
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Fun/id_stickers.rsi
+    state: plasma
+  - type: CardSticker
+    cardStickerProto: CardStickerPlasma
+
+- type: cardSticker
+  id: CardStickerPlasma
+  name: plasma sticker
+  icon:
+    sprite: _IS14/Objects/Fun/id_stickers.rsi
+    state: plasma

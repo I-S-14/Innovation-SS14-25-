@@ -1,5 +1,5 @@
 ﻿{
-  "version": 1,
+  "version": 2,
   "license": "All Rights Reserved",
   "copyright": "made for innovation station by melvilla (discord)",
   "size": {
@@ -24,6 +24,29 @@
     },
     {
       "name": "orange"
+    },
+    {
+      "name": "mashunist"
+    },
+    {
+      "name": "melon"
+    },
+    {
+      "name": "mia"
+    },
+    {
+      "name": "plasma"
+    },
+    {
+      "name": "holo",
+      "delays": [
+                        [
+                            3.0,
+                            0.2,
+                            0.2,
+                            0.2
+                        ]
+                    ]
     }
   ]
 }
