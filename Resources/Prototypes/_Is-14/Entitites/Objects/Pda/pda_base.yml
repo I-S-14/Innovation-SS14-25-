@@ -7,10 +7,10 @@
   components:
   - type: Sprite
     layers:
-    - state: "base"
+    - state: "closed"
     - state: "unlit"
       shader: unshaded
-    - state: "closed"
+      visible: false
   - type: Pda
     paiSlot:
       priority: -2

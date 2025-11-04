@@ -36,7 +36,7 @@
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Security/security.rsi
   - type: Pda
-    id: IS_IdCardScientist
+    id: IS_IdCardSecurityOfficer
 
 - type: entity
   parent: IS_PdaBase

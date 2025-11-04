@@ -78,6 +78,7 @@
     - state: "base"
     - state: "unlit"
       shader: unshaded
+      visible: false
     #- state: "closed" No closed state for clown!
     sprite: _IS14/Objects/Devices/pda/Service/clown.rsi
   - type: Pda
