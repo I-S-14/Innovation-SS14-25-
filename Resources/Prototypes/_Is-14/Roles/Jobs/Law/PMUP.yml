@@ -1,0 +1,44 @@
+- type: job
+  id: PMUP
+  name: job-name-PMUP
+  description: job-description-PMUP
+  playTimeTracker: JobPMUP
+  requirements:
+    - !type:DepartmentTimeRequirement
+      department: Command
+      time: 180000  #50 hours
+    - !type:AgeRequirement
+      requiredAge: 21
+  weight: 30
+  startingGear: NanotrasenRepresentativeGear
+  icon: "JobIconPMUP"
+  requireAdminNotify: true
+  joinNotifyCrew: true
+  supervisors: job-supervisors-centcom
+  canBeAntag: false
+  #goobcoins: 40 Corvax-Goob-coins
+  access:
+  - Security
+  - Brig
+  - External
+  - Cryogenics
+  - Maintenance
+  - Engineering
+  - Medical
+  - Research
+  - Command
+  - CentralCommand
+  - Service
+  - Hydroponics
+  - Kitchen
+  - Cargo
+  - Theatre
+  - NanotrasenRepresentative
+  special:
+  - !type:AddImplantSpecial
+    implants: [ MindShieldImplant ]
+  - !type:AddComponentSpecial
+    components:
+      - type: CommandStaff
+      - type: Condemned
+        soulOwnedNotDevil: true

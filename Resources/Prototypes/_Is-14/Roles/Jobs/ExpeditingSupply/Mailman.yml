@@ -1,0 +1,24 @@
+- type: job
+  id: Mailman
+  name: job-name-Mailman
+  description: job-description-Mailman
+  playTimeTracker: JobMailman
+  startingGear: CargoTechGear
+  icon: "JobIconMailman"
+  supervisors: job-supervisors-qm
+  #goobcoins: 20 #Goob content Corvax-Goob-coins
+  access:
+  - Cargo
+  - Maintenance
+  extendedAccess:
+  - Salvage
+  - External # goobstation
+  special:
+  - !type:GiveItemOnHolidaySpecial
+    holiday: BoxingDay
+    prototype: BoxCardboard
+  - !type:AddComponentSpecial
+    components:
+    - type: Skills # CorvaxGoob-Skills
+      skills:
+      - ShuttleControl

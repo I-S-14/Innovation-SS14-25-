@@ -8,14 +8,6 @@
 
 - type: jobIcon
   parent: JobIcon
-  id: JobIconInspectorIOC
-  icon:
-    sprite: /Textures/_Is-14/Interface/Misc/job_icons.rsi
-    state: InspectorIOC
-  allowSelection: false
-
-- type: jobIcon
-  parent: JobIcon
   id: JobIconNOK
   icon:
     sprite: /Textures/_Is-14/Interface/Misc/job_icons.rsi
@@ -68,4 +60,100 @@
   icon:
     sprite: /Textures/_Is-14/Interface/Misc/job_icons.rsi
     state: SK
+  allowSelection: false
+
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconHS
+  icon:
+    sprite: /Textures/_Is-14/Interface/Misc/job_icons.rsi
+    state: HS
+  allowSelection: false
+
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconPMUP
+  icon:
+    sprite: /Textures/_Is-14/Interface/Misc/job_icons.rsi
+    state: PMUP
+  allowSelection: false
+
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconIVK
+  icon:
+    sprite: /Textures/_Is-14/Interface/Misc/job_icons.rsi
+    state: IVK
+  allowSelection: false
+
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconLawWorker
+  icon:
+    sprite: /Textures/_Is-14/Interface/Misc/job_icons.rsi
+    state: LawWorker
+  allowSelection: false
+
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconInspectorMOKO
+  icon:
+    sprite: /Textures/_Is-14/Interface/Misc/job_icons.rsi
+    state: InspectorMOKO
+  allowSelection: false
+
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconDirectorMOKO
+  icon:
+    sprite: /Textures/_Is-14/Interface/Misc/job_icons.rsi
+    state: DirectorMOKO
+  allowSelection: false
+
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconOHRMO
+  icon:
+    sprite: /Textures/_Is-14/Interface/Misc/job_icons.rsi
+    state: OHRMO
+  allowSelection: false
+
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconOMOKO
+  icon:
+    sprite: /Textures/_Is-14/Interface/Misc/job_icons.rsi
+    state: OMOKO
+  allowSelection: false
+
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconSeniorForwarder
+  icon:
+    sprite: /Textures/_Is-14/Interface/Misc/job_icons.rsi
+    state: SeniorForwarder
+  allowSelection: false
+
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconForwarder
+  icon:
+    sprite: /Textures/_Is-14/Interface/Misc/job_icons.rsi
+    state: Forwarder
+  allowSelection: false
+
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconMailman
+  icon:
+    sprite: /Textures/_Is-14/Interface/Misc/job_icons.rsi
+    state: Mailman
+  allowSelection: false
+
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconCargoSpecialist
+  icon:
+    sprite: /Textures/_Is-14/Interface/Misc/job_icons.rsi
+    state: CargoSpecialist
   allowSelection: false

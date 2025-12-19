@@ -1,0 +1,34 @@
+- type: job
+  id: InspectorMOKO
+  name: job-name-InspectorMOKO
+  description: job-description-InspectorMOKO
+  playTimeTracker: JobInspectorMOKO
+  setPreference: true #IS14TODO Set false
+  startingGear: CentcomGear
+  icon: "JobIconInspectorMOKO"
+  supervisors: job-supervisors-centcom # Goobstation
+  canBeAntag: false
+  weight: 30
+  requirements:
+  - !type:AgeRequirement
+    requiredAge: 21
+  accessGroups:
+  - AllAccess
+  access:
+  - CentralCommand
+  # Goobstation
+  - NanotrasenRepresentative
+  - BlueshieldOfficer
+  special: # Goobstation
+  - !type:AddImplantSpecial
+    implants: [ MindShieldImplant, FreedomImplant, BluespaceLifelineImplant, RadioImplantCentcomm, NutrimentPumpImplant, StypticStimulatorImplant, DeathRattleImplantCentcomm ]
+  - !type:AddComponentSpecial
+    components:
+    - type: Skills # CorvaxGoob-Skills
+      skills:
+      - ShuttleControl
+      - Shooting
+      - AdvancedBuilding
+      - Surgery
+      - MedicalEquipment
+      - Butchering

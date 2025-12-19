@@ -1,13 +1,12 @@
 {
     "version": 1,
+    "license": "All Rights Reserved",
+    "copyright": "made for innovation station by melvilla (discord)",
     "size": {
         "x": 8,
         "y": 8
     },
     "states": [
-        {
-            "name": "InspectorIOC"
-        },
         {
             "name": "ExpeditionDirector"
         },
@@ -31,6 +30,42 @@
         },
         {
             "name": "SK"
+        },
+        {
+            "name": "HS"
+        },
+        {
+            "name": "PMUP"
+        },
+        {
+            "name": "IVK"
+        },
+        {
+            "name": "LawWorker"
+        },
+        {
+            "name": "DirectorMOKO"
+        },
+        {
+            "name": "InspectorMOKO"
+        },
+        {
+            "name": "OHRMO"
+        },
+        {
+            "name": "OMOKO"
+        },
+        {
+            "name": "SeniorForwarder"
+        },
+        {
+            "name": "Forwarder"
+        },
+        {
+            "name": "Mailman"
+        },
+        {
+            "name": "CargoSpecialist"
         }
     ]
 }

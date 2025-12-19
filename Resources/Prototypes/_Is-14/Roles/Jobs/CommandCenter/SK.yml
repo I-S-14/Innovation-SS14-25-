@@ -9,9 +9,6 @@
   canBeAntag: false
   #goobcoins: 40 #Goob content Corvax-Goob-coins
   access:
-  - Cargo
-  - Salvage
-  - Quartermaster
   - Maintenance
   - External
   - Command

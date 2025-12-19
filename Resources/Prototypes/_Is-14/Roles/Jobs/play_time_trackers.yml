@@ -21,3 +21,27 @@
 
 - type: playTimeTracker
   id: JobSK
+
+- type: playTimeTracker
+  id: JobHS
+
+- type: playTimeTracker
+  id: JobPMUP
+
+- type: playTimeTracker
+  id: JobLawWorker
+
+- type: playTimeTracker
+  id: JobIVK
+
+- type: playTimeTracker
+  id: JobDirectorMOKO
+
+- type: playTimeTracker
+  id: JobInspectorMOKO
+
+- type: playTimeTracker
+  id: JobOHRMO
+
+- type: playTimeTracker
+  id: JobOMOKO

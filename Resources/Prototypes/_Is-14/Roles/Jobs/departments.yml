@@ -5,7 +5,10 @@
   color: "#da7700"
   weight: 10
   roles:
-  - Clown
+  - DirectorMOKO
+  - InspectorMOKO
+  - OHRMO
+  - OMOKO
   primary: true
   editorHidden: false
 
@@ -25,7 +28,10 @@
   description: department-Law-description
   color: "#2c2c2c"
   roles:
-  - Clown
+  - HS
+  - PMUP
+  - IVK
+  - LawWorker
   primary: true
   editorHidden: false
 
@@ -93,6 +99,10 @@
   color: "#0095ff"
   roles:
   - RESO
+  - CargoSpecialist
+  - Mailman
+  - Forwarder
+  - SeniorForwarder
   primary: true
   editorHidden: false
 
