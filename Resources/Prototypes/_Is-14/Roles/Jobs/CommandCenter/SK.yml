@@ -1,0 +1,23 @@
+- type: job
+  id: SK
+  name: job-name-SK
+  description: job-description-SK
+  playTimeTracker: JobSK
+  weight: 10
+  icon: "JobIconSK"
+  supervisors: job-supervisors-captain
+  canBeAntag: false
+  #goobcoins: 40 #Goob content Corvax-Goob-coins
+  access:
+  - Maintenance
+  - External
+  - Command
+  - Brig
+  - Cryogenics
+  - External # goobstation
+  special:
+  - !type:AddImplantSpecial
+    implants: [ MindShieldImplant ]
+  - !type:AddComponentSpecial
+    components:
+      - type: CommandStaff

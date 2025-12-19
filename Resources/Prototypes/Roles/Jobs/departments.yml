@@ -108,6 +108,8 @@
   - CargoTechnician
   - Quartermaster
   - SalvageSpecialist
+  primary: false
+  editorHidden: true
 
 - type: department
   id: Civilian
@@ -133,6 +135,8 @@
   - Visitor
   - Zookeeper
   - ServiceWorker
+  primary: false
+  editorHidden: true
 
 - type: department
   id: CentralCommand
@@ -159,6 +163,7 @@
   - SpecialOperationsOfficer
   - Diplomat
   - GovernmentMan # Goobstation - End
+  primary: false
   editorHidden: true
   weight: 120
 
@@ -190,6 +195,7 @@
   - HecuOperative
   primary: false
   weight: 100
+  editorHidden: true
 
 - type: department
   id: Engineering
@@ -201,6 +207,8 @@
   - ChiefEngineer
   - StationEngineer
   - TechnicalAssistant
+  primary: false
+  editorHidden: true
 
 - type: department
   id: Medical
@@ -215,6 +223,8 @@
   - Psychologist
   - Paramedic
   - Surgeon # Corvax-Next-Surgeon
+  primary: false
+  editorHidden: true
 
 - type: department
   id: Security
@@ -231,6 +241,8 @@
   - Brigmedic # Goob
   - Pilot # Corvax-Pilot
   - WardenHelper # Corvax-Next-WardenHelper
+  primary: false
+  editorHidden: true
 
 - type: department
   id: Science
@@ -241,6 +253,8 @@
   - ResearchDirector
   - Scientist
   - ResearchAssistant
+  primary: false
+  editorHidden: true
 
 - type: department
   id: Silicon
@@ -263,3 +277,4 @@
   - Zookeeper
   - Psychologist
   primary: false
+  editorHidden: true

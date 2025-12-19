@@ -1,0 +1,159 @@
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconExpeditionDirector
+  icon:
+    sprite: /Textures/_Is-14/Interface/Misc/job_icons.rsi
+    state: ExpeditionDirector
+  allowSelection: false
+
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconNOK
+  icon:
+    sprite: /Textures/_Is-14/Interface/Misc/job_icons.rsi
+    state: NOK
+  allowSelection: false
+
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconNM
+  icon:
+    sprite: /Textures/_Is-14/Interface/Misc/job_icons.rsi
+    state: NM
+  allowSelection: false
+
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconDNIC
+  icon:
+    sprite: /Textures/_Is-14/Interface/Misc/job_icons.rsi
+    state: DNIC
+  allowSelection: false
+
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconGMS
+  icon:
+    sprite: /Textures/_Is-14/Interface/Misc/job_icons.rsi
+    state: GMS
+  allowSelection: false
+
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconGIS
+  icon:
+    sprite: /Textures/_Is-14/Interface/Misc/job_icons.rsi
+    state: GIS
+  allowSelection: false
+
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconRESO
+  icon:
+    sprite: /Textures/_Is-14/Interface/Misc/job_icons.rsi
+    state: RESO
+  allowSelection: false
+
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconSK
+  icon:
+    sprite: /Textures/_Is-14/Interface/Misc/job_icons.rsi
+    state: SK
+  allowSelection: false
+
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconHS
+  icon:
+    sprite: /Textures/_Is-14/Interface/Misc/job_icons.rsi
+    state: HS
+  allowSelection: false
+
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconPMUP
+  icon:
+    sprite: /Textures/_Is-14/Interface/Misc/job_icons.rsi
+    state: PMUP
+  allowSelection: false
+
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconIVK
+  icon:
+    sprite: /Textures/_Is-14/Interface/Misc/job_icons.rsi
+    state: IVK
+  allowSelection: false
+
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconLawWorker
+  icon:
+    sprite: /Textures/_Is-14/Interface/Misc/job_icons.rsi
+    state: LawWorker
+  allowSelection: false
+
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconInspectorMOKO
+  icon:
+    sprite: /Textures/_Is-14/Interface/Misc/job_icons.rsi
+    state: InspectorMOKO
+  allowSelection: false
+
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconDirectorMOKO
+  icon:
+    sprite: /Textures/_Is-14/Interface/Misc/job_icons.rsi
+    state: DirectorMOKO
+  allowSelection: false
+
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconOHRMO
+  icon:
+    sprite: /Textures/_Is-14/Interface/Misc/job_icons.rsi
+    state: OHRMO
+  allowSelection: false
+
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconOMOKO
+  icon:
+    sprite: /Textures/_Is-14/Interface/Misc/job_icons.rsi
+    state: OMOKO
+  allowSelection: false
+
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconSeniorForwarder
+  icon:
+    sprite: /Textures/_Is-14/Interface/Misc/job_icons.rsi
+    state: SeniorForwarder
+  allowSelection: false
+
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconForwarder
+  icon:
+    sprite: /Textures/_Is-14/Interface/Misc/job_icons.rsi
+    state: Forwarder
+  allowSelection: false
+
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconMailman
+  icon:
+    sprite: /Textures/_Is-14/Interface/Misc/job_icons.rsi
+    state: Mailman
+  allowSelection: false
+
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconCargoSpecialist
+  icon:
+    sprite: /Textures/_Is-14/Interface/Misc/job_icons.rsi
+    state: CargoSpecialist
+  allowSelection: false

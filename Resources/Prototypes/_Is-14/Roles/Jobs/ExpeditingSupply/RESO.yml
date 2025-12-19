@@ -1,0 +1,40 @@
+- type: job
+  id: RESO
+  name: job-name-RESO
+  description: job-description-RESO
+  playTimeTracker: JobRESO
+  requirements:
+    - !type:RoleTimeRequirement
+      role: JobCargoTechnician
+      time: 18000 #5 hrs
+    - !type:RoleTimeRequirement
+      role: JobSalvageSpecialist
+      time: 9000 #2.5 hrs
+    - !type:DepartmentTimeRequirement
+      department: Cargo
+      time: 36000 #10 hours
+  weight: 10
+  startingGear: QuartermasterGear
+  icon: "JobIconRESO"
+  supervisors: job-supervisors-captain
+  canBeAntag: false
+  #goobcoins: 40 #Goob content Corvax-Goob-coins
+  access:
+  - Cargo
+  - Salvage
+  - Quartermaster
+  - Maintenance
+  - External
+  - Command
+  - Brig
+  - Cryogenics
+  - External # goobstation
+  special:
+  - !type:AddImplantSpecial
+    implants: [ MindShieldImplant ]
+  - !type:AddComponentSpecial
+    components:
+      - type: CommandStaff
+      - type: Skills # CorvaxGoob-Skills
+        skills:
+        - ShuttleControl

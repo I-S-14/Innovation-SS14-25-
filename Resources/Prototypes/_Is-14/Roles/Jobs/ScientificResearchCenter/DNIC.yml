@@ -1,0 +1,34 @@
+- type: job
+  id: DNIC
+  name: job-name-DNIC
+  description: job-description-DNIC
+  playTimeTracker: JobDNIC
+  requirements:
+  - !type:RoleTimeRequirement
+    role: JobScientist
+    time: 18000 #5 hrs
+  - !type:DepartmentTimeRequirement
+    department: Science
+    time: 36000 #10 hrs
+  weight: 10
+  startingGear: ResearchDirectorGear
+  icon: "JobIconDNIC"
+  supervisors: job-supervisors-captain
+  canBeAntag: false
+  access:
+  - Research
+  - Command
+  - Maintenance
+  - ResearchDirector
+  - Brig
+  - Cryogenics
+  - External # goobstation
+  special:
+  - !type:AddImplantSpecial
+    implants: [ MindShieldImplant ]
+  - !type:AddComponentSpecial
+    components:
+      - type: CommandStaff
+      - type: Skills # CorvaxGoob-Skills
+        skills:
+        - AdvancedBuilding

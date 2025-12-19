@@ -1,0 +1,48 @@
+- type: job
+  id: GMS
+  name: job-name-GMS
+  description: job-description-GMS
+  playTimeTracker: JobGMS
+  requirements:
+    - !type:RoleTimeRequirement
+      role: JobChemist
+      time: 9000 #2.5 hrs
+    - !type:RoleTimeRequirement
+      role: JobMedicalDoctor
+      time: 18000 #5 hrs
+    - !type:DepartmentTimeRequirement
+      department: Medical
+      time: 36000 #10 hrs
+  startingGear: CMOGear
+  icon: "JobIconGMS"
+  supervisors: job-supervisors-captain
+  canBeAntag: false
+  #goobcoins: 40 #Goob content Corvax-Goob-coins
+  access:
+  - Medical
+  - Command
+  - Maintenance
+  - Chemistry
+  - ChiefMedicalOfficer
+  - Brig
+  - Cryogenics
+  - External # goobstation
+  special:
+  - !type:AddImplantSpecial
+    implants: [ MindShieldImplant ]
+  - !type:AddComponentSpecial
+    components:
+      - type: CommandStaff
+      - type: Skills # CorvaxGoob-Skills
+        skills:
+        - Surgery
+        - MedicalEquipment
+  # Shitmed Change
+  - !type:AddComponentSpecial
+    components:
+    - type: SurgerySpeedModifier
+      speedModifier: 2
+    - type: Skills # CorvaxGoob-Skills
+      skills:
+      - Surgery
+      - MedicalEquipment

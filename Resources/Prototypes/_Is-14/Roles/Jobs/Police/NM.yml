@@ -1,0 +1,51 @@
+- type: job
+  id: NM
+  name: job-name-NM
+  description: job-description-NM
+  playTimeTracker: JobNM
+  requirements:
+    - !type:RoleTimeRequirement
+      role: JobWarden
+      time: 3600 #1 hr
+    - !type:RoleTimeRequirement
+      role: JobDetective
+      time: 3600 #1 hr, knowing how to use the tools is important
+    - !type:RoleTimeRequirement
+      role: JobSecurityOfficer
+      time: 18000 #5 hrs
+    - !type:DepartmentTimeRequirement
+      department: Security
+      time: 36000 # 10 hrs
+  #  - !type:StyleRequirement
+  #    styles:
+  #    - HumanHairFloorlengthBedhead
+  #    - HumanHairClassicFloorlengthBedhead
+  #    - HumanHairFloorlengthBraid
+  weight: 10
+  startingGear: HoSGear
+  icon: "JobIconNM"
+  supervisors: job-supervisors-captain
+  canBeAntag: false
+  #goobcoins: 45 #Goob content Corvax-Goob-coins
+  access:
+  - HeadOfSecurity
+  - Command
+  - Brig
+  - Security
+  - Armory
+  - Maintenance
+  - Service
+  - External
+  - Detective
+  - Cryogenics
+  special:
+  - !type:AddImplantSpecial
+    implants: [ MindShieldImplant ]
+  - !type:AddComponentSpecial
+    components:
+      - type: CommandStaff
+      - type: SecurityStaff # goobstation
+      - type: Skills # CorvaxGoob-Skills
+        skills:
+        - ShuttleControl
+        - Shooting

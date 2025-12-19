@@ -1,0 +1,24 @@
+- type: job
+  id: CargoSpecialist
+  name: job-name-CargoSpecialist
+  description: job-description-CargoSpecialist
+  playTimeTracker: JobCargoSpecialist
+  startingGear: CargoTechGear
+  icon: "JobIconCargoSpecialist"
+  supervisors: job-supervisors-qm
+  #goobcoins: 20 #Goob content Corvax-Goob-coins
+  access:
+  - Cargo
+  - Maintenance
+  extendedAccess:
+  - Salvage
+  - External # goobstation
+  special:
+  - !type:GiveItemOnHolidaySpecial
+    holiday: BoxingDay
+    prototype: BoxCardboard
+  - !type:AddComponentSpecial
+    components:
+    - type: Skills # CorvaxGoob-Skills
+      skills:
+      - ShuttleControl

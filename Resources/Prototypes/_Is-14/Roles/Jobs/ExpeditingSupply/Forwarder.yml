@@ -1,0 +1,26 @@
+- type: job
+  id: Forwarder
+  name: job-name-Forwarder
+  description: job-description-Forwarder
+  playTimeTracker: JobForwarder
+  requirements:
+    - !type:DepartmentTimeRequirement
+      department: Cargo
+      time: 9000 # 2.5 hrs
+  icon: "JobIconForwarder"
+  startingGear: SalvageSpecialistGear
+  #goobcoins: 20 #Goob content Corvax-Goob-coins
+  supervisors: job-supervisors-qm
+  access:
+  - Cargo
+  - Salvage
+  - Maintenance
+  - External
+  special:
+  - !type:AddComponentSpecial
+    components:
+    - type: Skills # CorvaxGoob-Skills
+      skills:
+      - ShuttleControl
+      - Shooting
+      - Butchering

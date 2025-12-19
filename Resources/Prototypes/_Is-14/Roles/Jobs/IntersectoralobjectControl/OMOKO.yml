@@ -1,0 +1,50 @@
+- type: job
+  id: OMOKO
+  name: job-name-OMOKO
+  description: job-description-OMOKO
+  playTimeTracker: JobOMOKO
+  requirements:
+    - !type:DepartmentTimeRequirement
+      department: Command
+      time: 90000 # 25 hours
+    - !type:DepartmentTimeRequirement
+      department: Medical
+      time: 54000 # 15 hours
+    - !type:DepartmentTimeRequirement
+      department: Security
+      time: 90000 # 25 hours
+    - !type:AgeRequirement
+      requiredAge: 21
+  #goobcoins: 45 Corvax-Goob-coins
+  weight: 10
+  startingGear: BlueshieldOfficerGear
+  icon: "JobIconOMOKO"
+  joinNotifyCrew: true
+  supervisors: job-supervisors-ntr-centcom
+  canBeAntag: false
+  access:
+  - Security
+  - Brig
+  - External
+  - Cryogenics
+  - Maintenance
+  - Engineering
+  - Medical
+  - Research
+  - Command
+  - CentralCommand
+  - BlueshieldOfficer
+  - Service
+  - Hydroponics
+  - Cargo
+  special:
+  - !type:AddImplantSpecial
+    implants: [ MindShieldImplant, BluespaceLifelineImplant ] # Go big, or go home.
+  - !type:AddComponentSpecial
+    components:
+      - type: CommandStaff
+      - type: Condemned
+        soulOwnedNotDevil: true
+      - type: Skills # CorvaxGoob-Skills
+        skills:
+        - Shooting

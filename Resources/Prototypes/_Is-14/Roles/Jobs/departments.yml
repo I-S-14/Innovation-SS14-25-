@@ -1,0 +1,132 @@
+- type: department
+  id: Intersectoral-object-Control
+  name: department-Intersectoral-object-Control
+  description: department-Intersectoral-object-Control-description
+  color: "#da7700"
+  weight: 10
+  roles:
+  - DirectorMOKO
+  - InspectorMOKO
+  - OHRMO
+  - OMOKO
+  primary: true
+  editorHidden: false
+
+- type: department
+  id: KGB
+  name: department-KGB
+  description: department-KGB-description
+  color: "#2c2c2c"
+  roles:
+  - Clown
+  primary: true
+  editorHidden: false
+
+- type: department
+  id: Law
+  name: department-Law
+  description: department-Law-description
+  color: "#2c2c2c"
+  roles:
+  - HS
+  - PMUP
+  - IVK
+  - LawWorker
+  primary: true
+  editorHidden: false
+
+- type: department
+  id: Command-Center
+  name: department-Command-Center
+  description: department-Command-Center-description
+  color: "#a61f1c"
+  roles:
+  - ExpeditionDirector
+  - NOK
+  - SK
+  - NM
+  - DNIC
+  - GMS
+  - GIS
+  - RESO
+  primary: false
+  editorHidden: false
+
+- type: department
+  id: Police
+  name: department-Police
+  description: department-Police-description
+  color: "#1c8ba7"
+  roles:
+  - NM
+  primary: true
+  editorHidden: false
+
+- type: department
+  id: Medical-Department
+  name: department-Medical-Department
+  description: department-Medical-Department-description
+  color: "#23a610"
+  roles:
+  - GMS
+  primary: true
+  editorHidden: false
+
+- type: department
+  id: Scientific-Research-Center
+  name: department-Scientific-Research-Center
+  description: department-Scientific-Research-Center
+  color: "#616161"
+  roles:
+  - DNIC
+  primary: true
+  editorHidden: false
+
+- type: department
+  id: Engineering-Department
+  name: department-Engineering-Department
+  description: department-Engineering-Department-description
+  color: "#ef9500"
+  roles:
+  - GIS
+  primary: true
+  editorHidden: false
+
+- type: department
+  id: Expediting-Supply
+  name: department-Expediting-Supply
+  description: department-Expediting-Supply-description
+  color: "#0095ff"
+  roles:
+  - RESO
+  - CargoSpecialist
+  - Mailman
+  - Forwarder
+  - SeniorForwarder
+  primary: true
+  editorHidden: false
+
+- type: department
+  id: Service-Department
+  name: department-Service-Department
+  description: department-Service-Department-description
+  color: "#678088"
+  roles:
+  - NOK
+  - Bartender
+  - Botanist
+  - Chaplain
+  - Chef
+  - Clown
+  - Janitor
+  - Lawyer
+  - Librarian
+  - Mime
+  - Musician
+  - Passenger
+  - Reporter
+  - Visitor
+  - Zookeeper
+  - ServiceWorker
+  primary: true
+  editorHidden: false

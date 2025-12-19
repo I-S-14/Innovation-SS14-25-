@@ -1,0 +1,41 @@
+- type: job
+  id: GIS
+  name: job-name-GIS
+  description: job-description-GIS
+  playTimeTracker: JobGIS
+  requirements:
+    - !type:RoleTimeRequirement
+      role: JobAtmosphericTechnician
+      time: 9000 #2.5 hrs
+    - !type:RoleTimeRequirement
+      role: JobStationEngineer
+      time: 18000 #5 hrs
+    - !type:DepartmentTimeRequirement
+      department: Engineering
+      time: 36000 #10 hrs
+  weight: 10
+  startingGear: ChiefEngineerGear
+  icon: "JobIconGIS"
+  supervisors: job-supervisors-captain
+  canBeAntag: false
+  #goobcoins: 40 #Goob content Corvax-Goob-coins
+  access:
+  - Maintenance
+  - Engineering
+  - Command
+  - External
+  - ChiefEngineer
+  - Atmospherics
+  - Brig
+  - Cryogenics
+  special:
+  - !type:AddImplantSpecial
+    implants: [ MindShieldImplant ]
+  - !type:AddComponentSpecial
+    components:
+      - type: CommandStaff
+      - type: EngineeringStaff # Goobstation
+      - type: Skills # CorvaxGoob-Skills
+        skills:
+        - ShuttleControl
+        - AdvancedBuilding

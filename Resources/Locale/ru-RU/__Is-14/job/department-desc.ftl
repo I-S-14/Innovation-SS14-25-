@@ -1,0 +1,10 @@
+department-Intersectoral-object-Control-description = Следите чтоб станция выполняла свои обязанности и не забывайте об этом напоминать.
+department-KGB-description = Комитет Государственной Безопасности
+department-Law-description = Представительство Министерства Юстиции и Прав
+department-Command-Center-description = Руководите персоналом и следите за выполнением задач, во имя партии!
+department-Police-description = Наблюдайте за экипажем, не допускайте нарушения закона и следите за порядком.
+department-Medical-Department-description =  Экипаж должен быть здоров! И это ваша забота.
+department-Scientific-Research-Center-description = Изучайте артефакты и аномалии, обеспечивайте членов экипажа и партию новыми продвинутыми устройствами!
+department-Engineering-Department-description = Несите людям свет! ну и держите космос вне станции
+department-Expediting-Supply-description = Выполняйте запросы, зарабатывайте советские кредиты и доставляйте экипажу полезные припасы, во славу партии!
+department-Service-Department-description = Занимайтесь простыми поручениями,  обеспечивайте персонал станции едой, а также создавайте комфортный досуг!

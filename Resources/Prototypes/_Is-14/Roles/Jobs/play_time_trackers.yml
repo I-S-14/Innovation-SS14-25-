@@ -1,0 +1,47 @@
+- type: playTimeTracker
+  id: JobExpeditionDirecor
+
+- type: playTimeTracker
+  id: JobNOK
+
+- type: playTimeTracker
+  id: JobNM
+
+- type: playTimeTracker
+  id: JobDNIC
+
+- type: playTimeTracker
+  id: JobGMS
+
+- type: playTimeTracker
+  id: JobGIS
+
+- type: playTimeTracker
+  id: JobRESO
+
+- type: playTimeTracker
+  id: JobSK
+
+- type: playTimeTracker
+  id: JobHS
+
+- type: playTimeTracker
+  id: JobPMUP
+
+- type: playTimeTracker
+  id: JobLawWorker
+
+- type: playTimeTracker
+  id: JobIVK
+
+- type: playTimeTracker
+  id: JobDirectorMOKO
+
+- type: playTimeTracker
+  id: JobInspectorMOKO
+
+- type: playTimeTracker
+  id: JobOHRMO
+
+- type: playTimeTracker
+  id: JobOMOKO
