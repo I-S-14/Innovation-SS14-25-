@@ -529,7 +529,7 @@
     WizCoin: 2
   categories:
   - SpellbookUtility
-  conditions:
+
   - !type:BuyBeforeCondition
     whitelist:
     - SpellbookTeleport

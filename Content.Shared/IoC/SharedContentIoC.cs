@@ -11,6 +11,7 @@
 
 using Content.Shared.Humanoid.Markings;
 using Content.Shared.Localizations;
+using Robust.Shared._Innovation.Pets.Systems;
 
 namespace Content.Shared.IoC
 {

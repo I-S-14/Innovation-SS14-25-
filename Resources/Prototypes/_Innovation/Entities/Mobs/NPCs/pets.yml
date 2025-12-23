@@ -1,0 +1,63 @@
+- type: entity
+  parent: SimpleMobBase
+  abstract: true
+  id: BasePet
+  components:
+  - type: HTN
+    rootTask:
+      task: PetCompound
+    blackboard:
+      IdleRange: !type:Single
+        3.5
+      FollowCloseRange: !type:Single
+        2.0
+      FollowRange: !type:Single
+        3.0
+
+- type: entity
+  parent: BasePet
+  id: MobMuhtar
+  name: muhtar
+  description: He's biting!
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _Innovation/Mobs/Pets/muhtar.rsi
+    layers:
+    - map: ["enum.DamageStateVisualLayers.Base"]
+      state: muhtar
+  - type: Physics
+  - type: Speech
+    speechVerb: Canine
+    speechSounds: Dog
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.35
+        density: 50
+        mask:
+        - MobMask
+        layer:
+        - MobLayer
+  - type: InteractionPopup
+    interactSuccessString: petting-success-dog
+    interactFailureString: petting-failure-generic
+    interactSuccessSpawn: EffectHearts
+    interactSuccessSound:
+      path: /Audio/Animals/small_dog_bark_happy.ogg
+  - type: Grammar
+    attributes:
+      gender: epicene
+  - type: MobPrice
+    price: 2000
+  - type: Butcherable
+    spawned:
+    - id: FoodMeat
+      amount: 2
+  - type: LanguageKnowledge
+    speaks:
+    - Dog
+    understands:
+    - Dog

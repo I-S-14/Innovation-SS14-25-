@@ -182,6 +182,9 @@
     implants: [ MindShieldImplant ]
   - !type:AddComponentSpecial
     components:
+      - type: PetOwner # Innovation
+        pets:
+        - Muhtar
       - type: CommandStaff
       - type: SecurityStaff # goobstation
       - type: Skills # CorvaxGoob-Skills

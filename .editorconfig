@@ -352,6 +352,9 @@ resharper_csharp_allow_alias = false
 [*.{csproj,xml,yml,yaml,dll.config,msbuildproj,targets,props}]
 indent_size = 2
 
+# IDE0160: Convert to block scoped namespace
+csharp_style_namespace_declarations = block_scoped
+
 [nuget.config]
 indent_size = 2
 
