@@ -1,0 +1,37 @@
+- type: entity
+  parent: Airlock
+  id: IS14AirlockSolitary
+  suffix: Security
+  components:
+    - type: Sprite
+      sprite: _IS14/Doors/Airlocks/Standard/solitary.rsi
+    - type: Wires
+      layoutId: AirlockSecurity
+
+- type: entity
+  parent: IS14AirlockSolitary
+  id: IS14AirlockSolitaryLocked
+  suffix: Security, Locked
+  components:
+    - type: ContainerFill
+      containers:
+        board: [DoorElectronicsSecurity]
+
+- type: entity
+  parent: AirlockGlass
+  id: IS14AirlockPrison
+  suffix: Security
+  components:
+    - type: Sprite
+      sprite: _IS14/Doors/Airlocks/Standard/prison.rsi
+    - type: Wires
+      layoutId: AirlockSecurity
+
+- type: entity
+  parent: IS14AirlockPrison
+  id: IS14AirlockPrisonLocked
+  suffix: Security, Locked
+  components:
+    - type: ContainerFill
+      containers:
+        board: [DoorElectronicsSecurity]
