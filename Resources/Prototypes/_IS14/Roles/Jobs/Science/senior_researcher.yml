@@ -1,0 +1,45 @@
+# SPDX-FileCopyrightText: 2025 IS14 Edit
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# IS14 Edit - Новая роль: Старший учёный
+- type: job
+  id: SeniorResearcher
+  name: job-name-senior-researcher
+  description: job-description-senior-researcher
+  playTimeTracker: JobSeniorResearcher
+  requirements:
+    - !type:DepartmentTimeRequirement
+      department: Science
+      time: 216000 #60 hrs
+  startingGear: SeniorResearcherGear
+  icon: "JobIconSeniorResearcher" # IS14 Edit
+  supervisors: job-supervisors-rd
+  access:
+  - Research
+  - Maintenance
+  special:
+  - !type:AddComponentSpecial
+    components:
+    - type: Skills # CorvaxGoob-Skills
+      skills:
+      - AdvancedBuilding
+
+- type: startingGear
+  id: SeniorResearcherGear
+  equipment:
+    ears: ClothingHeadsetScience
+    id: IS_PdaMentorScientist # IS14 Edit - используем существующий PDA для старшего учёного
+  storage:
+    back: []
+
+- type: chameleonOutfit
+  id: SeniorResearcherChameleonOutfit
+  job: SeniorResearcher
+  equipment:
+    head: ClothingHeadHatBeretRND
+    eyes: ClothingEyesGlassesCheapSunglasses
+    mask: ClothingMaskGas
+    neck: ClothingNeckTieSci
+    outerClothing: ClothingOuterCoatLabSeniorResearcher
+    gloves: ClothingHandsGlovesLatex

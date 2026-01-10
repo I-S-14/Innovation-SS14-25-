@@ -1,0 +1,151 @@
+- type: localizedDataset
+  id: IS14MilicVendAds
+  values:
+    prefix: advertisement-milic-
+    count: 4
+
+- type: localizedDataset
+  id: IS14ObshiyVendAds
+  values:
+    prefix: advertisement-obshiy-
+    count: 4
+
+- type: localizedDataset
+  id: IS14URVendAds
+  values:
+    prefix: advertisement-ur-
+    count: 4
+
+- type: localizedDataset
+  id: IS14ExpGearVendAds
+  values:
+    prefix: advertisement-expgear-
+    count: 4
+
+- type: localizedDataset
+  id: IS14ExpVendAds
+  values:
+    prefix: advertisement-exp-
+    count: 4
+
+- type: localizedDataset
+  id: IS14ChemVendAds
+  values:
+    prefix: advertisement-chem-
+    count: 4
+
+- type: localizedDataset
+  id: IS14MedVendAds
+  values:
+    prefix: advertisement-med-
+    count: 4
+
+##################################
+
+- type: localizedDataset
+  id: IS14CigsVendAds
+  values:
+    prefix: advertisement-cigss-
+    count: 4
+
+- type: localizedDataset
+  id: IS14KofeeVendAds
+  values:
+    prefix: advertisement-kofee-
+    count: 4
+
+- type: localizedDataset
+  id: IS14FoodVendAds
+  values:
+    prefix: advertisement-food-
+    count: 4
+
+- type: localizedDataset
+  id: IS14WaterVendAds
+  values:
+    prefix: advertisement-water-
+    count: 4
+
+
+
+
+
+#                                    ▲
+#adventersments бля мой инглиш сосет |
+#даааа норм сортировка идет нахуй
+#goodbyes |
+#         ▼
+
+
+
+- type: localizedDataset
+  id: IS14MilicVendGoodbyes
+  values:
+    prefix: thankyou-milicvend-
+    count: 4
+
+- type: localizedDataset
+  id: IS14ObshiyVendGoodbyes
+  values:
+    prefix: thankyou-obshiy-
+    count: 4
+
+- type: localizedDataset
+  id: IS14URVendGoodbyes
+  values:
+    prefix: thankyou-ur-
+    count: 4
+
+- type: localizedDataset
+  id: IS14ExpGearVendGoodbyes
+  values:
+    prefix: thankyou-expgear-
+    count: 4
+
+- type: localizedDataset
+  id: IS14ExpVendGoodbyes
+  values:
+    prefix: thankyou-exp-
+    count: 4
+
+- type: localizedDataset
+  id: IS14ChemVendGoodbyes
+  values:
+    prefix: thankyou-chem-
+    count: 4
+
+- type: localizedDataset
+  id: IS14MedVendGoodbyes
+  values:
+    prefix: thankyou-med-
+    count: 4
+
+
+##################################
+
+
+
+
+- type: localizedDataset
+  id: IS14CigsVendGoodbyes
+  values:
+    prefix: thankyou-cigssvend-
+    count: 4
+
+- type: localizedDataset
+  id: IS14KofeeVendGoodbyes
+  values:
+    prefix: thankyou-kofee-
+    count: 4
+
+- type: localizedDataset
+  id: IS14FoodVendGoodbyes
+  values:
+    prefix: thankyou-food-
+    count: 4
+
+- type: localizedDataset
+  id: IS14WaterVendGoodbyes
+  values:
+    prefix: thankyou-water-
+    count: 4

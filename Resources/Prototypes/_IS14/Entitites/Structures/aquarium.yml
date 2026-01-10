@@ -1,0 +1,37 @@
+- type: entity
+  id: Aquarium
+  parent: BaseStructureDynamic
+  name: aquarium
+  description: aquarium and fish
+  components:
+  - type: Sprite
+    sprite: _IS14/Structures/Decoration/aquarium.rsi
+    state: base
+    noRot: true
+  - type: Transform
+    noRot: true
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.2
+        density: 190
+        mask:
+        - MachineMask
+        layer:
+        - Opaque
+        - MidImpassable
+        - HighImpassable
+        - BulletImpassable
+  - type: InteractionOutline
+  - type: Damageable
+    damageContainer: StructuralInorganic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]

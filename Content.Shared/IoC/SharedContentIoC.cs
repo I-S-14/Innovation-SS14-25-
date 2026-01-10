@@ -6,12 +6,18 @@
 // SPDX-FileCopyrightText: 2022 metalgearsloth <comedian_vs_clown@hotmail.com>
 // SPDX-FileCopyrightText: 2022 wrexbe <81056464+wrexbe@users.noreply.github.com>
 // SPDX-FileCopyrightText: 2025 Aiden <28298836+Aidenkrz@users.noreply.github.com>
+// SPDX-FileCopyrightText: 2025 GoobBot <uristmchands@proton.me>
+// SPDX-FileCopyrightText: 2025 RadsammyT <radsammyt@gmail.com>
+// SPDX-FileCopyrightText: 2025 SX-7 <sn1.test.preria.2002@gmail.com>
 //
 // SPDX-License-Identifier: MIT
 
 using Content.Shared.Humanoid.Markings;
 using Content.Shared.Localizations;
+
 using Robust.Shared._Innovation.Pets.Systems;
+using Content.Shared.Tag;
+using Content.Shared.Whitelist;
 
 namespace Content.Shared.IoC
 {
@@ -21,6 +27,9 @@ namespace Content.Shared.IoC
         {
             IoCManager.Register<MarkingManager, MarkingManager>();
             IoCManager.Register<ContentLocalizationManager, ContentLocalizationManager>();
+            // Goob: to port EE Interaction Verbs. I hate this.
+            IoCManager.Register<EntityWhitelistSystem>();
+            IoCManager.Register<TagSystem>();
         }
     }
 }

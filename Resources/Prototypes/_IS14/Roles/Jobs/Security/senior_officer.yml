@@ -1,0 +1,59 @@
+# SPDX-FileCopyrightText: 2025 IS14 Edit
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# IS14 Edit - Новая роль: Старший офицер
+- type: job
+  id: SeniorOfficer
+  name: job-name-senior-officer
+  description: job-description-senior-officer
+  playTimeTracker: JobSeniorOfficer
+  requirements:
+    - !type:RoleTimeRequirement
+      role: JobWarden
+      time: 21600 #6 hrs
+    - !type:DepartmentTimeRequirement
+      department: Security
+      time: 216000 # 60 hrs
+  startingGear: SeniorOfficerGear
+  icon: "JobIconSeniorOfficer" # IS14 Edit
+  supervisors: job-supervisors-hos
+  canBeAntag: false
+  access:
+  - Security
+  - Brig
+  - Maintenance
+  - Service
+  - External
+  - Cryogenics
+  special:
+  - !type:AddImplantSpecial
+    implants: [ MindShieldImplant ]
+  - !type:AddComponentSpecial
+    components:
+      - type: SecurityStaff
+      - type: Skills # CorvaxGoob-Skills
+        skills:
+        - Shooting
+
+- type: startingGear
+  id: SeniorOfficerGear
+  equipment:
+    eyes: ClothingEyesGlassesSecurity
+    ears: ClothingHeadsetAltSecurityRegular
+    pocket1: WeaponPistolMk58
+    id: IS_PdaSeniorOfficer # IS14 Edit
+  storage:
+    back:
+    - Flash
+    - MagazinePistol
+
+- type: chameleonOutfit
+  id: SeniorOfficerChameleonOutfit
+  job: SeniorOfficer
+  hasMindShield: true
+  equipment:
+    head: ClothingHeadHatBeretSecurity
+    mask: ClothingMaskGasSecurity
+    neck: Dinkystar
+    gloves: ClothingHandsGlovesColorBlack

@@ -1,10 +1,10 @@
 meta:
   format: 7
   category: Map
-  engineVersion: 262.0.0
+  engineVersion: 264.0.0
   forkId: ""
   forkVersion: ""
-  time: 08/23/2025 20:25:06
+  time: 10/25/2025 15:52:33
   entityCount: 32393
 maps:
 - 1
@@ -13396,6 +13396,11 @@ entities:
         chunkSize: 4
     - type: OccluderTree
     - type: Shuttle
+      dampingModifiers:
+        Cruise: 0.0075
+        Dampen: 0.25
+        Anchor: 2
+        None: 0.25
       dampingModifier: 0.25
     - type: RadiationGridResistance
     - type: GravityShake
@@ -13405,6 +13410,7 @@ entities:
     - type: GridPathfinding
     - type: NavMap
     - type: ImplicitRoof
+    - type: FTLDrive
   - uid: 3
     components:
     - type: MetaData
@@ -13494,145 +13500,6 @@ entities:
     - type: Transform
       pos: 57.495346,-62.54486
       parent: 2
-- proto: ActionBibleSummon
-  entities:
-  - uid: 4506
-    components:
-    - type: Transform
-      parent: 1156
-  - uid: 6168
-    components:
-    - type: Transform
-      parent: 6167
-- proto: ActionToggleBlock
-  entities:
-  - uid: 21110
-    components:
-    - type: Transform
-      parent: 12733
-- proto: ActionToggleInternals
-  entities:
-  - uid: 10130
-    components:
-    - type: Transform
-      parent: 31971
-  - uid: 10131
-    components:
-    - type: Transform
-      parent: 30176
-  - uid: 10610
-    components:
-    - type: Transform
-      parent: 31972
-  - uid: 10617
-    components:
-    - type: Transform
-      parent: 31973
-  - uid: 14335
-    components:
-    - type: Transform
-      parent: 13540
-  - uid: 17000
-    components:
-    - type: Transform
-      parent: 16260
-  - uid: 17049
-    mapInit: true
-    paused: true
-    components:
-    - type: Transform
-      parent: 31647
-    - type: Action
-      container: 31647
-      originalIconColor: '#FFFFFFFF'
-  - uid: 21177
-    components:
-    - type: Transform
-      parent: 21154
-  - uid: 21228
-    components:
-    - type: Transform
-      parent: 21226
-  - uid: 21508
-    components:
-    - type: Transform
-      parent: 21484
-  - uid: 22863
-    components:
-    - type: Transform
-      parent: 22764
-  - uid: 26397
-    components:
-    - type: Transform
-      parent: 26392
-  - uid: 26398
-    components:
-    - type: Transform
-      parent: 25906
-  - uid: 26404
-    components:
-    - type: Transform
-      parent: 25908
-  - uid: 26414
-    components:
-    - type: Transform
-      parent: 26411
-  - uid: 26498
-    components:
-    - type: Transform
-      parent: 26494
-  - uid: 26499
-    components:
-    - type: Transform
-      parent: 25909
-  - uid: 26507
-    components:
-    - type: Transform
-      parent: 25907
-  - uid: 26520
-    components:
-    - type: Transform
-      parent: 26518
-- proto: ActionToggleJetpack
-  entities:
-  - uid: 21164
-    components:
-    - type: Transform
-      parent: 21154
-  - uid: 21227
-    components:
-    - type: Transform
-      parent: 21226
-  - uid: 21492
-    components:
-    - type: Transform
-      parent: 21484
-  - uid: 22813
-    components:
-    - type: Transform
-      parent: 22764
-  - uid: 26393
-    components:
-    - type: Transform
-      parent: 26392
-  - uid: 26413
-    components:
-    - type: Transform
-      parent: 26411
-  - uid: 26496
-    components:
-    - type: Transform
-      parent: 26494
-  - uid: 26519
-    components:
-    - type: Transform
-      parent: 26518
-- proto: ActionToggleLight
-  entities:
-  - uid: 19491
-    components:
-    - type: Transform
-      parent: 19656
 - proto: AirAlarm
   entities:
   - uid: 11
@@ -16297,7 +16164,7 @@ entities:
       pos: -5.5,-12.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -157931.72
+      secondsUntilStateChange: -157978.95
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -23283,39 +23150,11 @@ entities:
     - type: Transform
       pos: 66.22371,2.4150128
       parent: 2
-    - type: Summonable
-      summonActionEntity: 4506
-    - type: ContainerContainer
-      containers:
-        storagebase: !type:Container
-          showEnts: False
-          occludes: True
-          ents: []
-        actions: !type:Container
-          showEnts: False
-          occludes: True
-          ents:
-          - 4506
-    - type: ActionsContainer
   - uid: 6167
     components:
     - type: Transform
       pos: -6.247646,37.714256
       parent: 2
-    - type: Summonable
-      summonActionEntity: 6168
-    - type: ContainerContainer
-      containers:
-        storagebase: !type:Container
-          showEnts: False
-          occludes: True
-          ents: []
-        actions: !type:Container
-          showEnts: False
-          occludes: True
-          ents:
-          - 6168
-    - type: ActionsContainer
 - proto: BigBox
   entities:
   - uid: 1157
@@ -86156,7 +85995,7 @@ entities:
       pos: 30.5,17.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -301127.16
+      secondsUntilStateChange: -301174.38
       state: Opening
   - uid: 11706
     components:
@@ -86165,7 +86004,7 @@ entities:
       pos: 33.5,16.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -440766.4
+      secondsUntilStateChange: -440813.62
       state: Opening
   - uid: 11707
     components:
@@ -96946,61 +96785,29 @@ entities:
     components:
     - type: Transform
       parent: 26391
-    - type: GasTank
-      toggleActionEntity: 26398
     - type: Physics
       canCollide: False
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 26398
     - type: InsideEntityStorage
   - uid: 25907
     components:
     - type: Transform
       parent: 26503
-    - type: GasTank
-      toggleActionEntity: 26507
     - type: Physics
       canCollide: False
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 26507
     - type: InsideEntityStorage
   - uid: 25908
     components:
     - type: Transform
       parent: 26403
-    - type: GasTank
-      toggleActionEntity: 26404
     - type: Physics
       canCollide: False
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 26404
     - type: InsideEntityStorage
   - uid: 25909
     components:
     - type: Transform
       parent: 26424
-    - type: GasTank
-      toggleActionEntity: 26499
     - type: Physics
       canCollide: False
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 26499
     - type: InsideEntityStorage
   - uid: 28305
     components:
@@ -99384,14 +99191,6 @@ entities:
     - type: Transform
       pos: -27.477726,28.767803
       parent: 2
-    - type: GasTank
-      toggleActionEntity: 17049
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 17049
 - proto: Emitter
   entities:
   - uid: 17066
@@ -146527,73 +146326,29 @@ entities:
     components:
     - type: Transform
       parent: 26391
-    - type: GasTank
-      toggleActionEntity: 26397
-    - type: Jetpack
-      toggleActionEntity: 26393
     - type: Physics
       canCollide: False
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 26393
-          - 26397
     - type: InsideEntityStorage
   - uid: 26411
     components:
     - type: Transform
       parent: 26403
-    - type: GasTank
-      toggleActionEntity: 26414
-    - type: Jetpack
-      toggleActionEntity: 26413
     - type: Physics
       canCollide: False
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 26413
-          - 26414
     - type: InsideEntityStorage
   - uid: 26494
     components:
     - type: Transform
       parent: 26424
-    - type: GasTank
-      toggleActionEntity: 26498
-    - type: Jetpack
-      toggleActionEntity: 26496
     - type: Physics
       canCollide: False
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 26496
-          - 26498
     - type: InsideEntityStorage
   - uid: 26518
     components:
     - type: Transform
       parent: 26503
-    - type: GasTank
-      toggleActionEntity: 26520
-    - type: Jetpack
-      toggleActionEntity: 26519
     - type: Physics
       canCollide: False
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 26519
-          - 26520
     - type: InsideEntityStorage
 - proto: JetpackMiniFilled
   entities:
@@ -146634,65 +146389,21 @@ entities:
     - type: Transform
       pos: 6.701569,49.36833
       parent: 2
-    - type: GasTank
-      toggleActionEntity: 21177
-    - type: Jetpack
-      toggleActionEntity: 21164
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 21164
-          - 21177
   - uid: 21226
     components:
     - type: Transform
       pos: 6.323044,48.943226
       parent: 2
-    - type: GasTank
-      toggleActionEntity: 21228
-    - type: Jetpack
-      toggleActionEntity: 21227
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 21227
-          - 21228
   - uid: 21484
     components:
     - type: Transform
       pos: 6.244919,49.70885
       parent: 2
-    - type: GasTank
-      toggleActionEntity: 21508
-    - type: Jetpack
-      toggleActionEntity: 21492
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 21492
-          - 21508
   - uid: 22764
     components:
     - type: Transform
       pos: 6.713669,48.474476
       parent: 2
-    - type: GasTank
-      toggleActionEntity: 22863
-    - type: Jetpack
-      toggleActionEntity: 22813
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 22813
-          - 22863
 - proto: Jug
   entities:
   - uid: 32094
@@ -146996,22 +146707,6 @@ entities:
     - type: Transform
       pos: -33.41656,-27.273544
       parent: 2
-    - type: HandheldLight
-      toggleActionEntity: 19491
-    - type: ContainerContainer
-      containers:
-        cell_slot: !type:ContainerSlot
-          showEnts: False
-          occludes: True
-          ent: null
-        actions: !type:Container
-          showEnts: False
-          occludes: True
-          ents:
-          - 19491
-    - type: Physics
-      canCollide: True
-    - type: ActionsContainer
   - uid: 19657
     components:
     - type: Transform
@@ -148921,18 +148616,6 @@ entities:
     - type: Transform
       pos: -52.5,5.5
       parent: 2
-- proto: MagazineBoxAntiMateriel
-  entities:
-  - uid: 14994
-    components:
-    - type: Transform
-      pos: -2.4913008,40.616848
-      parent: 2
-  - uid: 14999
-    components:
-    - type: Transform
-      pos: -2.5844164,40.506798
-      parent: 2
 - proto: MagazineBoxLightRifle
   entities:
   - uid: 13421
@@ -148986,6 +148669,18 @@ entities:
     - type: Transform
       rot: 3.141592653589793 rad
       pos: -0.6418812,42.606243
+      parent: 2
+- proto: MagazineLargeCaliber
+  entities:
+  - uid: 14994
+    components:
+    - type: Transform
+      pos: -2.786906,40.37699
+      parent: 2
+  - uid: 14999
+    components:
+    - type: Transform
+      pos: -2.5489566,40.599983
       parent: 2
 - proto: MailingUnit
   entities:
@@ -150777,31 +150472,15 @@ entities:
     components:
     - type: Transform
       parent: 11601
-    - type: GasTank
-      toggleActionEntity: 14335
     - type: Physics
       canCollide: False
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 14335
     - type: InsideEntityStorage
   - uid: 16260
     components:
     - type: Transform
       parent: 11601
-    - type: GasTank
-      toggleActionEntity: 17000
     - type: Physics
       canCollide: False
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 17000
     - type: InsideEntityStorage
   - uid: 30175
     components:
@@ -150812,61 +150491,29 @@ entities:
     components:
     - type: Transform
       parent: 11665
-    - type: GasTank
-      toggleActionEntity: 10131
     - type: Physics
       canCollide: False
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 10131
     - type: InsideEntityStorage
   - uid: 31971
     components:
     - type: Transform
       parent: 11665
-    - type: GasTank
-      toggleActionEntity: 10130
     - type: Physics
       canCollide: False
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 10130
     - type: InsideEntityStorage
   - uid: 31972
     components:
     - type: Transform
       parent: 11665
-    - type: GasTank
-      toggleActionEntity: 10610
     - type: Physics
       canCollide: False
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 10610
     - type: InsideEntityStorage
   - uid: 31973
     components:
     - type: Transform
       parent: 11665
-    - type: GasTank
-      toggleActionEntity: 10617
     - type: Physics
       canCollide: False
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 10617
     - type: InsideEntityStorage
 - proto: NoticeBoard
   entities:
@@ -183777,14 +183424,6 @@ entities:
     - type: Transform
       pos: -1.8225595,35.43038
       parent: 2
-    - type: Blocking
-      blockingToggleActionEntity: 21110
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 21110
   - uid: 24957
     components:
     - type: Transform
@@ -209896,14 +209535,6 @@ entities:
       rot: 1.5707963267948966 rad
       pos: 12.616045,41.690353
       parent: 2
-- proto: WeaponSniperHristov
-  entities:
-  - uid: 26510
-    components:
-    - type: Transform
-      rot: -0.7853981633974483 rad
-      pos: -1.7738128,40.58264
-      parent: 2
 - proto: WeaponSniperMosin
   entities:
   - uid: 27400
@@ -209911,6 +209542,13 @@ entities:
     - type: Transform
       rot: 1.5707963267948966 rad
       pos: 12.589073,42.738724
+      parent: 2
+- proto: WeaponSniperUncleStyopa
+  entities:
+  - uid: 26510
+    components:
+    - type: Transform
+      pos: -2.2515209,40.391857
       parent: 2
 - proto: WeaponTurretSyndicateBroken
   entities:

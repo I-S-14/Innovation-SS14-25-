@@ -1,0 +1,28 @@
+# SPDX-FileCopyrightText: 2025 IS14 Edit
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# IS14 Edit - Play time trackers for custom roles
+- type: playTimeTracker
+  id: JobSeniorExpeditioner
+
+- type: playTimeTracker
+  id: JobChurchServant
+
+- type: playTimeTracker
+  id: JobCommandSecretary
+
+- type: playTimeTracker
+  id: JobInternalControlExecutor
+
+- type: playTimeTracker
+  id: JobSeniorEngineer
+
+- type: playTimeTracker
+  id: JobSeniorPhysician
+
+- type: playTimeTracker
+  id: JobSeniorResearcher
+
+- type: playTimeTracker
+  id: JobSeniorOfficer

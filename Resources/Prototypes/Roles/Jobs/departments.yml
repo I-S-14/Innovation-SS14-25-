@@ -108,6 +108,7 @@
   - CargoTechnician
   - Quartermaster
   - SalvageSpecialist
+  - SeniorExpeditioner # IS14 Edit
 
 - type: department
   id: Civilian
@@ -124,7 +125,6 @@
   - Clown
   - HeadOfPersonnel
   - Janitor
-  - Lawyer
   - Librarian
   - Mime
   - Musician
@@ -133,6 +133,18 @@
   - Visitor
   - Zookeeper
   - ServiceWorker
+  - ChurchServant # IS14 Edit
+
+- type: department
+  id: Legal
+  name: department-Legal
+  description: department-Legal-description
+  color: "#9FED58"
+  roles:
+  - NanotrasenRepresentative # IS14 Edit
+  - InternalControlExecutor # IS14 Edit
+  - Lawyer
+
 
 - type: department
   id: CentralCommand
@@ -151,7 +163,7 @@
   - DeathSquad
   - HecuOperative
   - BlueshieldOfficer # Goobstation - Start
-  - NanotrasenRepresentative
+#  - NanotrasenRepresentative # IS14 Edit
   - NanotrasenCareerTrainer
   - NavyOfficer
   - NavyCaptain
@@ -175,8 +187,7 @@
   - HeadOfSecurity
   - ResearchDirector
   - Quartermaster
-  - BlueshieldOfficer # Goobstation
-  - NanotrasenRepresentative # Goobstation
+#  - BlueshieldOfficer # Goobstation - IS14 Edit
   - NanotrasenCareerTrainer # Goobstation
   - CentralCommandOfficial
   - CBURN
@@ -188,6 +199,7 @@
   - ERTEngineer
   - DeathSquad
   - HecuOperative
+  - CommandSecretary # IS14 Edit
   primary: false
   weight: 100
 
@@ -201,6 +213,7 @@
   - ChiefEngineer
   - StationEngineer
   - TechnicalAssistant
+  - SeniorEngineer # IS14 Edit
 
 - type: department
   id: Medical
@@ -215,6 +228,7 @@
   - Psychologist
   - Paramedic
   - Surgeon # Corvax-Next-Surgeon
+  - SeniorPhysician # IS14 Edit
 
 - type: department
   id: Security
@@ -230,7 +244,8 @@
   - Warden
   - Brigmedic # Goob
   - Pilot # Corvax-Pilot
-  - WardenHelper # Corvax-Next-WardenHelper
+  # - WardenHelper # Corvax-Next-WardenHelper # IS14 Edit
+  - SeniorOfficer # IS14 Edit
 
 - type: department
   id: Science
@@ -241,6 +256,7 @@
   - ResearchDirector
   - Scientist
   - ResearchAssistant
+  - SeniorResearcher # IS14 Edit
 
 - type: department
   id: Silicon

@@ -51,7 +51,7 @@
       map: ["enum.NukeVisualLayers.Base"]
     - state: nuclearbomb_deployed_unlit
       map: ["enum.NukeVisualLayers.Unlit"]
-      shader: unshaded
+#      shader: unshaded # IS14 Edit
       visible: false
     - state: nuclearbomb_gay
       map: ["pride"]
@@ -126,7 +126,7 @@
         components:
         - NukeDisk
     alertLevelOnActivate: delta
-    alertLevelOnDeactivate: green
+    alertLevelOnDeactivate: red # CorvaxGoob-Announcements
     alertLevelOnOverride: omicron # Goobstation
   - type: InteractionOutline
   - type: ActivatableUI
@@ -150,6 +150,7 @@
     location: nuclear bomb
   - type: FTLSmashImmune
   - type: SupermatterImmune # Goobstation
+
 
 - type: entity
   parent: NuclearBomb

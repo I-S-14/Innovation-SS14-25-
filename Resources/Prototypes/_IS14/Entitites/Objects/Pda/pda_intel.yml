@@ -1,0 +1,9 @@
+- type: entity
+  parent: IS_PdaBase
+  id: IS_PdaIntelOfficer
+  name: intel officer's PDA
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Devices/pda/Intel/intel_officer.rsi
+  - type: Pda
+    id: IS_IdCardIntelOfficer

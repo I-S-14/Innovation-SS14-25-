@@ -110,13 +110,14 @@
 
 # Head
 
-- type: loadout
-  id: SeniorPhysicianBeret
-  effects:
-  - !type:GroupLoadoutEffect
-    proto: SeniorPhysician
-  equipment:
-    head: ClothingHeadHatBeretSeniorPhysician
+# IS14 Edit - Senior loadout закомментирован
+#- type: loadout
+#  id: SeniorPhysicianBeret
+#  effects:
+#  - !type:GroupLoadoutEffect
+#    proto: SeniorPhysician
+#  equipment:
+#    head: ClothingHeadHatBeretSeniorPhysician
 
 - type: loadout
   id: MedicalHeadMirror
@@ -169,21 +170,22 @@
     jumpsuit: ClothingUniformJumpskirtMedicalDoctor
 
 
-- type: loadout
-  id: SeniorPhysicianJumpsuit
-  effects:
-  - !type:GroupLoadoutEffect
-    proto: SeniorPhysician
-  equipment:
-    jumpsuit: ClothingUniformJumpsuitSeniorPhysician
-
-- type: loadout
-  id: SeniorPhysicianJumpskirt
-  effects:
-  - !type:GroupLoadoutEffect
-    proto: SeniorPhysician
-  equipment:
-    jumpsuit: ClothingUniformJumpskirtSeniorPhysician
+# IS14 Edit - Senior loadout'ы закомментированы, доступны только через Senior loadout groups
+#- type: loadout
+#  id: SeniorPhysicianJumpsuit
+#  effects:
+#  - !type:GroupLoadoutEffect
+#    proto: SeniorPhysician
+#  equipment:
+#    jumpsuit: ClothingUniformJumpsuitSeniorPhysician
+#
+#- type: loadout
+#  id: SeniorPhysicianJumpskirt
+#  effects:
+#  - !type:GroupLoadoutEffect
+#    proto: SeniorPhysician
+#  equipment:
+#    jumpsuit: ClothingUniformJumpskirtSeniorPhysician
 
 - type: loadout
   id: MedicalBlueScrubs
@@ -231,13 +233,14 @@
   equipment:
     outerClothing: ClothingOuterWinterMed
 
-- type: loadout
-  id: SeniorPhysicianLabCoat
-  effects:
-  - !type:GroupLoadoutEffect
-    proto: SeniorPhysician
-  equipment:
-    outerClothing: ClothingOuterCoatLabSeniorPhysician
+# IS14 Edit - Senior loadout закомментирован
+#- type: loadout
+#  id: SeniorPhysicianLabCoat
+#  effects:
+#  - !type:GroupLoadoutEffect
+#    proto: SeniorPhysician
+#  equipment:
+#    outerClothing: ClothingOuterCoatLabSeniorPhysician
 
 # Shoes
 - type: loadout
@@ -251,13 +254,14 @@
   equipment:
     id: MedicalPDA
 
-- type: loadout
-  id: SeniorPhysicianPDA
-  effects:
-  - !type:GroupLoadoutEffect
-    proto: SeniorPhysician
-  equipment:
-    id: SeniorPhysicianPDA
+# IS14 Edit - Senior loadout закомментирован
+#- type: loadout
+#  id: SeniorPhysicianPDA
+#  effects:
+#  - !type:GroupLoadoutEffect
+#    proto: SeniorPhysician
+#  equipment:
+#    id: SeniorPhysicianPDA
 
 # Gloves
 - type: loadout

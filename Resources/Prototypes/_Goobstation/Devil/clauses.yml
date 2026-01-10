@@ -9,7 +9,7 @@
 
 - type: clause
   id: soulownership
-  name: Владение душой # CorvaxGoob devil fix
+  name: Право владения душой # CorvaxGoob devil fix
   clauseWeight: 25
   event: !type:DevilContractSoulOwnershipEvent
 
@@ -26,8 +26,13 @@
   clauseWeight: -30
   addedComponents:
   - type: Devourer
-    foodPreference: Humanoid
-    shouldStoreDevoured: true
+    foodPreferenceWhitelist:
+      components:
+      - HumanoidAppearance
+    stomachStorageWhitelist:
+      components:
+      - MobState
+      - Item
     chemical: Ichor
     healRate: 7.5
     whitelist:

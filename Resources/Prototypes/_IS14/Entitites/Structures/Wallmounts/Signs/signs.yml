@@ -1,0 +1,79 @@
+- type: entity
+  parent: IS14BaseSign
+  id: IS14BaseSignDirectional
+  abstract: true
+  components:
+    - type: Sprite
+      snapCardinals: false
+
+- type: entity
+  parent: IS14BaseSignDirectional
+  id: IS14SignDirectionalCmd
+  name: cmd sign
+  components:
+  - type: Sprite
+    state: direction_cmd
+
+- type: entity
+  parent: IS14BaseSignDirectional
+  id: IS14SignDirectionalCrb
+  name: crb sign
+  components:
+  - type: Sprite
+    state: direction_crb
+
+- type: entity
+  parent: IS14BaseSignDirectional
+  id: IS14SignDirectionalExpo
+  name: expo sign
+  components:
+  - type: Sprite
+    state: direction_expo
+
+- type: entity
+  parent: IS14BaseSignDirectional
+  id: IS14SignDirectionalMed
+  name: med sign
+  components:
+  - type: Sprite
+    state: direction_med
+
+- type: entity
+  parent: IS14BaseSignDirectional
+  id: IS14SignDirectionalMoko
+  name: moko sign
+  components:
+  - type: Sprite
+    state: direction_moko
+
+- type: entity
+  parent: IS14BaseSignDirectional
+  id: IS14SignDirectionalMup
+  name: mup sign
+  components:
+  - type: Sprite
+    state: direction_mup
+
+- type: entity
+  parent: IS14BaseSignDirectional
+  id: IS14SignDirectionalSci
+  name: sci sign
+  components:
+  - type: Sprite
+    state: direction_sci
+
+- type: entity
+  parent: IS14BaseSignDirectional
+  id: IS14SignDirectionalSec
+  name: sec sign
+  components:
+  - type: Sprite
+    state: direction_sec
+
+- type: entity
+  parent: IS14BaseSignDirectional
+  id: IS14SignDirectionalService
+  name: service sign
+  components:
+  - type: Sprite
+    state: direction_service

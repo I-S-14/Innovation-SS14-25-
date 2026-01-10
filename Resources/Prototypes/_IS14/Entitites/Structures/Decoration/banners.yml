@@ -1,0 +1,218 @@
+- type: entity
+  id: BannerScientific
+  name: banner scientific
+  description: In 3091, the Union of Socialist Planets unveils its iconic Scientific Banner
+  components:
+  - type: Transform
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.2
+        density: 190
+        mask:
+        - HighImpassable
+  - type: Physics
+    bodyType: Dynamic  
+  - type: Anchorable
+  - type: InteractionOutline
+  - type: Pullable
+  - type: Damageable
+  - type: PointLight
+    color: SkyBlue
+    radius: 1.5
+    energy: 1
+    netsync: false
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: Sprite
+    sprite: _IS14/Structures/Decoration/bannersgolo.rsi
+    state: banner_scientific
+    noRot: true
+
+
+- type: entity
+  id: BannerMokoGolo
+  name: banner moko golo
+  description: In 3091, the Union of Socialist Planets unveils its iconic Scientific Banner
+  components:
+  - type: Transform
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.2
+        density: 190
+        mask:
+        - HighImpassable
+  - type: Physics
+    bodyType: Dynamic  
+  - type: Anchorable
+  - type: InteractionOutline
+  - type: Pullable
+  - type: Damageable
+  - type: PointLight
+    color: SkyBlue
+    radius: 1.5
+    energy: 1
+    netsync: false
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: Sprite
+    sprite: _IS14/Structures/Decoration/bannersgolo.rsi
+    state: banner_moko_golo
+    noRot: true
+
+
+- type: entity
+  id: BannerLegal
+  parent: BannerBase
+  name: banner legal
+  description: A banner displaying the Nanotrasen logo. It looks rather cheap.
+  components:
+  - type: Sprite
+    sprite: _IS14/Structures/Decoration/banners.rsi
+    state: banner_legal
+  - type: Construction 
+    graph: BannersGraph 
+    node: BannerNanotrasenNode   
+
+
+- type: entity
+  id: BannerCom
+  parent: BannerBase
+  name: banner com
+  description: A banner displaying the Nanotrasen logo. It looks rather cheap.
+  components:
+  - type: Sprite
+    sprite: _IS14/Structures/Decoration/banners.rsi
+    state: banner_com
+  - type: Construction 
+    graph: BannersGraph 
+    node: BannerNanotrasenNode 
+
+
+- type: entity
+  id: BannerEng
+  parent: BannerBase
+  name: banner eng
+  description: A banner displaying the Nanotrasen logo. It looks rather cheap.
+  components:
+  - type: Sprite
+    sprite: _IS14/Structures/Decoration/banners.rsi
+    state: banner_eng
+  - type: Construction 
+    graph: BannersGraph 
+    node: BannerNanotrasenNode 
+
+
+- type: entity
+  id: BannerExpSupply
+  parent: BannerBase
+  name: banner exp supply
+  description: A banner displaying the Nanotrasen logo. It looks rather cheap.
+  components:
+  - type: Sprite
+    sprite: _IS14/Structures/Decoration/banners.rsi
+    state: banner_exp_supply
+  - type: Construction 
+    graph: BannersGraph 
+    node: BannerNanotrasenNode
+
+
+- type: entity
+  id: BannerKgb
+  parent: BannerBase
+  name: banner kgb
+  description: A banner displaying the Nanotrasen logo. It looks rather cheap.
+  components:
+  - type: Sprite
+    sprite: _IS14/Structures/Decoration/banners.rsi
+    state: banner_kgb
+  - type: Construction 
+    graph: BannersGraph 
+    node: BannerNanotrasenNode
+
+
+- type: entity
+  id: BannerMed
+  parent: BannerBase
+  name: banner med
+  description: A banner displaying the Nanotrasen logo. It looks rather cheap.
+  components:
+  - type: Sprite
+    sprite: _IS14/Structures/Decoration/banners.rsi
+    state: banner_med
+  - type: Construction 
+    graph: BannersGraph 
+    node: BannerNanotrasenNode
+
+
+- type: entity
+  id: BannerMilitia
+  parent: BannerBase
+  name: banner militia
+  description: A banner displaying the Nanotrasen logo. It looks rather cheap.
+  components:
+  - type: Sprite
+    sprite: _IS14/Structures/Decoration/banners.rsi
+    state: banner_militia
+  - type: Construction 
+    graph: BannersGraph 
+    node: BannerNanotrasenNode
+
+
+- type: entity
+  id: BannerMoko
+  parent: BannerBase
+  name: banner moko
+  description: A banner displaying the Nanotrasen logo. It looks rather cheap.
+  components:
+  - type: Sprite
+    sprite: _IS14/Structures/Decoration/banners.rsi
+    state: banner_moko
+  - type: Construction 
+    graph: BannersGraph 
+    node: BannerNanotrasenNode
+
+
+- type: entity
+  id: BannerServ
+  parent: BannerBase
+  name: banner serv
+  description: A banner displaying the Nanotrasen logo. It looks rather cheap.
+  components:
+  - type: Sprite
+    sprite: _IS14/Structures/Decoration/banners.rsi
+    state: banner_serv
+  - type: Construction 
+    graph: BannersGraph 
+    node: BannerNanotrasenNode
+
+
+- type: entity
+  id: BannerSyndicatenew
+  parent: BannerBase
+  name: banner syndicate
+  description: A banner displaying the Nanotrasen logo. It looks rather cheap.
+  components:
+  - type: Sprite
+    sprite: _IS14/Structures/Decoration/banners.rsi
+    state: banner_syndicate
+  - type: Construction 
+    graph: BannersGraph 
+    node: BannerNanotrasenNode

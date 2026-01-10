@@ -24,15 +24,15 @@
   - type: PresetIdCard
     job: Surgeon
 
-- type: entity
-  parent: IDCardStandard
-  id: WardenHelperIDCard
-  name: warden assistant ID card
-  components:
-    - type: Sprite
-      layers:
-        - state: default
-        - sprite: _CorvaxGoob/Objects/Misc/id_cards.rsi
-          state: idwardenhelper
-    - type: PresetIdCard
-      job: WardenHelper
+# - type: entity  # IS14 Edit
+  # parent: IDCardStandard
+  # id: WardenHelperIDCard
+  # name: warden assistant ID card
+  # components:
+    # - type: Sprite
+      # layers:
+        # - state: default
+        # - sprite: _CorvaxGoob/Objects/Misc/id_cards.rsi
+          # state: idwardenhelper
+    # - type: PresetIdCard
+      # job: WardenHelper

@@ -1,0 +1,47 @@
+{
+    "version": 1,
+    "size": {
+        "x": 32,
+        "y": 32
+    },
+    "license": "All Rights Reserved",
+    "copyright": "made for innovation station by melvilla (discord)",
+    "states": [
+        {
+            "name": "direction_cmd",
+            "directions": 4
+        },
+        {
+            "name": "direction_crb",
+            "directions": 4
+        },
+        {
+            "name": "direction_expo",
+            "directions": 4
+        },
+        {
+            "name": "direction_med",
+            "directions": 4
+        },
+        {
+            "name": "direction_moko",
+            "directions": 4
+        },
+        {
+            "name": "direction_mup",
+            "directions": 4
+        },
+        {
+            "name": "direction_sci",
+            "directions": 4
+        },
+        {
+            "name": "direction_sec",
+            "directions": 4
+        },
+        {
+            "name": "direction_service",
+            "directions": 4
+        }
+    ]
+}

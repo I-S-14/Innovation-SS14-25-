@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "license": "All Rights Reserved",
+  "copyright": "made for innovation station by melvilla (discord)",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "deny-unshaded",
+      "delays": [
+        [
+          0.25,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "normal-unshaded",
+      "delays": [
+        [
+          10,
+          0.1,
+          10,
+          0.1,
+          10,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "off"
+    },
+    {
+      "name": "broken"
+    },
+    {
+      "name": "panel"
+    }
+  ]
+}

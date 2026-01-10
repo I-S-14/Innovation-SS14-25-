@@ -1,0 +1,83 @@
+{
+    "version": 1,
+    "license": "All Rights Reserved",
+    "copyright": "Made by Melvilla (discord)",
+    "size": {
+        "x": 32,
+        "y": 32
+    },
+    "states": [
+        {
+            "name": "capitan_generic"
+        },
+        {
+            "name": "capitan_open"
+        },
+        {
+            "name": "capitan_closed"
+        },
+        {
+            "name": "hop_generic"
+        },
+        {
+            "name": "hop_open"
+        },
+        {
+            "name": "hop_closed"
+        },
+        {
+            "name": "hos_generic"
+        },
+        {
+            "name": "hos_open"
+        },
+        {
+            "name": "hos_closed"
+        },
+        {
+            "name": "ing_closed"
+        },
+        {
+            "name": "ing_generic"
+        },
+        {
+            "name": "ing_open"
+        },
+        {
+            "name": "locked"
+        },
+        {
+            "name": "med_closed"
+        },
+        {
+            "name": "med_generic"
+        },
+        {
+            "name": "med_open"
+        },
+        {
+            "name": "scientist_closed"
+        },
+        {
+            "name": "scientist_generic"
+        },
+        {
+            "name": "scientist_open"
+        },
+        {
+            "name": "supply_closed"
+        },
+        {
+            "name": "supply_generic"
+        },
+        {
+            "name": "supply_open"
+        },
+        {
+            "name": "unlocked_closed"
+        },
+        {
+            "name": "unlocked_open"
+        }
+    ]
+}

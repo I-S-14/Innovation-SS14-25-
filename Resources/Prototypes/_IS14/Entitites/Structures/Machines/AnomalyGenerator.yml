@@ -1,0 +1,110 @@
+- type: entity
+  id: IS14MachineAnomalyGenerator
+  parent: BaseMachinePowered
+  name: anomaly generator
+  description: The peak of pseudoscientific technology.
+  placement:
+    mode: AlignTileAny
+  components:
+  - type: StationAiWhitelist
+  - type: SpriteFade
+  - type: Sprite
+    sprite: _IS14/Structures/Machines/Anomaly/anomaly_generator.rsi
+    offset: 0,1
+    drawdepth: Mobs
+    layers:
+    - state: base
+    - state: panel
+      map: ["enum.WiresVisualLayers.MaintenancePanel"]
+      visible: false
+    - state: unshaded
+      shader: unshaded
+      map: ["enum.PowerDeviceVisualLayers.Powered"]
+    - state: inserting
+      visible: false
+      map: ["enum.MaterialStorageVisualLayers.Inserting"]
+    - state: generating
+      visible: false
+      shader: unshaded
+      map: ["enum.AnomalyGeneratorVisualLayers.Base"]
+  - type: Transform
+    anchored: true
+  - type: ApcPowerReceiver
+    powerLoad: 1500
+  - type: ExtensionCableReceiver
+  - type: AmbientSound
+    range: 5
+    volume: -6
+    sound:
+      path: /Audio/Ambience/Objects/anomaly_generator.ogg
+  - type: Physics
+    bodyType: Static
+  - type: AnomalyGenerator
+    generatingSound:
+      path: /Audio/Machines/anomaly_generate.ogg
+    generatingFinishedSound:
+      path: /Audio/Machines/beep.ogg
+  - type: MaterialStorage
+    whitelist:
+      tags:
+        - Sheet
+    materialWhiteList:
+    - Plasma
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-1.5,-0.5,1.5,0.6"
+        density: 50
+        mask:
+        - LargeMobMask
+        layer:
+        - WallLayer
+  - type: Repairable
+    fuelCost: 10
+    doAfterDelay: 5
+  - type: WiresPanel
+  - type: Wires
+    boardName: wires-board-name-anomalygenerator
+    layoutId: AnomalyGenerator
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 500
+      behaviors:
+      - !type:DoActsBehavior
+        acts: ["Breakage"]
+  - type: ActivatableUI
+    key: enum.AnomalyGeneratorUiKey.Key
+  - type: ActivatableUIRequiresAccess
+  - type: ActivatableUIRequiresPower
+  - type: UserInterface
+    interfaces:
+        enum.AnomalyGeneratorUiKey.Key:
+          type: AnomalyGeneratorBoundUserInterface
+        enum.WiresUiKey.Key:
+          type: WiresBoundUserInterface
+  - type: Appearance
+  - type: ActiveRadio
+    channels:
+    - Science
+  - type: GenericVisualizer
+    visuals:
+      enum.PowerDeviceVisuals.Powered:
+        enum.PowerDeviceVisualLayers.Powered:
+          True: { visible: true }
+          False: { visible: false }
+      enum.AnomalyGeneratorVisuals.Generating:
+        enum.AnomalyGeneratorVisualLayers.Base:
+          True: { visible: true }
+          False: { visible: false }
+  - type: WiresVisuals
+  - type: StaticPrice
+    price: 5000
+  - type: AccessReader
+    access: [["Research"]]
+  - type: GuideHelp
+    guides:
+    - AnomalousResearch

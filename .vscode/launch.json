@@ -21,7 +21,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/bin/Content.Client/Content.Client.dll",
             "args": [],
-            "console": "internalConsole",
+            "console": "externalTerminal",
             "stopAtEntry": false
         },
         {
@@ -81,7 +81,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/bin/Content.Server/Content.Server.dll",
             "args": [],
-            "console": "integratedTerminal",
+            "console": "externalTerminal",
             "stopAtEntry": false
         },
         {
@@ -154,6 +154,13 @@
                 "Client"
             ],
             "preLaunchTask": "build"
+        },
+        {
+            "name": "Server/Client - No build",
+            "configurations": [
+                "Server",
+                "Client"
+            ]
         },
         {
             "name": "Server/Client - Tools",

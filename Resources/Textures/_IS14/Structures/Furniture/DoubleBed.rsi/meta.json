@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "license": "All Rights Reserved",
+  "copyright": "made for innovation station by melvilla (discord)",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "doublebed_up"
+    },
+    {
+      "name": "doublebed_down"
+    }
+  ]
+}

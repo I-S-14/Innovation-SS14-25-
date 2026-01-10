@@ -481,7 +481,7 @@
   loadouts:
   - DetectiveGloves
 
-# Warden
+# Warden & Warden Helper
 
 - type: loadoutGroup
   id: WardenEnvirohelm
@@ -1247,7 +1247,7 @@
   minLimit: 0
   loadouts:
   - MedicalBeret
-  - SeniorPhysicianBeret
+  # IS14 Edit - SeniorPhysicianBeret закомментирован, loadout не существует
   - ChemistUshanka # Da.
 
 - type: loadoutGroup
@@ -1392,8 +1392,6 @@
   name: loadout-group-security-melee
   loadouts:
   - SecurityMeleeKnife
-  - SecurityMeleePolyBaton
-  - SecurityMeleeSpear
 
 # Zookeeper
 

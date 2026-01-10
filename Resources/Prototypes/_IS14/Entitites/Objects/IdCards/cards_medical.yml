@@ -1,0 +1,84 @@
+- type: entity
+  parent: IS_IdCardBase
+  id: IS_IdCardDoctor
+  name: identification card
+  description: A card necessary to access various areas aboard the station.
+  components:
+  - type: Appearance
+    appearanceDataInit:
+     enum.IdCardVisualLayers.Base:
+       !type:String
+       doctor
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Devices/id_cards/medical.rsi
+
+- type: entity
+  parent: IS_IdCardBase
+  id: IS_IdCardIntern
+  name: identification card
+  description: A card necessary to access various areas aboard the station.
+  components:
+  - type: Appearance
+    appearanceDataInit:
+     enum.IdCardVisualLayers.Base:
+       !type:String
+       intern
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Devices/id_cards/medical.rsi
+
+- type: entity
+  parent: IS_IdCardBase
+  id: IS_IdCardParamedic
+  name: identification card
+  description: A card necessary to access various areas aboard the station.
+  components:
+  - type: Appearance
+    appearanceDataInit:
+     enum.IdCardVisualLayers.Base:
+       !type:String
+       paramedic
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Devices/id_cards/medical.rsi
+
+- type: entity
+  parent: IS_IdCardBase
+  id: IS_IdCardPharmacist
+  name: identification card
+  description: A card necessary to access various areas aboard the station.
+  components:
+  - type: Appearance
+    appearanceDataInit:
+     enum.IdCardVisualLayers.Base:
+       !type:String
+       pharmacist
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Devices/id_cards/medical.rsi
+
+- type: entity
+  parent: IS_IdCardBase
+  id: IS_IdCardPsychologist
+  name: identification card
+  description: A card necessary to access various areas aboard the station.
+  components:
+  - type: Appearance
+    appearanceDataInit:
+     enum.IdCardVisualLayers.Base:
+       !type:String
+       psychologist
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Devices/id_cards/medical.rsi
+
+- type: entity
+  parent: IS_IdCardBase
+  id: IS_IdCardSeniorDoctor
+  name: identification card
+  description: A card necessary to access various areas aboard the station.
+  components:
+  - type: Appearance
+    appearanceDataInit:
+     enum.IdCardVisualLayers.Base:
+       !type:String
+       senior_doctor
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Devices/id_cards/medical.rsi
+

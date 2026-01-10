@@ -124,6 +124,7 @@
 # SPDX-FileCopyrightText: 2024 Арт <123451459+JustArt1m@users.noreply.github.com>
 # SPDX-FileCopyrightText: 2025 Aiden <28298836+Aidenkrz@users.noreply.github.com>
 # SPDX-FileCopyrightText: 2025 Aiden <aiden@djkraz.com>
+# SPDX-FileCopyrightText: 2025 Avalon <jfbentley1@gmail.com>
 # SPDX-FileCopyrightText: 2025 Aviu00 <93730715+Aviu00@users.noreply.github.com>
 # SPDX-FileCopyrightText: 2025 Aviu00 <aviu00@protonmail.com>
 # SPDX-FileCopyrightText: 2025 BloodfiendishOperator <141253729+Diggy0@users.noreply.github.com>
@@ -174,7 +175,7 @@
   - PlushieLizard
   - PlushieSpaceLizard
   - PersonalAI # Goobstation
-  - GoldPersonalAI # Goobstation
+  - GoldenPersonalAI # Goobstation
   - ThreeCandles
   - Lighter
   - CigPackGreen
@@ -238,6 +239,7 @@
   - Cane
   - WhiteCane
   - TapeRecorder
+  - DrinkOniGourd
   # End DeltaV Additions
 
 - type: loadoutGroup
@@ -329,6 +331,7 @@
   - CaptainJumpsuitTurtleneck
   - CaptainJumpskirtTurtleneck
   # CorvaxGoob-Loadouts-End
+  - CaptainSummerShirt # also goob
 
 - type: loadoutGroup
   id: CaptainNeck
@@ -374,6 +377,7 @@
   - HoPJumpsuitTurtleneck
   - HoPJumpskirtTurtleneck
   # CorvaxGoob-Loadouts-End
+  - HoPSummerShirt # goob
 
 - type: loadoutGroup
   id: HoPNeck
@@ -399,6 +403,7 @@
   minLimit: 0
   loadouts:
   - HoPWintercoat
+  - HoPLongcoat #goob
 
 # Civilian
 - type: loadoutGroup
@@ -867,6 +872,7 @@
   - QuartermasterTurtleneckSkirt
   - QuartermasterFormalSuit
   - QuartermasterMJ # goob
+  - QMSummerShirt # goob
 
 - type: loadoutGroup
   id: QuartermasterNeck
@@ -973,6 +979,7 @@
   - ChiefEngineerTurtleneck
   - ChiefEngineerTurtleneckSkirt
   - ChiefEngineerMJ # goob
+  - CESummerShirt # goob
 
 - type: loadoutGroup
   id: ChiefEngineerNeck
@@ -1012,7 +1019,7 @@
   - StationEngineerHardhatYellow
   - StationEngineerHardhatOrange
   - StationEngineerHardhatRed
-  - SeniorEngineerBeret
+  # IS14 Edit - SeniorEngineerBeret закомментирован, loadout не существует
 
 - type: loadoutGroup
   id: StationEngineerJumpsuit
@@ -1021,8 +1028,7 @@
   - StationEngineerJumpsuit
   - StationEngineerJumpskirt
   - StationEngineerHazardsuit
-  - SeniorEngineerJumpsuit
-  - SeniorEngineerJumpskirt
+  # IS14 Edit - SeniorEngineerJumpsuit и SeniorEngineerJumpskirt закомментированы, loadout'ы не существуют
   - EngiMJ # goob
 
 - type: loadoutGroup
@@ -1054,14 +1060,13 @@
   name: loadout-group-station-engineer-id
   loadouts:
   - StationEngineerPDA
-  - SeniorEngineerPDA
+  # IS14 Edit - SeniorEngineerPDA закомментирован, loadout не существует
 
 - type: loadoutGroup
   id: AtmosphericTechnicianHead
   name: loadout-group-atmospheric-technician-head
   minLimit: 0
-  loadouts:
-  - SeniorEngineerBeret   # Goobstation
+  loadouts: [] # IS14 Edit - SeniorEngineerBeret закомментирован, loadout не существует
 
 - type: loadoutGroup
   id: AtmosphericTechnicianJumpsuit
@@ -1070,8 +1075,7 @@
   - AtmosphericTechnicianJumpsuit
   - AtmosphericTechnicianJumpskirt
   - AtmosphericTechnicianJumpsuitCasual
-  - SeniorEngineerJumpskirt  # Goobstation
-  - SeniorEngineerJumpsuit   # Goobstation
+  # IS14 Edit - SeniorEngineerJumpsuit и SeniorEngineerJumpskirt закомментированы, loadout'ы не существуют
   - AtmosMJ # goob
 
 - type: loadoutGroup
@@ -1137,6 +1141,7 @@
   - ResearchDirectorJumpsuitClassical
   - ResearchDirectorJumpskirtClassical
   # CorvaxGoob-Loadouts-End
+  - RDSummerShirt # goob
 
 - type: loadoutGroup
   id: ResearchDirectorOuterClothing
@@ -1145,6 +1150,7 @@
   loadouts:
   - ResearchDirectorLabCoat
   - ResearchDirectorWintercoat
+  - ResearchDirectorLabCoatPurple #goob
 
 - type: loadoutGroup
   id: ResearchDirectorShoes
@@ -1177,8 +1183,7 @@
   - ScientistJumpskirt
   - RoboticistJumpsuit
   - RoboticistJumpskirt
-  - SeniorResearcherJumpsuit
-  - SeniorResearcherJumpskirt
+  # IS14 Edit - SeniorResearcherJumpsuit и SeniorResearcherJumpskirt закомментированы, loadout'ы не существуют
   - ResearchMJ # goob
 
 - type: loadoutGroup
@@ -1200,7 +1205,7 @@
   - ScienceWintercoat
   - RoboticistLabCoat
   - RoboticistWintercoat
-  - SeniorResearcherLabCoat
+  # IS14 Edit - SeniorResearcherLabCoat закомментирован, loadout не существует
 
 - type: loadoutGroup
   id: ScientistShoes
@@ -1224,7 +1229,7 @@
   name: loadout-group-scientist-id
   loadouts:
   - ScientistPDA
-  - SeniorResearcherPDA
+  # IS14 Edit - SeniorResearcherPDA закомментирован, loadout не существует
 
 - type: loadoutGroup
   id: ResearchAssistantJumpsuit
@@ -1258,6 +1263,7 @@
   - HeadofSecurityJumpsuitBlack
   - HeadofSecurityJumpskirtBlack
   # CorvaxGoob-Loadouts-End
+  - HoSSummerShirt # goob
 
 - type: loadoutGroup
   id: HeadofSecurityNeck
@@ -1298,6 +1304,7 @@
   loadouts:
   - WardenCoat
   - WardenArmoredWinterCoat
+  - WardenCoatBlue #goob
 
 - type: loadoutGroup
   id: SecurityHead
@@ -1318,8 +1325,7 @@
   - SecurityJumpskirt
   - SecurityJumpsuitGrey
   - SecurityJumpskirtGrey
-  - SeniorOfficerJumpsuit
-  - SeniorOfficerJumpskirt
+  # IS14 Edit - SeniorOfficerJumpsuit и SeniorOfficerJumpskirt закомментированы, loadout'ы не существуют
   - TrooperUniform
 
 - type: loadoutGroup
@@ -1337,7 +1343,6 @@
   loadouts:
   - SecurityBelt
   - SecurityWebbing
-  - SecurityJudoBelt # Goobstation - Martial Arts
 
 - type: loadoutGroup
   id: SecurityOuterClothing
@@ -1361,7 +1366,7 @@
   name: loadout-group-security-id
   loadouts:
   - SecurityPDA
-  - SeniorOfficerPDA
+  # IS14 Edit - SeniorOfficerPDA закомментирован, loadout не существует
 
 - type: loadoutGroup
   id: DetectiveHead
@@ -1472,7 +1477,7 @@
   minLimit: 0
   loadouts:
   - MedicalBeret
-  - SeniorPhysicianBeret
+  # IS14 Edit - SeniorPhysicianBeret закомментирован, loadout не существует
   - MedicalHeadMirror
   - BlueSurgeryCap
   - GreenSurgeryCap
@@ -1485,8 +1490,7 @@
   loadouts:
   - MedicalDoctorJumpsuit
   - MedicalDoctorJumpskirt
-  - SeniorPhysicianJumpsuit
-  - SeniorPhysicianJumpskirt
+  # IS14 Edit - SeniorPhysicianJumpsuit и SeniorPhysicianJumpskirt закомментированы, loadout'ы не существуют
   - MedicalBlueScrubs
   - MedicalGreenScrubs
   - MedicalPurpleScrubs
@@ -1499,7 +1503,7 @@
   loadouts:
   - RegularLabCoat
   - MedicalDoctorWintercoat
-  - SeniorPhysicianLabCoat
+  # IS14 Edit - SeniorPhysicianLabCoat закомментирован, loadout не существует
 
 - type: loadoutGroup
   id: MedicalBackpack
@@ -1522,7 +1526,7 @@
   name: loadout-group-medical-doctor-id
   loadouts:
   - MedicalDoctorPDA
-  - SeniorPhysicianPDA
+  # IS14 Edit - SeniorPhysicianPDA закомментирован, loadout не существует
 
 - type: loadoutGroup
   id: MedicalGloves
@@ -1553,8 +1557,7 @@
   loadouts:
   - ChemistJumpsuit
   - ChemistJumpskirt
-  - SeniorPhysicianJumpsuit # Goobstation
-  - SeniorPhysicianJumpskirt # Goobstation
+  # IS14 Edit - SeniorPhysicianJumpsuit и SeniorPhysicianJumpskirt закомментированы, loadout'ы не существуют
   - ChemistMJ # goob
 
 - type: loadoutGroup
@@ -1565,7 +1568,7 @@
   - RegularLabCoat
   - ChemistLabCoat
   - ChemistWintercoat
-  - SeniorPhysicianLabCoat # Goobstation
+  # IS14 Edit - SeniorPhysicianLabCoat закомментирован, loadout не существует
 
 - type: loadoutGroup
   id: ChemistBackpack
@@ -1582,7 +1585,7 @@
   minLimit: 0
   loadouts:
   - ParamedicHead
-  - SeniorPhysicianBeret # Goobstation
+  # IS14 Edit - SeniorPhysicianBeret закомментирован, loadout не существует
 
 - type: loadoutGroup
   id: ParamedicJumpsuit
@@ -1590,8 +1593,7 @@
   loadouts:
   - ParamedicJumpsuit
   - ParamedicJumpskirt
-  - SeniorPhysicianJumpsuit # Goobstation
-  - SeniorPhysicianJumpskirt # Goobstation
+  # IS14 Edit - SeniorPhysicianJumpsuit и SeniorPhysicianJumpskirt закомментированы, loadout'ы не существуют
   - ParamedMJ # goob
 
 - type: loadoutGroup
@@ -1602,7 +1604,7 @@
   - ParamedicWindbreaker
   - ParamedicWintercoat
   - ParamedicDavidsJacket # Goobstation
-  - SeniorPhysicianLabCoat # Goobstation
+  # IS14 Edit - SeniorPhysicianLabCoat закомментирован, loadout не существует
 
 - type: loadoutGroup
   id: ParamedicShoes

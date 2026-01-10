@@ -1,0 +1,42 @@
+- type: entity
+  parent: IS_PdaBase
+  id: IS_PdaCargoBase
+  name: base cargo PDA
+  abstract: true
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Devices/pda/Cargo/cargo.rsi
+
+# ==========================================================
+
+- type: entity
+  parent: IS_PdaCargoBase
+  id: IS_PdaCourier
+  name: courier PDA
+  components:
+  - type: Pda
+    id: IS_IdCardCourier
+
+- type: entity
+  parent: IS_PdaCargoBase
+  id: IS_PdaExpeditionist
+  name: expeditionist PDA
+  components:
+  - type: Pda
+    id: IS_IdCardExpeditionist
+
+- type: entity
+  parent: IS_PdaCargoBase
+  id: IS_PdaSeniorExpeditionist
+  name: senior expeditionist PDA
+  components:
+  - type: Pda
+    id: IS_IdCardSeniorExpeditionist
+
+- type: entity
+  parent: IS_PdaCargoBase
+  id: IS_PdaCargoTechnician
+  name: cargo technician PDA
+  components:
+  - type: Pda
+    id: IS_IdCardCargoTechnician

@@ -88,14 +88,14 @@
   parent: JobIcon
   id: JobIconNanotrasenRepresentative
   icon:
-    sprite: /Textures/_Goobstation/Interface/Misc/job_icons.rsi
-    state: nanotrasenrepresentative
+    sprite: /Textures/_IS14/Interface/Misc/job_icons.rsi
+    state: NanotrasenRepresentative
   jobName: job-name-ntr
 
 - type: jobIcon
   parent: JobIcon
   id: JobIconBlueshield
   icon:
-    sprite: /Textures/_Goobstation/Interface/Misc/job_icons.rsi
-    state: blueshield
+    sprite: /Textures/_IS14/Interface/Misc/job_icons.rsi
+    state: BlueshieldOfficer
   jobName: job-name-bs

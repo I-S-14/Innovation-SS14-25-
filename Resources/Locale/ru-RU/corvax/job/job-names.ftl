@@ -1,4 +1,3 @@
 job-name-iaa = агент внутренних дел
-job-name-pilot = пилот
 JobIAA = агент внутренних дел
-JobPilot = пилот
+# IS14 Edit - job-name-pilot и JobPilot удалены, так как они переименованы в стандартном файле job/job-names.ftl

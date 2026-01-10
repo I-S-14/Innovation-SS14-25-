@@ -1,0 +1,13 @@
+- type: entity
+  parent: IS_IdCardBase
+  id: IS_IdCardIntelOfficer
+  name: identification card
+  description: A card necessary to access various areas aboard the station.
+  components:
+  - type: Appearance
+    appearanceDataInit:
+     enum.IdCardVisualLayers.Base:
+       !type:String
+       intel_officer
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Devices/id_cards/intel.rsi

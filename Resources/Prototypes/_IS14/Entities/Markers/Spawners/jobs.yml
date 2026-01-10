@@ -1,0 +1,108 @@
+# SPDX-FileCopyrightText: 2025 IS14 Edit
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# IS14 Edit - Spawn points for custom roles
+
+# Cargo
+- type: entity
+  id: SpawnPointSeniorExpeditioner
+  parent: SpawnPointJobBase
+  name: seniorexpeditioner
+  components:
+  - type: SpawnPoint
+    job_id: SeniorExpeditioner
+  - type: Sprite
+    layers:
+      - state: green
+      - state: salvagespecialist
+
+# Civilian
+- type: entity
+  id: SpawnPointChurchServant
+  parent: SpawnPointJobBase
+  name: churchservant
+  components:
+  - type: SpawnPoint
+    job_id: ChurchServant
+  - type: Sprite
+    layers:
+      - state: green
+      - state: chaplain
+
+# Command
+- type: entity
+  id: SpawnPointCommandSecretary
+  parent: SpawnPointJobBase
+  name: commandsecretary
+  components:
+  - type: SpawnPoint
+    job_id: CommandSecretary
+  - type: Sprite
+    layers:
+      - state: green
+      - state: hop
+
+# Security
+- type: entity
+  id: SpawnPointInternalControlExecutor
+  parent: SpawnPointJobBase
+  name: internalcontrolexecutor
+  components:
+  - type: SpawnPoint
+    job_id: InternalControlExecutor
+  - type: Sprite
+    layers:
+      - state: green
+      - state: security_officer
+
+- type: entity
+  id: SpawnPointSeniorOfficer
+  parent: SpawnPointJobBase
+  name: seniorofficer
+  components:
+  - type: SpawnPoint
+    job_id: SeniorOfficer
+  - type: Sprite
+    layers:
+      - state: green
+      - state: seniorofficer
+
+# Engineering
+- type: entity
+  id: SpawnPointSeniorEngineer
+  parent: SpawnPointJobBase
+  name: seniorengineer
+  components:
+  - type: SpawnPoint
+    job_id: SeniorEngineer
+  - type: Sprite
+    layers:
+      - state: green
+      - state: seniorengineer
+
+# Medical
+- type: entity
+  id: SpawnPointSeniorPhysician
+  parent: SpawnPointJobBase
+  name: seniorphysician
+  components:
+  - type: SpawnPoint
+    job_id: SeniorPhysician
+  - type: Sprite
+    layers:
+      - state: green
+      - state: seniorphysician
+
+# Science
+- type: entity
+  id: SpawnPointSeniorResearcher
+  parent: SpawnPointJobBase
+  name: seniorresearcher
+  components:
+  - type: SpawnPoint
+    job_id: SeniorResearcher
+  - type: Sprite
+    layers:
+      - state: green
+      - state: seniorresearcher

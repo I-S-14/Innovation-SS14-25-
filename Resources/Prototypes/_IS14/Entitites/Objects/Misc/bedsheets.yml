@@ -1,0 +1,89 @@
+#base ent
+
+- type: entity
+  parent: BaseItem
+  id: IS14DoubleBedsheetBase
+  name: DoubleBedsheetBase
+  abstract: true
+  description: A surprisingly soft linen bedsheet.
+  placement:
+    mode: SnapgridCenter
+    snap:
+    - Bed
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Misc/doublebedsheets.rsi
+    noRot: true
+  - type: Item
+    size: Small
+  - type: StaticPrice
+    price: 150
+  - type: Tag
+    tags:
+    - Bedsheet
+
+
+#bedsheets go brrr..
+- type: entity
+  id: IS14DoubleBedsheetBlue
+  parent: IS14DoubleBedsheetBase
+  name: blue bedsheet
+  components:
+  - type: Sprite
+    state: blue
+
+- type: entity
+  id: IS14DoubleBedsheetFlowers
+  parent: IS14DoubleBedsheetBase
+  name: flowers bedsheet
+  components:
+  - type: Sprite
+    state: flowers
+
+- type: entity
+  id: IS14DoubleBedsheetGreen
+  parent: IS14DoubleBedsheetBase
+  name: green bedsheet
+  components:
+  - type: Sprite
+    state: green
+
+- type: entity
+  id: IS14DoubleBedsheetNT
+  parent: IS14DoubleBedsheetBase
+  name: nt bedsheet
+  components:
+  - type: Sprite
+    state: nt
+
+- type: entity
+  id: IS14DoubleBedsheetUSSR
+  parent: IS14DoubleBedsheetBase
+  name: ussr bedsheet
+  components:
+  - type: Sprite
+    state: ussr
+
+- type: entity
+  id: IS14DoubleBedsheetViolet
+  parent: IS14DoubleBedsheetBase
+  name: violet bedsheet
+  components:
+  - type: Sprite
+    state: violet
+
+- type: entity
+  id: IS14DoubleBedsheetWhite
+  parent: IS14DoubleBedsheetBase
+  name: white bedsheet
+  components:
+  - type: Sprite
+    state: white
+
+- type: entity
+  id: IS14DoubleBedsheetSymbol
+  parent: IS14DoubleBedsheetBase
+  name: symbol bedsheet
+  components:
+  - type: Sprite
+    state: symbol

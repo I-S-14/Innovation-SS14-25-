@@ -1,0 +1,57 @@
+# SPDX-FileCopyrightText: 2025 IS14 Edit
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# IS14 Edit - Новая роль: Старший врач
+- type: job
+  id: SeniorPhysician
+  name: job-name-senior-physician
+  description: job-description-senior-physician
+  playTimeTracker: JobSeniorPhysician
+  requirements:
+    - !type:RoleTimeRequirement
+      role: JobChemist
+      time: 21600 #6 hrs
+    - !type:RoleTimeRequirement
+      role: JobMedicalDoctor
+      time: 21600 #6 hrs
+    - !type:DepartmentTimeRequirement
+      department: Medical
+      time: 216000 # 60 hrs
+  startingGear: SeniorPhysicianGear
+  icon: "JobIconSeniorPhysician" # IS14 Edit
+  supervisors: job-supervisors-cmo
+  access:
+  - Medical
+  - Maintenance
+  extendedAccess:
+  - Chemistry
+  special:
+  - !type:AddComponentSpecial
+    components:
+    - type: SurgerySpeedModifier
+      speedModifier: 1.5
+    - type: Skills # CorvaxGoob-Skills
+      skills:
+      - Surgery
+      - MedicalEquipment
+
+- type: startingGear
+  id: SeniorPhysicianGear
+  equipment:
+    ears: ClothingHeadsetMedical
+    belt: ClothingBeltMedicalFilled
+    id: IS_PdaSeniorDoctor # IS14 Edit
+  storage:
+    back: []
+
+- type: chameleonOutfit
+  id: SeniorPhysicianChameleonOutfit
+  job: SeniorPhysician
+  equipment:
+    head: ClothingHeadHatBeretSeniorPhysician
+    eyes: ClothingEyesHudMedical
+    mask: ClothingMaskSterile
+    neck: ClothingNeckStethoscope
+    outerClothing: ClothingOuterCoatLabSeniorPhysician
+    gloves: ClothingHandsGlovesLatex

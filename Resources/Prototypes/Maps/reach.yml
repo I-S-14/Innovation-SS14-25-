@@ -49,6 +49,7 @@
             SecurityOfficer: [ 1, 2 ]
             CargoTechnician: [ 1, 1 ]
             SalvageSpecialist: [ 1, 2 ]
+            SeniorExpeditioner: [ 1, 1 ] # IS14 Edit
             Bartender: [ 1, 1 ]
             Botanist: [ 1, 1 ]
             Chef: [ 1, 1 ]
@@ -59,6 +60,13 @@
             AtmosphericTechnician: [ 1, 1 ]
             StationEngineer: [ 1, 2 ]
             Scientist: [ 1, 1 ]
+            SeniorResearcher: [ 1, 1 ] # IS14 Edit
+            SeniorEngineer: [ 1, 1 ] # IS14 Edit
+            SeniorPhysician: [ 1, 1 ] # IS14 Edit
+            SeniorOfficer: [ 1, 1 ] # IS14 Edit
+            CommandSecretary: [ 1, 1 ] # IS14 Edit
+            ChurchServant: [ 1, 1 ] # IS14 Edit
+            InternalControlExecutor: [ 1, 1 ] # IS14 Edit
             Passenger: [ -1, -1 ]
 
         # Goobstation blob-config-start LOW

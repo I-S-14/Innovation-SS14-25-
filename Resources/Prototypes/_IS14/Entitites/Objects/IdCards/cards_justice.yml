@@ -1,0 +1,56 @@
+- type: entity
+  parent: IS_IdCardBase
+  id: IS_IdCardJusticeOfficer
+  name: identification card
+  description: A card necessary to access various areas aboard the station.
+  components:
+  - type: Appearance
+    appearanceDataInit:
+     enum.IdCardVisualLayers.Base:
+       !type:String
+       justice_officer
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Devices/id_cards/justice.rsi
+
+- type: entity
+  parent: IS_IdCardBase
+  id: IS_IdCardJusticeRepresentative
+  name: identification card
+  description: A card necessary to access various areas aboard the station.
+  components:
+  - type: Appearance
+    appearanceDataInit:
+     enum.IdCardVisualLayers.Base:
+       !type:String
+       justice_representative
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Devices/id_cards/justice.rsi
+
+- type: entity
+  parent: IS_IdCardBase
+  id: IS_IdCardLawyer
+  name: identification card
+  description: A card necessary to access various areas aboard the station.
+  components:
+  - type: Appearance
+    appearanceDataInit:
+     enum.IdCardVisualLayers.Base:
+       !type:String
+       lawyer
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Devices/id_cards/justice.rsi
+
+- type: entity
+  parent: IS_IdCardBase
+  id: IS_IdCardStaffJudge
+  name: identification card
+  description: A card necessary to access various areas aboard the station.
+  components:
+  - type: Appearance
+    appearanceDataInit:
+     enum.IdCardVisualLayers.Base:
+       !type:String
+       staff_judge
+  - type: Sprite
+    sprite: /Textures/_IS14/Objects/Devices/id_cards/justice.rsi
+

@@ -1,0 +1,57 @@
+# SPDX-FileCopyrightText: 2025 IS14 Edit
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# IS14 Edit - Новая роль: Исполнитель внутреннего контроля
+- type: job
+  id: InternalControlExecutor
+  name: job-name-internal-control-executor
+  description: job-description-internal-control-executor
+  playTimeTracker: JobInternalControlExecutor
+  requirements:
+    - !type:DepartmentTimeRequirement
+      department: Security
+      time: 14400 # 4 hrs
+  startingGear: InternalControlExecutorGear
+  icon: "JobIconInternalControlExecutor" # IS14 Edit
+  supervisors: job-supervisors-hos
+  canBeAntag: false
+  access:
+  - Security
+  - Brig
+  - Maintenance
+  - Service
+  - External
+  - Cryogenics
+  - Detective
+  special:
+  - !type:AddImplantSpecial
+    implants: [ MindShieldImplant ]
+  - !type:AddComponentSpecial
+    components:
+      - type: SecurityStaff
+      - type: Skills # CorvaxGoob-Skills
+        skills:
+        - Shooting
+
+- type: startingGear
+  id: InternalControlExecutorGear
+  equipment:
+    eyes: ClothingEyesGlassesSecurity
+    id: IS_PdaInternalControlExecutor # IS14 Edit
+    ears: ClothingHeadsetAltSecurityRegular
+    pocket1: WeaponPistolMk58
+  storage:
+    back:
+    - Flash
+    - MagazinePistol
+
+- type: chameleonOutfit
+  id: InternalControlExecutorChameleonOutfit
+  job: InternalControlExecutor
+  hasMindShield: true
+  equipment:
+    head: ClothingHeadHatBeretSecurity
+    mask: ClothingMaskGasSecurity
+    neck: Dinkystar
+    gloves: ClothingHandsGlovesColorBlack

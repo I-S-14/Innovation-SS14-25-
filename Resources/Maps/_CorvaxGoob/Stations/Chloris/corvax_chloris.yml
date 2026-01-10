@@ -1,11 +1,11 @@
 meta:
   format: 7
   category: Map
-  engineVersion: 262.0.0
+  engineVersion: 264.0.0
   forkId: ""
   forkVersion: ""
-  time: 08/20/2025 09:47:36
-  entityCount: 51526
+  time: 10/25/2025 15:54:04
+  entityCount: 51525
 maps:
 - 1
 grids:
@@ -14411,6 +14411,11 @@ entities:
             11607: 126.43613,100.94663
     - type: OccluderTree
     - type: Shuttle
+      dampingModifiers:
+        Cruise: 0.0075
+        Dampen: 0.25
+        Anchor: 2
+        None: 0.25
       dampingModifier: 0.25
     - type: GridPathfinding
     - type: SpreaderGrid
@@ -18098,6 +18103,7 @@ entities:
     - type: NavMap
     - type: BecomesStation
       id: CorvaxChloris
+    - type: FTLDrive
   - uid: 4
     components:
     - type: MetaData
@@ -19334,70 +19340,6 @@ entities:
     - type: Transform
       pos: 18.53904,66.46434
       parent: 2
-- proto: ActionStartFishing
-  entities:
-  - uid: 161
-    mapInit: true
-    paused: true
-    components:
-    - type: Transform
-      parent: 160
-- proto: ActionToggleBlock
-  entities:
-  - uid: 163
-    mapInit: true
-    paused: true
-    components:
-    - type: Transform
-      parent: 162
-    - type: Action
-      container: 162
-      originalIconColor: '#FFFFFFFF'
-  - uid: 165
-    mapInit: true
-    paused: true
-    components:
-    - type: Transform
-      parent: 164
-    - type: Action
-      container: 164
-      originalIconColor: '#FFFFFFFF'
-  - uid: 167
-    mapInit: true
-    paused: true
-    components:
-    - type: Transform
-      parent: 166
-    - type: Action
-      container: 166
-      originalIconColor: '#FFFFFFFF'
-  - uid: 169
-    mapInit: true
-    paused: true
-    components:
-    - type: Transform
-      parent: 168
-    - type: Action
-      container: 168
-      originalIconColor: '#FFFFFFFF'
-  - uid: 171
-    mapInit: true
-    paused: true
-    components:
-    - type: Transform
-      parent: 170
-    - type: Action
-      container: 170
-      originalIconColor: '#FFFFFFFF'
-  - uid: 173
-    mapInit: true
-    paused: true
-    components:
-    - type: Transform
-      parent: 172
-    - type: Action
-      container: 172
-      originalIconColor: '#FFFFFFFF'
 - proto: AirAlarm
   entities:
   - uid: 174
@@ -25988,7 +25930,7 @@ entities:
       lastSignals:
         DoorStatus: True
     - type: Door
-      secondsUntilStateChange: -195520.36
+      secondsUntilStateChange: -195581.36
       state: Opening
     - type: Forensics
       residues: []
@@ -26825,7 +26767,7 @@ entities:
       pos: 25.5,132.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -200520.28
+      secondsUntilStateChange: -200581.28
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -27008,7 +26950,7 @@ entities:
       pos: 99.5,50.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -117811.52
+      secondsUntilStateChange: -117872.53
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -28416,7 +28358,7 @@ entities:
       pos: 14.5,132.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -188601.36
+      secondsUntilStateChange: -188662.36
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -114947,8 +114889,8 @@ entities:
           restitution: 0
           friction: 0.4
     - type: EntityStorage
-      open: True
       removedMasks: 20
+      open: True
     - type: PlaceableSurface
       isPlaceable: True
 - proto: ClosetJanitorFilled
@@ -115737,8 +115679,8 @@ entities:
         - 0
         - 0
         - 0
-      open: True
       removedMasks: 20
+      open: True
     - type: PlaceableSurface
       isPlaceable: True
   - uid: 17646
@@ -121734,8 +121676,8 @@ entities:
           restitution: 0
           friction: 0.4
     - type: EntityStorage
-      open: True
       removedMasks: 20
+      open: True
     - type: PlaceableSurface
       isPlaceable: True
 - proto: CrateEmergencyInflatablewall
@@ -121921,8 +121863,8 @@ entities:
           restitution: 0
           friction: 0.4
     - type: EntityStorage
-      open: True
       removedMasks: 20
+      open: True
     - type: PlaceableSurface
       isPlaceable: True
   - uid: 18529
@@ -121972,8 +121914,8 @@ entities:
           restitution: 0
           friction: 0.4
     - type: EntityStorage
-      open: True
       removedMasks: 20
+      open: True
     - type: PlaceableSurface
       isPlaceable: True
   - uid: 18534
@@ -122003,8 +121945,8 @@ entities:
           restitution: 0
           friction: 0.4
     - type: EntityStorage
-      open: True
       removedMasks: 20
+      open: True
     - type: PlaceableSurface
       isPlaceable: True
 - proto: CrateEngineeringAMEControl
@@ -122305,8 +122247,8 @@ entities:
           restitution: 0
           friction: 0.4
     - type: EntityStorage
-      open: True
       removedMasks: 20
+      open: True
     - type: PlaceableSurface
       isPlaceable: True
   - uid: 18563
@@ -122549,8 +122491,8 @@ entities:
           restitution: 0
           friction: 0.4
     - type: EntityStorage
-      open: True
       removedMasks: 20
+      open: True
     - type: PlaceableSurface
       isPlaceable: True
 - proto: CrateHydroponicsSeeds
@@ -122776,8 +122718,8 @@ entities:
           restitution: 0
           friction: 0.4
     - type: EntityStorage
-      open: True
       removedMasks: 20
+      open: True
     - type: PlaceableSurface
       isPlaceable: True
 - proto: CrateMedicalSecure
@@ -122826,8 +122768,8 @@ entities:
       pos: 96.5,141.5
       parent: 2
     - type: EntityStorage
-      open: True
       removedMasks: 28
+      open: True
     - type: Fixtures
       fixtures:
         fix1:
@@ -122906,8 +122848,8 @@ entities:
           restitution: 0
           friction: 0.4
     - type: EntityStorage
-      open: True
       removedMasks: 20
+      open: True
     - type: PlaceableSurface
       isPlaceable: True
 - proto: CratePrivateSecure
@@ -122980,8 +122922,8 @@ entities:
         - 0
         - 0
         - 0
-      open: True
       removedMasks: 20
+      open: True
     - type: PlaceableSurface
       isPlaceable: True
 - proto: CrateScience
@@ -123018,8 +122960,8 @@ entities:
           restitution: 0
           friction: 0.4
     - type: EntityStorage
-      open: True
       removedMasks: 20
+      open: True
     - type: PlaceableSurface
       isPlaceable: True
   - uid: 18616
@@ -123049,8 +122991,8 @@ entities:
           restitution: 0
           friction: 0.4
     - type: EntityStorage
-      open: True
       removedMasks: 20
+      open: True
     - type: PlaceableSurface
       isPlaceable: True
 - proto: CrateScienceSecure
@@ -123320,8 +123262,8 @@ entities:
           restitution: 0
           friction: 0.4
     - type: EntityStorage
-      open: True
       removedMasks: 20
+      open: True
     - type: PlaceableSurface
       isPlaceable: True
   - uid: 18643
@@ -123491,8 +123433,8 @@ entities:
         - 0
         - 0
         - 0
-      open: True
       removedMasks: 20
+      open: True
     - type: PlaceableSurface
       isPlaceable: True
   - uid: 18649
@@ -123522,8 +123464,8 @@ entities:
           restitution: 0
           friction: 0.4
     - type: EntityStorage
-      open: True
       removedMasks: 20
+      open: True
     - type: PlaceableSurface
       isPlaceable: True
   - uid: 18650
@@ -123585,8 +123527,8 @@ entities:
           restitution: 0
           friction: 0.4
     - type: EntityStorage
-      open: True
       removedMasks: 20
+      open: True
     - type: PlaceableSurface
       isPlaceable: True
   - uid: 18657
@@ -123631,8 +123573,8 @@ entities:
           restitution: 0
           friction: 0.4
     - type: EntityStorage
-      open: True
       removedMasks: 20
+      open: True
     - type: PlaceableSurface
       isPlaceable: True
   - uid: 18661
@@ -123672,8 +123614,8 @@ entities:
           restitution: 0
           friction: 0.4
     - type: EntityStorage
-      open: True
       removedMasks: 20
+      open: True
     - type: PlaceableSurface
       isPlaceable: True
   - uid: 18664
@@ -153050,14 +152992,6 @@ entities:
     - type: Transform
       pos: 96.71353,156.2413
       parent: 2
-    - type: FishingRod
-      throwLureActionEntity: 161
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 161
   - uid: 22851
     components:
     - type: Transform
@@ -249725,8 +249659,8 @@ entities:
           restitution: 0
           friction: 0.4
     - type: EntityStorage
-      open: True
       removedMasks: 20
+      open: True
     - type: PlaceableSurface
       isPlaceable: True
   - uid: 36153
@@ -250902,8 +250836,8 @@ entities:
         - 0
         - 0
         - 0
-      open: True
       removedMasks: 20
+      open: True
     - type: PlaceableSurface
       isPlaceable: True
   - uid: 36219
@@ -250959,8 +250893,8 @@ entities:
         - 0
         - 0
         - 0
-      open: True
       removedMasks: 20
+      open: True
     - type: PlaceableSurface
       isPlaceable: True
   - uid: 36220
@@ -252401,13 +252335,6 @@ entities:
     - type: Transform
       pos: 151.5,139.5
       parent: 2
-- proto: MagazineBoxAntiMateriel
-  entities:
-  - uid: 36380
-    components:
-    - type: Transform
-      pos: 146.5338,117.58666
-      parent: 2
 - proto: MagazineBoxLightRifleBig
   entities:
   - uid: 18672
@@ -252460,6 +252387,13 @@ entities:
     components:
     - type: Transform
       pos: 117.930725,154.69363
+      parent: 2
+- proto: MagazineLargeCaliber
+  entities:
+  - uid: 51057
+    components:
+    - type: Transform
+      pos: 146.78532,117.53066
       parent: 2
 - proto: MagazineLightRifleMaxim
   entities:
@@ -265219,7 +265153,7 @@ entities:
       lastSignals:
         DoorStatus: True
     - type: Door
-      secondsUntilStateChange: -183554.53
+      secondsUntilStateChange: -183615.53
       state: Opening
     - type: Airlock
       autoClose: False
@@ -283800,27 +283734,11 @@ entities:
     - type: Transform
       pos: 136.35056,111.45198
       parent: 2
-    - type: Blocking
-      blockingToggleActionEntity: 163
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 163
   - uid: 164
     components:
     - type: Transform
       pos: 136.66306,111.45198
       parent: 2
-    - type: Blocking
-      blockingToggleActionEntity: 165
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 165
 - proto: RiotLaserShield
   entities:
   - uid: 166
@@ -283828,27 +283746,11 @@ entities:
     - type: Transform
       pos: 136.33493,113.70198
       parent: 2
-    - type: Blocking
-      blockingToggleActionEntity: 167
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 167
   - uid: 168
     components:
     - type: Transform
       pos: 136.67868,113.73323
       parent: 2
-    - type: Blocking
-      blockingToggleActionEntity: 169
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 169
 - proto: RiotShield
   entities:
   - uid: 170
@@ -283856,27 +283758,11 @@ entities:
     - type: Transform
       pos: 136.6318,112.26448
       parent: 2
-    - type: Blocking
-      blockingToggleActionEntity: 171
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 171
   - uid: 172
     components:
     - type: Transform
       pos: 136.33493,112.23323
       parent: 2
-    - type: Blocking
-      blockingToggleActionEntity: 173
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 173
 - proto: RipleyRLeg
   entities:
   - uid: 40304
@@ -346974,8 +346860,6 @@ entities:
       pos: 61.5,183.5
       parent: 2
     - type: DeviceNetwork
-      configurators:
-      - invalid
       deviceLists:
       - 51038
   - uid: 51029
@@ -346984,8 +346868,6 @@ entities:
       pos: 52.5,180.5
       parent: 2
     - type: DeviceNetwork
-      configurators:
-      - invalid
       deviceLists:
       - 51038
   - uid: 51030
@@ -347002,8 +346884,6 @@ entities:
       pos: 69.5,178.5
       parent: 2
     - type: DeviceNetwork
-      configurators:
-      - invalid
       deviceLists:
       - 51038
   - uid: 51032
@@ -347270,13 +347150,6 @@ entities:
     - type: Transform
       pos: 141.47546,112.46353
       parent: 2
-- proto: WeaponLauncherHydra
-  entities:
-  - uid: 51057
-    components:
-    - type: Transform
-      pos: 78.49922,57.620148
-      parent: 2
 - proto: WeaponMakeshiftLaser
   entities:
   - uid: 43920
@@ -347378,12 +347251,12 @@ entities:
     - BallisticAmmoProvider
     - Gun
     - AmmoCounter
-- proto: WeaponSniperHristov
+- proto: WeaponSniperUncleStyopa
   entities:
-  - uid: 51068
+  - uid: 36380
     components:
     - type: Transform
-      pos: 146.55359,117.57558
+      pos: 146.54738,117.60499
       parent: 2
 - proto: WeaponTemperatureGun
   entities:
@@ -347392,16 +347265,6 @@ entities:
     - type: Transform
       pos: 143.54213,109.448814
       parent: 2
-    - type: Item
-      heldPrefix: cooling
-    - type: ProjectileBatteryAmmoProvider
-      proto: BulletTemperatureCold
-    - type: EnergyGun
-      currentFireMode:
-        state: cooling
-        name: cooling
-        fireCost: 100
-        proto: BulletTemperatureCold
 - proto: WeaponTurretSyndicateBroken
   entities:
   - uid: 51070
@@ -348811,26 +348674,6 @@ entities:
     - type: Transform
       pos: 91.5,53.5
       parent: 2
-- proto: WindowTintedDirectional
-  entities:
-  - uid: 51302
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 128.5,115.5
-      parent: 2
-  - uid: 51303
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 128.5,114.5
-      parent: 2
-  - uid: 51304
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 128.5,116.5
-      parent: 2
 - proto: WindowReinforcedDirectional
   entities:
   - uid: 51305
@@ -349660,6 +349503,26 @@ entities:
     - type: Transform
       rot: -1.5707963267948966 rad
       pos: 94.5,162.5
+      parent: 2
+- proto: WindowTintedDirectional
+  entities:
+  - uid: 51302
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 128.5,115.5
+      parent: 2
+  - uid: 51303
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 128.5,114.5
+      parent: 2
+  - uid: 51304
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 128.5,116.5
       parent: 2
 - proto: Wirecutter
   entities:

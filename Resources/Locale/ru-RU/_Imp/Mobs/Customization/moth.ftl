@@ -97,7 +97,9 @@ marking-LegTwistingLeftMoth-twisting = Крученый шрам (Левая н�
 
 # UndergarmentBottom
 
+
 # UndergarmentTop
+
 
 # LFoot
 
@@ -129,7 +131,9 @@ marking-HandTwistingRightMoth-twisting = Крученый шрам (Правая
 
 # FacialHair
 
+
 # Hair
+
 
 # HeadSide
 
@@ -199,5 +203,5 @@ marking-WingsDragonfly = Крылья (Стрекоза)
 marking-WingsDragonfly-dragonfly1 = Шея
 marking-WingsDragonfly-dragonfly2 = Крылья
 marking-WingsDragonfly-dragonfly3 = Хвост
-marking-WingsLanterfly = Крылья (Фонарь)
-marking-WingsLanterfly-lanternfly = Крылья
+marking-WingsLanternfly = Крылья (Фонарь)
+marking-WingsLanternfly-lanternfly = Крылья

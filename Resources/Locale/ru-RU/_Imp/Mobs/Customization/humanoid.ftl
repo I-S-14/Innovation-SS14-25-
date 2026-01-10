@@ -37,7 +37,7 @@ marking-TattooCode3-code3 = Татуировка
 marking-TattooDragon = Татуировка (Дракон)
 marking-TattooDragon-dragontattoo1 = Тело
 marking-TattooDragon-dragontattoo2 = Акценты
-marking-TattooNanotrasenChest-nanotrasen = Татуировка на груди (Nanotrasen)
+marking-TattooNanotrasenChest-nanotrasen = Татуировка на груди (NanoTrasen)
 marking-ChestStar = Звёздный шрам
 marking-ChestStar-star = Звёздный шрам
 marking-TorsoIncision = Разрез на туловище
@@ -76,6 +76,7 @@ marking-HeadSeptum = Пирсинг в перегородке носа
 marking-HeadSeptum-septum = Пирсинг в перегородке носа
 
 # Eyes
+
 
 # RArm
 
@@ -219,6 +220,7 @@ marking-HumanHairSusie = Злая Девчонка (Челка)
 marking-HumanHairSusieNoBangs = Злая Девчонка
 
 # Tail  
+
 
 # RArmExtension  
 

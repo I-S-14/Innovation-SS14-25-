@@ -22,15 +22,15 @@
     - sprite: _CorvaxGoob/Markers/jobs.rsi
       state: surgeon
 
-- type: entity
-  id: SpawnPointWardenHelper
-  parent: SpawnPointJobBase
-  name: warden assistant
-  components:
-  - type: SpawnPoint
-    job_id: WardenHelper
-  - type: Sprite
-    layers:
-      - state: green
-      - sprite: _CorvaxGoob/Markers/jobs.rsi
-        state: wardenhelper
+# - type: entity  # IS14 Edit
+  # id: SpawnPointWardenHelper
+  # parent: SpawnPointJobBase
+  # name: warden assistant
+  # components:
+  # - type: SpawnPoint
+    # job_id: WardenHelper
+  # - type: Sprite
+    # layers:
+      # - state: green
+      # - sprite: _CorvaxGoob/Markers/jobs.rsi
+        # state: wardenhelper

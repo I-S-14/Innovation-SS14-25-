@@ -1,45 +1,61 @@
-- type: job
-  id: WardenHelper
-  name: job-name-wardenHelper
-  description: job-description-wardenHelper
-  playTimeTracker: JobWardenHelper
-  requirements:
-    - !type:DepartmentTimeRequirement
-      department: Security
-      time: 72000 #20 hrs
-  startingGear: WardenHelperGear
-  icon: "JobIconWardenHelper"
-  supervisors: job-supervisors-hos
-  weight: 5
-  canBeAntag: false
-  access:
-  - Security
-  - Brig
-  - Armory
-  - Maintenance
-  - Service
-  - External
-  - Detective
-  - Cryogenics
-  special:
-  - !type:AddImplantSpecial
-    implants: [ MindShieldImplant ]
-  - !type:AddComponentSpecial
-    components:
-      - type: Skills # Corvax-Next-Skills
-        skills:
-        - Shooting
+# IS14 Edit: WardenHelper job disabled (commented out)
+# - type: job
+  # id: WardenHelper
+  # name: job-name-wardenHelper
+  # description: job-description-wardenHelper
+  # playTimeTracker: JobWardenHelper
+  # requirements:
+    # - !type:DepartmentTimeRequirement
+      # department: Security
+      # time: 72000 #20 hrs
+  # startingGear: WardenHelperGear
+  # icon: "JobIconWardenHelper"
+  # supervisors: job-supervisors-hos
+  # weight: 5
+  # canBeAntag: false
+  # access:
+  # - Security
+  # - Brig
+  # - Armory
+  # - Maintenance
+  # - Service
+  # - External
+  # - Detective
+  # - Cryogenics
+  # special:
+  # - !type:AddImplantSpecial
+    # implants: [ MindShieldImplant ]
+  # - !type:AddComponentSpecial
+    # components:
+      # - type: Skills # Corvax-Next-Skills
+        # skills:
+        # - Shooting
 
-- type: startingGear
-  id: WardenHelperGear
-  equipment:
-    head: ClothingHeadHatWardenHelper
-    eyes: ClothingEyesGlassesSecurity
-    id: WardenHelperPDA
-    ears: ClothingHeadsetSecurity
-    pocket1: WeaponPistolMk58
-    pocket2: BookSpaceLaw
-  storage:
-    back:
-    - Flash
-    - MagazinePistol
+# - type: startingGear
+  # id: WardenHelperGear
+  # equipment:
+    # head: ClothingHeadHatWardenHelper
+    # eyes: ClothingEyesGlassesSecurity
+    # id: WardenHelperPDA
+    # ears: ClothingHeadsetSecurity
+    # pocket1: WeaponPistolMk58
+    # pocket2: BookSpaceLaw
+  # storage:
+    # back:
+    # - Flash
+    # - MagazinePistol
+
+# - type: chameleonOutfit
+  # id: WardenHelperChameleonOutfit
+  # job: WardenHelper
+  # equipment:
+    # head: ClothingHeadHatWardenHelper
+    # eyes: ClothingEyesGlassesSecurity
+    # mask: ClothingMaskGasSecurity
+    # ears: ClothingHeadsetSecurity
+    # outerClothing: ClothingOuterCoatWarden
+    # gloves: ClothingHandsGlovesCombat
+    # jumpsuit: ClothingUniformJumpsuitWarden
+    # id: WardenHelperPDA
+    # back: ClothingBackpackSecurity
+    # shoes: ClothingShoesBootsJack

@@ -1,10 +1,4 @@
 #!/usr/bin/env python3
-# SPDX-FileCopyrightText: 2024 Pieter-Jan Briers <pieterjan.briers+git@gmail.com>
-# SPDX-FileCopyrightText: 2024 Piras314 <p1r4s@proton.me>
-# SPDX-FileCopyrightText: 2025 Aiden <28298836+Aidenkrz@users.noreply.github.com>
-# SPDX-FileCopyrightText: 2025 Aiden <aiden@djkraz.com>
-#
-# SPDX-License-Identifier: AGPL-3.0-or-later
 
 import argparse
 import requests
@@ -14,7 +8,6 @@ from typing import Iterable
 
 PUBLISH_TOKEN = os.environ["PUBLISH_TOKEN"]
 VERSION = os.environ["GITHUB_SHA"]
-FORK_ID = os.environ['FORK_ID']
 
 RELEASE_DIR = "release"
 
@@ -22,7 +15,8 @@ RELEASE_DIR = "release"
 # CONFIGURATION PARAMETERS
 # Forks should change these to publish to their own infrastructure.
 #
-ROBUST_CDN_URL = "https://cdn.station14.ru/"
+ROBUST_CDN_URL = "http://185.65.200.114/cdn/"
+FORK_ID = "innovation-station"
 
 def main():
     parser = argparse.ArgumentParser()

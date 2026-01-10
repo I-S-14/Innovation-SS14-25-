@@ -1,0 +1,31 @@
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconCommandSecretary
+  icon:
+    sprite: /Textures/_IS14/Interface/Misc/job_icons.rsi
+    state: CommandSecretary
+  jobName: job-name-command-secretary
+
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconSeniorExpeditioner
+  icon:
+    sprite: /Textures/_IS14/Interface/Misc/job_icons.rsi
+    state: SeniorExpeditioner
+  jobName: job-name-senior-expeditioner
+
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconChurchServant
+  icon:
+    sprite: /Textures/_IS14/Interface/Misc/job_icons.rsi
+    state: ChurchServant
+  jobName: job-name-church-servant
+
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconInternalControlExecutor
+  icon:
+    sprite: /Textures/_IS14/Interface/Misc/job_icons.rsi
+    state: InternalControlExecutor
+  jobName: job-name-internal-control-executor

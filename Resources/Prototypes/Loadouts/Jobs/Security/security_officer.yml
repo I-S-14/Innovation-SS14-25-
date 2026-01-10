@@ -168,21 +168,22 @@
     jumpsuit: ClothingUniformSecurityTrooper
 
 
-- type: loadout
-  id: SeniorOfficerJumpsuit
-  effects:
-  - !type:GroupLoadoutEffect
-    proto: SeniorOfficer
-  equipment:
-    jumpsuit: ClothingUniformJumpsuitSeniorOfficer
-
-- type: loadout
-  id: SeniorOfficerJumpskirt
-  effects:
-  - !type:GroupLoadoutEffect
-    proto: SeniorOfficer
-  equipment:
-    jumpsuit: ClothingUniformJumpskirtSeniorOfficer
+# IS14 Edit - Senior loadout'ы закомментированы
+#- type: loadout
+#  id: SeniorOfficerJumpsuit
+#  effects:
+#  - !type:GroupLoadoutEffect
+#    proto: SeniorOfficer
+#  equipment:
+#    jumpsuit: ClothingUniformJumpsuitSeniorOfficer
+#
+#- type: loadout
+#  id: SeniorOfficerJumpskirt
+#  effects:
+#  - !type:GroupLoadoutEffect
+#    proto: SeniorOfficer
+#  equipment:
+#    jumpsuit: ClothingUniformJumpskirtSeniorOfficer
 
 # Back
 - type: loadout
@@ -249,13 +250,14 @@
   equipment:
     id: SecurityPDA
 
-- type: loadout
-  id: SeniorOfficerPDA
-  effects:
-  - !type:GroupLoadoutEffect
-    proto: SeniorOfficer
-  equipment:
-    id: SeniorOfficerPDA
+# IS14 Edit - Senior loadout закомментирован
+#- type: loadout
+#  id: SeniorOfficerPDA
+#  effects:
+#  - !type:GroupLoadoutEffect
+#    proto: SeniorOfficer
+#  equipment:
+#    id: SeniorOfficerPDA
 
 # Misc
 - type: loadout

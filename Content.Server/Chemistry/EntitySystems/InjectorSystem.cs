@@ -23,7 +23,6 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-
 using Content.Shared._DV.Chemistry.Components; // DeltaV
 using Content.Server.Body.Components;
 using Content.Server.Body.Systems;
@@ -31,6 +30,7 @@ using Content.Shared.Chemistry;
 using Content.Shared.Chemistry.Components;
 using Content.Shared.Chemistry.Components.SolutionManager;
 using Content.Shared.Chemistry.EntitySystems;
+using Content.Shared.Body.Components;
 using Content.Shared.Database;
 using Content.Shared.DoAfter;
 using Content.Goobstation.Maths.FixedPoint;
@@ -42,6 +42,9 @@ using Content.Shared.Stacks;
 using Content.Shared.Nutrition.EntitySystems;
 using Content.Shared._CorvaxGoob.Skills;
 using Content.Server._CorvaxGoob.Skills;
+using Robust.Shared.Timing; // Goobstation
+using System.Linq; // Goobstation
+using Content.Shared.Chemistry.Reagent; // Goobstation
 
 namespace Content.Server.Chemistry.EntitySystems;
 
@@ -53,6 +56,7 @@ public sealed class InjectorSystem : SharedInjectorSystem
     [Dependency] private readonly SkillsSystem _skills = default!; // CorvaxGoob-Skills
 
     private const float DelayModifierWithoutSkill = 5; // CorvaxGoob-Skills
+    [Dependency] private readonly IGameTiming _timing = default!; // Goobstation
 
     public override void Initialize()
     {
@@ -213,12 +217,12 @@ public sealed class InjectorSystem : SharedInjectorSystem
             if (injector.Comp.ToggleState == InjectorToggleMode.Inject)
             {
                 AdminLogger.Add(LogType.ForceFeed,
-                    $"{EntityManager.ToPrettyString(user):user} is attempting to inject {EntityManager.ToPrettyString(target):target} with a solution {SharedSolutionContainerSystem.ToPrettyString(solution):solution}");
+                    $"{ToPrettyString(user):user} is attempting to inject {ToPrettyString(target):target} with a solution {SharedSolutionContainerSystem.ToPrettyString(solution):solution}");
             }
             else
             {
                 AdminLogger.Add(LogType.ForceFeed,
-                    $"{EntityManager.ToPrettyString(user):user} is attempting to draw {injector.Comp.TransferAmount.ToString()} units from {EntityManager.ToPrettyString(target):target}");
+                    $"{ToPrettyString(user):user} is attempting to draw {injector.Comp.TransferAmount.ToString()} units from {ToPrettyString(target):target}");
             }
         }
         else
@@ -229,12 +233,12 @@ public sealed class InjectorSystem : SharedInjectorSystem
             if (injector.Comp.ToggleState == InjectorToggleMode.Inject)
             {
                 AdminLogger.Add(LogType.Ingestion,
-                    $"{EntityManager.ToPrettyString(user):user} is attempting to inject themselves with a solution {SharedSolutionContainerSystem.ToPrettyString(solution):solution}.");
+                    $"{ToPrettyString(user):user} is attempting to inject themselves with a solution {SharedSolutionContainerSystem.ToPrettyString(solution):solution}.");
             }
             else
             {
                 AdminLogger.Add(LogType.ForceFeed,
-                    $"{EntityManager.ToPrettyString(user):user} is attempting to draw {injector.Comp.TransferAmount.ToString()} units from themselves.");
+                    $"{ToPrettyString(user):user} is attempting to draw {injector.Comp.TransferAmount.ToString()} units from themselves.");
             }
         }
 
@@ -279,7 +283,7 @@ public sealed class InjectorSystem : SharedInjectorSystem
         // Move units from attackSolution to targetSolution
         var removedSolution = SolutionContainers.SplitSolution(target.Comp.ChemicalSolution.Value, realTransferAmount);
 
-        _blood.TryAddToChemicals(target, removedSolution, target.Comp);
+        _blood.TryAddToChemicals(target.AsNullable(), removedSolution);
 
         _reactiveSystem.DoEntityReaction(target, removedSolution, ReactionMethod.Injection);
 
@@ -447,6 +451,14 @@ public sealed class InjectorSystem : SharedInjectorSystem
                 ref target.Comp.BloodSolution))
         {
             var bloodTemp = SolutionContainers.SplitSolution(target.Comp.BloodSolution.Value, drawAmount);
+            // Goobstation start
+            // On blood draw, freshness will almost always be at it's best
+            foreach (var dna in bloodTemp
+                .SelectMany(r => r.Reagent.EnsureReagentData().OfType<DnaData>()))
+            {
+                dna.Freshness = _timing.CurTime;
+            }
+            // Goobstation end
             SolutionContainers.TryAddSolution(injectorSolution, bloodTemp);
         }
 

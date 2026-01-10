@@ -12,6 +12,7 @@
 
 using System.Linq;
 using Content.Corvax.Interfaces.Shared;
+using Content.Shared._CorvaxGoob;
 using Content.Shared.Humanoid;
 using Content.Shared.Humanoid.Markings;
 using Content.Shared.Humanoid.Prototypes;
@@ -244,6 +245,9 @@ public sealed partial class MarkingPicker : Control
             }
 
             var item = CMarkingsUnused.AddItem($"{GetMarkingName(marking)}", _sprite.Frame0(marking.Sprites[0]));
+            if (marking.SponsorOnly) // CorvaxGoob-Start
+                item.Text += SponsorUtils.GetSponsorOnlySuffix();
+            // Corvax-Sponsors-End
             item.Metadata = marking;
             // CorvaxGoob-Sponsors-Start
             if (marking.SponsorOnly && _sponsorsManager != null)
@@ -435,6 +439,7 @@ public sealed partial class MarkingPicker : Control
             CMarkingColors.AddChild(colorContainer);
 
             ColorSelectorSliders colorSelector = new ColorSelectorSliders();
+            colorSelector.SelectorType = ColorSelectorSliders.ColorSelectorType.Hsv; // defaults color selector to HSV
             colorSliders.Add(colorSelector);
 
             colorContainer.AddChild(new Label { Text = $"{stateNames[i]} color:" });

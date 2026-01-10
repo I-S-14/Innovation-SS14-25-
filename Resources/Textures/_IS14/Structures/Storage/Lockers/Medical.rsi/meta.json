@@ -1,0 +1,65 @@
+{
+    "version": 1,
+    "license": "All Rights Reserved",
+    "copyright": "Made by Melvilla (discord)",
+    "size": {
+        "x": 32,
+        "y": 32
+    },
+    "states": [
+        {
+            "name": "v1_base"
+        },
+        {
+            "name": "v1_opened"
+        },
+        {
+            "name": "v1_closed"
+        },
+        {
+            "name": "v2_base"
+        },
+        {
+            "name": "v2_opened"
+        },
+        {
+            "name": "v2_closed"
+        },
+        {
+            "name": "psycho_base"
+        },
+        {
+            "name": "psycho_opened"
+        },
+        {
+            "name": "psycho_closed"
+        },
+        {
+            "name": "feld_base"
+        },
+        {
+            "name": "feld_opened"
+        },
+        {
+            "name": "feld_closed"
+        },
+        {
+            "name": "farm_base"
+        },
+        {
+            "name": "farm_opened"
+        },
+        {
+            "name": "farm_closed"
+        },
+        {
+            "name": "welded"
+        },
+        {
+            "name": "locked"
+        },
+        {
+            "name": "unlocked"
+        }
+    ]
+}

@@ -1,0 +1,51 @@
+# SPDX-FileCopyrightText: 2025 IS14 Edit
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# IS14 Edit - Новая роль: Старший экспедитор
+- type: job
+  id: SeniorExpeditioner
+  name: job-name-senior-expeditioner
+  description: job-description-senior-expeditioner
+  playTimeTracker: JobSeniorExpeditioner
+  requirements:
+    - !type:DepartmentTimeRequirement
+      department: Cargo
+      time: 18000 # 5 hrs
+  icon: "JobIconSeniorExpeditioner" # IS14 Edit
+  startingGear: SeniorExpeditionerGear
+  supervisors: job-supervisors-qm
+  access:
+  - Cargo
+  - Salvage
+  - Maintenance
+  - External
+  special:
+  - !type:AddComponentSpecial
+    components:
+    - type: Skills # CorvaxGoob-Skills
+      skills:
+      - ShuttleControl
+      - Shooting
+      - Butchering
+
+- type: startingGear
+  id: SeniorExpeditionerGear
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitSalvageSpecialist
+    id: IS_PdaSeniorExpeditionist # IS14 Edit
+    ears: ClothingHeadsetCargo
+  storage:
+    back:
+    - MiningVoucher
+
+- type: chameleonOutfit
+  id: SeniorExpeditionerChameleonOutfit
+  job: SeniorExpeditioner
+  equipment:
+    head: ClothingHeadHatCargosoft
+    eyes: ClothingEyesGlassesCheapSunglasses
+    mask: ClothingMaskGasExplorer
+    outerClothing: ClothingOuterWinterMiner
+    neck: ClothingNeckScarfStripedBrown
+    gloves: ClothingHandsGlovesColorBlack

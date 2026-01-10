@@ -1,5 +1,6 @@
 department-Cargo = Отдел снабжения
 department-Civilian = Сервисный отдел
+department-Legal = Юридический отдел
 department-Command = Командование
 department-CentralCommand = Центральное командование
 department-Engineering = Инженерный отдел

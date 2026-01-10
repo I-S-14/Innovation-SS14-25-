@@ -1,0 +1,44 @@
+# SPDX-FileCopyrightText: 2025 IS14 Edit
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# IS14 Edit - Новая роль: Церковный служитель
+- type: job
+  id: ChurchServant
+  name: job-name-church-servant
+  description: job-description-church-servant
+  playTimeTracker: JobChurchServant
+  requirements:
+    - !type:OverallPlaytimeRequirement
+      time: 9000 # 2.5 hours
+  startingGear: ChurchServantGear
+  icon: "JobIconChurchServant" # IS14 Edit
+  supervisors: job-supervisors-hop
+  access:
+  - Chapel
+  - Maintenance
+  special:
+  - !type:AddComponentSpecial
+    components:
+    - type: BibleUser # Lets them heal with bibles
+
+- type: startingGear
+  id: ChurchServantGear
+  equipment:
+    shoes: ClothingShoesColorBlack
+    id: IS_PdachaplainAssistant # IS14 Edit
+    ears: ClothingHeadsetService
+  storage:
+    back:
+    - ChaplainUndeterminedBible
+
+- type: chameleonOutfit
+  id: ChurchServantChameleonOutfit
+  job: ChurchServant
+  equipment:
+    head: ClothingHeadHatPlaguedoctor
+    eyes: ClothingEyesGlasses
+    mask: ClothingMaskPlague
+    neck: ClothingNeckStoleChaplain
+    outerClothing: ClothingOuterPlagueSuit
+    gloves: ClothingHandsGlovesColorBlack

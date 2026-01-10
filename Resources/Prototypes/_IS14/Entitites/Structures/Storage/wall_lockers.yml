@@ -1,0 +1,204 @@
+- type: entity
+  id: ClosetWallHoS
+  parent: BaseWallLocker
+  name: настенный шкафчик Начальника Отдела Милиции
+  description: Что же хранит в себе этот настенный шкафчик? Ведомо только Начальству - половина Начальству Министерства Внутренних дел, вторая людям ЦРБ.
+  components:
+  - type: Sprite
+    layers:
+    - state: hos_generic
+      sprite: _IS14/Structures/Storage/wall_locker.rsi
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: hos_closed
+      sprite: _IS14/Structures/Storage/wall_locker.rsi
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: welded
+      sprite: Structures/Storage/wall_locker.rsi
+      map: ["enum.WeldableLayers.BaseWelded"]
+      visible: false
+    - state: locked
+      sprite: Structures/Storage/wall_locker.rsi
+      map: ["enum.LockVisualLayers.Lock"]
+      shader: unshaded
+  - type: EntityStorageVisuals
+    stateBaseClosed: hos_generic
+    stateDoorOpen: hos_open
+    stateDoorClosed: hos_closed
+  - type: AccessReader
+    access: [["HeadOfSecurity"]]
+
+- type: entity
+  id: ClosetWallHoP
+  parent: BaseWallLocker
+  name: настенный шкафчик Начальника Отдела Кадров
+  description: "Стоишь, смотришь и думаешь: \"что же в нём?\" - документы, запасные ручки, листы А4, чего только нет в настенном шкафчике Начальника Отдела Кадров."
+  components:
+  - type: Sprite
+    layers:
+    - state: hop_generic
+      sprite: _IS14/Structures/Storage/wall_locker.rsi
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: hop_closed
+      sprite: _IS14/Structures/Storage/wall_locker.rsi
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: welded
+      sprite: Structures/Storage/wall_locker.rsi
+      map: ["enum.WeldableLayers.BaseWelded"]
+      visible: false
+    - state: locked
+      sprite: Structures/Storage/wall_locker.rsi
+      map: ["enum.LockVisualLayers.Lock"]
+      shader: unshaded
+  - type: EntityStorageVisuals
+    stateBaseClosed: hop_generic
+    stateDoorOpen: hop_open
+    stateDoorClosed: hop_closed
+  - type: AccessReader
+    access: [["HeadOfPersonnel"]]
+
+- type: entity
+  id: ClosetWallCE
+  parent: BaseWallLocker
+  name: настенный шкафчик Старшего Инженера
+  description: Смотришь, и сразу видно - ручная работа. Ну а если открыть, то можно надеяться на сам сварочный аппарат, которым тот был изготовлен.
+  components:
+  - type: Sprite
+    layers:
+    - state: ing_generic
+      sprite: _IS14/Structures/Storage/wall_locker.rsi
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: ing_closed
+      sprite: _IS14/Structures/Storage/wall_locker.rsi
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: welded
+      sprite: Structures/Storage/wall_locker.rsi
+      map: ["enum.WeldableLayers.BaseWelded"]
+      visible: false
+    - state: locked
+      sprite: Structures/Storage/wall_locker.rsi
+      map: ["enum.LockVisualLayers.Lock"]
+      shader: unshaded
+  - type: EntityStorageVisuals
+    stateBaseClosed: ing_generic
+    stateDoorOpen: ing_open
+    stateDoorClosed: ing_closed
+  - type: AccessReader
+    access: [["ChiefEngineer"]]
+
+- type: entity
+  id: ClosetWallCMO
+  parent: BaseWallLocker
+  name: настенный шкафчик Главного Врача
+  description: Стерильно-чистый, пахнущий медицинским спиртом, попробуйте во время выполнения долга не испортить его.
+  components:
+  - type: Sprite
+    layers:
+    - state: med_generic
+      sprite: _IS14/Structures/Storage/wall_locker.rsi
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: med_closed
+      sprite: _IS14/Structures/Storage/wall_locker.rsi
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: welded
+      sprite: Structures/Storage/wall_locker.rsi
+      map: ["enum.WeldableLayers.BaseWelded"]
+      visible: false
+    - state: locked
+      sprite: Structures/Storage/wall_locker.rsi
+      map: ["enum.LockVisualLayers.Lock"]
+      shader: unshaded
+  - type: EntityStorageVisuals
+    stateBaseClosed: med_generic
+    stateDoorOpen: med_open
+    stateDoorClosed: med_closed
+  - type: AccessReader
+    access: [["ChiefMedicalOfficer"]]
+
+- type: entity
+  id: ClosetWallRD
+  parent: BaseWallLocker
+  name: настенный шкафчик Главы НИЦ
+  description: Что только не может появиться в шкафчике Главы НИЦ, иногда передовые разработки, иногда бутерброд, с сыром.
+  components:
+  - type: Sprite
+    layers:
+    - state: scientist_generic
+      sprite: _IS14/Structures/Storage/wall_locker.rsi
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: scientist_closed
+      sprite: _IS14/Structures/Storage/wall_locker.rsi
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: welded
+      sprite: Structures/Storage/wall_locker.rsi
+      map: ["enum.WeldableLayers.BaseWelded"]
+      visible: false
+    - state: locked
+      sprite: Structures/Storage/wall_locker.rsi
+      map: ["enum.LockVisualLayers.Lock"]
+      shader: unshaded
+  - type: EntityStorageVisuals
+    stateBaseClosed: scientist_generic
+    stateDoorOpen: scientist_open
+    stateDoorClosed: scientist_closed
+  - type: AccessReader
+    access: [["ResearchDirector"]]
+
+- type: entity
+  id: ClosetWallQM
+  parent: BaseWallLocker
+  name: настенный шкафчик Начальника экспедиционно-снабженческого отдела
+  description: Не будь мы так уверены в лояльности Начальника экспедиционно-снабженческого отдела, сказали бы что он хранит там контрабанду и советские кредиты - а нет, всё чинно, он же тоже чинновник.
+  components:
+  - type: Sprite
+    layers:
+    - state: supply_generic
+      sprite: _IS14/Structures/Storage/wall_locker.rsi
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: supply_closed
+      sprite: _IS14/Structures/Storage/wall_locker.rsi
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: welded
+      sprite: Structures/Storage/wall_locker.rsi
+      map: ["enum.WeldableLayers.BaseWelded"]
+      visible: false
+    - state: locked
+      sprite: Structures/Storage/wall_locker.rsi
+      map: ["enum.LockVisualLayers.Lock"]
+      shader: unshaded
+  - type: EntityStorageVisuals
+    stateBaseClosed: supply_generic
+    stateDoorOpen: supply_open
+    stateDoorClosed: supply_closed
+  - type: AccessReader
+    access: [["Quartermaster"]]
+
+- type: entity
+  id: ClosetWallCaptain
+  parent: BaseWallLocker
+  name: настенный шкафчик Капитана
+  description: Ухоженный, налощенный, блестит под светом комнатной лампы красный настенный шкафчик Капитана.
+  components:
+  - type: Sprite
+    layers:
+    - state: capitan_generic
+      sprite: _IS14/Structures/Storage/wall_locker.rsi
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: capitan_closed
+      sprite: _IS14/Structures/Storage/wall_locker.rsi
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: welded
+      sprite: Structures/Storage/wall_locker.rsi
+      map: ["enum.WeldableLayers.BaseWelded"]
+      visible: false
+    - state: locked
+      sprite: Structures/Storage/wall_locker.rsi
+      map: ["enum.LockVisualLayers.Lock"]
+      shader: unshaded
+  - type: EntityStorageVisuals
+    stateBaseClosed: capitan_generic
+    stateDoorOpen: capitan_open
+    stateDoorClosed: capitan_closed
+  - type: AccessReader
+    access: [["Captain"]]
+
+

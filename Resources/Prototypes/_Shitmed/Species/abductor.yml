@@ -7,7 +7,7 @@
 - type: species
   id: Abductor
   name: species-name-abductor
-  roundStart: false
+  roundStart: true
   prototype: MobAbductor
   sprites: MobAbductorSprites
   markingLimits: MobHumanMarkingLimits

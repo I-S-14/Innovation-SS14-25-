@@ -110,6 +110,7 @@
             NanotrasenRepresentative: [ 1, 1 ]
             BlueshieldOfficer: [ 1, 1 ]
             HeadOfPersonnel: [ 1, 1 ]
+            CommandSecretary: [ 1, 1 ] # IS14 Edit
             Bartender: [ 2, 2 ]
             Botanist: [ 3, 3 ]
             Chef: [ 2, 2 ]
@@ -118,11 +119,13 @@
             Librarian: [ 1, 1 ]
             Reporter: [ 1, 1 ]
             ServiceWorker: [ 2, 2 ]
+            ChurchServant: [ 1, 1 ] # IS14 Edit
             #engineering
             ChiefEngineer: [ 1, 1 ]
             AtmosphericTechnician: [ 3, 3 ]
             StationEngineer: [ 5, 5 ]
             TechnicalAssistant: [ 4, 4 ]
+            SeniorEngineer: [ 1, 1 ] # IS14 Edit
             #medical
             ChiefMedicalOfficer: [ 1, 1 ]
             Chemist: [ 2, 2 ]
@@ -130,10 +133,12 @@
             Paramedic: [ 1, 1 ]
             MedicalIntern: [ 4, 4 ]
             Psychologist: [ 1, 1 ]
+            SeniorPhysician: [ 1, 1 ] # IS14 Edit
             #science
             ResearchDirector: [ 1, 1 ]
             Scientist: [ 5, 5 ]
             ResearchAssistant: [ 4, 4 ]
+            SeniorResearcher: [ 1, 1 ] # IS14 Edit
             #security
             HeadOfSecurity: [ 1, 1 ]
             Warden: [ 1, 1 ]
@@ -142,10 +147,13 @@
             SecurityCadet: [ 4, 4 ]
             Lawyer: [ 2, 2 ]
             Brigmedic: [ 1, 1 ]
+            InternalControlExecutor: [ 1, 1 ] # IS14 Edit
+            SeniorOfficer: [ 1, 1 ] # IS14 Edit
             #supply
             Quartermaster: [ 1, 1 ]
             SalvageSpecialist: [ 3, 3 ]
             CargoTechnician: [ 3, 3 ]
+            SeniorExpeditioner: [ 1, 1 ] # IS14 Edit
             #civilian
             Passenger: [ -1, -1 ]
             Clown: [ 1, 1 ]

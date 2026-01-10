@@ -1,0 +1,140 @@
+{
+    "version": 1,
+    "license": "All Rights Reserved",
+    "copyright": "Made by Melvilla (discord)",
+    "size": {
+        "x": 8,
+        "y": 8
+    },
+    "states": [
+        {
+            "name": "AtmosphericTechnician"
+        },
+        {
+            "name": "BlueshieldOfficer"
+        },
+        {
+            "name": "Boxer"
+        },
+        {
+            "name": "Brigmedic"
+        },
+        {
+            "name": "Captain"
+        },
+        {
+            "name": "CargoTechnician"
+        },
+        {
+            "name": "CentralCommandRepOfficial"
+        },
+        {
+            "name": "CentralCommandOfficerOfficial"
+        },
+        {
+            "name": "CentralCommandCommanderOfficial"
+        },
+        {
+            "name": "Chaplain"
+        },
+        {
+            "name": "Chemist"
+        },
+        {
+            "name": "ChiefEngineer"
+        },
+        {
+            "name": "ChiefMedicalOfficer"
+        },
+        {
+            "name": "CommandSecretary"
+        },
+        {
+            "name": "Detective"
+        },
+        {
+            "name": "HeadOfPersonnel"
+        },
+        {
+            "name": "HeadOfSecurity"
+        },
+        {
+            "name": "Lawyer"
+        },
+        {
+            "name": "MedicalDoctor"
+        },
+        {
+            "name": "MedicalIntern"
+        },
+        {
+            "name": "NanotrasenRepresentative"
+        },
+        {
+            "name": "Paramedic"
+        },
+        {
+            "name": "Pilot"
+        },
+        {
+            "name": "Psychologist"
+        },
+        {
+            "name": "QuarterMaster"
+        },
+        {
+            "name": "ResearchAssistant"
+        },
+        {
+            "name": "ResearchDirector"
+        },
+        {
+            "name": "Roboticist"
+        },
+        {
+            "name": "SalvageSpecialist"
+        },
+        {
+            "name": "Scientist"
+        },
+        {
+            "name": "SecurityCadet"
+        },
+        {
+            "name": "SecurityOfficer"
+        },
+        {
+            "name": "SeniorEngineer"
+        },
+        {
+            "name": "SeniorExpeditioner"
+        },
+        {
+            "name": "SeniorOfficer"
+        },
+        {
+            "name": "SeniorPhysician"
+        },
+        {
+            "name": "SeniorResearcher"
+        },
+        {
+            "name": "ServiceWorker"
+        },
+        {
+            "name": "StationEngineer"
+        },
+        {
+            "name": "TechnicalAssistant"
+        },
+        {
+            "name": "Warden"
+        },
+        {
+            "name": "ChurchServant"
+        },
+        {
+            "name": "InternalControlExecutor"
+        }
+    ]
+}

@@ -13,7 +13,7 @@
 - type: species
   id: Yowie
   name: species-name-yowie
-  roundStart: false # CorvaxGoob LRP bullshit
+  roundStart: true # CorvaxGoob LRP bullshit
   prototype: MobYowie
   sprites: MobYowieSprites
   markingLimits: MobYowieMarkingLimits

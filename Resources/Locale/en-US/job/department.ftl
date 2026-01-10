@@ -13,6 +13,7 @@
 
 department-Cargo = Cargo
 department-Civilian = Civilian
+department-Legal = Legal
 department-Command = Command
 department-CentralCommand = Central Command
 department-Engineering = Engineering

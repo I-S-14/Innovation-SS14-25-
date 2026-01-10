@@ -112,9 +112,7 @@ entities:
     - type: Transform
     - type: Map
       mapPaused: True
-    - type: PhysicsMap
     - type: GridTree
-    - type: MovedGrids
     - type: Broadphase
     - type: OccluderTree
     - type: Parallax
@@ -36304,28 +36302,6 @@ entities:
       rot: 1.0182609457842773E-06 rad
       pos: 85.43188,7.632456
       parent: 2
-- proto: ActionToggleInternals
-  entities:
-  - uid: 16
-    components:
-    - type: Transform
-      parent: 15
-    - type: InstantAction
-      container: 15
-  - uid: 30
-    components:
-    - type: Transform
-      parent: 29
-    - type: InstantAction
-      container: 29
-- proto: ActionToggleLight
-  entities:
-  - uid: 41774
-    components:
-    - type: Transform
-      parent: 41773
-    - type: InstantAction
-      container: 41773
 - proto: AirAlarm
   entities:
   - uid: 33
@@ -122563,22 +122539,8 @@ entities:
           Heat: 0.8912
           Radiation: 0.873
           Caustic: 0.929
-    - type: HandheldLight
-      toggleActionEntity: 41774
-    - type: ContainerContainer
-      containers:
-        cell_slot: !type:ContainerSlot
-          showEnts: False
-          occludes: True
-          ent: null
-        actions: !type:Container
-          showEnts: False
-          occludes: True
-          ents:
-          - 41774
     - type: Physics
       canCollide: False
-    - type: ActionsContainer
     - type: InsideEntityStorage
 - proto: ClothingHeadHelmetPodWars
   entities:
@@ -138373,30 +138335,14 @@ entities:
     components:
     - type: Transform
       parent: 14
-    - type: GasTank
-      toggleActionEntity: 16
     - type: Physics
       canCollide: False
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 16
     - type: InsideEntityStorage
   - uid: 29
     components:
     - type: Transform
       pos: -59.539093,53.571106
       parent: 2
-    - type: GasTank
-      toggleActionEntity: 30
-    - type: ActionsContainer
-    - type: ContainerContainer
-      containers:
-        actions: !type:Container
-          ents:
-          - 30
   - uid: 17349
     components:
     - type: Transform
@@ -147950,65 +147896,21 @@ entities:
     - type: Transform
       pos: -59.845146,-0.58183944
       parent: 2
-    - type: ContainerContainer
-      containers:
-        cell_slot: !type:ContainerSlot
-          showEnts: False
-          occludes: True
-          ent: null
-        actions: !type:Container
-          showEnts: False
-          occludes: True
-          ents: []
-    - type: ActionsContainer
   - uid: 38315
     components:
     - type: Transform
       pos: -59.470146,-0.50371456
       parent: 2
-    - type: ContainerContainer
-      containers:
-        cell_slot: !type:ContainerSlot
-          showEnts: False
-          occludes: True
-          ent: null
-        actions: !type:Container
-          showEnts: False
-          occludes: True
-          ents: []
-    - type: ActionsContainer
   - uid: 38316
     components:
     - type: Transform
       pos: -59.01702,-0.51933956
       parent: 2
-    - type: ContainerContainer
-      containers:
-        cell_slot: !type:ContainerSlot
-          showEnts: False
-          occludes: True
-          ent: null
-        actions: !type:Container
-          showEnts: False
-          occludes: True
-          ents: []
-    - type: ActionsContainer
   - uid: 38317
     components:
     - type: Transform
       pos: -59.18155,-0.46986866
       parent: 2
-    - type: ContainerContainer
-      containers:
-        cell_slot: !type:ContainerSlot
-          showEnts: False
-          occludes: True
-          ent: null
-        actions: !type:Container
-          showEnts: False
-          occludes: True
-          ents: []
-    - type: ActionsContainer
   - uid: 39064
     components:
     - type: Transform
@@ -195526,19 +195428,6 @@ entities:
     - type: Transform
       pos: 74.52993,-39.28385
       parent: 2
-    - type: ContainerContainer
-      containers:
-        cell_slot: !type:ContainerSlot
-          showEnts: False
-          occludes: True
-          ent: null
-        actions: !type:Container
-          showEnts: False
-          occludes: True
-          ents: []
-    - type: Physics
-      canCollide: True
-    - type: ActionsContainer
   - uid: 24819
     components:
     - type: Transform

@@ -142,21 +142,22 @@
     jumpsuit: ClothingUniformJumpskirtRoboticist
 
 
-- type: loadout
-  id: SeniorResearcherJumpsuit
-  effects:
-  - !type:GroupLoadoutEffect
-    proto: SeniorResearcher
-  equipment:
-    jumpsuit: ClothingUniformJumpsuitSeniorResearcher
-
-- type: loadout
-  id: SeniorResearcherJumpskirt
-  effects:
-  - !type:GroupLoadoutEffect
-    proto: SeniorResearcher
-  equipment:
-    jumpsuit: ClothingUniformJumpskirtSeniorResearcher
+# IS14 Edit - Senior loadout'ы закомментированы
+#- type: loadout
+#  id: SeniorResearcherJumpsuit
+#  effects:
+#  - !type:GroupLoadoutEffect
+#    proto: SeniorResearcher
+#  equipment:
+#    jumpsuit: ClothingUniformJumpsuitSeniorResearcher
+#
+#- type: loadout
+#  id: SeniorResearcherJumpskirt
+#  effects:
+#  - !type:GroupLoadoutEffect
+#    proto: SeniorResearcher
+#  equipment:
+#    jumpsuit: ClothingUniformJumpskirtSeniorResearcher
 
 - type: loadout # goob
   id: ResearchMJ
@@ -206,13 +207,14 @@
   equipment:
     outerClothing: ClothingOuterWinterRobo
 
-- type: loadout
-  id: SeniorResearcherLabCoat
-  effects:
-  - !type:GroupLoadoutEffect
-    proto: SeniorResearcher
-  equipment:
-    outerClothing: ClothingOuterCoatLabSeniorResearcher
+# IS14 Edit - Senior loadout закомментирован
+#- type: loadout
+#  id: SeniorResearcherLabCoat
+#  effects:
+#  - !type:GroupLoadoutEffect
+#    proto: SeniorResearcher
+#  equipment:
+#    outerClothing: ClothingOuterCoatLabSeniorResearcher
 
 # Gloves
 - type: loadout
@@ -239,10 +241,11 @@
   equipment:
     id: SciencePDA
 
-- type: loadout
-  id: SeniorResearcherPDA
-  effects:
-  - !type:GroupLoadoutEffect
-    proto: SeniorResearcher
-  equipment:
-    id: SeniorResearcherPDA
+# IS14 Edit - Senior loadout закомментирован
+#- type: loadout
+#  id: SeniorResearcherPDA
+#  effects:
+#  - !type:GroupLoadoutEffect
+#    proto: SeniorResearcher
+#  equipment:
+#    id: SeniorResearcherPDA
