@@ -1,0 +1,8 @@
+- type: pet
+  id: Muhtar
+  pet: MobMuhtar
+  commands:
+    Голос: !type:PetVoiceCommand
+    К ноге: !type:PetFollowCommand
+    Место: !type:PetStayCommand
+    Фас: !type:PetAttackCommand

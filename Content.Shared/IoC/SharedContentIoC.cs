@@ -14,6 +14,8 @@
 
 using Content.Shared.Humanoid.Markings;
 using Content.Shared.Localizations;
+
+using Robust.Shared._Innovation.Pets.Systems;
 using Content.Shared.Tag;
 using Content.Shared.Whitelist;
 
