@@ -168,6 +168,14 @@
     - type: Sprite
       sprite: _IS14/Structures/Doors/Airlocks/Standard/centcomm.rsi
 
+- type: entity
+  parent: AirlockCommand
+  id: IS14AirlockCRB
+  suffix: Central Command
+  components:
+    - type: Sprite
+      sprite: _IS14/Structures/Doors/Airlocks/Standard/crb.rsi
+
 # Glass
 - type: entity
   parent: AirlockGlass
@@ -279,7 +287,15 @@
   suffix: Central Command
   components:
     - type: Sprite
-      sprite: _IS14/Structures/Doors/Airlocks/Glass/centcomm.rsi
+      sprite: _IS14/Structures/Doors/Airlocks/Glass/crb.rsi
+
+- type: entity
+  parent: AirlockCommandGlass
+  id: IS14AirlockCRBGlass
+  suffix: Central Command
+  components:
+    - type: Sprite
+      sprite: _IS14/Structures/Doors/Airlocks/Glass/crb.rsi
 
 - type: entity
   parent: AirlockGlass

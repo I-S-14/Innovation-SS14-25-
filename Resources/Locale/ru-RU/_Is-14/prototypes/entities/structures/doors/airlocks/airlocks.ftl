@@ -1,8 +1,8 @@
 ent-IS14AirlockCargo = Шлюз Экспедиционно-Снабженческого Отдела 
      .desc = При отсутствии стекл остается только догадываться о том, что там происходит по стуку, вздохах и топоту.
 
-#ent-BannerScientific = Шлюз ЦРБ 
-#     .desc = Смотря на него вы понимаете, что там ничего не происходит.
+ent-IS14AirlockCRB = Шлюз ЦРБ 
+     .desc = Смотря на него вы понимаете, что там ничего не происходит.
 
 ent-IS14AirlockStandard = Шлюз Персонала 
      .desc = Ведет вас из коридора в помещение и обратно.
@@ -34,8 +34,6 @@ ent-IS14AirlockChemistry = Шлюз Хим-Отдела
 ent-IS14AirlockVirology = Шлюз Вирусологии 
      .desc = Имеет возможность быстро и безвозвратно изолировать помещение с больными.
 
-#ent-BannerScientific = Шлюз Секретаря 
-#     .desc = Не позволяет капитану не стуча наблюдать за работой подчиненного.
 
 ent-IS14AirlockQuartermaster = Стеклянный Шлюз Руководителя ЭСО 
      .desc = Позволяет Руководителю ЭСО закрыться от всех и посидеть наедине со столом.
@@ -72,8 +70,8 @@ ent-IS14AirlockAtmospherics = Шлюз Отдела Атмос
 ent-IS14AirlockCargoGlass = Стеклянный Шлюз Экспедиционно-Снабженческого Отдела 
      .desc = Наличие стёкл позволяет видеть, чем занимаются грузчики.
 
-#ent-BannerScientific = Стеклянный Шлюз ЦРБ 
-#     .desc = Через стекла можно увидеть что угодно, кроме того, что происходит там на самом деле.
+ent-IS14AirlockCRBGlass = Стеклянный Шлюз ЦРБ 
+     .desc = Через стекла можно увидеть что угодно, кроме того, что происходит там на самом деле.
 
 ent-IS14AirlockStandardGlass = Стеклянный Шлюз Персонала 
      .desc =Сквозь Шлюз можно оценить обстановку как в коридоре из отдела, так и в отделе из коридора.
@@ -102,8 +100,6 @@ ent-IS14AirlockChemistryGlass = Стеклянный Шлюз Хим-Отдел�
 ent-IS14AirlockVirologyGlass = Стеклянный Шлюз Вирусологии 
      .desc = На стеклах этого шлюза, при помощи пара из-зо рта можно писать сочувствия заболевшим.
 
-#ent-BannerScientific = Стеклянный Шлюз Секретаря 
-#     .desc = Позволяет капитану не стуча наблюдать за работой подчиненного.
 
 ent-IS14AirlockQuartermasterGlass = Стеклянный Шлюз Руководителя ЭСО 
      .desc = Когда-то мог открывать обзор на отдел, но из-за табачной сажи такую особенность потерял.
@@ -200,19 +196,25 @@ ent-IS14AirlockMedicalScienceLocked = { ent-IS14AirlockScience }
     .desc = { ent-IS14AirlockScience.desc }
 
 ent-IS14AirlockCentralCommandLocked = { ent-IS14AirlockCentralCommand } 
-    .desc = { ent-IS14AirlockScience.desc }
+    .desc = { ent-IS14AirlockCentralCommand.desc }
 
 ent-IS14AirlockCommandLocked = { ent-IS14AirlockCommand } 
-    .desc = { ent-IS14AirlockScience.desc }
+    .desc = { ent-IS14AirlockCommand.desc }
 
 ent-IS14AirlockCaptainLocked = { ent-IS14AirlockCaptain } 
-    .desc = { ent-IS14AirlockScience.desc }
+    .desc = { ent-IS14AirlockCaptain.desc }
 
 ent-IS14AirlockChiefMedicalOfficerLocked = { ent-IS14AirlockChiefMedicalOfficer } 
-    .desc = { ent-IS14AirlockScience.desc }
+    .desc = { ent-IS14AirlockChiefMedicalOfficer.desc }
 
 ent-IS14AirlockChiefEngineerLocked = { ent-IS14AirlockChiefEngineer } 
+    .desc = { ent-IS14AirlockChiefEngineer.desc }
+
+ent-IS14AirlockCRBLocked = { ent-IS14AirlockCRB } 
     .desc = { ent-IS14AirlockScience.desc }
+
+ent-IS14AirlockCRBGlassLocked = { ent-IS14AirlockCRBGlass } 
+    .desc = { ent-IS14AirlockCRBGlass.desc }
 
 #ai slop 
 ent-IS14AirlockHeadOfSecurityLocked = { ent-IS14AirlockHeadOfSecurity }

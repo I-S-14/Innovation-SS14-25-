@@ -201,6 +201,15 @@
       board: [ DoorElectronicsCentralCommand ]
 
 - type: entity
+  parent: IS14AirlockCRB
+  id: IS14AirlockCRBLocked
+  suffix: Central Command, Locked
+  components:
+  - type: ContainerFill
+    containers:
+      board: [ DoorElectronicsCentralCommand ]
+
+- type: entity
   parent: IS14AirlockCommand
   id: IS14AirlockCommandLocked
   suffix: Command, Locked
@@ -505,6 +514,15 @@
 - type: entity
   parent: IS14AirlockCentralCommandGlass
   id: IS14AirlockCentralCommandGlassLocked
+  suffix: Central Command, Locked
+  components:
+  - type: ContainerFill
+    containers:
+      board: [ DoorElectronicsCentralCommand ]
+
+- type: entity
+  parent: IS14AirlockCRBGlass
+  id: IS14AirlockCRBGlassLocked
   suffix: Central Command, Locked
   components:
   - type: ContainerFill
