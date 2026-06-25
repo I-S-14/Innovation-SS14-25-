@@ -20,4 +20,8 @@ public sealed partial class JobSalaryComponent : Component
     /// <summary>Absolute game time of the next salary payment.</summary>
     [DataField]
     public TimeSpan NextPaymentTime;
+
+    /// <summary>ID card entity that announces salary payments in IC chat.</summary>
+    [DataField]
+    public EntityUid? IdCardEntity;
 }

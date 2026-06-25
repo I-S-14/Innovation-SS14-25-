@@ -33,10 +33,12 @@ public sealed class CrewBankAccountSystem : EntitySystem
         var account = _bankManager.CreateAccount(balance);
 
         // Bind account to the crew member's ID card
+        EntityUid? idCardUid = null;
         if (_idCard.TryFindIdCard(ev.Mob, out var idCard))
         {
             var holder = EnsureComp<BankAccountHolderComponent>(idCard);
             holder.AccountNumber = account.AccountNumber;
+            idCardUid = idCard.Owner;
         }
 
         // Add salary tracking to the mob entity
@@ -45,5 +47,6 @@ public sealed class CrewBankAccountSystem : EntitySystem
         salary.Salary = economy.Salary;
         salary.SalaryIntervalSeconds = economy.SalaryIntervalSeconds;
         salary.NextPaymentTime = _timing.CurTime + TimeSpan.FromSeconds(economy.SalaryIntervalSeconds);
+        salary.IdCardEntity = idCardUid;
     }
 }
