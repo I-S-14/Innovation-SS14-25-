@@ -1,0 +1,308 @@
+# Job economy configuration for IS14.
+# ID must match the corresponding JobPrototype ID exactly.
+# salaryIntervalSeconds: seconds between payments (default: 600 = 10 minutes).
+
+# ─── Command ────────────────────────────────────────────────────────────────
+
+- type: jobEconomy
+  id: Captain
+  minBalance: 1500
+  maxBalance: 3000
+  salary: 400
+  salaryIntervalSeconds: 600
+
+- type: jobEconomy
+  id: HeadOfPersonnel
+  minBalance: 800
+  maxBalance: 1500
+  salary: 280
+  salaryIntervalSeconds: 600
+
+- type: jobEconomy
+  id: ChiefEngineer
+  minBalance: 800
+  maxBalance: 1500
+  salary: 280
+  salaryIntervalSeconds: 600
+
+- type: jobEconomy
+  id: ChiefMedicalOfficer
+  minBalance: 800
+  maxBalance: 1500
+  salary: 280
+  salaryIntervalSeconds: 600
+
+- type: jobEconomy
+  id: ResearchDirector
+  minBalance: 800
+  maxBalance: 1500
+  salary: 280
+  salaryIntervalSeconds: 600
+
+- type: jobEconomy
+  id: HeadOfSecurity
+  minBalance: 800
+  maxBalance: 1500
+  salary: 280
+  salaryIntervalSeconds: 600
+
+- type: jobEconomy
+  id: Quartermaster
+  minBalance: 800
+  maxBalance: 1500
+  salary: 280
+  salaryIntervalSeconds: 600
+
+# ─── Engineering ────────────────────────────────────────────────────────────
+
+- type: jobEconomy
+  id: StationEngineer
+  minBalance: 500
+  maxBalance: 1000
+  salary: 175
+  salaryIntervalSeconds: 600
+
+- type: jobEconomy
+  id: AtmosphericTechnician
+  minBalance: 500
+  maxBalance: 1000
+  salary: 175
+  salaryIntervalSeconds: 600
+
+- type: jobEconomy
+  id: TechnicalAssistant
+  minBalance: 200
+  maxBalance: 400
+  salary: 60
+  salaryIntervalSeconds: 600
+
+# ─── Medical ────────────────────────────────────────────────────────────────
+
+- type: jobEconomy
+  id: MedicalDoctor
+  minBalance: 500
+  maxBalance: 1000
+  salary: 175
+  salaryIntervalSeconds: 600
+
+- type: jobEconomy
+  id: Chemist
+  minBalance: 500
+  maxBalance: 1000
+  salary: 175
+  salaryIntervalSeconds: 600
+
+- type: jobEconomy
+  id: Paramedic
+  minBalance: 500
+  maxBalance: 1000
+  salary: 175
+  salaryIntervalSeconds: 600
+
+- type: jobEconomy
+  id: Psychologist
+  minBalance: 500
+  maxBalance: 1000
+  salary: 175
+  salaryIntervalSeconds: 600
+
+- type: jobEconomy
+  id: MedicalIntern
+  minBalance: 200
+  maxBalance: 400
+  salary: 60
+  salaryIntervalSeconds: 600
+
+# ─── Science ────────────────────────────────────────────────────────────────
+
+- type: jobEconomy
+  id: Scientist
+  minBalance: 500
+  maxBalance: 1000
+  salary: 175
+  salaryIntervalSeconds: 600
+
+- type: jobEconomy
+  id: ResearchAssistant
+  minBalance: 200
+  maxBalance: 400
+  salary: 60
+  salaryIntervalSeconds: 600
+
+# ─── Security ───────────────────────────────────────────────────────────────
+
+- type: jobEconomy
+  id: Warden
+  minBalance: 500
+  maxBalance: 1000
+  salary: 200
+  salaryIntervalSeconds: 600
+
+- type: jobEconomy
+  id: SecurityOfficer
+  minBalance: 500
+  maxBalance: 1000
+  salary: 175
+  salaryIntervalSeconds: 600
+
+- type: jobEconomy
+  id: Detective
+  minBalance: 500
+  maxBalance: 1000
+  salary: 175
+  salaryIntervalSeconds: 600
+
+- type: jobEconomy
+  id: SecurityCadet
+  minBalance: 200
+  maxBalance: 400
+  salary: 60
+  salaryIntervalSeconds: 600
+
+# ─── Cargo ──────────────────────────────────────────────────────────────────
+
+- type: jobEconomy
+  id: CargoTechnician
+  minBalance: 400
+  maxBalance: 800
+  salary: 150
+  salaryIntervalSeconds: 600
+
+- type: jobEconomy
+  id: SalvageSpecialist
+  minBalance: 400
+  maxBalance: 800
+  salary: 150
+  salaryIntervalSeconds: 600
+
+# ─── Service ────────────────────────────────────────────────────────────────
+
+- type: jobEconomy
+  id: Chef
+  minBalance: 300
+  maxBalance: 600
+  salary: 125
+  salaryIntervalSeconds: 600
+
+- type: jobEconomy
+  id: Bartender
+  minBalance: 300
+  maxBalance: 600
+  salary: 125
+  salaryIntervalSeconds: 600
+
+- type: jobEconomy
+  id: Janitor
+  minBalance: 300
+  maxBalance: 600
+  salary: 110
+  salaryIntervalSeconds: 600
+
+- type: jobEconomy
+  id: Botanist
+  minBalance: 300
+  maxBalance: 600
+  salary: 125
+  salaryIntervalSeconds: 600
+
+- type: jobEconomy
+  id: Chaplain
+  minBalance: 300
+  maxBalance: 600
+  salary: 110
+  salaryIntervalSeconds: 600
+
+- type: jobEconomy
+  id: Clown
+  minBalance: 300
+  maxBalance: 600
+  salary: 100
+  salaryIntervalSeconds: 600
+
+- type: jobEconomy
+  id: Mime
+  minBalance: 300
+  maxBalance: 600
+  salary: 100
+  salaryIntervalSeconds: 600
+
+- type: jobEconomy
+  id: Librarian
+  minBalance: 300
+  maxBalance: 600
+  salary: 100
+  salaryIntervalSeconds: 600
+
+- type: jobEconomy
+  id: Reporter
+  minBalance: 300
+  maxBalance: 600
+  salary: 110
+  salaryIntervalSeconds: 600
+
+- type: jobEconomy
+  id: Musician
+  minBalance: 300
+  maxBalance: 600
+  salary: 100
+  salaryIntervalSeconds: 600
+
+- type: jobEconomy
+  id: Zookeeper
+  minBalance: 300
+  maxBalance: 600
+  salary: 110
+  salaryIntervalSeconds: 600
+
+- type: jobEconomy
+  id: Lawyer
+  minBalance: 400
+  maxBalance: 800
+  salary: 150
+  salaryIntervalSeconds: 600
+
+- type: jobEconomy
+  id: Boxer
+  minBalance: 300
+  maxBalance: 600
+  salary: 110
+  salaryIntervalSeconds: 600
+
+- type: jobEconomy
+  id: ServiceWorker
+  minBalance: 200
+  maxBalance: 400
+  salary: 60
+  salaryIntervalSeconds: 600
+
+# ─── Passenger ──────────────────────────────────────────────────────────────
+
+- type: jobEconomy
+  id: Passenger
+  minBalance: 200
+  maxBalance: 500
+  salary: 25
+  salaryIntervalSeconds: 600
+
+# ─── IS14 custom jobs ───────────────────────────────────────────────────────
+
+- type: jobEconomy
+  id: IS_JobLawyer
+  minBalance: 400
+  maxBalance: 800
+  salary: 150
+  salaryIntervalSeconds: 600
+
+- type: jobEconomy
+  id: IS_JobPilot
+  minBalance: 400
+  maxBalance: 800
+  salary: 150
+  salaryIntervalSeconds: 600
+
+- type: jobEconomy
+  id: IS_JobCadet
+  minBalance: 200
+  maxBalance: 400
+  salary: 60
+  salaryIntervalSeconds: 600
