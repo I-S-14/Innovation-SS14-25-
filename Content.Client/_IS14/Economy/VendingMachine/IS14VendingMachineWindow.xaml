@@ -1,0 +1,73 @@
+<!--
+SPDX-FileCopyrightText: 2025 IS14
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<is14:IS14VendingMachineWindow
+    xmlns="https://spacestation14.io"
+    xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Economy.VendingMachine"
+    xmlns:cuc="clr-namespace:Content.Client.UserInterface.Controls"
+    MinSize="480 610">
+
+    <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True">
+
+        <!-- Player name stripe -->
+        <cuc:StripeBack HorizontalExpand="True" MinSize="0 22" HasTopEdge="False">
+            <Label Name="PlayerLabel"
+                   HorizontalAlignment="Left" HorizontalExpand="True"
+                   FontColorOverride="#7AACCF" Margin="4 0" />
+        </cuc:StripeBack>
+
+        <!-- Ad text stripe -->
+        <cuc:StripeBack HorizontalExpand="True" MinSize="0 22">
+            <Label Name="AdLabel"
+                   HorizontalAlignment="Left" HorizontalExpand="True"
+                   FontColorOverride="#BF8A40" Margin="4 0" />
+        </cuc:StripeBack>
+
+        <!-- Group 1: balance+search + item grid -->
+        <PanelContainer HorizontalExpand="True" VerticalExpand="True">
+            <PanelContainer.PanelOverride>
+                <gfx:StyleBoxFlat BackgroundColor="#181E2E" />
+            </PanelContainer.PanelOverride>
+            <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True">
+
+                <!-- Balance + search row -->
+                <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="4 4">
+                    <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
+                        <Label Text="{Loc 'is14-vending-balance-label'}"
+                               FontColorOverride="#8898A8" HorizontalExpand="True" Margin="0 0 4 0" />
+                        <Label Name="BalanceLabel" FontColorOverride="#3ABB3A" />
+                    </BoxContainer>
+                    <LineEdit Name="SearchEdit"
+                              PlaceHolder="{Loc 'is14-vending-search-placeholder'}"
+                              MinSize="140 0" />
+                </BoxContainer>
+
+                <!-- Gold separator -->
+                <PanelContainer HorizontalExpand="True" MinSize="0 2">
+                    <PanelContainer.PanelOverride>
+                        <gfx:StyleBoxFlat BackgroundColor="#8A6C14" />
+                    </PanelContainer.PanelOverride>
+                </PanelContainer>
+
+                <!-- Item grid -->
+                <ScrollContainer HorizontalExpand="True" VerticalExpand="True" Margin="2 2">
+                    <GridContainer Name="ItemGrid" Columns="5" HorizontalExpand="True" />
+                </ScrollContainer>
+
+            </BoxContainer>
+        </PanelContainer>
+
+        <!-- Group 2: tab row at bottom -->
+        <PanelContainer HorizontalExpand="True">
+            <PanelContainer.PanelOverride>
+                <gfx:StyleBoxFlat BackgroundColor="#101420" />
+            </PanelContainer.PanelOverride>
+            <BoxContainer Name="TabRow" Orientation="Horizontal" HorizontalExpand="True" Margin="4 4" />
+        </PanelContainer>
+
+    </BoxContainer>
+</is14:IS14VendingMachineWindow>
