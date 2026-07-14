@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-**CorvaxGoob** — actively developed fork of Goob Station (itself a fork of Space Station 14). A multiplayer game built on the RobustToolbox engine using C# with an Entity-Component-System (ECS) architecture. Official SS14 docs: https://docs.spacestation14.io/
+**Innovation Station** — actively developed fork of Goob Station (itself a fork of Space Station 14). A multiplayer game built on the RobustToolbox engine using C# with an Entity-Component-System (ECS) architecture. Official SS14 docs: https://docs.spacestation14.io/
 
 ## Build & Run
 
