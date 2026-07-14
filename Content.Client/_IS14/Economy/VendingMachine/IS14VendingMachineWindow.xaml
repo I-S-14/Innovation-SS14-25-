@@ -9,22 +9,28 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
     xmlns:is14="clr-namespace:Content.Client._IS14.Economy.VendingMachine"
     xmlns:cuc="clr-namespace:Content.Client.UserInterface.Controls"
-    MinSize="480 610">
+    Resizable="False"
+    SetSize="560 610"
+    MinSize="570 610">
 
     <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True">
 
         <!-- Player name stripe -->
         <cuc:StripeBack HorizontalExpand="True" MinSize="0 22" HasTopEdge="False">
-            <Label Name="PlayerLabel"
-                   HorizontalAlignment="Left" HorizontalExpand="True"
-                   FontColorOverride="#7AACCF" Margin="4 0" />
-        </cuc:StripeBack>
-
-        <!-- Ad text stripe -->
-        <cuc:StripeBack HorizontalExpand="True" MinSize="0 22">
-            <Label Name="AdLabel"
-                   HorizontalAlignment="Left" HorizontalExpand="True"
-                   FontColorOverride="#BF8A40" Margin="4 0" />
+            <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="4 0">
+                <SpriteView Name="IdCardIcon"
+                            Stretch="None" RectClipContent="True"
+                            SetSize="24 20" VerticalAlignment="Center" Margin="0 0 4 0" />
+                <TextureRect Name="IdCardIconFallback"
+                             TexturePath="/Textures/Objects/Misc/id_cards.rsi/default.png"
+                             Stretch="KeepCentered" RectClipContent="True"
+                             SetSize="24 20" VerticalAlignment="Center" Margin="0 0 4 0"
+                             Visible="False" />
+                <Label Name="PlayerLabel"
+                       HorizontalAlignment="Left" HorizontalExpand="True"
+                       VerticalAlignment="Center"
+                       FontColorOverride="#7AACCF" />
+            </BoxContainer>
         </cuc:StripeBack>
 
         <!-- Group 1: balance+search + item grid -->
@@ -39,11 +45,14 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                     <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
                         <Label Text="{Loc 'is14-vending-balance-label'}"
                                FontColorOverride="#8898A8" HorizontalExpand="True" Margin="0 0 4 0" />
+                        <TextureRect TexturePath="/Textures/Objects/Misc/coins.rsi/coin_gold.png"
+                                     Stretch="KeepCentered" RectClipContent="True"
+                                     SetSize="16 16" VerticalAlignment="Center" Margin="0 0 4 0" />
                         <Label Name="BalanceLabel" FontColorOverride="#3ABB3A" />
                     </BoxContainer>
                     <LineEdit Name="SearchEdit"
                               PlaceHolder="{Loc 'is14-vending-search-placeholder'}"
-                              MinSize="140 0" />
+                              MinSize="140 0" Margin="16 0 0 0" />
                 </BoxContainer>
 
                 <!-- Gold separator -->
@@ -61,13 +70,20 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             </BoxContainer>
         </PanelContainer>
 
-        <!-- Group 2: tab row at bottom -->
+        <!-- Group 2: tab row -->
         <PanelContainer HorizontalExpand="True">
             <PanelContainer.PanelOverride>
                 <gfx:StyleBoxFlat BackgroundColor="#101420" />
             </PanelContainer.PanelOverride>
             <BoxContainer Name="TabRow" Orientation="Horizontal" HorizontalExpand="True" Margin="4 4" />
         </PanelContainer>
+
+        <!-- Ad text stripe at the very bottom -->
+        <cuc:StripeBack HorizontalExpand="True" MinSize="0 22" HasBottomEdge="False">
+            <Label Name="AdLabel"
+                   HorizontalAlignment="Left" HorizontalExpand="True"
+                   FontColorOverride="#BF8A40" Margin="4 0" />
+        </cuc:StripeBack>
 
     </BoxContainer>
 </is14:IS14VendingMachineWindow>

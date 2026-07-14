@@ -1,4 +1,6 @@
 bank-salary-notification = beeps: "Salary +{ $salary } cr. Balance: { $balance } cr."
+
+is14-stack-credit = credits
 bank-holder-examine-balance = Account balance: [color=green]{ $balance } cr.[/color]
 
 is14-vending-balance-label = Balance:

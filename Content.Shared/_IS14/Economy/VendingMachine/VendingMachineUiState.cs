@@ -8,11 +8,14 @@ public sealed class IS14VendingTabUiState
 {
     public readonly string Name;
     public readonly List<IS14VendingMachineUiEntry> Inventory;
+    /// <summary>Whether the viewing player's ID satisfies the tab's access requirements.</summary>
+    public readonly bool HasAccess;
 
-    public IS14VendingTabUiState(string name, List<IS14VendingMachineUiEntry> inventory)
+    public IS14VendingTabUiState(string name, List<IS14VendingMachineUiEntry> inventory, bool hasAccess)
     {
         Name = name;
         Inventory = inventory;
+        HasAccess = hasAccess;
     }
 }
 
@@ -26,6 +29,8 @@ public sealed class IS14VendingMachineUiState : BoundUserInterfaceState
     public readonly List<IS14VendingMachineUiEntry> Contraband;
     public readonly string PlayerName;
     public readonly string PlayerJob;
+    /// <summary>The ID card the balance is read from; used to render its sprite in the UI.</summary>
+    public readonly NetEntity? IdCard;
     public readonly string AdMessage;
 
     public IS14VendingMachineUiState(
@@ -36,6 +41,7 @@ public sealed class IS14VendingMachineUiState : BoundUserInterfaceState
         List<IS14VendingMachineUiEntry> contraband,
         string playerName,
         string playerJob,
+        NetEntity? idCard,
         string adMessage)
     {
         MachineName = machineName;
@@ -45,6 +51,7 @@ public sealed class IS14VendingMachineUiState : BoundUserInterfaceState
         Contraband = contraband;
         PlayerName = playerName;
         PlayerJob = playerJob;
+        IdCard = idCard;
         AdMessage = adMessage;
     }
 }

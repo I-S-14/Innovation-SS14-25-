@@ -1,5 +1,6 @@
 using Content.Server.Chat.Systems;
 using Content.Shared._IS14.Economy;
+using Content.Shared._IS14.Economy.EconomyMonitor;
 using Content.Shared.Chat;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
@@ -35,6 +36,7 @@ public sealed class SalarySystem : EntitySystem
                 continue;
 
             account.Balance += salary.Salary;
+            RaiseLocalEvent(new EconomyTransactionEvent(salary.AccountNumber, salary.Salary, account.Balance, Loc.GetString("economy-transaction-salary")));
             AnnounceFromCard(salary.IdCardEntity, salary.Salary, account.Balance);
         }
     }
@@ -47,6 +49,7 @@ public sealed class SalarySystem : EntitySystem
 
         account.Balance += salary.Salary;
         salary.NextPaymentTime = _timing.CurTime + TimeSpan.FromSeconds(salary.SalaryIntervalSeconds);
+        RaiseLocalEvent(new EconomyTransactionEvent(salary.AccountNumber, salary.Salary, account.Balance, Loc.GetString("economy-transaction-salary")));
         AnnounceFromCard(salary.IdCardEntity, salary.Salary, account.Balance);
     }
 

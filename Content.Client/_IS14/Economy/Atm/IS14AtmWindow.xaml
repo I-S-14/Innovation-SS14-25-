@@ -1,0 +1,173 @@
+<!--
+SPDX-FileCopyrightText: 2025 IS14
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<is14:IS14AtmWindow
+    xmlns="https://spacestation14.io"
+    xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Economy.Atm"
+    xmlns:cuc="clr-namespace:Content.Client.UserInterface.Controls"
+    Title="{Loc 'is14-atm-window-title'}"
+    Resizable="False"
+    SetSize="340 500"
+    MinSize="340 500">
+
+    <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True">
+
+        <!-- Card owner stripe -->
+        <cuc:StripeBack HorizontalExpand="True" MinSize="0 22" HasTopEdge="False">
+            <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="4 0">
+                <SpriteView Name="CardIcon"
+                            Stretch="None" RectClipContent="True"
+                            SetSize="24 20" VerticalAlignment="Center" Margin="0 0 4 0" />
+                <TextureRect Name="CardIconFallback"
+                             TexturePath="/Textures/Objects/Misc/id_cards.rsi/default.png"
+                             Stretch="KeepCentered" RectClipContent="True"
+                             SetSize="24 20" VerticalAlignment="Center" Margin="0 0 4 0"
+                             Visible="False" />
+                <Label Name="CardOwnerLabel"
+                       HorizontalAlignment="Left" HorizontalExpand="True"
+                       VerticalAlignment="Center"
+                       FontColorOverride="#7AACCF" />
+            </BoxContainer>
+        </cuc:StripeBack>
+
+        <!-- Body -->
+        <PanelContainer HorizontalExpand="True" VerticalExpand="True">
+            <PanelContainer.PanelOverride>
+                <gfx:StyleBoxFlat BackgroundColor="#181E2E" />
+            </PanelContainer.PanelOverride>
+            <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True" Margin="8 8">
+
+                <!-- No card -->
+                <BoxContainer Name="NoCardPanel" Orientation="Vertical"
+                              HorizontalExpand="True" VerticalExpand="True" Visible="False">
+                    <Label Text="{Loc 'is14-atm-no-card'}"
+                           HorizontalAlignment="Center" VerticalAlignment="Center" VerticalExpand="True"
+                           FontColorOverride="#8898A8" />
+                </BoxContainer>
+
+                <!-- Locked -->
+                <BoxContainer Name="LockedPanel" Orientation="Vertical"
+                              HorizontalExpand="True" VerticalExpand="True" Visible="False">
+                    <Label Name="LockedLabel"
+                           HorizontalAlignment="Center" VerticalAlignment="Center" VerticalExpand="True"
+                           FontColorOverride="#CC6666" />
+                </BoxContainer>
+
+                <!-- PIN entry -->
+                <BoxContainer Name="PinPanel" Orientation="Vertical"
+                              HorizontalExpand="True" VerticalExpand="True" Visible="False">
+                    <Label Name="PinPromptLabel"
+                           HorizontalAlignment="Center" Margin="0 8 0 4"
+                           FontColorOverride="#8898A8" />
+                    <Label Name="PinDisplayLabel"
+                           HorizontalAlignment="Center" Margin="0 4 0 12"
+                           FontColorOverride="#3ABB3A" />
+                    <Label Name="AttemptsLabel"
+                           HorizontalAlignment="Center" Margin="0 0 0 8"
+                           FontColorOverride="#A07828" Visible="False" />
+                    <GridContainer Columns="3" HorizontalAlignment="Center">
+                        <Button Name="PinBtn1" Text="1" SetSize="56 40" />
+                        <Button Name="PinBtn2" Text="2" SetSize="56 40" />
+                        <Button Name="PinBtn3" Text="3" SetSize="56 40" />
+                        <Button Name="PinBtn4" Text="4" SetSize="56 40" />
+                        <Button Name="PinBtn5" Text="5" SetSize="56 40" />
+                        <Button Name="PinBtn6" Text="6" SetSize="56 40" />
+                        <Button Name="PinBtn7" Text="7" SetSize="56 40" />
+                        <Button Name="PinBtn8" Text="8" SetSize="56 40" />
+                        <Button Name="PinBtn9" Text="9" SetSize="56 40" />
+                        <Button Name="PinBtnClear" Text="C" SetSize="56 40" />
+                        <Button Name="PinBtn0" Text="0" SetSize="56 40" />
+                        <Button Name="PinBtnOk" Text="OK" SetSize="56 40" />
+                    </GridContainer>
+                    <Button Name="PinCancelBtn" Text="{Loc 'is14-atm-cancel'}"
+                            HorizontalAlignment="Center" Margin="0 8 0 0" Visible="False" />
+                </BoxContainer>
+
+                <!-- Menu -->
+                <BoxContainer Name="MenuPanel" Orientation="Vertical"
+                              HorizontalExpand="True" VerticalExpand="True" Visible="False">
+
+                    <!-- Balance -->
+                    <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="0 0 0 6">
+                        <Label Text="{Loc 'is14-atm-balance-label'}"
+                               FontColorOverride="#8898A8" HorizontalExpand="True" />
+                        <TextureRect TexturePath="/Textures/Objects/Misc/coins.rsi/coin_gold.png"
+                                     Stretch="KeepCentered" RectClipContent="True"
+                                     SetSize="16 16" VerticalAlignment="Center" Margin="0 0 4 0" />
+                        <Label Name="BalanceLabel" FontColorOverride="#3ABB3A" />
+                    </BoxContainer>
+
+                    <PanelContainer HorizontalExpand="True" MinSize="0 2" Margin="0 0 0 8">
+                        <PanelContainer.PanelOverride>
+                            <gfx:StyleBoxFlat BackgroundColor="#8A6C14" />
+                        </PanelContainer.PanelOverride>
+                    </PanelContainer>
+
+                    <!-- Withdraw -->
+                    <Label Text="{Loc 'is14-atm-withdraw-label'}" FontColorOverride="#8898A8" Margin="0 0 0 4" />
+                    <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="0 0 0 4">
+                        <Button Name="Withdraw50Btn" Text="+50" HorizontalExpand="True" Margin="0 0 3 0" />
+                        <Button Name="Withdraw100Btn" Text="+100" HorizontalExpand="True" Margin="0 0 3 0" />
+                        <Button Name="Withdraw500Btn" Text="+500" HorizontalExpand="True" />
+                    </BoxContainer>
+                    <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="0 0 0 8">
+                        <LineEdit Name="WithdrawAmountEdit"
+                                  PlaceHolder="{Loc 'is14-atm-amount-placeholder'}"
+                                  HorizontalExpand="True" Margin="0 0 3 0" />
+                        <Button Name="WithdrawBtn" Text="{Loc 'is14-atm-withdraw'}" />
+                    </BoxContainer>
+
+                    <PanelContainer HorizontalExpand="True" MinSize="0 2" Margin="0 0 0 8">
+                        <PanelContainer.PanelOverride>
+                            <gfx:StyleBoxFlat BackgroundColor="#8A6C14" />
+                        </PanelContainer.PanelOverride>
+                    </PanelContainer>
+
+                    <!-- Transfer -->
+                    <Label Text="{Loc 'is14-atm-transfer-label'}" FontColorOverride="#8898A8" Margin="0 0 0 4" />
+                    <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="0 0 0 8">
+                        <LineEdit Name="TransferAccountEdit"
+                                  PlaceHolder="{Loc 'is14-atm-transfer-account-placeholder'}"
+                                  HorizontalExpand="True" Margin="0 0 3 0" />
+                        <LineEdit Name="TransferAmountEdit"
+                                  PlaceHolder="{Loc 'is14-atm-amount-placeholder'}"
+                                  HorizontalExpand="True" Margin="0 0 3 0" />
+                        <Button Name="TransferBtn" Text="{Loc 'is14-atm-transfer'}" />
+                    </BoxContainer>
+
+                    <PanelContainer HorizontalExpand="True" MinSize="0 2" Margin="0 0 0 8">
+                        <PanelContainer.PanelOverride>
+                            <gfx:StyleBoxFlat BackgroundColor="#8A6C14" />
+                        </PanelContainer.PanelOverride>
+                    </PanelContainer>
+
+                    <RichTextLabel Text="{Loc 'is14-atm-deposit-hint'}"
+                                   HorizontalExpand="True" Margin="0 0 0 8" />
+
+                    <BoxContainer Orientation="Vertical" VerticalExpand="True" />
+
+                    <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
+                        <Button Name="ChangePinBtn" Text="{Loc 'is14-atm-change-pin'}"
+                                HorizontalExpand="True" Margin="0 0 3 0" />
+                        <Button Name="EjectCardBtn" Text="{Loc 'is14-atm-eject-card'}"
+                                HorizontalExpand="True" />
+                    </BoxContainer>
+
+                </BoxContainer>
+
+            </BoxContainer>
+        </PanelContainer>
+
+        <!-- Status stripe at the bottom -->
+        <cuc:StripeBack HorizontalExpand="True" MinSize="0 22" HasBottomEdge="False">
+            <Label Name="StatusLabel"
+                   HorizontalAlignment="Left" HorizontalExpand="True"
+                   FontColorOverride="#BF8A40" Margin="4 0" />
+        </cuc:StripeBack>
+
+    </BoxContainer>
+</is14:IS14AtmWindow>

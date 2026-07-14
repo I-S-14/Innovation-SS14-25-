@@ -30,14 +30,14 @@ public sealed partial class IS14VendingItemButton : ContainerButton
         RobustXamlLoader.Load(this);
     }
 
-    public void Initialize(IS14VendingMachineUiEntry entry, int buyerBalance)
+    public void Initialize(IS14VendingMachineUiEntry entry, int buyerBalance, bool hasAccess = true)
     {
         var outOfStock = entry.Stock <= 0;
         var canAfford  = buyerBalance >= entry.Price;
-        _isDisabled = outOfStock || !canAfford;
+        _isDisabled = outOfStock || !canAfford || !hasAccess;
         Disabled = _isDisabled;
 
-        ToolTip = entry.ItemName;
+        ToolTip = hasAccess ? entry.ItemName : Loc.GetString("is14-vending-no-access-tooltip");
 
         StyleBoxOverride = new StyleBoxFlat
         {
@@ -48,6 +48,10 @@ public sealed partial class IS14VendingItemButton : ContainerButton
 
         PriceLabel.Text = Loc.GetString("is14-vending-price", ("price", entry.Price));
         PriceLabel.FontColorOverride = canAfford ? ColorPriceGold : ColorPricePoor;
+
+        // No access: show a lock icon in place of the stock counter.
+        LockIcon.Visible = !hasAccess;
+        StockLabel.Visible = hasAccess;
 
         if (outOfStock)
         {

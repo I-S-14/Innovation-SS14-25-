@@ -8,15 +8,24 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     xmlns="https://spacestation14.io"
     xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
     xmlns:is14="clr-namespace:Content.Client._IS14.Economy.VendingMachine"
-    MinSize="95 120"
+    SetWidth="102"
+    MinHeight="120"
     Margin="1 1">
 
     <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True">
 
-        <!-- Price (left) | Stock (right) -->
+        <!-- Price (left) | Stock or lock icon (right) -->
         <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="2 1">
             <Label Name="PriceLabel" HorizontalExpand="True" VerticalAlignment="Top" />
             <Label Name="StockLabel" HorizontalAlignment="Right" VerticalAlignment="Top" />
+            <TextureRect Name="LockIcon"
+                         TexturePath="/Textures/Interface/VerbIcons/lock.svg.192dpi.png"
+                         Stretch="KeepAspectCentered"
+                         SetSize="12 12"
+                         Modulate="#B06030"
+                         HorizontalAlignment="Right"
+                         VerticalAlignment="Center"
+                         Visible="False" />
         </BoxContainer>
 
         <!-- Icon centered -->

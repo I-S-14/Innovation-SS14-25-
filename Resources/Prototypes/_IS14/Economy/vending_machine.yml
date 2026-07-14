@@ -136,7 +136,62 @@
       - itemId: Gauze
         price: 60
         stock: 10
+      - itemId: Brutepack
+        price: 80
+        stock: 10
+      - itemId: Ointment
+        price: 80
+        stock: 10
+      - itemId: Gauze
+        price: 60
+        stock: 10
+      - itemId: Brutepack
+        price: 80
+        stock: 10
+      - itemId: Ointment
+        price: 80
+        stock: 10
+      - itemId: Gauze
+        price: 60
+        stock: 10
+      - itemId: Brutepack
+        price: 80
+        stock: 10
+      - itemId: Ointment
+        price: 80
+        stock: 10
+      - itemId: Gauze
+        price: 60
+        stock: 10
+      - itemId: Brutepack
+        price: 80
+        stock: 10
+      - itemId: Ointment
+        price: 80
+        stock: 10
+      - itemId: Gauze
+        price: 60
+        stock: 10
+      - itemId: Brutepack
+        price: 80
+        stock: 10
+      - itemId: Ointment
+        price: 80
+        stock: 10
+      - itemId: Gauze
+        price: 60
+        stock: 10
+      - itemId: Brutepack
+        price: 80
+        stock: 10
+      - itemId: Ointment
+        price: 80
+        stock: 10
+      - itemId: Gauze
+        price: 60
+        stock: 10
     - name: Продвинутое
+      access: [ Medical ]
       inventory:
       - itemId: Bloodpack
         price: 300

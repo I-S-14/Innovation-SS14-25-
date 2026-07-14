@@ -1,6 +1,7 @@
 using Content.Server.Access.Systems;
 using Content.Shared._IS14.Economy.VendingMachine;
 using Content.Shared.Access.Components;
+using Content.Shared.Access.Systems;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Interaction;
 using Robust.Server.GameObjects;
@@ -14,6 +15,7 @@ namespace Content.Server._IS14.Economy.VendingMachine;
 
 public sealed class VendingMachineSystem : EntitySystem
 {
+    [Dependency] private readonly AccessReaderSystem _accessReader = default!;
     [Dependency] private readonly BankingSystem _banking = default!;
     [Dependency] private readonly IdCardSystem _idCard = default!;
     [Dependency] private readonly SharedHandsSystem _hands = default!;
@@ -62,7 +64,8 @@ public sealed class VendingMachineSystem : EntitySystem
         }
         else if (args.TabIndex < ent.Comp.Tabs.Count)
         {
-            inventory = ent.Comp.Tabs[args.TabIndex].Inventory;
+            var tab = ent.Comp.Tabs[args.TabIndex];
+            inventory = HasTabAccess(buyer, tab) ? tab.Inventory : null;
         }
         else
         {
@@ -77,7 +80,12 @@ public sealed class VendingMachineSystem : EntitySystem
 
         var entry = inventory[args.ItemIndex];
 
-        if (entry.Stock <= 0 || !_banking.TryChangeBalance(buyer, -entry.Price, out _))
+        var itemName = entry.ItemId.ToString();
+        if (_prototypes.TryIndex<EntityPrototype>(entry.ItemId, out var entProto))
+            itemName = entProto.Name;
+        var purchaseDescription = Loc.GetString("economy-transaction-vending-purchase", ("item", itemName), ("machine", ent.Comp.MachineName));
+
+        if (entry.Stock <= 0 || !_banking.TryChangeBalance(buyer, -entry.Price, out _, purchaseDescription, ent.Owner))
         {
             _audio.PlayPvs(ent.Comp.DenySound, ent.Owner);
             return;
@@ -107,11 +115,11 @@ public sealed class VendingMachineSystem : EntitySystem
     private void UpdateUiState(Entity<IS14VendingMachineComponent> ent, EntityUid actor)
     {
         _banking.TryGetEntityBalance(actor, out var balance);
-        var (playerName, playerJob) = GetPlayerInfo(actor);
+        var (playerName, playerJob, playerIdCard) = GetPlayerInfo(actor);
 
         var tabs = new List<IS14VendingTabUiState>(ent.Comp.Tabs.Count);
         foreach (var tab in ent.Comp.Tabs)
-            tabs.Add(new IS14VendingTabUiState(tab.Name, BuildUiEntries(tab.Inventory)));
+            tabs.Add(new IS14VendingTabUiState(tab.Name, BuildUiEntries(tab.Inventory), HasTabAccess(actor, tab)));
 
         var adMessage = string.Empty;
         if (ent.Comp.AdMessages.Count > 0)
@@ -129,15 +137,37 @@ public sealed class VendingMachineSystem : EntitySystem
                 BuildUiEntries(ent.Comp.ContrabandInventory),
                 playerName,
                 playerJob,
+                playerIdCard,
                 adMessage));
     }
 
-    private (string name, string job) GetPlayerInfo(EntityUid actor)
+    /// <summary>
+    /// Checks whether the buyer's access tags (ID card, held items) satisfy the tab's
+    /// access requirements. Tabs without requirements are open to everyone.
+    /// </summary>
+    private bool HasTabAccess(EntityUid buyer, VendingMachineTab tab)
+    {
+        if (tab.Access.Count == 0)
+            return true;
+
+        var tags = _accessReader.FindAccessTags(buyer);
+        foreach (var access in tab.Access)
+        {
+            if (tags.Contains(access))
+                return true;
+        }
+
+        return false;
+    }
+
+    private (string name, string job, NetEntity? idCard) GetPlayerInfo(EntityUid actor)
     {
         if (!_idCard.TryFindIdCard(actor, out var idCard) || !TryComp<IdCardComponent>(idCard, out var card))
-            return (_loc.GetString("is14-vending-unknown"), string.Empty);
+            return (_loc.GetString("is14-vending-unknown"), string.Empty, null);
 
-        return (card.FullName ?? _loc.GetString("is14-vending-unknown"), card.LocalizedJobTitle ?? string.Empty);
+        return (card.FullName ?? _loc.GetString("is14-vending-unknown"),
+            card.LocalizedJobTitle ?? string.Empty,
+            GetNetEntity(idCard));
     }
 
     private List<IS14VendingMachineUiEntry> BuildUiEntries(List<VendingMachineEntry> source)

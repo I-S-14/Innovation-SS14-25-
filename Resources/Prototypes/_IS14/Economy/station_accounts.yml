@@ -1,0 +1,38 @@
+# Station bank accounts for IS14.
+# These are created at round start for stations that declare them via StationEconomy component.
+# Add new accounts here, then reference their IDs in a map prototype's StationEconomy component.
+
+- type: stationBankAccount
+  id: StationTreasury
+  displayName: Казна станции
+  initialBalance: 200000
+
+- type: stationBankAccount
+  id: StationEngineering
+  displayName: Бюджет инженерии
+  initialBalance: 30000
+
+- type: stationBankAccount
+  id: StationMedical
+  displayName: Бюджет медотсека
+  initialBalance: 30000
+
+- type: stationBankAccount
+  id: StationSecurity
+  displayName: Бюджет безопасности
+  initialBalance: 30000
+
+- type: stationBankAccount
+  id: StationCargo
+  displayName: Бюджет карго
+  initialBalance: 30000
+
+- type: stationBankAccount
+  id: StationService
+  displayName: Бюджет сервисной службы
+  initialBalance: 20000
+
+- type: stationBankAccount
+  id: StationResearch
+  displayName: Бюджет науки
+  initialBalance: 25000

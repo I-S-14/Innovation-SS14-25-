@@ -306,3 +306,54 @@
   maxBalance: 400
   salary: 60
   salaryIntervalSeconds: 600
+
+# ─── IS14 prototype jobs ─────────────────────────────────────────────────────
+
+- type: jobEconomy
+  id: SeniorEngineer
+  minBalance: 700
+  maxBalance: 1200
+  salary: 220
+  salaryIntervalSeconds: 600
+
+- type: jobEconomy
+  id: SeniorPhysician
+  minBalance: 700
+  maxBalance: 1200
+  salary: 220
+  salaryIntervalSeconds: 600
+
+- type: jobEconomy
+  id: SeniorResearcher
+  minBalance: 700
+  maxBalance: 1200
+  salary: 220
+  salaryIntervalSeconds: 600
+
+- type: jobEconomy
+  id: SeniorExpeditioner
+  minBalance: 500
+  maxBalance: 1000
+  salary: 190
+  salaryIntervalSeconds: 600
+
+- type: jobEconomy
+  id: InternalControlExecutor
+  minBalance: 600
+  maxBalance: 1200
+  salary: 220
+  salaryIntervalSeconds: 600
+
+- type: jobEconomy
+  id: CommandSecretary
+  minBalance: 600
+  maxBalance: 1200
+  salary: 200
+  salaryIntervalSeconds: 600
+
+- type: jobEconomy
+  id: ChurchServant
+  minBalance: 250
+  maxBalance: 500
+  salary: 90
+  salaryIntervalSeconds: 600

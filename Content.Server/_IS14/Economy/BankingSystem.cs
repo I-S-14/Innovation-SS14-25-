@@ -1,5 +1,6 @@
 using Content.Server.Access.Systems;
 using Content.Shared._IS14.Economy;
+using Content.Shared._IS14.Economy.EconomyMonitor;
 
 namespace Content.Server._IS14.Economy;
 
@@ -35,8 +36,9 @@ public sealed class BankingSystem : EntitySystem
     /// <summary>
     /// Changes the balance of the entity's bank account by delta.
     /// Returns false if no account found or balance would go negative.
+    /// Raises <see cref="EconomyTransactionEvent"/> on success.
     /// </summary>
-    public bool TryChangeBalance(EntityUid entity, int delta, out int newBalance)
+    public bool TryChangeBalance(EntityUid entity, int delta, out int newBalance, string description = "", EntityUid? sourceEntity = null)
     {
         newBalance = 0;
 
@@ -55,6 +57,7 @@ public sealed class BankingSystem : EntitySystem
 
         account.Balance += delta;
         newBalance = account.Balance;
+        RaiseLocalEvent(new EconomyTransactionEvent(holder.AccountNumber, delta, newBalance, description, sourceEntity));
         return true;
     }
 }

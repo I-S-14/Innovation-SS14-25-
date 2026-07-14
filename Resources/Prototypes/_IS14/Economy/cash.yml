@@ -1,0 +1,81 @@
+# IS14 cash: banknote stack whose sprite changes with the amount.
+# Sprite thresholds: <100, 100-199, 200-499, 500-999, 1000+.
+- type: entity
+  parent: SpaceCash
+  id: IS14SpaceCash
+  name: кредиты
+  description: Наличные кредиты. Деньги любят счёт.
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Economy/cash.rsi
+    state: cash
+    layers:
+    - state: cash
+      map: ["base"]
+  - type: Icon
+    sprite: _IS14/Objects/Economy/cash.rsi
+    state: cash
+  - type: Stack
+    stackType: IS14Credit
+    count: 1
+    baseLayer: base
+    layerFunction: Threshold
+    layerStates:
+    - cash
+    - cash_100
+    - cash_200
+    - cash_500
+    - cash_1000
+  - type: StackLayerThreshold
+    thresholds: [100, 200, 500, 1000]
+
+- type: stack
+  id: IS14Credit
+  name: is14-stack-credit
+  icon: { sprite: /Textures/_IS14/Objects/Economy/cash.rsi, state: cash }
+  spawn: IS14SpaceCash
+
+# Denomination presets for mapping/admin spawning.
+- type: entity
+  parent: IS14SpaceCash
+  id: IS14SpaceCash100
+  suffix: 100
+  components:
+  - type: Icon
+    sprite: _IS14/Objects/Economy/cash.rsi
+    state: cash_100
+  - type: Stack
+    count: 100
+
+- type: entity
+  parent: IS14SpaceCash
+  id: IS14SpaceCash200
+  suffix: 200
+  components:
+  - type: Icon
+    sprite: _IS14/Objects/Economy/cash.rsi
+    state: cash_200
+  - type: Stack
+    count: 200
+
+- type: entity
+  parent: IS14SpaceCash
+  id: IS14SpaceCash500
+  suffix: 500
+  components:
+  - type: Icon
+    sprite: _IS14/Objects/Economy/cash.rsi
+    state: cash_500
+  - type: Stack
+    count: 500
+
+- type: entity
+  parent: IS14SpaceCash
+  id: IS14SpaceCash1000
+  suffix: 1000
+  components:
+  - type: Icon
+    sprite: _IS14/Objects/Economy/cash.rsi
+    state: cash_1000
+  - type: Stack
+    count: 1000
