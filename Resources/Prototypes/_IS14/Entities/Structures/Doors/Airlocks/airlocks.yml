@@ -47,6 +47,16 @@
       layoutId: AirlockSecurity
 
 - type: entity
+  parent: AirlockGlass
+  id: IS14AirlockPrisonGrille
+  suffix: Security, Brig
+  components:
+    - type: Sprite
+      sprite: _IS14/Structures/Doors/Airlocks/Standard/prison_grille.rsi
+    - type: Wires
+      layoutId: AirlockSecurity
+
+- type: entity
   parent: IS14AirlockPrisonCell
   id: IS14AirlockPrisonCellLocked
   suffix: Security, Brig, Locked

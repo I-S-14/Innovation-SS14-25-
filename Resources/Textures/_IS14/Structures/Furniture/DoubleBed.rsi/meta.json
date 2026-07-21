@@ -18,6 +18,12 @@
     },
     {
       "name": "mattress_down"
+    },
+    {
+      "name": "prisondoublebed_up"
+    },
+    {
+      "name": "prisondoublebed_down"
     }
   ]
 }

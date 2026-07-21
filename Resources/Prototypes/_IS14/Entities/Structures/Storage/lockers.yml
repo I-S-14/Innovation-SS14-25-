@@ -563,9 +563,9 @@
 
 - type: entity
   id: IS14PrisonLocker
-  parent: LockerBase
-  name: prison locker
-  description: A locker for prison use.
+  parent: ClosetSteelBase
+  name: prison closet
+  description: A closet for prison use.
   components:
   - type: Sprite
     sprite: _IS14/Structures/Storage/lockers.rsi
@@ -575,14 +575,9 @@
       map: ["enum.StorageVisualLayers.Base"]
     - state: pl_closed
       map: ["enum.StorageVisualLayers.Door"]
-    - state: locked
-      map: ["enum.LockVisualLayers.Lock"]
-      shader: unshaded
     - state: welded
       visible: false
       map: ["enum.WeldableLayers.BaseWelded"]
-  - type: AccessReader
-    access: [["Security"]]
   - type: EntityStorageVisuals
     stateBaseClosed: pl_base
     stateDoorOpen: pl_opened
