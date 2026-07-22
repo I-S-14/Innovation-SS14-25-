@@ -48,5 +48,7 @@ public sealed class CrewBankAccountSystem : EntitySystem
         salary.SalaryIntervalSeconds = economy.SalaryIntervalSeconds;
         salary.NextPaymentTime = _timing.CurTime + TimeSpan.FromSeconds(economy.SalaryIntervalSeconds);
         salary.IdCardEntity = idCardUid;
+        salary.Station = ev.Station;
+        salary.PayerAccount = economy.PayerAccount;
     }
 }

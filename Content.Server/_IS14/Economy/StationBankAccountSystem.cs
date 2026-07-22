@@ -11,6 +11,9 @@ namespace Content.Server._IS14.Economy;
 /// </summary>
 public sealed class StationBankAccountSystem : EntitySystem
 {
+    /// <summary>Well-known account prototype ID of the station treasury.</summary>
+    public const string Treasury = "StationTreasury";
+
     [Dependency] private readonly BankManagerSystem _bankManager = default!;
     [Dependency] private readonly IPrototypeManager _prototypes = default!;
 

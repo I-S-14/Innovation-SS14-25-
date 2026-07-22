@@ -1,4 +1,69 @@
 bank-salary-notification = beeps: "Salary +{ $salary } cr. Balance: { $balance } cr."
+bank-salary-delayed = buzzes: "Salary delayed! Department fund is empty. Owed: { $owed } cr. Contact your head of staff."
+economy-transaction-salary-fund = Employee salary payout
+economy-transaction-vending-revenue = Revenue: { $item } ({ $machine })
+economy-transaction-vending-tax = Sales tax ({ $machine })
+economy-transaction-allocation-out = Allocation: { $target }
+economy-transaction-allocation-in = Allocation from the treasury
+
+# Payment terminal
+is14-payterm-window-title = Payment terminal
+is14-payterm-recipient = Recipient: { $name }
+is14-payterm-no-recipient = No recipient bound
+is14-payterm-charge-label = New charge
+is14-payterm-amount-placeholder = Amount
+is14-payterm-desc-placeholder = Note (optional)
+is14-payterm-set-charge = Charge
+is14-payterm-pending = To pay: { $amount } cr.
+is14-payterm-pay = Pay with ID card
+is14-payterm-cancel = Cancel
+is14-payterm-bind = Bind my card
+is14-payterm-status-bound = Card bound.
+is14-payterm-status-paid = Paid: { $amount } cr.
+is14-payterm-status-denied = Payment declined.
+is14-payterm-status-no-card = No ID card with an account found.
+is14-payterm-status-no-recipient = No recipient bound.
+is14-payterm-status-bad-amount = Invalid amount.
+is14-payterm-receipt-note = Note: { $desc }
+is14-payterm-receipt-content = [head=2]RECEIPT[/head]
+    Recipient: { $recipient }
+    Amount: [bold]{ $amount } cr.[/bold]
+    { $note }
+    Thank you for your purchase!
+economy-transaction-terminal-payment = Terminal payment — { $recipient }
+economy-transaction-terminal-payment-desc = Payment: { $desc } — { $recipient }
+economy-transaction-terminal-revenue = Terminal revenue
+economy-transaction-terminal-tax = Terminal revenue tax
+
+# Economy monitor
+economy-monitor-window-title = Economy monitor
+economy-monitor-no-records = No transactions yet.
+economy-monitor-col-time = Time
+economy-monitor-col-account = Account
+economy-monitor-col-amount = Amount
+economy-monitor-col-description = Description
+economy-monitor-col-balance = Balance
+economy-monitor-search-account = Account:
+economy-monitor-search-placeholder = Account number...
+economy-monitor-unknown-vendor = Unknown device
+economy-monitor-delete = Delete
+economy-monitor-print = Print
+economy-monitor-report-name = transaction report
+economy-monitor-report-header = [head=2]Transaction report[/head]
+economy-monitor-report-line = { $time } | account #{ $account } | { $amount } cr. | { $description } | balance: { $balance }
+
+# Treasury console UI
+is14-treasury-window-title = Treasury console
+is14-treasury-balance-label = Station treasury:
+is14-treasury-funds-label = Department funds
+is14-treasury-transfer-label = Allocation from the treasury
+is14-treasury-transfer = Transfer
+is14-treasury-amount-placeholder = Amount
+is14-treasury-credits = { $amount } cr.
+is14-treasury-status-bad-amount = Invalid amount.
+is14-treasury-status-bad-target = Target fund not found.
+is14-treasury-status-insufficient = Insufficient treasury funds.
+is14-treasury-status-done = Transferred { $amount } cr. — { $target }.
 
 is14-stack-credit = credits
 bank-holder-examine-balance = Account balance: [color=green]{ $balance } cr.[/color]

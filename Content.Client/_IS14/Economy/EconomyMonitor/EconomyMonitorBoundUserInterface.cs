@@ -15,6 +15,8 @@ public sealed class EconomyMonitorBoundUserInterface : BoundUserInterface
         base.Open();
         _window = this.CreateWindow<EconomyMonitorWindow>();
         _window.OnClose += Close;
+        _window.OnDeleteRecords += ids => SendMessage(new EconomyMonitorDeleteMessage(ids));
+        _window.OnPrintRecords += ids => SendMessage(new EconomyMonitorPrintMessage(ids));
     }
 
     protected override void UpdateState(BoundUserInterfaceState state)

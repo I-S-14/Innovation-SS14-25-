@@ -24,4 +24,19 @@ public sealed partial class JobSalaryComponent : Component
     /// <summary>ID card entity that announces salary payments in IC chat.</summary>
     [DataField]
     public EntityUid? IdCardEntity;
+
+    /// <summary>Station whose fund pays this salary.</summary>
+    [DataField]
+    public EntityUid? Station;
+
+    /// <summary>
+    /// Station account prototype ID the salary is debited from.
+    /// Null — salary is paid without a debit (legacy behavior).
+    /// </summary>
+    [DataField]
+    public string? PayerAccount;
+
+    /// <summary>Accumulated unpaid salary from ticks when the fund was empty.</summary>
+    [DataField]
+    public int OwedSalary;
 }

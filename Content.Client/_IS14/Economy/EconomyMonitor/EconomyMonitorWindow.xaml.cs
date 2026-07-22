@@ -34,6 +34,14 @@ public sealed partial class EconomyMonitorWindow : FancyWindow
 
     private EconomyMonitorUiState? _lastState;
     private NetEntity? _selectedVendor;
+    private readonly HashSet<int> _selectedIds = new();
+    private readonly HashSet<Guid> _expandedGroups = new();
+
+    /// <summary>Raised with the selected record ids when the user presses the delete button.</summary>
+    public event Action<List<int>>? OnDeleteRecords;
+
+    /// <summary>Raised with the selected record ids when the user presses the print button.</summary>
+    public event Action<List<int>>? OnPrintRecords;
 
     public EconomyMonitorWindow()
     {
@@ -55,8 +63,20 @@ public sealed partial class EconomyMonitorWindow : FancyWindow
             AccountSearch.Clear();
             _selectedVendor = null;
             NavMap.FocusVendor = null;
-            RefreshVendorList();
+            RefreshVendors();
             RefreshLog();
+        };
+
+        DeleteBtn.OnPressed += _ =>
+        {
+            if (_selectedIds.Count > 0)
+                OnDeleteRecords?.Invoke(new List<int>(_selectedIds));
+        };
+
+        PrintBtn.OnPressed += _ =>
+        {
+            if (_selectedIds.Count > 0)
+                OnPrintRecords?.Invoke(new List<int>(_selectedIds));
         };
     }
 
@@ -69,36 +89,19 @@ public sealed partial class EconomyMonitorWindow : FancyWindow
         else
             NavMap.Visible = false;
 
-        RefreshVendorList();
+        RefreshVendors();
         RefreshLog();
     }
 
-    // ── Vendor list ───────────────────────────────────────────────────────────
+    // ── Vendor blips on the map ───────────────────────────────────────────────
 
-    private void RefreshVendorList()
+    private void RefreshVendors()
     {
-        VendorList.RemoveAllChildren();
         NavMap.TrackedEntities.Clear();
         NavMap.LocalizedNames.Clear();
 
         if (_lastState == null)
             return;
-
-        var allBtn = new Button
-        {
-            Text = Loc.GetString("economy-monitor-vendor-all"),
-            HorizontalExpand = true,
-            ToggleMode = true,
-            Pressed = _selectedVendor == null,
-        };
-        allBtn.OnPressed += _ =>
-        {
-            _selectedVendor = null;
-            NavMap.FocusVendor = null;
-            RefreshVendorList();
-            RefreshLog();
-        };
-        VendorList.AddChild(allBtn);
 
         foreach (var vendor in _lastState.Vendors)
         {
@@ -125,28 +128,6 @@ public sealed partial class EconomyMonitorWindow : FancyWindow
                 scale: 1.5f);
 
             NavMap.LocalizedNames[vendor.Entity] = vendor.Name;
-
-            var btn = new Button
-            {
-                Text = vendor.Name,
-                HorizontalExpand = true,
-                ToggleMode = true,
-                Pressed = isSelected,
-            };
-
-            var capturedVendor = vendor;
-            var capturedCoords = localCoords;
-            btn.OnPressed += _ =>
-            {
-                _selectedVendor = _selectedVendor == capturedVendor.Entity ? null : capturedVendor.Entity;
-                NavMap.FocusVendor = _selectedVendor;
-                if (_selectedVendor.HasValue)
-                    NavMap.CenterToCoordinates(capturedCoords);
-                RefreshVendorList();
-                RefreshLog();
-            };
-
-            VendorList.AddChild(btn);
         }
     }
 
@@ -157,23 +138,62 @@ public sealed partial class EconomyMonitorWindow : FancyWindow
         LogRows.RemoveAllChildren();
 
         if (_lastState == null)
+        {
+            _selectedIds.Clear();
+            UpdateActionButtons();
             return;
+        }
+
+        // Drop selections/expansions pointing at records that no longer exist.
+        var presentIds = new HashSet<int>();
+        var groups = new Dictionary<Guid, List<EconomyTransactionRecord>>();
+        foreach (var record in _lastState.Records)
+        {
+            presentIds.Add(record.Id);
+            if (record.GroupId is not { } groupId)
+                continue;
+
+            if (!groups.TryGetValue(groupId, out var members))
+                groups[groupId] = members = new List<EconomyTransactionRecord>();
+            members.Add(record);
+        }
+        _selectedIds.IntersectWith(presentIds);
+        _expandedGroups.RemoveWhere(g => !groups.ContainsKey(g));
 
         int? accountFilter = null;
         var text = AccountSearch.Text.Trim().TrimStart('#');
         if (int.TryParse(text, out var acc))
             accountFilter = acc;
 
+        var renderedGroups = new HashSet<Guid>();
         var rowIndex = 0;
         foreach (var record in _lastState.Records)
         {
-            if (_selectedVendor.HasValue && record.SourceEntity != _selectedVendor)
-                continue;
-            if (accountFilter.HasValue && record.AccountNumber != accountFilter.Value)
-                continue;
+            if (record.GroupId is { } groupId && groups[groupId].Count > 1)
+            {
+                if (!renderedGroups.Add(groupId))
+                    continue;
 
-            LogRows.AddChild(BuildRow(record, rowIndex));
-            rowIndex++;
+                var members = groups[groupId];
+                if (!AnyPassesFilters(members, accountFilter))
+                    continue;
+
+                var expanded = _expandedGroups.Contains(groupId);
+                LogRows.AddChild(BuildGroupRow(members, groupId, expanded, rowIndex++));
+
+                if (!expanded)
+                    continue;
+
+                foreach (var member in members)
+                    LogRows.AddChild(BuildRow(member, rowIndex++, isChild: true));
+            }
+            else
+            {
+                if (!PassesFilters(record, accountFilter))
+                    continue;
+
+                LogRows.AddChild(BuildRow(record, rowIndex++, isChild: false));
+            }
         }
 
         if (rowIndex == 0)
@@ -185,24 +205,94 @@ public sealed partial class EconomyMonitorWindow : FancyWindow
                 Margin = new Thickness(4, 8),
             });
         }
+
+        UpdateActionButtons();
     }
 
-    private Control BuildRow(EconomyTransactionRecord record, int index)
+    private bool PassesFilters(EconomyTransactionRecord record, int? accountFilter)
+    {
+        if (_selectedVendor.HasValue && record.SourceEntity != _selectedVendor)
+            return false;
+        if (accountFilter.HasValue && record.AccountNumber != accountFilter.Value)
+            return false;
+        return true;
+    }
+
+    private bool AnyPassesFilters(List<EconomyTransactionRecord> records, int? accountFilter)
+    {
+        foreach (var record in records)
+        {
+            if (PassesFilters(record, accountFilter))
+                return true;
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// Collapsed row for one purchase: shows the payer's transaction and expands
+    /// into the individual money movements (payment, fund revenue, tax) on click.
+    /// </summary>
+    private Control BuildGroupRow(List<EconomyTransactionRecord> members, Guid groupId, bool expanded, int index)
+    {
+        // The payer's debit is the "face" of the purchase.
+        var primary = members[0];
+        foreach (var member in members)
+        {
+            if (member.Delta >= 0)
+                continue;
+            primary = member;
+            break;
+        }
+
+        var bg = index % 2 == 0 ? ColRowEven : ColRowOdd;
+        var marker = expanded ? "[-]" : $"[+{members.Count.ToString()}]";
+        var amtStr = primary.Delta >= 0 ? $"+{primary.Delta}" : primary.Delta.ToString();
+        var amtColor = primary.Delta > 0 ? ColIncome : primary.Delta < 0 ? ColExpense : ColNeutral;
+
+        var hbox = new BoxContainer { Orientation = BoxContainer.LayoutOrientation.Horizontal, HorizontalExpand = true };
+        hbox.AddChild(MakeCell(FormatTime(primary.Timestamp), 80, ColMuted));
+        hbox.AddChild(MakeCell($"#{primary.AccountNumber}",   70, ColNeutral));
+        hbox.AddChild(MakeCell(amtStr,                        80, amtColor));
+        hbox.AddChild(MakeCell($"{marker} {primary.Description}", 0, Color.White, expand: true));
+        hbox.AddChild(MakeCell(primary.NewBalance.ToString(), 80, ColNeutral));
+
+        var btn = new Button
+        {
+            HorizontalExpand = true,
+            StyleBoxOverride = new StyleBoxFlat { BackgroundColor = bg },
+        };
+        btn.AddChild(hbox);
+        btn.OnPressed += _ =>
+        {
+            if (!_expandedGroups.Remove(groupId))
+                _expandedGroups.Add(groupId);
+            RefreshLog();
+        };
+
+        var memberIds = new List<int>(members.Count);
+        foreach (var member in members)
+            memberIds.Add(member.Id);
+
+        return WrapWithCheckbox(btn, memberIds, bg);
+    }
+
+    private Control BuildRow(EconomyTransactionRecord record, int index, bool isChild)
     {
         var bg = index % 2 == 0 ? ColRowEven : ColRowOdd;
 
         var amtStr   = record.Delta >= 0 ? $"+{record.Delta}" : record.Delta.ToString();
         var amtColor = record.Delta > 0 ? ColIncome : record.Delta < 0 ? ColExpense : ColNeutral;
-        var locMark  = record.SourceEntity.HasValue ? "📍" : "";
+        var descColor = isChild ? ColNeutral : Color.White;
+        var description = isChild ? $"    - {record.Description}" : record.Description;
 
         var hbox = new BoxContainer { Orientation = BoxContainer.LayoutOrientation.Horizontal, HorizontalExpand = true };
         hbox.AddChild(MakeCell(FormatTime(record.Timestamp),  80, ColMuted));
         hbox.AddChild(MakeCell($"#{record.AccountNumber}",    70, ColNeutral));
         hbox.AddChild(MakeCell(amtStr,                        80, amtColor));
-        hbox.AddChild(MakeCell(record.Description,             0, Color.White, expand: true));
+        hbox.AddChild(MakeCell(description,                    0, descColor, expand: true));
         hbox.AddChild(MakeCell(record.NewBalance.ToString(),  80, ColNeutral));
-        hbox.AddChild(MakeCell(locMark,                       24, ColMuted));
 
+        Control content;
         if (record.Location.HasValue)
         {
             var btn = new Button
@@ -224,23 +314,84 @@ public sealed partial class EconomyMonitorWindow : FancyWindow
                 {
                     _selectedVendor = capturedRecord.SourceEntity.Value;
                     NavMap.FocusVendor = _selectedVendor;
-                    RefreshVendorList();
+                    RefreshVendors();
                 }
             };
-            return btn;
+            content = btn;
+        }
+        else
+        {
+            var panel = new PanelContainer { HorizontalExpand = true };
+            panel.PanelOverride = new StyleBoxFlat { BackgroundColor = bg };
+            panel.AddChild(hbox);
+            content = panel;
         }
 
-        var panel = new PanelContainer { HorizontalExpand = true };
-        panel.PanelOverride = new StyleBoxFlat { BackgroundColor = bg };
-        panel.AddChild(hbox);
-        return panel;
+        // Sub-rows of an expanded purchase are selected via the group row's checkbox;
+        // a spacer keeps their columns aligned with checkbox rows.
+        if (!isChild)
+            return WrapWithCheckbox(content, new List<int> { record.Id }, bg);
+
+        var childRow = new PanelContainer { HorizontalExpand = true };
+        childRow.PanelOverride = new StyleBoxFlat { BackgroundColor = bg };
+        var childBox = new BoxContainer { Orientation = BoxContainer.LayoutOrientation.Horizontal, HorizontalExpand = true };
+        childBox.AddChild(new Control { MinSize = new Vector2(29, 0) });
+        childBox.AddChild(content);
+        childRow.AddChild(childBox);
+        return childRow;
+    }
+
+    /// <summary>Puts a selection checkbox in front of a log row; toggling it (de)selects all given record ids.</summary>
+    private Control WrapWithCheckbox(Control content, List<int> recordIds, Color bg)
+    {
+        var allSelected = true;
+        foreach (var id in recordIds)
+        {
+            if (_selectedIds.Contains(id))
+                continue;
+            allSelected = false;
+            break;
+        }
+
+        var checkBox = new CheckBox
+        {
+            Pressed = allSelected,
+            Margin = new Thickness(6, 0, 2, 0),
+            VerticalAlignment = VAlignment.Center,
+        };
+        checkBox.OnToggled += args =>
+        {
+            foreach (var id in recordIds)
+            {
+                if (args.Pressed)
+                    _selectedIds.Add(id);
+                else
+                    _selectedIds.Remove(id);
+            }
+            UpdateActionButtons();
+        };
+
+        var row = new PanelContainer { HorizontalExpand = true };
+        row.PanelOverride = new StyleBoxFlat { BackgroundColor = bg };
+
+        var hbox = new BoxContainer { Orientation = BoxContainer.LayoutOrientation.Horizontal, HorizontalExpand = true };
+        hbox.AddChild(checkBox);
+        hbox.AddChild(content);
+        row.AddChild(hbox);
+        return row;
+    }
+
+    private void UpdateActionButtons()
+    {
+        DeleteBtn.Disabled = _selectedIds.Count == 0;
+        PrintBtn.Disabled = _selectedIds.Count == 0;
     }
 
     private void OnMapEntitySelected(NetEntity? entity)
     {
         _selectedVendor = entity;
         NavMap.FocusVendor = entity;
-        RefreshVendorList();
+        RefreshVendors();
         RefreshLog();
     }
 

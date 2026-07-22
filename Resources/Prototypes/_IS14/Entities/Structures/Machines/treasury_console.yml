@@ -1,0 +1,18 @@
+# Treasury console — shows station account balances, transfers treasury -> department funds.
+- type: entity
+  parent: IS14BaseCommandComputer
+  id: IS14TreasuryConsole
+  name: консоль казначейства
+  description: Терминал управления фондами станции. Требуется доступ командования.
+  components:
+  - type: PointLight
+    color: "#c9a53b"
+  - type: TreasuryConsole
+  - type: ActivatableUI
+    key: enum.TreasuryConsoleUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.TreasuryConsoleUiKey.Key:
+        type: TreasuryConsoleBoundUserInterface
+      enum.WiresUiKey.Key:
+        type: WiresBoundUserInterface

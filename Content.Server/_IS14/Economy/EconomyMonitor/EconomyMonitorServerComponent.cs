@@ -22,4 +22,7 @@ public sealed partial class EconomyMonitorServerComponent : Component
 
     /// <summary>Transaction log, oldest first.</summary>
     public List<EconomyTransactionRecord> Log = new();
+
+    /// <summary>Next unique id assigned to an incoming record.</summary>
+    public int NextRecordId = 1;
 }

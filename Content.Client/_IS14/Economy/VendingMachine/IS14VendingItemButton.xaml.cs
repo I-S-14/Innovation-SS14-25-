@@ -23,8 +23,6 @@ public sealed partial class IS14VendingItemButton : ContainerButton
     private static readonly Color ColorStockLow  = Color.FromHex("#A07828");
     private static readonly Color ColorStockNone = Color.FromHex("#993030");
 
-    private bool _isDisabled;
-
     public IS14VendingItemButton()
     {
         RobustXamlLoader.Load(this);
@@ -34,14 +32,16 @@ public sealed partial class IS14VendingItemButton : ContainerButton
     {
         var outOfStock = entry.Stock <= 0;
         var canAfford  = buyerBalance >= entry.Price;
-        _isDisabled = outOfStock || !canAfford || !hasAccess;
-        Disabled = _isDisabled;
+
+        // Like vanilla vending machines, buttons stay clickable no matter what —
+        // the server answers unavailable purchases with a deny buzz and screen flash.
+        var unavailable = outOfStock || !canAfford || !hasAccess;
 
         ToolTip = hasAccess ? entry.ItemName : Loc.GetString("is14-vending-no-access-tooltip");
 
         StyleBoxOverride = new StyleBoxFlat
         {
-            BackgroundColor = _isDisabled ? ColorDisabledBg : ColorNormal,
+            BackgroundColor = unavailable ? ColorDisabledBg : ColorNormal,
             BorderColor = ColorBorder,
             BorderThickness = new Thickness(1),
         };
@@ -67,7 +67,7 @@ public sealed partial class IS14VendingItemButton : ContainerButton
         IconView.SetPrototype(entry.ItemId);
 
         NameLabel.Text = entry.ItemName;
-        NameLabel.FontColorOverride = _isDisabled ? Color.FromHex("#888890") : Color.White;
+        NameLabel.FontColorOverride = unavailable ? Color.FromHex("#888890") : Color.White;
     }
 
     protected override void DrawModeChanged()

@@ -4,12 +4,18 @@ using Robust.Client.UserInterface;
 
 namespace Content.Client._IS14.Economy.VendingMachine;
 
+/// <summary>
+/// IS14 economy vending machine UI.
+/// NOTE: the class name deliberately does NOT end with "VendingMachineBoundUserInterface" —
+/// the engine resolves BUI types via <c>IReflectionManager.LooseGetType</c>, which matches by
+/// FullName suffix, so a longer name would hijack the vanilla lookup and break vanilla machines.
+/// </summary>
 [UsedImplicitly]
-public sealed class IS14VendingMachineBoundUserInterface : BoundUserInterface
+public sealed class IS14VendingBoundUserInterface : BoundUserInterface
 {
     private IS14VendingMachineWindow? _window;
 
-    public IS14VendingMachineBoundUserInterface(EntityUid owner, Enum uiKey) : base(owner, uiKey)
+    public IS14VendingBoundUserInterface(EntityUid owner, Enum uiKey) : base(owner, uiKey)
     {
     }
 

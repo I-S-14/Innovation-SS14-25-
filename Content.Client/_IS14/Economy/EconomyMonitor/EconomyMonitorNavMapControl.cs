@@ -39,6 +39,16 @@ public sealed class EconomyMonitorNavMapControl : NavMapControl
 
         _focusPanel.AddChild(_focusLabel);
         AddChild(_focusPanel);
+
+        // The base NavMapControl hardcodes a 650px-wide top panel (zoom/beacons/recenter),
+        // which overflows our narrow side column — let it size to its content instead.
+        if (ChildCount > 0 && GetChild(0) is BoxContainer { ChildCount: > 0 } topContainer
+            && topContainer.GetChild(0) is PanelContainer topPanel)
+        {
+            topPanel.SetWidth = float.NaN;
+            topPanel.HorizontalExpand = false;
+            topPanel.HorizontalAlignment = HAlignment.Left;
+        }
     }
 
     protected override void FrameUpdate(FrameEventArgs args)

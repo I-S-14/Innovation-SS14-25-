@@ -1,19 +1,70 @@
-# Base IS14 vending machine — override Sprite, MachineName and tabs in children
+# Base IS14 vending machine — override Sprite, MachineName and tabs in children.
+# Behaves like a vanilla vending machine (breaks, repairs, panel + wires, powered screen),
+# but sells goods for credits through the IS14 economy UI.
+# Fork machines live in _IS14/Entities/Structures/Machines/vendomats.yml.
 - type: entity
   id: IS14VendingMachineBase
   name: Торговый автомат
   description: Продаёт разные вещи за кредиты.
-  parent: BaseStructureDynamic
+  parent: BaseMachinePowered
   abstract: true
   components:
   - type: IS14VendingMachine
   - type: UserInterface
     interfaces:
       enum.IS14VendingMachineUiKey.Key:
-        type: IS14VendingMachineBoundUserInterface
+        type: IS14VendingBoundUserInterface
+      enum.WiresUiKey.Key:
+        type: WiresBoundUserInterface
+  - type: ActivatableUI
+    key: enum.IS14VendingMachineUiKey.Key
+  - type: ActivatableUIRequiresPower
+  - type: ActivatableUIRequiresAnchor
+  - type: ApcPowerReceiver
+    powerLoad: 200
+  - type: Appearance
+  - type: WiresPanel
+  - type: WiresVisuals
   - type: Wires
     boardName: wires-board-name-vendingmachine
     layoutId: IS14Vending
+  - type: Electrified
+    enabled: false
+    usesApcPower: true
+  - type: Repairable
+    doAfterDelay: 8
+  - type: Destructible
+    thresholds:
+    - trigger: # Excess damage, don't do anything
+        !type:DamageTrigger
+        damage: 200
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalGlassBreak
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Breakage" ]
+  - type: AmbientOnPowered
+  - type: AmbientSound
+    volume: -9
+    range: 3
+    enabled: false
+    sound:
+      path: /Audio/Ambience/Objects/vending_machine_hum.ogg
+  - type: LitOnPowered
+  - type: PointLight
+    enabled: false
+    radius: 2
+    energy: 1.6
+    color: "#4b93ad"
+    mask: /Textures/Effects/LightMasks/cone.png
+    autoRot: true
   - type: InteractionOutline
   - type: Fixtures
     fixtures:
@@ -30,185 +81,10 @@
     sprite: Structures/Machines/VendingMachines/engivend.rsi
     snapCardinals: true
     layers:
-    - state: off
+    - state: "off"
       map: ["enum.VendingMachineVisualLayers.Base"]
-    - state: normal-unshaded
+    - state: "normal-unshaded"
       map: ["enum.VendingMachineVisualLayers.BaseUnshaded"]
       shader: unshaded
-
-# Engineering tools vendor
-- type: entity
-  id: IS14VendingMachine
-  parent: IS14VendingMachineBase
-  name: EngineVend
-  description: Распродаёт инструменты инженерам.
-  components:
-  - type: IS14VendingMachine
-    machineName: EngineVend
-    adMessages:
-    - is14-vending-ad-engine-1
-    - is14-vending-ad-engine-2
-    tabs:
-    - name: Инструменты
-      inventory:
-      - itemId: Crowbar
-        price: 150
-        stock: 5
-      - itemId: Screwdriver
-        price: 120
-        stock: 5
-      - itemId: Wirecutter
-        price: 120
-        stock: 5
-      - itemId: Wrench
-        price: 100
-        stock: 5
-      - itemId: Wirecutter
-        price: 120
-        stock: 5
-      - itemId: Wrench
-        price: 100
-        stock: 5
-      - itemId: Wirecutter
-        price: 120
-        stock: 5
-      - itemId: Wrench
-        price: 100
-        stock: 5
-      - itemId: Wrench
-        price: 100
-        stock: 5
-      - itemId: Wirecutter
-        price: 120
-        stock: 5
-      - itemId: Wrench
-        price: 100
-        stock: 5
-      - itemId: Wirecutter
-        price: 120
-        stock: 5
-      - itemId: Wrench
-        price: 100
-        stock: 5
-    - name: Оборудование
-      inventory:
-      - itemId: Multitool
-        price: 300
-        stock: 3
-      - itemId: FlashlightLantern
-        price: 200
-        stock: 3
-    contrabandInventory:
-    - itemId: Welder
-      price: 400
-      stock: 3
-  - type: Sprite
-    sprite: Structures/Machines/VendingMachines/engivend.rsi
-    snapCardinals: true
-    layers:
-    - state: off
-      map: ["enum.VendingMachineVisualLayers.Base"]
-    - state: normal-unshaded
-      map: ["enum.VendingMachineVisualLayers.BaseUnshaded"]
-      shader: unshaded
-
-# Medical vendor
-- type: entity
-  id: IS14VendingMachineMedical
-  parent: IS14VendingMachineBase
-  name: MediVend
-  description: Базовые медикаменты за кредиты.
-  components:
-  - type: IS14VendingMachine
-    machineName: MediVend
-    adMessages:
-    - is14-vending-ad-medical-1
-    - is14-vending-ad-medical-2
-    tabs:
-    - name: Базовое
-      inventory:
-      - itemId: Brutepack
-        price: 80
-        stock: 10
-      - itemId: Ointment
-        price: 80
-        stock: 10
-      - itemId: Gauze
-        price: 60
-        stock: 10
-      - itemId: Brutepack
-        price: 80
-        stock: 10
-      - itemId: Ointment
-        price: 80
-        stock: 10
-      - itemId: Gauze
-        price: 60
-        stock: 10
-      - itemId: Brutepack
-        price: 80
-        stock: 10
-      - itemId: Ointment
-        price: 80
-        stock: 10
-      - itemId: Gauze
-        price: 60
-        stock: 10
-      - itemId: Brutepack
-        price: 80
-        stock: 10
-      - itemId: Ointment
-        price: 80
-        stock: 10
-      - itemId: Gauze
-        price: 60
-        stock: 10
-      - itemId: Brutepack
-        price: 80
-        stock: 10
-      - itemId: Ointment
-        price: 80
-        stock: 10
-      - itemId: Gauze
-        price: 60
-        stock: 10
-      - itemId: Brutepack
-        price: 80
-        stock: 10
-      - itemId: Ointment
-        price: 80
-        stock: 10
-      - itemId: Gauze
-        price: 60
-        stock: 10
-      - itemId: Brutepack
-        price: 80
-        stock: 10
-      - itemId: Ointment
-        price: 80
-        stock: 10
-      - itemId: Gauze
-        price: 60
-        stock: 10
-    - name: Продвинутое
-      access: [ Medical ]
-      inventory:
-      - itemId: Bloodpack
-        price: 300
-        stock: 5
-      - itemId: Syringe
-        price: 50
-        stock: 10
-    contrabandInventory:
-    - itemId: Stimpack
-      price: 500
-      stock: 3
-  - type: Sprite
-    sprite: Structures/Machines/VendingMachines/medivend.rsi
-    snapCardinals: true
-    layers:
-    - state: off
-      map: ["enum.VendingMachineVisualLayers.Base"]
-    - state: normal-unshaded
-      map: ["enum.VendingMachineVisualLayers.BaseUnshaded"]
-      shader: unshaded
+    - state: panel
+      map: ["enum.WiresVisualLayers.MaintenancePanel"]

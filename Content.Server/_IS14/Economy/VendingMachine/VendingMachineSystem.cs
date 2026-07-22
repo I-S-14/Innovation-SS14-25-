@@ -1,15 +1,22 @@
 using Content.Server.Access.Systems;
+using Content.Server.Power.EntitySystems;
+using Content.Server.Station.Systems;
+using Content.Shared._IS14.Economy.EconomyMonitor;
 using Content.Shared._IS14.Economy.VendingMachine;
 using Content.Shared.Access.Components;
 using Content.Shared.Access.Systems;
+using Content.Shared.Damage;
+using Content.Shared.Destructible;
 using Content.Shared.Hands.EntitySystems;
-using Content.Shared.Interaction;
+using Content.Shared.Power;
+using Content.Shared.UserInterface;
 using Robust.Server.GameObjects;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Localization;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
+using Robust.Shared.Timing;
 
 namespace Content.Server._IS14.Economy.VendingMachine;
 
@@ -20,17 +27,26 @@ public sealed class VendingMachineSystem : EntitySystem
     [Dependency] private readonly IdCardSystem _idCard = default!;
     [Dependency] private readonly SharedHandsSystem _hands = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
+    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
     [Dependency] private readonly IPrototypeManager _prototypes = default!;
     [Dependency] private readonly ILocalizationManager _loc = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
+    [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly UserInterfaceSystem _ui = default!;
     [Dependency] private readonly TransformSystem _transform = default!;
+    [Dependency] private readonly StationSystem _station = default!;
+    [Dependency] private readonly StationBankAccountSystem _stationBank = default!;
+    [Dependency] private readonly PowerReceiverSystem _power = default!;
 
     public override void Initialize()
     {
         base.Initialize();
 
-        SubscribeLocalEvent<IS14VendingMachineComponent, ActivateInWorldEvent>(OnActivate);
+        SubscribeLocalEvent<IS14VendingMachineComponent, MapInitEvent>(OnMapInit);
+        SubscribeLocalEvent<IS14VendingMachineComponent, PowerChangedEvent>(OnPowerChanged);
+        SubscribeLocalEvent<IS14VendingMachineComponent, BreakageEventArgs>(OnBreak);
+        SubscribeLocalEvent<IS14VendingMachineComponent, DamageChangedEvent>(OnDamageChanged);
+        SubscribeLocalEvent<IS14VendingMachineComponent, ActivatableUIOpenAttemptEvent>(OnUiOpenAttempt);
 
         Subs.BuiEvents<IS14VendingMachineComponent>(IS14VendingMachineUiKey.Key, subs =>
         {
@@ -39,13 +55,55 @@ public sealed class VendingMachineSystem : EntitySystem
         });
     }
 
-    private void OnActivate(Entity<IS14VendingMachineComponent> ent, ref ActivateInWorldEvent args)
+    /// <summary>Reverts expired deny animations back to the normal screen.</summary>
+    public override void Update(float frameTime)
     {
-        if (args.Handled)
-            return;
+        base.Update(frameTime);
 
-        args.Handled = true;
-        _ui.TryOpenUi(ent.Owner, IS14VendingMachineUiKey.Key, args.User);
+        var now = _timing.CurTime;
+        var query = EntityQueryEnumerator<IS14VendingMachineComponent>();
+        while (query.MoveNext(out var uid, out var comp))
+        {
+            if (comp.DenyEnd == TimeSpan.Zero || now < comp.DenyEnd)
+                continue;
+
+            comp.DenyEnd = TimeSpan.Zero;
+            UpdateVisualState((uid, comp));
+        }
+    }
+
+    private void OnMapInit(Entity<IS14VendingMachineComponent> ent, ref MapInitEvent args)
+    {
+        UpdateVisualState(ent);
+    }
+
+    private void OnPowerChanged(Entity<IS14VendingMachineComponent> ent, ref PowerChangedEvent args)
+    {
+        UpdateVisualState(ent);
+    }
+
+    private void OnBreak(Entity<IS14VendingMachineComponent> ent, ref BreakageEventArgs args)
+    {
+        ent.Comp.Broken = true;
+        ent.Comp.DenyEnd = TimeSpan.Zero;
+        _ui.CloseUi(ent.Owner, IS14VendingMachineUiKey.Key);
+        UpdateVisualState(ent);
+    }
+
+    private void OnDamageChanged(Entity<IS14VendingMachineComponent> ent, ref DamageChangedEvent args)
+    {
+        // Repaired (damage went down below the breakage threshold via welding).
+        if (!args.DamageIncreased && ent.Comp.Broken)
+        {
+            ent.Comp.Broken = false;
+            UpdateVisualState(ent);
+        }
+    }
+
+    private void OnUiOpenAttempt(Entity<IS14VendingMachineComponent> ent, ref ActivatableUIOpenAttemptEvent args)
+    {
+        if (ent.Comp.Broken)
+            args.Cancel();
     }
 
     private void OnUiOpened(Entity<IS14VendingMachineComponent> ent, ref BoundUIOpenedEvent args)
@@ -56,6 +114,13 @@ public sealed class VendingMachineSystem : EntitySystem
     private void OnBuy(Entity<IS14VendingMachineComponent> ent, ref IS14VendingMachineBuyMessage args)
     {
         var buyer = args.Actor;
+
+        // The UI can stay open while the machine breaks, is unwrenched or loses power — recheck here.
+        if (ent.Comp.Broken || !Transform(ent.Owner).Anchored || !_power.IsPowered(ent.Owner))
+        {
+            Deny(ent);
+            return;
+        }
 
         List<VendingMachineEntry>? inventory;
         if (args.TabIndex < 0)
@@ -74,7 +139,7 @@ public sealed class VendingMachineSystem : EntitySystem
 
         if (inventory == null || args.ItemIndex < 0 || args.ItemIndex >= inventory.Count)
         {
-            _audio.PlayPvs(ent.Comp.DenySound, ent.Owner);
+            Deny(ent);
             return;
         }
 
@@ -83,15 +148,19 @@ public sealed class VendingMachineSystem : EntitySystem
         var itemName = entry.ItemId.ToString();
         if (_prototypes.TryIndex<EntityPrototype>(entry.ItemId, out var entProto))
             itemName = entProto.Name;
-        var purchaseDescription = Loc.GetString("economy-transaction-vending-purchase", ("item", itemName), ("machine", ent.Comp.MachineName));
+        var purchaseDescription = Loc.GetString("economy-transaction-vending-purchase", ("item", itemName), ("machine", GetMachineName(ent)));
 
-        if (entry.Stock <= 0 || !_banking.TryChangeBalance(buyer, -entry.Price, out _, purchaseDescription, ent.Owner))
+        // One purchase = one log group: payment, fund revenue and tax collapse into a single monitor row.
+        var purchaseGroup = Guid.NewGuid();
+
+        if (entry.Stock <= 0 || !_banking.TryChangeBalance(buyer, -entry.Price, out _, purchaseDescription, ent.Owner, purchaseGroup))
         {
-            _audio.PlayPvs(ent.Comp.DenySound, ent.Owner);
+            Deny(ent);
             return;
         }
 
         entry.Stock--;
+        CreditRevenue(ent, entry.Price, itemName, purchaseGroup);
 
         var item = Spawn(entry.ItemId, Transform(ent.Owner).Coordinates);
         if (!_hands.TryPickupAnyHand(buyer, item))
@@ -99,6 +168,76 @@ public sealed class VendingMachineSystem : EntitySystem
 
         _audio.PlayPvs(ent.Comp.BuySound, ent.Owner);
         UpdateUiState(ent, buyer);
+    }
+
+    /// <summary>UI display name: the component override or the entity name.</summary>
+    private string GetMachineName(Entity<IS14VendingMachineComponent> ent)
+        => string.IsNullOrWhiteSpace(ent.Comp.MachineName) ? Name(ent.Owner) : ent.Comp.MachineName;
+
+    /// <summary>Plays the deny sound and flashes the deny screen state, like vanilla vending machines.</summary>
+    private void Deny(Entity<IS14VendingMachineComponent> ent)
+    {
+        _audio.PlayPvs(ent.Comp.DenySound, ent.Owner);
+
+        if (ent.Comp.Broken || !_power.IsPowered(ent.Owner))
+            return;
+
+        ent.Comp.DenyEnd = _timing.CurTime + ent.Comp.DenyDelay;
+        UpdateVisualState(ent);
+    }
+
+    private void UpdateVisualState(Entity<IS14VendingMachineComponent> ent)
+    {
+        var state = IS14VendingMachineVisualState.Normal;
+
+        if (ent.Comp.Broken)
+            state = IS14VendingMachineVisualState.Broken;
+        else if (!_power.IsPowered(ent.Owner))
+            state = IS14VendingMachineVisualState.Off;
+        else if (ent.Comp.DenyEnd != TimeSpan.Zero && _timing.CurTime < ent.Comp.DenyEnd)
+            state = IS14VendingMachineVisualState.Deny;
+
+        _appearance.SetData(ent.Owner, IS14VendingMachineVisuals.VisualState, state);
+    }
+
+    /// <summary>
+    /// Splits a sale between the machine's revenue fund and the treasury tax.
+    /// If the machine has no owning station or accounts, the money leaves the economy (sink).
+    /// </summary>
+    private void CreditRevenue(Entity<IS14VendingMachineComponent> ent, int price, string itemName, Guid purchaseGroup)
+    {
+        if (price <= 0)
+            return;
+
+        if (_station.GetOwningStation(ent.Owner) is not { } station)
+            return;
+
+        var tax = (int)MathF.Round(price * ent.Comp.TaxPercent);
+        var revenue = price - tax;
+
+        if (ent.Comp.RevenueAccount is { } fund && fund.Id != StationBankAccountSystem.Treasury)
+        {
+            if (_stationBank.TryChangeStationBalance(station, fund, revenue, out var fundBalance))
+            {
+                var account = _stationBank.GetStationAccount(station, fund)!;
+                RaiseLocalEvent(new EconomyTransactionEvent(account.AccountNumber, revenue, fundBalance,
+                    Loc.GetString("economy-transaction-vending-revenue", ("item", itemName), ("machine", GetMachineName(ent))),
+                    ent.Owner, purchaseGroup));
+            }
+        }
+        else
+        {
+            // No dedicated fund — the whole sale goes to the treasury.
+            tax = price;
+        }
+
+        if (tax > 0 && _stationBank.TryChangeStationBalance(station, StationBankAccountSystem.Treasury, tax, out var treasuryBalance))
+        {
+            var treasury = _stationBank.GetStationAccount(station, StationBankAccountSystem.Treasury)!;
+            RaiseLocalEvent(new EconomyTransactionEvent(treasury.AccountNumber, tax, treasuryBalance,
+                Loc.GetString("economy-transaction-vending-tax", ("machine", GetMachineName(ent))),
+                ent.Owner, purchaseGroup));
+        }
     }
 
     public void SetContraband(EntityUid uid, bool value, IS14VendingMachineComponent? comp = null)
@@ -130,7 +269,7 @@ public sealed class VendingMachineSystem : EntitySystem
 
         _ui.SetUiState(ent.Owner, IS14VendingMachineUiKey.Key,
             new IS14VendingMachineUiState(
-                ent.Comp.MachineName,
+                GetMachineName(ent),
                 balance,
                 ent.Comp.ContrabandUnlocked,
                 tabs,

@@ -7,22 +7,12 @@
                MinSize="800 480">
     <BoxContainer Orientation="Horizontal" VerticalExpand="True" HorizontalExpand="True">
 
-        <!-- ── Left: map + vendor list ── -->
-        <BoxContainer Orientation="Vertical" SetWidth="380" Margin="4 4 2 4">
+        <!-- ── Left: map ── -->
+        <BoxContainer Orientation="Vertical" SetWidth="380" Margin="4 4 2 4" RectClipContent="True">
 
             <ui:EconomyMonitorNavMapControl Name="NavMap"
                                             VerticalExpand="True"
-                                            HorizontalExpand="True"
-                                            MinHeight="260"
-                                            Margin="0 0 0 4"/>
-
-            <Label Text="{Loc 'economy-monitor-vendors-label'}"
-                   FontColorOverride="#8AACCC"
-                   Margin="2 4 2 2"/>
-
-            <ScrollContainer VerticalExpand="True" HScrollEnabled="False" MinHeight="100">
-                <BoxContainer Name="VendorList" Orientation="Vertical" HorizontalExpand="True"/>
-            </ScrollContainer>
+                                            HorizontalExpand="True"/>
 
         </BoxContainer>
 
@@ -42,10 +32,13 @@
                           HorizontalExpand="True"
                           PlaceHolder="{Loc 'economy-monitor-search-placeholder'}"/>
                 <Button Name="ClearBtn" Text="✕" SetWidth="30" Margin="4 0 0 0"/>
+                <Button Name="DeleteBtn" Text="{Loc 'economy-monitor-delete'}" Margin="8 0 0 0" Disabled="True"/>
+                <Button Name="PrintBtn" Text="{Loc 'economy-monitor-print'}" Margin="4 0 0 0" Disabled="True"/>
             </BoxContainer>
 
             <!-- Log header -->
             <BoxContainer Name="LogHeader" Orientation="Horizontal" Margin="0 0 0 2">
+                <Label Text="" SetWidth="28" Margin="4 2"/>
                 <Label Text="{Loc 'economy-monitor-col-time'}"
                        FontColorOverride="#8AACCC" SetWidth="80" Margin="4 2"/>
                 <Label Text="{Loc 'economy-monitor-col-account'}"
@@ -56,7 +49,6 @@
                        FontColorOverride="#8AACCC" HorizontalExpand="True" Margin="4 2"/>
                 <Label Text="{Loc 'economy-monitor-col-balance'}"
                        FontColorOverride="#8AACCC" SetWidth="80" Margin="4 2"/>
-                <Label Text="" SetWidth="24" Margin="4 2"/>
             </BoxContainer>
 
             <PanelContainer StyleClasses="LowDivider" Margin="0 0 0 2"/>

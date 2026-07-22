@@ -27,4 +27,11 @@ public sealed partial class JobEconomyPrototype : IPrototype
     /// <summary>Seconds between salary payments. Default: 10 minutes.</summary>
     [DataField]
     public int SalaryIntervalSeconds = 600;
+
+    /// <summary>
+    /// Station account (department fund) that pays this job's salary.
+    /// If the station has no such account, salary is paid without a debit (legacy behavior).
+    /// </summary>
+    [DataField]
+    public ProtoId<StationAccountPrototype> PayerAccount = "StationTreasury";
 }

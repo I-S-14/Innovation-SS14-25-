@@ -38,7 +38,7 @@ public sealed class BankingSystem : EntitySystem
     /// Returns false if no account found or balance would go negative.
     /// Raises <see cref="EconomyTransactionEvent"/> on success.
     /// </summary>
-    public bool TryChangeBalance(EntityUid entity, int delta, out int newBalance, string description = "", EntityUid? sourceEntity = null)
+    public bool TryChangeBalance(EntityUid entity, int delta, out int newBalance, string description = "", EntityUid? sourceEntity = null, Guid? groupId = null)
     {
         newBalance = 0;
 
@@ -57,7 +57,23 @@ public sealed class BankingSystem : EntitySystem
 
         account.Balance += delta;
         newBalance = account.Balance;
-        RaiseLocalEvent(new EconomyTransactionEvent(holder.AccountNumber, delta, newBalance, description, sourceEntity));
+        RaiseLocalEvent(new EconomyTransactionEvent(holder.AccountNumber, delta, newBalance, description, sourceEntity, groupId));
+        return true;
+    }
+
+    /// <summary>
+    /// Changes the balance of an account by its number (no ID card involved).
+    /// Returns false if the account doesn't exist or the delta would push the balance below zero.
+    /// Raises <see cref="EconomyTransactionEvent"/> on success.
+    /// </summary>
+    public bool TryChangeAccountBalance(int accountNumber, int delta, string description = "", EntityUid? sourceEntity = null, Guid? groupId = null)
+    {
+        var account = _bankManager.GetAccount(accountNumber);
+        if (account == null || account.Balance + delta < 0)
+            return false;
+
+        account.Balance += delta;
+        RaiseLocalEvent(new EconomyTransactionEvent(accountNumber, delta, account.Balance, description, sourceEntity, groupId));
         return true;
     }
 }
