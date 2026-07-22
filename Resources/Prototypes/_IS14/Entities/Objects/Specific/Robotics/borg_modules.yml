@@ -8,9 +8,8 @@
     - state: module
     - state: module_telekinesis
   - type: ItemBorgModule
-    moduleId: Telekines
-    items:
-    - WeaponTetherGun
+    hands:
+    - item: WeaponTetherGun
   - type: BorgModuleIcon
     icon: { sprite: _IS14/Interface/Actions/actions_borg.rsi, state: icon_telekinesis }
 
@@ -24,20 +23,22 @@
     layers:
     - state: module
     - state: module_police
-  - type: DroppableBorgModule
-    moduleId: BorgModulePolice
-    items:
-    - id: WeaponDisabler
-      whitelist:
-        components:
-        - Gun
-    - id: Handcuffs
-      whitelist:
-        components:
-        - Handcuff
-    - id: Zipties
-      whitelist:
-        components:
-        - Handcuff
+  - type: ItemBorgModule
+    hands:
+    - item: WeaponDisabler
+      hand:
+        whitelist:
+          components:
+          - Gun
+    - item: Handcuffs
+      hand:
+        whitelist:
+          components:
+          - Handcuff
+    - item: Zipties
+      hand:
+        whitelist:
+          components:
+          - Handcuff
   - type: BorgModuleIcon
     icon: { sprite: _IS14/Interface/Actions/actions_borg.rsi, state: icon_police }

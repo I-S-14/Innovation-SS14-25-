@@ -1,7 +1,7 @@
 - type: vendingMachineInventory
   id: IS14MilicInventory
   startingInventory:
-     ClothingBackpackMessengerMailman: 2
+     ClothingBackpackMessenger: 2 # was ClothingBackpackMessengerMailman, removed upstream (mailfix TODO)
     # ClothingUniformMailCarrier: 2
     # ClothingUniformSkirtMailCarrier: 2
     # ClothingHeadMailCarrier: 2
@@ -17,7 +17,7 @@
 - type: vendingMachineInventory
   id: IS14ObshiyInventory
   startingInventory:
-     ClothingBackpackMessengerMailman: 2
+     ClothingBackpackMessenger: 2 # was ClothingBackpackMessengerMailman, removed upstream (mailfix TODO)
     # ClothingUniformMailCarrier: 2
     # ClothingUniformSkirtMailCarrier: 2
     # ClothingHeadMailCarrier: 2
@@ -33,7 +33,7 @@
 - type: vendingMachineInventory
   id: IS14UrInventory
   startingInventory:
-     ClothingBackpackMessengerMailman: 2
+     ClothingBackpackMessenger: 2 # was ClothingBackpackMessengerMailman, removed upstream (mailfix TODO)
     # ClothingUniformMailCarrier: 2
     # ClothingUniformSkirtMailCarrier: 2
     # ClothingHeadMailCarrier: 2
@@ -51,7 +51,7 @@
 - type: vendingMachineInventory
   id: IS14ExpGearInventory
   startingInventory:
-     ClothingBackpackMessengerMailman: 2
+     ClothingBackpackMessenger: 2 # was ClothingBackpackMessengerMailman, removed upstream (mailfix TODO)
     # ClothingUniformMailCarrier: 2
     # ClothingUniformSkirtMailCarrier: 2
     # ClothingHeadMailCarrier: 2
@@ -67,7 +67,7 @@
 - type: vendingMachineInventory
   id: IS14ExpInventory
   startingInventory:
-     ClothingBackpackMessengerMailman: 2
+     ClothingBackpackMessenger: 2 # was ClothingBackpackMessengerMailman, removed upstream (mailfix TODO)
     # ClothingUniformMailCarrier: 2
     # ClothingUniformSkirtMailCarrier: 2
     # ClothingHeadMailCarrier: 2
@@ -83,7 +83,7 @@
 - type: vendingMachineInventory
   id: IS14ChemInventory
   startingInventory:
-     ClothingBackpackMessengerMailman: 2
+     ClothingBackpackMessenger: 2 # was ClothingBackpackMessengerMailman, removed upstream (mailfix TODO)
     # ClothingUniformMailCarrier: 2
     # ClothingUniformSkirtMailCarrier: 2
     # ClothingHeadMailCarrier: 2
@@ -99,7 +99,7 @@
 - type: vendingMachineInventory
   id: IS14MedInventory
   startingInventory:
-     ClothingBackpackMessengerMailman: 2
+     ClothingBackpackMessenger: 2 # was ClothingBackpackMessengerMailman, removed upstream (mailfix TODO)
     # ClothingUniformMailCarrier: 2
     # ClothingUniformSkirtMailCarrier: 2
     # ClothingHeadMailCarrier: 2
@@ -120,7 +120,7 @@
 - type: vendingMachineInventory
   id: IS14CigsInventory
   startingInventory:
-     ClothingBackpackMessengerMailman: 2
+     ClothingBackpackMessenger: 2 # was ClothingBackpackMessengerMailman, removed upstream (mailfix TODO)
     # ClothingUniformMailCarrier: 2
     # ClothingUniformSkirtMailCarrier: 2
     # ClothingHeadMailCarrier: 2
@@ -136,7 +136,7 @@
 - type: vendingMachineInventory
   id: IS14KofeeInventory
   startingInventory:
-     ClothingBackpackMessengerMailman: 2
+     ClothingBackpackMessenger: 2 # was ClothingBackpackMessengerMailman, removed upstream (mailfix TODO)
     # ClothingUniformMailCarrier: 2
     # ClothingUniformSkirtMailCarrier: 2
     # ClothingHeadMailCarrier: 2
@@ -152,7 +152,7 @@
 - type: vendingMachineInventory
   id: IS14FoodInventory
   startingInventory:
-     ClothingBackpackMessengerMailman: 2
+     ClothingBackpackMessenger: 2 # was ClothingBackpackMessengerMailman, removed upstream (mailfix TODO)
     # ClothingUniformMailCarrier: 2
     # ClothingUniformSkirtMailCarrier: 2
     # ClothingHeadMailCarrier: 2
@@ -168,7 +168,7 @@
 - type: vendingMachineInventory
   id: IS14WaterInventory
   startingInventory:
-     ClothingBackpackMessengerMailman: 2
+     ClothingBackpackMessenger: 2 # was ClothingBackpackMessengerMailman, removed upstream (mailfix TODO)
     # ClothingUniformMailCarrier: 2
     # ClothingUniformSkirtMailCarrier: 2
     # ClothingHeadMailCarrier: 2

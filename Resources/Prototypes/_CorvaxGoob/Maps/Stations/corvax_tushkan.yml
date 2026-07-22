@@ -26,6 +26,7 @@
             # cargo
             Quartermaster: [ 1, 1 ]
             SalvageSpecialist: [ 2, 2 ]
+            ShaftMiner: [ 2, 2 ]
             CargoTechnician: [ 2, 2 ]
             # engineering
             ChiefEngineer: [ 1, 1 ]
@@ -58,7 +59,6 @@
             HeadOfPersonnel: [ 1, 1 ]
             Bartender: [ 1, 1 ]
             Botanist: [ 1, 1 ]
-            Boxer: [ 1, 1 ]
             Chaplain: [ 1, 1 ]
             Chef: [ 1, 1 ]
             Clown: [ 1, 1 ]

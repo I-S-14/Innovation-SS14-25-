@@ -15,10 +15,9 @@
   id: RadioHostGear
   equipment:
     ears: ClothingHeadsetAltRadioHost
-    eyes: ClothingEyesGlassesSunglasses
-    jumpsuit: ClothingUniformJumpsuitHawaiBlack
+#   eyes: ClothingEyesGlassesSunglasses # CorvaxGoob-loadouts: replaced on a RadiohostGlasses loadout
+    belt: ClothingBeltStorageWaistbag
     shoes: ClothingShoesColorBlack
-    back: ClothingBackpackSatchel
     id: RadioHostPDA
 
 - type: chameleonOutfit

@@ -119,7 +119,7 @@ public sealed class ParilkaSystem : EntitySystem
             if (!EntityManager.TryGetComponent<StackComponent>(used, out var stack))
                 return;
 
-            if (!_stack.Use(used, 1, stack!))
+            if (!_stack.TryUse((used, stack), 1))
                 return;
 
             component.Fuel = Math.Min(component.Fuel + 1, component.MaxFuel);

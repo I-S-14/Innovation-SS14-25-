@@ -1,5 +1,6 @@
 ent-LibrarianTranslatorImplant = имплант "библиотекарский переводчик"
     .desc = Позволяет понимать и говорить на большинстве языках.
+
 ent-ChevalTranslatorImplant = имплант "продвинутый переводчик Шшечи"
     .desc = Позволяет понимать и говорить на языке Шшечи.
 ent-BasicSpaceItalianTranslatorImplant = имплант "переводчик Космо-итальянский"
@@ -8,3 +9,5 @@ ent-SpaceItalianTranslatorImplant = имплант "продвинутый пе�
     .desc = Позволяет говорить на языке кухни.
 ent-YowKriolTranslatorImplant = имплант "продвинутый переводчик Йовикрол"
     .desc = Позволяет понимать и говорить на языке Йовикрол.
+ent-SignTranslatorImplant = имплант "переводчик жестов"
+    .desc = Позволяет понимать и говорить на языке жестов.

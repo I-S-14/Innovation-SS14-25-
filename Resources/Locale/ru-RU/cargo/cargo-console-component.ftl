@@ -27,11 +27,11 @@ cargo-console-menu-order-row-button-approve = Одобрить
 cargo-console-menu-order-row-button-cancel = Отменить
 cargo-console-menu-order-row-alerts-reason-absent = Причина не указана
 cargo-console-menu-order-row-alerts-requester-unknown = Неизвестно
-cargo-console-menu-populate-orders-cargo-order-row-product-name-text = { $productName } (x{ $orderAmount }) от { $orderRequester } со счёта [color={ $accountColor }]{ $account }[/color]
+cargo-console-menu-populate-orders-cargo-order-row-product-name-text = Заказ от { $orderRequester } со счёта [color={ $accountColor }]{ $account }[/color]
 cargo-console-menu-tab-title-orders = Заказы
 cargo-console-menu-account-action-transfer-limit-amount = ${ $amount }
 cargo-console-menu-tab-title-funds = Переводы
-cargo-console-menu-account-action-transfer-limit = [bold]Лимит перевода:[/bold] ${ $limit }
+cargo-console-menu-account-action-transfer-limit = Лимит перевода:
 cargo-console-menu-account-action-transfer-limit-unlimited-notifier = [color=gold](Безлимитно)[/color]
 cargo-console-menu-account-action-select = [bold]Действие аккаунта:[/bold]
 cargo-console-menu-account-action-amount = [bold]Сумма:[/bold] $
@@ -57,13 +57,14 @@ cargo-console-paper-reason-default = Отсутствует
 cargo-console-cooldown-count = Нельзя заказать более одного товара { $product } за раз.
 cargo-console-cooldown-active = Заказы на { $product } будут недоступны ещё { $timeCount } { $timeUnits }.
 cargo-console-paper-approver-default = Самостоятельно
-cargo-console-paper-print-name = Заказ #{ $orderNumber }
+cargo-console-paper-print-name = Заказ #{ $orderNumber } ({ $detailName } x { $detailQuantity })
 cargo-console-paper-print-text =
     Заказ #{ $orderNumber }
     Товар: { $itemName }
     Кол-во: { $orderQuantity }
     Запросил: { $requester }
-    Причина: { $reason }
+    Место доставки: { $destination }
+    Примечание: { $note }
     Одобрил: { $approver }
 # Cargo shuttle console
 cargo-shuttle-console-menu-title = Консоль вызова грузового шаттла
@@ -96,4 +97,5 @@ cargo-acquisition-slip-body = [head=3]Детали актива[/head]
     
     { "[head=3]Детали покупки[/head]" }
     { "[bold]Заказчик:[/bold]" } { $orderer }
-    { "[bold]Причина:[/bold]" } { $reason }
+    { "[bold]Место доставки:[/bold]" } { $destination }
+    { "[bold]Примечание:[/bold]" } { $note }

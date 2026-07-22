@@ -315,7 +315,7 @@
   - Glasses
   - Survival
   - Trinkets
-  - JanitorPlunger
+  - JanitorJobTrinkets # upstream #41094 folded JanitorPlunger into JanitorJobTrinkets
   - Animals
   - GroupSpeciesBreathTool
   # Goobstation - EE Plasmeme Change.
@@ -618,7 +618,7 @@
   #- HeadofSecurityShoes # Goobstation edit
   - SurvivalSecurity
   - Trinkets
-  - SecurityStar
+  - HeadofSecurityJobTrinkets # upstream #41094 folded SecurityStar into *JobTrinkets
   - Animals
   - GroupSpeciesBreathToolSecurity
   # Goobstation - EE Plasmeme Change.
@@ -641,7 +641,7 @@
   #- SecurityShoes
   - SurvivalSecurity
   - Trinkets
-  - SecurityStar
+  - WardenJobTrinkets # upstream #41094 folded SecurityStar into *JobTrinkets
   - Animals
   - GroupSpeciesBreathToolSecurity
   # Goobstation - EE Plasmeme Change.
@@ -664,7 +664,7 @@
   #- SecurityBelt
   - SurvivalSecurity
   - Trinkets
-  - SecurityStar
+  - SecurityJobTrinkets # upstream #41094 folded SecurityStar into *JobTrinkets
   - Animals
   - GroupSpeciesBreathToolSecurity
   # Goobstation - EE Plasmeme Change.
@@ -684,7 +684,7 @@
   #- SecurityShoes
   - SurvivalSecurity
   - Trinkets
-  - SecurityStar
+  - DetectiveJobTrinkets # upstream #41094 folded SecurityStar into *JobTrinkets
   - Animals
   - GroupSpeciesBreathToolSecurity
   # Goobstation - EE Plasmeme Change.
@@ -960,3 +960,14 @@
   groups:
   - GroupEVATank
   - SurvivalExtended
+
+# IS14: re-added after upstream merge dropped these local survival loadouts
+- type: roleLoadout
+  id: RoleSurvivalMilitaryDouble
+  groups:
+  - SurvivalMilitaryDouble
+
+- type: roleLoadout
+  id: RoleSurvivalSpaceNinja
+  groups:
+  - GroupEVATank

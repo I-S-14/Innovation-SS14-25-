@@ -16,6 +16,8 @@ using Content.Shared.Interaction;
 using Content.Shared.Interaction.Events;
 using Content.Shared.NPC.Systems;
 using Content.Shared.Pointing;
+using Content.Shared.Speech;
+using Content.Shared.Speech.Components;
 using Robust.Server.GameObjects;
 using Robust.Shared.Containers;
 using Robust.Shared.Map;
