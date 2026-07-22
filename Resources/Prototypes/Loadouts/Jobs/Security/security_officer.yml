@@ -175,12 +175,4 @@
 #  equipment:
 #    id: SeniorOfficerPDA
 
-# Misc
-- type: loadout
-  id: SecStar
-  effects:
-  - !type:GroupLoadoutEffect
-    proto: SecurityStarWorthy
-  storage:
-    back:
-    - Dinkystar
+# SecStar moved to Loadouts/Miscellaneous/jobtrinkets.yml (upstream #41094)
