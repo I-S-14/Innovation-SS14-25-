@@ -1,5 +1,6 @@
 using Content.Goobstation.Shared.Disease.Systems;
 using Content.Shared.Random;
+using Robust.Shared.Containers;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 
@@ -10,11 +11,13 @@ namespace Content.Goobstation.Shared.Disease.Components;
 [EntityCategory("Diseases")]
 public sealed partial class DiseaseComponent : Component
 {
+    public const string EffectContainerId = "diseaseEffectContainer";
+
     /// <summary>
     /// The effects this disease has
     /// </summary>
-    [ViewVariables, AutoNetworkedField]
-    public List<EntityUid> Effects = [];
+    [ViewVariables]
+    public Container Effects = default!;
 
     /// <summary>
     /// Current strength of the organism's immunity against this disease
@@ -41,7 +44,7 @@ public sealed partial class DiseaseComponent : Component
     /// How much to increase <see cref="InfectionProgress"/> per second
     /// </summary>
     [DataField, AutoNetworkedField]
-    public float InfectionRate = 0.01f;
+    public float InfectionRate = 0.00444444444444f;
 
     /// <summary>
     /// How much this disease mutates on spread
@@ -128,7 +131,7 @@ public sealed partial class DiseaseComponent : Component
     /// If <see cref="AffectsDead"/> is true, how to change infection progress per second in dead entities
     /// </summary>
     [DataField, AutoNetworkedField]
-    public float DeadInfectionRate = -0.01f;
+    public float DeadInfectionRate = 0.00444444444444f;
 
     /// <summary>
     /// Determiens the effects this disease mutates

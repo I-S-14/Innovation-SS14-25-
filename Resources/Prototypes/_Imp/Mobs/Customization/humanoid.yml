@@ -1,6 +1,3 @@
-# SPDX-FileCopyrightText: 2025 BloodfiendishOperator <141253729+Diggy0@users.noreply.github.com>
-# SPDX-FileCopyrightText: 2025 GoobBot <uristmchands@proton.me>
-#
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 # markings intended for multiple species go here
@@ -314,7 +311,7 @@
   id: HumanoidEyebags
   bodyPart: Head
   markingCategory: Head
-  speciesRestriction: [Human, Dwarf, Oni, Reptilian, SlimePerson, Arachnid, Tajaran, Shadowkin, Vulpkanin, Rodentia, Yowie] # goob edit - yowies
+  speciesRestriction: [Human, Dwarf, Oni, Reptilian, SlimePerson, Arachnid, Tajaran, Vulpkanin, Rodentia, Yowie] # goob edit - yowies # CorvaxGoob - Removed Shadowkin
   sprites:
   - sprite: _Impstation/Mobs/Customization/Humanoid/head.rsi
     state: eyebags

@@ -130,7 +130,7 @@ crime-assist-sophont-explanation =
     • [bold]Ощущение[/bold]: сущность имеет способность обрабатывать эмоции или их отсутствие, или как минимум способность распознавать собственную боль.
     • [bold]Самосознание[/bold]: сущность способна разумно изменять своё поведение в результате стимулов, или как минимум способна осознавать собственную разумность и ощущения.
     Любое разумное существо считается юридическим лицом, независимо от происхождения или предыдущего когнитивного статуса. Подобно любому другому разумному организму, разумное существо может предъявлять обвинения членам экипажа и быть судимым за преступления.
-mail-metrics-program-name = Почтовые Метрики
+mail-metrics-program-name = MailMetrics
 mail-metrics-header = Доход от Почтовых Доставок
 mail-metrics-opened = Доход (Открыто)
 mail-metrics-expired = Убытки (Просрочено)
@@ -146,8 +146,8 @@ mail-metrics-progress-percent = Успешность: { $successRate }%
 ## NanoChat
 
 # General
-nano-chat-program-name = НаноЧат
-nano-chat-title = НаноЧат
+nano-chat-program-name = NanoChat
+nano-chat-title = NanoChat
 nano-chat-new-chat = Новый чат
 nano-chat-contacts = КОНТАКТЫ
 nano-chat-no-chats = Нет активных чатов
@@ -176,9 +176,9 @@ nano-chat-job-placeholder = Введите должность (опционал�
 nano-chat-cancel = Отмена
 nano-chat-create = Создать
 # LogProbe additions
-log-probe-scan-nanochat = Просканированы логи НаноЧата { $card }
+log-probe-scan-nanochat = Просканированы логи NanoChat { $card }
 log-probe-header-access = Доступ сканера логов
-log-probe-header-nanochat = Сканер логов НаноЧата
+log-probe-header-nanochat = Сканер логов NanoChat
 log-probe-label-message = Сообщение
 log-probe-card-number = Карта: { $number }
 log-probe-recipients = { $count } Получателей

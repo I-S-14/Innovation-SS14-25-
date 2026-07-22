@@ -1,6 +1,8 @@
+using Content.Shared.Alert;
+using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
-using Content.Shared.Actions.Components;
+using Robust.Shared.Utility;
 
 namespace Content.Goobstation.Shared.Slasher.Components;
 
@@ -39,7 +41,7 @@ public sealed partial class SlasherIncorporealComponent : Component
     /// How long the do-after to enter incorporeal form takes.
     /// </summary>
     [DataField]
-    public TimeSpan IncorporealizeDelay = TimeSpan.FromSeconds(2);
+    public TimeSpan IncorporealizeDelay = TimeSpan.FromSeconds(5);
 
     /// <summary>
     /// Range to disable lights around the slasher when entering incorporeal.
@@ -58,4 +60,33 @@ public sealed partial class SlasherIncorporealComponent : Component
     /// </summary>
     [ViewVariables]
     public TimeSpan? IncorporealStartTime;
+
+    [ViewVariables]
+    public HashSet<string> AddedIncorporealComponents = new();
+
+    /// <summary>
+    /// Effect spawned when entering incorporeal state.
+    /// </summary>
+    [DataField]
+    public EntProtoId JauntInEffect = "EffectSlasherJauntIn";
+
+    /// <summary>
+    /// Effect spawned when exiting incorporeal state.
+    /// </summary>
+    [DataField]
+    public EntProtoId JauntOutEffect = "EffectSlasherJauntOut";
+
+    /// <summary>
+    /// Alert shown to indicate if the slasher is seen or unseen by observers.
+    /// </summary>
+    [DataField]
+    public ProtoId<AlertPrototype> SeenAlert = "SlasherSeen";
+
+    [DataField]
+    public SoundSpecifier JauntAppear =
+        new SoundPathSpecifier(new ResPath("/Audio/_Goobstation/Effects/Slasher/SlasherJauntAppear.ogg"));
+
+    [DataField]
+    public SoundSpecifier JauntDisappear =
+        new SoundPathSpecifier(new ResPath("/Audio/_Goobstation/Effects/Slasher/SlasherJauntDisappear.ogg"));
 }

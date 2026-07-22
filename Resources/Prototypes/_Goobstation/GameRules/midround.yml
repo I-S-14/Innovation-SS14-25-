@@ -1,16 +1,3 @@
-# SPDX-FileCopyrightText: 2025 Aiden <28298836+Aidenkrz@users.noreply.github.com>
-# SPDX-FileCopyrightText: 2025 Aidenkrz <aiden@djkraz.com>
-# SPDX-FileCopyrightText: 2025 Aviu00 <93730715+Aviu00@users.noreply.github.com>
-# SPDX-FileCopyrightText: 2025 GoobBot <uristmchands@proton.me>
-# SPDX-FileCopyrightText: 2025 Ilya246 <57039557+Ilya246@users.noreply.github.com>
-# SPDX-FileCopyrightText: 2025 Ilya246 <ilyukarno@gmail.com>
-# SPDX-FileCopyrightText: 2025 SolsticeOfTheWinter <solsticeofthewinter@gmail.com>
-# SPDX-FileCopyrightText: 2025 TheBorzoiMustConsume <197824988+TheBorzoiMustConsume@users.noreply.github.com>
-# SPDX-FileCopyrightText: 2025 gluesniffler <159397573+gluesniffler@users.noreply.github.com>
-# SPDX-FileCopyrightText: 2025 gus <august.eymann@gmail.com>
-# SPDX-FileCopyrightText: 2025 loltart <159829224+loltart@users.noreply.github.com>
-# SPDX-FileCopyrightText: 2025 loltart <lo1tartyt@gmail.com>
-#
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 - type: entity
@@ -36,7 +23,7 @@
       Death: 100
     eventType: HostilesSpawn
   - type: GameRule
-    chaosScore: 250
+    chaosScore: 400
   - type: AlertLevelInterceptionRule
   - type: AntagSelection
     selectionTime: PostPlayerSpawn
@@ -58,149 +45,6 @@
     tags:
       - MidroundAntag
 
-# Midround Changelings
-- type: entity
-  parent: Changeling
-  id: ChangelingMidround
-  components:
-  - type: StationEvent
-    earliestStart: 20
-    weight: 4
-    minimumPlayers: 15
-    maxOccurrences: 1
-    startAnnouncement: station-event-communication-interception
-    startAudio:
-      path: /Audio/Announcements/intercept.ogg
-    announcersStartAudio: # CorvaxGoob-CustomAnnouncers
-      Intern:
-        path: /Audio/_CorvaxGoob/Announcements/Announcers/Intern/intercept.ogg
-    duration: null
-    occursDuringRoundEnd: false
-    chaos:
-      Hostile: 150
-      Medical: 150
-      Death: 150
-    eventType: HostilesSpawn
-  - type: GameRule
-    chaosScore: 300
-  - type: AlertLevelInterceptionRule
-  - type: AntagSelection
-    selectionTime: PostPlayerSpawn
-    agentName: changeling-roundend-name
-    definitions:
-    - prefRoles: [ Changeling ]
-      min: 1
-      max: 2
-      playerRatio: 10
-      skills: # CorvaxGoob-Skills
-      - All
-      blacklist:
-        components:
-        - CommandStaff
-        - AntagImmune
-        - BibleUser
-      lateJoinAdditional: true
-      mindRoles:
-      - MindRoleChangeling
-  - type: Tag
-    tags:
-      - MidroundAntag
-
-# Midround Heretics
-- type: entity
-  parent: Heretic
-  id: HereticMidround
-  components:
-  - type: StationEvent
-    earliestStart: 20
-    weight: 3
-    minimumPlayers: 30
-    maxOccurrences: 1
-    startAnnouncement: station-event-communication-interception
-    startAudio:
-      path: /Audio/Announcements/intercept.ogg
-    announcersStartAudio: # CorvaxGoob-CustomAnnouncers
-      Intern:
-        path: /Audio/_CorvaxGoob/Announcements/Announcers/Intern/intercept.ogg
-    duration: null
-    occursDuringRoundEnd: false
-    chaos:
-      Hostile: 200
-      Medical: 150
-      Death: 200
-    eventType: HostilesSpawn
-  - type: GameRule
-    chaosScore: 300
-  - type: AlertLevelInterceptionRule
-  - type: AntagSelection
-    selectionTime: PostPlayerSpawn
-    agentName: heretic-roundend-name
-    definitions:
-    - prefRoles: [ Heretic ]
-      max: 2
-      min: 1
-      playerRatio: 15
-      blacklist:
-        components:
-        - CommandStaff
-        - AntagImmune
-        - BibleUser
-      startingGear: Heretictmidround
-      lateJoinAdditional: true
-      jobBlacklist: [ Chaplain ] # GOOBSTATION
-      skills: # CorvaxGoob-Skills
-      - All
-      mindRoles:
-      - MindRoleHeretic
-  - type: Tag
-    tags:
-      - MidroundAntag
-
-# Midround Revolutionaries
-- type: entity
-  parent: Revolutionary
-  id: RevolutionaryMidround
-  components:
-  - type: StationEvent
-    earliestStart: 20
-    weight: 3.5 # CorvaxGoob Changes: 3 > 3.5
-    minimumPlayers: 30
-    maxOccurrences: 1
-    duration: null
-    occursDuringRoundEnd: false
-    chaos:
-      Hostile: 250
-      Medical: 250
-      Death: 250
-    eventType: HostilesSpawn
-  - type: GameRule
-    chaosScore: 800
-  - type: AntagSelection
-    selectionTime: PostPlayerSpawn
-    definitions:
-    - prefRoles: [ HeadRev ]
-      max: 3
-      playerRatio: 15
-      blacklist:
-        components:
-        - AntagImmune
-        - CommandStaff
-      briefing:
-        text: head-rev-role-greeting
-        color: CornflowerBlue
-        sound: "/Audio/Ambience/Antag/headrev_start.ogg"
-      startingGear: HeadRevGear
-      skills: # CorvaxGoob-Skills
-      - All
-      components:
-      - type: Revolutionary
-      - type: HeadRevolutionary
-      mindRoles:
-      - MindRoleHeadRevolutionary
-  - type: Tag
-    tags:
-      - MidroundAntag
-
 # Skeleton Spawn
 - type: entity
   parent: BaseGameRule
@@ -210,13 +54,14 @@
     weight: 5
     duration: 1
     minimumPlayers: 15
+    maxOccurrences: 2
     chaos:
       Hostile: 40
       Medical: 40
       Death: 40
     eventType: Chaotic
   - type: GameRule
-    chaosScore: 90
+    chaosScore: 150
   - type: RandomEntityStorageSpawnRule
     prototype: MobSkeletonCloset
   - type: Tag
@@ -240,7 +85,7 @@
       Death: 400
     eventType: HostilesSpawn
   - type: GameRule
-    chaosScore: 1000
+    chaosScore: 1100
   - type: BlobSpawnRule
     carrierBlobProtos:
     - SpawnPointGhostBlobRat
@@ -261,7 +106,7 @@
     maxOccurrences: 2
     eventType: Neutral
   - type: GameRule
-    chaosScore: 0
+    chaosScore: 20
   - type: VentCrittersRule
     max: 1
     table: !type:GroupSelector
@@ -270,41 +115,6 @@
   - type: Tag
     tags:
     - MidroundAntag
-
-- type: entity
-  parent: BaseGameRule
-  id: GreyTideAntagMidround
-  components:
-  - type: StationEvent
-    weight: 3
-    duration: null
-    earliestStart: 20
-    minimumPlayers: 40
-    chaos:
-      Hostile: 50
-      Combat: 20
-    eventType: HostilesSpawn
-  - type: GameRule
-    chaosScore: 220
-  - type: AntagSpawner
-    prototype: MobHumanGreyTide
-  - type: AntagSelection
-    agentName: ghost-role-information-grey-tide-name
-    definitions:
-    - spawnerPrototype: SpawnPointGhostGreyTide
-      min: 1
-      max: 1
-      pickPlayer: false
-      mindRoles:
-      - MindRoleGhostRoleSoloAntagonist
-      briefing:
-        text: grey-tide-role-greeting
-        color: Red
-        sound: /Audio/_Goobstation/Music/the_gray_tide_song.ogg
-  - type: AntagRandomSpawn # TODO replace with MaintsSpawnRuleComponent once mapped
-  - type: AntagObjectives
-    objectives:
-    - GrayTideKillEveryoneObjective
 
 - type: entity
   parent: BaseGameRule
@@ -320,7 +130,7 @@
       Combat: 20
     eventType: HostilesSpawn
   - type: GameRule
-    chaosScore: 200
+    chaosScore: 280
   - type: AntagSpawner
     prototype: MobHumanTunnelClown
   - type: AntagSelection
@@ -355,7 +165,7 @@
       Combat: 40
     eventType: HostilesSpawn
   - type: GameRule
-    chaosScore: 350
+    chaosScore: 420
   - type: AntagSpawner
     prototype: MobHumanSingulothKnight
   - type: AntagSelection
@@ -393,7 +203,7 @@
       Hostile: 40
     eventType: HostilesSpawn
   - type: GameRule
-    chaosScore: 400
+    chaosScore: 550
   - type: AntagSpawner
     prototype: MobHumanDarkLord
   - type: AntagSelection
@@ -405,6 +215,7 @@
       pickPlayer: false
       mindRoles:
       - MindRoleGhostRoleSoloAntagonist
+      - MindRoleTraitor
       briefing:
         text: dark-lord-role-greeting
         color: Red
@@ -456,7 +267,7 @@
       Combat: 50
     eventType: HostilesSpawn
   - type: GameRule
-    chaosScore: 200
+    chaosScore: 300
   - type: AntagSpawner
     prototype: MobHumanMimeAssassin
   - type: AntagSelection
@@ -466,8 +277,11 @@
       min: 1
       max: 1
       pickPlayer: false
+      skills: # CorvaxGoob-Skills
+      - All
       mindRoles:
       - MindRoleGhostRoleSoloAntagonist
+      - MindRoleTraitor
       briefing:
         text: mime-Assassin-role-greeting
         color: Red
@@ -493,7 +307,7 @@
       Death: 60
     eventType: HostilesSpawn
   - type: GameRule
-    chaosScore: 250
+    chaosScore: 350
   - type: AntagSpawner
     prototype: MobHumanDarkPriest
   - type: AntagSelection
@@ -505,6 +319,7 @@
       pickPlayer: false
       mindRoles:
       - MindRoleGhostRoleFreeAgent
+      - MindRoleTraitor
       briefing:
         text: dark-priest-role-greeting
         color: Purple
@@ -527,11 +342,11 @@
   - type: AntagRandomObjectives
     sets:
     - groups: ThiefBigObjectiveGroups
-      prob: 0.7
+      prob: 1
       maxPicks: 2
     - groups: ThiefObjectiveGroups
-      maxPicks: 15
-    maxDifficulty: 2
+      maxPicks: 5
+    maxDifficulty: 10
   - type: StationEvent
     earliestStart: 35
     weight: 2.5
@@ -556,8 +371,11 @@
       min: 3
       max: 4
       pickPlayer: false
+      skills: # CorvaxGoob-Skills
+      - All
       mindRoles:
       - MindRoleGhostRoleTeamAntagonist
+      - MindRoleThief
       briefing:
         text: vox-raider-role-greeting
         color: Purple
@@ -598,8 +416,8 @@
       Death: 40
     eventType: HostilesSpawn
   - type: GameRule
-    chaosScore: 400
-  - type: AntagRandomSpawn
+    chaosScore: 600
+  - type: AntagLockerSpawn
   - type: AntagLoadProfileRule
     speciesOverride: Human
     speciesOverrideBlacklist:
@@ -608,6 +426,7 @@
     - Diona
     - Harpy
     - Plasmaman
+    forceMaxSize: true
   - type: AntagObjectives
     objectives:
     - SlasherSurviveObjective
@@ -620,7 +439,8 @@
       min: 1
       max: 1
       pickPlayer: false
-      startingGear: SlasherGear
+      skills: # CorvaxGoob-Skills
+      - All
       briefing:
         text: slasher-role-greeting
         color: Red
@@ -628,35 +448,172 @@
       mindRoles:
       - MindRoleSlasher
       components:
-      - type: Slasher
-      - type: SlasherSummonMachete
-      - type: SlasherStaggerArea
-      - type: SlasherRegenerate
-      - type: SlasherPossession
-      - type: SlasherBloodTrail
-      - type: SlasherIncorporeal
-      - type: SlasherSoulSteal
-      - type: SlasherSummonMeatSpike
-      - type: BreathingImmunity
-      - type: GunBlocked
-        PopupText: slasher-cannot-use-guns # Seems to be broken inside AntagSelection
-      - type: WeakToHoly
-      - type: NightVision
-        activateSound: null
-        deactivateSound: null
-      - type: Hunger
-        baseDecayRate: 0
-      - type: Thirst
-        baseDecayRate: 0
-      - type: MobThresholds
-        thresholds:
-          0: Alive
-          200: Dead
-      - type: RandomMetadata
-        nameSegments:
-        - NamesSlasherTitle
-        - NamesSlasher
-        nameFormat: name-format-slasher
+      - type: SlasherKitSelect
+        kits:
+          slasher-kit-butcher:
+            gear: SlasherGear
+            description: slasher-kit-butcher-desc
+            sprite:
+              sprite: _Goobstation/Objects/Specific/Slasher/mask.rsi
+              state: icon
+          slasher-kit-spring:
+            gear: SlasherGearSpring
+            description: slasher-kit-spring-desc
+            sprite:
+              sprite: _Goobstation/Objects/Specific/Slasher/spring_mask.rsi
+              state: icon
+            machetePrototype: SlasherMacheteSpring
+            bloodTrailMusic:
+              path: /Audio/_Goobstation/Music/fnaf_bonnies_lullaby.ogg
+              params:
+                volume: -4
+                loop: true
+          slasher-kit-billy:
+            gear: SlasherGearBilly
+            description: slasher-kit-billy-desc
+            sprite:
+              sprite: Objects/Tools/crowbar.rsi
+              state: icon
+            machetePrototype: SlasherCrowbar
+            bloodTrailMusic:
+              path: /Audio/_Goobstation/Music/that_handsome_devil_midi.ogg
+              params:
+                volume: -7
+                loop: true
+          slasher-kit-cult:
+            gear: SlasherGearCult
+            description: slasher-kit-cult-desc
+            sprite:
+              sprite: Clothing/Head/Hoods/cult.rsi
+              state: icon
+            machetePrototype: SlasherEldritchBlade
+            bloodTrailMusic:
+              path: /Audio/_Goobstation/Music/cultist_chant.ogg
+              params:
+                loop: true
+          slasher-kit-maintenance:
+            gear: SlasherGearMaintenance
+            description: slasher-kit-maintenance-desc
+            sprite:
+              sprite: Clothing/Head/Hats/papersacksmile.rsi
+              state: icon
+            machetePrototype: SlasherButchCleaver
+            bloodTrailMusic:
+              path: /Audio/_Goobstation/Music/scared_to_bits.ogg
+              params:
+                loop: true
+          slasher-kit-cannibal:
+            gear: SlasherGearCannibal
+            description: slasher-kit-cannibal-desc
+            sprite:
+              sprite: _Goobstation/Wizard/Clothing/Mask/pig.rsi
+              state: icon
+            machetePrototype: SlasherButchCleaver
+            bloodTrailMusic:
+              path: /Audio/_Goobstation/Music/horror_violin_string.ogg
+              params:
+                volume: -7
+                loop: true
+          slasher-kit-clown:
+            gear: SlasherGearClown
+            description: slasher-kit-clown-desc
+            sprite:
+              sprite: Clothing/Mask/clown.rsi
+              state: icon
+            machetePrototype: SlasherOffsetCaneClown
+            bloodTrailMusic:
+              path: /Audio/_Goobstation/Music/naktigonis_catwhisker.ogg
+              params:
+                volume: -7
+                loop: true
+            jumpscareSound:
+              path: /Audio/Items/Toys/pushHornHonk.ogg
+            meatSpikePrototype: SlasherMeatSpikeClown
+            bloodTrailReagent: Honk
+            soulStealSound:
+              path: /Audio/Items/Toys/pushHornHonk.ogg
+            ascensionGear: SlasherGearClownAscended
+            ascendanceAnnouncementKey: slasher-soulsteal-ascendance-clown
+            ascendanceSound:
+              path: /Audio/Items/Toys/pushHornHonk.ogg
+              params:
+                volume: -2
+          slasher-kit-glutton:
+            gear: SlasherGearGlutton
+            description: slasher-kit-glutton-desc
+            sprite:
+              sprite: Clothing/OuterClothing/Hardsuits/lingspacesuit.rsi
+              state: icon
+            machetePrototype: SlasherButchCleaver
+            bloodTrailMusic:
+              path: /Audio/_Goobstation/Music/padtext_horror.ogg
+              params:
+                volume: -7
+                loop: true
+          slasher-kit-hockey:
+            gear: SlasherGearHockey
+            description: slasher-kit-hockey-desc
+            sprite:
+              sprite: _Goobstation/Objects/Specific/Slasher/hockymask/hockey_mask.rsi
+              state: icon
+            bloodTrailMusic:
+              path: /Audio/_Goobstation/Music/horror_synthwave.ogg
+              params:
+                volume: -7
+                loop: true
+            jumpscareSound:
+              path: /Audio/_Goobstation/Effects/Slasher/JasonJumpscare.ogg
+        postSelectionComponents:
+          - type: Slasher
+          - type: SlasherSummonMachete
+          - type: SlasherStaggerArea
+          - type: SlasherRelentlessGrab
+          - type: SlasherRegenerate
+          - type: SlasherBloodTrail
+          - type: SlasherIncorporeal
+          - type: SlasherSoulSteal
+          - type: SlasherSummonMeatSpike
+          - type: NightVision
+            color: "#FF0000"
+            toggleAction: ActionSlasherNightVision
+            activateSound: !type:SoundCollectionSpecifier
+              collection: EyeOpen
+            deactivateSound: !type:SoundCollectionSpecifier
+              collection: EyeClose
+          - type: GrabIntent
+            grabThrownSpeed: 10
+            throwingDistance: 8
+            softGrabSpeedModifier: 1
+            hardGrabSpeedModifier: 1
+            chokeGrabSpeedModifier: 1
+          - type: BreathingImmunity
+          - type: GunBlocked
+            popupText: slasher-cannot-use-guns # Seems to be broken inside AntagSelection
+          - type: WeakToHoly
+          - type: Hunger
+            baseDecayRate: 0
+          - type: Thirst
+            baseDecayRate: 0
+          - type: MobThresholds
+            thresholds:
+              0: Alive
+              150: Dead
+          - type: RandomMetadata
+            nameSegments:
+            - NamesSlasherTitle
+            - NamesSlasher
+            nameFormat: name-format-slasher
+      - type: UserInterface
+        interfaces:
+          enum.SlasherKitSelectUiKey.Key:
+            type: SlasherKitSelectBoundUserInterface
+      - type: GhostRole
+        name: ghost-role-information-slasher-name
+        description: ghost-role-information-slasher-description
+        rules: ghost-role-information-antagonist-rules
+        mindRoles:
+        - MindRoleGhostRoleSoloAntagonist
+      - type: GhostTakeoverAvailable
   - type: Tag
     tags:
     - MidroundAntag
@@ -668,7 +625,7 @@
   parent: BaseGameRule
   components:
   - type: StationEvent
-    weight: 25 # Tune down after Christmas
+    weight: 1
     earliestStart: 3
     minimumPlayers: 10
     maxOccurrences: 1
@@ -679,3 +636,64 @@
     max: 1
     table:
       id: SantaClaus
+
+#Contractor
+- type: entity
+  parent: ContractorSpawn
+  id: ContractorSpawnMidround
+  components:
+  - type: GameRule
+    chaosScore: 400
+  - type: RuleGrids
+  - type: LoadMapRule
+    gridPath: /Maps/_Goobstation/Shuttles/ShuttleEvent/Legionnaire.yml
+  - type: StationEvent
+    startAnnouncement: null
+    weight: 1
+    duration: null
+    earliestStart: 30
+    minimumPlayers: 30
+    chaos:
+      Hostile: 40
+      Combat: 40
+      Death: 40
+    eventType: HostilesSpawn
+  - type: AntagLoadProfileRule
+    speciesOverrideBlacklist:
+    - Yowie
+    - IPC
+    - Diona
+    - Harpy
+    - Plasmaman
+  - type: AntagObjectives
+    objectives:
+    - ContractorRansomObjective
+  - type: AntagSelection
+    selectionTime: PostPlayerSpawn
+    agentName: ghost-role-information-contractor-name
+    definitions:
+    - spawnerPrototype: ContractorSpawner
+      min: 1
+      max: 1
+      pickPlayer: false
+      startingGear: ContractorGear
+      roleLoadout:
+      - RoleSurvivalNukie
+      mindRoles:
+      - MindRoleContractor
+      briefing:
+        text: contractor-role-greeting
+        color: Red
+        sound: /Audio/Ambience/Antag/traitor_wawa.ogg
+      components:
+      - type: RandomMetadata
+        nameSegments:
+        - NamesContractorPrefix
+        - NamesSyndicateElite
+        nameFormat: name-format-standard
+      - type: NpcFactionMember
+        factions:
+        - Syndicate
+  - type: Tag
+    tags:
+    - MidroundAntag

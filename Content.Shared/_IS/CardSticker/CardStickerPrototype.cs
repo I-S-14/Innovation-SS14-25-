@@ -6,7 +6,7 @@ namespace Content.Shared._IS.CardSticker;
 [Prototype("cardSticker")]
 public sealed partial class CardStickerPrototype : IPrototype
 {
-    [IdDataField] public string ID { get; } = default!;
+    [IdDataField] public string ID { get; private set; } = default!;
 
     [DataField] public LocId Name { get; private set; } = default!;
 

@@ -1,0 +1,20 @@
+- type: reaction
+  id: BluespaceTile
+  impact: Low
+  quantized: true
+  conserveEnergy: false
+  reactants:
+    Uranium:
+      amount: 4
+    Iron:
+      amount: 2
+    Gold:
+      amount: 1
+    Ephedrine:
+      amount: 1
+  effects:
+    - !type:SpawnEntity
+      entity: FloorTileItemBluespace
+      number: 2
+    - !type:SpawnEntity
+      entity: EffectFlashBluespace

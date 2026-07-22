@@ -5,17 +5,20 @@ maxplayers = 180
 soft_max_players = 90
 map_rotation = true
 
+[thunderdome]
+activation_delay_enabled = true
+
 [server]
 lobby_name = "️🛰️ CorvaxGoob — 🌌 Войд ☄️ [MRP] [TTS]"
 
 [game.panic_bunker]
 enabled = true
 show_reason = true
-min_account_age = 1440
-min_overall_minutes = 1200
+min_account_age = 0
+min_overall_minutes = 0
 deny_vpn = true
 enable_without_admins = true
-disable_with_admins = false
+disable_with_admins = true
 
 [rules]
 time = 30.0
@@ -23,3 +26,7 @@ time = 30.0
 [hub]
 advertise = true
 tags = "lang:ru,rp:med,region:eu_e,tts"
+
+[replay]
+max_compressed_size = 1048576
+max_uncompressed_size = 8388608
