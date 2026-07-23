@@ -30,7 +30,7 @@
       soundGunshot:
         path: /Audio/Weapons/Guns/Gunshots/laser3.ogg
       requiresSkill: true
-    - type: HitscanBatteryAmmoProvider
+    - type: BatteryAmmoProvider
       proto: RedLaser
       fireCost: 62.5
     - type: Tag

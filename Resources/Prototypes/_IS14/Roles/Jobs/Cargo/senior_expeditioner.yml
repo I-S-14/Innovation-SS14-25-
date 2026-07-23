@@ -13,7 +13,7 @@
     - !type:DepartmentTimeRequirement
       department: Cargo
       time: 18000 # 5 hrs
-  weight: 9 # IS14-edit
+  weight: 9
   icon: "JobIconSeniorExpeditioner"
   startingGear: SeniorExpeditionerGear
   supervisors: job-supervisors-qm

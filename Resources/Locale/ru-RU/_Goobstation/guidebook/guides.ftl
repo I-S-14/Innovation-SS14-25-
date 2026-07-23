@@ -10,10 +10,14 @@
 
 guide-entry-space-law = Корпоративный Закон
 guide-entry-medpatches = Медицинские пластыри
+guide-entry-virology = Вирусология
 guide-entry-rules-nrp = Правила NRP
 guide-entry-sm = Суперматерия
 guide-entry-automation = Автоматизация
 guide-entry-plumbing = Трубы
+guide-entry-alcoholic-drinks = Алкоголь
+guide-entry-non-alcoholic-drinks = Безалкоголь
+guide-entry-enchanting = Зачарования
 # Goob SOP
 # - Основные разделы
 guide-entry-sop = СОП (Стандартные Операционные Процедуры)
@@ -63,9 +67,10 @@ guide-entry-sop-searches = Обыски
 # - Грузовой отдел
 guide-entry-sop-cargotech = Грузчик
 guide-entry-sop-salvage = Утилизатор
+guide-entry-sop-shaft-miner = Шахтёр
 # - Командование
 guide-entry-sop-ntr = Представитель NanoTrasen
-guide-entry-sop-bso = Офицер Синего Щита
+guide-entry-sop-bso = Офицер "Синий Щит"
 guide-entry-sop-captain = Капитан
 guide-entry-sop-hop = Глава Персонала
 guide-entry-sop-hos = Глава Службы Безопасности

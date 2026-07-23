@@ -42,10 +42,17 @@ loadout-group-security-neck = СБ, шея
 loadout-group-captain-mask = Капитан, маска
 loadout-group-salvage-specialist-neck = Утилизатор, шея
 loadout-group-chemist-head = Химик, голова
-loadout-group-hos-shoes = ГСБ, обувь
+loadout-group-hos-shoes = Глава службы безопасности, обувь
 loadout-group-brigmedic-jumpsuit = Бригмедик, комбинезон
 loadout-group-brigmedic-head = Бригмедик, голова
 loadout-group-brigmedic-outer = Бригмедик, верхняя одежда
 loadout-group-brigmedic-backpack = Бригмедик, рюкзак
 loadout-group-security-melee = СБ, оружие ближнего боя
 loadout-group-animals = Питомцы
+# Virology
+loadout-group-virologist-jumpsuit = Вирусолог, комбинезон
+loadout-group-virologist-backpack = Вирусолог, рюкзак
+loadout-group-virologist-outerclothing = Вирусолог, верхняя одежда
+loadout-group-virologist-id = Вирусолог, ID карта
+#RadioHost
+loadout-group-radiohost-jumpsuit = Радиоведущий, комбинезон

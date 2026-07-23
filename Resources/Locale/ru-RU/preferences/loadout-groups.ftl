@@ -164,7 +164,15 @@ loadout-group-paramedic-outerclothing = Парамедик, верхняя од�
 loadout-group-paramedic-shoes = Парамедик, обувь
 # Wildcards
 loadout-group-reporter-jumpsuit = Репортёр, комбинезон
-loadout-group-medical-glasses = медицинские очки
+loadout-group-medical-glasses = Медицинский отдел, очки
 loadout-group-psychologist-jumpsuit = Психолог, комбинезон
 loadout-group-boxer-jumpsuit = Боксёр, комбинезон
 loadout-group-boxer-gloves = Боксёр, перчатки
+
+loadout-group-jobtrinkets = Безделушки должности
+
+loadout-group-survival-military = См. строку 14, никто не увидит это, так что :3
+
+loadout-group-chaplain-bible = Священная книга
+
+loadout-group-cargo-technician-id = Грузчик, ID
