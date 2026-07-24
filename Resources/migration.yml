@@ -1121,3 +1121,7 @@ ZookeeperIDCard: null
 
 #2026-07-11 CorvaxGoob
 ClothingShoesHighheelBootsFilled: ClothingShoesHighheelBoots
+
+# 2026-07-23 IS14
+IS14BedDoubleUp: IS14PrisonBedDoubleUp
+IS14BedDoubleDown: IS14PrisonBedDoubleDown

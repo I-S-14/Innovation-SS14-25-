@@ -1,6 +1,6 @@
 - type: entity
   name: bunk bed (upper berth)
-  id: IS14BedDoubleUp
+  id: IS14PrisonBedDoubleUp
   parent: BaseStructure
   description: Top bunk of a two-tier bed. Resting here provides extremely slow healing. Needs a bunk mattress before anyone can lie on it.
   components:
@@ -22,7 +22,7 @@
         - TableMask
   - type: Sprite
     sprite: _IS14/Structures/Furniture/DoubleBed.rsi
-    state: doublebed_up
+    state: prisondoublebed_up
     noRot: true
     # Well above lower berth + buckled mob (client sets mob to strapDepth±1).
     drawdepth: LargeObjects
@@ -83,8 +83,8 @@
   - type: Pullable
 
 - type: entity
-  parent: IS14BedDoubleUp
-  id: IS14BedDoubleDown
+  parent: IS14PrisonBedDoubleUp
+  id: IS14PrisonBedDoubleDown
   name: bunk bed (lower berth)
   description: Bottom bunk of a two-tier bed. Slightly softer than the floor. Needs a bunk mattress before anyone can lie on it.
   components:
@@ -92,7 +92,7 @@
     graph: IS14DoubleBed
     node: bunkLower
   - type: Sprite
-    state: doublebed_down
+    state: prisondoublebed_down
     drawdepth: Objects
   - type: Damageable
     damageModifierSet: Inflatable
@@ -110,3 +110,78 @@
         whitelist:
           tags:
           - IS14BunkMattress
+
+- type: entity
+  name: Bed double up
+  id: IS14BedDoubleUp
+  parent: BaseStructure
+  description: This is used to lie in, sleep in or strap on. Resting here provides extremely slow healing.
+  components:
+  - type: HealOnBuckle
+    damage:
+      types:
+        Poison: -0.5
+        Blunt: -0.2
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.45,-0.45,0.45,0.55"
+        density: 190
+        mask:
+        - TableMask
+  - type: Sprite
+    sprite: _IS14/Structures/Furniture/DoubleBed.rsi
+    state: doublebed_up
+    noRot: true
+  - type: Strap
+    position: Down
+    rotation: -90
+    buckleOffset: "0,0.20"
+#  - type: Construction TODO
+#    graph: LPPBedDouble
+#    node: LPPBedDoubleUp
+  - type: PlaceableSurface
+    placeCentered: true
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Metallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 75
+      behaviors:
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          SheetSteel1:
+            min: 1
+            max: 2
+  - type: Transform
+    anchored: true
+    noRot: true
+  - type: Anchorable
+  - type: Pullable
+
+- type: entity
+  parent: IS14BedDoubleUp
+  id: IS14BedDoubleDown
+  name: bed double down
+  description: Better sleep in that then on the floor i guess.
+  components:
+#  - type: Construction TODO x2
+#    graph: LPPBedDouble
+#    node: LPPBedDoubleDown
+  - type: Sprite
+    state: doublebed_down
+  - type: Damageable
+    damageModifierSet: Inflatable
+  - type: Strap
+    position: Down
+    rotation: -90
+    buckleOffset: "0,-0.1"

@@ -7,14 +7,27 @@
   components:
   - type: Sprite
     sprite: _IS14/Structures/Machines/research_console.rsi
+    noRot: true
     layers:
     - map: ["computerLayerBody"]
       state: computer
     - map: ["computerLayerKeyboard"]
       state: generic_keyboard
     - map: ["computerLayerScreen"]
+      sprite: _IS14/Structures/Machines/research_console_screen.rsi
       state: rdcomp
     - map: ["computerLayerKeys"]
       state: rd_key
     - map: ["enum.WiresVisualLayers.MaintenancePanel"]
       state: generic_panel_open
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-1.4,-0.4,1.4,0.4"
+        density: 190
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
