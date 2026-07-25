@@ -55,6 +55,7 @@
       inverted: true
       species:
       - Abductor
+  weight: 4
   startingGear: IS14GearMilitia
   icon: "JobIconMilitia"
   supervisors: job-supervisors-hos
@@ -95,6 +96,7 @@
       inverted: true
       species:
       - Abductor
+  weight: 8
   startingGear: IS14GearSeniorMilitia
   icon: "JobIconSeniorMilitia"
   supervisors: job-supervisors-hos
@@ -140,6 +142,7 @@
   - !type:AddComponentSpecial
     components:
       - type: SecurityStaff
+  weight: 3 # IS14-edit
 
 - type: startingGear
   id: IS14GearCadet
@@ -163,6 +166,7 @@
       inverted: true
       species:
       - Abductor
+  weight: 5
   startingGear: IS14GearInvestigator
   icon: "JobIconInvestigator"
   supervisors: job-supervisors-hos
@@ -204,6 +208,7 @@
       inverted: true
       species:
       - Abductor
+  weight: 6
   startingGear: IS14GearMedOfficer
   icon: "JobIconMedOfficer"
   supervisors: job-supervisors-hos
@@ -286,6 +291,7 @@
       inverted: true
       species:
       - Abductor
+  weight: 7
   startingGear: IS14GearPilot
   icon: "JobIconIS14Pilot"
   supervisors: job-supervisors-hos

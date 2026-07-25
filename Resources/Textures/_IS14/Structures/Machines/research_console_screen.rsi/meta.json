@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "license": "All Rights Reserved",
+  "copyright": "Made by melvilla (discord) for IS14",
+  "size": {
+    "x": 96,
+    "y": 64
+  },
+  "states": [
+    {
+      "name": "rdcomp",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ]
+      ]
+    }
+  ]
+}

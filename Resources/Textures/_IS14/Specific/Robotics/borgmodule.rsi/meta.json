@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "license": "EULA",
+    "copyright": "Created by melvilla (discord) for Innovation Station 14",
+    "size": {
+        "x": 32,
+        "y": 32
+    },
+    "states": [
+        {
+            "name": "module"
+        },
+        {
+            "name": "module_police"
+        },
+		{
+            "name": "module_telekinesis"
+        }
+    ]
+}

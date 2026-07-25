@@ -1,0 +1,56 @@
+{
+    "version": 1,
+    "license": "EULA",
+    "copyright": "Created by melvilla (discord) for Innovation Station 14",
+    "size": {
+        "x": 64,
+        "y": 32
+    },
+    "states": [
+        {
+            "name": "poster_holo_cargo",
+            "delays": [
+                [
+                    0.5,
+                    0.5
+                ]
+            ]
+        },
+		{
+            "name": "poster_holo_med",
+            "delays": [
+                [
+                    0.5,
+                    0.5
+                ]
+            ]
+        },
+		{
+            "name": "poster_holo_security",
+            "delays": [
+                [
+                    0.5,
+                    0.5
+                ]
+            ]
+        },
+		{
+            "name": "poster_science"
+        },
+		{
+            "name": "poster_ussp"
+        },
+		{
+            "name": "poster_ussp_v2"
+        },
+		{
+            "name": "poster_ussp_v3"
+        },
+		{
+            "name": "poster_ussp_v4"
+        },
+		{
+            "name": "poster_ussp_v5"
+        }
+    ]
+}

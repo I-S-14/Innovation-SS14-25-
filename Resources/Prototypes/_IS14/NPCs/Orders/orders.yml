@@ -1,0 +1,23 @@
+- type: petOrder
+  id: Stay
+  language: TauCetiBasic
+  message: Сидеть
+  order: Stay
+
+- type: petOrder
+  id: Follow
+  language: TauCetiBasic
+  message: К ноге
+  order: Follow
+
+- type: petOrder
+  id: Attack
+  language: TauCetiBasic
+  message: Фас
+  order: Attack
+
+- type: petOrder
+  id: Voice
+  language: TauCetiBasic
+  message: Голос
+  sayOnOrder: Гав!

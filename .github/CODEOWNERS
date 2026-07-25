@@ -1,18 +1,22 @@
 # Last match in file takes precedence.
 
 # Ping for all PRs
-* @KillanGenifer
+# * 
+
+# CI/CD
+/.github @Deatherd
+/Tools @Deatherd
 
 # Locale
-/Resources/Locale @Ko4ergaPunk
+#/Resources/Locale
 
 # Textures
-/Resources/Textures/_CorvaxGoob @SonicHDC
+#/Resources/Textures/_IS
 
 # Map files
-/Resources/Prototypes/_CorvaxGoob/Entities/Stations @kvant8
-/Resources/Prototypes/_CorvaxGoob/Maps @kvant8
-/Resources/Maps/_CorvaxGoob @kvant8
+#/Resources/Prototypes/_IS/Entities/Stations
+#/Resources/Prototypes/_IS/Maps
+#/Resources/Maps/_IS
 
-# TTS
-/Content.*/_CorvaxGoob/TTS @Morb0
+# License files
+EULA.txt @Melvilla-G

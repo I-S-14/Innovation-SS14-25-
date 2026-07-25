@@ -1,0 +1,42 @@
+# Flags 32x32
+- type: entity
+  parent: BaseFlag
+  id: IS14FlagUssp
+  name: USSP flag
+  description: A flag representing the United Soviet Socialist Planets.
+  components:
+  - type: Sprite
+    sprite: _IS14/Structures/Wallmounts/flags/flags_32x32.rsi
+    state: flag_ussp
+
+# Flags 32x64
+- type: entity
+  parent: BaseFlag
+  id: IS14FlagUsspMedium
+  name: USSP flag
+  description: A flag representing the United Soviet Socialist Planets.
+  components:
+  - type: Sprite
+    sprite: _IS14/Structures/Wallmounts/flags/flags_32x64.rsi
+    state: flag_ussp_v1
+
+- type: entity
+  parent: BaseFlag
+  id: IS14FlagUsspMediumAlt
+  name: USSP flag
+  description: A flag representing the United Soviet Socialist Planets.
+  components:
+  - type: Sprite
+    sprite: _IS14/Structures/Wallmounts/flags/flags_32x64.rsi
+    state: flag_ussp_v2
+
+# Flags 64x128
+- type: entity
+  parent: BaseFlag
+  id: IS14FlagUsspLarge
+  name: large USSP flag
+  description: A large flag representing the United Soviet Socialist Planets.
+  components:
+  - type: Sprite
+    sprite: _IS14/Structures/Wallmounts/flags/flags_64x128.rsi
+    state: flag_ussp

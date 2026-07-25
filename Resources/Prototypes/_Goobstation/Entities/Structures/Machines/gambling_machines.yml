@@ -59,6 +59,7 @@
     defaultChannel: Binary
     channels:
     - Binary
+  - type: IntellicardableMind # Goobstation - intellicard on more AIs
   - type: Vocalizer
     minVocalizeInterval: 8m
     maxVocalizeInterval: 10m
@@ -384,14 +385,10 @@
     - PlushieBongle
     - PlushieBinglePony
     - PlushieAbductor
-    - PlushieGhost
-    - FoamBlade
-    - FoamCrossbow
-    - ToySword
-    - RevolverCapGun
-    - ToyHammer
-    - FoamCutlass
-    - PlushieRouny
+    # - PlushieWachtel
+    # - PlushieLeguia
+    # - PlushiePasha
+    # CorvaxGoob-DelPlushie-start
     # - PlushieXeve
     # - PlushieDurk
     # - PlushieMnwaar
@@ -402,36 +399,21 @@
     # - PlushieBrizby
     # - PlushieBoggle
     # - PlushieLehmin
-    evilRewards: # CorvaxGoob-Edits : Same but with lethal and fun things
-    - PlushieMoth
-    - PlushieHuman
-    - PlushiePenguin
-    - PlushieThrongler
-    - FoamWonderprod
-    - PlushieBingle
-    - PlushieBongle
-    - PlushieBinglePony
-    - PlushieAbductor
-    - PlushieGhost
-    - FoamBlade
-    - FoamCrossbow
-    - ToySword
-    - RevolverCapGun
-    - ToyHammer
-    - FoamCutlass
-    - PlushieRouny
-    - GrenadeDummy
-    - SyndieTrickyBomb
-    - NukeDiskFake
-    - BalloonSyn
-    - SoapSyndie
-    # - EvilPlushieXeve
+    #- PlushieLeoMalone
+    evilRewards:
     # - EvilPlushieBoggle
     # - EvilPlushieBrizby
     # - EvilPlushieNigel
     # - EvilPlushieFern
     # - EvilPlushieJvne
-    # - EvilPlushieMnwaar
-    # - EvilPlushieDurk
-    # - EvilPlushieLouie
+    # - EvilPlushieWachtel
+    # - EvilPlushieLeguia
+    # - EvilPlushiePasha
+    # - EvilPlushieTwofish
+    # CorvaxGoob-DelPlushie-end
+    #- EvilPlushieXeve
+    #- EvilPlushieMnwaar
+    #- EvilPlushieDurk
+    #- EvilPlushieLouie
+    #- EvilPlushieLeoMalone
   - type: DoAfter

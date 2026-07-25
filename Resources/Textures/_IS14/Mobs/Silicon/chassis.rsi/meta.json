@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "size": {
+    "x": 35,
+    "y": 35
+  },
+  "license": "EULA",
+  "copyright": "Created by melvilla (discord) for Innovation Station 14",
+  "states": [
+    {
+      "name": "yasari",
+      "directions": 4
+    },
+    {
+      "name": "yasari_e",
+      "directions": 4
+    }
+  ]
+}

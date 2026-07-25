@@ -1,0 +1,134 @@
+# Posters 32x32
+- type: entity
+  parent: PosterBase
+  id: IS14PosterDealWorld
+  components:
+  - type: Sprite
+    sprite: _IS14/Structures/Wallmounts/posters/posters_32x32.rsi
+    state: poster_deal_world
+
+- type: entity
+  parent: PosterBase
+  id: IS14PosterHoloUsspV1
+  components:
+  - type: Sprite
+    sprite: _IS14/Structures/Wallmounts/posters/posters_32x32.rsi
+    state: poster_holo_ussp_v1
+
+- type: entity
+  parent: PosterBase
+  id: IS14PosterHoloUsspV2
+  components:
+  - type: Sprite
+    sprite: _IS14/Structures/Wallmounts/posters/posters_32x32.rsi
+    state: poster_holo_ussp_v2
+
+- type: entity
+  parent: PosterBase
+  id: IS14PosterPeaceWorld
+  components:
+  - type: Sprite
+    sprite: _IS14/Structures/Wallmounts/posters/posters_32x32.rsi
+    state: poster_peace_world
+
+- type: entity
+  parent: PosterBase
+  id: IS14PosterScience
+  components:
+  - type: Sprite
+    sprite: _IS14/Structures/Wallmounts/posters/posters_32x32.rsi
+    state: poster_science
+
+- type: entity
+  parent: PosterBase
+  id: IS14PosterUsspMetall
+  components:
+  - type: Sprite
+    sprite: _IS14/Structures/Wallmounts/posters/posters_32x32.rsi
+    state: poster_ussp_metall
+
+# Posters 32x64
+- type: entity
+  parent: PosterBase
+  id: IS14PosterHoloCargo
+  components:
+  - type: Sprite
+    sprite: _IS14/Structures/Wallmounts/posters/posters_32x64.rsi
+    state: poster_holo_cargo
+
+- type: entity
+  parent: PosterBase
+  id: IS14PosterHoloMed
+  components:
+  - type: Sprite
+    sprite: _IS14/Structures/Wallmounts/posters/posters_32x64.rsi
+    state: poster_holo_med
+
+- type: entity
+  parent: PosterBase
+  id: IS14PosterHoloSecurity
+  components:
+  - type: Sprite
+    sprite: _IS14/Structures/Wallmounts/posters/posters_32x64.rsi
+    state: poster_holo_security
+
+- type: entity
+  parent: PosterBase
+  id: IS14PosterScienceMedium
+  components:
+  - type: Sprite
+    sprite: _IS14/Structures/Wallmounts/posters/posters_32x64.rsi
+    state: poster_science
+
+- type: entity
+  parent: PosterBase
+  id: IS14PosterUssp
+  components:
+  - type: Sprite
+    sprite: _IS14/Structures/Wallmounts/posters/posters_32x64.rsi
+    state: poster_ussp
+
+- type: entity
+  parent: PosterBase
+  id: IS14PosterUsspV2
+  components:
+  - type: Sprite
+    sprite: _IS14/Structures/Wallmounts/posters/posters_32x64.rsi
+    state: poster_ussp_v2
+
+- type: entity
+  parent: PosterBase
+  id: IS14PosterUsspV3
+  components:
+  - type: Sprite
+    sprite: _IS14/Structures/Wallmounts/posters/posters_32x64.rsi
+    state: poster_ussp_v3
+
+- type: entity
+  parent: PosterBase
+  id: IS14PosterUsspV4
+  components:
+  - type: Sprite
+    sprite: _IS14/Structures/Wallmounts/posters/posters_32x64.rsi
+    state: poster_ussp_v4
+
+- type: entity
+  parent: PosterBase
+  id: IS14PosterUsspV5
+  components:
+  - type: Sprite
+    sprite: _IS14/Structures/Wallmounts/posters/posters_32x64.rsi
+    state: poster_ussp_v5
+
+# Holo posters
+- type: entity
+  parent: PosterBase
+  id: IS14PosterHoloUssp
+  components:
+  - type: Sprite
+    sprite: _IS14/Structures/Wallmounts/posters/holo.rsi
+    state: holo_ussp
+  - type: PointLight
+    color: "#00d5ffdd"
+    radius: 2
+    energy: 2

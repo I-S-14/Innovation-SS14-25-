@@ -1,0 +1,42 @@
+- type: entity
+  id: IS14LaserGun
+  parent: [BaseWeaponBattery, BaseGunWieldable]
+  components:
+    - type: Sprite
+      sprite: _IS14/Objects/Weapons/Guns/Battery/laser_gun.rsi
+      layers:
+        - state: base
+          map: ["enum.GunVisualLayers.Base"]
+        - state: mag-unshaded-5
+          map: ["enum.GunVisualLayers.MagUnshaded"]
+          shader: unshaded
+    - type: Clothing
+      sprite: _IS14/Objects/Weapons/Guns/Battery/laser_gun_clothing.rsi
+      quickEquip: false
+      slots:
+      - Back
+      - suitStorage
+    - type: MagazineVisuals
+      magState: mag
+      steps: 5
+      zeroVisible: false
+    - type: Appearance
+    - type: Gun
+      selectedMode: SemiAuto
+      fireRate: 3
+      availableModes:
+        - SemiAuto
+        - FullAuto
+      soundGunshot:
+        path: /Audio/Weapons/Guns/Gunshots/laser3.ogg
+      requiresSkill: true
+    - type: BatteryAmmoProvider
+      proto: RedLaser
+      fireCost: 62.5
+    - type: Tag
+      tags:
+      - Rifle
+    - type: Item
+      size: Huge
+      shape:
+      - 0,0,4,1

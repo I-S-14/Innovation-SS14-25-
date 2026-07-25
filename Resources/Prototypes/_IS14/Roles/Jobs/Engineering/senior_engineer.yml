@@ -31,6 +31,7 @@
   - !type:AddComponentSpecial
     components:
     - type: EngineeringStaff
+  weight: 9
 
 - type: startingGear
   id: SeniorEngineerGear

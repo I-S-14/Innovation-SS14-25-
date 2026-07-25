@@ -1,0 +1,65 @@
+{
+    "version": 1,
+    "license": "EULA",
+    "copyright": "Created by slaybrine (discord) for Innovation Station 14",
+    "size": {
+        "x": 44,
+        "y": 32
+    },
+    "states": [
+        {
+            "name": "cargo_base"
+        },
+        {
+            "name": "cargo_closed"
+        },
+        {
+            "name": "cargo_opened"
+        },
+        {
+            "name": "law_base"
+        },
+        {
+            "name": "law_closed"
+        },
+        {
+            "name": "law_opened"
+        },
+        {
+            "name": "locked"
+        },
+        {
+            "name": "med_base"
+        },
+        {
+            "name": "med_closed"
+        },
+        {
+            "name": "med_opened"
+        },
+        {
+            "name": "rnd_base"
+        },
+        {
+            "name": "rnd_closed"
+        },
+        {
+            "name": "rnd_opened"
+        },
+        {
+            "name": "sec_base"
+        },
+        {
+            "name": "sec_closed"
+        },
+        {
+            "name": "sec_opened"
+        },
+        {
+            "name": "unlocked"
+        },
+        {
+            "name": "welded"
+        }
+    ]
+}

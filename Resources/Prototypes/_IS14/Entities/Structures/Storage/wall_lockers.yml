@@ -1,5 +1,5 @@
 - type: entity
-  id: ClosetWallHoS
+  id: IS14ClosetWallHoS
   parent: BaseWallLocker
   name: настенный шкафчик Начальника Отдела Милиции
   description: Что же хранит в себе этот настенный шкафчик? Ведомо только Начальству - половина Начальству Министерства Внутренних дел, вторая людям ЦРБ.
@@ -28,7 +28,7 @@
     access: [["HeadOfSecurity"]]
 
 - type: entity
-  id: ClosetWallHoP
+  id: IS14ClosetWallHoP
   parent: BaseWallLocker
   name: настенный шкафчик Начальника Отдела Кадров
   description: "Стоишь, смотришь и думаешь: \"что же в нём?\" - документы, запасные ручки, листы А4, чего только нет в настенном шкафчике Начальника Отдела Кадров."
@@ -57,7 +57,7 @@
     access: [["HeadOfPersonnel"]]
 
 - type: entity
-  id: ClosetWallCE
+  id: IS14ClosetWallCE
   parent: BaseWallLocker
   name: настенный шкафчик Старшего Инженера
   description: Смотришь, и сразу видно - ручная работа. Ну а если открыть, то можно надеяться на сам сварочный аппарат, которым тот был изготовлен.
@@ -86,7 +86,7 @@
     access: [["ChiefEngineer"]]
 
 - type: entity
-  id: ClosetWallCMO
+  id: IS14ClosetWallCMO
   parent: BaseWallLocker
   name: настенный шкафчик Главного Врача
   description: Стерильно-чистый, пахнущий медицинским спиртом, попробуйте во время выполнения долга не испортить его.
@@ -115,7 +115,34 @@
     access: [["ChiefMedicalOfficer"]]
 
 - type: entity
-  id: ClosetWallRD
+  id: IS14ClosetWallMedical
+  parent: BaseWallLocker
+  components:
+  - type: Sprite
+    layers:
+    - state: med_v2_generic
+      sprite: _IS14/Structures/Storage/wall_locker.rsi
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: med_v2_closed
+      sprite: _IS14/Structures/Storage/wall_locker.rsi
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: welded
+      sprite: Structures/Storage/wall_locker.rsi
+      map: ["enum.WeldableLayers.BaseWelded"]
+      visible: false
+    - state: locked
+      sprite: Structures/Storage/wall_locker.rsi
+      map: ["enum.LockVisualLayers.Lock"]
+      shader: unshaded
+  - type: EntityStorageVisuals
+    stateBaseClosed: med_v2_generic
+    stateDoorOpen: med_v2_open
+    stateDoorClosed: med_v2_closed
+  - type: AccessReader
+    access: [["Medical"]]
+
+- type: entity
+  id: IS14ClosetWallRD
   parent: BaseWallLocker
   name: настенный шкафчик Главы НИЦ
   description: Что только не может появиться в шкафчике Главы НИЦ, иногда передовые разработки, иногда бутерброд, с сыром.
@@ -144,7 +171,7 @@
     access: [["ResearchDirector"]]
 
 - type: entity
-  id: ClosetWallQM
+  id: IS14ClosetWallQM
   parent: BaseWallLocker
   name: настенный шкафчик Начальника экспедиционно-снабженческого отдела
   description: Не будь мы так уверены в лояльности Начальника экспедиционно-снабженческого отдела, сказали бы что он хранит там контрабанду и советские кредиты - а нет, всё чинно, он же тоже чинновник.
@@ -173,7 +200,7 @@
     access: [["Quartermaster"]]
 
 - type: entity
-  id: ClosetWallCaptain
+  id: IS14ClosetWallCaptain
   parent: BaseWallLocker
   name: настенный шкафчик Капитана
   description: Ухоженный, налощенный, блестит под светом комнатной лампы красный настенный шкафчик Капитана.
@@ -200,4 +227,3 @@
     stateDoorClosed: capitan_closed
   - type: AccessReader
     access: [["Captain"]]
-

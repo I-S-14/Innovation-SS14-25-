@@ -1,21 +1,3 @@
-# SPDX-FileCopyrightText: 2024 BombasterDS <115770678+BombasterDS@users.noreply.github.com>
-# SPDX-FileCopyrightText: 2024 Piras314 <p1r4s@proton.me>
-# SPDX-FileCopyrightText: 2025 Aiden <28298836+Aidenkrz@users.noreply.github.com>
-# SPDX-FileCopyrightText: 2025 Aiden <aiden@djkraz.com>
-# SPDX-FileCopyrightText: 2025 Creatorbot01 <creatorbot02@gmail.com>
-# SPDX-FileCopyrightText: 2025 Creatorbot01 <creatorbot20@gmail.com>
-# SPDX-FileCopyrightText: 2025 GMWQ <garethquaile@gmail.com>
-# SPDX-FileCopyrightText: 2025 Gareth Quaile <garethquaile@gmail.com>
-# SPDX-FileCopyrightText: 2025 GoobBot <uristmchands@proton.me>
-# SPDX-FileCopyrightText: 2025 SX-7 <sn1.test.preria.2002@gmail.com>
-# SPDX-FileCopyrightText: 2025 Solstice <solsticeofthewinter@gmail.com>
-# SPDX-FileCopyrightText: 2025 SolsticeOfTheWinter <solsticeofthewinter@gmail.com>
-# SPDX-FileCopyrightText: 2025 Ted Lukin <66275205+pheenty@users.noreply.github.com>
-# SPDX-FileCopyrightText: 2025 coderabbitai[bot] <136622811+coderabbitai[bot]@users.noreply.github.com>
-# SPDX-FileCopyrightText: 2025 gluesniffler <159397573+gluesniffler@users.noreply.github.com>
-# SPDX-FileCopyrightText: 2025 gluesniffler <linebarrelerenthusiast@gmail.com>
-# SPDX-FileCopyrightText: 2025 pheenty <fedorlukin2006@gmail.com>
-#
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 - type: entity
@@ -66,6 +48,9 @@
   name: tactical response magboots
   description: Look! An emergency responder, we're saved!
   components:
+  - type: ContainerContainer # CorvaxGoob edit
+    containers:
+      item: !type:ContainerSlot
   - type: Sprite
     sprite: _Goobstation/Clothing/Shoes/Boots/emergencyresponseteam.rsi
     state: icon
@@ -105,6 +90,9 @@
   name: deathsquad magboots
   description: The sound of these boots are iconic; the sound of terror.
   components:
+  - type: ContainerContainer # CorvaxGoob edit
+    containers:
+      item: !type:ContainerSlot
   - type: Sprite
     sprite: _Goobstation/Clothing/Shoes/Boots/deathsquad.rsi
     state: icon
@@ -140,6 +128,7 @@
 - type: entity
   parent: [ClothingShoesBootsMagBase, BaseMajorContraband]
   id: ClothingShoesRealJordans
+  suffix: Magboots
   name: air jordans
   description: State-of-the-art, official, uncreased Jordans that protect you from slipping when turned on.
   components:
@@ -224,6 +213,7 @@
 - type: entity
   parent: [ClothingShoesBootsMagBase, BaseMajorContraband]
   id: ClothingShoesRealJordansAutographed
+  suffix: Devil
   name: air jordans
   description: These aren't just any Jordans, these were signed my Micheal Jordan himself. These must be worth a FORTUNE.
   components:
@@ -348,3 +338,7 @@
           tags:
           - Knife
           - Sidearm
+  - type: ClothingSlowOnDamageModifier
+    modifier: 0.5
+  - type: ModifyStandingUpTime
+    multiplier: 0.5

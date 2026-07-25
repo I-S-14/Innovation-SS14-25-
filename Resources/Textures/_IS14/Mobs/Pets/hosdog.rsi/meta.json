@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "size": {
+        "x": 48,
+        "y": 32
+    },
+    "license": "EULA",
+    "copyright": "Created by slaybrine (discord) for Innovation Station 14",
+    "states": [
+        {
+            "name": "dogBody",
+            "directions": 4
+        },
+        {
+            "name": "dogCollar",
+            "directions": 4
+        },
+        {
+            "name": "dogIdle",
+            "directions": 4
+        },
+        {
+            "name": "dogTail",
+            "directions": 4
+        }
+    ]
+}

@@ -1,0 +1,57 @@
+- type: entity
+  parent: BaseAction
+  id: ActionPetStay
+  name: Stay
+  description: Order to stay
+  components:
+  - type: Action
+    useDelay: 1
+    icon:
+      sprite: _IS14/Interface/Actions/actions_pet.rsi
+      state: stayOff
+    iconOn:
+      sprite: _IS14/Interface/Actions/actions_pet.rsi
+      state: stay
+    priority: 5
+  - type: InstantAction
+    event: !type:PetOrderActionEvent
+      type: Stay
+
+- type: entity
+  parent: BaseAction
+  id: ActionPetAttack
+  name: Attack
+  description: Order to attack
+  components:
+  - type: Action
+    useDelay: 1
+    icon:
+      sprite: _IS14/Interface/Actions/actions_pet.rsi
+      state: attackOff
+    iconOn:
+      sprite: _IS14/Interface/Actions/actions_pet.rsi
+      state: attack
+    priority: 6
+  - type: InstantAction
+    event: !type:PetOrderActionEvent
+      type: Attack
+
+
+- type: entity
+  parent: BaseAction
+  id: ActionPetFollow
+  name: Follow
+  description: Order to follow
+  components:
+  - type: Action
+    useDelay: 1
+    icon:
+      sprite: _IS14/Interface/Actions/actions_pet.rsi
+      state: followOff
+    iconOn:
+      sprite: _IS14/Interface/Actions/actions_pet.rsi
+      state: follow
+    priority: 7
+  - type: InstantAction
+    event: !type:PetOrderActionEvent
+      type: Follow

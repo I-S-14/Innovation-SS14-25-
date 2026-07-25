@@ -1,0 +1,44 @@
+- type: htnCompound
+  id: PetCompound
+  branches:
+  - preconditions:
+      - !type:HasOrdersPrecondition
+        orders: enum.PetOrderType.Stay
+    tasks:
+      - !type:HTNCompoundTask
+        task: IdleCompound
+  - preconditions:
+      - !type:HasOrdersPrecondition
+        orders: enum.PetOrderType.Follow
+    tasks:
+      - !type:HTNCompoundTask
+        task: FollowCompound
+  - preconditions:
+      - !type:HasOrdersPrecondition
+        orders: enum.PetOrderType.Attack
+    tasks:
+      - !type:HTNCompoundTask
+        task: FollowAndAttackSelectedTargetCompound
+
+- type: htnCompound
+  id: FollowAndAttackSelectedTargetCompound
+  branches:
+    - tasks:
+        - !type:HTNCompoundTask
+          task: AttackSelectedTargetCompound
+    - tasks:
+        - !type:HTNCompoundTask
+          task: FollowCompound
+    - tasks:
+        - !type:HTNCompoundTask
+          task: IdleCompound
+
+- type: htnCompound
+  id: AttackSelectedTargetCompound
+  branches:
+    - tasks:
+        - !type:HTNPrimitiveTask
+          operator: !type:UtilityOperator
+            proto: OrderedTargets
+        - !type:HTNCompoundTask
+          task: MeleeAttackOrderedTargetCompound

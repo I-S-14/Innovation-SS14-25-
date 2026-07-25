@@ -18,6 +18,7 @@
   - !type:AddComponentSpecial
     components:
     - type: BibleUser # Lets them heal with bibles
+  weight: 11
 
 - type: startingGear
   id: ChurchServantGear

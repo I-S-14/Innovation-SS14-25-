@@ -120,12 +120,12 @@
   id: JobCaptain
   groups:
   - Inventory # CorvaxGoob-loadouts
-  - CaptainHead
-  - CaptainNeck
-  - CaptainJumpsuit
-  - CaptainMask # Goobstation - Lollypops!
-  - CaptainBackpack
-  - CaptainOuterClothing
+  #- CaptainHead
+  #- CaptainNeck
+  #- CaptainJumpsuit
+  #- CaptainMask # Goobstation - Lollypops!
+  #- CaptainBackpack
+  #- CaptainOuterClothing
   - Survival
   - Trinkets
   - Animals
@@ -141,11 +141,11 @@
   groups:
   - Inventory # CorvaxGoob-loadouts
   - GroupTankHarness
-  - HoPHead
-  - HoPNeck
-  - HoPJumpsuit
-  - HoPBackpack
-  - HoPOuterClothing
+  #- HoPHead
+  #- HoPNeck
+  #- HoPJumpsuit
+  #- HoPBackpack
+  #- HoPOuterClothing
   - Glasses
   - Survival
   - Trinkets
@@ -173,13 +173,13 @@
   groups:
   - Inventory # CorvaxGoob-loadouts
   - GroupTankHarness
-  - PassengerJumpsuit
-  - CommonBackpack
-  - PassengerNeck
-  - PassengerFace
-  - PassengerGloves
-  - PassengerOuterClothing
-  - PassengerShoes
+  #- PassengerJumpsuit
+  #- CommonBackpack
+  #- PassengerNeck
+  #- PassengerFace
+  #- PassengerGloves
+  #- PassengerOuterClothing
+  #- PassengerShoes
   - Glasses
   - Survival
   - Trinkets
@@ -195,10 +195,10 @@
   groups:
   - Inventory # CorvaxGoob-loadouts
   - GroupTankHarness
-  - BartenderHead
-  - BartenderJumpsuit
-  - CommonBackpack
-  - BartenderOuterClothing
+  #- BartenderHead
+  #- BartenderJumpsuit
+  #- CommonBackpack
+  #- BartenderOuterClothing
   - Glasses
   - Survival
   - Trinkets
@@ -214,8 +214,8 @@
   groups:
   - Inventory # CorvaxGoob-loadouts
   - GroupTankHarness
-  - BartenderJumpsuit
-  - CommonBackpack
+  #- BartenderJumpsuit
+  #- CommonBackpack
   - Glasses
   - Survival
   - Trinkets
@@ -231,11 +231,11 @@
   groups:
   - Inventory # CorvaxGoob-loadouts
   - GroupTankHarness
-  - ChefHead
-  - ChefMask
-  - ChefJumpsuit
-  - CommonBackpack
-  - ChefOuterClothing
+  #- ChefHead
+  #- ChefMask
+  #- ChefJumpsuit
+  #- CommonBackpack
+  #- ChefOuterClothing
   - Glasses
   - Survival
   - Trinkets
@@ -251,8 +251,8 @@
   groups:
   - Inventory # CorvaxGoob-loadouts
   - GroupTankHarness
-  - LibrarianJumpsuit
-  - CommonBackpack
+  #- LibrarianJumpsuit
+  #- CommonBackpack
   - Glasses
   - Survival
   - Trinkets
@@ -268,9 +268,9 @@
   groups:
   - Inventory # CorvaxGoob-loadouts
   - GroupTankHarness
-  - LawyerNeck
-  - LawyerJumpsuit
-  - CommonBackpack
+  #- LawyerNeck
+  #- LawyerJumpsuit
+  #- CommonBackpack
   - Glasses
   - Survival
   - Trinkets
@@ -286,12 +286,12 @@
   groups:
   - Inventory # CorvaxGoob-loadouts
   - GroupTankHarness
-  - ChaplainHead
-  - ChaplainMask
-  - ChaplainNeck
-  - ChaplainJumpsuit
-  - CommonBackpack
-  - ChaplainOuterClothing
+  #- ChaplainHead
+  #- ChaplainMask
+  #- ChaplainNeck
+  #- ChaplainJumpsuit
+  #- CommonBackpack
+  #- ChaplainOuterClothing
   - Glasses
   - Survival
   - Trinkets
@@ -307,15 +307,15 @@
   groups:
   - Inventory # CorvaxGoob-loadouts
   - GroupTankHarness
-  - JanitorHead
-  - JanitorJumpsuit
-  - JanitorGloves
-  - CommonBackpack
-  - JanitorOuterClothing
+  #- JanitorHead
+  #- JanitorJumpsuit
+  #- JanitorGloves
+  #- CommonBackpack
+  #- JanitorOuterClothing
   - Glasses
   - Survival
   - Trinkets
-  - JanitorPlunger
+  - JanitorJobTrinkets # upstream #41094 folded JanitorPlunger into JanitorJobTrinkets
   - Animals
   - GroupSpeciesBreathTool
   # Goobstation - EE Plasmeme Change.
@@ -328,10 +328,10 @@
   groups:
   - Inventory # CorvaxGoob-loadouts
   - GroupTankHarness
-  - BotanistHead
-  - BotanistJumpsuit
-  - BotanistBackpack
-  - BotanistOuterClothing
+  #- BotanistHead
+  #- BotanistJumpsuit
+  #- BotanistBackpack
+  #- BotanistOuterClothing
   - Glasses
   - Survival
   - Trinkets
@@ -348,11 +348,11 @@
   groups:
   - Inventory # CorvaxGoob-loadouts
   - GroupTankHarness
-  - ClownHead
-  - ClownJumpsuit
-  - ClownBackpack
-  - ClownOuterClothing
-  - ClownShoes
+  #- ClownHead
+  #- ClownJumpsuit
+  #- ClownBackpack
+  #- ClownOuterClothing
+  #- ClownShoes
   - Glasses
   - SurvivalClown
   - Trinkets
@@ -368,12 +368,12 @@
   groups:
   - Inventory # CorvaxGoob-loadouts
   - GroupTankHarness
-  - MimeHead
-  - MimeMask
-  - MimeJumpsuit
-  - MimeBackpack
-  - MimeOuterClothing
-  - MimeBelt
+  #- MimeHead
+  #- MimeMask
+  #- MimeJumpsuit
+  #- MimeBackpack
+  #- MimeOuterClothing
+  #- MimeBelt
   - Glasses
   - SurvivalMime
   - Trinkets
@@ -389,9 +389,9 @@
   groups:
   - Inventory # CorvaxGoob-loadouts
   - GroupTankHarness
-  - MusicianJumpsuit
-  - CommonBackpack
-  - MusicianOuterClothing
+  #- MusicianJumpsuit
+  #- CommonBackpack
+  #- MusicianOuterClothing
   - Glasses
   - Survival
   - Trinkets
@@ -409,12 +409,12 @@
   groups:
   - Inventory # CorvaxGoob-loadouts
   - GroupTankHarness
-  - QuartermasterHead
-  - QuartermasterNeck
-  - QuartermasterJumpsuit
-  - CargoTechnicianBackpack
-  - QuartermasterOuterClothing
-  - QuartermasterShoes
+  #- QuartermasterHead
+  #- QuartermasterNeck
+  #- QuartermasterJumpsuit
+  #- CargoTechnicianBackpack
+  #- QuartermasterOuterClothing
+  #- QuartermasterShoes
   - Glasses
   - Survival
   - Trinkets
@@ -430,11 +430,11 @@
   groups:
   - Inventory # CorvaxGoob-loadouts
   - GroupTankHarness
-  - CargoTechnicianHead
-  - CargoTechnicianJumpsuit
-  - CargoTechnicianBackpack
-  - CargoTechnicianOuterClothing
-  - CargoTechnicianShoes
+  #- CargoTechnicianHead
+  #- CargoTechnicianJumpsuit
+  #- CargoTechnicianBackpack
+  #- CargoTechnicianOuterClothing
+  #- CargoTechnicianShoes
   - Glasses
   - Survival
   - Trinkets
@@ -450,10 +450,10 @@
   groups:
   - Inventory # CorvaxGoob-loadouts
   - GroupTankHarness
-  - SalvageSpecialistNeck # Goobstation
-  - SalvageSpecialistBackpack
-  - SalvageSpecialistOuterClothing
-  - SalvageSpecialistShoes
+  #- SalvageSpecialistNeck # Goobstation
+  #- SalvageSpecialistBackpack
+  #- SalvageSpecialistOuterClothing
+  #- SalvageSpecialistShoes
   - Glasses
   - Survival
   - Trinkets
@@ -470,12 +470,12 @@
   groups:
   - Inventory # CorvaxGoob-loadouts
   - GroupTankHarness
-  - ChiefEngineerHead
-  - ChiefEngineerJumpsuit
-  - StationEngineerBackpack
-  - ChiefEngineerNeck
-  - ChiefEngineerOuterClothing
-  - ChiefEngineerShoes
+  #- ChiefEngineerHead
+  #- ChiefEngineerJumpsuit
+  #- StationEngineerBackpack
+  #- ChiefEngineerNeck
+  #- ChiefEngineerOuterClothing
+  #- ChiefEngineerShoes
   - SurvivalExtended
   - Trinkets
   - Animals
@@ -490,8 +490,8 @@
   groups:
   - Inventory # CorvaxGoob-loadouts
   - GroupTankHarness
-  - TechnicalAssistantJumpsuit
-  - StationEngineerBackpack
+  #- TechnicalAssistantJumpsuit
+  #- StationEngineerBackpack
   - SurvivalExtended
   - Trinkets
   - Animals
@@ -506,12 +506,12 @@
   groups:
   - Inventory # CorvaxGoob-loadouts
   - GroupTankHarness
-  - StationEngineerHead
-  - StationEngineerJumpsuit
-  - StationEngineerBackpack
-  - StationEngineerOuterClothing
-  - StationEngineerShoes
-  - StationEngineerID
+  #- StationEngineerHead
+  #- StationEngineerJumpsuit
+  #- StationEngineerBackpack
+  #- StationEngineerOuterClothing
+  #- StationEngineerShoes
+  #- StationEngineerID
   - SurvivalExtended
   - Trinkets
   - Animals
@@ -526,11 +526,11 @@
   groups:
   - Inventory # CorvaxGoob-loadouts
   - GroupTankHarness
-  - AtmosphericTechnicianHead # Goobstation
-  - AtmosphericTechnicianJumpsuit
-  - AtmosphericTechnicianBackpack
-  - AtmosphericTechnicianOuterClothing
-  - AtmosphericTechnicianShoes
+  #- AtmosphericTechnicianHead # Goobstation
+  #- AtmosphericTechnicianJumpsuit
+  #- AtmosphericTechnicianBackpack
+  #- AtmosphericTechnicianOuterClothing
+  #- AtmosphericTechnicianShoes
   - SurvivalExtended
   - Trinkets
   - Animals
@@ -546,13 +546,13 @@
   groups:
   - Inventory # CorvaxGoob-loadouts
   - GroupTankHarness
-  - ResearchDirectorHead
-  - ResearchDirectorNeck
-  - ResearchDirectorJumpsuit
-  - ScientistBackpack
-  - ResearchDirectorOuterClothing
-  - ScientistGloves
-  - ResearchDirectorShoes
+  #- ResearchDirectorHead
+  #- ResearchDirectorNeck
+  #- ResearchDirectorJumpsuit
+  #- ScientistBackpack
+  #- ResearchDirectorOuterClothing
+  #- ScientistGloves
+  #- ResearchDirectorShoes
   - Glasses
   - Survival
   - Trinkets
@@ -568,14 +568,14 @@
   groups:
   - Inventory # CorvaxGoob-loadouts
   - GroupTankHarness
-  - ScientistHead
-  - ScientistNeck
-  - ScientistJumpsuit
-  - ScientistBackpack
-  - ScientistOuterClothing
-  - ScientistGloves
-  - ScientistShoes
-  - ScientistPDA
+  #- ScientistHead
+  #- ScientistNeck
+  #- ScientistJumpsuit
+  #- ScientistBackpack
+  #- ScientistOuterClothing
+  #- ScientistGloves
+  #- ScientistShoes
+  #- ScientistPDA
   - Glasses
   - Survival
   - Trinkets
@@ -591,8 +591,8 @@
   groups:
   - Inventory # CorvaxGoob-loadouts
   - GroupTankHarness
-  - ResearchAssistantJumpsuit
-  - ScientistBackpack
+  #- ResearchAssistantJumpsuit
+  #- ScientistBackpack
   - Glasses
   - Survival
   - Trinkets
@@ -608,17 +608,17 @@
   id: JobHeadOfSecurity
   groups:
   - Inventory # CorvaxGoob-loadouts
-  - HeadofSecurityHead
-  - HeadofSecurityNeck
-  - HeadofSecurityJumpsuit
-  - SecurityBackpack
-  - SecurityMelee # Goobstation
-  - SecurityBelt
-  - HeadofSecurityOuterClothing
-  - HeadofSecurityShoes # Goobstation edit
+  #- HeadofSecurityHead
+  #- HeadofSecurityNeck
+  #- HeadofSecurityJumpsuit
+  #- SecurityBackpack
+  #- SecurityMelee # Goobstation
+  #- SecurityBelt
+  #- HeadofSecurityOuterClothing
+  #- HeadofSecurityShoes # Goobstation edit
   - SurvivalSecurity
   - Trinkets
-  - SecurityStar
+  - HeadofSecurityJobTrinkets # upstream #41094 folded SecurityStar into *JobTrinkets
   - Animals
   - GroupSpeciesBreathToolSecurity
   # Goobstation - EE Plasmeme Change.
@@ -631,17 +631,17 @@
   id: JobWarden
   groups:
   - Inventory # CorvaxGoob-loadouts
-  - WardenHead
-  - WardenJumpsuit
-  - SecurityBackpack
-  - SecurityMelee # Goobstation
-  - SecurityNeck
-  - SecurityBelt
-  - WardenOuterClothing
-  - SecurityShoes
+  #- WardenHead
+  #- WardenJumpsuit
+  #- SecurityBackpack
+  #- SecurityMelee # Goobstation
+  #- SecurityNeck
+  #- SecurityBelt
+  #- WardenOuterClothing
+  #- SecurityShoes
   - SurvivalSecurity
   - Trinkets
-  - SecurityStar
+  - WardenJobTrinkets # upstream #41094 folded SecurityStar into *JobTrinkets
   - Animals
   - GroupSpeciesBreathToolSecurity
   # Goobstation - EE Plasmeme Change.
@@ -653,18 +653,18 @@
   id: JobSecurityOfficer
   groups:
   - Inventory # CorvaxGoob-loadouts
-  - SecurityHead
-  - SecurityJumpsuit
-  - SecurityBackpack
-  - SecurityMelee # Goobstation
-  - SecurityOuterClothing
-  - SecurityShoes
-  - SecurityNeck
-  - SecurityPDA
-  - SecurityBelt
+  #- SecurityHead
+  #- SecurityJumpsuit
+  #- SecurityBackpack
+  #- SecurityMelee # Goobstation
+  #- SecurityOuterClothing
+  #- SecurityShoes
+  #- SecurityNeck
+  #- SecurityPDA
+  #- SecurityBelt
   - SurvivalSecurity
   - Trinkets
-  - SecurityStar
+  - SecurityJobTrinkets # upstream #41094 folded SecurityStar into *JobTrinkets
   - Animals
   - GroupSpeciesBreathToolSecurity
   # Goobstation - EE Plasmeme Change.
@@ -676,15 +676,15 @@
   id: JobDetective
   groups:
   - Inventory # CorvaxGoob-loadouts
-  - DetectiveHead
-  - DetectiveNeck
-  - DetectiveJumpsuit
-  - SecurityBackpack
-  - DetectiveOuterClothing
-  - SecurityShoes
+  #- DetectiveHead
+  #- DetectiveNeck
+  #- DetectiveJumpsuit
+  #- SecurityBackpack
+  #- DetectiveOuterClothing
+  #- SecurityShoes
   - SurvivalSecurity
   - Trinkets
-  - SecurityStar
+  - DetectiveJobTrinkets # upstream #41094 folded SecurityStar into *JobTrinkets
   - Animals
   - GroupSpeciesBreathToolSecurity
   # Goobstation - EE Plasmeme Change.
@@ -697,12 +697,12 @@
   id: JobSecurityCadet
   groups:
   - Inventory # CorvaxGoob-loadouts
-  - SecurityCadetJumpsuit
-  - SecurityBackpack
-  - SecurityMelee # Goobstation
+  #- SecurityCadetJumpsuit
+  #- SecurityBackpack
+  #- SecurityMelee # Goobstation
   - SurvivalSecurity
-  - SecurityNeck
-  - SecurityOuterClothing # Goobstation - Why not.
+  #- SecurityNeck
+  #- SecurityOuterClothing # Goobstation - Why not.
   - Trinkets
   - Animals
   - GroupSpeciesBreathToolSecurity
@@ -717,14 +717,14 @@
   groups:
   - Inventory # CorvaxGoob-loadouts
   - GroupTankHarness
-  - ChiefMedicalOfficerHead
-  - MedicalMask
-  - ChiefMedicalOfficerJumpsuit
-  - MedicalGloves
-  - MedicalBackpack
-  - ChiefMedicalOfficerOuterClothing
-  - ChiefMedicalOfficerNeck
-  - ChiefMedicalOfficerShoes
+  #- ChiefMedicalOfficerHead
+  #- MedicalMask
+  #- ChiefMedicalOfficerJumpsuit
+  #- MedicalGloves
+  #- MedicalBackpack
+  #- ChiefMedicalOfficerOuterClothing
+  #- ChiefMedicalOfficerNeck
+  #- ChiefMedicalOfficerShoes
   - MedicalEyewear
   - SurvivalMedical
   - Trinkets
@@ -740,14 +740,14 @@
   groups:
   - Inventory # CorvaxGoob-loadouts
   - GroupTankHarness
-  - MedicalDoctorHead
-  - MedicalMask
-  - MedicalDoctorJumpsuit
-  - MedicalGloves
-  - MedicalBackpack
-  - MedicalDoctorOuterClothing
-  - MedicalShoes
-  - MedicalDoctorPDA
+  #- MedicalDoctorHead
+  #- MedicalMask
+  #- MedicalDoctorJumpsuit
+  #- MedicalGloves
+  #- MedicalBackpack
+  #- MedicalDoctorOuterClothing
+  #- MedicalShoes
+  #- MedicalDoctorPDA
   - MedicalEyewear
   - SurvivalMedical
   - Trinkets
@@ -763,8 +763,8 @@
   groups:
   - Inventory # CorvaxGoob-loadouts
   - GroupTankHarness
-  - MedicalInternJumpsuit
-  - MedicalBackpack
+  #- MedicalInternJumpsuit
+  #- MedicalBackpack
   - MedicalEyewear
   - SurvivalMedical
   - Trinkets
@@ -780,13 +780,13 @@
   groups:
   - Inventory # CorvaxGoob-loadouts
   - GroupTankHarness
-  - ChemistHead # Goobstation
-  - MedicalMask
-  - ChemistJumpsuit
-  - MedicalGloves
-  - ChemistBackpack
-  - ChemistOuterClothing
-  - MedicalShoes
+  #- ChemistHead # Goobstation
+  #- MedicalMask
+  #- ChemistJumpsuit
+  #- MedicalGloves
+  #- ChemistBackpack
+  #- ChemistOuterClothing
+  #- MedicalShoes
   - SurvivalMedical
   - Trinkets
   - Animals
@@ -801,13 +801,13 @@
   groups:
   - Inventory # CorvaxGoob-loadouts
   - GroupTankHarness
-  - ParamedicHead
-  - MedicalMask
-  - ParamedicJumpsuit
-  - MedicalGloves
-  - MedicalBackpack
-  - ParamedicOuterClothing
-  - ParamedicShoes
+  #- ParamedicHead
+  #- MedicalMask
+  #- ParamedicJumpsuit
+  #- MedicalGloves
+  #- MedicalBackpack
+  #- ParamedicOuterClothing
+  #- ParamedicShoes
   - MedicalEyewear
   - SurvivalMedical
   - Trinkets
@@ -823,8 +823,8 @@
   id: JobZookeeper
   groups:
   - Inventory # CorvaxGoob-loadouts
-  - ZookeeperHead
-  - ZookeeperJumpsuit
+  #- ZookeeperHead
+  #- ZookeeperJumpsuit
   - GroupTankHarness
   - CommonBackpack
   - Glasses
@@ -842,9 +842,9 @@
   groups:
   - Inventory # CorvaxGoob-loadouts
   - GroupTankHarness
-  - ReporterJumpsuit
-  - ReporterOuterClothing # Goobstation - Bodycams
-  - CommonBackpack
+  #- ReporterJumpsuit
+  #- ReporterOuterClothing # Goobstation - Bodycams
+  #- CommonBackpack
   - Glasses
   - Survival
   - Trinkets
@@ -860,8 +860,8 @@
   groups:
   - Inventory # CorvaxGoob-loadouts
   - GroupTankHarness
-  - PsychologistJumpsuit
-  - MedicalBackpack
+  #- PsychologistJumpsuit
+  #- MedicalBackpack
   - Glasses
   - Survival
   - Trinkets
@@ -877,9 +877,9 @@
   groups:
   - Inventory # CorvaxGoob-loadouts
   - GroupTankHarness
-  - BoxerJumpsuit
-  - BoxerGloves
-  - CommonBackpack
+  #- BoxerJumpsuit
+  #- BoxerGloves
+  #- CommonBackpack
   - Glasses
   - Survival
   - Trinkets
@@ -960,3 +960,14 @@
   groups:
   - GroupEVATank
   - SurvivalExtended
+
+# IS14: re-added after upstream merge dropped these local survival loadouts
+- type: roleLoadout
+  id: RoleSurvivalMilitaryDouble
+  groups:
+  - SurvivalMilitaryDouble
+
+- type: roleLoadout
+  id: RoleSurvivalSpaceNinja
+  groups:
+  - GroupEVATank

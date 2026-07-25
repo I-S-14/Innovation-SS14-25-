@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "license": "EULA",
+    "copyright": "Created by melvilla (discord) for Innovation Station 14",
+    "size": {
+        "x": 64,
+        "y": 32
+    },
+    "states": [
+        {
+            "name": "flag_ussp_v1"
+        },
+		{
+            "name": "flag_ussp_v2"
+        }
+    ]
+}

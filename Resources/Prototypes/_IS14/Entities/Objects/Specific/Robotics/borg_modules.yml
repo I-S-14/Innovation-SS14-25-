@@ -1,0 +1,44 @@
+- type: entity
+  id: BorgModuleTelekines
+  parent: [ BaseBorgModule, BaseProviderBorgModule ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Specific/Robotics/borgmodule.rsi
+    layers:
+    - state: module
+    - state: module_telekinesis
+  - type: ItemBorgModule
+    hands:
+    - item: WeaponTetherGun
+  - type: BorgModuleIcon
+    icon: { sprite: _IS14/Interface/Actions/actions_borg.rsi, state: icon_telekinesis }
+
+- type: entity
+  id: BorgModulePolice
+  parent: [ BaseBorgModule, BaseProviderBorgModule ]
+  name: construction cyborg module
+  components:
+  - type: Sprite
+    sprite: _IS14/Specific/Robotics/borgmodule.rsi
+    layers:
+    - state: module
+    - state: module_police
+  - type: ItemBorgModule
+    hands:
+    - item: WeaponDisabler
+      hand:
+        whitelist:
+          components:
+          - Gun
+    - item: Handcuffs
+      hand:
+        whitelist:
+          components:
+          - Handcuff
+    - item: Zipties
+      hand:
+        whitelist:
+          components:
+          - Handcuff
+  - type: BorgModuleIcon
+    icon: { sprite: _IS14/Interface/Actions/actions_borg.rsi, state: icon_police }

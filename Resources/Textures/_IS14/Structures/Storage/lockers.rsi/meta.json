@@ -1,0 +1,236 @@
+{
+    "version": 1,
+    "license": "EULA",
+    "copyright": "Created by slaybrine (discord) for Innovation Station 14",
+    "size": {
+        "x": 32,
+        "y": 32
+    },
+    "states": [
+        {
+            "name": "ba_closed"
+        },
+        {
+            "name": "bomb_closed"
+        },
+        {
+            "name": "brigmed_closed"
+        },
+        {
+            "name": "cap_base"
+        },
+        {
+            "name": "cap_closed"
+        },
+        {
+            "name": "cap_opened"
+        },
+        {
+            "name": "cargo_base"
+        },
+        {
+            "name": "cargo_closed"
+        },
+        {
+            "name": "cargo_opened"
+        },
+        {
+            "name": "cc_base"
+        },
+        {
+            "name": "cc_closed"
+        },
+        {
+            "name": "cc_opened"
+        },
+        {
+            "name": "ce_base"
+        },
+        {
+            "name": "ce_closed"
+        },
+        {
+            "name": "ce_opened"
+        },
+        {
+            "name": "cmo_base"
+        },
+        {
+            "name": "cmo_closed"
+        },
+        {
+            "name": "cmo_opened"
+        },
+        {
+            "name": "evi_closed"
+        },
+        {
+            "name": "exp_closed"
+        },
+        {
+            "name": "farm_base"
+        },
+        {
+            "name": "farm_closed"
+        },
+        {
+            "name": "farm_opened"
+        },
+        {
+            "name": "feld_base"
+        },
+        {
+            "name": "feld_closed"
+        },
+        {
+            "name": "feld_opened"
+        },
+        {
+            "name": "hop_base"
+        },
+        {
+            "name": "hop_closed"
+        },
+        {
+            "name": "hop_opened"
+        },
+        {
+            "name": "hos_closed"
+        },
+        {
+            "name": "hydro_base"
+        },
+        {
+            "name": "hydro_closed"
+        },
+        {
+            "name": "hydro_opened"
+        },
+        {
+            "name": "law_base"
+        },
+        {
+            "name": "law_closed"
+        },
+        {
+            "name": "law_opened"
+        },
+        {
+            "name": "locked"
+        },
+        {
+            "name": "pilot_closed"
+        },
+        {
+            "name": "pl_base"
+        },
+        {
+            "name": "pl_closed"
+        },
+        {
+            "name": "pl_opened"
+        },
+        {
+            "name": "psycho_base"
+        },
+        {
+            "name": "psycho_closed"
+        },
+        {
+            "name": "psycho_opened"
+        },
+        {
+            "name": "pzd_base"
+        },
+        {
+            "name": "pzd_closed"
+        },
+        {
+            "name": "pzd_opened"
+        },
+        {
+            "name": "qm_closed"
+        },
+        {
+            "name": "rd_closed"
+        },
+        {
+            "name": "rnd_base"
+        },
+        {
+            "name": "rnd_closed"
+        },
+        {
+            "name": "rnd_opened"
+        },
+        {
+            "name": "robo_closed"
+        },
+        {
+            "name": "safe_base"
+        },
+        {
+            "name": "safe_cap_base"
+        },
+        {
+            "name": "safe_cap_closed"
+        },
+        {
+            "name": "safe_cap_opened"
+        },
+        {
+            "name": "safe_closed"
+        },
+        {
+            "name": "safe_locked"
+        },
+        {
+            "name": "safe_opened"
+        },
+        {
+            "name": "safe_unlocked"
+        },
+        {
+            "name": "safe_welded"
+        },
+        {
+            "name": "sec_base"
+        },
+        {
+            "name": "sec_closed"
+        },
+        {
+            "name": "sec_opened"
+        },
+        {
+            "name": "sec_v2_base"
+        },
+        {
+            "name": "unlocked"
+        },
+        {
+            "name": "med_v1_base"
+        },
+        {
+            "name": "med_v1_closed"
+        },
+        {
+            "name": "med_v1_opened"
+        },
+        {
+            "name": "med_v2_base"
+        },
+        {
+            "name": "med_v2_closed"
+        },
+        {
+            "name": "med_v2_opened"
+        },
+        {
+            "name": "warden_closed"
+        },
+        {
+            "name": "welded"
+        }
+    ]
+}

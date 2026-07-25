@@ -1,0 +1,41 @@
+{
+    "version": 1,
+    "license": "EULA",
+    "copyright": "Created by melvilla (discord) for Innovation Station 14",
+    "size": {
+        "x": 32,
+        "y": 32
+    },
+    "states": [
+        {
+            "name": "poster_holo_ussp_v1",
+            "delays": [
+                [
+                    0.5,
+                    0.5
+                ]
+            ]
+        },
+		{
+            "name": "poster_holo_ussp_v2",
+            "delays": [
+                [
+                    0.5,
+                    0.5
+                ]
+            ]
+        },
+		{
+            "name": "poster_deal_world"
+        },
+		{
+            "name": "poster_peace_world"
+        },
+		{
+            "name": "poster_science"
+        },
+		{
+            "name": "poster_ussp_metall"
+        }
+    ]
+}

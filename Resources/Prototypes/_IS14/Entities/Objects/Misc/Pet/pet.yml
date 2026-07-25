@@ -1,0 +1,14 @@
+- type: entity
+  id: PetCarrierHoSDog
+  name: pet carrier
+  description: Allows large animals to be carried comfortably. It smells vaguely of toilet water and explosives.
+  parent: BaseItem
+  components:
+    - type: PetMakeOverlordOnOpen
+    - type: Icon
+      sprite: Objects/Storage/petcarrier.rsi
+      state: icon
+    - type: Sprite
+      noRot: true
+      sprite: Objects/Storage/petcarrier.rsi
+      state: icon

@@ -1,0 +1,50 @@
+- type: entity
+  id: IS14BorgChassisYasari
+  parent: BaseBorgChassisNT
+  components:
+    - type: Sprite
+      sprite: _IS14/Mobs/Silicon/chassis.rsi
+      layers:
+      - state: yasari
+        map: ["enum.BorgVisualLayers.Body", "movement"]
+      - state: yasari_e
+        map: ["enum.BorgVisualLayers.Light"]
+        shader: unshaded
+        visible: false
+      - state: yasari_e
+        shader: unshaded
+        map: ["light","enum.BorgVisualLayers.LightStatus"]
+        visible: false
+    - type: BorgChassis
+      hasMindState: yasari_e
+      noMindState: yasari_e
+    - type: BorgTransponder
+      sprite:
+        sprite: _IS14/Mobs/Silicon/chassis.rsi
+        state: yasari
+      name: cyborg
+    - type: SiliconLawProvider
+      laws: YasariStatic
+      subverted: true
+
+- type: entity
+  id: IS14PlayerBorgYasari
+  parent: IS14BorgChassisYasari
+  suffix: Battery, Module
+  components:
+  - type: ContainerFill
+    containers:
+      borg_brain:
+        - PositronicBrain
+      borg_module:
+        - BorgModuleTool
+        - BorgModuleFireExtinguisher
+        - BorgModuleTelekines
+        - BorgModulePolice
+  - type: ItemSlots
+    slots:
+      cell_slot:
+        name: power-cell-slot-component-slot-name-default
+        startingItem: PowerCellHigh
+  - type: RandomMetadata
+    nameSegments: [NamesBorg]

@@ -3,7 +3,7 @@ job-name-church-servant = Служитель церкви
 job-name-command-secretary = Секретарь командования
 job-name-internal-control-executor = Исполнитель внутреннего контроля
 
-job-name-hos-militia = Начальник охраны
+job-name-hos-militia = Начальник отдела милиции
 job-name-militia = Офицер милиции
 job-name-senior-militia = Старший офицер милиции
 job-name-is14-cadet = Курсант милиции
@@ -15,6 +15,10 @@ job-name-ivk = Офицер ИВК
 job-name-lawyer-militia = Адвокат
 job-name-mup-representative = Представитель МУП
 
+job-name-senior-engineer = Ведущий инженер
+
+job-name-senior-physician = Старший врач
+
 JobSeniorExpeditioner = Старший экспедитор
 JobChurchServant = Служитель церкви
 JobCommandSecretary = Секретарь командования
@@ -23,13 +27,13 @@ JobSeniorEngineer = Старший инженер
 JobSeniorPhysician = Старший врач
 JobSeniorResearcher = Старший исследователь
 
-JobHosMilitia = Начальник охраны (Милиция)
+JobHosMilitia = Начальник отдела милиции
 JobMilitia = Офицер милиции
 JobSeniorMilitia = Старший офицер милиции
 IS_JobCadet = Курсант милиции
 JobInvestigator = Следователь
 JobMedOfficer = Медицинский офицер
-JobLrrChief = Начальник ГБР
+JobLrrChief = Начальник ЛРР
 IS_JobPilot = Пилот (Милиция)
 JobIvk = Офицер ИВК
 IS_JobLawyer = Адвокат (Милиция)

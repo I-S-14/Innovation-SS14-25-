@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "size": {
+        "x": 32,
+        "y": 32
+    },
+    "license": "EULA",
+    "copyright": "Created by slaybrine (discord) for Innovation Station 14",
+    "states": [
+        {
+        "name": "attack"
+        },
+        {
+        "name": "attackOff"
+        },
+        {
+        "name": "follow"
+        },
+        {
+        "name": "followOff"
+        },
+        {
+        "name": "stay"
+        },
+        {
+        "name": "stayOff"
+        }
+    ]
+}
