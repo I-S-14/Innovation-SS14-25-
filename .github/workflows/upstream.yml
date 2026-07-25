@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
 name: Weekly Upstream Pull
 
 on:
@@ -10,12 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      pull-requests: write 
+      pull-requests: write
 
     env:
-      REMOTE_URL: 'https://github.com/space-wizards/space-station-14.git'
-      REMOTE_BRANCH: 'stable'
-      TARGET_BRANCH: 'rebase'
+      REMOTE_URL: 'https://github.com/space-syndicate/Goob-Station.git'
+      REMOTE_BRANCH: 'master'
+      TARGET_BRANCH: 'master'
       SYNC_BRANCH: 'automated-upstream-branch'
 
     steps:
@@ -23,33 +24,43 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          token: ${{ secrets.BOT_TOKEN }}
 
       - name: Configure Git
         run: |
-          git config --global user.name "GoobBot"
-          git config --global user.email "uristmchands@proton.me"
+          git config --global user.name "${{ vars.CHANGELOG_USER || 'IS14 Bot' }}"
+          git config --global user.email "${{ vars.CHANGELOG_EMAIL || 'bot@users.noreply.github.com' }}"
 
       - name: Sync Branch and Create PR
         env:
           GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
         run: |
           git remote add upstream "$REMOTE_URL"
-
           git fetch upstream "$REMOTE_BRANCH"
 
-          if git diff --quiet "origin/$TARGET_BRANCH"..."upstream/$REMOTE_BRANCH"; then
-            echo "No changes detected between upstream and local target. Exiting."
+          if git merge-base --is-ancestor "upstream/$REMOTE_BRANCH" "origin/$TARGET_BRANCH"; then
+            echo "Upstream is already fully merged into $TARGET_BRANCH. Nothing to do."
             exit 0
           fi
 
-          git checkout -B "$SYNC_BRANCH" "upstream/$REMOTE_BRANCH"
+          # Start from our own branch and merge upstream into it, so the PR contains
+          # only the upstream delta instead of resetting the fork to upstream.
+          git checkout -B "$SYNC_BRANCH" "origin/$TARGET_BRANCH"
+
+          if ! git merge --no-edit "upstream/$REMOTE_BRANCH"; then
+            echo "::error::Merge conflicts between upstream/$REMOTE_BRANCH and $TARGET_BRANCH. Resolve them manually."
+            echo "Conflicting files:"
+            git diff --name-only --diff-filter=U
+            git merge --abort
+            exit 1
+          fi
 
           git push -f origin "$SYNC_BRANCH"
-          
-          EXISTING_PR=$(gh pr list --head "$SYNC_BRANCH" --base "$TARGET_BRANCH" --json state --jq '.[0].state')
 
-          if [ "$EXISTING_PR" = "OPEN" ]; then
-            echo "An open PR for this sync branch already exists. Updated the branch."
+          EXISTING_PR=$(gh pr list --head "$SYNC_BRANCH" --base "$TARGET_BRANCH" --state open --json number --jq '.[0].number')
+
+          if [ -n "$EXISTING_PR" ]; then
+            echo "PR #$EXISTING_PR is already open for this sync branch. Branch has been updated."
           else
             gh pr create \
               --title "Automatic Upstream Merge" \

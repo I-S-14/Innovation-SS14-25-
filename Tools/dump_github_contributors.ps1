@@ -121,8 +121,9 @@ function load_contribs([string] $repo)
 
 $engineJson = load_contribs("space-wizards/RobustToolbox")
 $contentJson = load_contribs("Goob-Station/Goob-Station")
+$forkJson = load_contribs("I-S-14/Innovation-SS14-25-")
 
-($engineJson).login + ($contentJson).login + ($add) `
+($engineJson).login + ($contentJson).login + ($forkJson).login + ($add) `
     | select -unique `
     | Where-Object { -not $ignore[$_] }`
     | ForEach-Object { if($replacements[$_] -eq $null){ $_ } else { $replacements[$_] }} `

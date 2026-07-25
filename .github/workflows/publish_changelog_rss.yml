@@ -19,6 +19,6 @@ jobs:
         submodules: 'recursive'
   
     - name: Publish changelog (RSS)
-      run: Tools/actions_changelog_rss.py
+      run: python3 Tools/actions_changelog_rss.py
       env:
         CHANGELOG_RSS_KEY: ${{ secrets.CHANGELOG_RSS_KEY }}

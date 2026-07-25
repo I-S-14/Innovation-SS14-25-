@@ -1,10 +1,13 @@
 # SPDX-License-Identifier: MIT
 
 name: Benchmarks
+# Benchmarks run on Wizard Den infrastructure (centcomm.spacestation14.io) and need
+# secrets this fork does not have, so the SSH step below is skipped and the run does
+# nothing. The daily schedule was removed to stop burning a runner slot every morning.
+# If you ever set up your own benchmark host, point the script at this repository and
+# re-add a `schedule:` trigger here.
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 8 * * *'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

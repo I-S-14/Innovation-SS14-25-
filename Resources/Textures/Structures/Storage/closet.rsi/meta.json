@@ -170,6 +170,9 @@
             "name": "ce_open"
         },
         {
+            "name": "chemical"
+        },
+        {
             "name": "chemical_door"
         },
         {
