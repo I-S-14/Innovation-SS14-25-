@@ -45,6 +45,8 @@ public sealed class CrewBankAccountSystem : EntitySystem
         var salary = EnsureComp<JobSalaryComponent>(ev.Mob);
         salary.AccountNumber = account.AccountNumber;
         salary.Salary = economy.Salary;
+        salary.BaseSalary = economy.Salary;
+        salary.JobProtoId = ev.JobId;
         salary.SalaryIntervalSeconds = economy.SalaryIntervalSeconds;
         salary.NextPaymentTime = _timing.CurTime + TimeSpan.FromSeconds(economy.SalaryIntervalSeconds);
         salary.IdCardEntity = idCardUid;

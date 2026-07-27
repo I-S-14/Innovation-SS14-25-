@@ -1,0 +1,21 @@
+<!--
+SPDX-FileCopyrightText: 2025 IS14
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<is14:PayrollEmployeeRow
+    xmlns="https://spacestation14.io"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Economy.Payroll"
+    HorizontalExpand="True"
+    MinHeight="26"
+    Margin="0 1">
+
+    <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="6 2">
+        <!-- Job titles run long, so the job column takes the slack and the name column is fixed. -->
+        <Label Name="NameLabel" SetWidth="170" ClipText="True" VerticalAlignment="Center" />
+        <Label Name="JobLabel" HorizontalExpand="True" ClipText="True" VerticalAlignment="Center" />
+        <Label Name="OwedLabel" VerticalAlignment="Center" Margin="0 0 6 0" Visible="False" />
+        <Label Name="SalaryLabel" MinWidth="86" Align="Right" VerticalAlignment="Center" />
+    </BoxContainer>
+</is14:PayrollEmployeeRow>

@@ -167,7 +167,7 @@ public sealed class IS14AtmSystem : EntitySystem
             return;
         }
 
-        var cash = _stack.Spawn(args.Amount, atm.Comp.CashStackType, Transform(atm.Owner).Coordinates);
+        var cash = _stack.SpawnAtPosition(args.Amount, atm.Comp.CashStackType, Transform(atm.Owner).Coordinates);
         _hands.TryPickupAnyHand(args.Actor, cash);
 
         _audio.PlayPvs(atm.Comp.AcceptSound, atm.Owner);

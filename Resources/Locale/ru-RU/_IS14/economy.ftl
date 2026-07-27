@@ -93,6 +93,58 @@ is14-treasury-status-done = Переведено { $amount } кр. — { $target
 economy-transaction-allocation-out = Ассигнование: { $target }
 economy-transaction-allocation-in = Ассигнование из казны
 
+# Payroll console UI
+is14-payroll-window-title = Консоль расчёта зарплат
+is14-payroll-tab-payroll = Расчёт
+is14-payroll-tab-log = Журнал
+is14-payroll-col-name = Сотрудник
+is14-payroll-col-job = Должность
+is14-payroll-col-salary = Оклад
+is14-payroll-salary-label = Оклад за смену
+is14-payroll-salary-placeholder = Оклад
+is14-payroll-salary-apply = Применить
+is14-payroll-oneoff-label = Разовая выплата или взыскание
+is14-payroll-amount-placeholder = Сумма
+is14-payroll-limits = Премиальный фонд { $pool } кр. · доступно к выплате { $bonus } кр. · штраф до { $fine } кр.
+is14-payroll-bonus = Премировать
+is14-payroll-fine = Оштрафовать
+is14-payroll-credits = { $amount } кр.
+is14-payroll-owed = долг { $amount }
+is14-payroll-no-selection = Сотрудник не выбран
+is14-payroll-selection = { $name } — { $job }
+is14-payroll-selection-hint = Базовый оклад { $base } кр. · допустимо { $min }–{ $max } кр.
+is14-payroll-row-tooltip = Базовый оклад: { $base } кр. Допустимый диапазон: { $min }–{ $max } кр.
+is14-payroll-unknown-job = Должность неизвестна
+is14-payroll-status-bad-salary = Оклад должен быть в пределах { $min }–{ $max } кр.
+is14-payroll-status-bad-bonus = В премиальном фонде только { $max } кр. Он пополняется с поступлений отдела.
+is14-payroll-status-bad-fine = Штраф не может превышать { $max } кр.
+is14-payroll-status-not-subordinate = Этот сотрудник не на довольствии вашего отдела.
+is14-payroll-status-no-self = Нельзя проводить начисления самому себе.
+is14-payroll-status-no-fund = Бюджет отдела недоступен.
+is14-payroll-status-fund-insufficient = В бюджете отдела недостаточно средств.
+is14-payroll-status-no-account = Счёт сотрудника не найден.
+is14-payroll-status-employee-broke = На счету сотрудника пусто — взыскивать нечего.
+is14-payroll-status-salary-set = Оклад { $name } установлен: { $salary } кр.
+is14-payroll-status-bonus-paid = { $name } премирован на { $amount } кр.
+is14-payroll-status-fine-collected = С { $name } удержано { $amount } кр.
+
+is14-payroll-log-empty = Действий пока не было.
+is14-payroll-log-raise = Оклад повышен: { $name } — { $old } → { $new } кр.
+is14-payroll-log-cut = Оклад понижен: { $name } — { $old } → { $new } кр.
+is14-payroll-log-bonus = Премия: { $name } — { $amount } кр.
+is14-payroll-log-fine = Штраф: { $name } — { $amount } кр.
+
+is14-payroll-notify-raise = Ваш оклад повышен до { $salary } кр.
+is14-payroll-notify-cut = Ваш оклад понижен до { $salary } кр.
+is14-payroll-notify-bonus = Начислена премия: { $amount } кр.
+is14-payroll-notify-fine = Удержан штраф: { $amount } кр.
+
+economy-transaction-bonus = Премия
+economy-transaction-bonus-fund = Премия сотруднику — { $name }
+economy-transaction-fine = Штраф
+economy-transaction-fine-fund = Взыскание с сотрудника — { $name }
+economy-transaction-salary-changed = Оклад изменён: { $name } — { $old } → { $new } кр.
+
 # Economy monitor console UI
 economy-monitor-window-title = Монитор экономики
 economy-monitor-no-records = Транзакций пока нет.

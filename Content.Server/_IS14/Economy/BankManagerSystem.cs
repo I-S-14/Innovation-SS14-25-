@@ -18,7 +18,7 @@ public sealed class BankManagerSystem : EntitySystem
     /// Changes the balance of an account by delta and raises <see cref="EconomyTransactionEvent"/> on success.
     /// Returns false if the account doesn't exist or the delta would push the balance below zero.
     /// </summary>
-    public bool TryChangeBalance(int accountNumber, int delta, out int newBalance, string description = "", EntityUid? sourceEntity = null)
+    public bool TryChangeBalance(int accountNumber, int delta, out int newBalance, string description = "", EntityUid? sourceEntity = null, Guid? groupId = null)
     {
         newBalance = 0;
 
@@ -28,7 +28,7 @@ public sealed class BankManagerSystem : EntitySystem
 
         account.Balance += delta;
         newBalance = account.Balance;
-        RaiseLocalEvent(new EconomyTransactionEvent(accountNumber, delta, newBalance, description, sourceEntity));
+        RaiseLocalEvent(new EconomyTransactionEvent(accountNumber, delta, newBalance, description, sourceEntity, groupId));
         return true;
     }
 

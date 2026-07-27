@@ -9,7 +9,7 @@ namespace Content.Shared._IS14.Economy;
 public sealed partial class StationAccountPrototype : IPrototype
 {
     [IdDataField]
-    public string ID { get; } = default!;
+    public string ID { get; private set; } = default!;
 
     /// <summary>Human-readable name shown in banking UIs.</summary>
     [DataField]

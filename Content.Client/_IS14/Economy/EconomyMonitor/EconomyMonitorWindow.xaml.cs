@@ -246,7 +246,7 @@ public sealed partial class EconomyMonitorWindow : FancyWindow
 
         var bg = index % 2 == 0 ? ColRowEven : ColRowOdd;
         var marker = expanded ? "[-]" : $"[+{members.Count.ToString()}]";
-        var amtStr = primary.Delta >= 0 ? $"+{primary.Delta}" : primary.Delta.ToString();
+        var amtStr = FormatDelta(primary.Delta);
         var amtColor = primary.Delta > 0 ? ColIncome : primary.Delta < 0 ? ColExpense : ColNeutral;
 
         var hbox = new BoxContainer { Orientation = BoxContainer.LayoutOrientation.Horizontal, HorizontalExpand = true };
@@ -280,7 +280,7 @@ public sealed partial class EconomyMonitorWindow : FancyWindow
     {
         var bg = index % 2 == 0 ? ColRowEven : ColRowOdd;
 
-        var amtStr   = record.Delta >= 0 ? $"+{record.Delta}" : record.Delta.ToString();
+        var amtStr   = FormatDelta(record.Delta);
         var amtColor = record.Delta > 0 ? ColIncome : record.Delta < 0 ? ColExpense : ColNeutral;
         var descColor = isChild ? ColNeutral : Color.White;
         var description = isChild ? $"    - {record.Description}" : record.Description;
@@ -412,4 +412,16 @@ public sealed partial class EconomyMonitorWindow : FancyWindow
 
     private static string FormatTime(TimeSpan ts)
         => $"{(int)ts.TotalHours:D2}:{ts.Minutes:D2}:{ts.Seconds:D2}";
+
+    /// <summary>
+    /// Zero-delta records are decisions that moved no money yet (e.g. a salary change),
+    /// so they read better as a dash than as "+0".
+    /// </summary>
+    private static string FormatDelta(int delta)
+        => delta switch
+        {
+            0 => "—",
+            > 0 => $"+{delta}",
+            _ => delta.ToString(),
+        };
 }

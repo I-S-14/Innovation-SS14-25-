@@ -13,6 +13,17 @@ public sealed partial class JobSalaryComponent : Component
     [DataField]
     public int Salary;
 
+    /// <summary>
+    /// Salary the job prototype starts with. Kept as the reference point department heads
+    /// raise or cut from, so console limits stay tied to the job rather than the last change.
+    /// </summary>
+    [DataField]
+    public int BaseSalary;
+
+    /// <summary>Job prototype the crew member spawned as, used for display fallbacks.</summary>
+    [DataField]
+    public string? JobProtoId;
+
     /// <summary>Seconds between payments, copied from JobEconomyPrototype.</summary>
     [DataField]
     public int SalaryIntervalSeconds;
