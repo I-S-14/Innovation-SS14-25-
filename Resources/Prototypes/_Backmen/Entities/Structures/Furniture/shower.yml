@@ -24,8 +24,6 @@
     - type: InteractionOutline
     - type: Damageable
       damageModifierSet: StructuralMetallic
-    - type: Injurable
-      damageContainer: StructuralInorganic
     - type: Construction
       graph: Shower
       node: shower
