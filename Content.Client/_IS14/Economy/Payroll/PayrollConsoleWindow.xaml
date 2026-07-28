@@ -1,0 +1,116 @@
+<!--
+SPDX-FileCopyrightText: 2025 IS14
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<is14:PayrollConsoleWindow
+    xmlns="https://spacestation14.io"
+    xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Economy.Payroll"
+    xmlns:cuc="clr-namespace:Content.Client.UserInterface.Controls"
+    Title="{Loc 'is14-payroll-window-title'}"
+    Resizable="False"
+    SetSize="620 650"
+    MinSize="620 650">
+
+    <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True">
+
+        <!-- Department fund stripe -->
+        <cuc:StripeBack HorizontalExpand="True" MinSize="0 32" HasTopEdge="False">
+            <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="8 0">
+                <Label Name="FundNameLabel"
+                       FontColorOverride="#8898A8" HorizontalExpand="True" VerticalAlignment="Center" />
+                <TextureRect TexturePath="/Textures/Objects/Misc/coins.rsi/coin_gold.png"
+                             Stretch="KeepCentered" RectClipContent="True"
+                             SetSize="16 16" VerticalAlignment="Center" Margin="0 0 4 0" />
+                <Label Name="FundBalanceLabel" FontColorOverride="#3ABB3A" VerticalAlignment="Center" />
+            </BoxContainer>
+        </cuc:StripeBack>
+
+        <!-- Body -->
+        <PanelContainer HorizontalExpand="True" VerticalExpand="True">
+            <PanelContainer.PanelOverride>
+                <gfx:StyleBoxFlat BackgroundColor="#181E2E" />
+            </PanelContainer.PanelOverride>
+
+            <TabContainer Name="Tabs" HorizontalExpand="True" VerticalExpand="True">
+
+                <!-- Tab 1: payroll -->
+                <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True" Margin="8 8">
+
+                    <!-- Column headers -->
+                    <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="6 0 6 2">
+                        <Label Text="{Loc 'is14-payroll-col-name'}"
+                               SetWidth="170" FontColorOverride="#8898A8" />
+                        <Label Text="{Loc 'is14-payroll-col-job'}"
+                               HorizontalExpand="True" FontColorOverride="#8898A8" />
+                        <Label Text="{Loc 'is14-payroll-col-salary'}"
+                               MinWidth="86" Align="Right" FontColorOverride="#8898A8" />
+                    </BoxContainer>
+
+                    <ScrollContainer HorizontalExpand="True" VerticalExpand="True" Margin="0 0 0 8">
+                        <BoxContainer Name="EmployeeList" Orientation="Vertical" HorizontalExpand="True" />
+                    </ScrollContainer>
+
+                    <PanelContainer HorizontalExpand="True" MinSize="0 2" Margin="0 0 0 8">
+                        <PanelContainer.PanelOverride>
+                            <gfx:StyleBoxFlat BackgroundColor="#8A6C14" />
+                        </PanelContainer.PanelOverride>
+                    </PanelContainer>
+
+                    <!-- Selected employee -->
+                    <Label Name="SelectionLabel" FontColorOverride="#B8C4D8" Margin="0 0 0 2" />
+                    <Label Name="SelectionHintLabel" FontColorOverride="#787880" Margin="0 0 0 6" />
+
+                    <!-- Salary -->
+                    <Label Text="{Loc 'is14-payroll-salary-label'}" FontColorOverride="#8898A8" Margin="0 0 0 4" />
+                    <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="0 0 0 8">
+                        <LineEdit Name="SalaryEdit"
+                                  PlaceHolder="{Loc 'is14-payroll-salary-placeholder'}"
+                                  HorizontalExpand="True" Margin="0 0 3 0" />
+                        <Button Name="SalaryMinusBtn" Text="-50" Margin="0 0 3 0" />
+                        <Button Name="SalaryPlusBtn" Text="+50" Margin="0 0 3 0" />
+                        <Button Name="SalaryApplyBtn" Text="{Loc 'is14-payroll-salary-apply'}" />
+                    </BoxContainer>
+
+                    <!-- One-off bonus / fine -->
+                    <Label Text="{Loc 'is14-payroll-oneoff-label'}" FontColorOverride="#8898A8" Margin="0 0 0 2" />
+                    <Label Name="LimitsLabel" FontColorOverride="#787880" Margin="0 0 0 4" />
+                    <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
+                        <LineEdit Name="AmountEdit"
+                                  PlaceHolder="{Loc 'is14-payroll-amount-placeholder'}"
+                                  HorizontalExpand="True" Margin="0 0 3 0" />
+                        <Button Name="BonusBtn"
+                                Text="{Loc 'is14-payroll-bonus'}"
+                                StyleClasses="ButtonColorGreen"
+                                Margin="0 0 3 0" />
+                        <Button Name="FineBtn"
+                                Text="{Loc 'is14-payroll-fine'}"
+                                StyleClasses="ButtonColorRed" />
+                    </BoxContainer>
+
+                </BoxContainer>
+
+                <!-- Tab 2: local action log -->
+                <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True" Margin="8 8">
+                    <Label Name="LogEmptyLabel"
+                           Text="{Loc 'is14-payroll-log-empty'}"
+                           FontColorOverride="#787880" Margin="0 0 0 4" />
+                    <ScrollContainer HorizontalExpand="True" VerticalExpand="True">
+                        <BoxContainer Name="LogList" Orientation="Vertical" HorizontalExpand="True" />
+                    </ScrollContainer>
+                </BoxContainer>
+
+            </TabContainer>
+        </PanelContainer>
+
+        <!-- Status stripe -->
+        <cuc:StripeBack HorizontalExpand="True" MinSize="0 22" HasBottomEdge="False">
+            <Label Name="StatusLabel"
+                   HorizontalAlignment="Left" HorizontalExpand="True"
+                   FontColorOverride="#BF8A40" Margin="4 0" />
+        </cuc:StripeBack>
+
+    </BoxContainer>
+</is14:PayrollConsoleWindow>

@@ -1,0 +1,90 @@
+# Base IS14 vending machine — override Sprite, MachineName and tabs in children.
+# Behaves like a vanilla vending machine (breaks, repairs, panel + wires, powered screen),
+# but sells goods for credits through the IS14 economy UI.
+# Fork machines live in _IS14/Entities/Structures/Machines/vendomats.yml.
+- type: entity
+  id: IS14VendingMachineBase
+  name: Торговый автомат
+  description: Продаёт разные вещи за кредиты.
+  parent: BaseMachinePowered
+  abstract: true
+  components:
+  - type: IS14VendingMachine
+  - type: UserInterface
+    interfaces:
+      enum.IS14VendingMachineUiKey.Key:
+        type: IS14VendingBoundUserInterface
+      enum.WiresUiKey.Key:
+        type: WiresBoundUserInterface
+  - type: ActivatableUI
+    key: enum.IS14VendingMachineUiKey.Key
+  - type: ActivatableUIRequiresPower
+  - type: ActivatableUIRequiresAnchor
+  - type: ApcPowerReceiver
+    powerLoad: 200
+  - type: Appearance
+  - type: WiresPanel
+  - type: WiresVisuals
+  - type: Wires
+    boardName: wires-board-name-vendingmachine
+    layoutId: IS14Vending
+  - type: Electrified
+    enabled: false
+    usesApcPower: true
+  - type: Repairable
+    doAfterDelay: 8
+  - type: Destructible
+    thresholds:
+    - trigger: # Excess damage, don't do anything
+        !type:DamageTrigger
+        damage: 200
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalGlassBreak
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Breakage" ]
+  - type: AmbientOnPowered
+  - type: AmbientSound
+    volume: -9
+    range: 3
+    enabled: false
+    sound:
+      path: /Audio/Ambience/Objects/vending_machine_hum.ogg
+  - type: LitOnPowered
+  - type: PointLight
+    enabled: false
+    radius: 2
+    energy: 1.6
+    color: "#4b93ad"
+    mask: /Textures/Effects/LightMasks/cone.png
+    autoRot: true
+  - type: InteractionOutline
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.25,-0.45,0.25,0.45"
+        density: 200
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+  - type: Sprite
+    sprite: Structures/Machines/VendingMachines/engivend.rsi
+    snapCardinals: true
+    layers:
+    - state: "off"
+      map: ["enum.VendingMachineVisualLayers.Base"]
+    - state: "normal-unshaded"
+      map: ["enum.VendingMachineVisualLayers.BaseUnshaded"]
+      shader: unshaded
+    - state: panel
+      map: ["enum.WiresVisualLayers.MaintenancePanel"]

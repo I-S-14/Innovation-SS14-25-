@@ -18,7 +18,7 @@
 - type: gameMap
   id: Dev
   mapName: Dev
-  mapPath: /Maps/Test/dev_map.yml
+  mapPath: /Maps/Test/new_dev.yml # IS14 change
   minPlayers: 0
   stations:
     Dev:
@@ -48,6 +48,17 @@
           stageCritical: 50
           stageTheEnd: 100
         # Goobstation blob-config-end
+        #IS14-change start
+        - type: StationEconomy
+          accounts:
+            - StationTreasury
+            - StationEngineering
+            - StationMedical
+            - StationSecurity
+            - StationCargo
+            - StationService
+            - StationResearch
+        #IS14-change end
 
 - type: gameMap
   id: TestTeg

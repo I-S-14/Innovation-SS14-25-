@@ -1,0 +1,48 @@
+<!--
+SPDX-FileCopyrightText: 2025 IS14
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<fines:FineCartridgeUiFragment
+    xmlns="https://spacestation14.io"
+    xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+    xmlns:fines="clr-namespace:Content.Client._IS14.Economy.Fines"
+    Margin="1 0 2 0">
+
+    <PanelContainer StyleClasses="BackgroundDark" />
+
+    <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True" Margin="4">
+
+        <!-- Offender -->
+        <Label Text="{Loc 'is14-fine-label-offender'}" FontColorOverride="#8898A8" />
+        <LineEdit Name="SearchEdit" PlaceHolder="{Loc 'is14-fine-search-placeholder'}"
+                  HorizontalExpand="True" Margin="0 2 0 2" />
+        <OptionButton Name="TargetSelector" HorizontalExpand="True" Margin="0 0 0 4" />
+
+        <!-- Article -->
+        <Label Text="{Loc 'is14-fine-label-article'}" FontColorOverride="#8898A8" />
+        <OptionButton Name="ArticleSelector" HorizontalExpand="True" Margin="0 2 0 4" />
+
+        <!-- Amount -->
+        <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="0 0 0 4">
+            <LineEdit Name="AmountEdit" HorizontalExpand="True" Margin="0 0 3 0" />
+            <Button Name="IssueButton" Text="{Loc 'is14-fine-issue'}" />
+        </BoxContainer>
+
+        <Label Name="StatusLabel" FontColorOverride="#BF8A40" Margin="0 0 0 4" />
+
+        <PanelContainer HorizontalExpand="True" MinSize="0 2" Margin="0 0 0 4">
+            <PanelContainer.PanelOverride>
+                <gfx:StyleBoxFlat BackgroundColor="#8A6C14" />
+            </PanelContainer.PanelOverride>
+        </PanelContainer>
+
+        <!-- Ledger -->
+        <Label Text="{Loc 'is14-fine-label-ledger'}" FontColorOverride="#8898A8" />
+        <ScrollContainer HorizontalExpand="True" VerticalExpand="True" Margin="0 2 0 0">
+            <BoxContainer Name="FineList" Orientation="Vertical" HorizontalExpand="True" />
+        </ScrollContainer>
+
+    </BoxContainer>
+</fines:FineCartridgeUiFragment>

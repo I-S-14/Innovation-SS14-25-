@@ -1,0 +1,414 @@
+# Job economy configuration for IS14.
+# ID must match the corresponding JobPrototype ID exactly.
+# salaryIntervalSeconds: seconds between payments — omit for the default (600 = 10 minutes).
+# payerAccount: station account (department fund) the salary is debited from.
+#   Default: StationTreasury. If the fund is empty, the salary is delayed and debt accumulates.
+
+# ─── Command ────────────────────────────────────────────────────────────────
+# Captain and HoP are paid by the treasury (default).
+# Department heads are paid from their own department's fund — the head starves with the crew.
+
+- type: jobEconomy
+  id: Captain
+  minBalance: 1500
+  maxBalance: 3000
+  salary: 400
+- type: jobEconomy
+  id: HeadOfPersonnel
+  minBalance: 800
+  maxBalance: 1500
+  salary: 280
+- type: jobEconomy
+  id: ChiefEngineer
+  minBalance: 800
+  maxBalance: 1500
+  salary: 280
+  payerAccount: StationEngineering
+
+- type: jobEconomy
+  id: ChiefMedicalOfficer
+  minBalance: 800
+  maxBalance: 1500
+  salary: 280
+  payerAccount: StationMedical
+
+- type: jobEconomy
+  id: ResearchDirector
+  minBalance: 800
+  maxBalance: 1500
+  salary: 280
+  payerAccount: StationResearch
+
+- type: jobEconomy
+  id: HeadOfSecurity
+  minBalance: 800
+  maxBalance: 1500
+  salary: 280
+  payerAccount: StationSecurity
+
+- type: jobEconomy
+  id: Quartermaster
+  minBalance: 800
+  maxBalance: 1500
+  salary: 280
+  payerAccount: StationCargo
+
+# ─── Engineering ────────────────────────────────────────────────────────────
+
+- type: jobEconomy
+  id: StationEngineer
+  minBalance: 500
+  maxBalance: 1000
+  salary: 175
+  payerAccount: StationEngineering
+
+- type: jobEconomy
+  id: AtmosphericTechnician
+  minBalance: 500
+  maxBalance: 1000
+  salary: 175
+  payerAccount: StationEngineering
+
+- type: jobEconomy
+  id: TechnicalAssistant
+  minBalance: 200
+  maxBalance: 400
+  salary: 60
+  payerAccount: StationEngineering
+
+# ─── Medical ────────────────────────────────────────────────────────────────
+
+- type: jobEconomy
+  id: MedicalDoctor
+  minBalance: 500
+  maxBalance: 1000
+  salary: 175
+  payerAccount: StationMedical
+
+- type: jobEconomy
+  id: Chemist
+  minBalance: 500
+  maxBalance: 1000
+  salary: 175
+  payerAccount: StationMedical
+
+- type: jobEconomy
+  id: Paramedic
+  minBalance: 500
+  maxBalance: 1000
+  salary: 175
+  payerAccount: StationMedical
+
+- type: jobEconomy
+  id: Psychologist
+  minBalance: 500
+  maxBalance: 1000
+  salary: 175
+  payerAccount: StationMedical
+
+- type: jobEconomy
+  id: MedicalIntern
+  minBalance: 200
+  maxBalance: 400
+  salary: 60
+  payerAccount: StationMedical
+
+# ─── Science ────────────────────────────────────────────────────────────────
+
+- type: jobEconomy
+  id: Scientist
+  minBalance: 500
+  maxBalance: 1000
+  salary: 175
+  payerAccount: StationResearch
+
+- type: jobEconomy
+  id: ResearchAssistant
+  minBalance: 200
+  maxBalance: 400
+  salary: 60
+  payerAccount: StationResearch
+
+# ─── Security ───────────────────────────────────────────────────────────────
+
+- type: jobEconomy
+  id: Warden
+  minBalance: 500
+  maxBalance: 1000
+  salary: 200
+  payerAccount: StationSecurity
+
+- type: jobEconomy
+  id: SecurityOfficer
+  minBalance: 500
+  maxBalance: 1000
+  salary: 175
+  payerAccount: StationSecurity
+
+- type: jobEconomy
+  id: Detective
+  minBalance: 500
+  maxBalance: 1000
+  salary: 175
+  payerAccount: StationSecurity
+
+- type: jobEconomy
+  id: SecurityCadet
+  minBalance: 200
+  maxBalance: 400
+  salary: 60
+  payerAccount: StationSecurity
+
+# ─── Cargo ──────────────────────────────────────────────────────────────────
+
+- type: jobEconomy
+  id: CargoTechnician
+  minBalance: 400
+  maxBalance: 800
+  salary: 150
+  payerAccount: StationCargo
+
+- type: jobEconomy
+  id: SalvageSpecialist
+  minBalance: 400
+  maxBalance: 800
+  salary: 150
+  payerAccount: StationCargo
+
+# ─── Service ────────────────────────────────────────────────────────────────
+
+- type: jobEconomy
+  id: Chef
+  minBalance: 300
+  maxBalance: 600
+  salary: 125
+  payerAccount: StationService
+
+- type: jobEconomy
+  id: Bartender
+  minBalance: 300
+  maxBalance: 600
+  salary: 125
+  payerAccount: StationService
+
+- type: jobEconomy
+  id: Janitor
+  minBalance: 300
+  maxBalance: 600
+  salary: 110
+  payerAccount: StationService
+
+- type: jobEconomy
+  id: Botanist
+  minBalance: 300
+  maxBalance: 600
+  salary: 125
+  payerAccount: StationService
+
+- type: jobEconomy
+  id: Chaplain
+  minBalance: 300
+  maxBalance: 600
+  salary: 110
+  payerAccount: StationService
+
+- type: jobEconomy
+  id: Clown
+  minBalance: 300
+  maxBalance: 600
+  salary: 100
+  payerAccount: StationService
+
+- type: jobEconomy
+  id: Mime
+  minBalance: 300
+  maxBalance: 600
+  salary: 100
+  payerAccount: StationService
+
+- type: jobEconomy
+  id: Librarian
+  minBalance: 300
+  maxBalance: 600
+  salary: 100
+  payerAccount: StationService
+
+- type: jobEconomy
+  id: Reporter
+  minBalance: 300
+  maxBalance: 600
+  salary: 110
+  payerAccount: StationService
+
+- type: jobEconomy
+  id: Musician
+  minBalance: 300
+  maxBalance: 600
+  salary: 100
+  payerAccount: StationService
+
+- type: jobEconomy
+  id: Zookeeper
+  minBalance: 300
+  maxBalance: 600
+  salary: 110
+  payerAccount: StationService
+
+- type: jobEconomy
+  id: Lawyer
+  minBalance: 400
+  maxBalance: 800
+  salary: 150
+  payerAccount: StationService
+
+- type: jobEconomy
+  id: Boxer
+  minBalance: 300
+  maxBalance: 600
+  salary: 110
+  payerAccount: StationService
+
+- type: jobEconomy
+  id: ServiceWorker
+  minBalance: 200
+  maxBalance: 400
+  salary: 60
+  payerAccount: StationService
+
+# ─── Passenger ──────────────────────────────────────────────────────────────
+
+- type: jobEconomy
+  id: Passenger
+  minBalance: 200
+  maxBalance: 500
+  salary: 25
+  payerAccount: StationService
+
+# ─── IS14 custom jobs ───────────────────────────────────────────────────────
+
+- type: jobEconomy
+  id: IS_JobLawyer
+  minBalance: 400
+  maxBalance: 800
+  salary: 150
+  payerAccount: StationService
+
+- type: jobEconomy
+  id: IS_JobPilot
+  minBalance: 400
+  maxBalance: 800
+  salary: 150
+  payerAccount: StationSecurity
+
+- type: jobEconomy
+  id: IS_JobCadet
+  minBalance: 200
+  maxBalance: 400
+  salary: 60
+  payerAccount: StationSecurity
+
+# ─── IS14 prototype jobs ─────────────────────────────────────────────────────
+
+- type: jobEconomy
+  id: SeniorEngineer
+  minBalance: 700
+  maxBalance: 1200
+  salary: 220
+  payerAccount: StationEngineering
+
+- type: jobEconomy
+  id: SeniorPhysician
+  minBalance: 700
+  maxBalance: 1200
+  salary: 220
+  payerAccount: StationMedical
+
+- type: jobEconomy
+  id: SeniorResearcher
+  minBalance: 700
+  maxBalance: 1200
+  salary: 220
+  payerAccount: StationResearch
+
+- type: jobEconomy
+  id: SeniorExpeditioner
+  minBalance: 500
+  maxBalance: 1000
+  salary: 190
+  payerAccount: StationCargo
+
+- type: jobEconomy
+  id: InternalControlExecutor
+  minBalance: 600
+  maxBalance: 1200
+  salary: 220
+  payerAccount: StationSecurity
+
+- type: jobEconomy
+  id: CommandSecretary
+  minBalance: 600
+  maxBalance: 1200
+  salary: 200
+- type: jobEconomy
+  id: ChurchServant
+  minBalance: 250
+  maxBalance: 500
+  salary: 90
+  payerAccount: StationService
+
+# ─── IS14 militia & oversight ───────────────────────────────────────────────
+
+- type: jobEconomy
+  id: JobHosMilitia
+  minBalance: 800
+  maxBalance: 1500
+  salary: 280
+  payerAccount: StationSecurity
+
+- type: jobEconomy
+  id: JobSeniorMilitia
+  minBalance: 600
+  maxBalance: 1200
+  salary: 220
+  payerAccount: StationSecurity
+
+- type: jobEconomy
+  id: JobMilitia
+  minBalance: 500
+  maxBalance: 1000
+  salary: 175
+  payerAccount: StationSecurity
+
+- type: jobEconomy
+  id: JobInvestigator
+  minBalance: 500
+  maxBalance: 1000
+  salary: 175
+  payerAccount: StationSecurity
+
+- type: jobEconomy
+  id: JobMedOfficer
+  minBalance: 500
+  maxBalance: 1000
+  salary: 175
+  payerAccount: StationSecurity
+
+- type: jobEconomy
+  id: JobLrrChief
+  minBalance: 600
+  maxBalance: 1200
+  salary: 220
+  payerAccount: StationSecurity
+
+# ИВК и представитель МУП платятся из казны — проверяющие не должны
+# зависеть от фондов тех, кого проверяют.
+- type: jobEconomy
+  id: JobIvk
+  minBalance: 600
+  maxBalance: 1200
+  salary: 220
+- type: jobEconomy
+  id: JobMupRepresentative
+  minBalance: 600
+  maxBalance: 1200
+  salary: 200

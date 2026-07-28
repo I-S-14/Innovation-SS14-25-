@@ -138,6 +138,10 @@ namespace Content.Client.Entry
             _prototypeManager.RegisterIgnore("codewordFaction");
             _prototypeManager.RegisterIgnore("story"); // Goobstation
             _prototypeManager.RegisterIgnore("storyBeat"); // Goobstation
+            //IS14-change start
+            // Plan quotas measure the station server-side; the board only ever sees their results.
+            _prototypeManager.RegisterIgnore("planQuota");
+            //IS14-change end
 
             _componentFactory.GenerateNetIds();
             _adminManager.Initialize();

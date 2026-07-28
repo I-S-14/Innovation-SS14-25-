@@ -1,0 +1,56 @@
+<!--
+SPDX-FileCopyrightText: 2025 IS14
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<is14:PlanQuotaRow
+    xmlns="https://spacestation14.io"
+    xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Economy.Gosplan"
+    Orientation="Vertical"
+    HorizontalExpand="True"
+    Margin="0 0 0 6">
+
+    <!-- Pass, not Stop: the row only needs hover for its tooltip, the scroll wheel
+         still has to reach the list underneath it. -->
+    <PanelContainer Name="RowPanel" HorizontalExpand="True" MouseFilter="Pass">
+
+        <BoxContainer Orientation="Vertical" HorizontalExpand="True" Margin="8 6">
+
+            <!-- Department badge and the headline percentage -->
+            <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
+
+                <PanelContainer Name="FundBadge" VerticalAlignment="Center">
+                    <Label Name="FundLabel" StyleClasses="LabelSmall" Margin="5 1" />
+                </PanelContainer>
+
+                <Control HorizontalExpand="True" />
+
+                <Label Name="PercentLabel" StyleClasses="LabelHeading" VerticalAlignment="Center" />
+
+            </BoxContainer>
+
+            <!-- Quota name — wraps, department names and quotas are long in Russian -->
+            <RichTextLabel Name="NameLabel" HorizontalExpand="True" Margin="0 3 0 4" />
+
+            <!-- The scale, with the running figures written across it -->
+            <Control HorizontalExpand="True" SetHeight="20">
+                <is14:PlanGauge Name="Gauge" HorizontalExpand="True" />
+                <Label Name="ValueLabel"
+                       StyleClasses="LabelSmall"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center" />
+            </Control>
+
+            <!-- Money on the line this period -->
+            <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="0 4 0 0">
+                <Label Name="PayoutLabel" StyleClasses="LabelSmall" HorizontalExpand="True" />
+                <Label Name="StatusLabel" StyleClasses="LabelSmall" HorizontalAlignment="Right" />
+            </BoxContainer>
+
+            <RichTextLabel Name="NoteLabel" HorizontalExpand="True" Margin="0 3 0 0" />
+
+        </BoxContainer>
+    </PanelContainer>
+</is14:PlanQuotaRow>

@@ -1,399 +1,545 @@
+# IS14 fork vending machines — use the IS14 economy system (paid, revenue goes to a department fund).
+# Vanilla vending machines are untouched and keep the vanilla free-vend UI.
+# Everything shared (power, anchoring, wires, breakage, screen visuals, light, sprite layers)
+# lives in IS14VendingMachineBase — children set only goods, ad datasets and the RSI path.
+# UI title defaults to the entity name; sprite layers use the standard vanilla state names.
+
+# ─── Милиция ────────────────────────────────────────────────────────────────
+
 - type: entity
-  parent: VendingMachine
+  parent: IS14VendingMachineBase
   id: IS14VendingMachineMilicia
   name: MilicVend
-  description: Cop wardrobe.
+  description: Автомат снаряжения милиции.
   components:
-  - type: VendingMachine
-    pack: IS14MilicInventory #
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
-    ejectState: eject-unshaded
+  - type: IS14VendingMachine
+    revenueAccount: StationSecurity
+    tabs:
+    - name: Форма
+      inventory:
+      - itemId: ClothingBackpackSecurity
+        price: 200
+        stock: 3
+      - itemId: ClothingUniformJumpsuitSec
+        price: 150
+        stock: 3
+      - itemId: ClothingHeadHatBeretSecurity
+        price: 150
+        stock: 3
+      - itemId: ClothingShoesBootsJack
+        price: 150
+        stock: 3
+    - name: Спецсредства
+      access: [ Security ]
+      inventory:
+      - itemId: Handcuffs
+        price: 300
+        stock: 4
+      - itemId: Flash
+        price: 250
+        stock: 3
+      - itemId: GrenadeFlashBang
+        price: 400
+        stock: 2
   - type: DatasetVocalizer
-    dataset: IS14MilicVendAds #
+    dataset: IS14MilicVendAds
   - type: SpeakOnUIClosed
-    pack: IS14MilicVendGoodbyes #
+    pack: IS14MilicVendGoodbyes
   - type: Sprite
-    sprite: _IS14/Structures/Machines/Vends/milicia.rsi #
-    layers:
-    - state: "off"
-      map: ["enum.VendingMachineVisualLayers.Base"]
-    - state: "off"
-      map: ["enum.VendingMachineVisualLayers.BaseUnshaded"]
-      shader: unshaded
-    - state: panel
-      map: ["enum.WiresVisualLayers.MaintenancePanel"]
-  - type: AccessReader
-    access: [["Service"]]
-  - type: PointLight
-    radius: 2
-    energy: 1.6
-    color: "#4b93ad"
-    mask: /Textures/Effects/LightMasks/cone.png
-    autoRot: true
+    sprite: _IS14/Structures/Machines/Vends/milicia.rsi
+
+# ─── Общий ──────────────────────────────────────────────────────────────────
 
 - type: entity
-  parent: VendingMachine
+  parent: IS14VendingMachineBase
   id: IS14VendingMachineObshiy
   name: Vend
-  description: General usage vend.
+  description: Автомат товаров общего назначения.
   components:
-  - type: VendingMachine
-    pack: IS14ObshiyInventory #
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
-    ejectState: eject-unshaded
+  - type: IS14VendingMachine
+    revenueAccount: StationService
+    tabs:
+    - name: Товары
+      inventory:
+      - itemId: FoodSnackChocolate
+        price: 30
+        stock: 5
+      - itemId: FoodSnackRaisins
+        price: 30
+        stock: 5
+      - itemId: FoodSnackSemki
+        price: 25
+        stock: 8
+      - itemId: DrinkColaCan
+        price: 25
+        stock: 6
+      - itemId: DrinkIcedTeaCan
+        price: 25
+        stock: 6
+      - itemId: CheapLighter
+        price: 20
+        stock: 5
+      - itemId: Matchbox
+        price: 15
+        stock: 5
+      - itemId: ForkPlastic
+        price: 10
+        stock: 10
+      - itemId: SpoonPlastic
+        price: 10
+        stock: 10
+      - itemId: FlashlightLantern
+        price: 200
+        stock: 2
+    contrabandInventory:
+    - itemId: FoodSnackSyndi
+      price: 90
+      stock: 3
   - type: DatasetVocalizer
-    dataset: IS14ObshiyVendAds #
+    dataset: IS14ObshiyVendAds
   - type: SpeakOnUIClosed
-    pack: IS14ObshiyVendGoodbyes #
+    pack: IS14ObshiyVendGoodbyes
   - type: Sprite
-    sprite: _IS14/Structures/Machines/Vends/obshiy.rsi #
-    layers:
-    - state: "off"
-      map: ["enum.VendingMachineVisualLayers.Base"]
-    - state: "off"
-      map: ["enum.VendingMachineVisualLayers.BaseUnshaded"]
-      shader: unshaded
-    - state: panel
-      map: ["enum.WiresVisualLayers.MaintenancePanel"]
-  - type: AccessReader
-    access: [["Service"]]
-  - type: PointLight
-    radius: 2
-    energy: 1.6
-    color: "#4b93ad"
-    mask: /Textures/Effects/LightMasks/cone.png
-    autoRot: true
+    sprite: _IS14/Structures/Machines/Vends/obshiy.rsi
+
+# ─── Юрист ──────────────────────────────────────────────────────────────────
 
 - type: entity
-  parent: VendingMachine
+  parent: IS14VendingMachineBase
   id: IS14VendingMachineUr
   name: LawVend
-  description: Vending machine for lawyers.
+  description: Автомат для юристов.
   components:
-  - type: VendingMachine
-    pack: IS14UrInventory #
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
-    ejectState: eject-unshaded
+  - type: IS14VendingMachine
+    revenueAccount: StationService
+    tabs:
+    - name: Товары
+      inventory:
+      - itemId: ClothingUniformJumpsuitLawyerBlue
+        price: 150
+        stock: 1
+      - itemId: ClothingUniformJumpsuitLawyerPurple
+        price: 150
+        stock: 1
+      - itemId: ClothingUniformJumpsuitLawyerRed
+        price: 150
+        stock: 1
+      - itemId: ClothingUniformJumpsuitLawyerBlack
+        price: 150
+        stock: 1
+      - itemId: ClothingShoesBootsLaceup
+        price: 120
+        stock: 2
+      - itemId: ClothingNeckLawyerbadge
+        price: 100
+        stock: 2
+      - itemId: BriefcaseBrown
+        price: 120
+        stock: 2
+      - itemId: BookSpaceLaw
+        price: 100
+        stock: 3
+      - itemId: LuxuryPen
+        price: 80
+        stock: 2
+      - itemId: HandLabeler
+        price: 60
+        stock: 2
+    contrabandInventory:
+    - itemId: ClothingOuterRobesJudge
+      price: 450
+      stock: 1
+    - itemId: ClothingHeadHatPwig
+      price: 450
+      stock: 1
   - type: DatasetVocalizer
-    dataset: IS14URVendAds #
+    dataset: IS14URVendAds
   - type: SpeakOnUIClosed
-    pack: IS14URVendGoodbyes #
+    pack: IS14URVendGoodbyes
   - type: Sprite
-    sprite: _IS14/Structures/Machines/Vends/ur.rsi #
-    layers:
-    - state: "off"
-      map: ["enum.VendingMachineVisualLayers.Base"]
-    - state: "off"
-      map: ["enum.VendingMachineVisualLayers.BaseUnshaded"]
-      shader: unshaded
-    - state: panel
-      map: ["enum.WiresVisualLayers.MaintenancePanel"]
-  - type: AccessReader
-    access: [["Service"]]
-  - type: PointLight
-    radius: 2
-    energy: 1.6
-    color: "#4b93ad"
-    mask: /Textures/Effects/LightMasks/cone.png
-    autoRot: true
+    sprite: _IS14/Structures/Machines/Vends/ur.rsi
 
-
+# ─── Экспедиция ─────────────────────────────────────────────────────────────
 
 - type: entity
-  parent: VendingMachine
+  parent: IS14VendingMachineBase
   id: IS14VendingMachineExpeditionGear
   name: ExpGear
-  description: Expedition gear.
+  description: Базовое снаряжение экспедиций.
   components:
-  - type: VendingMachine
-    pack: IS14ExpGearInventory #
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
-    ejectState: eject-unshaded
+  - type: IS14VendingMachine
+    revenueAccount: StationCargo
+    tabs:
+    - name: Снаряжение
+      inventory:
+      - itemId: Pickaxe
+        price: 150
+        stock: 4
+      - itemId: OreBag
+        price: 100
+        stock: 4
+      - itemId: Flare
+        price: 30
+        stock: 6
+      - itemId: FlashlightLantern
+        price: 200
+        stock: 2
+      - itemId: HandheldGPSBasic
+        price: 150
+        stock: 2
+      - itemId: RadioHandheld
+        price: 120
+        stock: 2
+      - itemId: Crowbar
+        price: 150
+        stock: 2
+    contrabandInventory:
+    - itemId: PlushieCarp
+      price: 300
+      stock: 1
   - type: DatasetVocalizer
-    dataset: IS14ExpGearVendAds #
+    dataset: IS14ExpGearVendAds
   - type: SpeakOnUIClosed
-    pack: IS14ExpGearVendGoodbyes #
+    pack: IS14ExpGearVendGoodbyes
   - type: Sprite
-    sprite: _IS14/Structures/Machines/Vends/expgear.rsi #
-    layers:
-    - state: "off"
-      map: ["enum.VendingMachineVisualLayers.Base"]
-    - state: "off"
-      map: ["enum.VendingMachineVisualLayers.BaseUnshaded"]
-      shader: unshaded
-    - state: panel
-      map: ["enum.WiresVisualLayers.MaintenancePanel"]
-  - type: AccessReader
-    access: [["Service"]]
-  - type: PointLight
-    radius: 2
-    energy: 1.6
-    color: "#4b93ad"
-    mask: /Textures/Effects/LightMasks/cone.png
-    autoRot: true
+    sprite: _IS14/Structures/Machines/Vends/expgear.rsi
 
 - type: entity
-  parent: VendingMachine
+  parent: IS14VendingMachineBase
   id: IS14VendingMachineExp
   name: ExpVend
-  description: Expedition vending machine.
+  description: Продвинутое снаряжение экспедиций.
   components:
-  - type: VendingMachine
-    pack: IS14ExpInventory #
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
-    ejectState: eject-unshaded
+  - type: IS14VendingMachine
+    revenueAccount: StationCargo
+    tabs:
+    - name: Расходники
+      inventory:
+      - itemId: Flare
+        price: 30
+        stock: 8
+      - itemId: OreBag
+        price: 100
+        stock: 3
+    - name: Снаряжение
+      access: [ Salvage ]
+      inventory:
+      - itemId: WeaponGrapplingGun
+        price: 500
+        stock: 3
+      - itemId: WeaponProtoKineticAccelerator
+        price: 600
+        stock: 3
+      - itemId: Fulton
+        price: 200
+        stock: 3
+      - itemId: FultonBeacon
+        price: 400
+        stock: 1
+      - itemId: SeismicCharge
+        price: 350
+        stock: 2
   - type: DatasetVocalizer
-    dataset: IS14ExpVendAds #
+    dataset: IS14ExpVendAds
   - type: SpeakOnUIClosed
-    pack: IS14ExpVendGoodbyes #
+    pack: IS14ExpVendGoodbyes
   - type: Sprite
-    sprite: _IS14/Structures/Machines/Vends/exp.rsi #
-    layers:
-    - state: "off"
-      map: ["enum.VendingMachineVisualLayers.Base"]
-    - state: "off"
-      map: ["enum.VendingMachineVisualLayers.BaseUnshaded"]
-      shader: unshaded
-    - state: panel
-      map: ["enum.WiresVisualLayers.MaintenancePanel"]
-  - type: AccessReader
-    access: [["Service"]]
-  - type: PointLight
-    radius: 2
-    energy: 1.6
-    color: "#4b93ad"
-    mask: /Textures/Effects/LightMasks/cone.png
-    autoRot: true
+    sprite: _IS14/Structures/Machines/Vends/exp.rsi
+
+# ─── Медицина ───────────────────────────────────────────────────────────────
 
 - type: entity
-  parent: VendingMachine
+  parent: IS14VendingMachineBase
   id: IS14VendingMachineChem
   name: ChemVend
-  description: Vending machine for chemists.
+  description: Автомат реагентов для химиков.
   components:
-  - type: VendingMachine
-    pack: IS14ChemInventory #
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
-    ejectState: eject-unshaded
+  - type: IS14VendingMachine
+    revenueAccount: StationMedical
+    tabs:
+    - name: Реагенты
+      access: [ Chemistry ]
+      inventory:
+      - itemId: Jug
+        price: 80
+        stock: 4
+      - itemId: JugCarbon
+        price: 80
+        stock: 4
+      - itemId: JugHydrogen
+        price: 80
+        stock: 3
+      - itemId: JugNitrogen
+        price: 80
+        stock: 3
+      - itemId: JugOxygen
+        price: 80
+        stock: 3
+      - itemId: JugIron
+        price: 80
+        stock: 2
+      - itemId: JugCopper
+        price: 80
+        stock: 2
+      - itemId: JugEthanol
+        price: 80
+        stock: 2
+      - itemId: JugPotassium
+        price: 80
+        stock: 2
+      - itemId: JugSodium
+        price: 80
+        stock: 2
+      - itemId: JugSilicon
+        price: 80
+        stock: 2
+      - itemId: JugLithium
+        price: 80
+        stock: 2
+      - itemId: JugSugar
+        price: 80
+        stock: 3
+      - itemId: JugAluminium
+        price: 80
+        stock: 2
+      - itemId: JugPhosphorus
+        price: 100
+        stock: 1
+      - itemId: JugSulfur
+        price: 100
+        stock: 1
+      - itemId: JugChlorine
+        price: 100
+        stock: 1
+      - itemId: JugFluorine
+        price: 100
+        stock: 1
+      - itemId: JugIodine
+        price: 100
+        stock: 1
+      - itemId: JugMercury
+        price: 120
+        stock: 1
+      - itemId: JugRadium
+        price: 120
+        stock: 1
+    contrabandInventory:
+    - itemId: StrangePill
+      price: 240
+      stock: 3
+    - itemId: ChemistryBottleToxin
+      price: 400
+      stock: 1
   - type: DatasetVocalizer
-    dataset: IS14ChemVendAds #
+    dataset: IS14ChemVendAds
   - type: SpeakOnUIClosed
-    pack: IS14ChemVendGoodbyes #
+    pack: IS14ChemVendGoodbyes
   - type: Sprite
-    sprite: _IS14/Structures/Machines/Vends/chem.rsi #
-    layers:
-    - state: "off"
-      map: ["enum.VendingMachineVisualLayers.Base"]
-    - state: "off"
-      map: ["enum.VendingMachineVisualLayers.BaseUnshaded"]
-      shader: unshaded
-    - state: panel
-      map: ["enum.WiresVisualLayers.MaintenancePanel"]
-  - type: AccessReader
-    access: [["Service"]]
-  - type: PointLight
-    radius: 2
-    energy: 1.6
-    color: "#4b93ad"
-    mask: /Textures/Effects/LightMasks/cone.png
-    autoRot: true
+    sprite: _IS14/Structures/Machines/Vends/chem.rsi
 
 - type: entity
-  parent: VendingMachine
+  parent: IS14VendingMachineBase
   id: IS14VendingMachineMed
   name: MedVend
-  description: Vending machine for medics.
+  description: Автомат медикаментов.
   components:
-  - type: VendingMachine
-    pack: IS14MedInventory #
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
-    ejectState: eject-unshaded
+  - type: IS14VendingMachine
+    revenueAccount: StationMedical
+    tabs:
+    - name: Базовое
+      inventory:
+      - itemId: Gauze
+        price: 60
+        stock: 5
+      - itemId: Brutepack
+        price: 80
+        stock: 5
+      - itemId: Ointment
+        price: 80
+        stock: 5
+      - itemId: MedicalPatchBasic
+        price: 60
+        stock: 5
+      - itemId: Tourniquet
+        price: 100
+        stock: 4
+      - itemId: Syringe
+        price: 50
+        stock: 5
+    - name: Продвинутое
+      access: [ Medical ]
+      inventory:
+      - itemId: HandheldHealthAnalyzer
+        price: 250
+        stock: 3
+      - itemId: Bloodpack
+        price: 120
+        stock: 5
+      - itemId: ChemistryBottleEpinephrine
+        price: 200
+        stock: 3
+      - itemId: ParamedHypo
+        price: 400
+        stock: 2
+      - itemId: ClothingEyesHudMedical
+        price: 300
+        stock: 2
+    contrabandInventory:
+    - itemId: Stimpack
+      price: 500
+      stock: 2
   - type: DatasetVocalizer
-    dataset: IS14MedVendAds #
+    dataset: IS14MedVendAds
   - type: SpeakOnUIClosed
-    pack: IS14MedVendGoodbyes #
+    pack: IS14MedVendGoodbyes
   - type: Sprite
-    sprite: _IS14/Structures/Machines/Vends/med.rsi #
-    layers:
-    - state: "off"
-      map: ["enum.VendingMachineVisualLayers.Base"]
-    - state: "off"
-      map: ["enum.VendingMachineVisualLayers.BaseUnshaded"]
-      shader: unshaded
-    - state: panel
-      map: ["enum.WiresVisualLayers.MaintenancePanel"]
-  - type: AccessReader
-    access: [["Service"]]
-  - type: PointLight
-    radius: 2
-    energy: 1.6
-    color: "#4b93ad"
-    mask: /Textures/Effects/LightMasks/cone.png
-    autoRot: true
+    sprite: _IS14/Structures/Machines/Vends/med.rsi
 
-#######################################
-#######################################
-#######################################
+# ─── Сервис ─────────────────────────────────────────────────────────────────
 
 - type: entity
-  parent: VendingMachine
+  parent: IS14VendingMachineBase
   id: IS14VendingMachineCigs
   name: CigsVend
-  description: Vending machine for cigarettes.
+  description: Автомат сигарет.
   components:
-  - type: VendingMachine
-    pack: IS14CigsInventory #
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
-    ejectState: eject-unshaded
+  - type: IS14VendingMachine
+    revenueAccount: StationService
+    tabs:
+    - name: Товары
+      inventory:
+      - itemId: CigPackGreen
+        price: 60
+        stock: 2
+      - itemId: CigPackRed
+        price: 60
+        stock: 2
+      - itemId: CigPackBlue
+        price: 60
+        stock: 2
+      - itemId: CigPackBlack
+        price: 60
+        stock: 2
+      - itemId: CigPackMixed
+        price: 60
+        stock: 2
+      - itemId: CigarCase
+        price: 200
+        stock: 1
+      - itemId: SmokingPipeFilledTobacco
+        price: 150
+        stock: 1
+      - itemId: Vape
+        price: 250
+        stock: 1
+      - itemId: PackPaperRollingFilters
+        price: 40
+        stock: 3
+      - itemId: Matchbox
+        price: 15
+        stock: 5
+      - itemId: CheapLighter
+        price: 20
+        stock: 4
+      - itemId: Lighter
+        price: 40
+        stock: 2
+      - itemId: FlippoLighter
+        price: 120
+        stock: 2
+    contrabandInventory:
+    - itemId: GroundTobacco
+      price: 120
+      stock: 3
+    - itemId: CigarGold
+      price: 500
+      stock: 2
   - type: DatasetVocalizer
-    dataset: IS14CigsVendAds #
+    dataset: IS14CigsVendAds
   - type: SpeakOnUIClosed
-    pack: IS14CigsVendGoodbyes #
+    pack: IS14CigsVendGoodbyes
   - type: Sprite
-    sprite: _IS14/Structures/Machines/Vends/cigs.rsi #
-    layers:
-    - state: "off"
-      map: ["enum.VendingMachineVisualLayers.Base"]
-    - state: "off"
-      map: ["enum.VendingMachineVisualLayers.BaseUnshaded"]
-      shader: unshaded
-    - state: panel
-      map: ["enum.WiresVisualLayers.MaintenancePanel"]
-  - type: AccessReader
-    access: [["Service"]]
-  - type: PointLight
-    radius: 2
-    energy: 1.6
-    color: "#4b93ad"
-    mask: /Textures/Effects/LightMasks/cone.png
-    autoRot: true
+    sprite: _IS14/Structures/Machines/Vends/cigs.rsi
 
 - type: entity
-  parent: VendingMachine
+  parent: IS14VendingMachineBase
   id: IS14VendingMachinekofee
   name: KofeeVend
-  description: Vending machine for kofee.
+  description: Автомат горячих напитков.
   components:
-  - type: VendingMachine
-    pack: IS14KofeeInventory #
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
-    ejectState: eject-unshaded
+  - type: IS14VendingMachine
+    revenueAccount: StationService
+    tabs:
+    - name: Напитки
+      inventory:
+      - itemId: DrinkHotCoffee
+        price: 20
+        stock: 5
+      - itemId: DrinkCafeLatte
+        price: 25
+        stock: 5
+      - itemId: DrinkTeacup
+        price: 15
+        stock: 5
+      - itemId: DrinkGreenTea
+        price: 15
+        stock: 5
+      - itemId: DrinkHotCoco
+        price: 20
+        stock: 5
+    contrabandInventory:
+    - itemId: DrinkTeapot
+      price: 100
+      stock: 2
   - type: DatasetVocalizer
-    dataset: IS14KofeeVendAds #
+    dataset: IS14KofeeVendAds
   - type: SpeakOnUIClosed
-    pack: IS14KofeeVendGoodbyes #
+    pack: IS14KofeeVendGoodbyes
   - type: Sprite
-    sprite: _IS14/Structures/Machines/Vends/kofee.rsi #
-    layers:
-    - state: "off"
-      map: ["enum.VendingMachineVisualLayers.Base"]
-    - state: "off"
-      map: ["enum.VendingMachineVisualLayers.BaseUnshaded"]
-      shader: unshaded
-    - state: panel
-      map: ["enum.WiresVisualLayers.MaintenancePanel"]
-  - type: AccessReader
-    access: [["Service"]]
-  - type: PointLight
-    radius: 2
-    energy: 1.6
-    color: "#4b93ad"
-    mask: /Textures/Effects/LightMasks/cone.png
-    autoRot: true
+    sprite: _IS14/Structures/Machines/Vends/kofee.rsi
 
 - type: entity
-  parent: VendingMachine
+  parent: IS14VendingMachineBase
   id: IS14VendingMachineFood
   name: FoodVend
-  description: Vending machine for food.
+  description: Автомат снеков.
   components:
-  - type: VendingMachine
-    pack: IS14FoodInventory #
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
-    ejectState: eject-unshaded
+  - type: IS14VendingMachine
+    revenueAccount: StationService
+    tabs:
+    - name: Снеки
+      inventory:
+      - itemId: FoodSnackRaisins
+        price: 30
+        stock: 3
+      - itemId: FoodSnackChocolate
+        price: 35
+        stock: 3
+      - itemId: FoodSnackCnDs
+        price: 30
+        stock: 3
+      - itemId: FoodSnackPistachios
+        price: 35
+        stock: 3
+      - itemId: FoodSnackSus
+        price: 30
+        stock: 3
+      - itemId: FoodSnackSemki
+        price: 25
+        stock: 3
+      - itemId: DrinkColaCan
+        price: 25
+        stock: 4
+    contrabandInventory:
+    - itemId: FoodSnackLollypopWrapped
+      price: 60
+      stock: 3
+    - itemId: FoodSnackSyndi
+      price: 90
+      stock: 3
   - type: DatasetVocalizer
-    dataset: IS14FoodVendAds #
+    dataset: IS14FoodVendAds
   - type: SpeakOnUIClosed
-    pack: IS14FoodVendGoodbyes #
+    pack: IS14FoodVendGoodbyes
   - type: Sprite
-    sprite: _IS14/Structures/Machines/Vends/food.rsi #
-    layers:
-    - state: "off"
-      map: ["enum.VendingMachineVisualLayers.Base"]
-    - state: "off"
-      map: ["enum.VendingMachineVisualLayers.BaseUnshaded"]
-      shader: unshaded
-    - state: panel
-      map: ["enum.WiresVisualLayers.MaintenancePanel"]
-  - type: AccessReader
-    access: [["Service"]]
-  - type: PointLight
-    radius: 2
-    energy: 1.6
-    color: "#4b93ad"
-    mask: /Textures/Effects/LightMasks/cone.png
-    autoRot: true
-
-# - type: entity
-#   parent: VendingMachine
-#   id: IS14VendingMachineWater
-#   name: WaterVend
-#   description: Vending machine for water.
-#   components:
-#   - type: VendingMachine
-#     pack: IS14WaterInventory #
-#     offState: off
-#     brokenState: broken
-#     normalState: normal-unshaded
-#     ejectState: eject-unshaded
-#   - type: DatasetVocalizer
-#     dataset: IS14WaterVendAds #
-#   - type: SpeakOnUIClosed
-#     pack: IS14WaterVendGoodbyes #
-#   - type: Sprite
-#     sprite: _IS14/Structures/Machines/Vends/water.rsi #
-#     layers:
-#     - state: "off"
-#       map: ["enum.VendingMachineVisualLayers.Base"]
-#     - state: "off"
-#       map: ["enum.VendingMachineVisualLayers.BaseUnshaded"]
-#       shader: unshaded
-#     - state: panel
-#       map: ["enum.WiresVisualLayers.MaintenancePanel"]
-#   - type: AccessReader
-#     access: [["Service"]]
-#   - type: PointLight
-#     radius: 2
-#     energy: 1.6
-#     color: "#4b93ad"
-#     mask: /Textures/Effects/LightMasks/cone.png
-#     autoRot: true
-
-
-
-
-
-
-
-
-
+    sprite: _IS14/Structures/Machines/Vends/food.rsi

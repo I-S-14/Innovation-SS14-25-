@@ -1,0 +1,5 @@
+- type: wireLayout
+  id: IS14Vending
+  wires:
+  - !type:PowerWireAction
+  - !type:IS14VendingMachineContrabandWireAction

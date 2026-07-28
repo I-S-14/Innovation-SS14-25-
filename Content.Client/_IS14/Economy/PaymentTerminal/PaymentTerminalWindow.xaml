@@ -1,0 +1,86 @@
+<!--
+SPDX-FileCopyrightText: 2025 IS14
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<is14:PaymentTerminalWindow
+    xmlns="https://spacestation14.io"
+    xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Economy.PaymentTerminal"
+    xmlns:cuc="clr-namespace:Content.Client.UserInterface.Controls"
+    Title="{Loc 'is14-payterm-window-title'}"
+    Resizable="False"
+    SetSize="320 360"
+    MinSize="320 360">
+
+    <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True">
+
+        <!-- Recipient stripe -->
+        <cuc:StripeBack HorizontalExpand="True" MinSize="0 24" HasTopEdge="False">
+            <Label Name="RecipientLabel"
+                   HorizontalAlignment="Left" HorizontalExpand="True"
+                   VerticalAlignment="Center"
+                   FontColorOverride="#7AACCF" Margin="6 0" />
+        </cuc:StripeBack>
+
+        <!-- Body -->
+        <PanelContainer HorizontalExpand="True" VerticalExpand="True">
+            <PanelContainer.PanelOverride>
+                <gfx:StyleBoxFlat BackgroundColor="#181E2E" />
+            </PanelContainer.PanelOverride>
+            <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True" Margin="10 10">
+
+                <!-- Pending charge: pay screen -->
+                <BoxContainer Name="PayPanel" Orientation="Vertical"
+                              HorizontalExpand="True" VerticalExpand="True" Visible="False">
+                    <Label Name="PendingAmountLabel"
+                           HorizontalAlignment="Center" Margin="0 18 0 6"
+                           StyleClasses="LabelHeading"
+                           FontColorOverride="#3ABB3A" />
+                    <Label Name="PendingDescLabel"
+                           HorizontalAlignment="Center" Margin="0 0 0 18"
+                           FontColorOverride="#8898A8" />
+                    <Button Name="PayBtn" Text="{Loc 'is14-payterm-pay'}"
+                            HorizontalExpand="True" MinSize="0 44" Margin="0 0 0 6"
+                            StyleClasses="OpenBoth" />
+                    <Button Name="CancelBtn" Text="{Loc 'is14-payterm-cancel'}"
+                            HorizontalExpand="True" />
+                    <BoxContainer Orientation="Vertical" VerticalExpand="True" />
+                </BoxContainer>
+
+                <!-- No pending charge: charge entry screen -->
+                <BoxContainer Name="ChargePanel" Orientation="Vertical"
+                              HorizontalExpand="True" VerticalExpand="True" Visible="False">
+                    <Label Text="{Loc 'is14-payterm-charge-label'}"
+                           FontColorOverride="#8898A8" Margin="0 0 0 4" />
+                    <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="0 0 0 4">
+                        <Button Name="Add10Btn" Text="+10" HorizontalExpand="True" Margin="0 0 3 0" />
+                        <Button Name="Add50Btn" Text="+50" HorizontalExpand="True" Margin="0 0 3 0" />
+                        <Button Name="Add100Btn" Text="+100" HorizontalExpand="True" />
+                    </BoxContainer>
+                    <LineEdit Name="AmountEdit"
+                              PlaceHolder="{Loc 'is14-payterm-amount-placeholder'}"
+                              HorizontalExpand="True" Margin="0 0 0 4" />
+                    <LineEdit Name="DescEdit"
+                              PlaceHolder="{Loc 'is14-payterm-desc-placeholder'}"
+                              HorizontalExpand="True" Margin="0 0 0 8" />
+                    <Button Name="SetChargeBtn" Text="{Loc 'is14-payterm-set-charge'}"
+                            HorizontalExpand="True" MinSize="0 36" />
+                    <BoxContainer Orientation="Vertical" VerticalExpand="True" />
+                    <Button Name="BindBtn" Text="{Loc 'is14-payterm-bind'}"
+                            HorizontalExpand="True" Visible="False" />
+                </BoxContainer>
+
+            </BoxContainer>
+        </PanelContainer>
+
+        <!-- Status stripe -->
+        <cuc:StripeBack HorizontalExpand="True" MinSize="0 22" HasBottomEdge="False">
+            <Label Name="StatusLabel"
+                   HorizontalAlignment="Left" HorizontalExpand="True"
+                   FontColorOverride="#BF8A40" Margin="6 0" />
+        </cuc:StripeBack>
+
+    </BoxContainer>
+</is14:PaymentTerminalWindow>

@@ -1,0 +1,78 @@
+<!--
+SPDX-FileCopyrightText: 2025 IS14
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<is14:TreasuryConsoleWindow
+    xmlns="https://spacestation14.io"
+    xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Economy.Treasury"
+    xmlns:cuc="clr-namespace:Content.Client.UserInterface.Controls"
+    Title="{Loc 'is14-treasury-window-title'}"
+    Resizable="False"
+    SetSize="420 560"
+    MinSize="420 560">
+
+    <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True">
+
+        <!-- Treasury balance stripe -->
+        <cuc:StripeBack HorizontalExpand="True" MinSize="0 32" HasTopEdge="False">
+            <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="8 0">
+                <Label Text="{Loc 'is14-treasury-balance-label'}"
+                       FontColorOverride="#8898A8" HorizontalExpand="True" VerticalAlignment="Center" />
+                <TextureRect TexturePath="/Textures/Objects/Misc/coins.rsi/coin_gold.png"
+                             Stretch="KeepCentered" RectClipContent="True"
+                             SetSize="16 16" VerticalAlignment="Center" Margin="0 0 4 0" />
+                <Label Name="TreasuryBalanceLabel" FontColorOverride="#3ABB3A" VerticalAlignment="Center" />
+            </BoxContainer>
+        </cuc:StripeBack>
+
+        <!-- Body -->
+        <PanelContainer HorizontalExpand="True" VerticalExpand="True">
+            <PanelContainer.PanelOverride>
+                <gfx:StyleBoxFlat BackgroundColor="#181E2E" />
+            </PanelContainer.PanelOverride>
+            <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True" Margin="8 8">
+
+                <!-- Department funds -->
+                <Label Text="{Loc 'is14-treasury-funds-label'}" FontColorOverride="#8898A8" Margin="0 0 0 4" />
+                <ScrollContainer HorizontalExpand="True" VerticalExpand="True" Margin="0 0 0 8">
+                    <BoxContainer Name="AccountsList" Orientation="Vertical" HorizontalExpand="True" />
+                </ScrollContainer>
+
+                <PanelContainer HorizontalExpand="True" MinSize="0 2" Margin="0 0 0 8">
+                    <PanelContainer.PanelOverride>
+                        <gfx:StyleBoxFlat BackgroundColor="#8A6C14" />
+                    </PanelContainer.PanelOverride>
+                </PanelContainer>
+
+                <!-- Allocation -->
+                <Label Text="{Loc 'is14-treasury-transfer-label'}" FontColorOverride="#8898A8" Margin="0 0 0 4" />
+                <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="0 0 0 4">
+                    <OptionButton Name="TargetSelector" HorizontalExpand="True" Margin="0 0 3 0" />
+                </BoxContainer>
+                <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="0 0 0 4">
+                    <Button Name="Add1KBtn" Text="+1000" HorizontalExpand="True" Margin="0 0 3 0" />
+                    <Button Name="Add5KBtn" Text="+5000" HorizontalExpand="True" Margin="0 0 3 0" />
+                    <Button Name="Add10KBtn" Text="+10000" HorizontalExpand="True" />
+                </BoxContainer>
+                <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="0 0 0 4">
+                    <LineEdit Name="AmountEdit"
+                              PlaceHolder="{Loc 'is14-treasury-amount-placeholder'}"
+                              HorizontalExpand="True" Margin="0 0 3 0" />
+                    <Button Name="TransferBtn" Text="{Loc 'is14-treasury-transfer'}" />
+                </BoxContainer>
+
+            </BoxContainer>
+        </PanelContainer>
+
+        <!-- Status stripe -->
+        <cuc:StripeBack HorizontalExpand="True" MinSize="0 22" HasBottomEdge="False">
+            <Label Name="StatusLabel"
+                   HorizontalAlignment="Left" HorizontalExpand="True"
+                   FontColorOverride="#BF8A40" Margin="4 0" />
+        </cuc:StripeBack>
+
+    </BoxContainer>
+</is14:TreasuryConsoleWindow>

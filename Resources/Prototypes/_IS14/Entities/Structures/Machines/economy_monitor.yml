@@ -1,0 +1,53 @@
+# Economy Monitor Server — stores transaction logs (no BUI, placed in server room)
+- type: entity
+  parent: BaseMachinePowered
+  id: IS14EconomyMonitorServer
+  name: economy monitor server
+  description: A server rack that records all economic transactions on the station.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: ApcPowerReceiver
+    powerLoad: 150
+  - type: Sprite
+    sprite: Structures/Machines/server.rsi
+    snapCardinals: true
+    layers:
+    - state: server-off
+    - state: server-on
+      visible: false
+      map: ["enum.PowerDeviceVisualLayers.Powered"]
+    - state: server_o
+      map: ["enum.WiresVisualLayers.MaintenancePanel"]
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.PowerDeviceVisuals.Powered:
+        enum.PowerDeviceVisualLayers.Powered:
+          True:  { visible: true }
+          False: { visible: false }
+  - type: EconomyMonitorServer
+    networkId: "station"
+    maxEntries: 500
+  - type: AccessReader
+    access: [[ "Command" ]]
+
+# Economy Monitor Console — BUI terminal displaying the server's log
+- type: entity
+  parent: IS14BaseCommandComputer
+  id: IS14EconomyMonitorConsole
+  name: economy monitor console
+  description: A terminal for reviewing all economic activity on the station. Requires command access.
+  components:
+  - type: PointLight
+    color: "#3bcc6e"
+  - type: EconomyMonitorConsole
+    networkId: "station"
+  - type: ActivatableUI
+    key: enum.EconomyMonitorUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.EconomyMonitorUiKey.Key:
+        type: EconomyMonitorBoundUserInterface
+      enum.WiresUiKey.Key:
+        type: WiresBoundUserInterface

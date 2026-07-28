@@ -172,6 +172,9 @@
     - NewsReaderCartridge
     - WantedListCartridge
     - NanoChatCartridge # DeltaV
+    #IS14-change start
+    - IS14FineCartridge
+    #IS14-change end
 
 - type: entity
   parent: BasePDA

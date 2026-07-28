@@ -1,0 +1,20 @@
+# Soc-competition board — shows the station plan and how every department is doing.
+# Deliberately open to everyone: the whole point is that the crew can see which
+# department is carrying the station and which one is dragging it down.
+- type: entity
+  parent: IS14BaseComputer
+  id: IS14GosplanConsole
+  name: доска соцсоревнования
+  description: Стенд с плановыми показателями станции. Здесь видно, кто тянет станцию, а кто позорит цех.
+  components:
+  - type: PointLight
+    color: "#c9a53b"
+  - type: GosplanConsole
+  - type: ActivatableUI
+    key: enum.GosplanConsoleUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.GosplanConsoleUiKey.Key:
+        type: GosplanConsoleBui
+      enum.WiresUiKey.Key:
+        type: WiresBoundUserInterface

@@ -106,6 +106,18 @@
 #      enum.WiresUiKey.Key:
 #        type: WiresBoundUserInterface
 
+# Command-access console base: the UI opens only with Command access on the ID card.
+- type: entity
+  parent: IS14BaseComputer
+  id: IS14BaseCommandComputer
+  abstract: true
+  components:
+  - type: AccessReader
+    access: [[ "Command" ]]
+  - type: ActivatableUIRequiresAccess
+  - type: Computer
+    board: ComputerBroken
+
 - type: entity
   parent: IS14BaseComputer
   id: IS14BaseComputerAiAccess

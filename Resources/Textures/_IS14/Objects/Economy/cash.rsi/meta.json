@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "license": "All Rights Reserved",
+  "copyright": "Created for Innovation Station 14",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "cash"
+    },
+    {
+      "name": "cash_100"
+    },
+    {
+      "name": "cash_200"
+    },
+    {
+      "name": "cash_500"
+    },
+    {
+      "name": "cash_1000"
+    }
+  ]
+}

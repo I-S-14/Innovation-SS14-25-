@@ -1,0 +1,80 @@
+# P2P payment terminal: the owner binds their ID card (or the prototype fixes a department
+# fund), sets a charge, and the customer pays it with their ID card. 10% tax goes to the treasury.
+- type: entity
+  parent: BaseItem
+  id: IS14PaymentTerminal
+  name: платёжный терминал
+  description: Принимает оплату с ID-карты. Привяжите свою карту и выставляйте счета.
+  components:
+  - type: IS14PaymentTerminal
+  - type: Sprite
+    sprite: _IS14/Objects/Devices/payment_terminal.rsi
+    state: icon
+  - type: Item
+    sprite: Objects/Tools/appraisal-tool.rsi
+  - type: Clothing
+    sprite: Objects/Tools/appraisal-tool.rsi
+    quickEquip: false
+    slots:
+    - Belt
+  - type: ActivatableUI
+    key: enum.IS14PaymentTerminalUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.IS14PaymentTerminalUiKey.Key:
+        type: IS14PaymentTerminalBui
+
+# Printed proof of payment, spawned by the terminal after each successful charge.
+- type: entity
+  parent: Paper
+  id: IS14PaymentReceipt
+  name: чек об оплате
+  description: Печатное подтверждение оплаты через платёжный терминал.
+  components:
+  - type: Sprite
+    sprite: Objects/Misc/bureaucracy.rsi
+    layers:
+    - state: paper_receipt
+    - state: paper_receipt_words
+      map: ["enum.PaperVisualLayers.Writing"]
+      visible: false
+    - state: paper_stamp-generic
+      map: ["enum.PaperVisualLayers.Stamp"]
+      visible: false
+
+# Department presets: revenue goes straight to the fund, the card can't be rebound.
+- type: entity
+  parent: IS14PaymentTerminal
+  id: IS14PaymentTerminalService
+  suffix: Фонд сервиса
+  description: Касса сервисной службы. Выручка зачисляется в фонд отдела.
+  components:
+  - type: IS14PaymentTerminal
+    revenueAccount: StationService
+
+- type: entity
+  parent: IS14PaymentTerminal
+  id: IS14PaymentTerminalMedical
+  suffix: Фонд медотсека
+  description: Касса медотсека. Выручка зачисляется в фонд отдела.
+  components:
+  - type: IS14PaymentTerminal
+    revenueAccount: StationMedical
+
+- type: entity
+  parent: IS14PaymentTerminal
+  id: IS14PaymentTerminalCargo
+  suffix: Фонд карго
+  description: Касса карго. Выручка зачисляется в фонд отдела.
+  components:
+  - type: IS14PaymentTerminal
+    revenueAccount: StationCargo
+
+- type: entity
+  parent: IS14PaymentTerminal
+  id: IS14PaymentTerminalResearch
+  suffix: Фонд науки
+  description: Касса научного отдела. Выручка зачисляется в фонд отдела.
+  components:
+  - type: IS14PaymentTerminal
+    revenueAccount: StationResearch

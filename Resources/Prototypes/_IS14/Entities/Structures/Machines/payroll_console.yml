@@ -1,0 +1,95 @@
+# Payroll consoles — a department head raises, cuts, rewards or fines the crew paid by their fund.
+# Every operation settles against managedAccount, so raises and bonuses drain the department budget
+# and fines top it back up. Access is gated per department by the head's own access level.
+# Salary and bonus limits are server-wide and live in the is14.payroll_* cvars, not here.
+- type: entity
+  parent: IS14BaseComputer
+  id: IS14PayrollConsole
+  abstract: true
+  name: консоль расчёта зарплат
+  description: Терминал кадровой службы отдела. Начисляет оклады, премии и штрафы из бюджета отдела.
+  components:
+  - type: PointLight
+    color: "#3ab77a"
+  - type: Computer
+    board: ComputerBroken
+  - type: ActivatableUIRequiresAccess
+  - type: ActivatableUI
+    key: enum.PayrollConsoleUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.PayrollConsoleUiKey.Key:
+        type: PayrollConsoleBui
+      enum.WiresUiKey.Key:
+        type: WiresBoundUserInterface
+
+- type: entity
+  parent: IS14PayrollConsole
+  id: IS14PayrollConsoleEngineering
+  name: консоль расчёта зарплат инженерии
+  components:
+  - type: AccessReader
+    access: [[ "ChiefEngineer" ], [ "Captain" ]]
+  - type: PayrollConsole
+    managedAccount: StationEngineering
+
+- type: entity
+  parent: IS14PayrollConsole
+  id: IS14PayrollConsoleMedical
+  name: консоль расчёта зарплат медотсека
+  components:
+  - type: AccessReader
+    access: [[ "ChiefMedicalOfficer" ], [ "Captain" ]]
+  - type: PayrollConsole
+    managedAccount: StationMedical
+
+- type: entity
+  parent: IS14PayrollConsole
+  id: IS14PayrollConsoleSecurity
+  name: консоль расчёта зарплат безопасности
+  components:
+  - type: AccessReader
+    access: [[ "HeadOfSecurity" ], [ "Captain" ]]
+  - type: PayrollConsole
+    managedAccount: StationSecurity
+
+- type: entity
+  parent: IS14PayrollConsole
+  id: IS14PayrollConsoleCargo
+  name: консоль расчёта зарплат карго
+  components:
+  - type: AccessReader
+    access: [[ "Quartermaster" ], [ "Captain" ]]
+  - type: PayrollConsole
+    managedAccount: StationCargo
+
+- type: entity
+  parent: IS14PayrollConsole
+  id: IS14PayrollConsoleResearch
+  name: консоль расчёта зарплат науки
+  components:
+  - type: AccessReader
+    access: [[ "ResearchDirector" ], [ "Captain" ]]
+  - type: PayrollConsole
+    managedAccount: StationResearch
+
+- type: entity
+  parent: IS14PayrollConsole
+  id: IS14PayrollConsoleService
+  name: консоль расчёта зарплат сервисной службы
+  components:
+  - type: AccessReader
+    access: [[ "HeadOfPersonnel" ], [ "Captain" ]]
+  - type: PayrollConsole
+    managedAccount: StationService
+
+# Command payroll: the captain sets pay for the heads and everyone else on the treasury payroll.
+- type: entity
+  parent: IS14PayrollConsole
+  id: IS14PayrollConsoleCommand
+  name: консоль расчёта зарплат командования
+  components:
+  - type: AccessReader
+    access: [[ "Captain" ]]
+  - type: PayrollConsole
+    managedAccount: StationTreasury

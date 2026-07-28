@@ -1,0 +1,53 @@
+# Articles of the station code an officer can charge.
+#
+# Amounts sit well below a shift's wages on purpose: a fine should sting and start an
+# argument, not bankrupt anyone. Serious crimes still belong in a cell, not on a receipt.
+
+- type: finePreset
+  id: FineDisorderlyConduct
+  name: is14-fine-article-disorderly
+  amount: 200
+  order: 10
+
+- type: finePreset
+  id: FineDressCode
+  name: is14-fine-article-dress-code
+  amount: 150
+  order: 20
+
+- type: finePreset
+  id: FineIdleness
+  name: is14-fine-article-idleness
+  amount: 300
+  order: 30
+
+- type: finePreset
+  id: FineTrespassing
+  name: is14-fine-article-trespassing
+  amount: 400
+  order: 40
+
+- type: finePreset
+  id: FineInsubordination
+  name: is14-fine-article-insubordination
+  amount: 500
+  order: 50
+
+- type: finePreset
+  id: FinePropertyDamage
+  name: is14-fine-article-property-damage
+  amount: 700
+  order: 60
+
+- type: finePreset
+  id: FineContraband
+  name: is14-fine-article-contraband
+  amount: 900
+  order: 70
+
+# Selling above the state price, reselling coupons, trading in state property.
+- type: finePreset
+  id: FineSpeculation
+  name: is14-fine-article-speculation
+  amount: 1200
+  order: 80

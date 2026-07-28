@@ -1,0 +1,28 @@
+<!--
+SPDX-FileCopyrightText: 2025 IS14
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<is14:IS14VendingTabButton
+    xmlns="https://spacestation14.io"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Economy.VendingMachine"
+    MinSize="0 26"
+    Margin="0 0 3 0">
+
+    <!-- Text and (optionally) the lock icon sit in one row, so the button
+         sizes itself to fit both and they can never overlap. -->
+    <BoxContainer Orientation="Horizontal"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center">
+        <Label Name="TabLabel" />
+        <TextureRect Name="LockIcon"
+                     TexturePath="/Textures/Interface/VerbIcons/lock.svg.192dpi.png"
+                     Stretch="KeepAspectCentered"
+                     SetSize="12 12"
+                     Modulate="#B06030"
+                     VerticalAlignment="Center"
+                     Margin="4 0 0 0"
+                     Visible="False" />
+    </BoxContainer>
+</is14:IS14VendingTabButton>
