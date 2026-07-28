@@ -1,0 +1,108 @@
+<!--
+SPDX-FileCopyrightText: 2025 IS14
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<is14:GosplanConsoleWindow
+    xmlns="https://spacestation14.io"
+    xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Economy.Gosplan"
+    xmlns:cuc="clr-namespace:Content.Client.UserInterface.Controls"
+    Title="{Loc 'is14-gosplan-window-title'}"
+    Resizable="True"
+    SetSize="540 700"
+    MinSize="460 520">
+
+    <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True">
+
+        <!-- Period number and countdown -->
+        <is14:PlanTimerPanel Name="TimerPanel" HorizontalExpand="True" />
+
+        <!-- Body -->
+        <PanelContainer HorizontalExpand="True" VerticalExpand="True">
+            <PanelContainer.PanelOverride>
+                <gfx:StyleBoxFlat BackgroundColor="#181E2E" />
+            </PanelContainer.PanelOverride>
+
+            <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True" Margin="4">
+
+                <!-- The banner is won, not measured, so it sits outside the plan list -->
+                <is14:RedBannerPanel Name="Banner" HorizontalExpand="True" />
+
+                <Label Name="NoPlanLabel"
+                       Text="{Loc 'is14-gosplan-no-plan-hint'}"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                       VerticalExpand="True" Visible="False"
+                       FontColorOverride="#8898A8" />
+
+                <TabContainer Name="Tabs" HorizontalExpand="True" VerticalExpand="True">
+
+                    <!-- Current plan -->
+                    <BoxContainer Name="PlanTab" Orientation="Vertical"
+                                  HorizontalExpand="True" VerticalExpand="True" Margin="4">
+
+                        <!-- The thresholds are the same for every quota, so the scale is
+                             explained once here instead of under each bar. -->
+                        <PanelContainer HorizontalExpand="True" Margin="0 0 0 6">
+                            <PanelContainer.PanelOverride>
+                                <gfx:StyleBoxFlat BackgroundColor="#141A2C" />
+                            </PanelContainer.PanelOverride>
+
+                            <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="6 3">
+
+                                <PanelContainer SetSize="10 4" VerticalAlignment="Center">
+                                    <PanelContainer.PanelOverride>
+                                        <gfx:StyleBoxFlat BackgroundColor="#BF4040" />
+                                    </PanelContainer.PanelOverride>
+                                </PanelContainer>
+                                <Label Name="LegendFailLabel" StyleClasses="LabelSubText" Margin="4 0 10 0" />
+
+                                <PanelContainer SetSize="10 4" VerticalAlignment="Center">
+                                    <PanelContainer.PanelOverride>
+                                        <gfx:StyleBoxFlat BackgroundColor="#E0C060" />
+                                    </PanelContainer.PanelOverride>
+                                </PanelContainer>
+                                <Label Name="LegendTargetLabel" StyleClasses="LabelSubText" Margin="4 0 10 0" />
+
+                                <PanelContainer SetSize="10 4" VerticalAlignment="Center">
+                                    <PanelContainer.PanelOverride>
+                                        <gfx:StyleBoxFlat BackgroundColor="#4FD14F" />
+                                    </PanelContainer.PanelOverride>
+                                </PanelContainer>
+                                <Label Name="LegendCapLabel" StyleClasses="LabelSubText" Margin="4 0 0 0" />
+
+                            </BoxContainer>
+                        </PanelContainer>
+
+                        <ScrollContainer HorizontalExpand="True" VerticalExpand="True" HScrollEnabled="False">
+                            <BoxContainer Name="QuotaList" Orientation="Vertical" HorizontalExpand="True" />
+                        </ScrollContainer>
+                    </BoxContainer>
+
+                    <!-- Finished periods -->
+                    <ScrollContainer Name="HistoryTab"
+                                     HorizontalExpand="True" VerticalExpand="True"
+                                     HScrollEnabled="False" Margin="4">
+                        <BoxContainer Orientation="Vertical" HorizontalExpand="True">
+                            <Label Name="HistoryEmptyLabel"
+                                   Text="{Loc 'is14-gosplan-history-empty'}"
+                                   HorizontalAlignment="Center" Margin="0 12 0 0"
+                                   FontColorOverride="#8898A8" Visible="False" />
+                            <BoxContainer Name="HistoryList" Orientation="Vertical" HorizontalExpand="True" />
+                        </BoxContainer>
+                    </ScrollContainer>
+
+                </TabContainer>
+            </BoxContainer>
+        </PanelContainer>
+
+        <!-- Motto -->
+        <cuc:StripeBack HorizontalExpand="True" MinSize="0 22" HasBottomEdge="False">
+            <Label Name="StatusLabel" Text="{Loc 'is14-gosplan-motto'}"
+                   HorizontalAlignment="Center" HorizontalExpand="True"
+                   FontColorOverride="#BF8A40" Margin="4 0" />
+        </cuc:StripeBack>
+
+    </BoxContainer>
+</is14:GosplanConsoleWindow>

@@ -1,0 +1,21 @@
+# Fine-writing program for Security PDAs. Preinstalled on BaseSecurityPDA upstream;
+# this loose copy exists for lockers, cargo orders and admin spawning.
+- type: entity
+  parent: BasePDACartridge
+  id: IS14FineCartridge
+  name: картридж «Протокол»
+  description: Программа для выписки штрафов по статьям устава станции.
+  components:
+  - type: Sprite
+    state: cart-sec
+  - type: Icon
+    sprite: Objects/Devices/cartridge.rsi
+    state: cart-sec
+  - type: UIFragment
+    ui: !type:FineCartridgeUi
+  - type: Cartridge
+    programName: is14-fine-program-name
+    icon:
+      sprite: _CorvaxGoob/Interface/Misc/program_icons.rsi
+      state: watchdog
+  - type: FineCartridge

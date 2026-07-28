@@ -1,0 +1,45 @@
+<!--
+SPDX-FileCopyrightText: 2025 IS14
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<is14:PlanPeriodCard
+    xmlns="https://spacestation14.io"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Economy.Gosplan"
+    Orientation="Vertical"
+    HorizontalExpand="True"
+    Margin="0 0 0 8">
+
+    <PanelContainer Name="CardPanel" HorizontalExpand="True">
+
+        <BoxContainer Orientation="Vertical" HorizontalExpand="True" Margin="8 6">
+
+            <!-- Period number, then the score it closed on -->
+            <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
+
+                <PanelContainer Name="PeriodBadge" VerticalAlignment="Center">
+                    <Label Name="PeriodLabel" StyleClasses="LabelKeyText" Margin="6 1" />
+                </PanelContainer>
+
+                <Label Name="LatestLabel" StyleClasses="LabelSubText"
+                       VerticalAlignment="Center" Margin="6 0 0 0" Visible="False" />
+
+                <Control HorizontalExpand="True" />
+
+                <Label Name="AverageLabel" StyleClasses="LabelHeading" VerticalAlignment="Center" />
+
+            </BoxContainer>
+
+            <Label Name="AverageCaptionLabel" StyleClasses="LabelSubText" Margin="0 3 0 2" />
+
+            <is14:PlanGauge Name="Gauge" HorizontalExpand="True" SetHeight="14" />
+
+            <Label Name="PayoutLabel" StyleClasses="LabelSmall" Margin="0 5 0 0" />
+
+            <RichTextLabel Name="LeaderLabel" HorizontalExpand="True" Margin="0 3 0 0" />
+            <RichTextLabel Name="FailedLabel" HorizontalExpand="True" Margin="0 2 0 0" />
+
+        </BoxContainer>
+    </PanelContainer>
+</is14:PlanPeriodCard>

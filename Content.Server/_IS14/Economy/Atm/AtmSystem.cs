@@ -1,7 +1,10 @@
+using Content.Server._IS14.Economy.Fines;
 using Content.Server.Power.Components;
 using Content.Server.Stack;
+using Content.Server.Station.Systems;
 using Content.Shared._IS14.Economy;
 using Content.Shared._IS14.Economy.Atm;
+using Content.Shared._IS14.Economy.Fines;
 using Content.Shared.Access.Components;
 using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Hands.EntitySystems;
@@ -18,6 +21,8 @@ namespace Content.Server._IS14.Economy.Atm;
 public sealed class IS14AtmSystem : EntitySystem
 {
     [Dependency] private readonly BankManagerSystem _bankManager = default!;
+    [Dependency] private readonly FineSystem _fines = default!;
+    [Dependency] private readonly StationSystem _station = default!;
     [Dependency] private readonly ItemSlotsSystem _itemSlots = default!;
     [Dependency] private readonly StackSystem _stack = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
@@ -43,6 +48,7 @@ public sealed class IS14AtmSystem : EntitySystem
             subs.Event<IS14AtmChangePinMessage>(OnChangePin);
             subs.Event<IS14AtmWithdrawMessage>(OnWithdraw);
             subs.Event<IS14AtmTransferMessage>(OnTransfer);
+            subs.Event<IS14AtmPayFineMessage>(OnPayFine);
             subs.Event<IS14AtmEjectCardMessage>(OnEjectCard);
         });
     }
@@ -249,6 +255,33 @@ public sealed class IS14AtmSystem : EntitySystem
         UpdateUiState(atm, Loc.GetString("is14-atm-status-transfer-done"));
     }
 
+    /// <summary>
+    /// Settles a fine from the inserted card. Paying is always the cardholder's own
+    /// action — nothing here ever deducts a fine without them pressing the button.
+    /// </summary>
+    private void OnPayFine(Entity<IS14AtmComponent> atm, ref IS14AtmPayFineMessage args)
+    {
+        var account = GetInsertedAccount(atm, out _);
+        if (account == null || !atm.Comp.Authenticated)
+            return;
+
+        if (_station.GetOwningStation(atm.Owner) is not { } station)
+        {
+            UpdateUiState(atm, Loc.GetString("is14-fine-status-no-station"));
+            return;
+        }
+
+        if (!_fines.TryPayFine(station, args.FineId, account.AccountNumber, out var status))
+        {
+            _audio.PlayPvs(atm.Comp.DenySound, atm.Owner);
+            UpdateUiState(atm, status);
+            return;
+        }
+
+        _audio.PlayPvs(atm.Comp.AcceptSound, atm.Owner);
+        UpdateUiState(atm, status);
+    }
+
     // ── State ─────────────────────────────────────────────────────────────────
 
     private void UpdateUiState(Entity<IS14AtmComponent> atm, string status = "")
@@ -259,6 +292,7 @@ public sealed class IS14AtmSystem : EntitySystem
         var balance = 0;
         var attemptsLeft = 0;
         var lockSecondsLeft = 0;
+        var fines = new List<FineRecord>();
 
         var account = GetInsertedAccount(atm, out var card);
         if (card != null && TryComp<IdCardComponent>(card, out var idCard))
@@ -286,6 +320,11 @@ public sealed class IS14AtmSystem : EntitySystem
             {
                 screen = IS14AtmScreen.Menu;
                 balance = account.Balance;
+
+                // Only the cardholder's own outstanding fines, so the ATM never leaks
+                // the station's whole ledger to whoever is standing at it.
+                if (_station.GetOwningStation(atm.Owner) is { } station)
+                    fines = _fines.GetPayableFines(station, account.AccountNumber, cardOwner);
             }
         }
         else if (card != null)
@@ -295,7 +334,7 @@ public sealed class IS14AtmSystem : EntitySystem
 
         _ui.SetUiState(atm.Owner, IS14AtmUiKey.Key,
             new IS14AtmUiState(screen, cardOwner, card != null ? GetNetEntity(card.Value) : null,
-                accountNumber, balance, attemptsLeft, lockSecondsLeft, status));
+                accountNumber, balance, attemptsLeft, lockSecondsLeft, status, fines));
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────────

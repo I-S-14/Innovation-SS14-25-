@@ -64,6 +64,18 @@ public sealed class IS14AtmTransferMessage : BoundUserInterfaceMessage
     }
 }
 
+/// <summary>Pays one of the cardholder's outstanding fines from the authenticated account.</summary>
+[Serializable, NetSerializable]
+public sealed class IS14AtmPayFineMessage : BoundUserInterfaceMessage
+{
+    public readonly uint FineId;
+
+    public IS14AtmPayFineMessage(uint fineId)
+    {
+        FineId = fineId;
+    }
+}
+
 /// <summary>Ejects the inserted ID card and ends the session.</summary>
 [Serializable, NetSerializable]
 public sealed class IS14AtmEjectCardMessage : BoundUserInterfaceMessage

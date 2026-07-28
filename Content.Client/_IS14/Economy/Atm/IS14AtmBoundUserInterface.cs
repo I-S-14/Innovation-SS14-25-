@@ -29,6 +29,7 @@ public sealed class IS14AtmBoundUserInterface : BoundUserInterface
 
         _window.OnWithdraw += amount => SendMessage(new IS14AtmWithdrawMessage(amount));
         _window.OnTransfer += (account, amount) => SendMessage(new IS14AtmTransferMessage(account, amount));
+        _window.OnPayFine += fineId => SendMessage(new IS14AtmPayFineMessage(fineId));
         _window.OnEjectCard += () => SendMessage(new IS14AtmEjectCardMessage());
     }
 

@@ -1,3 +1,4 @@
+using Content.Shared._IS14.Economy.Fines;
 using Robust.Shared.Serialization;
 
 namespace Content.Shared._IS14.Economy.Atm;
@@ -34,6 +35,8 @@ public sealed class IS14AtmUiState : BoundUserInterfaceState
     public readonly int LockSecondsLeft;
     /// <summary>Localized status/error line, empty if none.</summary>
     public readonly string StatusMessage;
+    /// <summary>Unpaid fines this cardholder can settle here. Empty unless authenticated.</summary>
+    public readonly List<FineRecord> Fines;
 
     public IS14AtmUiState(
         IS14AtmScreen screen,
@@ -43,8 +46,10 @@ public sealed class IS14AtmUiState : BoundUserInterfaceState
         int balance,
         int attemptsLeft,
         int lockSecondsLeft,
-        string statusMessage)
+        string statusMessage,
+        List<FineRecord>? fines = null)
     {
+        Fines = fines ?? new List<FineRecord>();
         Screen = screen;
         CardOwner = cardOwner;
         IdCard = idCard;

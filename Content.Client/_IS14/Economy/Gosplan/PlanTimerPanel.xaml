@@ -1,0 +1,63 @@
+<!--
+SPDX-FileCopyrightText: 2025 IS14
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<is14:PlanTimerPanel
+    xmlns="https://spacestation14.io"
+    xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Economy.Gosplan"
+    Orientation="Vertical"
+    HorizontalExpand="True">
+
+    <PanelContainer HorizontalExpand="True">
+        <PanelContainer.PanelOverride>
+            <gfx:StyleBoxFlat BackgroundColor="#10152A" BorderColor="#8A6C14" BorderThickness="0 0 0 2" />
+        </PanelContainer.PanelOverride>
+
+        <BoxContainer Orientation="Vertical" HorizontalExpand="True" Margin="10 6 10 6">
+
+            <!-- Period number on the left, countdown on the right -->
+            <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
+
+                <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalAlignment="Center">
+                    <Label Text="{Loc 'is14-gosplan-header-caption'}" StyleClasses="LabelSubText" />
+                    <Label Name="PeriodLabel" StyleClasses="LabelHeading" />
+                </BoxContainer>
+
+                <BoxContainer Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Center">
+
+                    <!-- The countdown sits in its own inset display, so it reads as an
+                         instrument rather than another line of text. -->
+                    <PanelContainer Name="TimerBox" HorizontalAlignment="Right">
+                        <Label Name="TimerLabel"
+                               StyleClasses="LabelHeadingBigger"
+                               HorizontalAlignment="Center"
+                               Margin="10 1" />
+                    </PanelContainer>
+
+                    <Label Name="TimerCaptionLabel"
+                           StyleClasses="LabelSubText"
+                           HorizontalAlignment="Right"
+                           Margin="0 2 0 0" />
+                </BoxContainer>
+
+            </BoxContainer>
+
+            <!-- How much of the period is already gone -->
+            <is14:PlanGauge Name="PeriodGauge"
+                            HorizontalExpand="True"
+                            SetHeight="10"
+                            MaxValue="1"
+                            Segments="20"
+                            Margin="0 6 0 3" />
+
+            <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
+                <Label Name="ElapsedLabel" StyleClasses="LabelSubText" HorizontalExpand="True" />
+                <Label Name="QuotaCountLabel" StyleClasses="LabelSubText" HorizontalAlignment="Right" />
+            </BoxContainer>
+
+        </BoxContainer>
+    </PanelContainer>
+</is14:PlanTimerPanel>

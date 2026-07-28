@@ -1,0 +1,38 @@
+<!--
+SPDX-FileCopyrightText: 2025 IS14
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<is14:RedBannerPanel
+    xmlns="https://spacestation14.io"
+    xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Economy.Gosplan"
+    Orientation="Vertical"
+    HorizontalExpand="True"
+    Margin="0 0 0 4">
+
+    <PanelContainer Name="BannerPanel" HorizontalExpand="True">
+        <PanelContainer.PanelOverride>
+            <gfx:StyleBoxFlat BackgroundColor="#5A1417" BorderColor="#C9A53B" BorderThickness="2" />
+        </PanelContainer.PanelOverride>
+
+        <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="10 6">
+
+            <Label Name="StarLabel"
+                   Text="★"
+                   StyleClasses="LabelHeadingBigger"
+                   VerticalAlignment="Center"
+                   Margin="0 0 8 0" />
+
+            <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalAlignment="Center">
+                <Label Name="TitleLabel"
+                       Text="{Loc 'is14-gosplan-banner-title'}"
+                       StyleClasses="LabelKeyText" />
+                <RichTextLabel Name="HolderLabel" HorizontalExpand="True" />
+                <RichTextLabel Name="DetailLabel" HorizontalExpand="True" />
+            </BoxContainer>
+
+        </BoxContainer>
+    </PanelContainer>
+</is14:RedBannerPanel>

@@ -1,0 +1,81 @@
+# Gosplan quotas — the plan every department is scored against each period.
+#
+# Payouts are tuned against the salary grid: at 100% fulfillment a department earns
+# roughly twice what it pays out in wages over a period, so a department that works
+# well can afford supplies while one that coasts barely covers payroll.
+#
+# A quota is only created for a station that actually has the fund it belongs to.
+
+# ─── Engineering: keep the lights on ────────────────────────────────────────
+- type: planQuota
+  id: PlanQuotaEngineeringPower
+  name: is14-quota-engineering-power
+  description: is14-quota-engineering-power-desc
+  fund: StationEngineering
+  metric: !type:PoweredApcsMetric
+  target: 0.95
+  payout: 6000
+  unit: !type:PercentQuotaUnit
+  order: 10
+
+# ─── Medical: keep the crew alive ───────────────────────────────────────────
+- type: planQuota
+  id: PlanQuotaMedicalCrew
+  name: is14-quota-medical-crew
+  description: is14-quota-medical-crew-desc
+  fund: StationMedical
+  metric: !type:CrewAliveMetric
+  target: 0.9
+  payout: 6000
+  unit: !type:PercentQuotaUnit
+  order: 20
+
+# ─── Security: keep the peace ───────────────────────────────────────────────
+# Measured as time spent on the default alert level, so every minute of a raised
+# code costs Security money. A red code the captain refuses to lift is expensive.
+- type: planQuota
+  id: PlanQuotaSecurityPeace
+  name: is14-quota-security-peace
+  description: is14-quota-security-peace-desc
+  fund: StationSecurity
+  metric: !type:PeaceTimeMetric
+  target: 0.9
+  payout: 5000
+  unit: !type:PercentQuotaUnit
+  order: 30
+
+# ─── Research: deliver technology ───────────────────────────────────────────
+- type: planQuota
+  id: PlanQuotaResearchTech
+  name: is14-quota-research-tech
+  description: is14-quota-research-tech-desc
+  fund: StationResearch
+  metric: !type:ResearchUnlockedMetric
+  target: 2
+  payout: 6000
+  unit: !type:CountQuotaUnit
+  order: 40
+
+# ─── Cargo: earn your keep ──────────────────────────────────────────────────
+- type: planQuota
+  id: PlanQuotaCargoRevenue
+  name: is14-quota-cargo-revenue
+  description: is14-quota-cargo-revenue-desc
+  fund: StationCargo
+  metric: !type:FundRevenueMetric
+  target: 6000
+  payout: 6000
+  unit: !type:CreditsQuotaUnit
+  order: 50
+
+# ─── Service: feed the station ──────────────────────────────────────────────
+- type: planQuota
+  id: PlanQuotaServiceRevenue
+  name: is14-quota-service-revenue
+  description: is14-quota-service-revenue-desc
+  fund: StationService
+  metric: !type:FundRevenueMetric
+  target: 4000
+  payout: 5000
+  unit: !type:CreditsQuotaUnit
+  order: 60

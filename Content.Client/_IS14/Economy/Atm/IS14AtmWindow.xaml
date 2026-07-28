@@ -148,7 +148,21 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                     <RichTextLabel Text="{Loc 'is14-atm-deposit-hint'}"
                                    HorizontalExpand="True" Margin="0 0 0 8" />
 
-                    <BoxContainer Orientation="Vertical" VerticalExpand="True" />
+                    <!-- Outstanding fines -->
+                    <BoxContainer Name="FinesSection" Orientation="Vertical"
+                                  HorizontalExpand="True" VerticalExpand="True" Visible="False">
+                        <PanelContainer HorizontalExpand="True" MinSize="0 2" Margin="0 0 0 8">
+                            <PanelContainer.PanelOverride>
+                                <gfx:StyleBoxFlat BackgroundColor="#8A2020" />
+                            </PanelContainer.PanelOverride>
+                        </PanelContainer>
+                        <Label Name="FinesHeaderLabel" FontColorOverride="#CC6666" Margin="0 0 0 4" />
+                        <ScrollContainer HorizontalExpand="True" VerticalExpand="True">
+                            <BoxContainer Name="FinesList" Orientation="Vertical" HorizontalExpand="True" />
+                        </ScrollContainer>
+                    </BoxContainer>
+
+                    <BoxContainer Name="MenuSpacer" Orientation="Vertical" VerticalExpand="True" />
 
                     <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
                         <Button Name="ChangePinBtn" Text="{Loc 'is14-atm-change-pin'}"

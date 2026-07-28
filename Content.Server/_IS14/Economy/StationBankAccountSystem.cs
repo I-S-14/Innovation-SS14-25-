@@ -123,6 +123,19 @@ public sealed class StationBankAccountSystem : EntitySystem
         return true;
     }
 
+    /// <summary>
+    /// Puts credits straight into the bonus pool without touching the account balance.
+    /// Used for awards that are meant to be handed out personally rather than spent
+    /// on department supplies.
+    /// </summary>
+    public void AddBonusPool(EntityUid station, string protoId, int amount)
+    {
+        if (amount <= 0 || !TryComp<StationBankAccountsComponent>(station, out var comp))
+            return;
+
+        comp.BonusPools[protoId] = comp.BonusPools.GetValueOrDefault(protoId, 0) + amount;
+    }
+
     /// <summary>Puts a share of incoming money aside for bonuses.</summary>
     private void AccrueBonusPool(EntityUid station, string protoId, int income)
     {
