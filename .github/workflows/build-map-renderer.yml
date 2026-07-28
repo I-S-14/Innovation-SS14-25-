@@ -54,7 +54,7 @@ jobs:
         run: dotnet run --project Content.MapRenderer Dev
 
   ci-success:
-    name: Build & Test Debug
+    name: Build & Test Map Renderer
     needs:
       - build
     runs-on: ubuntu-latest

@@ -3,7 +3,7 @@ name: Update Wiki
 on:
   workflow_dispatch:
   push:
-    branches: [ master, jsondump ]
+    branches: [ master ]
     paths:
       - '.github/workflows/update-wiki.yml'
       - 'Content.Shared/**'
@@ -63,7 +63,7 @@ jobs:
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v4.1.0
         with:
-          dotnet-version: 9.0.x
+          dotnet-version: 10.0.x
 
       - name: Install Dependencies
         run: dotnet restore

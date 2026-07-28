@@ -1,32 +1,22 @@
-# # SPDX-FileCopyrightText: 2024 Myra <vasilis@pikachu.systems>
-# # SPDX-FileCopyrightText: 2024 Saphire Lattice <lattice@saphi.re>
-# # SPDX-FileCopyrightText: 2024 Vasilis <vasilis@pikachu.systems>
-# # SPDX-FileCopyrightText: 2025 Aiden <28298836+Aidenkrz@users.noreply.github.com>
+# SPDX-License-Identifier: AGPL-3.0-or-later
 
-# # SPDX-License-Identifier: AGPL-3.0-or-later
+name: "Labels: Approved"
 
-# name: "Labels: Approved"
+on:
+  pull_request_review:
+    types: [submitted]
 
-# on:
-#  pull_request_review:
-#    types: [submitted]
-
-# jobs:
-#  add_label:
-#    # Change the repository name after you've made sure the team name is correct for your fork!
-#    if: ${{ (github.event.review.state == 'APPROVED') }}
-#    permissions:
-#      contents: read
-#      pull-requests: write
-#    runs-on: ubuntu-latest
-#    steps:
-#    # - uses: tspascoal/get-user-teams-membership@v3 Down untill GITHUB_TOKEN -> PAT
-#    #   id: checkUserMember
-#    #   with:
-#    #     username: ${{ github.actor }}
-#    #     team: "maintainers"
-#    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#    #- if: ${{ steps.checkUserMember.outputs.isTeamMember == 'true' }}     
-#    - uses: actions-ecosystem/action-add-labels@v1
-#      with:
-#        labels: "S: Одобрено"
+jobs:
+  add_label:
+    if: ${{ github.event.review.state == 'APPROVED' }}
+    permissions:
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+    # BOT_TOKEN is used instead of GITHUB_TOKEN so the label is applied on reviews
+    # of pull requests coming from forks as well.
+    - uses: actions-ecosystem/action-add-labels@v1
+      with:
+        github_token: ${{ secrets.BOT_TOKEN }}
+        labels: "S: Одобрено"

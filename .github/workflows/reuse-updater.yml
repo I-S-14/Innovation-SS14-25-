@@ -1,25 +1,53 @@
-
 # SPDX-FileCopyrightText: 2025 Aiden <28298836+Aidenkrz@users.noreply.github.com>
 # SPDX-FileCopyrightText: 2025 Aidenkrz <28298836+Aidenkrz@users.noreply.github.com>
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
+# Run manually against a single pull request. The previous version was dispatch-only
+# but read everything from `github.event.pull_request.*`, which is empty on a manual
+# run, so it could never actually be used. The PR number is now an explicit input.
 name: Update REUSE Headers
 
 on:
   workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'Pull request number to update headers in'
+        required: true
+        type: string
 
 jobs:
   update_headers:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: read
     steps:
-      - name: Checkout Code
+      - name: Resolve PR head
+        id: pr
+        env:
+          GH_TOKEN: ${{ secrets.BOT_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ inputs.pr_number }}
+        run: |
+          set -euo pipefail
+
+          pr_json=$(gh pr view "$PR_NUMBER" --json headRefName,headRepository,headRepositoryOwner,baseRefOid,headRefOid)
+
+          {
+            echo "head_ref=$(jq -r '.headRefName' <<< "$pr_json")"
+            echo "head_repo=$(jq -r '.headRepositoryOwner.login + "/" + .headRepository.name' <<< "$pr_json")"
+            echo "base_sha=$(jq -r '.baseRefOid' <<< "$pr_json")"
+            echo "head_sha=$(jq -r '.headRefOid' <<< "$pr_json")"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Checkout PR branch
         uses: actions/checkout@v4
         with:
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-          ref: ${{ github.head_ref }}
+          repository: ${{ steps.pr.outputs.head_repo }}
+          ref: ${{ steps.pr.outputs.head_ref }}
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.BOT_TOKEN }}
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -29,62 +57,52 @@ jobs:
       - name: Get Changed Files and PR Info
         id: changed_files
         env:
-           PR_BODY: ${{ github.event.pull_request.body }}
-           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-           GH_REPO: ${{ github.repository }}
-           PR_NUMBER: ${{ github.event.pull_request.number }}
+          GH_TOKEN: ${{ secrets.BOT_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ inputs.pr_number }}
         run: |
-          set -e # Exit script on first error
+          set -euo pipefail
 
           echo "Fetching files for PR #${PR_NUMBER} in repo ${GH_REPO}"
 
-          PR_FILES_JSON=$(curl -s -f -H "Authorization: token ${GH_TOKEN}" \
-            "https://api.github.com/repos/${GH_REPO}/pulls/${PR_NUMBER}/files")
-
-          if [ $? -ne 0 ]; then
-            echo "Error fetching PR files from GitHub API."
-            exit 1
-          fi
-
-          if ! echo "$PR_FILES_JSON" | jq -e . > /dev/null; then
-             echo "Warning: Received empty or invalid JSON from GitHub API for PR files."
-             PR_FILES="" # Set PR_FILES to empty to avoid errors below
-          else
-             PR_FILES=$(echo "$PR_FILES_JSON" | jq -r '.[] | select(.filename != null) | "\(.status) \(.filename)"')
-          fi
+          PR_FILES=$(gh api --paginate "repos/${GH_REPO}/pulls/${PR_NUMBER}/files" \
+            --jq '.[] | select(.filename != null) | "\(.status) \(.filename)"')
 
           if [ -z "$PR_FILES" ]; then
             echo "No files found in PR."
             ADDED_FILES=""
             MODIFIED_FILES=""
           else
-            ADDED_FILES=$(echo "$PR_FILES" | grep "^added" | grep -E '\.(cs|ya?ml)$' | sed 's/^added //' | xargs) || true
-            MODIFIED_FILES=$(echo "$PR_FILES" | grep "^modified" | grep -E '\.(cs|ya?ml)$' | sed 's/^modified //' | xargs) || true
+            ADDED_FILES=$(grep "^added" <<< "$PR_FILES" | grep -E '\.(cs|ya?ml)$' | sed 's/^added //' | xargs) || true
+            MODIFIED_FILES=$(grep "^modified" <<< "$PR_FILES" | grep -E '\.(cs|ya?ml)$' | sed 's/^modified //' | xargs) || true
           fi
 
           echo "Added Files: $ADDED_FILES"
           echo "Modified Files: $MODIFIED_FILES"
 
-          echo "ADDED_FILES_LIST<<EOF" >> $GITHUB_ENV
-          echo "$ADDED_FILES" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
-
-          echo "MODIFIED_FILES_LIST<<EOF" >> $GITHUB_ENV
-          echo "$MODIFIED_FILES" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+          {
+            echo "ADDED_FILES_LIST<<EOF"
+            echo "$ADDED_FILES"
+            echo "EOF"
+            echo "MODIFIED_FILES_LIST<<EOF"
+            echo "$MODIFIED_FILES"
+            echo "EOF"
+          } >> "$GITHUB_ENV"
 
           echo "Checking PR body for license..."
+          PR_BODY=$(gh pr view "$PR_NUMBER" --json body --jq '.body')
+
           if grep -q "LICENSE: MIT" <<< "$PR_BODY"; then
-            echo "PR_LICENSE=mit" >> $GITHUB_ENV
+            echo "PR_LICENSE=mit" >> "$GITHUB_ENV"
             echo "License specified in PR: MIT"
           elif grep -q "LICENSE: AGPL" <<< "$PR_BODY"; then
-            echo "PR_LICENSE=agpl" >> $GITHUB_ENV
+            echo "PR_LICENSE=agpl" >> "$GITHUB_ENV"
             echo "License specified in PR: AGPL"
           elif grep -q "LICENSE: MPL" <<< "$PR_BODY"; then
-            echo "PR_LICENSE=mpl" >> $GITHUB_ENV
+            echo "PR_LICENSE=mpl" >> "$GITHUB_ENV"
             echo "License specified in PR: MPL"
           else
-            echo "PR_LICENSE=agpl" >> $GITHUB_ENV
+            echo "PR_LICENSE=agpl" >> "$GITHUB_ENV"
             echo "No license specified in PR, using default: AGPL"
           fi
 
@@ -94,18 +112,16 @@ jobs:
             --files-added ${{ env.ADDED_FILES_LIST }} \
             --files-modified ${{ env.MODIFIED_FILES_LIST }} \
             --pr-license ${{ env.PR_LICENSE }} \
-            --pr-base-sha ${{ github.event.pull_request.base.sha }} \
-            --pr-head-sha ${{ github.event.pull_request.head.sha }}
+            --pr-base-sha ${{ steps.pr.outputs.base_sha }} \
+            --pr-head-sha ${{ steps.pr.outputs.head_sha }}
         working-directory: ${{ github.workspace }}
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore: Automatically update REUSE headers"
-          commit_user_name: ${{ vars.CHANGELOG_USER }}
-          commit_user_email: ${{ vars.CHANGELOG_EMAIL }}
-          commit_author: ${{ vars.CHANGELOG_USER }} <${{ vars.CHANGELOG_EMAIL }}>
+          commit_user_name: ${{ vars.CHANGELOG_USER || 'IS14 Bot' }}
+          commit_user_email: ${{ vars.CHANGELOG_EMAIL || 'bot@users.noreply.github.com' }}
+          commit_author: ${{ vars.CHANGELOG_USER || 'IS14 Bot' }} <${{ vars.CHANGELOG_EMAIL || 'bot@users.noreply.github.com' }}>
           skip_dirty_check: false
           skip_fetch: true
-
-
