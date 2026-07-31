@@ -1,0 +1,28 @@
+<!--
+SPDX-FileCopyrightText: 2025 IS14
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<is14:PlanDepartmentButton
+    xmlns="https://spacestation14.io"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Economy.Gosplan"
+    HorizontalExpand="True"
+    Margin="0 0 0 3">
+
+    <BoxContainer Orientation="Vertical" HorizontalExpand="True" Margin="7 5">
+
+        <!-- Department and its headline percentage -->
+        <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
+            <Label Name="NameLabel" StyleClasses="LabelSmall"
+                   HorizontalExpand="True" ClipText="True" VerticalAlignment="Center" />
+            <Label Name="PercentLabel" StyleClasses="LabelSmall" VerticalAlignment="Center" />
+        </BoxContainer>
+
+        <!-- Thin version of the plan gauge: enough to compare departments at a glance -->
+        <is14:PlanGauge Name="Gauge" HorizontalExpand="True" SetHeight="6" Margin="0 4 0 0" />
+
+        <Label Name="NoteLabel" StyleClasses="LabelSubText" ClipText="True" Margin="0 3 0 0" />
+
+    </BoxContainer>
+</is14:PlanDepartmentButton>

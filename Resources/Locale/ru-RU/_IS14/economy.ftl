@@ -6,6 +6,7 @@ economy-transaction-salary = Зарплата
 economy-transaction-salary-fund = Выплата зарплаты сотруднику
 economy-transaction-vending-purchase = Покупка: { $item } ({ $machine })
 economy-transaction-vending-revenue = Выручка: { $item } ({ $machine })
+economy-transaction-vending-revenue-cash = Продажа за наличные: { $item } ({ $machine })
 economy-transaction-vending-tax = Налог с продажи ({ $machine })
 economy-transaction-atm-withdraw = Снятие наличных
 economy-transaction-atm-deposit = Внесение наличных
@@ -67,6 +68,8 @@ is14-payterm-status-denied = Оплата отклонена.
 is14-payterm-status-no-card = ID-карта со счётом не найдена.
 is14-payterm-status-no-recipient = Получатель не привязан.
 is14-payterm-status-bad-amount = Некорректная сумма.
+is14-payterm-popup-nothing-to-pay = Терминал не выставил счёт.
+is14-payterm-tap-hint = Или просто приложите карту к терминалу.
 is14-payterm-receipt-note = Назначение: { $desc }
 is14-payterm-receipt-content = [head=2]ЧЕК[/head]
     Получатель: { $recipient }
@@ -164,6 +167,10 @@ economy-monitor-report-line = { $time } | счёт #{ $account } | { $amount } �
 bank-holder-examine-balance = Баланс счёта: [color=green]{ $balance } кр.[/color]
 
 is14-vending-balance-label = Баланс:
+is14-vending-cash-label = Наличные:
+is14-vending-eject-cash = Забрать наличные
+is14-vending-eject-cash-tooltip = Выдать оставшиеся в автомате наличные.
+is14-vending-cash-inserted = Внесено. В автомате: { $amount } кр.
 is14-vending-balance-value = { $balance } кр.
 is14-vending-price = { $price } кр.
 is14-vending-stock = x{ $stock }

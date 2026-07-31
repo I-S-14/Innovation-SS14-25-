@@ -10,6 +10,10 @@ using Robust.Client.UserInterface.XAML;
 
 namespace Content.Client._IS14.Economy.Gosplan;
 
+/// <summary>
+/// One metric inside the selected department. A department may be measured on several
+/// of these; each is paid for separately, but none of them alone decides the plan.
+/// </summary>
 [GenerateTypedNameReferences]
 public sealed partial class PlanQuotaRow : BoxContainer
 {
@@ -24,34 +28,26 @@ public sealed partial class PlanQuotaRow : BoxContainer
         BorderThickness = new Thickness(3, 0, 0, 0),
     };
 
-    private readonly StyleBoxFlat _badgePanel = new()
-    {
-        BorderThickness = new Thickness(1),
-    };
-
     public PlanQuotaRow()
     {
         RobustXamlLoader.Load(this);
 
         RowPanel.PanelOverride = _rowPanel;
-        FundBadge.PanelOverride = _badgePanel;
     }
 
-    public void Update(PlanQuotaEntry entry, GosplanConsoleUiState state)
+    /// <summary>
+    /// The department's colour is passed in rather than derived here: the row no longer
+    /// carries a fund of its own, it belongs to whichever department is open.
+    /// </summary>
+    public void Update(PlanQuotaEntry entry, GosplanConsoleUiState state, Color fundColor)
     {
-        var fundColor = GosplanPalette.Fund(entry.FundId);
         var color = GosplanPalette.ForFulfillment(entry.Fulfillment, state.FailThreshold, state.OverThreshold);
 
-        // The department stripe down the left is what makes one quota tell itself
-        // apart from the next at a glance.
-        _rowPanel.BorderColor = fundColor;
-        _badgePanel.BackgroundColor = fundColor.WithAlpha(0.16f);
-        _badgePanel.BorderColor = fundColor.WithAlpha(0.65f);
+        _rowPanel.BorderColor = fundColor.WithAlpha(0.7f);
 
-        FundLabel.Text = entry.FundName;
-        FundLabel.FontColorOverride = fundColor;
+        NameLabel.Text = entry.Name;
+        NameLabel.FontColorOverride = NameText;
 
-        NameLabel.Text = GosplanPalette.Markup(NameText, entry.Name);
         // The full explanation is long, so it lives on hover instead of eating the row.
         RowPanel.ToolTip = entry.Description.Length > 0 ? entry.Description : null;
 
@@ -71,9 +67,7 @@ public sealed partial class PlanQuotaRow : BoxContainer
 
         var note = GetNote(entry);
         NoteLabel.Visible = note.Length > 0;
-        NoteLabel.Text = GosplanPalette.Markup(
-            entry.FailStreak > 0 ? GosplanPalette.Failing : GosplanPalette.TextDim,
-            note);
+        NoteLabel.Text = GosplanPalette.Markup(GosplanPalette.TextDim, note);
     }
 
     private void UpdateGauge(PlanQuotaEntry entry, GosplanConsoleUiState state, Color color)
@@ -85,9 +79,6 @@ public sealed partial class PlanQuotaRow : BoxContainer
         Gauge.Fail = state.FailThreshold;
         Gauge.Value = entry.Fulfillment;
         Gauge.FillColor = color;
-
-        // A quota one period away from a sanction should be impossible to miss.
-        Gauge.Pulse = entry.FailStreak > 0 && entry.Fulfillment < state.FailThreshold;
 
         // The numbers arrive already written in the quota's unit.
         ValueLabel.Text = Loc.GetString("is14-gosplan-progress",
@@ -108,14 +99,12 @@ public sealed partial class PlanQuotaRow : BoxContainer
     }
 
     /// <summary>
-    /// The line under the bar carries whatever matters most right now: an imminent
-    /// sanction first, then last period's score, then the quota's description.
+    /// The line under the bar carries last period's score once there is one; until then
+    /// it explains what the metric actually measures. The sanction warning is not here —
+    /// that belongs to the department, not to any single metric.
     /// </summary>
     private static string GetNote(PlanQuotaEntry entry)
     {
-        if (entry.FailStreak >= 1)
-            return Loc.GetString("is14-gosplan-note-warning", ("streak", entry.FailStreak));
-
         if (entry.LastFulfillment is { } last)
             return Loc.GetString("is14-gosplan-note-last", ("percent", (int)MathF.Round(last * 100f)));
 

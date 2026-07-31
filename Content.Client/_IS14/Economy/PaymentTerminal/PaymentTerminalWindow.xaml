@@ -46,6 +46,9 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                             StyleClasses="OpenBoth" />
                     <Button Name="CancelBtn" Text="{Loc 'is14-payterm-cancel'}"
                             HorizontalExpand="True" />
+                    <Label Text="{Loc 'is14-payterm-tap-hint'}"
+                           HorizontalAlignment="Center" Margin="0 8 0 0"
+                           FontColorOverride="#8898A8" />
                     <BoxContainer Orientation="Vertical" VerticalExpand="True" />
                 </BoxContainer>
 

@@ -2,7 +2,8 @@
 is14-gosplan-announcer = Gosplan
 is14-gosplan-plan-issued = The station has been issued the Plan for period #{ $period }. Reporting period — { $minutes } min. Departments are funded by their fulfillment percentage. Comrades, to work!
 is14-gosplan-report-header = Period #{ $period } results:
-is14-gosplan-report-line = { $fund } — { $quota }: { $percent }%, allocated { $payout } cr.
+is14-gosplan-report-line = { $fund }: { $percent }%, allocated { $payout } cr.
+is14-gosplan-report-line-failed = ⤷ failed: { $quotas }
 is14-gosplan-report-banner = The Red Banner is awarded to: { $fund }. A bonus pool has been granted to the department.
 is14-gosplan-report-sanction = Second consecutive failure: { $fund }. { $amount } cr. confiscated to Gosplan. Expect an inspection.
 
@@ -14,11 +15,17 @@ economy-transaction-gosplan-sanction = Gosplan penalty for failing the plan
 is14-quota-engineering-power = Uninterrupted power supply
 is14-quota-engineering-power-desc = Share of areas under power. Sampled continuously: a blackout costs the fund even once it's fixed.
 
+is14-quota-engineering-atmos = Atmosphere within norms
+is14-quota-engineering-atmos-desc = Share of air alarms reading normal. Averaged over the period: a breach costs money for as long as the alarm stays lit.
+
 is14-quota-medical-crew = Preservation of personnel
 is14-quota-medical-crew-desc = Share of the crew still alive. Averaged over the period — an hour in a body bag isn't undone by a revival.
 
 is14-quota-security-peace = Public order
 is14-quota-security-peace-desc = Share of the period on green alert. Every minute of a raised code costs the department money.
+
+is14-quota-security-fines = Enforcement quota
+is14-quota-security-fines-desc = Fines written during the period. Voided ones don't count — Gosplan does not pay for padded paperwork.
 
 is14-quota-research-tech = Technology rollout
 is14-quota-research-tech-desc = Technologies researched during the reporting period.
@@ -41,7 +48,7 @@ is14-gosplan-period = Period #{ $period }
 is14-gosplan-timer-caption = until results
 is14-gosplan-timer-scoring = scoring the period
 is14-gosplan-elapsed = Period { $percent }% gone
-is14-gosplan-quota-count = Plan items: { $count }
+is14-gosplan-quota-count = Departments: { $departments }, plan items: { $count }
 is14-gosplan-no-plan = No plan issued
 is14-gosplan-no-plan-hint = Gosplan has not issued this station any quotas.
 
@@ -51,6 +58,14 @@ is14-gosplan-banner-since = Awarded for period #{ $period }
 is14-gosplan-banner-bonus = bonus pool +{ $amount } cr.
 is14-gosplan-banner-none = The banner is unclaimed
 is14-gosplan-banner-none-hint = Overfulfil the plan and it is yours, comrades.
+
+# ── Departments ─────────────────────────────────────────────────────────────
+is14-gosplan-departments = DEPARTMENTS
+is14-gosplan-department-banner-mark = ★ { $fund }
+is14-gosplan-department-banner = holds the banner
+is14-gosplan-department-metrics = Plan items: { $count }
+is14-gosplan-department-streak = ⚠ Failures in a row: { $streak }
+is14-gosplan-department-caption = Mean across all { $count } plan items — this is what you answer for
 
 # ── Plan row ────────────────────────────────────────────────────────────────
 is14-gosplan-percent = { $percent }%

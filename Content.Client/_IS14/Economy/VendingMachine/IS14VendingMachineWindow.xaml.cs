@@ -26,6 +26,7 @@ public sealed partial class IS14VendingMachineWindow : DefaultWindow
     private IS14VendingMachineUiState? _lastState;
 
     public event Action<int, int>? OnBuyPressed;
+    public event Action? OnEjectCashPressed;
 
     public IS14VendingMachineWindow()
     {
@@ -38,6 +39,8 @@ public sealed partial class IS14VendingMachineWindow : DefaultWindow
             if (_lastState != null)
                 RefreshGrid(_lastState);
         };
+
+        EjectCashButton.OnPressed += _ => OnEjectCashPressed?.Invoke();
     }
 
     public void UpdateState(IS14VendingMachineUiState state)
@@ -67,7 +70,7 @@ public sealed partial class IS14VendingMachineWindow : DefaultWindow
         }
 
         AdLabel.Text = state.AdMessage;
-        BalanceLabel.Text = Loc.GetString("is14-vending-balance-value", ("balance", state.Balance));
+        RefreshFunds(state);
 
         if (isFirst)
             _activeTabIndex = state.Tabs.Count > 0 ? 0 : -1;
@@ -82,6 +85,28 @@ public sealed partial class IS14VendingMachineWindow : DefaultWindow
         RefreshTabColors();
         RefreshGrid(state);
     }
+
+    /// <summary>
+    /// The readout follows the money the machine will actually charge: cash in the till while
+    /// there is any, the card balance otherwise.
+    /// </summary>
+    private void RefreshFunds(IS14VendingMachineUiState state)
+    {
+        var onCash = UsesCash(state);
+
+        FundsCaptionLabel.Text = Loc.GetString(onCash ? "is14-vending-cash-label" : "is14-vending-balance-label");
+        BalanceLabel.Text = Loc.GetString("is14-vending-balance-value", ("balance", GetFunds(state)));
+
+        CashIcon.Visible = onCash;
+        CardIcon.Visible = !onCash;
+        EjectCashButton.Visible = onCash;
+    }
+
+    private static bool UsesCash(IS14VendingMachineUiState state)
+        => state.AcceptsCash && state.InsertedCash > 0;
+
+    private static int GetFunds(IS14VendingMachineUiState state)
+        => UsesCash(state) ? state.InsertedCash : state.Balance;
 
     private void RebuildTabs(IS14VendingMachineUiState state)
     {
@@ -148,6 +173,7 @@ public sealed partial class IS14VendingMachineWindow : DefaultWindow
         }
 
         var filter = SearchEdit.Text.Trim();
+        var funds = GetFunds(state);
 
         for (var i = 0; i < inventory.Count; i++)
         {
@@ -158,7 +184,7 @@ public sealed partial class IS14VendingMachineWindow : DefaultWindow
             var capturedTab  = _activeTabIndex;
             var capturedItem = i;
             var card = new IS14VendingItemButton();
-            card.Initialize(entry, state.Balance, hasAccess);
+            card.Initialize(entry, funds, hasAccess);
             card.OnPressed += _ => OnBuyPressed?.Invoke(capturedTab, capturedItem);
             ItemGrid.AddChild(card);
         }

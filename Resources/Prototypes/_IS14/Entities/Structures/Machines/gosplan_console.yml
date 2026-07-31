@@ -7,9 +7,23 @@
   name: доска соцсоревнования
   description: Стенд с плановыми показателями станции. Здесь видно, кто тянет станцию, а кто позорит цех.
   components:
+  - type: Sprite
+    sprite: _IS14/Structures/Machines/gosplan_console.rsi
+    drawdepth: SmallObjects
+    layers:
+    - map: ["computerLayerBody"]
+      state: base
+    - map: ["computerLayerScreen"]
+      state: animated
+  - type: ApcPowerReceiver
+    powerLoad: 200
   - type: PointLight
-    color: "#c9a53b"
+    color: "#3fc8ff"
+    radius: 1.6
+    energy: 0.7
+    softness: 1.2
   - type: GosplanConsole
+  - type: WallMount
   - type: ActivatableUI
     key: enum.GosplanConsoleUiKey.Key
   - type: UserInterface

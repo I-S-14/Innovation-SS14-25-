@@ -4,7 +4,9 @@ using Content.Shared._IS14.Economy;
 using Content.Shared._IS14.Economy.EconomyMonitor;
 using Content.Shared._IS14.Economy.PaymentTerminal;
 using Content.Shared.Access.Components;
+using Content.Shared.Interaction;
 using Content.Shared.Paper;
+using Content.Shared.Popups;
 using Robust.Server.GameObjects;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Prototypes;
@@ -21,6 +23,7 @@ public sealed class PaymentTerminalSystem : EntitySystem
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly IPrototypeManager _prototypes = default!;
     [Dependency] private readonly PaperSystem _paper = default!;
+    [Dependency] private readonly SharedPopupSystem _popup = default!;
 
     private const int MaxAmount = 1_000_000;
     private const int MaxDescriptionLength = 64;
@@ -28,6 +31,8 @@ public sealed class PaymentTerminalSystem : EntitySystem
     public override void Initialize()
     {
         base.Initialize();
+
+        SubscribeLocalEvent<IS14PaymentTerminalComponent, InteractUsingEvent>(OnInteractUsing);
 
         Subs.BuiEvents<IS14PaymentTerminalComponent>(IS14PaymentTerminalUiKey.Key, subs =>
         {
@@ -42,6 +47,33 @@ public sealed class PaymentTerminalSystem : EntitySystem
     private void OnOpened(Entity<IS14PaymentTerminalComponent> ent, ref BoundUIOpenedEvent args)
     {
         SendState(ent);
+    }
+
+    /// <summary>
+    /// Tapping the terminal with a card (or a PDA holding one) pays the standing charge
+    /// outright — no window, no button. With nothing to pay and no recipient yet, the tap
+    /// binds the card instead, same as the button in the UI.
+    /// </summary>
+    private void OnInteractUsing(Entity<IS14PaymentTerminalComponent> ent, ref InteractUsingEvent args)
+    {
+        if (args.Handled || !_idCard.TryGetIdCard(args.Used, out var idCard))
+            return;
+
+        args.Handled = true;
+
+        if (ent.Comp.PendingAmount > 0)
+        {
+            TryPay(ent, idCard.Owner, args.User);
+            return;
+        }
+
+        if (ent.Comp.RevenueAccount != null || ent.Comp.RecipientAccountNumber != null)
+        {
+            _popup.PopupEntity(Loc.GetString("is14-payterm-popup-nothing-to-pay"), ent.Owner, args.User);
+            return;
+        }
+
+        BindCard(ent, idCard.Owner, args.User);
     }
 
     private void OnSetCharge(Entity<IS14PaymentTerminalComponent> ent, ref IS14PaymentTerminalSetChargeMessage args)
@@ -74,21 +106,46 @@ public sealed class PaymentTerminalSystem : EntitySystem
         if (ent.Comp.RevenueAccount != null)
             return;
 
-        if (!_idCard.TryFindIdCard(args.Actor, out var idCard)
-            || !TryComp<BankAccountHolderComponent>(idCard, out var holder))
+        if (!_idCard.TryFindIdCard(args.Actor, out var idCard))
         {
             Deny(ent, Loc.GetString("is14-payterm-status-no-card"));
             return;
         }
 
+        BindCard(ent, idCard.Owner, args.Actor);
+    }
+
+    private void BindCard(Entity<IS14PaymentTerminalComponent> ent, EntityUid card, EntityUid user)
+    {
+        if (ent.Comp.RevenueAccount != null)
+            return;
+
+        if (!TryComp<BankAccountHolderComponent>(card, out var holder))
+        {
+            Deny(ent, Loc.GetString("is14-payterm-status-no-card"), user);
+            return;
+        }
+
         ent.Comp.RecipientAccountNumber = holder.AccountNumber;
-        ent.Comp.RecipientName = CompOrNull<IdCardComponent>(idCard)?.FullName ?? string.Empty;
+        ent.Comp.RecipientName = CompOrNull<IdCardComponent>(card)?.FullName ?? string.Empty;
         ent.Comp.PendingAmount = 0;
         ent.Comp.PendingDescription = string.Empty;
-        SendState(ent, Loc.GetString("is14-payterm-status-bound"));
+
+        var status = Loc.GetString("is14-payterm-status-bound");
+        _popup.PopupEntity(status, ent.Owner, user);
+        SendState(ent, status);
     }
 
     private void OnPay(Entity<IS14PaymentTerminalComponent> ent, ref IS14PaymentTerminalPayMessage args)
+    {
+        TryPay(ent, args.Actor, args.Actor);
+    }
+
+    /// <summary>
+    /// Charges the standing amount. <paramref name="payerSource"/> is whatever the account is
+    /// read from: the customer themselves for the UI button, or the tapped card for a tap.
+    /// </summary>
+    private void TryPay(Entity<IS14PaymentTerminalComponent> ent, EntityUid payerSource, EntityUid user)
     {
         var amount = ent.Comp.PendingAmount;
         if (amount <= 0)
@@ -101,7 +158,7 @@ public sealed class PaymentTerminalSystem : EntitySystem
             if (_station.GetOwningStation(ent.Owner) is not { } owningStation
                 || _stationBank.GetStationAccount(owningStation, ent.Comp.RevenueAccount) == null)
             {
-                Deny(ent, Loc.GetString("is14-payterm-status-no-recipient"));
+                Deny(ent, Loc.GetString("is14-payterm-status-no-recipient"), user);
                 return;
             }
 
@@ -109,7 +166,7 @@ public sealed class PaymentTerminalSystem : EntitySystem
         }
         else if (ent.Comp.RecipientAccountNumber == null)
         {
-            Deny(ent, Loc.GetString("is14-payterm-status-no-recipient"));
+            Deny(ent, Loc.GetString("is14-payterm-status-no-recipient"), user);
             return;
         }
 
@@ -121,9 +178,9 @@ public sealed class PaymentTerminalSystem : EntitySystem
         // One payment = one log group: the charge, the revenue and the tax collapse into a single monitor row.
         var paymentGroup = Guid.NewGuid();
 
-        if (!_banking.TryChangeBalance(args.Actor, -amount, out _, paymentDescription, ent.Owner, paymentGroup))
+        if (!_banking.TryChangeBalance(payerSource, -amount, out _, paymentDescription, ent.Owner, paymentGroup))
         {
-            Deny(ent, Loc.GetString("is14-payterm-status-denied"));
+            Deny(ent, Loc.GetString("is14-payterm-status-denied"), user);
             return;
         }
 
@@ -133,7 +190,10 @@ public sealed class PaymentTerminalSystem : EntitySystem
         ent.Comp.PendingAmount = 0;
         ent.Comp.PendingDescription = string.Empty;
         _audio.PlayPvs(ent.Comp.PaySound, ent.Owner);
-        SendState(ent, Loc.GetString("is14-payterm-status-paid", ("amount", amount)));
+
+        var paidStatus = Loc.GetString("is14-payterm-status-paid", ("amount", amount));
+        _popup.PopupEntity(paidStatus, ent.Owner, user);
+        SendState(ent, paidStatus);
     }
 
     /// <summary>
@@ -191,9 +251,14 @@ public sealed class PaymentTerminalSystem : EntitySystem
         _audio.PlayPvs(ent.Comp.PrintSound, ent.Owner);
     }
 
-    private void Deny(Entity<IS14PaymentTerminalComponent> ent, string status)
+    private void Deny(Entity<IS14PaymentTerminalComponent> ent, string status, EntityUid? user = null)
     {
         _audio.PlayPvs(ent.Comp.DenySound, ent.Owner);
+
+        // Card taps happen with no window open, so the reason has to reach the user as a popup.
+        if (user != null)
+            _popup.PopupEntity(status, ent.Owner, user.Value);
+
         SendState(ent, status);
     }
 

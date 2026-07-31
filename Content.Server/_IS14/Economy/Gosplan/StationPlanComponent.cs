@@ -23,6 +23,12 @@ public sealed partial class StationPlanComponent : Component
     /// <summary>Quota prototype ID to its live progress.</summary>
     public Dictionary<string, PlanQuotaState> Quotas = new();
 
+    /// <summary>
+    /// Station account prototype ID to how that department is doing overall. A department
+    /// can carry any number of quotas, but it is sanctioned and awarded as one.
+    /// </summary>
+    public Dictionary<string, PlanFundState> Funds = new();
+
     /// <summary>Scored periods, newest last.</summary>
     public List<PlanPeriodEntry> History = new();
 
@@ -48,11 +54,21 @@ public sealed class PlanQuotaState
     /// <summary>Fulfillment scored at the end of the previous period.</summary>
     public float? LastFulfillment;
 
-    /// <summary>How many periods in a row this quota has been failed.</summary>
-    public int FailStreak;
-
     public PlanQuotaState(PlanMetricState metric)
     {
         Metric = metric;
     }
+}
+
+/// <summary>
+/// How a whole department is doing. Kept apart from the individual quotas because a
+/// department failing one metric out of three has not failed its plan.
+/// </summary>
+public sealed class PlanFundState
+{
+    /// <summary>Mean fulfillment scored at the end of the previous period.</summary>
+    public float? LastFulfillment;
+
+    /// <summary>How many periods in a row this department has been below the threshold.</summary>
+    public int FailStreak;
 }

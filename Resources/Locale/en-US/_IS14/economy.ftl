@@ -2,6 +2,7 @@ bank-salary-notification = beeps: "Salary +{ $salary } cr. Balance: { $balance }
 bank-salary-delayed = buzzes: "Salary delayed! Department fund is empty. Owed: { $owed } cr. Contact your head of staff."
 economy-transaction-salary-fund = Employee salary payout
 economy-transaction-vending-revenue = Revenue: { $item } ({ $machine })
+economy-transaction-vending-revenue-cash = Cash sale: { $item } ({ $machine })
 economy-transaction-vending-tax = Sales tax ({ $machine })
 economy-transaction-allocation-out = Allocation: { $target }
 economy-transaction-allocation-in = Allocation from the treasury
@@ -24,6 +25,8 @@ is14-payterm-status-denied = Payment declined.
 is14-payterm-status-no-card = No ID card with an account found.
 is14-payterm-status-no-recipient = No recipient bound.
 is14-payterm-status-bad-amount = Invalid amount.
+is14-payterm-popup-nothing-to-pay = The terminal has no standing charge.
+is14-payterm-tap-hint = Or just tap your card on the terminal.
 is14-payterm-receipt-note = Note: { $desc }
 is14-payterm-receipt-content = [head=2]RECEIPT[/head]
     Recipient: { $recipient }
@@ -121,6 +124,10 @@ is14-stack-credit = credits
 bank-holder-examine-balance = Account balance: [color=green]{ $balance } cr.[/color]
 
 is14-vending-balance-label = Balance:
+is14-vending-cash-label = Cash:
+is14-vending-eject-cash = Take cash back
+is14-vending-eject-cash-tooltip = Returns the cash left in the machine.
+is14-vending-cash-inserted = Inserted. In the machine: { $amount } cr.
 is14-vending-balance-value = { $balance } cr.
 is14-vending-price = { $price } cr.
 is14-vending-stock = x{ $stock }

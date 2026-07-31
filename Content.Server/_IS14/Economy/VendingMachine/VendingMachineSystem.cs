@@ -1,5 +1,6 @@
 using Content.Server.Access.Systems;
 using Content.Server.Power.EntitySystems;
+using Content.Server.Stack;
 using Content.Server.Station.Systems;
 using Content.Shared._IS14.Economy.EconomyMonitor;
 using Content.Shared._IS14.Economy.VendingMachine;
@@ -8,7 +9,10 @@ using Content.Shared.Access.Systems;
 using Content.Shared.Damage;
 using Content.Shared.Destructible;
 using Content.Shared.Hands.EntitySystems;
+using Content.Shared.Interaction;
+using Content.Shared.Popups;
 using Content.Shared.Power;
+using Content.Shared.Stacks;
 using Content.Shared.UserInterface;
 using Robust.Server.GameObjects;
 using Robust.Shared.Audio;
@@ -26,8 +30,11 @@ public sealed class VendingMachineSystem : EntitySystem
     [Dependency] private readonly BankingSystem _banking = default!;
     [Dependency] private readonly IdCardSystem _idCard = default!;
     [Dependency] private readonly SharedHandsSystem _hands = default!;
+    [Dependency] private readonly StackSystem _stack = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
+    [Dependency] private readonly SharedPopupSystem _popup = default!;
+    [Dependency] private readonly SharedInteractionSystem _interaction = default!;
     [Dependency] private readonly IPrototypeManager _prototypes = default!;
     [Dependency] private readonly ILocalizationManager _loc = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
@@ -43,6 +50,7 @@ public sealed class VendingMachineSystem : EntitySystem
         base.Initialize();
 
         SubscribeLocalEvent<IS14VendingMachineComponent, MapInitEvent>(OnMapInit);
+        SubscribeLocalEvent<IS14VendingMachineComponent, InteractUsingEvent>(OnInteractUsing);
         SubscribeLocalEvent<IS14VendingMachineComponent, PowerChangedEvent>(OnPowerChanged);
         SubscribeLocalEvent<IS14VendingMachineComponent, BreakageEventArgs>(OnBreak);
         SubscribeLocalEvent<IS14VendingMachineComponent, DamageChangedEvent>(OnDamageChanged);
@@ -51,7 +59,9 @@ public sealed class VendingMachineSystem : EntitySystem
         Subs.BuiEvents<IS14VendingMachineComponent>(IS14VendingMachineUiKey.Key, subs =>
         {
             subs.Event<BoundUIOpenedEvent>(OnUiOpened);
+            subs.Event<BoundUIClosedEvent>(OnUiClosed);
             subs.Event<IS14VendingMachineBuyMessage>(OnBuy);
+            subs.Event<IS14VendingMachineEjectCashMessage>(OnEjectCash);
         });
     }
 
@@ -86,6 +96,8 @@ public sealed class VendingMachineSystem : EntitySystem
     {
         ent.Comp.Broken = true;
         ent.Comp.DenyEnd = TimeSpan.Zero;
+        // A smashed machine spills its till instead of eating the customer's money.
+        DropCash(ent);
         _ui.CloseUi(ent.Owner, IS14VendingMachineUiKey.Key);
         UpdateVisualState(ent);
     }
@@ -109,6 +121,94 @@ public sealed class VendingMachineSystem : EntitySystem
     private void OnUiOpened(Entity<IS14VendingMachineComponent> ent, ref BoundUIOpenedEvent args)
     {
         UpdateUiState(ent, args.Actor);
+    }
+
+    /// <summary>
+    /// Walking away from the machine takes the change with you: the till is emptied back to
+    /// whoever filled it once the last window closes, so nothing is left for the next customer.
+    /// </summary>
+    private void OnUiClosed(Entity<IS14VendingMachineComponent> ent, ref BoundUIClosedEvent args)
+    {
+        if (ent.Comp.InsertedCash <= 0 || _ui.IsUiOpen(ent.Owner, IS14VendingMachineUiKey.Key))
+            return;
+
+        EjectCash(ent, ent.Comp.CashOwner ?? args.Actor);
+    }
+
+    /// <summary>Feeding the machine: clicking it with a cash stack tops up the till.</summary>
+    private void OnInteractUsing(Entity<IS14VendingMachineComponent> ent, ref InteractUsingEvent args)
+    {
+        if (args.Handled
+            || !ent.Comp.AcceptsCash
+            || !TryComp<StackComponent>(args.Used, out var stack)
+            || stack.StackTypeId != ent.Comp.CashStackType.Id
+            || stack.Count <= 0)
+        {
+            return;
+        }
+
+        args.Handled = true;
+
+        if (ent.Comp.Broken || !Transform(ent.Owner).Anchored || !_power.IsPowered(ent.Owner))
+        {
+            Deny(ent);
+            return;
+        }
+
+        // The till belongs to the last person who put money in — see OnUiClosed.
+        ent.Comp.InsertedCash += stack.Count;
+        ent.Comp.CashOwner = args.User;
+        QueueDel(args.Used);
+
+        _audio.PlayPvs(ent.Comp.InsertCashSound, ent.Owner);
+        _popup.PopupEntity(Loc.GetString("is14-vending-cash-inserted", ("amount", ent.Comp.InsertedCash)), ent.Owner, args.User);
+        RefreshOpenUis(ent);
+    }
+
+    private void OnEjectCash(Entity<IS14VendingMachineComponent> ent, ref IS14VendingMachineEjectCashMessage args)
+    {
+        if (ent.Comp.InsertedCash <= 0)
+            return;
+
+        EjectCash(ent, args.Actor);
+    }
+
+    /// <summary>Empties the till into someone's hands, dropping it at the machine if they can't take it.</summary>
+    private void EjectCash(Entity<IS14VendingMachineComponent> ent, EntityUid user)
+    {
+        var amount = ent.Comp.InsertedCash;
+        if (amount <= 0)
+            return;
+
+        ent.Comp.InsertedCash = 0;
+        ent.Comp.CashOwner = null;
+
+        var cash = _stack.SpawnAtPosition(amount, ent.Comp.CashStackType, Transform(ent.Owner).Coordinates);
+
+        // Whoever is standing there gets it in hand; if the owner already wandered off,
+        // the money is left in the machine's tile rather than teleported across the station.
+        if (!TerminatingOrDeleted(user) && _interaction.InRangeUnobstructed(user, ent.Owner))
+            _hands.TryPickupAnyHand(user, cash);
+
+        _audio.PlayPvs(ent.Comp.EjectCashSound, ent.Owner);
+        RefreshOpenUis(ent);
+    }
+
+    /// <summary>Spills the till on the floor — used when the machine breaks with money inside.</summary>
+    private void DropCash(Entity<IS14VendingMachineComponent> ent)
+    {
+        if (ent.Comp.InsertedCash <= 0)
+            return;
+
+        _stack.SpawnAtPosition(ent.Comp.InsertedCash, ent.Comp.CashStackType, Transform(ent.Owner).Coordinates);
+        ent.Comp.InsertedCash = 0;
+        ent.Comp.CashOwner = null;
+    }
+
+    private void RefreshOpenUis(Entity<IS14VendingMachineComponent> ent)
+    {
+        foreach (var actor in _ui.GetActors(ent.Owner, IS14VendingMachineUiKey.Key))
+            UpdateUiState(ent, actor);
     }
 
     private void OnBuy(Entity<IS14VendingMachineComponent> ent, ref IS14VendingMachineBuyMessage args)
@@ -145,6 +245,12 @@ public sealed class VendingMachineSystem : EntitySystem
 
         var entry = inventory[args.ItemIndex];
 
+        if (entry.Stock <= 0)
+        {
+            Deny(ent);
+            return;
+        }
+
         var itemName = entry.ItemId.ToString();
         if (_prototypes.TryIndex<EntityPrototype>(entry.ItemId, out var entProto))
             itemName = entProto.Name;
@@ -153,14 +259,21 @@ public sealed class VendingMachineSystem : EntitySystem
         // One purchase = one log group: payment, fund revenue and tax collapse into a single monitor row.
         var purchaseGroup = Guid.NewGuid();
 
-        if (entry.Stock <= 0 || !_banking.TryChangeBalance(buyer, -entry.Price, out _, purchaseDescription, ent.Owner, purchaseGroup))
+        // Money in the till always wins over the card, and it has no account behind it:
+        // a cash sale leaves no payer row in the monitor, only revenue and tax.
+        var cash = HasCash(ent);
+        var paid = cash
+            ? TryPayCash(ent, entry.Price)
+            : _banking.TryChangeBalance(buyer, -entry.Price, out _, purchaseDescription, ent.Owner, purchaseGroup);
+
+        if (!paid)
         {
             Deny(ent);
             return;
         }
 
         entry.Stock--;
-        CreditRevenue(ent, entry.Price, itemName, purchaseGroup);
+        CreditRevenue(ent, entry.Price, itemName, purchaseGroup, cash);
 
         var item = Spawn(entry.ItemId, Transform(ent.Owner).Coordinates);
         if (!_hands.TryPickupAnyHand(buyer, item))
@@ -168,6 +281,20 @@ public sealed class VendingMachineSystem : EntitySystem
 
         _audio.PlayPvs(ent.Comp.BuySound, ent.Owner);
         UpdateUiState(ent, buyer);
+    }
+
+    /// <summary>Whether the machine is running on cash right now instead of on cards.</summary>
+    private static bool HasCash(Entity<IS14VendingMachineComponent> ent)
+        => ent.Comp.AcceptsCash && ent.Comp.InsertedCash > 0;
+
+    /// <summary>Takes the price out of the till. The remainder stays in the machine as change.</summary>
+    private bool TryPayCash(Entity<IS14VendingMachineComponent> ent, int price)
+    {
+        if (ent.Comp.InsertedCash < price)
+            return false;
+
+        ent.Comp.InsertedCash -= price;
+        return true;
     }
 
     /// <summary>UI display name: the component override or the entity name.</summary>
@@ -204,7 +331,7 @@ public sealed class VendingMachineSystem : EntitySystem
     /// Splits a sale between the machine's revenue fund and the treasury tax.
     /// If the machine has no owning station or accounts, the money leaves the economy (sink).
     /// </summary>
-    private void CreditRevenue(Entity<IS14VendingMachineComponent> ent, int price, string itemName, Guid purchaseGroup)
+    private void CreditRevenue(Entity<IS14VendingMachineComponent> ent, int price, string itemName, Guid purchaseGroup, bool cash)
     {
         if (price <= 0)
             return;
@@ -214,15 +341,22 @@ public sealed class VendingMachineSystem : EntitySystem
 
         var tax = (int)MathF.Round(price * ent.Comp.TaxPercent);
         var revenue = price - tax;
+        var wholeSaleToTreasury = ent.Comp.RevenueAccount is not { } configured || configured.Id == StationBankAccountSystem.Treasury;
 
-        if (ent.Comp.RevenueAccount is { } fund && fund.Id != StationBankAccountSystem.Treasury)
+        // A cash sale has no payer row, so the revenue line is the only record of the purchase —
+        // it says what was sold and that it was paid in cash.
+        var revenueDescription = Loc.GetString(
+            cash ? "economy-transaction-vending-revenue-cash" : "economy-transaction-vending-revenue",
+            ("item", itemName), ("machine", GetMachineName(ent)));
+
+        if (!wholeSaleToTreasury)
         {
+            var fund = ent.Comp.RevenueAccount!.Value;
             if (_stationBank.TryChangeStationBalance(station, fund, revenue, out var fundBalance))
             {
                 var account = _stationBank.GetStationAccount(station, fund)!;
                 RaiseLocalEvent(new EconomyTransactionEvent(account.AccountNumber, revenue, fundBalance,
-                    Loc.GetString("economy-transaction-vending-revenue", ("item", itemName), ("machine", GetMachineName(ent))),
-                    ent.Owner, purchaseGroup));
+                    revenueDescription, ent.Owner, purchaseGroup));
             }
         }
         else
@@ -235,7 +369,9 @@ public sealed class VendingMachineSystem : EntitySystem
         {
             var treasury = _stationBank.GetStationAccount(station, StationBankAccountSystem.Treasury)!;
             RaiseLocalEvent(new EconomyTransactionEvent(treasury.AccountNumber, tax, treasuryBalance,
-                Loc.GetString("economy-transaction-vending-tax", ("machine", GetMachineName(ent))),
+                wholeSaleToTreasury
+                    ? revenueDescription
+                    : Loc.GetString("economy-transaction-vending-tax", ("machine", GetMachineName(ent))),
                 ent.Owner, purchaseGroup));
         }
     }
@@ -271,6 +407,8 @@ public sealed class VendingMachineSystem : EntitySystem
             new IS14VendingMachineUiState(
                 GetMachineName(ent),
                 balance,
+                ent.Comp.AcceptsCash,
+                ent.Comp.InsertedCash,
                 ent.Comp.ContrabandUnlocked,
                 tabs,
                 BuildUiEntries(ent.Comp.ContrabandInventory),

@@ -2,18 +2,13 @@ using Robust.Shared.Serialization;
 
 namespace Content.Shared._IS14.Economy.Gosplan;
 
-/// <summary>One quota as shown on the soc-competition board.</summary>
+/// <summary>One measurement inside a department's plan, as shown on the board.</summary>
 [Serializable, NetSerializable]
 public sealed class PlanQuotaEntry
 {
     public string QuotaId = string.Empty;
     public string Name = string.Empty;
     public string Description = string.Empty;
-
-    /// <summary>Station account prototype ID, used by the board to colour the department.</summary>
-    public string FundId = string.Empty;
-
-    public string FundName = string.Empty;
 
     /// <summary>
     /// Where the department is right now, already written in the quota's own unit —
@@ -30,14 +25,46 @@ public sealed class PlanQuotaEntry
     /// <summary>Fulfillment scored at the end of the previous period, or null on the first one.</summary>
     public float? LastFulfillment;
 
+    /// <summary>Credits the fund would be paid for this metric if the period were scored right now.</summary>
+    public int ProjectedPayout;
+
+    /// <summary>Credits this metric is worth at exactly 100%.</summary>
+    public int FullPayout;
+}
+
+/// <summary>
+/// A department and everything it is measured on. Departments are the unit the plan is
+/// actually scored in — the banner, the fail streak and the sanctions all look at the
+/// department as a whole, however many metrics it happens to carry.
+/// </summary>
+[Serializable, NetSerializable]
+public sealed class PlanDepartmentEntry
+{
+    /// <summary>Station account prototype ID, used by the board to colour the department.</summary>
+    public string FundId = string.Empty;
+
+    public string FundName = string.Empty;
+
+    /// <summary>Mean fulfillment across every metric below, uncapped.</summary>
+    public float Fulfillment;
+
+    /// <summary>The department's mean fulfillment at the end of the previous period.</summary>
+    public float? LastFulfillment;
+
     /// <summary>Consecutive failed periods. Two means sanctions have already landed.</summary>
     public int FailStreak;
 
-    /// <summary>Credits the fund would be paid if the period were scored right now.</summary>
+    /// <summary>Sum of what every metric would pay if the period were scored right now.</summary>
     public int ProjectedPayout;
 
-    /// <summary>Credits the fund is paid at exactly 100%.</summary>
+    /// <summary>Sum of what every metric pays at exactly 100%.</summary>
     public int FullPayout;
+
+    /// <summary>Whether this department is currently holding the red banner.</summary>
+    public bool HasBanner;
+
+    /// <summary>The department's metrics, in board order.</summary>
+    public List<PlanQuotaEntry> Quotas = new();
 }
 
 /// <summary>A finished plan period, kept for the board's history tab.</summary>
@@ -49,7 +76,7 @@ public sealed class PlanPeriodEntry
     /// <summary>Department that scored highest, or empty if nobody did.</summary>
     public string LeaderFundName = string.Empty;
 
-    /// <summary>Average fulfillment across every quota, 0..n.</summary>
+    /// <summary>Average fulfillment across every department, 0..n.</summary>
     public float AverageFulfillment;
 
     /// <summary>Total credits Gosplan paid the station for this period.</summary>
@@ -87,7 +114,7 @@ public sealed class GosplanConsoleUiState : BoundUserInterfaceState
     /// <summary>Full length of a period, so the board can show how much of it is gone.</summary>
     public int PeriodSeconds;
 
-    public List<PlanQuotaEntry> Quotas = new();
+    public List<PlanDepartmentEntry> Departments = new();
     public List<PlanPeriodEntry> History = new();
 
     /// <summary>Department holding the red banner, or empty if it hasn't been awarded yet.</summary>
@@ -107,4 +134,17 @@ public sealed class GosplanConsoleUiState : BoundUserInterfaceState
 
     /// <summary>Highest fulfillment that still earns extra credits — the end of every gauge.</summary>
     public float PayoutCap = 1.5f;
+
+    /// <summary>Total number of metrics across every department.</summary>
+    public int QuotaCount
+    {
+        get
+        {
+            var count = 0;
+            foreach (var department in Departments)
+                count += department.Quotas.Count;
+
+            return count;
+        }
+    }
 }

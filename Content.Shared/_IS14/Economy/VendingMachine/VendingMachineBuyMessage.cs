@@ -15,3 +15,9 @@ public sealed class IS14VendingMachineBuyMessage : BoundUserInterfaceMessage
         ItemIndex = itemIndex;
     }
 }
+
+/// <summary>Hands the cash left in the machine back to the customer.</summary>
+[Serializable, NetSerializable]
+public sealed class IS14VendingMachineEjectCashMessage : BoundUserInterfaceMessage
+{
+}

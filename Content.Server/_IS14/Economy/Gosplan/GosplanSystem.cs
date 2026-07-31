@@ -20,6 +20,10 @@ namespace Content.Server._IS14.Economy.Gosplan;
 /// grant, so without the plan a station simply runs dry halfway through the shift.
 /// Doing your job well is what keeps the lights on for everyone downstream.
 ///
+/// A department may be measured on any number of quotas. Each one is paid for on its
+/// own, but the department is judged as a whole: the banner, the fail streak and the
+/// sanctions all look at the mean, so nobody loses a budget over one bad metric.
+///
 /// What each quota measures lives in its <see cref="PlanMetric"/>, not here — this
 /// system only knows how to sample, score and pay.
 /// </summary>
@@ -65,11 +69,12 @@ public sealed class GosplanSystem : EntitySystem
 
             var state = new PlanQuotaState(proto.Metric.CreateState());
             plan.Quotas[proto.ID] = state;
+            plan.Funds.TryAdd(proto.Fund, new PlanFundState());
 
             proto.Metric.PeriodStarted(Args(ev.Station, proto, state));
         }
 
-        Log.Info($"Gosplan: station {ToPrettyString(ev.Station)} received a plan with {plan.Quotas.Count} quotas, period {period.TotalMinutes:0} min.");
+        Log.Info($"Gosplan: station {ToPrettyString(ev.Station)} received a plan with {plan.Quotas.Count} quotas across {plan.Funds.Count} departments, period {period.TotalMinutes:0} min.");
 
         AnnounceNewPeriod(ev.Station, plan);
     }
@@ -134,6 +139,34 @@ public sealed class GosplanSystem : EntitySystem
         return quotas;
     }
 
+    /// <summary>
+    /// The same quotas, grouped the way the plan is scored. Departments come out in the
+    /// order of their first quota, so the board's list is as stable as the plan itself.
+    /// </summary>
+    public List<PlanDepartment> Departments(StationPlanComponent plan)
+    {
+        var departments = new List<PlanDepartment>();
+        var byFund = new Dictionary<string, PlanDepartment>();
+
+        foreach (var quota in Quotas(plan))
+        {
+            if (!byFund.TryGetValue(quota.Proto.Fund, out var department))
+            {
+                // A plan loaded before departments existed has no fund state yet.
+                if (!plan.Funds.TryGetValue(quota.Proto.Fund, out var fundState))
+                    plan.Funds[quota.Proto.Fund] = fundState = new PlanFundState();
+
+                department = new PlanDepartment(quota.Proto.Fund, fundState);
+                byFund[quota.Proto.Fund] = department;
+                departments.Add(department);
+            }
+
+            department.Quotas.Add(quota);
+        }
+
+        return departments;
+    }
+
     private PlanMetricArgs Args(EntityUid station, PlanQuotaPrototype proto, PlanQuotaState state) =>
         new(EntityManager, station, proto, state.Metric);
 
@@ -147,6 +180,23 @@ public sealed class GosplanSystem : EntitySystem
             return 0f;
 
         return GetCurrentValue(station, proto, state) / proto.Target;
+    }
+
+    /// <summary>
+    /// How the department is doing overall: the plain mean of its metrics. Every metric
+    /// carries the same weight regardless of what it pays, so a department cannot bury a
+    /// neglected duty behind one lucrative one.
+    /// </summary>
+    public float GetFulfillment(EntityUid station, PlanDepartment department)
+    {
+        if (department.Quotas.Count == 0)
+            return 0f;
+
+        var sum = 0f;
+        foreach (var (proto, state) in department.Quotas)
+            sum += GetFulfillment(station, proto, state);
+
+        return sum / department.Quotas.Count;
     }
 
     /// <summary>
@@ -176,10 +226,15 @@ public sealed class GosplanSystem : EntitySystem
             var left = (int)Math.Max(0, (plan.NextEvaluation - _timing.CurTime).TotalSeconds);
             text.AppendLine($"{ToPrettyString(station)}: period {plan.PeriodIndex}, {left}s left, banner: {(plan.BannerFund.Length > 0 ? plan.BannerFund : "-")}");
 
-            foreach (var (proto, state) in Quotas(plan))
+            foreach (var department in Departments(plan))
             {
-                var fulfillment = GetFulfillment(station, proto, state);
-                text.AppendLine($"  {proto.Fund,-20} {proto.ID,-28} {GetCurrentValue(station, proto, state):0.##}/{proto.Target:0.##} = {fulfillment * 100f:0}% (fails: {state.FailStreak})");
+                text.AppendLine($"  {department.Fund,-20} {GetFulfillment(station, department) * 100f:0}% overall (fails: {department.State.FailStreak})");
+
+                foreach (var (proto, state) in department.Quotas)
+                {
+                    var fulfillment = GetFulfillment(station, proto, state);
+                    text.AppendLine($"    {proto.ID,-30} {GetCurrentValue(station, proto, state):0.##}/{proto.Target:0.##} = {fulfillment * 100f:0}%");
+                }
             }
         }
 
@@ -189,8 +244,8 @@ public sealed class GosplanSystem : EntitySystem
     // ── Scoring ───────────────────────────────────────────────────────────────
 
     /// <summary>
-    /// Scores every quota, pays out, hands the banner to the best department and
-    /// sanctions anyone who failed twice running.
+    /// Scores every department, pays out per metric, hands the banner to the best
+    /// department and sanctions anyone who failed twice running.
     /// </summary>
     private void EvaluatePeriod(EntityUid station, StationPlanComponent plan)
     {
@@ -208,55 +263,80 @@ public sealed class GosplanSystem : EntitySystem
         string? leaderFund = null;
         var leaderFulfillment = 0f;
 
-        var quotas = Quotas(plan);
+        var departments = Departments(plan);
 
-        foreach (var (proto, state) in quotas)
+        foreach (var department in departments)
         {
-            var fulfillment = GetFulfillment(station, proto, state);
-            var paidFulfillment = Math.Clamp(fulfillment, 0f, cap);
-            var payout = (int)(proto.Payout * paidFulfillment * multiplier);
+            var fundName = GetFundName(department.Fund);
+            var departmentPayout = 0;
+            var departmentSum = 0f;
 
-            if (payout > 0 && _stationBank.TryChangeStationBalance(station, proto.Fund, payout, out var newBalance))
+            // Failed metrics are named on the department's line: the mean alone doesn't
+            // tell anyone which duty was dropped.
+            var failedQuotas = new List<string>();
+
+            foreach (var (proto, state) in department.Quotas)
             {
-                totalPayout += payout;
+                var fulfillment = GetFulfillment(station, proto, state);
+                var paidFulfillment = Math.Clamp(fulfillment, 0f, cap);
+                var payout = (int)(proto.Payout * paidFulfillment * multiplier);
 
-                if (_stationBank.GetStationAccount(station, proto.Fund) is { } account)
+                if (payout > 0 && _stationBank.TryChangeStationBalance(station, proto.Fund, payout, out var newBalance))
                 {
-                    RaiseLocalEvent(new EconomyTransactionEvent(account.AccountNumber, payout, newBalance,
-                        Loc.GetString("economy-transaction-gosplan-funding", ("quota", Loc.GetString(proto.Name)))));
+                    departmentPayout += payout;
+
+                    if (_stationBank.GetStationAccount(station, proto.Fund) is { } account)
+                    {
+                        RaiseLocalEvent(new EconomyTransactionEvent(account.AccountNumber, payout, newBalance,
+                            Loc.GetString("economy-transaction-gosplan-funding", ("quota", Loc.GetString(proto.Name)))));
+                    }
                 }
+
+                if (fulfillment < failThreshold)
+                    failedQuotas.Add(Loc.GetString(proto.Name));
+
+                state.LastFulfillment = fulfillment;
+                departmentSum += fulfillment;
             }
 
-            if (fulfillment < failThreshold)
+            var departmentFulfillment = department.Quotas.Count == 0 ? 0f : departmentSum / department.Quotas.Count;
+
+            if (departmentFulfillment < failThreshold)
             {
-                state.FailStreak++;
-                failedFunds.Add(GetFundName(proto.Fund));
+                department.State.FailStreak++;
+                failedFunds.Add(fundName);
             }
             else
             {
-                state.FailStreak = 0;
+                department.State.FailStreak = 0;
             }
 
-            if (fulfillment >= overThreshold && fulfillment > leaderFulfillment)
+            if (departmentFulfillment >= overThreshold && departmentFulfillment > leaderFulfillment)
             {
-                leaderFulfillment = fulfillment;
-                leaderFund = proto.Fund;
+                leaderFulfillment = departmentFulfillment;
+                leaderFund = department.Fund;
             }
 
             lines.Add(Loc.GetString("is14-gosplan-report-line",
-                ("fund", GetFundName(proto.Fund)),
-                ("quota", Loc.GetString(proto.Name)),
-                ("percent", (int)MathF.Round(fulfillment * 100f)),
-                ("payout", payout)));
+                ("fund", fundName),
+                ("percent", (int)MathF.Round(departmentFulfillment * 100f)),
+                ("payout", departmentPayout)));
 
-            state.LastFulfillment = fulfillment;
-            fulfillmentSum += fulfillment;
+            if (failedQuotas.Count > 0)
+            {
+                lines.Add(Loc.GetString("is14-gosplan-report-line-failed",
+                    ("quotas", string.Join(", ", failedQuotas))));
+            }
+
+            department.State.LastFulfillment = departmentFulfillment;
+            totalPayout += departmentPayout;
+            fulfillmentSum += departmentFulfillment;
             scored++;
         }
 
         var leaderName = leaderFund != null ? GetFundName(leaderFund) : string.Empty;
 
-        AnnounceReport(station, plan, lines, leaderFund, leaderName, quotas);
+        AnnounceReport(station, plan, lines, leaderFund, leaderName, departments);
 
         plan.History.Add(new PlanPeriodEntry(
             plan.PeriodIndex,
@@ -271,9 +351,10 @@ public sealed class GosplanSystem : EntitySystem
 
         // Start the metrics over last: payouts and sanctions above move money through the
         // same funds these quotas measure, and Gosplan's own money must not count as revenue.
-        foreach (var (proto, state) in quotas)
+        foreach (var department in departments)
         {
-            proto.Metric.PeriodStarted(Args(station, proto, state));
+            foreach (var (proto, state) in department.Quotas)
+                proto.Metric.PeriodStarted(Args(station, proto, state));
         }
 
         plan.PeriodIndex++;
@@ -289,7 +370,7 @@ public sealed class GosplanSystem : EntitySystem
         List<string> lines,
         string? leaderFund,
         string leaderName,
-        List<(PlanQuotaPrototype Proto, PlanQuotaState State)> quotas)
+        List<PlanDepartment> departments)
     {
         var text = new StringBuilder();
         text.AppendLine(Loc.GetString("is14-gosplan-report-header", ("period", plan.PeriodIndex)));
@@ -303,18 +384,18 @@ public sealed class GosplanSystem : EntitySystem
             text.AppendLine(Loc.GetString("is14-gosplan-report-banner", ("fund", leaderName)));
         }
 
-        foreach (var (proto, state) in quotas)
+        foreach (var department in departments)
         {
-            if (state.FailStreak < 2)
+            if (department.State.FailStreak < 2)
                 continue;
 
-            var confiscated = ApplySanction(station, proto.Fund);
+            var confiscated = ApplySanction(station, department.Fund);
             text.AppendLine(Loc.GetString("is14-gosplan-report-sanction",
-                ("fund", GetFundName(proto.Fund)),
+                ("fund", GetFundName(department.Fund)),
                 ("amount", confiscated)));
 
             // One sanction per streak, not one per period forever.
-            state.FailStreak = 0;
+            department.State.FailStreak = 0;
         }
 
         _chat.DispatchStationAnnouncement(
@@ -381,5 +462,23 @@ public sealed class GosplanSystem : EntitySystem
         return _prototypes.TryIndex<StationAccountPrototype>(fundProtoId, out var proto)
             ? proto.DisplayName
             : fundProtoId;
+    }
+}
+
+/// <summary>One department's slice of the plan: its fund, its running record and its metrics.</summary>
+public sealed class PlanDepartment
+{
+    /// <summary>Station account prototype ID this department is funded through.</summary>
+    public readonly string Fund;
+
+    public readonly PlanFundState State;
+
+    /// <summary>Everything the department is measured on, in board order.</summary>
+    public readonly List<(PlanQuotaPrototype Proto, PlanQuotaState State)> Quotas = new();
+
+    public PlanDepartment(string fund, PlanFundState state)
+    {
+        Fund = fund;
+        State = state;
     }
 }

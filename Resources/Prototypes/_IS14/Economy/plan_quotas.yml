@@ -5,8 +5,12 @@
 # well can afford supplies while one that coasts barely covers payroll.
 #
 # A quota is only created for a station that actually has the fund it belongs to.
+#
+# A department may carry several quotas. Each one is paid for on its own, but the
+# department is judged on their mean — so splitting a fund's payout across two quotas
+# doubles the ways to earn it without doubling what it is worth.
 
-# ─── Engineering: keep the lights on ────────────────────────────────────────
+# ─── Engineering: keep the lights on and the air breathable ─────────────────
 - type: planQuota
   id: PlanQuotaEngineeringPower
   name: is14-quota-engineering-power
@@ -14,9 +18,20 @@
   fund: StationEngineering
   metric: !type:PoweredApcsMetric
   target: 0.95
-  payout: 6000
+  payout: 3500
   unit: !type:PercentQuotaUnit
   order: 10
+
+- type: planQuota
+  id: PlanQuotaEngineeringAtmos
+  name: is14-quota-engineering-atmos
+  description: is14-quota-engineering-atmos-desc
+  fund: StationEngineering
+  metric: !type:AirAlarmsNormalMetric
+  target: 0.9
+  payout: 2500
+  unit: !type:PercentQuotaUnit
+  order: 11
 
 # ─── Medical: keep the crew alive ───────────────────────────────────────────
 - type: planQuota
@@ -30,7 +45,7 @@
   unit: !type:PercentQuotaUnit
   order: 20
 
-# ─── Security: keep the peace ───────────────────────────────────────────────
+# ─── Security: keep the peace, and be seen keeping it ───────────────────────
 # Measured as time spent on the default alert level, so every minute of a raised
 # code costs Security money. A red code the captain refuses to lift is expensive.
 - type: planQuota
@@ -40,9 +55,22 @@
   fund: StationSecurity
   metric: !type:PeaceTimeMetric
   target: 0.9
-  payout: 5000
+  payout: 3000
   unit: !type:PercentQuotaUnit
   order: 30
+
+# The paperwork quota, and yes, it pulls against the one above: a quiet shift leaves
+# nothing to write up. Deciding which of the two to chase is Security's problem.
+- type: planQuota
+  id: PlanQuotaSecurityFines
+  name: is14-quota-security-fines
+  description: is14-quota-security-fines-desc
+  fund: StationSecurity
+  metric: !type:FinesIssuedMetric
+  target: 3
+  payout: 2000
+  unit: !type:CountQuotaUnit
+  order: 31
 
 # ─── Research: deliver technology ───────────────────────────────────────────
 - type: planQuota

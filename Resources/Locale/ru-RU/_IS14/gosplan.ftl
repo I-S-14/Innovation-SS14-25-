@@ -2,7 +2,8 @@
 is14-gosplan-announcer = Госплан
 is14-gosplan-plan-issued = Станции спущен План на период №{ $period }. Отчётный период — { $minutes } мин. Финансирование отделов производится по проценту выполнения. Товарищи, к работе!
 is14-gosplan-report-header = Итоги периода №{ $period }:
-is14-gosplan-report-line = { $fund } — { $quota }: { $percent }%, ассигновано { $payout } кр.
+is14-gosplan-report-line = { $fund }: { $percent }%, ассигновано { $payout } кр.
+is14-gosplan-report-line-failed = ⤷ сорвано: { $quotas }
 is14-gosplan-report-banner = Переходящее Красное знамя присуждается: { $fund }. Отделу выделен премиальный фонд.
 is14-gosplan-report-sanction = Второй провал плана подряд: { $fund }. Взыскано в доход Госплана { $amount } кр. Ожидайте комиссию.
 
@@ -14,11 +15,17 @@ economy-transaction-gosplan-sanction = Взыскание Госплана за 
 is14-quota-engineering-power = Бесперебойное энергоснабжение
 is14-quota-engineering-power-desc = Доля отсеков под напряжением. Считается непрерывно: обесточка бьёт по фонду, даже если её потом устранили.
 
+is14-quota-engineering-atmos = Атмосфера в норме
+is14-quota-engineering-atmos-desc = Доля воздушных сигнализаций в штатном режиме. Усредняется за период: пробоина стоит денег всё время, пока горит тревога.
+
 is14-quota-medical-crew = Сохранность личного состава
 is14-quota-medical-crew-desc = Доля живых членов экипажа. Усредняется за период — час в мешке для трупов не списывается воскрешением.
 
 is14-quota-security-peace = Общественный порядок
 is14-quota-security-peace-desc = Доля времени на зелёном коде. Каждая минута повышенной тревоги стоит отделу денег.
+
+is14-quota-security-fines = План по взысканиям
+is14-quota-security-fines-desc = Штрафов выписано за период. Аннулированные не в счёт — приписки Госплан не оплачивает.
 
 is14-quota-research-tech = Внедрение технологий
 is14-quota-research-tech-desc = Технологий исследовано за отчётный период.
@@ -41,7 +48,7 @@ is14-gosplan-period = Период №{ $period }
 is14-gosplan-timer-caption = до подведения итогов
 is14-gosplan-timer-scoring = идёт подведение итогов
 is14-gosplan-elapsed = Период пройден на { $percent }%
-is14-gosplan-quota-count = Позиций плана: { $count }
+is14-gosplan-quota-count = Отделов: { $departments }, позиций плана: { $count }
 is14-gosplan-no-plan = План не спущен
 is14-gosplan-no-plan-hint = Госплан не довёл до станции плановых заданий.
 
@@ -51,6 +58,14 @@ is14-gosplan-banner-since = Присуждено по итогам период�
 is14-gosplan-banner-bonus = премиальный фонд +{ $amount } кр.
 is14-gosplan-banner-none = Знамя не присуждено
 is14-gosplan-banner-none-hint = Перевыполните план — и оно будет вашим, товарищи.
+
+# ── Отделы ──────────────────────────────────────────────────────────────────
+is14-gosplan-departments = ОТДЕЛЫ
+is14-gosplan-department-banner-mark = ★ { $fund }
+is14-gosplan-department-banner = держит знамя
+is14-gosplan-department-metrics = Позиций плана: { $count }
+is14-gosplan-department-streak = ⚠ Провалов подряд: { $streak }
+is14-gosplan-department-caption = Среднее по всем позициям плана ({ $count }) — по нему и спрос
 
 # ── Строка плана ────────────────────────────────────────────────────────────
 is14-gosplan-percent = { $percent }%

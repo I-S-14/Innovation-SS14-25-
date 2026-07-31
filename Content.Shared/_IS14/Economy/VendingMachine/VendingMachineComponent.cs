@@ -1,3 +1,4 @@
+using Content.Shared.Stacks;
 using Robust.Shared.Audio;
 using Robust.Shared.Prototypes;
 
@@ -24,6 +25,25 @@ public sealed partial class IS14VendingMachineComponent : Component
     [DataField]
     public float TaxPercent = 0.1f;
 
+    /// <summary>Whether cash can be fed into the machine and spent instead of a bank account.</summary>
+    [DataField]
+    public bool AcceptsCash = true;
+
+    /// <summary>Stack prototype accepted as cash.</summary>
+    [DataField]
+    public ProtoId<StackPrototype> CashStackType = "Credit";
+
+    /// <summary>
+    /// Cash currently sitting in the machine. While this is above zero the machine sells for
+    /// cash and no buyer account is involved at all. Returned through the UI button.
+    /// </summary>
+    [ViewVariables]
+    public int InsertedCash;
+
+    /// <summary>Who fed the cash in, so an abandoned session gives it back to them and not to the next customer.</summary>
+    [ViewVariables]
+    public EntityUid? CashOwner;
+
     [DataField]
     public List<VendingMachineTab> Tabs = new();
 
@@ -40,6 +60,12 @@ public sealed partial class IS14VendingMachineComponent : Component
 
     [DataField]
     public SoundSpecifier DenySound = new SoundPathSpecifier("/Audio/Machines/buzz-two.ogg");
+
+    [DataField]
+    public SoundSpecifier InsertCashSound = new SoundPathSpecifier("/Audio/Machines/machine_vend.ogg");
+
+    [DataField]
+    public SoundSpecifier EjectCashSound = new SoundPathSpecifier("/Audio/Machines/machine_vend.ogg");
 
     // ── Sprite states (vanilla vending machine conventions) ──────────────────
 

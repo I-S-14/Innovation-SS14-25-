@@ -76,7 +76,9 @@ public sealed partial class PlanTimerPanel : BoxContainer
 
         PeriodLabel.Text = Loc.GetString("is14-gosplan-period", ("period", state.PeriodIndex));
         PeriodLabel.FontColorOverride = GosplanPalette.Gold;
-        QuotaCountLabel.Text = Loc.GetString("is14-gosplan-quota-count", ("count", state.Quotas.Count));
+        QuotaCountLabel.Text = Loc.GetString("is14-gosplan-quota-count",
+            ("count", state.QuotaCount),
+            ("departments", state.Departments.Count));
 
         _periodSeconds = MathF.Max(1f, state.PeriodSeconds);
         _secondsLeft = Math.Clamp(state.SecondsLeft, 0f, _periodSeconds);

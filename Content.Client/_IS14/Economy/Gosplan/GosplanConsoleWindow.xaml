@@ -11,8 +11,8 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     xmlns:cuc="clr-namespace:Content.Client.UserInterface.Controls"
     Title="{Loc 'is14-gosplan-window-title'}"
     Resizable="True"
-    SetSize="540 700"
-    MinSize="460 520">
+    SetSize="780 700"
+    MinSize="660 540">
 
     <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True">
 
@@ -38,46 +38,63 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
                 <TabContainer Name="Tabs" HorizontalExpand="True" VerticalExpand="True">
 
-                    <!-- Current plan -->
-                    <BoxContainer Name="PlanTab" Orientation="Vertical"
+                    <!-- Current plan: pick a department on the left, read its metrics on the right -->
+                    <BoxContainer Name="PlanTab" Orientation="Horizontal"
                                   HorizontalExpand="True" VerticalExpand="True" Margin="4">
 
-                        <!-- The thresholds are the same for every quota, so the scale is
-                             explained once here instead of under each bar. -->
-                        <PanelContainer HorizontalExpand="True" Margin="0 0 0 6">
-                            <PanelContainer.PanelOverride>
-                                <gfx:StyleBoxFlat BackgroundColor="#141A2C" />
-                            </PanelContainer.PanelOverride>
+                        <BoxContainer Orientation="Vertical" SetWidth="210" VerticalExpand="True">
+                            <Label Text="{Loc 'is14-gosplan-departments'}"
+                                   StyleClasses="LabelSubText" Margin="2 0 0 4"
+                                   FontColorOverride="#8898A8" />
 
-                            <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="6 3">
+                            <ScrollContainer VerticalExpand="True" HScrollEnabled="False">
+                                <BoxContainer Name="DepartmentList" Orientation="Vertical" HorizontalExpand="True" />
+                            </ScrollContainer>
+                        </BoxContainer>
 
-                                <PanelContainer SetSize="10 4" VerticalAlignment="Center">
-                                    <PanelContainer.PanelOverride>
-                                        <gfx:StyleBoxFlat BackgroundColor="#BF4040" />
-                                    </PanelContainer.PanelOverride>
-                                </PanelContainer>
-                                <Label Name="LegendFailLabel" StyleClasses="LabelSubText" Margin="4 0 10 0" />
+                        <BoxContainer Orientation="Vertical" HorizontalExpand="True"
+                                      VerticalExpand="True" Margin="8 0 0 0">
 
-                                <PanelContainer SetSize="10 4" VerticalAlignment="Center">
-                                    <PanelContainer.PanelOverride>
-                                        <gfx:StyleBoxFlat BackgroundColor="#E0C060" />
-                                    </PanelContainer.PanelOverride>
-                                </PanelContainer>
-                                <Label Name="LegendTargetLabel" StyleClasses="LabelSubText" Margin="4 0 10 0" />
+                            <is14:PlanDepartmentPanel Name="DepartmentPanel" HorizontalExpand="True" />
 
-                                <PanelContainer SetSize="10 4" VerticalAlignment="Center">
-                                    <PanelContainer.PanelOverride>
-                                        <gfx:StyleBoxFlat BackgroundColor="#4FD14F" />
-                                    </PanelContainer.PanelOverride>
-                                </PanelContainer>
-                                <Label Name="LegendCapLabel" StyleClasses="LabelSubText" Margin="4 0 0 0" />
+                            <!-- The thresholds are the same for every metric, so the scale is
+                                 explained once here instead of under each bar. -->
+                            <PanelContainer HorizontalExpand="True" Margin="0 0 0 6">
+                                <PanelContainer.PanelOverride>
+                                    <gfx:StyleBoxFlat BackgroundColor="#141A2C" />
+                                </PanelContainer.PanelOverride>
 
-                            </BoxContainer>
-                        </PanelContainer>
+                                <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="6 3">
 
-                        <ScrollContainer HorizontalExpand="True" VerticalExpand="True" HScrollEnabled="False">
-                            <BoxContainer Name="QuotaList" Orientation="Vertical" HorizontalExpand="True" />
-                        </ScrollContainer>
+                                    <PanelContainer SetSize="10 4" VerticalAlignment="Center">
+                                        <PanelContainer.PanelOverride>
+                                            <gfx:StyleBoxFlat BackgroundColor="#BF4040" />
+                                        </PanelContainer.PanelOverride>
+                                    </PanelContainer>
+                                    <Label Name="LegendFailLabel" StyleClasses="LabelSubText" Margin="4 0 10 0" />
+
+                                    <PanelContainer SetSize="10 4" VerticalAlignment="Center">
+                                        <PanelContainer.PanelOverride>
+                                            <gfx:StyleBoxFlat BackgroundColor="#E0C060" />
+                                        </PanelContainer.PanelOverride>
+                                    </PanelContainer>
+                                    <Label Name="LegendTargetLabel" StyleClasses="LabelSubText" Margin="4 0 10 0" />
+
+                                    <PanelContainer SetSize="10 4" VerticalAlignment="Center">
+                                        <PanelContainer.PanelOverride>
+                                            <gfx:StyleBoxFlat BackgroundColor="#4FD14F" />
+                                        </PanelContainer.PanelOverride>
+                                    </PanelContainer>
+                                    <Label Name="LegendCapLabel" StyleClasses="LabelSubText" Margin="4 0 0 0" />
+
+                                </BoxContainer>
+                            </PanelContainer>
+
+                            <ScrollContainer VerticalExpand="True" HScrollEnabled="False">
+                                <BoxContainer Name="QuotaList" Orientation="Vertical" HorizontalExpand="True" />
+                            </ScrollContainer>
+                        </BoxContainer>
+
                     </BoxContainer>
 
                     <!-- Finished periods -->

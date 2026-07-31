@@ -80,30 +80,50 @@ public sealed class GosplanConsoleSystem : EntitySystem
         var cap = _cfg.GetCVar(IS14CVars.GosplanOverfulfillmentCap);
         var multiplier = _cfg.GetCVar(IS14CVars.GosplanPayoutMultiplier);
 
-        var quotas = new List<PlanQuotaEntry>();
+        var departments = new List<PlanDepartmentEntry>();
 
-        // Already in board order.
-        foreach (var (proto, state) in _gosplan.Quotas(plan))
+        // Already in board order, departments first and their metrics inside.
+        foreach (var department in _gosplan.Departments(plan))
         {
-            var fulfillment = _gosplan.GetFulfillment(station, proto, state);
-
-            quotas.Add(new PlanQuotaEntry
+            var entry = new PlanDepartmentEntry
             {
-                QuotaId = proto.ID,
-                Name = Loc.GetString(proto.Name),
-                Description = proto.Description != null ? Loc.GetString(proto.Description.Value) : string.Empty,
-                FundId = proto.Fund,
-                FundName = _gosplan.GetFundName(proto.Fund),
-                CurrentText = proto.Unit.Format(_gosplan.GetCurrentValue(station, proto, state)),
-                TargetText = proto.Unit.Format(proto.Target),
-                Fulfillment = fulfillment,
-                LastFulfillment = state.LastFulfillment,
-                FailStreak = state.FailStreak,
-                // Same formula the period scoring uses, so the board never promises
-                // a number the payout won't match.
-                ProjectedPayout = (int)(proto.Payout * Math.Clamp(fulfillment, 0f, cap) * multiplier),
-                FullPayout = (int)(proto.Payout * multiplier),
-            });
+                FundId = department.Fund,
+                FundName = _gosplan.GetFundName(department.Fund),
+                LastFulfillment = department.State.LastFulfillment,
+                FailStreak = department.State.FailStreak,
+                HasBanner = plan.BannerFund == department.Fund,
+            };
+
+            var fulfillmentSum = 0f;
+
+            foreach (var (proto, state) in department.Quotas)
+            {
+                var fulfillment = _gosplan.GetFulfillment(station, proto, state);
+
+                entry.Quotas.Add(new PlanQuotaEntry
+                {
+                    QuotaId = proto.ID,
+                    Name = Loc.GetString(proto.Name),
+                    Description = proto.Description != null ? Loc.GetString(proto.Description.Value) : string.Empty,
+                    CurrentText = proto.Unit.Format(_gosplan.GetCurrentValue(station, proto, state)),
+                    TargetText = proto.Unit.Format(proto.Target),
+                    Fulfillment = fulfillment,
+                    LastFulfillment = state.LastFulfillment,
+                    // Same formula the period scoring uses, so the board never promises
+                    // a number the payout won't match.
+                    ProjectedPayout = (int)(proto.Payout * Math.Clamp(fulfillment, 0f, cap) * multiplier),
+                    FullPayout = (int)(proto.Payout * multiplier),
+                });
+
+                entry.ProjectedPayout += entry.Quotas[^1].ProjectedPayout;
+                entry.FullPayout += entry.Quotas[^1].FullPayout;
+                fulfillmentSum += fulfillment;
+            }
+
+            // The headline figure is the one the banner and the sanctions are decided on.
+            entry.Fulfillment = entry.Quotas.Count == 0 ? 0f : fulfillmentSum / entry.Quotas.Count;
+
+            departments.Add(entry);
         }
 
         var secondsLeft = (int)Math.Max(0, (plan.NextEvaluation - _timing.CurTime).TotalSeconds);
@@ -114,7 +134,7 @@ public sealed class GosplanConsoleSystem : EntitySystem
             PeriodIndex = plan.PeriodIndex,
             SecondsLeft = secondsLeft,
             PeriodSeconds = _cfg.GetCVar(IS14CVars.GosplanPeriodSeconds),
-            Quotas = quotas,
+            Departments = departments,
             // Newest period first reads better in a log.
             History = plan.History.AsEnumerable().Reverse().ToList(),
             BannerFundName = plan.BannerFund.Length > 0 ? _gosplan.GetFundName(plan.BannerFund) : string.Empty,

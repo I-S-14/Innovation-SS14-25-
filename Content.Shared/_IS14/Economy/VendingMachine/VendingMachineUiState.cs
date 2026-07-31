@@ -24,6 +24,10 @@ public sealed class IS14VendingMachineUiState : BoundUserInterfaceState
 {
     public readonly string MachineName;
     public readonly int Balance;
+    /// <summary>Whether this machine takes cash at all.</summary>
+    public readonly bool AcceptsCash;
+    /// <summary>Cash sitting in the machine. Above zero the machine sells for cash, not for the card.</summary>
+    public readonly int InsertedCash;
     public readonly bool ContrabandUnlocked;
     public readonly List<IS14VendingTabUiState> Tabs;
     public readonly List<IS14VendingMachineUiEntry> Contraband;
@@ -36,6 +40,8 @@ public sealed class IS14VendingMachineUiState : BoundUserInterfaceState
     public IS14VendingMachineUiState(
         string machineName,
         int balance,
+        bool acceptsCash,
+        int insertedCash,
         bool contrabandUnlocked,
         List<IS14VendingTabUiState> tabs,
         List<IS14VendingMachineUiEntry> contraband,
@@ -46,6 +52,8 @@ public sealed class IS14VendingMachineUiState : BoundUserInterfaceState
     {
         MachineName = machineName;
         Balance = balance;
+        AcceptsCash = acceptsCash;
+        InsertedCash = insertedCash;
         ContrabandUnlocked = contrabandUnlocked;
         Tabs = tabs;
         Contraband = contraband;

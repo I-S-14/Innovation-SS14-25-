@@ -14,10 +14,21 @@ namespace Content.Client._IS14.Economy.Gosplan;
 [GenerateTypedNameReferences]
 public sealed partial class GosplanConsoleWindow : DefaultWindow
 {
-    /// <summary>Rows are reused between refreshes — the board updates every second.</summary>
+    /// <summary>Controls are reused between refreshes — the board updates every second.</summary>
+    private readonly Dictionary<string, PlanDepartmentButton> _departments = new();
+
     private readonly Dictionary<string, PlanQuotaRow> _rows = new();
 
     private readonly List<PlanPeriodCard> _cards = new();
+
+    /// <summary>Fund the reader is looking at. Survives refreshes, and the round if they leave and come back.</summary>
+    private string _selectedFund = string.Empty;
+
+    /// <summary>
+    /// Last state the server sent. A click has to redraw against the current plan, not
+    /// against whatever the buttons happened to be built from.
+    /// </summary>
+    private GosplanConsoleUiState? _state;
 
     public GosplanConsoleWindow()
     {
@@ -29,6 +40,8 @@ public sealed partial class GosplanConsoleWindow : DefaultWindow
 
     public void UpdateState(GosplanConsoleUiState state)
     {
+        _state = state;
+
         TimerPanel.Update(state);
 
         Banner.Visible = state.Active;
@@ -37,8 +50,10 @@ public sealed partial class GosplanConsoleWindow : DefaultWindow
 
         if (!state.Active)
         {
+            DepartmentList.RemoveAllChildren();
             QuotaList.RemoveAllChildren();
             HistoryList.RemoveAllChildren();
+            _departments.Clear();
             _rows.Clear();
             _cards.Clear();
             return;
@@ -46,7 +61,7 @@ public sealed partial class GosplanConsoleWindow : DefaultWindow
 
         Banner.Update(state);
         UpdateLegend(state);
-        UpdateQuotas(state);
+        UpdateDepartments(state);
         UpdateHistory(state);
     }
 
@@ -66,12 +81,82 @@ public sealed partial class GosplanConsoleWindow : DefaultWindow
             ("percent", (int)MathF.Round(state.PayoutCap * 100f)));
     }
 
+    private void UpdateDepartments(GosplanConsoleUiState state)
+    {
+        var departments = state.Departments;
+
+        // Rebuild only when the set of departments actually changes; otherwise refresh in
+        // place so the scroll position survives the once-a-second update.
+        if (_departments.Count != departments.Count || departments.Any(d => !_departments.ContainsKey(d.FundId)))
+        {
+            DepartmentList.RemoveAllChildren();
+            _departments.Clear();
+
+            foreach (var department in departments)
+            {
+                var fund = department.FundId;
+                var button = new PlanDepartmentButton();
+                button.OnPressed += _ => Select(fund);
+
+                _departments[fund] = button;
+                DepartmentList.AddChild(button);
+            }
+        }
+
+        // Whatever was open may have been dropped from the plan; fall back to the banner
+        // holder, because that is the department the room is arguing about anyway.
+        if (!_departments.ContainsKey(_selectedFund))
+        {
+            _selectedFund = departments.FirstOrDefault(d => d.HasBanner)?.FundId
+                            ?? departments.FirstOrDefault()?.FundId
+                            ?? string.Empty;
+        }
+
+        foreach (var department in departments)
+        {
+            if (_departments.TryGetValue(department.FundId, out var button))
+                button.Update(department, state, department.FundId == _selectedFund);
+        }
+
+        UpdateQuotas(state);
+    }
+
+    /// <summary>Opens a department. Selecting is local — the server sends the whole plan either way.</summary>
+    private void Select(string fundId)
+    {
+        if (_selectedFund == fundId || _state is not { } state)
+            return;
+
+        _selectedFund = fundId;
+
+        foreach (var department in state.Departments)
+        {
+            if (_departments.TryGetValue(department.FundId, out var button))
+                button.Update(department, state, department.FundId == _selectedFund);
+        }
+
+        UpdateQuotas(state);
+    }
+
     private void UpdateQuotas(GosplanConsoleUiState state)
     {
-        var quotas = state.Quotas;
+        var selected = state.Departments.FirstOrDefault(d => d.FundId == _selectedFund);
 
-        // Rebuild only when the set of quotas actually changes; otherwise refresh in place
-        // so the scroll position survives the once-a-second update.
+        DepartmentPanel.Visible = selected != null;
+
+        if (selected == null)
+        {
+            QuotaList.RemoveAllChildren();
+            _rows.Clear();
+            return;
+        }
+
+        DepartmentPanel.Update(selected, state);
+
+        var quotas = selected.Quotas;
+
+        // Same reuse rule as the department list, plus the rebuild that a change of
+        // department forces: the rows belong to whichever fund is open.
         if (_rows.Count != quotas.Count || quotas.Any(q => !_rows.ContainsKey(q.QuotaId)))
         {
             QuotaList.RemoveAllChildren();
@@ -85,10 +170,12 @@ public sealed partial class GosplanConsoleWindow : DefaultWindow
             }
         }
 
+        var fundColor = GosplanPalette.Fund(selected.FundId);
+
         foreach (var quota in quotas)
         {
             if (_rows.TryGetValue(quota.QuotaId, out var row))
-                row.Update(quota, state);
+                row.Update(quota, state, fundColor);
         }
     }
 

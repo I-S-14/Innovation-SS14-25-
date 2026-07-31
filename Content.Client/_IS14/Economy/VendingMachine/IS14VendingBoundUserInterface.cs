@@ -26,6 +26,7 @@ public sealed class IS14VendingBoundUserInterface : BoundUserInterface
         _window = this.CreateWindow<IS14VendingMachineWindow>();
         _window.OnBuyPressed += (tabIndex, itemIndex) =>
             SendMessage(new IS14VendingMachineBuyMessage(tabIndex, itemIndex));
+        _window.OnEjectCashPressed += () => SendMessage(new IS14VendingMachineEjectCashMessage());
     }
 
     protected override void UpdateState(BoundUserInterfaceState state)

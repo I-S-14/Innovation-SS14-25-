@@ -42,17 +42,28 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
                 <!-- Balance + search row -->
                 <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="4 4">
-                    <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
-                        <Label Text="{Loc 'is14-vending-balance-label'}"
-                               FontColorOverride="#8898A8" HorizontalExpand="True" Margin="0 0 4 0" />
-                        <TextureRect TexturePath="/Textures/Objects/Misc/coins.rsi/coin_gold.png"
+                    <BoxContainer Orientation="Horizontal" HorizontalExpand="True" VerticalAlignment="Center">
+                        <Label Name="FundsCaptionLabel"
+                               Text="{Loc 'is14-vending-balance-label'}"
+                               FontColorOverride="#8898A8" Margin="0 0 4 0" />
+                        <TextureRect Name="CardIcon"
+                                     TexturePath="/Textures/Objects/Misc/coins.rsi/coin_gold.png"
                                      Stretch="KeepCentered" RectClipContent="True"
                                      SetSize="16 16" VerticalAlignment="Center" Margin="0 0 4 0" />
+                        <TextureRect Name="CashIcon"
+                                     TexturePath="/Textures/Objects/Economy/cash.rsi/cash.png"
+                                     Stretch="KeepCentered" RectClipContent="True"
+                                     SetSize="16 16" VerticalAlignment="Center" Margin="0 0 4 0"
+                                     Visible="False" />
                         <Label Name="BalanceLabel" FontColorOverride="#3ABB3A" />
                     </BoxContainer>
+
+                    <Button Name="EjectCashButton" Text="{Loc 'is14-vending-eject-cash'}"
+                            ToolTip="{Loc 'is14-vending-eject-cash-tooltip'}"
+                            Margin="8 0 0 0" Visible="False" />
                     <LineEdit Name="SearchEdit"
                               PlaceHolder="{Loc 'is14-vending-search-placeholder'}"
-                              MinSize="140 0" Margin="16 0 0 0" />
+                              MinSize="120 0" Margin="8 0 0 0" />
                 </BoxContainer>
 
                 <!-- Gold separator -->
