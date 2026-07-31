@@ -1,0 +1,165 @@
+# Places a defibrillator unit lives when nobody is using it. Both racks present the
+# unit rather than hiding it: clicking the rack hands you the paddles off the unit
+# inside, so an arrest that turns into a code blue costs one click, not three.
+
+# Deliberately parentless: this is a mixin of the rack behaviour only. The wall station
+# wants a wallmount's physics and the cart wants a dynamic body, and inheriting a
+# structure base here would drag anchoring and a static body into both of them.
+- type: entity
+  abstract: true
+  id: IS14BaseDefibrillatorMount
+  components:
+  - type: Sprite
+    sprite: _IS14/Structures/Machines/defib_mount.rsi
+    drawdepth: SmallObjects
+  - type: Appearance
+  - type: InteractionOutline
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: StructuralMetallic
+  - type: DefibMountVisuals
+  # The rack itself knows nothing about defibrillators. Clicking it works the unit
+  # inside, and the unit's own appearance is copied onto the rack for its sprite to
+  # draw — both generic, both reusable by any bracket, dock or cart.
+  - type: ContainedInteractionRelay
+    slotId: defib_unit
+  - type: ContainedAppearanceRelay
+    slotId: defib_unit
+  - type: ContainerContainer
+    containers:
+      defib_unit: !type:ContainerSlot { }
+  - type: ItemSlots
+    slots:
+      defib_unit:
+        name: is14-defib-mount-slot
+        # Clicking is for the paddles; the unit itself comes out through the verb.
+        ejectOnInteract: false
+        whitelist:
+          components:
+          - DefibUnit
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:EmptyAllContainersBehaviour
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+
+# ─── Wall station ────────────────────────────────────────────────────────────
+# Wired into the local grid and charging whatever is racked in it, which is the whole
+# reason to hang one: a unit left on a cart slowly becomes a brick, one on the wall
+# never does.
+- type: entity
+  parent: [BaseWallmountMetallic, IS14BaseDefibrillatorMount]
+  id: IS14DefibrillatorWallMount
+  name: настенная станция дефибрилляции
+  description: Кронштейн с зарядкой. Дефибриллятор в нём всегда под напряжением и готов к работе.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    sprite: _IS14/Structures/Machines/defib_mount.rsi
+    noRot: false
+    drawdepth: WallMountedItems
+    layers:
+    - state: defibrillator_mount
+      map: ["enum.DefibMountVisualLayers.Base"]
+    - state: defib
+      map: ["enum.DefibMountVisualLayers.Defib"]
+      visible: false
+    - state: charge100
+      map: ["enum.DefibMountVisualLayers.Charge"]
+      shader: unshaded
+      visible: false
+    - state: online
+      map: ["enum.DefibMountVisualLayers.Online"]
+      shader: unshaded
+      visible: false
+    - state: emagged
+      map: ["enum.DefibMountVisualLayers.Emagged"]
+      shader: unshaded
+      visible: false
+  - type: Transform
+    anchored: true
+  - type: ApcPowerReceiver
+    powerLoad: 1 # Matches ChargerComponent.PassiveDraw; the charger raises it while working.
+  - type: ExtensionCableReceiver
+  - type: Charger
+    slotId: defib_unit
+    chargeRate: 30
+    whitelist:
+      components:
+      - DefibUnit
+
+# ─── Crash cart ──────────────────────────────────────────────────────────────
+# Unpowered on purpose: the cart buys you mobility, the wall buys you charge, and
+# medbay has to decide which one it wants where.
+- type: entity
+  parent: [BaseStructureDynamic, StructureWheeled, IS14BaseDefibrillatorMount]
+  id: IS14DefibrillatorCart
+  name: реанимационная тележка
+  description: Каталка с дефибриллятором. Розетки на ней нет — заряжать придётся на станции.
+  components:
+  - type: Sprite
+    sprite: _IS14/Structures/Machines/defib_mount.rsi
+    drawdepth: SmallObjects
+    # Dragging a dynamic body spins it. A trolley that cartwheels behind the doctor is
+    # not the look, and the sheet has no directional states anyway.
+    noRot: true
+    layers:
+    - state: mobile
+      map: ["enum.DefibMountVisualLayers.Base"]
+    - state: defib
+      map: ["enum.DefibMountVisualLayers.Defib"]
+      visible: false
+    - state: charge100
+      map: ["enum.DefibMountVisualLayers.Charge"]
+      shader: unshaded
+      visible: false
+    - state: online
+      map: ["enum.DefibMountVisualLayers.Online"]
+      shader: unshaded
+      visible: false
+    - state: emagged
+      map: ["enum.DefibMountVisualLayers.Emagged"]
+      shader: unshaded
+      visible: false
+  # Spelled out rather than left to the base: a cart you cannot drag to the patient is
+  # just a worse wall station.
+  - type: Transform
+    anchored: false
+  - type: Physics
+    bodyType: Dynamic
+  - type: Pullable
+  - type: Anchorable
+    delay: 1
+
+# ─── Filled variants for mappers ─────────────────────────────────────────────
+- type: entity
+  parent: IS14DefibrillatorWallMount
+  id: IS14DefibrillatorWallMountFilled
+  suffix: С дефибриллятором
+  components:
+  - type: ContainerFill
+    containers:
+      defib_unit:
+      - IS14DefibrillatorUnit
+
+- type: entity
+  parent: IS14DefibrillatorCart
+  id: IS14DefibrillatorCartFilled
+  suffix: С дефибриллятором
+  components:
+  - type: ContainerFill
+    containers:
+      defib_unit:
+      - IS14DefibrillatorUnit

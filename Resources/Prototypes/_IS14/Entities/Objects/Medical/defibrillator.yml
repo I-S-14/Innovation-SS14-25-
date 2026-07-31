@@ -1,0 +1,162 @@
+# A defibrillator built the way the real thing is: a box that stays put and paddles on
+# a cord. The box is the defibrillator proper — it holds the cell and the upstream
+# Defibrillator component — and the paddles just forward everything back to it.
+#
+# The result is a two-person-shaped tool in a one-person-shaped world: you cannot carry
+# the unit and work the paddles at the same time, so somebody either drags the crash
+# cart over or the patient gets moved to the wall station.
+#
+# Almost none of that is defibrillator code. The tether is the generic Leash, the cable
+# is the generic Cord, and both are configured here rather than written for this item.
+
+- type: entity
+  id: IS14DefibrillatorPaddles
+  parent: BaseItem
+  name: электроды дефибриллятора
+  description: Пара электродов на витом кабеле. Одной рукой — просто кусок пластика, двумя — уже разряд.
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Medical/defib.rsi
+    layers:
+    - state: defibpaddles0
+      map: ["base"]
+  - type: Appearance
+  # Wielding is the whole switch: both hands on the paddles is what charges the unit.
+  - type: GenericVisualizer
+    visuals:
+      enum.WieldableVisuals.Wielded:
+        base:
+          True: { state: defibpaddles1 }
+          False: { state: defibpaddles0 }
+  - type: Item
+    size: Normal
+  - type: Wieldable
+    freeHandsRequired: 1
+    wieldSound: null
+    unwieldSound: null
+    useDelayOnWield: false
+  - type: DefibPaddles
+  - type: LeashedItem
+  # The cable. A coil that visibly straightens as it runs out, with current running down
+  # it once the unit is charged — both picked here, neither written for defibrillators.
+  - type: Cord
+    color: "#2A2D36"
+    width: 0.0625
+    shape: !type:ZigzagCordShape
+      amplitude: 0.24
+      zigLength: 0.2
+    effect: !type:PulseCordEffect
+      color: "#7FD8FF"
+      speed: 7
+      width: 2.5
+  - type: Speech
+    speechVerb: Robotic
+  - type: StaticPrice
+    price: 0
+
+- type: entity
+  id: IS14DefibrillatorUnit
+  parent: [BaseItem, PowerCellSlotMediumItem]
+  name: дефибриллятор
+  description: Реанимационный блок с аккумулятором. Электроды снимаются с гнезда и держатся на кабеле.
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Medical/defib.rsi
+    drawdepth: SmallObjects
+    layers:
+    - state: defibunit
+      map: ["enum.DefibUnitVisualLayers.Base"]
+    - state: defibunit-nocell
+      map: ["enum.DefibUnitVisualLayers.NoCell"]
+      visible: false
+    - state: defibunit-charge100
+      map: ["enum.DefibUnitVisualLayers.Charge"]
+      shader: unshaded
+      visible: false
+    - state: defibunit-paddles
+      map: ["enum.DefibUnitVisualLayers.Paddles"]
+    - state: defibunit-powered
+      map: ["enum.DefibUnitVisualLayers.Powered"]
+      shader: unshaded
+      visible: false
+    # Cut and wired up now so the sabotage rework only has to set the flag.
+    - state: defibunit-emagged
+      map: ["enum.DefibUnitVisualLayers.Emagged"]
+      shader: unshaded
+      visible: false
+  - type: Appearance
+  - type: DefibUnitVisuals
+  - type: Item
+    size: Huge
+  - type: DefibUnit
+  # The tether. Three metres of lead, paddles come home when let go of.
+  - type: LeashAnchor
+    slotId: defib_paddles
+    range: 3
+    recallSound:
+      path: /Audio/Items/Defib/defib_safety_off.ogg
+    recallPopup: is14-defib-cord-snapped
+    noHandPopup: is14-defib-no-free-hand
+    alreadyOutPopup: is14-defib-paddles-already-out
+    takeVerb: is14-defib-verb-take-paddles
+    stowVerb: is14-defib-verb-dock-paddles
+  - type: ContainerContainer
+    containers:
+      cell_slot: !type:ContainerSlot { }
+      defib_paddles: !type:ContainerSlot { }
+  - type: ContainerFill
+    containers:
+      defib_paddles:
+      - IS14DefibrillatorPaddles
+  # The cell comes out with a screwdriver and nothing else. A slot that pops open on
+  # click would eat every click meant for the unit, and swapping a cell is maintenance
+  # work anyway — not something to do with a patient on the floor.
+  - type: ItemSlots
+    slots:
+      cell_slot:
+        name: power-cell-slot-component-slot-name-default
+        startingItem: PowerCellMedium
+        ejectOnInteract: false
+        disableEject: true
+  # Everything below is the stock defibrillator, unchanged: the paddles hand their
+  # target straight to this component, so revival rules stay upstream's business.
+  - type: Defibrillator
+    zapHeal:
+      types:
+        Asphyxiation: -40
+  # No sounds here on purpose: the unit toggles when the paddles are wielded, and the
+  # tone has to come from the paddles in the doctor's hands, not from the box behind
+  # them. DefibUnitSystem plays it.
+  - type: ItemToggle
+    soundActivate: null
+    soundDeactivate: null
+  - type: ToggleCellDraw
+  - type: PowerCellDraw
+    useCharge: 100
+  - type: DoAfter
+  - type: UseDelay
+  - type: Speech
+    speechVerb: Robotic
+  - type: StaticPrice
+    price: 60
+  - type: GuideHelp
+    guides:
+    - MedicalDoctor
+  - type: LanguageSpeaker
+  - type: LanguageKnowledge
+    speaks:
+    - TauCetiBasic
+    understands:
+    - TauCetiBasic
+
+- type: entity
+  id: IS14DefibrillatorUnitEmpty
+  parent: IS14DefibrillatorUnit
+  suffix: Без батареи
+  components:
+  - type: ItemSlots
+    slots:
+      cell_slot:
+        name: power-cell-slot-component-slot-name-default
+        ejectOnInteract: false
+        disableEject: true

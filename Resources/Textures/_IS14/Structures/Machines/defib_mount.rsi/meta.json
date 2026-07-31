@@ -1,0 +1,47 @@
+{
+    "version": 1,
+    "license": "CC-BY-SA-3.0",
+    "copyright": "Exported from TG station",
+    "size": {
+        "x": 32,
+        "y": 32
+    },
+    "states": [
+        {
+            "name": "defibrillator_mount"
+        },
+        {
+            "name": "clamps"
+        },
+        {
+            "name": "defib"
+        },
+        {
+            "name": "online"
+        },
+        {
+            "name": "emagged",
+            "delays": [
+                [
+                    0.3,
+                    0.3
+                ]
+            ]
+        },
+        {
+            "name": "charge25"
+        },
+        {
+            "name": "charge50"
+        },
+        {
+            "name": "charge75"
+        },
+        {
+            "name": "charge100"
+        },
+        {
+            "name": "mobile"
+        }
+    ]
+}

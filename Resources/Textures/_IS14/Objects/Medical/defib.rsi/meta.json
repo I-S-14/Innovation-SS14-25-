@@ -1,0 +1,64 @@
+{
+    "version": 1,
+    "license": "CC-BY-SA-3.0",
+    "copyright": "Exported from TG station",
+    "size": {
+        "x": 32,
+        "y": 32
+    },
+    "states": [
+        {
+            "name": "defibpaddles0"
+        },
+        {
+            "name": "defibpaddles1"
+        },
+        {
+            "name": "defibunit"
+        },
+        {
+            "name": "defibunit-paddles"
+        },
+        {
+            "name": "defibunit-nocell"
+        },
+        {
+            "name": "defibunit-powered",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ]
+        },
+        {
+            "name": "defibunit-emagged",
+            "delays": [
+                [
+                    0.3,
+                    0.3
+                ]
+            ]
+        },
+        {
+            "name": "defibunit-charge100"
+        },
+        {
+            "name": "defibunit-charge75"
+        },
+        {
+            "name": "defibunit-charge50"
+        },
+        {
+            "name": "defibunit-charge25"
+        }
+    ]
+}
