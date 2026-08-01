@@ -1,0 +1,41 @@
+# SPDX-FileCopyrightText: 2025 IS14
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# What a transfusion turns into when the recipient rejects it.
+#
+# The important part is what this reagent is *not*: it is not anybody's blood, so it counts
+# for nothing towards blood level and the bag that went in was wasted. That is the whole
+# punishment for skipping a test — the poison below is the reminder, not the sentence.
+#
+# It keeps the donor's DNA and group in its reagent data, so a scan still says whose mistake
+# this was, and it is not protected from metabolism, so the patient does clear it eventually.
+- type: reagent
+  id: IS14HemolysedBlood
+  name: reagent-name-is14-hemolysed-blood
+  group: Biological
+  desc: reagent-desc-is14-hemolysed-blood
+  physicalDesc: reagent-physical-desc-ferrous
+  flavor: metallic
+  color: "#4A1418"
+  recognizable: true
+  standsout: true
+  metabolisms:
+    Poison:
+      metabolismRate: 0.2
+      effects:
+      # Ruptured cells carry no oxygen, so the damage is as much suffocation as poisoning.
+      - !type:HealthChange
+        damage:
+          types:
+            Poison: 0.9
+            Asphyxiation: 1.2
+      - !type:AdjustTemperature
+        amount: 12000
+      - !type:Vomit
+        probability: 0.03
+      - !type:PopupMessage
+        type: Local
+        visualType: Medium
+        messages: [ "is14-blood-transfusion-reaction-1", "is14-blood-transfusion-reaction-2" ]
+        probability: 0.08

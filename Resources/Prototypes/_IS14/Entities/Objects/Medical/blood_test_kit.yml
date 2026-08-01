@@ -1,0 +1,27 @@
+# SPDX-FileCopyrightText: 2025 IS14
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# Reusable and unlimited. The thing being rationed is the four seconds, not the strips: a
+# doctor with somebody bleeding out on the table knows the test exists and decides to skip
+# it, and that decision is the entire point of blood groups. Charges would only add a way to
+# be caught without one.
+- type: entity
+  parent: [ BaseItem, BaseMedicalContraband ]
+  id: IS14BloodTestKit
+  name: гемоанализатор
+  description: Карманный анализатор групп крови. Прижмите к пациенту или к пакету — и он скажет, что там.
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Medical/handheldcrewmonitor.rsi
+    state: scanner
+  - type: Item
+    size: Small
+    heldPrefix: scanner
+  - type: BloodTestKit
+  - type: UserInterface
+    interfaces:
+      enum.BloodTestKitUiKey.Key:
+        type: BloodTestKitBui
+  - type: StaticPrice
+    price: 60

@@ -1,0 +1,101 @@
+# The bag half of a drip stand. It is an ordinary solution container with a hook on it —
+# everything about holding, filling and emptying is the stock chemistry, and the only new
+# thing is that a stand will accept it.
+#
+# Two hundred units on purpose: the stand moves two units every two seconds, so a full bag
+# is a bit over three minutes of unattended treatment. Long enough to be worth walking
+# away from, short enough that somebody has to come back.
+
+- type: entity
+  parent: BaseItem
+  id: IS14IvPack
+  name: инфузионный пакет
+  description: Мягкий пакет с портом под иглу. Вешается на стойку капельницы.
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Medical/medical.rsi
+    layers:
+    - state: bloodpack-empty
+      map: ["enum.SolutionContainerLayers.Base"]
+    - state: bloodpack-liquid-1
+      map: ["enum.SolutionContainerLayers.Fill"]
+      visible: false
+  - type: Appearance
+  # The bag is drawn empty and the level is painted on over it, so one sheet covers every
+  # reagent instead of one sheet per drug.
+  - type: SolutionContainerVisuals
+    maxFillLevels: 5
+    fillBaseName: bloodpack-liquid-
+    solutionName: beaker
+  - type: Item
+    size: Small
+    # The in-hand sheet is cut with the fluid already in it, so no fill levels here.
+    heldPrefix: bloodpack
+  - type: IvPack
+  - type: SolutionContainerManager
+    solutions:
+      beaker:
+        maxVol: 200
+  - type: RefillableSolution
+    solution: beaker
+  - type: DrainableSolution
+    solution: beaker
+  - type: DrawableSolution
+    solution: beaker
+  - type: ExaminableSolution
+    solution: beaker
+  - type: FitsInDispenser
+    solution: beaker
+  - type: MixableSolution
+    solution: beaker
+  - type: InjectableSolution
+    solution: beaker
+  - type: Spillable
+    solution: beaker
+  - type: Damageable
+    damageContainer: Inorganic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 20
+      behaviors:
+      - !type:SpillBehavior { }
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+  - type: StaticPrice
+    price: 20
+
+- type: entity
+  parent: IS14IvPack
+  id: IS14IvPackSaline
+  suffix: Физраствор
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      beaker:
+        maxVol: 200
+        reagents:
+        - ReagentId: Water
+          Quantity: 150
+        - ReagentId: TableSalt
+          Quantity: 50
+
+# Nanotrasen's printed substitute rather than anybody's donation: it carries the synthetic
+# group, which has no antigens on it, so it goes into anyone. That is what medbay reaches for
+# when there is no time to type a patient — and why donor blood, which is free if you have a
+# donor and a needle, is still worth collecting.
+- type: entity
+  parent: IS14IvPack
+  id: IS14IvPackBlood
+  suffix: Синтетическая кровь
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      beaker:
+        maxVol: 200
+        reagents:
+        - ReagentId: Blood
+          Quantity: 200
+  - type: PresetBloodType
+    bloodType: BloodTypeSynthetic

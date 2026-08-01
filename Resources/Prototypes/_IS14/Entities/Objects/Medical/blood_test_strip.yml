@@ -1,0 +1,52 @@
+# SPDX-FileCopyrightText: 2025 IS14
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# The cheap half of blood typing. Where the analyser costs four seconds and names the group
+# for you, the strip costs a syringe of blood and names nothing — it shows three reactions
+# and leaves the arithmetic to the doctor. That is why it can be stocked by the boxful and
+# the analyser cannot: one of them makes you equipped, the other makes you competent.
+- type: entity
+  parent: BaseItem
+  id: IS14BloodTestStrip
+  name: тест-полоска группы крови
+  description: Бумажная полоска с тремя пятнами реагента. Капните крови — и увидите, где свернётся.
+  components:
+  - type: Sprite
+    sprite: Objects/Misc/bureaucracy.rsi
+    layers:
+    - state: paper
+    # Same trick a written page uses: a blood-coloured overlay switched on underneath, so a
+    # spent strip is obvious in a pile without a single new texture.
+    - state: paper_words-blood
+      map: ["enum.BloodTestStripLayers.Reaction"]
+      visible: false
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.BloodTestStripVisuals.Used:
+        enum.BloodTestStripLayers.Reaction:
+          True: { visible: true }
+          False: { visible: false }
+  - type: Item
+    size: Tiny
+  - type: BloodTestStrip
+  # Small enough that one syringe does several strips, and too small to be a way to move
+  # blood around.
+  - type: SolutionContainerManager
+    solutions:
+      strip:
+        maxVol: 5
+  # Two ways to wet it: pour from a beaker or bag, or push it out of a syringe.
+  - type: RefillableSolution
+    solution: strip
+  - type: InjectableSolution
+    solution: strip
+  - type: ActivatableUI
+    key: enum.BloodTestStripUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.BloodTestStripUiKey.Key:
+        type: BloodTestStripBui
+  - type: StaticPrice
+    price: 4

@@ -1,0 +1,140 @@
+# SPDX-FileCopyrightText: 2025 IS14
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# ── Humanoids ───────────────────────────────────────────────────────────────────────────
+#
+# Weights are the real-world frequencies, rounded to whole percent. The asymmetry is the
+# interesting part: the universal donor is rare, so O− crew are a resource medbay will come
+# looking for, and the universal recipient is rare, so being AB+ is quiet good luck.
+
+- type: bloodType
+  id: BloodTypeOPos
+  name: is14-blood-type-o-pos
+  shortName: is14-blood-type-o-pos-short
+  color: "#B23A3A"
+  weight: 36
+  antigens:
+  - AntigenRhD
+
+- type: bloodType
+  id: BloodTypeAPos
+  name: is14-blood-type-a-pos
+  shortName: is14-blood-type-a-pos-short
+  color: "#B23A3A"
+  weight: 30
+  antigens:
+  - AntigenA
+  - AntigenRhD
+
+- type: bloodType
+  id: BloodTypeBPos
+  name: is14-blood-type-b-pos
+  shortName: is14-blood-type-b-pos-short
+  color: "#B23A3A"
+  weight: 9
+  antigens:
+  - AntigenB
+  - AntigenRhD
+
+- type: bloodType
+  id: BloodTypeABPos
+  name: is14-blood-type-ab-pos
+  shortName: is14-blood-type-ab-pos-short
+  color: "#B23A3A"
+  weight: 4
+  antigens:
+  - AntigenA
+  - AntigenB
+  - AntigenRhD
+
+# The universal donor: nothing on it for anyone to object to.
+- type: bloodType
+  id: BloodTypeONeg
+  name: is14-blood-type-o-neg
+  shortName: is14-blood-type-o-neg-short
+  color: "#B23A3A"
+  weight: 8
+
+- type: bloodType
+  id: BloodTypeANeg
+  name: is14-blood-type-a-neg
+  shortName: is14-blood-type-a-neg-short
+  color: "#B23A3A"
+  weight: 7
+  antigens:
+  - AntigenA
+
+- type: bloodType
+  id: BloodTypeBNeg
+  name: is14-blood-type-b-neg
+  shortName: is14-blood-type-b-neg-short
+  color: "#B23A3A"
+  weight: 4
+  antigens:
+  - AntigenB
+
+- type: bloodType
+  id: BloodTypeABNeg
+  name: is14-blood-type-ab-neg
+  shortName: is14-blood-type-ab-neg-short
+  color: "#B23A3A"
+  weight: 2
+  antigens:
+  - AntigenA
+  - AntigenB
+
+# Nanotrasen's printed substitute. Weightless, so nobody is born with it — it exists to be
+# stocked, and it is the answer for a patient nobody has time to type.
+- type: bloodType
+  id: BloodTypeSynthetic
+  name: is14-blood-type-synthetic
+  shortName: is14-blood-type-synthetic-short
+  color: "#8A5AA8"
+
+# ── Everyone else ───────────────────────────────────────────────────────────────────────
+#
+# One group per species. They exist so an analyser says something useful about a moth
+# instead of shrugging, and so cross-species blood is rejected by the same rule that
+# rejects a bad human unit rather than by a special case. Species not listed here keep
+# behaving exactly as they did before blood groups existed.
+
+- type: bloodType
+  id: BloodTypeInsect
+  name: is14-blood-type-insect
+  shortName: is14-blood-type-insect-short
+  reagent: InsectBlood
+  color: "#808A51"
+  weight: 1
+
+- type: bloodType
+  id: BloodTypeCopper
+  name: is14-blood-type-copper
+  shortName: is14-blood-type-copper-short
+  reagent: CopperBlood
+  color: "#2F5D8A"
+  weight: 1
+
+- type: bloodType
+  id: BloodTypeSlime
+  name: is14-blood-type-slime
+  shortName: is14-blood-type-slime-short
+  reagent: Slime
+  color: "#2CF274"
+  weight: 1
+
+- type: bloodType
+  id: BloodTypeAmmonia
+  name: is14-blood-type-ammonia
+  shortName: is14-blood-type-ammonia-short
+  reagent: AmmoniaBlood
+  color: "#7CC7C7"
+  weight: 1
+
+- type: bloodType
+  id: BloodTypeSap
+  name: is14-blood-type-sap
+  shortName: is14-blood-type-sap-short
+  reagent: Sap
+  color: "#B08A3A"
+  weight: 1

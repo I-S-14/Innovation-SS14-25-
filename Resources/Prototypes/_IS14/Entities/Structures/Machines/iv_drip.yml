@@ -1,0 +1,104 @@
+# A drip stand: a pole on wheels, a bag hanging off it, and a needle on a line.
+#
+# Built the same way the crash cart is, and for the same reason — a dynamic body on
+# wheels that a doctor drags to the patient rather than the other way round. Dragging it
+# onto somebody puts the needle in; clicking it bare-handed pulls the needle back out.
+#
+# Almost none of the parts are drip-specific. The line is the generic Cord, the bag hangs
+# in a plain ItemSlot, and the fluid is the stock chemistry — the only thing written for
+# this is the clock that moves two units at a time.
+
+- type: entity
+  parent: [BaseStructureDynamic, StructureWheeled]
+  id: IS14IvDrip
+  name: капельница
+  description: Стойка на колёсиках с иглой на трубке. Вешаешь пакет, ставишь у койки и уходишь.
+  components:
+  - type: Sprite
+    sprite: _IS14/Structures/Machines/iv_drip.rsi
+    drawdepth: SmallObjects
+    # Same reasoning as the crash cart: a dragged dynamic body spins, and a pole that
+    # cartwheels down the corridor is not the look. The sheet has no directions anyway.
+    noRot: true
+    layers:
+    # One layer, swapped whole. The running frames differ from the idle ones down the
+    # length of the stand, so there is nothing to gain from stacking overlays here.
+    - state: iv_drip
+      map: ["enum.IvDripVisualLayers.Base"]
+    - state: beakeridle
+      map: ["enum.IvDripVisualLayers.Beaker"]
+      visible: false
+    - state: reagent0
+      map: ["enum.IvDripVisualLayers.Reagent"]
+      visible: false
+  - type: Appearance
+  - type: InteractionOutline
+  - type: IvDripVisuals
+  - type: IvDrip
+    slotId: iv_pack
+  # The line leaves the bottom of the drip tube — pixel (21, 17) on the sheet — rather
+  # than the middle of the tile, so it reads as coming out of the bag and not out of the
+  # floor. White until there is something in it to take the colour of.
+  - type: Cord
+    color: "#FFFFFF"
+    width: 0.05
+    offset: 0.172,-0.047
+    slackLength: 2.5
+    shape: !type:SagCordShape
+      sag: 0.3
+      segments: 8
+  - type: ContainerContainer
+    containers:
+      iv_pack: !type:ContainerSlot { }
+  - type: ItemSlots
+    slots:
+      iv_pack:
+        name: is14-iv-drip-slot
+        # A bare click is how the needle comes out, so it cannot also be how the bag
+        # comes off. The bag goes on by being clicked onto the stand and comes off
+        # through the verb.
+        ejectOnInteract: false
+        whitelist:
+          components:
+          - IvPack
+  - type: Transform
+    anchored: false
+  - type: Physics
+    bodyType: Dynamic
+  - type: Pullable
+  - type: Anchorable
+    delay: 1
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: StructuralMetallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 80
+      behaviors:
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+    - trigger:
+        !type:DamageTrigger
+        damage: 40
+      behaviors:
+      - !type:EmptyAllContainersBehaviour
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: StaticPrice
+    price: 80
+  - type: GuideHelp
+    guides:
+    - MedicalDoctor
+
+- type: entity
+  parent: IS14IvDrip
+  id: IS14IvDripFilled
+  suffix: С физраствором
+  components:
+  - type: ContainerFill
+    containers:
+      iv_pack:
+      - IS14IvPackSaline

@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+using System.Numerics;
 using Robust.Shared.GameStates;
 
 namespace Content.Shared._IS14.Cord;
@@ -40,8 +41,33 @@ public sealed partial class CordComponent : Component
     [DataField, AutoNetworkedField]
     public float SlackLength = 3f;
 
-    /// <summary>Colour of the cord itself, before any effect is applied.</summary>
+    /// <summary>
+    /// Where on this entity the cord is tied on, in metres from its origin. A cord leaves
+    /// a sprite from somewhere specific — a socket, a hook, the bag hanging off a drip —
+    /// and one drawn from the middle of the tile instead reads as floating.
+    /// </summary>
+    /// <remarks>
+    /// Measured on the sprite sheet, and turned by whatever the renderer turns the sheet
+    /// by — which is the entity's rotation for an ordinary sprite, but the camera's for a
+    /// <c>noRot</c> one and the nearest quarter turn for a <c>snapCardinals</c> one. Read
+    /// it off the sheet and it lands on the same pixel on any grid, at any camera angle.
+    /// </remarks>
     [DataField]
+    public Vector2 Offset = Vector2.Zero;
+
+    /// <summary>
+    /// The same, for the far end. Kept here rather than on the anchor because it is a
+    /// fact about this cord — the same anchor can hold several, tied on in different
+    /// places.
+    /// </summary>
+    [DataField]
+    public Vector2 AnchorOffset = Vector2.Zero;
+
+    /// <summary>
+    /// Colour of the cord itself, before any effect is applied. Networked so an owner can
+    /// dye it as it runs — a hose takes the colour of whatever is going down it.
+    /// </summary>
+    [DataField, AutoNetworkedField]
     public Color Color = Color.FromHex("#2A2D36");
 
     /// <summary>Thickness in metres. One tile is one metre.</summary>

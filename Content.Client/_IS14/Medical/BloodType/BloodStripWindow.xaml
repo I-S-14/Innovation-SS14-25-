@@ -1,0 +1,91 @@
+<!--
+SPDX-FileCopyrightText: 2025 IS14
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<is14:BloodStripWindow
+    xmlns="https://spacestation14.io"
+    xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Medical.BloodType"
+    Title="{Loc 'is14-blood-strip-title'}"
+    Resizable="False"
+    SetSize="384 272"
+    MinSize="384 272">
+
+    <!-- The whole body is the card. No instrument chrome anywhere: this is a thing you hold
+         up to the light, and it should not look like it has a firmware version. -->
+    <PanelContainer HorizontalExpand="True" VerticalExpand="True">
+        <PanelContainer.PanelOverride>
+            <gfx:StyleBoxFlat BackgroundColor="#E6DFC8" />
+        </PanelContainer.PanelOverride>
+
+        <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True"
+                      Margin="14 10">
+
+            <Label Text="{Loc 'is14-blood-strip-header'}"
+                   HorizontalAlignment="Center"
+                   FontColorOverride="#3E3627" />
+
+            <!-- Printed rule. A one-pixel panel is cheaper than a texture and lines up with
+                 the label baselines at any UI scale. -->
+            <PanelContainer HorizontalExpand="True" MinSize="0 1" Margin="0 5 0 0">
+                <PanelContainer.PanelOverride>
+                    <gfx:StyleBoxFlat BackgroundColor="#8C7F63" />
+                </PanelContainer.PanelOverride>
+            </PanelContainer>
+
+            <!-- The one blank on the card. Nothing fills it in automatically — the strip has
+                 no idea whose blood it soaked up, and neither will anyone else in an hour. -->
+            <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="0 6 0 0">
+                <Label Text="{Loc 'is14-blood-strip-patient'}"
+                       VerticalAlignment="Bottom"
+                       FontColorOverride="#5A4F3C" />
+
+                <!-- A ruled blank, not a text box. Without a pen there is nothing to click:
+                     the line is printed on the card whether or not anybody filled it in. The
+                     editor is laid over the same spot and only appears when a pen unlocks it,
+                     so the line does not move when it does. -->
+                <BoxContainer Orientation="Vertical" HorizontalExpand="True" Margin="5 0 0 0">
+                    <Control MinHeight="20">
+                        <Label Name="PatientLabel"
+                               VerticalAlignment="Center"
+                               FontColorOverride="#3E3627" />
+                        <LineEdit Name="PatientEdit"
+                                  HorizontalExpand="True"
+                                  Visible="False" />
+                    </Control>
+
+                    <PanelContainer HorizontalExpand="True" MinSize="0 1">
+                        <PanelContainer.PanelOverride>
+                            <gfx:StyleBoxFlat BackgroundColor="#8C7F63" />
+                        </PanelContainer.PanelOverride>
+                    </PanelContainer>
+                </BoxContainer>
+            </BoxContainer>
+
+            <BoxContainer Name="WellsBox" Orientation="Horizontal"
+                          HorizontalAlignment="Center" VerticalExpand="True"
+                          VerticalAlignment="Center" />
+
+            <Label Name="NoteLabel"
+                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                   VerticalExpand="True" Visible="False"
+                   FontColorOverride="#8A7F68" />
+
+            <PanelContainer HorizontalExpand="True" MinSize="0 1" Margin="0 0 0 5">
+                <PanelContainer.PanelOverride>
+                    <gfx:StyleBoxFlat BackgroundColor="#8C7F63" />
+                </PanelContainer.PanelOverride>
+            </PanelContainer>
+
+            <!-- The small print, and the only thing standing where the analyser would put an
+                 answer. The card does not know what A and D together mean. You do. -->
+            <Label Text="{Loc 'is14-blood-strip-footer'}"
+                   HorizontalAlignment="Center"
+                   FontColorOverride="#A79B82"
+                   StyleClasses="LabelSubText" />
+
+        </BoxContainer>
+    </PanelContainer>
+</is14:BloodStripWindow>

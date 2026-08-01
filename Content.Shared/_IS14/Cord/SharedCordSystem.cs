@@ -35,6 +35,19 @@ public sealed class SharedCordSystem : EntitySystem
         Dirty(ent);
     }
 
+    /// <summary>
+    /// Dyes the cord. For cords whose contents are visible through them — a transfusion
+    /// line, a fuel hose — so the colour is a readout rather than decoration.
+    /// </summary>
+    public void SetColor(Entity<CordComponent?> ent, Color color)
+    {
+        if (!Resolve(ent, ref ent.Comp, false) || ent.Comp.Color == color)
+            return;
+
+        ent.Comp.Color = color;
+        Dirty(ent);
+    }
+
     /// <summary>Flags the cord as carrying something, for effects that care.</summary>
     public void SetEnergized(Entity<CordComponent?> ent, bool energized)
     {

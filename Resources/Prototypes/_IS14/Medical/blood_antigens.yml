@@ -1,0 +1,28 @@
+# SPDX-FileCopyrightText: 2025 IS14
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# Markers on a blood cell. A group is nothing but a set of these, and a test card draws one
+# well per antigen that exists for the sample's blood — so adding an antigen here is enough
+# to make it real, both in compatibility checks and on the card.
+
+- type: bloodAntigen
+  id: AntigenA
+  name: is14-blood-antigen-a
+  shortName: is14-blood-antigen-a-short
+  order: 0
+
+- type: bloodAntigen
+  id: AntigenB
+  name: is14-blood-antigen-b
+  shortName: is14-blood-antigen-b-short
+  order: 1
+
+# Unlike A and B, nobody is born with antibodies for this one — the body has to meet it
+# first. That makes the first mismatched unit go in quietly and the second one bite.
+- type: bloodAntigen
+  id: AntigenRhD
+  name: is14-blood-antigen-rhd
+  shortName: is14-blood-antigen-rhd-short
+  order: 2
+  preformed: false

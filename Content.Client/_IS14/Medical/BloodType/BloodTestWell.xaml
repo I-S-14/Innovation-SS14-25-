@@ -1,0 +1,29 @@
+<!--
+SPDX-FileCopyrightText: 2025 IS14
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<is14:BloodTestWell
+    xmlns="https://spacestation14.io"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Medical.BloodType"
+    Margin="5 0">
+
+    <BoxContainer Orientation="Vertical" HorizontalAlignment="Center">
+        <!-- Which antibody sits in this well, not which antigen we are looking for:
+             the card shows what the doctor put in, and the clumping is the answer. -->
+        <Label Name="TitleLabel"
+               HorizontalAlignment="Center"
+               FontColorOverride="#7C8AA8"
+               Margin="0 0 0 4" />
+
+        <is14:BloodTestWellControl Name="Well"
+                                   MinSize="58 58"
+                                   HorizontalAlignment="Center" />
+
+        <Label Name="ResultLabel"
+               HorizontalAlignment="Center"
+               Margin="0 4 0 0"
+               StyleClasses="LabelHeading" />
+    </BoxContainer>
+</is14:BloodTestWell>

@@ -1,0 +1,64 @@
+<!--
+SPDX-FileCopyrightText: 2025 IS14
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<is14:BloodTestWindow
+    xmlns="https://spacestation14.io"
+    xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Medical.BloodType"
+    xmlns:cuc="clr-namespace:Content.Client.UserInterface.Controls"
+    Title="{Loc 'is14-blood-test-title'}"
+    Resizable="False"
+    SetSize="400 300"
+    MinSize="400 300">
+
+    <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True">
+
+        <!-- What was tested. Named rather than described, because a doctor holding two bags
+             needs to know which one this card belongs to. -->
+        <cuc:StripeBack HorizontalExpand="True" MinSize="0 24" HasTopEdge="False">
+            <Label Name="SampleLabel"
+                   HorizontalAlignment="Left" HorizontalExpand="True"
+                   VerticalAlignment="Center"
+                   FontColorOverride="#7AACCF" Margin="6 0" />
+        </cuc:StripeBack>
+
+        <!-- The card itself -->
+        <PanelContainer HorizontalExpand="True" VerticalExpand="True">
+            <PanelContainer.PanelOverride>
+                <gfx:StyleBoxFlat BackgroundColor="#141821" />
+            </PanelContainer.PanelOverride>
+
+            <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True"
+                          Margin="10 10">
+                <BoxContainer Name="WellsBox" Orientation="Horizontal"
+                              HorizontalAlignment="Center" VerticalExpand="True"
+                              VerticalAlignment="Center" />
+
+                <Label Name="EmptyLabel"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                       VerticalExpand="True" Visible="False"
+                       FontColorOverride="#7C8AA8" />
+            </BoxContainer>
+        </PanelContainer>
+
+        <!-- The readout -->
+        <PanelContainer HorizontalExpand="True">
+            <PanelContainer.PanelOverride>
+                <gfx:StyleBoxFlat BackgroundColor="#0E1119" />
+            </PanelContainer.PanelOverride>
+
+            <BoxContainer Orientation="Vertical" HorizontalExpand="True" Margin="8 6">
+                <Label Name="ResultLabel"
+                       HorizontalAlignment="Center"
+                       StyleClasses="LabelHeadingBigger" />
+                <Label Name="ResultNameLabel"
+                       HorizontalAlignment="Center"
+                       FontColorOverride="#7C8AA8" />
+            </BoxContainer>
+        </PanelContainer>
+
+    </BoxContainer>
+</is14:BloodTestWindow>

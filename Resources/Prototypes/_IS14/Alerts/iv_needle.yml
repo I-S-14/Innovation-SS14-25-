@@ -1,0 +1,10 @@
+# The patient's half of a transfusion. The stand is a piece of furniture somewhere across
+# the room; the needle is in their arm, and this is the thing they click to get it out.
+- type: alert
+  id: IS14IvNeedle
+  clickEvent: !type:IvNeedleRemoveAlertEvent
+  icons:
+  - sprite: /Textures/_IS14/Structures/Machines/iv_drip.rsi
+    state: iv_drip_injectidle
+  name: is14-alert-iv-needle-name
+  description: is14-alert-iv-needle-desc
