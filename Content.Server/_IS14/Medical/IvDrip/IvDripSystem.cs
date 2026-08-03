@@ -26,7 +26,6 @@ namespace Content.Server._IS14.Medical.IvDrip;
 /// </summary>
 public sealed class IvDripSystem : SharedIvDripSystem
 {
-    [Dependency] private readonly BloodLabelSystem _labels = default!;
     [Dependency] private readonly BloodTypeSystem _bloodType = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly IPrototypeManager _prototypes = default!;
@@ -116,7 +115,7 @@ public sealed class IvDripSystem : SharedIvDripSystem
         }
 
         return ent.Comp.Mode == IvDripMode.Draw
-            ? Draw(ent, patient, pack, soln.Value, contents)
+            ? Draw(ent, patient, soln.Value, contents)
             : Inject(ent, patient, soln.Value, contents);
     }
 
@@ -159,7 +158,6 @@ public sealed class IvDripSystem : SharedIvDripSystem
     private bool Draw(
         Entity<IvDripComponent> ent,
         EntityUid patient,
-        EntityUid packUid,
         Entity<SolutionComponent> packSolution,
         Solution pack)
     {
@@ -179,11 +177,9 @@ public sealed class IvDripSystem : SharedIvDripSystem
         if (!_solutions.TryAddSolution(packSolution, drawn))
             return false;
 
-        // A bag fills up labelled. Read off the bag rather than off the donor, so drawing into
-        // a bag that already held somebody else relabels it as the mixture it now is — or
-        // strips the label entirely if that mixture has no name.
-        _labels.SetLabel(packUid, _bloodType.GetBloodType(pack));
-
+        // A bag fills up blank. It used to fill up labelled, which meant the group cost a
+        // needle and nothing else — no test, no doctor, no way to be wrong. Whoever draws the
+        // blood knows whose arm it came out of; writing that down is their job and their word.
         _adminLogger.Add(
             LogType.ForceFeed,
             $"{ToPrettyString(ent):drip} drew {amount} units of blood from {ToPrettyString(patient):target}");

@@ -62,6 +62,29 @@ public sealed partial class BloodTestStripComponent : Component
     [DataField, AutoNetworkedField]
     public bool Used;
 
+    /// <summary>
+    /// What colour the pad went, if something other than blood wet it.
+    /// </summary>
+    /// <remarks>
+    /// Null on a card that is dry or that soaked up blood — blood is drawn in the palette's
+    /// own red, which is tuned to the card stock rather than taken from the reagent. This is
+    /// only for the other case: a pad ruined by whatever was actually in the syringe, which
+    /// shows the pads wetting in that liquid's colour and then never doing anything.
+    /// </remarks>
+    [DataField, AutoNetworkedField]
+    public Color? Stain;
+
+    /// <summary>
+    /// When the pad first got wet, by anything at all.
+    /// </summary>
+    /// <remarks>
+    /// Separate from <see cref="DevelopAt"/> because a spoiled card still soaks — it has a
+    /// wetting to animate and no reaction to finish.
+    /// </remarks>
+    [DataField(customTypeSerializer: typeof(TimeOffsetSerializer))]
+    [AutoNetworkedField, AutoPausedField]
+    public TimeSpan SoakedAt;
+
     /// <summary>Which blood the sample was, deciding which wells the card even has.</summary>
     [DataField, AutoNetworkedField]
     public ProtoId<ReagentPrototype>? Reagent;

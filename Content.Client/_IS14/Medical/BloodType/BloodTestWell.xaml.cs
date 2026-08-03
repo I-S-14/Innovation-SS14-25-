@@ -43,6 +43,15 @@ public sealed partial class BloodTestWell : Control
         ResultLabel.Visible = spellItOut;
     }
 
+    /// <summary>
+    /// Tints the pad to something other than blood. Set when the card soaked up the wrong
+    /// liquid; null leaves it drawing blood.
+    /// </summary>
+    public void SetStain(Color? stain)
+    {
+        Well.Stain = stain;
+    }
+
     public void SetWell(BloodTestWellState state)
     {
         _state = state;

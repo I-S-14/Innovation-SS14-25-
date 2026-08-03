@@ -39,6 +39,12 @@ is14-blood-type-sap-short = СОК
 
 # ─── Этикетка ───────────────────────────────────────────────────────────────
 is14-blood-label-examine = Этикетка: [color={ $color }]{ $type }[/color]
+is14-blood-label-title = Надпись на пакете
+is14-blood-label-current = Сейчас написано: { $type }
+is14-blood-label-current-none = Пакет не подписан
+is14-blood-label-hint = Пакет не знает, что в нём. Написанное — ваше слово.
+is14-blood-label-erase = Стереть надпись
+is14-blood-label-need-pen = Нечем писать.
 
 # ─── Гемоанализатор ─────────────────────────────────────────────────────────
 is14-blood-test-title = Экспресс-анализ крови
@@ -62,6 +68,7 @@ reagent-desc-is14-hemolysed-blood = Слипшиеся комья разруше
 
 # ─── Тест-полоска ───────────────────────────────────────────────────────────
 is14-blood-strip-examine-blank = Полоска чистая — на ней три пятна реагента.
+is14-blood-strip-examine-spoiled = Пятна пропитаны чем-то, кроме крови. Полоска испорчена.
 is14-blood-strip-examine-developing = Кровь расходится по бумаге, реакция ещё идёт.
 is14-blood-strip-examine-nothing = Реагенты не сработали: кровь им незнакома.
 is14-blood-strip-examine-result = Проступило: { $wells }

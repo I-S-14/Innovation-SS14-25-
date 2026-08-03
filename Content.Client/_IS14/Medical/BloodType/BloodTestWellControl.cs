@@ -31,6 +31,12 @@ public sealed class BloodTestWellControl : Control
     /// <summary>Whether this well is going to come out positive.</summary>
     public bool Positive;
 
+    /// <summary>
+    /// What the pad went, when it was not blood that landed on it. Null draws the palette's
+    /// own red, which is tuned to the surface rather than taken from a reagent.
+    /// </summary>
+    public Color? Stain;
+
     /// <summary>0 for a dry printed well, 1 for a pad soaked through with blood.</summary>
     public float Filled;
 
@@ -57,19 +63,19 @@ public sealed class BloodTestWellControl : Control
             DrawSample(handle, center, radius * 0.78f, filled, reaction);
 
         // The rim brightens while the well is working and dims once it has settled, so a card
-        // halfway through a run reads at a glance as "still going".
-        var working = filled > 0f && reaction < 1f;
+        // halfway through a run reads at a glance as "still going". A stained well is never
+        // working — nothing is coming, and a rim lit forever would say the opposite.
+        var working = filled > 0f && reaction < 1f && Stain == null;
         handle.DrawCircle(center, radius, working ? Palette.RimLit : Palette.Rim, false);
     }
 
     private void DrawSample(DrawingHandleScreen handle, Vector2 center, float radius, float filled, float reaction)
     {
-        // Blood darkens a little as it stands, whether or not it is going to clump.
-        var body = Color.InterpolateBetween(Palette.Blood, Palette.Clump, reaction * 0.35f);
+        handle.DrawCircle(center, radius * filled, Body(reaction));
 
-        handle.DrawCircle(center, radius * filled, body);
-
-        if (!Positive || reaction <= 0f)
+        // A pad wet with something that is not blood has nothing to agglutinate. It just sits
+        // there being the wrong colour, which is the whole message.
+        if (Stain != null || !Positive || reaction <= 0f)
             return;
 
         // Agglutination: the blood breaks up. Positions are a golden-angle spiral so they look
@@ -82,5 +88,18 @@ public sealed class BloodTestWellControl : Control
 
             handle.DrawCircle(center + offset, radius * 0.24f * reaction, Palette.Clump);
         }
+    }
+
+    /// <summary>What is sitting in the well right now.</summary>
+    private Color Body(float reaction)
+    {
+        // Blood darkens a little as it stands, whether or not it is going to clump.
+        if (Stain is not { } stain)
+            return Color.InterpolateBetween(Palette.Blood, Palette.Clump, reaction * 0.35f);
+
+        // Reagent colours are frequently near-transparent — water would draw as nothing at all.
+        // The stain is composited onto the pad with a floor under its opacity, so a barely
+        // visible liquid still shows as a damp patch of roughly the right hue.
+        return Color.InterpolateBetween(Palette.Plate, stain.WithAlpha(1f), MathF.Max(stain.A, 0.4f));
     }
 }

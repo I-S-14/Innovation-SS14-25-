@@ -63,6 +63,13 @@
       - !type:SpillBehavior { }
       - !type:DoActsBehavior
         acts: ["Destruction"]
+  # Blank from the factory. What ends up written here is somebody's handwriting after somebody
+  # ran a test — the bag itself never finds out what is in it.
+  - type: BloodLabel
+  - type: UserInterface
+    interfaces:
+      enum.BloodLabelUiKey.Key:
+        type: BloodLabelBui
   - type: StaticPrice
     price: 20
 

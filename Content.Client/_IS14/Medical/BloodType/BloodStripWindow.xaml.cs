@@ -162,17 +162,24 @@ public sealed partial class BloodStripWindow : DefaultWindow
         var soaked = 0f;
         var reacted = 0f;
 
-        if (strip.Used)
+        // Wetting and reacting run off the same clock but not off the same event: a card
+        // ruined by the wrong liquid soaks exactly like a good one and then stops there.
+        if (strip.Used || strip.Stain != null)
         {
-            var develop = MathF.Max((float) strip.DevelopDelay.TotalSeconds, 0.01f);
-            var elapsed = develop - (float) (strip.DevelopAt - _timing.CurTime).TotalSeconds;
+            var elapsed = (float) (_timing.CurTime - strip.SoakedAt).TotalSeconds;
 
             soaked = Math.Clamp(elapsed / SoakSeconds, 0f, 1f);
-            reacted = Math.Clamp((elapsed - SoakSeconds) / MathF.Max(develop - SoakSeconds, 0.01f), 0f, 1f);
+
+            if (strip.Used)
+            {
+                var develop = MathF.Max((float) strip.DevelopDelay.TotalSeconds, SoakSeconds + 0.01f);
+                reacted = Math.Clamp((elapsed - SoakSeconds) / (develop - SoakSeconds), 0f, 1f);
+            }
         }
 
         foreach (var well in _wells)
         {
+            well.SetStain(strip.Stain);
             well.SetProgress(soaked, reacted);
         }
     }

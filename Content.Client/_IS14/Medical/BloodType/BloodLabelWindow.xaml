@@ -1,0 +1,33 @@
+<!--
+SPDX-FileCopyrightText: 2025 IS14
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<is14:BloodLabelWindow
+    xmlns="https://spacestation14.io"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Medical.BloodType"
+    Title="{Loc 'is14-blood-label-title'}"
+    Resizable="False"
+    MinSize="320 0">
+
+    <BoxContainer Orientation="Vertical" Margin="8" HorizontalExpand="True">
+
+        <Label Name="CurrentLabel" HorizontalAlignment="Center" />
+
+        <!-- Said out loud because the bag looks the same whether the writing is a test result
+             or a guess, and the person reading it later has no way to tell them apart. -->
+        <Label Text="{Loc 'is14-blood-label-hint'}"
+               HorizontalAlignment="Center"
+               StyleClasses="LabelSubText"
+               Margin="0 2 0 8" />
+
+        <GridContainer Name="OptionsGrid" Columns="4" HorizontalAlignment="Center" />
+
+        <Button Name="EraseButton"
+                Text="{Loc 'is14-blood-label-erase'}"
+                HorizontalAlignment="Center"
+                Margin="0 8 0 0" />
+
+    </BoxContainer>
+</is14:BloodLabelWindow>

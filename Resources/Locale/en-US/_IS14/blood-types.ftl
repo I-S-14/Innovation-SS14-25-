@@ -39,6 +39,12 @@ is14-blood-type-sap-short = SAP
 
 # ─── The label ──────────────────────────────────────────────────────────────
 is14-blood-label-examine = Labelled: [color={ $color }]{ $type }[/color]
+is14-blood-label-title = Writing on the bag
+is14-blood-label-current = Currently reads: { $type }
+is14-blood-label-current-none = The bag is unlabelled
+is14-blood-label-hint = The bag does not know what is in it. This is your word for it.
+is14-blood-label-erase = Wipe the label
+is14-blood-label-need-pen = Nothing to write with.
 
 # ─── The analyser ───────────────────────────────────────────────────────────
 is14-blood-test-title = Blood typing
@@ -62,6 +68,7 @@ reagent-desc-is14-hemolysed-blood = Clumps of ruptured red cells. They carry no 
 
 # ─── The paper strip ────────────────────────────────────────────────────────
 is14-blood-strip-examine-blank = The strip is clean — three pads of reagent on it.
+is14-blood-strip-examine-spoiled = The pads are soaked through with something that is not blood. Ruined.
 is14-blood-strip-examine-developing = The blood is still spreading through the paper.
 is14-blood-strip-examine-nothing = The reagents did nothing. They do not know this blood.
 is14-blood-strip-examine-result = It reads: { $wells }

@@ -36,6 +36,7 @@ public sealed class BloodTestStripSystem : EntitySystem
     [Dependency] private readonly BloodTypeSystem _bloodType = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly INetManager _net = default!;
+    [Dependency] private readonly IPrototypeManager _protos = default!;
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
     [Dependency] private readonly SharedHandsSystem _hands = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
@@ -69,16 +70,32 @@ public sealed class BloodTestStripSystem : EntitySystem
         return comp.Used && comp.Reagent != null && comp.Reagent.Value != comp.Card;
     }
 
+    /// <summary>Whether the pad was wet by something that was not blood, and is now scrap.</summary>
+    public bool IsSpoiled(BloodTestStripComponent comp)
+    {
+        return comp.Stain != null;
+    }
+
     // ── Soaking ───────────────────────────────────────────────────────────────
 
     /// <summary>
-    /// Blood landing on a blank card commits it. Anything arriving afterwards is ignored:
-    /// the card reads the first sample, which means a second donor's blood cannot quietly
-    /// rewrite an answer somebody has already acted on.
+    /// The first thing to soak the pad commits the card, whatever it was.
     /// </summary>
+    /// <remarks>
+    /// Blood starts the reaction. Anything else wets the pads in its own colour and leaves
+    /// them like that — a soaked pad cannot be dried out and re-used, so the card is scrap
+    /// either way, and this is the difference between "still developing" and "you poured
+    /// water on it". Nothing arriving afterwards is looked at, which is what stops a second
+    /// donor's blood from quietly rewriting an answer somebody has already acted on.
+    /// </remarks>
     private void OnSolutionChanged(Entity<BloodTestStripComponent> ent, ref SolutionContainerChangedEvent args)
     {
-        if (ent.Comp.Used || _net.IsClient || args.SolutionId != ent.Comp.Solution)
+        if (ent.Comp.Used || IsSpoiled(ent.Comp) || _net.IsClient || args.SolutionId != ent.Comp.Solution)
+            return;
+
+        // Too little to wet the pads. A card being filled a drop at a time is still blank, and
+        // this event also fires on the way back down when somebody draws the sample out again.
+        if (args.Solution.Volume < ent.Comp.Required)
             return;
 
         var blood = FixedPoint2.Zero;
@@ -89,13 +106,23 @@ public sealed class BloodTestStripSystem : EntitySystem
                 blood += quantity;
         }
 
-        if (blood < ent.Comp.Required || !_bloodType.TryGetSample(ent.Owner, out var read))
-            return;
+        ent.Comp.SoakedAt = _timing.CurTime;
 
-        ent.Comp.Used = true;
-        ent.Comp.Reagent = read.Reagent;
-        ent.Comp.Antigens = new HashSet<ProtoId<BloodAntigenPrototype>>(read.Antigens);
-        ent.Comp.DevelopAt = _timing.CurTime + ent.Comp.DevelopDelay;
+        if (blood >= ent.Comp.Required && _bloodType.TryGetSample(ent.Owner, out var read))
+        {
+            ent.Comp.Used = true;
+            ent.Comp.Reagent = read.Reagent;
+            ent.Comp.Antigens = new HashSet<ProtoId<BloodAntigenPrototype>>(read.Antigens);
+            ent.Comp.DevelopAt = ent.Comp.SoakedAt + ent.Comp.DevelopDelay;
+        }
+        else
+        {
+            // Whatever it was, the pads still take its colour. Showing that is the point: a
+            // card the doctor ruined has to look ruined rather than look blank, or they will
+            // stand there waiting twelve seconds for a reaction that is never coming.
+            ent.Comp.Stain = args.Solution.GetColor(_protos);
+        }
+
         Dirty(ent);
 
         // The stain is immediate even though the reading is not — the paper is wet the moment
@@ -211,6 +238,12 @@ public sealed class BloodTestStripSystem : EntitySystem
         {
             if (ent.Comp.Patient != string.Empty)
                 args.PushMarkup(Loc.GetString("is14-blood-strip-examine-patient", ("patient", ent.Comp.Patient)));
+
+            if (IsSpoiled(ent.Comp))
+            {
+                args.PushMarkup(Loc.GetString("is14-blood-strip-examine-spoiled"));
+                return;
+            }
 
             if (!ent.Comp.Used || ent.Comp.Reagent is not { } reagent)
             {
