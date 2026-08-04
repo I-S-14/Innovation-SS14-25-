@@ -8,63 +8,71 @@
   },
   "states": [
     {
-      "name": "banner_legal"
+        "name": "banner_legal"
     },
     {
-      "name": "banner_legal_v2"
+        "name": "banner_legal_v2"
     },
     {
       "name": "banner_com"
     },
     {
-      "name": "banner_com_v2"
+        "name": "banner_com_v2"
     },
     {
-      "name": "banner_eng"
+        "name": "banner_eng"
     },
     {
-      "name": "banner_eng_v2"
+        "name": "banner_eng_v2"
     },
     {
-      "name": "banner_exp_supply"
+        "name": "banner_exp_supply"
     },
     {
-      "name": "banner_exp_supply_v2"
+        "name": "banner_exp_supply_v2"
     },
     {
-      "name": "banner_kgb"
+        "name": "banner_kgb"
     },
     {
-      "name": "banner_kgb_v2"
+        "name": "banner_kgb_v2"
     },
     {
-      "name": "banner_med"
+        "name": "banner_med"
     },
     {
-      "name": "banner_med_v2"
+        "name": "banner_med_v2"
     },
     {
-      "name": "banner_militia"
+        "name": "banner_militia"
     },
     {
-      "name": "banner_militia_v2"
+        "name": "banner_militia_v2"
     },
     {
-      "name": "banner_moko"
+        "name": "banner_moko"
     },
     {
-      "name": "banner_serv"
+        "name": "banner_serv"
     },
     {
-      "name": "banner_serv_v2"
+        "name": "banner_serv_v2"
     },
     {
-      "name": "banner_syndicate"
+        "name": "banner_syndicate"
     },
     {
-      "name": "banner_sci",
-      "directions": 5,
-      "delays": [0.1, 0.1, 0.1, 0.1, 0.1]
+        "name": "banner_sci",
+        "directions": 5,
+        "delays": [
+            [
+                0.1,
+                0.1,
+                0.1,
+                0.1,
+                0.1
+            ]
+        ]
     }
   ]
 }
