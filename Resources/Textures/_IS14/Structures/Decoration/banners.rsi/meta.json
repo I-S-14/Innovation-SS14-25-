@@ -63,7 +63,6 @@
     },
     {
         "name": "banner_sci",
-        "directions": 5,
         "delays": [
             [
                 0.1,
