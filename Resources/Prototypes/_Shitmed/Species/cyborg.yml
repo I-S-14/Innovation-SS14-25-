@@ -3,7 +3,11 @@
 - type: species
   id: Cyborg
   name: species-name-human
-  roundStart: true
+  # IS14-edit: was true. This species only exists so borg limbs render; its
+  # prototype is a borg chassis with no HumanoidAppearanceComponent, so picking
+  # it in the character editor (or via HumanoidCharacterProfile.Random) makes
+  # SpawnPlayerMob spawn a chassis and LoadProfile error out.
+  roundStart: false
   prototype: BorgChassisSelectable
   sprites: CyborgSprites
   defaultSkinTone: "#fff9e2"
