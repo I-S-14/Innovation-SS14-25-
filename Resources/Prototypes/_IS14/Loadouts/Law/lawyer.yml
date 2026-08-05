@@ -1,0 +1,62 @@
+# lawyer loadouts
+
+- type: loadout
+  id: IS14LawyerBackpack
+  equipment:
+    back: ClothingBackpack
+
+- type: loadout
+  id: IS14LawyerDuffel
+  equipment:
+    back: ClothingBackpackDuffel
+
+- type: loadout
+  id: IS14LawyerJumpskirt
+  equipment:
+    jumpsuit: ClothingUniformJumpskirtIS14Lawyer
+  groupBy: "jumpskirt"
+
+- type: loadout
+  id: IS14LawyerJumpsuit
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitIS14Lawyer
+  groupBy: "jumpsuit"
+
+- type: loadout
+  id: IS14LawyerSatchel
+  equipment:
+    back: ClothingBackpackSatchelLeather
+
+- type: loadout
+  id: IS14LawyerShoes
+  equipment:
+    shoes: ClothingShoesColorBlack
+
+# ========================
+# MUP representative
+# ========================
+
+- type: loadoutGroup
+  id: IS14LawyerBackpack
+  name: loadout-group-backpack
+  loadouts:
+  - IS14LawyerBackpack
+  - IS14LawyerSatchel
+  - IS14LawyerDuffel
+
+- type: loadoutGroup
+  id: IS14LawyerJumpsuit
+  name: loadout-group-jumpsuit
+  loadouts:
+  - IS14LawyerJumpsuit
+  - IS14LawyerJumpskirt
+
+- type: loadoutGroup
+  id: IS14LawyerShoes
+  name: loadout-group-shoes
+  loadouts:
+  - IS14LawyerShoes
+
+# ========================
+# MUP representative
+# ========================

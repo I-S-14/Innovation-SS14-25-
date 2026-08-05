@@ -1,8 +1,8 @@
-ent-ClothingHeadIS14AssaultHelmetGreen = Штурмовой шлем (Зеленый)
+ent-ClothingHeadIS14AssaultHelmetGreen = штурмовой шлем (зеленый)
     .desc = При отсутствии тарана может быть использован как ударное средство прорыва.
-ent-ClothingHeadIS14AssaultHelmetBlue = Штурмовой шлем (Синий)
+ent-ClothingHeadIS14AssaultHelmetBlue = штурмовой шлем (синий)
     .desc = При отсутствии тарана не может быть использован как ударное средство прорыва.
-ent-ClothingHeadIS14RiotHelmet = Противоударный Шлем
+ent-ClothingHeadIS14RiotHelmet = противоударный шлем
     .desc = Может быть использован, в мирное время, для игры в карты на щелбаны.
-ent-ClothingHeadIS14MilitiaMotorcycleHelmet = Мотоциклетный Шлем Милиции
+ent-ClothingHeadIS14MilitiaMotorcycleHelmet = мотоциклетный шлем милиции
     .desc = "Лучше об грунт размажется шлем, чем голова" - за потерю или повреждение шлема будут применены санкции.

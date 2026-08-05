@@ -21,7 +21,7 @@
           availableJobs: # 60 jobs total w/o latejoins & interns, 77 jobs total w/ latejoins & interns
             #command (7)
             Captain: [ 1, 1 ]
-            NanotrasenRepresentative: [ 1, 1 ]
+            JobMupRepresentative: [ 1, 1 ] # IS14 Edit
             BlueshieldOfficer: [ 1, 1 ]
             CommandSecretary: [ 1, 1 ] # IS14 Edit
             #service
@@ -53,19 +53,20 @@
             ResearchAssistant: [ 4, 4 ] #intern, not counted
             SeniorResearcher: [ 1, 1 ] # IS14 Edit
             #security (10)
-            HeadOfSecurity: [ 1, 1 ]
-            Warden: [ 1, 1 ]
-            SecurityOfficer: [ 6, 6 ]
-            Detective: [ 1, 1 ]
-            SecurityCadet: [ 4, 4 ]
-            Lawyer: [ 2, 2 ]
-            Brigmedic: [ 1, 1 ]
+            JobHosMilitia: [ 1, 1 ] # IS14 Edit
+            JobLrrChief: [ 1, 1 ] # IS14 Edit
+            JobMilitia: [ 6, 6 ] # IS14 Edit
+            JobInvestigator: [ 1, 1 ] # IS14 Edit
+            IS_JobCadet: [ 4, 4 ] # IS14 Edit
+            IS_JobLawyer: [ 2, 2 ] # IS14 Edit
+            JobMedOfficer: [ 1, 1 ] # IS14 Edit
             InternalControlExecutor: [ 1, 1 ] # IS14 Edit
             JobSeniorMilitia: [ 1, 1 ] # IS14 Edit
+            IS_JobPilot: [ 1, 1 ] # IS14 Edit
+            JobIvk: [ 1, 1 ] # IS14 Edit
             #supply
             Quartermaster: [ 1, 1 ]
             SalvageSpecialist: [ 3, 3 ]
-            ShaftMiner: [ 3, 3 ]
             CargoTechnician: [ 3, 3 ]
             SeniorExpeditioner: [ 1, 1 ] # IS14 Edit
             #civilian
@@ -74,7 +75,6 @@
             Mime: [ 1, 1 ]
             Musician: [ 1, 1 ]
             Reporter: [ 2, 2 ]
-            RadioHost: [ 1, 1 ]
             #silicon
             StationAi: [ 1, 1 ]
             Borg: [ 2, 2 ]

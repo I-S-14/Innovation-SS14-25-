@@ -1,0 +1,138 @@
+# investigator loadouts
+
+- type: loadout
+  id: IS14InvestigatorArmorVest
+  equipment:
+    outerClothing: ClothingOuterArmorBasic
+
+- type: loadout
+  id: IS14InvestigatorBackpack
+  equipment:
+    back: ClothingBackpackSecurity
+
+- type: loadout
+  id: IS14InvestigatorBelt
+  equipment:
+    belt: ClothingBeltIS14Militia
+
+- type: loadout
+  id: IS14InvestigatorBeret
+  equipment:
+    head: ClothingHeadIS14MilitiaBeret
+
+- type: loadout
+  id: IS14InvestigatorBoots
+  equipment:
+    shoes: ClothingShoesBootsJack
+
+- type: loadout
+  id: IS14InvestigatorCap
+  equipment:
+    head: ClothingHeadIS14MilitiaCap
+
+- type: loadout
+  id: IS14InvestigatorDuffel
+  equipment:
+    back: ClothingBackpackDuffelSecurity
+
+- type: loadout
+  id: IS14InvestigatorEyeScanner
+  equipment:
+    eyes: ClothingEyesIS14MilitiaEyeScanner
+
+- type: loadout
+  id: IS14InvestigatorGlasses
+  equipment:
+    eyes: ClothingEyesIS14MilitiaGlasses
+
+- type: loadout
+  id: IS14InvestigatorJacket
+  equipment:
+    outerClothing: ClothingOuterIS14MilitiaFormalJacket
+
+- type: loadout
+  id: IS14InvestigatorJumpskirt
+  equipment:
+    jumpsuit: ClothingUniformJumpskirtIS14InvestigatorSkirt
+  groupBy: "jumpskirt"
+
+- type: loadout
+  id: IS14InvestigatorJumpsuit
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitIS14Investigator
+  groupBy: "jumpsuit"
+
+- type: loadout
+  id: IS14InvestigatorMilitiaBoots
+  equipment:
+    shoes: ClothingShoesIS14MilitiaBoots
+
+- type: loadout
+  id: IS14InvestigatorSatchel
+  equipment:
+    back: ClothingBackpackSatchelSecurity
+
+- type: loadout
+  id: IS14InvestigatorVisor
+  equipment:
+    eyes: ClothingEyesIS14MilitiaVisor
+
+- type: loadout
+  id: IS14InvestigatorWebbing
+  equipment:
+    belt: ClothingBeltIS14MilitiaWebbing
+
+- type: loadoutGroup
+  id: IS14InvestigatorBackpack
+  name: loadout-group-backpack
+  loadouts:
+  - IS14InvestigatorBackpack
+  - IS14InvestigatorSatchel
+  - IS14InvestigatorDuffel
+
+- type: loadoutGroup
+  id: IS14InvestigatorBelt
+  name: loadout-group-belt
+  minLimit: 0
+  loadouts:
+  - IS14InvestigatorBelt
+  - IS14InvestigatorWebbing
+
+- type: loadoutGroup
+  id: IS14InvestigatorEyes
+  name: loadout-group-glasses
+  minLimit: 0
+  loadouts:
+  - IS14InvestigatorGlasses
+  - IS14InvestigatorEyeScanner
+  - IS14InvestigatorVisor
+
+- type: loadoutGroup
+  id: IS14InvestigatorHead
+  name: loadout-group-head
+  minLimit: 0
+  loadouts:
+  - IS14InvestigatorCap
+  - IS14InvestigatorBeret
+
+- type: loadoutGroup
+  id: IS14InvestigatorJumpsuit
+  name: loadout-group-jumpsuit
+  loadouts:
+  - IS14InvestigatorJumpsuit
+  - IS14InvestigatorJumpskirt
+
+- type: loadoutGroup
+  id: IS14InvestigatorOuterClothing
+  name: loadout-group-outerclothing
+  minLimit: 0
+  loadouts:
+  - IS14InvestigatorJacket
+  - IS14InvestigatorArmorVest
+
+- type: loadoutGroup
+  id: IS14InvestigatorShoes
+  name: loadout-group-shoes
+  loadouts:
+  - IS14InvestigatorBoots
+  - IS14InvestigatorMilitiaBoots

@@ -1,0 +1,81 @@
+# research director loadouts
+
+- type: loadout
+  id: IS14RdBeret
+  equipment:
+    head: ClothingHeadIS14RdBeret
+
+- type: loadout
+  id: IS14RdJumpsuit
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitIS14Rd
+  groupBy: "jumpsuit"
+
+- type: loadout
+  id: IS14RdLabCoat
+  equipment:
+    outerClothing: ClothingOuterIS14RdLabCoat
+
+- type: loadout
+  id: IS14RdRobe
+  equipment:
+    outerClothing: ClothingOuterIS14RdRobe
+
+# ========================
+# Chief Engineer
+# ========================
+
+- type: loadout
+  id: IS14RdWhiteJumpsuit
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitIS14RdWhite
+  groupBy: "jumpsuit"
+
+- type: loadout
+  id: IS14ScientistMessenger
+  equipment:
+    back: ClothingBackpackMessengerScience
+
+- type: loadoutGroup
+  id: IS14RdHead
+  name: loadout-group-head
+  minLimit: 0
+  loadouts:
+  - IS14RdBeret
+  - IS14GiftKnittedOrange
+
+- type: loadoutGroup
+  id: IS14RdJumpsuit
+  name: loadout-group-jumpsuit
+  loadouts:
+  - IS14RdJumpsuit
+  - IS14RdWhiteJumpsuit
+
+- type: loadoutGroup
+  id: IS14RdOuterClothing
+  name: loadout-group-outerclothing
+  minLimit: 0
+  loadouts:
+  - IS14RdLabCoat
+  - IS14RdRobe
+
+- type: loadoutGroup
+  id: IS14RdShoes
+  name: loadout-group-shoes
+  loadouts:
+  - IS14CommandShoes
+  - IS14GiftDressShoes
+  - IS14GiftTights
+
+# ========================
+# Chief Engineer
+# ========================
+
+- type: loadoutGroup
+  id: IS14ScientistBackpack
+  name: loadout-group-scientist-backpack
+  loadouts:
+  - IS14ScientistBackpack
+  - IS14ScientistSatchel
+  - IS14ScientistDuffel
+  - IS14ScientistMessenger # Frontier

@@ -22,12 +22,11 @@
             # command
             Captain: [ 1, 1 ]
             BlueshieldOfficer: [ 1, 1 ]
-            NanotrasenRepresentative: [ 1, 1 ]
+            JobMupRepresentative: [ 1, 1 ] # IS14 Edit
             # cargo
             Quartermaster: [ 1, 1 ]
             SalvageSpecialist: [ 3, 3 ]
             CargoTechnician: [ 3, 3 ]
-            ShaftMiner: [ 3, 3 ]
             # engineering
             ChiefEngineer: [ 1, 1 ]
             AtmosphericTechnician: [ 3, 3 ]
@@ -40,24 +39,21 @@
             Psychologist: [ 1, 1 ]
             Paramedic: [ 1, 1 ]
             Chemist: [ 2, 2 ]
-            Surgeon: [ 1, 1 ]
-            Virologist: [ 1, 1 ]
             # science
             ResearchDirector: [ 1, 1 ]
             Scientist: [ 4, 4 ]
             ResearchAssistant: [ 4, 4 ]
             Roboticist: [ 1, 1 ]
             # security
-            HeadOfSecurity: [ 1, 1 ]
-            Warden: [ 1, 1 ]
-            WardenHelper: [ 1, 1 ]
-            SecurityOfficer: [ 4, 4 ]
-            SecurityCadet: [ 3, 3 ]
-            Detective: [ 1, 1 ]
-            Pilot: [ 1, 1]
-            Brigmedic: [ 1, 1 ]
+            JobHosMilitia: [ 1, 1 ] # IS14 Edit
+            JobLrrChief: [ 1, 1 ] # IS14 Edit
+            JobMilitia: [ 4, 4 ] # IS14 Edit
+            IS_JobCadet: [ 3, 3 ] # IS14 Edit
+            JobInvestigator: [ 1, 1 ] # IS14 Edit
+            IS_JobPilot: [ 1, 1] # IS14 Edit
+            JobMedOfficer: [ 1, 1 ] # IS14 Edit
             # court
-            Lawyer: [ 2, 2 ]
+            IS_JobLawyer: [ 2, 2 ] # IS14 Edit
             Magistrate: [ 1, 1 ]
             # service
             HeadOfPersonnel: [ 1, 1 ]
@@ -73,10 +69,18 @@
             Reporter: [ 1, 1 ]
             ServiceWorker: [ 2, 2 ]
             Passenger: [ -1, -1 ]
-            RadioHost: [ 1, 1 ]
             #silicon
             StationAi: [ 1, 1 ]
             Borg: [ 2, 2 ]
+            CommandSecretary: [ 1, 1 ] # IS14 Edit
+            SeniorEngineer: [ 1, 1 ] # IS14 Edit
+            SeniorPhysician: [ 1, 1 ] # IS14 Edit
+            SeniorResearcher: [ 1, 1 ] # IS14 Edit
+            SeniorExpeditioner: [ 1, 1 ] # IS14 Edit
+            ChurchServant: [ 1, 1 ] # IS14 Edit
+            JobSeniorMilitia: [ 1, 1 ] # IS14 Edit
+            InternalControlExecutor: [ 1, 1 ] # IS14 Edit
+            JobIvk: [ 1, 1 ] # IS14 Edit
         - type: StationBlobConfig
           stageBegin: 40
           stageCritical: 450

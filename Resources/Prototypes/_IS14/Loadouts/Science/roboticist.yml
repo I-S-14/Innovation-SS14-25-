@@ -1,0 +1,231 @@
+# roboticist loadouts
+
+- type: loadout
+  id: IS14BlackShoes
+  equipment:
+    shoes: ClothingShoesColorBlack
+
+- type: loadout
+  id: IS14CheapSunglasses
+  equipment:
+    eyes: ClothingEyesGlassesCheapSunglasses
+
+- type: loadout
+  id: IS14Glasses
+  equipment:
+    eyes: ClothingEyesGlasses
+
+# Special options
+# Jamjar
+
+- type: loadout
+  id: IS14GlassesJamjar
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: JamjarTimer
+  equipment:
+    eyes: ClothingEyesGlassesJamjar
+
+# Jensen
+
+- type: loadout
+  id: IS14GlassesJensen
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: JensenTimer
+  equipment:
+    eyes: ClothingEyesGlassesJensen
+
+- type: loadout
+  id: IS14LatexGloves
+  equipment:
+    gloves: ClothingHandsGlovesLatex
+
+- type: loadout
+  id: IS14PurpleGloves
+  equipment:
+    gloves: ClothingHandsGlovesColorPurple
+
+
+# Outer clothing
+
+- type: loadout
+  id: IS14RegularLabCoat
+  equipment:
+    outerClothing: ClothingOuterCoatLab
+
+- type: loadout # goob
+  id: IS14ResearchMJ
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitMilitaryScientist
+
+- type: loadout
+  id: IS14RobohandsGloves
+  equipment:
+    gloves: ClothingHandsGlovesRobohands
+
+
+# Shoes
+
+- type: loadout
+  id: IS14RoboticistCap
+  equipment:
+    head: ClothingHeadHatCorpsoft
+
+- type: loadout
+  id: IS14RoboticistGlasses
+  equipment:
+    eyes: ClothingEyesGlassesDiag
+
+- type: loadout
+  id: IS14RoboticistHud
+  equipment:
+    eyes: ClothingEyesHudDiagnostic
+
+- type: loadout
+  id: IS14RoboticistJumpskirt
+  equipment:
+    jumpsuit: ClothingUniformJumpskirtRoboticist
+
+- type: loadout
+  id: IS14RoboticistJumpsuit
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitRoboticist
+
+- type: loadout
+  id: IS14RoboticistLabCoat
+  equipment:
+    outerClothing: ClothingOuterCoatRobo
+
+- type: loadout
+  id: IS14RoboticistMonoHud
+  equipment:
+    eyes: ClothingEyesEyepatchHudDiag
+    
+
+- type: loadout
+  id: IS14RoboticistPDA
+  equipment:
+    id: RoboticistPDA
+
+- type: loadout
+  id: IS14RoboticistWintercoat
+  equipment:
+    outerClothing: ClothingOuterWinterRobo
+
+# IS14 Edit - Senior loadout закомментирован
+#- type: loadout
+#  id: SeniorResearcherLabCoat
+#  effects:
+#  - !type:GroupLoadoutEffect
+#    proto: SeniorResearcher
+#  equipment:
+#    outerClothing: ClothingOuterCoatLabSeniorResearcher
+
+# Gloves
+
+- type: loadout
+  id: IS14ScienceWinterBoots
+  equipment:
+    shoes: ClothingShoesBootsWinterSci
+
+# ID
+
+- type: loadout
+  id: IS14ScientistTie
+  equipment:
+    neck: ClothingNeckTieSci
+
+# Jumpsuit
+
+- type: loadout
+  id: IS14SkullBandana
+  equipment:
+    head: ClothingHeadBandSkull
+
+
+# Neck
+
+- type: loadout
+  id: IS14WhiteShoes
+  equipment:
+    shoes: ClothingShoesColorWhite
+
+- type: loadoutGroup
+  id: IS14RoboticistBackpack
+  name: loadout-group-roboticist-backpack
+  loadouts:
+  - IS14ScientistBackpack
+  - IS14ScientistSatchel
+  - IS14ScientistDuffel
+
+- type: loadoutGroup
+  id: IS14RoboticistGlasses
+  name: loadout-group-roboticist-glasses
+  loadouts:
+  - IS14RoboticistGlasses
+  - IS14RoboticistHud
+  - IS14RoboticistMonoHud
+  - IS14Glasses
+  - IS14CheapSunglasses
+  - IS14GlassesJamjar
+  - IS14GlassesJensen
+  
+# Command
+
+- type: loadoutGroup
+  id: IS14RoboticistGloves
+  name: loadout-group-roboticist-gloves
+  minLimit: 0
+  loadouts:
+  - IS14LatexGloves
+  - IS14PurpleGloves
+  - IS14RobohandsGloves
+
+- type: loadoutGroup
+  id: IS14RoboticistHead
+  name: loadout-group-roboticist-head
+  minLimit: 0
+  loadouts:
+  - IS14RoboticistCap
+  - IS14SkullBandana
+
+- type: loadoutGroup
+  id: IS14RoboticistJumpsuit
+  name: loadout-group-roboticist-jumpsuit
+  loadouts:
+  - IS14RoboticistJumpsuit
+  - IS14RoboticistJumpskirt
+  - IS14ResearchMJ # goob
+
+- type: loadoutGroup
+  id: IS14RoboticistOuterClothing
+  name: loadout-group-roboticist-outerclothing
+  minLimit: 0
+  loadouts:
+  - IS14RegularLabCoat
+  - IS14RoboticistLabCoat
+  - IS14RoboticistWintercoat
+
+- type: loadoutGroup
+  id: IS14RoboticistPDA
+  name: loadout-group-roboticist-id
+  loadouts:
+  - IS14RoboticistPDA
+
+# Salvage
+
+- type: loadoutGroup
+  id: IS14RoboticistShoes
+  name: loadout-group-roboticist-shoes
+  loadouts:
+  - IS14WhiteShoes
+  - IS14BlackShoes
+  - IS14ScienceWinterBoots
+
+- type: loadoutGroup
+  id: IS14ScientistNeck
+  name: loadout-group-scientist-neck
+  minLimit: 0
+  loadouts:
+  - IS14ScientistTie

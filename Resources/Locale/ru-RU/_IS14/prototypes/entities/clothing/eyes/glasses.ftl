@@ -1,8 +1,8 @@
-ent-ClothingEyesIS14MilitiaGlasses = Очки Милиционера
+ent-ClothingEyesIS14MilitiaGlasses = очки милиционера
     .desc = Созданы дабы отражать свет, вспышки, лица просящих гражданских и удары совести.
-ent-ClothingEyesIS14MilitiaEyeScanner = Глазной Сканер Милиционера
+ent-ClothingEyesIS14MilitiaEyeScanner = глазной сканер милиционера
     .desc = Оснащен системой информирования сотрудника милиции, и защитой глаза от физических повреждений.
-ent-ClothingEyesIS14MedEyeScanner = Глазной Сканер Медика
+ent-ClothingEyesIS14MedEyeScanner = глазной сканер медика
     .desc = Обеспечивает медика информацие о состоянии пациента и набором советов по лечению в реальном времени.
-ent-ClothingEyesIS14MilitiaVisor = Визор Милиционера
+ent-ClothingEyesIS14MilitiaVisor = визор милиционера
     .desc = Универсальная высокотехнологичная массовая разработка, продаётся только в руки сотрудникам милиции, только в вычет зарплаты.

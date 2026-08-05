@@ -1,0 +1,49 @@
+# Law role loadouts
+
+- type: roleLoadout
+  id: JobJobMupRepresentative
+  groups:
+  - IS14MupRepresentativeJumpsuit
+  - IS14MupRepresentativeNeck
+  - IS14MupRepresentativeBackpack
+  - IS14MupRepresentativeShoes
+
+- type: roleLoadout
+  id: JobIS_JobLawyer
+  groups:
+  - IS14LawyerJumpsuit
+  - IS14LawyerBackpack
+  - IS14LawyerShoes
+
+- type: roleLoadout
+  id: JobMagistrate
+  groups:
+  - Inventory
+  - IS14MagistrateHead
+  - IS14MagistrateJumpsuit
+  - IS14MagistrateOuterClothing
+  - IS14CommonBackpack
+  - Survival
+  - Trinkets
+  - GroupSpeciesBreathTool
+
+- type: roleLoadout
+  id: JobInternalControlExecutor
+  groups:
+  - IS14InternalControlExecutorJumpsuit
+  - IS14InternalControlExecutorHead
+  - IS14InternalControlExecutorOuterClothing
+  - IS14InternalControlExecutorBelt
+  - IS14InternalControlExecutorBackpack
+  - IS14InternalControlExecutorShoes
+  - IS14InternalControlExecutorGloves
+
+- type: roleLoadout
+  id: JobJobIvk
+  groups:
+  - IS14IvkJumpsuit
+  - IS14IvkHead
+  - IS14IvkOuterClothing
+  - IS14IvkMask
+  - IS14IvkBackpack
+  - IS14IvkShoes

@@ -1,2 +1,2 @@
-ent-ClothingShoesIS14MilitiaBoots = Сапоги Милиции
+ent-ClothingShoesIS14MilitiaBoots = сапоги милиции
     .desc = Специально-разработанная противоударная насадка для носка продлевает жизнь ботинкам на года.

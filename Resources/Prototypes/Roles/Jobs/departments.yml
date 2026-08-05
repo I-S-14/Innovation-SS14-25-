@@ -1,188 +1,189 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-- type: department
-  id: Cargo
-  name: department-Cargo
-  description: department-Cargo-description
-  color: "#A46106"
-  roles:
-  - CargoTechnician
-  - Quartermaster
-  - SalvageSpecialist
-  - SeniorExpeditioner # IS14 Edit
-
-- type: department
-  id: Civilian
-  name: department-Civilian
-  description: department-Civilian-description
-  color: "#9FED58"
-  weight: -10
-  roles:
-  - Bartender
-  - Botanist
-  - Chaplain
-  - Chef
-  - Clown
-  - HeadOfPersonnel
-  - Janitor
-  #- Lawyer #Corvax Goob Legal Department
-  - Librarian
-  - Mime
-  - Musician
-  - Passenger
-  - Reporter
-  - Visitor
-  - ServiceWorker
-  - PartyMaker # event-restricted, Goobstation
-  #- JobIvk # IS14 Edit
-  #- IS_JobLawyer # IS14 Edit
-  #- JobMupRepresentative # IS14 Edit
-  - ChurchServant # IS14-edit
-
-- type: department
-  id: CentralCommand
-  name: department-CentralCommand
-  description: department-CentralCommand-description
-  color: "#0c344d"
-  roles:
-  - CentralCommandOfficial
-  - CBURN
-  - ERTLeader
-  - ERTChaplain
-  - ERTJanitor
-  - ERTMedical
-  - ERTSecurity
-  - ERTEngineer
-  - DeathSquad
-  - HecuOperative
-  - BlueshieldOfficer # Goobstation - Start
-#  - NanotrasenRepresentative # IS14 Edit
-  - NanotrasenCareerTrainer
-  - NavyOfficer
-  - NavyCaptain
-  - NavyOfficerUndercover
-  - SpecialOperationsOfficer
-  - Diplomat
-  - GovernmentMan # Goobstation - End
-  editorHidden: true
-  weight: 120
-
-- type: department
-  id: Command
-  name: department-Command
-  description: department-Command-description
-  color: "#334E6D"
-  roles:
-  - Captain
-  - ChiefEngineer
-  - ChiefMedicalOfficer
-  - HeadOfPersonnel
-  - HeadOfSecurity
-  - ResearchDirector
-  - Quartermaster
-#  - BlueshieldOfficer # Goobstation - IS14 Edit
-  - NanotrasenCareerTrainer # Goobstation
-  - CentralCommandOfficial
-  - CBURN
-  - ERTLeader
-  - ERTChaplain
-  - ERTJanitor
-  - ERTMedical
-  - ERTSecurity
-  - ERTEngineer
-  - DeathSquad
-  - HecuOperative
-  - CommandMaid # event-restricted, Goobstation
-  - JobHosMilitia # IS14 Edit
-  primary: false
-  weight: 100
-
-- type: department
-  id: Engineering
-  name: department-Engineering
-  description: department-Engineering-description
-  color: "#EFB341"
-  roles:
-  - AtmosphericTechnician
-  - ChiefEngineer
-  - StationEngineer
-  - TechnicalAssistant
-  - SeniorEngineer # IS14 Edit
-
-- type: department
-  id: Medical
-  name: department-Medical
-  description: department-Medical-description
-  color: "#52B4E9"
-  roles:
-  - Chemist
-  - ChiefMedicalOfficer
-  - MedicalDoctor
-  - MedicalIntern
-  - Psychologist
-  - Paramedic
-  #- Surgeon # CorvaxGoob-Surgeon
-  #- Virologist # Gooby goob ba gooby goob ba
-  - SeniorPhysician # IS14-edit
-
-- type: department
-  id: Security
-  name: department-Security
-  description: department-Security-description
-  color: "#DE3A3A"
-  weight: 20
-  roles:
-  # IS14 Edit
-  - JobHosMilitia
-  - JobMilitia
-  - JobSeniorMilitia
-  - IS_JobCadet
-  - JobInvestigator
-  - JobMedOfficer
-  - JobLrrChief
-  - IS_JobPilot
-  #- InternalControlExecutor # IS14 Edit
-
-- type: department
-  id: Science
-  name: department-Science
-  description: department-Science-description
-  color: "#D381C9"
-  roles:
-  - ResearchDirector
-  - Scientist
-  - ResearchAssistant
-  - Roboticist #Goob
-
-- type: department
-  id: Silicon
-  name: department-Silicon
-  description: department-Silicon-description
-  color: "#D381C9"
-  roles:
-  - Borg
-  - StationAi
-
-- type: department
-  id: Specific
-  name: department-Specific
-  description: department-Specific-description
-  color: "#9FED58"
-  weight: 10
-  roles:
-  - RadioHost # Goobstation
-  - Reporter
-  - Psychologist
-  primary: false
-
-# IS14-edit-start
-- type: department
-  id: Law
-  name: department-Law
-  description: department-Law-description
-  color: "#6900C6"
-  roles:
-  - NanotrasenRepresentative
-  - Lawyer
-  - InternalControlExecutor
-# IS14-edit-end
+# IS14-edit start
+# Ванильные отделы отключены целиком. Структура отделов Innovation Station
+# живёт в Resources/Prototypes/_IS14/Roles/Jobs/departments.yml — там же
+# переопределены идентификаторы Cargo/Civilian/Command/Engineering/Medical/
+# Security/Science/Silicon/CentralCommand, чтобы не порвать ~220 ссылок на них
+# (DepartmentTimeRequirement, allowedDepartments, покраска шлюзов, аплинк).
+# Отделы Specific и Legal не восстанавливаются: их роли либо перенесены в наши
+# отделы, либо отключены.
+#
+#- type: department
+#  id: Cargo
+#  name: department-Cargo
+#  description: department-Cargo-description
+#  color: "#A46106"
+#  roles:
+#  - CargoTechnician
+#  - Quartermaster
+#  - SalvageSpecialist
+#  - SeniorExpeditioner
+#
+#- type: department
+#  id: Civilian
+#  name: department-Civilian
+#  description: department-Civilian-description
+#  color: "#9FED58"
+#  weight: -10
+#  roles:
+#  - Bartender
+#  - Botanist
+#  - Chaplain
+#  - Chef
+#  - Clown
+#  - HeadOfPersonnel
+#  - Janitor
+#  - Librarian
+#  - Mime
+#  - Musician
+#  - Passenger
+#  - Reporter
+#  - Visitor
+#  - ServiceWorker
+#  - PartyMaker
+#  - JobIvk
+#  - IS_JobLawyer
+#  - JobMupRepresentative
+#  - ChurchServant
+#
+#- type: department
+#  id: CentralCommand
+#  name: department-CentralCommand
+#  description: department-CentralCommand-description
+#  color: "#0c344d"
+#  roles:
+#  - CentralCommandOfficial
+#  - CBURN
+#  - ERTLeader
+#  - ERTChaplain
+#  - ERTJanitor
+#  - ERTMedical
+#  - ERTSecurity
+#  - ERTEngineer
+#  - DeathSquad
+#  - HecuOperative
+#  - BlueshieldOfficer
+#  - NanotrasenCareerTrainer
+#  - NavyOfficer
+#  - NavyCaptain
+#  - NavyOfficerUndercover
+#  - SpecialOperationsOfficer
+#  - Diplomat
+#  - GovernmentMan
+#  editorHidden: true
+#  weight: 120
+#
+#- type: department
+#  id: Command
+#  name: department-Command
+#  description: department-Command-description
+#  color: "#334E6D"
+#  roles:
+#  - Captain
+#  - ChiefEngineer
+#  - ChiefMedicalOfficer
+#  - HeadOfPersonnel
+#  - HeadOfSecurity
+#  - ResearchDirector
+#  - Quartermaster
+#  - NanotrasenCareerTrainer
+#  - CentralCommandOfficial
+#  - CBURN
+#  - ERTLeader
+#  - ERTChaplain
+#  - ERTJanitor
+#  - ERTMedical
+#  - ERTSecurity
+#  - ERTEngineer
+#  - DeathSquad
+#  - HecuOperative
+#  - CommandMaid
+#  - JobHosMilitia
+#  primary: false
+#  weight: 100
+#
+#- type: department
+#  id: Engineering
+#  name: department-Engineering
+#  description: department-Engineering-description
+#  color: "#EFB341"
+#  roles:
+#  - AtmosphericTechnician
+#  - ChiefEngineer
+#  - StationEngineer
+#  - TechnicalAssistant
+#  - SeniorEngineer
+#
+#- type: department
+#  id: Medical
+#  name: department-Medical
+#  description: department-Medical-description
+#  color: "#52B4E9"
+#  roles:
+#  - Chemist
+#  - ChiefMedicalOfficer
+#  - MedicalDoctor
+#  - MedicalIntern
+#  - Psychologist
+#  - Paramedic
+#  - SeniorPhysician
+#
+#- type: department
+#  id: Security
+#  name: department-Security
+#  description: department-Security-description
+#  color: "#DE3A3A"
+#  weight: 20
+#  roles:
+#  - JobHosMilitia
+#  - JobMilitia
+#  - JobSeniorMilitia
+#  - IS_JobCadet
+#  - JobInvestigator
+#  - JobMedOfficer
+#  - JobLrrChief
+#  - IS_JobPilot
+#
+#- type: department
+#  id: Science
+#  name: department-Science
+#  description: department-Science-description
+#  color: "#D381C9"
+#  roles:
+#  - ResearchDirector
+#  - Scientist
+#  - ResearchAssistant
+#  - Roboticist
+#
+#- type: department
+#  id: Silicon
+#  name: department-Silicon
+#  description: department-Silicon-description
+#  color: "#D381C9"
+#  roles:
+#  - Borg
+#  - StationAi
+#
+#- type: department
+#  id: Specific
+#  name: department-Specific
+#  description: department-Specific-description
+#  color: "#9FED58"
+#  weight: 10
+#  roles:
+#  - RadioHost
+#  - Reporter
+#  - Psychologist
+#  primary: false
+#
+#- type: department
+#  id: Law
+#  name: department-Law
+#  description: department-Law-description
+#  color: "#6900C6"
+#  roles:
+#  - NanotrasenRepresentative
+#  - Lawyer
+#  - InternalControlExecutor
+# IS14-edit end

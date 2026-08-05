@@ -1,6 +1,6 @@
-ent-ClothingBackpackIS14MilitiaRps = РПС Милиции
+ent-ClothingBackpackIS14MilitiaRps = РПС милиции
     .desc = Ременно-плечевая система для хранения орудий способствования послушанию и законопорядку.
-ent-ClothingBackpackIS14MedOfficerRps = РПС Медицинского Офицера
+ent-ClothingBackpackIS14MedOfficerRps = РПС медицинского офицера
     .desc = Оснащен увеличенным объемом карманов, а также красивым красным крестиком.
-ent-ClothingBackpackIS14MilitiaJetpack = Джетпак Милиции
+ent-ClothingBackpackIS14MilitiaJetpack = джетпак милиции
     .desc = Универсальное средство передвижения в космосе и разгерметизированных помещениях. Как говорил первый испытатель "Смотри как могу ааааа Бл-...." - не летайте рядом с двигателями шаттлов.

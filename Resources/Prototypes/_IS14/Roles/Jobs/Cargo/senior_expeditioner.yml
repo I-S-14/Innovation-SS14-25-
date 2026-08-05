@@ -27,7 +27,6 @@
 - type: startingGear
   id: SeniorExpeditionerGear
   equipment:
-    jumpsuit: ClothingUniformJumpsuitSalvageSpecialist
     id: IS_PdaSeniorExpeditionist
     ears: ClothingHeadsetCargo
   storage:

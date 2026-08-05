@@ -1,0 +1,63 @@
+# captain clothing
+
+- type: entity
+  parent: ClothingHandsBase
+  id: ClothingHandsIS14CaptainGloves
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Hands/captain_gloves.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Hands/captain_gloves.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: ClothingHeadIS14CaptainCap
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Head/Caps/captain_cap.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Head/Caps/captain_cap.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: ClothingNeckIS14CaptainCloak
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Neck/Cloaks/captain_cloak.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Neck/Cloaks/captain_cloak.rsi
+  - type: StealTarget
+    stealGroup: HeadCloak
+
+- type: entity
+  parent: ClothingUniformJumpskirtIS14Base
+  id: ClothingUniformJumpskirtIS14Captain
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Uniforms/Jumpskirt/captain.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Uniforms/Jumpskirt/captain.rsi
+    equipSound:
+      path: /Audio/Items/jumpsuit_equip.ogg
+
+- type: entity
+  parent: ClothingUniformJumpsuitIS14Base
+  id: ClothingUniformJumpsuitIS14Captain
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Uniforms/Jumpsuit/captain.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Uniforms/Jumpsuit/captain.rsi
+    equipSound:
+      path: /Audio/Items/jumpsuit_equip.ogg
+
+- type: entity
+  parent: ClothingUniformJumpsuitIS14Base
+  id: ClothingUniformJumpsuitIS14CaptainFormal
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Uniforms/Jumpsuit/captain_formal.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Uniforms/Jumpsuit/captain_formal.rsi
+    equipSound:
+      path: /Audio/Items/jumpsuit_equip.ogg

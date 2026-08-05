@@ -1,4 +1,4 @@
-ent-RubberStampIS14MupRepresentative = Печать Представителя МЮиП
+ent-RubberStampIS14MupRepresentative = печать представителя МЮиП
     .desc = Печать из резины для проставления печатей на важных документах.
-ent-RubberStampIS14Lawyer = Печать Юридического Сотрудника
+ent-RubberStampIS14Lawyer = печать юридического сотрудника
     .desc = Печать из резины для проставления печатей на важных документах.

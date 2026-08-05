@@ -80,7 +80,7 @@
 - type: startingGear
   id: HoPGear
   equipment:
-    shoes: ClothingShoesColorBrown
+#   shoes: ClothingShoesColorBrown # IS14-edit: moved to the IS14HopShoes loadout group
     id: HoPPDA
     #gloves: ClothingHandsGlovesHop
     ears: ClothingHeadsetAltCommand
