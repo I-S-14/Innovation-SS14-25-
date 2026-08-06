@@ -21,16 +21,16 @@ ent-IS14VendingMachineMed = МедШкаф
 
 ###############################
 
-ent-IS14VendingMachineCigs = Сигареты
+ent-IS14VendingMachineCigs = сигареты
     .desc = Автомат по выдаче сигарет. На нижней части автомата написано "Медздрав предупреждает! Курение вредит вашему здоровью!"
 
-ent-IS14VendingMachinekofee = Аппарат с кофе
+ent-IS14VendingMachinekofee = аппарат с кофе
     .desc = Кофемашина.
 
-ent-IS14VendingMachineFood = Быстрый перекус!
+ent-IS14VendingMachineFood = быстрый перекус!
     .desc = Автомат с едой быстрого приготовления.
 
-ent-IS14VendingMachineWater = Вода
+ent-IS14VendingMachineWater = вода
     .desc = Автомат с водой.
 
 

@@ -1,0 +1,129 @@
+# internal control executor loadouts
+
+- type: loadout
+  id: IS14InternalControlExecutorBackpack
+  equipment:
+    back: ClothingBackpackSecurity
+
+- type: loadout
+  id: IS14InternalControlExecutorBelt
+  equipment:
+    belt: ClothingBeltIS14Militia
+
+- type: loadout
+  id: IS14InternalControlExecutorBeret
+  equipment:
+    head: ClothingHeadIS14MilitiaBeret
+
+- type: loadout
+  id: IS14InternalControlExecutorBoots
+  equipment:
+    shoes: ClothingShoesBootsJack
+
+- type: loadout
+  id: IS14InternalControlExecutorCap
+  equipment:
+    head: ClothingHeadIS14MilitiaCap
+
+- type: loadout
+  id: IS14InternalControlExecutorDuffel
+  equipment:
+    back: ClothingBackpackDuffelSecurity
+
+- type: loadout
+  id: IS14InternalControlExecutorGloves
+  equipment:
+    gloves: ClothingHandsGlovesColorBlack
+
+# ========================
+# IVK officer
+# ========================
+
+- type: loadout
+  id: IS14InternalControlExecutorJacket
+  equipment:
+    outerClothing: ClothingOuterIS14MilitiaFormalJacket
+
+- type: loadout
+  id: IS14InternalControlExecutorJumpskirt
+  equipment:
+    jumpsuit: ClothingUniformJumpskirtIS14MilitiaFormalSkirt
+  groupBy: "jumpskirt"
+
+- type: loadout
+  id: IS14InternalControlExecutorJumpsuit
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitIS14MilitiaFormal
+  groupBy: "jumpsuit"
+
+- type: loadout
+  id: IS14InternalControlExecutorMilitiaBoots
+  equipment:
+    shoes: ClothingShoesIS14MilitiaBoots
+
+- type: loadout
+  id: IS14InternalControlExecutorSatchel
+  equipment:
+    back: ClothingBackpackSatchelSecurity
+
+- type: loadout
+  id: IS14InternalControlExecutorTactical
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitIS14MilitiaTactical
+  groupBy: "jumpsuit"
+
+- type: loadoutGroup
+  id: IS14InternalControlExecutorBackpack
+  name: loadout-group-backpack
+  loadouts:
+  - IS14InternalControlExecutorBackpack
+  - IS14InternalControlExecutorSatchel
+  - IS14InternalControlExecutorDuffel
+
+- type: loadoutGroup
+  id: IS14InternalControlExecutorBelt
+  name: loadout-group-belt
+  minLimit: 0
+  loadouts:
+  - IS14InternalControlExecutorBelt
+
+- type: loadoutGroup
+  id: IS14InternalControlExecutorGloves
+  name: loadout-group-gloves
+  minLimit: 0
+  loadouts:
+  - IS14InternalControlExecutorGloves
+
+# ========================
+# IVK officer
+# ========================
+
+- type: loadoutGroup
+  id: IS14InternalControlExecutorHead
+  name: loadout-group-head
+  minLimit: 0
+  loadouts:
+  - IS14InternalControlExecutorCap
+  - IS14InternalControlExecutorBeret
+
+- type: loadoutGroup
+  id: IS14InternalControlExecutorJumpsuit
+  name: loadout-group-jumpsuit
+  loadouts:
+  - IS14InternalControlExecutorJumpsuit
+  - IS14InternalControlExecutorJumpskirt
+  - IS14InternalControlExecutorTactical
+
+- type: loadoutGroup
+  id: IS14InternalControlExecutorOuterClothing
+  name: loadout-group-outerclothing
+  minLimit: 0
+  loadouts:
+  - IS14InternalControlExecutorJacket
+
+- type: loadoutGroup
+  id: IS14InternalControlExecutorShoes
+  name: loadout-group-shoes
+  loadouts:
+  - IS14InternalControlExecutorBoots
+  - IS14InternalControlExecutorMilitiaBoots

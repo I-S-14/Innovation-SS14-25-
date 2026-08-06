@@ -1,0 +1,75 @@
+# senior militia clothing
+
+- type: entity
+  parent: ClothingHeadBase
+  id: ClothingHeadIS14SeniorMilitiaBeret
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Head/Berets/senior_militia_beret.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Head/Berets/senior_militia_beret.rsi
+    equippedState: equipped-HEAD
+
+- type: entity
+  parent: ClothingOuterIS14Base
+  id: ClothingOuterIS14SeniorMilitiaFormalJacket
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/OuterClothing/Coats/senior_militia_formal_jacket.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/OuterClothing/Coats/senior_militia_formal_jacket.rsi
+
+- type: entity
+  parent: ClothingUniformJumpskirtIS14Base
+  id: ClothingUniformJumpskirtIS14SeniorMilitiaFormalSkirt
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Uniforms/Jumpskirt/senior_militia_formal_skirt.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Uniforms/Jumpskirt/senior_militia_formal_skirt.rsi
+    equipSound:
+      path: /Audio/Items/jumpsuit_equip.ogg
+
+- type: entity
+  parent: ClothingUniformJumpskirtIS14Base
+  id: ClothingUniformJumpskirtIS14SeniorMilitiaSkirt
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Uniforms/Jumpskirt/senior_militia_skirt.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Uniforms/Jumpskirt/senior_militia_skirt.rsi
+    equipSound:
+      path: /Audio/Items/jumpsuit_equip.ogg
+
+- type: entity
+  parent: ClothingUniformJumpsuitIS14Base
+  id: ClothingUniformJumpsuitIS14SeniorMilitiaFormal
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Uniforms/Jumpsuit/senior_militia_formal.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Uniforms/Jumpsuit/senior_militia_formal.rsi
+    equipSound:
+      path: /Audio/Items/jumpsuit_equip.ogg
+
+- type: entity
+  parent: ClothingUniformJumpsuitIS14Base
+  id: ClothingUniformJumpsuitIS14SeniorMilitiaJumpsuit
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Uniforms/Jumpsuit/senior_militia_jumpsuit.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Uniforms/Jumpsuit/senior_militia_jumpsuit.rsi
+    equipSound:
+      path: /Audio/Items/jumpsuit_equip.ogg
+
+- type: entity
+  parent: ClothingUniformJumpsuitIS14Base
+  id: ClothingUniformJumpsuitIS14SeniorMilitiaTactical
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Uniforms/Jumpsuit/senior_militia_tactical.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Uniforms/Jumpsuit/senior_militia_tactical.rsi
+    equipSound:
+      path: /Audio/Items/jumpsuit_equip.ogg

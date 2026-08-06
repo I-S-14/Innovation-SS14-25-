@@ -1,0 +1,101 @@
+# Medical role loadouts
+
+- type: roleLoadout
+  id: JobChiefMedicalOfficer
+  groups:
+  - Inventory
+  - GroupTankHarness
+  - MedicalEyewear
+  - SurvivalMedical
+  - Trinkets
+  - Animals
+  - GroupSpeciesBreathToolMedical
+  - ChiefMedicalOfficerEnvirohelm
+  - ChiefMedicalOfficerEnvirosuit
+  - ChiefMedicalOfficerEnvirogloves
+  - IS14MedicalBackpack
+  - IS14CmoJumpsuit
+  - IS14CmoHead
+  - IS14CmoNeck
+  - IS14CmoOuterClothing
+  - IS14CmoShoes
+
+- type: roleLoadout
+  id: JobSeniorPhysician
+  groups:
+  - IS14SeniorPhysicianJumpsuit
+  - IS14SeniorPhysicianHead
+  - IS14SeniorPhysicianNeck
+  - IS14SeniorPhysicianOuterClothing
+  - IS14SeniorPhysicianBackpack
+  - IS14SeniorPhysicianShoes
+  - IS14SeniorPhysicianGloves
+
+- type: roleLoadout
+  id: JobChemist
+  groups:
+  - Inventory
+  - GroupTankHarness
+  - SurvivalMedical
+  - Trinkets
+  - Animals
+  - GroupSpeciesBreathToolMedical
+  - ChemistEnvirohelm
+  - ChemistEnvirosuit
+  - ChemistEnvirogloves
+
+- type: roleLoadout
+  id: JobMedicalDoctor
+  groups:
+  - Inventory
+  - GroupTankHarness
+  - MedicalEyewear
+  - SurvivalMedical
+  - Trinkets
+  - Animals
+  - GroupSpeciesBreathToolMedical
+  - MedicalDoctorEnvirohelm
+  - MedicalDoctorEnvirosuit
+  - MedicalDoctorEnvirogloves
+
+- type: roleLoadout
+  id: JobParamedic
+  groups:
+  - Inventory
+  - GroupTankHarness
+  - MedicalEyewear
+  - SurvivalMedical
+  - Trinkets
+  - Animals
+  - GroupSpeciesBreathToolMedical
+  - ParamedicEnvirohelm
+  - ParamedicEnvirosuit
+  - ParamedicEnvirogloves
+
+- type: roleLoadout
+  id: JobPsychologist
+  groups:
+  - Inventory
+  - GroupTankHarness
+  - Glasses
+  - Survival
+  - Trinkets
+  - Animals
+  - GroupSpeciesBreathTool
+  - PsychologistEnvirohelm
+  - PsychologistEnvirosuit
+  - PsychologistEnvirogloves
+
+- type: roleLoadout
+  id: JobMedicalIntern
+  groups:
+  - Inventory
+  - GroupTankHarness
+  - MedicalEyewear
+  - SurvivalMedical
+  - Trinkets
+  - Animals
+  - GroupSpeciesBreathToolMedical
+  - MedicalInternEnvirohelm
+  - MedicalInternEnvirosuit
+  - MedicalInternEnvirogloves

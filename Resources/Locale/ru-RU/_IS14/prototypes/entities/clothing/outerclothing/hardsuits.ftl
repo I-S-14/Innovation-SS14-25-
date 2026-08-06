@@ -1,10 +1,10 @@
-ent-ClothingOuterHardsuitIS14Pilot = Скафандр Пилота
+ent-ClothingOuterHardsuitIS14Pilot = скафандр пилота
     .desc = По многочисленным просьбам работников разработаны дополнительные три кармана под фляжки для повышения навыка управления "Столичной".
-ent-ClothingOuterHardsuitIS14Militia = Скафандр Милиционера
+ent-ClothingOuterHardsuitIS14Militia = скафандр милиционера
     .desc = Стандартная форма для ведения правоохранительной деятельности возле объекта, в условиях невесомости и корпоративов.
-ent-ClothingOuterHardsuitIS14LrrChief = Скафандр Главы ЛРР
+ent-ClothingOuterHardsuitIS14LrrChief = скафандр главы ЛРР
     .desc = Оптимизирован системой самозатягивающихся ремней, способный визуально убрать до 20 кг.
-ent-ClothingOuterHardsuitIS14MedOfficer = Скафандр Медицинского Офицера
+ent-ClothingOuterHardsuitIS14MedOfficer = скафандр медицинского офицера
     .desc = Обеспечен набором дополнительных мягких карманов, сохраняющих медицинские инструменты целыми.
-ent-ClothingOuterHardsuitIS14Hos = Скафандр Главы Милиции
+ent-ClothingOuterHardsuitIS14Hos = скафандр главы милиции
     .desc = Создан для проведения строевых учений в условиях невесомости, отсутствия объекта и проведения пеших маршей от объекта до объекта по открытому космосу.

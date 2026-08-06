@@ -1,0 +1,26 @@
+# mime loadouts
+
+- type: loadout
+  id: IS14BlackGloves
+  equipment:
+    gloves: ClothingHandsGlovesColorBlack
+
+- type: loadout
+  id: IS14RedGloves
+  equipment:
+    gloves: ClothingHandsGlovesColorRed
+
+- type: loadout
+  id: IS14WhiteGloves
+  equipment:
+    gloves: ClothingHandsGlovesColorWhite
+
+- type: loadoutGroup
+  id: IS14MimeGloves
+  name: loadout-group-mime-gloves
+  minLimit: 1
+  maxLimit: 1
+  loadouts:
+  - IS14WhiteGloves
+  - IS14BlackGloves
+  - IS14RedGloves

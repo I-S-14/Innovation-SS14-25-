@@ -1,17 +1,17 @@
-ent-ClothingOuterIS14SeniorMilitiaFormalJacket = Пиджак Старшего Милиционера
+ent-ClothingOuterIS14SeniorMilitiaFormalJacket = пиджак старшего милиционера
     .desc = Парадная форма для получения наград, зарплаты, пенсии и торжественной благодарности от партии.
-ent-ClothingOuterIS14MilitiaFormalJacket = Пиджак Милиционера
+ent-ClothingOuterIS14MilitiaFormalJacket = пиджак милиционера
     .desc = Парадная форма для получения обещаний о повышении.
-ent-ClothingOuterIS14LrrChiefJacket = Куртка Начальника ЛРР
+ent-ClothingOuterIS14LrrChiefJacket = куртка начальника ЛРР
     .desc = В тяжелых условиях работы кондиционера, дабы избежать обморожений куртка обеспечена прослойками флисок.
-ent-ClothingOuterIS14HosJacket = Куртка Главы Милиции
+ent-ClothingOuterIS14HosJacket = куртка главы милиции
     .desc = Разработан для полевых выездов, инспекций, дней рождений и корпоративов на свежем воздухе.
-ent-ClothingOuterIS14MedOfficerRobe = Халат Медицинского Офицера
+ent-ClothingOuterIS14MedOfficerRobe = халат медицинского офицера
     .desc = Обеспечен небольшой бронепластиной на уровне живота, что особенно удобно чувствуется, при работе в приседе.
-ent-ClothingOuterIS14RiotVest = Противоударный Бронежилет
+ent-ClothingOuterIS14RiotVest = противоударный бронежилет
     .desc = Смотря на него вы вспоминаете армейские будни, и все народные конкурсы с его участием.
 
-ent-ClothingOuterIS14IVKShinel = Шинель ИВК
+ent-ClothingOuterIS14IVKShinel = шинель ИВК
     .desc = Строгая шинель, совершенно не снятая с предыдущего носителя.
-ent-ClothingOuterIS14IVKVest = Жилет ИВК
+ent-ClothingOuterIS14IVKVest = жилет ИВК
     .desc = Тактическая разгрузка для хранения карандашей, линеек и рулонов А4 вперемешку со стяжками и патроном.

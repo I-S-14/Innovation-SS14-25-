@@ -1,0 +1,98 @@
+# church servant loadouts
+
+- type: loadout
+  id: IS14ChurchServantBackpack
+  equipment:
+    back: ClothingBackpack
+
+- type: loadout
+  id: IS14ChurchServantDuffel
+  equipment:
+    back: ClothingBackpackDuffel
+
+- type: loadout
+  id: IS14ChurchServantHood
+  equipment:
+    head: ClothingHeadHatHoodChaplainHood
+
+- type: loadout
+  id: IS14ChurchServantHoodie
+  equipment:
+    outerClothing: ClothingOuterHoodieChaplain
+
+- type: loadout
+  id: IS14ChurchServantJumpskirt
+  equipment:
+    jumpsuit: ClothingUniformJumpskirtChaplain
+  groupBy: "jumpskirt"
+
+- type: loadout
+  id: IS14ChurchServantJumpsuit
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitChaplain
+  groupBy: "jumpsuit"
+
+- type: loadout
+  id: IS14ChurchServantSatchel
+  equipment:
+    back: ClothingBackpackSatchel
+
+- type: loadout
+  id: IS14ChurchServantShoes
+  equipment:
+    shoes: ClothingShoesColorBlack
+
+# ========================
+# Senior engineer
+# ========================
+
+- type: loadout
+  id: IS14ChurchServantStole
+  equipment:
+    neck: ClothingNeckStoleChaplain
+
+- type: loadoutGroup
+  id: IS14ChurchServantBackpack
+  name: loadout-group-backpack
+  loadouts:
+  - IS14ChurchServantBackpack
+  - IS14ChurchServantSatchel
+  - IS14ChurchServantDuffel
+
+- type: loadoutGroup
+  id: IS14ChurchServantHead
+  name: loadout-group-head
+  minLimit: 0
+  loadouts:
+  - IS14ChurchServantHood
+
+- type: loadoutGroup
+  id: IS14ChurchServantJumpsuit
+  name: loadout-group-jumpsuit
+  loadouts:
+  - IS14ChurchServantJumpsuit
+  - IS14ChurchServantJumpskirt
+
+- type: loadoutGroup
+  id: IS14ChurchServantNeck
+  name: loadout-group-neck
+  minLimit: 0
+  loadouts:
+  - IS14ChurchServantStole
+
+- type: loadoutGroup
+  id: IS14ChurchServantOuterClothing
+  name: loadout-group-outerclothing
+  minLimit: 0
+  loadouts:
+  - IS14ChurchServantHoodie
+
+- type: loadoutGroup
+  id: IS14ChurchServantShoes
+  name: loadout-group-shoes
+  loadouts:
+  - IS14ChurchServantShoes
+
+# ========================
+# Senior engineer
+# ========================

@@ -1,0 +1,127 @@
+# Chameleon outfits for the IS14 militia / justice jobs.
+# Every job that has both a startingGear and a roleLoadout needs one of these
+# (see Content.IntegrationTests.Tests.Chameleon.ChameleonJobLoadoutTest).
+
+- type: chameleonOutfit
+  id: HosMilitiaChameleonOutfit
+  job: JobHosMilitia
+  hasMindShield: true
+  equipment:
+    head: ClothingHeadIS14HosMilitiaCap
+    eyes: ClothingEyesIS14MilitiaGlasses
+    mask: ClothingMaskGasSecurity
+    neck: ClothingNeckIS14HosMilitiaCloak
+    outerClothing: ClothingOuterIS14HosMilitiaGreatcoat
+    gloves: ClothingHandsIS14HosMilitiaGloves
+    shoes: ClothingShoesIS14HosMilitiaBoots
+
+- type: chameleonOutfit
+  id: MilitiaChameleonOutfit
+  job: JobMilitia
+  hasMindShield: true
+  equipment:
+    head: ClothingHeadIS14MilitiaCap
+    eyes: ClothingEyesIS14MilitiaGlasses
+    mask: ClothingMaskGasSecurity
+    outerClothing: ClothingOuterIS14MilitiaFormalJacket
+    gloves: ClothingHandsGlovesColorBlack
+    shoes: ClothingShoesIS14MilitiaBoots
+
+- type: chameleonOutfit
+  id: SeniorMilitiaChameleonOutfit
+  job: JobSeniorMilitia
+  hasMindShield: true
+  equipment:
+    head: ClothingHeadIS14SeniorMilitiaBeret
+    eyes: ClothingEyesIS14MilitiaEyeScanner
+    mask: ClothingMaskGasSecurity
+    outerClothing: ClothingOuterIS14SeniorMilitiaFormalJacket
+    gloves: ClothingHandsGlovesColorBlack
+    shoes: ClothingShoesIS14MilitiaBoots
+
+- type: chameleonOutfit
+  id: IS14CadetChameleonOutfit
+  job: IS_JobCadet
+  hasMindShield: true
+  equipment:
+    head: ClothingHeadIS14MilitiaPilotka
+    eyes: ClothingEyesIS14MilitiaGlasses
+    outerClothing: ClothingOuterIS14MilitiaFormalJacket
+    gloves: ClothingHandsGlovesColorBlack
+    shoes: ClothingShoesIS14MilitiaBoots
+
+- type: chameleonOutfit
+  id: InvestigatorChameleonOutfit
+  job: JobInvestigator
+  hasMindShield: true
+  equipment:
+    head: ClothingHeadIS14MilitiaBeret
+    eyes: ClothingEyesIS14MilitiaVisor
+    outerClothing: ClothingOuterIS14MilitiaFormalJacket
+    gloves: ClothingHandsGlovesColorBlack
+    shoes: ClothingShoesIS14MilitiaBoots
+
+- type: chameleonOutfit
+  id: MedOfficerChameleonOutfit
+  job: JobMedOfficer
+  hasMindShield: true
+  equipment:
+    head: ClothingHeadIS14MedOfficerCap
+    eyes: ClothingEyesIS14MedEyeScanner
+    mask: ClothingMaskSterile
+    outerClothing: ClothingOuterIS14MedOfficerRobe
+    gloves: ClothingHandsGlovesLatex
+    shoes: ClothingShoesIS14MilitiaBoots
+
+- type: chameleonOutfit
+  id: LrrChiefChameleonOutfit
+  job: JobLrrChief
+  hasMindShield: true
+  equipment:
+    head: ClothingHeadIS14LrrChiefCap
+    eyes: ClothingEyesIS14MilitiaEyeScanner
+    mask: ClothingMaskGasSecurity
+    outerClothing: ClothingOuterIS14LrrChiefJacket
+    gloves: ClothingHandsGlovesColorBlack
+    shoes: ClothingShoesIS14MilitiaBoots
+
+- type: chameleonOutfit
+  id: IS14PilotChameleonOutfit
+  job: IS_JobPilot
+  hasMindShield: true
+  equipment:
+    head: ClothingHeadIS14MilitiaCap
+    eyes: ClothingEyesIS14MilitiaVisor
+    outerClothing: ClothingOuterIS14MilitiaFormalJacket
+    gloves: ClothingHandsGlovesColorBlack
+    shoes: ClothingShoesIS14MilitiaBoots
+
+- type: chameleonOutfit
+  id: IvkChameleonOutfit
+  job: JobIvk
+  equipment:
+    head: ClothingHeadIS14IVKCap
+    mask: ClothingMaskIS14GasIVK
+    outerClothing: ClothingOuterIS14IVKShinel
+    gloves: ClothingHandsGlovesColorBlack
+    shoes: ClothingShoesIS14MilitiaBoots
+
+- type: chameleonOutfit
+  id: IS14LawyerChameleonOutfit
+  job: IS_JobLawyer
+  equipment:
+    eyes: ClothingEyesGlasses
+    neck: ClothingNeckLawyerbadge
+    outerClothing: ClothingOuterCoatDetective
+    gloves: ClothingHandsGlovesColorBlack
+    shoes: ClothingShoesColorBlack
+
+- type: chameleonOutfit
+  id: MupRepresentativeChameleonOutfit
+  job: JobMupRepresentative
+  equipment:
+    eyes: ClothingEyesGlasses
+    neck: ClothingNeckIS14MupRepresentative
+    outerClothing: ClothingOuterCoatDetective
+    gloves: ClothingHandsGlovesColorBlack
+    shoes: ClothingShoesColorBlack

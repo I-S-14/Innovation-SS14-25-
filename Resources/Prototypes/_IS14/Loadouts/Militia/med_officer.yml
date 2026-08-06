@@ -1,0 +1,121 @@
+# med officer loadouts
+
+- type: loadout
+  id: IS14MedEyeScanner
+  equipment:
+    eyes: ClothingEyesIS14MedEyeScanner
+
+- type: loadout
+  id: IS14MedOfficerBackpack
+  equipment:
+    back: ClothingBackpackSecurity
+
+- type: loadout
+  id: IS14MedOfficerBeret
+  equipment:
+    head: ClothingHeadIS14MedOfficerBeret
+
+- type: loadout
+  id: IS14MedOfficerBoots
+  equipment:
+    shoes: ClothingShoesBootsJack
+
+- type: loadout
+  id: IS14MedOfficerCap
+  equipment:
+    head: ClothingHeadIS14MedOfficerCap
+
+- type: loadout
+  id: IS14MedOfficerDuffel
+  equipment:
+    back: ClothingBackpackDuffelSecurity
+
+- type: loadout
+  id: IS14MedOfficerFormal
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitIS14MedOfficerFormal
+  groupBy: "jumpsuit"
+
+- type: loadout
+  id: IS14MedOfficerJumpskirt
+  equipment:
+    jumpsuit: ClothingUniformJumpskirtIS14MedOfficerSkirt
+  groupBy: "jumpskirt"
+
+- type: loadout
+  id: IS14MedOfficerJumpsuit
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitIS14MedOfficerJumpsuit
+  groupBy: "jumpsuit"
+
+- type: loadout
+  id: IS14MedOfficerMilitiaBoots
+  equipment:
+    shoes: ClothingShoesIS14MilitiaBoots
+
+- type: loadout
+  id: IS14MedOfficerRobe
+  equipment:
+    outerClothing: ClothingOuterIS14MedOfficerRobe
+
+- type: loadout
+  id: IS14MedOfficerSatchel
+  equipment:
+    back: ClothingBackpackSatchelSecurity
+
+- type: loadout
+  id: IS14MedOfficerWebbing
+  equipment:
+    belt: ClothingBeltIS14MedOfficerWebbing
+
+- type: loadoutGroup
+  id: IS14MedOfficerBackpack
+  name: loadout-group-backpack
+  loadouts:
+  - IS14MedOfficerBackpack
+  - IS14MedOfficerSatchel
+  - IS14MedOfficerDuffel
+
+- type: loadoutGroup
+  id: IS14MedOfficerBelt
+  name: loadout-group-belt
+  minLimit: 0
+  loadouts:
+  - IS14MedOfficerWebbing
+
+- type: loadoutGroup
+  id: IS14MedOfficerEyes
+  name: loadout-group-glasses
+  minLimit: 0
+  loadouts:
+  - IS14MedEyeScanner
+
+- type: loadoutGroup
+  id: IS14MedOfficerHead
+  name: loadout-group-head
+  minLimit: 0
+  loadouts:
+  - IS14MedOfficerCap
+  - IS14MedOfficerBeret
+
+- type: loadoutGroup
+  id: IS14MedOfficerJumpsuit
+  name: loadout-group-jumpsuit
+  loadouts:
+  - IS14MedOfficerJumpsuit
+  - IS14MedOfficerJumpskirt
+  - IS14MedOfficerFormal
+
+- type: loadoutGroup
+  id: IS14MedOfficerOuterClothing
+  name: loadout-group-outerclothing
+  minLimit: 0
+  loadouts:
+  - IS14MedOfficerRobe
+
+- type: loadoutGroup
+  id: IS14MedOfficerShoes
+  name: loadout-group-shoes
+  loadouts:
+  - IS14MedOfficerBoots
+  - IS14MedOfficerMilitiaBoots

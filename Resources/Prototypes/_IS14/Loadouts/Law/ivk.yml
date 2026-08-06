@@ -1,0 +1,103 @@
+# ivk loadouts
+
+- type: loadout
+  id: IS14IvkBackpack
+  equipment:
+    back: ClothingBackpackSecurity
+
+- type: loadout
+  id: IS14IvkBeret
+  equipment:
+    head: ClothingHeadIS14IVKBeret
+
+- type: loadout
+  id: IS14IvkBoots
+  equipment:
+    shoes: ClothingShoesIS14MilitiaBoots
+
+# ========================
+# Lawyer (militia)
+# ========================
+
+- type: loadout
+  id: IS14IvkCap
+  equipment:
+    head: ClothingHeadIS14IVKCap
+
+- type: loadout
+  id: IS14IvkDuffel
+  equipment:
+    back: ClothingBackpackDuffelSecurity
+
+- type: loadout
+  id: IS14IvkGasMask
+  equipment:
+    mask: ClothingMaskIS14GasIVK
+
+- type: loadout
+  id: IS14IvkJumpskirt
+  equipment:
+    jumpsuit: ClothingUniformJumpskirtIS14IVK
+  groupBy: "jumpskirt"
+
+- type: loadout
+  id: IS14IvkSatchel
+  equipment:
+    back: ClothingBackpackSatchelSecurity
+
+- type: loadout
+  id: IS14IvkShinel
+  equipment:
+    outerClothing: ClothingOuterIS14IVKShinel
+
+- type: loadout
+  id: IS14IvkVest
+  equipment:
+    outerClothing: ClothingOuterIS14IVKVest
+
+- type: loadoutGroup
+  id: IS14IvkBackpack
+  name: loadout-group-backpack
+  loadouts:
+  - IS14IvkBackpack
+  - IS14IvkSatchel
+  - IS14IvkDuffel
+
+- type: loadoutGroup
+  id: IS14IvkHead
+  name: loadout-group-head
+  minLimit: 0
+  loadouts:
+  - IS14IvkCap
+  - IS14IvkBeret
+
+- type: loadoutGroup
+  id: IS14IvkJumpsuit
+  name: loadout-group-jumpsuit
+  loadouts:
+  - IS14IvkJumpskirt
+
+- type: loadoutGroup
+  id: IS14IvkMask
+  name: loadout-group-mask
+  minLimit: 0
+  loadouts:
+  - IS14IvkGasMask
+
+- type: loadoutGroup
+  id: IS14IvkOuterClothing
+  name: loadout-group-outerclothing
+  minLimit: 0
+  loadouts:
+  - IS14IvkShinel
+  - IS14IvkVest
+
+- type: loadoutGroup
+  id: IS14IvkShoes
+  name: loadout-group-shoes
+  loadouts:
+  - IS14IvkBoots
+
+# ========================
+# Lawyer (militia)
+# ========================

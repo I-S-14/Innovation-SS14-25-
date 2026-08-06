@@ -22,26 +22,27 @@
   - NanotrasenRepresentativeEnvirosuit
   - NanotrasenRepresentativeEnvirogloves
 
-- type: roleLoadout
-  id: JobBlueshieldOfficer
-  groups:
-  - Inventory # CorvaxGoob-loadouts
-  - BlueshieldOfficerHead
-  - BlueshieldOfficerJumpsuit
-  - BlueshieldOfficerBackpack
-  - BlueshieldOfficerOuter
-  - BlueshieldOfficerNeck
-  - BlueshieldOfficerMask
-  - BlueshieldOfficerShoes
-  - BlueshieldOfficerGloves
-  - Trinkets
-  - Animals
-  - GroupSpeciesBreathTool
-  - SurvivalSecurity
-  # Goobstation - EE Plasmeme Change.
-  - BlueshieldOfficerEnvirohelm
-  - BlueshieldOfficerEnvirosuit
-  - BlueshieldOfficerEnvirogloves
+# IS14-edit: this role loadout now lives in Resources/Prototypes/_IS14/Loadouts
+#- type: roleLoadout
+#  id: JobBlueshieldOfficer
+#  groups:
+#  - Inventory # CorvaxGoob-loadouts
+#  - BlueshieldOfficerHead
+#  - BlueshieldOfficerJumpsuit
+#  - BlueshieldOfficerBackpack
+#  - BlueshieldOfficerOuter
+#  - BlueshieldOfficerNeck
+#  - BlueshieldOfficerMask
+#  - BlueshieldOfficerShoes
+#  - BlueshieldOfficerGloves
+#  - Trinkets
+#  - Animals
+#  - GroupSpeciesBreathTool
+#  - SurvivalSecurity
+#  # Goobstation - EE Plasmeme Change.
+#  - BlueshieldOfficerEnvirohelm
+#  - BlueshieldOfficerEnvirosuit
+#  - BlueshieldOfficerEnvirogloves
 
 - type: roleLoadout
   id: JobNanotrasenCareerTrainer
@@ -71,27 +72,28 @@
   - GroupHonkopsMask
   - GroupPocketTankDouble
 
-- type: roleLoadout
-  id: JobRoboticist
-  groups:
-  - Inventory # CorvaxGoob-loadouts
-  - GroupTankHarness
-  - RoboticistHead
-  - RoboticistGlasses # CorvaxGoob-loadouts: Glasses > RoboticistGlasses
-  - ScientistNeck
-  - RoboticistJumpsuit
-  - RoboticistBackpack
-  - RoboticistOuterClothing
-  - RoboticistGloves
-  - RoboticistShoes
-  - RoboticistPDA
-  - Survival
-  - Trinkets
-  - GroupSpeciesBreathTool
-  # Plasmaman
-  - ScientistEnvirohelm
-  - ScientistEnvirosuit
-  - ScientistEnvirogloves
+# IS14-edit: this role loadout now lives in Resources/Prototypes/_IS14/Loadouts
+#- type: roleLoadout
+#  id: JobRoboticist
+#  groups:
+#  - Inventory # CorvaxGoob-loadouts
+#  - GroupTankHarness
+#  - RoboticistHead
+#  - RoboticistGlasses # CorvaxGoob-loadouts: Glasses > RoboticistGlasses
+#  - ScientistNeck
+#  - RoboticistJumpsuit
+#  - RoboticistBackpack
+#  - RoboticistOuterClothing
+#  - RoboticistGloves
+#  - RoboticistShoes
+#  - RoboticistPDA
+#  - Survival
+#  - Trinkets
+#  - GroupSpeciesBreathTool
+#  # Plasmaman
+#  - ScientistEnvirohelm
+#  - ScientistEnvirosuit
+#  - ScientistEnvirogloves
 
 - type: roleLoadout
   id: JobBrigmedic

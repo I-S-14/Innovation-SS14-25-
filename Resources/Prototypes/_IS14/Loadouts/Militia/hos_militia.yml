@@ -1,0 +1,191 @@
+# hos militia loadouts
+
+- type: loadout
+  id: IS14HosArmorVest
+  equipment:
+    outerClothing: ClothingOuterArmorBasic
+
+- type: loadout
+  id: IS14HosBackpack
+  equipment:
+    back: ClothingBackpackSecurity
+
+- type: loadout
+  id: IS14HosBeret
+  equipment:
+    head: ClothingHeadIS14HosBeret
+
+- type: loadout
+  id: IS14HosBoots
+  equipment:
+    shoes: ClothingShoesBootsJack
+
+- type: loadout
+  id: IS14HosCap
+  equipment:
+    head: ClothingHeadIS14HosCap
+
+- type: loadout
+  id: IS14HosDuffel
+  equipment:
+    back: ClothingBackpackDuffelSecurity
+
+- type: loadout
+  id: IS14HosJacket
+  equipment:
+    outerClothing: ClothingOuterIS14HosJacket
+
+- type: loadout
+  id: IS14HosJumpsuit
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitIS14FormalHosMilitia
+  groupBy: "jumpsuit"
+
+- type: loadout
+  id: IS14HosJumpsuit_Formal
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitIS14FormalHosMilitia
+  groupBy: "jumpsuit"
+
+- type: loadout
+  id: IS14HosMilitiaBelt
+  equipment:
+    belt: ClothingBeltIS14HosMilitia
+
+- type: loadout
+  id: IS14HosMilitiaBeret
+  equipment:
+    head: ClothingHeadIS14HosMilitiaBeret
+
+- type: loadout
+  id: IS14HosMilitiaBoots
+  equipment:
+    shoes: ClothingShoesIS14MilitiaBoots
+
+- type: loadout
+  id: IS14HosMilitiaCap
+  equipment:
+    head: ClothingHeadIS14HosMilitiaCap
+
+- type: loadout
+  id: IS14HosMilitiaCloak
+  equipment:
+    neck: ClothingNeckIS14HosMilitiaCloak
+
+- type: loadout
+  id: IS14HosMilitiaGloves
+  equipment:
+    gloves: ClothingHandsIS14HosMilitiaGloves
+
+# ========================
+# Command secretary
+# ========================
+
+- type: loadout
+  id: IS14HosMilitiaGreatcoat
+  equipment:
+    outerClothing: ClothingOuterIS14HosMilitiaGreatcoat
+
+- type: loadout
+  id: IS14HosMilitiaJacket
+  equipment:
+    outerClothing: ClothingOuterIS14HosMilitiaJacket
+
+- type: loadout
+  id: IS14HosMilitiaJumpskirt
+  equipment:
+    jumpsuit: ClothingUniformJumpskirtIS14HosMilitia
+  groupBy: "jumpskirt"
+
+- type: loadout
+  id: IS14HosMilitiaJumpsuit
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitIS14HosMilitia
+  groupBy: "jumpsuit"
+
+- type: loadout
+  id: IS14HosMilitiaTacticalBoots
+  equipment:
+    shoes: ClothingShoesIS14HosMilitiaBoots
+
+- type: loadout
+  id: IS14HosSatchel
+  equipment:
+    back: ClothingBackpackSatchelSecurity
+
+- type: loadout
+  id: IS14HosTactical
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitIS14TacticalHosMilitia
+  groupBy: "jumpsuit"
+
+- type: loadoutGroup
+  id: IS14HosBackpack
+  name: loadout-group-backpack
+  loadouts:
+  - IS14HosBackpack
+  - IS14HosSatchel
+  - IS14HosDuffel
+
+- type: loadoutGroup
+  id: IS14HosBelt
+  name: loadout-group-belt
+  minLimit: 0
+  loadouts:
+  - IS14HosMilitiaBelt
+
+- type: loadoutGroup
+  id: IS14HosGloves
+  name: loadout-group-gloves
+  minLimit: 0
+  loadouts:
+  - IS14HosMilitiaGloves
+
+# ========================
+# Command secretary
+# ========================
+
+- type: loadoutGroup
+  id: IS14HosHead
+  name: loadout-group-head
+  minLimit: 0
+  loadouts:
+  - IS14HosCap
+  - IS14HosBeret
+  - IS14HosMilitiaCap
+  - IS14HosMilitiaBeret
+
+- type: loadoutGroup
+  id: IS14HosJumpsuit
+  name: loadout-group-jumpsuit
+  loadouts:
+  - IS14HosJumpsuit
+  - IS14HosJumpsuit_Formal
+  - IS14HosTactical
+  - IS14HosMilitiaJumpsuit
+  - IS14HosMilitiaJumpskirt
+
+- type: loadoutGroup
+  id: IS14HosNeck
+  name: loadout-group-neck
+  minLimit: 0
+  loadouts:
+  - IS14HosMilitiaCloak
+
+- type: loadoutGroup
+  id: IS14HosOuterClothing
+  name: loadout-group-outerclothing
+  minLimit: 0
+  loadouts:
+  - IS14HosJacket
+  - IS14HosArmorVest
+  - IS14HosMilitiaJacket
+  - IS14HosMilitiaGreatcoat
+
+- type: loadoutGroup
+  id: IS14HosShoes
+  name: loadout-group-shoes
+  loadouts:
+  - IS14HosBoots
+  - IS14HosMilitiaBoots
+  - IS14HosMilitiaTacticalBoots

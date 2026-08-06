@@ -1,0 +1,109 @@
+# chief medical officer loadouts
+
+- type: loadout
+  id: IS14CmoBeret
+  equipment:
+    head: ClothingHeadIS14CmoBeret
+
+- type: loadout
+  id: IS14CmoCloak
+  equipment:
+    neck: ClothingNeckIS14CmoCloak
+
+- type: loadout
+  id: IS14CmoFormalCloak
+  equipment:
+    neck: ClothingNeckIS14CmoFormalCloak
+
+- type: loadout
+  id: IS14CmoFormalRobe
+  equipment:
+    outerClothing: ClothingOuterIS14CmoFormalRobe
+
+# ========================
+# Research Director
+# ========================
+
+- type: loadout
+  id: IS14CmoJumpsuit
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitIS14Cmo
+  groupBy: "jumpsuit"
+
+- type: loadout
+  id: IS14CmoRobe
+  equipment:
+    outerClothing: ClothingOuterIS14CmoRobe
+
+- type: loadout
+  id: IS14MedicalDoctorBackpack
+  equipment:
+    back: ClothingBackpackMedical
+
+- type: loadout
+  id: IS14MedicalDoctorDuffel
+  equipment:
+    back: ClothingBackpackDuffelMedical
+
+# OuterClothing
+
+- type: loadout
+  id: IS14MedicalDoctorMessenger
+  equipment:
+    back: ClothingBackpackMessengerMedical
+
+- type: loadout
+  id: IS14MedicalDoctorSatchel
+  equipment:
+    back: ClothingBackpackSatchelMedical
+
+- type: loadoutGroup
+  id: IS14CmoHead
+  name: loadout-group-head
+  minLimit: 0
+  loadouts:
+  - IS14CmoBeret
+  - IS14GiftKnittedOrange
+
+- type: loadoutGroup
+  id: IS14CmoJumpsuit
+  name: loadout-group-jumpsuit
+  loadouts:
+  - IS14CmoJumpsuit
+
+- type: loadoutGroup
+  id: IS14CmoNeck
+  name: loadout-group-neck
+  minLimit: 0
+  loadouts:
+  - IS14CmoCloak
+  - IS14CmoFormalCloak
+
+- type: loadoutGroup
+  id: IS14CmoOuterClothing
+  name: loadout-group-outerclothing
+  minLimit: 0
+  loadouts:
+  - IS14CmoRobe
+  - IS14CmoFormalRobe
+
+- type: loadoutGroup
+  id: IS14CmoShoes
+  name: loadout-group-shoes
+  loadouts:
+  - IS14CommandShoes
+  - IS14GiftDressShoes
+  - IS14GiftTights
+
+# ========================
+# Research Director
+# ========================
+
+- type: loadoutGroup
+  id: IS14MedicalBackpack
+  name: loadout-group-medical-doctor-backpack
+  loadouts:
+  - IS14MedicalDoctorBackpack
+  - IS14MedicalDoctorSatchel
+  - IS14MedicalDoctorDuffel
+  - IS14MedicalDoctorMessenger # Frontier

@@ -1,0 +1,113 @@
+# salvage specialist loadouts
+
+- type: loadout
+  id: IS14ExpeditionerArmor
+  equipment:
+    outerClothing: ClothingOuterIS14ExpeditionerArmor
+
+- type: loadout
+  id: IS14ExpeditionerBackpack
+  equipment:
+    back: ClothingBackpackCargo
+
+- type: loadout
+  id: IS14ExpeditionerBeret
+  equipment:
+    head: ClothingHeadIS14ExpeditionerBeret
+
+- type: loadout
+  id: IS14ExpeditionerBoots
+  equipment:
+    shoes: ClothingShoesBootsWork
+
+- type: loadout
+  id: IS14ExpeditionerDuffel
+  equipment:
+    back: ClothingBackpackDuffelCargo
+
+- type: loadout
+  id: IS14ExpeditionerGloves
+  equipment:
+    gloves: ClothingHandsGlovesColorBlack
+
+# ========================
+# Senior expeditioner
+# ========================
+
+- type: loadout
+  id: IS14ExpeditionerJumpsuit
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitIS14Expeditioner
+  groupBy: "jumpsuit"
+
+- type: loadout
+  id: IS14ExpeditionerRespirator
+  equipment:
+    mask: ClothingMaskIS14ExpeditionerRespirator
+
+- type: loadout
+  id: IS14ExpeditionerSalvageJumpskirt
+  equipment:
+    jumpsuit: ClothingUniformJumpskirtSalvageSpecialist
+  groupBy: "jumpskirt"
+
+- type: loadout
+  id: IS14ExpeditionerSalvageJumpsuit
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitSalvageSpecialist
+  groupBy: "jumpsuit"
+
+- type: loadout
+  id: IS14ExpeditionerSatchel
+  equipment:
+    back: ClothingBackpackSatchelCargo
+
+- type: loadoutGroup
+  id: IS14ExpeditionerBackpack
+  name: loadout-group-backpack
+  loadouts:
+  - IS14ExpeditionerBackpack
+  - IS14ExpeditionerSatchel
+  - IS14ExpeditionerDuffel
+
+- type: loadoutGroup
+  id: IS14ExpeditionerGloves
+  name: loadout-group-gloves
+  minLimit: 0
+  loadouts:
+  - IS14ExpeditionerGloves
+
+- type: loadoutGroup
+  id: IS14ExpeditionerHead
+  name: loadout-group-head
+  minLimit: 0
+  loadouts:
+  - IS14ExpeditionerBeret
+
+- type: loadoutGroup
+  id: IS14ExpeditionerJumpsuit
+  name: loadout-group-jumpsuit
+  loadouts:
+  - IS14ExpeditionerJumpsuit
+  - IS14ExpeditionerSalvageJumpsuit
+  - IS14ExpeditionerSalvageJumpskirt
+
+- type: loadoutGroup
+  id: IS14ExpeditionerMask
+  name: loadout-group-mask
+  minLimit: 0
+  loadouts:
+  - IS14ExpeditionerRespirator
+
+- type: loadoutGroup
+  id: IS14ExpeditionerOuterClothing
+  name: loadout-group-outerclothing
+  minLimit: 0
+  loadouts:
+  - IS14ExpeditionerArmor
+
+- type: loadoutGroup
+  id: IS14ExpeditionerShoes
+  name: loadout-group-shoes
+  loadouts:
+  - IS14ExpeditionerBoots
