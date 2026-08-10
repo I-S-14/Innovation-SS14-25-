@@ -5,6 +5,7 @@ economy-transaction-vending-revenue = Revenue: { $item } ({ $machine })
 economy-transaction-vending-tax = Sales tax ({ $machine })
 economy-transaction-allocation-out = Allocation: { $target }
 economy-transaction-allocation-in = Allocation from the treasury
+economy-transaction-blood-donation = Blood donation: { $volume }u ({ $donor })
 
 # Payment terminal
 is14-payterm-window-title = Payment terminal

@@ -1,0 +1,149 @@
+# SPDX-FileCopyrightText: 2025 IS14
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# A donation room is three things that already mostly existed: an ordinary drip, a bed that
+# notices what the drip took out of whoever is on it, and a console the doctor runs it from.
+#
+# Nothing here draws blood. The drip does that, unchanged and unaware, and either of the
+# other two can be missing without breaking it — a smart bed with no console is a bed, and a
+# donation with no bed is a doctor filling a bag the old way.
+
+- type: entity
+  parent: MedicalBed
+  id: IS14SmartBed
+  name: умная кровать
+  description: >-
+    Койка с датчиками. Следит за пациентом на ней и за тем, сколько крови из него взяли.
+    Подключается к консоли донорства.
+  components:
+  - type: BloodDonationBed
+  - type: DeviceNetwork
+    deviceNetId: Wired
+    receiveFrequencyId: BasicDevice
+  - type: DeviceLinkSink
+    ports:
+    - IS14BloodDonationReceiver
+  - type: GuideHelp
+    guides:
+    - MedicalDoctor
+
+- type: entity
+  parent: BaseComputerAiAccess
+  id: IS14BloodDonationConsole
+  name: консоль донорства
+  description: >-
+    Пульт станции переливания. Показывает состояние донора на подключённой койке
+    и печатает наличные для выплаты.
+  components:
+  - type: BloodDonationConsole
+  - type: Sprite
+    layers:
+    - map: ["computerLayerBody"]
+      state: computer
+    - map: ["computerLayerKeyboard"]
+      state: generic_keyboard
+    - map: ["computerLayerScreen"]
+      state: medcomp
+    - map: ["computerLayerKeys"]
+      state: med_key
+    - map: [ "enum.WiresVisualLayers.MaintenancePanel" ]
+      state: generic_panel_open
+  # Range is the link range, not a working range: once paired the two stay paired wherever
+  # they are, so this only bounds how far apart they can be when somebody wires them up.
+  - type: DeviceLinkSource
+    range: 5
+    ports:
+    - IS14BloodDonationSender
+  - type: ActivatableUI
+    key: enum.BloodDonationConsoleUiKey.Key
+  # The console spends the department's money and pulls needles out of people, so it is
+  # medbay's and not the hallway's.
+  - type: ActivatableUIRequiresAccess
+  - type: AccessReader
+    access: [["Medical"]]
+  - type: UserInterface
+    interfaces:
+      enum.BloodDonationConsoleUiKey.Key:
+        type: BloodDonationConsoleBui
+      enum.WiresUiKey.Key:
+        type: WiresBoundUserInterface
+  - type: GuideHelp
+    guides:
+    - MedicalDoctor
+
+# Printed alongside the cash, so the handover leaves a trace somebody who was not in the room
+# can read. Records the rate as well as the total: the rate is the part a doctor sets, and
+# therefore the part worth being able to check.
+- type: entity
+  parent: Paper
+  id: IS14BloodDonationReceipt
+  name: квитанция донора
+  description: Отрывной талон станции переливания крови.
+  components:
+  - type: Sprite
+    sprite: Objects/Misc/bureaucracy.rsi
+    layers:
+    - state: paper_receipt
+    - state: paper_receipt_words
+      map: ["enum.PaperVisualLayers.Writing"]
+      visible: false
+    - state: paper_stamp-generic
+      map: ["enum.PaperVisualLayers.Stamp"]
+      visible: false
+
+# The shelf donated bags end up on. Bags and not a tank, and the reason is the compatibility
+# rule rather than laziness: pooled blood carries the union of every donor's antigens, so one
+# big vat of donations would be a vat nobody on the station could receive. Unlabelled, too —
+# only an analyser writes on a bag, so a stocked bank is still a shelf somebody has to test.
+
+- type: entity
+  parent: BaseStructure
+  id: IS14BloodBank
+  name: банк крови
+  description: >-
+    Холодильный шкаф для донорских пакетов. Что в них — шкаф не знает: это надо проверять.
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/smartfridge.rsi
+    state: smartfridge
+    snapCardinals: true
+  - type: BloodBank
+  - type: Storage
+    grid:
+    - 0,0,5,3
+    maxItemSize: Normal
+    whitelist:
+      components:
+      - IvPack
+  - type: ContainerContainer
+    containers:
+      storagebase: !type:Container
+  - type: UserInterface
+    interfaces:
+      enum.StorageUiKey.Key:
+        type: StorageBoundUserInterface
+  - type: InteractionOutline
+  - type: Clickable
+  - type: Anchorable
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: StructuralMetallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 200
+      behaviors:
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:EmptyAllContainersBehaviour
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: StaticPrice
+    price: 150

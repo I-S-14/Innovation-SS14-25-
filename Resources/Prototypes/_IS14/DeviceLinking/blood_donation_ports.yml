@@ -1,0 +1,18 @@
+# SPDX-FileCopyrightText: 2025 IS14
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# The console reads the bed, so the console is the source and the bed is the sink — the
+# same way the analysis console owns its analyser. Default-linked, so a network configurator
+# pairs them in one click and nobody has to know a port name to build a donation room.
+
+- type: sourcePort
+  id: IS14BloodDonationSender
+  name: signal-port-name-is14-blood-donation-sender
+  description: signal-port-description-is14-blood-donation-sender
+  defaultLinks: [ IS14BloodDonationReceiver ]
+
+- type: sinkPort
+  id: IS14BloodDonationReceiver
+  name: signal-port-name-is14-blood-donation-receiver
+  description: signal-port-description-is14-blood-donation-receiver

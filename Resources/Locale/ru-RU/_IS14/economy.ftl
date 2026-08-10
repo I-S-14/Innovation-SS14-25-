@@ -11,6 +11,7 @@ economy-transaction-atm-withdraw = Снятие наличных
 economy-transaction-atm-deposit = Внесение наличных
 economy-transaction-atm-transfer-out = Перевод на счёт #{ $target }
 economy-transaction-atm-transfer-in = Перевод со счёта #{ $source }
+economy-transaction-blood-donation = Донорство: { $volume }u крови ({ $donor })
 
 # Cash
 is14-stack-credit = кредиты

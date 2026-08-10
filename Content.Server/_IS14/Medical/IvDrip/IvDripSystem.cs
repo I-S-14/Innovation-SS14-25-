@@ -184,6 +184,9 @@ public sealed class IvDripSystem : SharedIvDripSystem
             LogType.ForceFeed,
             $"{ToPrettyString(ent):drip} drew {amount} units of blood from {ToPrettyString(patient):target}");
 
+        var drawnEvent = new IvBloodDrawnEvent(patient, amount);
+        RaiseLocalEvent(ent.Owner, ref drawnEvent);
+
         return true;
     }
 

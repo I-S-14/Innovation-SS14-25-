@@ -1,0 +1,189 @@
+<!--
+SPDX-FileCopyrightText: 2025 IS14
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<!--
+    Three stacked readings and two buttons, in a fixed footer so the payout can never end up
+    behind the thing that pays it: the readout scrolls, the controls do not.
+-->
+
+<controls:FancyWindow
+    xmlns="https://spacestation14.io"
+    xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Medical.BloodDonation"
+    xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
+    Title="{Loc 'is14-blood-donation-console-title'}"
+    SetSize="400 560"
+    MinSize="380 460">
+
+    <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True">
+
+        <!-- Patient bar: who is on the bed, and whether anything is happening to them -->
+        <PanelContainer HorizontalExpand="True">
+            <PanelContainer.PanelOverride>
+                <gfx:StyleBoxFlat BackgroundColor="#12212B" />
+            </PanelContainer.PanelOverride>
+            <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="8 6">
+                <TextureRect TexturePath="/Textures/Interface/Alerts/human_alive.rsi/health0.png"
+                             SetSize="20 20" Stretch="KeepAspectCentered"
+                             VerticalAlignment="Center" Margin="0 0 6 0" />
+                <Label Name="DonorLabel"
+                       VerticalAlignment="Center" HorizontalExpand="True"
+                       FontColorOverride="#8FD3C0" />
+                <PanelContainer Name="StatusPill" VerticalAlignment="Center">
+                    <Label Name="StatusLabel" Margin="8 2" />
+                </PanelContainer>
+            </BoxContainer>
+        </PanelContainer>
+
+        <PanelContainer StyleClasses="LowDivider" />
+
+        <!-- Readout -->
+        <ScrollContainer HorizontalExpand="True" VerticalExpand="True"
+                         HScrollEnabled="False">
+            <BoxContainer Orientation="Vertical" HorizontalExpand="True" Margin="10 8">
+
+                <Label Name="PlaceholderLabel"
+                       HorizontalAlignment="Center" Margin="0 60 0 0"
+                       FontColorOverride="#6E7F8C"
+                       Visible="False" />
+
+                <BoxContainer Name="ReadoutPanel" Orientation="Vertical"
+                              HorizontalExpand="True" Visible="False">
+
+                    <!-- ── Donor vitals ─────────────────────────────────── -->
+                    <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="0 0 0 4">
+                        <TextureRect TexturePath="/Textures/Interface/Alerts/bleed.rsi/bleed5.png"
+                                     SetSize="16 16" Stretch="KeepAspectCentered"
+                                     VerticalAlignment="Center" Margin="0 0 5 0" />
+                        <Label Text="{Loc 'is14-blood-donation-console-section-donor'}"
+                               StyleClasses="LabelKeyText" />
+                    </BoxContainer>
+
+                    <PanelContainer HorizontalExpand="True" Margin="0 0 0 10">
+                        <PanelContainer.PanelOverride>
+                            <gfx:StyleBoxFlat BackgroundColor="#141C24" />
+                        </PanelContainer.PanelOverride>
+                        <BoxContainer Orientation="Vertical" HorizontalExpand="True" Margin="8 7">
+                            <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
+                                <Label Text="{Loc 'is14-blood-donation-console-blood-level'}"
+                                       FontColorOverride="#7A8B99" HorizontalExpand="True"
+                                       VerticalAlignment="Center" />
+                                <Label Name="BloodLabel" VerticalAlignment="Center"
+                                       StyleClasses="LabelBig" />
+                            </BoxContainer>
+                            <ProgressBar Name="BloodBar" MinSize="0 10" Margin="0 5 0 0"
+                                         MinValue="0" MaxValue="1" Value="1" />
+                        </BoxContainer>
+                    </PanelContainer>
+
+                    <!-- ── The draw itself ──────────────────────────────── -->
+                    <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="0 0 0 4">
+                        <TextureRect TexturePath="/Textures/_IS14/Structures/Machines/iv_drip.rsi/iv_drip.png"
+                                     SetSize="16 16" Stretch="KeepAspectCentered"
+                                     VerticalAlignment="Center" Margin="0 0 5 0" />
+                        <Label Text="{Loc 'is14-blood-donation-console-section-draw'}"
+                               StyleClasses="LabelKeyText" />
+                    </BoxContainer>
+
+                    <PanelContainer HorizontalExpand="True" Margin="0 0 0 10">
+                        <PanelContainer.PanelOverride>
+                            <gfx:StyleBoxFlat BackgroundColor="#141C24" />
+                        </PanelContainer.PanelOverride>
+                        <BoxContainer Orientation="Vertical" HorizontalExpand="True" Margin="8 7">
+                            <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
+                                <Label Text="{Loc 'is14-blood-donation-console-pack'}"
+                                       FontColorOverride="#7A8B99" HorizontalExpand="True"
+                                       VerticalAlignment="Center" />
+                                <Label Name="PackLabel" VerticalAlignment="Center" />
+                            </BoxContainer>
+                            <ProgressBar Name="PackBar" MinSize="0 10" Margin="0 5 0 7"
+                                         MinValue="0" MaxValue="1" Value="0" />
+
+                            <PanelContainer StyleClasses="LowDivider" Margin="0 0 0 7" />
+
+                            <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
+                                <Label Text="{Loc 'is14-blood-donation-console-drawn'}"
+                                       FontColorOverride="#7A8B99" HorizontalExpand="True" />
+                                <Label Name="DrawnLabel" StyleClasses="LabelBig"
+                                       FontColorOverride="#C4564E" />
+                            </BoxContainer>
+
+                            <PanelContainer StyleClasses="LowDivider" Margin="0 7 0 7" />
+
+                            <CheckBox Name="AutoStopCheck"
+                                      Text="{Loc 'is14-blood-donation-console-autostop'}"
+                                      HorizontalExpand="True" />
+                            <Label Name="AutoStopHint"
+                                   FontColorOverride="#6E7F8C" Margin="0 2 0 0" />
+                        </BoxContainer>
+                    </PanelContainer>
+
+                    <!-- ── What the station owes ────────────────────────── -->
+                    <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="0 0 0 4">
+                        <TextureRect TexturePath="/Textures/Objects/Misc/coins.rsi/coin_gold.png"
+                                     SetSize="16 16" Stretch="KeepAspectCentered"
+                                     VerticalAlignment="Center" Margin="0 0 5 0" />
+                        <Label Text="{Loc 'is14-blood-donation-console-section-payment'}"
+                               StyleClasses="LabelKeyText" />
+                    </BoxContainer>
+
+                    <PanelContainer HorizontalExpand="True">
+                        <PanelContainer.PanelOverride>
+                            <gfx:StyleBoxFlat BackgroundColor="#141C24" />
+                        </PanelContainer.PanelOverride>
+                        <BoxContainer Orientation="Vertical" HorizontalExpand="True" Margin="8 7">
+                            <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="0 0 0 5">
+                                <Label Text="{Loc 'is14-blood-donation-console-rate'}"
+                                       FontColorOverride="#7A8B99" HorizontalExpand="True"
+                                       VerticalAlignment="Center" />
+                                <SpinBox Name="RateSpin" MinSize="110 0" VerticalAlignment="Center" />
+                            </BoxContainer>
+
+                            <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
+                                <Label Text="{Loc 'is14-blood-donation-console-quota'}"
+                                       FontColorOverride="#7A8B99" HorizontalExpand="True" />
+                                <Label Name="QuotaLabel" />
+                            </BoxContainer>
+                            <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="0 3 0 7">
+                                <Label Text="{Loc 'is14-blood-donation-console-purity'}"
+                                       FontColorOverride="#7A8B99" HorizontalExpand="True" />
+                                <Label Name="PurityLabel" />
+                            </BoxContainer>
+
+                            <PanelContainer StyleClasses="LowDivider" Margin="0 0 0 7" />
+
+                            <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
+                                <Label Text="{Loc 'is14-blood-donation-console-payout'}"
+                                       HorizontalExpand="True" VerticalAlignment="Center" />
+                                <Label Name="PayoutLabel" StyleClasses="LabelBig"
+                                       FontColorOverride="#3ABB3A" VerticalAlignment="Center" />
+                            </BoxContainer>
+                        </BoxContainer>
+                    </PanelContainer>
+                </BoxContainer>
+            </BoxContainer>
+        </ScrollContainer>
+
+        <!-- Fixed controls: never scrolled away from, never overlapped -->
+        <PanelContainer StyleClasses="LowDivider" />
+        <PanelContainer HorizontalExpand="True">
+            <PanelContainer.PanelOverride>
+                <gfx:StyleBoxFlat BackgroundColor="#12212B" />
+            </PanelContainer.PanelOverride>
+            <BoxContainer Orientation="Vertical" HorizontalExpand="True" Margin="10 8">
+                <Label Name="BlockedLabel"
+                       HorizontalAlignment="Center" Margin="0 0 0 6"
+                       FontColorOverride="#BB8A3A"
+                       Visible="False" />
+                <Button Name="StopBtn" Text="{Loc 'is14-blood-donation-console-stop'}"
+                        HorizontalExpand="True" MinSize="0 32" Margin="0 0 0 6" />
+                <Button Name="PayBtn" Text="{Loc 'is14-blood-donation-console-pay'}"
+                        HorizontalExpand="True" MinSize="0 40"
+                        StyleClasses="ButtonColorGreen" />
+            </BoxContainer>
+        </PanelContainer>
+    </BoxContainer>
+</controls:FancyWindow>
