@@ -6,11 +6,18 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     xmlns="https://spacestation14.io"
     xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
     xmlns:customControls="clr-namespace:Content.Client.Administration.UI.CustomControls"
-    MinWidth="800"
-    MinHeight="525"> <!-- Shitmed Change -->
+    xmlns:is14="clr-namespace:Content.Client._IS14.Medical.Circulation"
+    xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+    MinWidth="720"
+    MinHeight="600"> <!--IS14-change: было 600x525. Слева теперь кукла и сетка 2x2 в одной
+                          строке, а в панели куклы появляются кнопка «назад» и подпись части. -->
     <BoxContainer Orientation="Vertical" VerticalExpand="True">
+        <!--IS14-change: выбор режима убран целиком. Органы читаются на вкладке тела, а химикаты
+            анализатор не показывает; кнопки остаются в дереве, потому что код-behind на них
+            подписан, но не показываются. -->
         <BoxContainer
             Orientation="Horizontal"
+            Visible="False"
             Margin="8 10 8 10">
             <Button
                 Name="BodyButton"
@@ -19,13 +26,16 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                 MinHeight="30"
                 HorizontalExpand="True"
                 StyleClasses="OpenRight"/>
+            <!--IS14-change start — вкладка органов убрана: схема переехала на вкладку тела -->
             <Button
                 Name="OrgansButton"
                 Text="{Loc 'health-analyzer-window-organs'}"
                 MinWidth="130"
                 MinHeight="30"
                 HorizontalExpand="True"
+                Visible="False"
                 StyleClasses="OpenBoth"/>
+            <!--IS14-change end-->
             <Button
                 Name="ChemicalsButton"
                 Text="{Loc 'health-analyzer-window-chemicals'}"
@@ -36,6 +46,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         </BoxContainer>
         <PanelContainer StyleClasses="LowDivider"/>
         <BoxContainer Orientation="Horizontal" VerticalExpand="True">
+            <!--IS14-change: левая колонка по ширине содержимого, весь остаток отдаём правой -->
             <ScrollContainer
                 Margin="5 5 5 5"
                 ReturnMeasure="True"
@@ -47,20 +58,48 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                     <Label
                         Name="NoPatientDataText"
                         Text="{Loc health-analyzer-window-no-patient-data-text}"/>
-                    <!-- Shitmed Change Start -->
-                    <Button Name="ReturnButton"
-                        Text="{Loc 'health-analyzer-window-return-button-text'}"
-                        Margin="0 0 0 10"
-                        HorizontalExpand="False"/>
-                    <!-- Shitmed Change End -->
+                    <!--IS14-change start — блок кровообращения: ЭКГ, метрики доставки, диагнозы.
+                        Вся логика в самом контроле, см. Docs/_IS14/bloodloss-design.md -->
+                    <!--IS14-change end-->
                     <BoxContainer
                         Name="PatientDataContainer"
                         Margin="0 16 0 5"
                         Orientation="Vertical">
                         <!-- Shitmed Change Start -->
+                        <!--IS14-change start — шапка пациента отдельно и сверху, а не сбоку от куклы -->
+                        <controls:StripeBack HorizontalExpand="True" Margin="0 0 0 6"
+                                            HasTopEdge="True" HasBottomEdge="True">
+                            <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="8 5">
+                                <RichTextLabel Name="NameLabel" VerticalAlignment="Center" HorizontalExpand="True" />
+                                <Label Name="SpeciesLabel" StyleClasses="LabelSubText"
+                                       VerticalAlignment="Center" HorizontalAlignment="Right"
+                                       Margin="8 0 0 0" />
+                            </BoxContainer>
+                        </controls:StripeBack>
+                        <!--IS14-change end-->
+
+                        <!--IS14-change: заголовки секций одним стилем во всём анализаторе -->
+                        <Label Text="{Loc 'is14-analyzer-section-general'}" StyleClasses="LabelSubText" FontColorOverride="#A88B5E" Margin="0 0 0 3" />
                         <BoxContainer Orientation="Horizontal"
                                     Margin="0 0 0 5">
-                            <PanelContainer>
+                            <!--IS14-change start — кукла в выделенной панели, дашборд справа от неё -->
+                            <PanelContainer VerticalAlignment="Top">
+                                <PanelContainer.PanelOverride>
+                                    <gfx:StyleBoxFlat BackgroundColor="#0F1620" />
+                                </PanelContainer.PanelOverride>
+                            <BoxContainer Orientation="Vertical" Margin="4 4" SetSize="118 164">
+                                <!-- Слот постоянной высоты: кнопка появляется и исчезает, но
+                                     место под неё занято всегда, иначе кукла ездит вверх-вниз. -->
+                                <Control SetHeight="26">
+                                    <Button Name="ReturnButton"
+                                            Text="{Loc 'health-analyzer-window-return-button-text'}"
+                                            StyleClasses="ButtonSmall"
+                                            HorizontalExpand="True" SetHeight="22" />
+                                </Control>
+                            <!-- Ровно 96 в ширину: SpriteView центрируется, а PartView с кнопками
+                                 привязан к левому краю, поэтому оверлей обязан совпадать с куклой,
+                                 иначе нажатия уезжают мимо конечностей. -->
+                            <PanelContainer SetSize="96 96" HorizontalAlignment="Center">
                                 <SpriteView OverrideDirection="South"
                                             Name="SpriteView"
                                             Access="Public"
@@ -201,25 +240,22 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                                         </TextureButton>
                                     </PanelContainer>
                                 </PanelContainer>
+                                <TextureRect Name="NoDataTex"
+                                             Access="Public"
+                                             SetSize="64 64"
+                                             Visible="false"
+                                             Stretch="KeepAspectCentered"
+                                             HorizontalAlignment="Center"
+                                             VerticalAlignment="Center"
+                                             TexturePath="/Textures/Interface/Misc/health_analyzer_out_of_range.png"/>
                             </PanelContainer>
-                            <TextureRect Name="NoDataTex"
-                                        Access="Public"
-                                        SetSize="64 64"
-                                        Visible="false"
-                                        Stretch="KeepAspectCentered"
-                                        TexturePath="/Textures/Interface/Misc/health_analyzer_out_of_range.png"/>
-                            <BoxContainer Margin="5 0 0 0"
-                                        Orientation="Vertical"
-                                        VerticalAlignment="Top">
-                                <RichTextLabel Name="NameLabel"
-                                            SetWidth="150"/>
-                                <Label Name="SpeciesLabel"
-                                    VerticalAlignment="Top"
-                                    StyleClasses="LabelSubText"/>
-                                <Label Name="PartNameLabel"
-                                    VerticalAlignment="Bottom"
-                                    StyleClasses="LabelSubText"/>
+                                <Control SetHeight="34">
+                                    <RichTextLabel Name="PartNameLabel" StyleClasses="LabelSubText"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Control>
                             </BoxContainer>
+                            </PanelContainer>
+
                             <Label Margin="0 0 5 0"
                                 HorizontalExpand="True"
                                 HorizontalAlignment="Right"
@@ -227,25 +263,84 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                                 VerticalAlignment="Top"
                                 Name="ScanModeLabel"
                                 Text="{Loc 'health-analyzer-window-entity-unknown-text'}"/>
+                            <BoxContainer Orientation="Vertical" HorizontalExpand="True"
+                                          VerticalAlignment="Top" Margin="6 0 0 0">
+                        <!--IS14-change start — четыре показателя компактными плитками.
+                            Подписи заменены иконками: длинные строки вроде «Общие повреждения»
+                            и раздували ширину. Смысл несут иконка, единицы измерения и подсказка.
+                            Имена меток сохранены — код-behind по-прежнему пишет в них текст. -->
+                        <GridContainer Columns="2">
+
+                            <PanelContainer SetSize="92 82" Margin="0 0 2 0"
+                                            ToolTip="{Loc 'health-analyzer-window-entity-status-text'}">
+                                <PanelContainer.PanelOverride>
+                                    <gfx:StyleBoxFlat BackgroundColor="#141C24" />
+                                </PanelContainer.PanelOverride>
+                                <BoxContainer Orientation="Vertical" Margin="5 4" HorizontalExpand="True">
+                                    <AnimatedTextureRect Name="IS14StatusIcon" SetSize="38 38"
+                                                         HorizontalAlignment="Center" Margin="0 0 0 1" />
+                                    <Label Name="StatusLabel" HorizontalAlignment="Center" />
+                                </BoxContainer>
+                            </PanelContainer>
+
+                            <PanelContainer SetSize="92 82" Margin="2 0"
+                                            ToolTip="{Loc 'health-analyzer-window-entity-temperature-text'}">
+                                <PanelContainer.PanelOverride>
+                                    <gfx:StyleBoxFlat BackgroundColor="#141C24" />
+                                </PanelContainer.PanelOverride>
+                                <BoxContainer Orientation="Vertical" Margin="5 4" HorizontalExpand="True">
+                                    <AnimatedTextureRect Name="IS14TempIcon" SetSize="38 38"
+                                                         HorizontalAlignment="Center" Margin="0 0 0 1" />
+                                    <Label Name="TemperatureLabel" HorizontalAlignment="Center" />
+                                </BoxContainer>
+                            </PanelContainer>
+
+                            <PanelContainer SetSize="92 82" Margin="2 0"
+                                            ToolTip="{Loc 'health-analyzer-window-entity-blood-level-text'}">
+                                <PanelContainer.PanelOverride>
+                                    <gfx:StyleBoxFlat BackgroundColor="#141C24" />
+                                </PanelContainer.PanelOverride>
+                                <BoxContainer Orientation="Vertical" Margin="5 4" HorizontalExpand="True">
+                                    <AnimatedTextureRect Name="IS14BloodIcon" SetSize="38 38"
+                                                         HorizontalAlignment="Center" Margin="0 0 0 1" />
+                                    <Label Name="BloodLabel" HorizontalAlignment="Center" />
+                                </BoxContainer>
+                            </PanelContainer>
+
+                            <PanelContainer SetSize="92 82" Margin="2 0 0 0"
+                                            ToolTip="{Loc 'health-analyzer-window-entity-damage-total-text'}">
+                                <PanelContainer.PanelOverride>
+                                    <gfx:StyleBoxFlat BackgroundColor="#141C24" />
+                                </PanelContainer.PanelOverride>
+                                <BoxContainer Orientation="Vertical" Margin="5 4" HorizontalExpand="True">
+                                    <AnimatedTextureRect Name="IS14DamageIcon" SetSize="38 38"
+                                                         HorizontalAlignment="Center" Margin="0 0 0 1" />
+                                    <BoxContainer Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Label Name="DamageLabel" VerticalAlignment="Center" />
+                                        <Label Text="/" StyleClasses="LabelSubText"
+                                               VerticalAlignment="Center" Margin="2 0" />
+                                        <Label Name="DamageLabelVital" VerticalAlignment="Center"
+                                               StyleClasses="LabelSubText" />
+                                    </BoxContainer>
+                                    <!-- Подписи оставлены пустыми: код-behind переключает их видимость,
+                                         поэтому убрать их совсем нельзя, а текст в плитке лишний. -->
+                                    <Label Name="DamageLabelHeading" Text="" />
+                                    <Label Name="DamageLabelHeadingVital" Text="" />
+                                </BoxContainer>
+                            </PanelContainer>
+                        </GridContainer>
+                        <!--IS14-change end-->
+                            </BoxContainer>
+                            <!--IS14-change end-->
                         </BoxContainer>
+
+                        <!--IS14-change start — ЭКГ между выбором конечности и блоком показателей -->
+                        <is14:CirculationPanel Name="IS14Circulation" Visible="False" />
+                        <!--IS14-change end-->
 
                         <PanelContainer StyleClasses="LowDivider"/>
 
-                        <GridContainer Margin="0 5 0 0"
-                                    Columns="2">
-                            <Label Text="{Loc 'health-analyzer-window-entity-status-text'}"/>
-                            <Label Name="StatusLabel"/>
-                            <Label Text="{Loc 'health-analyzer-window-entity-temperature-text'}"/>
-                            <Label Name="TemperatureLabel"/>
-                            <Label Text="{Loc 'health-analyzer-window-entity-blood-level-text'}"/>
-                            <Label Name="BloodLabel"/>
-                            <Label Name="DamageLabelHeading" Text="{Loc 'health-analyzer-window-entity-damage-total-text'}"/>
-                            <Label Name="DamageLabel"/>
-                            <!-- Goobstation start -->
-                            <Label Name="DamageLabelHeadingVital" Text="{Loc 'health-analyzer-window-entity-damage-vital-text'}"/>
-                            <Label Name="DamageLabelVital"/>
-                            <!-- Goobstation end -->
-                        </GridContainer>
+
                     </BoxContainer>
 
                     <PanelContainer Name="AlertsDivider"
@@ -263,6 +358,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                     <PanelContainer StyleClasses="LowDivider"/>
                     <!-- Shitmed Change End -->
 
+                    <Label Text="{Loc 'is14-analyzer-section-damage'}" StyleClasses="LabelSubText" FontColorOverride="#A88B5E" Margin="0 6 0 3" />
                     <BoxContainer
                         Name="GroupsContainer"
                         Margin="0 5 0 5"
@@ -283,20 +379,30 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
                 </BoxContainer>
             </ScrollContainer>
-            <customControls:VSeparator VerticalExpand="True" StyleClasses="LowDivider" />
+            <!--IS14-change start — правая колонка прячется целиком на вкладке органов -->
+            <customControls:VSeparator Name="IS14RightDivider" VerticalExpand="True" StyleClasses="LowDivider" />
             <ScrollContainer
-                Margin="16 16 16 16"
+                Name="IS14RightColumn"
+                Margin="10 16 10 16"
                 ReturnMeasure="True"
                 VerticalExpand="True"
-                HorizontalExpand="True">
+                HorizontalExpand="True"
+                MinWidth="340">
+            <!--IS14-change end-->
                 <BoxContainer
                     Name="ConditionsContainer"
                     VerticalExpand="True"
                     HorizontalExpand="True"
                     Orientation="Vertical">
+                    <!--IS14-change start — диагнозы и схема органов живут в правой колонке,
+                        над блоком состояния -->
+                    <is14:DiagnosisPanel Name="IS14Diagnoses" />
+                    <is14:OrganChartPanel Name="IS14Organs" />
+                    <PanelContainer StyleClasses="LowDivider" Margin="0 8 0 8" />
+                    <!--IS14-change end-->
                     <RichTextLabel
                         Name="ConditionsLabel"
-                        Text="{Loc 'health-analyzer-window-conditions'}"
+                        Text="{Loc 'is14-analyzer-section-pathologies'}"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         HorizontalExpand="True"/>

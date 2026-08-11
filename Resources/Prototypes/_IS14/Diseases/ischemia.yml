@@ -1,0 +1,64 @@
+# SPDX-FileCopyrightText: 2025 IS14
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# IS14 conditions are entities living in a container on the patient, with a stage each.
+#
+# Deliberately separate from Goobstation's disease system: that one is aimed at virology,
+# contagion and mutation and is being actively developed elsewhere, so tying our heart disease
+# to it would mean our medicine breaking every time their virology moves. Everything here is
+# prefixed IS14 so the two can never share a component id.
+
+- type: entity
+  id: IS14BaseDisease
+  abstract: true
+  components:
+  - type: Tag
+    tags:
+    - HideContextMenu
+
+# Ischaemic heart disease: the price of compensation.
+#
+# Driven by the heart working beyond its resting rate (see IschemiaSystem), which means it is
+# caused by the very thing keeping the patient alive. The sharp edge is heartCeiling: an
+# unhealthy heart cannot race, so it cannot compensate, so the wound the patient already had
+# becomes enough to put them into shock.
+#
+# Stage 4 — cardiac arrest, which this model expresses as heartCeiling 0 — is intentionally
+# absent until the defibrillator is wired in. Without that, a patient would arrest, die, get
+# revived and arrest again with the illness untouched.
+
+- type: entity
+  parent: IS14BaseDisease
+  id: IS14DiseaseIschemia
+  name: ишемическая болезнь сердца
+  description: Сердце, слишком долго работавшее на пределе.
+  components:
+  - type: IS14Disease
+    label: is14-disease-ischemia
+    # Изнашивается именно сердце, и урон идёт по его целостности, а не абстрактным типом урона.
+    targetOrgan: heart
+    stages:
+
+    # Кислородный долг. Диагноз без последствий: сходит сам за пару минут покоя.
+    - threshold: 10
+      label: is14-disease-ischemia-stage-1
+      regressRate: 0.2
+
+    # Стенокардия. Потолок ЧСС падает с 200 до 160 — компенсировать кровопотерю нечем.
+    # Урона почти нет: боль есть, мышца ещё жива.
+    - threshold: 30
+      label: is14-disease-ischemia-stage-2
+      heartCeiling: 160
+      regressRate: 0.05
+      organDamage: 3
+
+    # Инфаркт. Мышца отмирает — здесь урон уже настоящий и сам не проходит.
+    - threshold: 60
+      label: is14-disease-ischemia-stage-3
+      heartCeiling: 120
+      demandMultiplier: 1.1
+      effects:
+      - StatusEffectWoozy
+      regressRate: 0
+      organDamage: 9

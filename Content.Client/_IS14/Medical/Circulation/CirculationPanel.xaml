@@ -1,0 +1,36 @@
+<!--
+SPDX-FileCopyrightText: 2025 IS14
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<BoxContainer
+    xmlns="https://spacestation14.io"
+    xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Medical.Circulation"
+    Orientation="Vertical"
+    HorizontalExpand="True"
+    Margin="0 8 0 0">
+
+    <!-- Heading with the one number worth reading aloud -->
+    <Label Text="{Loc 'is14-analyzer-section-circulation'}"
+           StyleClasses="LabelSubText" FontColorOverride="#A88B5E" Margin="0 0 0 4" />
+
+    <!-- The trace -->
+    <PanelContainer HorizontalExpand="True">
+        <PanelContainer.PanelOverride>
+            <gfx:StyleBoxFlat BackgroundColor="#05100A" />
+        </PanelContainer.PanelOverride>
+        <BoxContainer Orientation="Vertical" HorizontalExpand="True">
+            <is14:EcgControl Name="Ecg" HorizontalExpand="True" />
+            <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="6 0 6 4">
+                <Label Name="RateLabel" StyleClasses="LabelBig" />
+                <Label Name="StageLabel" VerticalAlignment="Bottom" Margin="4 0 0 0" />
+                <Control HorizontalExpand="True" />
+                <Label Name="DeliveryLabel" VerticalAlignment="Bottom" Margin="0 0 8 0" />
+                <Label Name="SaturationLabel" VerticalAlignment="Bottom" />
+            </BoxContainer>
+        </BoxContainer>
+    </PanelContainer>
+
+</BoxContainer>

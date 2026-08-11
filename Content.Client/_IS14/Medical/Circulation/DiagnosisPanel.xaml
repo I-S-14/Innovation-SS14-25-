@@ -1,0 +1,24 @@
+<!--
+SPDX-FileCopyrightText: 2025 IS14
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<BoxContainer
+    xmlns="https://spacestation14.io"
+    Orientation="Vertical"
+    HorizontalExpand="True"
+    Margin="0 0 0 8">
+
+    <!--
+        The root stays visible and only its contents are toggled. Robust does not tick
+        FrameUpdate on a hidden control, so a panel that hides itself can never decide to come
+        back — which is exactly how this one vanished.
+    -->
+    <BoxContainer Name="Content" Orientation="Vertical" HorizontalExpand="True" Visible="False">
+        <Label Text="{Loc 'is14-analyzer-section-diagnoses'}"
+               StyleClasses="LabelSubText" FontColorOverride="#A88B5E" Margin="0 0 0 3" />
+        <BoxContainer Name="DiagnosisList" Orientation="Vertical" HorizontalExpand="True" />
+        <PanelContainer StyleClasses="LowDivider" Margin="0 6 0 0" />
+    </BoxContainer>
+</BoxContainer>

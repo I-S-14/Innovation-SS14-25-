@@ -26,9 +26,8 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                 <gfx:StyleBoxFlat BackgroundColor="#12212B" />
             </PanelContainer.PanelOverride>
             <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="8 6">
-                <TextureRect TexturePath="/Textures/Interface/Alerts/human_alive.rsi/health0.png"
-                             SetSize="20 20" Stretch="KeepAspectCentered"
-                             VerticalAlignment="Center" Margin="0 0 6 0" />
+                <AnimatedTextureRect Name="DonorIcon" SetSize="20 20"
+                                     VerticalAlignment="Center" Margin="0 0 6 0" />
                 <Label Name="DonorLabel"
                        VerticalAlignment="Center" HorizontalExpand="True"
                        FontColorOverride="#8FD3C0" />
@@ -81,9 +80,8 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
                     <!-- ── The draw itself ──────────────────────────────── -->
                     <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="0 0 0 4">
-                        <TextureRect TexturePath="/Textures/_IS14/Structures/Machines/iv_drip.rsi/iv_drip.png"
-                                     SetSize="16 16" Stretch="KeepAspectCentered"
-                                     VerticalAlignment="Center" Margin="0 0 5 0" />
+                        <AnimatedTextureRect Name="DripIcon" SetSize="16 16"
+                                             VerticalAlignment="Center" Margin="0 0 5 0" />
                         <Label Text="{Loc 'is14-blood-donation-console-section-draw'}"
                                StyleClasses="LabelKeyText" />
                     </BoxContainer>

@@ -17,8 +17,11 @@ public class StaticSpriteView : Control
     private SharedTransformSystem? _transform;
     protected readonly IEntityManager EntMan;
 
-    private SpriteComponent? _cachedSprite;
+    //IS14-change start — поле _cachedSprite удалено: ему нигде не присваивалось значение
+    // (компилятор сообщал об этом CS0649), а Draw его разыменовывал. Спрайт и так доступен
+    // из ResolveEntity(), поэтому лишнего состояния тут быть не должно.
     private readonly Angle _cachedWorldRotation = Angle.Zero;
+    //IS14-change end
 
     [ViewVariables]
     public SpriteComponent? Sprite => Entity?.Comp;
@@ -277,9 +280,13 @@ public class StaticSpriteView : Control
         };
         var stretch = MathF.Min(stretchVec.X, stretchVec.Y);
 
+        //IS14-change start — берём смещение у разрешённого спрайта вместо всегда-null поля.
+        // Ветка SpriteOffset == false — та, что выполняется по умолчанию, так что прежний код
+        // означал гарантированный NullReferenceException, а не «возможный».
         var offset = SpriteOffset
             ? Vector2.Zero
-            : - (-_eyeRotation).RotateVec(_cachedSprite.Offset * _scale) * new Vector2(1, -1) * EyeManager.PixelsPerMeter;
+            : - (-_eyeRotation).RotateVec(ent.Comp.Offset * _scale) * new Vector2(1, -1) * EyeManager.PixelsPerMeter;
+        //IS14-change end
 
         var position = PixelSize / 2 + offset * stretch * UIScale;
         var scale = Scale * UIScale * stretch;

@@ -101,7 +101,12 @@ public abstract partial class SharedBloodstreamSystem : EntitySystem
 
                 // deal bloodloss damage if their blood level is below a threshold.
                 var bloodPercentage = GetBloodLevel(uid);
-                if (bloodPercentage < bloodstream.BloodlossThreshold)
+                //IS14-change start — тела со своим контуром кровообращения считают урон и лечение
+                // сами, по доставке кислорода, а не по одному лишь уровню крови.
+                // См. Docs/_IS14/bloodloss-design.md и CirculationSystem.
+                var is14Circulation = HasComp<Content.Shared._IS14.Medical.Circulation.CirculationComponent>(uid);
+                if (bloodPercentage < bloodstream.BloodlossThreshold && !is14Circulation)
+                //IS14-change end
                 {
                     // bloodloss damage is based on the base value, and modified by how low your blood level is.
                     var amt = bloodstream.BloodlossDamage / (0.1f + bloodPercentage);
@@ -124,7 +129,9 @@ public abstract partial class SharedBloodstreamSystem : EntitySystem
                 // Multiplying by 2 is arbitrary but works for this case, it just prevents the time from running out
                 _status.TrySetStatusEffectDuration(uid, Bloodloss);
                 }
-                else if (!_mobStateSystem.IsDead(uid))
+                //IS14-change start — вторая половина той же развилки
+                else if (!_mobStateSystem.IsDead(uid) && !is14Circulation)
+                //IS14-change end
                 {
                     // If they're healthy, we'll try and heal some bloodloss instead.
                     _damageableSystem.TryChangeDamage(

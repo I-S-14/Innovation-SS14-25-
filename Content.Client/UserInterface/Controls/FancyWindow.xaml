@@ -13,7 +13,8 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         <Control>
             <PanelContainer StyleClasses="WindowHeadingBackground" Name="WindowHeader" />
             <BoxContainer Margin="4 2 4 0" Orientation="Horizontal">
-                <Label Name="WindowTitle"
+                <!--IS14-change: доступ наружу, чтобы наследник мог красить заголовок по статусу -->
+                <Label Name="WindowTitle" Access="Public"
                        HorizontalExpand="True" VAlign="Center" StyleClasses="FancyWindowTitle" ClipText="true" />
                 <TextureButton Name="HelpButton" StyleClasses="windowHelpButton" VerticalAlignment="Center" Disabled="True" Visible="False" Access="Public" />
                 <TextureButton Name="CloseButton" StyleClasses="windowCloseButton"

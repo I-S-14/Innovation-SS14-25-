@@ -276,6 +276,12 @@
   id: BaseMobSpeciesOrganic
   abstract: true
   components:
+  #IS14-change start — контур доставки кислорода: ЧСС, сатурация, стадии шока.
+  # Ставится на органических гуманоидов, а не на всё живое: модель предполагает
+  # дыхание и осмысленные симптомы. См. Docs/_IS14/bloodloss-design.md
+  - type: Circulation
+  - type: IS14DiseaseCarrier
+  #IS14-change end
   - type: Absorbable # Goobstation - changelings
   - type: OfferItem # CorvaxGoob-Offer
   - type: WraithAbsorbable # Goobstation - wraith

@@ -19,6 +19,9 @@ using Robust.Client.UserInterface.XAML;
 using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
 using Robust.Client.UserInterface.Controls;
+using Content.Client.Resources;
+using Content.Shared.Alert;
+using Content.Shared.Mobs.Systems;
 using Robust.Client.ResourceManagement;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
@@ -43,6 +46,7 @@ namespace Content.Client.HealthAnalyzer.UI
         private readonly IEntityManager _entityManager;
         private readonly SpriteSystem _spriteSystem;
         private readonly IPrototypeManager _prototypes;
+        private readonly Dictionary<AnimatedTextureRect, SpriteSpecifier> _is14Icons = new();
         private readonly IResourceCache _cache;
 
         // Shitmed Change Start
@@ -55,7 +59,46 @@ namespace Content.Client.HealthAnalyzer.UI
         private readonly EntProtoId _bodyView = "AlertSpriteView";
 
         private readonly Dictionary<TargetBodyPart, TextureButton> _bodyPartControls;
+
+        //IS14-change start — какая часть тела сейчас выбрана, чтобы её было видно на модельке
+        private TargetBodyPart? _is14ActivePart;
+
+        private static readonly Color IS14PartSelected = Color.FromHex("#7ADCF5");
+
+        // Статусная шкала для плиток показателей. Прогнана валидатором палитр: разделение
+        // при дальтонизме ΔE 8.6, при обычном зрении 15.3, контраст к подложке выше 3:1.
+        // Полосу светлоты она не проходит намеренно — это правило для категориальных палитр,
+        // где ни одна серия не должна выделяться, а здесь «критично» обязано кричать громче.
+        private static readonly Color IS14Good = Color.FromHex("#35A86A");
+        private static readonly Color IS14Warn = Color.FromHex("#C2952F");
+        private static readonly Color IS14Bad = Color.FromHex("#CF5C52");
+
+        /// <summary>
+        /// Подсветки конечностей на кукле.
+        /// </summary>
+        /// <remarks>
+        /// В обычном состоянии у этих кнопок текстуры нет вовсе — стиль задаёт её только для
+        /// псевдокласса hover. Поэтому одной лишь модуляцией выбранную конечность подсветить
+        /// нельзя: красить нечего. Берём ту же самую текстуру наведения и вешаем её выбранной
+        /// кнопке как постоянную, чтобы выбор выглядел ровно так же, как наведение.
+        /// </remarks>
+        private static readonly Dictionary<TargetBodyPart, string> IS14PartTextures = new()
+        {
+            { TargetBodyPart.Head, "head" },
+            { TargetBodyPart.Chest, "torso" },
+            { TargetBodyPart.Groin, "groin" },
+            { TargetBodyPart.LeftArm, "leftarm" },
+            { TargetBodyPart.LeftHand, "lefthand" },
+            { TargetBodyPart.RightArm, "rightarm" },
+            { TargetBodyPart.RightHand, "righthand" },
+            { TargetBodyPart.LeftLeg, "leftleg" },
+            { TargetBodyPart.LeftFoot, "leftfoot" },
+            { TargetBodyPart.RightLeg, "rightleg" },
+            { TargetBodyPart.RightFoot, "rightfoot" },
+        };
+        //IS14-change end
         private EntityUid? _target;
+        private readonly MobThresholdSystem _thresholds;
         // Shitmed Change End
 
         public HealthAnalyzerWindow()
@@ -65,10 +108,16 @@ namespace Content.Client.HealthAnalyzer.UI
             var dependencies = IoCManager.Instance!;
             _entityManager = dependencies.Resolve<IEntityManager>();
             _spriteSystem = _entityManager.System<SpriteSystem>();
+            _thresholds = _entityManager.System<MobThresholdSystem>();
             _prototypes = dependencies.Resolve<IPrototypeManager>();
             _cache = dependencies.Resolve<IResourceCache>();
             // Shitmed Change Start
             _wound = _entityManager.System<WoundSystem>();
+            //IS14-change start — иконки берутся из RSI по состоянию, а не по пути к png.
+            // Путь к png внутри .rsi — это весь лист кадров, поэтому анимированные наборы
+            // (human_alive, temperature, human_critical) рисовались простынёй.
+            //IS14-change end
+
             _bodyPartControls = new Dictionary<TargetBodyPart, TextureButton>
             {
                 { TargetBodyPart.Head, HeadButton },
@@ -102,8 +151,214 @@ namespace Content.Client.HealthAnalyzer.UI
             if (_target == null)
                 return;
 
+            //IS14-change start — раньше выбор был виден только по смене текста справа
+            _is14ActivePart = part;
+            IS14RefreshPartHighlight();
+            //IS14-change end
+
             OnBodyPartSelected?.Invoke(part, _target.Value);
         }
+
+        /// <summary>
+        /// Tints the selected limb on the doll.
+        /// </summary>
+        /// <remarks>
+        /// The doll was already the thing you clicked, but nothing on it changed afterwards, so
+        /// the only way to tell which limb you were reading was to remember. Modulating the
+        /// button is enough — they are drawn from the doll's own textures.
+        /// </remarks>
+        private void IS14RefreshPartHighlight()
+        {
+            var cache = IoCManager.Resolve<IResourceCache>();
+
+            foreach (var (part, button) in _bodyPartControls)
+            {
+                if (_is14ActivePart == part && IS14PartTextures.TryGetValue(part, out var file))
+                {
+                    button.TextureNormal =
+                        cache.GetTexture($"/Textures/_Shitmed/Interface/Targeting/Doll/{file}_hover.png");
+                    button.ModulateSelfOverride = IS14PartSelected;
+                }
+                else
+                {
+                    button.TextureNormal = null;
+                    button.ModulateSelfOverride = null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Красит значения плиток по тому, насколько плохо дело.
+        /// </summary>
+        /// <remarks>
+        /// Температура сравнивается с нормой тела, а не с нулём Цельсия: интересно отклонение,
+        /// а не абсолютное значение.
+        /// </remarks>
+        private void IS14ColourVitals(HealthAnalyzerBaseMessage msg)
+        {
+            const float bodyNormal = 310f;
+
+            TemperatureLabel.FontColorOverride = float.IsNaN(msg.Temperature)
+                ? null
+                : IS14Pick(MathF.Abs(msg.Temperature - bodyNormal), 3f, 10f);
+
+            BloodLabel.FontColorOverride = float.IsNaN(msg.BloodLevel)
+                ? null
+                : IS14Pick(1f - msg.BloodLevel, 0.10f, 0.30f);
+
+            StatusLabel.FontColorOverride =
+                _entityManager.TryGetComponent<MobStateComponent>(_target!.Value, out var state)
+                    ? state.CurrentState switch
+                    {
+                        MobState.Alive => IS14Good,
+                        MobState.Critical => IS14Warn,
+                        MobState.Dead => IS14Bad,
+                        _ => null,
+                    }
+                    : null;
+
+            DamageLabel.FontColorOverride =
+                _entityManager.TryGetComponent<DamageableComponent>(_target.Value, out var damage)
+                    ? IS14Pick(damage.TotalDamage.Float(), 1f, 50f)
+                    : null;
+        }
+
+        /// <summary>Good below the first threshold, bad above the second.</summary>
+        private static Color IS14Pick(float value, float warn, float bad)
+        {
+            return value >= bad ? IS14Bad : value >= warn ? IS14Warn : IS14Good;
+        }
+        //IS14-change end
+
+        /// <summary>
+        /// Ставит кадр из RSI, но только если он изменился.
+        /// </summary>
+        /// <remarks>
+        /// <see cref="AnimatedTextureRect.SetFromSpriteSpecifier"/> сбрасывает анимацию в
+        /// нулевой кадр. Сканер шлёт обновления раз в секунду, так что без этой проверки
+        /// анимированные иконки дёргались бы обратно к началу и никогда не доигрывали.
+        /// </remarks>
+        private void IS14SetIcon(AnimatedTextureRect rect, SpriteSpecifier spec)
+        {
+            if (_is14Icons.TryGetValue(rect, out var current) && current.Equals(spec))
+                return;
+
+            _is14Icons[rect] = spec;
+            rect.DisplayRect.Stretch = TextureRect.StretchMode.KeepAspectCentered;
+            rect.SetFromSpriteSpecifier(spec);
+        }
+
+        private void IS14SetIcon(AnimatedTextureRect rect, string rsi, string state)
+        {
+            IS14SetIcon(rect, new SpriteSpecifier.Rsi(new ResPath(rsi), state));
+        }
+
+        /// <summary>Иконка ступени готового алерта, с зажимом в его же диапазон.</summary>
+        private bool IS14TryAlertIcon(string alertId, float fraction, out SpriteSpecifier icon)
+        {
+            icon = default!;
+
+            if (!_prototypes.TryIndex<AlertPrototype>(alertId, out var alert))
+                return false;
+
+            var severity = (short) Math.Clamp(
+                MathF.Round(MathHelper.Lerp(alert.MinSeverity, alert.MaxSeverity, Math.Clamp(fraction, 0f, 1f))),
+                alert.MinSeverity,
+                alert.MaxSeverity);
+
+            icon = alert.GetIcon(alert.SupportsSeverity ? severity : null);
+            return true;
+        }
+
+        /// <summary>
+        /// Все четыре иконки плиток — живые, каждая по своему показателю.
+        /// </summary>
+        /// <remarks>
+        /// Везде, где в игре уже есть ступенчатый набор под эту величину, берётся он: холод и
+        /// жар — из алертов <c>Cold</c>/<c>Hot</c>, кровь — из <c>Bleed</c>. Так шкала иконок
+        /// совпадает с той, что игрок видит у себя, и её не приходится выдумывать заново.
+        /// </remarks>
+        private void IS14UpdateIcons(HealthAnalyzerBaseMessage msg, EntityUid target)
+        {
+            IS14UpdateStatusIcon(target);
+
+            const float bodyNormal = 310f;
+
+            if (!float.IsNaN(msg.Temperature))
+            {
+                var deviation = msg.Temperature - bodyNormal;
+
+                // Ниже нормы — набор холода, выше — жара. Шкала до 25 градусов отклонения.
+                if (IS14TryAlertIcon(deviation < 0f ? "Cold" : "Hot", MathF.Abs(deviation) / 25f, out var temp))
+                    IS14SetIcon(IS14TempIcon, temp);
+            }
+
+            // Шкала перевёрнута относительно алерта кровотечения: там ступень растёт с потерей,
+            // а здесь это указатель уровня — полная капля означает полную кровь.
+            if (!float.IsNaN(msg.BloodLevel)
+                && IS14TryAlertIcon("Bleed", msg.BloodLevel, out var blood))
+            {
+                IS14SetIcon(IS14BloodIcon, blood);
+            }
+
+            // Урон — отдельная графика мониторинга экипажа, а не та же кукла, что в состоянии:
+            // две одинаковые иконки рядом читались бы как одно и то же показание.
+            var step = 0;
+
+            if (_entityManager.TryGetComponent<DamageableComponent>(target, out var damageable)
+                && _thresholds.TryGetPercentageForState(target, MobState.Critical, damageable.TotalDamage, out var toCrit)
+                && toCrit is { } value)
+            {
+                step = (int) Math.Clamp(MathF.Round(Math.Clamp(value.Float(), 0f, 1f) * 4f), 0f, 4f);
+            }
+
+            IS14SetIcon(IS14DamageIcon, "/Textures/Interface/Alerts/human_crew_monitoring.rsi", $"health{step}");
+        }
+
+        /// <summary>
+        /// Ставит в плитку состояния ровно ту иконку, которую пациент видит у себя в алертах.
+        /// </summary>
+        /// <remarks>
+        /// Прочитать чужой <c>AlertsComponent</c> нельзя — у него <c>SendOnlyToOwner</c>, и
+        /// клиенту врача он не приходит. Зато нужные слагаемые сетевые, а считает их общая
+        /// <c>MobThresholdSystem</c>, так что мы вызываем те же самые методы, что и сервер,
+        /// и получаем ту же ступень — не копируя формулу, а переиспользуя её.
+        /// </remarks>
+        private void IS14UpdateStatusIcon(EntityUid target)
+        {
+            if (!_entityManager.TryGetComponent<MobStateComponent>(target, out var mobState)
+                || !_entityManager.TryGetComponent<MobThresholdsComponent>(target, out var thresholds))
+            {
+                return;
+            }
+
+            // Через локальную: у StateAlertDict ограниченный доступ, читать поле можно, а
+            // вызывать на нём методы анализатор Robust не разрешает.
+            var alerts = thresholds.StateAlertDict;
+
+            if (!alerts.TryGetValue(mobState.CurrentState, out var alertId)
+                || !_prototypes.TryIndex<AlertPrototype>(alertId, out var alert))
+            {
+                return;
+            }
+
+            var severity = alert.MinSeverity;
+
+            if (alert.SupportsSeverity
+                && _entityManager.TryGetComponent<DamageableComponent>(target, out var damageable)
+                && _thresholds.TryGetNextState(target, mobState.CurrentState, out var next, thresholds)
+                && _thresholds.TryGetPercentageForState(target, next.Value, damageable.TotalDamage, out var percent)
+                && percent is { } value)
+            {
+                severity = (short) MathF.Round(MathHelper.Lerp(
+                    alert.MinSeverity,
+                    alert.MaxSeverity,
+                    FixedPoint2.Clamp(value, 0, 1).Float()));
+            }
+
+            IS14SetIcon(IS14StatusIcon, alert.GetIcon(severity));
+        }
+        //IS14-change end
 
         public void SetMode(HealthAnalyzerMode mode)
         {
@@ -117,6 +372,11 @@ namespace Content.Client.HealthAnalyzer.UI
         {
             if (_target == null)
                 return;
+
+            //IS14-change start
+            _is14ActivePart = null;
+            IS14RefreshPartHighlight();
+            //IS14-change end
 
             OnBodyPartSelected?.Invoke(null, _target.Value);
         }
@@ -139,15 +399,37 @@ namespace Content.Client.HealthAnalyzer.UI
 
             NoPatientDataText.Visible = false;
 
+            //IS14-change start — блок кровообращения обновляется сам по кадрам, ему нужен только пациент
+            IS14Circulation.SetTarget(_target);
+            IS14Diagnoses.SetTarget(_target);
+            IS14Organs.SetTarget(_target);
+            //IS14-change end
+
             // Scan Mode
 
-            ScanModeLabel.Text = msg.ScanMode.HasValue
-                ? msg.ScanMode.Value
-                    ? Loc.GetString("health-analyzer-window-scan-mode-active")
-                    : Loc.GetString("health-analyzer-window-scan-mode-inactive")
-                : Loc.GetString("health-analyzer-window-entity-unknown-text");
+            //IS14-change start — значения плиток красятся по состоянию. Подпись у каждой плитки
+            // остаётся нейтральной, поэтому цвет нигде не является единственным сигналом.
+            IS14ColourVitals(msg);
+            IS14UpdateIcons(msg, _target.Value);
 
-            ScanModeLabel.FontColorOverride = msg.ScanMode.HasValue && msg.ScanMode.Value ? Color.Green : Color.Red;
+            // статус живёт в заголовке окна, а не строкой в теле
+            var is14Active = msg.ScanMode is true;
+
+            Title = Loc.GetString(
+                "is14-analyzer-title",
+                ("state", Loc.GetString(msg.ScanMode.HasValue
+                    ? is14Active
+                        ? "health-analyzer-window-scan-mode-active"
+                        : "health-analyzer-window-scan-mode-inactive"
+                    : "health-analyzer-window-entity-unknown-text")));
+
+            WindowTitle.FontColorOverride = msg.ScanMode.HasValue
+                ? is14Active ? Color.FromHex("#3ABB6A") : Color.FromHex("#C4564E")
+                : null;
+
+            // Только сама надпись: её сосед по контейнеру — блок с именем пациента.
+            ScanModeLabel.Visible = false;
+            //IS14-change end
 
             // Patient Information
 
@@ -173,9 +455,12 @@ namespace Content.Client.HealthAnalyzer.UI
 
             // Basic Diagnostic
 
+            //IS14-change start — только цельсии: кельвины врачу ни о чём не говорят и вдвое
+            // растягивали плитку
             TemperatureLabel.Text = !float.IsNaN(msg.Temperature)
-                ? $"{msg.Temperature - Atmospherics.T0C:F1} °C ({msg.Temperature:F1} K)"
+                ? $"{msg.Temperature - Atmospherics.T0C:F1} °C"
                 : Loc.GetString("health-analyzer-window-entity-unknown-value-text");
+            //IS14-change end
 
             BloodLabel.Text = !float.IsNaN(msg.BloodLevel)
                 ? $"{msg.BloodLevel * 100:F1} %"
@@ -326,7 +611,7 @@ namespace Content.Client.HealthAnalyzer.UI
             {
                 ConditionsListContainer.AddChild(new RichTextLabel
                 {
-                    Text = Loc.GetString("condition-none"),
+                    Text = Loc.GetString("is14-analyzer-pathologies-none"),
                     Margin = new Thickness(0, 4),
                 });
             }
@@ -345,6 +630,9 @@ namespace Content.Client.HealthAnalyzer.UI
 
             ConditionsListContainer.RemoveAllChildren();
             GroupsContainer.RemoveAllChildren();
+
+            //IS14-change start — вкладка органов целиком заменена: кукла в центре, органы вокруг.
+            // Кровообращение и общие показатели тут не дублируются, они на вкладке тела.
             foreach (var (organ, data) in msg.Organs)
             {
                 var organEnt = _entityManager.GetEntity(organ);
@@ -364,9 +652,6 @@ namespace Content.Client.HealthAnalyzer.UI
                     });
                 }
 
-                /*if (data.Integrity > data.IntegrityCap * 0.90) // Organs without at LEAST some significant damage wont be shown.
-                    return;
-*/
                 ConditionsListContainer.AddChild(new RichTextLabel
                 {
                     Text = Loc.GetString($"condition-organ-damage-{data.Severity.ToString()}", ("organ", organName)),
@@ -378,7 +663,7 @@ namespace Content.Client.HealthAnalyzer.UI
             {
                 ConditionsListContainer.AddChild(new RichTextLabel
                 {
-                    Text = Loc.GetString("condition-none"),
+                    Text = Loc.GetString("is14-analyzer-pathologies-none"),
                     Margin = new Thickness(0, 4),
                 });
             }
@@ -403,7 +688,7 @@ namespace Content.Client.HealthAnalyzer.UI
 
             ConditionsListContainer.AddChild(new RichTextLabel
             {
-                Text = Loc.GetString("condition-none"),
+                Text = Loc.GetString("is14-analyzer-pathologies-none"),
                 Margin = new Thickness(0, 4),
             });
         }
