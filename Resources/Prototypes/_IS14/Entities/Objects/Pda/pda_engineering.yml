@@ -1,40 +1,40 @@
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaAtmosphericTechnician
+  parent: IS14_PdaBase
+  id: IS14_PdaAtmosphericTechnician
   name: atmospheric technician's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Engineering/engineer.rsi
   - type: Pda
-    id: IS_IdCardAtmosphericTechnician
+    id: IS14_IdCardAtmosphericTechnician
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaEngineerAssistant
+  parent: IS14_PdaBase
+  id: IS14_PdaEngineerAssistant
   name: engineer assistant's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Engineering/engineer.rsi
   - type: Pda
-    id: IS_IdCardEngineerAssistant
+    id: IS14_IdCardEngineerAssistant
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaEngineer
+  parent: IS14_PdaBase
+  id: IS14_PdaEngineer
   name: engineer's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Engineering/engineer.rsi
   - type: Pda
-    id: IS_IdCardEngineer
+    id: IS14_IdCardEngineer
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaSeniorEngineer
+  parent: IS14_PdaBase
+  id: IS14_PdaSeniorEngineer
   name: senior engineer's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Engineering/engineer.rsi
   - type: Pda
-    id: IS_IdCardSeniorEngineer
+    id: IS14_IdCardSeniorEngineer
 

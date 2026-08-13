@@ -1,6 +1,6 @@
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardIntelOfficer
+  parent: IS14_IdCardBase
+  id: IS14_IdCardIntelOfficer
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:

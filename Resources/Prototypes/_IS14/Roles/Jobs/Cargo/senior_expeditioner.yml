@@ -28,7 +28,7 @@
   id: SeniorExpeditionerGear
   equipment:
     jumpsuit: ClothingUniformJumpsuitSalvageSpecialist
-    id: IS_PdaSeniorExpeditionist
+    id: IS14_PdaSeniorExpeditionist
     ears: ClothingHeadsetCargo
   storage:
     back:

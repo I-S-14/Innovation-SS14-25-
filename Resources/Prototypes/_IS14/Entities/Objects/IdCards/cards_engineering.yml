@@ -1,6 +1,6 @@
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardAtmosphericTechnician
+  parent: IS14_IdCardBase
+  id: IS14_IdCardAtmosphericTechnician
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -13,8 +13,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/engineering.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardEngineerAssistant
+  parent: IS14_IdCardBase
+  id: IS14_IdCardEngineerAssistant
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -27,8 +27,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/engineering.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardEngineer
+  parent: IS14_IdCardBase
+  id: IS14_IdCardEngineer
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -41,8 +41,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/engineering.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardSeniorEngineer
+  parent: IS14_IdCardBase
+  id: IS14_IdCardSeniorEngineer
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:

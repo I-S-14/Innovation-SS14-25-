@@ -40,7 +40,7 @@
 - type: startingGear
   id: IS14GearHosMilitia
   equipment:
-    id: IS_PdaHosMilitia
+    id: IS14_PdaHosMilitia
     ears: ClothingHeadsetIS14Hos
 
 - type: job
@@ -77,7 +77,7 @@
 - type: startingGear
   id: IS14GearMilitia
   equipment:
-    id: IS_PdaMilitia
+    id: IS14_PdaMilitia
     ears: ClothingHeadsetIS14Militia
 
 - type: job
@@ -118,7 +118,7 @@
 - type: startingGear
   id: IS14GearSeniorMilitia
   equipment:
-    id: IS_PdaSeniorMilitia
+    id: IS14_PdaSeniorMilitia
     ears: ClothingHeadsetIS14Militia
 
 - type: job
@@ -147,7 +147,7 @@
 - type: startingGear
   id: IS14GearCadet
   equipment:
-    id: IS_PdaCadet
+    id: IS14_PdaCadet
     ears: ClothingHeadsetIS14Militia
 
 - type: job
@@ -189,7 +189,7 @@
 - type: startingGear
   id: IS14GearInvestigator
   equipment:
-    id: IS_PdaInvestigator
+    id: IS14_PdaInvestigator
     ears: ClothingHeadsetIS14Militia
 
 - type: job
@@ -231,7 +231,7 @@
 - type: startingGear
   id: IS14GearMedOfficer
   equipment:
-    id: IS_PdaMedOfficer
+    id: IS14_PdaMedOfficer
     ears: ClothingHeadsetIS14MedOfficer
 
 - type: job
@@ -273,7 +273,7 @@
 - type: startingGear
   id: IS14GearLrrChief
   equipment:
-    id: IS_PdaLrrChief
+    id: IS14_PdaLrrChief
     ears: ClothingHeadsetIS14Militia
 
 - type: job
@@ -315,7 +315,7 @@
 - type: startingGear
   id: IS14GearPilot
   equipment:
-    id: IS_PdaPilot
+    id: IS14_PdaPilot
     ears: ClothingHeadsetIS14Militia
 
 - type: job
@@ -341,7 +341,7 @@
 - type: startingGear
   id: IS14GearIVK
   equipment:
-    id: IS_PdaIVK
+    id: IS14_PdaIVK
 
 - type: job
   id: IS_JobLawyer
@@ -367,7 +367,7 @@
 - type: startingGear
   id: IS14GearLawyer
   equipment:
-    id: IS_PdaLawyer
+    id: IS14_PdaLawyer
     ears: ClothingHeadsetIS14Lawyer
 
 - type: job
@@ -393,5 +393,5 @@
 - type: startingGear
   id: IS14GearMupRepresentative
   equipment:
-    id: IS_PdaJusticeRepresentative
+    id: IS14_PdaJusticeRepresentative
     ears: ClothingHeadsetIS14MupRepresentative

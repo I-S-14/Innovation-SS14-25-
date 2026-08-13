@@ -1,6 +1,6 @@
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaCargoBase
+  parent: IS14_PdaBase
+  id: IS14_PdaCargoBase
   name: base cargo PDA
   abstract: true
   components:
@@ -10,33 +10,33 @@
 # ==========================================================
 
 - type: entity
-  parent: IS_PdaCargoBase
-  id: IS_PdaCourier
+  parent: IS14_PdaCargoBase
+  id: IS14_PdaCourier
   name: courier PDA
   components:
   - type: Pda
-    id: IS_IdCardCourier
+    id: IS14_IdCardCourier
 
 - type: entity
-  parent: IS_PdaCargoBase
-  id: IS_PdaExpeditionist
+  parent: IS14_PdaCargoBase
+  id: IS14_PdaExpeditionist
   name: expeditionist PDA
   components:
   - type: Pda
-    id: IS_IdCardExpeditionist
+    id: IS14_IdCardExpeditionist
 
 - type: entity
-  parent: IS_PdaCargoBase
-  id: IS_PdaSeniorExpeditionist
+  parent: IS14_PdaCargoBase
+  id: IS14_PdaSeniorExpeditionist
   name: senior expeditionist PDA
   components:
   - type: Pda
-    id: IS_IdCardSeniorExpeditionist
+    id: IS14_IdCardSeniorExpeditionist
 
 - type: entity
-  parent: IS_PdaCargoBase
-  id: IS_PdaCargoTechnician
+  parent: IS14_PdaCargoBase
+  id: IS14_PdaCargoTechnician
   name: cargo technician PDA
   components:
   - type: Pda
-    id: IS_IdCardCargoTechnician
+    id: IS14_IdCardCargoTechnician
