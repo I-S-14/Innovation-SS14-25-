@@ -103,19 +103,6 @@
     node: BannerNanotrasenNode
 
 - type: entity
-  id: IS14BannerLegalV2
-  parent: BannerBase
-  name: banner legal v2
-  description: A banner displaying the Nanotrasen logo. It looks rather cheap.
-  components:
-  - type: Sprite
-    sprite: _IS14/Structures/Decoration/banners.rsi
-    state: banner_legal_v2
-  - type: Construction
-    graph: BannersGraph
-    node: BannerNanotrasenNode
-
-- type: entity
   id: IS14BannerCom
   parent: BannerBase
   name: banner com
@@ -124,19 +111,6 @@
   - type: Sprite
     sprite: _IS14/Structures/Decoration/banners.rsi
     state: banner_com
-  - type: Construction
-    graph: BannersGraph
-    node: BannerNanotrasenNode
-
-- type: entity
-  id: IS14BannerComV2
-  parent: BannerBase
-  name: banner com v2
-  description: A banner displaying the Nanotrasen logo. It looks rather cheap.
-  components:
-  - type: Sprite
-    sprite: _IS14/Structures/Decoration/banners.rsi
-    state: banner_com_v2
   - type: Construction
     graph: BannersGraph
     node: BannerNanotrasenNode
@@ -155,14 +129,14 @@
     node: BannerNanotrasenNode
 
 - type: entity
-  id: IS14BannerEngV2
+  id: IS14BannerAtmos
   parent: BannerBase
-  name: banner eng v2
+  name: banner atmos
   description: A banner displaying the Nanotrasen logo. It looks rather cheap.
   components:
   - type: Sprite
     sprite: _IS14/Structures/Decoration/banners.rsi
-    state: banner_eng_v2
+    state: banner_atmos
   - type: Construction
     graph: BannersGraph
     node: BannerNanotrasenNode
@@ -181,19 +155,6 @@
     node: BannerNanotrasenNode
 
 - type: entity
-  id: IS14BannerExpSupplyV2
-  parent: BannerBase
-  name: banner exp supply v2
-  description: A banner displaying the Nanotrasen logo. It looks rather cheap.
-  components:
-  - type: Sprite
-    sprite: _IS14/Structures/Decoration/banners.rsi
-    state: banner_exp_supply_v2
-  - type: Construction
-    graph: BannersGraph
-    node: BannerNanotrasenNode
-
-- type: entity
   id: IS14BannerKgb
   parent: BannerBase
   name: banner kgb
@@ -202,19 +163,6 @@
   - type: Sprite
     sprite: _IS14/Structures/Decoration/banners.rsi
     state: banner_kgb
-  - type: Construction
-    graph: BannersGraph
-    node: BannerNanotrasenNode
-
-- type: entity
-  id: IS14BannerKgbV2
-  parent: BannerBase
-  name: banner kgb v2
-  description: A banner displaying the Nanotrasen logo. It looks rather cheap.
-  components:
-  - type: Sprite
-    sprite: _IS14/Structures/Decoration/banners.rsi
-    state: banner_kgb_v2
   - type: Construction
     graph: BannersGraph
     node: BannerNanotrasenNode
@@ -233,19 +181,6 @@
     node: BannerNanotrasenNode
 
 - type: entity
-  id: IS14BannerMedV2
-  parent: BannerBase
-  name: banner med v2
-  description: A banner displaying the Nanotrasen logo. It looks rather cheap.
-  components:
-  - type: Sprite
-    sprite: _IS14/Structures/Decoration/banners.rsi
-    state: banner_med_v2
-  - type: Construction
-    graph: BannersGraph
-    node: BannerNanotrasenNode
-
-- type: entity
   id: IS14BannerMilitia
   parent: BannerBase
   name: banner militia
@@ -254,19 +189,6 @@
   - type: Sprite
     sprite: _IS14/Structures/Decoration/banners.rsi
     state: banner_militia
-  - type: Construction
-    graph: BannersGraph
-    node: BannerNanotrasenNode
-
-- type: entity
-  id: IS14BannerMilitiaV2
-  parent: BannerBase
-  name: banner militia v2
-  description: A banner displaying the Nanotrasen logo. It looks rather cheap.
-  components:
-  - type: Sprite
-    sprite: _IS14/Structures/Decoration/banners.rsi
-    state: banner_militia_v2
   - type: Construction
     graph: BannersGraph
     node: BannerNanotrasenNode
@@ -298,14 +220,14 @@
     node: BannerNanotrasenNode
 
 - type: entity
-  id: IS14BannerServV2
+  id: IS14BannerMars
   parent: BannerBase
-  name: banner serv v2
+  name: banner mars
   description: A banner displaying the Nanotrasen logo. It looks rather cheap.
   components:
   - type: Sprite
     sprite: _IS14/Structures/Decoration/banners.rsi
-    state: banner_serv_v2
+    state: banner_mars
   - type: Construction
     graph: BannersGraph
     node: BannerNanotrasenNode
