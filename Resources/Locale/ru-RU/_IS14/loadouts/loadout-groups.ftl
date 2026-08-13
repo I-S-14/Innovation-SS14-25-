@@ -4,3 +4,6 @@ loadout-group-outerclothing = Верхняя одежда
 loadout-group-belt = Пояс
 loadout-group-shoes = Обувь
 loadout-group-ears = Уши
+loadout-group-neck = Шея
+loadout-group-gloves = Перчатки
+loadout-group-mask = Маска

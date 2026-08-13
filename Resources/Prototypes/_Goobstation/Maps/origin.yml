@@ -21,7 +21,7 @@
           availableJobs:
             #service
             StationAi: [ 1, 1 ]
-            NanotrasenRepresentative: [ 1, 1 ]
+            JobMupRepresentative: [ 1, 1 ] # IS14 Edit
             BlueshieldOfficer: [ 1, 1 ]
             Captain: [ 1, 1 ]
             HeadOfPersonnel: [ 1, 1 ]
@@ -31,7 +31,7 @@
             Janitor: [ 3, 3 ]
             Chaplain: [ 1, 1 ]
             Librarian: [ 2, 2 ]
-            Lawyer: [ 2, 2 ]
+            IS_JobLawyer: [ 2, 2 ] # IS14 Edit
             ServiceWorker: [ 3, 4 ]
             #engineering
             ChiefEngineer: [ 1, 1 ]
@@ -45,23 +45,21 @@
             MedicalDoctor: [ 6, 6 ]
             Psychologist: [ 1, 1 ]
             MedicalIntern: [ 1, 2 ]
-            Virologist: [ 1, 1 ]
             #science
             ResearchDirector: [ 1, 1 ]
             Scientist: [ 6, 6 ]
             ResearchAssistant: [ 4, 4 ]
             Borg: [ 2, 2 ]
             #security
-            HeadOfSecurity: [ 1, 1 ]
-            Warden: [ 1, 1 ]
-            Detective: [ 1, 1 ]
-            SecurityOfficer: [ 7, 7 ]
-            SecurityCadet: [ 2, 4 ]
-            Brigmedic: [ 1, 1 ]
+            JobHosMilitia: [ 1, 1 ] # IS14 Edit
+            JobLrrChief: [ 1, 1 ] # IS14 Edit
+            JobInvestigator: [ 1, 1 ] # IS14 Edit
+            JobMilitia: [ 7, 7 ] # IS14 Edit
+            IS_JobCadet: [ 2, 4 ] # IS14 Edit
+            JobMedOfficer: [ 1, 1 ] # IS14 Edit
             #supply
             Quartermaster: [ 1, 1 ]
             SalvageSpecialist: [ 3, 3 ]
-            ShaftMiner: [ 3, 3 ]
             CargoTechnician: [ 5, 5 ]
             #civillian
             Passenger: [ -1, -1 ]
@@ -69,6 +67,16 @@
             Mime: [ 1, 1 ]
             Musician: [ 2, 2 ]
             Reporter: [ 1, 1 ]
+            CommandSecretary: [ 1, 1 ] # IS14 Edit
+            SeniorEngineer: [ 1, 1 ] # IS14 Edit
+            SeniorPhysician: [ 1, 1 ] # IS14 Edit
+            SeniorResearcher: [ 1, 1 ] # IS14 Edit
+            SeniorExpeditioner: [ 1, 1 ] # IS14 Edit
+            ChurchServant: [ 1, 1 ] # IS14 Edit
+            JobSeniorMilitia: [ 1, 1 ] # IS14 Edit
+            IS_JobPilot: [ 1, 1 ] # IS14 Edit
+            InternalControlExecutor: [ 1, 1 ] # IS14 Edit
+            JobIvk: [ 1, 1 ] # IS14 Edit
 
         # Goobstation blob-config-start HUGE
         - type: StationBlobConfig

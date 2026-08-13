@@ -1,0 +1,107 @@
+# head of personnel loadouts
+
+- type: loadout
+  id: IS14HoPBackpackIan
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ProfessionalHoP
+  equipment:
+    back: ClothingBackpackIan
+
+# Outerclothing
+
+- type: loadout
+  id: IS14HoPGloves
+  equipment:
+    gloves: ClothingHandsGlovesHop
+
+- type: loadout
+  id: IS14HopBeret
+  equipment:
+    head: ClothingHeadIS14HopBeret
+
+- type: loadout
+  id: IS14HopCap
+  equipment:
+    head: ClothingHeadIS14HopCap
+
+- type: loadout
+  id: IS14HopCloak
+  equipment:
+    neck: ClothingNeckIS14HopCloak
+
+# ========================
+# Chief Medical Officer
+# ========================
+
+- type: loadout
+  id: IS14HopFormal
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitIS14HopFormal
+  groupBy: "jumpsuit"
+
+- type: loadout
+  id: IS14HopJumpsuit
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitIS14Hop
+  groupBy: "jumpsuit"
+
+- type: loadout
+  id: IS14HopShoes
+  equipment:
+    shoes: ClothingShoesColorBrown
+
+- type: loadoutGroup
+  id: IS14HoPBackpack
+  name: loadout-group-hop-backpack
+  loadouts:
+  - IS14CommonBackpack
+  - IS14CommonSatchel
+  - IS14CommonDuffel
+  - IS14CommonMessenger # Frontier
+  - IS14HoPBackpackIan
+
+- type: loadoutGroup
+  id: IS14HoPGloves
+  name: loadout-group-hop-gloves
+  minLimit: 1
+  maxLimit: 1
+  loadouts:
+  - IS14HoPGloves
+
+# Centcomm Officer
+
+- type: loadoutGroup
+  id: IS14HopHead
+  name: loadout-group-head
+  minLimit: 0
+  loadouts:
+  - IS14HopCap
+  - IS14HopBeret
+  - IS14GiftKnittedOrange
+
+- type: loadoutGroup
+  id: IS14HopJumpsuit
+  name: loadout-group-jumpsuit
+  loadouts:
+  - IS14HopJumpsuit
+  - IS14HopFormal
+
+- type: loadoutGroup
+  id: IS14HopNeck
+  name: loadout-group-neck
+  minLimit: 0
+  loadouts:
+  - IS14HopCloak
+
+- type: loadoutGroup
+  id: IS14HopShoes
+  name: loadout-group-shoes
+  loadouts:
+  - IS14HopShoes
+  - IS14GiftDressShoes
+  - IS14GiftTights
+
+# ========================
+# Chief Medical Officer
+# ========================

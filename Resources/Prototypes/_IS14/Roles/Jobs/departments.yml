@@ -1,0 +1,205 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+#
+# Структура отделов Innovation Station.
+# Заменяет ванильные Resources/Prototypes/Roles/Jobs/departments.yml
+# и _CorvaxGoob/Roles/Jobs/departments.yml — там всё закомментировано.
+#
+# Идентификаторы прототипов намеренно совпадают с ванильными: на них завязаны
+# DepartmentTimeRequirement в требованиях профессий, allowedDepartments у
+# контрабанды, покраска шлюзов, реагенты и условия аплинка (~220 ссылок).
+# Название, описание, цвет и состав отделов при этом полностью наши.
+
+# ========================================
+# МОКО
+# ========================================
+- type: department
+  id: CentralCommand
+  name: department-IS14Moko
+  description: department-IS14Moko-description
+  color: "#0c344d"
+  weight: 120
+  roles:
+  - CentralCommandOfficial # Инспектор МОКО (ПЦК)
+  - NavyCaptain # Директор штаба МОКО
+  - SpecialOperationsOfficer # Офицер штаба реагирования министерства обороны (ОСО)
+  - BlueshieldOfficer # Оперативник государственной службы охраны (ОСЩ)
+  - NavyOfficer
+  - Diplomat
+  - Inspector
+
+# ========================================
+# Центральное Разведывательное Бюро
+# ========================================
+- type: department
+  id: IS14Crb
+  name: department-IS14Crb
+  description: department-IS14Crb-description
+  color: "#3F2E56"
+  weight: 119
+  editorHidden: true
+  roles:
+  - NavyOfficerUndercover # Агент комитета государственной безопасности
+  - ERTLeader # СОБР
+  - ERTSecurity
+  - ERTMedical
+  - ERTEngineer
+  - ERTJanitor
+  - ERTChaplain
+  - DeathSquad # управление "Альфа"
+  - CBURN # группа БРБП
+
+# ========================================
+# Командный центр
+# ========================================
+- type: department
+  id: Command
+  name: department-IS14Command
+  description: department-IS14Command-description
+  color: "#334E6D"
+  weight: 100
+  primary: false
+  roles:
+  - Captain
+  - HeadOfPersonnel # Начальник отдела кадров
+  - JobHosMilitia # Начальник милиции
+  - ResearchDirector # Директор НИЦ
+  - ChiefMedicalOfficer # Главный медицинский специалист
+  - ChiefEngineer # Главный инженерный специалист
+  - Quartermaster # Руководитель ЭСО
+  - CommandSecretary # Секретарь командования
+
+# ========================================
+# Представительство министерства Юстиции и прав
+# ========================================
+- type: department
+  id: Law
+  name: department-IS14Law
+  description: department-IS14Law-description
+  color: "#6900C6"
+  weight: 30
+  roles:
+  - JobMupRepresentative # Представитель МЮП
+  - IS_JobLawyer # Юридический сотрудник
+  - Magistrate # Штаб-судья
+  - InternalControlExecutor # Исполнитель внутреннего контроля
+  - JobIvk # Офицер ИВК
+
+# ========================================
+# Милиция
+# ========================================
+- type: department
+  id: Security
+  name: department-IS14Militia
+  description: department-IS14Militia-description
+  color: "#DE3A3A"
+  weight: 20
+  roles:
+  - JobHosMilitia # Начальник милиции
+  - JobLrrChief # Начальник ЛРР
+  - JobSeniorMilitia # Старший милиционер
+  - IS_JobPilot # Офицер космической безопасности
+  - JobMedOfficer # Медицинский офицер
+  - JobInvestigator # Следователь
+  - JobMilitia # Милиционер
+  - IS_JobCadet # Курсант
+
+# ========================================
+# Медицинский цех
+# ========================================
+- type: department
+  id: Medical
+  name: department-IS14Medical
+  description: department-IS14Medical-description
+  color: "#52B4E9"
+  roles:
+  - ChiefMedicalOfficer # Главный медицинский специалист
+  - SeniorPhysician # Старший медицинский специалист
+  - Chemist # Фармацевт
+  - MedicalDoctor # Врач
+  - Paramedic # Фельдшер
+  - Psychologist # Психолог
+  - MedicalIntern # Интерн
+
+# ========================================
+# Научно-исследовательский центр
+# ========================================
+- type: department
+  id: Science
+  name: department-IS14Science
+  description: department-IS14Science-description
+  color: "#D381C9"
+  roles:
+  - ResearchDirector # Директор НИЦ
+  - SeniorResearcher # Старший научный сотрудник
+  - Scientist # Научный сотрудник
+  - Roboticist # Роботехнический специалист
+  - ResearchAssistant # Лаборант
+
+# ========================================
+# Инженерный цех
+# ========================================
+- type: department
+  id: Engineering
+  name: department-IS14Engineering
+  description: department-IS14Engineering-description
+  color: "#EFB341"
+  roles:
+  - ChiefEngineer # Главный инженерный специалист
+  - SeniorEngineer # Старший инженерный специалист
+  - AtmosphericTechnician # Атмосферный техник
+  - StationEngineer # Инженерный специалист
+  - TechnicalAssistant # Младший инженерный специалист
+
+# ========================================
+# Экспедиционно-снабженческий отдел
+# ========================================
+- type: department
+  id: Cargo
+  name: department-IS14Expedition
+  description: department-IS14Expedition-description
+  color: "#A46106"
+  roles:
+  - Quartermaster # Руководитель ЭСО
+  - SeniorExpeditioner # Старший экспедитор
+  - SalvageSpecialist # Экспедитор
+  - CargoTechnician # Грузчик
+
+# ========================================
+# Сервисное отделение
+# ========================================
+- type: department
+  id: Civilian
+  name: department-IS14Service
+  description: department-IS14Service-description
+  color: "#9FED58"
+  weight: -10
+  roles:
+  - HeadOfPersonnel # Начальник отдела кадров
+  - Chef # Повар
+  - Botanist # Гидропонный техник
+  - Bartender # Бармен
+  - ServiceWorker # Сервисный сотрудник
+  - Janitor # Санитарный специалист
+  - Librarian # Библиотекарь
+  - Chaplain # Священник
+  - ChurchServant # Церковный служитель
+  - Reporter # Корреспондент
+  - Musician # Музыкант
+  - Clown # Клоун
+  - Mime # Мим
+  - Passenger # Разнорабочий
+
+# ========================================
+# Синтетики
+# ========================================
+# В документе отдела нет, но без него ИИ и боргов нельзя выбрать, а на картах
+# они присутствуют физически.
+- type: department
+  id: Silicon
+  name: department-IS14Silicon
+  description: department-IS14Silicon-description
+  color: "#D381C9"
+  weight: -20
+  roles:
+  - Borg
+  - StationAi

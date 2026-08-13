@@ -13,7 +13,7 @@ card-sticker-emag = ЕМАГ
 
 ent-IS_CardStickerGalaxy = наклейка Цдар-Дао
     .desc = Одноразовый стикер для айди-карт. Сделайте свои доступы модными!
-ent-IS_CardStickerMementoUltionis = Наклейка "Легитимисты"
+ent-IS_CardStickerMementoUltionis = наклейка "Легитимисты"
     .desc = { ent-IS_CardStickerGalaxy.desc }
 ent-IS_CardStickerSkull = наклейка "Вольные люди"
     .desc = { ent-IS_CardStickerGalaxy.desc }

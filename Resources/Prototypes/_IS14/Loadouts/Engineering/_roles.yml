@@ -1,0 +1,68 @@
+# Engineering role loadouts
+
+- type: roleLoadout
+  id: JobChiefEngineer
+  groups:
+  - Inventory
+  - GroupTankHarness
+  - SurvivalExtended
+  - Trinkets
+  - Animals
+  - GroupSpeciesBreathTool
+  - ChiefEngineerEnvirohelm
+  - ChiefEngineerEnvirosuit
+  - ChiefEngineerEnvirogloves
+  - IS14StationEngineerBackpack
+  - IS14CeJumpsuit
+  - IS14CeHead
+  - IS14CeNeck
+  - IS14CeShoes
+
+- type: roleLoadout
+  id: JobSeniorEngineer
+  groups:
+  - IS14SeniorEngineerJumpsuit
+  - IS14SeniorEngineerHead
+  - IS14SeniorEngineerOuterClothing
+  - IS14SeniorEngineerBackpack
+  - IS14SeniorEngineerShoes
+  - IS14SeniorEngineerGloves
+
+- type: roleLoadout
+  id: JobAtmosphericTechnician
+  groups:
+  - Inventory
+  - GroupTankHarness
+  - SurvivalExtended
+  - Trinkets
+  - Animals
+  - GroupSpeciesBreathTool
+  - AtmosEnvirohelm
+  - AtmosEnvirosuit
+  - AtmosEnvirogloves
+
+- type: roleLoadout
+  id: JobStationEngineer
+  groups:
+  - Inventory
+  - GroupTankHarness
+  - SurvivalExtended
+  - Trinkets
+  - Animals
+  - GroupSpeciesBreathTool
+  - StationEngineerEnvirohelm
+  - StationEngineerEnvirosuit
+  - StationEngineerEnvirogloves
+
+- type: roleLoadout
+  id: JobTechnicalAssistant
+  groups:
+  - Inventory
+  - GroupTankHarness
+  - SurvivalExtended
+  - Trinkets
+  - Animals
+  - GroupSpeciesBreathTool
+  - TechnicalAssistantEnvirohelm
+  - TechnicalAssistantEnvirosuit
+  - TechnicalAssistantEnvirogloves

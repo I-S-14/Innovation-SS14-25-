@@ -1,0 +1,79 @@
+# Science role loadouts
+
+- type: roleLoadout
+  id: JobResearchDirector
+  groups:
+  - Inventory
+  - GroupTankHarness
+  - Glasses
+  - Survival
+  - Trinkets
+  - Animals
+  - GroupSpeciesBreathTool
+  - ResearchDirectorEnvirosuit
+  - ResearchDirectorEnvirohelm
+  - ResearchDirectorEnvirogloves
+  - IS14ScientistBackpack
+  - IS14RdJumpsuit
+  - IS14RdHead
+  - IS14RdOuterClothing
+  - IS14RdShoes
+
+- type: roleLoadout
+  id: JobSeniorResearcher
+  groups:
+  - IS14SeniorResearcherJumpsuit
+  - IS14SeniorResearcherHead
+  - IS14SeniorResearcherOuterClothing
+  - IS14SeniorResearcherBackpack
+  - IS14SeniorResearcherShoes
+  - IS14SeniorResearcherGloves
+
+- type: roleLoadout
+  id: JobScientist
+  groups:
+  - Inventory
+  - GroupTankHarness
+  - Glasses
+  - Survival
+  - Trinkets
+  - Animals
+  - GroupSpeciesBreathTool
+  - ScientistEnvirohelm
+  - ScientistEnvirosuit
+  - ScientistEnvirogloves
+
+- type: roleLoadout
+  id: JobRoboticist
+  groups:
+  - Inventory
+  - GroupTankHarness
+  - IS14RoboticistHead
+  - IS14RoboticistGlasses
+  - IS14ScientistNeck
+  - IS14RoboticistJumpsuit
+  - IS14RoboticistBackpack
+  - IS14RoboticistOuterClothing
+  - IS14RoboticistGloves
+  - IS14RoboticistShoes
+  - IS14RoboticistPDA
+  - Survival
+  - Trinkets
+  - GroupSpeciesBreathTool
+  - ScientistEnvirohelm
+  - ScientistEnvirosuit
+  - ScientistEnvirogloves
+
+- type: roleLoadout
+  id: JobResearchAssistant
+  groups:
+  - Inventory
+  - GroupTankHarness
+  - Glasses
+  - Survival
+  - Trinkets
+  - Animals
+  - GroupSpeciesBreathTool
+  - ResearchAssistantEnvirohelm
+  - ResearchAssistantEnvirosuit
+  - ResearchAssistantEnvirogloves

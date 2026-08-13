@@ -22,7 +22,7 @@
             # command
             Captain: [ 1, 1 ]
             BlueshieldOfficer: [ 1, 1 ]
-            NanotrasenRepresentative: [ 1, 1 ]
+            JobMupRepresentative: [ 1, 1 ] # IS14 Edit
             # cargo
             Quartermaster: [ 1, 1 ]
             SalvageSpecialist: [ 3, 3 ]
@@ -44,15 +44,15 @@
             Scientist: [ 2, 2 ]
             ResearchAssistant: [ 2, 2 ]
             # security
-            HeadOfSecurity: [ 1, 1 ]
-            Warden: [ 1, 1 ]
+            JobHosMilitia: [ 1, 1 ] # IS14 Edit
+            JobLrrChief: [ 1, 1 ] # IS14 Edit
             # WardenHelper: [ 1, 1 ] # IS14 Edit
-            SecurityOfficer: [ 3, 3 ]
-            SecurityCadet: [ 2, 2 ]
-            Detective: [ 1, 1 ]
-            Pilot: [ 2, 2 ]
-            Brigmedic: [ 1, 1 ]
-            Lawyer: [ 1, 1 ]
+            JobMilitia: [ 3, 3 ] # IS14 Edit
+            IS_JobCadet: [ 2, 2 ] # IS14 Edit
+            JobInvestigator: [ 1, 1 ] # IS14 Edit
+            IS_JobPilot: [ 2, 2 ] # IS14 Edit
+            JobMedOfficer: [ 1, 1 ] # IS14 Edit
+            IS_JobLawyer: [ 1, 1 ] # IS14 Edit
             # service
             HeadOfPersonnel: [ 1, 1 ]
             Bartender: [ 2, 2 ]
@@ -70,6 +70,15 @@
             # silicon
             Borg: [ 1, 1 ]
             StationAi: [ 1, 1 ]
+            CommandSecretary: [ 1, 1 ] # IS14 Edit
+            SeniorEngineer: [ 1, 1 ] # IS14 Edit
+            SeniorPhysician: [ 1, 1 ] # IS14 Edit
+            SeniorResearcher: [ 1, 1 ] # IS14 Edit
+            SeniorExpeditioner: [ 1, 1 ] # IS14 Edit
+            ChurchServant: [ 1, 1 ] # IS14 Edit
+            JobSeniorMilitia: [ 1, 1 ] # IS14 Edit
+            InternalControlExecutor: [ 1, 1 ] # IS14 Edit
+            JobIvk: [ 1, 1 ] # IS14 Edit
         - type: StationGoal
           goals:
           - SolarPanels

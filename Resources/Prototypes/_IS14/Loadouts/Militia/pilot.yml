@@ -1,0 +1,152 @@
+# pilot loadouts
+
+- type: loadout
+  id: IS14PilotArmorVest
+  equipment:
+    outerClothing: ClothingOuterArmorBasic
+
+- type: loadout
+  id: IS14PilotBackpack
+  equipment:
+    back: ClothingBackpackSecurity
+
+- type: loadout
+  id: IS14PilotBelt
+  equipment:
+    belt: ClothingBeltIS14Militia
+
+- type: loadout
+  id: IS14PilotBeret
+  equipment:
+    head: ClothingHeadIS14MilitiaBeret
+
+- type: loadout
+  id: IS14PilotBoots
+  equipment:
+    shoes: ClothingShoesBootsJack
+
+- type: loadout
+  id: IS14PilotCap
+  equipment:
+    head: ClothingHeadIS14MilitiaCap
+
+- type: loadout
+  id: IS14PilotDuffel
+  equipment:
+    back: ClothingBackpackDuffelSecurity
+
+- type: loadout
+  id: IS14PilotEyeScanner
+  equipment:
+    eyes: ClothingEyesIS14MilitiaEyeScanner
+
+- type: loadout
+  id: IS14PilotFormal
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitIS14PilotFormal
+  groupBy: "jumpsuit"
+
+- type: loadout
+  id: IS14PilotGlasses
+  equipment:
+    eyes: ClothingEyesIS14MilitiaGlasses
+
+- type: loadout
+  id: IS14PilotJacket
+  equipment:
+    outerClothing: ClothingOuterIS14MilitiaFormalJacket
+
+- type: loadout
+  id: IS14PilotJumpskirt
+  equipment:
+    jumpsuit: ClothingUniformJumpskirtIS14PilotSkirt
+  groupBy: "jumpskirt"
+
+- type: loadout
+  id: IS14PilotJumpsuit
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitIS14PilotJumpsuit
+  groupBy: "jumpsuit"
+
+- type: loadout
+  id: IS14PilotMilitiaBoots
+  equipment:
+    shoes: ClothingShoesIS14MilitiaBoots
+
+- type: loadout
+  id: IS14PilotSatchel
+  equipment:
+    back: ClothingBackpackSatchelSecurity
+
+- type: loadout
+  id: IS14PilotTactical
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitIS14PilotTactical
+  groupBy: "jumpsuit"
+
+- type: loadout
+  id: IS14PilotVisor
+  equipment:
+    eyes: ClothingEyesIS14MilitiaVisor
+
+- type: loadout
+  id: IS14PilotWebbing
+  equipment:
+    belt: ClothingBeltIS14MilitiaWebbing
+
+- type: loadoutGroup
+  id: IS14PilotBackpack
+  name: loadout-group-backpack
+  loadouts:
+  - IS14PilotBackpack
+  - IS14PilotSatchel
+  - IS14PilotDuffel
+
+- type: loadoutGroup
+  id: IS14PilotBelt
+  name: loadout-group-belt
+  minLimit: 0
+  loadouts:
+  - IS14PilotBelt
+  - IS14PilotWebbing
+
+- type: loadoutGroup
+  id: IS14PilotEyes
+  name: loadout-group-glasses
+  minLimit: 0
+  loadouts:
+  - IS14PilotGlasses
+  - IS14PilotEyeScanner
+  - IS14PilotVisor
+
+- type: loadoutGroup
+  id: IS14PilotHead
+  name: loadout-group-head
+  minLimit: 0
+  loadouts:
+  - IS14PilotCap
+  - IS14PilotBeret
+
+- type: loadoutGroup
+  id: IS14PilotJumpsuit
+  name: loadout-group-jumpsuit
+  loadouts:
+  - IS14PilotJumpsuit
+  - IS14PilotJumpskirt
+  - IS14PilotFormal
+  - IS14PilotTactical
+
+- type: loadoutGroup
+  id: IS14PilotOuterClothing
+  name: loadout-group-outerclothing
+  minLimit: 0
+  loadouts:
+  - IS14PilotJacket
+  - IS14PilotArmorVest
+
+- type: loadoutGroup
+  id: IS14PilotShoes
+  name: loadout-group-shoes
+  loadouts:
+  - IS14PilotBoots
+  - IS14PilotMilitiaBoots

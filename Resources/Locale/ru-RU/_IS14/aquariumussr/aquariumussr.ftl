@@ -1,6 +1,6 @@
 comp-aquarium-knock = Вы постучали по окну и, вероятно, напугали рыбок.
 comp-aquariumu-knock = кто-то постучал по окну и, вероятно, напугал рыбок.
-ent-Aquariumussr = Аквариум СССП
+ent-Aquariumussr = аквариум СССП
     .desc = Это аквариум с рыбами и крабом
-ent-Aquarium = Аквариум
+ent-Aquarium = аквариум
     .desc = Это аквариум

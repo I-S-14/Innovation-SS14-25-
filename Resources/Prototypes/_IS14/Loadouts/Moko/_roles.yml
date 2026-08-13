@@ -1,0 +1,21 @@
+# Moko role loadouts
+
+- type: roleLoadout
+  id: JobBlueshieldOfficer
+  groups:
+  - Inventory
+  - IS14BlueshieldOfficerHead
+  - IS14BlueshieldOfficerJumpsuit
+  - IS14BlueshieldOfficerBackpack
+  - IS14BlueshieldOfficerOuter
+  - IS14BlueshieldOfficerNeck
+  - IS14BlueshieldOfficerMask
+  - IS14BlueshieldOfficerShoes
+  - IS14BlueshieldOfficerGloves
+  - Trinkets
+  - Animals
+  - GroupSpeciesBreathTool
+  - SurvivalSecurity
+  - BlueshieldOfficerEnvirohelm
+  - BlueshieldOfficerEnvirosuit
+  - BlueshieldOfficerEnvirogloves

@@ -22,7 +22,7 @@
             # Goobstation - TODO: add bso and ntr
             # Goobstation - Me did it, Icepick - Erm, if you did it, it isn't a todo!!!!
             StationAi: [ 1, 1 ]
-            NanotrasenRepresentative: [ 1, 1 ] # Goobstation
+            JobMupRepresentative: [ 1, 1 ] # Goobstation # IS14 Edit
             BlueshieldOfficer: [ 1, 1 ] # Goobstation
             Captain: [ 1, 1 ]
             HeadOfPersonnel: [ 1, 1 ]
@@ -55,14 +55,16 @@
             Borg: [ 2, 2 ]
             SeniorResearcher: [ 1, 1 ] # IS14 Edit
             #security
-            HeadOfSecurity: [ 1, 1 ]
-            Warden: [ 1, 1 ]
-            Detective: [ 1, 1 ]
-            SecurityOfficer: [ 4, 4 ]
-            SecurityCadet: [ 4, 4 ]
-            Brigmedic: [ 1, 1 ]
+            JobHosMilitia: [ 1, 1 ] # IS14 Edit
+            JobLrrChief: [ 1, 1 ] # IS14 Edit
+            JobInvestigator: [ 1, 1 ] # IS14 Edit
+            JobMilitia: [ 4, 4 ] # IS14 Edit
+            IS_JobCadet: [ 4, 4 ] # IS14 Edit
+            JobMedOfficer: [ 1, 1 ] # IS14 Edit
             InternalControlExecutor: [ 1, 1 ] # IS14 Edit
             JobSeniorMilitia: [ 1, 1 ] # IS14 Edit
+            IS_JobPilot: [ 1, 1 ] # IS14 Edit
+            JobIvk: [ 1, 1 ] # IS14 Edit
             #supply
             Quartermaster: [ 1, 1 ]
             SalvageSpecialist: [ 1, 3 ]

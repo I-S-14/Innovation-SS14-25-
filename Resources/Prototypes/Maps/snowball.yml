@@ -20,7 +20,7 @@
             #command (7)
             Captain: [ 1, 1 ]
             HeadOfPersonnel: [ 1, 1 ]
-            HeadOfSecurity: [ 1, 1 ]
+            JobHosMilitia: [ 1, 1 ] # IS14 Edit
             ChiefMedicalOfficer: [ 1, 1 ]
             ChiefEngineer: [ 1, 1 ]
             ResearchDirector: [ 1, 1 ]
@@ -46,11 +46,11 @@
             Scientist: [ 3, 5 ]
             ResearchAssistant: [ 3, 3 ] #intern, not counted
             #security (6 - 8)
-            Warden: [ 1, 1 ]
-            SecurityOfficer: [ 3, 5 ]
-            Detective: [ 1, 1 ]
-            SecurityCadet: [ 4, 4 ] #intern, not counted
-            Lawyer: [ 1, 1 ]
+            JobLrrChief: [ 1, 1 ] # IS14 Edit
+            JobMilitia: [ 3, 5 ] # IS14 Edit
+            JobInvestigator: [ 1, 1 ] # IS14 Edit
+            IS_JobCadet: [ 4, 4 ] #intern, not counted # IS14 Edit
+            IS_JobLawyer: [ 1, 1 ] # IS14 Edit
             #supply (6-8)
             SalvageSpecialist: [ 3, 3 ]
             CargoTechnician: [ 3, 5 ]
@@ -62,3 +62,13 @@
             #silicon (3)
             StationAi: [ 1, 1 ]
             Borg: [ 2, 2 ]
+            CommandSecretary: [ 1, 1 ] # IS14 Edit
+            SeniorEngineer: [ 1, 1 ] # IS14 Edit
+            SeniorPhysician: [ 1, 1 ] # IS14 Edit
+            SeniorResearcher: [ 1, 1 ] # IS14 Edit
+            SeniorExpeditioner: [ 1, 1 ] # IS14 Edit
+            ChurchServant: [ 1, 1 ] # IS14 Edit
+            JobSeniorMilitia: [ 1, 1 ] # IS14 Edit
+            IS_JobPilot: [ 1, 1 ] # IS14 Edit
+            InternalControlExecutor: [ 1, 1 ] # IS14 Edit
+            JobIvk: [ 1, 1 ] # IS14 Edit

@@ -1,0 +1,30 @@
+ent-ClothingUniformJumpsuitIS14CargoTech = cargo technician's uniform
+    .desc = Designed to warm the body efficiently in the heat and cool it in the cold.
+ent-ClothingUniformJumpsuitIS14CargoTechVest = cargo technician's sleeveless uniform
+    .desc = Designed for improved automatic thermoregulation by way of the wearer running.
+ent-ClothingHeadIS14CargoTechCap = cargo technician's cap
+    .desc = Its aerodynamic shape makes it as bad as possible for fanning yourself. Wasting time on manual thermoregulation is shameful.
+
+ent-ClothingUniformJumpsuitIS14Postman = postman's uniform
+    .desc = Has special patches for hiding important letters. Secret letter pockets can be reserved on the official SOV-Post website.
+ent-ClothingUniformJumpskirtIS14Postman = postwoman's uniform
+    .desc = Has special patches for hiding important letters. Secret letter pockets in the bikini and bust area can be reserved on the official SOV-Post website.
+ent-ClothingHeadIS14PostmanCap = postman's peaked cap
+    .desc = Spotting this cap on a worker grants permission to ask about a missing parcel. Should parcels and letters go missing repeatedly, the cap is sent to waste disposal along with the worker.
+ent-ClothingHeadIS14PostmanPilotka = postman's pilotka
+    .desc = Spotting this pilotka on a worker grants permission to ask about a missing parcel. Should parcels and letters go missing repeatedly, the pilotka is sent to waste disposal along with the worker.
+
+ent-ClothingUniformJumpsuitIS14Expeditioner = expeditioner's uniform
+    .desc = Designed to be comfortable to wear off-mission, so that onlookers feel the urge to show respect and toss in 50 soviet credits.
+ent-ClothingUniformJumpsuitIS14SeniorExpeditioner = senior expeditioner's uniform
+    .desc = Unlike a rank-and-file expeditioner's uniform it radiates an even greater aura of respect, and its pockets refuse notes worth less than 100 soviet credits.
+ent-ClothingHeadIS14ExpeditionerBeret = expeditioner's beret
+    .desc = Wearing it grants automatic permission to bathe in fountains.
+ent-ClothingOuterIS14ExpeditionerArmor = expeditioner's armor
+    .desc = Built for work in low temperatures, high pressure and the company of creatures eager to breach its integrity.
+ent-ClothingMaskIS14ExpeditionerRespirator = expeditioner's respirator
+    .desc = It not only feeds oxygen to your face, but can also feed liquids the other way, serving as a funnel at corporate parties.
+ent-ClothingOuterHardsuitIS14Expeditioner = expeditioner's hardsuit
+    .desc = Built for work in low temperatures and high pressure.
+ent-ClothingHeadHelmetIS14Expeditioner = expeditioner's helmet
+    .desc = Fitted with a specialised flashlight duct-taped to the right temple.

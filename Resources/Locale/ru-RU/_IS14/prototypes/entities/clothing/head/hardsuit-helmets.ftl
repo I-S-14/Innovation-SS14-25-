@@ -1,10 +1,10 @@
-ent-ClothingHeadHelmetIS14Pilot = Шлем Пилота
+ent-ClothingHeadHelmetIS14Pilot = шлем пилота
     .desc = Создан опираясь на многочисленные запросы пилотов десантных шаттлов, выдерживает удар бутылкой как об затылок, так и об лоб.
-ent-ClothingHeadHelmetIS14Militia = Шлем Милиционера
+ent-ClothingHeadHelmetIS14Militia = шлем милиционера
     .desc = Обустроен для поддержания дыхания в разгерметизированных помещениях, внешняя бронепластина спасает от неожиданностей.
-ent-ClothingHeadHelmetIS14LrrChief = Шлем Главы ЛРР
+ent-ClothingHeadHelmetIS14LrrChief = шлем главы ЛРР
     .desc = Спроектирован для продолжения комфортной работы в участках в условиях разгерметизации.
-ent-ClothingHeadHelmetIS14MedOfficer = Шлем Медицинского Офицера
+ent-ClothingHeadHelmetIS14MedOfficer = шлем медицинского офицера
     .desc = Обеспечен набором сканеров, системой поддержания жизнедеятельности и бумажкой с рецептами в правом-верхнем углу шлема.
-ent-ClothingHeadHelmetIS14Hos = Шлем Главы Милиции
+ent-ClothingHeadHelmetIS14Hos = шлем главы милиции
     .desc = Гордое облачение главы милиции служит напоминанием для подчиненных и мишенью для правонарушителей.

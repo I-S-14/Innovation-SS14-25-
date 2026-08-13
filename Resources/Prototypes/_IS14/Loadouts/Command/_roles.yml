@@ -1,0 +1,28 @@
+# Command role loadouts
+
+- type: roleLoadout
+  id: JobCaptain
+  groups:
+  - Inventory
+  - Survival
+  - Trinkets
+  - Animals
+  - GroupSpeciesBreathTool
+  - CaptainEnvirohelm
+  - CaptainEnvirosuit
+  - CaptainEnvirogloves
+  - IS14CaptainBackpack
+  - IS14CaptainJumpsuit
+  - IS14CaptainHead
+  - IS14CaptainNeck
+  - IS14CaptainGloves
+  - IS14CaptainShoes
+
+- type: roleLoadout
+  id: JobCommandSecretary
+  groups:
+  - IS14CommandSecretaryJumpsuit
+  - IS14CommandSecretaryHead
+  - IS14CommandSecretaryOuterClothing
+  - IS14CommandSecretaryBackpack
+  - IS14CommandSecretaryShoes

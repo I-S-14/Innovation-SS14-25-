@@ -1,0 +1,59 @@
+# chief medical officer clothing
+
+- type: entity
+  parent: ClothingHeadBase
+  id: ClothingHeadIS14CmoBeret
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Head/Berets/cmo_beret.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Head/Berets/cmo_beret.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: ClothingNeckIS14CmoCloak
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Neck/Cloaks/cmo_cloak.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Neck/Cloaks/cmo_cloak.rsi
+  - type: StealTarget
+    stealGroup: HeadCloak
+
+- type: entity
+  parent: ClothingNeckBase
+  id: ClothingNeckIS14CmoFormalCloak
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Neck/Cloaks/cmo_formal_cloak.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Neck/Cloaks/cmo_formal_cloak.rsi
+
+- type: entity
+  parent: ClothingOuterIS14LabCoatBase
+  id: ClothingOuterIS14CmoFormalRobe
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/OuterClothing/Coats/cmo_formal_robe.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/OuterClothing/Coats/cmo_formal_robe.rsi
+
+- type: entity
+  parent: ClothingOuterCoatLab
+  id: ClothingOuterIS14CmoRobe
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/OuterClothing/Coats/cmo_robe.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/OuterClothing/Coats/cmo_robe.rsi
+
+- type: entity
+  parent: ClothingUniformJumpsuitIS14Base
+  id: ClothingUniformJumpsuitIS14Cmo
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Uniforms/Jumpsuit/cmo.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Uniforms/Jumpsuit/cmo.rsi
+    equipSound:
+      path: /Audio/Items/jumpsuit_equip.ogg

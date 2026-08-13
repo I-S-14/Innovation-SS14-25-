@@ -1,0 +1,202 @@
+# Service role loadouts
+
+- type: roleLoadout
+  id: JobHeadOfPersonnel
+  groups:
+  - Inventory
+  - GroupTankHarness
+  - Glasses
+  - Survival
+  - Trinkets
+  - Animals
+  - GroupSpeciesBreathTool
+  - HoPEnvirohelm
+  - HoPEnvirosuit
+  - HoPEnvirogloves
+  - IS14HoPGloves
+  - IS14HoPBackpack
+  - IS14HopJumpsuit
+  - IS14HopHead
+  - IS14HopNeck
+  - IS14HopShoes
+
+- type: roleLoadout
+  id: JobChef
+  groups:
+  - Inventory
+  - GroupTankHarness
+  - Glasses
+  - Survival
+  - Trinkets
+  - Animals
+  - GroupSpeciesBreathTool
+  - ChefEnvirohelm
+  - ChefEnvirosuit
+  - ChefEnvirogloves
+
+- type: roleLoadout
+  id: JobBotanist
+  groups:
+  - Inventory
+  - GroupTankHarness
+  - Glasses
+  - Survival
+  - Trinkets
+  - Animals
+  - GroupSpeciesBreathTool
+  - BotanistEnvirohelm
+  - BotanistEnvirosuit
+  - BotanistEnvirogloves
+
+- type: roleLoadout
+  id: JobBartender
+  groups:
+  - Inventory
+  - GroupTankHarness
+  - Glasses
+  - Survival
+  - Trinkets
+  - Animals
+  - GroupSpeciesBreathTool
+  - BartenderEnvirohelm
+  - BartenderEnvirosuit
+  - BartenderEnvirogloves
+
+- type: roleLoadout
+  id: JobServiceWorker
+  groups:
+  - Inventory
+  - GroupTankHarness
+  - Glasses
+  - Survival
+  - Trinkets
+  - Animals
+  - GroupSpeciesBreathTool
+  - ServiceWorkerEnvirohelm
+  - ServiceWorkerEnvirosuit
+  - ServiceWorkerEnvirogloves
+
+- type: roleLoadout
+  id: JobJanitor
+  groups:
+  - Inventory
+  - GroupTankHarness
+  - Glasses
+  - Survival
+  - Trinkets
+  - JanitorJobTrinkets
+  - Animals
+  - GroupSpeciesBreathTool
+  - JanitorEnvirohelm
+  - JanitorEnvirosuit
+  - JanitorEnvirogloves
+
+- type: roleLoadout
+  id: JobLibrarian
+  groups:
+  - Inventory
+  - GroupTankHarness
+  - Glasses
+  - Survival
+  - Trinkets
+  - Animals
+  - GroupSpeciesBreathTool
+  - LibrarianEnvirohelm
+  - LibrarianEnvirosuit
+  - LibrarianEnvirogloves
+
+- type: roleLoadout
+  id: JobChaplain
+  groups:
+  - Inventory
+  - GroupTankHarness
+  - Glasses
+  - Survival
+  - Trinkets
+  - Animals
+  - GroupSpeciesBreathTool
+  - ChaplainEnvirohelm
+  - ChaplainEnvirosuit
+  - ChaplainEnvirogloves
+
+- type: roleLoadout
+  id: JobChurchServant
+  groups:
+  - IS14ChurchServantJumpsuit
+  - IS14ChurchServantHead
+  - IS14ChurchServantNeck
+  - IS14ChurchServantOuterClothing
+  - IS14ChurchServantBackpack
+  - IS14ChurchServantShoes
+
+- type: roleLoadout
+  id: JobReporter
+  groups:
+  - Inventory
+  - GroupTankHarness
+  - Glasses
+  - Survival
+  - Trinkets
+  - Animals
+  - GroupSpeciesBreathTool
+  - ReporterEnvirohelm
+  - ReporterEnvirosuit
+  - ReporterEnvirogloves
+
+- type: roleLoadout
+  id: JobMusician
+  groups:
+  - Inventory
+  - GroupTankHarness
+  - Glasses
+  - Survival
+  - Trinkets
+  - Instruments
+  - Animals
+  - GroupSpeciesBreathTool
+  - MusicianEnvirohelm
+  - MusicianEnvirosuit
+  - MusicianEnvirogloves
+
+- type: roleLoadout
+  id: JobClown
+  canCustomizeName: true
+  groups:
+  - Inventory
+  - GroupTankHarness
+  - Glasses
+  - SurvivalClown
+  - Trinkets
+  - Animals
+  - ClownEnvirohelm
+  - ClownEnvirosuit
+  - ClownEnvirogloves
+
+- type: roleLoadout
+  id: JobMime
+  canCustomizeName: true
+  groups:
+  - Inventory
+  - GroupTankHarness
+  - Glasses
+  - SurvivalMime
+  - Trinkets
+  - Animals
+  - MimeEnvirohelm
+  - MimeEnvirosuit
+  - MimeEnvirogloves
+  - IS14MimeGloves
+
+- type: roleLoadout
+  id: JobPassenger
+  groups:
+  - Inventory
+  - GroupTankHarness
+  - Glasses
+  - Survival
+  - Trinkets
+  - Animals
+  - GroupSpeciesBreathTool
+  - AssistantEnvirohelm
+  - AssistantEnvirosuit
+  - AssistantEnvirogloves

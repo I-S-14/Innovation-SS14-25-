@@ -1,10 +1,10 @@
-ent-ClothingHeadHelmetIS14Pilot = Pilot Helmet
+ent-ClothingHeadHelmetIS14Pilot = pilot helmet
     .desc = Designed for shuttle pilots, withstands a bottle hit to the back or the forehead.
-ent-ClothingHeadHelmetIS14Militia = Militia Helmet
+ent-ClothingHeadHelmetIS14Militia = militia helmet
     .desc = Fitted for breathing in depressurized areas, outer armor plate protects from surprises.
-ent-ClothingHeadHelmetIS14LrrChief = LRR Chief Helmet
+ent-ClothingHeadHelmetIS14LrrChief = LRR chief helmet
     .desc = Designed for comfortable work in sections under depressurization.
-ent-ClothingHeadHelmetIS14MedOfficer = Medical Officer Helmet
+ent-ClothingHeadHelmetIS14MedOfficer = medical officer helmet
     .desc = Fitted with scanners, life support and a prescription note in the top-right corner.
-ent-ClothingHeadHelmetIS14Hos = Head of Militia Helmet
+ent-ClothingHeadHelmetIS14Hos = head of militia helmet
     .desc = Proud headgear of the head of militia, a reminder for subordinates and a target for offenders.
