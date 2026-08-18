@@ -1,76 +1,76 @@
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaAdministrator
+  parent: IS14_PdaBase
+  id: IS14_PdaAdministrator
   name: administrator's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Service/administrator.rsi
   - type: Pda
-    id: IS_IdCardAdministrator
+    id: IS14_IdCardAdministrator
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaAssistant
+  parent: IS14_PdaBase
+  id: IS14_PdaAssistant
   name: assistant's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Service/assistant.rsi
   - type: Pda
-    id: IS_IdCardAssistant
+    id: IS14_IdCardAssistant
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaBartender
+  parent: IS14_PdaBase
+  id: IS14_PdaBartender
   name: bartender's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Service/bartender.rsi
   - type: Pda
-    id: IS_IdCardBartender
+    id: IS14_IdCardBartender
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaBotanist
+  parent: IS14_PdaBase
+  id: IS14_PdaBotanist
   name: botanist's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Service/botanist.rsi
   - type: Pda
-    id: IS_IdCardBotanist
+    id: IS14_IdCardBotanist
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdachaplainAssistant
+  parent: IS14_PdaBase
+  id: IS14_PdachaplainAssistant
   name: chaplain assistant's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Service/chaplain.rsi
   - type: Pda
-    id: IS_IdCardChaplainAssistant
+    id: IS14_IdCardChaplainAssistant
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaChaplain
+  parent: IS14_PdaBase
+  id: IS14_PdaChaplain
   name: chaplain's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Service/chaplain.rsi
   - type: Pda
-    id: IS_IdCardChaplain
+    id: IS14_IdCardChaplain
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaChef
+  parent: IS14_PdaBase
+  id: IS14_PdaChef
   name: chef's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Service/chef.rsi
   - type: Pda
-    id: IS_IdCardChef
+    id: IS14_IdCardChef
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaClown
+  parent: IS14_PdaBase
+  id: IS14_PdaClown
   name: clown's PDA
   components:
   - type: Sprite
@@ -82,74 +82,74 @@
     #- state: "closed" No closed state for clown!
     sprite: _IS14/Objects/Devices/pda/Service/clown.rsi
   - type: Pda
-    id: IS_IdCardClown
+    id: IS14_IdCardClown
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaCorrespondent
+  parent: IS14_PdaBase
+  id: IS14_PdaCorrespondent
   name: correspondent's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Service/correspondent.rsi
   - type: Pda
-    id: IS_IdCardCorrespondent
+    id: IS14_IdCardCorrespondent
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaJanitor
+  parent: IS14_PdaBase
+  id: IS14_PdaJanitor
   name: janitor's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Service/janitor.rsi
   - type: Pda
-    id: IS_IdCardJanitor
+    id: IS14_IdCardJanitor
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaLibrarian
+  parent: IS14_PdaBase
+  id: IS14_PdaLibrarian
   name: librarian's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Service/librarian.rsi
   - type: Pda
-    id: IS_IdCardLibrarian
+    id: IS14_IdCardLibrarian
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaMartialArtist
+  parent: IS14_PdaBase
+  id: IS14_PdaMartialArtist
   name: martial artist's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Service/martial_artist.rsi
   - type: Pda
-    id: IS_IdCardMartialArtist
+    id: IS14_IdCardMartialArtist
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaMime
+  parent: IS14_PdaBase
+  id: IS14_PdaMime
   name: mime's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Service/mime.rsi
   - type: Pda
-    id: IS_IdCardMime
+    id: IS14_IdCardMime
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaMusician
+  parent: IS14_PdaBase
+  id: IS14_PdaMusician
   name: musician's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Service/musician.rsi
   - type: Pda
-    id: IS_IdCardMusician
+    id: IS14_IdCardMusician
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaServiceWorker
+  parent: IS14_PdaBase
+  id: IS14_PdaServiceWorker
   name: service worker's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Service/service_worker.rsi
   - type: Pda
-    id: IS_IdCardServiceWorker
+    id: IS14_IdCardServiceWorker

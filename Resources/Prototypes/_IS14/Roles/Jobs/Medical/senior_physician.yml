@@ -38,7 +38,7 @@
   equipment:
     ears: ClothingHeadsetMedical
     belt: ClothingBeltMedicalFilled
-    id: IS_PdaSeniorDoctor
+    id: IS14_PdaSeniorDoctor
   storage:
     back: []
 

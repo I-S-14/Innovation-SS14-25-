@@ -22,7 +22,7 @@
   id: SeniorResearcherGear
   equipment:
     ears: ClothingHeadsetScience
-    id: IS_PdaMentorScientist
+    id: IS14_PdaMentorScientist
   storage:
     back: []
 

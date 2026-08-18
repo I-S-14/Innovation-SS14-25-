@@ -1,6 +1,6 @@
 ﻿- type: entity
   parent: Clothing
-  id: IS_IdCardBase
+  id: IS14_IdCardBase
   name: identification card
   description: A card necessary to access various areas aboard the station.
   abstract: true

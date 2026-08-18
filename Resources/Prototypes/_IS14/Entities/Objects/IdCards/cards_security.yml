@@ -1,6 +1,6 @@
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardBrigmedic
+  parent: IS14_IdCardBase
+  id: IS14_IdCardBrigmedic
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -13,8 +13,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/security.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardCadet
+  parent: IS14_IdCardBase
+  id: IS14_IdCardCadet
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -27,8 +27,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/security.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardDetective
+  parent: IS14_IdCardBase
+  id: IS14_IdCardDetective
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -41,8 +41,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/security.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardSecurityOfficer
+  parent: IS14_IdCardBase
+  id: IS14_IdCardSecurityOfficer
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -55,8 +55,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/security.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardSeniorOfficer
+  parent: IS14_IdCardBase
+  id: IS14_IdCardSeniorOfficer
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -69,8 +69,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/security.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardWarden
+  parent: IS14_IdCardBase
+  id: IS14_IdCardWarden
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -83,8 +83,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/security.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardInternalControlExecutor
+  parent: IS14_IdCardBase
+  id: IS14_IdCardInternalControlExecutor
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -97,8 +97,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/security.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardHosMilitia
+  parent: IS14_IdCardBase
+  id: IS14_IdCardHosMilitia
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -111,8 +111,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/security.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardMilitia
+  parent: IS14_IdCardBase
+  id: IS14_IdCardMilitia
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -125,8 +125,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/security.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardSeniorMilitia
+  parent: IS14_IdCardBase
+  id: IS14_IdCardSeniorMilitia
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -139,8 +139,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/security.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardMedOfficer
+  parent: IS14_IdCardBase
+  id: IS14_IdCardMedOfficer
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -153,8 +153,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/security.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardLrrChief
+  parent: IS14_IdCardBase
+  id: IS14_IdCardLrrChief
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -167,8 +167,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/security.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardPilot
+  parent: IS14_IdCardBase
+  id: IS14_IdCardPilot
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -181,8 +181,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/security.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardIVK
+  parent: IS14_IdCardBase
+  id: IS14_IdCardIVK
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -195,8 +195,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/security.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardInvestigator
+  parent: IS14_IdCardBase
+  id: IS14_IdCardInvestigator
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:

@@ -1,6 +1,6 @@
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardAdministrator
+  parent: IS14_IdCardBase
+  id: IS14_IdCardAdministrator
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -13,8 +13,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/service.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardAssistant
+  parent: IS14_IdCardBase
+  id: IS14_IdCardAssistant
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -27,8 +27,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/service.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardBartender
+  parent: IS14_IdCardBase
+  id: IS14_IdCardBartender
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -41,8 +41,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/service.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardBotanist
+  parent: IS14_IdCardBase
+  id: IS14_IdCardBotanist
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -55,8 +55,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/service.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardMartialArtist
+  parent: IS14_IdCardBase
+  id: IS14_IdCardMartialArtist
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -69,8 +69,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/service.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardChaplainAssistant
+  parent: IS14_IdCardBase
+  id: IS14_IdCardChaplainAssistant
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -83,8 +83,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/service.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardChaplain
+  parent: IS14_IdCardBase
+  id: IS14_IdCardChaplain
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -97,8 +97,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/service.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardChef
+  parent: IS14_IdCardBase
+  id: IS14_IdCardChef
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -111,8 +111,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/service.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardClown
+  parent: IS14_IdCardBase
+  id: IS14_IdCardClown
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -125,8 +125,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/service.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardCorrespondent
+  parent: IS14_IdCardBase
+  id: IS14_IdCardCorrespondent
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -139,8 +139,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/service.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardJanitor
+  parent: IS14_IdCardBase
+  id: IS14_IdCardJanitor
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -153,8 +153,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/service.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardLibrarian
+  parent: IS14_IdCardBase
+  id: IS14_IdCardLibrarian
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -167,8 +167,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/service.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardMime
+  parent: IS14_IdCardBase
+  id: IS14_IdCardMime
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -181,8 +181,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/service.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardMusician
+  parent: IS14_IdCardBase
+  id: IS14_IdCardMusician
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -195,8 +195,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/service.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardServiceWorker
+  parent: IS14_IdCardBase
+  id: IS14_IdCardServiceWorker
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:

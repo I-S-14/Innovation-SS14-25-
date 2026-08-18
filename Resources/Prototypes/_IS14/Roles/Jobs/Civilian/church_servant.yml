@@ -23,7 +23,8 @@
 - type: startingGear
   id: ChurchServantGear
   equipment:
-    id: IS_PdachaplainAssistant
+    shoes: ClothingShoesColorBlack
+    id: IS14_PdachaplainAssistant
     ears: ClothingHeadsetService
   storage:
     back:

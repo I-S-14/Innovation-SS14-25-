@@ -1,149 +1,149 @@
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaBrigmedic
+  parent: IS14_PdaBase
+  id: IS14_PdaBrigmedic
   name: brigmedic's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Security/security.rsi
   - type: Pda
-    id: IS_IdCardBrigmedic
+    id: IS14_IdCardBrigmedic
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaCadet
+  parent: IS14_PdaBase
+  id: IS14_PdaCadet
   name: cadet's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Security/security.rsi
   - type: Pda
-    id: IS_IdCardCadet
+    id: IS14_IdCardCadet
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaDetective
+  parent: IS14_PdaBase
+  id: IS14_PdaDetective
   name: detective's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Security/security.rsi
   - type: Pda
-    id: IS_IdCardDetective
+    id: IS14_IdCardDetective
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaSecurityOfficer
+  parent: IS14_PdaBase
+  id: IS14_PdaSecurityOfficer
   name: security officer's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Security/security.rsi
   - type: Pda
-    id: IS_IdCardSecurityOfficer
+    id: IS14_IdCardSecurityOfficer
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaSeniorOfficer
+  parent: IS14_PdaBase
+  id: IS14_PdaSeniorOfficer
   name: senior officer's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Security/security.rsi
   - type: Pda
-    id: IS_IdCardSeniorOfficer
+    id: IS14_IdCardSeniorOfficer
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaWarden
+  parent: IS14_PdaBase
+  id: IS14_PdaWarden
   name: warden's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Security/security.rsi
   - type: Pda
-    id: IS_IdCardWarden
+    id: IS14_IdCardWarden
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaInternalControlExecutor
+  parent: IS14_PdaBase
+  id: IS14_PdaInternalControlExecutor
   name: internal control executor's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Security/security.rsi
   - type: Pda
-    id: IS_IdCardInternalControlExecutor
+    id: IS14_IdCardInternalControlExecutor
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaHosMilitia
+  parent: IS14_PdaBase
+  id: IS14_PdaHosMilitia
   name: head of security's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Security/security.rsi
   - type: Pda
-    id: IS_IdCardHosMilitia
+    id: IS14_IdCardHosMilitia
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaMilitia
+  parent: IS14_PdaBase
+  id: IS14_PdaMilitia
   name: militia officer's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Security/security.rsi
   - type: Pda
-    id: IS_IdCardMilitia
+    id: IS14_IdCardMilitia
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaSeniorMilitia
+  parent: IS14_PdaBase
+  id: IS14_PdaSeniorMilitia
   name: senior militia officer's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Security/security.rsi
   - type: Pda
-    id: IS_IdCardSeniorMilitia
+    id: IS14_IdCardSeniorMilitia
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaMedOfficer
+  parent: IS14_PdaBase
+  id: IS14_PdaMedOfficer
   name: medical officer's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Security/security.rsi
   - type: Pda
-    id: IS_IdCardMedOfficer
+    id: IS14_IdCardMedOfficer
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaLrrChief
+  parent: IS14_PdaBase
+  id: IS14_PdaLrrChief
   name: LRR chief's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Security/security.rsi
   - type: Pda
-    id: IS_IdCardLrrChief
+    id: IS14_IdCardLrrChief
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaPilot
+  parent: IS14_PdaBase
+  id: IS14_PdaPilot
   name: pilot's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Security/security.rsi
   - type: Pda
-    id: IS_IdCardPilot
+    id: IS14_IdCardPilot
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaIVK
+  parent: IS14_PdaBase
+  id: IS14_PdaIVK
   name: IVK officer's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Security/security.rsi
   - type: Pda
-    id: IS_IdCardIVK
+    id: IS14_IdCardIVK
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaInvestigator
+  parent: IS14_PdaBase
+  id: IS14_PdaInvestigator
   name: investigator's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Security/security.rsi
   - type: Pda
-    id: IS_IdCardInvestigator
+    id: IS14_IdCardInvestigator
