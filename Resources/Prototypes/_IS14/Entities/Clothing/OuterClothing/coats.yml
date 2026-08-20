@@ -21,45 +21,45 @@
   id: ClothingOuterIS14SeniorMilitiaFormalJacket
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/OuterClothing/Coats/senior_militia_formal_jacket.rsi
+    sprite: _IS14/Clothing/OuterClothing/Militia/SeniorMilitia/senior_militia_formal_jacket.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/OuterClothing/Coats/senior_militia_formal_jacket.rsi
+    sprite: _IS14/Clothing/OuterClothing/Militia/SeniorMilitia/senior_militia_formal_jacket.rsi
 
 - type: entity
   parent: ClothingOuterIS14Base
   id: ClothingOuterIS14MilitiaFormalJacket
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/OuterClothing/Coats/militia_formal_jacket.rsi
+    sprite: _IS14/Clothing/OuterClothing/Militia/Militia/militia_formal_jacket.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/OuterClothing/Coats/militia_formal_jacket.rsi
+    sprite: _IS14/Clothing/OuterClothing/Militia/Militia/militia_formal_jacket.rsi
 
 - type: entity
   parent: ClothingOuterIS14Base
   id: ClothingOuterIS14LrrChiefJacket
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/OuterClothing/Coats/lrr_chief_jacket.rsi
+    sprite: _IS14/Clothing/OuterClothing/Militia/LrrChief/lrr_chief_jacket.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/OuterClothing/Coats/lrr_chief_jacket.rsi
+    sprite: _IS14/Clothing/OuterClothing/Militia/LrrChief/lrr_chief_jacket.rsi
 
 - type: entity
   parent: ClothingOuterIS14Base
   id: ClothingOuterIS14HosJacket
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/OuterClothing/Coats/hos_jacket.rsi
+    sprite: _IS14/Clothing/OuterClothing/Militia/HosMilitia/hos_jacket.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/OuterClothing/Coats/hos_jacket.rsi
+    sprite: _IS14/Clothing/OuterClothing/Militia/HosMilitia/hos_jacket.rsi
 
 - type: entity
   parent: ClothingOuterIS14Base
   id: ClothingOuterIS14MedOfficerRobe
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/OuterClothing/Coats/med_officer_robe.rsi
+    sprite: _IS14/Clothing/OuterClothing/Militia/MedOfficer/med_officer_robe.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/OuterClothing/Coats/med_officer_robe.rsi
+    sprite: _IS14/Clothing/OuterClothing/Militia/MedOfficer/med_officer_robe.rsi
   - type: Armor
     coverage:
     - Chest
@@ -87,9 +87,9 @@
   id: ClothingOuterIS14RiotVest
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/OuterClothing/Vests/riot_vest.rsi
+    sprite: _IS14/Clothing/OuterClothing/Militia/riot_vest.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/OuterClothing/Vests/riot_vest.rsi
+    sprite: _IS14/Clothing/OuterClothing/Militia/riot_vest.rsi
   - type: Armor
     coverage:
     - Chest
@@ -118,6 +118,33 @@
     delayDelta: 2.5
     knockdownTimeDelta: -2.5
 
+- type: entity
+  parent: ClothingOuterIS14Base
+  id: ClothingOuterIS14MilitiaShinel
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/OuterClothing/Militia/militia_shinel.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/OuterClothing/Militia/militia_shinel.rsi
+
+- type: entity
+  parent: ClothingOuterIS14Base
+  id: ClothingOuterIS14InvestigatorCoat
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/OuterClothing/Militia/Investigator/investigator_coat.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/OuterClothing/Militia/Investigator/investigator_coat.rsi
+
+- type: entity
+  parent: ClothingOuterIS14Base
+  id: ClothingOuterIS14InvestigatorTrenchcoat
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/OuterClothing/Militia/Investigator/investigator_trenchcoat.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/OuterClothing/Militia/Investigator/investigator_trenchcoat.rsi
+
 # Militia end
 
 # Minust start
@@ -127,18 +154,18 @@
   id: ClothingOuterIS14IVKShinel
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/OuterClothing/Coats/ivk_shinel.rsi
+    sprite: _IS14/Clothing/OuterClothing/Minust/Ivk/ivk_shinel.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/OuterClothing/Coats/ivk_shinel.rsi
+    sprite: _IS14/Clothing/OuterClothing/Minust/Ivk/ivk_shinel.rsi
 
 - type: entity
   parent: ClothingOuterBase
   id: ClothingOuterIS14IVKVest
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/OuterClothing/Vests/ivk_vest.rsi
+    sprite: _IS14/Clothing/OuterClothing/Minust/Ivk/ivk_vest.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/OuterClothing/Vests/ivk_vest.rsi
+    sprite: _IS14/Clothing/OuterClothing/Minust/Ivk/ivk_vest.rsi
   - type: Armor
     coverage:
     - Chest

@@ -3,8 +3,8 @@
   id: ClothingShoesIS14MilitiaBoots
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Shoes/militia_boots.rsi
+    sprite: _IS14/Clothing/Shoes/Militia/militia_boots.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Shoes/militia_boots.rsi
+    sprite: _IS14/Clothing/Shoes/Militia/militia_boots.rsi
   - type: ClothingSlowOnDamageModifier
     modifier: 0.5

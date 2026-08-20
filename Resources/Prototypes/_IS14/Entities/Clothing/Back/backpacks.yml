@@ -3,6 +3,6 @@
   id: JetpackIS14Militia
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Back/militia_jetpack.rsi
+    sprite: _IS14/Clothing/Back/Militia/militia_jetpack.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Back/militia_jetpack.rsi
+    sprite: _IS14/Clothing/Back/Militia/militia_jetpack.rsi

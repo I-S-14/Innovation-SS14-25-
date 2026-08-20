@@ -5,9 +5,9 @@
   id: ClothingHeadIS14HosCap
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Caps/hos_cap.rsi
+    sprite: _IS14/Clothing/Head/Militia/HosMilitia/hos_cap.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Caps/hos_cap.rsi
+    sprite: _IS14/Clothing/Head/Militia/HosMilitia/hos_cap.rsi
     equippedState: equipped-HEAD
 
 - type: entity
@@ -15,9 +15,9 @@
   id: ClothingHeadIS14LrrChiefCap
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Caps/lrr_chief_cap.rsi
+    sprite: _IS14/Clothing/Head/Militia/LrrChief/lrr_chief_cap.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Caps/lrr_chief_cap.rsi
+    sprite: _IS14/Clothing/Head/Militia/LrrChief/lrr_chief_cap.rsi
     equippedState: equipped-HEAD
 
 - type: entity
@@ -25,9 +25,9 @@
   id: ClothingHeadIS14MilitiaCap
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Caps/militia_cap.rsi
+    sprite: _IS14/Clothing/Head/Militia/Militia/militia_cap.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Caps/militia_cap.rsi
+    sprite: _IS14/Clothing/Head/Militia/Militia/militia_cap.rsi
     equippedState: equipped-HEAD
 
 - type: entity
@@ -35,9 +35,9 @@
   id: ClothingHeadIS14HatMilitiaUshanka
   components:
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Hats/militia_ushanka.rsi
+    sprite: _IS14/Clothing/Head/Militia/Militia/militia_ushanka.rsi
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Hats/militia_ushanka.rsi
+    sprite: _IS14/Clothing/Head/Militia/Militia/militia_ushanka.rsi
     layers:
     - state: icon
       map: [ "unfoldedLayer" ]
@@ -50,13 +50,13 @@
   id: ClothingHeadIS14HatRedMilitiaKubanka
   components:
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Hats/militia_kubanka.rsi
+    sprite: _IS14/Clothing/Head/Militia/militia_kubanka.rsi
     equippedState: red-equipped-HELMET
   - type: Appearance
   - type: AddAccentClothing
     accent: RussianAccent
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Hats/militia_kubanka.rsi
+    sprite: _IS14/Clothing/Head/Militia/militia_kubanka.rsi
     layers:
     - state: icon-red
 
@@ -65,13 +65,13 @@
   id: ClothingHeadIS14HatBlackMilitiaKubanka
   components:
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Hats/militia_kubanka.rsi
+    sprite: _IS14/Clothing/Head/Militia/militia_kubanka.rsi
     equippedState: black-equipped-HELMET
   - type: Appearance
   - type: AddAccentClothing
     accent: RussianAccent
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Hats/militia_kubanka.rsi
+    sprite: _IS14/Clothing/Head/Militia/militia_kubanka.rsi
     layers:
     - state: icon-black
 
@@ -80,9 +80,9 @@
   id: ClothingHeadIS14MilitiaPilotka
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Hats/militia_pilotka.rsi
+    sprite: _IS14/Clothing/Head/Militia/Militia/militia_pilotka.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Hats/militia_pilotka.rsi
+    sprite: _IS14/Clothing/Head/Militia/Militia/militia_pilotka.rsi
     equippedState: equipped-HEAD
 
 - type: entity
@@ -90,9 +90,9 @@
   id: ClothingHeadIS14MilitiaKepka
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Hats/militia_kepka.rsi
+    sprite: _IS14/Clothing/Head/Militia/Militia/militia_kepka.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Hats/militia_kepka.rsi
+    sprite: _IS14/Clothing/Head/Militia/Militia/militia_kepka.rsi
     equippedState: equipped-HEAD
 
 - type: entity
@@ -100,9 +100,9 @@
   id: ClothingHeadIS14MedOfficerCap
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Hats/med_officer_cap.rsi
+    sprite: _IS14/Clothing/Head/Militia/MedOfficer/med_officer_cap.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Hats/med_officer_cap.rsi
+    sprite: _IS14/Clothing/Head/Militia/MedOfficer/med_officer_cap.rsi
     equippedState: equipped-HEAD
 
 - type: entity
@@ -110,9 +110,9 @@
   id: ClothingHeadIS14SeniorMilitiaBeret
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Berets/senior_militia_beret.rsi
+    sprite: _IS14/Clothing/Head/Militia/SeniorMilitia/senior_militia_beret.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Berets/senior_militia_beret.rsi
+    sprite: _IS14/Clothing/Head/Militia/SeniorMilitia/senior_militia_beret.rsi
     equippedState: equipped-HEAD
 
 - type: entity
@@ -120,9 +120,9 @@
   id: ClothingHeadIS14LrrChiefBeret
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Berets/lrr_chief_beret.rsi
+    sprite: _IS14/Clothing/Head/Militia/LrrChief/lrr_chief_beret.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Berets/lrr_chief_beret.rsi
+    sprite: _IS14/Clothing/Head/Militia/LrrChief/lrr_chief_beret.rsi
     equippedState: equipped-HEAD
 
 - type: entity
@@ -130,9 +130,9 @@
   id: ClothingHeadIS14MilitiaBeret
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Berets/militia_beret.rsi
+    sprite: _IS14/Clothing/Head/Militia/Militia/militia_beret.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Berets/militia_beret.rsi
+    sprite: _IS14/Clothing/Head/Militia/Militia/militia_beret.rsi
     equippedState: equipped-HEAD
 
 - type: entity
@@ -140,9 +140,9 @@
   id: ClothingHeadIS14MedOfficerBeret
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Berets/med_officer_beret.rsi
+    sprite: _IS14/Clothing/Head/Militia/MedOfficer/med_officer_beret.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Berets/med_officer_beret.rsi
+    sprite: _IS14/Clothing/Head/Militia/MedOfficer/med_officer_beret.rsi
     equippedState: equipped-HEAD
 
 - type: entity
@@ -150,9 +150,31 @@
   id: ClothingHeadIS14HosBeret
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Berets/hos_beret.rsi
+    sprite: _IS14/Clothing/Head/Militia/HosMilitia/hos_beret.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Berets/hos_beret.rsi
+    sprite: _IS14/Clothing/Head/Militia/HosMilitia/hos_beret.rsi
+    equippedState: equipped-HEAD
+
+# The new blue ushanka only ships one pose, so it is a plain hat rather than a
+# child of ClothingHeadHatUshanka, which needs icon-up/up-equipped states.
+- type: entity
+  parent: ClothingHeadBase
+  id: ClothingHeadIS14HatBlueMilitiaUshanka
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Head/Militia/Militia/militia_blue_ushanka.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Head/Militia/Militia/militia_blue_ushanka.rsi
+    equippedState: equipped-HEAD
+
+- type: entity
+  parent: ClothingHeadBase
+  id: ClothingHeadIS14InvestigatorHat
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Head/Militia/Investigator/investigator_hat.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Head/Militia/Investigator/investigator_hat.rsi
     equippedState: equipped-HEAD
 
 # Militia end
@@ -164,9 +186,9 @@
   id: ClothingHeadIS14IVKCap
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Caps/ivk_cap.rsi
+    sprite: _IS14/Clothing/Head/Minust/Ivk/ivk_cap.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Caps/ivk_cap.rsi
+    sprite: _IS14/Clothing/Head/Minust/Ivk/ivk_cap.rsi
     equippedState: equipped-HEAD
 
 - type: entity
@@ -174,9 +196,19 @@
   id: ClothingHeadIS14IVKBeret
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Berets/ivk_beret.rsi
+    sprite: _IS14/Clothing/Head/Minust/Ivk/ivk_beret.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Berets/ivk_beret.rsi
+    sprite: _IS14/Clothing/Head/Minust/Ivk/ivk_beret.rsi
+    equippedState: equipped-HEAD
+
+- type: entity
+  parent: ClothingHeadBase
+  id: ClothingHeadIS14MupRepresentativeCap
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Head/Minust/MupRepresentative/mup_representative_cap.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Head/Minust/MupRepresentative/mup_representative_cap.rsi
     equippedState: equipped-HEAD
 
 # minust end
@@ -190,9 +222,9 @@
   description: A cheap cap issued to inmates.
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Hats/prisoner_cap.rsi
+    sprite: _IS14/Clothing/Head/Specific/prisoner_cap.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Hats/prisoner_cap.rsi
+    sprite: _IS14/Clothing/Head/Specific/prisoner_cap.rsi
     equippedState: equipped-HEAD
   - type: Tag
     tags:

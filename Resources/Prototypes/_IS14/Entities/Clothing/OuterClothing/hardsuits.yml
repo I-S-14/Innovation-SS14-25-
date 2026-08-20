@@ -3,9 +3,9 @@
   id: ClothingOuterHardsuitIS14Pilot
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/OuterClothing/Hardsuits/pilot_suit.rsi
+    sprite: _IS14/Clothing/OuterClothing/Militia/Pilot/pilot_suit.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/OuterClothing/Hardsuits/pilot_suit.rsi
+    sprite: _IS14/Clothing/OuterClothing/Militia/Pilot/pilot_suit.rsi
   - type: PressureProtection
     highPressureMultiplier: 0.5
     lowPressureMultiplier: 1000
@@ -44,9 +44,9 @@
   id: ClothingOuterHardsuitIS14Militia
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/OuterClothing/Hardsuits/militia_suit.rsi
+    sprite: _IS14/Clothing/OuterClothing/Militia/Militia/militia_suit.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/OuterClothing/Hardsuits/militia_suit.rsi
+    sprite: _IS14/Clothing/OuterClothing/Militia/Militia/militia_suit.rsi
   - type: PressureProtection
     highPressureMultiplier: 0.5
     lowPressureMultiplier: 1000
@@ -85,9 +85,9 @@
   id: ClothingOuterHardsuitIS14LrrChief
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/OuterClothing/Hardsuits/lrr_chief_suit.rsi
+    sprite: _IS14/Clothing/OuterClothing/Militia/LrrChief/lrr_chief_suit.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/OuterClothing/Hardsuits/lrr_chief_suit.rsi
+    sprite: _IS14/Clothing/OuterClothing/Militia/LrrChief/lrr_chief_suit.rsi
   - type: PressureProtection
     highPressureMultiplier: 0.5
     lowPressureMultiplier: 1000
@@ -126,9 +126,9 @@
   id: ClothingOuterHardsuitIS14MedOfficer
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/OuterClothing/Hardsuits/med_officer_suit.rsi
+    sprite: _IS14/Clothing/OuterClothing/Militia/MedOfficer/med_officer_suit.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/OuterClothing/Hardsuits/med_officer_suit.rsi
+    sprite: _IS14/Clothing/OuterClothing/Militia/MedOfficer/med_officer_suit.rsi
   - type: PressureProtection
     highPressureMultiplier: 0.5
     lowPressureMultiplier: 1000
@@ -167,9 +167,9 @@
   id: ClothingOuterHardsuitIS14Hos
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/OuterClothing/Hardsuits/hos_suit.rsi
+    sprite: _IS14/Clothing/OuterClothing/Militia/HosMilitia/hos_suit.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/OuterClothing/Hardsuits/hos_suit.rsi
+    sprite: _IS14/Clothing/OuterClothing/Militia/HosMilitia/hos_suit.rsi
   - type: PressureProtection
     highPressureMultiplier: 0.5
     lowPressureMultiplier: 1000

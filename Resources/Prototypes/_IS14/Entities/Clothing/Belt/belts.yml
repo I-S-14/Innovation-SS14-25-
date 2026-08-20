@@ -3,24 +3,24 @@
   id: ClothingBeltIS14Militia
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Belt/militia_belt.rsi
+    sprite: _IS14/Clothing/Belt/Militia/militia_belt.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Belt/militia_belt.rsi
+    sprite: _IS14/Clothing/Belt/Militia/militia_belt.rsi
 
 - type: entity
   parent: ClothingBeltSecurityWebbing
   id: ClothingBeltIS14MilitiaWebbing
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Belt/militia_rps.rsi
+    sprite: _IS14/Clothing/Belt/Militia/militia_rps.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Belt/militia_rps.rsi
+    sprite: _IS14/Clothing/Belt/Militia/militia_rps.rsi
 
 - type: entity
   parent: ClothingBeltSecurityWebbing
   id: ClothingBeltIS14MedOfficerWebbing
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Belt/med_officer_rps.rsi
+    sprite: _IS14/Clothing/Belt/Militia/MedOfficer/med_officer_rps.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Belt/med_officer_rps.rsi
+    sprite: _IS14/Clothing/Belt/Militia/MedOfficer/med_officer_rps.rsi

@@ -5,6 +5,6 @@
   id: ClothingNeckIS14MupRepresentative
   components:
     - type: Sprite
-      sprite: _IS14/Clothing/Neck/Cloaks/mup_representative.rsi
+      sprite: _IS14/Clothing/Neck/Minust/MupRepresentative/mup_representative.rsi
     - type: StealTarget
       stealGroup: HeadCloak # а почему бы и не сделать)))

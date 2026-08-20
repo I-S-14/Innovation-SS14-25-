@@ -3,9 +3,9 @@
   id: ClothingMaskIS14GasIVK
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Masks/ivk.rsi
+    sprite: _IS14/Clothing/Masks/Minust/Ivk/ivk.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Masks/ivk.rsi
+    sprite: _IS14/Clothing/Masks/Minust/Ivk/ivk.rsi
   - type: Tag # Goobstation
     tags:
     - HamsterWearable

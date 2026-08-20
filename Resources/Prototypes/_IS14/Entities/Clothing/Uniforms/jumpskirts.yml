@@ -27,9 +27,9 @@
   id: ClothingUniformJumpskirtIS14CadetSkirt
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpskirt/cadet_skirt.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/Cadet/cadet_skirt.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpskirt/cadet_skirt.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/Cadet/cadet_skirt.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg
 
@@ -38,9 +38,9 @@
   id: ClothingUniformJumpskirtIS14MedOfficerSkirt
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpskirt/med_officer_skirt.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/MedOfficer/med_officer_skirt.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpskirt/med_officer_skirt.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/MedOfficer/med_officer_skirt.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg
 
@@ -49,9 +49,9 @@
   id: ClothingUniformJumpskirtIS14MilitiaSkirt
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpskirt/militia_skirt.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/Militia/militia_skirt.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpskirt/militia_skirt.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/Militia/militia_skirt.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg
 
@@ -60,9 +60,9 @@
   id: ClothingUniformJumpskirtIS14MilitiaFormalSkirt
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpskirt/militia_formal_skirt.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/Militia/militia_formal_skirt.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpskirt/militia_formal_skirt.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/Militia/militia_formal_skirt.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg
 
@@ -71,9 +71,9 @@
   id: ClothingUniformJumpskirtIS14PilotSkirt
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpskirt/pilot_skirt.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/Pilot/pilot_skirt.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpskirt/pilot_skirt.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/Pilot/pilot_skirt.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg
 
@@ -82,9 +82,9 @@
   id: ClothingUniformJumpskirtIS14InvestigatorSkirt
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpskirt/investigator_skirt.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/Investigator/investigator_skirt.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpskirt/investigator_skirt.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/Investigator/investigator_skirt.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg
 
@@ -93,9 +93,9 @@
   id: ClothingUniformJumpskirtIS14SeniorMilitiaSkirt
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpskirt/senior_militia_skirt.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/SeniorMilitia/senior_militia_skirt.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpskirt/senior_militia_skirt.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/SeniorMilitia/senior_militia_skirt.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg
 
@@ -104,9 +104,9 @@
   id: ClothingUniformJumpskirtIS14SeniorMilitiaFormalSkirt
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpskirt/senior_militia_formal_skirt.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/SeniorMilitia/senior_militia_formal_skirt.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpskirt/senior_militia_formal_skirt.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/SeniorMilitia/senior_militia_formal_skirt.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg
 
@@ -119,9 +119,9 @@
   id: ClothingUniformJumpskirtIS14Lawyer
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpskirt/lawyer.rsi
+    sprite: _IS14/Clothing/Uniforms/Minust/Lawyer/lawyer_skirt.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpskirt/lawyer.rsi
+    sprite: _IS14/Clothing/Uniforms/Minust/Lawyer/lawyer_skirt.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg
 
@@ -130,9 +130,9 @@
   id: ClothingUniformJumpskirtIS14MupRepresentative
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpskirt/mup_representative.rsi
+    sprite: _IS14/Clothing/Uniforms/Minust/MupRepresentative/mup_representative_skirt.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpskirt/mup_representative.rsi
+    sprite: _IS14/Clothing/Uniforms/Minust/MupRepresentative/mup_representative_skirt.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg
 

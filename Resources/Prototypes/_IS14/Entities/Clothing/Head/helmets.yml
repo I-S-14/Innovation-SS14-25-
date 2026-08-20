@@ -3,9 +3,9 @@
   id: ClothingHeadIS14AssaultHelmetGreen
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Helmets/assault_helmet_green.rsi
+    sprite: _IS14/Clothing/Head/Militia/assault_helmet_green.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Helmets/assault_helmet_green.rsi
+    sprite: _IS14/Clothing/Head/Militia/assault_helmet_green.rsi
     equippedState: equipped-HEAD
 
 - type: entity
@@ -13,9 +13,9 @@
   id: ClothingHeadIS14AssaultHelmetBlue
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Helmets/assault_helmet_blue.rsi
+    sprite: _IS14/Clothing/Head/Militia/assault_helmet_blue.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Helmets/assault_helmet_blue.rsi
+    sprite: _IS14/Clothing/Head/Militia/assault_helmet_blue.rsi
     equippedState: equipped-HEAD
 
 - type: entity
@@ -23,9 +23,9 @@
   id: ClothingHeadIS14RiotHelmet
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Helmets/riot_helmet.rsi
+    sprite: _IS14/Clothing/Head/Militia/riot_helmet.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Helmets/riot_helmet.rsi
+    sprite: _IS14/Clothing/Head/Militia/riot_helmet.rsi
     equippedState: equipped-HEAD
 
 - type: entity
@@ -33,7 +33,7 @@
   id: ClothingHeadIS14MilitiaMotorcycleHelmet
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Helmets/militia_motorcycle_helmet.rsi
+    sprite: _IS14/Clothing/Head/Militia/militia_motorcycle_helmet.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Helmets/militia_motorcycle_helmet.rsi
+    sprite: _IS14/Clothing/Head/Militia/militia_motorcycle_helmet.rsi
     equippedState: equipped-HEAD
