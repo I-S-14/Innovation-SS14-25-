@@ -178,6 +178,9 @@
     stateBaseClosed: safe_base
     stateDoorOpen: safe_opened
     stateDoorClosed: safe_closed
+  - type: LockVisuals
+    stateLocked: safe_locked
+    stateUnlocked: safe_unlocked
 
 - type: entity
   id: IS14SafeCaptain
@@ -191,7 +194,7 @@
       map: ["enum.StorageVisualLayers.Base"]
     - state: safe_cap_closed
       map: ["enum.StorageVisualLayers.Door"]
-    - state: safe_locked
+    - state: safe_cap_locked
       map: ["enum.LockVisualLayers.Lock"]
       shader: unshaded
     - state: safe_welded
@@ -203,6 +206,9 @@
     stateBaseClosed: safe_cap_base
     stateDoorOpen: safe_cap_opened
     stateDoorClosed: safe_cap_closed
+  - type: LockVisuals
+    stateLocked: safe_cap_locked
+    stateUnlocked: safe_cap_unlocked
 
 # law
 

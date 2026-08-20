@@ -8,34 +8,52 @@
   },
   "states": [
     {
-      "name": "banner_legal"
+        "name": "banner_atmos"
+    },
+    {
+        "name": "banner_legal"
     },
     {
       "name": "banner_com"
     },
     {
-      "name": "banner_eng"
+        "name": "banner_eng"
     },
     {
-      "name": "banner_exp_supply"
+        "name": "banner_exp_supply"
     },
     {
-      "name": "banner_kgb"
+        "name": "banner_kgb"
     },
     {
-      "name": "banner_med"
+        "name": "banner_mars"
     },
     {
-      "name": "banner_militia"
+        "name": "banner_med"
     },
     {
-      "name": "banner_moko"
+        "name": "banner_militia"
     },
     {
-      "name": "banner_serv"
+        "name": "banner_moko"
     },
     {
-      "name": "banner_syndicate"
+        "name": "banner_serv"
+    },
+    {
+        "name": "banner_syndicate"
+    },
+    {
+        "name": "banner_sci",
+        "delays": [
+            [
+                0.1,
+                0.1,
+                0.1,
+                0.1,
+                0.1
+            ]
+        ]
     }
   ]
 }

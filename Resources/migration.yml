@@ -1125,3 +1125,17 @@ ClothingShoesHighheelBootsFilled: ClothingShoesHighheelBoots
 # 2026-07-23 IS14
 IS14BedDoubleUp: IS14PrisonBedDoubleUp
 IS14BedDoubleDown: IS14PrisonBedDoubleDown
+
+# 2026-08-01 IS14
+BannerScientific: IS14BannerScientific
+BannerMokoGolo: IS14BannerMokoGolo
+BannerLegal: IS14BannerLegal
+BannerCom: IS14BannerCom
+BannerEng: IS14BannerEng
+BannerExpSupply: IS14BannerExpSupply
+BannerKgb: IS14BannerKgb
+BannerMed: IS14BannerMed
+BannerMilitia: IS14BannerMilitia
+BannerMoko: IS14BannerMoko
+BannerServ: IS14BannerServ
+BannerSyndicatenew: IS14BannerSyndicate

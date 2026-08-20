@@ -190,6 +190,12 @@
         {
             "name": "safe_unlocked"
         },
+		{
+            "name": "safe_cap_unlocked"
+        },
+		{
+            "name": "safe_cap_locked"
+        },
         {
             "name": "safe_welded"
         },
