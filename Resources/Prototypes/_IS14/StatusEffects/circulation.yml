@@ -1,0 +1,22 @@
+# SPDX-FileCopyrightText: 2025 IS14
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# Обморок от нехватки доставки кислорода.
+#
+# Намеренно НЕ StatusEffectForcedSleeping. Тот эффект описан как «спит так крепко, что
+# разбудить не может ничто», и вместе со сном он поднимает SleepingComponent, который выдаёт
+# игроку действие «перестать спать». Действие при этом заведомо бесполезно — TryWaking
+# отказывает, пока висит принудительный сон, — а наш цикл обмороков вешает и снимает эффект
+# каждые полминуты, из-за чего действие успевает устареть и клиент падает на ассерте.
+#
+# Обмороку сон не нужен: нужно, чтобы человек упал и не мог действовать. Это ровно оглушение
+# плюс сбивание с ног, без участия системы сна.
+
+- type: entity
+  parent: MobStatusEffectDebuff
+  id: IS14StatusEffectCollapse
+  name: collapse
+  components:
+  - type: StunnedStatusEffect
+  - type: KnockdownStatusEffect

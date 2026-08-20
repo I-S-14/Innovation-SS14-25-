@@ -95,6 +95,16 @@ public sealed partial class CirculationComponent : Component
     [ViewVariables]
     public bool FaintWarned;
 
+    /// <summary>
+    /// Whether this body is blind because of the current fainting spell.
+    /// </summary>
+    /// <remarks>
+    /// Tracked rather than inferred so that coming round only gives back the sight this took
+    /// away — a patient blinded by something else does not get cured by fainting near it.
+    /// </remarks>
+    [ViewVariables]
+    public bool FaintBlinded;
+
     // ── Tuning ────────────────────────────────────────────────────────────────
 
     /// <summary>Beats per minute with nothing wrong.</summary>
@@ -181,13 +191,26 @@ public sealed partial class CirculationComponent : Component
     [DataField]
     public TimeSpan FaintRecovery = TimeSpan.FromSeconds(12);
 
-    /// <summary>How fast the world greys out while the body is failing, per second.</summary>
+    /// <summary>
+    /// How fast the world greys out while the body is failing, per second.
+    /// </summary>
+    /// <remarks>
+    /// Reciprocal of this is the seconds from "something is badly wrong" to blacking out, so
+    /// this value is really a duration in disguise: about eleven seconds. Chosen against the
+    /// real time of useful consciousness in vacuum, which is ten to fifteen — and long enough
+    /// that the warning at four seconds is something a player can still act on rather than
+    /// read on the way down.
+    /// </remarks>
     [DataField]
-    public float FaintBuildRate = 0.34f;
+    public float FaintBuildRate = 0.09f;
 
     /// <summary>How fast it clears once the body is coping again, per second.</summary>
     [DataField]
     public float FaintDecayRate = 0.5f;
+
+    /// <summary>How long the world stays unsteady after coming round.</summary>
+    [DataField]
+    public TimeSpan FaintGrogginess = TimeSpan.FromSeconds(4);
 
     /// <summary>
     /// Multiplier on oxygen demand while lying down.
@@ -202,16 +225,22 @@ public sealed partial class CirculationComponent : Component
     public float LyingDemand = 0.75f;
 
     /// <summary>
-    /// How far saturation is allowed to drag delivery down.
+    /// Saturation the lungs are reduced to when there is nothing at all to breathe.
     /// </summary>
     /// <remarks>
-    /// Floored deliberately. Suffocation is already punished by the respirator, and letting
-    /// saturation reach zero here would bill a suffocating patient twice for the same breath.
-    /// The floor keeps a hole in the hull relevant to delivery without making this system the
-    /// main way to die of vacuum.
+    /// Near zero on purpose. This used to sit at one half so that a suffocating patient was not
+    /// billed twice — the respirator deals its own asphyxiation damage — and that turned out to
+    /// be far worse than the problem: with half saturation the delivery formula is satisfied by
+    /// doubling the pulse, so vacuum was fully compensated and cost nothing at all.
+    /// <para>
+    /// Delivery is a product, so a multiplier near zero collapses it whatever the heart does.
+    /// That is the physiological truth — no rate compensates for having no oxygen — and it also
+    /// drags the coronary limit down with it, which is what produces the terminal bradycardia a
+    /// dying body actually shows.
+    /// </para>
     /// </remarks>
     [DataField]
-    public float SaturationFloor = 0.5f;
+    public float SaturationFloor = 0.05f;
 
     /// <summary>Damage per second when delivery has completely failed, scaled by the deficit.</summary>
     /// <remarks>

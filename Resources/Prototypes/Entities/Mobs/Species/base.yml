@@ -281,6 +281,7 @@
   # дыхание и осмысленные симптомы. См. Docs/_IS14/bloodloss-design.md
   - type: Circulation
   - type: IS14DiseaseCarrier
+  - type: IS14Faculties
   #IS14-change end
   - type: Absorbable # Goobstation - changelings
   - type: OfferItem # CorvaxGoob-Offer

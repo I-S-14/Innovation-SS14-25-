@@ -607,7 +607,9 @@ namespace Content.Client.HealthAnalyzer.UI
                 });
             }*/
 
-            if (ConditionsListContainer.ChildCount == 0)
+            //IS14-change: список патологий общий с нашими диагнозами, поэтому «не обнаружено»
+            // пишется только когда пусто и там, и там
+            if (ConditionsListContainer.ChildCount == 0 && !IS14Diagnoses.HasEntries)
             {
                 ConditionsListContainer.AddChild(new RichTextLabel
                 {
@@ -659,7 +661,9 @@ namespace Content.Client.HealthAnalyzer.UI
                 });
             }
 
-            if (ConditionsListContainer.ChildCount == 0)
+            //IS14-change: список патологий общий с нашими диагнозами, поэтому «не обнаружено»
+            // пишется только когда пусто и там, и там
+            if (ConditionsListContainer.ChildCount == 0 && !IS14Diagnoses.HasEntries)
             {
                 ConditionsListContainer.AddChild(new RichTextLabel
                 {
@@ -686,11 +690,15 @@ namespace Content.Client.HealthAnalyzer.UI
 
             DrawSolutionDiagnostics(msg.Solutions);
 
-            ConditionsListContainer.AddChild(new RichTextLabel
+            //IS14-change: то же самое
+            if (!IS14Diagnoses.HasEntries)
             {
-                Text = Loc.GetString("is14-analyzer-pathologies-none"),
-                Margin = new Thickness(0, 4),
-            });
+                ConditionsListContainer.AddChild(new RichTextLabel
+                {
+                    Text = Loc.GetString("is14-analyzer-pathologies-none"),
+                    Margin = new Thickness(0, 4),
+                });
+            }
         }
 
         private bool TryGetEntityName(NetEntity ent, out string name)

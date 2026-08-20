@@ -16,9 +16,6 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         back — which is exactly how this one vanished.
     -->
     <BoxContainer Name="Content" Orientation="Vertical" HorizontalExpand="True" Visible="False">
-        <Label Text="{Loc 'is14-analyzer-section-diagnoses'}"
-               StyleClasses="LabelSubText" FontColorOverride="#A88B5E" Margin="0 0 0 3" />
         <BoxContainer Name="DiagnosisList" Orientation="Vertical" HorizontalExpand="True" />
-        <PanelContainer StyleClasses="LowDivider" Margin="0 6 0 0" />
     </BoxContainer>
 </BoxContainer>

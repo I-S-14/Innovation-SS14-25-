@@ -1,0 +1,51 @@
+# SPDX-FileCopyrightText: 2025 IS14
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# Что тело умеет, потому что у него есть для этого органы.
+# Уровень 0…1, считается из целостности органов. См. Docs/_IS14/organ-function-design.md
+
+- type: is14Faculty
+  id: Pump
+  name: is14-faculty-pump
+  order: 0
+
+- type: is14Faculty
+  id: Respiration
+  name: is14-faculty-respiration
+  order: 1
+
+- type: is14Faculty
+  id: Cognition
+  name: is14-faculty-cognition
+  order: 2
+
+- type: is14Faculty
+  id: Vision
+  name: is14-faculty-vision
+  order: 3
+
+- type: is14Faculty
+  id: Hearing
+  name: is14-faculty-hearing
+  order: 4
+
+- type: is14Faculty
+  id: Speech
+  name: is14-faculty-speech
+  order: 5
+
+- type: is14Faculty
+  id: Filtration
+  name: is14-faculty-filtration
+  order: 6
+
+- type: is14Faculty
+  id: Detox
+  name: is14-faculty-detox
+  order: 7
+
+- type: is14Faculty
+  id: Digestion
+  name: is14-faculty-digestion
+  order: 8

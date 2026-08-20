@@ -6,6 +6,7 @@ using System.Linq;
 using System.Numerics;
 using Content.Goobstation.Maths.FixedPoint;
 using Robust.Shared.Timing;
+using Content.Shared._IS14.Medical.Organs;
 using Content.Shared._Shitmed.Medical.Surgery.Traumas;
 using Content.Shared.Body.Organ;
 using Content.Shared.Body.Part;
@@ -45,13 +46,16 @@ public sealed class OrganChartPanel : BoxContainer
     private readonly SpriteView _detailIcon;
     private readonly Label _detailName;
     private readonly Label _detailIntegrity;
+    private readonly Label _detailFunction;
+    private readonly Label _detailHypoxia;
     private readonly RichTextLabel _detailStatus;
     private readonly Label _detailLocation;
 
     private readonly Dictionary<EntityUid, OrganCard> _cards = new();
-    private readonly List<(EntityUid Organ, FixedPoint2 Integrity, OrganSeverity Severity)> _last = new();
+    private readonly List<(EntityUid Organ, FixedPoint2 Integrity, OrganSeverity Severity, float Injury)> _last = new();
 
     private SharedBodySystem? _body;
+    private SharedOrganFunctionSystem? _function;
     private EntityUid? _target;
     private EntityUid? _selected;
 
@@ -97,6 +101,8 @@ public sealed class OrganChartPanel : BoxContainer
 
         _detailName = new Label { StyleClasses = { "LabelBig" } };
         _detailIntegrity = new Label { FontColorOverride = Muted };
+        _detailFunction = new Label { FontColorOverride = Muted };
+        _detailHypoxia = new Label { FontColorOverride = Hurt };
         _detailStatus = new RichTextLabel { Margin = new Thickness(0, 2, 0, 0) };
         _detailLocation = new Label { FontColorOverride = Muted };
 
@@ -119,7 +125,15 @@ public sealed class OrganChartPanel : BoxContainer
                         {
                             Orientation = LayoutOrientation.Vertical,
                             HorizontalExpand = true,
-                            Children = { _detailName, _detailLocation, _detailIntegrity, _detailStatus },
+                            Children =
+                            {
+                                _detailName,
+                                _detailLocation,
+                                _detailIntegrity,
+                                _detailFunction,
+                                _detailHypoxia,
+                                _detailStatus,
+                            },
                         },
                     },
                 },
@@ -170,10 +184,15 @@ public sealed class OrganChartPanel : BoxContainer
             if (index >= _last.Count)
                 return true;
 
-            var (lastOrgan, lastIntegrity, lastSeverity) = _last[index++];
+            var (lastOrgan, lastIntegrity, lastSeverity, lastInjury) = _last[index++];
 
-            if (lastOrgan != organ || lastIntegrity != comp.OrganIntegrity || lastSeverity != comp.OrganSeverity)
+            if (lastOrgan != organ
+                || lastIntegrity != comp.OrganIntegrity
+                || lastSeverity != comp.OrganSeverity
+                || Math.Abs(lastInjury - Injury(organ)) > 0.005f)
+            {
                 return true;
+            }
         }
 
         return index != _last.Count;
@@ -182,6 +201,15 @@ public sealed class OrganChartPanel : BoxContainer
     private SharedBodySystem? Body => _body ??= _entities.EntitySysManager.TryGetEntitySystem<SharedBodySystem>(out var sys)
         ? sys
         : null;
+
+    /// <summary>Гипоксическое повреждение органа — оно не меняет целостность, но меняет цифры.</summary>
+    private float Injury(EntityUid organ) =>
+        _entities.TryGetComponent<IS14OrganFunctionComponent>(organ, out var fn) ? fn.HypoxicInjury : 0f;
+
+    private SharedOrganFunctionSystem? Function =>
+        _function ??= _entities.EntitySysManager.TryGetEntitySystem<SharedOrganFunctionSystem>(out var sys)
+            ? sys
+            : null;
 
     private void Rebuild()
     {
@@ -196,7 +224,11 @@ public sealed class OrganChartPanel : BoxContainer
             foreach (var entry in body.GetBodyOrgans(target))
             {
                 organs.Add((entry.Id, entry.Component));
-                _last.Add((entry.Id, entry.Component.OrganIntegrity, entry.Component.OrganSeverity));
+                _last.Add((
+                    entry.Id,
+                    entry.Component.OrganIntegrity,
+                    entry.Component.OrganSeverity,
+                    Injury(entry.Id)));
             }
         }
 
@@ -285,11 +317,44 @@ public sealed class OrganChartPanel : BoxContainer
             ("current", comp.OrganIntegrity.Int()),
             ("max", comp.IntegrityCap.Int()));
 
+        // Целостность — это состояние органа, функция — то, что от него получает пациент.
+        // Между ними стоит резерв, поэтому надорванный орган может работать как новый, и
+        // врачу нужно видеть оба числа, чтобы понимать, лечить сейчас или наблюдать.
+        ShowFunction(organ, comp);
+
         // The wording the rest of the analyser already uses, so a doctor reads the same phrase
         // here that they would have read in the old list. The organ's flavour description is
         // deliberately not repeated — it says nothing about this patient.
         _detailStatus.SetMessage(
             Loc.GetString($"condition-organ-damage-{comp.OrganSeverity}", ("organ", meta.EntityName)));
+    }
+
+    /// <summary>Работоспособность органа и отдельной строкой — сколько её отняла гипоксия.</summary>
+    /// <remarks>
+    /// Гипоксия показана отдельно, а не подмешана в целостность, потому что это разные
+    /// диагнозы с разным лечением: разорванный орган чинит хирург, задохнувшийся — время и
+    /// восстановленное кровообращение. Одно число на двоих скрыло бы именно тот факт, который
+    /// решает, что делать дальше.
+    /// </remarks>
+    private void ShowFunction(EntityUid organ, OrganComponent comp)
+    {
+        if (Function is not { } function
+            || !_entities.TryGetComponent<IS14OrganFunctionComponent>(organ, out var fn))
+        {
+            _detailFunction.Visible = false;
+            _detailHypoxia.Visible = false;
+            return;
+        }
+
+        _detailFunction.Visible = true;
+        _detailFunction.Text = Loc.GetString(
+            "is14-analyzer-organ-function",
+            ("percent", (int) MathF.Round(function.GetEfficiency(fn, comp) * 100f)));
+
+        var injury = (int) MathF.Round(fn.HypoxicInjury * 100f);
+
+        _detailHypoxia.Visible = injury > 0;
+        _detailHypoxia.Text = Loc.GetString("is14-analyzer-organ-hypoxia", ("percent", injury));
     }
 
     private static readonly Color Heading = Color.FromHex("#A88B5E");

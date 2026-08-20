@@ -29,3 +29,27 @@ public record struct GetOxygenDemandEvent(float Demand);
 /// <summary>Raised on a body when it moves between shock stages, in either direction.</summary>
 [ByRefEvent]
 public readonly record struct ShockStageChangedEvent(ShockStage Old, ShockStage New);
+
+/// <summary>
+/// Raised on a body to ask how much of a healthy stroke volume its heart still manages.
+/// </summary>
+/// <remarks>
+/// Separate from the ceiling because the two failures are different: a heart that cannot race
+/// has lost its reserve, a heart that cannot squeeze has lost its output right now. A damaged
+/// heart loses both, which is why organ function multiplies into each of them and why the
+/// resulting delivery falls off faster than the damage does.
+/// </remarks>
+[ByRefEvent]
+public record struct GetStrokeVolumeEvent(float Multiplier);
+
+/// <summary>
+/// Raised on a body to ask how saturated its blood is even allowed to get.
+/// </summary>
+/// <remarks>
+/// This is where lungs live. Breathing is upstream's business and it decides whether there is
+/// air; the ceiling decides whether the body can do anything with it. A patient with half a
+/// lung left in a perfectly good atmosphere is short of oxygen, and no amount of breathing
+/// fixes that.
+/// </remarks>
+[ByRefEvent]
+public record struct GetSaturationCeilingEvent(float Ceiling);

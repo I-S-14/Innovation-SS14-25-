@@ -396,16 +396,18 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                     Orientation="Vertical">
                     <!--IS14-change start — диагнозы и схема органов живут в правой колонке,
                         над блоком состояния -->
-                    <is14:DiagnosisPanel Name="IS14Diagnoses" />
                     <is14:OrganChartPanel Name="IS14Organs" />
                     <PanelContainer StyleClasses="LowDivider" Margin="0 8 0 8" />
-                    <!--IS14-change end-->
                     <RichTextLabel
                         Name="ConditionsLabel"
                         Text="{Loc 'is14-analyzer-section-pathologies'}"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         HorizontalExpand="True"/>
+                    <!-- Диагнозы IS14 и состояния из апстрима — один список под одним
+                         заголовком: для врача это одно и то же, «что с пациентом не так». -->
+                    <is14:DiagnosisPanel Name="IS14Diagnoses" />
+                    <!--IS14-change end-->
                     <BoxContainer
                         Name="ConditionsListContainer"
                         Orientation="Vertical"

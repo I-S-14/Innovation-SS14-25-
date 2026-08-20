@@ -8,6 +8,7 @@ using Content.Shared.Body.Components;
 using Content.Shared.Body.Systems;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Damage;
+using Content.Shared.Eye.Blinding.Components;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Popups;
 using Content.Shared.Standing;
@@ -50,7 +51,8 @@ public sealed class CirculationSystem : EntitySystem
     private static readonly EntProtoId Woozy = "StatusEffectWoozy";
     private static readonly EntProtoId Stutter = "StatusEffectStutter";
     private static readonly EntProtoId Bloodloss = "StatusEffectBloodloss";
-    private static readonly EntProtoId Sleeping = "StatusEffectForcedSleeping";
+    /// <summary>Обморок: сбитый с ног и неспособный действовать, но не спящий.</summary>
+    private static readonly EntProtoId Collapse = "IS14StatusEffectCollapse";
 
     /// <summary>
     /// Symptoms are refreshed every tick with a lifetime slightly longer than the tick, so
@@ -132,7 +134,12 @@ public sealed class CirculationSystem : EntitySystem
 
         // Stroke volume: an empty vessel has nothing to eject however fast it beats. Capped
         // at one because a transfused-full patient does not pump harder than a healthy one.
-        var stroke = Math.Clamp(comp.Volume, 0f, 1f);
+        // A damaged heart also squeezes weaker, which is asked for rather than read off the
+        // heart directly — this system has never needed to know that organs exist.
+        var strokeEv = new GetStrokeVolumeEvent(1f);
+        RaiseLocalEvent(ent, ref strokeEv);
+
+        var stroke = Math.Clamp(comp.Volume, 0f, 1f) * Math.Clamp(strokeEv.Multiplier, 0f, 1f);
         var perBeat = stroke * comp.Capacity * comp.Saturation;
 
         // The heart chases whatever rate would close the gap, and gets there slowly.
@@ -191,6 +198,18 @@ public sealed class CirculationSystem : EntitySystem
     /// </para>
     /// </remarks>
     private float GetSaturation(Entity<CirculationComponent> ent)
+    {
+        var breathing = GetBreathingSaturation(ent);
+
+        // Whatever the air is like, the lungs decide how much of it reaches the blood.
+        var ceilingEv = new GetSaturationCeilingEvent(1f);
+        RaiseLocalEvent(ent, ref ceilingEv);
+
+        return Math.Clamp(Math.Min(breathing, ceilingEv.Ceiling), 0f, 1f);
+    }
+
+    /// <summary>Saturation as far as breathing alone is concerned.</summary>
+    private float GetBreathingSaturation(Entity<CirculationComponent> ent)
     {
         if (!TryComp<RespiratorComponent>(ent, out var respirator)
             || respirator.Saturation >= respirator.SuffocationThreshold)
@@ -276,6 +295,15 @@ public sealed class CirculationSystem : EntitySystem
         if (now < comp.FaintingUntil)
             return;
 
+        // Just came round: sight back, and a few seconds of being visibly rattled rather than
+        // snapping upright as though nothing happened.
+        if (comp.FaintBlinded)
+        {
+            comp.FaintBlinded = false;
+            RemComp<TemporaryBlindnessComponent>(ent);
+            _status.TrySetStatusEffectDuration(ent.Owner, Woozy, comp.FaintGrogginess);
+        }
+
         var failing = comp.Volume < comp.CollapseVolume || deficit > comp.FaintDeficit;
 
         if (!failing || now < comp.NextFaintAllowed)
@@ -307,7 +335,12 @@ public sealed class CirculationSystem : EntitySystem
         comp.FaintingUntil = now + comp.FaintDuration;
         comp.NextFaintAllowed = comp.FaintingUntil + comp.FaintRecovery;
 
-        _status.TryAddStatusEffectDuration(ent.Owner, Sleeping, comp.FaintDuration);
+        _status.TryAddStatusEffectDuration(ent.Owner, Collapse, comp.FaintDuration);
+
+        // The screen going black is the whole difference between "I passed out" and "I tripped".
+        // Knockdown alone reads as slipping on a banana peel.
+        comp.FaintBlinded = true;
+        EnsureComp<TemporaryBlindnessComponent>(ent);
         _popup.PopupEntity(Loc.GetString("is14-circulation-fainted"), ent, ent, PopupType.LargeCaution);
     }
 

@@ -1,0 +1,62 @@
+# SPDX-FileCopyrightText: 2025 IS14
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# Что делает орган в каждом слоте тела — сразу для всех видов.
+# id совпадает с Organ.slotId, поэтому moth/vox/dwarf и всё остальное, что наследуется от
+# человеческих органов, получает функции даром и без правки апстримных прототипов.
+#
+# reserve — доля целостности, выше которой орган работает без потерь.
+# perfusionSensitivity — насколько сильно орган страдает от нехватки кислорода (мозг = 1).
+
+- type: is14OrganFunction
+  id: heart
+  contributions:
+    Pump: 1.0
+  reserve: 0.6
+  perfusionSensitivity: 0.7
+
+- type: is14OrganFunction
+  id: lungs
+  contributions:
+    Respiration: 1.0
+  reserve: 0.6
+  perfusionSensitivity: 0.3
+
+- type: is14OrganFunction
+  id: brain
+  # Резерв меньше всех: мозг единственный, кто замечает собственное повреждение сразу.
+  contributions:
+    Cognition: 1.0
+  reserve: 0.75
+  perfusionSensitivity: 1.0
+
+# Глаз здесь пока намеренно нет. Апстримный BlindableSystem при первом же повреждении глаз
+# вешает на них модификатор целостности и никогда его не снимает, так что любой, кого один
+# раз ослепили вспышкой, до конца раунда числится с испорченными глазами. Пока это не
+# разобрано (этап 4), зрение осталось бы вечной ложной патологией в анализаторе.
+
+# Почки и печень подстраховывают друг друга: сумма вкладов в каждую функцию больше единицы,
+# поэтому здоровый человек избытка не замечает, а потеря одного органа не отключает функцию.
+- type: is14OrganFunction
+  id: kidneys
+  contributions:
+    Filtration: 0.75
+    Detox: 0.4
+  reserve: 0.5
+  perfusionSensitivity: 0.6
+
+- type: is14OrganFunction
+  id: liver
+  contributions:
+    Detox: 0.7
+    Filtration: 0.3
+  reserve: 0.4
+  perfusionSensitivity: 0.4
+
+- type: is14OrganFunction
+  id: stomach
+  contributions:
+    Digestion: 1.0
+  reserve: 0.5
+  perfusionSensitivity: 0.15
