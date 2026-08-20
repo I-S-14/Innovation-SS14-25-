@@ -1,0 +1,28 @@
+# gifts clothing
+
+- type: entity
+  parent: ClothingHeadBase
+  id: ClothingHeadIS14HatKnittedOrange
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Head/Specific/knitted_orange.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Head/Specific/knitted_orange.rsi
+
+- type: entity
+  parent: ClothingShoesBaseButcherable
+  id: ClothingShoesIS14DressShoesBlack
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Shoes/Specific/dress_shoes_black.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Shoes/Specific/dress_shoes_black.rsi
+
+- type: entity
+  parent: ClothingShoesBase
+  id: ClothingUnderIS14Tights
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Shoes/Specific/tights.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Shoes/Specific/tights.rsi

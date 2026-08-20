@@ -1,0 +1,128 @@
+# senior militia loadouts
+
+- type: loadout
+  id: IS14SeniorMilitiaArmorVest
+  equipment:
+    outerClothing: ClothingOuterArmorBasic
+
+- type: loadout
+  id: IS14SeniorMilitiaBackpack
+  equipment:
+    back: ClothingBackpackSecurity
+
+- type: loadout
+  id: IS14SeniorMilitiaBeret
+  equipment:
+    head: ClothingHeadIS14SeniorMilitiaBeret
+
+- type: loadout
+  id: IS14SeniorMilitiaBoots
+  equipment:
+    shoes: ClothingShoesBootsJack
+
+- type: loadout
+  id: IS14SeniorMilitiaDuffel
+  equipment:
+    back: ClothingBackpackDuffelSecurity
+
+- type: loadout
+  id: IS14SeniorMilitiaFormalJacket
+  equipment:
+    outerClothing: ClothingOuterIS14SeniorMilitiaFormalJacket
+
+- type: loadout
+  id: IS14SeniorMilitiaFormalJumpskirt
+  equipment:
+    jumpsuit: ClothingUniformJumpskirtIS14SeniorMilitiaFormalSkirt
+  groupBy: "jumpskirt"
+
+- type: loadout
+  id: IS14SeniorMilitiaFormalJumpsuit
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitIS14SeniorMilitiaFormal
+  groupBy: "jumpsuit"
+
+- type: loadout
+  id: IS14SeniorMilitiaJumpskirt
+  equipment:
+    jumpsuit: ClothingUniformJumpskirtIS14SeniorMilitiaSkirt
+  groupBy: "jumpskirt"
+
+- type: loadout
+  id: IS14SeniorMilitiaJumpsuit
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitIS14SeniorMilitiaJumpsuit
+  groupBy: "jumpsuit"
+
+- type: loadout
+  id: IS14SeniorMilitiaMilitiaBoots
+  equipment:
+    shoes: ClothingShoesIS14MilitiaBoots
+
+- type: loadout
+  id: IS14SeniorMilitiaSatchel
+  equipment:
+    back: ClothingBackpackSatchelSecurity
+
+- type: loadout
+  id: IS14SeniorMilitiaTactical
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitIS14SeniorMilitiaTactical
+  groupBy: "jumpsuit"
+
+- type: loadoutGroup
+  id: IS14SeniorMilitiaBackpack
+  name: loadout-group-backpack
+  loadouts:
+  - IS14SeniorMilitiaBackpack
+  - IS14SeniorMilitiaSatchel
+  - IS14SeniorMilitiaDuffel
+
+- type: loadoutGroup
+  id: IS14SeniorMilitiaEyes
+  name: loadout-group-glasses
+  minLimit: 0
+  loadouts:
+  - IS14MilitiaGlasses
+  - IS14MilitiaEyeScanner
+  - IS14MilitiaVisor
+
+- type: loadoutGroup
+  id: IS14SeniorMilitiaHead
+  name: loadout-group-head
+  minLimit: 0
+  loadouts:
+  - IS14SeniorMilitiaBeret
+
+- type: loadoutGroup
+  id: IS14SeniorMilitiaJumpsuit
+  name: loadout-group-jumpsuit
+  loadouts:
+  - IS14SeniorMilitiaJumpsuit
+  - IS14SeniorMilitiaJumpskirt
+  - IS14SeniorMilitiaFormalJumpsuit
+  - IS14SeniorMilitiaFormalJumpskirt
+  - IS14SeniorMilitiaTactical
+
+- type: loadoutGroup
+  id: IS14SeniorMilitiaOuterClothing
+  name: loadout-group-outerclothing
+  minLimit: 0
+  loadouts:
+  - IS14SeniorMilitiaFormalJacket
+  - IS14SeniorMilitiaArmorVest
+
+- type: loadoutGroup
+  id: IS14SeniorMilitiaShoes
+  name: loadout-group-shoes
+  loadouts:
+  - IS14SeniorMilitiaBoots
+  - IS14SeniorMilitiaMilitiaBoots
+
+- type: loadoutGroup
+  id: IS14SeniorMiltiaBelt
+  name: loadout-group-belt
+  minLimit: 0
+  loadouts:
+  - IS14MilitiaBelt
+  - IS14MilitiaWebbing

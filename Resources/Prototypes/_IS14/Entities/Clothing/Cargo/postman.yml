@@ -1,0 +1,33 @@
+# postman clothing
+
+- type: entity
+  parent: ClothingHeadBase
+  id: ClothingHeadIS14PostmanCap
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Head/Cargo/Postman/postman_cap.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Head/Cargo/Postman/postman_cap.rsi
+    equippedState: equipped-HEAD
+
+- type: entity
+  parent: ClothingUniformJumpskirtIS14Base
+  id: ClothingUniformJumpskirtIS14Postman
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Uniforms/Cargo/Postman/postman_skirt.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Uniforms/Cargo/Postman/postman_skirt.rsi
+    equipSound:
+      path: /Audio/Items/jumpsuit_equip.ogg
+
+- type: entity
+  parent: ClothingUniformJumpsuitIS14Base
+  id: ClothingUniformJumpsuitIS14Postman
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Uniforms/Cargo/Postman/postman.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Uniforms/Cargo/Postman/postman.rsi
+    equipSound:
+      path: /Audio/Items/jumpsuit_equip.ogg

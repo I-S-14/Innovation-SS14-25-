@@ -1,0 +1,12 @@
+# senior expeditioner clothing
+
+- type: entity
+  parent: ClothingUniformJumpsuitIS14Base
+  id: ClothingUniformJumpsuitIS14SeniorExpeditioner
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Uniforms/Cargo/SeniorExpeditioner/senior_expeditioner.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Uniforms/Cargo/SeniorExpeditioner/senior_expeditioner.rsi
+    equipSound:
+      path: /Audio/Items/jumpsuit_equip.ogg

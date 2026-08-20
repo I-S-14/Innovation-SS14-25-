@@ -1,0 +1,73 @@
+# mup representative clothing
+
+- type: entity
+  parent: ClothingHeadset
+  id: ClothingHeadsetIS14MupRepresentative
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Ears/Minust/MupRepresentative/mup_representative_headset.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Ears/Minust/MupRepresentative/mup_representative_headset.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: ClothingNeckIS14MupRepresentative
+  components:
+    - type: Sprite
+      sprite: _IS14/Clothing/Neck/Minust/MupRepresentative/mup_representative.rsi
+    - type: StealTarget
+      stealGroup: HeadCloak # а почему бы и не сделать)))
+
+- type: entity
+  parent: ClothingUniformJumpskirtIS14Base
+  id: ClothingUniformJumpskirtIS14MupRepresentative
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Uniforms/Minust/MupRepresentative/mup_representative_skirt.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Uniforms/Minust/MupRepresentative/mup_representative_skirt.rsi
+    equipSound:
+      path: /Audio/Items/jumpsuit_equip.ogg
+
+- type: entity
+  parent: ClothingUniformJumpsuitIS14Base
+  id: ClothingUniformJumpsuitIS14FormalBlackMupRepresentative
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Uniforms/Minust/MupRepresentative/formal_black_mup_representative.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Uniforms/Minust/MupRepresentative/formal_black_mup_representative.rsi
+    equipSound:
+      path: /Audio/Items/jumpsuit_equip.ogg
+
+- type: entity
+  parent: ClothingUniformJumpsuitIS14Base
+  id: ClothingUniformJumpsuitIS14FormalMupRepresentative
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Uniforms/Minust/MupRepresentative/formal_mup_representative.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Uniforms/Minust/MupRepresentative/formal_mup_representative.rsi
+    equipSound:
+      path: /Audio/Items/jumpsuit_equip.ogg
+
+- type: entity
+  parent: ClothingUniformJumpsuitIS14Base
+  id: ClothingUniformJumpsuitIS14MupRepresentative
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Uniforms/Minust/MupRepresentative/mup_representative.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Uniforms/Minust/MupRepresentative/mup_representative.rsi
+    equipSound:
+      path: /Audio/Items/jumpsuit_equip.ogg
+
+- type: entity
+  parent: ClothingHeadBase
+  id: ClothingHeadIS14MupRepresentativeCap
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Head/Minust/MupRepresentative/mup_representative_cap.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Head/Minust/MupRepresentative/mup_representative_cap.rsi
+    equippedState: equipped-HEAD

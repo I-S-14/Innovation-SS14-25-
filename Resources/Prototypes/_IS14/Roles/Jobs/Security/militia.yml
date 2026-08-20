@@ -1,0 +1,397 @@
+- type: job
+  id: JobHosMilitia
+  name: job-name-hos-militia
+  description: job-description-hos-militia
+  playTimeTracker: JobHosMilitia
+  requirements:
+    - !type:RoleTimeRequirement
+      role: JobSeniorMilitia
+      time: 36000 # 10 hrs
+    - !type:DepartmentTimeRequirement
+      department: Security
+      time: 54000 # 15 hrs
+    - !type:SpeciesRequirement
+      inverted: true
+      species:
+      - Abductor
+  weight: 10
+  startingGear: IS14GearHosMilitia
+  icon: "JobIconHosMilitia"
+  supervisors: job-supervisors-captain
+  canBeAntag: false
+  access:
+  - HeadOfSecurity
+  - Command
+  - Brig
+  - Security
+  - Armory
+  - Maintenance
+  - Service
+  - External
+  - Cryogenics
+  special:
+  - !type:AddImplantSpecial
+    implants: [ MindShieldImplant ]
+  - !type:AddComponentSpecial
+    components:
+      - type: CommandStaff
+      - type: SecurityStaff
+
+- type: startingGear
+  id: IS14GearHosMilitia
+  equipment:
+    id: IS14_PdaHosMilitia
+    ears: ClothingHeadsetIS14Hos
+
+- type: job
+  id: JobMilitia
+  name: job-name-militia
+  description: job-description-militia
+  playTimeTracker: JobMilitia
+  requirements:
+    - !type:OverallPlaytimeRequirement
+      time: 9000 # 2.5 hrs
+    - !type:SpeciesRequirement
+      inverted: true
+      species:
+      - Abductor
+  weight: 4
+  startingGear: IS14GearMilitia
+  icon: "JobIconMilitia"
+  supervisors: job-supervisors-hos
+  canBeAntag: false
+  access:
+  - Security
+  - Brig
+  - Maintenance
+  - Service
+  - External
+  - Cryogenics
+  special:
+  - !type:AddImplantSpecial
+    implants: [ MindShieldImplant ]
+  - !type:AddComponentSpecial
+    components:
+      - type: SecurityStaff
+
+- type: startingGear
+  id: IS14GearMilitia
+  equipment:
+    id: IS14_PdaMilitia
+    ears: ClothingHeadsetIS14Militia
+
+- type: job
+  id: JobSeniorMilitia
+  name: job-name-senior-militia
+  description: job-description-senior-militia
+  playTimeTracker: JobSeniorMilitia
+  requirements:
+    - !type:RoleTimeRequirement
+      role: JobMilitia
+      time: 18000 # 5 hrs
+    - !type:DepartmentTimeRequirement
+      department: Security
+      time: 18000 # 5 hrs
+    - !type:SpeciesRequirement
+      inverted: true
+      species:
+      - Abductor
+  weight: 8
+  startingGear: IS14GearSeniorMilitia
+  icon: "JobIconSeniorMilitia"
+  supervisors: job-supervisors-hos
+  canBeAntag: false
+  access:
+  - Security
+  - Brig
+  - Maintenance
+  - Service
+  - External
+  - Cryogenics
+  special:
+  - !type:AddImplantSpecial
+    implants: [ MindShieldImplant ]
+  - !type:AddComponentSpecial
+    components:
+      - type: SecurityStaff
+
+- type: startingGear
+  id: IS14GearSeniorMilitia
+  equipment:
+    id: IS14_PdaSeniorMilitia
+    ears: ClothingHeadsetIS14Militia
+
+- type: job
+  id: IS_JobCadet
+  name: job-name-is14-cadet
+  description: job-description-is14-cadet
+  playTimeTracker: IS_JobCadet
+  startingGear: IS14GearCadet
+  icon: "JobIconIS14Cadet"
+  supervisors: job-supervisors-security
+  canBeAntag: false
+  access:
+  - Security
+  - Brig
+  - Maintenance
+  - Service
+  - Cryogenics
+  special:
+  - !type:AddImplantSpecial
+    implants: [ MindShieldImplant ]
+  - !type:AddComponentSpecial
+    components:
+      - type: SecurityStaff
+  weight: 3 # IS14-edit
+
+- type: startingGear
+  id: IS14GearCadet
+  equipment:
+    id: IS14_PdaCadet
+    ears: ClothingHeadsetIS14Militia
+
+- type: job
+  id: JobInvestigator
+  name: job-name-investigator
+  description: job-description-investigator
+  playTimeTracker: JobInvestigator
+  requirements:
+    - !type:RoleTimeRequirement
+      role: JobMilitia
+      time: 18000 # 5 hrs
+    - !type:DepartmentTimeRequirement
+      department: Security
+      time: 18000 # 5 hrs
+    - !type:SpeciesRequirement
+      inverted: true
+      species:
+      - Abductor
+  weight: 5
+  startingGear: IS14GearInvestigator
+  icon: "JobIconInvestigator"
+  supervisors: job-supervisors-hos
+  canBeAntag: false
+  access:
+  - Security
+  - Brig
+  - Detective
+  - Maintenance
+  - Service
+  - External
+  - Cryogenics
+  special:
+  - !type:AddImplantSpecial
+    implants: [ MindShieldImplant ]
+  - !type:AddComponentSpecial
+    components:
+      - type: SecurityStaff
+
+- type: startingGear
+  id: IS14GearInvestigator
+  equipment:
+    id: IS14_PdaInvestigator
+    ears: ClothingHeadsetIS14Militia
+
+- type: job
+  id: JobMedOfficer
+  name: job-name-med-officer
+  description: job-description-med-officer
+  playTimeTracker: JobMedOfficer
+  requirements:
+    - !type:RoleTimeRequirement
+      role: JobMilitia
+      time: 18000 # 5 hrs
+    - !type:DepartmentTimeRequirement
+      department: Security
+      time: 18000 # 5 hrs
+    - !type:SpeciesRequirement
+      inverted: true
+      species:
+      - Abductor
+  weight: 6
+  startingGear: IS14GearMedOfficer
+  icon: "JobIconMedOfficer"
+  supervisors: job-supervisors-hos
+  canBeAntag: false
+  access:
+  - Security
+  - Brig
+  - Medical
+  - Maintenance
+  - Service
+  - External
+  - Cryogenics
+  special:
+  - !type:AddImplantSpecial
+    implants: [ MindShieldImplant ]
+  - !type:AddComponentSpecial
+    components:
+      - type: SecurityStaff
+
+- type: startingGear
+  id: IS14GearMedOfficer
+  equipment:
+    id: IS14_PdaMedOfficer
+    ears: ClothingHeadsetIS14MedOfficer
+
+- type: job
+  id: JobLrrChief
+  name: job-name-lrr-chief
+  description: job-description-lrr-chief
+  playTimeTracker: JobLrrChief
+  requirements:
+    - !type:RoleTimeRequirement
+      role: JobMilitia
+      time: 36000 # 10 hrs
+    - !type:DepartmentTimeRequirement
+      department: Security
+      time: 36000 # 10 hrs
+    - !type:SpeciesRequirement
+      inverted: true
+      species:
+      - Abductor
+  weight: 10
+  startingGear: IS14GearLrrChief
+  icon: "JobIconLrrChief"
+  supervisors: job-supervisors-hos
+  canBeAntag: false
+  access:
+  - Security
+  - Brig
+  - Armory
+  - Maintenance
+  - Service
+  - External
+  - Cryogenics
+  special:
+  - !type:AddImplantSpecial
+    implants: [ MindShieldImplant ]
+  - !type:AddComponentSpecial
+    components:
+      - type: SecurityStaff
+
+- type: startingGear
+  id: IS14GearLrrChief
+  equipment:
+    id: IS14_PdaLrrChief
+    ears: ClothingHeadsetIS14Militia
+
+- type: job
+  id: IS_JobPilot
+  name: job-name-is14-pilot
+  description: job-description-is14-pilot
+  playTimeTracker: IS_JobPilot
+  requirements:
+    - !type:OverallPlaytimeRequirement
+      time: 9000 # 2.5 hrs
+    - !type:DepartmentTimeRequirement
+      department: Security
+      time: 9000 # 2.5 hrs
+    - !type:SpeciesRequirement
+      inverted: true
+      species:
+      - Abductor
+  weight: 7
+  startingGear: IS14GearPilot
+  icon: "JobIconIS14Pilot"
+  supervisors: job-supervisors-hos
+  canBeAntag: false
+  skills:
+  - ShuttleControl
+  access:
+  - Security
+  - Brig
+  - Maintenance
+  - Service
+  - External
+  - Cryogenics
+  special:
+  - !type:AddImplantSpecial
+    implants: [ MindShieldImplant ]
+  - !type:AddComponentSpecial
+    components:
+      - type: SecurityStaff
+
+- type: startingGear
+  id: IS14GearPilot
+  equipment:
+    id: IS14_PdaPilot
+    ears: ClothingHeadsetIS14Militia
+
+- type: job
+  id: JobIvk
+  name: job-name-ivk
+  description: job-description-ivk
+  playTimeTracker: JobIvk
+  requirements:
+    - !type:OverallPlaytimeRequirement
+      time: 9000 # 2.5 hrs
+    - !type:SpeciesRequirement
+      inverted: true
+      species:
+      - Abductor
+  startingGear: IS14GearIVK
+  icon: "JobIconIvk"
+  supervisors: job-supervisors-hop
+  access:
+  - Service
+  - Brig
+  - Maintenance
+
+- type: startingGear
+  id: IS14GearIVK
+  equipment:
+    id: IS14_PdaIVK
+
+- type: job
+  id: IS_JobLawyer
+  name: job-name-lawyer-militia
+  description: job-description-lawyer-militia
+  playTimeTracker: IS_JobLawyer
+  requirements:
+    - !type:OverallPlaytimeRequirement
+      time: 9000 # 2.5 hrs
+    - !type:SpeciesRequirement
+      inverted: true
+      species:
+      - Abductor
+  startingGear: IS14GearLawyer
+  icon: "JobIconIS14Lawyer"
+  supervisors: job-supervisors-hop
+  access:
+  - Service
+  - Lawyer
+  - Brig
+  - Maintenance
+
+- type: startingGear
+  id: IS14GearLawyer
+  equipment:
+    id: IS14_PdaLawyer
+    ears: ClothingHeadsetIS14Lawyer
+
+- type: job
+  id: JobMupRepresentative
+  name: job-name-mup-representative
+  description: job-description-mup-representative
+  playTimeTracker: JobMupRepresentative
+  requirements:
+    - !type:OverallPlaytimeRequirement
+      time: 9000 # 2.5 hrs
+    - !type:SpeciesRequirement
+      inverted: true
+      species:
+      - Abductor
+  startingGear: IS14GearMupRepresentative
+  icon: "JobIconMupRepresentative"
+  supervisors: job-supervisors-hop
+  access:
+  - Service
+  - Brig
+  - Maintenance
+
+- type: startingGear
+  id: IS14GearMupRepresentative
+  equipment:
+    id: IS14_PdaJusticeRepresentative
+    ears: ClothingHeadsetIS14MupRepresentative

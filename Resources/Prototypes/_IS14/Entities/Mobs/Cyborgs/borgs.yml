@@ -1,7 +1,28 @@
 - type: entity
   id: IS14BorgChassisYasari
-  parent: BaseBorgChassisNT
+  parent: [BaseBorgChassis, BaseBorgTransponder]
   components:
+    # from BaseBorgChassisNT start - Remove SlavedBorg, SiliconLawProvider
+    - type: RandomMetadata
+      nameSegments:
+      - NamesBorg
+    - type: NpcFactionMember
+      factions:
+      - NanoTrasen
+    - type: Access
+      groups:
+      - AllAccess
+      tags:
+      - Borg
+    - type: AccessReader
+      access: [["Command"], ["Research"]]
+    - type: ShowJobIcons
+    - type: StationAiVision # Goobstation - AI can see through NT silicon
+      range: 3
+    - type: InteractionPopup
+      interactSuccessSound:
+        path: /Audio/Ambience/Objects/periodic_beep.ogg
+    # from BaseBorgChassisNT end
     - type: Sprite
       sprite: _IS14/Mobs/Silicon/chassis.rsi
       layers:
@@ -16,8 +37,8 @@
         map: ["light","enum.BorgVisualLayers.LightStatus"]
         visible: false
     - type: BorgChassis
-      hasMindState: yasari_e
-      noMindState: yasari_e
+      hasMindState: yasari_empty
+      noMindState: yasari_empty
     - type: BorgTransponder
       sprite:
         sprite: _IS14/Mobs/Silicon/chassis.rsi
@@ -26,6 +47,7 @@
     - type: SiliconLawProvider
       laws: YasariStatic
       subverted: true
+    - type: NightVision
 
 - type: entity
   id: IS14PlayerBorgYasari

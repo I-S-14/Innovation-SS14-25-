@@ -1,91 +1,92 @@
 # Глава милиции
-ent-ClothingUniformJumpsuitIS14FormalHosMilitia = Официальная Форма Главы Милиции
+ent-ClothingUniformJumpsuitIS14FormalHosMilitia = официальная форма главы милиции
     .desc = Дизайн формы адаптирован под ведение документальной деятельности, проведение брифингов и конференций для поддержания работы объекта (впитывает пасту ручек и пятна жира не оставляя следов).
-ent-ClothingUniformJumpsuitIS14TacticalHosMilitia = Тактический Комбинезон Главы Милиции
+ent-ClothingUniformJumpsuitIS14TacticalHosMilitia = тактический комбинезон главы милиции
     .desc = Разработан дабы выделять, во время выполнения задач, лидирующую роль командования в их исполнении. Дизайн автоматически адаптируется под особенности телосложения или размеров офицера.
 
 # Курсант
-ent-ClothingUniformJumpsuitIS14Cadet = Форма Курсанта
+ent-ClothingUniformJumpsuitIS14Cadet = форма курсанта
     .desc = Эффективность производства формы обеспечена дешевизной материалов, дабы обеспечить новое поколение Милиции снаряжением.
-ent-ClothingUniformJumpskirtIS14CadetSkirt = Юбка Курсанта
+ent-ClothingUniformJumpskirtIS14CadetSkirt = юбка курсанта
     .desc = Создана дабы вдохновлять старших офицеров на обучение.
 
 # Медицинский офицер
-ent-ClothingUniformJumpsuitIS14MedOfficerJumpsuit = Комбинезон Медицинского Офицера
+ent-ClothingUniformJumpsuitIS14MedOfficerJumpsuit = комбинезон медицинского офицера
     .desc = Разработан с учетом возможных угроз, которые могут возникнуть в ходе выполнения долга на боевых задачах.
-ent-ClothingUniformJumpsuitIS14MedOfficerFormal = Официальная Форма Медицинского Офицера
+ent-ClothingUniformJumpsuitIS14MedOfficerFormal = официальная форма медицинского офицера
     .desc = Строгий костюм, созданный дабы внушать потерпевшим, сотрудникам и заключенным уверенность, что раны и повреждения выйдет залечить.
-ent-ClothingUniformJumpskirtIS14MedOfficerSkirt = Юбка Медицинского Офицера
+ent-ClothingUniformJumpskirtIS14MedOfficerSkirt = юбка медицинского офицера
     .desc = По многочисленным завещаниям сотрудников и заключенных была разработана для того, чтобы в случае летального исхода была возможность посмотреть на что-то красивое.
 
 # Милиционер
-ent-ClothingUniformJumpsuitIS14MilitiaJumpsuit = Комбинезон Милиционера
+ent-ClothingUniformJumpsuitIS14MilitiaJumpsuit = комбинезон милиционера
     .desc = Выдержанный строгий стиль создан, чтобы напоминать - "Советская власть следит за порядком!"
-ent-ClothingUniformJumpsuitIS14MilitiaFormal = Форма Милиционера
+ent-ClothingUniformJumpsuitIS14MilitiaFormal = форма милиционера
     .desc = Удобность в ношении и повышенная прочность идеально подходят для выполнения ежедневных задач.
-ent-ClothingUniformJumpsuitIS14MilitiaTactical = Тактический Комбинезон Милиционера
+ent-ClothingUniformJumpsuitIS14MilitiaTactical = тактический комбинезон милиционера
     .desc = Создан для выполнения задержаний, вооружённого патруля объекта и донесения сотрудникам важности следования приказам командования.
-ent-ClothingUniformJumpskirtIS14MilitiaSkirt = Юбка Милиционера
+ent-ClothingUniformJumpskirtIS14MilitiaSkirt = юбка милиционера
     .desc = Создана с учетом запросов сотрудниц и сотрудников отделений милиции, сохраняет удобство движений, красоту и загадочность.
-ent-ClothingUniformJumpskirtIS14MilitiaFormalSkirt = Парадная Юбка Милиционера
+ent-ClothingUniformJumpskirtIS14MilitiaFormalSkirt = парадная юбка милиционера
     .desc = Форма разработанная для ведения бюрократической работы и скрытого патрулирования объекта, дизайн разработан так, чтобы не привлекать внимание.
 
 # Начальник ЛРР
-ent-ClothingUniformJumpsuitIS14LrrChiefJumpsuit = Комбинезон Начальника ЛРР
+ent-ClothingUniformJumpsuitIS14LrrChiefJumpsuit = комбинезон начальника ЛРР
     .desc = Строгий комбинезон созданный для внушения уважения со стороны правонарушителей.
-ent-ClothingUniformJumpsuitIS14LrrChiefFormal = Официальная Форма Начальника ЛРР
+ent-ClothingUniformJumpsuitIS14LrrChiefFormal = официальная форма начальника ЛРР
     .desc = Стандартизированная рабочая форма для ведения учетных работ в отделении милиции.
 
 # Пилот
-ent-ClothingUniformJumpsuitIS14PilotJumpsuit = Комбинезон Пилота
+ent-ClothingUniformJumpsuitIS14PilotJumpsuit = комбинезон пилота
     .desc = Оптимизированная форма для выполнения боевых задач с пилотирования шаттлов милиции.
-ent-ClothingUniformJumpsuitIS14PilotFormal = Форма Пилота
+ent-ClothingUniformJumpsuitIS14PilotFormal = форма пилота
     .desc = Рекомендация союза пилотов советует хранить чистоту и ухоженность формы, для проведения возможных парадов и сопровождения официальных лиц.
-ent-ClothingUniformJumpsuitIS14PilotTactical = Тактический Комбинезон Пилота
+ent-ClothingUniformJumpsuitIS14PilotTactical = тактический комбинезон пилота
     .desc = Разработан с учетом возможных боевых задач который могут встать в работе пилота.
-ent-ClothingUniformJumpskirtIS14PilotSkirt = Юбка Пилота
+ent-ClothingUniformJumpskirtIS14PilotSkirt = юбка пилота
     .desc = Основа дизайна взята с формы стюардесс, дабы в при любом из исходов сохранять у сотрудников бодрость и приподнятость боевого духа.
 
 # Следователь
-ent-ClothingUniformJumpsuitIS14Investigator = Форма Следователя
+ent-ClothingUniformJumpsuitIS14Investigator = форма следователя
     .desc = По многочисленным запросам следователей, форма адаптирована под впитывание алкогольных пятен и огарков от сигарет, чтобы не оставлять следов.
-ent-ClothingUniformJumpskirtIS14InvestigatorSkirt = Юбка Следователя
+ent-ClothingUniformJumpskirtIS14InvestigatorSkirt = юбка следователя
     .desc = Особенность дизайна этой формы заключается в повышении эффективности проведения расследования и склонения сотрудников к сотрудничеству.
 
 # Старший милиционер
-ent-ClothingUniformJumpsuitIS14SeniorMilitiaJumpsuit = Комбинезон Старшего Милиционера
+ent-ClothingUniformJumpsuitIS14SeniorMilitiaJumpsuit = комбинезон старшего милиционера
     .desc = Форма для старших сотрудников милиции, для ведения правоохранительной деятельности.
-ent-ClothingUniformJumpsuitIS14SeniorMilitiaFormal = Парадная Форма Старшего Милиционера
+ent-ClothingUniformJumpsuitIS14SeniorMilitiaFormal = парадная форма старшего милиционера
     .desc = Подчеркивает статус сотрудника правоохранительных органов, в то же время скрывая живот.
-ent-ClothingUniformJumpsuitIS14SeniorMilitiaTactical = Тактический Комбинезон Старшего Милиционера
+ent-ClothingUniformJumpsuitIS14SeniorMilitiaTactical = тактический комбинезон старшего милиционера
     .desc = Базовая форма сотрудников правоохранительных органов, приспособленная для проведения полевых правоохранительных работ.
-ent-ClothingUniformJumpskirtIS14SeniorMilitiaSkirt = Юбка Старшего Милиционера
+ent-ClothingUniformJumpskirtIS14SeniorMilitiaSkirt = юбка старшего милиционера
     .desc = Специально-скроена чтобы прикрывать достоинство сотрудниц и в особенности сотрудников Милиции.
-ent-ClothingUniformJumpskirtIS14SeniorMilitiaFormalSkirt = Парадная Юбка Старшего Милиционера
+ent-ClothingUniformJumpskirtIS14SeniorMilitiaFormalSkirt = парадная юбка старшего милиционера
     .desc = Специально-разработанный дизайн способствует проведению дознавательских работ и поддерживает приподнятый боевой дух сотрудников.
 
 
 # Министерство Юстиции и Права
-ent-ClothingUniformJumpskirtIS14Lawyer = Официальная Юбка Юридического Сотрудника
+ent-ClothingUniformJumpskirtIS14Lawyer = официальная юбка юридического сотрудника
     .desc = Официальный наряд для ведения юридической защиты клиента и углубленных переговоров со стороной обвинения. Унисекс.
-ent-ClothingUniformJumpsuitIS14Lawyer = Официальная Форма Юридического Сотрудника
+ent-ClothingUniformJumpsuitIS14Lawyer = официальная форма юридического сотрудника
     .desc = Официальная унифицированная форма, для поддержания (видимости) работы отдела МЮиП.
-ent-ClothingUniformJumpskirtIS14MupRepresentative = Юбка Представителя МЮиП
+ent-ClothingUniformJumpskirtIS14MupRepresentative = юбка представителя МЮиП
     .desc = Красиво-скроенная юбка для представителя МЮиП, как и красные шаровары, обладает красным низом, дабы не вызывать паники у подчиненных.
-ent-ClothingUniformJumpsuitIS14MupRepresentative = Костюм Представителя МЮиП
+ent-ClothingUniformJumpsuitIS14MupRepresentative = костюм представителя МЮиП
     .desc = Скромный черный костюм, созданный для ношения в особенно теплые солнечные дни.
-ent-ClothingUniformJumpsuitIS14FormalBlackMupRepresentative = Парадный Костюм с Черными Брюками
+ent-ClothingUniformJumpsuitIS14FormalBlackMupRepresentative = парадный костюм с черными брюками
     .desc = Дизайн создан для проведения публичных слушаний и званых ужинов. Имеет подчеркивающую тугость в районе икр и таза.
-ent-ClothingUniformJumpsuitIS14FormalMupRepresentative = Парадный Костюм с Белыми Брюками
+ent-ClothingUniformJumpsuitIS14FormalMupRepresentative = парадный костюм с белыми брюками
     .desc = Дизайн создан для проведения публичных слушаний и званых ужинов. Имеет подчеркивающую тугость в районе икр и таза. Особый материал легко подвергается чистке, как и инакомыслие.
 
 # ИВК
-ent-ClothingUniformJumpskirtIS14IVK = Форма ИВК
+ent-ClothingUniformJumpskirtIS14IVK = форма ИВК
     .desc = Специальное снаряжение, оснащенное базовой защитой от пулевых ранений, ножевых ударов и карманом, с дополнительными ручками для представителей МЮиП.
 
 # Заключённый
-ent-ClothingUniformJumpsuitIS14Prisoner = Форма заключённого
+ent-ClothingUniformJumpsuitIS14Prisoner = форма заключённого
     .desc = Чёрно-белая полосатая ткань комбинезона разработана по многочисленным просьбам работников милиции и их неуёмного желания посмотреть на зебру.
+
 # Милиционер (новая форма)
 ent-ClothingUniformJumpsuitIS14MilitiaSummer = голубая форма милиции
     .desc = Летняя вариация формы сотрудников, даже при обильном потоотделении не начинает просвечивать.

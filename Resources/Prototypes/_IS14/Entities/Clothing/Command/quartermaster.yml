@@ -1,0 +1,61 @@
+# quartermaster clothing
+
+- type: entity
+  parent: ClothingBeltStorageBase
+  id: ClothingBeltIS14Qm
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Belt/Command/Quartermaster/qm_belt.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Belt/Command/Quartermaster/qm_belt.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: ClothingHeadIS14QmCap
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Head/Command/Quartermaster/qm_cap.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Head/Command/Quartermaster/qm_cap.rsi
+
+- type: entity
+  parent: ClothingNeckBase
+  id: ClothingNeckIS14QmCloak
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Neck/Command/Quartermaster/qm_cloak.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Neck/Command/Quartermaster/qm_cloak.rsi
+  - type: StealTarget
+    stealGroup: HeadCloak
+
+- type: entity
+  parent: ClothingOuterIS14Base
+  id: ClothingOuterIS14QmGreatcoat
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/OuterClothing/Command/Quartermaster/qm_greatcoat.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/OuterClothing/Command/Quartermaster/qm_greatcoat.rsi
+
+- type: entity
+  parent: ClothingUniformJumpskirtIS14Base
+  id: ClothingUniformJumpskirtIS14Qm
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Uniforms/Command/Quartermaster/qm_skirt.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Uniforms/Command/Quartermaster/qm_skirt.rsi
+    equipSound:
+      path: /Audio/Items/jumpsuit_equip.ogg
+
+- type: entity
+  parent: ClothingUniformJumpsuitIS14Base
+  id: ClothingUniformJumpsuitIS14Qm
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Uniforms/Command/Quartermaster/qm.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Uniforms/Command/Quartermaster/qm.rsi
+    equipSound:
+      path: /Audio/Items/jumpsuit_equip.ogg

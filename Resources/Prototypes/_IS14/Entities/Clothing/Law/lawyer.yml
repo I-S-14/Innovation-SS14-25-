@@ -1,0 +1,32 @@
+# lawyer clothing
+
+- type: entity
+  parent: ClothingHeadset
+  id: ClothingHeadsetIS14Lawyer
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Ears/Minust/Lawyer/lawyer_headset.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Ears/Minust/Lawyer/lawyer_headset.rsi
+
+- type: entity
+  parent: ClothingUniformJumpskirtIS14Base
+  id: ClothingUniformJumpskirtIS14Lawyer
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Uniforms/Minust/Lawyer/lawyer_skirt.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Uniforms/Minust/Lawyer/lawyer_skirt.rsi
+    equipSound:
+      path: /Audio/Items/jumpsuit_equip.ogg
+
+- type: entity
+  parent: ClothingUniformJumpsuitIS14Base
+  id: ClothingUniformJumpsuitIS14Lawyer
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Uniforms/Minust/Lawyer/lawyer.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Uniforms/Minust/Lawyer/lawyer.rsi
+    equipSound:
+      path: /Audio/Items/jumpsuit_equip.ogg

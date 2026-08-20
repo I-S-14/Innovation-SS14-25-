@@ -1,0 +1,164 @@
+# militia loadouts
+
+- type: loadout
+  id: IS14MilitiaArmorVest
+  equipment:
+    outerClothing: ClothingOuterArmorBasic
+
+- type: loadout
+  id: IS14MilitiaBackpack
+  equipment:
+    back: ClothingBackpackSecurity
+
+- type: loadout
+  id: IS14MilitiaBeret
+  equipment:
+    head: ClothingHeadIS14MilitiaBeret
+
+- type: loadout
+  id: IS14MilitiaBlackKubanka
+  equipment:
+    head: ClothingHeadIS14HatBlackMilitiaKubanka
+
+- type: loadout
+  id: IS14MilitiaBoots
+  equipment:
+    shoes: ClothingShoesBootsJack
+
+- type: loadout
+  id: IS14MilitiaCap
+  equipment:
+    head: ClothingHeadIS14MilitiaCap
+
+- type: loadout
+  id: IS14MilitiaDuffel
+  equipment:
+    back: ClothingBackpackDuffelSecurity
+
+- type: loadout
+  id: IS14MilitiaFormalJacket
+  equipment:
+    outerClothing: ClothingOuterIS14MilitiaFormalJacket
+
+- type: loadout
+  id: IS14MilitiaFormalJumpskirt
+  equipment:
+    jumpsuit: ClothingUniformJumpskirtIS14MilitiaFormalSkirt
+  groupBy: "jumpskirt"
+
+- type: loadout
+  id: IS14MilitiaFormalJumpsuit
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitIS14MilitiaFormal
+  groupBy: "jumpsuit"
+
+- type: loadout
+  id: IS14MilitiaJumpskirt
+  equipment:
+    jumpsuit: ClothingUniformJumpskirtIS14MilitiaSkirt
+  groupBy: "jumpskirt"
+
+- type: loadout
+  id: IS14MilitiaJumpsuit
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitIS14MilitiaJumpsuit
+  groupBy: "jumpsuit"
+
+- type: loadout
+  id: IS14MilitiaKepka
+  equipment:
+    head: ClothingHeadIS14MilitiaKepka
+
+- type: loadout
+  id: IS14MilitiaPilotka
+  equipment:
+    head: ClothingHeadIS14MilitiaPilotka
+
+- type: loadout
+  id: IS14MilitiaRedKubanka
+  equipment:
+    head: ClothingHeadIS14HatRedMilitiaKubanka
+
+- type: loadout
+  id: IS14MilitiaSatchel
+  equipment:
+    back: ClothingBackpackSatchelSecurity
+
+- type: loadout
+  id: IS14MilitiaTactical
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitIS14MilitiaTactical
+  groupBy: "jumpsuit"
+
+- type: loadout
+  id: IS14MilitiaUshanka
+  equipment:
+    head: ClothingHeadIS14HatMilitiaUshanka
+
+- type: loadout
+  id: IS14MilitiaWinterBoots
+  equipment:
+    shoes: ClothingShoesWinterCombatBoots
+
+- type: loadoutGroup
+  id: IS14MilitiaBackpack
+  name: loadout-group-backpack
+  loadouts:
+  - IS14MilitiaBackpack
+  - IS14MilitiaSatchel
+  - IS14MilitiaDuffel
+
+- type: loadoutGroup
+  id: IS14MilitiaEyes
+  name: loadout-group-glasses
+  minLimit: 0
+  loadouts:
+  - IS14MilitiaGlasses
+  - IS14MilitiaEyeScanner
+  - IS14MilitiaVisor
+
+- type: loadoutGroup
+  id: IS14MilitiaHead
+  name: loadout-group-head
+  minLimit: 0
+  loadouts:
+  - IS14MilitiaCap
+  - IS14MilitiaBeret
+  - IS14MilitiaUshanka
+  - IS14MilitiaRedKubanka
+  - IS14MilitiaBlackKubanka
+  - IS14MilitiaPilotka
+  - IS14MilitiaKepka
+
+- type: loadoutGroup
+  id: IS14MilitiaJumpsuit
+  name: loadout-group-jumpsuit
+  loadouts:
+  - IS14MilitiaJumpsuit
+  - IS14MilitiaJumpskirt
+  - IS14MilitiaFormalJumpsuit
+  - IS14MilitiaFormalJumpskirt
+  - IS14MilitiaTactical
+
+- type: loadoutGroup
+  id: IS14MilitiaOuterClothing
+  name: loadout-group-outerclothing
+  minLimit: 0
+  loadouts:
+  - IS14MilitiaFormalJacket
+  - IS14MilitiaArmorVest
+
+- type: loadoutGroup
+  id: IS14MilitiaShoes
+  name: loadout-group-shoes
+  loadouts:
+  - IS14MilitiaBoots
+  - IS14MilitiaWinterBoots
+
+- type: loadoutGroup
+  id: IS14MiltiaBelt
+  name: loadout-group-belt
+  minLimit: 0
+  loadouts:
+  - IS14MilitiaBelt
+  - IS14MilitiaWebbing

@@ -60,7 +60,7 @@
   id: QuartermasterGear
   equipment:
     id: QuartermasterPDA
-    belt: BoxFolderClipboardThreePapers
+#   belt: BoxFolderClipboardThreePapers # IS14-edit: moved to the IS14QmBelt loadout group
     ears: ClothingHeadsetAltCargo # Goobstation
     pocket1: AppraisalTool
   storage:

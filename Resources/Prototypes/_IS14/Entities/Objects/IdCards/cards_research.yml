@@ -1,6 +1,6 @@
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardMentorScientist
+  parent: IS14_IdCardBase
+  id: IS14_IdCardMentorScientist
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -13,8 +13,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/research.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardResearchAssistant
+  parent: IS14_IdCardBase
+  id: IS14_IdCardResearchAssistant
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -27,8 +27,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/research.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardRoboticist
+  parent: IS14_IdCardBase
+  id: IS14_IdCardRoboticist
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -41,8 +41,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/research.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardScientist
+  parent: IS14_IdCardBase
+  id: IS14_IdCardScientist
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:

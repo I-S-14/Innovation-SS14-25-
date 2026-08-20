@@ -24,7 +24,7 @@
   id: ChurchServantGear
   equipment:
     shoes: ClothingShoesColorBlack
-    id: IS_PdachaplainAssistant
+    id: IS14_PdachaplainAssistant
     ears: ClothingHeadsetService
   storage:
     back:

@@ -1,0 +1,121 @@
+# quartermaster loadouts
+
+- type: loadout
+  id: IS14CargoTechnicianBackpack
+  equipment:
+    back: ClothingBackpackCargo
+
+- type: loadout
+  id: IS14CargoTechnicianDuffel
+  equipment:
+    back: ClothingBackpackDuffelCargo
+
+# OuterClothing
+
+- type: loadout
+  id: IS14CargoTechnicianMessenger
+  equipment:
+    back: ClothingBackpackMessengerCargo
+
+- type: loadout
+  id: IS14CargoTechnicianSatchel
+  equipment:
+    back: ClothingBackpackSatchelCargo
+
+- type: loadout
+  id: IS14QmBelt
+  equipment:
+    belt: ClothingBeltIS14Qm
+
+# ========================
+# Head of Militia
+# ========================
+
+- type: loadout
+  id: IS14QmCap
+  equipment:
+    head: ClothingHeadIS14QmCap
+
+- type: loadout
+  id: IS14QmClipboard
+  equipment:
+    belt: BoxFolderClipboardThreePapers
+
+- type: loadout
+  id: IS14QmCloak
+  equipment:
+    neck: ClothingNeckIS14QmCloak
+
+- type: loadout
+  id: IS14QmGreatcoat
+  equipment:
+    outerClothing: ClothingOuterIS14QmGreatcoat
+
+- type: loadout
+  id: IS14QmJumpskirt
+  equipment:
+    jumpsuit: ClothingUniformJumpskirtIS14Qm
+  groupBy: "jumpskirt"
+
+- type: loadout
+  id: IS14QmJumpsuit
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitIS14Qm
+  groupBy: "jumpsuit"
+
+- type: loadoutGroup
+  id: IS14CargoTechnicianBackpack
+  name: loadout-group-cargo-technician-backpack
+  loadouts:
+  - IS14CargoTechnicianBackpack
+  - IS14CargoTechnicianSatchel
+  - IS14CargoTechnicianDuffel
+  - IS14CargoTechnicianMessenger # Frontier
+
+- type: loadoutGroup
+  id: IS14QmBelt
+  name: loadout-group-belt
+  loadouts:
+  - IS14QmClipboard
+  - IS14QmBelt
+
+- type: loadoutGroup
+  id: IS14QmHead
+  name: loadout-group-head
+  minLimit: 0
+  loadouts:
+  - IS14QmCap
+  - IS14GiftKnittedOrange
+
+- type: loadoutGroup
+  id: IS14QmJumpsuit
+  name: loadout-group-jumpsuit
+  loadouts:
+  - IS14QmJumpsuit
+  - IS14QmJumpskirt
+
+- type: loadoutGroup
+  id: IS14QmNeck
+  name: loadout-group-neck
+  minLimit: 0
+  loadouts:
+  - IS14QmCloak
+
+- type: loadoutGroup
+  id: IS14QmOuterClothing
+  name: loadout-group-outerclothing
+  minLimit: 0
+  loadouts:
+  - IS14QmGreatcoat
+
+- type: loadoutGroup
+  id: IS14QmShoes
+  name: loadout-group-shoes
+  loadouts:
+  - IS14CommandShoes
+  - IS14GiftDressShoes
+  - IS14GiftTights
+
+# ========================
+# Head of Militia (extra groups on top of the older IS14Hos* set)
+# ========================

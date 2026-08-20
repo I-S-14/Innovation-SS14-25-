@@ -1,0 +1,102 @@
+# lrr chief clothing
+
+- type: entity
+  parent: ClothingHeadHardsuitWithLightBase
+  id: ClothingHeadHelmetIS14LrrChief
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Head/Militia/LrrChief/lrr_chief_helmet.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Head/Militia/LrrChief/lrr_chief_helmet.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: ClothingHeadIS14LrrChiefBeret
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Head/Militia/LrrChief/lrr_chief_beret.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Head/Militia/LrrChief/lrr_chief_beret.rsi
+    equippedState: equipped-HEAD
+
+- type: entity
+  parent: ClothingHeadBase
+  id: ClothingHeadIS14LrrChiefCap
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Head/Militia/LrrChief/lrr_chief_cap.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Head/Militia/LrrChief/lrr_chief_cap.rsi
+    equippedState: equipped-HEAD
+
+- type: entity
+  parent: ClothingOuterHardsuitBase
+  id: ClothingOuterHardsuitIS14LrrChief
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/OuterClothing/Militia/LrrChief/lrr_chief_suit.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/OuterClothing/Militia/LrrChief/lrr_chief_suit.rsi
+  - type: PressureProtection
+    highPressureMultiplier: 0.5
+    lowPressureMultiplier: 1000
+  - type: ExplosionResistance
+    damageCoefficient: 0.65
+  - type: Armor
+    coverage:
+    - Chest
+    - Groin
+    - Arm
+    - Hand
+    - Leg
+    - Foot
+    - Tail
+    traumaDeductions:
+      Dismemberment: 0.3
+      OrganDamage: 0.3
+      BoneDamage: 0.3
+      VeinsDamage: 0
+      NerveDamage: 0
+    modifiers:
+      coefficients:
+        Blunt: 0.65
+        Slash: 0.65
+        Piercing: 0.65
+        Heat: 0.75
+        Caustic: 0.6
+  - type: StaminaResistance
+    damageCoefficient: 0.6
+  - type: ToggleableClothing
+    clothingPrototypes:
+      head: ClothingHeadHelmetIS14LrrChief
+
+- type: entity
+  parent: ClothingOuterIS14Base
+  id: ClothingOuterIS14LrrChiefJacket
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/OuterClothing/Militia/LrrChief/lrr_chief_jacket.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/OuterClothing/Militia/LrrChief/lrr_chief_jacket.rsi
+
+- type: entity
+  parent: ClothingUniformJumpsuitIS14Base
+  id: ClothingUniformJumpsuitIS14LrrChiefFormal
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Uniforms/Militia/LrrChief/lrr_chief_formal.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Uniforms/Militia/LrrChief/lrr_chief_formal.rsi
+    equipSound:
+      path: /Audio/Items/jumpsuit_equip.ogg
+
+- type: entity
+  parent: ClothingUniformJumpsuitIS14Base
+  id: ClothingUniformJumpsuitIS14LrrChiefJumpsuit
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Uniforms/Militia/LrrChief/lrr_chief_jumpsuit.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Uniforms/Militia/LrrChief/lrr_chief_jumpsuit.rsi
+    equipSound:
+      path: /Audio/Items/jumpsuit_equip.ogg

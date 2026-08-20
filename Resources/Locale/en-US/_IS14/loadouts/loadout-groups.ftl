@@ -4,3 +4,6 @@ loadout-group-outerclothing = Outer clothing
 loadout-group-belt = Belt
 loadout-group-shoes = Shoes
 loadout-group-ears = Ears
+loadout-group-neck = Neck
+loadout-group-gloves = Gloves
+loadout-group-mask = Mask

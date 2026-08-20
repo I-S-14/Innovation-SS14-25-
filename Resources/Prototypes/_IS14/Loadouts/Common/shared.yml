@@ -1,0 +1,92 @@
+# shared loadouts
+
+- type: loadout
+  id: IS14CommonBackpack
+  equipment:
+    back: ClothingBackpack
+
+- type: loadout
+  id: IS14CommonDuffel
+  equipment:
+    back: ClothingBackpackDuffel
+
+# Gloves
+
+- type: loadout
+  id: IS14CommonMessenger
+  equipment:
+    back: ClothingBackpackMessenger
+
+- type: loadout
+  id: IS14CommonSatchel
+  equipment:
+    back: ClothingBackpackSatchel
+
+- type: loadout
+  id: IS14CommandShoes
+  equipment:
+    shoes: ClothingShoesBootsLaceup
+
+- type: loadout
+  id: IS14GiftDressShoes
+  equipment:
+    shoes: ClothingShoesIS14DressShoesBlack
+
+# ========================
+# Round-start defaults
+# ========================
+# These sit first in their group so the game hands them out when the player
+# leaves the group untouched, instead of the character spawning barefoot.
+
+- type: loadout
+  id: IS14GiftKnittedOrange
+  equipment:
+    head: ClothingHeadIS14HatKnittedOrange
+
+- type: loadout
+  id: IS14GiftTights
+  equipment:
+    shoes: ClothingUnderIS14Tights
+
+- type: loadout
+  id: IS14MilitiaBelt
+  equipment:
+    belt: ClothingBeltIS14Militia
+
+- type: loadout
+  id: IS14MilitiaEyeScanner
+  equipment:
+    eyes: ClothingEyesIS14MilitiaEyeScanner
+
+- type: loadout
+  id: IS14MilitiaGlasses
+  equipment:
+    eyes: ClothingEyesIS14MilitiaGlasses
+
+- type: loadout
+  id: IS14MilitiaVisor
+  equipment:
+    eyes: ClothingEyesIS14MilitiaVisor
+
+- type: loadout
+  id: IS14MilitiaWebbing
+  equipment:
+    belt: ClothingBeltIS14MilitiaWebbing
+
+- type: loadout
+  id: IS14ScientistBackpack
+  equipment:
+    back: ClothingBackpackScience
+
+- type: loadout
+  id: IS14ScientistDuffel
+  equipment:
+    back: ClothingBackpackDuffelScience
+
+# OuterClothing
+
+- type: loadout
+  id: IS14ScientistSatchel
+  equipment:
+    back: ClothingBackpackSatchelScience
+

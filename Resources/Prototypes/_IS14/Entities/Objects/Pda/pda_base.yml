@@ -1,7 +1,7 @@
 - type: entity
   abstract: true
   parent: [ BaseItem, StorePresetUplink ] #PDA's have uplinks so they have to inherit the data.
-  id: IS_PdaBase
+  id: IS14_PdaBase
   name: PDA
   description: Personal Data Assistant.
   components:

@@ -1,0 +1,72 @@
+# Cargo role loadouts
+
+- type: roleLoadout
+  id: JobQuartermaster
+  groups:
+  - Inventory
+  - GroupTankHarness
+  - Glasses
+  - Survival
+  - Trinkets
+  - Animals
+  - GroupSpeciesBreathTool
+  - QuartermasterEnvirohelm
+  - QuartermasterEnvirosuit
+  - QuartermasterEnvirogloves
+  - IS14CargoTechnicianBackpack
+  - IS14QmJumpsuit
+  - IS14QmHead
+  - IS14QmNeck
+  - IS14QmOuterClothing
+  - IS14QmBelt
+  - IS14QmShoes
+
+- type: roleLoadout
+  id: JobSeniorExpeditioner
+  groups:
+  - IS14SeniorExpeditionerJumpsuit
+  - IS14SeniorExpeditionerHead
+  - IS14SeniorExpeditionerOuterClothing
+  - IS14SeniorExpeditionerBackpack
+  - IS14SeniorExpeditionerShoes
+  - IS14SeniorExpeditionerGloves
+
+- type: roleLoadout
+  id: JobSalvageSpecialist
+  groups:
+  - Inventory
+  - GroupTankHarness
+  - Glasses
+  - Survival
+  - Trinkets
+  - Animals
+  - GroupSpeciesBreathTool
+  - SalvageEnvirohelm
+  - SalvageEnvirosuit
+  - SalvageEnvirogloves
+  - IS14ExpeditionerJumpsuit
+  - IS14ExpeditionerHead
+  - IS14ExpeditionerOuterClothing
+  - IS14ExpeditionerMask
+  - IS14ExpeditionerBackpack
+  - IS14ExpeditionerShoes
+  - IS14ExpeditionerGloves
+
+- type: roleLoadout
+  id: JobCargoTechnician
+  groups:
+  - Inventory
+  - GroupTankHarness
+  - Glasses
+  - Survival
+  - Trinkets
+  - Animals
+  - GroupSpeciesBreathTool
+  - CargoTechnicianEnvirohelm
+  - CargoTechnicianEnvirosuit
+  - CargoTechnicianEnvirogloves
+  - IS14CargoTechJumpsuit
+  - IS14CargoTechHead
+  - IS14CargoTechBackpack
+  - IS14CargoTechShoes
+  - IS14CargoTechGloves

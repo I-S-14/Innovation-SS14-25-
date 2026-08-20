@@ -1,0 +1,98 @@
+# chief engineer loadouts
+
+- type: loadout
+  id: IS14CeBeret
+  equipment:
+    head: ClothingHeadIS14CeBeret
+
+- type: loadout
+  id: IS14CeCloak
+  equipment:
+    neck: ClothingNeckIS14CeCloak
+
+- type: loadout
+  id: IS14CeFormalCloak
+  equipment:
+    neck: ClothingNeckIS14CeFormalCloak
+
+# ========================
+# Quartermaster (ESO chief)
+# ========================
+
+- type: loadout
+  id: IS14CeJumpsuit
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitIS14Ce
+  groupBy: "jumpsuit"
+
+- type: loadout
+  id: IS14CeWorkJumpsuit
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitIS14CeWork
+  groupBy: "jumpsuit"
+
+- type: loadout
+  id: IS14StationEngineerBackpack
+  equipment:
+    back: ClothingBackpackEngineering
+
+- type: loadout
+  id: IS14StationEngineerDuffel
+  equipment:
+    back: ClothingBackpackDuffelEngineering
+
+# OuterClothing
+
+- type: loadout
+  id: IS14StationEngineerMessenger
+  equipment:
+    back: ClothingBackpackMessengerEngineering
+
+- type: loadout
+  id: IS14StationEngineerSatchel
+  equipment:
+    back: ClothingBackpackSatchelEngineering
+
+- type: loadoutGroup
+  id: IS14CeHead
+  name: loadout-group-head
+  minLimit: 0
+  loadouts:
+  - IS14CeBeret
+  - IS14GiftKnittedOrange
+
+- type: loadoutGroup
+  id: IS14CeJumpsuit
+  name: loadout-group-jumpsuit
+  loadouts:
+  - IS14CeJumpsuit
+  - IS14CeWorkJumpsuit
+
+- type: loadoutGroup
+  id: IS14CeNeck
+  name: loadout-group-neck
+  minLimit: 0
+  loadouts:
+  - IS14CeCloak
+  - IS14CeFormalCloak
+
+- type: loadoutGroup
+  id: IS14CeShoes
+  name: loadout-group-shoes
+  loadouts:
+  - IS14CommandShoes
+  - IS14GiftDressShoes
+  - IS14GiftTights
+
+# ========================
+# Quartermaster (ESO chief)
+# ========================
+
+- type: loadoutGroup
+  id: IS14StationEngineerBackpack
+  name: loadout-group-station-engineer-backpack
+  loadouts:
+  - IS14StationEngineerBackpack
+  - IS14StationEngineerSatchel
+  - IS14StationEngineerDuffel
+  - IS14StationEngineerMessenger # Frontier

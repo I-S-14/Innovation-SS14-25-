@@ -1,6 +1,6 @@
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardCaptain
+  parent: IS14_IdCardBase
+  id: IS14_IdCardCaptain
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -13,8 +13,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/command.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardCE
+  parent: IS14_IdCardBase
+  id: IS14_IdCardCE
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -27,8 +27,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/command.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardCMO
+  parent: IS14_IdCardBase
+  id: IS14_IdCardCMO
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -41,8 +41,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/command.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardHoP
+  parent: IS14_IdCardBase
+  id: IS14_IdCardHoP
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -55,8 +55,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/command.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardHoS
+  parent: IS14_IdCardBase
+  id: IS14_IdCardHoS
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -69,8 +69,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/command.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardQM
+  parent: IS14_IdCardBase
+  id: IS14_IdCardQM
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -83,8 +83,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/command.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardRD
+  parent: IS14_IdCardBase
+  id: IS14_IdCardRD
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -97,8 +97,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/command.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardSecretary
+  parent: IS14_IdCardBase
+  id: IS14_IdCardSecretary
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:

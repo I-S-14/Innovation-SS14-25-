@@ -1,40 +1,40 @@
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaMentorScientist
+  parent: IS14_PdaBase
+  id: IS14_PdaMentorScientist
   name: mentor scientist's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Research/scientist.rsi
   - type: Pda
-    id: IS_IdCardMentorScientist
+    id: IS14_IdCardMentorScientist
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaResearchAssistant
+  parent: IS14_PdaBase
+  id: IS14_PdaResearchAssistant
   name: research assistant's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Research/scientist.rsi
   - type: Pda
-    id: IS_IdCardResearchAssistant
+    id: IS14_IdCardResearchAssistant
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaRoboticist
+  parent: IS14_PdaBase
+  id: IS14_PdaRoboticist
   name: roboticist's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Research/scientist.rsi
   - type: Pda
-    id: IS_IdCardRoboticist
+    id: IS14_IdCardRoboticist
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaScientist
+  parent: IS14_PdaBase
+  id: IS14_PdaScientist
   name: scientist's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Research/scientist.rsi
   - type: Pda
-    id: IS_IdCardScientist
+    id: IS14_IdCardScientist
 

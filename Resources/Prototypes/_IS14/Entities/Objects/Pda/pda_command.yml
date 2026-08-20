@@ -1,79 +1,79 @@
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaCaptain
+  parent: IS14_PdaBase
+  id: IS14_PdaCaptain
   name: captain's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Command/captain.rsi
   - type: Pda
-    id: IS_IdCardCaptain
+    id: IS14_IdCardCaptain
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaCE
+  parent: IS14_PdaBase
+  id: IS14_PdaCE
   name: cheif engineer's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Command/CE.rsi
   - type: Pda
-    id: IS_IdCardCE
+    id: IS14_IdCardCE
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaCMO
+  parent: IS14_PdaBase
+  id: IS14_PdaCMO
   name: cheif medical officer's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Command/CMO.rsi
   - type: Pda
-    id: IS_IdCardCMO
+    id: IS14_IdCardCMO
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaHOP
+  parent: IS14_PdaBase
+  id: IS14_PdaHOP
   name: head of personel's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Command/HOP.rsi
   - type: Pda
-    id: IS_IdCardHoP
+    id: IS14_IdCardHoP
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaHOS
+  parent: IS14_PdaBase
+  id: IS14_PdaHOS
   name: head of security's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Command/HOS.rsi
   - type: Pda
-    id: IS_IdCardHoS
+    id: IS14_IdCardHoS
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaQM
+  parent: IS14_PdaBase
+  id: IS14_PdaQM
   name: quartermaster's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Command/QM.rsi
   - type: Pda
-    id: IS_IdCardQM
+    id: IS14_IdCardQM
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaRD
+  parent: IS14_PdaBase
+  id: IS14_PdaRD
   name: research director's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Command/RD.rsi
   - type: Pda
-    id: IS_IdCardRD
+    id: IS14_IdCardRD
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaSecretary
+  parent: IS14_PdaBase
+  id: IS14_PdaSecretary
   name: secretary's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Command/secretary.rsi
   - type: Pda
-    id: IS_IdCardSecretary
+    id: IS14_IdCardSecretary

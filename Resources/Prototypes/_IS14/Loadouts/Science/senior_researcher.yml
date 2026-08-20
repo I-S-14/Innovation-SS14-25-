@@ -1,0 +1,111 @@
+# senior researcher loadouts
+
+- type: loadout
+  id: IS14SeniorResearcherBackpack
+  equipment:
+    back: ClothingBackpackScience
+
+- type: loadout
+  id: IS14SeniorResearcherBeret
+  equipment:
+    head: ClothingHeadHatBeretRND
+
+- type: loadout
+  id: IS14SeniorResearcherDuffel
+  equipment:
+    back: ClothingBackpackDuffelScience
+
+- type: loadout
+  id: IS14SeniorResearcherGloves
+  equipment:
+    gloves: ClothingHandsGlovesLatex
+
+# ========================
+# Internal control executor
+# ========================
+
+- type: loadout
+  id: IS14SeniorResearcherJumpskirt
+  equipment:
+    jumpsuit: ClothingUniformJumpskirtSeniorResearcher
+  groupBy: "jumpskirt"
+
+- type: loadout
+  id: IS14SeniorResearcherJumpsuit
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitSeniorResearcher
+  groupBy: "jumpsuit"
+
+- type: loadout
+  id: IS14SeniorResearcherLabCoat
+  equipment:
+    outerClothing: ClothingOuterCoatLabSeniorResearcher
+
+- type: loadout
+  id: IS14SeniorResearcherLabCoatOpened
+  equipment:
+    outerClothing: ClothingOuterCoatLabSeniorResearcherOpened
+
+- type: loadout
+  id: IS14SeniorResearcherMilitaryJumpsuit
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitMilitarySeniorResearcher
+  groupBy: "jumpsuit"
+
+- type: loadout
+  id: IS14SeniorResearcherSatchel
+  equipment:
+    back: ClothingBackpackSatchelScience
+
+- type: loadout
+  id: IS14SeniorResearcherShoes
+  equipment:
+    shoes: ClothingShoesColorWhite
+
+- type: loadoutGroup
+  id: IS14SeniorResearcherBackpack
+  name: loadout-group-backpack
+  loadouts:
+  - IS14SeniorResearcherBackpack
+  - IS14SeniorResearcherSatchel
+  - IS14SeniorResearcherDuffel
+
+- type: loadoutGroup
+  id: IS14SeniorResearcherGloves
+  name: loadout-group-gloves
+  minLimit: 0
+  loadouts:
+  - IS14SeniorResearcherGloves
+
+# ========================
+# Internal control executor
+# ========================
+
+- type: loadoutGroup
+  id: IS14SeniorResearcherHead
+  name: loadout-group-head
+  minLimit: 0
+  loadouts:
+  - IS14SeniorResearcherBeret
+
+- type: loadoutGroup
+  id: IS14SeniorResearcherJumpsuit
+  name: loadout-group-jumpsuit
+  loadouts:
+  - IS14SeniorResearcherJumpsuit
+  - IS14SeniorResearcherJumpskirt
+  - IS14SeniorResearcherMilitaryJumpsuit
+
+- type: loadoutGroup
+  id: IS14SeniorResearcherOuterClothing
+  name: loadout-group-outerclothing
+  minLimit: 0
+  loadouts:
+  - IS14SeniorResearcherLabCoat
+  - IS14SeniorResearcherLabCoatOpened
+
+- type: loadoutGroup
+  id: IS14SeniorResearcherShoes
+  name: loadout-group-shoes
+  loadouts:
+  - IS14SeniorResearcherShoes

@@ -1,6 +1,6 @@
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardJusticeOfficer
+  parent: IS14_IdCardBase
+  id: IS14_IdCardJusticeOfficer
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -13,8 +13,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/justice.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardJusticeRepresentative
+  parent: IS14_IdCardBase
+  id: IS14_IdCardJusticeRepresentative
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -27,8 +27,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/justice.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardLawyer
+  parent: IS14_IdCardBase
+  id: IS14_IdCardLawyer
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:
@@ -41,8 +41,8 @@
     sprite: /Textures/_IS14/Objects/Devices/id_cards/justice.rsi
 
 - type: entity
-  parent: IS_IdCardBase
-  id: IS_IdCardStaffJudge
+  parent: IS14_IdCardBase
+  id: IS14_IdCardStaffJudge
   name: identification card
   description: A card necessary to access various areas aboard the station.
   components:

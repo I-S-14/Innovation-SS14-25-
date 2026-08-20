@@ -1,10 +1,10 @@
-ent-ClothingOuterHardsuitIS14Pilot = Pilot Hardsuit
+ent-ClothingOuterHardsuitIS14Pilot = pilot hardsuit
     .desc = Extra pockets for flasks, by popular request of workers.
-ent-ClothingOuterHardsuitIS14Militia = Militia Hardsuit
+ent-ClothingOuterHardsuitIS14Militia = militia hardsuit
     .desc = Standard suit for law enforcement near the facility, in zero-g and corporate events.
-ent-ClothingOuterHardsuitIS14LrrChief = LRR Chief Hardsuit
+ent-ClothingOuterHardsuitIS14LrrChief = LRR chief hardsuit
     .desc = Self-tightening straps, visually slims up to 20 kg.
-ent-ClothingOuterHardsuitIS14MedOfficer = Medical Officer Hardsuit
+ent-ClothingOuterHardsuitIS14MedOfficer = medical officer hardsuit
     .desc = Soft pockets that keep medical tools intact.
-ent-ClothingOuterHardsuitIS14Hos = Head of Militia Hardsuit
+ent-ClothingOuterHardsuitIS14Hos = head of militia hardsuit
     .desc = For drill in zero-g and marches from facility to facility in open space.

@@ -45,12 +45,12 @@
             Scientist: [ 4, 4 ]
             ResearchAssistant: [ 3, 3 ]
             #security
-            HeadOfSecurity: [ 1, 1 ]
-            Warden: [ 1, 1 ]
-            SecurityOfficer: [ 4, 4 ]
-            Detective: [ 1, 1 ]
-            SecurityCadet: [ 4, 4 ]
-            Lawyer: [ 2, 2 ]
+            JobHosMilitia: [ 1, 1 ] # IS14 Edit
+            JobLrrChief: [ 1, 1 ] # IS14 Edit
+            JobMilitia: [ 4, 4 ] # IS14 Edit
+            JobInvestigator: [ 1, 1 ] # IS14 Edit
+            IS_JobCadet: [ 4, 4 ] # IS14 Edit
+            IS_JobLawyer: [ 2, 2 ] # IS14 Edit
             #supply
             Quartermaster: [ 1, 1 ]
             SalvageSpecialist: [ 3, 3 ]
@@ -64,3 +64,13 @@
             #silicon
             StationAi: [ 1, 1 ]
             Borg: [ 2, 2 ]
+            CommandSecretary: [ 1, 1 ] # IS14 Edit
+            SeniorEngineer: [ 1, 1 ] # IS14 Edit
+            SeniorPhysician: [ 1, 1 ] # IS14 Edit
+            SeniorResearcher: [ 1, 1 ] # IS14 Edit
+            SeniorExpeditioner: [ 1, 1 ] # IS14 Edit
+            ChurchServant: [ 1, 1 ] # IS14 Edit
+            JobSeniorMilitia: [ 1, 1 ] # IS14 Edit
+            IS_JobPilot: [ 1, 1 ] # IS14 Edit
+            InternalControlExecutor: [ 1, 1 ] # IS14 Edit
+            JobIvk: [ 1, 1 ] # IS14 Edit

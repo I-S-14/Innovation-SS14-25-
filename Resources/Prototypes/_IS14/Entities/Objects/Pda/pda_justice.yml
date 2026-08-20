@@ -1,40 +1,40 @@
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaJusticeOfficer
+  parent: IS14_PdaBase
+  id: IS14_PdaJusticeOfficer
   name: justic officer's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Justice/justice.rsi
   - type: Pda
-    id: IS_IdCardJusticeOfficer
+    id: IS14_IdCardJusticeOfficer
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaJusticeRepresentative
+  parent: IS14_PdaBase
+  id: IS14_PdaJusticeRepresentative
   name: justice representative's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Justice/justice.rsi
   - type: Pda
-    id: IS_IdCardJusticeRepresentative
+    id: IS14_IdCardJusticeRepresentative
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaLawyer
+  parent: IS14_PdaBase
+  id: IS14_PdaLawyer
   name: lawyer's PDA
   components:
   - type: Sprite
-    sprite: _IS14/Objects/Devices/pda/Justice/justice.rsi
+    sprite: _IS14/Objects/Devices/pda/Justice/lawyer.rsi
   - type: Pda
-    id: IS_IdCardLawyer
+    id: IS14_IdCardLawyer
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaStaffJudge
+  parent: IS14_PdaBase
+  id: IS14_PdaStaffJudge
   name: staff judge's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Justice/justice.rsi
   - type: Pda
-    id: IS_IdCardStaffJudge
+    id: IS14_IdCardStaffJudge
 

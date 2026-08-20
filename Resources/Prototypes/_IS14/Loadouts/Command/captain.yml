@@ -1,0 +1,116 @@
+# captain loadouts
+
+- type: loadout
+  id: IS14CaptainBackpack
+  equipment:
+    back: ClothingBackpackCaptain
+
+- type: loadout
+  id: IS14CaptainDuffel
+  equipment:
+    back: ClothingBackpackDuffelCaptain
+
+# Outer clothing
+
+- type: loadout
+  id: IS14CaptainInsulatedGloves
+  equipment:
+    gloves: ClothingHandsGlovesCaptain
+
+- type: loadout
+  id: IS14CaptainMessenger
+  equipment:
+    back: ClothingBackpackMessengerCaptain
+
+- type: loadout
+  id: IS14CaptainSatchel
+  equipment:
+    back: ClothingBackpackSatchelCaptain
+
+- type: loadout
+  id: IS14CaptainCap
+  equipment:
+    head: ClothingHeadIS14CaptainCap
+
+- type: loadout
+  id: IS14CaptainCloak
+  equipment:
+    neck: ClothingNeckIS14CaptainCloak
+
+- type: loadout
+  id: IS14CaptainFormal
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitIS14CaptainFormal
+  groupBy: "jumpsuit"
+
+- type: loadout
+  id: IS14CaptainGloves
+  equipment:
+    gloves: ClothingHandsIS14CaptainGloves
+
+# ========================
+# Head of Personnel
+# ========================
+
+- type: loadout
+  id: IS14CaptainJumpskirt
+  equipment:
+    jumpsuit: ClothingUniformJumpskirtIS14Captain
+  groupBy: "jumpskirt"
+
+- type: loadout
+  id: IS14CaptainJumpsuit
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitIS14Captain
+  groupBy: "jumpsuit"
+
+- type: loadoutGroup
+  id: IS14CaptainBackpack
+  name: loadout-group-captain-backpack
+  loadouts:
+  - IS14CaptainBackpack
+  - IS14CaptainSatchel
+  - IS14CaptainDuffel
+  - IS14CaptainMessenger # Frontier
+
+- type: loadoutGroup
+  id: IS14CaptainGloves
+  name: loadout-group-gloves
+  loadouts:
+  - IS14CaptainInsulatedGloves
+  - IS14CaptainGloves
+
+- type: loadoutGroup
+  id: IS14CaptainHead
+  name: loadout-group-head
+  minLimit: 0
+  loadouts:
+  - IS14CaptainCap
+  - IS14GiftKnittedOrange
+
+- type: loadoutGroup
+  id: IS14CaptainJumpsuit
+  name: loadout-group-jumpsuit
+  loadouts:
+  - IS14CaptainJumpsuit
+  - IS14CaptainJumpskirt
+  - IS14CaptainFormal
+
+- type: loadoutGroup
+  id: IS14CaptainNeck
+  name: loadout-group-neck
+  minLimit: 0
+  loadouts:
+  - IS14CaptainCloak
+
+- type: loadoutGroup
+  id: IS14CaptainShoes
+  name: loadout-group-shoes
+  loadouts:
+  - IS14CommandShoes
+  - IS14GiftDressShoes
+  - IS14GiftTights
+
+# ========================
+# Head of Personnel
+# ========================

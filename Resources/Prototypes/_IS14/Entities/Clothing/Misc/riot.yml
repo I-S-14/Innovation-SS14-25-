@@ -1,0 +1,67 @@
+# riot clothing
+
+- type: entity
+  parent: ClothingHeadBase
+  id: ClothingHeadIS14AssaultHelmetBlue
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Head/Militia/assault_helmet_blue.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Head/Militia/assault_helmet_blue.rsi
+    equippedState: equipped-HEAD
+
+- type: entity
+  parent: ClothingHeadBase
+  id: ClothingHeadIS14AssaultHelmetGreen
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Head/Militia/assault_helmet_green.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Head/Militia/assault_helmet_green.rsi
+    equippedState: equipped-HEAD
+
+- type: entity
+  parent: ClothingHeadBase
+  id: ClothingHeadIS14RiotHelmet
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Head/Militia/riot_helmet.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Head/Militia/riot_helmet.rsi
+    equippedState: equipped-HEAD
+
+- type: entity
+  parent: ClothingOuterBase
+  id: ClothingOuterIS14RiotVest
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/OuterClothing/Militia/riot_vest.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/OuterClothing/Militia/riot_vest.rsi
+  - type: Armor
+    coverage:
+    - Chest
+    - Groin
+    - Arm
+    - Leg
+    - Tail
+    traumaDeductions:
+      Dismemberment: 0.35
+      OrganDamage: 0.35
+      BoneDamage: 0.35
+      VeinsDamage: 0
+      NerveDamage: 0
+    modifiers:
+      coefficients:
+        Blunt: 0.4
+        Slash: 0.4
+        Piercing: 0.6
+        Heat: 0.6
+        Caustic: 0.75
+  - type: ExplosionResistance
+    damageCoefficient: 0.9
+  - type: StaminaResistance
+    damageCoefficient: 0.6
+  - type: ModifyDelayedKnockdown
+    delayDelta: 2.5
+    knockdownTimeDelta: -2.5

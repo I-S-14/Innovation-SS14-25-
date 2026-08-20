@@ -1,0 +1,124 @@
+# pilot clothing
+
+- type: entity
+  parent: ClothingHeadHardsuitWithLightBase
+  id: ClothingHeadHelmetIS14Pilot
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Head/Militia/Pilot/pilot_helmet.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Head/Militia/Pilot/pilot_helmet.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: ClothingHeadIS14MilitiaPilotka
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Head/Militia/Militia/militia_pilotka.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Head/Militia/Militia/militia_pilotka.rsi
+    equippedState: equipped-HEAD
+
+- type: entity
+  parent: ClothingHeadBase
+  id: ClothingHeadIS14PostmanPilotka
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Head/Cargo/Postman/postman_pilotka.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Head/Cargo/Postman/postman_pilotka.rsi
+    equippedState: equipped-HEAD
+
+- type: entity
+  parent: ClothingOuterHardsuitBase
+  id: ClothingOuterHardsuitIS14Pilot
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/OuterClothing/Militia/Pilot/pilot_suit.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/OuterClothing/Militia/Pilot/pilot_suit.rsi
+  - type: PressureProtection
+    highPressureMultiplier: 0.5
+    lowPressureMultiplier: 1000
+  - type: ExplosionResistance
+    damageCoefficient: 0.65
+  - type: Armor
+    coverage:
+    - Chest
+    - Groin
+    - Arm
+    - Hand
+    - Leg
+    - Foot
+    - Tail
+    traumaDeductions:
+      Dismemberment: 0.3
+      OrganDamage: 0.3
+      BoneDamage: 0.3
+      VeinsDamage: 0
+      NerveDamage: 0
+    modifiers:
+      coefficients:
+        Blunt: 0.65
+        Slash: 0.65
+        Piercing: 0.65
+        Heat: 0.75
+        Caustic: 0.6
+  - type: StaminaResistance
+    damageCoefficient: 0.6
+  - type: ToggleableClothing
+    clothingPrototypes:
+      head: ClothingHeadHelmetIS14Pilot
+
+- type: entity
+  parent: ClothingUniformJumpskirtIS14Base
+  id: ClothingUniformJumpskirtIS14PilotSkirt
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Uniforms/Militia/Pilot/pilot_skirt.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Uniforms/Militia/Pilot/pilot_skirt.rsi
+    equipSound:
+      path: /Audio/Items/jumpsuit_equip.ogg
+
+- type: entity
+  parent: ClothingUniformJumpsuitIS14Base
+  id: ClothingUniformJumpsuitIS14PilotFormal
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Uniforms/Militia/Pilot/pilot_formal.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Uniforms/Militia/Pilot/pilot_formal.rsi
+    equipSound:
+      path: /Audio/Items/jumpsuit_equip.ogg
+
+- type: entity
+  parent: ClothingUniformJumpsuitIS14Base
+  id: ClothingUniformJumpsuitIS14PilotJumpsuit
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Uniforms/Militia/Pilot/pilot_jumpsuit.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Uniforms/Militia/Pilot/pilot_jumpsuit.rsi
+    equipSound:
+      path: /Audio/Items/jumpsuit_equip.ogg
+
+- type: entity
+  parent: ClothingUniformJumpsuitIS14Base
+  id: ClothingUniformJumpsuitIS14PilotTactical
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Uniforms/Militia/Pilot/pilot_tactical.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Uniforms/Militia/Pilot/pilot_tactical.rsi
+    equipSound:
+      path: /Audio/Items/jumpsuit_equip.ogg
+
+- type: entity
+  parent: ClothingHeadset
+  id: ClothingHeadsetIS14Pilot
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Ears/Militia/Pilot/pilot_headset.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Ears/Militia/Pilot/pilot_headset.rsi

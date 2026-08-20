@@ -1,0 +1,214 @@
+# blueshield officer loadouts
+
+- type: loadout
+  id: IS14BlackCowboyBoots
+  equipment:
+    shoes: ClothingShoesBootsCowboyBlack
+
+- type: loadout
+  id: IS14BlueShieldMaskGasSWAT
+  equipment:
+    mask: ClothingBSOMaskGasSwat
+
+- type: loadout
+  id: IS14BlueshieldOfficerBackpack
+  equipment:
+    back: ClothingBackpackBlueshield
+
+- type: loadout
+  id: IS14BlueshieldOfficerBeret
+  equipment:
+    head: ClothingHeadHatBeretBlueshield # Here's your beret back Gallagin.
+
+- type: loadout
+  id: IS14BlueshieldOfficerDuffel
+  equipment:
+    back: ClothingBackpackDuffelBlueshield
+
+- type: loadout
+  id: IS14BlueshieldOfficerEnsemble
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: GrandMasterBSO
+  equipment:
+    neck: ClothingNeckEnsembleBlueshield
+
+# Mask
+
+- type: loadout
+  id: IS14BlueshieldOfficerGoidaHelmet
+  equipment:
+    head: ClothingHeadHatUshankaBlueshield
+
+- type: loadout
+  id: IS14BlueshieldOfficerHeadCowboy
+  equipment:
+    head: ClothingHeadHatCowboyBlueshield
+
+- type: loadout
+  id: IS14BlueshieldOfficerHeadSwatHelmet
+  equipment:
+    head: ClothingHeadHelmetSwat
+
+- type: loadout
+  id: IS14BlueshieldOfficerInnerBlueshieldShirt
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitBlueshieldShirt
+
+- type: loadout
+  id: IS14BlueshieldOfficerInnerBlueshieldSkirt
+  equipment:
+    jumpsuit: ClothingUniformJumpskirtBlueshieldOfficer
+
+- type: loadout
+  id: IS14BlueshieldOfficerInnerBlueshieldSuit
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitBlueshieldOfficer
+
+- type: loadout
+  id: IS14BlueshieldOfficerMaskLollypop
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: SeniorBlueshieldOfficer
+  equipment:
+    mask: FoodSnackLollypopBlueshield
+
+# Back
+
+- type: loadout
+  id: IS14BlueshieldOfficerMessenger
+  equipment:
+    back: ClothingBackpackMessengerBlueshield
+
+# Shoes
+
+- type: loadout
+  id: IS14BlueshieldOfficerOuterBlueshieldArmorVest
+  equipment:
+    outerClothing: ClothingBlueshieldArmourVest
+
+- type: loadout
+  id: IS14BlueshieldOfficerOuterBlueshieldArmoredJacket
+  equipment:
+    outerClothing: ClothingBlueshieldArmoredJacket
+
+- type: loadout
+  id: IS14BlueshieldOfficerOuterBlueshieldCowboyVest
+  equipment:
+    outerClothing: ClothingBlueshieldArmoredCowboyJacket
+
+- type: loadout
+  id: IS14BlueshieldOfficerOuterBlueshieldMantle
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: SeniorBlueshieldOfficer
+  equipment:
+    neck: ClothingNeckMantleBlueshield
+
+- type: loadout
+  id: IS14BlueshieldOfficerOuterWinterBlueshield
+  equipment:
+    outerClothing: ClothingOuterWinterBlueshield
+
+# Neck
+
+- type: loadout
+  id: IS14BlueshieldOfficerSatchel
+  equipment:
+    back: ClothingBackpackSatchelBlueshield
+
+- type: loadout
+  id: IS14ClothingShoesSwatBoots
+  equipment:
+    shoes: ClothingShoesSwat
+
+# Outerclothing
+
+- type: loadout
+  id: IS14CombatGloves
+  equipment:
+    gloves: ClothingHandsGlovesCombat
+
+
+# Outer
+
+- type: loadout
+  id: IS14JackBoots
+  equipment:
+    shoes: ClothingShoesBootsJack # Goobstation
+
+- type: loadout
+  id: IS14SnowjacksBso
+  equipment:
+    shoes: ClothingShoesBootsWinterSnowjackBso
+
+- type: loadoutGroup
+  id: IS14BlueshieldOfficerBackpack
+  name: loadout-group-bso-backpack
+  loadouts:
+  - IS14BlueshieldOfficerBackpack
+  - IS14BlueshieldOfficerSatchel
+  - IS14BlueshieldOfficerDuffel
+  - IS14BlueshieldOfficerMessenger
+
+- type: loadoutGroup
+  id: IS14BlueshieldOfficerGloves
+  name: loadout-group-bso-gloves
+  minLimit: 1
+  maxLimit: 1
+  loadouts:
+  - IS14CombatGloves
+
+# Career Trainer
+
+- type: loadoutGroup
+  id: IS14BlueshieldOfficerHead
+  name: loadout-group-bso-head
+  minLimit: 0
+  loadouts:
+  - IS14BlueshieldOfficerHeadSwatHelmet
+  - IS14BlueshieldOfficerBeret
+  - IS14BlueshieldOfficerHeadCowboy
+  - IS14BlueshieldOfficerGoidaHelmet
+
+- type: loadoutGroup
+  id: IS14BlueshieldOfficerJumpsuit
+  name: loadout-group-bso-jumpsuit
+  loadouts:
+  - IS14BlueshieldOfficerInnerBlueshieldSuit
+  - IS14BlueshieldOfficerInnerBlueshieldSkirt
+  - IS14BlueshieldOfficerInnerBlueshieldShirt
+
+- type: loadoutGroup
+  id: IS14BlueshieldOfficerMask
+  name: loadout-group-bso-mask
+  minLimit: 0
+  loadouts:
+  - IS14BlueshieldOfficerMaskLollypop
+  - IS14BlueShieldMaskGasSWAT # CorvaxGoob-loadouts
+
+- type: loadoutGroup
+  id: IS14BlueshieldOfficerNeck
+  name: loadout-group-bso-neck
+  minLimit: 0
+  loadouts:
+  - IS14BlueshieldOfficerOuterBlueshieldMantle
+  - IS14BlueshieldOfficerEnsemble
+
+- type: loadoutGroup
+  id: IS14BlueshieldOfficerOuter
+  name: loadout-group-bso-outer
+  loadouts:
+  - IS14BlueshieldOfficerOuterBlueshieldArmorVest
+  - IS14BlueshieldOfficerOuterBlueshieldArmoredJacket
+  - IS14BlueshieldOfficerOuterBlueshieldCowboyVest
+  - IS14BlueshieldOfficerOuterWinterBlueshield
+
+- type: loadoutGroup
+  id: IS14BlueshieldOfficerShoes
+  name: loadout-group-bso-shoes
+  loadouts:
+  - IS14JackBoots
+  - IS14BlackCowboyBoots
+  - IS14SnowjacksBso
+  - IS14ClothingShoesSwatBoots # corvaxgoob

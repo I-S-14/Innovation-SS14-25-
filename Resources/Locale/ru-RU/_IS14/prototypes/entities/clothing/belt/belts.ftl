@@ -1,6 +1,6 @@
-ent-ClothingBeltIS14Militia = Пояс Милиции
+ent-ClothingBeltIS14Militia = пояс милиции
     .desc = "Бесконечность не предел!" - вот девиз кб, создавшего безразмерный ремень для сотрудников милиции.
-ent-ClothingBeltIS14MilitiaWebbing = РПС Милиции
+ent-ClothingBeltIS14MilitiaWebbing = РПС милиции
     .desc = Ременно-плечевая система для хранения орудий способствования послушанию и законопорядку.
-ent-ClothingBeltIS14MedOfficerWebbing = РПС Медицинского Офицера
+ent-ClothingBeltIS14MedOfficerWebbing = РПС медицинского офицера
     .desc = Оснащен увеличенным объемом карманов, а также красивым красным крестиком.

@@ -1,0 +1,116 @@
+# senior physician loadouts
+
+- type: loadout
+  id: IS14SeniorPhysicianBackpack
+  equipment:
+    back: ClothingBackpackMedical
+
+- type: loadout
+  id: IS14SeniorPhysicianBeret
+  equipment:
+    head: ClothingHeadHatBeretSeniorPhysician
+
+- type: loadout
+  id: IS14SeniorPhysicianDuffel
+  equipment:
+    back: ClothingBackpackDuffelMedical
+
+- type: loadout
+  id: IS14SeniorPhysicianGloves
+  equipment:
+    gloves: ClothingHandsGlovesLatex
+
+# ========================
+# Senior researcher
+# ========================
+
+- type: loadout
+  id: IS14SeniorPhysicianJumpskirt
+  equipment:
+    jumpsuit: ClothingUniformJumpskirtSeniorPhysician
+  groupBy: "jumpskirt"
+
+- type: loadout
+  id: IS14SeniorPhysicianJumpsuit
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitSeniorPhysician
+  groupBy: "jumpsuit"
+
+- type: loadout
+  id: IS14SeniorPhysicianLabCoat
+  equipment:
+    outerClothing: ClothingOuterCoatLabSeniorPhysician
+
+- type: loadout
+  id: IS14SeniorPhysicianLabCoatOpened
+  equipment:
+    outerClothing: ClothingOuterCoatLabSeniorPhysicianOpened
+
+- type: loadout
+  id: IS14SeniorPhysicianSatchel
+  equipment:
+    back: ClothingBackpackSatchelMedical
+
+- type: loadout
+  id: IS14SeniorPhysicianShoes
+  equipment:
+    shoes: ClothingShoesColorWhite
+
+- type: loadout
+  id: IS14SeniorPhysicianStethoscope
+  equipment:
+    neck: ClothingNeckStethoscope
+
+- type: loadoutGroup
+  id: IS14SeniorPhysicianBackpack
+  name: loadout-group-backpack
+  loadouts:
+  - IS14SeniorPhysicianBackpack
+  - IS14SeniorPhysicianSatchel
+  - IS14SeniorPhysicianDuffel
+
+- type: loadoutGroup
+  id: IS14SeniorPhysicianGloves
+  name: loadout-group-gloves
+  minLimit: 0
+  loadouts:
+  - IS14SeniorPhysicianGloves
+
+# ========================
+# Senior researcher
+# ========================
+
+- type: loadoutGroup
+  id: IS14SeniorPhysicianHead
+  name: loadout-group-head
+  minLimit: 0
+  loadouts:
+  - IS14SeniorPhysicianBeret
+
+- type: loadoutGroup
+  id: IS14SeniorPhysicianJumpsuit
+  name: loadout-group-jumpsuit
+  loadouts:
+  - IS14SeniorPhysicianJumpsuit
+  - IS14SeniorPhysicianJumpskirt
+
+- type: loadoutGroup
+  id: IS14SeniorPhysicianNeck
+  name: loadout-group-neck
+  minLimit: 0
+  loadouts:
+  - IS14SeniorPhysicianStethoscope
+
+- type: loadoutGroup
+  id: IS14SeniorPhysicianOuterClothing
+  name: loadout-group-outerclothing
+  minLimit: 0
+  loadouts:
+  - IS14SeniorPhysicianLabCoat
+  - IS14SeniorPhysicianLabCoatOpened
+
+- type: loadoutGroup
+  id: IS14SeniorPhysicianShoes
+  name: loadout-group-shoes
+  loadouts:
+  - IS14SeniorPhysicianShoes

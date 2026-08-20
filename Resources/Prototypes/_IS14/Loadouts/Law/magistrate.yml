@@ -1,0 +1,82 @@
+# magistrate loadouts
+
+- type: loadout
+  id: IS14MagistrateHeadPwig
+  equipment:
+    head: ClothingHeadHatPwig
+
+- type: loadout
+  id: IS14MagistrateHeadPwigFancy
+  equipment:
+    head: ClothingHeadHatPwigFancy
+
+- type: loadout
+  id: IS14MagistrateJumpskirt
+  equipment:
+    jumpsuit: ClothingUniformJumpskirtMagistrate
+
+- type: loadout
+  id: IS14MagistrateJumpsuit
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitMagistrate
+
+- type: loadout
+  id: IS14MagistrateJumpsuitFormal
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitMagistrateFormal
+
+- type: loadout
+  id: IS14MagistrateOuterClothingRobe
+  equipment:
+    outerClothing: ClothingOuterRobesMagistrate
+
+- type: loadout
+  id: IS14MagistrateOuterClothingRobeAlt
+  equipment:
+    outerClothing: ClothingOuterRobesMagistrateAlt
+    
+
+- type: loadout
+  id: IS14MagistrateOuterClothingRobeFancy
+  equipment:
+    outerClothing: ClothingOuterRobesMagistrateFancy
+
+- type: loadout
+  id: IS14MagistrateOuterClothingRobeRed
+  equipment:
+    outerClothing: ClothingOuterRobesMagistrateRed
+
+- type: loadoutGroup
+  id: IS14CommonBackpack
+  name: loadout-group-backpack
+  loadouts:
+  - IS14CommonBackpack
+  - IS14CommonSatchel
+  - IS14CommonDuffel
+  - IS14CommonMessenger # Frontier
+
+- type: loadoutGroup
+  id: IS14MagistrateHead
+  name: loadout-group-magistrate-head
+  loadouts:
+  - IS14MagistrateHeadPwig
+  - IS14MagistrateHeadPwigFancy
+
+- type: loadoutGroup
+  id: IS14MagistrateJumpsuit
+  name: loadout-group-magistrate-jumpsuit
+  loadouts:
+  - IS14MagistrateJumpsuit
+  - IS14MagistrateJumpskirt
+  - IS14MagistrateJumpsuitFormal
+
+- type: loadoutGroup
+  id: IS14MagistrateOuterClothing
+  name: loadout-group-magistrate-outerclothing
+  loadouts:
+  - IS14MagistrateOuterClothingRobe
+  - IS14MagistrateOuterClothingRobeAlt
+  - IS14MagistrateOuterClothingRobeFancy
+  - IS14MagistrateOuterClothingRobeRed
+
+# Medical

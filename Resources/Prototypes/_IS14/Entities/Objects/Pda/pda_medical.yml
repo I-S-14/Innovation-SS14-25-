@@ -1,59 +1,59 @@
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaDoctor
+  parent: IS14_PdaBase
+  id: IS14_PdaDoctor
   name: doctor's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Medical/doctor.rsi
   - type: Pda
-    id: IS_IdCardDoctor
+    id: IS14_IdCardDoctor
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaIntern
+  parent: IS14_PdaBase
+  id: IS14_PdaIntern
   name: intern's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Medical/doctor.rsi
   - type: Pda
-    id: IS_IdCardIntern
+    id: IS14_IdCardIntern
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaParamedic
+  parent: IS14_PdaBase
+  id: IS14_PdaParamedic
   name: paramedic's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Medical/doctor.rsi
   - type: Pda
-    id: IS_IdCardParamedic
+    id: IS14_IdCardParamedic
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaPharmacist
+  parent: IS14_PdaBase
+  id: IS14_PdaPharmacist
   name: pharmacist's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Medical/doctor.rsi
   - type: Pda
-    id: IS_IdCardPharmacist
+    id: IS14_IdCardPharmacist
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaPsychologist
+  parent: IS14_PdaBase
+  id: IS14_PdaPsychologist
   name: psychologist's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Medical/doctor.rsi
   - type: Pda
-    id: IS_IdCardPsychologist
+    id: IS14_IdCardPsychologist
 
 - type: entity
-  parent: IS_PdaBase
-  id: IS_PdaSeniorDoctor
+  parent: IS14_PdaBase
+  id: IS14_PdaSeniorDoctor
   name: senior doctor's PDA
   components:
   - type: Sprite
     sprite: _IS14/Objects/Devices/pda/Medical/doctor.rsi
   - type: Pda
-    id: IS_IdCardSeniorDoctor
+    id: IS14_IdCardSeniorDoctor

@@ -32,7 +32,7 @@
   id: InternalControlExecutorGear
   equipment:
     eyes: ClothingEyesGlassesSecurity
-    id: IS_PdaInternalControlExecutor
+    id: IS14_PdaInternalControlExecutor
     ears: ClothingHeadsetAltSecurityRegular
     pocket1: WeaponPistolMk58
   storage:
