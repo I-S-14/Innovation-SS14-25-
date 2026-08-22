@@ -31,12 +31,6 @@
     back: ClothingBackpackDuffelSecurity
 
 - type: loadout
-  id: IS14LrrChiefFormal
-  equipment:
-    jumpsuit: ClothingUniformJumpsuitIS14LrrChiefFormal
-  groupBy: "jumpsuit"
-
-- type: loadout
   id: IS14LrrChiefJacket
   equipment:
     outerClothing: ClothingOuterIS14LrrChiefJacket
@@ -78,7 +72,6 @@
   name: loadout-group-jumpsuit
   loadouts:
   - IS14LrrChiefJumpsuit
-  - IS14LrrChiefFormal
 
 - type: loadoutGroup
   id: IS14LrrChiefOuterClothing

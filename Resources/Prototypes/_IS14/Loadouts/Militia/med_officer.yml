@@ -31,12 +31,6 @@
     back: ClothingBackpackDuffelSecurity
 
 - type: loadout
-  id: IS14MedOfficerFormal
-  equipment:
-    jumpsuit: ClothingUniformJumpsuitIS14MedOfficerFormal
-  groupBy: "jumpsuit"
-
-- type: loadout
   id: IS14MedOfficerJumpskirt
   equipment:
     jumpsuit: ClothingUniformJumpskirtIS14MedOfficerSkirt
@@ -104,7 +98,6 @@
   loadouts:
   - IS14MedOfficerJumpsuit
   - IS14MedOfficerJumpskirt
-  - IS14MedOfficerFormal
 
 - type: loadoutGroup
   id: IS14MedOfficerOuterClothing

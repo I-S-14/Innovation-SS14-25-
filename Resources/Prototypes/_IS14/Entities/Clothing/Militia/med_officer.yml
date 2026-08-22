@@ -140,17 +140,6 @@
 
 - type: entity
   parent: ClothingUniformJumpsuitIS14Base
-  id: ClothingUniformJumpsuitIS14MedOfficerFormal
-  components:
-  - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Militia/MedOfficer/med_officer_formal.rsi
-  - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Militia/MedOfficer/med_officer_formal.rsi
-    equipSound:
-      path: /Audio/Items/jumpsuit_equip.ogg
-
-- type: entity
-  parent: ClothingUniformJumpsuitIS14Base
   id: ClothingUniformJumpsuitIS14MedOfficerJumpsuit
   components:
   - type: Sprite
