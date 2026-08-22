@@ -5,18 +5,18 @@
   id: ClothingHeadHelmetIS14Pilot
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Hardsuits/pilot_helmet.rsi
+    sprite: _IS14/Clothing/Head/Militia/Pilot/pilot_helmet.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Hardsuits/pilot_helmet.rsi
+    sprite: _IS14/Clothing/Head/Militia/Pilot/pilot_helmet.rsi
 
 - type: entity
   parent: ClothingHeadBase
   id: ClothingHeadIS14MilitiaPilotka
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Hats/militia_pilotka.rsi
+    sprite: _IS14/Clothing/Head/Militia/Militia/militia_pilotka.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Hats/militia_pilotka.rsi
+    sprite: _IS14/Clothing/Head/Militia/Militia/militia_pilotka.rsi
     equippedState: equipped-HEAD
 
 - type: entity
@@ -24,9 +24,9 @@
   id: ClothingHeadIS14PostmanPilotka
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Hats/postman_pilotka.rsi
+    sprite: _IS14/Clothing/Head/Cargo/Postman/postman_pilotka.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Hats/postman_pilotka.rsi
+    sprite: _IS14/Clothing/Head/Cargo/Postman/postman_pilotka.rsi
     equippedState: equipped-HEAD
 
 - type: entity
@@ -34,9 +34,9 @@
   id: ClothingOuterHardsuitIS14Pilot
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/OuterClothing/Hardsuits/pilot_suit.rsi
+    sprite: _IS14/Clothing/OuterClothing/Militia/Pilot/pilot_suit.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/OuterClothing/Hardsuits/pilot_suit.rsi
+    sprite: _IS14/Clothing/OuterClothing/Militia/Pilot/pilot_suit.rsi
   - type: PressureProtection
     highPressureMultiplier: 0.5
     lowPressureMultiplier: 1000
@@ -75,9 +75,9 @@
   id: ClothingUniformJumpskirtIS14PilotSkirt
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpskirt/pilot_skirt.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/Pilot/pilot_skirt.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpskirt/pilot_skirt.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/Pilot/pilot_skirt.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg
 
@@ -86,9 +86,9 @@
   id: ClothingUniformJumpsuitIS14PilotFormal
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/pilot_formal.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/Pilot/pilot_formal.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/pilot_formal.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/Pilot/pilot_formal.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg
 
@@ -97,9 +97,9 @@
   id: ClothingUniformJumpsuitIS14PilotJumpsuit
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/pilot_jumpsuit.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/Pilot/pilot_jumpsuit.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/pilot_jumpsuit.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/Pilot/pilot_jumpsuit.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg
 
@@ -108,8 +108,17 @@
   id: ClothingUniformJumpsuitIS14PilotTactical
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/pilot_tactical.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/Pilot/pilot_tactical.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/pilot_tactical.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/Pilot/pilot_tactical.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg
+
+- type: entity
+  parent: ClothingHeadset
+  id: ClothingHeadsetIS14Pilot
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Ears/Militia/Pilot/pilot_headset.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Ears/Militia/Pilot/pilot_headset.rsi

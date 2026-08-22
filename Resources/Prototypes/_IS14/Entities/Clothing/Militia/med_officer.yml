@@ -5,36 +5,36 @@
   id: ClothingBeltIS14MedOfficerWebbing
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Belt/med_officer_rps.rsi
+    sprite: _IS14/Clothing/Belt/Militia/MedOfficer/med_officer_rps.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Belt/med_officer_rps.rsi
+    sprite: _IS14/Clothing/Belt/Militia/MedOfficer/med_officer_rps.rsi
 
 - type: entity
   parent: [ClothingEyesBase, ShowMedicalIcons]
   id: ClothingEyesIS14MedEyeScanner
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Eyes/med_eye_scanner.rsi
+    sprite: _IS14/Clothing/Eyes/Militia/MedOfficer/med_eye_scanner.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Eyes/med_eye_scanner.rsi
+    sprite: _IS14/Clothing/Eyes/Militia/MedOfficer/med_eye_scanner.rsi
 
 - type: entity
   parent: ClothingHeadHardsuitWithLightBase
   id: ClothingHeadHelmetIS14MedOfficer
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Hardsuits/med_officer_helmet.rsi
+    sprite: _IS14/Clothing/Head/Militia/MedOfficer/med_officer_helmet.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Hardsuits/med_officer_helmet.rsi
+    sprite: _IS14/Clothing/Head/Militia/MedOfficer/med_officer_helmet.rsi
 
 - type: entity
   parent: ClothingHeadBase
   id: ClothingHeadIS14MedOfficerBeret
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Berets/med_officer_beret.rsi
+    sprite: _IS14/Clothing/Head/Militia/MedOfficer/med_officer_beret.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Berets/med_officer_beret.rsi
+    sprite: _IS14/Clothing/Head/Militia/MedOfficer/med_officer_beret.rsi
     equippedState: equipped-HEAD
 
 - type: entity
@@ -42,9 +42,9 @@
   id: ClothingHeadIS14MedOfficerCap
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Hats/med_officer_cap.rsi
+    sprite: _IS14/Clothing/Head/Militia/MedOfficer/med_officer_cap.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Hats/med_officer_cap.rsi
+    sprite: _IS14/Clothing/Head/Militia/MedOfficer/med_officer_cap.rsi
     equippedState: equipped-HEAD
 
 - type: entity
@@ -52,18 +52,18 @@
   id: ClothingHeadsetIS14MedOfficer
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Ears/med_officer_headset.rsi
+    sprite: _IS14/Clothing/Ears/Militia/MedOfficer/med_officer_headset.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Ears/med_officer_headset.rsi
+    sprite: _IS14/Clothing/Ears/Militia/MedOfficer/med_officer_headset.rsi
 
 - type: entity
   parent: ClothingOuterHardsuitBase
   id: ClothingOuterHardsuitIS14MedOfficer
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/OuterClothing/Hardsuits/med_officer_suit.rsi
+    sprite: _IS14/Clothing/OuterClothing/Militia/MedOfficer/med_officer_suit.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/OuterClothing/Hardsuits/med_officer_suit.rsi
+    sprite: _IS14/Clothing/OuterClothing/Militia/MedOfficer/med_officer_suit.rsi
   - type: PressureProtection
     highPressureMultiplier: 0.5
     lowPressureMultiplier: 1000
@@ -102,9 +102,9 @@
   id: ClothingOuterIS14MedOfficerRobe
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/OuterClothing/Coats/med_officer_robe.rsi
+    sprite: _IS14/Clothing/OuterClothing/Militia/MedOfficer/med_officer_robe.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/OuterClothing/Coats/med_officer_robe.rsi
+    sprite: _IS14/Clothing/OuterClothing/Militia/MedOfficer/med_officer_robe.rsi
   - type: Armor
     coverage:
     - Chest
@@ -132,20 +132,9 @@
   id: ClothingUniformJumpskirtIS14MedOfficerSkirt
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpskirt/med_officer_skirt.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/MedOfficer/med_officer_skirt.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpskirt/med_officer_skirt.rsi
-    equipSound:
-      path: /Audio/Items/jumpsuit_equip.ogg
-
-- type: entity
-  parent: ClothingUniformJumpsuitIS14Base
-  id: ClothingUniformJumpsuitIS14MedOfficerFormal
-  components:
-  - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/med_officer_formal.rsi
-  - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/med_officer_formal.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/MedOfficer/med_officer_skirt.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg
 
@@ -154,8 +143,8 @@
   id: ClothingUniformJumpsuitIS14MedOfficerJumpsuit
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/med_officer_jumpsuit.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/MedOfficer/med_officer_jumpsuit.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/med_officer_jumpsuit.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/MedOfficer/med_officer_jumpsuit.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg

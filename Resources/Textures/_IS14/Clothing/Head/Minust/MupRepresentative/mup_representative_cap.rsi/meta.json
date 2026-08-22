@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "license": "All Rights Reserved",
+  "copyright": "Created by ashotik3 (discord) for Innovation Station 14",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "icon"
+    },
+    {
+      "name": "equipped-HEAD",
+      "directions": 4
+    },
+    {
+      "name": "inhand-left",
+      "directions": 4
+    },
+    {
+      "name": "inhand-right",
+      "directions": 4
+    }
+  ]
+}

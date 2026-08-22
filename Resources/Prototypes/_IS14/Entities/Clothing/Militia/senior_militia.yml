@@ -5,9 +5,9 @@
   id: ClothingHeadIS14SeniorMilitiaBeret
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Berets/senior_militia_beret.rsi
+    sprite: _IS14/Clothing/Head/Militia/SeniorMilitia/senior_militia_beret.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Berets/senior_militia_beret.rsi
+    sprite: _IS14/Clothing/Head/Militia/SeniorMilitia/senior_militia_beret.rsi
     equippedState: equipped-HEAD
 
 - type: entity
@@ -15,18 +15,18 @@
   id: ClothingOuterIS14SeniorMilitiaFormalJacket
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/OuterClothing/Coats/senior_militia_formal_jacket.rsi
+    sprite: _IS14/Clothing/OuterClothing/Militia/SeniorMilitia/senior_militia_formal_jacket.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/OuterClothing/Coats/senior_militia_formal_jacket.rsi
+    sprite: _IS14/Clothing/OuterClothing/Militia/SeniorMilitia/senior_militia_formal_jacket.rsi
 
 - type: entity
   parent: ClothingUniformJumpskirtIS14Base
   id: ClothingUniformJumpskirtIS14SeniorMilitiaFormalSkirt
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpskirt/senior_militia_formal_skirt.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/SeniorMilitia/senior_militia_formal_skirt.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpskirt/senior_militia_formal_skirt.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/SeniorMilitia/senior_militia_formal_skirt.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg
 
@@ -35,9 +35,9 @@
   id: ClothingUniformJumpskirtIS14SeniorMilitiaSkirt
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpskirt/senior_militia_skirt.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/SeniorMilitia/senior_militia_skirt.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpskirt/senior_militia_skirt.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/SeniorMilitia/senior_militia_skirt.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg
 
@@ -46,9 +46,9 @@
   id: ClothingUniformJumpsuitIS14SeniorMilitiaFormal
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/senior_militia_formal.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/SeniorMilitia/senior_militia_formal.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/senior_militia_formal.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/SeniorMilitia/senior_militia_formal.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg
 
@@ -57,9 +57,9 @@
   id: ClothingUniformJumpsuitIS14SeniorMilitiaJumpsuit
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/senior_militia_jumpsuit.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/SeniorMilitia/senior_militia_jumpsuit.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/senior_militia_jumpsuit.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/SeniorMilitia/senior_militia_jumpsuit.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg
 
@@ -68,8 +68,8 @@
   id: ClothingUniformJumpsuitIS14SeniorMilitiaTactical
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/senior_militia_tactical.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/SeniorMilitia/senior_militia_tactical.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/senior_militia_tactical.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/SeniorMilitia/senior_militia_tactical.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg

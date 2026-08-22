@@ -5,18 +5,18 @@
   id: ClothingHeadHelmetIS14LrrChief
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Hardsuits/lrr_chief_helmet.rsi
+    sprite: _IS14/Clothing/Head/Militia/LrrChief/lrr_chief_helmet.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Hardsuits/lrr_chief_helmet.rsi
+    sprite: _IS14/Clothing/Head/Militia/LrrChief/lrr_chief_helmet.rsi
 
 - type: entity
   parent: ClothingHeadBase
   id: ClothingHeadIS14LrrChiefBeret
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Berets/lrr_chief_beret.rsi
+    sprite: _IS14/Clothing/Head/Militia/LrrChief/lrr_chief_beret.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Berets/lrr_chief_beret.rsi
+    sprite: _IS14/Clothing/Head/Militia/LrrChief/lrr_chief_beret.rsi
     equippedState: equipped-HEAD
 
 - type: entity
@@ -24,9 +24,9 @@
   id: ClothingHeadIS14LrrChiefCap
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Caps/lrr_chief_cap.rsi
+    sprite: _IS14/Clothing/Head/Militia/LrrChief/lrr_chief_cap.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Caps/lrr_chief_cap.rsi
+    sprite: _IS14/Clothing/Head/Militia/LrrChief/lrr_chief_cap.rsi
     equippedState: equipped-HEAD
 
 - type: entity
@@ -34,9 +34,9 @@
   id: ClothingOuterHardsuitIS14LrrChief
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/OuterClothing/Hardsuits/lrr_chief_suit.rsi
+    sprite: _IS14/Clothing/OuterClothing/Militia/LrrChief/lrr_chief_suit.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/OuterClothing/Hardsuits/lrr_chief_suit.rsi
+    sprite: _IS14/Clothing/OuterClothing/Militia/LrrChief/lrr_chief_suit.rsi
   - type: PressureProtection
     highPressureMultiplier: 0.5
     lowPressureMultiplier: 1000
@@ -75,28 +75,17 @@
   id: ClothingOuterIS14LrrChiefJacket
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/OuterClothing/Coats/lrr_chief_jacket.rsi
+    sprite: _IS14/Clothing/OuterClothing/Militia/LrrChief/lrr_chief_jacket.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/OuterClothing/Coats/lrr_chief_jacket.rsi
-
-- type: entity
-  parent: ClothingUniformJumpsuitIS14Base
-  id: ClothingUniformJumpsuitIS14LrrChiefFormal
-  components:
-  - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/lrr_chief_formal.rsi
-  - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/lrr_chief_formal.rsi
-    equipSound:
-      path: /Audio/Items/jumpsuit_equip.ogg
+    sprite: _IS14/Clothing/OuterClothing/Militia/LrrChief/lrr_chief_jacket.rsi
 
 - type: entity
   parent: ClothingUniformJumpsuitIS14Base
   id: ClothingUniformJumpsuitIS14LrrChiefJumpsuit
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/lrr_chief_jumpsuit.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/LrrChief/lrr_chief_jumpsuit.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/lrr_chief_jumpsuit.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/LrrChief/lrr_chief_jumpsuit.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg

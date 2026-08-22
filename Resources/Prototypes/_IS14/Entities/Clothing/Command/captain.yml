@@ -5,27 +5,27 @@
   id: ClothingHandsIS14CaptainGloves
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Hands/captain_gloves.rsi
+    sprite: _IS14/Clothing/Hands/Command/Captain/captain_gloves.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Hands/captain_gloves.rsi
+    sprite: _IS14/Clothing/Hands/Command/Captain/captain_gloves.rsi
 
 - type: entity
   parent: ClothingHeadBase
   id: ClothingHeadIS14CaptainCap
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Caps/captain_cap.rsi
+    sprite: _IS14/Clothing/Head/Command/Captain/captain_cap.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Caps/captain_cap.rsi
+    sprite: _IS14/Clothing/Head/Command/Captain/captain_cap.rsi
 
 - type: entity
   parent: ClothingNeckBase
   id: ClothingNeckIS14CaptainCloak
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Neck/Cloaks/captain_cloak.rsi
+    sprite: _IS14/Clothing/Neck/Command/Captain/captain_cloak.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Neck/Cloaks/captain_cloak.rsi
+    sprite: _IS14/Clothing/Neck/Command/Captain/captain_cloak.rsi
   - type: StealTarget
     stealGroup: HeadCloak
 
@@ -34,9 +34,9 @@
   id: ClothingUniformJumpskirtIS14Captain
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpskirt/captain.rsi
+    sprite: _IS14/Clothing/Uniforms/Command/Captain/captain_skirt.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpskirt/captain.rsi
+    sprite: _IS14/Clothing/Uniforms/Command/Captain/captain_skirt.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg
 
@@ -45,9 +45,9 @@
   id: ClothingUniformJumpsuitIS14Captain
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/captain.rsi
+    sprite: _IS14/Clothing/Uniforms/Command/Captain/captain.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/captain.rsi
+    sprite: _IS14/Clothing/Uniforms/Command/Captain/captain.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg
 
@@ -56,8 +56,8 @@
   id: ClothingUniformJumpsuitIS14CaptainFormal
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/captain_formal.rsi
+    sprite: _IS14/Clothing/Uniforms/Command/Captain/captain_formal.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/captain_formal.rsi
+    sprite: _IS14/Clothing/Uniforms/Command/Captain/captain_formal.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg

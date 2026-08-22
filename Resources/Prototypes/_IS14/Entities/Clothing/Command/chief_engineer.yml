@@ -5,18 +5,18 @@
   id: ClothingHeadIS14CeBeret
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Berets/ce_beret.rsi
+    sprite: _IS14/Clothing/Head/Command/ChiefEngineer/ce_beret.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Berets/ce_beret.rsi
+    sprite: _IS14/Clothing/Head/Command/ChiefEngineer/ce_beret.rsi
 
 - type: entity
   parent: ClothingNeckBase
   id: ClothingNeckIS14CeCloak
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Neck/Cloaks/ce_cloak.rsi
+    sprite: _IS14/Clothing/Neck/Command/ChiefEngineer/ce_cloak.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Neck/Cloaks/ce_cloak.rsi
+    sprite: _IS14/Clothing/Neck/Command/ChiefEngineer/ce_cloak.rsi
   - type: StealTarget
     stealGroup: HeadCloak
 
@@ -25,18 +25,18 @@
   id: ClothingNeckIS14CeFormalCloak
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Neck/Cloaks/ce_formal_cloak.rsi
+    sprite: _IS14/Clothing/Neck/Command/ChiefEngineer/ce_formal_cloak.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Neck/Cloaks/ce_formal_cloak.rsi
+    sprite: _IS14/Clothing/Neck/Command/ChiefEngineer/ce_formal_cloak.rsi
 
 - type: entity
   parent: ClothingUniformJumpsuitIS14Base
   id: ClothingUniformJumpsuitIS14Ce
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/ce.rsi
+    sprite: _IS14/Clothing/Uniforms/Command/ChiefEngineer/ce.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/ce.rsi
+    sprite: _IS14/Clothing/Uniforms/Command/ChiefEngineer/ce.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg
 
@@ -45,8 +45,8 @@
   id: ClothingUniformJumpsuitIS14CeWork
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/ce_work.rsi
+    sprite: _IS14/Clothing/Uniforms/Command/ChiefEngineer/ce_work.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/ce_work.rsi
+    sprite: _IS14/Clothing/Uniforms/Command/ChiefEngineer/ce_work.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg

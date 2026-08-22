@@ -5,18 +5,18 @@
   id: ClothingHeadHelmetIS14Expeditioner
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Hardsuits/expeditioner_helmet.rsi
+    sprite: _IS14/Clothing/Head/Cargo/Expeditioner/expeditioner_helmet.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Hardsuits/expeditioner_helmet.rsi
+    sprite: _IS14/Clothing/Head/Cargo/Expeditioner/expeditioner_helmet.rsi
 
 - type: entity
   parent: ClothingHeadBase
   id: ClothingHeadIS14ExpeditionerBeret
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Berets/expeditioner_beret.rsi
+    sprite: _IS14/Clothing/Head/Cargo/Expeditioner/expeditioner_beret.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Berets/expeditioner_beret.rsi
+    sprite: _IS14/Clothing/Head/Cargo/Expeditioner/expeditioner_beret.rsi
     equippedState: equipped-HEAD
 
 - type: entity
@@ -24,9 +24,9 @@
   id: ClothingMaskIS14ExpeditionerRespirator
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Masks/expeditioner_respirator.rsi
+    sprite: _IS14/Clothing/Masks/Cargo/Expeditioner/expeditioner_respirator.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Masks/expeditioner_respirator.rsi
+    sprite: _IS14/Clothing/Masks/Cargo/Expeditioner/expeditioner_respirator.rsi
   - type: Tag # Goobstation
     tags:
     - HamsterWearable
@@ -39,9 +39,9 @@
   id: ClothingOuterHardsuitIS14Expeditioner
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/OuterClothing/Hardsuits/expeditioner_suit.rsi
+    sprite: _IS14/Clothing/OuterClothing/Cargo/Expeditioner/expeditioner_suit.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/OuterClothing/Hardsuits/expeditioner_suit.rsi
+    sprite: _IS14/Clothing/OuterClothing/Cargo/Expeditioner/expeditioner_suit.rsi
   - type: PressureProtection
     highPressureMultiplier: 0.5
     lowPressureMultiplier: 1000
@@ -87,9 +87,9 @@
   id: ClothingOuterIS14ExpeditionerArmor
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/OuterClothing/Vests/expeditioner_armor.rsi
+    sprite: _IS14/Clothing/OuterClothing/Cargo/Expeditioner/expeditioner_armor.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/OuterClothing/Vests/expeditioner_armor.rsi
+    sprite: _IS14/Clothing/OuterClothing/Cargo/Expeditioner/expeditioner_armor.rsi
   - type: Armor
     coverage:
     - Chest
@@ -121,8 +121,8 @@
   id: ClothingUniformJumpsuitIS14Expeditioner
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/expeditioner.rsi
+    sprite: _IS14/Clothing/Uniforms/Cargo/Expeditioner/expeditioner.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/expeditioner.rsi
+    sprite: _IS14/Clothing/Uniforms/Cargo/Expeditioner/expeditioner.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg

@@ -5,36 +5,36 @@
   id: ClothingHeadIS14RdBeret
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Berets/rd_beret.rsi
+    sprite: _IS14/Clothing/Head/Command/ResearchDirector/rd_beret.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Berets/rd_beret.rsi
+    sprite: _IS14/Clothing/Head/Command/ResearchDirector/rd_beret.rsi
 
 - type: entity
   parent: ClothingOuterIS14LabCoatBase
   id: ClothingOuterIS14RdLabCoat
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/OuterClothing/Coats/rd_labcoat.rsi
+    sprite: _IS14/Clothing/OuterClothing/Command/ResearchDirector/rd_labcoat.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/OuterClothing/Coats/rd_labcoat.rsi
+    sprite: _IS14/Clothing/OuterClothing/Command/ResearchDirector/rd_labcoat.rsi
 
 - type: entity
   parent: ClothingOuterIS14Base
   id: ClothingOuterIS14RdRobe
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/OuterClothing/Coats/rd_robe.rsi
+    sprite: _IS14/Clothing/OuterClothing/Command/ResearchDirector/rd_robe.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/OuterClothing/Coats/rd_robe.rsi
+    sprite: _IS14/Clothing/OuterClothing/Command/ResearchDirector/rd_robe.rsi
 
 - type: entity
   parent: ClothingUniformJumpsuitIS14Base
   id: ClothingUniformJumpsuitIS14Rd
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/rd.rsi
+    sprite: _IS14/Clothing/Uniforms/Command/ResearchDirector/rd.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/rd.rsi
+    sprite: _IS14/Clothing/Uniforms/Command/ResearchDirector/rd.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg
 
@@ -43,8 +43,8 @@
   id: ClothingUniformJumpsuitIS14RdWhite
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/rd_white.rsi
+    sprite: _IS14/Clothing/Uniforms/Command/ResearchDirector/rd_white.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/rd_white.rsi
+    sprite: _IS14/Clothing/Uniforms/Command/ResearchDirector/rd_white.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg

@@ -5,18 +5,18 @@
   id: ClothingBeltIS14HosMilitia
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Belt/hos_militia_belt.rsi
+    sprite: _IS14/Clothing/Belt/Command/HosMilitia/hos_militia_belt.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Belt/hos_militia_belt.rsi
+    sprite: _IS14/Clothing/Belt/Command/HosMilitia/hos_militia_belt.rsi
 
 - type: entity
   parent: ClothingHandsBase
   id: ClothingHandsIS14HosMilitiaGloves
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Hands/hos_militia_gloves.rsi
+    sprite: _IS14/Clothing/Hands/Command/HosMilitia/hos_militia_gloves.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Hands/hos_militia_gloves.rsi
+    sprite: _IS14/Clothing/Hands/Command/HosMilitia/hos_militia_gloves.rsi
   - type: Fiber
     fiberMaterial: fibers-durathread
 
@@ -25,18 +25,18 @@
   id: ClothingHeadHelmetIS14Hos
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Hardsuits/hos_helmet.rsi
+    sprite: _IS14/Clothing/Head/Militia/HosMilitia/hos_helmet.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Hardsuits/hos_helmet.rsi
+    sprite: _IS14/Clothing/Head/Militia/HosMilitia/hos_helmet.rsi
 
 - type: entity
   parent: ClothingHeadBase
   id: ClothingHeadIS14HosBeret
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Berets/hos_beret.rsi
+    sprite: _IS14/Clothing/Head/Militia/HosMilitia/hos_beret.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Berets/hos_beret.rsi
+    sprite: _IS14/Clothing/Head/Militia/HosMilitia/hos_beret.rsi
     equippedState: equipped-HEAD
 
 - type: entity
@@ -44,9 +44,9 @@
   id: ClothingHeadIS14HosCap
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Caps/hos_cap.rsi
+    sprite: _IS14/Clothing/Head/Militia/HosMilitia/hos_cap.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Caps/hos_cap.rsi
+    sprite: _IS14/Clothing/Head/Militia/HosMilitia/hos_cap.rsi
     equippedState: equipped-HEAD
 
 - type: entity
@@ -54,36 +54,36 @@
   id: ClothingHeadIS14HosMilitiaBeret
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Berets/hos_militia_beret.rsi
+    sprite: _IS14/Clothing/Head/Command/HosMilitia/hos_militia_beret.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Berets/hos_militia_beret.rsi
+    sprite: _IS14/Clothing/Head/Command/HosMilitia/hos_militia_beret.rsi
 
 - type: entity
   parent: ClothingHeadBase
   id: ClothingHeadIS14HosMilitiaCap
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Caps/hos_militia_cap.rsi
+    sprite: _IS14/Clothing/Head/Command/HosMilitia/hos_militia_cap.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Caps/hos_militia_cap.rsi
+    sprite: _IS14/Clothing/Head/Command/HosMilitia/hos_militia_cap.rsi
 
 - type: entity
   parent: ClothingHeadset
   id: ClothingHeadsetIS14Hos
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Ears/hos_headset.rsi
+    sprite: _IS14/Clothing/Ears/Militia/HosMilitia/hos_headset.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Ears/hos_headset.rsi
+    sprite: _IS14/Clothing/Ears/Militia/HosMilitia/hos_headset.rsi
 
 - type: entity
   parent: ClothingNeckBase
   id: ClothingNeckIS14HosMilitiaCloak
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Neck/Cloaks/hos_militia_cloak.rsi
+    sprite: _IS14/Clothing/Neck/Command/HosMilitia/hos_militia_cloak.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Neck/Cloaks/hos_militia_cloak.rsi
+    sprite: _IS14/Clothing/Neck/Command/HosMilitia/hos_militia_cloak.rsi
   - type: StealTarget
     stealGroup: HeadCloak
 
@@ -92,9 +92,9 @@
   id: ClothingOuterHardsuitIS14Hos
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/OuterClothing/Hardsuits/hos_suit.rsi
+    sprite: _IS14/Clothing/OuterClothing/Militia/HosMilitia/hos_suit.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/OuterClothing/Hardsuits/hos_suit.rsi
+    sprite: _IS14/Clothing/OuterClothing/Militia/HosMilitia/hos_suit.rsi
   - type: PressureProtection
     highPressureMultiplier: 0.5
     lowPressureMultiplier: 1000
@@ -133,36 +133,36 @@
   id: ClothingOuterIS14HosJacket
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/OuterClothing/Coats/hos_jacket.rsi
+    sprite: _IS14/Clothing/OuterClothing/Militia/HosMilitia/hos_jacket.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/OuterClothing/Coats/hos_jacket.rsi
+    sprite: _IS14/Clothing/OuterClothing/Militia/HosMilitia/hos_jacket.rsi
 
 - type: entity
   parent: ClothingOuterIS14Base
   id: ClothingOuterIS14HosMilitiaGreatcoat
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/OuterClothing/Coats/hos_militia_greatcoat.rsi
+    sprite: _IS14/Clothing/OuterClothing/Command/HosMilitia/hos_militia_greatcoat.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/OuterClothing/Coats/hos_militia_greatcoat.rsi
+    sprite: _IS14/Clothing/OuterClothing/Command/HosMilitia/hos_militia_greatcoat.rsi
 
 - type: entity
   parent: ClothingOuterIS14Base
   id: ClothingOuterIS14HosMilitiaJacket
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/OuterClothing/Coats/hos_militia_jacket.rsi
+    sprite: _IS14/Clothing/OuterClothing/Command/HosMilitia/hos_militia_jacket.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/OuterClothing/Coats/hos_militia_jacket.rsi
+    sprite: _IS14/Clothing/OuterClothing/Command/HosMilitia/hos_militia_jacket.rsi
 
 - type: entity
   parent: ClothingShoesBaseButcherable
   id: ClothingShoesIS14HosMilitiaBoots
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Shoes/hos_militia_boots.rsi
+    sprite: _IS14/Clothing/Shoes/Command/HosMilitia/hos_militia_boots.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Shoes/hos_militia_boots.rsi
+    sprite: _IS14/Clothing/Shoes/Command/HosMilitia/hos_militia_boots.rsi
   - type: ClothingSlowOnDamageModifier
     modifier: 0.5
 
@@ -171,9 +171,9 @@
   id: ClothingUniformJumpskirtIS14HosMilitia
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpskirt/hos_militia.rsi
+    sprite: _IS14/Clothing/Uniforms/Command/HosMilitia/hos_militia_skirt.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpskirt/hos_militia.rsi
+    sprite: _IS14/Clothing/Uniforms/Command/HosMilitia/hos_militia_skirt.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg
 
@@ -182,9 +182,9 @@
   id: ClothingUniformJumpsuitIS14FormalHosMilitia
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/formal_hos_militia.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/HosMilitia/formal_hos_militia.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/formal_hos_militia.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/HosMilitia/formal_hos_militia.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg
 
@@ -193,9 +193,9 @@
   id: ClothingUniformJumpsuitIS14HosMilitia
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/hos_militia.rsi
+    sprite: _IS14/Clothing/Uniforms/Command/HosMilitia/hos_militia.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/hos_militia.rsi
+    sprite: _IS14/Clothing/Uniforms/Command/HosMilitia/hos_militia.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg
 
@@ -204,8 +204,8 @@
   id: ClothingUniformJumpsuitIS14TacticalHosMilitia
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/tactical_hos_militia.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/HosMilitia/tactical_hos_militia.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/tactical_hos_militia.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/HosMilitia/tactical_hos_militia.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg

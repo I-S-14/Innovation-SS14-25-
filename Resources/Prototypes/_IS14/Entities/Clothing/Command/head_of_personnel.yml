@@ -5,27 +5,27 @@
   id: ClothingHeadIS14HopBeret
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Berets/hop_beret.rsi
+    sprite: _IS14/Clothing/Head/Command/HeadOfPersonnel/hop_beret.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Berets/hop_beret.rsi
+    sprite: _IS14/Clothing/Head/Command/HeadOfPersonnel/hop_beret.rsi
 
 - type: entity
   parent: ClothingHeadBase
   id: ClothingHeadIS14HopCap
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Caps/hop_cap.rsi
+    sprite: _IS14/Clothing/Head/Command/HeadOfPersonnel/hop_cap.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Caps/hop_cap.rsi
+    sprite: _IS14/Clothing/Head/Command/HeadOfPersonnel/hop_cap.rsi
 
 - type: entity
   parent: ClothingNeckBase
   id: ClothingNeckIS14HopCloak
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Neck/Cloaks/hop_cloak.rsi
+    sprite: _IS14/Clothing/Neck/Command/HeadOfPersonnel/hop_cloak.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Neck/Cloaks/hop_cloak.rsi
+    sprite: _IS14/Clothing/Neck/Command/HeadOfPersonnel/hop_cloak.rsi
   - type: StealTarget
     stealGroup: HeadCloak
 
@@ -34,9 +34,9 @@
   id: ClothingUniformJumpsuitIS14Hop
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/hop.rsi
+    sprite: _IS14/Clothing/Uniforms/Command/HeadOfPersonnel/hop.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/hop.rsi
+    sprite: _IS14/Clothing/Uniforms/Command/HeadOfPersonnel/hop.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg
 
@@ -45,8 +45,8 @@
   id: ClothingUniformJumpsuitIS14HopFormal
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/hop_formal.rsi
+    sprite: _IS14/Clothing/Uniforms/Command/HeadOfPersonnel/hop_formal.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/hop_formal.rsi
+    sprite: _IS14/Clothing/Uniforms/Command/HeadOfPersonnel/hop_formal.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg

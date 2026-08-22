@@ -5,9 +5,9 @@
   id: ClothingHeadIS14IVKBeret
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Berets/ivk_beret.rsi
+    sprite: _IS14/Clothing/Head/Minust/Ivk/ivk_beret.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Berets/ivk_beret.rsi
+    sprite: _IS14/Clothing/Head/Minust/Ivk/ivk_beret.rsi
     equippedState: equipped-HEAD
 
 - type: entity
@@ -15,9 +15,9 @@
   id: ClothingHeadIS14IVKCap
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Caps/ivk_cap.rsi
+    sprite: _IS14/Clothing/Head/Minust/Ivk/ivk_cap.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Caps/ivk_cap.rsi
+    sprite: _IS14/Clothing/Head/Minust/Ivk/ivk_cap.rsi
     equippedState: equipped-HEAD
 
 - type: entity
@@ -25,9 +25,9 @@
   id: ClothingMaskIS14GasIVK
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Masks/ivk.rsi
+    sprite: _IS14/Clothing/Masks/Minust/Ivk/ivk.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Masks/ivk.rsi
+    sprite: _IS14/Clothing/Masks/Minust/Ivk/ivk.rsi
   - type: Tag # Goobstation
     tags:
     - HamsterWearable
@@ -40,18 +40,18 @@
   id: ClothingOuterIS14IVKShinel
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/OuterClothing/Coats/ivk_shinel.rsi
+    sprite: _IS14/Clothing/OuterClothing/Minust/Ivk/ivk_shinel.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/OuterClothing/Coats/ivk_shinel.rsi
+    sprite: _IS14/Clothing/OuterClothing/Minust/Ivk/ivk_shinel.rsi
 
 - type: entity
   parent: ClothingOuterBase
   id: ClothingOuterIS14IVKVest
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/OuterClothing/Vests/ivk_vest.rsi
+    sprite: _IS14/Clothing/OuterClothing/Minust/Ivk/ivk_vest.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/OuterClothing/Vests/ivk_vest.rsi
+    sprite: _IS14/Clothing/OuterClothing/Minust/Ivk/ivk_vest.rsi
   - type: Armor
     coverage:
     - Chest
@@ -85,8 +85,8 @@
   id: ClothingUniformJumpskirtIS14IVK
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/ivk.rsi
+    sprite: _IS14/Clothing/Uniforms/Minust/Ivk/ivk.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/ivk.rsi
+    sprite: _IS14/Clothing/Uniforms/Minust/Ivk/ivk.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg

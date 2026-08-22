@@ -5,9 +5,9 @@
   id: ClothingUniformJumpskirtIS14InvestigatorSkirt
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpskirt/investigator_skirt.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/Investigator/investigator_skirt.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpskirt/investigator_skirt.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/Investigator/investigator_skirt.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg
 
@@ -16,8 +16,36 @@
   id: ClothingUniformJumpsuitIS14Investigator
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/investigator.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/Investigator/investigator.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/investigator.rsi
+    sprite: _IS14/Clothing/Uniforms/Militia/Investigator/investigator.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg
+
+- type: entity
+  parent: ClothingHeadBase
+  id: ClothingHeadIS14InvestigatorHat
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Head/Militia/Investigator/investigator_hat.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Head/Militia/Investigator/investigator_hat.rsi
+    equippedState: equipped-HEAD
+
+- type: entity
+  parent: ClothingOuterIS14Base
+  id: ClothingOuterIS14InvestigatorCoat
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/OuterClothing/Militia/Investigator/investigator_coat.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/OuterClothing/Militia/Investigator/investigator_coat.rsi
+
+- type: entity
+  parent: ClothingOuterIS14Base
+  id: ClothingOuterIS14InvestigatorTrenchcoat
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/OuterClothing/Militia/Investigator/investigator_trenchcoat.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/OuterClothing/Militia/Investigator/investigator_trenchcoat.rsi

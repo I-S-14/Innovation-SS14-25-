@@ -5,9 +5,9 @@
   id: ClothingHeadIS14CargoTechCap
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Head/Caps/cargo_tech_cap.rsi
+    sprite: _IS14/Clothing/Head/Cargo/CargoTechnician/cargo_tech_cap.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Head/Caps/cargo_tech_cap.rsi
+    sprite: _IS14/Clothing/Head/Cargo/CargoTechnician/cargo_tech_cap.rsi
     equippedState: equipped-HEAD
 
 - type: entity
@@ -15,9 +15,9 @@
   id: ClothingUniformJumpsuitIS14CargoTech
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/cargo_tech.rsi
+    sprite: _IS14/Clothing/Uniforms/Cargo/CargoTechnician/cargo_tech.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/cargo_tech.rsi
+    sprite: _IS14/Clothing/Uniforms/Cargo/CargoTechnician/cargo_tech.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg
 
@@ -26,8 +26,8 @@
   id: ClothingUniformJumpsuitIS14CargoTechVest
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/cargo_tech_vest.rsi
+    sprite: _IS14/Clothing/Uniforms/Cargo/CargoTechnician/cargo_tech_vest.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Jumpsuit/cargo_tech_vest.rsi
+    sprite: _IS14/Clothing/Uniforms/Cargo/CargoTechnician/cargo_tech_vest.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg
