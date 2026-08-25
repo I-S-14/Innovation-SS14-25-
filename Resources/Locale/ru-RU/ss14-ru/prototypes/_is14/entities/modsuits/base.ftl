@@ -1,0 +1,14 @@
+ent-IS14ModsuitPartHelmetBase = МОД-шлем
+    .desc = Шлем модульного костюма.
+ent-IS14ModsuitPartChestplateBase = МОД-нагрудник
+    .desc = Нагрудник модульного костюма.
+ent-IS14ModsuitPartGauntletsBase = МОД-перчатки
+    .desc = Перчатки модульного костюма.
+ent-IS14ModsuitPartBootsBase = МОД-ботинки
+    .desc = Ботинки модульного костюма.
+ent-IS14ModsuitControlBase = блок управления МОД-костюма
+    .desc = Блок управления модульного костюма. Носится на спине.
+ent-IS14ModCoreStandard = стандартное МОД-ядро
+    .desc = Ядро модульного костюма. Питается от сменной батареи.
+ent-IS14ModCoreInfinite = бесконечное МОД-ядро
+    .desc = Ядро, которому не нужна батарея. Вам не полагается такое.

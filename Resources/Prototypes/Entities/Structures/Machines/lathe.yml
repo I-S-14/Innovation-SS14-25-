@@ -380,6 +380,9 @@
     - RoboticsStatic
     - BorgModulesStatic
     - BorgLimbsStatic
+    #IS14-change start
+    - IS14ModsuitStatic
+    #IS14-change end
     # Goobstation Packs
     - MechPartsStatic
     # - BorgModulesStaticGoob #Removes surgery module, medical cyborgs start with them

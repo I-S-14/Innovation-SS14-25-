@@ -1,0 +1,43 @@
+- type: entity
+  parent: BaseAction
+  id: ActionModsuitToggleDeploy
+  name: Deploy MODsuit
+  description: Deploys or retracts every part of the suit.
+  components:
+  - type: Action
+    icon:
+      sprite: _IS14/Objects/Modsuit/construction.rsi
+      state: chestplate
+    itemIconStyle: BigAction
+    useDelay: 1
+  - type: InstantAction
+    event: !type:ModsuitToggleDeployEvent
+
+- type: entity
+  parent: BaseAction
+  id: ActionModsuitToggleSeal
+  name: Seal MODsuit
+  description: Seals or unseals the deployed parts, one at a time.
+  components:
+  - type: Action
+    icon:
+      sprite: _IS14/Objects/Modsuit/construction.rsi
+      state: core-standard
+    itemIconStyle: BigAction
+    useDelay: 1
+  - type: InstantAction
+    event: !type:ModsuitToggleSealEvent
+
+- type: entity
+  parent: BaseAction
+  id: ActionModsuitOpenModules
+  name: MODsuit modules
+  description: Opens the suit interface.
+  components:
+  - type: Action
+    icon:
+      sprite: _IS14/Objects/Modsuit/modules.rsi
+      state: module
+    itemIconStyle: BigAction
+  - type: InstantAction
+    event: !type:ModsuitOpenModulesEvent

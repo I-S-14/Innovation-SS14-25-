@@ -1,0 +1,7 @@
+- type: wireLayout
+  id: IS14Modsuit
+  wires:
+  - !type:ModsuitLockWireAction
+  - !type:ModsuitMalfunctionWireAction
+  - !type:ModsuitShockWireAction
+  - !type:ModsuitInterfaceWireAction

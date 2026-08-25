@@ -1,0 +1,103 @@
+<!--
+SPDX-FileCopyrightText: 2026 IS14
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<controls:FancyWindow
+    xmlns="https://spacestation14.io"
+    xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
+    xmlns:cust="clr-namespace:Content.Client._IS14.Modular.Controls"
+    Title="{Loc 'chassis-ui-title'}"
+    SetSize="820 680"
+    MinSize="720 580">
+
+    <PanelContainer Name="Backdrop" HorizontalExpand="True" VerticalExpand="True">
+        <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True" Margin="8">
+
+            <!-- Identification strip: what you are wearing, who is wearing it, what state it is in -->
+            <PanelContainer Name="HeaderPanel" HorizontalExpand="True">
+                <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="8 6">
+                    <SpriteView Name="ChassisIcon" SetSize="48 48" VerticalAlignment="Center" />
+                    <BoxContainer Orientation="Vertical" HorizontalExpand="True" Margin="10 0 0 0" VerticalAlignment="Center">
+                        <Label Name="SuitNameLabel" Text="—" StyleClasses="LabelHeading" ClipText="True" />
+                        <Label Name="WearerLabel" Text="—" StyleClasses="LabelSubText" />
+                    </BoxContainer>
+                    <BoxContainer Name="ChipsContainer" Orientation="Horizontal" VerticalAlignment="Center" />
+                </BoxContainer>
+            </PanelContainer>
+
+            <BoxContainer Orientation="Horizontal" HorizontalExpand="True" VerticalExpand="True" Margin="0 8 0 0">
+
+                <!-- Shell: the suit laid out the way it sits on a body -->
+                <BoxContainer Orientation="Vertical" MinWidth="272" Margin="0 0 8 0">
+
+                    <PanelContainer Name="DollPanel" HorizontalExpand="True">
+                        <BoxContainer Orientation="Vertical" HorizontalExpand="True" Margin="8">
+                            <Label Name="ShellHeading" Text="{Loc 'chassis-ui-shell'}" StyleClasses="LabelKeyText" />
+                            <GridContainer Name="DollGrid" Columns="3" HSeparationOverride="4" VSeparationOverride="4"
+                                           HorizontalAlignment="Center" Margin="0 6 0 0" />
+                            <BoxContainer Name="ExtraPartsContainer" Orientation="Vertical" HorizontalExpand="True" />
+                        </BoxContainer>
+                    </PanelContainer>
+
+                    <!-- Expands with whatever tile is selected above -->
+                    <PanelContainer Name="DetailPanel" HorizontalExpand="True" VerticalExpand="True" Margin="0 8 0 0">
+                        <ScrollContainer HorizontalExpand="True" VerticalExpand="True">
+                            <BoxContainer Name="DetailContainer" Orientation="Vertical" HorizontalExpand="True" Margin="8" />
+                        </ScrollContainer>
+                    </PanelContainer>
+
+                </BoxContainer>
+
+                <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True">
+
+                    <!-- Power plant -->
+                    <PanelContainer Name="PowerPanel" HorizontalExpand="True">
+                        <BoxContainer Orientation="Vertical" HorizontalExpand="True" Margin="8">
+
+                            <Label Text="{Loc 'chassis-ui-power'}" StyleClasses="LabelKeyText" />
+
+                            <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="0 6 0 0">
+                                <cust:BatteryGauge Name="Battery" VerticalAlignment="Center" />
+                                <BoxContainer Orientation="Vertical" HorizontalExpand="True" Margin="12 0 0 0" VerticalAlignment="Center">
+                                    <Label Name="ChargePercentLabel" Text="—" StyleClasses="LabelHeading" />
+                                    <Label Name="ChargeLabel" Text="—" StyleClasses="LabelSubText" />
+                                    <Label Name="CoreLabel" Text="—" StyleClasses="LabelSubText" />
+                                </BoxContainer>
+                            </BoxContainer>
+
+                            <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="0 10 0 0">
+                                <Label Text="{Loc 'chassis-ui-complexity'}" MinWidth="96" StyleClasses="LabelSubText" />
+                                <cust:ComplexityBar Name="Complexity" HorizontalExpand="True" VerticalAlignment="Center" />
+                                <Label Name="ComplexityLabel" Text="—" MinWidth="56" Align="Right" StyleClasses="LabelSubText" />
+                            </BoxContainer>
+
+                        </BoxContainer>
+                    </PanelContainer>
+
+                    <!-- Module bay -->
+                    <PanelContainer Name="ModulesPanel" HorizontalExpand="True" VerticalExpand="True" Margin="0 8 0 0">
+                        <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True" Margin="8">
+
+                            <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
+                                <Label Text="{Loc 'chassis-ui-modules'}" StyleClasses="LabelKeyText" HorizontalExpand="True" />
+                                <Label Name="ModulesCountLabel" Text="" StyleClasses="LabelSubText" />
+                            </BoxContainer>
+
+                            <ScrollContainer HorizontalExpand="True" VerticalExpand="True" Margin="0 6 0 0">
+                                <BoxContainer Name="ModulesContainer" Orientation="Vertical" HorizontalExpand="True" />
+                            </ScrollContainer>
+
+                        </BoxContainer>
+                    </PanelContainer>
+
+                </BoxContainer>
+            </BoxContainer>
+
+            <!-- The two controls you actually reach for -->
+            <BoxContainer Name="FooterContainer" Orientation="Horizontal" HorizontalExpand="True" Margin="0 8 0 0" />
+
+        </BoxContainer>
+    </PanelContainer>
+</controls:FancyWindow>

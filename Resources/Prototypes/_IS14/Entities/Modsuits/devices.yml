@@ -1,0 +1,39 @@
+# Железо модулей-предметов.
+#
+# Отдельные прототипы нужны, чтобы в руке было видно: это выдвижная часть МОД-костюма,
+# а не подобранный со стола инструмент. Иконку берём у самого модуля — с проводами и
+# креплениями, — а вот спрайты «в руке» и замах остаются от исходного предмета: слой
+# поверх иконки ломал и то и другое (анимация удара копирует спрайт оружия целиком).
+#
+# Принадлежность костюму дополнительно помечается значком поверх слота руки,
+# см. ChassisDeviceBadgeSystem.
+
+- type: entity
+  parent: HandheldHealthAnalyzer
+  id: IS14ModsuitHealthAnalyzer
+  name: MOD health analyzer
+  description: A scanning suite that folds out of a MOD suit gauntlet. It answers to the suit, not to you.
+  components:
+  # Список слоёв, а не state: у родителя объявлены layers, и одиночный state рядом
+  # с ними движок просто игнорирует.
+  - type: Sprite
+    sprite: _IS14/Objects/Modsuit/modules.rsi
+    layers:
+    - state: health
+  - type: Item
+    sprite: Objects/Specific/Medical/healthanalyzer.rsi
+    heldPrefix: analyzer
+    storedRotation: -90
+
+- type: entity
+  parent: MiningDrill
+  id: IS14ModsuitMiningDrill
+  name: MOD drill
+  description: A diamond-tipped drill that folds out of a MOD suit gauntlet. It answers to the suit, not to you.
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Modsuit/modules.rsi
+    state: drill
+  - type: Item
+    sprite: Objects/Tools/handdrill.rsi
+    storedRotation: -90

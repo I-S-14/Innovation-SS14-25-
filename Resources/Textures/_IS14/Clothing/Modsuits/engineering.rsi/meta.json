@@ -1,0 +1,93 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from tgstation via BandaStation, https://github.com/tgstation/tgstation",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "control"
+    },
+    {
+      "name": "equipped-BACKPACK",
+      "directions": 4
+    },
+    {
+      "name": "control-sealed",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "sealed-equipped-BACKPACK",
+      "directions": 4
+    },
+    {
+      "name": "helmet"
+    },
+    {
+      "name": "equipped-HELMET",
+      "directions": 4
+    },
+    {
+      "name": "helmet-sealed"
+    },
+    {
+      "name": "sealed-equipped-HELMET",
+      "directions": 4
+    },
+    {
+      "name": "chestplate"
+    },
+    {
+      "name": "equipped-OUTERCLOTHING",
+      "directions": 4
+    },
+    {
+      "name": "chestplate-sealed"
+    },
+    {
+      "name": "sealed-equipped-OUTERCLOTHING",
+      "directions": 4
+    },
+    {
+      "name": "gauntlets"
+    },
+    {
+      "name": "equipped-HAND",
+      "directions": 4
+    },
+    {
+      "name": "gauntlets-sealed"
+    },
+    {
+      "name": "sealed-equipped-HAND",
+      "directions": 4
+    },
+    {
+      "name": "boots"
+    },
+    {
+      "name": "equipped-FEET",
+      "directions": 4
+    },
+    {
+      "name": "boots-sealed"
+    },
+    {
+      "name": "sealed-equipped-FEET",
+      "directions": 4
+    },
+    {
+      "name": "visor",
+      "directions": 4
+    }
+  ]
+}

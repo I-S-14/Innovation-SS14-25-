@@ -2,6 +2,7 @@
 
 using System.Numerics;
 using Content.Client.Cooldown;
+using Robust.Client.Graphics;
 using Content.Client.UserInterface.Systems.Inventory.Controls;
 using Robust.Client.GameObjects;
 using Robust.Client.UserInterface;
@@ -18,6 +19,23 @@ namespace Content.Client.UserInterface.Controls
 
         public TextureRect ButtonRect { get; }
         public TextureRect BlockedRect { get; }
+        //IS14-change start: a slot can mark whose property the item it holds is
+        public TextureRect BadgeRect { get; }
+
+        /// <summary>
+        ///     Small emblem drawn over the item, for gear that belongs to something other
+        ///     than the person carrying it. Null hides it. Clicks pass straight through.
+        /// </summary>
+        public Texture? BadgeTexture
+        {
+            get => BadgeRect.Texture;
+            set
+            {
+                BadgeRect.Texture = value;
+                BadgeRect.Visible = value != null;
+            }
+        }
+        //IS14-change end
         public TextureRect HighlightRect { get; }
         public SpriteView HoverSpriteView { get; }
         public TextureButton StorageButton { get; }
@@ -202,6 +220,15 @@ namespace Content.Client.UserInterface.Controls
                 MouseFilter = MouseFilterMode.Stop,
                 Visible = false
             });
+
+            //IS14-change start: ownership badge, drawn last so it sits over the item
+            AddChild(BadgeRect = new TextureRect
+            {
+                TextureScale = new Vector2(2, 2),
+                MouseFilter = MouseFilterMode.Ignore,
+                Visible = false
+            });
+            //IS14-change end
 
             HighlightTexturePath = "slot_highlight";
             BlockedTexturePath = "blocked";

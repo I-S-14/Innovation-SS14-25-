@@ -1,0 +1,412 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from tgstation via BandaStation, https://github.com/tgstation/tgstation",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "light",
+      "directions": 4
+    },
+    {
+      "name": "light_on",
+      "directions": 4
+    },
+    {
+      "name": "welding",
+      "directions": 4
+    },
+    {
+      "name": "jetpack",
+      "directions": 4
+    },
+    {
+      "name": "jetpack_on",
+      "directions": 4
+    },
+    {
+      "name": "jetpackadv",
+      "directions": 4
+    },
+    {
+      "name": "jetpackadv_on",
+      "directions": 4
+    },
+    {
+      "name": "plasma",
+      "directions": 4
+    },
+    {
+      "name": "rave",
+      "directions": 4
+    },
+    {
+      "name": "kinesis",
+      "directions": 4
+    },
+    {
+      "name": "kinesis_on",
+      "directions": 4
+    },
+    {
+      "name": "clamp",
+      "directions": 4
+    },
+    {
+      "name": "clamp_on",
+      "directions": 4
+    },
+    {
+      "name": "drill",
+      "directions": 4
+    },
+    {
+      "name": "ash-mining",
+      "directions": 4
+    },
+    {
+      "name": "ash-asteroid",
+      "directions": 4
+    },
+    {
+      "name": "atrocinator",
+      "directions": 4
+    },
+    {
+      "name": "armorbooster_off-syndicate",
+      "directions": 4
+    },
+    {
+      "name": "armorbooster_on-syndicate",
+      "directions": 4
+    },
+    {
+      "name": "armorbooster_visor-syndicate",
+      "directions": 4
+    },
+    {
+      "name": "armorbooster_off-honkerative",
+      "directions": 4
+    },
+    {
+      "name": "armorbooster_on-honkerative",
+      "directions": 4
+    },
+    {
+      "name": "armorbooster_visor-honkerative",
+      "directions": 4
+    },
+    {
+      "name": "armorbooster_off-elite",
+      "directions": 4
+    },
+    {
+      "name": "armorbooster_on-elite",
+      "directions": 4
+    },
+    {
+      "name": "armorbooster_visor-elite",
+      "directions": 4
+    },
+    {
+      "name": "armorbooster_off-glitch",
+      "directions": 4
+    },
+    {
+      "name": "armorbooster_on-glitch",
+      "directions": 4
+    },
+    {
+      "name": "armorbooster_visor-glitch",
+      "directions": 4
+    },
+    {
+      "name": "armorbooster_off-responsory",
+      "directions": 4
+    },
+    {
+      "name": "armorbooster_on-responsory",
+      "directions": 4
+    },
+    {
+      "name": "armorbooster_visor-responsory",
+      "directions": 4
+    },
+    {
+      "name": "armorbooster_off-inquisitory",
+      "directions": 4
+    },
+    {
+      "name": "armorbooster_on-inquisitory",
+      "directions": 4
+    },
+    {
+      "name": "armorbooster_visor-inquisitory",
+      "directions": 4
+    },
+    {
+      "name": "insignia-responsory",
+      "directions": 4
+    },
+    {
+      "name": "insignia-inquisitory",
+      "directions": 4
+    },
+    {
+      "name": "hydraulic",
+      "directions": 4,
+      "delays": [
+        [
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ],
+        [
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ],
+        [
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ],
+        [
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ]
+      ]
+    },
+    {
+      "name": "hydraulic_active",
+      "directions": 4,
+      "delays": [
+        [
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ],
+        [
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ],
+        [
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ],
+        [
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ]
+      ]
+    },
+    {
+      "name": "clamp_loader",
+      "directions": 4,
+      "delays": [
+        [
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ],
+        [
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ],
+        [
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ],
+        [
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ]
+      ]
+    },
+    {
+      "name": "magnet",
+      "directions": 4,
+      "delays": [
+        [
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ],
+        [
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ],
+        [
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ],
+        [
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ]
+      ]
+    },
+    {
+      "name": "flamethrower",
+      "directions": 4
+    },
+    {
+      "name": "flamethrower_on",
+      "directions": 4,
+      "delays": [
+        [
+          0.08,
+          0.08,
+          0.08,
+          0.08
+        ],
+        [
+          0.08,
+          0.08,
+          0.08,
+          0.08
+        ],
+        [
+          0.08,
+          0.08,
+          0.08,
+          0.08
+        ],
+        [
+          0.08,
+          0.08,
+          0.08,
+          0.08
+        ]
+      ]
+    },
+    {
+      "name": "pepper",
+      "directions": 4
+    },
+    {
+      "name": "pepper_used",
+      "directions": 4
+    },
+    {
+      "name": "mirage_grenade",
+      "directions": 4
+    },
+    {
+      "name": "threadripper",
+      "directions": 4
+    },
+    {
+      "name": "defibrillator",
+      "directions": 4
+    },
+    {
+      "name": "defibrillator_active",
+      "directions": 4,
+      "delays": [
+        [
+          0.15,
+          0.2,
+          0.2
+        ],
+        [
+          0.15,
+          0.2,
+          0.2
+        ],
+        [
+          0.15,
+          0.2,
+          0.2
+        ],
+        [
+          0.15,
+          0.2,
+          0.2
+        ]
+      ]
+    },
+    {
+      "name": "defibrillator_combat",
+      "directions": 4
+    },
+    {
+      "name": "defibrillator_combat_active",
+      "directions": 4,
+      "delays": [
+        [
+          0.15,
+          0.2,
+          0.2
+        ],
+        [
+          0.15,
+          0.2,
+          0.2
+        ],
+        [
+          0.15,
+          0.2,
+          0.2
+        ],
+        [
+          0.15,
+          0.2,
+          0.2
+        ]
+      ]
+    },
+    {
+      "name": "recycler",
+      "directions": 4
+    },
+    {
+      "name": "donk_recycler",
+      "directions": 4
+    },
+    {
+      "name": "donk_safe_recycler",
+      "directions": 4
+    },
+    {
+      "name": "fishing_glove",
+      "directions": 4
+    },
+    {
+      "name": "ball_mask"
+    },
+    {
+      "name": "bileworm_bracing",
+      "directions": 4
+    }
+  ]
+}

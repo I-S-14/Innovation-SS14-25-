@@ -1,0 +1,179 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from tgstation via BandaStation, https://github.com/tgstation/tgstation",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "core",
+      "delays": [
+        [
+          1.0,
+          0.1,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "core-infinite",
+      "delays": [
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ]
+      ]
+    },
+    {
+      "name": "core-standard",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "core-ethereal"
+    },
+    {
+      "name": "core-plasma",
+      "delays": [
+        [
+          0.3,
+          0.3,
+          0.3,
+          0.3
+        ]
+      ]
+    },
+    {
+      "name": "assembly-start"
+    },
+    {
+      "name": "assembly-core",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "assembly-screwed_core",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "assembly-helmet"
+    },
+    {
+      "name": "assembly-chestplate"
+    },
+    {
+      "name": "assembly-gauntlets"
+    },
+    {
+      "name": "assembly-boots"
+    },
+    {
+      "name": "assembly-wrenched_assembly"
+    },
+    {
+      "name": "assembly-screwed_assembly"
+    },
+    {
+      "name": "chestplate"
+    },
+    {
+      "name": "gauntlets"
+    },
+    {
+      "name": "boots"
+    },
+    {
+      "name": "helmet"
+    },
+    {
+      "name": "standard-plating"
+    },
+    {
+      "name": "psuit-plating"
+    },
+    {
+      "name": "civilian-plating"
+    },
+    {
+      "name": "engineering-plating"
+    },
+    {
+      "name": "atmospheric-plating"
+    },
+    {
+      "name": "medical-plating"
+    },
+    {
+      "name": "security-plating"
+    },
+    {
+      "name": "cosmohonk-plating"
+    },
+    {
+      "name": "paintkit"
+    },
+    {
+      "name": "skinapplier"
+    },
+    {
+      "name": "plasma-flower",
+      "delays": [
+        [
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ]
+      ]
+    },
+    {
+      "name": "core-plasma-flower",
+      "delays": [
+        [
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ]
+      ]
+    },
+    {
+      "name": "core-soul-base"
+    },
+    {
+      "name": "core-soul-shard",
+      "delays": [
+        [
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ]
+      ]
+    }
+  ]
+}

@@ -1,0 +1,271 @@
+# Базовые прототипы МОД-костюма.
+# Тема = прототип-наследник: переопределяет спрайты частей, броню, лимит сложности и расход.
+
+# ---------------------------------------------------------------- части костюма
+
+- type: entity
+  abstract: true
+  parent: ClothingHeadBase
+  id: IS14ModsuitPartHelmetBase
+  name: MOD helmet
+  description: A helmet piece of a modular suit.
+  components:
+  - type: ModsuitPart
+    slot: head
+    slotFlag: HEAD
+    # Целостность: шлем берёт на себя попадания в голову.
+    maxIntegrity: 250
+    coveredParts:
+    - Head
+    sealPopup: modsuit-seal-helmet
+    unsealPopup: modsuit-unseal-helmet
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.1
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      coolingCoefficient: 0.01
+      heatingCoefficient: 0.01
+  - type: Sprite
+    layers:
+    - state: helmet
+      map: ["enum.ModsuitVisualLayers.Base"]
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.ModsuitVisuals.Sealed:
+        enum.ModsuitVisualLayers.Base:
+          True: { state: helmet-sealed }
+          False: { state: helmet }
+  - type: Clothing
+    equipDelay: 0
+    unequipDelay: 0
+  - type: Item
+    size: Normal
+
+- type: entity
+  abstract: true
+  parent: ClothingOuterBase
+  id: IS14ModsuitPartChestplateBase
+  name: MOD chestplate
+  description: A chestplate piece of a modular suit.
+  components:
+  - type: ModsuitPart
+    slot: outerClothing
+    slotFlag: OUTERCLOTHING
+    maxIntegrity: 300
+    coveredParts:
+    - Chest
+    - Groin
+    sealPopup: modsuit-seal-chestplate
+    unsealPopup: modsuit-unseal-chestplate
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.1
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      coolingCoefficient: 0.01
+      heatingCoefficient: 0.01
+  - type: Sprite
+    layers:
+    - state: chestplate
+      map: ["enum.ModsuitVisualLayers.Base"]
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.ModsuitVisuals.Sealed:
+        enum.ModsuitVisualLayers.Base:
+          True: { state: chestplate-sealed }
+          False: { state: chestplate }
+  - type: Clothing
+    equipDelay: 0
+    unequipDelay: 0
+  - type: AllowSuitStorage
+
+- type: entity
+  abstract: true
+  parent: ClothingHandsBase
+  id: IS14ModsuitPartGauntletsBase
+  name: MOD gauntlets
+  description: A pair of gauntlets for a modular suit.
+  components:
+  - type: ModsuitPart
+    slot: gloves
+    slotFlag: GLOVES
+    maxIntegrity: 200
+    coveredParts:
+    - FullArms
+    sealPopup: modsuit-seal-gauntlets
+    unsealPopup: modsuit-unseal-gauntlets
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.1
+      lowPressureMultiplier: 1000
+  - type: Sprite
+    layers:
+    - state: gauntlets
+      map: ["enum.ModsuitVisualLayers.Base"]
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.ModsuitVisuals.Sealed:
+        enum.ModsuitVisualLayers.Base:
+          True: { state: gauntlets-sealed }
+          False: { state: gauntlets }
+  - type: Clothing
+    equipDelay: 0
+    unequipDelay: 0
+
+- type: entity
+  abstract: true
+  parent: ClothingShoesBase
+  id: IS14ModsuitPartBootsBase
+  name: MOD boots
+  description: A pair of boots for a modular suit.
+  components:
+  - type: ModsuitPart
+    slot: shoes
+    slotFlag: FEET
+    maxIntegrity: 200
+    coveredParts:
+    - FullLegs
+    sealPopup: modsuit-seal-boots
+    unsealPopup: modsuit-unseal-boots
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.1
+      lowPressureMultiplier: 1000
+  - type: Sprite
+    layers:
+    - state: boots
+      map: ["enum.ModsuitVisualLayers.Base"]
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.ModsuitVisuals.Sealed:
+        enum.ModsuitVisualLayers.Base:
+          True: { state: boots-sealed }
+          False: { state: boots }
+  - type: Clothing
+    equipDelay: 0
+    unequipDelay: 0
+
+# ------------------------------------------------------------- блок управления
+
+- type: entity
+  abstract: true
+  parent: Clothing
+  id: IS14ModsuitControlBase
+  name: MOD control unit
+  description: The control unit of a modular suit. Worn on the back.
+  components:
+  - type: Sprite
+    layers:
+    - state: control
+      map: ["enum.ModsuitVisualLayers.Base"]
+  - type: GenericVisualizer
+    visuals:
+      enum.ModsuitVisuals.Sealed:
+        enum.ModsuitVisualLayers.Base:
+          True: { state: control-sealed }
+          False: { state: control }
+  - type: Clothing
+    slots: [ back ]
+  - type: Item
+    size: Ginormous
+  - type: Appearance
+
+  # Слой шасси: модули, бюджет сложности, питание.
+  # Beam shape lives here: light modules only switch it on and set colour/radius.
+  # Unlike a handheld torch this light is switched from the suit UI, which is a
+  # server-side message — so the state has to be networked or the client stays dark.
+  - type: PointLight
+    enabled: false
+    mask: /Textures/Effects/LightMasks/cone.png
+    autoRot: true
+    radius: 4.5
+  - type: ModularChassis
+    maxComplexity: 15
+  - type: ChassisPower
+    baseDraw: 0.5
+  - type: ModCoreSlot
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        whitelist:
+          components:
+          - ModCore
+  - type: ContainerContainer
+    containers:
+      chassis-modules: !type:Container
+      modsuit-parts: !type:Container
+      mod-core: !type:ContainerSlot
+
+  # Слой костюма: части, развёртывание, герметизация.
+  - type: ModsuitControl
+  - type: ModsuitActions
+
+  # Wire panel: the screwdriver hands panel state to WiresSystem, and the chassis
+  # mirrors it (see SharedModularChassisSystem.Interaction).
+  - type: WiresPanel
+  - type: Wires
+    boardName: modsuit-wires-board
+    layoutId: IS14Modsuit
+  - type: ModsuitLock
+  - type: ModsuitSabotage
+  - type: AccessReader
+
+  - type: ActivatableUI
+    key: enum.ModularChassisUiKey.Key
+    inHandsOnly: false
+    requiresComplex: false
+    requireActiveHand: false
+  - type: UserInterface
+    interfaces:
+      enum.ModularChassisUiKey.Key:
+        type: ModularChassisBoundUserInterface
+      # Открывается кнопкой модуля хранения, а не кликом по костюму: клик занят
+      # основным интерфейсом.
+      enum.StorageUiKey.Key:
+        type: StorageBoundUserInterface
+
+# ----------------------------------------------------------------------- ядра
+
+- type: entity
+  parent: BaseItem
+  id: IS14ModCoreStandard
+  name: MOD standard core
+  description: A MOD core running off a swappable power cell.
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Modsuit/construction.rsi
+    state: core-standard
+  - type: Item
+    size: Small
+  - type: ModCore
+  - type: ItemSlots
+    slots:
+      cell_slot:
+        name: power-cell-slot-component-slot-name-default
+        startingItem: PowerCellMedium
+  - type: PowerCellSlot
+    cellSlotId: cell_slot
+  - type: ContainerContainer
+    containers:
+      cell_slot: !type:ContainerSlot
+
+- type: entity
+  parent: IS14ModCoreStandard
+  id: IS14ModCoreInfinite
+  name: MOD infinite core
+  description: A core that never needs charging. You should not have this.
+  components:
+  - type: Sprite
+    state: core-infinite
+  - type: ModCore
+    infinite: true
+  - type: ItemSlots
+    slots:
+      cell_slot:
+        name: power-cell-slot-component-slot-name-default

@@ -1,0 +1,45 @@
+# SPDX-License-Identifier: MIT
+#
+# Source files that shipped as stereo were downmixed to mono: SS14 positional
+# audio asserts on multi-channel streams. Nothing else about them was changed.
+
+- files:
+  - "atrocinator_step.ogg"
+  - "ballin.ogg"
+  - "ballout.ogg"
+  - "flamethrower.ogg"
+  - "inflate_bloon.ogg"
+  - "loader_charge.ogg"
+  - "loader_launch.ogg"
+  - "magnetic_harness.ogg"
+  - "rewinder.ogg"
+  - "springlock.ogg"
+  - "tem_shot.ogg"
+  - "time_anchor_set.ogg"
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from tgstation via BandaStation (sound/items/modsuit)."
+  source: "https://github.com/tgstation/tgstation"
+- files: ["part_move.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from tgstation via BandaStation (sound/vehicles/mecha/mechmove03.ogg)."
+  source: "https://github.com/tgstation/tgstation"
+- files: ["seal_complete.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from tgstation via BandaStation (sound/vehicles/mecha/nominal.ogg)."
+  source: "https://github.com/tgstation/tgstation"
+- files: ["fail.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from tgstation via BandaStation (sound/machines/scanner/scanbuzz.ogg)."
+  source: "https://github.com/tgstation/tgstation"
+- files: ["seal_part.ogg", "unseal_part.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from tgstation via BandaStation (sound/effects/compressed_air)."
+  source: "https://github.com/tgstation/tgstation"
+- files: ["hiss.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from tgstation via BandaStation (sound/effects/gas_hissing.ogg)."
+  source: "https://github.com/tgstation/tgstation"
+- files: ["module_click.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from tgstation via BandaStation (sound/machines/click.ogg)."
+  source: "https://github.com/tgstation/tgstation"

@@ -1,0 +1,195 @@
+# MVP production route: the exosuit fabricator prints cores, modules and finished suits.
+# The staged construction graph from the design doc replaces the whole-suit recipes later;
+# the module and core recipes carry over unchanged.
+
+- type: latheRecipe
+  id: IS14ModCoreStandard
+  result: IS14ModCoreStandard
+  categories:
+  - Robotics
+  completetime: 4
+  materials:
+    Steel: 500
+    Glass: 500
+    Plasma: 200
+
+# ------------------------------------------------------------------- модули
+
+- type: latheRecipe
+  id: IS14ModuleFlashlight
+  result: IS14ModuleFlashlight
+  categories:
+  - Robotics
+  completetime: 2
+  materials:
+    Steel: 200
+    Glass: 100
+
+- type: latheRecipe
+  id: IS14ModuleStorage
+  result: IS14ModuleStorage
+  categories:
+  - Robotics
+  completetime: 2
+  materials:
+    Steel: 300
+    Plastic: 200
+
+- type: latheRecipe
+  id: IS14ModuleStorageLarge
+  result: IS14ModuleStorageLarge
+  categories:
+  - Robotics
+  completetime: 3
+  materials:
+    Steel: 500
+    Plastic: 400
+
+- type: latheRecipe
+  id: IS14ModuleEmpShield
+  result: IS14ModuleEmpShield
+  categories:
+  - Robotics
+  completetime: 3
+  materials:
+    Steel: 300
+    Gold: 100
+
+- type: latheRecipe
+  id: IS14ModuleVisorMedical
+  result: IS14ModuleVisorMedical
+  categories:
+  - Robotics
+  completetime: 3
+  materials:
+    Steel: 200
+    Glass: 300
+    Silver: 100
+
+- type: latheRecipe
+  id: IS14ModuleVisorSecurity
+  result: IS14ModuleVisorSecurity
+  categories:
+  - Robotics
+  completetime: 3
+  materials:
+    Steel: 200
+    Glass: 300
+    Silver: 100
+
+- type: latheRecipe
+  id: IS14ModuleVisorNight
+  result: IS14ModuleVisorNight
+  categories:
+  - Robotics
+  completetime: 3
+  materials:
+    Steel: 200
+    Glass: 300
+    Uranium: 50
+
+- type: latheRecipe
+  id: IS14ModuleRadProtection
+  result: IS14ModuleRadProtection
+  categories:
+  - Robotics
+  completetime: 4
+  materials:
+    Steel: 400
+    Uranium: 100
+
+- type: latheRecipe
+  id: IS14ModuleMagboots
+  result: IS14ModuleMagboots
+  categories:
+  - Robotics
+  completetime: 3
+  materials:
+    Steel: 400
+    Gold: 100
+
+- type: latheRecipe
+  id: IS14ModuleThermalRegulator
+  result: IS14ModuleThermalRegulator
+  categories:
+  - Robotics
+  completetime: 3
+  materials:
+    Steel: 300
+    Plasma: 100
+
+- type: latheRecipe
+  id: IS14ModuleHealthAnalyzer
+  result: IS14ModuleHealthAnalyzer
+  categories:
+  - Robotics
+  completetime: 4
+  materials:
+    Steel: 400
+    Glass: 400
+    Silver: 100
+
+- type: latheRecipe
+  id: IS14ModuleWeldingProtection
+  result: IS14ModuleWeldingProtection
+  categories:
+  - Robotics
+  completetime: 2
+  materials:
+    Steel: 200
+    Glass: 200
+
+- type: latheRecipe
+  id: IS14ModuleDrill
+  result: IS14ModuleDrill
+  categories:
+  - Robotics
+  completetime: 4
+  materials:
+    Steel: 600
+    Gold: 100
+
+# ------------------------------------------------------------------ костюмы
+
+- type: latheRecipe
+  id: IS14ModsuitStandard
+  result: IS14ModsuitStandard
+  categories:
+  - Robotics
+  completetime: 8
+  materials:
+    Steel: 2000
+    Glass: 500
+    Plastic: 500
+
+- type: latheRecipe
+  id: IS14ModsuitEngineering
+  result: IS14ModsuitEngineering
+  categories:
+  - Robotics
+  completetime: 10
+  materials:
+    Steel: 2000
+    Glass: 500
+    Gold: 300
+    Plasma: 300
+
+- type: latheRecipePack
+  id: IS14ModsuitStatic
+  recipes:
+  - IS14ModCoreStandard
+  - IS14ModsuitStandard
+  - IS14ModsuitEngineering
+  - IS14ModuleFlashlight
+  - IS14ModuleStorage
+  - IS14ModuleStorageLarge
+  - IS14ModuleEmpShield
+  - IS14ModuleVisorMedical
+  - IS14ModuleVisorSecurity
+  - IS14ModuleVisorNight
+  - IS14ModuleRadProtection
+  - IS14ModuleMagboots
+  - IS14ModuleThermalRegulator
+  - IS14ModuleHealthAnalyzer
+  - IS14ModuleWeldingProtection
+  - IS14ModuleDrill

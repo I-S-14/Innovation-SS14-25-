@@ -1,0 +1,173 @@
+# Темы костюмов. Тема — это прототип-наследник: спрайты, броня, лимит сложности,
+# расход и набор встроенных модулей. Новая тема = один блок здесь плюс RSI.
+
+# =========================================================== СТАНДАРТНЫЙ
+
+- type: entity
+  parent: IS14ModsuitPartHelmetBase
+  id: IS14ModsuitHelmetStandard
+  name: standard MOD helmet
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/standard.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/standard.rsi
+
+- type: entity
+  parent: IS14ModsuitPartChestplateBase
+  id: IS14ModsuitChestplateStandard
+  name: standard MOD chestplate
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/standard.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/standard.rsi
+
+- type: entity
+  parent: IS14ModsuitPartGauntletsBase
+  id: IS14ModsuitGauntletsStandard
+  name: standard MOD gauntlets
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/standard.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/standard.rsi
+
+- type: entity
+  parent: IS14ModsuitPartBootsBase
+  id: IS14ModsuitBootsStandard
+  name: standard MOD boots
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/standard.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/standard.rsi
+
+- type: entity
+  parent: IS14ModsuitControlBase
+  id: IS14ModsuitStandard
+  name: standard MODsuit
+  description: A civilian modular suit by Nakamura Engineering. Nothing remarkable, but dependable.
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/standard.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/standard.rsi
+  - type: ModsuitControl
+    sealedSlowdown: 0.75
+    partPrototypes:
+      head: IS14ModsuitHelmetStandard
+      outerClothing: IS14ModsuitChestplateStandard
+      gloves: IS14ModsuitGauntletsStandard
+      shoes: IS14ModsuitBootsStandard
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        startingItem: IS14ModCoreStandard
+        whitelist:
+          components:
+          - ModCore
+
+# =========================================================== ИНЖЕНЕРНЫЙ
+
+- type: entity
+  parent: IS14ModsuitPartHelmetBase
+  id: IS14ModsuitHelmetEngineering
+  name: engineering MOD helmet
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/engineering.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/engineering.rsi
+
+- type: entity
+  parent: IS14ModsuitPartChestplateBase
+  id: IS14ModsuitChestplateEngineering
+  name: engineering MOD chestplate
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/engineering.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/engineering.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Radiation: 0.2
+        Heat: 0.8
+
+- type: entity
+  parent: IS14ModsuitPartGauntletsBase
+  id: IS14ModsuitGauntletsEngineering
+  name: engineering MOD gauntlets
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/engineering.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/engineering.rsi
+
+- type: entity
+  parent: IS14ModsuitPartBootsBase
+  id: IS14ModsuitBootsEngineering
+  name: engineering MOD boots
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/engineering.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/engineering.rsi
+
+- type: entity
+  parent: IS14ModsuitControlBase
+  id: IS14ModsuitEngineering
+  name: engineering MODsuit
+  description: The Nakamura Engineering classic. Holds off heat and radiation at the cost of mobility.
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/engineering.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/engineering.rsi
+  - type: ModsuitControl
+    sealedSlowdown: 1.0
+    partPrototypes:
+      head: IS14ModsuitHelmetEngineering
+      outerClothing: IS14ModsuitChestplateEngineering
+      gloves: IS14ModsuitGauntletsEngineering
+      shoes: IS14ModsuitBootsEngineering
+  - type: ModularChassis
+    maxComplexity: 15
+    integratedModules:
+    - IS14ModuleRadProtection
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        startingItem: IS14ModCoreStandard
+        whitelist:
+          components:
+          - ModCore
+
+# ============================================= отладочный набор для теста
+
+- type: entity
+  parent: IS14ModsuitEngineering
+  id: IS14ModsuitDebug
+  name: debug MODsuit
+  description: Every module and an infinite core. For testing.
+  components:
+  - type: ModularChassis
+    maxComplexity: 50
+    integratedModules:
+    - IS14ModuleFlashlight
+    - IS14ModuleStorage
+    - IS14ModuleVisorMedical
+    - IS14ModuleMagboots
+    - IS14ModuleThermalRegulator
+    - IS14ModuleHealthAnalyzer
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        startingItem: IS14ModCoreInfinite
+        whitelist:
+          components:
+          - ModCore

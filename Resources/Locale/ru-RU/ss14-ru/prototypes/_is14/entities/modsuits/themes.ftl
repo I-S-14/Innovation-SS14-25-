@@ -1,0 +1,14 @@
+ent-IS14ModsuitHelmetStandard = стандартный МОД-шлем
+ent-IS14ModsuitChestplateStandard = стандартный МОД-нагрудник
+ent-IS14ModsuitGauntletsStandard = стандартные МОД-перчатки
+ent-IS14ModsuitBootsStandard = стандартные МОД-ботинки
+ent-IS14ModsuitStandard = стандартный МОД-костюм
+    .desc = Гражданский модульный костюм Nakamura Engineering. Ничего выдающегося, зато надёжен.
+ent-IS14ModsuitHelmetEngineering = инженерный МОД-шлем
+ent-IS14ModsuitChestplateEngineering = инженерный МОД-нагрудник
+ent-IS14ModsuitGauntletsEngineering = инженерные МОД-перчатки
+ent-IS14ModsuitBootsEngineering = инженерные МОД-ботинки
+ent-IS14ModsuitEngineering = инженерный МОД-костюм
+    .desc = Классика Nakamura Engineering. Держит жар и радиацию, но сковывает движения.
+ent-IS14ModsuitDebug = отладочный МОД-костюм
+    .desc = Со всеми модулями и бесконечным ядром. Для тестов.

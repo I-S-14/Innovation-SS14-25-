@@ -1,0 +1,308 @@
+# Каталог модулей. Почти всё здесь — чистый YAML поверх библиотеки поведений;
+# собственный C# нужен только там, где механика действительно уникальна.
+
+- type: entity
+  abstract: true
+  parent: BaseItem
+  id: IS14ModuleBase
+  name: MOD module
+  description: A module for a modular suit.
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Modsuit/modules.rsi
+    state: module
+  - type: Item
+    size: Small
+  - type: ChassisModule
+
+# --------------------------------------------------------------------- общие
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleFlashlight
+  name: MOD flashlight module
+  description: A cluster of LEDs built into the suit helmet.
+  components:
+  - type: Sprite
+    state: flashlight
+  - type: ChassisModule
+    kind: Toggleable
+    complexity: 1
+    activeDraw: 0.3
+    requiredSlots:
+    - HEAD
+  - type: ModuleLight
+    color: "#ffdbad"
+    radius: 4.5
+    energy: 3
+  - type: ModuleWornOverlay
+    rsi: _IS14/Clothing/Modsuits/module_overlays.rsi
+    targetSlot: HEAD
+    stateInactive: light
+    stateActive: light_on
+    unshaded: true
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleStorage
+  name: MOD storage module
+  description: A network of compartments built across the suit surface.
+  components:
+  - type: Sprite
+    state: storage
+  - type: ChassisModule
+    # Кнопка в интерфейсе открывает отсеки; шасси для этого включать не нужно.
+    kind: Usable
+    actionText: chassis-ui-module-open
+    actionIcon: /Textures/Interface/VerbIcons/open.svg.192dpi.png
+    allow: ChassisInactive
+    complexity: 3
+    conflicts:
+    - IS14ModsuitStorage
+  - type: Tag
+    tags:
+    - IS14ModsuitStorage
+  - type: ModuleStorage
+    grid:
+    - 0,0,5,3
+
+- type: entity
+  parent: IS14ModuleStorage
+  id: IS14ModuleStorageLarge
+  name: MOD expanded storage module
+  description: Hidden compartments spread the load so the cargo is barely felt.
+  components:
+  - type: Sprite
+    state: storage_large
+  - type: ChassisModule
+    complexity: 5
+    conflicts:
+    - IS14ModsuitStorage
+  - type: ModuleStorage
+    grid:
+    - 0,0,7,4
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleEmpShield
+  name: MOD EMP shield module
+  description: Shielding that damps out induced pulses.
+  components:
+  - type: Sprite
+    state: empshield
+  - type: ChassisModule
+    complexity: 3
+    idleDraw: 0.15
+  - type: ModuleGrantComponents
+    target: Chassis
+    components:
+    - type: EmpResistance
+      strengthMultiplier: 0.2
+      durationMultiplier: 0.2
+
+# ------------------------------------------------------------------ визоры
+# Все визоры несут один тег, поэтому исключают друг друга, но уживаются
+# с не-визорными модулями зрения.
+
+- type: entity
+  abstract: true
+  parent: IS14ModuleBase
+  id: IS14ModuleVisorBase
+  components:
+  - type: ChassisModule
+    kind: Toggleable
+    complexity: 2
+    activeDraw: 0.15
+    requiredSlots:
+    - HEAD
+    conflicts:
+    - IS14ModsuitVisor
+  - type: Tag
+    tags:
+    - IS14ModsuitVisor
+
+- type: entity
+  parent: IS14ModuleVisorBase
+  id: IS14ModuleVisorMedical
+  name: MOD medical visor module
+  description: Projects medical readouts straight onto the helmet visor.
+  components:
+  - type: Sprite
+    state: medhud_visor
+  - type: ModuleGrantComponents
+    requireActive: true
+    components:
+    - type: ShowHealthBars
+      damageContainers:
+      - Biological
+    - type: ShowHealthIcons
+      damageContainers:
+      - Biological
+
+- type: entity
+  parent: IS14ModuleVisorBase
+  id: IS14ModuleVisorSecurity
+  name: MOD security visor module
+  description: Ties the visor into security databases.
+  components:
+  - type: Sprite
+    state: sechud_visor
+  - type: ModuleGrantComponents
+    requireActive: true
+    components:
+    - type: ShowJobIcons
+    - type: ShowMindShieldIcons
+    - type: ShowCriminalRecordIcons
+
+- type: entity
+  parent: IS14ModuleVisorBase
+  id: IS14ModuleVisorNight
+  name: MOD night visor module
+  description: Amplifies residual light, washing the view green.
+  components:
+  - type: Sprite
+    state: night_visor
+  - type: ModuleGrantComponents
+    requireActive: true
+    components:
+    - type: NightVision
+
+# ---------------------------------------------------------------- инженерия
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleRadProtection
+  name: MOD radiation protection module
+  description: A layer of absorber woven into the plating.
+  components:
+  - type: Sprite
+    state: radshield
+  - type: ChassisModule
+    complexity: 4
+    idleDraw: 0.15
+    requiredSlots:
+    - OUTERCLOTHING
+  - type: ModuleGrantComponents
+    components:
+    - type: RadiationProtection
+      modifier: PotassiumIodide
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleMagboots
+  name: MOD magnetic stability module
+  description: Powerful electromagnets in the soles.
+  components:
+  - type: Sprite
+    state: magnet
+  - type: ChassisModule
+    kind: Toggleable
+    complexity: 3
+    activeDraw: 0.8
+    requiredSlots:
+    - FEET
+  - type: ModuleGrantComponents
+    requireActive: true
+    components:
+    - type: NoSlip
+  # Даёт статус-иконку, иммунитет к разгерметизационному ветру и отмену невесомости.
+  - type: ModuleMagboots
+  - type: ModuleWornOverlay
+    rsi: _IS14/Clothing/Modsuits/module_overlays.rsi
+    targetSlot: FEET
+    stateActive: magnet
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleThermalRegulator
+  name: MOD thermal regulator module
+  description: Holds the wearer at a comfortable temperature.
+  components:
+  - type: Sprite
+    state: regulator
+  - type: ChassisModule
+    kind: Toggleable
+    complexity: 2
+    activeDraw: 0.5
+    requiredSlots:
+    - OUTERCLOTHING
+  - type: ModuleGrantComponents
+    requireActive: true
+    target: Chassis
+    components:
+    - type: TemperatureProtection
+      coolingCoefficient: 0.005
+      heatingCoefficient: 0.005
+
+# ----------------------------------------------------------------- медицина
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleHealthAnalyzer
+  name: MOD health analyzer module
+  description: A scanning suite that unfolds from the gauntlet.
+  components:
+  - type: Sprite
+    state: health
+  - type: ChassisModule
+    kind: Active
+    complexity: 2
+    useCost: 5
+    requiredSlots:
+    - GLOVES
+  - type: ModuleItem
+    devicePrototype: IS14ModsuitHealthAnalyzer
+  - type: ContainerContainer
+    containers:
+      module-device: !type:ContainerSlot
+
+# ------------------------------------------- модули с наносимым визуалом
+# Состояния берутся из module_overlays.rsi (конвертация mob/mod_modules.dmi).
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleWeldingProtection
+  name: MOD welding protection module
+  description: A polarised holographic overlay across the visor, rated for arc welding and solar eclipses alike.
+  components:
+  - type: Sprite
+    state: welding
+  - type: ChassisModule
+    kind: Toggleable
+    complexity: 2
+    activeDraw: 0.15
+    requiredSlots:
+    - HEAD
+  - type: ModuleGrantComponents
+    requireActive: true
+    components:
+    - type: EyeProtection
+  - type: ModuleWornOverlay
+    rsi: _IS14/Clothing/Modsuits/module_overlays.rsi
+    targetSlot: HEAD
+    stateActive: welding
+    unshaded: true
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleDrill
+  name: MOD drill module
+  description: A diamond-tipped drill that folds out of the gauntlet.
+  components:
+  - type: Sprite
+    state: drill
+  - type: ChassisModule
+    kind: Active
+    complexity: 4
+    useCost: 10
+    requiredSlots:
+    - GLOVES
+  - type: ModuleItem
+    devicePrototype: IS14ModsuitMiningDrill
+  - type: ContainerContainer
+    containers:
+      module-device: !type:ContainerSlot
+  - type: ModuleWornOverlay
+    rsi: _IS14/Clothing/Modsuits/module_overlays.rsi
+    targetSlot: GLOVES
+    stateActive: drill
