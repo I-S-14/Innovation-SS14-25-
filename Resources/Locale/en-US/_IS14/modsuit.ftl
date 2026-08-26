@@ -62,14 +62,17 @@ chassis-ui-part-stowed = stowed
 chassis-ui-part-deployed = deployed
 chassis-ui-part-sealed = sealed
 chassis-ui-part-broken = beaten in
+chassis-ui-part-ruptured = split open
 chassis-ui-kind-passive = passive
 chassis-ui-kind-toggleable = toggleable
 chassis-ui-kind-usable = usable
 chassis-ui-kind-active = active
-chassis-ui-module-complexity = Complexity { $value }
-chassis-ui-module-idle = { $value } W idle
-chassis-ui-module-active = { $value } W active
-chassis-ui-module-use = { $value } J per use
+chassis-ui-module-idle = { $value } W
+chassis-ui-module-active = { $value } W
+chassis-ui-module-use = { $value } J
+chassis-ui-module-idle-tooltip = Drawn while installed
+chassis-ui-module-active-tooltip = Drawn while switched on
+chassis-ui-module-use-tooltip = Spent per use
 chassis-ui-module-on = Switch on
 chassis-ui-module-off = Switch off
 chassis-ui-module-use-button = Use
@@ -99,6 +102,7 @@ chassis-ui-electrified = Electrified
 chassis-ui-interface-broken = Interface damaged
 chassis-ui-panel-shut = closed
 chassis-ui-hw-core = Core
+chassis-ui-hw-cell = Cell
 chassis-ui-hw-panel = Panel
 chassis-ui-hw-lock = ID lock
 chassis-ui-hw-draw = Draw
@@ -109,6 +113,15 @@ chassis-ui-hw-hint = A screwdriver opens the panel, a crowbar pulls modules, an 
 
 # ID lock and sabotage
 
+modsuit-breach-fold-instead = Fold it away from the suit panel.
+modsuit-breach-not-subdued = They are still on their feet — restrain them first.
+modsuit-breach-not-yours = The panel answers only to whoever is wearing it.
+modsuit-breach-released = The suit unseals and folds away.
+modsuit-breach-cutting = You cut into the { $part }.
+modsuit-breach-already-cut = The { $part } is already cut through.
+modsuit-breach-nothing-there = Nothing covers what you are aiming at.
+modsuit-lock-override = The suit acknowledges the card and lets go.
+wire-name-mod-release = RLS
 modsuit-lock-denied = Access denied.
 modsuit-lock-engaged = The lock engages.
 modsuit-lock-released = The lock releases.
@@ -145,5 +158,61 @@ chassis-ui-module-open = Open
 
 chassis-ui-integrity = Integrity
 chassis-ui-integrity-value = { $current } / { $max }
-chassis-ui-integrity-broken = Too battered to carry its modules. The seal still holds.
+chassis-ui-status-seal = Pressure seal
+chassis-ui-status-modules = Hardpoints
+chassis-ui-fault-structural = Bent plating — weld it.
+chassis-ui-fault-electrical = Burnt wiring — run new cable.
 modsuit-part-broken = The { $part } buckles — its hardpoints go dead.
+modsuit-part-ruptured = The { $part } splits open and blows its seal.
+modsuit-part-cannot-seal = The { $part } is too far gone to close.
+modsuit-no-storage = No compartments on this suit.
+
+# Servicing
+
+modsuit-repair-done = You work the { $part } back into shape.
+modsuit-repair-needs-welder = This piece has bent plating. It wants a welder.
+modsuit-repair-needs-cable = This piece has burnt wiring. It wants cable.
+modsuit-repair-no-cable = Not enough cable left.
+
+chassis-device-no-power = The suit has nothing left to run that on.
+chassis-device-no-hands = You need both hands free for the { $device }.
+chassis-ui-module-details = Show what this does.
+
+modsuit-core-full = The core is already full.
+modsuit-core-refuelled = You feed { $count } of the { $fuel } into the core.
+
+# Tank
+
+chassis-ui-tank = Bottle
+chassis-ui-tank-value = { $kpa } kPa
+chassis-ui-tank-idle = compressor idle
+chassis-ui-tank-seal = Airtight seal
+chassis-ui-tank-internals = Breathe from bottle
+chassis-ui-tank-internals-off = Stop breathing from bottle
+chassis-ui-tank-internals-tooltip = Feeds the wearer from the suit's own bottle instead of the air around them.
+chassis-ui-tank-internals-needs-seal = Every piece has to be sealed and the valve shut.
+chassis-ui-tank-unsealed = The compressor needs a sealed chestplate.
+chassis-ui-tank-temperature = { $celsius } °C
+chassis-ui-tank-empty = empty
+chassis-ui-tank-share = { $percent }%
+chassis-ui-tank-rest = trace { $percent }%
+chassis-ui-tank-valve = Open valve
+chassis-ui-tank-valve-close = Close valve
+chassis-ui-tank-valve-tooltip = Vents the bottle into the room. Internals cannot run through an open valve.
+chassis-ui-tank-pump-tooltip = Runs the compressor while the suit is closed up.
+chassis-ui-no-tank = no tank
+
+chassis-jetpack-no-gas = The thrusters have nothing to push against.
+chassis-ui-eject-cell = Eject cell
+chassis-ui-eject-cell-tooltip = Puts the core's power cell into your hand.
+chassis-ui-insert-cell = Insert cell
+chassis-ui-insert-cell-tooltip = Puts the cell you are holding into the core.
+chassis-ui-no-cell = no cell
+chassis-ui-hopper = Fuel hopper
+chassis-ui-hopper-tooltip = Load the core with fuel. It burns what it needs as it needs it.
+chassis-config-open-storage = Open
+chassis-config-pump = Compressor
+chassis-config-gas-oxygen = Oxygen
+chassis-config-gas-nitrogen = Nitrogen
+chassis-config-gas-carbondioxide = CO2
+chassis-config-gas-plasma = Plasma

@@ -9,6 +9,7 @@ using Content.Shared.Emag.Components;
 using Content.Shared.Emag.Systems;
 using Content.Shared.Interaction;
 using Content.Shared.Popups;
+using Content.Shared.Wires;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Timing;
@@ -59,6 +60,7 @@ public sealed class SharedModsuitLockSystem : EntitySystem
 
         ent.Comp.Locked = locked;
         Dirty(ent);
+        Announce(ent);
     }
 
     /// <summary>
@@ -71,6 +73,7 @@ public sealed class SharedModsuitLockSystem : EntitySystem
         ent.Comp.AccessWiped = true;
         ent.Comp.Locked = false;
         Dirty(ent);
+        Announce(ent);
     }
 
     /// <summary>
@@ -91,6 +94,19 @@ public sealed class SharedModsuitLockSystem : EntitySystem
         {
             _popup.PopupClient(Loc.GetString("modsuit-lock-denied"), ent, args.User);
             _audio.PlayPredicted(DenySound, ent, args.User);
+            return;
+        }
+
+        // An authorised card on an open panel is an override, not a toggle: the suit
+        // belongs to a department, and the department can get its own hardware back off
+        // whoever is standing in it. A closed panel is just the everyday lock.
+        if (IsPanelOpen(ent))
+        {
+            var release = new ModsuitForceReleaseEvent(args.User);
+            RaiseLocalEvent(ent, ref release);
+
+            _popup.PopupClient(Loc.GetString("modsuit-lock-override"), ent, args.User);
+            _audio.PlayPredicted(LockSound, ent, args.User);
             return;
         }
 
@@ -131,6 +147,16 @@ public sealed class SharedModsuitLockSystem : EntitySystem
         }
     }
 
+    /// <summary>
+    ///     Whether the maintenance panel is open. The panel is what separates "swipe to
+    ///     lock" from "swipe to force it open" — you have to have got a screwdriver into
+    ///     it first, which means the wearer was already in no position to object.
+    /// </summary>
+    private bool IsPanelOpen(EntityUid uid)
+    {
+        return TryComp<WiresPanelComponent>(uid, out var panel) && panel.Open;
+    }
+
     #endregion
 
     #region Sabotage
@@ -147,6 +173,7 @@ public sealed class SharedModsuitLockSystem : EntitySystem
 
         ent.Comp.InterfaceBroken = broken;
         Dirty(ent);
+        Announce(ent);
     }
 
     public void SetMalfunctioning(EntityUid uid, bool malfunctioning)
@@ -156,6 +183,25 @@ public sealed class SharedModsuitLockSystem : EntitySystem
 
         power.Malfunctioning = malfunctioning;
         Dirty(uid, power);
+        Announce(uid);
+    }
+
+    /// <summary>
+    ///     Whether somebody has already taken the emergency release out of the picture.
+    /// </summary>
+    public bool IsReleaseCut(EntityUid uid)
+    {
+        return TryComp<ModsuitSabotageComponent>(uid, out var comp) && comp.ReleaseCut;
+    }
+
+    public void SetReleaseCut(Entity<ModsuitSabotageComponent> ent, bool cut)
+    {
+        if (ent.Comp.ReleaseCut == cut)
+            return;
+
+        ent.Comp.ReleaseCut = cut;
+        Dirty(ent);
+        Announce(ent);
     }
 
     public bool IsElectrified(Entity<ModsuitSabotageComponent> ent)
@@ -176,6 +222,7 @@ public sealed class SharedModsuitLockSystem : EntitySystem
         }
 
         Dirty(ent);
+        Announce(ent);
     }
 
     public void ClearElectrification(Entity<ModsuitSabotageComponent> ent)
@@ -183,6 +230,18 @@ public sealed class SharedModsuitLockSystem : EntitySystem
         ent.Comp.PermanentlyElectrified = false;
         ent.Comp.ElectrifiedUntil = null;
         Dirty(ent);
+        Announce(ent);
+    }
+
+    /// <summary>
+    ///     Tells the suit its security state moved. Nothing here can depend on the suit
+    ///     system directly — that one already depends on this one — so the panel is told
+    ///     through an event rather than reached for.
+    /// </summary>
+    private void Announce(EntityUid uid)
+    {
+        var ev = new ModsuitSecurityChangedEvent();
+        RaiseLocalEvent(uid, ref ev);
     }
 
     #endregion

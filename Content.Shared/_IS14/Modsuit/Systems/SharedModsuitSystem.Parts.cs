@@ -129,8 +129,9 @@ public sealed partial class SharedModsuitSystem
             return false;
         }
 
-        EnsureComp<UnremoveableComponent>(part).DeleteOnDrop = false;
-
+        // Deployed plating is worn, not welded on. What holds a piece to a body is the
+        // seal, and that is applied in SetPartSealed — an open suit can be taken off
+        // somebody, which is the only reason security has any answer to a MOD at all.
         partComp.Deployed = true;
         Dirty(part, partComp);
 
@@ -229,6 +230,11 @@ public sealed partial class SharedModsuitSystem
 
         RemComp<UnremoveableComponent>(part);
 
+        // Cleared before the unequip, not after: the strip hook keys off this flag to
+        // tell "somebody pulled it off a body" from "the suit folded it away itself".
+        partComp.Deployed = false;
+        Dirty(part, partComp);
+
         if (ent.Comp.Wearer is { } wearer)
             _inventory.TryUnequip(wearer, partComp.Slot, force: true, predicted: true);
 
@@ -237,9 +243,6 @@ public sealed partial class SharedModsuitSystem
             Log.Warning($"Could not fold {ToPrettyString(part)} back into {ToPrettyString(ent)}.");
             return false;
         }
-
-        partComp.Deployed = false;
-        Dirty(part, partComp);
 
         // Give the player their own gear back now the slot is free again.
         if (ent.Comp.Wearer is { } stillWorn)
@@ -304,6 +307,7 @@ public sealed partial class SharedModsuitSystem
         // for a costume that was back in its case.
         SetActive(ent, IsAnyPartSealed(ent));
 
+        RefreshBreathing(ent);
         UpdateSealActionState(ent);
         UpdateUi(ent);
     }

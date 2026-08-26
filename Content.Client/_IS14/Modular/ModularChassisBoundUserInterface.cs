@@ -23,6 +23,11 @@ public sealed class ModularChassisBoundUserInterface : BoundUserInterface
         _window.OnToggleDeploy += () => SendMessage(new ChassisToggleDeployMessage());
         _window.OnSelectModule += module => SendMessage(new ChassisSelectModuleMessage(module));
         _window.OnEjectModule += module => SendMessage(new ChassisEjectModuleMessage(module));
+        _window.OnEjectCell += () => SendMessage(new ChassisEjectCellMessage());
+        _window.OnInsertCell += () => SendMessage(new ChassisInsertCellMessage());
+        _window.OnOpenHopper += () => SendMessage(new ChassisOpenHopperMessage());
+        _window.OnConfigureModule += (module, key, value) =>
+            SendMessage(new ChassisConfigureModuleMessage(module, key, value));
         _window.OnTogglePart += part => SendMessage(new ChassisTogglePartMessage(part));
         _window.OnSealPart += part => SendMessage(new ChassisSealPartMessage(part));
     }

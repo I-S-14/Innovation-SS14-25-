@@ -26,7 +26,7 @@
     storedRotation: -90
 
 - type: entity
-  parent: MiningDrill
+  parent: MiningDrillDiamond
   id: IS14ModsuitMiningDrill
   name: MOD drill
   description: A diamond-tipped drill that folds out of a MOD suit gauntlet. It answers to the suit, not to you.
@@ -37,3 +37,63 @@
   - type: Item
     sprite: Objects/Tools/handdrill.rsi
     storedRotation: -90
+
+- type: entity
+  parent: DefibrillatorOneHandedUnpowered
+  id: IS14ModsuitDefibrillator
+  name: MOD defibrillator
+  description: Paddles that fold out of a MOD suit gauntlet. They answer to the suit, not to you.
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Modsuit/modules.rsi
+    layers:
+    - state: defibrillator
+  - type: Item
+    sprite: Objects/Specific/Medical/defib.rsi
+    storedRotation: -90
+  # Электроды держат двумя руками. Если вторая занята, модуль просто не развернётся.
+  - type: MultiHandedItem
+
+- type: entity
+  parent: RCD
+  id: IS14ModsuitRcd
+  name: MOD constructor
+  description: A construction head that folds out of a MOD suit gauntlet. The suit spins its matter back up on its own.
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Modsuit/modules.rsi
+    state: constructor
+  - type: Item
+    sprite: Objects/Tools/rcd.rsi
+    storedRotation: -90
+  # Матрица костюма восстанавливает заряд сама: снабжать модуль картриджами
+  # означало бы носить с собой то, ради чего модуль и ставят.
+  - type: LimitedCharges
+    maxCharges: 30
+  - type: AutoRecharge
+    rechargeDuration: 8
+
+# Облако перцового модуля: самосрабатывающая сущность, чтобы вся химия жила в YAML,
+# а модуль только ставил её под ноги нападающему.
+- type: entity
+  parent: BaseItem
+  id: IS14ModsuitPepperBurst
+  name: pepper burst
+  description: You should not be seeing this.
+  noSpawn: true
+  components:
+  - type: Sprite
+    sprite: Objects/Weapons/Grenades/tear_gas.rsi
+    state: icon
+    visible: false
+  - type: TriggerOnSpawn
+  - type: SmokeOnTrigger
+    duration: 5
+    spreadAmount: 10
+    smokePrototype: TearGasSmokeWhite
+    solution:
+      reagents:
+      - ReagentId: TearGas
+        Quantity: 15
+  - type: TimedDespawn
+    lifetime: 3

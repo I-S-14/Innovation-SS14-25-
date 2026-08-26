@@ -5,3 +5,4 @@
   - !type:ModsuitMalfunctionWireAction
   - !type:ModsuitShockWireAction
   - !type:ModsuitInterfaceWireAction
+  - !type:ModsuitReleaseWireAction

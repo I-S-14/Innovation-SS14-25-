@@ -78,6 +78,7 @@ public sealed partial class ActivatableUISystem : EntitySystem
         args.Verbs.Add(new ActivationVerb
         {
             Act = () => InteractUI(args.User, uid, component),
+            Priority = component.VerbPriority, //IS14-change
             Text = Loc.GetString(component.VerbText),
             // TODO VERB ICON find a better icon
             Icon = new SpriteSpecifier.Texture(new ResPath("/Textures/Interface/VerbIcons/settings.svg.192dpi.png")),
@@ -106,6 +107,7 @@ public sealed partial class ActivatableUISystem : EntitySystem
         args.Verbs.Add(new AlternativeVerb
         {
             Act = () => InteractUI(args.User, uid, component),
+            Priority = component.VerbPriority, //IS14-change
             Text = Loc.GetString(component.VerbText),
             // TODO VERB ICON find a better icon
             Icon = new SpriteSpecifier.Texture(new ResPath("/Textures/Interface/VerbIcons/settings.svg.192dpi.png")),

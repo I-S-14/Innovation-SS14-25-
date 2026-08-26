@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using Content.Shared._IS14.Modular.Components;
 using Content.Shared.Inventory;
 using Content.Shared.DoAfter;
+using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Popups;
 using Content.Shared.Tools.Systems;
 using Content.Shared.Tag;
@@ -25,6 +26,7 @@ public sealed partial class SharedModularChassisSystem : EntitySystem
     [Dependency] private readonly INetManager _net = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly SharedContainerSystem _container = default!;
+    [Dependency] private readonly SharedHandsSystem _hands = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly TagSystem _tag = default!;
     [Dependency] private readonly SharedChassisModuleSystem _modules = default!;
@@ -278,6 +280,12 @@ public sealed partial class SharedModularChassisSystem : EntitySystem
         if (!TryGetModuleContainer(chassis, out var container) || !_container.Remove(module.Owner, container))
             return false;
 
+        // A module pulled from the panel belongs in the hands of whoever is wearing the
+        // thing, not on the floor behind them. PickupOrDrop already falls through to the
+        // floor when there is no free hand.
+        if ((GetOperator(chassis) ?? user) is { } recipient)
+            _hands.PickupOrDrop(recipient, module.Owner);
+
         if (user != null)
         {
             _popup.PopupClient(Loc.GetString("chassis-module-removed", ("module", Name(module))), chassis, user.Value);
@@ -378,6 +386,20 @@ public sealed partial class SharedModularChassisSystem : EntitySystem
 
         ent.Comp.PanelOpen = open;
         Dirty(ent);
+
+        var ev = new ChassisPanelChangedEvent(open);
+        RaiseLocalEvent(ent, ref ev);
+    }
+
+    /// <summary>
+    ///     Whoever is operating this chassis — the wearer of a suit, the pilot of a mech.
+    /// </summary>
+    public EntityUid? GetOperator(EntityUid chassis)
+    {
+        var ev = new ChassisGetUserEvent(null);
+        RaiseLocalEvent(chassis, ref ev);
+
+        return ev.User;
     }
 
     /// <summary>

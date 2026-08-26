@@ -1,0 +1,51 @@
+# Гайдбук по МОД-костюмам. Верхняя запись попадает в корень оглавления сама:
+# корнем становится всё, что не указано ничьим ребёнком.
+
+- type: guideEntry
+  id: IS14Modsuits
+  name: "МОД-костюм"
+  priority: 5
+  text: "/ServerInfo/_IS14/Guidebook/Modsuit/Modsuit.xml"
+  children:
+  - IS14ModsuitsStart
+  - IS14ModsuitsCore
+  - IS14ModsuitsModules
+  - IS14ModsuitsAir
+  - IS14ModsuitsDamage
+  - IS14ModsuitsSecurity
+
+- type: guideEntry
+  id: IS14ModsuitsStart
+  name: "С чего начать"
+  priority: 0
+  text: "/ServerInfo/_IS14/Guidebook/Modsuit/Start.xml"
+
+- type: guideEntry
+  id: IS14ModsuitsCore
+  name: "Ядро и питание"
+  priority: 1
+  text: "/ServerInfo/_IS14/Guidebook/Modsuit/Core.xml"
+
+- type: guideEntry
+  id: IS14ModsuitsModules
+  name: "Модули и сложность"
+  priority: 2
+  text: "/ServerInfo/_IS14/Guidebook/Modsuit/Modules.xml"
+
+- type: guideEntry
+  id: IS14ModsuitsAir
+  name: "Баллон и дыхание"
+  priority: 3
+  text: "/ServerInfo/_IS14/Guidebook/Modsuit/Air.xml"
+
+- type: guideEntry
+  id: IS14ModsuitsDamage
+  name: "Повреждения и ремонт"
+  priority: 4
+  text: "/ServerInfo/_IS14/Guidebook/Modsuit/Damage.xml"
+
+- type: guideEntry
+  id: IS14ModsuitsSecurity
+  name: "Замок, провода и взлом"
+  priority: 5
+  text: "/ServerInfo/_IS14/Guidebook/Modsuit/Security.xml"

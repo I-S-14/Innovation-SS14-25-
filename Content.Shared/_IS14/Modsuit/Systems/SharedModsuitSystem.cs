@@ -5,12 +5,19 @@ using Content.Shared._IS14.Modsuit.Components;
 using Content.Shared._IS14.Modular;
 using Content.Shared._IS14.Modular.Components;
 using Content.Shared._IS14.Modular.Systems;
+using Content.Shared.ActionBlocker;
 using Content.Shared.Actions;
 using Content.Shared.DoAfter;
 using Content.Shared.Inventory;
 using Content.Shared.Inventory.Events;
 using Content.Shared.Access.Systems;
+using Content.Shared.Interaction;
 using Content.Shared.Popups;
+using Content.Shared.Storage;
+using Content.Shared.Storage.EntitySystems;
+using Content.Shared.Stacks;
+using Content.Shared.Tag;
+using Content.Shared.Tools.Systems;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Containers;
 using Robust.Shared.Map;
@@ -27,7 +34,9 @@ namespace Content.Shared._IS14.Modsuit.Systems;
 public sealed partial class SharedModsuitSystem : EntitySystem
 {
     [Dependency] private readonly INetManager _net = default!;
+    [Dependency] private readonly ActionBlockerSystem _actionBlocker = default!;
     [Dependency] private readonly SharedActionsSystem _actions = default!;
+    [Dependency] private readonly SharedInteractionSystem _interaction = default!;
     [Dependency] private readonly InventorySystem _inventory = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly SharedContainerSystem _container = default!;
@@ -35,6 +44,10 @@ public sealed partial class SharedModsuitSystem : EntitySystem
     [Dependency] private readonly ChassisPowerSystem _power = default!;
     [Dependency] private readonly SharedModularChassisSystem _chassis = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
+    [Dependency] private readonly SharedStackSystem _stack = default!;
+    [Dependency] private readonly SharedStorageSystem _storage = default!;
+    [Dependency] private readonly SharedToolSystem _tool = default!;
+    [Dependency] private readonly TagSystem _tag = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly SharedChassisModuleSystem _modules = default!;
     [Dependency] private readonly SharedUserInterfaceSystem _ui = default!;
@@ -52,6 +65,7 @@ public sealed partial class SharedModsuitSystem : EntitySystem
         SubscribeLocalEvent<ModsuitControlComponent, GotEquippedEvent>(OnEquipped);
         SubscribeLocalEvent<ModsuitControlComponent, GotUnequippedEvent>(OnUnequipped);
         SubscribeLocalEvent<ModsuitControlComponent, BeingUnequippedAttemptEvent>(OnUnequipAttempt);
+        SubscribeLocalEvent<ModsuitControlComponent, ActivateInWorldEvent>(OnActivate);
 
         // The chassis asks which slots it can offer modules; only sealed parts count.
         SubscribeLocalEvent<ModsuitControlComponent, ChassisGetAvailableSlotsEvent>(OnGetAvailableSlots);
@@ -63,8 +77,10 @@ public sealed partial class SharedModsuitSystem : EntitySystem
 
         InitializeParts();
         InitializeIntegrity();
+        InitializeRepair();
         InitializeActions();
         InitializeUi();
+        InitializeBreach();
     }
 
     private void OnControlInit(Entity<ModsuitControlComponent> ent, ref ComponentInit args)
@@ -137,6 +153,19 @@ public sealed partial class SharedModsuitSystem : EntitySystem
         Dirty(ent);
     }
 
+    /// <summary>
+    ///     E on the suit reaches for the pockets, the way it does on any other back item.
+    ///     With no storage module there are none, and the panel readout now lives on
+    ///     alt-interact — so say that once rather than leaving the key dead.
+    /// </summary>
+    private void OnActivate(Entity<ModsuitControlComponent> ent, ref ActivateInWorldEvent args)
+    {
+        if (args.Handled || !args.Complex || HasComp<StorageComponent>(ent))
+            return;
+
+        _popup.PopupClient(Loc.GetString("modsuit-no-storage"), ent, args.User);
+    }
+
     #region Wearer
 
     private void OnEquipped(Entity<ModsuitControlComponent> ent, ref GotEquippedEvent args)
@@ -200,8 +229,20 @@ public sealed partial class SharedModsuitSystem : EntitySystem
         if (wearer == null && !TerminatingOrDeleted(ent))
             RetractAll(ent, silent: true);
 
+        if (ent.Comp.Wearer is { } previous && !TerminatingOrDeleted(previous))
+            RemComp<ModsuitWearerComponent>(previous);
+
         ent.Comp.Wearer = wearer;
         Dirty(ent);
+
+        // Tools have to be usable on the person, because the suit on their back cannot be
+        // clicked. See SharedModsuitSystem.Breach.
+        if (wearer is { } worn)
+        {
+            EnsureComp<ModsuitWearerComponent>(worn, out var marker);
+            marker.Suit = ent;
+            Dirty(worn, marker);
+        }
 
         var ev = new ModsuitWearerChangedEvent(wearer);
         RaiseLocalEvent(ent, ref ev);

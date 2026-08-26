@@ -9,6 +9,7 @@ using Content.Client.Clothing;
 using Content.Shared.Clothing;
 using Content.Shared.Item;
 using Robust.Client.GameObjects;
+using Robust.Shared.GameStates;
 using Robust.Shared.Timing;
 
 namespace Content.Client._IS14.Modsuit;
@@ -40,6 +41,17 @@ public sealed class ModsuitModuleOverlaySystem : EntitySystem
         SubscribeLocalEvent<ModuleWornOverlayComponent, ModuleDisabledEvent>(OnModuleDisabled);
         SubscribeLocalEvent<ModuleWornOverlayComponent, ModuleInstalledEvent>(OnModuleInstalled);
         SubscribeLocalEvent<ModuleWornOverlayComponent, ModuleUninstalledEvent>(OnModuleUninstalled);
+
+        // The events above only fire on whichever side ran the toggle, and the switch is
+        // a server-side interface message — so on the client the module simply changed
+        // state underneath us. This is the only notice we get that it did.
+        SubscribeLocalEvent<ChassisModuleComponent, AfterAutoHandleStateEvent>(OnModuleState);
+    }
+
+    private void OnModuleState(Entity<ChassisModuleComponent> ent, ref AfterAutoHandleStateEvent args)
+    {
+        if (TryComp<ModuleWornOverlayComponent>(ent, out var overlay))
+            RefreshParts((ent.Owner, overlay));
     }
 
     private void OnGetPartVisuals(Entity<ModsuitPartComponent> ent, ref GetEquipmentVisualsEvent args)
@@ -48,7 +60,7 @@ public sealed class ModsuitModuleOverlaySystem : EntitySystem
             || !TryComp<ModularChassisComponent>(control, out var chassis))
             return;
 
-        if (ent.Comp.SlotFlag == 0)
+        if (ent.Comp.SlotFlag == 0 || !ent.Comp.Deployed)
             return;
 
         var index = 0;
@@ -65,7 +77,11 @@ public sealed class ModsuitModuleOverlaySystem : EntitySystem
             if (GetState(module, overlay) is not { } state)
                 continue;
 
-            args.Layers.Add(($"modsuit-module-{index}", new PrototypeLayerData
+            // Keyed by slot as well as index. The key is what the inventory maps the
+            // layer under, and that map is global to the mob sprite — two parts both
+            // claiming "modsuit-module-0" means unequipping one leaves the other's layer
+            // on the body with no key left to remove it by.
+            args.Layers.Add(($"modsuit-module-{ent.Comp.Slot}-{index}", new PrototypeLayerData
             {
                 RsiPath = overlay.Rsi.ToString(),
                 State = state,
@@ -118,6 +134,7 @@ public sealed class ModsuitModuleOverlaySystem : EntitySystem
         foreach (var part in control.Parts.Values)
         {
             if (TryComp<ModsuitPartComponent>(part, out var partComp)
+                && partComp.Deployed
                 && (ent.Comp.TargetSlot & partComp.SlotFlag) != 0)
             {
                 _item.VisualsChanged(part);

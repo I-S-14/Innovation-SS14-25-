@@ -1607,7 +1607,24 @@ public abstract class SharedStorageSystem : EntitySystem
     /// <summary>
     /// Updates the occupied grid mask for the entity.
     /// </summary>
-    protected void UpdateOccupied(Entity<StorageComponent> ent)
+    //IS14-change start
+    // Runtime-granted storage has to set its own size limit, and the field is access-locked
+    // to this system. Without it a grid hung off a small entity derives its limit from that
+    // entity and refuses everything a bag that size would obviously hold.
+    public void SetMaxItemSize(Entity<StorageComponent> ent, ProtoId<ItemSizePrototype>? size)
+    {
+        ent.Comp.MaxItemSize = size;
+        Dirty(ent);
+    }
+    //IS14-change end
+
+    //IS14-change start
+    // Public so a storage grid handed out at runtime can rebuild its occupancy mask.
+    // The mask is otherwise only built in ComponentInit, so anything that edits Grid
+    // afterwards leaves it describing a grid that no longer exists and every insert
+    // fails with "insufficient capacity".
+    public void UpdateOccupied(Entity<StorageComponent> ent)
+    //IS14-change end
     {
         ent.Comp.OccupiedGrid.Clear();
         RemoveOccupied(ent.Comp.Grid, ent.Comp.OccupiedGrid);

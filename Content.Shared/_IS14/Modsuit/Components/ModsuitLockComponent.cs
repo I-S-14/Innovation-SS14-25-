@@ -59,4 +59,12 @@ public sealed partial class ModsuitSabotageComponent : Component
     /// </summary>
     [DataField, AutoNetworkedField]
     public bool PermanentlyElectrified;
+
+    /// <summary>
+    ///     The emergency release has been cut. Somebody who expects to be arrested in
+    ///     this suit will have done it in advance, and then the only ways out are the ID
+    ///     lock, the core, and a cutting torch.
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public bool ReleaseCut;
 }

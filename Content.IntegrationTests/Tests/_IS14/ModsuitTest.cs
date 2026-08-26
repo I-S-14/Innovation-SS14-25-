@@ -2,6 +2,7 @@
 
 #nullable enable
 using System.Linq;
+using Content.Shared._IS14.Modsuit;
 using Content.Shared._IS14.Modsuit.Components;
 using Content.Shared._IS14.Modsuit.Systems;
 using Content.Shared._IS14.Modular;
@@ -14,13 +15,16 @@ using Content.Shared.Alert;
 using Content.Shared.Clothing;
 using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Damage;
+using Content.Shared.Emp;
 using Content.Shared.Damage.Prototypes;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Inventory;
 using Content.Shared.Storage;
+using Content.Shared.Storage.EntitySystems;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Serialization;
 
 namespace Content.IntegrationTests.Tests._IS14;
 
@@ -593,8 +597,8 @@ public sealed class ModsuitTest
                 var storage = entMan.GetComponent<StorageComponent>(suit);
 
                 Assert.That(storage.Grid, Is.Not.Empty);
-                Assert.That(storage.OpenOnActivate, Is.False,
-                    "clicking the suit belongs to the suit interface, not to the bag");
+                Assert.That(storage.OpenOnActivate, Is.True,
+                    "E on a back item reaches for its pockets; the panel is on alt-interact");
             });
 
             Assert.That(chassisSys.TryUninstall(chassisEnt, (module, moduleComp)), Is.True);
@@ -833,7 +837,7 @@ public sealed class ModsuitTest
 
             // Just past the threshold, not destroyed.
             modsuit.SetIntegrity((helmetUid, helmet),
-                helmet.MaxIntegrity * helmet.BreakThreshold - 1f);
+                helmet.MaxIntegrity * helmet.ModuleThreshold - 1f);
 
             Assert.Multiple(() =>
             {
@@ -881,6 +885,15 @@ public sealed class ModsuitTest
 
             var modulesBefore = chassis.ModuleContainer!.ContainedEntities.Count;
 
+            // Every ordinary route is shut: the context menu's eject verb, the slot
+            // button and smart equip all come through here.
+            Assert.Multiple(() =>
+            {
+                Assert.That(itemSlots.TryEject(suit, slot, human, out _), Is.False,
+                    "nothing but the crowbar takes the core out");
+                Assert.That(slot.Item, Is.Not.Null);
+            });
+
             var pry = new ChassisPryEvent(human, false, false);
             entMan.EventBus.RaiseLocalEvent(suit, ref pry);
 
@@ -891,6 +904,428 @@ public sealed class ModsuitTest
                 Assert.That(chassis.ModuleContainer!.ContainedEntities, Has.Count.EqualTo(modulesBefore),
                     "modules are pulled from the interface, never levered out");
             });
+
+            entMan.DeleteEntity(suit);
+            entMan.DeleteEntity(human);
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>
+    ///     The second line: plating this far gone cannot hold pressure. It blows its own
+    ///     seal and refuses to close again until somebody works on it.
+    /// </summary>
+    [Test]
+    public async Task RupturedPlatingBlowsItsSeal()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var entMan = server.ResolveDependency<IEntityManager>();
+
+        var map = await pair.CreateTestMap();
+
+        await server.WaitAssertion(() =>
+        {
+            var modsuit = entMan.System<SharedModsuitSystem>();
+            var invSystem = entMan.System<InventorySystem>();
+
+            var human = entMan.SpawnEntity("MobHuman", map.GridCoords);
+            var suit = entMan.SpawnEntity(DebugSuitProto, map.GridCoords);
+
+            var control = entMan.GetComponent<ModsuitControlComponent>(suit);
+            var ent = new Entity<ModsuitControlComponent>(suit, control);
+
+            invSystem.TryEquip(human, suit, "back", force: true);
+            modsuit.DeployAll(ent, silent: true);
+
+            foreach (var piece in control.Parts.Values)
+            {
+                var comp = entMan.GetComponent<ModsuitPartComponent>(piece);
+                modsuit.SetPartSealed(ent, (piece, comp), true);
+            }
+
+            var helmetUid = control.Parts["head"];
+            var helmet = entMan.GetComponent<ModsuitPartComponent>(helmetUid);
+            var part = new Entity<ModsuitPartComponent>(helmetUid, helmet);
+
+            var boots = entMan.GetComponent<ModsuitPartComponent>(control.Parts["shoes"]);
+
+            modsuit.SetIntegrity(part, helmet.MaxIntegrity * helmet.UnsealThreshold - 1f);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(helmet.Sealed, Is.False, "a split piece cannot stay closed");
+                Assert.That(boots.Sealed, Is.True, "and the rest of the suit stays shut around it");
+            });
+
+            Assert.That(modsuit.TrySealPart(ent, helmetUid, true), Is.False,
+                "and it must refuse to close again until it is repaired");
+
+            entMan.DeleteEntity(suit);
+            entMan.DeleteEntity(human);
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>
+    ///     A welder works dented plating back out; the fault kind follows what actually
+    ///     did the damage, so brute-damaged plating asks for the welder and not for cable.
+    /// </summary>
+    [Test]
+    public async Task WeldingPutsDentedPlatingBack()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var entMan = server.ResolveDependency<IEntityManager>();
+        var protoMan = server.ResolveDependency<IPrototypeManager>();
+
+        var map = await pair.CreateTestMap();
+
+        await server.WaitAssertion(() =>
+        {
+            var modsuit = entMan.System<SharedModsuitSystem>();
+            var invSystem = entMan.System<InventorySystem>();
+            var damageable = entMan.System<DamageableSystem>();
+
+            var human = entMan.SpawnEntity("MobHuman", map.GridCoords);
+            var suit = entMan.SpawnEntity(DebugSuitProto, map.GridCoords);
+
+            var control = entMan.GetComponent<ModsuitControlComponent>(suit);
+            var ent = new Entity<ModsuitControlComponent>(suit, control);
+
+            invSystem.TryEquip(human, suit, "back", force: true);
+            modsuit.DeployAll(ent, silent: true);
+
+            var helmetUid = control.Parts["head"];
+            var helmet = entMan.GetComponent<ModsuitPartComponent>(helmetUid);
+            var part = new Entity<ModsuitPartComponent>(helmetUid, helmet);
+
+            damageable.TryChangeDamage(
+                human,
+                new DamageSpecifier(protoMan.Index<DamageTypePrototype>("Blunt"), FixedPoint2.New(60)),
+                targetPart: TargetBodyPart.Head,
+                canMiss: false);
+
+            var hurt = helmet.Integrity;
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(hurt, Is.LessThan(helmet.MaxIntegrity));
+                Assert.That(modsuit.GetFault(part), Is.EqualTo(ChassisPartFault.Structural),
+                    "a beating is plate work, not wiring");
+            });
+
+            // The repair itself, without the tool ceremony the interaction adds on top.
+            modsuit.ChangeIntegrity(part, helmet.MaxIntegrity * helmet.RepairFraction);
+
+            Assert.That(helmet.Integrity, Is.GreaterThan(hurt), "work has to put condition back");
+
+            modsuit.SetIntegrity(part, helmet.MaxIntegrity);
+
+            Assert.That(modsuit.GetFault(part), Is.EqualTo(ChassisPartFault.None),
+                "a piece back at full condition has nothing left to ask for");
+
+            entMan.DeleteEntity(suit);
+            entMan.DeleteEntity(human);
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>
+    ///     Ion cooks wiring rather than bending plate, so the same piece asks for cable
+    ///     instead of a welder.
+    /// </summary>
+    [Test]
+    public async Task IonDamageAsksForCable()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var entMan = server.ResolveDependency<IEntityManager>();
+        var protoMan = server.ResolveDependency<IPrototypeManager>();
+
+        var map = await pair.CreateTestMap();
+
+        await server.WaitAssertion(() =>
+        {
+            var modsuit = entMan.System<SharedModsuitSystem>();
+            var invSystem = entMan.System<InventorySystem>();
+            var damageable = entMan.System<DamageableSystem>();
+
+            var human = entMan.SpawnEntity("MobHuman", map.GridCoords);
+            var suit = entMan.SpawnEntity(DebugSuitProto, map.GridCoords);
+
+            var control = entMan.GetComponent<ModsuitControlComponent>(suit);
+            var ent = new Entity<ModsuitControlComponent>(suit, control);
+
+            invSystem.TryEquip(human, suit, "back", force: true);
+            modsuit.DeployAll(ent, silent: true);
+
+            var helmetUid = control.Parts["head"];
+            var helmet = entMan.GetComponent<ModsuitPartComponent>(helmetUid);
+            var part = new Entity<ModsuitPartComponent>(helmetUid, helmet);
+
+            damageable.TryChangeDamage(
+                human,
+                new DamageSpecifier(protoMan.Index<DamageTypePrototype>("Ion"), FixedPoint2.New(40)),
+                targetPart: TargetBodyPart.Head,
+                canMiss: false);
+
+            Assert.That(modsuit.GetFault(part), Is.EqualTo(ChassisPartFault.Electrical),
+                "ion goes through the loom, so that is what has to be re-run");
+
+            entMan.DeleteEntity(suit);
+            entMan.DeleteEntity(human);
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>
+    ///     The pocket has to actually take things. The grid is handed over after the
+    ///     storage component exists, and the occupancy mask is built once at init — miss
+    ///     the rebuild and every insert is refused for want of space in a grid the
+    ///     storage does not know it has.
+    /// </summary>
+    [Test]
+    public async Task GrantedPocketAcceptsItems()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var entMan = server.ResolveDependency<IEntityManager>();
+
+        var map = await pair.CreateTestMap();
+
+        await server.WaitAssertion(() =>
+        {
+            var modsuit = entMan.System<SharedModsuitSystem>();
+            var invSystem = entMan.System<InventorySystem>();
+            var storageSys = entMan.System<SharedStorageSystem>();
+
+            var human = entMan.SpawnEntity("MobHuman", map.GridCoords);
+
+            // The debug suit carries a storage module from map init, which is the path
+            // a player actually meets.
+            var suit = entMan.SpawnEntity(DebugSuitProto, map.GridCoords);
+            var control = entMan.GetComponent<ModsuitControlComponent>(suit);
+
+            invSystem.TryEquip(human, suit, "back", force: true);
+            modsuit.DeployAll((suit, control), silent: true);
+
+            var storage = entMan.GetComponent<StorageComponent>(suit);
+            Assert.That(storage.Grid, Is.Not.Empty, "the module should have handed over a grid");
+
+            var thing = entMan.SpawnEntity("Wrench", map.GridCoords);
+
+            Assert.That(storageSys.CanInsert(suit, thing, out var reason, storage), Is.True,
+                $"the pocket refused an ordinary item: {reason}");
+
+            Assert.That(storageSys.Insert(suit, thing, out _, out _, storageComp: storage, user: human), Is.True);
+            Assert.That(storage.Container.ContainedEntities, Does.Contain(thing));
+
+            entMan.DeleteEntity(suit);
+            entMan.DeleteEntity(human);
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>
+    ///     Every theme is five prototypes that differ by one sprite sheet, which is exactly
+    ///     the shape of thing that ships with a typo nobody notices until a player spawns it.
+    ///     This walks all of them: four parts, a core in the cradle, and integrated modules
+    ///     that cost the wearer nothing.
+    /// </summary>
+    [Test]
+    [TestCase("IS14ModsuitStandard")]
+    [TestCase("IS14ModsuitEngineering")]
+    [TestCase("IS14ModsuitMedical")]
+    [TestCase("IS14ModsuitSecurity")]
+    [TestCase("IS14ModsuitMining")]
+    [TestCase("IS14ModsuitAtmospheric")]
+    [TestCase("IS14ModsuitResearch")]
+    [TestCase("IS14ModsuitSyndicate")]
+    public async Task EveryThemeSpawnsWhole(string proto)
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var entMan = server.ResolveDependency<IEntityManager>();
+
+        await server.WaitAssertion(() =>
+        {
+            var itemSlots = entMan.System<ItemSlotsSystem>();
+
+            var suit = entMan.SpawnEntity(proto, MapCoordinates.Nullspace);
+
+            var control = entMan.GetComponent<ModsuitControlComponent>(suit);
+            var chassis = entMan.GetComponent<ModularChassisComponent>(suit);
+            var coreSlot = entMan.GetComponent<ModCoreSlotComponent>(suit);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(control.Parts, Has.Count.EqualTo(4), $"{proto} should carry four parts");
+                Assert.That(control.Parts.Keys,
+                    Is.EquivalentTo(new[] { "head", "outerClothing", "gloves", "shoes" }));
+
+                Assert.That(itemSlots.TryGetSlot(suit, coreSlot.SlotId, out var slot), Is.True);
+                Assert.That(slot!.Item, Is.Not.Null, $"{proto} should ship with a core");
+
+                // Built-in gear is part of the suit, not part of the player's budget.
+                Assert.That(chassis.UsedComplexity, Is.Zero, $"{proto} spends budget on its own gear");
+            });
+
+            foreach (var (slotName, part) in control.Parts)
+            {
+                var comp = entMan.GetComponent<ModsuitPartComponent>(part);
+
+                Assert.Multiple(() =>
+                {
+                    Assert.That(comp.Slot, Is.EqualTo(slotName));
+                    Assert.That(comp.MaxIntegrity, Is.GreaterThan(0f), $"{proto} {slotName} has no plating");
+                    Assert.That(comp.Integrity, Is.EqualTo(comp.MaxIntegrity));
+                    Assert.That(comp.CoveredParts, Is.Not.Empty,
+                        $"{proto} {slotName} covers nothing, so nothing can ever wear it down");
+                });
+            }
+
+            foreach (var module in chassis.ModuleContainer!.ContainedEntities)
+            {
+                var comp = entMan.GetComponent<ChassisModuleComponent>(module);
+
+                Assert.Multiple(() =>
+                {
+                    Assert.That(comp.Removable, Is.False, "integrated gear is not pulled by hand");
+                    Assert.That(comp.Complexity, Is.Zero);
+                });
+            }
+
+            entMan.DeleteEntity(suit);
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>
+    ///     The wire panel's status keys ride inside the interface state, so the client has
+    ///     to be able to name their type. A key defined server-side compiles, lints and
+    ///     starts up perfectly — and then kills the server mid-tick the first time somebody
+    ///     opens the panel, because PVS cannot serialise a type the client has never heard of.
+    /// </summary>
+    [Test]
+    public async Task WireKeysAreNetSerialisable()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var serializer = pair.Server.ResolveDependency<IRobustSerializer>();
+
+        Assert.That(serializer.CanSerialize(typeof(ModsuitWireKey)), Is.True,
+            "the panel's status keys have to live in a shared assembly");
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>
+    ///     An EMP is applied to whatever holds the charge, and that is the cell — nested
+    ///     inside the core, inside the suit. Resistance sitting on the chassis is read by
+    ///     nobody, which is how the shield module managed to do nothing at all.
+    /// </summary>
+    [Test]
+    public async Task EmpShieldCoversTheCell()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var entMan = server.ResolveDependency<IEntityManager>();
+
+        var map = await pair.CreateTestMap();
+
+        await server.WaitAssertion(() =>
+        {
+            var chassisSys = entMan.System<SharedModularChassisSystem>();
+            var itemSlots = entMan.System<ItemSlotsSystem>();
+            var core = entMan.System<ModCoreSystem>();
+
+            var suit = entMan.SpawnEntity(SuitProto, map.GridCoords);
+            var chassis = entMan.GetComponent<ModularChassisComponent>(suit);
+            var chassisEnt = new Entity<ModularChassisComponent>(suit, chassis);
+            var coreSlot = entMan.GetComponent<ModCoreSlotComponent>(suit);
+
+            Assert.That(core.GetCore((suit, coreSlot)), Is.Not.Null);
+            var coreUid = core.GetCore((suit, coreSlot))!.Value.Owner;
+
+            Assert.That(itemSlots.TryGetSlot(coreUid, "cell_slot", out var slot), Is.True);
+            Assert.That(slot!.Item, Is.Not.Null, "the standard core runs off a swappable cell");
+            var cell = slot.Item!.Value;
+
+            // Two containers deep and unprotected.
+            var before = new EmpAttemptEvent();
+            entMan.EventBus.RaiseLocalEvent(cell, ref before);
+            Assert.That(before.Cancelled, Is.False, "nothing shields the cell yet");
+
+            var module = entMan.SpawnEntity("IS14ModuleEmpShield", map.GridCoords);
+            var moduleComp = entMan.GetComponent<ChassisModuleComponent>(module);
+
+            chassisSys.SetPanelOpen(chassisEnt, true);
+            Assert.That(chassisSys.TryInstall(chassisEnt, (module, moduleComp)), Is.True);
+
+            var after = new EmpAttemptEvent();
+            entMan.EventBus.RaiseLocalEvent(cell, ref after);
+            Assert.That(after.Cancelled, Is.True,
+                "the screen has to answer for everything nested inside the suit");
+
+            Assert.That(chassisSys.TryUninstall(chassisEnt, (module, moduleComp)), Is.True);
+
+            var pulled = new EmpAttemptEvent();
+            entMan.EventBus.RaiseLocalEvent(cell, ref pulled);
+            Assert.That(pulled.Cancelled, Is.False, "and stop answering once it is pulled");
+
+            entMan.DeleteEntity(suit);
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>
+    ///     A flat suit sealing up would be a coffin: the seal draws power to hold, and the
+    ///     wearer would be shut into a shell that cannot open itself.
+    /// </summary>
+    [Test]
+    public async Task FlatSuitRefusesToSeal()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var entMan = server.ResolveDependency<IEntityManager>();
+
+        var map = await pair.CreateTestMap();
+
+        await server.WaitAssertion(() =>
+        {
+            var modsuit = entMan.System<SharedModsuitSystem>();
+            var invSystem = entMan.System<InventorySystem>();
+            var power = entMan.System<ChassisPowerSystem>();
+
+            var human = entMan.SpawnEntity("MobHuman", map.GridCoords);
+            var suit = entMan.SpawnEntity(SuitProto, map.GridCoords);
+
+            var control = entMan.GetComponent<ModsuitControlComponent>(suit);
+            var ent = new Entity<ModsuitControlComponent>(suit, control);
+
+            invSystem.TryEquip(human, suit, "back", force: true);
+            modsuit.DeployAll(ent, silent: true);
+
+            var helmet = control.Parts["head"];
+
+            Assert.That(modsuit.TrySealPart(ent, helmet, true), Is.True, "a charged suit seals");
+            modsuit.SetPartSealed(ent, (helmet, entMan.GetComponent<ModsuitPartComponent>(helmet)), false);
+
+            // Empty the core down to nothing.
+            var charge = power.GetCharge(suit).Current;
+            Assert.That(charge, Is.GreaterThan(0f));
+            Assert.That(power.TryUseCharge(suit, charge), Is.True);
+            Assert.That(power.GetCharge(suit).Current, Is.EqualTo(0f).Within(0.01f));
+
+            Assert.That(modsuit.TrySealPart(ent, helmet, true), Is.False,
+                "a flat suit must not close up");
 
             entMan.DeleteEntity(suit);
             entMan.DeleteEntity(human);

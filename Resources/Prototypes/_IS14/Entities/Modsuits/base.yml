@@ -193,6 +193,9 @@
     slots:
       mod-core:
         name: mod-core-slot
+        # Ядро вынимается ломом через открытую панель, а не альт-кликом:
+        # иначе костюм разряжают быстрее, чем успевают заметить.
+        disableEject: true
         whitelist:
           components:
           - ModCore
@@ -212,15 +215,28 @@
   - type: Wires
     boardName: modsuit-wires-board
     layoutId: IS14Modsuit
+  # Подключение и отключение внутреннего дыхания проходит через эту задержку, и без
+  # записи с этим именем оно молча отказывает — костюм с баллоном обязан её иметь.
+  - type: UseDelay
+    delays:
+      gasTank:
+        length: 1.0
   - type: ModsuitLock
   - type: ModsuitSabotage
   - type: AccessReader
 
+  # E занято хранилищем — интерфейс открывается альт-взаимодействием (Alt+E, альт-клик).
+  # verbOnly убирает его с обычного E, altVerb переносит вербу в альтернативный список.
   - type: ActivatableUI
     key: enum.ModularChassisUiKey.Key
     inHandsOnly: false
     requiresComplex: false
     requireActiveHand: false
+    verbOnly: true
+    altVerb: true
+    # Баллон от атмосферного модуля вешает на костюм свою альт-вербу «открыть клапан»,
+    # и на альт-клике она выигрывала у панели. Панель важнее.
+    verbPriority: 10
   - type: UserInterface
     interfaces:
       enum.ModularChassisUiKey.Key:
@@ -229,6 +245,10 @@
       # основным интерфейсом.
       enum.StorageUiKey.Key:
         type: StorageBoundUserInterface
+      # Без этой записи панель проводов физически некуда открыть: WiresSystem
+      # ищет ровно этот ключ, и мультитул по открытой панели молча ничего не делал.
+      enum.WiresUiKey.Key:
+        type: WiresBoundUserInterface
 
 # ----------------------------------------------------------------------- ядра
 
@@ -254,6 +274,39 @@
   - type: ContainerContainer
     containers:
       cell_slot: !type:ContainerSlot
+
+- type: entity
+  parent: BaseItem
+  id: IS14ModCorePlasma
+  name: MOD plasma core
+  description: A sealed core that runs on plasma. Feed it sheets or raw ore — the suit takes either, ore just goes further per unit of effort spent digging it up.
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Modsuit/construction.rsi
+    state: core-plasma
+  - type: Item
+    size: Small
+  - type: ModCore
+  # Собственная батарея, без слота ячейки: это ядро не меняют, а кормят.
+  - type: Battery
+    maxCharge: 4000
+    startingCharge: 1000
+  - type: ModCoreFuel
+    fuel:
+      Plasma: 400
+      PlasmaOre: 150
+  # Бункер: сюда складывают топливо, а ядро само сжигает его по мере надобности.
+  # Что именно сюда влезет, решает таблица топлива выше — второго списка нет.
+  - type: Storage
+    grid:
+    - 0,0,7,1
+    # Без явного предела хранилище берёт предметы на размер меньше себя, а ядро
+    # маленькое — листы и руда не пролезли бы в собственный бункер.
+    maxItemSize: Normal
+  - type: UserInterface
+    interfaces:
+      enum.StorageUiKey.Key:
+        type: StorageBoundUserInterface
 
 - type: entity
   parent: IS14ModCoreStandard

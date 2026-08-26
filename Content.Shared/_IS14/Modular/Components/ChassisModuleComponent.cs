@@ -3,6 +3,7 @@
 using Content.Shared._IS14.Modular.Systems;
 using Content.Shared.Inventory;
 using Content.Shared.Tag;
+using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 
@@ -14,7 +15,10 @@ namespace Content.Shared._IS14.Modular.Components;
 ///     What the module actually *does* lives in separate behaviour components on the
 ///     same entity, which react to the module events.
 /// </summary>
-[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
+// raiseAfterAutoHandleState: the client has no other notice that a module was
+// switched — the toggle is a server-side interface message — and the worn overlay
+// has to be repainted when it lands.
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState(true)]
 // Outside systems and the UI legitimately read and enumerate these; only the two
 // owning systems may write them.
 [Access(typeof(SharedChassisModuleSystem), typeof(SharedModularChassisSystem),
@@ -107,6 +111,20 @@ public sealed partial class ChassisModuleComponent : Component
     /// </summary>
     [DataField, AutoNetworkedField]
     public string? ActionIcon;
+
+    /// <summary>
+    ///     Played when the module switches on. Sound belongs to the module rather than to
+    ///     its behaviour so a flashlight can click without the light system knowing what
+    ///     a click is — and so any other toggle can have one from YAML alone.
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public SoundSpecifier? ActivateSound;
+
+    /// <summary>
+    ///     Played when it switches off.
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public SoundSpecifier? DeactivateSound;
 
     /// <summary>
     ///     Chassis this module is installed in, if any.

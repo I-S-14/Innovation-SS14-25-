@@ -2,6 +2,7 @@
 
 using Content.Shared._IS14.Modular.Components;
 using Content.Shared.ActionBlocker;
+using Content.Shared.Interaction;
 using Content.Shared.Inventory;
 using Content.Shared.Popups;
 using Robust.Shared.Audio.Systems;
@@ -21,6 +22,33 @@ public sealed class SharedChassisModuleSystem : EntitySystem
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly ChassisPowerSystem _power = default!;
+    [Dependency] private readonly SharedInteractionSystem _interaction = default!;
+
+    public override void Initialize()
+    {
+        base.Initialize();
+
+        SubscribeLocalEvent<ChassisModuleComponent, AccessibleOverrideEvent>(OnAccessible);
+    }
+
+    /// <summary>
+    ///     An installed module sits in a sealed container inside the chassis, so the
+    ///     ordinary accessibility rules say nobody can reach it — which is true of your
+    ///     hands and false of the panel. Anything a module offers is reached through that
+    ///     panel, and a bound interface opened on a module the engine considers
+    ///     unreachable is closed again on the next frame (and trips an assert on the way).
+    ///
+    ///     So the module borrows the chassis' answer: if you can reach the suit, you can
+    ///     reach what is bolted into it.
+    /// </summary>
+    private void OnAccessible(Entity<ChassisModuleComponent> ent, ref AccessibleOverrideEvent args)
+    {
+        if (args.Handled || args.Target != ent.Owner || ent.Comp.Chassis is not { } chassis)
+            return;
+
+        args.Handled = true;
+        args.Accessible = _interaction.IsAccessible(args.User, chassis);
+    }
 
     /// <summary>
     ///     Does the chassis currently offer every slot this module needs?
@@ -186,6 +214,8 @@ public sealed class SharedChassisModuleSystem : EntitySystem
         module.Comp.Active = true;
         Dirty(module);
 
+        _audio.PlayPredicted(module.Comp.ActivateSound, chassis, user);
+
         var ev = new ModuleActivatedEvent(chassis, user);
         RaiseLocalEvent(module, ref ev);
 
@@ -215,6 +245,8 @@ public sealed class SharedChassisModuleSystem : EntitySystem
         }
 
         Dirty(module);
+
+        _audio.PlayPredicted(module.Comp.DeactivateSound, chassis, user);
 
         var ev = new ModuleDeactivatedEvent(chassis, quiet ? null : user);
         RaiseLocalEvent(module, ref ev);

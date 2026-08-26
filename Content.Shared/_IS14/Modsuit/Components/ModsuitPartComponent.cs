@@ -95,7 +95,15 @@ public sealed partial class ModsuitPartComponent : Component
     ///     airtight long after the hardpoint inside it has stopped answering.
     /// </summary>
     [DataField, AutoNetworkedField]
-    public float BreakThreshold = 0.5f;
+    public float ModuleThreshold = 0.66f;
+
+    /// <summary>
+    ///     Fraction at which the piece can no longer hold pressure at all: it pops open
+    ///     on its own and refuses to seal again until it has been worked on. This is the
+    ///     line that turns a bad fight into an emergency rather than an inconvenience.
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public float UnsealThreshold = 0.33f;
 
     /// <summary>
     ///     Body parts whose damage lands on this piece. Any overlap counts, so a
@@ -113,6 +121,47 @@ public sealed partial class ModsuitPartComponent : Component
     {
         ["Ion"] = 2f,
     };
+
+    /// <summary>
+    ///     Damage types that dent plating rather than cook the wiring behind it.
+    ///     Anything not listed here is treated as an electrical fault.
+    /// </summary>
+    [DataField]
+    public List<ProtoId<DamageTypePrototype>> StructuralDamage = new()
+    {
+        "Blunt",
+        "Piercing",
+        "Slash",
+        "Structural",
+    };
+
+    /// <summary>
+    ///     Running totals of what has been done to this piece. Only the ratio matters —
+    ///     they decide which repair the piece is asking for, not how much of it it needs.
+    /// </summary>
+    [ViewVariables, AutoNetworkedField]
+    public float StructuralWear;
+
+    [ViewVariables, AutoNetworkedField]
+    public float ElectricalWear;
+
+    /// <summary>
+    ///     Share of <see cref="MaxIntegrity"/> one round of repair puts back.
+    /// </summary>
+    [DataField]
+    public float RepairFraction = 0.25f;
+
+    /// <summary>
+    ///     Time one round of repair takes.
+    /// </summary>
+    [DataField]
+    public TimeSpan RepairDelay = TimeSpan.FromSeconds(4);
+
+    /// <summary>
+    ///     Welder fuel one round of plate work burns.
+    /// </summary>
+    [DataField]
+    public float RepairFuel = 5f;
 
     #endregion
 
@@ -140,16 +189,16 @@ public sealed partial class ModsuitPartComponent : Component
     #region Feedback
 
     /// <summary>
-    ///     Air rushing in as the part pressurises.
+    ///     The plating moving as the part pressurises.
     /// </summary>
     [DataField]
-    public SoundSpecifier SealSound = new SoundPathSpecifier("/Audio/_IS14/Modsuit/seal_part.ogg");
+    public SoundSpecifier SealSound = new SoundPathSpecifier("/Audio/_IS14/Modsuit/part_move.ogg");
 
     /// <summary>
-    ///     Air venting as the part opens up again.
+    ///     And moving back as it opens up again.
     /// </summary>
     [DataField]
-    public SoundSpecifier UnsealSound = new SoundPathSpecifier("/Audio/_IS14/Modsuit/unseal_part.ogg");
+    public SoundSpecifier UnsealSound = new SoundPathSpecifier("/Audio/_IS14/Modsuit/part_move.ogg");
 
     #endregion
 }

@@ -149,6 +149,153 @@
     Steel: 600
     Gold: 100
 
+- type: latheRecipe
+  id: IS14ModuleVisorDiagnostic
+  result: IS14ModuleVisorDiagnostic
+  categories:
+  - Robotics
+  completetime: 3
+  materials:
+    Steel: 200
+    Glass: 300
+    Silver: 100
+
+- type: latheRecipe
+  id: IS14ModuleGps
+  result: IS14ModuleGps
+  categories:
+  - Robotics
+  completetime: 2
+  materials:
+    Steel: 200
+    Glass: 200
+
+- type: latheRecipe
+  id: IS14ModuleNoSlip
+  result: IS14ModuleNoSlip
+  categories:
+  - Robotics
+  completetime: 2
+  materials:
+    Steel: 300
+    Plastic: 200
+
+- type: latheRecipe
+  id: IS14ModuleDefibrillator
+  result: IS14ModuleDefibrillator
+  categories:
+  - Robotics
+  completetime: 5
+  materials:
+    Steel: 500
+    Glass: 300
+    Silver: 200
+
+- type: latheRecipe
+  id: IS14ModuleConstructor
+  result: IS14ModuleConstructor
+  categories:
+  - Robotics
+  completetime: 5
+  materials:
+    Steel: 700
+    Plastic: 300
+    Gold: 150
+
+- type: latheRecipe
+  id: IS14ModuleArmorBooster
+  result: IS14ModuleArmorBooster
+  categories:
+  - Robotics
+  completetime: 5
+  materials:
+    Steel: 800
+    Plasteel: 300
+
+- type: latheRecipe
+  id: IS14ModCorePlasma
+  result: IS14ModCorePlasma
+  categories:
+  - Robotics
+  completetime: 6
+  materials:
+    Steel: 400
+    Glass: 300
+    Plasma: 400
+
+- type: latheRecipe
+  id: IS14ModuleAtmosphericsSmall
+  result: IS14ModuleAtmosphericsSmall
+  categories:
+  - Robotics
+  completetime: 4
+  materials:
+    Steel: 500
+    Glass: 200
+    Plastic: 200
+
+- type: latheRecipe
+  id: IS14ModuleAtmosphericsLarge
+  result: IS14ModuleAtmosphericsLarge
+  categories:
+  - Robotics
+  completetime: 6
+  materials:
+    Steel: 900
+    Glass: 400
+    Plasteel: 200
+
+- type: latheRecipe
+  id: IS14ModuleJetpack
+  result: IS14ModuleJetpack
+  categories:
+  - Robotics
+  completetime: 5
+  materials:
+    Steel: 700
+    Plasma: 200
+
+- type: latheRecipe
+  id: IS14ModuleOreBag
+  result: IS14ModuleOreBag
+  categories:
+  - Robotics
+  completetime: 2
+  materials:
+    Steel: 300
+    Plastic: 300
+
+- type: latheRecipe
+  id: IS14ModuleCompression
+  result: IS14ModuleCompression
+  categories:
+  - Robotics
+  completetime: 5
+  materials:
+    Steel: 600
+    Plasteel: 200
+    Gold: 100
+
+- type: latheRecipe
+  id: IS14ModuleTrayScanner
+  result: IS14ModuleTrayScanner
+  categories:
+  - Robotics
+  completetime: 3
+  materials:
+    Steel: 200
+    Glass: 300
+
+- type: latheRecipe
+  id: IS14ModulePepper
+  result: IS14ModulePepper
+  categories:
+  - Robotics
+  completetime: 3
+  materials:
+    Steel: 300
+    Plastic: 200
+
 # ------------------------------------------------------------------ костюмы
 
 - type: latheRecipe
@@ -174,6 +321,62 @@
     Gold: 300
     Plasma: 300
 
+- type: latheRecipe
+  id: IS14ModsuitMedical
+  result: IS14ModsuitMedical
+  categories:
+  - Robotics
+  completetime: 10
+  materials:
+    Steel: 1500
+    Glass: 800
+    Silver: 300
+
+- type: latheRecipe
+  id: IS14ModsuitSecurity
+  result: IS14ModsuitSecurity
+  categories:
+  - Robotics
+  completetime: 12
+  materials:
+    Steel: 2500
+    Glass: 500
+    Plasteel: 500
+
+- type: latheRecipe
+  id: IS14ModsuitMining
+  result: IS14ModsuitMining
+  categories:
+  - Robotics
+  completetime: 11
+  materials:
+    Steel: 2000
+    Glass: 400
+    Gold: 300
+
+- type: latheRecipe
+  id: IS14ModsuitAtmospheric
+  result: IS14ModsuitAtmospheric
+  categories:
+  - Robotics
+  completetime: 12
+  materials:
+    Steel: 2200
+    Glass: 600
+    Plasma: 500
+
+- type: latheRecipe
+  id: IS14ModsuitResearch
+  result: IS14ModsuitResearch
+  categories:
+  - Robotics
+  completetime: 12
+  materials:
+    Steel: 1500
+    Glass: 1000
+    Silver: 400
+    Uranium: 200
+
 - type: latheRecipePack
   id: IS14ModsuitStatic
   recipes:
@@ -193,3 +396,22 @@
   - IS14ModuleHealthAnalyzer
   - IS14ModuleWeldingProtection
   - IS14ModuleDrill
+  - IS14ModsuitMedical
+  - IS14ModsuitSecurity
+  - IS14ModsuitMining
+  - IS14ModsuitAtmospheric
+  - IS14ModsuitResearch
+  - IS14ModuleVisorDiagnostic
+  - IS14ModuleGps
+  - IS14ModuleNoSlip
+  - IS14ModuleDefibrillator
+  - IS14ModuleConstructor
+  - IS14ModuleArmorBooster
+  - IS14ModCorePlasma
+  - IS14ModuleAtmosphericsSmall
+  - IS14ModuleAtmosphericsLarge
+  - IS14ModuleJetpack
+  - IS14ModuleOreBag
+  - IS14ModuleCompression
+  - IS14ModuleTrayScanner
+  - IS14ModulePepper

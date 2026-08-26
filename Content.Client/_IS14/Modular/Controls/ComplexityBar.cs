@@ -40,20 +40,34 @@ public sealed class ComplexityBar : Control
 
         var over = Used > Max;
 
+        var edge = MathF.Max(1f, MathF.Round(UIScale));
+
         for (var i = 0; i < Max; i++)
         {
             var left = box.Left + i * (cell + gap);
-            var filled = i < Used;
+            var rect = new UIBox2(left, box.Top, left + cell, box.Bottom);
 
-            var color = !filled
-                ? ChassisStyle.Panel
-                : over
-                    ? ChassisStyle.Bad
-                    : i >= Max - 2
-                        ? ChassisStyle.Warn
-                        : ChassisStyle.Accent;
+            // Spent slots are solid, free ones are empty outlines. A row of filled grey
+            // cells reads as "used up in a way I do not understand"; an empty socket
+            // reads as room for one more module, which is the question being asked.
+            if (i >= Used)
+            {
+                handle.DrawRect(rect, ChassisStyle.Border, filled: false);
+                continue;
+            }
 
-            handle.DrawRect(new UIBox2(left, box.Top, left + cell, box.Bottom), color);
+            var color = over
+                ? ChassisStyle.Bad
+                : i >= Max - 2
+                    ? ChassisStyle.Warn
+                    : ChassisStyle.Accent;
+
+            handle.DrawRect(rect, color);
         }
+
+        // Over budget: the overflow has nowhere to go on the bar, so it is drawn as a
+        // hard edge down the right-hand side rather than being silently dropped.
+        if (over)
+            handle.DrawRect(new UIBox2(box.Right - edge, box.Top, box.Right, box.Bottom), ChassisStyle.Bad);
     }
 }

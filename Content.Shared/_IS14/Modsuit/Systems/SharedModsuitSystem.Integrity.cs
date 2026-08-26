@@ -1,6 +1,7 @@
 // Licensed under IS14's EULA, see EULA.txt for more information.
 
 using Content.Shared._IS14.Modsuit.Components;
+using Content.Shared._IS14.Modular;
 using Content.Shared._Shitmed.Targeting;
 using Content.Shared.Damage;
 using Content.Shared.Inventory;
@@ -13,8 +14,10 @@ namespace Content.Shared._IS14.Modsuit.Systems;
 ///     on the body underneath it wear it down — so a suit is something that degrades
 ///     over a shift rather than a costume that either exists or does not.
 ///
-///     A worn-out piece keeps sealing: it is the hardpoint inside it that stops
-///     answering, which takes the modules bolted to that piece offline with it.
+///     Two lines matter. Past the first the hardpoints stop answering and the modules
+///     bolted to that piece go dark, but the piece still holds pressure. Past the second
+///     it cannot hold pressure either: it pops open on its own and refuses to close until
+///     someone has worked on it.
 /// </summary>
 public sealed partial class SharedModsuitSystem
 {
@@ -38,7 +41,8 @@ public sealed partial class SharedModsuitSystem
         if (!Covers(ent.Comp, hit))
             return;
 
-        var total = 0f;
+        var structural = 0f;
+        var electrical = 0f;
 
         foreach (var (type, value) in args.Args.OriginalDamage.DamageDict)
         {
@@ -46,13 +50,23 @@ public sealed partial class SharedModsuitSystem
             if (value <= 0)
                 continue;
 
-            total += value.Float() * ent.Comp.DamageMultipliers.GetValueOrDefault(type, 1f);
+            var amount = value.Float() * ent.Comp.DamageMultipliers.GetValueOrDefault(type, 1f);
+
+            if (ent.Comp.StructuralDamage.Contains(type))
+                structural += amount;
+            else
+                electrical += amount;
         }
 
-        if (total <= 0f)
+        if (structural + electrical <= 0f)
             return;
 
-        ChangeIntegrity(ent, -total);
+        // Remembering the split is what lets the piece tell an engineer which tool it
+        // wants without anybody having to watch the fight.
+        ent.Comp.StructuralWear += structural;
+        ent.Comp.ElectricalWear += electrical;
+
+        ChangeIntegrity(ent, -(structural + electrical));
     }
 
     private static bool Covers(ModsuitPartComponent comp, TargetBodyPart hit)
@@ -72,8 +86,8 @@ public sealed partial class SharedModsuitSystem
     }
 
     /// <summary>
-    ///     Writes a part's condition and, if that crossed the break threshold, tells the
-    ///     suit so the modules hanging off this piece are re-evaluated.
+    ///     Writes a part's condition and deals with whichever line it just crossed:
+    ///     modules first, then pressure.
     /// </summary>
     public void SetIntegrity(Entity<ModsuitPartComponent> ent, float value)
     {
@@ -83,8 +97,17 @@ public sealed partial class SharedModsuitSystem
             return;
 
         var wasBroken = IsPartBroken(ent);
+        var wasRuptured = IsPartRuptured(ent);
 
         ent.Comp.Integrity = value;
+
+        // A piece worked back up to full has nothing left to complain about.
+        if (value >= ent.Comp.MaxIntegrity)
+        {
+            ent.Comp.StructuralWear = 0f;
+            ent.Comp.ElectricalWear = 0f;
+        }
+
         Dirty(ent);
 
         if (ent.Comp.Control is not { } control || !TryComp<ModsuitControlComponent>(control, out var controlComp))
@@ -92,18 +115,31 @@ public sealed partial class SharedModsuitSystem
 
         var suit = new Entity<ModsuitControlComponent>(control, controlComp);
         var broken = IsPartBroken(ent);
+        var ruptured = IsPartRuptured(ent);
 
-        if (broken == wasBroken)
+        if (ruptured && !wasRuptured)
         {
-            UpdateUi(suit);
+            if (controlComp.Wearer is { } exposed)
+                _popup.PopupClient(Loc.GetString("modsuit-part-ruptured", ("part", Name(ent))), suit, exposed);
+
+            // Blows the seal itself rather than waiting to be asked: this is the piece
+            // failing, not the wearer choosing to open it.
+            if (ent.Comp.Sealed)
+                SetPartSealed(suit, ent, false);
+        }
+        else if (broken && !wasBroken && controlComp.Wearer is { } wearer)
+        {
+            _popup.PopupClient(Loc.GetString("modsuit-part-broken", ("part", Name(ent))), suit, wearer);
+        }
+
+        if (broken != wasBroken || ruptured != wasRuptured)
+        {
+            // Slot availability just changed, which is the whole point of the thresholds.
+            RefreshChassis(suit);
             return;
         }
 
-        if (broken && controlComp.Wearer is { } wearer)
-            _popup.PopupClient(Loc.GetString("modsuit-part-broken", ("part", Name(ent))), suit, wearer);
-
-        // Slot availability just changed, which is the whole point of the threshold.
-        RefreshChassis(suit);
+        UpdateUi(suit);
     }
 
     /// <summary>
@@ -112,6 +148,33 @@ public sealed partial class SharedModsuitSystem
     public bool IsPartBroken(Entity<ModsuitPartComponent> ent)
     {
         return ent.Comp.MaxIntegrity > 0f
-               && ent.Comp.Integrity <= ent.Comp.MaxIntegrity * ent.Comp.BreakThreshold;
+               && ent.Comp.Integrity <= ent.Comp.MaxIntegrity * ent.Comp.ModuleThreshold;
+    }
+
+    /// <summary>
+    ///     Whether this piece can no longer hold pressure and must be repaired before
+    ///     it will seal again.
+    /// </summary>
+    public bool IsPartRuptured(Entity<ModsuitPartComponent> ent)
+    {
+        return ent.Comp.MaxIntegrity > 0f
+               && ent.Comp.Integrity <= ent.Comp.MaxIntegrity * ent.Comp.UnsealThreshold;
+    }
+
+    /// <summary>
+    ///     What this piece needs doing to it. Whichever kind of damage did the most is
+    ///     the one an engineer has to answer; a piece at full condition needs nothing.
+    /// </summary>
+    public ChassisPartFault GetFault(Entity<ModsuitPartComponent> ent)
+    {
+        if (ent.Comp.Integrity >= ent.Comp.MaxIntegrity)
+            return ChassisPartFault.None;
+
+        if (ent.Comp.StructuralWear <= 0f && ent.Comp.ElectricalWear <= 0f)
+            return ChassisPartFault.Structural;
+
+        return ent.Comp.ElectricalWear > ent.Comp.StructuralWear
+            ? ChassisPartFault.Electrical
+            : ChassisPartFault.Structural;
     }
 }

@@ -3,3 +3,11 @@
 
 - type: Tag
   id: IS14ModsuitStorage
+
+- type: Tag
+  id: IS14ModsuitTank
+
+# Отдельно от IS14ModsuitStorage: рудный мешок уживается с обычными отсеками,
+# но не со следующим рудным мешком — например бэ-эс версией.
+- type: Tag
+  id: IS14ModsuitOreStorage

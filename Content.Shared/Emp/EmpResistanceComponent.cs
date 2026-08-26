@@ -6,7 +6,10 @@ namespace Content.Shared.Emp;
 /// An entity with this component resists or is fully immune to EMPs.
 /// </summary>
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
-[Access(typeof(SharedEmpSystem))]
+//IS14-change start: the MOD screen damps a pulse by writing resistance onto whatever
+// is actually being pulsed — the cell nested inside the suit — so it needs write access.
+[Access(typeof(SharedEmpSystem), typeof(Content.Shared._IS14.Modular.Behaviours.ModuleEmpShieldSystem))]
+//IS14-change end
 public sealed partial class EmpResistanceComponent : Component
 {
     /// <summary>

@@ -142,6 +142,18 @@ public sealed class ChassisPowerSystem : EntitySystem
         return true;
     }
 
+    /// <summary>
+    ///     Announces that the charge moved without going through this system — a core fed
+    ///     by hand writes to its own battery, and the readout has no other way to hear
+    ///     about it.
+    /// </summary>
+    public void NotifyChargeChanged(EntityUid chassis)
+    {
+        var (current, max) = GetCharge(chassis);
+        var changed = new ChassisPowerChangedEvent(current, max);
+        RaiseLocalEvent(chassis, ref changed);
+    }
+
     public bool TryAddCharge(EntityUid chassis, float amount)
     {
         if (amount <= 0f)

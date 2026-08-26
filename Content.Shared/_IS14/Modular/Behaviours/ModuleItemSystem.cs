@@ -132,6 +132,10 @@ public sealed class ModuleItemSystem : ModuleBehaviourSystem<ModuleItemComponent
         {
             ent.Comp.HeldBy = null;
 
+            // Two-handed hardware needs two free hands, and silently refusing to deploy
+            // reads as the module being broken.
+            _popup.PopupClient(Loc.GetString("chassis-device-no-hands", ("device", device)), ent, user);
+
             // Put it back where it belongs and stand the module down rather than
             // leaving the suit in a half-activated state.
             if (TryGetDeviceContainer(ent, out var container))

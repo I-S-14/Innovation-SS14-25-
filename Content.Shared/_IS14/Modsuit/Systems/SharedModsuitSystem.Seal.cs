@@ -3,6 +3,7 @@
 using Content.Shared._IS14.Modsuit.Components;
 using Content.Shared._IS14.Modular.Components;
 using Content.Shared.DoAfter;
+using Content.Shared.Interaction.Components;
 
 namespace Content.Shared._IS14.Modsuit.Systems;
 
@@ -52,6 +53,11 @@ public sealed partial class SharedModsuitSystem
             if (!TryComp<ModsuitPartComponent>(part, out var comp) || !comp.Deployed)
                 continue;
 
+            // A ruptured piece has nothing left to close; the rest of the suit still
+            // seals around it, which is what makes losing one piece survivable.
+            if (sealingUp && IsPartRuptured((part, comp)))
+                continue;
+
             if (comp.Sealed != sealingUp)
                 queue.Add(part);
         }
@@ -89,6 +95,14 @@ public sealed partial class SharedModsuitSystem
 
         if (!TryComp<ModsuitPartComponent>(part, out var comp) || !comp.Deployed || comp.Sealed == sealUp)
             return false;
+
+        if (sealUp && IsPartRuptured((part, comp)))
+        {
+            if (user != null)
+                PopupFail(ent, user.Value, "modsuit-part-cannot-seal");
+
+            return false;
+        }
 
         if (sealUp && !HasWorkingCore(ent))
         {
@@ -197,10 +211,15 @@ public sealed partial class SharedModsuitSystem
         if (value)
         {
             EntityManager.AddComponents(part, part.Comp.SealedComponents);
+
+            // A closed piece cannot be pulled off the body — by the wearer or by anyone
+            // standing over them. An open one can, and that is the way out of a MOD.
+            EnsureComp<UnremoveableComponent>(part).DeleteOnDrop = false;
         }
         else
         {
             EntityManager.RemoveComponents(part, part.Comp.SealedComponents);
+            RemComp<UnremoveableComponent>(part);
         }
 
         // Air rushing in or venting out, once per part — the sound that makes the
@@ -251,12 +270,18 @@ public sealed partial class SharedModsuitSystem
         return false;
     }
 
+    /// <summary>
+    ///     Sealing needs a core with something left in it. A flat suit closing up would
+    ///     be a coffin: the seal draws power to hold, and the wearer would be locked into
+    ///     a shell that cannot even open itself.
+    /// </summary>
     private bool HasWorkingCore(Entity<ModsuitControlComponent> ent)
     {
         if (!HasComp<ChassisPowerComponent>(ent))
             return true;
 
-        return _power.GetCharge(ent).Max > 0f;
+        var (current, max) = _power.GetCharge(ent);
+        return max > 0f && current > 0f;
     }
 
     #region State

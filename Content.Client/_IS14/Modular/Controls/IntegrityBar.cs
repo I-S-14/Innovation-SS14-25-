@@ -17,7 +17,10 @@ public sealed class IntegrityBar : Control
     public float Fraction { get; set; }
 
     /// <summary>Fraction at which the piece stops carrying modules.</summary>
-    public float Threshold { get; set; } = 0.5f;
+    public float ModuleThreshold { get; set; } = 0.66f;
+
+    /// <summary>Fraction at which the piece stops holding pressure.</summary>
+    public float UnsealThreshold { get; set; } = 0.33f;
 
     public IntegrityBar()
     {
@@ -26,12 +29,12 @@ public sealed class IntegrityBar : Control
     }
 
     /// <summary>
-    ///     Green while healthy, amber approaching the threshold, red once past it —
-    ///     the same three-step reading the rest of the readout uses.
+    ///     Green while the piece is whole, amber once its modules are gone, red once it
+    ///     will not close — the two colours match the two lines drawn on the bar.
     /// </summary>
-    public Color FillColor => Fraction <= Threshold
+    public Color FillColor => Fraction <= UnsealThreshold
         ? ChassisStyle.Bad
-        : Fraction <= Threshold + 0.25f
+        : Fraction <= ModuleThreshold
             ? ChassisStyle.Warn
             : ChassisStyle.Good;
 
@@ -47,10 +50,13 @@ public sealed class IntegrityBar : Control
         if (fill > 0f)
             handle.DrawRect(new UIBox2(box.Left, box.Top, box.Left + box.Width * fill, box.Bottom), FillColor);
 
-        // The line the piece must not fall below.
-        var tick = box.Left + box.Width * Math.Clamp(Threshold, 0f, 1f);
+        // The two lines: modules first, pressure second.
         var width = MathF.Max(1f, MathF.Round(UIScale));
 
-        handle.DrawRect(new UIBox2(tick, box.Top, tick + width, box.Bottom), ChassisStyle.Backdrop);
+        foreach (var mark in new[] { ModuleThreshold, UnsealThreshold })
+        {
+            var tick = box.Left + box.Width * Math.Clamp(mark, 0f, 1f);
+            handle.DrawRect(new UIBox2(tick, box.Top, tick + width, box.Bottom), ChassisStyle.Backdrop);
+        }
     }
 }

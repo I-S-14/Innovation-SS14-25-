@@ -73,6 +73,24 @@ public enum ModuleBlockReason : byte
 }
 
 /// <summary>
+///     What is actually wrong with a piece of a chassis' shell, which decides how it is
+///     put right. Derived from what hurt it rather than rolled: plating beaten with a
+///     crowbar needs working back out, plating cooked by lasers needs its loom re-run.
+/// </summary>
+[Serializable, NetSerializable]
+public enum ChassisPartFault : byte
+{
+    /// <summary>Nothing to fix.</summary>
+    None = 0,
+
+    /// <summary>Bent plating. Welder.</summary>
+    Structural = 1,
+
+    /// <summary>Burnt-through wiring. Cable coil.</summary>
+    Electrical = 2,
+}
+
+/// <summary>
 ///     Kinds of configuration control a module can expose to the UI.
 ///     The UI renders these generically and never needs to know which module it is talking to.
 /// </summary>

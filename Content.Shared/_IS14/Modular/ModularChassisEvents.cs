@@ -69,6 +69,14 @@ public readonly record struct ChassisModulesChangedEvent;
 public readonly record struct ChassisStateChangedEvent(bool Active);
 
 /// <summary>
+///     Raised on a chassis when its hardware panel is opened or closed. What the panel
+///     allows — installing, pulling, prying — is all shown in the readout, so the readout
+///     has to hear about it.
+/// </summary>
+[ByRefEvent]
+public readonly record struct ChassisPanelChangedEvent(bool Open);
+
+/// <summary>
 ///     Raised on a chassis to collect which slots are currently available to modules.
 ///     The modsuit layer answers with the slots of every deployed and sealed part;
 ///     a mech would answer with whatever hardpoints it has.

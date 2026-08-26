@@ -146,6 +146,484 @@
           components:
           - ModCore
 
+# =========================================================== МЕДИЦИНСКИЙ
+
+- type: entity
+  parent: IS14ModsuitPartHelmetBase
+  id: IS14ModsuitHelmetMedical
+  name: medical MOD helmet
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/medical.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/medical.rsi
+
+- type: entity
+  parent: IS14ModsuitPartChestplateBase
+  id: IS14ModsuitChestplateMedical
+  name: medical MOD chestplate
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/medical.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/medical.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Caustic: 0.6
+        Poison: 0.6
+
+- type: entity
+  parent: IS14ModsuitPartGauntletsBase
+  id: IS14ModsuitGauntletsMedical
+  name: medical MOD gauntlets
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/medical.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/medical.rsi
+
+- type: entity
+  parent: IS14ModsuitPartBootsBase
+  id: IS14ModsuitBootsMedical
+  name: medical MOD boots
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/medical.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/medical.rsi
+
+- type: entity
+  parent: IS14ModsuitControlBase
+  id: IS14ModsuitMedical
+  name: medical MODsuit
+  description: A light frame built for reaching people fast. Sealed against whatever they were breathing.
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/medical.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/medical.rsi
+  - type: ModsuitControl
+    sealedSlowdown: 0.6
+    partPrototypes:
+      head: IS14ModsuitHelmetMedical
+      outerClothing: IS14ModsuitChestplateMedical
+      gloves: IS14ModsuitGauntletsMedical
+      shoes: IS14ModsuitBootsMedical
+  - type: ModularChassis
+    maxComplexity: 15
+    integratedModules:
+    - IS14ModuleVisorMedical
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        disableEject: true
+        startingItem: IS14ModCoreStandard
+        whitelist:
+          components:
+          - ModCore
+
+
+# =========================================================== СЛУЖБА БЕЗОПАСНОСТИ
+
+- type: entity
+  parent: IS14ModsuitPartHelmetBase
+  id: IS14ModsuitHelmetSecurity
+  name: security MOD helmet
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/security.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/security.rsi
+
+- type: entity
+  parent: IS14ModsuitPartChestplateBase
+  id: IS14ModsuitChestplateSecurity
+  name: security MOD chestplate
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/security.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/security.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.75
+
+- type: entity
+  parent: IS14ModsuitPartGauntletsBase
+  id: IS14ModsuitGauntletsSecurity
+  name: security MOD gauntlets
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/security.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/security.rsi
+
+- type: entity
+  parent: IS14ModsuitPartBootsBase
+  id: IS14ModsuitBootsSecurity
+  name: security MOD boots
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/security.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/security.rsi
+
+- type: entity
+  parent: IS14ModsuitControlBase
+  id: IS14ModsuitSecurity
+  name: security MODsuit
+  description: Riot plating on a modular frame. Slow, obvious, and hard to argue with.
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/security.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/security.rsi
+  - type: ModsuitControl
+    sealedSlowdown: 0.9
+    partPrototypes:
+      head: IS14ModsuitHelmetSecurity
+      outerClothing: IS14ModsuitChestplateSecurity
+      gloves: IS14ModsuitGauntletsSecurity
+      shoes: IS14ModsuitBootsSecurity
+  - type: ModularChassis
+    maxComplexity: 15
+    integratedModules:
+    - IS14ModuleVisorSecurity
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        disableEject: true
+        startingItem: IS14ModCoreStandard
+        whitelist:
+          components:
+          - ModCore
+
+
+# =========================================================== ШАХТЁРСКИЙ
+
+- type: entity
+  parent: IS14ModsuitPartHelmetBase
+  id: IS14ModsuitHelmetMining
+  name: mining MOD helmet
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/mining.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/mining.rsi
+
+- type: entity
+  parent: IS14ModsuitPartChestplateBase
+  id: IS14ModsuitChestplateMining
+  name: mining MOD chestplate
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/mining.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/mining.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.75
+        Piercing: 0.8
+        Heat: 0.7
+
+- type: entity
+  parent: IS14ModsuitPartGauntletsBase
+  id: IS14ModsuitGauntletsMining
+  name: mining MOD gauntlets
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/mining.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/mining.rsi
+
+- type: entity
+  parent: IS14ModsuitPartBootsBase
+  id: IS14ModsuitBootsMining
+  name: mining MOD boots
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/mining.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/mining.rsi
+
+- type: entity
+  parent: IS14ModsuitControlBase
+  id: IS14ModsuitMining
+  name: mining MODsuit
+  description: Built for rock and for whatever lives under it. Comes with the drill already in the wrist.
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/mining.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/mining.rsi
+  - type: ModsuitControl
+    sealedSlowdown: 0.9
+    partPrototypes:
+      head: IS14ModsuitHelmetMining
+      outerClothing: IS14ModsuitChestplateMining
+      gloves: IS14ModsuitGauntletsMining
+      shoes: IS14ModsuitBootsMining
+  - type: ModularChassis
+    maxComplexity: 15
+    integratedModules:
+    - IS14ModuleDrill
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        disableEject: true
+        startingItem: IS14ModCoreStandard
+        whitelist:
+          components:
+          - ModCore
+
+
+# =========================================================== АТМОСФЕРНЫЙ
+
+- type: entity
+  parent: IS14ModsuitPartHelmetBase
+  id: IS14ModsuitHelmetAtmospheric
+  name: atmospheric MOD helmet
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/atmospheric.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/atmospheric.rsi
+
+- type: entity
+  parent: IS14ModsuitPartChestplateBase
+  id: IS14ModsuitChestplateAtmospheric
+  name: atmospheric MOD chestplate
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/atmospheric.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/atmospheric.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Heat: 0.4
+        Cold: 0.4
+
+- type: entity
+  parent: IS14ModsuitPartGauntletsBase
+  id: IS14ModsuitGauntletsAtmospheric
+  name: atmospheric MOD gauntlets
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/atmospheric.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/atmospheric.rsi
+
+- type: entity
+  parent: IS14ModsuitPartBootsBase
+  id: IS14ModsuitBootsAtmospheric
+  name: atmospheric MOD boots
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/atmospheric.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/atmospheric.rsi
+
+- type: entity
+  parent: IS14ModsuitControlBase
+  id: IS14ModsuitAtmospheric
+  name: atmospheric MODsuit
+  description: Rated for the far end of the thermometer in both directions. Heavy with it.
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/atmospheric.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/atmospheric.rsi
+  - type: ModsuitControl
+    sealedSlowdown: 1.0
+    partPrototypes:
+      head: IS14ModsuitHelmetAtmospheric
+      outerClothing: IS14ModsuitChestplateAtmospheric
+      gloves: IS14ModsuitGauntletsAtmospheric
+      shoes: IS14ModsuitBootsAtmospheric
+  - type: ModularChassis
+    maxComplexity: 15
+    integratedModules:
+    - IS14ModuleThermalRegulator
+    - IS14ModuleWeldingProtection
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        disableEject: true
+        startingItem: IS14ModCoreStandard
+        whitelist:
+          components:
+          - ModCore
+
+
+# =========================================================== НАУЧНЫЙ
+
+- type: entity
+  parent: IS14ModsuitPartHelmetBase
+  id: IS14ModsuitHelmetResearch
+  name: research MOD helmet
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/research.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/research.rsi
+
+- type: entity
+  parent: IS14ModsuitPartChestplateBase
+  id: IS14ModsuitChestplateResearch
+  name: research MOD chestplate
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/research.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/research.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Radiation: 0.5
+
+- type: entity
+  parent: IS14ModsuitPartGauntletsBase
+  id: IS14ModsuitGauntletsResearch
+  name: research MOD gauntlets
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/research.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/research.rsi
+
+- type: entity
+  parent: IS14ModsuitPartBootsBase
+  id: IS14ModsuitBootsResearch
+  name: research MOD boots
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/research.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/research.rsi
+
+- type: entity
+  parent: IS14ModsuitControlBase
+  id: IS14ModsuitResearch
+  name: research MODsuit
+  description: Barely armoured, and deliberately — the frame gives up plating for hardpoints.
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/research.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/research.rsi
+  - type: ModsuitControl
+    sealedSlowdown: 0.5
+    partPrototypes:
+      head: IS14ModsuitHelmetResearch
+      outerClothing: IS14ModsuitChestplateResearch
+      gloves: IS14ModsuitGauntletsResearch
+      shoes: IS14ModsuitBootsResearch
+  - type: ModularChassis
+    maxComplexity: 22
+    integratedModules:
+    - IS14ModuleGps
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        disableEject: true
+        startingItem: IS14ModCoreStandard
+        whitelist:
+          components:
+          - ModCore
+
+
+# =========================================================== СИНДИКАТ
+
+- type: entity
+  parent: IS14ModsuitPartHelmetBase
+  id: IS14ModsuitHelmetSyndicate
+  name: blood-red MOD helmet
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/syndicate.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/syndicate.rsi
+
+- type: entity
+  parent: IS14ModsuitPartChestplateBase
+  id: IS14ModsuitChestplateSyndicate
+  name: blood-red MOD chestplate
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/syndicate.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/syndicate.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.65
+        Slash: 0.65
+        Piercing: 0.7
+        Heat: 0.8
+
+- type: entity
+  parent: IS14ModsuitPartGauntletsBase
+  id: IS14ModsuitGauntletsSyndicate
+  name: blood-red MOD gauntlets
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/syndicate.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/syndicate.rsi
+
+- type: entity
+  parent: IS14ModsuitPartBootsBase
+  id: IS14ModsuitBootsSyndicate
+  name: blood-red MOD boots
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/syndicate.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/syndicate.rsi
+
+- type: entity
+  parent: [ IS14ModsuitControlBase, BaseSyndicateContraband ]
+  id: IS14ModsuitSyndicate
+  name: blood-red MODsuit
+  description: Someone spent a great deal of money making this quiet, fast and unpleasant.
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/syndicate.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/syndicate.rsi
+  - type: ModsuitControl
+    sealedSlowdown: 0.35
+    partPrototypes:
+      head: IS14ModsuitHelmetSyndicate
+      outerClothing: IS14ModsuitChestplateSyndicate
+      gloves: IS14ModsuitGauntletsSyndicate
+      shoes: IS14ModsuitBootsSyndicate
+  - type: ModularChassis
+    maxComplexity: 30
+    integratedModules:
+    - IS14ModuleStorage
+    - IS14ModuleArmorBooster
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        disableEject: true
+        startingItem: IS14ModCoreStandard
+        whitelist:
+          components:
+          - ModCore
+
 # ============================================= отладочный набор для теста
 
 - type: entity

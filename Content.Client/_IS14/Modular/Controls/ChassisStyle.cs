@@ -85,6 +85,42 @@ public static class ChassisStyle
     }
 
     /// <summary>
+    ///     A pill whose unit is a glyph rather than a word. Watts and complexity get
+    ///     printed on every module card in the bay, and spelling them out turns the card
+    ///     into a sentence; the symbol says the same thing in a quarter of the width.
+    /// </summary>
+    public static Control IconChip(Texture? icon, string text, Color color, string? tooltip = null)
+    {
+        var panel = new PanelContainer
+        {
+            PanelOverride = Box(color.WithAlpha(0.16f), color, 1f, 3f),
+            VerticalAlignment = Control.VAlignment.Center,
+            Margin = new Thickness(0, 0, 4, 0),
+            ToolTip = tooltip,
+        };
+
+        var row = new BoxContainer
+        {
+            Orientation = BoxContainer.LayoutOrientation.Horizontal,
+            Margin = new Thickness(4, 0),
+        };
+
+        row.AddChild(new Label
+        {
+            Text = text,
+            FontColorOverride = color,
+            StyleClasses = { "LabelSubText" },
+        });
+
+        var glyph = Icon(icon, 12f, color);
+        glyph.Margin = new Thickness(3, 0, 0, 0);
+        row.AddChild(glyph);
+
+        panel.AddChild(row);
+        return panel;
+    }
+
+    /// <summary>
     ///     A thin rule used to separate stacked readouts.
     /// </summary>
     public static Control Rule(float margin = 6f) => new PanelContainer

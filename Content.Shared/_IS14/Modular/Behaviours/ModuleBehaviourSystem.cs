@@ -14,6 +14,7 @@ public abstract class ModuleBehaviourSystem<TComp> : EntitySystem where TComp : 
     {
         base.Initialize();
 
+        SubscribeLocalEvent<TComp, ModuleInstalledEvent>(OnModuleInstalled);
         SubscribeLocalEvent<TComp, ModuleEnabledEvent>(OnModuleEnabled);
         SubscribeLocalEvent<TComp, ModuleDisabledEvent>(OnModuleDisabled);
         SubscribeLocalEvent<TComp, ModuleActivatedEvent>(OnModuleActivated);
@@ -38,9 +39,26 @@ public abstract class ModuleBehaviourSystem<TComp> : EntitySystem where TComp : 
     /// </summary>
     protected virtual bool RequiresActive(Entity<TComp> ent) => false;
 
+    /// <summary>
+    ///     Whether the behaviour follows the module being physically installed rather
+    ///     than the chassis being in a state that can run it.
+    ///
+    ///     Almost nothing wants this. A lamp has no business shining out of a folded
+    ///     suit. A bottle, on the other hand, holds what was put into it whether the
+    ///     suit is open, closed or lying on the floor — what the seal governs is the
+    ///     compressor and the breathing, not whether the gas exists.
+    /// </summary>
+    protected virtual bool FollowsInstallation(Entity<TComp> ent) => false;
+
+    private void OnModuleInstalled(Entity<TComp> ent, ref ModuleInstalledEvent args)
+    {
+        if (FollowsInstallation(ent))
+            Start(ent, args.Chassis);
+    }
+
     private void OnModuleEnabled(Entity<TComp> ent, ref ModuleEnabledEvent args)
     {
-        if (!RequiresActive(ent))
+        if (!FollowsInstallation(ent) && !RequiresActive(ent))
             Start(ent, args.Chassis);
     }
 
@@ -48,18 +66,19 @@ public abstract class ModuleBehaviourSystem<TComp> : EntitySystem where TComp : 
     {
         // Always stop, even for active-gated behaviours: losing the required parts
         // has to tear the effect down regardless of the switch position.
-        Stop(ent, args.Chassis);
+        if (!FollowsInstallation(ent))
+            Stop(ent, args.Chassis);
     }
 
     private void OnModuleActivated(Entity<TComp> ent, ref ModuleActivatedEvent args)
     {
-        if (RequiresActive(ent))
+        if (RequiresActive(ent) && !FollowsInstallation(ent))
             Start(ent, args.Chassis);
     }
 
     private void OnModuleDeactivated(Entity<TComp> ent, ref ModuleDeactivatedEvent args)
     {
-        if (RequiresActive(ent))
+        if (RequiresActive(ent) && !FollowsInstallation(ent))
             Stop(ent, args.Chassis);
     }
 

@@ -61,6 +61,16 @@ namespace Content.Shared.UserInterface
         [DataField, ViewVariables(VVAccess.ReadWrite)]
         public bool AltVerb;
 
+        //IS14-change start: anything else that hangs an alt-verb off the same entity —
+        // a MOD suit that has been handed a gas tank, for one — would otherwise win
+        // alt-click by sorting first, and the panel is what alt-click is for.
+        /// <summary>
+        ///     Sort priority for the verbs this component adds. Higher wins alt-click.
+        /// </summary>
+        [DataField, ViewVariables(VVAccess.ReadWrite)]
+        public int VerbPriority;
+        //IS14-change end
+
         /// <summary>
         ///     Whether spectators (non-admin ghosts) should be allowed to view this UI.
         /// </summary>

@@ -351,6 +351,18 @@ public abstract class SharedStrippableSystem : EntitySystem
         if (!CanStripRemoveInventory(user, target, item, slot))
             return;
 
+        //IS14-change start: some worn gear is owned by something else on the body. MOD
+        // plating folds back into its own suit instead of coming off into the stripper's
+        // hands, and it has to be asked before the unequip rather than after — the suit
+        // moves the piece itself, and a half-finished unequip underneath it would leave
+        // the plating on the floor.
+        var removed = new StrippedItemRemovedEvent(user, target, slot);
+        RaiseLocalEvent(item, ref removed);
+
+        if (removed.Handled)
+            return;
+        //IS14-change end
+
         if (!_inventorySystem.TryUnequip(user, target, slot, triggerHandContact: true))
             return;
 

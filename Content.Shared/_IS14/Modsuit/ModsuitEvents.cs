@@ -25,6 +25,13 @@ public sealed partial class ModsuitSealDoAfterEvent : SimpleDoAfterEvent
 }
 
 /// <summary>
+///     DoAfter for one round of work on a piece of plating. Raised on the piece itself,
+///     which is what the tool was pointed at.
+/// </summary>
+[Serializable, NetSerializable]
+public sealed partial class ModsuitRepairDoAfterEvent : SimpleDoAfterEvent;
+
+/// <summary>
 ///     Raised on a part after it seals or unseals, so visuals and behaviours can react.
 /// </summary>
 [ByRefEvent]
@@ -41,3 +48,42 @@ public readonly record struct ModsuitPartDeployedEvent(EntityUid Control, bool D
 /// </summary>
 [ByRefEvent]
 public readonly record struct ModsuitWearerChangedEvent(EntityUid? Wearer);
+
+/// <summary>
+///     Raised on the suit when the lock or the sabotage state moves.
+///
+///     One event for all of it rather than one per switch: everything it covers is
+///     invisible except through the panel, and the panel redraws itself whole anyway.
+///     Without it the readout keeps showing the state of a lock that was opened a minute
+///     ago, because nothing else about the suit changed.
+/// </summary>
+[ByRefEvent]
+public readonly record struct ModsuitSecurityChangedEvent;
+
+/// <summary>
+///     Raised on the suit to make it let go of whoever is inside — unseal everything and
+///     fold it away, whatever the wearer wants.
+///
+///     An event rather than a method call because the two things that ask for it, the
+///     wire panel and the ID lock, both live in systems the suit system already depends
+///     on. It is also the single place to hang anything else that should be able to pop
+///     a suit open later.
+/// </summary>
+[ByRefEvent]
+public record struct ModsuitForceReleaseEvent(EntityUid? User, bool Handled = false);
+
+/// <summary>
+///     DoAfter for one pass of a cutting torch over worn plating.
+/// </summary>
+[Serializable, NetSerializable]
+public sealed partial class ModsuitCutDoAfterEvent : SimpleDoAfterEvent
+{
+    /// <summary>Piece of plating under the torch.</summary>
+    public NetEntity Part;
+
+    public ModsuitCutDoAfterEvent(NetEntity part)
+    {
+        Part = part;
+    }
+}
+
