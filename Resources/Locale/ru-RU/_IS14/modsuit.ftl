@@ -58,11 +58,11 @@ chassis-ui-deploy = Развернуть
 chassis-ui-retract = Сложить
 chassis-ui-seal = Запечатать
 chassis-ui-unseal = Расшить
-chassis-ui-part-stowed = сложена
-chassis-ui-part-deployed = надета
-chassis-ui-part-sealed = запечатана
-chassis-ui-part-broken = разбита
-chassis-ui-part-ruptured = вскрыта
+chassis-ui-part-stowed = сложено
+chassis-ui-part-deployed = надето
+chassis-ui-part-sealed = запечатано
+chassis-ui-part-broken = разбито
+chassis-ui-part-ruptured = вскрыто
 chassis-ui-kind-passive = пассивный
 chassis-ui-kind-toggleable = включаемый
 chassis-ui-kind-usable = разовый
@@ -73,6 +73,7 @@ chassis-ui-module-use = { $value } Дж
 chassis-ui-module-idle-tooltip = Потребление в установленном виде
 chassis-ui-module-active-tooltip = Потребление во включённом виде
 chassis-ui-module-use-tooltip = Расход за одно применение
+chassis-ui-module-ready = Работает
 chassis-ui-module-on = Включить
 chassis-ui-module-off = Выключить
 chassis-ui-module-use-button = Применить
@@ -109,7 +110,6 @@ chassis-ui-hw-draw = Расход
 chassis-ui-lock-engaged = заперт
 chassis-ui-lock-open = открыт
 chassis-ui-lock-wiped = доступ стёрт
-chassis-ui-hw-hint = Отвёртка открывает панель, лом извлекает модули, ID-карта переключает замок.
 
 # ID-замок и саботаж
 
@@ -144,7 +144,6 @@ chassis-ui-slot-hands = Перчатки
 chassis-ui-slot-feet = Ботинки
 chassis-ui-slot-other = Прочее
 chassis-ui-module-count = установлено: { $count }
-chassis-ui-part-hint-deploy = Сначала разверните часть, потом её можно герметизировать.
 chassis-device-reeled-in = Костюм втягивает { $device } обратно.
 
 # Управление модулями
@@ -164,7 +163,7 @@ chassis-ui-fault-structural = Погнутая обшивка — заварит
 chassis-ui-fault-electrical = Выгоревшая проводка — протянуть кабель.
 modsuit-part-broken = { $part } проминается — крепления обесточиваются.
 modsuit-part-ruptured = { $part } вскрывается и срывает герметизацию.
-modsuit-part-cannot-seal = { $part } разбита слишком сильно, чтобы закрыться.
+modsuit-part-cannot-seal = { $part } разбито слишком сильно, чтобы закрыться.
 modsuit-no-storage = На этом костюме нет отсеков.
 
 # Обслуживание

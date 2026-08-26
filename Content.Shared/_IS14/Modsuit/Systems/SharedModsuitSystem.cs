@@ -229,19 +229,31 @@ public sealed partial class SharedModsuitSystem : EntitySystem
         if (wearer == null && !TerminatingOrDeleted(ent))
             RetractAll(ent, silent: true);
 
-        if (ent.Comp.Wearer is { } previous && !TerminatingOrDeleted(previous))
-            RemComp<ModsuitWearerComponent>(previous);
+        var previousWearer = ent.Comp.Wearer;
 
         ent.Comp.Wearer = wearer;
         Dirty(ent);
 
         // Tools have to be usable on the person, because the suit on their back cannot be
         // clicked. See SharedModsuitSystem.Breach.
-        if (wearer is { } worn)
+        //
+        // Server only, and this one is not optional. Equipping raises GotEquipped, and the
+        // client raises it again while applying a container state — in the middle of
+        // walking the wearer's networked components to reset them. Adding a networked
+        // component to that entity right then invalidates the enumeration the client is
+        // standing in, and the client dies. The marker reaches the client the ordinary
+        // way, as component state.
+        if (_net.IsServer)
         {
-            EnsureComp<ModsuitWearerComponent>(worn, out var marker);
-            marker.Suit = ent;
-            Dirty(worn, marker);
+            if (previousWearer is { } previous && !TerminatingOrDeleted(previous))
+                RemComp<ModsuitWearerComponent>(previous);
+
+            if (wearer is { } worn)
+            {
+                EnsureComp<ModsuitWearerComponent>(worn, out var marker);
+                marker.Suit = ent;
+                Dirty(worn, marker);
+            }
         }
 
         var ev = new ModsuitWearerChangedEvent(wearer);

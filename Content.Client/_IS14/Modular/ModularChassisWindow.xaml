@@ -112,7 +112,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                                        VerticalAlignment="Center" />
                                 <Label Name="ModulesCountLabel" Text="" StyleClasses="LabelSubText"
                                        Margin="6 0 0 0" HorizontalExpand="True" VerticalAlignment="Center" />
-                                <cust:ComplexityBar Name="Complexity" MinWidth="140" VerticalAlignment="Center" />
+                                <cust:ComplexityBar Name="Complexity" MinWidth="210" VerticalAlignment="Center" />
                                 <Label Name="ComplexityLabel" Text="—" Margin="6 0 2 0" Align="Right"
                                        StyleClasses="LabelSubText" VerticalAlignment="Center" />
                                 <BoxContainer Name="ComplexityIconBox" Orientation="Horizontal"

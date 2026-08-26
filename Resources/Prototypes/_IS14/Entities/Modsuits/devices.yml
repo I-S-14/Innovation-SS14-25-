@@ -11,6 +11,8 @@
 - type: entity
   parent: HandheldHealthAnalyzer
   id: IS14ModsuitHealthAnalyzer
+  # Разворачивается модулем, руками его брать неоткуда.
+  categories: [ HideSpawnMenu ]
   name: MOD health analyzer
   description: A scanning suite that folds out of a MOD suit gauntlet. It answers to the suit, not to you.
   components:
@@ -28,6 +30,8 @@
 - type: entity
   parent: MiningDrillDiamond
   id: IS14ModsuitMiningDrill
+  # Разворачивается модулем, руками его брать неоткуда.
+  categories: [ HideSpawnMenu ]
   name: MOD drill
   description: A diamond-tipped drill that folds out of a MOD suit gauntlet. It answers to the suit, not to you.
   components:
@@ -41,6 +45,8 @@
 - type: entity
   parent: DefibrillatorOneHandedUnpowered
   id: IS14ModsuitDefibrillator
+  # Разворачивается модулем, руками его брать неоткуда.
+  categories: [ HideSpawnMenu ]
   name: MOD defibrillator
   description: Paddles that fold out of a MOD suit gauntlet. They answer to the suit, not to you.
   components:
@@ -57,6 +63,8 @@
 - type: entity
   parent: RCD
   id: IS14ModsuitRcd
+  # Разворачивается модулем, руками его брать неоткуда.
+  categories: [ HideSpawnMenu ]
   name: MOD constructor
   description: A construction head that folds out of a MOD suit gauntlet. The suit spins its matter back up on its own.
   components:
@@ -80,7 +88,7 @@
   id: IS14ModsuitPepperBurst
   name: pepper burst
   description: You should not be seeing this.
-  noSpawn: true
+  categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
     sprite: Objects/Weapons/Grenades/tear_gas.rsi

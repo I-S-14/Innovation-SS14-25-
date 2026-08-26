@@ -16,7 +16,7 @@ public sealed class BatteryGauge : Control
 {
     [Dependency] private readonly IGameTiming _timing = default!;
 
-    private const int Segments = 12;
+    private const int Segments = 10;
 
     /// <summary>Charge as a fraction of capacity.</summary>
     public float Fraction { get; set; }

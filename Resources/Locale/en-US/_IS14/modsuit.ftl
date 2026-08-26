@@ -73,6 +73,7 @@ chassis-ui-module-use = { $value } J
 chassis-ui-module-idle-tooltip = Drawn while installed
 chassis-ui-module-active-tooltip = Drawn while switched on
 chassis-ui-module-use-tooltip = Spent per use
+chassis-ui-module-ready = Working
 chassis-ui-module-on = Switch on
 chassis-ui-module-off = Switch off
 chassis-ui-module-use-button = Use
@@ -109,7 +110,6 @@ chassis-ui-hw-draw = Draw
 chassis-ui-lock-engaged = engaged
 chassis-ui-lock-open = open
 chassis-ui-lock-wiped = access wiped
-chassis-ui-hw-hint = A screwdriver opens the panel, a crowbar pulls modules, an ID card flips the lock.
 
 # ID lock and sabotage
 
@@ -144,7 +144,6 @@ chassis-ui-slot-hands = Gauntlets
 chassis-ui-slot-feet = Boots
 chassis-ui-slot-other = Other
 chassis-ui-module-count = { $count } installed
-chassis-ui-part-hint-deploy = Deploy the piece before it can be sealed.
 chassis-device-reeled-in = The suit reels { $device } back in.
 
 # Module controls

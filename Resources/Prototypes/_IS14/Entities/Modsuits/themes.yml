@@ -6,6 +6,7 @@
 - type: entity
   parent: IS14ModsuitPartHelmetBase
   id: IS14ModsuitHelmetStandard
+  categories: [ HideSpawnMenu ]
   name: standard MOD helmet
   components:
   - type: Sprite
@@ -16,6 +17,7 @@
 - type: entity
   parent: IS14ModsuitPartChestplateBase
   id: IS14ModsuitChestplateStandard
+  categories: [ HideSpawnMenu ]
   name: standard MOD chestplate
   components:
   - type: Sprite
@@ -26,6 +28,7 @@
 - type: entity
   parent: IS14ModsuitPartGauntletsBase
   id: IS14ModsuitGauntletsStandard
+  categories: [ HideSpawnMenu ]
   name: standard MOD gauntlets
   components:
   - type: Sprite
@@ -36,6 +39,7 @@
 - type: entity
   parent: IS14ModsuitPartBootsBase
   id: IS14ModsuitBootsStandard
+  categories: [ HideSpawnMenu ]
   name: standard MOD boots
   components:
   - type: Sprite
@@ -46,7 +50,7 @@
 - type: entity
   parent: IS14ModsuitControlBase
   id: IS14ModsuitStandard
-  name: standard MODsuit
+  name: standard MOD controller
   description: A civilian modular suit by Nakamura Engineering. Nothing remarkable, but dependable.
   components:
   - type: Sprite
@@ -74,6 +78,7 @@
 - type: entity
   parent: IS14ModsuitPartHelmetBase
   id: IS14ModsuitHelmetEngineering
+  categories: [ HideSpawnMenu ]
   name: engineering MOD helmet
   components:
   - type: Sprite
@@ -84,6 +89,7 @@
 - type: entity
   parent: IS14ModsuitPartChestplateBase
   id: IS14ModsuitChestplateEngineering
+  categories: [ HideSpawnMenu ]
   name: engineering MOD chestplate
   components:
   - type: Sprite
@@ -99,6 +105,7 @@
 - type: entity
   parent: IS14ModsuitPartGauntletsBase
   id: IS14ModsuitGauntletsEngineering
+  categories: [ HideSpawnMenu ]
   name: engineering MOD gauntlets
   components:
   - type: Sprite
@@ -109,6 +116,7 @@
 - type: entity
   parent: IS14ModsuitPartBootsBase
   id: IS14ModsuitBootsEngineering
+  categories: [ HideSpawnMenu ]
   name: engineering MOD boots
   components:
   - type: Sprite
@@ -119,7 +127,7 @@
 - type: entity
   parent: IS14ModsuitControlBase
   id: IS14ModsuitEngineering
-  name: engineering MODsuit
+  name: engineering MOD controller
   description: The Nakamura Engineering classic. Holds off heat and radiation at the cost of mobility.
   components:
   - type: Sprite
@@ -151,6 +159,7 @@
 - type: entity
   parent: IS14ModsuitPartHelmetBase
   id: IS14ModsuitHelmetMedical
+  categories: [ HideSpawnMenu ]
   name: medical MOD helmet
   components:
   - type: Sprite
@@ -161,6 +170,7 @@
 - type: entity
   parent: IS14ModsuitPartChestplateBase
   id: IS14ModsuitChestplateMedical
+  categories: [ HideSpawnMenu ]
   name: medical MOD chestplate
   components:
   - type: Sprite
@@ -176,6 +186,7 @@
 - type: entity
   parent: IS14ModsuitPartGauntletsBase
   id: IS14ModsuitGauntletsMedical
+  categories: [ HideSpawnMenu ]
   name: medical MOD gauntlets
   components:
   - type: Sprite
@@ -186,6 +197,7 @@
 - type: entity
   parent: IS14ModsuitPartBootsBase
   id: IS14ModsuitBootsMedical
+  categories: [ HideSpawnMenu ]
   name: medical MOD boots
   components:
   - type: Sprite
@@ -196,7 +208,7 @@
 - type: entity
   parent: IS14ModsuitControlBase
   id: IS14ModsuitMedical
-  name: medical MODsuit
+  name: medical MOD controller
   description: A light frame built for reaching people fast. Sealed against whatever they were breathing.
   components:
   - type: Sprite
@@ -230,6 +242,7 @@
 - type: entity
   parent: IS14ModsuitPartHelmetBase
   id: IS14ModsuitHelmetSecurity
+  categories: [ HideSpawnMenu ]
   name: security MOD helmet
   components:
   - type: Sprite
@@ -240,6 +253,7 @@
 - type: entity
   parent: IS14ModsuitPartChestplateBase
   id: IS14ModsuitChestplateSecurity
+  categories: [ HideSpawnMenu ]
   name: security MOD chestplate
   components:
   - type: Sprite
@@ -256,6 +270,7 @@
 - type: entity
   parent: IS14ModsuitPartGauntletsBase
   id: IS14ModsuitGauntletsSecurity
+  categories: [ HideSpawnMenu ]
   name: security MOD gauntlets
   components:
   - type: Sprite
@@ -266,6 +281,7 @@
 - type: entity
   parent: IS14ModsuitPartBootsBase
   id: IS14ModsuitBootsSecurity
+  categories: [ HideSpawnMenu ]
   name: security MOD boots
   components:
   - type: Sprite
@@ -276,7 +292,7 @@
 - type: entity
   parent: IS14ModsuitControlBase
   id: IS14ModsuitSecurity
-  name: security MODsuit
+  name: security MOD controller
   description: Riot plating on a modular frame. Slow, obvious, and hard to argue with.
   components:
   - type: Sprite
@@ -310,6 +326,7 @@
 - type: entity
   parent: IS14ModsuitPartHelmetBase
   id: IS14ModsuitHelmetMining
+  categories: [ HideSpawnMenu ]
   name: mining MOD helmet
   components:
   - type: Sprite
@@ -320,6 +337,7 @@
 - type: entity
   parent: IS14ModsuitPartChestplateBase
   id: IS14ModsuitChestplateMining
+  categories: [ HideSpawnMenu ]
   name: mining MOD chestplate
   components:
   - type: Sprite
@@ -336,6 +354,7 @@
 - type: entity
   parent: IS14ModsuitPartGauntletsBase
   id: IS14ModsuitGauntletsMining
+  categories: [ HideSpawnMenu ]
   name: mining MOD gauntlets
   components:
   - type: Sprite
@@ -346,6 +365,7 @@
 - type: entity
   parent: IS14ModsuitPartBootsBase
   id: IS14ModsuitBootsMining
+  categories: [ HideSpawnMenu ]
   name: mining MOD boots
   components:
   - type: Sprite
@@ -356,7 +376,7 @@
 - type: entity
   parent: IS14ModsuitControlBase
   id: IS14ModsuitMining
-  name: mining MODsuit
+  name: mining MOD controller
   description: Built for rock and for whatever lives under it. Comes with the drill already in the wrist.
   components:
   - type: Sprite
@@ -390,6 +410,7 @@
 - type: entity
   parent: IS14ModsuitPartHelmetBase
   id: IS14ModsuitHelmetAtmospheric
+  categories: [ HideSpawnMenu ]
   name: atmospheric MOD helmet
   components:
   - type: Sprite
@@ -400,6 +421,7 @@
 - type: entity
   parent: IS14ModsuitPartChestplateBase
   id: IS14ModsuitChestplateAtmospheric
+  categories: [ HideSpawnMenu ]
   name: atmospheric MOD chestplate
   components:
   - type: Sprite
@@ -415,6 +437,7 @@
 - type: entity
   parent: IS14ModsuitPartGauntletsBase
   id: IS14ModsuitGauntletsAtmospheric
+  categories: [ HideSpawnMenu ]
   name: atmospheric MOD gauntlets
   components:
   - type: Sprite
@@ -425,6 +448,7 @@
 - type: entity
   parent: IS14ModsuitPartBootsBase
   id: IS14ModsuitBootsAtmospheric
+  categories: [ HideSpawnMenu ]
   name: atmospheric MOD boots
   components:
   - type: Sprite
@@ -435,7 +459,7 @@
 - type: entity
   parent: IS14ModsuitControlBase
   id: IS14ModsuitAtmospheric
-  name: atmospheric MODsuit
+  name: atmospheric MOD controller
   description: Rated for the far end of the thermometer in both directions. Heavy with it.
   components:
   - type: Sprite
@@ -470,6 +494,7 @@
 - type: entity
   parent: IS14ModsuitPartHelmetBase
   id: IS14ModsuitHelmetResearch
+  categories: [ HideSpawnMenu ]
   name: research MOD helmet
   components:
   - type: Sprite
@@ -480,6 +505,7 @@
 - type: entity
   parent: IS14ModsuitPartChestplateBase
   id: IS14ModsuitChestplateResearch
+  categories: [ HideSpawnMenu ]
   name: research MOD chestplate
   components:
   - type: Sprite
@@ -494,6 +520,7 @@
 - type: entity
   parent: IS14ModsuitPartGauntletsBase
   id: IS14ModsuitGauntletsResearch
+  categories: [ HideSpawnMenu ]
   name: research MOD gauntlets
   components:
   - type: Sprite
@@ -504,6 +531,7 @@
 - type: entity
   parent: IS14ModsuitPartBootsBase
   id: IS14ModsuitBootsResearch
+  categories: [ HideSpawnMenu ]
   name: research MOD boots
   components:
   - type: Sprite
@@ -514,7 +542,7 @@
 - type: entity
   parent: IS14ModsuitControlBase
   id: IS14ModsuitResearch
-  name: research MODsuit
+  name: research MOD controller
   description: Barely armoured, and deliberately — the frame gives up plating for hardpoints.
   components:
   - type: Sprite
@@ -548,6 +576,7 @@
 - type: entity
   parent: IS14ModsuitPartHelmetBase
   id: IS14ModsuitHelmetSyndicate
+  categories: [ HideSpawnMenu ]
   name: blood-red MOD helmet
   components:
   - type: Sprite
@@ -558,6 +587,7 @@
 - type: entity
   parent: IS14ModsuitPartChestplateBase
   id: IS14ModsuitChestplateSyndicate
+  categories: [ HideSpawnMenu ]
   name: blood-red MOD chestplate
   components:
   - type: Sprite
@@ -575,6 +605,7 @@
 - type: entity
   parent: IS14ModsuitPartGauntletsBase
   id: IS14ModsuitGauntletsSyndicate
+  categories: [ HideSpawnMenu ]
   name: blood-red MOD gauntlets
   components:
   - type: Sprite
@@ -585,6 +616,7 @@
 - type: entity
   parent: IS14ModsuitPartBootsBase
   id: IS14ModsuitBootsSyndicate
+  categories: [ HideSpawnMenu ]
   name: blood-red MOD boots
   components:
   - type: Sprite
@@ -595,7 +627,7 @@
 - type: entity
   parent: [ IS14ModsuitControlBase, BaseSyndicateContraband ]
   id: IS14ModsuitSyndicate
-  name: blood-red MODsuit
+  name: blood-red MOD controller
   description: Someone spent a great deal of money making this quiet, fast and unpleasant.
   components:
   - type: Sprite
@@ -629,7 +661,7 @@
 - type: entity
   parent: IS14ModsuitEngineering
   id: IS14ModsuitDebug
-  name: debug MODsuit
+  name: debug MOD controller
   description: Every module and an infinite core. For testing.
   components:
   - type: ModularChassis

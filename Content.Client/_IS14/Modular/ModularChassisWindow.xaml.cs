@@ -864,10 +864,9 @@ public sealed partial class ModularChassisWindow : FancyWindow
             part.Deployed ? ChassisStyle.Warn : ChassisStyle.Accent);
 
         deploy.HorizontalExpand = true;
-        deploy.Margin = new Thickness(0, 0, 0, 4);
+        deploy.Margin = new Thickness(0, 0, 4, 0);
         deploy.Disabled = part.Sealed;
         deploy.OnPressed += _ => OnTogglePart?.Invoke(id);
-        DetailContainer.AddChild(deploy);
 
         var canSeal = part.Deployed && (part.Sealed || !part.Ruptured);
 
@@ -880,11 +879,20 @@ public sealed partial class ModularChassisWindow : FancyWindow
         seal.Selected = part.Sealed;
         seal.Disabled = !canSeal;
         seal.OnPressed += _ => OnSealPart?.Invoke(id);
-        DetailContainer.AddChild(seal);
 
-        if (!part.Deployed)
-            DetailContainer.AddChild(ChassisStyle.Sub(Loc.GetString("chassis-ui-part-hint-deploy")));
-        else if (state.MaxCharge <= 0f)
+        // Side by side: two verbs on one piece, and stacking them made the panel a column
+        // of buttons taller than the readout it belongs to.
+        var actions = new BoxContainer
+        {
+            Orientation = BoxContainer.LayoutOrientation.Horizontal,
+            HorizontalExpand = true,
+        };
+
+        actions.AddChild(deploy);
+        actions.AddChild(seal);
+        DetailContainer.AddChild(actions);
+
+        if (part.Deployed && state.MaxCharge <= 0f)
             DetailContainer.AddChild(ChassisStyle.Sub(NoChargeReason(state), ChassisStyle.Bad));
     }
 
@@ -1040,14 +1048,6 @@ public sealed partial class ModularChassisWindow : FancyWindow
             Loc.GetString("chassis-ui-draw", ("draw", Num(state.Draw))),
             ChassisStyle.Muted));
 
-        DetailContainer.AddChild(ChassisStyle.Rule());
-
-        DetailContainer.AddChild(new Label
-        {
-            Text = Loc.GetString("chassis-ui-hw-hint"),
-            StyleClasses = { "LabelSubText" },
-            FontColorOverride = ChassisStyle.Muted,
-        });
     }
 
     private static Control HardwareRow(Texture? icon, string labelLoc, string value, Color color)
@@ -1182,17 +1182,6 @@ public sealed partial class ModularChassisWindow : FancyWindow
 
         text.AddChild(BuildStatPills(module, kindColor));
 
-        // Say why the switch is dead rather than leaving the player to guess.
-        if (module.Kind != ModuleKind.Passive && module.BlockReason != ModuleBlockReason.None)
-        {
-            text.AddChild(new Label
-            {
-                Text = Loc.GetString(BlockLocId(module.BlockReason)),
-                StyleClasses = { "LabelSubText" },
-                FontColorOverride = ChassisStyle.Warn,
-            });
-        }
-
         if (module.Cooldown > 0f && module.CooldownMax > 0f)
         {
             text.AddChild(new ProgressBar
@@ -1304,6 +1293,22 @@ public sealed partial class ModularChassisWindow : FancyWindow
             }
         }
 
+        // Whether the module can run at all, as a tick or a cross beside the pieces it
+        // hangs off — which is where the answer usually lies. The reason is on the
+        // tooltip; a line of red text saying "the suit is not active" told the player
+        // something they could already see and cost a whole row of the card to say it.
+        var running = module.BlockReason == ModuleBlockReason.None;
+
+        var status = ChassisStyle.Icon(
+            UiIcon(running ? IconCheck : IconCross),
+            14f,
+            running ? ChassisStyle.Good : ChassisStyle.Warn);
+
+        status.Margin = new Thickness(3, 0, 0, 0);
+        status.ToolTip = Loc.GetString(running ? "chassis-ui-module-ready" : BlockLocId(module.BlockReason));
+        status.MouseFilter = Control.MouseFilterMode.Stop;
+        links.AddChild(status);
+
         if (links.ChildCount > 0)
             column.AddChild(links);
 
@@ -1323,11 +1328,15 @@ public sealed partial class ModularChassisWindow : FancyWindow
             Orientation = BoxContainer.LayoutOrientation.Vertical,
             Margin = new Thickness(1, 0),
             ToolTip = $"{part.Name} — {Loc.GetString(PartStateLocId(part))}",
+
+            // Containers ignore the mouse by default, and a tooltip nobody can hover is
+            // not a tooltip.
+            MouseFilter = Control.MouseFilterMode.Stop,
         };
 
         wrap.AddChild(new SpriteView(part.Part, _entMan)
         {
-            SetSize = new Vector2(16, 16),
+            SetSize = new Vector2(22, 22),
             OverrideDirection = Direction.South,
             HorizontalAlignment = HAlignment.Center,
         });
@@ -1335,7 +1344,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
         wrap.AddChild(new PanelContainer
         {
             PanelOverride = new StyleBoxFlat(color),
-            MinSize = new Vector2(16, 2),
+            MinSize = new Vector2(22, 2),
             HorizontalAlignment = HAlignment.Center,
         });
 
