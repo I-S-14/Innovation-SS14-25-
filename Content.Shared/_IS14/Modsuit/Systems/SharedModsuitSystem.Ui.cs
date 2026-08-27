@@ -51,6 +51,11 @@ public sealed partial class SharedModsuitSystem
     private void OnChassisChanged(Entity<ModsuitControlComponent> ent, ref ChassisModulesChangedEvent args)
     {
         UpdateUi(ent);
+        RefreshChargeAlert(ent);
+
+        // The eating apparatus is a module, so the faceplate can change without any part
+        // of the suit moving. Sealing is handled the other way round, from RefreshChassis.
+        RefreshFace(ent);
     }
 
     private void OnSecurityChanged(Entity<ModsuitControlComponent> ent, ref ModsuitSecurityChangedEvent args)
@@ -61,6 +66,7 @@ public sealed partial class SharedModsuitSystem
     private void OnPowerChanged(Entity<ModsuitControlComponent> ent, ref ChassisPowerChangedEvent args)
     {
         UpdateUi(ent);
+        RefreshChargeAlert(ent);
     }
 
     private void OnPanelChanged(Entity<ModsuitControlComponent> ent, ref ChassisPanelChangedEvent args)

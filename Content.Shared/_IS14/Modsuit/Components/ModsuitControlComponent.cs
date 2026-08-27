@@ -1,6 +1,7 @@
 // Licensed under IS14's EULA, see EULA.txt for more information.
 
 using Content.Shared._IS14.Modsuit.Systems;
+using Content.Shared.Alert;
 using Content.Shared.Inventory;
 using Robust.Shared.Audio;
 using Robust.Shared.Containers;
@@ -98,6 +99,19 @@ public sealed partial class ModsuitControlComponent : Component
     public TimeSpan StripDelay = TimeSpan.FromSeconds(10);
 
     #region Feedback
+
+    /// <summary>
+    ///     Charge readout shown to the wearer in the alert strip.
+    /// </summary>
+    [DataField]
+    public ProtoId<AlertPrototype> ChargeAlert = "IS14ModsuitCharge";
+
+    /// <summary>
+    ///     Shown instead when the suit has no core, or a core with nothing left in it.
+    /// </summary>
+    [DataField]
+    public ProtoId<AlertPrototype> NoChargeAlert = "IS14ModsuitChargeNone";
+
 
     [DataField]
     public SoundSpecifier DeploySound = new SoundPathSpecifier("/Audio/_IS14/Modsuit/part_move.ogg");

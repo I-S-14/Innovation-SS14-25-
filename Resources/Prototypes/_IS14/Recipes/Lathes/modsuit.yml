@@ -377,41 +377,111 @@
     Silver: 400
     Uranium: 200
 
+- type: latheRecipe
+  id: IS14ModuleMouthhole
+  result: IS14ModuleMouthhole
+  categories:
+  - Robotics
+  completetime: 2
+  materials:
+    Steel: 150
+    Plastic: 100
+
+- type: latheRecipe
+  id: IS14ModuleCrewMonitor
+  result: IS14ModuleCrewMonitor
+  categories:
+  - Robotics
+  completetime: 2
+  materials:
+    Steel: 150
+    Glass: 300
+
+- type: latheRecipe
+  id: IS14ModuleHolster
+  result: IS14ModuleHolster
+  categories:
+  - Robotics
+  completetime: 2
+  materials:
+    Steel: 400
+    Plastic: 200
+
+
+- type: latheRecipe
+  id: IS14ModuleKineticCharge
+  result: IS14ModuleKineticCharge
+  categories:
+  - Robotics
+  completetime: 3
+  materials:
+    Steel: 500
+    Plastic: 200
+    Silver: 100
+
+- type: latheRecipe
+  id: IS14ModuleDnaLock
+  result: IS14ModuleDnaLock
+  categories:
+  - Robotics
+  completetime: 3
+  materials:
+    Steel: 200
+    Glass: 200
+    Gold: 100
+
+
+# Раскладка по паку решает, что печатается с начала раунда, а что после
+# исследования. Статический пак — входной билет: простой костюм и пара модулей,
+# чтобы система вообще была видна в раунде. Всё остальное идёт через науку.
+
 - type: latheRecipePack
   id: IS14ModsuitStatic
   recipes:
   - IS14ModCoreStandard
   - IS14ModsuitStandard
-  - IS14ModsuitEngineering
   - IS14ModuleFlashlight
   - IS14ModuleStorage
+
+# Динамические паки. Рецепт открывается технологией, но станок должен знать о нём
+# заранее, иначе открывать будет нечего.
+
+- type: latheRecipePack
+  id: IS14ModsuitDynamic
+  recipes:
+  - IS14ModsuitEngineering
+  - IS14ModsuitAtmospheric
   - IS14ModuleStorageLarge
-  - IS14ModuleEmpShield
-  - IS14ModuleVisorMedical
-  - IS14ModuleVisorSecurity
-  - IS14ModuleVisorNight
   - IS14ModuleRadProtection
-  - IS14ModuleMagboots
   - IS14ModuleThermalRegulator
-  - IS14ModuleHealthAnalyzer
   - IS14ModuleWeldingProtection
-  - IS14ModuleDrill
+  - IS14ModuleMagboots
+  - IS14ModuleNoSlip
+  - IS14ModuleGps
+  - IS14ModuleTrayScanner
+  - IS14ModuleAtmosphericsSmall
+  - IS14ModuleMouthhole
   - IS14ModsuitMedical
   - IS14ModsuitSecurity
   - IS14ModsuitMining
-  - IS14ModsuitAtmospheric
   - IS14ModsuitResearch
-  - IS14ModuleVisorDiagnostic
-  - IS14ModuleGps
-  - IS14ModuleNoSlip
+  - IS14ModuleHealthAnalyzer
   - IS14ModuleDefibrillator
+  - IS14ModuleVisorMedical
+  - IS14ModuleVisorSecurity
+  - IS14ModuleVisorDiagnostic
+  - IS14ModuleDrill
+  - IS14ModuleOreBag
+  - IS14ModulePepper
   - IS14ModuleConstructor
-  - IS14ModuleArmorBooster
+  - IS14ModuleCrewMonitor
+  - IS14ModuleKineticCharge
+  - IS14ModuleDnaLock
+  - IS14ModuleHolster
   - IS14ModCorePlasma
-  - IS14ModuleAtmosphericsSmall
   - IS14ModuleAtmosphericsLarge
   - IS14ModuleJetpack
-  - IS14ModuleOreBag
+  - IS14ModuleEmpShield
+  - IS14ModuleArmorBooster
   - IS14ModuleCompression
-  - IS14ModuleTrayScanner
-  - IS14ModulePepper
+  - IS14ModuleVisorNight

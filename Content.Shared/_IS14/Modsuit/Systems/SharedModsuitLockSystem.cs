@@ -3,10 +3,13 @@
 using Content.Shared._IS14.Modsuit.Components;
 using Content.Shared._IS14.Modular;
 using Content.Shared._IS14.Modular.Components;
+using Content.Shared._IS14.Modular.Systems;
 using Content.Shared.Access.Components;
 using Content.Shared.Access.Systems;
 using Content.Shared.Emag.Components;
 using Content.Shared.Emag.Systems;
+using Content.Shared.Emp;
+using Content.Shared.Forensics.Components;
 using Content.Shared.Interaction;
 using Content.Shared.Popups;
 using Content.Shared.Wires;
@@ -25,6 +28,7 @@ public sealed class SharedModsuitLockSystem : EntitySystem
 {
     [Dependency] private readonly AccessReaderSystem _access = default!;
     [Dependency] private readonly EmagSystem _emag = default!;
+    [Dependency] private readonly SharedModularChassisSystem _chassis = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
@@ -44,7 +48,145 @@ public sealed class SharedModsuitLockSystem : EntitySystem
 
         // The panel is the thing the lock actually protects.
         SubscribeLocalEvent<ModsuitLockComponent, ChassisInstallModuleAttemptEvent>(OnInstallAttempt);
+
+        SubscribeLocalEvent<ModuleDnaLockComponent, ModuleUsedEvent>(OnDnaLockUsed);
+        SubscribeLocalEvent<ModuleDnaLockComponent, GotEmaggedEvent>(OnDnaLockEmagged);
+        SubscribeLocalEvent<ModuleDnaLockComponent, EmpPulseEvent>(OnDnaLockEmp);
     }
+
+    #region DNA lock
+
+    /// <summary>
+    ///     The imprinted DNA of whichever DNA lock module is installed, or null if there
+    ///     is none, or it is blank, or it has been burned out.
+    /// </summary>
+    public string? GetDnaLock(EntityUid chassis)
+    {
+        if (!TryComp<ModularChassisComponent>(chassis, out var comp))
+            return null;
+
+        foreach (var module in _chassis.GetModuleEntities((chassis, comp)))
+        {
+            if (TryComp<ModuleDnaLockComponent>(module, out var dna) && !dna.Broken)
+                return dna.Dna;
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    ///     Whether this person is locked out of the suit. Nobody at all is locked out of
+    ///     a blank lock, and the owner is never locked out of their own.
+    /// </summary>
+    public bool IsDnaBlocked(EntityUid chassis, EntityUid? user)
+    {
+        if (GetDnaLock(chassis) is not { } imprint)
+            return false;
+
+        if (user == null)
+            return true;
+
+        return !TryComp<DnaComponent>(user.Value, out var dna) || dna.DNA != imprint;
+    }
+
+    /// <summary>
+    ///     Pressing the module imprints it on whoever pressed it; pressing it again as
+    ///     the owner wipes it. Somebody else's imprint cannot be pressed over — that is
+    ///     the entire point of the lock.
+    /// </summary>
+    private void OnDnaLockUsed(Entity<ModuleDnaLockComponent> ent, ref ModuleUsedEvent args)
+    {
+        if (args.Handled || args.User is not { } user)
+            return;
+
+        args.Handled = true;
+
+        if (ent.Comp.Broken)
+        {
+            Deny(args.Chassis, user, "modsuit-dna-lock-broken");
+            return;
+        }
+
+        if (!TryComp<DnaComponent>(user, out var dna) || dna.DNA == null)
+        {
+            Deny(args.Chassis, user, "modsuit-dna-lock-no-dna");
+            return;
+        }
+
+        if (ent.Comp.Dna == null)
+        {
+            ent.Comp.Dna = dna.DNA;
+            Dirty(ent);
+            Announce(args.Chassis);
+            _audio.PlayPredicted(LockSound, args.Chassis, user);
+            _popup.PopupClient(Loc.GetString("modsuit-dna-lock-set"), args.Chassis, user);
+            return;
+        }
+
+        if (ent.Comp.Dna != dna.DNA)
+        {
+            Deny(args.Chassis, user, "modsuit-dna-lock-denied");
+            return;
+        }
+
+        ent.Comp.Dna = null;
+        Dirty(ent);
+        Announce(args.Chassis);
+        _audio.PlayPredicted(LockSound, args.Chassis, user);
+        _popup.PopupClient(Loc.GetString("modsuit-dna-lock-cleared"), args.Chassis, user);
+    }
+
+    /// <summary>
+    ///     An emag does not open the lock, it destroys it. The module is dead weight
+    ///     afterwards and has to be replaced.
+    /// </summary>
+    private void OnDnaLockEmagged(Entity<ModuleDnaLockComponent> ent, ref GotEmaggedEvent args)
+    {
+        if (!_emag.CompareFlag(args.Type, EmagType.Access) || ent.Comp.Broken)
+            return;
+
+        ent.Comp.Broken = true;
+        ent.Comp.Dna = null;
+        Dirty(ent);
+
+        if (TryComp<ChassisModuleComponent>(ent, out var module) && module.Chassis is { } chassis)
+            Announce(chassis);
+
+        args.Handled = true;
+    }
+
+    private void OnDnaLockEmp(Entity<ModuleDnaLockComponent> ent, ref EmpPulseEvent args)
+    {
+        if (ent.Comp.Dna == null)
+            return;
+
+        args.Affected = true;
+        WipeDnaLock(ent);
+    }
+
+    /// <summary>
+    ///     Wipes the imprint without breaking the hardware. This is what an EMP does, and
+    ///     it is the reason an EMP grenade is a way into somebody's MOD.
+    /// </summary>
+    public void WipeDnaLock(Entity<ModuleDnaLockComponent> ent)
+    {
+        if (ent.Comp.Dna == null)
+            return;
+
+        ent.Comp.Dna = null;
+        Dirty(ent);
+
+        if (TryComp<ChassisModuleComponent>(ent, out var module) && module.Chassis is { } chassis)
+            Announce(chassis);
+    }
+
+    private void Deny(EntityUid chassis, EntityUid user, string locId)
+    {
+        _audio.PlayPredicted(DenySound, chassis, user);
+        _popup.PopupClient(Loc.GetString(locId), chassis, user);
+    }
+
+    #endregion
 
     #region Lock
 
@@ -122,11 +264,39 @@ public sealed class SharedModsuitLockSystem : EntitySystem
 
     private void OnEmagged(Entity<ModsuitLockComponent> ent, ref GotEmaggedEvent args)
     {
-        if (!_emag.CompareFlag(args.Type, EmagType.Access) || ent.Comp.AccessWiped)
+        if (!_emag.CompareFlag(args.Type, EmagType.Access))
+            return;
+
+        // Both locks at once. The DNA lock sits in a module container where an emag
+        // could never be pointed at it directly, and one emag opening everything is the
+        // point of an emag — the module's own defence is that it is expensive to reach.
+        BreakDnaLock(ent.Owner);
+
+        if (ent.Comp.AccessWiped)
             return;
 
         WipeAccess(ent);
         args.Handled = true;
+    }
+
+    /// <summary>
+    ///     Burns out whichever DNA lock the chassis is carrying, if any.
+    /// </summary>
+    private void BreakDnaLock(EntityUid chassis)
+    {
+        if (!TryComp<ModularChassisComponent>(chassis, out var comp))
+            return;
+
+        foreach (var module in _chassis.GetModuleEntities((chassis, comp)))
+        {
+            if (!TryComp<ModuleDnaLockComponent>(module, out var dna) || dna.Broken)
+                continue;
+
+            dna.Broken = true;
+            dna.Dna = null;
+            Dirty(module, dna);
+            Announce(chassis);
+        }
     }
 
     /// <summary>

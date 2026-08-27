@@ -44,6 +44,10 @@ public sealed class ModCoreSystem : EntitySystem
         SubscribeLocalEvent<ModCoreSlotComponent, ChassisPryEvent>(OnPry);
         SubscribeLocalEvent<ModCoreSlotComponent, ItemSlotEjectAttemptEvent>(OnCoreEjectAttempt);
         SubscribeLocalEvent<ModCoreComponent, AccessibleOverrideEvent>(OnCoreAccessible);
+
+        // The cell slot sits on the core, not on the chassis, so swapping a cell is
+        // invisible to the container messages above. This is the suit's only notice.
+        SubscribeLocalEvent<ModCoreComponent, PowerCellChangedEvent>(OnCellChanged);
     }
 
     /// <summary>
@@ -114,6 +118,12 @@ public sealed class ModCoreSystem : EntitySystem
 
         // The readout has no other notice that its power source came or went.
         AnnounceCharge(ent);
+    }
+
+    private void OnCellChanged(Entity<ModCoreComponent> ent, ref PowerCellChangedEvent args)
+    {
+        if (ent.Comp.Chassis is { } chassis)
+            AnnounceCharge(chassis);
     }
 
     /// <summary>

@@ -95,6 +95,11 @@
   - type: Sprite
     state: empshield
   - type: ChassisModule
+    # Экран — это клетка вокруг силовой цепи, а не прибор. Он держит и на
+    # сложенном костюме: ЭМИ-граната прилетает как раз в тот, что выключен.
+    # Заряд при этом тратится только пока костюм работает — обесточенное шасси
+    # вообще ничего не расходует.
+    allow: ChassisInactive
     complexity: 3
     idleDraw: 0.15
   # Не EmpResistance на шасси: импульс прилетает в то, что держит заряд, а это
@@ -646,3 +651,103 @@
     targetSlot: OUTERCLOTHING
     stateActive: pepper
     stateCooldown: pepper_used
+
+# ================================================================ обитаемость
+# То, что делает костюм местом, в котором можно провести смену, а не только
+# пережить разгерметизацию.
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleMouthhole
+  name: MOD eating apparatus module
+  description: An iris in the faceplate that closes around whatever you push through it. A sealed helmet is otherwise exactly as airtight against a sandwich as against vacuum.
+  components:
+  - type: Sprite
+    state: apparatus
+  - type: ChassisModule
+    kind: Passive
+    complexity: 1
+    # Без запечатанного шлема нечего и открывать.
+    requiredSlots:
+    - HEAD
+  - type: ModuleFaceOpening
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleCrewMonitor
+  name: MOD crew monitor module
+  description: A sensor readout built into the wrist. Shows the suit sensors of everyone still wearing theirs.
+  components:
+  - type: Sprite
+    state: scanner
+  - type: ChassisModule
+    kind: Active
+    complexity: 1
+    useCost: 5
+    requiredSlots:
+    - GLOVES
+  - type: ModuleItem
+    devicePrototype: IS14ModsuitCrewMonitor
+  - type: ContainerContainer
+    containers:
+      module-device: !type:ContainerSlot
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleHolster
+  name: MOD holster module
+  description: A magnetic cradle under the arm. Holds one sidearm and nothing else — the suit checks.
+  components:
+  - type: Sprite
+    state: holster
+  - type: ChassisModule
+    # Кобура открывается кнопкой и при выключенном костюме: оружие должно
+    # доставаться и из обесточенного МОДа.
+    kind: Usable
+    actionText: chassis-ui-module-open
+    actionIcon: /Textures/Interface/VerbIcons/open.svg.192dpi.png
+    allow: ChassisInactive
+    complexity: 2
+    requiredSlots:
+    - OUTERCLOTHING
+  - type: ModuleStorage
+    grid:
+    - 0,0,1,1
+    maxItemSize: Normal
+    whitelist:
+      components:
+      - Gun
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleKineticCharge
+  name: MOD joint torsion ratchet module
+  description: Ratchets in the joints that bleed a little charge back out of your stride. It pays for the suit standing still, not for what you hang on it.
+  components:
+  - type: Sprite
+    state: joint_torsion
+  - type: ChassisModule
+    kind: Passive
+    complexity: 3
+    requiredSlots:
+    - FEET
+  - type: ModuleKineticCharge
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleDnaLock
+  name: MOD DNA lock module
+  description: A lock keyed to a person instead of a card. An imprinted suit will not unfold for anybody else, which turns a stolen MOD into a rucksack. An EMP wipes the imprint and an emag burns the module out.
+  components:
+  - type: Sprite
+    state: dnalock
+  - type: ChassisModule
+    # Работает и на выключенном костюме: замок, который снимается вместе с
+    # разряженной батареей, не замок.
+    kind: Usable
+    actionText: chassis-ui-module-dna-lock
+    allow: ChassisInactive
+    complexity: 2
+  # Ничего для «эмагуемости» объявлять не надо: GotEmaggedEvent прилетает в цель,
+  # а компонент Emag — это про инструмент, а не про то, что им ломают.
+  - type: ModuleDnaLock

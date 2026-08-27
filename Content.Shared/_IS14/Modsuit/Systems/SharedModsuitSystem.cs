@@ -7,6 +7,7 @@ using Content.Shared._IS14.Modular.Components;
 using Content.Shared._IS14.Modular.Systems;
 using Content.Shared.ActionBlocker;
 using Content.Shared.Actions;
+using Content.Shared.Alert;
 using Content.Shared.DoAfter;
 using Content.Shared.Inventory;
 using Content.Shared.Inventory.Events;
@@ -36,6 +37,7 @@ public sealed partial class SharedModsuitSystem : EntitySystem
     [Dependency] private readonly INetManager _net = default!;
     [Dependency] private readonly ActionBlockerSystem _actionBlocker = default!;
     [Dependency] private readonly SharedActionsSystem _actions = default!;
+    [Dependency] private readonly AlertsSystem _alerts = default!;
     [Dependency] private readonly SharedInteractionSystem _interaction = default!;
     [Dependency] private readonly InventorySystem _inventory = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
@@ -246,7 +248,10 @@ public sealed partial class SharedModsuitSystem : EntitySystem
         if (_net.IsServer)
         {
             if (previousWearer is { } previous && !TerminatingOrDeleted(previous))
+            {
                 RemComp<ModsuitWearerComponent>(previous);
+                ClearChargeAlert(ent, previous);
+            }
 
             if (wearer is { } worn)
             {
@@ -255,6 +260,8 @@ public sealed partial class SharedModsuitSystem : EntitySystem
                 Dirty(worn, marker);
             }
         }
+
+        RefreshChargeAlert(ent);
 
         var ev = new ModsuitWearerChangedEvent(wearer);
         RaiseLocalEvent(ent, ref ev);
@@ -307,6 +314,7 @@ public sealed partial class SharedModsuitSystem : EntitySystem
             _popup.PopupClient(Loc.GetString("modsuit-power-depleted"), ent, wearer);
 
         Deactivate(ent);
+        RefreshChargeAlert(ent);
     }
 
     #endregion

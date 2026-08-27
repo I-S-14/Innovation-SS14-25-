@@ -19,6 +19,7 @@ using Content.Shared.Emp;
 using Content.Shared.Damage.Prototypes;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Inventory;
+using Content.Shared.Nutrition.Components;
 using Content.Shared.Storage;
 using Content.Shared.Storage.EntitySystems;
 using Robust.Shared.GameObjects;
@@ -1260,7 +1261,8 @@ public sealed class ModsuitTest
             // Two containers deep and unprotected.
             var before = new EmpAttemptEvent();
             entMan.EventBus.RaiseLocalEvent(cell, ref before);
-            Assert.That(before.Cancelled, Is.False, "nothing shields the cell yet");
+            Assert.That(entMan.HasComponent<EmpResistanceComponent>(cell), Is.False,
+                "nothing shields the cell yet");
 
             var module = entMan.SpawnEntity("IS14ModuleEmpShield", map.GridCoords);
             var moduleComp = entMan.GetComponent<ChassisModuleComponent>(module);
@@ -1268,16 +1270,21 @@ public sealed class ModsuitTest
             chassisSys.SetPanelOpen(chassisEnt, true);
             Assert.That(chassisSys.TryInstall(chassisEnt, (module, moduleComp)), Is.True);
 
+            // The screen damps rather than cancels: a shielded suit is worth a second
+            // grenade, not immune to the first. What it has to do is answer for a cell
+            // nested two containers down, which is the trap this test guards.
             var after = new EmpAttemptEvent();
             entMan.EventBus.RaiseLocalEvent(cell, ref after);
-            Assert.That(after.Cancelled, Is.True,
+            Assert.That(entMan.TryGetComponent<EmpResistanceComponent>(cell, out var resistance), Is.True,
                 "the screen has to answer for everything nested inside the suit");
+            Assert.That(resistance!.StrengthMultiplier, Is.LessThan(1f), "and actually damp the pulse");
 
             Assert.That(chassisSys.TryUninstall(chassisEnt, (module, moduleComp)), Is.True);
 
             var pulled = new EmpAttemptEvent();
             entMan.EventBus.RaiseLocalEvent(cell, ref pulled);
-            Assert.That(pulled.Cancelled, Is.False, "and stop answering once it is pulled");
+            Assert.That(entMan.HasComponent<EmpResistanceComponent>(cell), Is.False,
+                "and stop answering once it is pulled");
 
             entMan.DeleteEntity(suit);
         });
@@ -1329,6 +1336,146 @@ public sealed class ModsuitTest
 
             entMan.DeleteEntity(suit);
             entMan.DeleteEntity(human);
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>
+    ///     A closed faceplate is closed. The eating apparatus module is the one thing
+    ///     that reopens it, and only while it is running.
+    /// </summary>
+    [Test]
+    public async Task SealedHelmetBlocksEating()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var entMan = server.ResolveDependency<IEntityManager>();
+
+        var map = await pair.CreateTestMap();
+
+        await server.WaitAssertion(() =>
+        {
+            var modsuit = entMan.System<SharedModsuitSystem>();
+            var chassisSys = entMan.System<SharedModularChassisSystem>();
+            var invSystem = entMan.System<InventorySystem>();
+
+            var human = entMan.SpawnEntity("MobHuman", map.GridCoords);
+            var suit = entMan.SpawnEntity(SuitProto, map.GridCoords);
+            var control = entMan.GetComponent<ModsuitControlComponent>(suit);
+            var chassis = entMan.GetComponent<ModularChassisComponent>(suit);
+            var ent = new Entity<ModsuitControlComponent>(suit, control);
+            var chassisEnt = new Entity<ModularChassisComponent>(suit, chassis);
+
+            Assert.That(invSystem.TryEquip(human, suit, "back", force: true), Is.True);
+            modsuit.DeployAll(ent, silent: true);
+
+            var helmet = control.Parts["head"];
+            var helmetComp = entMan.GetComponent<ModsuitPartComponent>(helmet);
+
+            Assert.That(entMan.HasComponent<IngestionBlockerComponent>(helmet), Is.False,
+                "an open helmet is not in the way of anything");
+
+            modsuit.SetPartSealed(ent, (helmet, helmetComp), true);
+            Assert.That(entMan.HasComponent<IngestionBlockerComponent>(helmet), Is.True,
+                "a sealed helmet has to stop the wearer eating through it");
+
+            // The apparatus needs the head slot, which the sealed helmet now supplies.
+            var module = entMan.SpawnEntity("IS14ModuleMouthhole", map.GridCoords);
+            var moduleComp = entMan.GetComponent<ChassisModuleComponent>(module);
+
+            chassisSys.SetPanelOpen(chassisEnt, true);
+            Assert.That(chassisSys.TryInstall(chassisEnt, (module, moduleComp)), Is.True);
+            chassisSys.SetPanelOpen(chassisEnt, false);
+
+            Assert.That(moduleComp.Enabled, Is.True, "a sealed helmet supplies the head slot");
+            Assert.That(entMan.HasComponent<IngestionBlockerComponent>(helmet), Is.False,
+                "the apparatus is what reopens the faceplate");
+
+            // Opening the helmet takes the module's slot away, and the blocker has to go
+            // with the seal rather than come back with the module.
+            modsuit.SetPartSealed(ent, (helmet, helmetComp), false);
+            Assert.That(entMan.HasComponent<IngestionBlockerComponent>(helmet), Is.False,
+                "an open helmet blocks nothing either way");
+
+            entMan.DeleteEntity(suit);
+            entMan.DeleteEntity(human);
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>
+    ///     An imprinted suit does not unfold for anyone else. This is the difference
+    ///     between stealing a MOD and stealing a rucksack.
+    /// </summary>
+    [Test]
+    public async Task DnaLockRefusesStrangers()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var entMan = server.ResolveDependency<IEntityManager>();
+
+        var map = await pair.CreateTestMap();
+
+        await server.WaitAssertion(() =>
+        {
+            var modsuit = entMan.System<SharedModsuitSystem>();
+            var chassisSys = entMan.System<SharedModularChassisSystem>();
+            var lockSys = entMan.System<SharedModsuitLockSystem>();
+            var invSystem = entMan.System<InventorySystem>();
+
+            var owner = entMan.SpawnEntity("MobHuman", map.GridCoords);
+            var thief = entMan.SpawnEntity("MobHuman", map.GridCoords);
+            var suit = entMan.SpawnEntity(SuitProto, map.GridCoords);
+            var control = entMan.GetComponent<ModsuitControlComponent>(suit);
+            var chassis = entMan.GetComponent<ModularChassisComponent>(suit);
+            var ent = new Entity<ModsuitControlComponent>(suit, control);
+            var chassisEnt = new Entity<ModularChassisComponent>(suit, chassis);
+
+            var module = entMan.SpawnEntity("IS14ModuleDnaLock", map.GridCoords);
+            var moduleComp = entMan.GetComponent<ChassisModuleComponent>(module);
+            var dnaComp = entMan.GetComponent<ModuleDnaLockComponent>(module);
+
+            chassisSys.SetPanelOpen(chassisEnt, true);
+            Assert.That(chassisSys.TryInstall(chassisEnt, (module, moduleComp)), Is.True);
+            chassisSys.SetPanelOpen(chassisEnt, false);
+
+            Assert.That(invSystem.TryEquip(owner, suit, "back", force: true), Is.True);
+            Assert.That(lockSys.IsDnaBlocked(suit, owner), Is.False, "a blank lock blocks nobody");
+
+            // Imprint on the owner by pressing the module.
+            var used = new ModuleUsedEvent(suit, owner, null, false);
+            entMan.EventBus.RaiseLocalEvent(module, ref used);
+            Assert.That(used.Handled, Is.True);
+            Assert.That(dnaComp.Dna, Is.Not.Null, "pressing it should imprint whoever pressed it");
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(lockSys.IsDnaBlocked(suit, owner), Is.False, "the owner is never locked out");
+                Assert.That(lockSys.IsDnaBlocked(suit, thief), Is.True, "and nobody else is let in");
+            });
+
+            // Off the owner and onto the thief: the suit goes on, and stays shut.
+            modsuit.RetractAll(ent, silent: true);
+            Assert.That(invSystem.TryUnequip(owner, "back", force: true), Is.True);
+            Assert.That(invSystem.TryEquip(thief, suit, "back", force: true), Is.True);
+
+            modsuit.DeployAll(ent, silent: true);
+            Assert.That(modsuit.AnyPartDeployed(ent), Is.False,
+                "an imprinted suit is a rucksack to anyone else");
+
+            // An EMP wipes the imprint, which is the way in that does not need the owner.
+            var pulse = new EmpPulseEvent(0f, false, false, TimeSpan.FromSeconds(1), null);
+            entMan.EventBus.RaiseLocalEvent(module, ref pulse);
+            Assert.That(dnaComp.Dna, Is.Null, "an EMP has to clear the imprint");
+
+            modsuit.DeployAll(ent, silent: true);
+            Assert.That(modsuit.AnyPartDeployed(ent), Is.True, "and the suit opens up afterwards");
+
+            entMan.DeleteEntity(suit);
+            entMan.DeleteEntity(owner);
+            entMan.DeleteEntity(thief);
         });
 
         await pair.CleanReturnAsync();

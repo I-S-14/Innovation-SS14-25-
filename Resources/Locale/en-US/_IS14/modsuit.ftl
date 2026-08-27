@@ -215,3 +215,19 @@ chassis-config-gas-oxygen = Oxygen
 chassis-config-gas-nitrogen = Nitrogen
 chassis-config-gas-carbondioxide = CO2
 chassis-config-gas-plasma = Plasma
+
+alerts-is14-modsuit-charge-name = MOD charge
+alerts-is14-modsuit-charge-desc = Core charge of the suit you are wearing. When it runs out the suit unseals itself.
+alerts-is14-modsuit-nocharge-name = MOD without power
+alerts-is14-modsuit-nocharge-desc = The suit has no core, or the core has nothing left in it. Until that is fixed it is armour and nothing more.
+
+research-technology-is14-modsuit = MOD Technology
+research-technology-is14-modsuit-specialization = MOD Specialization
+research-technology-is14-modsuit-advanced = Advanced MOD Systems
+
+chassis-ui-module-dna-lock = Lock
+modsuit-dna-lock-set = The suit has memorised you.
+modsuit-dna-lock-cleared = The suit has forgotten you.
+modsuit-dna-lock-denied = The suit does not recognise you.
+modsuit-dna-lock-broken = The lock is burned out.
+modsuit-dna-lock-no-dna = The suit has nothing to memorise.

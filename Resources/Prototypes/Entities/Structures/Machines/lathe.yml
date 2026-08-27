@@ -399,6 +399,9 @@
     # Goobstation Packs
     - MechPartsGoob
     - Modsuits
+    #IS14-change start
+    - IS14ModsuitDynamic
+    #IS14-change end
     - PowerCages
     - BorgModulesGoob
     - BasicCybernetics

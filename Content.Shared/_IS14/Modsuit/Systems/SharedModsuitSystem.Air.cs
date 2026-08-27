@@ -1,7 +1,9 @@
 // Licensed under IS14's EULA, see EULA.txt for more information.
 
 using Content.Shared._IS14.Modsuit.Components;
+using Content.Shared._IS14.Modular.Components;
 using Content.Shared.Atmos.Components;
+using Content.Shared.Nutrition.Components;
 
 namespace Content.Shared._IS14.Modsuit.Systems;
 
@@ -59,6 +61,56 @@ public sealed partial class SharedModsuitSystem
             EnsureComp<BreathToolComponent>(helmet);
         else
             RemComp<BreathToolComponent>(helmet);
+    }
+
+    /// <summary>
+    ///     Puts the faceplate up or down over the wearer's mouth.
+    ///
+    ///     A closed helmet is a closed helmet: you cannot eat or drink through it, the way
+    ///     you cannot through any other sealed headgear in the game. The eating apparatus
+    ///     module is the exception, and it is the only one — which is what makes it worth
+    ///     a slot.
+    ///
+    ///     Deliberately not part of the helmet's sealedComponents: two owners of the same
+    ///     component would fight, and the module can come and go without the helmet ever
+    ///     being unsealed. One place decides, and it is this one.
+    /// </summary>
+    private void RefreshFace(Entity<ModsuitControlComponent> ent)
+    {
+        if (!ent.Comp.Parts.TryGetValue(HeadSlot, out var helmet) || TerminatingOrDeleted(helmet))
+            return;
+
+        var closed = TryComp<ModsuitPartComponent>(helmet, out var part) && part.Sealed;
+        var blocked = closed && !HasFaceOpening(ent);
+
+        if (blocked == HasComp<IngestionBlockerComponent>(helmet))
+            return;
+
+        if (blocked)
+            EnsureComp<IngestionBlockerComponent>(helmet);
+        else
+            RemComp<IngestionBlockerComponent>(helmet);
+    }
+
+    /// <summary>
+    ///     Whether any running module opens the faceplate. Installed is not enough — an
+    ///     apparatus on a suit with no power is a shut iris like any other.
+    /// </summary>
+    private bool HasFaceOpening(Entity<ModsuitControlComponent> ent)
+    {
+        if (!TryComp<ModularChassisComponent>(ent, out var chassis))
+            return false;
+
+        foreach (var module in _chassis.GetModuleEntities((ent, chassis)))
+        {
+            if (!HasComp<ModuleFaceOpeningComponent>(module))
+                continue;
+
+            if (TryComp<ChassisModuleComponent>(module, out var comp) && comp.Enabled)
+                return true;
+        }
+
+        return false;
     }
 
     /// <summary>Slot key of the piece that covers the face.</summary>

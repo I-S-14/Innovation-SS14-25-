@@ -95,6 +95,17 @@ public sealed partial class SharedModsuitSystem
         if (!TryComp<ModsuitPartComponent>(part, out var partComp) || partComp.Deployed)
             return false;
 
+        // A DNA-locked suit will not open up for anyone but its owner. Checked here
+        // rather than at the action, because this is the one gate every route to a
+        // deployed part passes through.
+        if (_lock.IsDnaBlocked(ent, wearer))
+        {
+            if (!silent && user != null)
+                PopupFail(ent, user.Value, "modsuit-dna-lock-denied");
+
+            return false;
+        }
+
         if (ent.Comp.Sealing)
         {
             if (!silent && user != null)
@@ -308,6 +319,7 @@ public sealed partial class SharedModsuitSystem
         SetActive(ent, IsAnyPartSealed(ent));
 
         RefreshBreathing(ent);
+        RefreshFace(ent);
         UpdateSealActionState(ent);
         UpdateUi(ent);
     }

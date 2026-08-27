@@ -215,3 +215,19 @@ chassis-config-gas-oxygen = Кислород
 chassis-config-gas-nitrogen = Азот
 chassis-config-gas-carbondioxide = CO2
 chassis-config-gas-plasma = Плазма
+
+alerts-is14-modsuit-charge-name = Заряд МОДа
+alerts-is14-modsuit-charge-desc = Заряд ядра надетого костюма. Когда он кончится, костюм расшивается сам.
+alerts-is14-modsuit-nocharge-name = МОД без питания
+alerts-is14-modsuit-nocharge-desc = В костюме нет ядра или в ядре ничего не осталось. Пока это не исправить, он просто броня.
+
+research-technology-is14-modsuit = МОД-технология
+research-technology-is14-modsuit-specialization = Специализация МОДов
+research-technology-is14-modsuit-advanced = Продвинутые системы МОД
+
+chassis-ui-module-dna-lock = Замок
+modsuit-dna-lock-set = Костюм запомнил вас.
+modsuit-dna-lock-cleared = Костюм забыл вас.
+modsuit-dna-lock-denied = Костюм не узнаёт вас.
+modsuit-dna-lock-broken = Замок сожжён.
+modsuit-dna-lock-no-dna = Костюму нечего запоминать.
