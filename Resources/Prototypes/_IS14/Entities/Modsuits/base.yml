@@ -265,6 +265,10 @@
     interfaces:
       enum.ModularChassisUiKey.Key:
         type: ModularChassisBoundUserInterface
+      # Радиалка модулей с экшена. Отдельный ключ, а не режим основного: окно живёт,
+      # пока его не закроют, а кольцо — до первого клика.
+      enum.ModularChassisUiKey.Radial:
+        type: ModularChassisRadialBoundUserInterface
       # Открывается кнопкой модуля хранения, а не кликом по костюму: клик занят
       # основным интерфейсом.
       enum.StorageUiKey.Key:

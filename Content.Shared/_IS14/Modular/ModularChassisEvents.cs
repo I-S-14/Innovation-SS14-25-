@@ -147,6 +147,22 @@ public record struct ChassisInstallModuleAttemptEvent(EntityUid Module, EntityUi
     public bool Cancelled = Cancelled;
 }
 
+/// <summary>
+///     Raised on the module itself before it is pulled out. Cancel to refuse — and say
+///     why while cancelling, because the caller only reports that nothing happened.
+///
+///     On the module rather than the chassis: what makes a module unsafe to remove is
+///     something the module knows about itself, and the behaviour systems are already
+///     keyed that way.
+/// </summary>
+[ByRefEvent]
+public record struct ChassisUninstallModuleAttemptEvent(EntityUid Chassis, EntityUid? User, bool Cancelled)
+{
+    public readonly EntityUid Chassis = Chassis;
+    public readonly EntityUid? User = User;
+    public bool Cancelled = Cancelled;
+}
+
 #endregion
 
 #region Module lifecycle

@@ -6,6 +6,7 @@ chassis-module-conflict = Incompatible with { $module }.
 chassis-module-installed = { $module } installed.
 chassis-module-removed = { $module } removed.
 chassis-module-not-removable = This module is built in.
+chassis-module-slots-in-use = Take it off first — it is only being carried there because of this module.
 
 chassis-module-no-power = Not enough charge.
 chassis-module-cooldown = Module is recharging.
@@ -15,6 +16,12 @@ chassis-module-not-worn = The suit is not worn.
 chassis-module-incapacitated = You cannot do that right now.
 chassis-module-malfunctioning = The module is malfunctioning.
 chassis-module-unavailable = Module unavailable.
+
+# Quick module ring
+
+chassis-radial-panel = Open the panel
+chassis-radial-active = { $module } — on
+chassis-radial-blocked = { $module } — { $reason }
 
 # MOD suit
 

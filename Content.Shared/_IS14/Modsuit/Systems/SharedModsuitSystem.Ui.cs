@@ -31,6 +31,7 @@ public sealed partial class SharedModsuitSystem
         SubscribeLocalEvent<ModsuitControlComponent, ChassisOpenHopperMessage>(OnOpenHopperMessage);
         SubscribeLocalEvent<ModsuitControlComponent, ChassisTogglePartMessage>(OnTogglePartMessage);
         SubscribeLocalEvent<ModsuitControlComponent, ChassisSealPartMessage>(OnSealPartMessage);
+        SubscribeLocalEvent<ModsuitControlComponent, ChassisOpenPanelMessage>(OnOpenPanelMessage);
         SubscribeLocalEvent<ModsuitControlComponent, ChassisToggleActiveMessage>(OnToggleActiveMessage);
         SubscribeLocalEvent<ModsuitControlComponent, ChassisToggleDeployMessage>(OnToggleDeployMessage);
 
@@ -62,8 +63,12 @@ public sealed partial class SharedModsuitSystem
     {
         // Refusing to open a panel that is already open in front of somebody would be a
         // sabotage nobody notices, so breaking the interface shuts it there and then.
+        // The ring runs off the same interface and goes with it.
         if (_lock.IsInterfaceBroken(ent))
+        {
             _ui.CloseUi(ent.Owner, ModularChassisUiKey.Key);
+            _ui.CloseUi(ent.Owner, ModularChassisUiKey.Radial);
+        }
 
         UpdateUi(ent);
     }
@@ -248,6 +253,20 @@ public sealed partial class SharedModsuitSystem
 
         TrySealPart(ent, part, !comp.Sealed, args.Actor);
         UpdateUi(ent);
+    }
+
+    /// <summary>
+    ///     The ring's way out to the full readout. Closing the ring first matters: leaving
+    ///     both open puts a menu that swallows the mouse on top of the window it just
+    ///     opened, and the player has to dismiss a thing they did not ask for.
+    /// </summary>
+    private void OnOpenPanelMessage(Entity<ModsuitControlComponent> ent, ref ChassisOpenPanelMessage args)
+    {
+        if (!CanUseInterface(ent, args.Actor))
+            return;
+
+        _ui.CloseUi(ent.Owner, ModularChassisUiKey.Radial, args.Actor);
+        _ui.OpenUi(ent.Owner, ModularChassisUiKey.Key, args.Actor);
     }
 
     private void OnToggleActiveMessage(Entity<ModsuitControlComponent> ent, ref ChassisToggleActiveMessage args)

@@ -277,6 +277,16 @@ public sealed partial class SharedModularChassisSystem : EntitySystem
             return false;
         }
 
+        var attempt = new ChassisUninstallModuleAttemptEvent(chassis, user, false);
+        RaiseLocalEvent(module, ref attempt);
+        if (attempt.Cancelled)
+        {
+            if (user != null)
+                _audio.PlayPredicted(chassis.Comp.FailSound, chassis, user);
+
+            return false;
+        }
+
         if (!TryGetModuleContainer(chassis, out var container) || !_container.Remove(module.Owner, container))
             return false;
 

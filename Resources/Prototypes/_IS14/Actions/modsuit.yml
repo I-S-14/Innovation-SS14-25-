@@ -32,7 +32,7 @@
   parent: BaseAction
   id: ActionModsuitOpenModules
   name: MODsuit modules
-  description: Opens the suit interface.
+  description: Brings up the module ring. The full panel is one of its options.
   components:
   - type: Action
     icon:

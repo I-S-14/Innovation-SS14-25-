@@ -1689,4 +1689,53 @@ public sealed class ModsuitTest
 
         await pair.CleanReturnAsync();
     }
+
+    /// <summary>
+    ///     The compression module cannot be pulled while the suit is hanging off a belt.
+    ///
+    ///     Restoring the old slots does not unequip what is already worn, so without the
+    ///     refusal the module came out, the suit stayed on the belt, and its complexity
+    ///     went back into the budget — the compression paid for once and then refunded.
+    /// </summary>
+    [Test]
+    public async Task CompressionModuleHeldByTheBeltItAllows()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var entMan = server.ResolveDependency<IEntityManager>();
+
+        await server.WaitAssertion(() =>
+        {
+            var chassisSys = entMan.System<SharedModularChassisSystem>();
+            var invSystem = entMan.System<InventorySystem>();
+
+            var human = entMan.SpawnEntity("MobHuman", MapCoordinates.Nullspace);
+            var suit = entMan.SpawnEntity(SuitProto, MapCoordinates.Nullspace);
+            var chassis = entMan.GetComponent<ModularChassisComponent>(suit);
+            var chassisEnt = new Entity<ModularChassisComponent>(suit, chassis);
+
+            var module = entMan.SpawnEntity("IS14ModuleCompression", MapCoordinates.Nullspace);
+            var moduleComp = entMan.GetComponent<ChassisModuleComponent>(module);
+
+            chassisSys.SetPanelOpen(chassisEnt, true);
+            Assert.That(chassisSys.TryInstall(chassisEnt, (module, moduleComp)), Is.True);
+
+            Assert.That(invSystem.TryEquip(human, suit, "belt"), Is.True,
+                "the whole point of the module is that the suit now fits a belt");
+
+            Assert.That(chassisSys.TryUninstall(chassisEnt, (module, moduleComp)), Is.False,
+                "the module is what is holding the suit there and must refuse to come out");
+            Assert.That(moduleComp.Chassis, Is.EqualTo(suit), "and it must still be installed");
+
+            // Off the belt it is an ordinary module again.
+            Assert.That(invSystem.TryUnequip(human, "belt", force: true), Is.True);
+            Assert.That(chassisSys.TryUninstall(chassisEnt, (module, moduleComp)), Is.True);
+
+            entMan.DeleteEntity(suit);
+            entMan.DeleteEntity(module);
+            entMan.DeleteEntity(human);
+        });
+
+        await pair.CleanReturnAsync();
+    }
 }

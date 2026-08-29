@@ -2,6 +2,8 @@
 
 using Content.Shared.Clothing.Components;
 using Content.Shared.Clothing.EntitySystems;
+using Content.Shared.Inventory;
+using Content.Shared.Popups;
 
 namespace Content.Shared._IS14.Modular.Behaviours;
 
@@ -11,6 +13,41 @@ namespace Content.Shared._IS14.Modular.Behaviours;
 public sealed class ModuleClothingSlotsSystem : ModuleBehaviourSystem<ModuleClothingSlotsComponent>
 {
     [Dependency] private readonly ClothingSystem _clothing = default!;
+    [Dependency] private readonly InventorySystem _inventory = default!;
+    [Dependency] private readonly SharedPopupSystem _popup = default!;
+
+    public override void Initialize()
+    {
+        base.Initialize();
+
+        SubscribeLocalEvent<ModuleClothingSlotsComponent, ChassisUninstallModuleAttemptEvent>(OnUninstallAttempt);
+    }
+
+    /// <summary>
+    ///     Refuses to come out while the chassis is hanging somewhere only this module
+    ///     allows. Restoring the old slots does not unequip what is already worn, so
+    ///     pulling the module off a belt-slung suit left it on the belt with its
+    ///     complexity handed back — the compression paid for, then refunded.
+    /// </summary>
+    private void OnUninstallAttempt(Entity<ModuleClothingSlotsComponent> ent, ref ChassisUninstallModuleAttemptEvent args)
+    {
+        if (args.Cancelled || ent.Comp.Previous is not { } previous)
+            return;
+
+        if (!_inventory.TryGetContainingSlot(args.Chassis, out var slot))
+            return;
+
+        // Same test the inventory itself equips by: the garment's flags have to cover
+        // the slot's. If they still would without us, this module is not what is
+        // holding the chassis there and has no business refusing.
+        if (previous.HasFlag(slot.SlotFlags))
+            return;
+
+        args.Cancelled = true;
+
+        if (args.User is { } user)
+            _popup.PopupClient(Loc.GetString("chassis-module-slots-in-use"), args.Chassis, user);
+    }
 
     /// <summary>
     ///     Follows installation rather than the chassis running, and it has to: the module

@@ -6,6 +6,7 @@ chassis-module-conflict = Несовместим с модулем «{ $module }
 chassis-module-installed = Модуль «{ $module }» установлен.
 chassis-module-removed = Модуль «{ $module }» извлечён.
 chassis-module-not-removable = Этот модуль встроен и не извлекается.
+chassis-module-slots-in-use = Сначала снимите — без этого модуля там носить нечего.
 
 chassis-module-no-power = Недостаточно заряда.
 chassis-module-cooldown = Модуль перезаряжается.
@@ -15,6 +16,12 @@ chassis-module-not-worn = Костюм не надет.
 chassis-module-incapacitated = Вы не можете этого сделать.
 chassis-module-malfunctioning = Модуль неисправен.
 chassis-module-unavailable = Модуль недоступен.
+
+# Радиальное меню модулей
+
+chassis-radial-panel = Открыть панель
+chassis-radial-active = { $module } — включён
+chassis-radial-blocked = { $module } — { $reason }
 
 # МОД-костюм
 

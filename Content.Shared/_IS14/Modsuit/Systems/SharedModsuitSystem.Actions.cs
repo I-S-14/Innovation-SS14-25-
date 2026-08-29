@@ -122,14 +122,16 @@ public sealed partial class SharedModsuitSystem
 
         args.Handled = true;
 
-        // The action opens the readout with the raw engine call, which is the one route
+        // The action opens the interface with the raw engine call, which is the one route
         // into it that never raises ActivatableUI's attempt event — so every refusal that
         // hangs off that event has to be repeated here or the button walks straight past
         // it. That is exactly how a wrecked interface stayed openable.
         if (!CanUseInterface(ent, args.Performer))
             return;
 
-        _ui.TryToggleUi(ent.Owner, ModularChassisUiKey.Key, args.Performer);
+        // The ring, not the readout: this is the button pressed mid-fight to put the
+        // lamp on. The full panel is one option inside the ring for when it is not.
+        _ui.TryToggleUi(ent.Owner, ModularChassisUiKey.Radial, args.Performer);
     }
 
     /// <summary>

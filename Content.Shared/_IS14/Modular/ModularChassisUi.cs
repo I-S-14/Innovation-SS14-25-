@@ -10,6 +10,13 @@ namespace Content.Shared._IS14.Modular;
 public enum ModularChassisUiKey : byte
 {
     Key,
+
+    /// <summary>
+    ///     The wearer's quick module ring. A separate key rather than a mode of the main
+    ///     one: the readout is a window you leave open and read, the ring is a gesture you
+    ///     make and it is gone, and the two want opposite lifetimes.
+    /// </summary>
+    Radial,
 }
 
 /// <summary>
@@ -305,6 +312,13 @@ public sealed class ChassisSealPartMessage : BoundUserInterfaceMessage
         Part = part;
     }
 }
+
+/// <summary>
+///     Trade the quick ring for the full readout. Sent from the ring, because a client
+///     cannot open a bound interface on its own — only ask for one.
+/// </summary>
+[Serializable, NetSerializable]
+public sealed class ChassisOpenPanelMessage : BoundUserInterfaceMessage;
 
 /// <summary>Switch the whole chassis on or off.</summary>
 [Serializable, NetSerializable]
