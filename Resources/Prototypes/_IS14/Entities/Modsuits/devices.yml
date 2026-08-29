@@ -81,6 +81,16 @@
   - type: AutoRecharge
     rechargeDuration: 8
 
+# Само облако. Белый вариант читался как пар из трубы; красный сразу говорит, что это
+# не туман, а чей-то костюм только что ответил.
+- type: entity
+  parent: TearGasSmokeWhite
+  id: IS14ModsuitPepperSmoke
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    color: "#E05252"
+
 # Облако перцового модуля: самосрабатывающая сущность, чтобы вся химия жила в YAML,
 # а модуль только ставил её под ноги нападающему.
 - type: entity
@@ -97,8 +107,8 @@
   - type: TriggerOnSpawn
   - type: SmokeOnTrigger
     duration: 5
-    spreadAmount: 10
-    smokePrototype: TearGasSmokeWhite
+    spreadAmount: 3
+    smokePrototype: IS14ModsuitPepperSmoke
     solution:
       reagents:
       - ReagentId: TearGas
@@ -122,3 +132,31 @@
     sprite: Objects/Specific/Medical/handheldcrewmonitor.rsi
     heldPrefix: scanner
     storedRotation: -90
+
+# Развёртываемые приборы новых модулей. Как и остальные, руками их взять неоткуда:
+# модуль достаёт их из костюма и туда же убирает.
+- type: entity
+  parent: SprayBottleSpaceCleaner
+  id: IS14ModsuitCleaner
+  categories: [ HideSpawnMenu ]
+  name: MOD cleaning nozzle
+  description: A nozzle that folds out of a MOD suit gauntlet. Fed from a reservoir in the plating.
+  components:
+  # Только базовый слой: слой заливки от родителя ссылается на состояния его RSI,
+  # которых в модульном атласе нет, а без слоя SolutionContainerVisuals просто молчит.
+  - type: Sprite
+    sprite: _IS14/Objects/Modsuit/modules.rsi
+    layers:
+    - state: cleaner
+
+- type: entity
+  parent: Hypospray
+  id: IS14ModsuitInjector
+  categories: [ HideSpawnMenu ]
+  name: MOD injector
+  description: An injector built into a MOD suit gauntlet. Holds one dose and answers to the suit.
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Modsuit/modules.rsi
+    layers:
+    - state: injector

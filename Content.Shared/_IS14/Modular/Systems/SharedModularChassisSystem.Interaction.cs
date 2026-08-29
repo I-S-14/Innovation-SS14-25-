@@ -68,6 +68,12 @@ public sealed partial class SharedModularChassisSystem
         // crowbar that emptied the whole bay one blind pull at a time was never the point.
         if (_tool.HasQuality(args.Used, PryingQuality))
         {
+            // A panel plated over is not a panel yet. The crowbar's job there is the
+            // plating, which the construction graph owns, so the click is left unhandled
+            // for it rather than answered with "nothing to pry".
+            if (TryComp<WiresPanelSecurityComponent>(ent, out var security) && !security.WiresAccessible)
+                return;
+
             if (!RequirePanelOpen(ent, args.User))
             {
                 args.Handled = true;

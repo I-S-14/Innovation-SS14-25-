@@ -499,7 +499,7 @@
     state: plasma_stabilizer
   - type: ModuleGasTank
     volume: 2.5
-    filterRate: 1.5
+    filterRate: 0.03
     filterDraw: 1.5
 
 - type: entity
@@ -519,7 +519,7 @@
     - IS14ModsuitTank
   - type: ModuleGasTank
     volume: 10
-    filterRate: 3
+    filterRate: 0.06
     filterDraw: 2.5
 
 - type: entity
@@ -620,12 +620,10 @@
     activeDraw: 0.4
     requiredSlots:
     - HEAD
-  - type: ModuleGrantComponents
-    requireActive: true
-    components:
-    - type: TrayScanner
-      enabled: true
-      range: 5
+  # Не ModuleGrantComponents: сканер должен висеть на костюме, а не на носителе, и
+  # вместе с ним нужна маска зрения. См. ModuleTrayScannerSystem.
+  - type: ModuleTrayScanner
+    range: 5
 
 # ==================================================================== защита
 
@@ -701,22 +699,22 @@
   - type: Sprite
     state: holster
   - type: ChassisModule
-    # Кобура открывается кнопкой и при выключенном костюме: оружие должно
-    # доставаться и из обесточенного МОДа.
-    kind: Usable
-    actionText: chassis-ui-module-open
-    actionIcon: /Textures/Interface/VerbIcons/open.svg.192dpi.png
-    allow: ChassisInactive
+    # Кнопки нет: кобура — это слот на нагруднике, а не хранилище с интерфейсом.
+    # Слот держится, пока модуль установлен, чтобы оружие доставалось и из
+    # обесточенного МОДа.
+    kind: Passive
     complexity: 2
     requiredSlots:
     - OUTERCLOTHING
-  - type: ModuleStorage
-    grid:
-    - 0,0,1,1
-    maxItemSize: Normal
-    whitelist:
-      components:
-      - Gun
+  - type: ModuleSuitSlot
+    part: outerClothing
+    slotId: modsuit-holster
+    slot:
+      name: modsuit-holster-slot
+      # Тот же вайтлист, что у наплечной кобуры: один пистолет и ничего больше.
+      whitelist:
+        tags:
+        - Sidearm
 
 - type: entity
   parent: IS14ModuleBase
@@ -751,3 +749,134 @@
   # Ничего для «эмагуемости» объявлять не надо: GotEmaggedEvent прилетает в цель,
   # а компонент Emag — это про инструмент, а не про то, что им ломают.
   - type: ModuleDnaLock
+
+# =============================================================== новый круг
+# Модули на уже существующих поведениях: тепловизор, слот под шапку, папка для
+# бумаг, распылитель, инъектор и громкоговоритель.
+
+- type: entity
+  parent: IS14ModuleVisorBase
+  id: IS14ModuleVisorThermal
+  name: MOD thermal visor module
+  description: Reads heat instead of light, so a body behind a wall is still a body. Washes everything else out, which is the price.
+  components:
+  - type: Sprite
+    state: thermal_visor
+  # Та же оговорка, что у ПНВ: своя кнопка включения превратила бы модуль в
+  # выключатель выключателя, поэтому toggleAction снят, а гасится он снятием модуля.
+  - type: ModuleGrantComponents
+    requireActive: true
+    components:
+    - type: ThermalVision
+      toggleAction: null
+      isActive: true
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleHatHolder
+  name: MOD hat stabiliser module
+  description: A magnetic cradle on the crown of the helmet. A sealed MOD leaves no room for a hat, and some people would rather have the hat.
+  components:
+  - type: Sprite
+    state: hat_holder
+  - type: ChassisModule
+    kind: Passive
+    complexity: 1
+    requiredSlots:
+    - HEAD
+  - type: ModuleSuitSlot
+    part: head
+    slotId: modsuit-hat
+    showContents: true
+    wearableIn: HEAD
+    slot:
+      name: modsuit-hat-slot
+      whitelist:
+        components:
+        - Clothing
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleOrganizer
+  name: MOD organiser module
+  description: A flat compartment behind the chestplate, sized for paperwork and nothing else. The suit refuses to close on anything thicker.
+  components:
+  - type: Sprite
+    state: organizer
+  - type: ChassisModule
+    kind: Usable
+    actionText: chassis-ui-module-open
+    actionIcon: /Textures/Interface/VerbIcons/open.svg.192dpi.png
+    allow: ChassisInactive
+    complexity: 1
+    requiredSlots:
+    - OUTERCLOTHING
+  - type: ModuleStorage
+    grid:
+    - 0,0,3,1
+    maxItemSize: Small
+    whitelist:
+      tags:
+      - Document
+      - Write
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleCleaner
+  name: MOD cleaning module
+  description: A nozzle in the gauntlet and a reservoir of space cleaner behind it. Janitorial work without putting the bucket down.
+  components:
+  - type: Sprite
+    state: cleaner
+  - type: ChassisModule
+    kind: Active
+    complexity: 2
+    useCost: 5
+    requiredSlots:
+    - GLOVES
+  - type: ModuleItem
+    devicePrototype: IS14ModsuitCleaner
+  - type: ContainerContainer
+    containers:
+      module-device: !type:ContainerSlot
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleInjector
+  name: MOD injector module
+  description: An injector that folds out of the wrist. Holds one dose of whatever was put in it, which is one dose more than you will have hands for.
+  components:
+  - type: Sprite
+    state: injector
+  - type: ChassisModule
+    kind: Active
+    complexity: 3
+    useCost: 5
+    requiredSlots:
+    - GLOVES
+  - type: ModuleItem
+    devicePrototype: IS14ModsuitInjector
+  - type: ContainerContainer
+    containers:
+      module-device: !type:ContainerSlot
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleMegaphone
+  name: MOD loudhailer module
+  description: Drives the helmet's speaker well past what it was built for. Everything you say arrives across the room whether the room wanted it or not.
+  components:
+  - type: Sprite
+    state: megaphone
+  - type: ChassisModule
+    kind: Toggleable
+    complexity: 2
+    activeDraw: 0.1
+    requiredSlots:
+    - HEAD
+  # Громкоговоритель вешается на носителя, а не на костюм: говорит человек.
+  - type: ModuleGrantComponents
+    requireActive: true
+    components:
+    - type: Loudspeaker
+      isActive: true

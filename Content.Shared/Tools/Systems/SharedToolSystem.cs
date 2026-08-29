@@ -66,6 +66,12 @@ public abstract partial class SharedToolSystem : EntitySystem
         else
             RaiseLocalEvent((object) ev);
 
+        //IS14-change start
+        // A wrapped event that asked to repeat gets to. Without this the flag is dropped
+        // on the floor, because the do-after only ever looks at the wrapper.
+        args.Repeat = ev.Repeat;
+        //IS14-change end
+
         if (TryComp(uid, out UseDelayComponent? delay)) // Goobstation
             _delay.TryResetDelay((uid, delay));
     }

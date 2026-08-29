@@ -30,6 +30,20 @@ public record struct ChassisTryUseChargeEvent(float Amount, bool Handled)
 }
 
 /// <summary>
+///     Raised on a chassis every drain tick to collect draw that does not depend on the
+///     chassis running: an armed trap, a standby circuit, anything bolted on that has to
+///     be paid for whether the suit is switched on or not.
+///
+///     Ordinary module draw does not belong here — that stops with the chassis, which is
+///     the whole reason a folded suit costs nothing.
+/// </summary>
+[ByRefEvent]
+public record struct ChassisGetStandingDrawEvent(float Draw)
+{
+    public float Draw = Draw;
+}
+
+/// <summary>
 ///     Raised on a chassis to put charge back in.
 /// </summary>
 [ByRefEvent]

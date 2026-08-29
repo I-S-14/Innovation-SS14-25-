@@ -15,9 +15,16 @@ namespace Content.Shared._IS14.Modsuit;
 [Serializable, NetSerializable]
 public enum ModsuitWireKey : byte
 {
-    LockStatus,
-    MalfunctionStatus,
+    /// <summary>Shared by both power leads: one light counting how many are left.</summary>
+    PowerStatus,
+    DeployStatus,
+    SealStatus,
     ShockStatus,
     InterfaceStatus,
-    ReleaseStatus,
+
+    /// <summary>
+    ///     Belongs to no wire: the circuit's own readout, lit while the suit is being
+    ///     driven too hard. Set through <c>WiresSystem.SetStatus</c>.
+    /// </summary>
+    OverloadStatus,
 }

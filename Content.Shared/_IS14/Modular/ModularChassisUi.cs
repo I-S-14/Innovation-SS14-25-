@@ -126,6 +126,27 @@ public sealed class ModularChassisUiState : BoundUserInterfaceState
     /// <summary>The suit is electrified and will shock whoever handles it.</summary>
     public bool Electrified;
 
+    /// <summary>The power circuit is being driven too hard and is burning charge for it.</summary>
+    public bool Overloaded;
+
+    /// <summary>Every power lead is cut: the core is in its cradle and out of circuit.</summary>
+    public bool PowerCut;
+
+    /// <summary>The link that carries deploy and fold commands to the plating is severed.</summary>
+    public bool DeployLinkCut;
+
+    /// <summary>The link that carries pressure commands to the plating is severed.</summary>
+    public bool SealLinkCut;
+
+    /// <summary>A DNA lock module is installed at all.</summary>
+    public bool DnaLockPresent;
+
+    /// <summary>It currently holds somebody's imprint.</summary>
+    public bool DnaLockImprinted;
+
+    /// <summary>It has been burned out and will never hold one again.</summary>
+    public bool DnaLockBroken;
+
     public float Charge;
     public float MaxCharge;
     public string? CoreName;

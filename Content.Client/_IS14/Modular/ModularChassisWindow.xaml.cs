@@ -275,6 +275,12 @@ public sealed partial class ModularChassisWindow : FancyWindow
         if (state.Electrified)
             ChipsContainer.AddChild(ChassisStyle.Chip(Loc.GetString("chassis-ui-electrified"), ChassisStyle.Bad));
 
+        if (state.PowerCut)
+            ChipsContainer.AddChild(ChassisStyle.Chip(Loc.GetString("chassis-ui-power-cut"), ChassisStyle.Bad));
+
+        if (state.Overloaded)
+            ChipsContainer.AddChild(ChassisStyle.Chip(Loc.GetString("chassis-ui-overloaded"), ChassisStyle.Warn));
+
         if (state.InterfaceBroken)
             ChipsContainer.AddChild(ChassisStyle.Chip(Loc.GetString("chassis-ui-interface-broken"), ChassisStyle.Bad));
 
@@ -715,9 +721,10 @@ public sealed partial class ModularChassisWindow : FancyWindow
     /// </summary>
     private Control HardwareTile(ModularChassisUiState state)
     {
-        var color = state.CoreName == null
+        var color = state.CoreName == null || state.PowerCut
             ? ChassisStyle.Bad
-            : state.PanelOpen || state.InterfaceBroken
+            : state.PanelOpen || state.InterfaceBroken || state.Overloaded
+                || state.DeployLinkCut || state.SealLinkCut
                 ? ChassisStyle.Warn
                 : ChassisStyle.Accent;
 
@@ -1042,12 +1049,108 @@ public sealed partial class ModularChassisWindow : FancyWindow
                 state.AccessWiped ? ChassisStyle.Bad : locked ? ChassisStyle.Good : ChassisStyle.Warn));
         }
 
+        // The DNA lock's own row. It used to have none, so pressing its button changed
+        // nothing anybody could see and the module read as broken when it was working.
+        if (state.DnaLockPresent)
+        {
+            DetailContainer.AddChild(HardwareRow(
+                UiIcon(state.DnaLockBroken ? IconCross : state.DnaLockImprinted ? IconSeal : IconUnseal),
+                "chassis-ui-hw-dna",
+                Loc.GetString(state.DnaLockBroken
+                    ? "chassis-ui-dna-broken"
+                    : state.DnaLockImprinted
+                        ? "chassis-ui-dna-imprinted"
+                        : "chassis-ui-dna-blank"),
+                state.DnaLockBroken ? ChassisStyle.Bad : state.DnaLockImprinted ? ChassisStyle.Good : ChassisStyle.Warn));
+        }
+
         DetailContainer.AddChild(HardwareRow(
             UiIcon(IconPower),
             "chassis-ui-hw-draw",
             Loc.GetString("chassis-ui-draw", ("draw", Num(state.Draw))),
             ChassisStyle.Muted));
 
+        BuildFaultList(state);
+    }
+
+    /// <summary>
+    ///     Everything wrong with the suit, in one list.
+    ///
+    ///     These used to be rows alongside the core and the panel, each reading "fine" almost
+    ///     all of the time — which is a lot of readout spent saying nothing, and it buried
+    ///     the one line that mattered when something did break. A list that is empty when
+    ///     the suit is healthy puts the weight back where it belongs: anything in here is a
+    ///     problem, and there is nothing else to read past.
+    /// </summary>
+    private void BuildFaultList(ModularChassisUiState state)
+    {
+        DetailContainer.AddChild(ChassisStyle.Rule());
+        DetailContainer.AddChild(ChassisStyle.Heading(Loc.GetString("chassis-ui-faults")));
+
+        var any = false;
+
+        void Fault(string icon, string locId, Color color)
+        {
+            any = true;
+            DetailContainer.AddChild(FaultRow(UiIcon(icon), Loc.GetString(locId), color));
+        }
+
+        // Ordered by what a wearer should deal with first: no power at all, then the
+        // circuit, then the two links, then the readout, then the shell being live.
+        if (state.PowerCut)
+            Fault(IconCross, "chassis-ui-fault-power-cut", ChassisStyle.Bad);
+
+        if (state.Overloaded)
+            Fault(IconZap, "chassis-ui-fault-overloaded", ChassisStyle.Warn);
+
+        if (state.Malfunctioning)
+            Fault(IconZap, "chassis-ui-fault-malfunctioning", ChassisStyle.Bad);
+
+        if (state.DeployLinkCut)
+            Fault(IconCross, "chassis-ui-fault-link-deploy", ChassisStyle.Bad);
+
+        if (state.SealLinkCut)
+            Fault(IconCross, "chassis-ui-fault-link-seal", ChassisStyle.Bad);
+
+        if (state.InterfaceBroken)
+            Fault(IconCross, "chassis-ui-fault-interface", ChassisStyle.Bad);
+
+        if (state.Electrified)
+            Fault(IconZap, "chassis-ui-fault-electrified", ChassisStyle.Bad);
+
+        if (state.DnaLockBroken)
+            Fault(IconCross, "chassis-ui-fault-dna-broken", ChassisStyle.Bad);
+
+        if (!any)
+            DetailContainer.AddChild(ChassisStyle.Sub(Loc.GetString("chassis-ui-faults-none")));
+    }
+
+    /// <summary>
+    ///     A fault has no label to put on the left — the fault is the whole line — so it
+    ///     gets its own row rather than reusing the name/value pair above.
+    /// </summary>
+    private static Control FaultRow(Texture? icon, string text, Color color)
+    {
+        var row = new BoxContainer
+        {
+            Orientation = BoxContainer.LayoutOrientation.Horizontal,
+            HorizontalExpand = true,
+            Margin = new Thickness(0, 2),
+        };
+
+        var glyph = ChassisStyle.Icon(icon, 16f, color);
+        glyph.Margin = new Thickness(0, 0, 6, 0);
+        row.AddChild(glyph);
+
+        row.AddChild(new Label
+        {
+            Text = text,
+            HorizontalExpand = true,
+            ClipText = true,
+            FontColorOverride = color,
+        });
+
+        return row;
     }
 
     private static Control HardwareRow(Texture? icon, string labelLoc, string value, Color color)

@@ -107,6 +107,17 @@ chassis-ui-hw-cell = Батарея
 chassis-ui-hw-panel = Панель
 chassis-ui-hw-lock = ID-замок
 chassis-ui-hw-draw = Расход
+chassis-ui-faults = Неисправности
+chassis-ui-faults-none = Не обнаружено.
+chassis-ui-fault-power-cut = Обрыв питания: ядро вне цепи.
+chassis-ui-fault-overloaded = Перегрузка силовой цепи.
+chassis-ui-fault-malfunctioning = Сбой контроллера.
+chassis-ui-fault-link-deploy = Обрыв линии привода обшивки.
+chassis-ui-fault-link-seal = Обрыв линии герметизации.
+chassis-ui-fault-interface = Интерфейс повреждён.
+chassis-ui-fault-electrified = Корпус под напряжением.
+chassis-ui-overloaded = Перегрузка
+chassis-ui-power-cut = Обесточен
 chassis-ui-lock-engaged = заперт
 chassis-ui-lock-open = открыт
 chassis-ui-lock-wiped = доступ стёрт
@@ -115,21 +126,21 @@ chassis-ui-lock-wiped = доступ стёрт
 
 modsuit-breach-fold-instead = Сложите её через панель костюма.
 modsuit-breach-not-subdued = Он ещё на ногах — сначала обездвижьте.
-modsuit-breach-not-yours = Панель слушается только того, кто в костюме.
 modsuit-breach-released = Костюм расшивается и складывается.
 modsuit-breach-cutting = Вы врезаетесь в { $part }.
 modsuit-breach-already-cut = { $part } уже прорезана насквозь.
 modsuit-breach-nothing-there = То, куда вы целитесь, ничем не закрыто.
+modsuit-breach-struggling = Он вырывается — так вы провозитесь куда дольше.
 modsuit-lock-override = Костюм принимает карту и отпускает.
-wire-name-mod-release = СБР
 modsuit-lock-denied = Отказано в доступе.
 modsuit-lock-engaged = Замок заперт.
 modsuit-lock-released = Замок открыт.
 
 # Провода
 
-wire-name-mod-lock = ЗМК
-wire-name-mod-malfunction = СБОЙ
+wire-name-mod-power = ПИТ
+wire-name-mod-deploy = РАЗВ
+wire-name-mod-seal = ГЕРМ
 wire-name-mod-shock = ТОК
 wire-name-mod-interface = ИНТФ
 modsuit-wires-board = Блок управления МОД-костюма
@@ -169,9 +180,10 @@ modsuit-no-storage = На этом костюме нет отсеков.
 # Обслуживание
 
 modsuit-repair-done = Вы выправляете { $part }.
-modsuit-repair-needs-welder = Здесь погнута обшивка. Нужна сварка.
+modsuit-repair-needs-plasteel = Здесь погнута обшивка. Нужна пласталь.
 modsuit-repair-needs-cable = Здесь выгорела проводка. Нужен кабель.
 modsuit-repair-no-cable = Кабеля не хватает.
+modsuit-repair-no-plasteel = Пластали не хватает.
 
 chassis-device-no-power = Костюму нечем это запитать.
 chassis-device-no-hands = Для { $device } нужны обе руки.
@@ -231,3 +243,26 @@ modsuit-dna-lock-cleared = Костюм забыл вас.
 modsuit-dna-lock-denied = Костюм не узнаёт вас.
 modsuit-dna-lock-broken = Замок сожжён.
 modsuit-dna-lock-no-dna = Костюму нечего запоминать.
+modsuit-shock-voice-armed = Активация защиты контроллера.
+modsuit-shock-voice-nopower = Отказ защиты: недостаточно энергии.
+modsuit-shock-voice-discharge = Несанкционированный доступ. Разряд.
+
+# Броня панели
+
+is14-modsuit-panel-rods = Поперёк проводки враспор вставлены стальные прутья. Используйте [color=cyan]монтировку[/color], чтобы выдрать их.
+is14-modsuit-panel-rods-welded = Стальные прутья приварены поперёк проводки. Используйте [color=cyan]сварочный аппарат[/color], чтобы срезать их.
+is14-modsuit-panel-steel = Проводку закрывает стальная пластина. Используйте [color=cyan]монтировку[/color], чтобы убрать её.
+is14-modsuit-panel-steel-welded = Стальная пластина приварена поверх проводки. Используйте [color=cyan]сварочный аппарат[/color], чтобы срезать её.
+is14-modsuit-panel-plasteel = Проводку закрывает пласталевая пластина. Используйте [color=cyan]монтировку[/color], чтобы убрать её.
+is14-modsuit-panel-plasteel-welded = Пласталевая пластина приварена поверх проводки. Используйте [color=cyan]сварочный аппарат[/color], чтобы срезать её.
+modsuit-link-deploy-cut = Команда не доходит до обшивки — оборвана линия привода.
+modsuit-link-seal-cut = Команда не доходит до обшивки — оборвана линия герметизации.
+wire-status-mod-overload = ПЕРЕГР
+modsuit-interface-broken = Интерфейс костюма не отвечает.
+modsuit-holster-slot = Кобура
+chassis-ui-hw-dna = ДНК-замок
+chassis-ui-dna-imprinted = отпечатан
+chassis-ui-dna-blank = свободен
+chassis-ui-dna-broken = сожжён
+chassis-ui-fault-dna-broken = ДНК-замок сожжён — модуль под замену.
+modsuit-hat-slot = Головной убор

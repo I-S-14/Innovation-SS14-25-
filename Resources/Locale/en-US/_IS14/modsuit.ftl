@@ -107,6 +107,17 @@ chassis-ui-hw-cell = Cell
 chassis-ui-hw-panel = Panel
 chassis-ui-hw-lock = ID lock
 chassis-ui-hw-draw = Draw
+chassis-ui-faults = Faults
+chassis-ui-faults-none = None detected.
+chassis-ui-fault-power-cut = Power severed: core out of circuit.
+chassis-ui-fault-overloaded = Power circuit overloaded.
+chassis-ui-fault-malfunctioning = Controller malfunction.
+chassis-ui-fault-link-deploy = Actuator link severed.
+chassis-ui-fault-link-seal = Pressure link severed.
+chassis-ui-fault-interface = Interface damaged.
+chassis-ui-fault-electrified = Shell is live.
+chassis-ui-overloaded = Overloaded
+chassis-ui-power-cut = No power
 chassis-ui-lock-engaged = engaged
 chassis-ui-lock-open = open
 chassis-ui-lock-wiped = access wiped
@@ -115,21 +126,21 @@ chassis-ui-lock-wiped = access wiped
 
 modsuit-breach-fold-instead = Fold it away from the suit panel.
 modsuit-breach-not-subdued = They are still on their feet — restrain them first.
-modsuit-breach-not-yours = The panel answers only to whoever is wearing it.
 modsuit-breach-released = The suit unseals and folds away.
 modsuit-breach-cutting = You cut into the { $part }.
 modsuit-breach-already-cut = The { $part } is already cut through.
 modsuit-breach-nothing-there = Nothing covers what you are aiming at.
+modsuit-breach-struggling = They are squirming — this will take far longer.
 modsuit-lock-override = The suit acknowledges the card and lets go.
-wire-name-mod-release = RLS
 modsuit-lock-denied = Access denied.
 modsuit-lock-engaged = The lock engages.
 modsuit-lock-released = The lock releases.
 
 # Wires
 
-wire-name-mod-lock = LCK
-wire-name-mod-malfunction = MLF
+wire-name-mod-power = PWR
+wire-name-mod-deploy = DPL
+wire-name-mod-seal = SEAL
 wire-name-mod-shock = SHK
 wire-name-mod-interface = IFC
 modsuit-wires-board = MOD control unit
@@ -169,9 +180,10 @@ modsuit-no-storage = No compartments on this suit.
 # Servicing
 
 modsuit-repair-done = You work the { $part } back into shape.
-modsuit-repair-needs-welder = This piece has bent plating. It wants a welder.
+modsuit-repair-needs-plasteel = This piece has bent plating. It wants plasteel.
 modsuit-repair-needs-cable = This piece has burnt wiring. It wants cable.
 modsuit-repair-no-cable = Not enough cable left.
+modsuit-repair-no-plasteel = Not enough plasteel left.
 
 chassis-device-no-power = The suit has nothing left to run that on.
 chassis-device-no-hands = You need both hands free for the { $device }.
@@ -231,3 +243,26 @@ modsuit-dna-lock-cleared = The suit has forgotten you.
 modsuit-dna-lock-denied = The suit does not recognise you.
 modsuit-dna-lock-broken = The lock is burned out.
 modsuit-dna-lock-no-dna = The suit has nothing to memorise.
+modsuit-shock-voice-armed = Controller defence armed.
+modsuit-shock-voice-nopower = Defence failed: insufficient charge.
+modsuit-shock-voice-discharge = Unauthorised access. Discharging.
+
+# Panel armour
+
+is14-modsuit-panel-rods = Steel rods are wedged across the wiring. Use a [color=cyan]Crowbar[/color] to lever them out.
+is14-modsuit-panel-rods-welded = Steel rods have been welded across the wiring. Use a [color=cyan]Welder[/color] to free them.
+is14-modsuit-panel-steel = A steel plate covers the wiring. Use a [color=cyan]Crowbar[/color] to remove it.
+is14-modsuit-panel-steel-welded = A steel plate has been welded over the wiring. Use a [color=cyan]Welder[/color] to free it.
+is14-modsuit-panel-plasteel = A plasteel plate covers the wiring. Use a [color=cyan]Crowbar[/color] to remove it.
+is14-modsuit-panel-plasteel-welded = A plasteel plate has been welded over the wiring. Use a [color=cyan]Welder[/color] to free it.
+modsuit-link-deploy-cut = The command never reaches the plating — the actuator line is cut.
+modsuit-link-seal-cut = The command never reaches the plating — the pressure line is cut.
+wire-status-mod-overload = OVLD
+modsuit-interface-broken = The suit's interface does not answer.
+modsuit-holster-slot = Holster
+chassis-ui-hw-dna = DNA lock
+chassis-ui-dna-imprinted = imprinted
+chassis-ui-dna-blank = blank
+chassis-ui-dna-broken = burnt out
+chassis-ui-fault-dna-broken = DNA lock burnt out — the module needs replacing.
+modsuit-hat-slot = Headwear

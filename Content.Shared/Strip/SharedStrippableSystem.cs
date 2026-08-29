@@ -2,6 +2,7 @@
 
 using System.Linq;
 using Content.Shared._Goobstation.Heretic.Components;
+using Content.Shared._IS14.Strip; //IS14-change
 using Content.Shared.Administration.Logs;
 using Content.Shared.CombatMode;
 using Content.Shared.Cuffs;
@@ -109,6 +110,20 @@ public abstract class SharedStrippableSystem : EntitySystem
 
         if (HasComp<StripMenuInvisibleComponent>(held)) // Goobstation
             return;
+
+        //IS14-change start
+        // Something held aimed at a filled slot can mean "use this on that" rather than
+        // "take that off them". Nothing subscribes by default, so every other item in the
+        // game strips exactly as it did before.
+        if (hasEnt && _handsSystem.GetActiveItem((user, userHands)) is { } tool)
+        {
+            var interactEv = new StrippedItemInteractUsingEvent(user, tool, strippable.Owner, args.Slot);
+            RaiseLocalEvent(held!.Value, ref interactEv);
+
+            if (interactEv.Handled)
+                return;
+        }
+        //IS14-change end
 
         if (_handsSystem.GetActiveItem((user, userHands)) is { } activeItem && !hasEnt)
             StartStripInsertInventory((user, userHands), strippable.Owner, activeItem, args.Slot);

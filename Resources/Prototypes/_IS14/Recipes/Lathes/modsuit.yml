@@ -435,13 +435,116 @@
 # исследования. Статический пак — входной билет: простой костюм и пара модулей,
 # чтобы система вообще была видна в раунде. Всё остальное идёт через науку.
 
+# ------------------------------------------------------- новый круг: костюмы
+
+- type: latheRecipe
+  id: IS14ModsuitCivilian
+  result: IS14ModsuitCivilian
+  categories:
+  - Robotics
+  completetime: 8
+  materials:
+    Steel: 1200
+    Plastic: 400
+    Glass: 200
+
+- type: latheRecipe
+  id: IS14ModsuitLoader
+  result: IS14ModsuitLoader
+  categories:
+  - Robotics
+  completetime: 12
+  materials:
+    Steel: 2400
+    Plastic: 600
+    Glass: 300
+
+- type: latheRecipe
+  id: IS14ModsuitMagnate
+  result: IS14ModsuitMagnate
+  categories:
+  - Robotics
+  completetime: 16
+  materials:
+    Steel: 2400
+    Glass: 600
+    Gold: 800
+    Silver: 400
+
+# ------------------------------------------------------- новый круг: модули
+
+- type: latheRecipe
+  id: IS14ModuleVisorThermal
+  result: IS14ModuleVisorThermal
+  categories:
+  - Robotics
+  completetime: 3
+  materials:
+    Steel: 300
+    Glass: 400
+    Silver: 200
+
+- type: latheRecipe
+  id: IS14ModuleHatHolder
+  result: IS14ModuleHatHolder
+  categories:
+  - Robotics
+  completetime: 1
+  materials:
+    Steel: 200
+    Plastic: 100
+
+- type: latheRecipe
+  id: IS14ModuleOrganizer
+  result: IS14ModuleOrganizer
+  categories:
+  - Robotics
+  completetime: 1
+  materials:
+    Steel: 200
+    Plastic: 200
+
+- type: latheRecipe
+  id: IS14ModuleCleaner
+  result: IS14ModuleCleaner
+  categories:
+  - Robotics
+  completetime: 2
+  materials:
+    Steel: 400
+    Plastic: 300
+
+- type: latheRecipe
+  id: IS14ModuleInjector
+  result: IS14ModuleInjector
+  categories:
+  - Robotics
+  completetime: 3
+  materials:
+    Steel: 400
+    Glass: 300
+    Plastic: 200
+
+- type: latheRecipe
+  id: IS14ModuleMegaphone
+  result: IS14ModuleMegaphone
+  categories:
+  - Robotics
+  completetime: 2
+  materials:
+    Steel: 300
+    Plastic: 200
+
 - type: latheRecipePack
   id: IS14ModsuitStatic
   recipes:
   - IS14ModCoreStandard
   - IS14ModsuitStandard
+  - IS14ModsuitCivilian
   - IS14ModuleFlashlight
   - IS14ModuleStorage
+  - IS14ModuleHatHolder
+  - IS14ModuleOrganizer
 
 # Динамические паки. Рецепт открывается технологией, но станок должен знать о нём
 # заранее, иначе открывать будет нечего.
@@ -485,3 +588,9 @@
   - IS14ModuleArmorBooster
   - IS14ModuleCompression
   - IS14ModuleVisorNight
+  - IS14ModsuitLoader
+  - IS14ModsuitMagnate
+  - IS14ModuleVisorThermal
+  - IS14ModuleCleaner
+  - IS14ModuleInjector
+  - IS14ModuleMegaphone

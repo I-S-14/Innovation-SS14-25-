@@ -75,6 +75,27 @@ public sealed partial class ModsuitControlComponent : Component
     public bool Sealing;
 
     /// <summary>
+    ///     Parts still waiting to blow open after the suit lost power. Server-side: this
+    ///     is not a player action and there is nothing for the client to predict.
+    /// </summary>
+    [ViewVariables]
+    public List<EntityUid> BlowoutQueue = new();
+
+    /// <summary>
+    ///     When the next part in <see cref="BlowoutQueue"/> gives way.
+    /// </summary>
+    [ViewVariables]
+    public TimeSpan? BlowoutNext;
+
+    /// <summary>
+    ///     Gap between parts blowing open. Shorter than a deliberate unseal — the suit is
+    ///     failing, not being operated — but not instant, because a suit coming apart
+    ///     around somebody should be heard happening.
+    /// </summary>
+    [DataField]
+    public TimeSpan BlowoutInterval = TimeSpan.FromSeconds(0.6);
+
+    /// <summary>
     ///     Parts still waiting to be sealed or unsealed in the current sequence.
     /// </summary>
     [ViewVariables, AutoNetworkedField]

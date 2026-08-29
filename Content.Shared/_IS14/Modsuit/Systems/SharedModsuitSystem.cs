@@ -19,11 +19,13 @@ using Content.Shared.Storage.EntitySystems;
 using Content.Shared.Stacks;
 using Content.Shared.Tag;
 using Content.Shared.Tools.Systems;
+using Content.Shared.Wires;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Containers;
 using Robust.Shared.Map;
 using System.Numerics;
 using Robust.Shared.Network;
+using Robust.Shared.Timing;
 
 namespace Content.Shared._IS14.Modsuit.Systems;
 
@@ -35,6 +37,7 @@ namespace Content.Shared._IS14.Modsuit.Systems;
 public sealed partial class SharedModsuitSystem : EntitySystem
 {
     [Dependency] private readonly INetManager _net = default!;
+    [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly ActionBlockerSystem _actionBlocker = default!;
     [Dependency] private readonly SharedActionsSystem _actions = default!;
     [Dependency] private readonly AlertsSystem _alerts = default!;
@@ -49,6 +52,7 @@ public sealed partial class SharedModsuitSystem : EntitySystem
     [Dependency] private readonly SharedStackSystem _stack = default!;
     [Dependency] private readonly SharedStorageSystem _storage = default!;
     [Dependency] private readonly SharedToolSystem _tool = default!;
+    [Dependency] private readonly SharedWiresSystem _wires = default!;
     [Dependency] private readonly TagSystem _tag = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly SharedChassisModuleSystem _modules = default!;
@@ -313,7 +317,17 @@ public sealed partial class SharedModsuitSystem : EntitySystem
         if (ent.Comp.Wearer is { } wearer)
             _popup.PopupClient(Loc.GetString("modsuit-power-depleted"), ent, wearer);
 
-        Deactivate(ent);
+        // A flat core cannot hold the shell live either. Without this the trap would keep
+        // biting for free until its own clock ran out, on a suit with nothing left to bite
+        // with — and draining a MOD is supposed to be the way past it.
+        if (TryComp<ModsuitSabotageComponent>(ent, out var sabotage))
+            _lock.ClearElectrification((ent, sabotage));
+
+        // Not Deactivate: a suit running out of power comes apart a seal at a time, loud
+        // enough that the wearer and anybody near them hears it happening. Pulling the
+        // core out lands here too — an empty cradle is a flat battery as far as the drain
+        // loop is concerned.
+        StartBlowout(ent);
         RefreshChargeAlert(ent);
     }
 

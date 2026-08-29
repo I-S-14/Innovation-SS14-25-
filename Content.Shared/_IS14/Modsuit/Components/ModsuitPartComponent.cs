@@ -157,12 +157,6 @@ public sealed partial class ModsuitPartComponent : Component
     [DataField]
     public TimeSpan RepairDelay = TimeSpan.FromSeconds(4);
 
-    /// <summary>
-    ///     Welder fuel one round of plate work burns.
-    /// </summary>
-    [DataField]
-    public float RepairFuel = 5f;
-
     #endregion
 
     #region Overslotting

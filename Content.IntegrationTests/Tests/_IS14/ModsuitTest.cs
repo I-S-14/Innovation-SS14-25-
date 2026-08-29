@@ -15,6 +15,7 @@ using Content.Shared.Alert;
 using Content.Shared.Clothing;
 using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Damage;
+using Content.Shared.DoAfter;
 using Content.Shared.Emp;
 using Content.Shared.Damage.Prototypes;
 using Content.Shared.Hands.EntitySystems;
@@ -22,6 +23,8 @@ using Content.Shared.Inventory;
 using Content.Shared.Nutrition.Components;
 using Content.Shared.Storage;
 using Content.Shared.Storage.EntitySystems;
+using Content.Shared.SubFloor;
+using Content.Shared.Verbs;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
@@ -1444,11 +1447,41 @@ public sealed class ModsuitTest
             Assert.That(invSystem.TryEquip(owner, suit, "back", force: true), Is.True);
             Assert.That(lockSys.IsDnaBlocked(suit, owner), Is.False, "a blank lock blocks nobody");
 
-            // Imprint on the owner by pressing the module.
-            var used = new ModuleUsedEvent(suit, owner, null, false);
-            entMan.EventBus.RaiseLocalEvent(module, ref used);
-            Assert.That(used.Handled, Is.True);
+            // Imprint on the owner by pressing the module — through the same door the
+            // panel button uses, not by raising the event by hand. The handler was fine
+            // all along; what was broken sat upstream of it, in the gate that decides
+            // whether the button is pressable at all.
+            var moduleSys = entMan.System<SharedChassisModuleSystem>();
+            moduleSys.CanUse((module, moduleComp), chassisEnt, owner, out var blocked);
+            Assert.That(blocked, Is.EqualTo(ModuleBlockReason.None), "the lock button has to be pressable");
+
+            Assert.That(moduleSys.TrySelect((module, moduleComp), owner), Is.True);
             Assert.That(dnaComp.Dna, Is.Not.Null, "pressing it should imprint whoever pressed it");
+
+            // And again with the suit actually running, which is how anybody would meet
+            // it in a round: deployed, sealed, drawing power.
+            modsuit.DeployAll(ent, silent: true);
+            foreach (var part in new[] { "head", "outerClothing", "gloves", "shoes" })
+            {
+                // Sealed directly rather than through the queue: the point here is the
+                // running suit, not the do-after that gets it there.
+                if (modsuit.TryGetPart(ent, part, out var piece))
+                    modsuit.SetPartSealed(ent, (piece, entMan.GetComponent<ModsuitPartComponent>(piece)), true);
+            }
+
+            Assert.That(chassis.Active, Is.True, "the suit has to be running for this half of the test");
+
+            moduleSys.CanUse((module, moduleComp), chassisEnt, owner, out var liveBlocked);
+            Assert.That(liveBlocked, Is.EqualTo(ModuleBlockReason.None),
+                "the lock button has to stay pressable on a running suit");
+
+            Assert.That(moduleSys.TrySelect((module, moduleComp), owner), Is.True);
+            Assert.That(dnaComp.Dna, Is.Null, "a second press by the owner wipes the imprint");
+
+            Assert.That(moduleSys.TrySelect((module, moduleComp), owner), Is.True);
+            Assert.That(dnaComp.Dna, Is.Not.Null, "and a third puts it back");
+
+            modsuit.RetractAll(ent, silent: true);
 
             Assert.Multiple(() =>
             {
@@ -1476,6 +1509,182 @@ public sealed class ModsuitTest
             entMan.DeleteEntity(suit);
             entMan.DeleteEntity(owner);
             entMan.DeleteEntity(thief);
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>
+    ///     The release wire drives the suit from outside, so the seal sequence it starts
+    ///     belongs to a body that is not the caller. It used to run the first step on the
+    ///     caller and every step after on the wearer, and the switch happens inside the
+    ///     do-after system's own update loop — where giving a fresh entity
+    ///     <c>ActiveDoAfterComponent</c> invalidates the query being walked and kills the
+    ///     server mid-tick.
+    /// </summary>
+    [Test]
+    public async Task ForceSealRunsOnOneBody()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var entMan = server.ResolveDependency<IEntityManager>();
+
+        EntityUid suit = default;
+        EntityUid wearer = default;
+        EntityUid hacker = default;
+
+        await server.WaitAssertion(() =>
+        {
+            var modsuit = entMan.System<SharedModsuitSystem>();
+            var invSystem = entMan.System<InventorySystem>();
+
+            wearer = entMan.SpawnEntity("MobHuman", MapCoordinates.Nullspace);
+            hacker = entMan.SpawnEntity("MobHuman", MapCoordinates.Nullspace);
+            suit = entMan.SpawnEntity(SuitProto, MapCoordinates.Nullspace);
+
+            var control = entMan.GetComponent<ModsuitControlComponent>(suit);
+            var ent = new Entity<ModsuitControlComponent>(suit, control);
+
+            Assert.That(invSystem.TryEquip(wearer, suit, "back", force: true), Is.True);
+
+            // First pulse on a folded suit: deploy and seal, driven by somebody else.
+            modsuit.ToggleForceSeal(ent, hacker);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(modsuit.AnyPartDeployed(ent), Is.True, "the wire has to open the suit up");
+                Assert.That(control.Sealing, Is.True, "and start closing it");
+                Assert.That(entMan.HasComponent<ActiveDoAfterComponent>(hacker), Is.False,
+                    "the sequence belongs to the body in the suit, not to whoever pulsed the wire");
+                Assert.That(entMan.HasComponent<ActiveDoAfterComponent>(wearer), Is.True);
+            });
+        });
+
+        // Long enough for every part to close. The crash this guards against happened on
+        // the second step, so the ticks are the test.
+        await pair.RunTicksSync(180);
+
+        await server.WaitAssertion(() =>
+        {
+            var modsuit = entMan.System<SharedModsuitSystem>();
+            var control = entMan.GetComponent<ModsuitControlComponent>(suit);
+            var ent = new Entity<ModsuitControlComponent>(suit, control);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(control.Sealing, Is.False, "the sequence has to finish, not stall");
+                Assert.That(modsuit.IsSealed(ent), Is.True, "and leave the suit closed");
+            });
+
+            // Second pulse: back out again, all the way to a rucksack.
+            modsuit.ToggleForceSeal(ent, hacker);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(modsuit.IsAnyPartSealed(ent), Is.False);
+                Assert.That(modsuit.AnyPartDeployed(ent), Is.False);
+            });
+
+            entMan.DeleteEntity(suit);
+            entMan.DeleteEntity(wearer);
+            entMan.DeleteEntity(hacker);
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>
+    ///     The panel armour hangs off a construction graph, and anything with a graph gets
+    ///     asked for a deconstruct verb. That verb pathfinds to <c>deconstructionTarget</c>,
+    ///     which defaults to a node literally named "start" — a node our graph has no reason
+    ///     to own. Asking a MOD for its verbs used to throw straight out of the graph and
+    ///     kill the server.
+    /// </summary>
+    [Test]
+    public async Task VerbsOnAPlatedSuitDoNotThrow()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var entMan = server.ResolveDependency<IEntityManager>();
+
+        await server.WaitAssertion(() =>
+        {
+            var verbs = entMan.System<SharedVerbSystem>();
+
+            var user = entMan.SpawnEntity("MobHuman", MapCoordinates.Nullspace);
+            var suit = entMan.SpawnEntity(SuitProto, MapCoordinates.Nullspace);
+
+            Assert.DoesNotThrow(
+                () => verbs.GetLocalVerbs(suit, user, Verb.VerbTypes, force: true),
+                "a suit carrying the panel-armour graph has to survive being asked for verbs");
+
+            entMan.DeleteEntity(suit);
+            entMan.DeleteEntity(user);
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>
+    ///     The t-ray module has two halves and drew a blank without either. The client
+    ///     sweeps the player's inventory slots for a scanner, so the scanner has to sit on
+    ///     the worn chassis rather than on the person; and the subfloor only renders for an
+    ///     eye carrying the mask, which upstream only ever hands out through the equip
+    ///     events of a handheld scanner.
+    /// </summary>
+    [Test]
+    public async Task TrayScannerModuleScansThroughTheSuit()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var entMan = server.ResolveDependency<IEntityManager>();
+
+        var map = await pair.CreateTestMap();
+
+        await server.WaitAssertion(() =>
+        {
+            var chassisSys = entMan.System<SharedModularChassisSystem>();
+            var moduleSys = entMan.System<SharedChassisModuleSystem>();
+            var invSystem = entMan.System<InventorySystem>();
+
+            var wearer = entMan.SpawnEntity("MobHuman", map.GridCoords);
+            var suit = entMan.SpawnEntity(SuitProto, map.GridCoords);
+            var chassis = entMan.GetComponent<ModularChassisComponent>(suit);
+            var chassisEnt = new Entity<ModularChassisComponent>(suit, chassis);
+
+            var module = entMan.SpawnEntity("IS14ModuleTrayScanner", map.GridCoords);
+            var moduleComp = entMan.GetComponent<ChassisModuleComponent>(module);
+
+            chassisSys.SetPanelOpen(chassisEnt, true);
+            Assert.That(chassisSys.TryInstall(chassisEnt, (module, moduleComp)), Is.True);
+            chassisSys.SetPanelOpen(chassisEnt, false);
+
+            Assert.That(invSystem.TryEquip(wearer, suit, "back", force: true), Is.True);
+
+            // The module needs the suit running before it will switch on at all.
+            chassisSys.SetActive(chassisEnt, true);
+            Assert.That(moduleSys.Activate((module, moduleComp), chassisEnt, wearer), Is.True);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(entMan.TryGetComponent<TrayScannerComponent>(suit, out var scanner), Is.True,
+                    "the scanner belongs on the worn chassis, which is what the client sweep can find");
+                Assert.That(scanner!.Enabled, Is.True);
+                Assert.That(entMan.HasComponent<TrayScannerUserComponent>(wearer), Is.True,
+                    "and the wearer needs the subfloor mask or nothing renders");
+            });
+
+            // Switching off has to put both halves back.
+            Assert.That(moduleSys.Deactivate((module, moduleComp), chassisEnt, wearer), Is.True);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(entMan.HasComponent<TrayScannerComponent>(suit), Is.False);
+                Assert.That(entMan.HasComponent<TrayScannerUserComponent>(wearer), Is.False);
+            });
+
+            entMan.DeleteEntity(suit);
+            entMan.DeleteEntity(wearer);
         });
 
         await pair.CleanReturnAsync();

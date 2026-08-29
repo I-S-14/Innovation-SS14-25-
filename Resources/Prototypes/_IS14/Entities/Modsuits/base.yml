@@ -163,12 +163,23 @@
     layers:
     - state: control
       map: ["enum.ModsuitVisualLayers.Base"]
+    # Дуга поверх корпуса, когда провод тока взведён. Тот же спрайт, что у решётки под
+    # напряжением, и видно его там же, где на костюм и смотрят — в окне обыска.
+    - state: electrified
+      sprite: Effects/electricity.rsi
+      shader: unshaded
+      visible: false
+      map: ["enum.ElectrifiedLayers.Sparks"]
   - type: GenericVisualizer
     visuals:
       enum.ModsuitVisuals.Sealed:
         enum.ModsuitVisualLayers.Base:
           True: { state: control-sealed }
           False: { state: control }
+      enum.ElectrifiedVisuals.ShowSparks:
+        enum.ElectrifiedLayers.Sparks:
+          True: { visible: True }
+          False: { visible: False }
   - type: Clothing
     slots: [ back ]
   - type: Item
@@ -215,6 +226,15 @@
   - type: Wires
     boardName: modsuit-wires-board
     layoutId: IS14Modsuit
+  # Броня панели: прутья, сталь или пласталь поверх проводки — ровно как на шлюзе.
+  # Граф ни одного узла не подменяет сущность, поэтому один и тот же годится всем МОДам.
+  - type: WiresPanelSecurity
+  - type: Construction
+    graph: IS14ModsuitPanel
+    node: mod
+    # У графа нет узла "start", а именно его ищет по умолчанию верба «разобрать» —
+    # и падает на нём. Брони панели она и не касается: пластина снимается ломом.
+    deconstructionTarget: null
   # Подключение и отключение внутреннего дыхания проходит через эту задержку, и без
   # записи с этим именем оно молча отказывает — костюм с баллоном обязан её иметь.
   - type: UseDelay
@@ -223,6 +243,10 @@
         length: 1.0
   - type: ModsuitLock
   - type: ModsuitSabotage
+  # Контроллер объявляет о себе вслух: взвод защиты и разряд слышны всей комнате, и это
+  # осознанно — ловушка, о которой никто не узнал, наказывает не того, кого надо.
+  - type: Speech
+    speechVerb: Robotic
   - type: AccessReader
 
   # E занято хранилищем — интерфейс открывается альт-взаимодействием (Alt+E, альт-клик).

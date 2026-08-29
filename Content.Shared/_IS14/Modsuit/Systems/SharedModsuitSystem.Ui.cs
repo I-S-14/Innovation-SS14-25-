@@ -60,6 +60,11 @@ public sealed partial class SharedModsuitSystem
 
     private void OnSecurityChanged(Entity<ModsuitControlComponent> ent, ref ModsuitSecurityChangedEvent args)
     {
+        // Refusing to open a panel that is already open in front of somebody would be a
+        // sabotage nobody notices, so breaking the interface shuts it there and then.
+        if (_lock.IsInterfaceBroken(ent))
+            _ui.CloseUi(ent.Owner, ModularChassisUiKey.Key);
+
         UpdateUi(ent);
     }
 
@@ -82,6 +87,12 @@ public sealed partial class SharedModsuitSystem
 
     private void OnSelectModuleMessage(Entity<ModsuitControlComponent> ent, ref ChassisSelectModuleMessage args)
     {
+        // Every message from the readout is checked, not just the ones that open it:
+        // a window already up when the interface went is still a window, and the
+        // client that owns it will happily keep sending.
+        if (!CanUseInterface(ent, args.Actor))
+            return;
+
         var module = GetEntity(args.Module);
 
         if (!TryComp<ChassisModuleComponent>(module, out var comp) || comp.Chassis != ent.Owner)
@@ -93,6 +104,9 @@ public sealed partial class SharedModsuitSystem
 
     private void OnConfigureModuleMessage(Entity<ModsuitControlComponent> ent, ref ChassisConfigureModuleMessage args)
     {
+        if (!CanUseInterface(ent, args.Actor))
+            return;
+
         var module = GetEntity(args.Module);
 
         if (!TryComp<ChassisModuleComponent>(module, out var comp) || comp.Chassis != ent.Owner)
@@ -110,6 +124,9 @@ public sealed partial class SharedModsuitSystem
     /// </summary>
     private void OnEjectModuleMessage(Entity<ModsuitControlComponent> ent, ref ChassisEjectModuleMessage args)
     {
+        if (!CanUseInterface(ent, args.Actor))
+            return;
+
         var module = GetEntity(args.Module);
 
         if (!TryComp<ChassisModuleComponent>(module, out var comp) || comp.Chassis != ent.Owner)
@@ -135,6 +152,9 @@ public sealed partial class SharedModsuitSystem
     /// </summary>
     private void OnEjectCellMessage(Entity<ModsuitControlComponent> ent, ref ChassisEjectCellMessage args)
     {
+        if (!CanUseInterface(ent, args.Actor))
+            return;
+
         if (!TryComp<ModularChassisComponent>(ent, out var chassis))
             return;
 
@@ -156,6 +176,9 @@ public sealed partial class SharedModsuitSystem
     /// </summary>
     private void OnInsertCellMessage(Entity<ModsuitControlComponent> ent, ref ChassisInsertCellMessage args)
     {
+        if (!CanUseInterface(ent, args.Actor))
+            return;
+
         if (!TryComp<ModularChassisComponent>(ent, out var chassis))
             return;
 
@@ -178,6 +201,9 @@ public sealed partial class SharedModsuitSystem
     /// </summary>
     private void OnOpenHopperMessage(Entity<ModsuitControlComponent> ent, ref ChassisOpenHopperMessage args)
     {
+        if (!CanUseInterface(ent, args.Actor))
+            return;
+
         if (!TryComp<ModCoreSlotComponent>(ent, out var slot)
             || _core.GetCore((ent.Owner, slot)) is not { } core
             || !HasComp<StorageComponent>(core))
@@ -188,9 +214,15 @@ public sealed partial class SharedModsuitSystem
 
     private void OnTogglePartMessage(Entity<ModsuitControlComponent> ent, ref ChassisTogglePartMessage args)
     {
+        if (!CanUseInterface(ent, args.Actor))
+            return;
+
         var part = GetEntity(args.Part);
 
         if (!TryComp<ModsuitPartComponent>(part, out var comp) || comp.Control != ent.Owner)
+            return;
+
+        if (!CanCommandDeploy(ent, args.Actor))
             return;
 
         if (comp.Deployed)
@@ -203,9 +235,15 @@ public sealed partial class SharedModsuitSystem
 
     private void OnSealPartMessage(Entity<ModsuitControlComponent> ent, ref ChassisSealPartMessage args)
     {
+        if (!CanUseInterface(ent, args.Actor))
+            return;
+
         var part = GetEntity(args.Part);
 
         if (!TryComp<ModsuitPartComponent>(part, out var comp) || comp.Control != ent.Owner)
+            return;
+
+        if (!CanCommandSeal(ent, args.Actor))
             return;
 
         TrySealPart(ent, part, !comp.Sealed, args.Actor);
@@ -214,12 +252,24 @@ public sealed partial class SharedModsuitSystem
 
     private void OnToggleActiveMessage(Entity<ModsuitControlComponent> ent, ref ChassisToggleActiveMessage args)
     {
+        if (!CanUseInterface(ent, args.Actor))
+            return;
+
+        if (!CanCommandSeal(ent, args.Actor))
+            return;
+
         TryToggleSeal(ent, args.Actor);
         UpdateUi(ent);
     }
 
     private void OnToggleDeployMessage(Entity<ModsuitControlComponent> ent, ref ChassisToggleDeployMessage args)
     {
+        if (!CanUseInterface(ent, args.Actor))
+            return;
+
+        if (!CanCommandDeploy(ent, args.Actor))
+            return;
+
         ToggleDeployAll(ent, args.Actor);
         UpdateUi(ent);
     }
@@ -273,7 +323,17 @@ public sealed partial class SharedModsuitSystem
         {
             state.InterfaceBroken = sabotage.InterfaceBroken;
             state.Electrified = _lock.IsElectrified((ent.Owner, sabotage));
+            state.Overloaded = _lock.IsOverloaded((ent.Owner, sabotage));
+            state.PowerCut = _lock.IsPowerCut((ent.Owner, sabotage));
+            state.DeployLinkCut = sabotage.DeployCut;
+            state.SealLinkCut = sabotage.SealCut;
         }
+
+        // Not inside the sabotage block: the DNA lock is a module, and a suit can carry
+        // one without carrying any of the wire hardware.
+        state.DnaLockPresent = _lock.TryGetDnaLockState(ent, out var dnaBroken, out var dnaImprinted);
+        state.DnaLockBroken = dnaBroken;
+        state.DnaLockImprinted = dnaImprinted;
 
         FillCore(ent, state);
         FillTank(ent, state);

@@ -681,3 +681,243 @@
         whitelist:
           components:
           - ModCore
+
+
+# =========================================================== ГРАЖДАНСКИЙ
+# Самый дешёвый корпус: ни брони, ни начинки, зато его не жалко и он не выглядит
+# как повод для вопросов у СБ.
+- type: entity
+  parent: IS14ModsuitPartHelmetBase
+  id: IS14ModsuitHelmetCivilian
+  categories: [ HideSpawnMenu ]
+  name: civilian MOD helmet
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/civilian.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/civilian.rsi
+
+- type: entity
+  parent: IS14ModsuitPartChestplateBase
+  id: IS14ModsuitChestplateCivilian
+  categories: [ HideSpawnMenu ]
+  name: civilian MOD chestplate
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/civilian.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/civilian.rsi
+
+- type: entity
+  parent: IS14ModsuitPartGauntletsBase
+  id: IS14ModsuitGauntletsCivilian
+  categories: [ HideSpawnMenu ]
+  name: civilian MOD gauntlets
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/civilian.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/civilian.rsi
+
+- type: entity
+  parent: IS14ModsuitPartBootsBase
+  id: IS14ModsuitBootsCivilian
+  categories: [ HideSpawnMenu ]
+  name: civilian MOD boots
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/civilian.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/civilian.rsi
+
+- type: entity
+  parent: IS14ModsuitControlBase
+  id: IS14ModsuitCivilian
+  name: civilian MOD controller
+  description: The cheapest shell that still holds pressure. No armour, no tricks, and nobody asks why you are wearing it.
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/civilian.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/civilian.rsi
+  - type: ModsuitControl
+    partPrototypes:
+      head: IS14ModsuitHelmetCivilian
+      outerClothing: IS14ModsuitChestplateCivilian
+      gloves: IS14ModsuitGauntletsCivilian
+      shoes: IS14ModsuitBootsCivilian
+  - type: ModularChassis
+    maxComplexity: 10
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        disableEject: true
+        startingItem: IS14ModCoreStandard
+        whitelist:
+          components:
+          - ModCore
+
+
+# =========================================================== ПОГРУЗОЧНЫЙ
+# Карго и утилизаторы: магнит и большой отсек уже внутри, брать нечего.
+- type: entity
+  parent: IS14ModsuitPartHelmetBase
+  id: IS14ModsuitHelmetLoader
+  categories: [ HideSpawnMenu ]
+  name: loader MOD helmet
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/loader.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/loader.rsi
+
+- type: entity
+  parent: IS14ModsuitPartChestplateBase
+  id: IS14ModsuitChestplateLoader
+  categories: [ HideSpawnMenu ]
+  name: loader MOD chestplate
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/loader.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/loader.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.9
+
+- type: entity
+  parent: IS14ModsuitPartGauntletsBase
+  id: IS14ModsuitGauntletsLoader
+  categories: [ HideSpawnMenu ]
+  name: loader MOD gauntlets
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/loader.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/loader.rsi
+
+- type: entity
+  parent: IS14ModsuitPartBootsBase
+  id: IS14ModsuitBootsLoader
+  categories: [ HideSpawnMenu ]
+  name: loader MOD boots
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/loader.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/loader.rsi
+
+- type: entity
+  parent: IS14ModsuitControlBase
+  id: IS14ModsuitLoader
+  name: loader MOD controller
+  description: Built around the compartment rather than around the person. The magnet and the hold come with it; what you carry is up to you.
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/loader.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/loader.rsi
+  - type: ModsuitControl
+    partPrototypes:
+      head: IS14ModsuitHelmetLoader
+      outerClothing: IS14ModsuitChestplateLoader
+      gloves: IS14ModsuitGauntletsLoader
+      shoes: IS14ModsuitBootsLoader
+  - type: ModularChassis
+    maxComplexity: 17
+    integratedModules:
+    - IS14ModuleOreBag
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        disableEject: true
+        startingItem: IS14ModCoreStandard
+        whitelist:
+          components:
+          - ModCore
+
+
+# =========================================================== МАГНАТСКИЙ
+# Командный корпус: дорогой, вместительный и заметный. Его и должно быть видно.
+- type: entity
+  parent: IS14ModsuitPartHelmetBase
+  id: IS14ModsuitHelmetMagnate
+  categories: [ HideSpawnMenu ]
+  name: magnate MOD helmet
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/magnate.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/magnate.rsi
+
+- type: entity
+  parent: IS14ModsuitPartChestplateBase
+  id: IS14ModsuitChestplateMagnate
+  categories: [ HideSpawnMenu ]
+  name: magnate MOD chestplate
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/magnate.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/magnate.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.85
+        Slash: 0.85
+        Piercing: 0.9
+
+- type: entity
+  parent: IS14ModsuitPartGauntletsBase
+  id: IS14ModsuitGauntletsMagnate
+  categories: [ HideSpawnMenu ]
+  name: magnate MOD gauntlets
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/magnate.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/magnate.rsi
+
+- type: entity
+  parent: IS14ModsuitPartBootsBase
+  id: IS14ModsuitBootsMagnate
+  categories: [ HideSpawnMenu ]
+  name: magnate MOD boots
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/magnate.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/magnate.rsi
+
+- type: entity
+  parent: IS14ModsuitControlBase
+  id: IS14ModsuitMagnate
+  name: magnate MOD controller
+  description: Command issue, and it looks it. The frame carries more hardware than anything else on the station, which is the point of being the person wearing it.
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/magnate.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/magnate.rsi
+  - type: ModsuitControl
+    partPrototypes:
+      head: IS14ModsuitHelmetMagnate
+      outerClothing: IS14ModsuitChestplateMagnate
+      gloves: IS14ModsuitGauntletsMagnate
+      shoes: IS14ModsuitBootsMagnate
+  - type: ModularChassis
+    maxComplexity: 20
+    integratedModules:
+    - IS14ModuleVisorDiagnostic
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        disableEject: true
+        startingItem: IS14ModCoreStandard
+        whitelist:
+          components:
+          - ModCore

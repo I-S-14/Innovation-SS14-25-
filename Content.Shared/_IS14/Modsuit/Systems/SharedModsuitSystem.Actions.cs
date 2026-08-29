@@ -64,6 +64,10 @@ public sealed partial class SharedModsuitSystem
             return;
 
         args.Handled = true;
+
+        if (!CanCommandDeploy(ent, args.Performer))
+            return;
+
         ToggleDeployAll(ent, args.Performer);
     }
 
@@ -73,7 +77,42 @@ public sealed partial class SharedModsuitSystem
             return;
 
         args.Handled = true;
+
+        if (!CanCommandSeal(ent, args.Performer))
+            return;
+
         TryToggleSeal(ent, args.Performer);
+    }
+
+    /// <summary>
+    ///     Whether deploy and fold commands still reach the plating. The actuators are not
+    ///     broken, the line to them is: a suit with this wire cut is stuck in whatever
+    ///     shape it was in, and the button reports why rather than doing nothing.
+    /// </summary>
+    private bool CanCommandDeploy(Entity<ModsuitControlComponent> ent, EntityUid? user)
+    {
+        if (!_lock.IsDeployCut(ent))
+            return true;
+
+        if (user is { } uid)
+            PopupFail(ent, uid, "modsuit-link-deploy-cut");
+
+        return false;
+    }
+
+    /// <summary>
+    ///     The same, for pressure. Worth knowing which of the two is gone: one traps you
+    ///     in the shape you are in, the other in the pressure you are in.
+    /// </summary>
+    private bool CanCommandSeal(Entity<ModsuitControlComponent> ent, EntityUid? user)
+    {
+        if (!_lock.IsSealCut(ent))
+            return true;
+
+        if (user is { } uid)
+            PopupFail(ent, uid, "modsuit-link-seal-cut");
+
+        return false;
     }
 
     private void OnOpenModulesAction(Entity<ModsuitControlComponent> ent, ref ModsuitOpenModulesEvent args)
@@ -82,7 +121,31 @@ public sealed partial class SharedModsuitSystem
             return;
 
         args.Handled = true;
+
+        // The action opens the readout with the raw engine call, which is the one route
+        // into it that never raises ActivatableUI's attempt event — so every refusal that
+        // hangs off that event has to be repeated here or the button walks straight past
+        // it. That is exactly how a wrecked interface stayed openable.
+        if (!CanUseInterface(ent, args.Performer))
+            return;
+
         _ui.TryToggleUi(ent.Owner, ModularChassisUiKey.Key, args.Performer);
+    }
+
+    /// <summary>
+    ///     Whether the suit's own readout will answer this person at all. A wrecked
+    ///     interface answers nobody, the wearer included: being stuck with the
+    ///     configuration you had is the whole point of the wire.
+    /// </summary>
+    public bool CanUseInterface(Entity<ModsuitControlComponent> ent, EntityUid? user)
+    {
+        if (!_lock.IsInterfaceBroken(ent))
+            return true;
+
+        if (user is { } uid)
+            PopupFail(ent, uid, "modsuit-interface-broken");
+
+        return false;
     }
 
     /// <summary>

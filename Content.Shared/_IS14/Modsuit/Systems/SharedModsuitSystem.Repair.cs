@@ -6,27 +6,31 @@ using Content.Shared.DoAfter;
 using Content.Shared.Interaction;
 using Content.Shared.Stacks;
 using Content.Shared.Tag;
-using Content.Shared.Tools;
 using Robust.Shared.Prototypes;
 
 namespace Content.Shared._IS14.Modsuit.Systems;
 
 /// <summary>
-///     Servicing the shell. Work happens on the piece itself: deploy it, then put a welder
-///     or a coil of cable to the slot it is sitting in. Clicking an occupied equipment slot
-///     with something in hand is already an interaction with whatever is worn there, so a
-///     dented gauntlet is repaired by working on the gauntlet — not by waving a tool at the
-///     backpack and hoping the suit picks the right piece.
+///     Servicing the shell. Work happens on the piece itself: deploy it, then put a sheet
+///     of plasteel or a coil of cable to the slot it is sitting in. Clicking an occupied
+///     equipment slot with something in hand is already an interaction with whatever is
+///     worn there, so a dented gauntlet is repaired by working on the gauntlet — not by
+///     waving a tool at the backpack and hoping the suit picks the right piece.
 ///
-///     Which tool a piece wants is decided by what hurt it, not by a roll: plating that took
-///     a beating gets worked back out with a welder, plating that was cooked by lasers or ion
-///     has its loom re-run with cable. The fight tells the engineer what to bring, and a suit
-///     that has been through both needs both.
+///     Which material a piece wants is decided by what hurt it, not by a roll: plating
+///     that took a beating is patched with new plating, plating that was cooked by lasers
+///     or ion has its loom re-run with cable. The fight tells the engineer what to bring,
+///     and a suit that has been through both needs both.
+///
+///     Deliberately no welder anywhere in here. A torch is how you cut somebody out of a
+///     MOD; the same tool putting one back together made the two jobs indistinguishable at
+///     the moment of the click, and the wrong one would fire on a mistake that costs a
+///     chestplate. Repair costs materials, breaching costs time, and nothing does both.
 /// </summary>
 public sealed partial class SharedModsuitSystem
 {
-    private static readonly ProtoId<ToolQualityPrototype> WeldingQuality = "Welding";
     private static readonly ProtoId<TagPrototype> CableTag = "CableCoil";
+    private static readonly ProtoId<StackPrototype> PlasteelStack = "Plasteel";
 
     private void InitializeRepair()
     {
@@ -39,10 +43,10 @@ public sealed partial class SharedModsuitSystem
         if (args.Handled)
             return;
 
-        var welder = _tool.HasQuality(args.Used, WeldingQuality);
+        var plasteel = IsPlasteel(args.Used);
         var cable = _tag.HasTag(args.Used, CableTag);
 
-        if (!welder && !cable)
+        if (!plasteel && !cable)
             return;
 
         if (ent.Comp.Control is not { } control || !TryComp<ModsuitControlComponent>(control, out var controlComp))
@@ -58,31 +62,15 @@ public sealed partial class SharedModsuitSystem
         args.Handled = true;
 
         var suit = new Entity<ModsuitControlComponent>(control, controlComp);
-        var offered = welder ? ChassisPartFault.Structural : ChassisPartFault.Electrical;
+        var offered = plasteel ? ChassisPartFault.Structural : ChassisPartFault.Electrical;
 
         if (fault != offered)
         {
-            // Say what the piece does need, so an engineer holding the wrong tool learns
+            // Say what the piece does need, so an engineer holding the wrong thing learns
             // something instead of being told "no".
             PopupFail(suit, args.User, fault == ChassisPartFault.Electrical
                 ? "modsuit-repair-needs-cable"
-                : "modsuit-repair-needs-welder");
-
-            return;
-        }
-
-        var ev = new ModsuitRepairDoAfterEvent();
-
-        if (welder)
-        {
-            _tool.UseTool(
-                args.Used,
-                args.User,
-                ent,
-                (float) ent.Comp.RepairDelay.TotalSeconds,
-                [WeldingQuality],
-                ev,
-                ent.Comp.RepairFuel);
+                : "modsuit-repair-needs-plasteel");
 
             return;
         }
@@ -91,7 +79,7 @@ public sealed partial class SharedModsuitSystem
             EntityManager,
             args.User,
             ent.Comp.RepairDelay,
-            ev,
+            new ModsuitRepairDoAfterEvent(),
             ent,
             ent,
             args.Used)
@@ -115,23 +103,25 @@ public sealed partial class SharedModsuitSystem
         var suit = new Entity<ModsuitControlComponent>(control, controlComp);
         var fault = GetFault(ent);
 
-        // Cable is spent per round; the welder already burned its fuel up front.
-        if (fault == ChassisPartFault.Electrical)
+        // Both repairs are paid for in stock, one sheet or one coil per pass. Taken at the
+        // end rather than up front so an interrupted repair costs nothing.
+        if (args.Used is not { } used
+            || !TryComp<StackComponent>(used, out var stack)
+            || !_stack.TryUse((used, stack), 1))
         {
-            if (args.Used is not { } used
-                || !TryComp<StackComponent>(used, out var stack)
-                || !_stack.TryUse((used, stack), 1))
-            {
-                PopupFail(suit, args.User, "modsuit-repair-no-cable");
-                return;
-            }
+            PopupFail(suit, args.User, fault == ChassisPartFault.Electrical
+                ? "modsuit-repair-no-cable"
+                : "modsuit-repair-no-plasteel");
+
+            return;
         }
 
         var amount = ent.Comp.MaxIntegrity * ent.Comp.RepairFraction;
         ChangeIntegrity(ent, amount);
 
         // Work the wear back down in step with the condition, so a piece that has been
-        // both dented and burnt eventually stops asking for the tool already used on it.
+        // both dented and burnt eventually stops asking for the material already spent on
+        // it.
         var drain = Math.Min(amount, fault == ChassisPartFault.Electrical
             ? ent.Comp.ElectricalWear
             : ent.Comp.StructuralWear);
@@ -146,5 +136,14 @@ public sealed partial class SharedModsuitSystem
         _popup.PopupClient(Loc.GetString("modsuit-repair-done", ("part", Name(ent))), ent, args.User);
 
         UpdateUi(suit);
+    }
+
+    /// <summary>
+    ///     Whether this is a stack of plasteel. Checked by stack type rather than by tag
+    ///     so that anything the game already counts as plasteel counts here too.
+    /// </summary>
+    private bool IsPlasteel(EntityUid uid)
+    {
+        return TryComp<StackComponent>(uid, out var stack) && stack.StackTypeId == PlasteelStack;
     }
 }

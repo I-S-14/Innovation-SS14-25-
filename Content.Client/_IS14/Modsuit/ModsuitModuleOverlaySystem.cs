@@ -1,5 +1,6 @@
 // Licensed under IS14's EULA, see EULA.txt for more information.
 
+using Content.Shared._IS14.Modsuit.Behaviours;
 using Content.Shared._IS14.Modsuit.Components;
 using Content.Shared._IS14.Modular;
 using Content.Shared._IS14.Modular.Behaviours;
@@ -9,13 +10,15 @@ using Content.Client.Clothing;
 using Content.Shared.Clothing;
 using Content.Shared.Item;
 using Robust.Client.GameObjects;
+using Robust.Shared.Containers;
 using Robust.Shared.GameStates;
 using Robust.Shared.Timing;
 
 namespace Content.Client._IS14.Modsuit;
 
 /// <summary>
-///     Paints installed modules onto the suit the wearer is actually wearing.
+///     Paints installed modules — and whatever they are holding in a slot of their own —
+///     onto the suit the wearer is actually wearing.
 ///
 ///     This has to live on the client: <c>ClothingComponent.ClothingVisuals</c> is a plain
 ///     data field with no network state, so the server cannot push these layers. Instead the
@@ -25,6 +28,7 @@ public sealed class ModsuitModuleOverlaySystem : EntitySystem
 {
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly SharedItemSystem _item = default!;
+    [Dependency] private readonly SharedContainerSystem _container = default!;
     [Dependency] private readonly SharedModularChassisSystem _chassis = default!;
 
     public override void Initialize()
@@ -46,6 +50,12 @@ public sealed class ModsuitModuleOverlaySystem : EntitySystem
         // a server-side interface message — so on the client the module simply changed
         // state underneath us. This is the only notice we get that it did.
         SubscribeLocalEvent<ChassisModuleComponent, AfterAutoHandleStateEvent>(OnModuleState);
+
+        // A slot module's art is whatever ended up in the slot, so filling or emptying one
+        // has to redraw the part. Installing and uninstalling need no separate handling:
+        // an empty slot draws nothing either way, and uninstalling a full one empties it.
+        SubscribeLocalEvent<ModsuitPartComponent, EntInsertedIntoContainerMessage>(OnPartContentsChanged);
+        SubscribeLocalEvent<ModsuitPartComponent, EntRemovedFromContainerMessage>(OnPartContentsChanged);
     }
 
     private void OnModuleState(Entity<ChassisModuleComponent> ent, ref AfterAutoHandleStateEvent args)
@@ -91,6 +101,107 @@ public sealed class ModsuitModuleOverlaySystem : EntitySystem
 
             index++;
         }
+
+        AddSlotContents(ent, ref args);
+    }
+
+    /// <summary>
+    ///     Draws what is sitting in a module's own item slot on top of the plating that
+    ///     carries it. A hat in the cradle should be a hat everyone can see, not one the
+    ///     wearer has to take on trust.
+    /// </summary>
+    private void AddSlotContents(Entity<ModsuitPartComponent> ent, ref GetEquipmentVisualsEvent args)
+    {
+        if (ent.Comp.Control is not { } control || !TryComp<ModularChassisComponent>(control, out var chassis))
+            return;
+
+        var index = 0;
+
+        foreach (var module in _chassis.GetModuleEntities((control, chassis)))
+        {
+            if (!TryComp<ModuleSuitSlotComponent>(module, out var suitSlot)
+                || !suitSlot.ShowContents
+                || suitSlot.Part != ent.Comp.Slot)
+            {
+                continue;
+            }
+
+            if (!_container.TryGetContainer(ent.Owner, suitSlot.SlotId, out var container))
+                continue;
+
+            foreach (var held in container.ContainedEntities)
+            {
+                // Ask the item what it would look like worn in the slot the part occupies.
+                // A hat in the cradle is a hat on a head, so the answer is the state the
+                // hat would have used anyway, species handling and all.
+                var ev = new GetEquipmentVisualsEvent(args.Equipee, args.Slot);
+                RaiseLocalEvent(held, ev);
+
+                foreach (var (_, layer) in ev.Layers)
+                {
+                    // Keyed by part rather than by whatever the item asked for: the key is
+                    // what the mob sprite maps the layer under, and the part is already
+                    // claiming the keys the item would have used.
+                    args.Layers.Add(($"modsuit-slot-{ent.Comp.Slot}-{index}", CopyLayer(held, layer)));
+                    index++;
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    ///     Copies a layer the item handed us and fills in what only the item knows.
+    ///
+    ///     The copy is not optional: layers taken from <c>clothingVisuals</c> are the
+    ///     prototype's own objects, shared by every instance of that item, so writing to
+    ///     one would edit the hat for everybody wearing it. And they do need writing to —
+    ///     plenty of clothing leaves the sheet out and leans on the renderer falling back
+    ///     to the worn item's sprite, which here would be the plating, not the hat.
+    /// </summary>
+    private PrototypeLayerData CopyLayer(EntityUid held, PrototypeLayerData layer)
+    {
+        var copy = new PrototypeLayerData
+        {
+            Shader = layer.Shader,
+            TexturePath = layer.TexturePath,
+            RsiPath = layer.RsiPath,
+            State = layer.State,
+            Scale = layer.Scale,
+            Rotation = layer.Rotation,
+            Offset = layer.Offset,
+            Visible = layer.Visible,
+            Color = layer.Color,
+            RenderingStrategy = layer.RenderingStrategy,
+            CopyToShaderParameters = layer.CopyToShaderParameters,
+            Cycle = layer.Cycle,
+            Loop = layer.Loop,
+
+            // Dropped deliberately: those keys belong to the item as it would be worn on
+            // its own, and reusing them here overwrites the part's own mapping.
+            MapKeys = null,
+        };
+
+        if (copy.RsiPath == null
+            && copy.TexturePath == null
+            && TryComp<SpriteComponent>(held, out var sprite)
+            && sprite.BaseRSI?.Path is { } path)
+        {
+            copy.RsiPath = path.ToString();
+        }
+
+        return copy;
+    }
+
+    /// <summary>
+    ///     Unfiltered on purpose. Working out whether the container that changed is a
+    ///     drawn one means asking the module that granted it, and on the way out the
+    ///     module is already gone by the time its slot empties — the one case that most
+    ///     needs the redraw. A part has a handful of containers and changes to them are
+    ///     rare, so redrawing on all of them costs less than getting this wrong.
+    /// </summary>
+    private void OnPartContentsChanged(EntityUid uid, ModsuitPartComponent comp, ContainerModifiedMessage args)
+    {
+        _item.VisualsChanged(uid);
     }
 
     /// <summary>

@@ -29,6 +29,7 @@ public sealed class ModCoreSystem : EntitySystem
     [Dependency] private readonly PowerCellSystem _powerCell = default!;
     [Dependency] private readonly SharedBatterySystem _battery = default!;
     [Dependency] private readonly SharedInteractionSystem _interaction = default!;
+    [Dependency] private readonly SharedModsuitLockSystem _lock = default!;
 
     public override void Initialize()
     {
@@ -127,6 +128,16 @@ public sealed class ModCoreSystem : EntitySystem
     }
 
     /// <summary>
+    ///     Whether the core has been wired out of the suit. Every power lead cut means the
+    ///     cradle is still full and still useless: the core answers none of the charge
+    ///     questions, so as far as everything upstream is concerned the suit is flat.
+    /// </summary>
+    private bool IsOutOfCircuit(EntityUid chassis)
+    {
+        return _lock.IsPowerCut(chassis);
+    }
+
+    /// <summary>
     ///     Tells the chassis its charge situation changed, which is what makes the
     ///     interface redraw.
     /// </summary>
@@ -207,7 +218,7 @@ public sealed class ModCoreSystem : EntitySystem
 
     private void OnGetCharge(Entity<ModCoreSlotComponent> ent, ref ChassisGetChargeEvent args)
     {
-        if (GetCore(ent) is not { } core)
+        if (IsOutOfCircuit(ent) || GetCore(ent) is not { } core)
             return;
 
         if (core.Comp.Infinite)
@@ -228,7 +239,7 @@ public sealed class ModCoreSystem : EntitySystem
 
     private void OnTryUseCharge(Entity<ModCoreSlotComponent> ent, ref ChassisTryUseChargeEvent args)
     {
-        if (GetCore(ent) is not { } core)
+        if (IsOutOfCircuit(ent) || GetCore(ent) is not { } core)
             return;
 
         if (core.Comp.Infinite)
@@ -245,7 +256,7 @@ public sealed class ModCoreSystem : EntitySystem
 
     private void OnAddCharge(Entity<ModCoreSlotComponent> ent, ref ChassisAddChargeEvent args)
     {
-        if (GetCore(ent) is not { } core)
+        if (IsOutOfCircuit(ent) || GetCore(ent) is not { } core)
             return;
 
         if (core.Comp.Infinite)

@@ -1,74 +1,32 @@
 // Licensed under IS14's EULA, see EULA.txt for more information.
 
 using Content.Server.Wires;
+using Content.Server._IS14.Modsuit;
 using Content.Shared._IS14.Modsuit;
 using Content.Shared._IS14.Modsuit.Components;
 using Content.Shared._IS14.Modsuit.Systems;
+using Content.Shared._IS14.Modular;
 using Content.Shared.Wires;
 
 namespace Content.Server._IS14.Modsuit.Wires;
 
 /// <summary>
-///     Green light. Pulsing flips the ID lock; cutting wipes the access list for good.
+///     Red. Two of these carry the core, and the suit runs on either one — cutting both
+///     takes the core out of circuit until one is mended.
+///
+///     A pulse instead drives the circuit too hard for ten seconds, which costs charge and
+///     nothing else. That is the honest reward for finding a power lead by guessing: you
+///     have learned which wire it is, and paid the wearer's battery for the lesson.
 /// </summary>
-public sealed partial class ModsuitLockWireAction : BaseWireAction
-{
-    public override Color Color { get; set; } = Color.Green;
-    public override string Name { get; set; } = "wire-name-mod-lock";
-    public override object StatusKey { get; } = ModsuitWireKey.LockStatus;
-
-    private SharedModsuitLockSystem _lock = default!;
-
-    public override void Initialize()
-    {
-        base.Initialize();
-        _lock = EntityManager.System<SharedModsuitLockSystem>();
-    }
-
-    public override StatusLightState? GetLightState(Wire wire)
-    {
-        if (!EntityManager.TryGetComponent<ModsuitLockComponent>(wire.Owner, out var comp))
-            return null;
-
-        if (comp.AccessWiped)
-            return StatusLightState.Off;
-
-        return comp.Locked ? StatusLightState.On : StatusLightState.BlinkingSlow;
-    }
-
-    public override bool Cut(EntityUid user, Wire wire)
-    {
-        if (EntityManager.TryGetComponent<ModsuitLockComponent>(wire.Owner, out var comp))
-            _lock.WipeAccess((wire.Owner, comp));
-
-        return true;
-    }
-
-    public override bool Mend(EntityUid user, Wire wire)
-    {
-        // Access, once wiped, is gone — mending the wire does not remember it.
-        return true;
-    }
-
-    public override void Pulse(EntityUid user, Wire wire)
-    {
-        if (EntityManager.TryGetComponent<ModsuitLockComponent>(wire.Owner, out var comp) && !comp.AccessWiped)
-            _lock.SetLocked((wire.Owner, comp), !comp.Locked);
-    }
-}
-
-/// <summary>
-///     Red light. A cut wire leaves the suit malfunctioning until it is mended.
-/// </summary>
-public sealed partial class ModsuitMalfunctionWireAction : BaseWireAction
+public sealed partial class ModsuitPowerWireAction : BaseWireAction
 {
     public override Color Color { get; set; } = Color.Red;
-    public override string Name { get; set; } = "wire-name-mod-malfunction";
-    public override object StatusKey { get; } = ModsuitWireKey.MalfunctionStatus;
+    public override string Name { get; set; } = "wire-name-mod-power";
+    public override object StatusKey { get; } = ModsuitWireKey.PowerStatus;
 
-    /// <summary>Seconds a pulse leaves the suit glitching before it recovers.</summary>
+    /// <summary>Seconds a pulse leaves the circuit overloaded.</summary>
     [DataField]
-    private int _pulseTimeout = 30;
+    private int _overloadSeconds = 10;
 
     private SharedModsuitLockSystem _lock = default!;
 
@@ -78,49 +36,172 @@ public sealed partial class ModsuitMalfunctionWireAction : BaseWireAction
         _lock = EntityManager.System<SharedModsuitLockSystem>();
     }
 
+    /// <summary>
+    ///     Both leads share one light, and it counts them down: steady on two, flickering
+    ///     on one, dark on none. A hacker who cut one lead can see that the other exists.
+    /// </summary>
     public override StatusLightState? GetLightState(Wire wire)
     {
-        return IsMalfunctioning(wire.Owner) ? StatusLightState.Off : StatusLightState.BlinkingFast;
-    }
+        if (!EntityManager.TryGetComponent<ModsuitSabotageComponent>(wire.Owner, out var comp))
+            return null;
 
-    private bool IsMalfunctioning(EntityUid uid)
-    {
-        return EntityManager.TryGetComponent<Content.Shared._IS14.Modular.Components.ChassisPowerComponent>(uid, out var power)
-               && power.Malfunctioning;
+        if (_lock.IsPowerCut((wire.Owner, comp)))
+            return StatusLightState.Off;
+
+        return comp.PowerWiresCut > 0 ? StatusLightState.BlinkingSlow : StatusLightState.On;
     }
 
     public override bool Cut(EntityUid user, Wire wire)
     {
-        _lock.SetMalfunctioning(wire.Owner, true);
-        WiresSystem.TryCancelWireAction(wire.Owner, ModsuitWireKey.MalfunctionStatus);
+        Change(wire, 1);
         return true;
     }
 
     public override bool Mend(EntityUid user, Wire wire)
     {
-        _lock.SetMalfunctioning(wire.Owner, false);
+        Change(wire, -1);
         return true;
     }
 
     public override void Pulse(EntityUid user, Wire wire)
     {
-        _lock.SetMalfunctioning(wire.Owner, true);
-
-        WiresSystem.StartWireAction(
-            wire.Owner,
-            _pulseTimeout,
-            ModsuitWireKey.MalfunctionStatus,
-            new TimedWireEvent(AwaitPulseCancel, wire));
+        if (EntityManager.TryGetComponent<ModsuitSabotageComponent>(wire.Owner, out var comp))
+            _lock.Overload((wire.Owner, comp), TimeSpan.FromSeconds(_overloadSeconds));
     }
 
-    private void AwaitPulseCancel(Wire wire)
+    /// <summary>
+    ///     Losing the last lead is the same event as a flat cell as far as the suit is
+    ///     concerned, so it goes through the same door: the shell blows open a seal at a
+    ///     time and everything hanging off the core stops.
+    /// </summary>
+    private void Change(Wire wire, int delta)
     {
-        _lock.SetMalfunctioning(wire.Owner, false);
+        if (!EntityManager.TryGetComponent<ModsuitSabotageComponent>(wire.Owner, out var comp))
+            return;
+
+        if (!_lock.ChangePowerWiresCut((wire.Owner, comp), delta) || !_lock.IsPowerCut((wire.Owner, comp)))
+            return;
+
+        var ev = new ChassisPowerDepletedEvent();
+        EntityManager.EventBus.RaiseLocalEvent(wire.Owner, ref ev);
     }
 }
 
 /// <summary>
-///     Orange light. Electrifies the suit against whoever pokes at it.
+///     Green. The link between the controller and the actuators in the plating.
+///
+///     Cut it and the deploy and fold buttons stop reaching the suit — the plating is
+///     stuck in whatever shape it was in, which is a rucksack somebody cannot open or an
+///     open suit somebody cannot close. Pulse it and every part moves at once.
+/// </summary>
+public sealed partial class ModsuitDeployWireAction : BaseWireAction
+{
+    public override Color Color { get; set; } = Color.Green;
+    public override string Name { get; set; } = "wire-name-mod-deploy";
+    public override object StatusKey { get; } = ModsuitWireKey.DeployStatus;
+
+    private SharedModsuitLockSystem _lock = default!;
+    private SharedModsuitSystem _modsuit = default!;
+
+    public override void Initialize()
+    {
+        base.Initialize();
+        _lock = EntityManager.System<SharedModsuitLockSystem>();
+        _modsuit = EntityManager.System<SharedModsuitSystem>();
+    }
+
+    public override StatusLightState? GetLightState(Wire wire)
+    {
+        if (!EntityManager.HasComponent<ModsuitSabotageComponent>(wire.Owner))
+            return null;
+
+        return _lock.IsDeployCut(wire.Owner) ? StatusLightState.Off : StatusLightState.On;
+    }
+
+    public override bool Cut(EntityUid user, Wire wire)
+    {
+        if (EntityManager.TryGetComponent<ModsuitSabotageComponent>(wire.Owner, out var comp))
+            _lock.SetDeployCut((wire.Owner, comp), true);
+
+        return true;
+    }
+
+    public override bool Mend(EntityUid user, Wire wire)
+    {
+        if (EntityManager.TryGetComponent<ModsuitSabotageComponent>(wire.Owner, out var comp))
+            _lock.SetDeployCut((wire.Owner, comp), false);
+
+        return true;
+    }
+
+    public override void Pulse(EntityUid user, Wire wire)
+    {
+        if (EntityManager.TryGetComponent<ModsuitControlComponent>(wire.Owner, out var control))
+            _modsuit.TryPulseDeploy((wire.Owner, control), user);
+    }
+}
+
+/// <summary>
+///     Blue. The link that carries pressure commands.
+///
+///     Cut it and nothing seals or unseals any more. A suit caught open cannot be closed,
+///     and a suit caught sealed cannot be opened — which is the interesting half, because
+///     the wearer is now living on whatever air is already in there.
+/// </summary>
+public sealed partial class ModsuitSealWireAction : BaseWireAction
+{
+    public override Color Color { get; set; } = Color.Blue;
+    public override string Name { get; set; } = "wire-name-mod-seal";
+    public override object StatusKey { get; } = ModsuitWireKey.SealStatus;
+
+    private SharedModsuitLockSystem _lock = default!;
+    private SharedModsuitSystem _modsuit = default!;
+
+    public override void Initialize()
+    {
+        base.Initialize();
+        _lock = EntityManager.System<SharedModsuitLockSystem>();
+        _modsuit = EntityManager.System<SharedModsuitSystem>();
+    }
+
+    public override StatusLightState? GetLightState(Wire wire)
+    {
+        if (!EntityManager.HasComponent<ModsuitSabotageComponent>(wire.Owner))
+            return null;
+
+        return _lock.IsSealCut(wire.Owner) ? StatusLightState.Off : StatusLightState.On;
+    }
+
+    public override bool Cut(EntityUid user, Wire wire)
+    {
+        if (EntityManager.TryGetComponent<ModsuitSabotageComponent>(wire.Owner, out var comp))
+            _lock.SetSealCut((wire.Owner, comp), true);
+
+        return true;
+    }
+
+    public override bool Mend(EntityUid user, Wire wire)
+    {
+        if (EntityManager.TryGetComponent<ModsuitSabotageComponent>(wire.Owner, out var comp))
+            _lock.SetSealCut((wire.Owner, comp), false);
+
+        return true;
+    }
+
+    public override void Pulse(EntityUid user, Wire wire)
+    {
+        if (EntityManager.TryGetComponent<ModsuitControlComponent>(wire.Owner, out var control))
+            _modsuit.TryToggleSeal((wire.Owner, control), user);
+    }
+}
+
+/// <summary>
+///     Orange. Arms the suit's own defence: the shell goes live for half a minute against
+///     whoever opens the wire interface.
+///
+///     Pulsing and cutting both arm it, and cutting also puts the discharge straight
+///     through the person holding the cutters. This is the one wire that bites back, so
+///     there is no safe way to test it and no way to disarm it by snipping.
 /// </summary>
 public sealed partial class ModsuitShockWireAction : BaseWireAction
 {
@@ -128,15 +209,14 @@ public sealed partial class ModsuitShockWireAction : BaseWireAction
     public override string Name { get; set; } = "wire-name-mod-shock";
     public override object StatusKey { get; } = ModsuitWireKey.ShockStatus;
 
-    [DataField]
-    private int _pulseTimeout = 30;
-
     private SharedModsuitLockSystem _lock = default!;
+    private ModsuitShockSystem _shock = default!;
 
     public override void Initialize()
     {
         base.Initialize();
         _lock = EntityManager.System<SharedModsuitLockSystem>();
+        _shock = EntityManager.System<ModsuitShockSystem>();
     }
 
     public override StatusLightState? GetLightState(Wire wire)
@@ -149,8 +229,13 @@ public sealed partial class ModsuitShockWireAction : BaseWireAction
 
     public override bool Cut(EntityUid user, Wire wire)
     {
-        if (EntityManager.TryGetComponent<ModsuitSabotageComponent>(wire.Owner, out var comp))
-            _lock.Electrify((wire.Owner, comp), null);
+        if (!EntityManager.TryGetComponent<ModsuitSabotageComponent>(wire.Owner, out var comp))
+            return true;
+
+        var ent = new Entity<ModsuitSabotageComponent>(wire.Owner, comp);
+
+        if (_shock.TryArm(ent))
+            _shock.Zap(ent, user);
 
         return true;
     }
@@ -163,16 +248,20 @@ public sealed partial class ModsuitShockWireAction : BaseWireAction
         return true;
     }
 
+    /// <summary>
+    ///     A pulse arms it without discharging: the multitool never touches the shell.
+    ///     That is the one difference between the two, and it is worth knowing.
+    /// </summary>
     public override void Pulse(EntityUid user, Wire wire)
     {
         if (EntityManager.TryGetComponent<ModsuitSabotageComponent>(wire.Owner, out var comp))
-            _lock.Electrify((wire.Owner, comp), TimeSpan.FromSeconds(_pulseTimeout));
+            _shock.TryArm((wire.Owner, comp));
     }
 }
 
 /// <summary>
-///     Yellow light. Breaks the suit's own interface, so the wearer is stuck with
-///     whatever configuration they had when it went.
+///     Yellow. Breaks the suit's own interface, so the wearer is stuck with whatever
+///     configuration they had when it went.
 /// </summary>
 public sealed partial class ModsuitInterfaceWireAction : BaseToggleWireAction
 {
@@ -204,61 +293,3 @@ public sealed partial class ModsuitInterfaceWireAction : BaseToggleWireAction
         return !_lock.IsInterfaceBroken(owner);
     }
 }
-
-/// <summary>
-///     Blue light. The emergency release: pulsing it makes the suit let go of whoever is
-///     inside, cutting it takes that option away for good.
-///
-///     This is the way in that rewards knowing what you are doing. The layout is shuffled
-///     per suit, so finding it means a multitool and the nerve to guess wrong — and
-///     somebody who expects to be arrested in their MOD will have cut it in advance,
-///     which is exactly the arms race it should be.
-/// </summary>
-public sealed partial class ModsuitReleaseWireAction : BaseWireAction
-{
-    public override Color Color { get; set; } = Color.Blue;
-    public override string Name { get; set; } = "wire-name-mod-release";
-    public override object StatusKey { get; } = ModsuitWireKey.ReleaseStatus;
-
-    private SharedModsuitLockSystem _lock = default!;
-
-    public override void Initialize()
-    {
-        base.Initialize();
-        _lock = EntityManager.System<SharedModsuitLockSystem>();
-    }
-
-    public override StatusLightState? GetLightState(Wire wire)
-    {
-        if (!EntityManager.HasComponent<ModsuitSabotageComponent>(wire.Owner))
-            return null;
-
-        return _lock.IsReleaseCut(wire.Owner) ? StatusLightState.Off : StatusLightState.On;
-    }
-
-    public override bool Cut(EntityUid user, Wire wire)
-    {
-        if (EntityManager.TryGetComponent<ModsuitSabotageComponent>(wire.Owner, out var comp))
-            _lock.SetReleaseCut((wire.Owner, comp), true);
-
-        return true;
-    }
-
-    public override bool Mend(EntityUid user, Wire wire)
-    {
-        if (EntityManager.TryGetComponent<ModsuitSabotageComponent>(wire.Owner, out var comp))
-            _lock.SetReleaseCut((wire.Owner, comp), false);
-
-        return true;
-    }
-
-    public override void Pulse(EntityUid user, Wire wire)
-    {
-        if (_lock.IsReleaseCut(wire.Owner))
-            return;
-
-        var ev = new ModsuitForceReleaseEvent(user);
-        EntityManager.EventBus.RaiseLocalEvent(wire.Owner, ref ev);
-    }
-}
-

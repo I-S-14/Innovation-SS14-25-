@@ -1,6 +1,8 @@
 // Licensed under IS14's EULA, see EULA.txt for more information.
 
 using Content.Shared._IS14.Modsuit.Components;
+using Content.Shared._IS14.Strip;
+using Content.Shared.Access.Components;
 using Content.Shared.Cuffs.Components;
 using Content.Shared._Shitmed.Targeting;
 using Content.Shared.Interaction;
@@ -9,6 +11,7 @@ using Content.Shared.Strip;
 using Content.Shared.DoAfter;
 using Content.Shared.Tools.Components;
 using Content.Shared.UserInterface;
+using Content.Shared.Wires;
 
 namespace Content.Shared._IS14.Modsuit.Systems;
 
@@ -18,17 +21,24 @@ namespace Content.Shared._IS14.Modsuit.Systems;
 ///     Everything else in this system assumes the wearer is the one operating the suit.
 ///     This part assumes the opposite, and the first problem it has to solve is reach: a
 ///     suit worn on somebody's back cannot be clicked at all, because the click lands on
-///     the mob. So the wearer carries a marker that forwards tools to the suit, and the
-///     suit counts as reachable — but only while its wearer is in no position to stop
-///     anyone. Cuff first, then work. Nobody has to be beaten to be let out.
+///     the mob. So the work happens in the strip window, where every piece of the suit
+///     already has its own slot to point at, and a tool clicked at one of those slots is
+///     handed to the hardware behind it.
+///
+///     Nobody has to be restrained first. A wearer on their feet is squirming, not
+///     immune: every job here simply takes several times as long, which is a cost the
+///     person doing it pays in the open rather than a door in their face.
 /// </summary>
 public sealed partial class SharedModsuitSystem
 {
     private void InitializeBreach()
     {
         SubscribeLocalEvent<ModsuitWearerComponent, InteractUsingEvent>(OnWearerInteractUsing);
+        SubscribeLocalEvent<ModsuitControlComponent, StrippedItemInteractUsingEvent>(OnSuitStripInteract);
+        SubscribeLocalEvent<ModsuitPartComponent, StrippedItemInteractUsingEvent>(OnPartStripInteract);
         SubscribeLocalEvent<ModsuitControlComponent, AccessibleOverrideEvent>(OnSuitAccessible);
         SubscribeLocalEvent<ModsuitControlComponent, ActivatableUIOpenAttemptEvent>(OnUiOpenAttempt);
+        SubscribeLocalEvent<ModsuitControlComponent, ModsuitPanelDoAfterEvent>(OnPanelDoAfter);
         SubscribeLocalEvent<ModsuitPartComponent, StrippedItemRemovedEvent>(OnPartStripped);
         SubscribeLocalEvent<ModsuitPartComponent, BeingUnequippedAttemptEvent>(OnPartUnequipAttempt);
         SubscribeLocalEvent<ModsuitControlComponent, ModsuitForceReleaseEvent>(OnForceRelease);
@@ -38,7 +48,7 @@ public sealed partial class SharedModsuitSystem
     /// <summary>
     ///     Lets go of whoever is inside: everything unseals, everything folds away, and
     ///     the suit can be taken off the back like any other bag. This is the outcome all
-    ///     three ways in are aiming at, so they share one door.
+    ///     the ways in are aiming at, so they share one door.
     /// </summary>
     private void OnForceRelease(Entity<ModsuitControlComponent> ent, ref ModsuitForceReleaseEvent args)
     {
@@ -60,9 +70,10 @@ public sealed partial class SharedModsuitSystem
     }
 
     /// <summary>
-    ///     Whether the wearer is in no position to stop somebody working on their suit.
-    ///     Cuffed, or unable to act at all — stunned, crit, dead. Deliberately not
-    ///     "damaged": you subdue somebody to get them out of a MOD, you do not beat them.
+    ///     Whether the wearer is in no position to interfere with somebody working on
+    ///     their suit. Cuffed, or unable to act at all — stunned, crit, dead. Deliberately
+    ///     not "damaged": you subdue somebody to get them out of a MOD, you do not beat
+    ///     them, and beating them only makes the job slower.
     /// </summary>
     public bool IsSubdued(EntityUid wearer)
     {
@@ -73,48 +84,167 @@ public sealed partial class SharedModsuitSystem
     }
 
     /// <summary>
-    ///     Forwards a tool used on the wearer to the suit itself, so a screwdriver opens
-    ///     its panel, a multitool reaches its wires, a crowbar takes its core and an ID
-    ///     answers its lock — all of it through the ordinary interactions those tools
-    ///     already have with a MOD lying on a table.
+    ///     How long a piece of breach work takes on this particular wearer. A restrained
+    ///     one costs the listed time; one still on their feet costs several times that,
+    ///     which is long enough that it cannot be done quietly in a hallway and short
+    ///     enough that a team holding somebody down does not need handcuffs to start.
+    /// </summary>
+    private float BreachDelay(EntityUid? wearer, float seconds)
+    {
+        if (wearer is not { } uid || IsSubdued(uid))
+            return seconds;
+
+        return seconds * StandingPenalty;
+    }
+
+    /// <summary>
+    ///     Warns the worker once, when they start, that the wearer moving about is what
+    ///     they are paying for. Silent on a restrained wearer, where there is no penalty
+    ///     to explain.
+    /// </summary>
+    private void WarnIfStanding(EntityUid target, EntityUid? wearer, EntityUid user)
+    {
+        if (wearer is not { } uid || IsSubdued(uid))
+            return;
+
+        _popup.PopupClient(Loc.GetString("modsuit-breach-struggling"), target, user);
+    }
+
+    /// <summary>
+    ///     A cutting torch used on somebody in the world. Which piece it lands on is
+    ///     whatever covers the body part the cutter has targeted, so the targeting doll
+    ///     does the aiming and no new interface has to be learned.
+    ///
+    ///     Everything else the panel needs — screwdriver, cutters, multitool, crowbar, a
+    ///     card — goes through the strip window instead, where the player points at the
+    ///     piece of hardware they mean rather than at a person.
     /// </summary>
     private void OnWearerInteractUsing(Entity<ModsuitWearerComponent> ent, ref InteractUsingEvent args)
     {
         if (args.Handled || !TryComp<ModsuitControlComponent>(ent.Comp.Suit, out var control))
             return;
 
-        // Only tools and cards. Everything else clicked at a person means something else
-        // entirely, and stealing those interactions would be a bug, not a feature.
-        if (!HasComp<ToolComponent>(args.Used) && !HasComp<Content.Shared.Access.Components.AccessComponent>(args.Used))
+        if (!_tool.HasQuality(args.Used, CuttingQuality))
             return;
 
-        if (!IsSubdued(ent.Owner))
+        var suit = new Entity<ModsuitControlComponent>(ent.Comp.Suit, control);
+
+        if (GetTargetedPart(suit, args.User) is not { } part)
         {
-            _popup.PopupClient(Loc.GetString("modsuit-breach-not-subdued"), ent, args.User);
+            _popup.PopupClient(Loc.GetString("modsuit-breach-nothing-there"), ent, args.User);
             args.Handled = true;
             return;
         }
 
-        // A torch is aimed at the plating; everything else is aimed at the control unit.
-        if (_tool.HasQuality(args.Used, CuttingQuality))
+        args.Handled = TryCut(ent, part, args.User, args.Used);
+    }
+
+    /// <summary>
+    ///     A tool or a card clicked at the suit's own slot in the strip window. The suit
+    ///     is handed the interaction exactly as if it were sitting on a bench — except for
+    ///     the panel, whose delay this system owns so that a squirming wearer can be
+    ///     charged for.
+    /// </summary>
+    private void OnSuitStripInteract(Entity<ModsuitControlComponent> ent, ref StrippedItemInteractUsingEvent args)
+    {
+        if (args.Handled)
+            return;
+
+        // Everything else clicked at a slot means an ordinary strip, and stealing that
+        // would be a bug rather than a feature.
+        if (!HasComp<ToolComponent>(args.Used) && !HasComp<AccessComponent>(args.Used))
+            return;
+
+        args.Handled = true;
+
+        if (TryComp<WiresPanelComponent>(ent, out var panel) && _tool.HasQuality(args.Used, panel.OpeningTool))
         {
-            args.Handled = TryCut(ent, (ent.Comp.Suit, control), args.User, args.Used);
+            TryTogglePanel((ent, panel), args.User, args.Used);
             return;
         }
 
-        // Hand the interaction to the suit exactly as if it were sitting on a bench.
-        args.Handled = _interaction.InteractUsing(
+        _interaction.InteractUsing(
             args.User,
             args.Used,
-            ent.Comp.Suit,
-            Transform(ent.Comp.Suit).Coordinates,
+            ent,
+            Transform(ent).Coordinates,
             checkCanInteract: false);
     }
 
     /// <summary>
+    ///     A torch clicked at one piece of plating in the strip window. Same job as the
+    ///     targeting doll, aimed by hand: the slot the player clicked is the piece that
+    ///     gets cut, with nothing to guess about which zone it covers.
+    /// </summary>
+    private void OnPartStripInteract(Entity<ModsuitPartComponent> ent, ref StrippedItemInteractUsingEvent args)
+    {
+        if (args.Handled || !ent.Comp.Deployed)
+            return;
+
+        if (!_tool.HasQuality(args.Used, CuttingQuality))
+            return;
+
+        if (ent.Comp.Control is not { } control
+            || !TryComp<ModsuitControlComponent>(control, out var comp)
+            || comp.Wearer != args.Target)
+        {
+            return;
+        }
+
+        args.Handled = TryCut(args.Target, ent, args.User, args.Used);
+    }
+
+    /// <summary>
+    ///     A screwdriver taken to a worn panel. The wire system's own handler would do
+    ///     this, but its delay comes straight out of the prototype with nowhere to add the
+    ///     penalty, so the do-after is ours and only the toggle is handed back.
+    /// </summary>
+    private bool TryTogglePanel(Entity<WiresPanelComponent> ent, EntityUid user, EntityUid used)
+    {
+        if (!_wires.CanTogglePanel(ent, user))
+            return false;
+
+        var wearer = CompOrNull<ModsuitControlComponent>(ent)?.Wearer;
+
+        if (!_tool.UseTool(
+                used,
+                user,
+                ent.Owner,
+                BreachDelay(wearer, (float) ent.Comp.OpenDelay.TotalSeconds),
+                ent.Comp.OpeningTool,
+                new ModsuitPanelDoAfterEvent()))
+        {
+            return false;
+        }
+
+        WarnIfStanding(ent, wearer, user);
+        return true;
+    }
+
+    private void OnPanelDoAfter(Entity<ModsuitControlComponent> ent, ref ModsuitPanelDoAfterEvent args)
+    {
+        if (args.Cancelled || args.Handled)
+            return;
+
+        args.Handled = true;
+
+        if (!TryComp<WiresPanelComponent>(ent, out var panel))
+            return;
+
+        if (!_wires.TogglePanel(ent, panel, !panel.Open, args.User))
+            return;
+
+        _audio.PlayPredicted(
+            panel.Open ? panel.ScrewdriverOpenSound : panel.ScrewdriverCloseSound,
+            ent,
+            args.User);
+    }
+
+    /// <summary>
     ///     A worn suit is normally sealed inside its wearer's inventory, where nobody can
-    ///     reach it — which is right until the wearer is face down in cuffs. Reachability
-    ///     is what lets the panel's do-afters and the wire interface work on a body.
+    ///     reach it. Reachability is what lets the panel's do-afters and the wire
+    ///     interface work on a body; whether the body is co-operating is a question of
+    ///     how long the work takes, not of whether it can be started.
     /// </summary>
     private void OnSuitAccessible(Entity<ModsuitControlComponent> ent, ref AccessibleOverrideEvent args)
     {
@@ -122,9 +252,6 @@ public sealed partial class SharedModsuitSystem
             return;
 
         if (args.User == wearer)
-            return;
-
-        if (!IsSubdued(wearer))
             return;
 
         args.Handled = true;
@@ -135,14 +262,26 @@ public sealed partial class SharedModsuitSystem
     ///     The readout stays the wearer's. Reaching the hardware is one thing; driving the
     ///     suit from its own control panel while somebody else is inside it would make
     ///     every other way in pointless.
+    ///
+    ///     Refused silently. The panel simply does not open for a stranger, and a popup
+    ///     saying so on every click was noise on the one interaction people try most.
     /// </summary>
     private void OnUiOpenAttempt(Entity<ModsuitControlComponent> ent, ref ActivatableUIOpenAttemptEvent args)
     {
-        if (args.Cancelled || ent.Comp.Wearer is not { } wearer || args.User == wearer)
+        if (args.Cancelled)
+            return;
+
+        // A wrecked interface refuses everyone, wearer included.
+        if (!CanUseInterface(ent, args.User))
+        {
+            args.Cancel();
+            return;
+        }
+
+        if (ent.Comp.Wearer is not { } wearer || args.User == wearer)
             return;
 
         args.Cancel();
-        _popup.PopupClient(Loc.GetString("modsuit-breach-not-yours"), ent, args.User);
     }
 
     /// <summary>
@@ -150,42 +289,46 @@ public sealed partial class SharedModsuitSystem
     ///     on the piece: this is how somebody is got out without being touched, which is
     ///     the whole reason it exists. Slow, loud, and it ruins the armour — cutting a
     ///     prisoner out costs the department a chestplate.
-    ///
-    ///     Which piece gets cut is whichever covers the body part the cutter has targeted,
-    ///     so the existing targeting doll is the aiming mechanism and nothing new has to
-    ///     be learned.
     /// </summary>
-    private bool TryCut(Entity<ModsuitWearerComponent> ent, Entity<ModsuitControlComponent> suit, EntityUid user, EntityUid used)
+    private bool TryCut(EntityUid wearer, Entity<ModsuitPartComponent> part, EntityUid user, EntityUid used)
     {
-        if (GetTargetedPart(suit, user) is not { } part)
+        if (IsPartRuptured(part))
         {
-            _popup.PopupClient(Loc.GetString("modsuit-breach-nothing-there"), ent, user);
-            return true;
-        }
-
-        if (part.Comp.Integrity <= 0f)
-        {
-            _popup.PopupClient(Loc.GetString("modsuit-breach-already-cut", ("part", Name(part))), ent, user);
+            _popup.PopupClient(Loc.GetString("modsuit-breach-already-cut", ("part", Name(part))), wearer, user);
             return true;
         }
 
         // The do-after hangs off the body rather than the plating: the plating is inside
         // an inventory slot, and a do-after against something in a slot spends its life
         // arguing about whether the user can reach it.
-        _tool.UseTool(
-            used,
-            user,
-            ent,
-            CutDelay,
-            CuttingQuality,
-            new ModsuitCutDoAfterEvent(GetNetEntity(part)));
+        if (!_tool.UseTool(
+                used,
+                user,
+                wearer,
+                BreachDelay(wearer, CutDelay),
+                CuttingQuality,
+                new ModsuitCutDoAfterEvent(GetNetEntity(part))))
+        {
+            return false;
+        }
 
+        WarnIfStanding(wearer, wearer, user);
         return true;
     }
 
+    /// <summary>
+    ///     One pass of the torch, and then the next one without asking. Cutting somebody
+    ///     out is a single job the player commits to, the way a meal is: it runs until the
+    ///     piece gives way, the torch goes out, or somebody moves.
+    /// </summary>
     private void OnCutDoAfter(Entity<ModsuitWearerComponent> ent, ref ModsuitCutDoAfterEvent args)
     {
-        if (args.Cancelled || args.Handled)
+        args.Repeat = false;
+
+        // Deliberately not gated on Handled. The do-after system resets that flag on the
+        // wrapper it repeats, never on the event wrapped inside, so a second pass would
+        // arrive already marked handled and stop the job one cut in.
+        if (args.Cancelled)
             return;
 
         args.Handled = true;
@@ -200,6 +343,30 @@ public sealed partial class SharedModsuitSystem
         ChangeIntegrity((part, comp), -comp.MaxIntegrity * CutFraction);
 
         _popup.PopupClient(Loc.GetString("modsuit-breach-cutting", ("part", Name(part))), ent, args.User);
+
+        // Stop at the seal rather than at nothing: the point of the torch is the hole,
+        // and grinding a chestplate to scrap afterwards helps nobody.
+        if (IsPartRuptured((part, comp)))
+            return;
+
+        // The do-after itself never re-checks the tool once it is running, so a welder
+        // that has gone out or run dry has to be caught here or it would cut forever.
+        args.Repeat = CanKeepCutting(args.Used, args.User);
+    }
+
+    /// <summary>
+    ///     Whether the torch is still a torch: lit, fuelled, and not taken out of the hand
+    ///     holding it.
+    /// </summary>
+    private bool CanKeepCutting(EntityUid? used, EntityUid user)
+    {
+        if (used is not { } tool || TerminatingOrDeleted(tool) || !_tool.HasQuality(tool, CuttingQuality))
+            return false;
+
+        var attempt = new ToolUseAttemptEvent(user, 0f);
+        RaiseLocalEvent(tool, attempt);
+
+        return !attempt.Cancelled;
     }
 
     /// <summary>
@@ -229,10 +396,13 @@ public sealed partial class SharedModsuitSystem
     private const string CuttingQuality = "Welding";
 
     /// <summary>Seconds one pass with the torch takes.</summary>
-    private const float CutDelay = 6f;
+    private const float CutDelay = 1.5f;
 
     /// <summary>Share of a piece's rating one pass takes off.</summary>
-    private const float CutFraction = 0.25f;
+    private const float CutFraction = 0.125f;
+
+    /// <summary>What breach work costs on a wearer who is still on their feet.</summary>
+    private const float StandingPenalty = 3f;
 
     /// <summary>
     ///     Worn plating comes off in exactly one way: somebody else taking it off a person

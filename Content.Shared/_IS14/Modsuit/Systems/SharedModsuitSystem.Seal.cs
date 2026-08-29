@@ -130,7 +130,14 @@ public sealed partial class SharedModsuitSystem
         }
 
         var part = ent.Comp.SealQueue[0];
-        var doAfterUser = user ?? ent.Comp.Wearer;
+
+        // The sequence belongs to the body inside the suit, whoever set it off. It used to
+        // take the caller for the first step and the wearer for every step after, and a
+        // sequence started by somebody else — the release wire — then moved the do-after
+        // from one entity to another halfway through. The second step lands inside the
+        // do-after system's own update loop, where putting ActiveDoAfterComponent on a
+        // fresh entity invalidates the query it is walking, and the server dies mid-tick.
+        var doAfterUser = ent.Comp.Wearer ?? user;
 
         if (doAfterUser == null)
         {
@@ -298,13 +305,114 @@ public sealed partial class SharedModsuitSystem
     }
 
     /// <summary>
+    ///     What the release wire drives: a suit that is open or live is shut down and let
+    ///     go of, a suit that is folded away is deployed and sealed around whoever has it
+    ///     on. Both directions of the same switch, which is what makes the wire worth
+    ///     finding for reasons other than escape.
+    /// </summary>
+    public void ToggleForceSeal(Entity<ModsuitControlComponent> ent, EntityUid? user = null)
+    {
+        if (AnyPartDeployed(ent))
+        {
+            var release = new ModsuitForceReleaseEvent(user);
+            RaiseLocalEvent(ent, ref release);
+            return;
+        }
+
+        DeployAll(ent, user);
+        TryToggleSeal(ent, user);
+    }
+
+    /// <summary>
+    ///     The suit coming apart because it lost power, rather than because somebody asked
+    ///     it to. Parts give way one at a time on a timer instead of a do-after: nobody is
+    ///     performing this, so there is nothing to interrupt and nothing to stand still
+    ///     for — but it is still heard happening, one seal at a time.
+    /// </summary>
+    public void StartBlowout(Entity<ModsuitControlComponent> ent)
+    {
+        // Whatever the wearer was in the middle of is over.
+        ent.Comp.Sealing = false;
+        ent.Comp.SealQueue.Clear();
+        Dirty(ent);
+
+        var queue = new List<EntityUid>();
+
+        foreach (var part in ent.Comp.Parts.Values)
+        {
+            if (TryComp<ModsuitPartComponent>(part, out var comp) && comp.Sealed)
+                queue.Add(part);
+        }
+
+        if (queue.Count == 0)
+        {
+            SetActive(ent, false);
+            return;
+        }
+
+        ent.Comp.BlowoutQueue = queue;
+
+        // The first one goes immediately: the suit does not pause politely before it
+        // starts failing.
+        ent.Comp.BlowoutNext = _timing.CurTime;
+    }
+
+    /// <summary>
+    ///     Walks whichever suits are in the middle of blowing open. Server-side, like the
+    ///     drain loop that starts it.
+    /// </summary>
+    public override void Update(float frameTime)
+    {
+        base.Update(frameTime);
+
+        if (!_net.IsServer)
+            return;
+
+        var now = _timing.CurTime;
+        var query = EntityQueryEnumerator<ModsuitControlComponent>();
+
+        while (query.MoveNext(out var uid, out var comp))
+        {
+            if (comp.BlowoutNext is not { } next || now < next)
+                continue;
+
+            var ent = new Entity<ModsuitControlComponent>(uid, comp);
+
+            // Anything that got unsealed by other means on the way is skipped rather than
+            // waited on, so a suit half taken apart by hand still finishes falling open.
+            while (comp.BlowoutQueue.Count > 0)
+            {
+                var part = comp.BlowoutQueue[0];
+                comp.BlowoutQueue.RemoveAt(0);
+
+                if (!TryComp<ModsuitPartComponent>(part, out var partComp) || !partComp.Sealed)
+                    continue;
+
+                SetPartSealed(ent, (part, partComp), false);
+                break;
+            }
+
+            if (comp.BlowoutQueue.Count > 0)
+            {
+                comp.BlowoutNext = now + comp.BlowoutInterval;
+                continue;
+            }
+
+            comp.BlowoutNext = null;
+            SetActive(ent, false);
+        }
+    }
+
+    /// <summary>
     ///     Shuts the suit down and unseals it, without the usual per-part delay.
-    ///     Used when power runs out or the suit is forcibly removed.
+    ///     Used when the suit is forcibly opened or taken off.
     /// </summary>
     public void Deactivate(Entity<ModsuitControlComponent> ent)
     {
         ent.Comp.Sealing = false;
         ent.Comp.SealQueue.Clear();
+        ent.Comp.BlowoutQueue.Clear();
+        ent.Comp.BlowoutNext = null;
 
         foreach (var part in ent.Comp.Parts.Values)
         {

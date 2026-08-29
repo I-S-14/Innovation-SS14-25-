@@ -8,6 +8,7 @@ using Content.Shared.Access.Components;
 using Content.Shared.Access.Systems;
 using Content.Shared.Emag.Components;
 using Content.Shared.Emag.Systems;
+using Content.Shared.Electrocution;
 using Content.Shared.Emp;
 using Content.Shared.Forensics.Components;
 using Content.Shared.Interaction;
@@ -15,6 +16,7 @@ using Content.Shared.Popups;
 using Content.Shared.Wires;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
+using Robust.Shared.Network;
 using Robust.Shared.Timing;
 
 namespace Content.Shared._IS14.Modsuit.Systems;
@@ -30,6 +32,8 @@ public sealed class SharedModsuitLockSystem : EntitySystem
     [Dependency] private readonly EmagSystem _emag = default!;
     [Dependency] private readonly SharedModularChassisSystem _chassis = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private readonly INetManager _net = default!;
+    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
 
@@ -52,6 +56,8 @@ public sealed class SharedModsuitLockSystem : EntitySystem
         SubscribeLocalEvent<ModuleDnaLockComponent, ModuleUsedEvent>(OnDnaLockUsed);
         SubscribeLocalEvent<ModuleDnaLockComponent, GotEmaggedEvent>(OnDnaLockEmagged);
         SubscribeLocalEvent<ModuleDnaLockComponent, EmpPulseEvent>(OnDnaLockEmp);
+
+        SubscribeLocalEvent<ModsuitSabotageComponent, ChassisGetStandingDrawEvent>(OnGetStandingDraw);
     }
 
     #region DNA lock
@@ -72,6 +78,34 @@ public sealed class SharedModsuitLockSystem : EntitySystem
         }
 
         return null;
+    }
+
+    /// <summary>
+    ///     The DNA lock's state for the readout: whether there is one at all, whether it
+    ///     has been burned out, and whether it currently holds an imprint.
+    ///
+    ///     The panel showed none of this, so pressing the button changed nothing anybody
+    ///     could see and the module read as broken when it was working perfectly.
+    /// </summary>
+    public bool TryGetDnaLockState(EntityUid chassis, out bool broken, out bool imprinted)
+    {
+        broken = false;
+        imprinted = false;
+
+        if (!TryComp<ModularChassisComponent>(chassis, out var comp))
+            return false;
+
+        foreach (var module in _chassis.GetModuleEntities((chassis, comp)))
+        {
+            if (!TryComp<ModuleDnaLockComponent>(module, out var dna))
+                continue;
+
+            broken = dna.Broken;
+            imprinted = dna.Dna != null;
+            return true;
+        }
+
+        return false;
     }
 
     /// <summary>
@@ -357,19 +391,78 @@ public sealed class SharedModsuitLockSystem : EntitySystem
     }
 
     /// <summary>
-    ///     Whether somebody has already taken the emergency release out of the picture.
+    ///     Whether deploy and fold commands still reach the plating.
     /// </summary>
-    public bool IsReleaseCut(EntityUid uid)
+    public bool IsDeployCut(EntityUid uid)
     {
-        return TryComp<ModsuitSabotageComponent>(uid, out var comp) && comp.ReleaseCut;
+        return TryComp<ModsuitSabotageComponent>(uid, out var comp) && comp.DeployCut;
     }
 
-    public void SetReleaseCut(Entity<ModsuitSabotageComponent> ent, bool cut)
+    public void SetDeployCut(Entity<ModsuitSabotageComponent> ent, bool cut)
     {
-        if (ent.Comp.ReleaseCut == cut)
+        if (ent.Comp.DeployCut == cut)
             return;
 
-        ent.Comp.ReleaseCut = cut;
+        ent.Comp.DeployCut = cut;
+        Dirty(ent);
+        Announce(ent);
+    }
+
+    /// <summary>
+    ///     Whether seal and unseal commands still reach the plating.
+    /// </summary>
+    public bool IsSealCut(EntityUid uid)
+    {
+        return TryComp<ModsuitSabotageComponent>(uid, out var comp) && comp.SealCut;
+    }
+
+    public void SetSealCut(Entity<ModsuitSabotageComponent> ent, bool cut)
+    {
+        if (ent.Comp.SealCut == cut)
+            return;
+
+        ent.Comp.SealCut = cut;
+        Dirty(ent);
+        Announce(ent);
+    }
+
+    /// <summary>
+    ///     Whether the core has been cut out of circuit. One power lead carries the whole
+    ///     suit, so this only becomes true once every lead is gone.
+    /// </summary>
+    public bool IsPowerCut(EntityUid uid)
+    {
+        return TryComp<ModsuitSabotageComponent>(uid, out var comp) && IsPowerCut((uid, comp));
+    }
+
+    public bool IsPowerCut(Entity<ModsuitSabotageComponent> ent)
+    {
+        return ent.Comp.PowerWireCount > 0 && ent.Comp.PowerWiresCut >= ent.Comp.PowerWireCount;
+    }
+
+    /// <summary>
+    ///     Records one power lead going or coming back, and reports whether that flipped
+    ///     the suit between powered and dead.
+    /// </summary>
+    public bool ChangePowerWiresCut(Entity<ModsuitSabotageComponent> ent, int delta)
+    {
+        var before = IsPowerCut(ent);
+
+        ent.Comp.PowerWiresCut = Math.Clamp(ent.Comp.PowerWiresCut + delta, 0, ent.Comp.PowerWireCount);
+        Dirty(ent);
+        Announce(ent);
+
+        return IsPowerCut(ent) != before;
+    }
+
+    public bool IsOverloaded(Entity<ModsuitSabotageComponent> ent)
+    {
+        return ent.Comp.OverloadedUntil is { } until && _timing.CurTime < until;
+    }
+
+    public void Overload(Entity<ModsuitSabotageComponent> ent, TimeSpan duration)
+    {
+        ent.Comp.OverloadedUntil = _timing.CurTime + duration;
         Dirty(ent);
         Announce(ent);
     }
@@ -392,6 +485,7 @@ public sealed class SharedModsuitLockSystem : EntitySystem
         }
 
         Dirty(ent);
+        RefreshShockVisuals(ent);
         Announce(ent);
     }
 
@@ -400,7 +494,76 @@ public sealed class SharedModsuitLockSystem : EntitySystem
         ent.Comp.PermanentlyElectrified = false;
         ent.Comp.ElectrifiedUntil = null;
         Dirty(ent);
+        RefreshShockVisuals(ent);
         Announce(ent);
+    }
+
+    /// <summary>
+    ///     Holding the shell live costs the core the whole time it is armed, whether the
+    ///     suit is running or folded in somebody's locker. A trap you can set and forget
+    ///     is not a trap, it is a free upgrade.
+    /// </summary>
+    private void OnGetStandingDraw(Entity<ModsuitSabotageComponent> ent, ref ChassisGetStandingDrawEvent args)
+    {
+        if (IsElectrified(ent))
+            args.Draw += ent.Comp.ElectrifiedDraw;
+
+        if (IsOverloaded(ent))
+            args.Draw += ent.Comp.OverloadDraw;
+    }
+
+    /// <summary>
+    ///     Puts the arcing overlay on the shell, or takes it off. Reusing the electrified
+    ///     grille's appearance key means the suit sparks with the same art as every other
+    ///     live thing on the station, including in the strip window — which is exactly
+    ///     where somebody about to grab it is looking.
+    /// </summary>
+    private void RefreshShockVisuals(Entity<ModsuitSabotageComponent> ent)
+    {
+        _appearance.SetData(ent, ElectrifiedVisuals.ShowSparks, IsElectrified(ent));
+    }
+
+    /// <summary>
+    ///     A timed electrification expires on the clock rather than on an event, so
+    ///     somebody has to notice that it has run out. Only suits with a live timer are
+    ///     walked, which on any real station is none of them.
+    /// </summary>
+    public override void Update(float frameTime)
+    {
+        base.Update(frameTime);
+
+        // Server-authoritative: the expiry writes component state, and predicting it would
+        // only fight the state that follows a moment later.
+        if (!_net.IsServer)
+            return;
+
+        var now = _timing.CurTime;
+        var query = EntityQueryEnumerator<ModsuitSabotageComponent>();
+
+        while (query.MoveNext(out var uid, out var comp))
+        {
+            var expired = false;
+
+            if (comp.ElectrifiedUntil is { } live && now >= live)
+            {
+                // Only the timer. A suit wired live for good stays live.
+                comp.ElectrifiedUntil = null;
+                RefreshShockVisuals((uid, comp));
+                expired = true;
+            }
+
+            if (comp.OverloadedUntil is { } hot && now >= hot)
+            {
+                comp.OverloadedUntil = null;
+                expired = true;
+            }
+
+            if (!expired)
+                continue;
+
+            Dirty(uid, comp);
+            Announce(uid);
+        }
     }
 
     /// <summary>

@@ -31,10 +31,12 @@ public sealed partial class ModuleGasTankComponent : Component
     public float TargetPressure = 1013.25f;
 
     /// <summary>
-    ///     Moles moved per second while the compressor is running.
+    ///     Moles moved per second while the compressor is running. Deliberately tiny:
+    ///     the compressor is meant to keep a bottle topped up over a shift, not to fill
+    ///     one while you stand in the airlock.
     /// </summary>
     [DataField]
-    public float FilterRate = 1.5f;
+    public float FilterRate = 0.03f;
 
     /// <summary>
     ///     Watts drawn while it is actually pulling gas. Idle scrubbing costs nothing

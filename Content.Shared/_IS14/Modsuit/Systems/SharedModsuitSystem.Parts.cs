@@ -56,6 +56,22 @@ public sealed partial class SharedModsuitSystem
         return false;
     }
 
+    /// <summary>
+    ///     The piece of plating that occupies one of the suit's slots, if it has one.
+    ///     Exists so behaviours outside this system can reach a named part without the
+    ///     access analyser having to hand out write rights on the whole dictionary.
+    /// </summary>
+    public bool TryGetPart(Entity<ModsuitControlComponent> ent, string slot, out EntityUid part)
+    {
+        part = default;
+
+        if (!ent.Comp.Parts.TryGetValue(slot, out var found) || TerminatingOrDeleted(found))
+            return false;
+
+        part = found;
+        return true;
+    }
+
     public bool IsDeployed(EntityUid part)
     {
         return TryComp<ModsuitPartComponent>(part, out var comp) && comp.Deployed;
@@ -295,6 +311,24 @@ public sealed partial class SharedModsuitSystem
 
         if (!silent)
             _audio.PlayPredicted(ent.Comp.RetractSound, ent, user);
+    }
+
+    /// <summary>
+    ///     What a pulse on the actuator wire does. Same toggle the wearer's button drives,
+    ///     with one refusal: it will not fold a suit that is closed up.
+    ///
+    ///     Pressure belongs to the other wire. A single pulse that undressed somebody
+    ///     through a sealed shell would make the seal wire pointless and the actuator wire
+    ///     the only one worth finding — so a sealed suit simply does not answer, and the
+    ///     hacker has to find both.
+    /// </summary>
+    public bool TryPulseDeploy(Entity<ModsuitControlComponent> ent, EntityUid? user = null)
+    {
+        if (IsAnyPartSealed(ent))
+            return false;
+
+        ToggleDeployAll(ent, user);
+        return true;
     }
 
     /// <summary>

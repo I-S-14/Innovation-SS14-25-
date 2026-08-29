@@ -32,6 +32,9 @@
   - IS14ModuleTrayScanner
   - IS14ModuleAtmosphericsSmall
   - IS14ModuleMouthhole
+  - IS14ModsuitLoader
+  - IS14ModuleCleaner
+  - IS14ModuleMegaphone
 
 - type: technology
   id: IS14ModsuitSpecialization
@@ -63,6 +66,8 @@
   - IS14ModuleKineticCharge
   - IS14ModuleDnaLock
   - IS14ModuleHolster
+  - IS14ModuleInjector
+  - IS14ModuleVisorThermal
 
 - type: technology
   id: IS14ModsuitAdvanced
@@ -77,6 +82,7 @@
   technologyPrerequisites:
   - IS14ModsuitSpecialization
   recipeUnlocks:
+  - IS14ModsuitMagnate
   - IS14ModCorePlasma
   - IS14ModuleAtmosphericsLarge
   - IS14ModuleJetpack

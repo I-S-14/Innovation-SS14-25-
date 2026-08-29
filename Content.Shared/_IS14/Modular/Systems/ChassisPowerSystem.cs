@@ -33,7 +33,13 @@ public sealed class ChassisPowerSystem : EntitySystem
         var query = EntityQueryEnumerator<ChassisPowerComponent, ModularChassisComponent>();
         while (query.MoveNext(out var uid, out var power, out var chassis))
         {
-            if (!chassis.Active)
+            // Something bolted to an idle chassis can still hold a draw of its own, and
+            // an idle chassis is exactly when that matters: arming a trap and then folding
+            // the suit away would otherwise be free.
+            var standing = new ChassisGetStandingDrawEvent(0f);
+            RaiseLocalEvent(uid, ref standing);
+
+            if (!chassis.Active && standing.Draw <= 0f)
                 continue;
 
             power.Accumulator += frameTime;
@@ -43,7 +49,12 @@ public sealed class ChassisPowerSystem : EntitySystem
             var seconds = power.Accumulator;
             power.Accumulator = 0f;
 
-            var draw = GetTotalDraw((uid, chassis), power) * seconds;
+            var watts = standing.Draw;
+
+            if (chassis.Active)
+                watts += GetTotalDraw((uid, chassis), power);
+
+            var draw = watts * seconds;
             if (draw <= 0f)
                 continue;
 

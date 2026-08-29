@@ -87,3 +87,14 @@ public sealed partial class ModsuitCutDoAfterEvent : SimpleDoAfterEvent
     }
 }
 
+
+/// <summary>
+///     DoAfter for a screwdriver taken to the panel of a suit somebody is wearing.
+/// </summary>
+/// <remarks>
+///     The wire system has its own panel do-after, but its delay comes straight out of the
+///     prototype and there is nowhere to put the penalty a struggling wearer earns. This
+///     one exists to own that delay; the toggle itself is still the wire system's.
+/// </remarks>
+[Serializable, NetSerializable]
+public sealed partial class ModsuitPanelDoAfterEvent : SimpleDoAfterEvent;
