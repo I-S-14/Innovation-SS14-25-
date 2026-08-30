@@ -1,6 +1,6 @@
 // Licensed under IS14's EULA, see EULA.txt for more information.
 
-using Content.Client._IS14.Modular.Controls;
+using Content.Client._IS14.Controls;
 using Content.Client.UserInterface.Controls;
 using Content.Shared._IS14.Modular;
 using Content.Shared._IS14.Modular.Behaviours;
@@ -79,14 +79,14 @@ public sealed partial class ModularChassisWindow : FancyWindow
     private readonly SpriteSystem _sprites;
     private readonly Dictionary<string, Texture> _icons = new();
 
-    private readonly ChassisButton _deployButton;
-    private readonly ChassisButton _sealButton;
-    private readonly ChassisButton _pumpButton;
-    private readonly ChassisButton _valveButton;
-    private readonly ChassisButton _internalsButton;
-    private readonly ChassisButton _cellButton;
-    private readonly ChassisButton _insertCellButton;
-    private readonly ChassisButton _hopperButton;
+    private readonly IS14Button _deployButton;
+    private readonly IS14Button _sealButton;
+    private readonly IS14Button _pumpButton;
+    private readonly IS14Button _valveButton;
+    private readonly IS14Button _internalsButton;
+    private readonly IS14Button _cellButton;
+    private readonly IS14Button _insertCellButton;
+    private readonly IS14Button _hopperButton;
 
     /// <summary>Part whose menu is expanded below the doll, if any.</summary>
     private NetEntity? _selectedPart;
@@ -111,27 +111,27 @@ public sealed partial class ModularChassisWindow : FancyWindow
         _protos = IoCManager.Resolve<IPrototypeManager>();
         _sprites = _entMan.System<SpriteSystem>();
 
-        Backdrop.PanelOverride = new StyleBoxFlat(ChassisStyle.Backdrop);
-        HeaderPanel.PanelOverride = ChassisStyle.Box(ChassisStyle.PanelRaised, ChassisStyle.BorderBright);
-        DollPanel.PanelOverride = ChassisStyle.Box(ChassisStyle.Panel, ChassisStyle.Border);
-        DetailPanel.PanelOverride = ChassisStyle.Box(ChassisStyle.Panel, ChassisStyle.Border);
-        PowerPanel.PanelOverride = ChassisStyle.Box(ChassisStyle.Panel, ChassisStyle.Border);
-        ModulesPanel.PanelOverride = ChassisStyle.Box(ChassisStyle.Panel, ChassisStyle.Border);
-        TankPanel.PanelOverride = ChassisStyle.Box(ChassisStyle.Panel, ChassisStyle.Border);
+        Backdrop.PanelOverride = new StyleBoxFlat(IS14Palette.Backdrop);
+        HeaderPanel.PanelOverride = IS14Palette.Box(IS14Palette.PanelRaised, IS14Palette.BorderBright);
+        DollPanel.PanelOverride = IS14Palette.Box(IS14Palette.Panel, IS14Palette.Border);
+        DetailPanel.PanelOverride = IS14Palette.Box(IS14Palette.Panel, IS14Palette.Border);
+        PowerPanel.PanelOverride = IS14Palette.Box(IS14Palette.Panel, IS14Palette.Border);
+        ModulesPanel.PanelOverride = IS14Palette.Box(IS14Palette.Panel, IS14Palette.Border);
+        TankPanel.PanelOverride = IS14Palette.Box(IS14Palette.Panel, IS14Palette.Border);
 
         // Same two glyphs the per-part menu uses, so "fold this piece" and "fold
         // everything" read as the same verb at two scales.
-        _deployButton = ChassisButton.Make(
+        _deployButton = IS14Button.Make(
             UiIcon(IconDeploy),
             Loc.GetString("chassis-ui-deploy-all"),
-            ChassisStyle.Accent);
+            IS14Palette.Accent);
         _deployButton.OnPressed += _ => OnToggleDeploy?.Invoke();
         _deployButton.Margin = new Thickness(0, 0, 4, 0);
 
-        _sealButton = ChassisButton.Make(
+        _sealButton = IS14Button.Make(
             UiIcon(IconSeal),
             Loc.GetString("chassis-ui-activate"),
-            ChassisStyle.Good);
+            IS14Palette.Good);
         _sealButton.OnPressed += _ => OnToggleActive?.Invoke();
 
         ActionsContainer.AddChild(_deployButton);
@@ -139,10 +139,10 @@ public sealed partial class ModularChassisWindow : FancyWindow
 
         // The compressor and the valve are module settings underneath, but they belong on
         // the gauge: the pressure they act on is already there to read.
-        _pumpButton = ChassisButton.Make(
+        _pumpButton = IS14Button.Make(
             UiIcon(IconPower),
             Loc.GetString("chassis-config-pump"),
-            ChassisStyle.Accent,
+            IS14Palette.Accent,
             iconSize: 16f,
             padding: 4f);
 
@@ -150,10 +150,10 @@ public sealed partial class ModularChassisWindow : FancyWindow
         _pumpButton.Margin = new Thickness(0, 0, 0, 3);
         _pumpButton.OnPressed += _ => SendTankConfig(SharedModuleGasTankSystem.PumpKey, !(_state?.TankPumpEnabled ?? false));
 
-        _valveButton = ChassisButton.Make(
+        _valveButton = IS14Button.Make(
             UiIcon(IconDeploy),
             Loc.GetString("chassis-ui-tank-valve"),
-            ChassisStyle.Warn,
+            IS14Palette.Warn,
             iconSize: 16f,
             padding: 4f);
 
@@ -163,10 +163,10 @@ public sealed partial class ModularChassisWindow : FancyWindow
         // The station's own internals toggle is the alert in the corner of the HUD, and it
         // still works — but a suit that only becomes a breathing rig once every piece of it
         // is closed is not something a player finds by guessing.
-        _internalsButton = ChassisButton.Make(
+        _internalsButton = IS14Button.Make(
             UiIcon(IconInternals),
             Loc.GetString("chassis-ui-tank-internals"),
-            ChassisStyle.Good,
+            IS14Palette.Good,
             iconSize: 16f,
             padding: 4f);
 
@@ -178,20 +178,20 @@ public sealed partial class ModularChassisWindow : FancyWindow
         TankControls.AddChild(_pumpButton);
         TankControls.AddChild(_valveButton);
 
-        _cellButton = ChassisButton.Make(
+        _cellButton = IS14Button.Make(
             UiIcon(IconEject),
             Loc.GetString("chassis-ui-eject-cell"),
-            ChassisStyle.Warn,
+            IS14Palette.Warn,
             iconSize: 16f,
             padding: 4f);
 
         _cellButton.HorizontalExpand = true;
         _cellButton.OnPressed += _ => OnEjectCell?.Invoke();
 
-        _hopperButton = ChassisButton.Make(
+        _hopperButton = IS14Button.Make(
             UiIcon(IconPutAway),
             Loc.GetString("chassis-ui-hopper"),
-            ChassisStyle.Accent,
+            IS14Palette.Accent,
             iconSize: 16f,
             padding: 4f);
 
@@ -199,10 +199,10 @@ public sealed partial class ModularChassisWindow : FancyWindow
         _hopperButton.Margin = new Thickness(0, 3, 0, 0);
         _hopperButton.OnPressed += _ => OnOpenHopper?.Invoke();
 
-        _insertCellButton = ChassisButton.Make(
+        _insertCellButton = IS14Button.Make(
             UiIcon(IconPutAway),
             Loc.GetString("chassis-ui-insert-cell"),
-            ChassisStyle.Accent,
+            IS14Palette.Accent,
             iconSize: 16f,
             padding: 4f);
 
@@ -213,7 +213,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
         CoreControls.AddChild(_insertCellButton);
         CoreControls.AddChild(_hopperButton);
 
-        ComplexityIconBox.AddChild(ChassisStyle.Icon(UiIcon(IconComplexity), 16f, ChassisStyle.Muted));
+        ComplexityIconBox.AddChild(IS14Palette.Icon(UiIcon(IconComplexity), 16f, IS14Palette.Muted));
     }
 
     /// <summary>
@@ -262,30 +262,30 @@ public sealed partial class ModularChassisWindow : FancyWindow
         ChipsContainer.RemoveAllChildren();
 
         var (stateLoc, stateColor) = state.Active
-            ? ("chassis-ui-state-sealed", ChassisStyle.Good)
+            ? ("chassis-ui-state-sealed", IS14Palette.Good)
             : state.AnyDeployed
-                ? ("chassis-ui-state-deployed", ChassisStyle.Accent)
-                : ("chassis-ui-state-stowed", ChassisStyle.Muted);
+                ? ("chassis-ui-state-deployed", IS14Palette.Accent)
+                : ("chassis-ui-state-stowed", IS14Palette.Muted);
 
-        ChipsContainer.AddChild(ChassisStyle.Chip(Loc.GetString(stateLoc), stateColor));
+        ChipsContainer.AddChild(IS14Palette.Chip(Loc.GetString(stateLoc), stateColor));
 
         if (state.Malfunctioning)
-            ChipsContainer.AddChild(ChassisStyle.Chip(Loc.GetString("chassis-ui-malfunctioning"), ChassisStyle.Bad));
+            ChipsContainer.AddChild(IS14Palette.Chip(Loc.GetString("chassis-ui-malfunctioning"), IS14Palette.Bad));
 
         if (state.Electrified)
-            ChipsContainer.AddChild(ChassisStyle.Chip(Loc.GetString("chassis-ui-electrified"), ChassisStyle.Bad));
+            ChipsContainer.AddChild(IS14Palette.Chip(Loc.GetString("chassis-ui-electrified"), IS14Palette.Bad));
 
         if (state.PowerCut)
-            ChipsContainer.AddChild(ChassisStyle.Chip(Loc.GetString("chassis-ui-power-cut"), ChassisStyle.Bad));
+            ChipsContainer.AddChild(IS14Palette.Chip(Loc.GetString("chassis-ui-power-cut"), IS14Palette.Bad));
 
         if (state.Overloaded)
-            ChipsContainer.AddChild(ChassisStyle.Chip(Loc.GetString("chassis-ui-overloaded"), ChassisStyle.Warn));
+            ChipsContainer.AddChild(IS14Palette.Chip(Loc.GetString("chassis-ui-overloaded"), IS14Palette.Warn));
 
         if (state.InterfaceBroken)
-            ChipsContainer.AddChild(ChassisStyle.Chip(Loc.GetString("chassis-ui-interface-broken"), ChassisStyle.Bad));
+            ChipsContainer.AddChild(IS14Palette.Chip(Loc.GetString("chassis-ui-interface-broken"), IS14Palette.Bad));
 
         if (state.PanelOpen)
-            ChipsContainer.AddChild(ChassisStyle.Chip(Loc.GetString("chassis-ui-panel-open"), ChassisStyle.Warn));
+            ChipsContainer.AddChild(IS14Palette.Chip(Loc.GetString("chassis-ui-panel-open"), IS14Palette.Warn));
     }
 
     #endregion
@@ -306,9 +306,9 @@ public sealed partial class ModularChassisWindow : FancyWindow
             ChargePercentLabel.Text = $"{(int) MathF.Round(fraction * 100f)}%";
             ChargePercentLabel.FontColorOverride = fraction switch
             {
-                <= 0.15f => ChassisStyle.Bad,
-                <= 0.4f => ChassisStyle.Warn,
-                _ => ChassisStyle.Good,
+                <= 0.15f => IS14Palette.Bad,
+                <= 0.4f => IS14Palette.Warn,
+                _ => IS14Palette.Good,
             };
 
             ChargeLabel.Text = Loc.GetString(
@@ -320,12 +320,12 @@ public sealed partial class ModularChassisWindow : FancyWindow
         else
         {
             ChargePercentLabel.Text = "—";
-            ChargePercentLabel.FontColorOverride = ChassisStyle.Bad;
+            ChargePercentLabel.FontColorOverride = IS14Palette.Bad;
             ChargeLabel.Text = NoChargeReason(state);
         }
 
         CoreLabel.Text = state.CoreName ?? Loc.GetString("chassis-ui-no-core");
-        CoreLabel.FontColorOverride = state.CoreName == null ? ChassisStyle.Bad : ChassisStyle.Muted;
+        CoreLabel.FontColorOverride = state.CoreName == null ? IS14Palette.Bad : IS14Palette.Muted;
 
         UpdateCore(state);
         UpdateTank(state);
@@ -334,8 +334,8 @@ public sealed partial class ModularChassisWindow : FancyWindow
         Complexity.Max = state.MaxComplexity;
         ComplexityLabel.Text = $"{state.UsedComplexity} / {state.MaxComplexity}";
         ComplexityLabel.FontColorOverride = state.UsedComplexity >= state.MaxComplexity
-            ? ChassisStyle.Warn
-            : ChassisStyle.Muted;
+            ? IS14Palette.Warn
+            : IS14Palette.Muted;
     }
 
     /// <summary>
@@ -413,7 +413,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
         if (!state.TankPresent)
         {
             TankPressureLabel.Text = Loc.GetString("chassis-ui-no-tank");
-            TankPressureLabel.FontColorOverride = ChassisStyle.Muted;
+            TankPressureLabel.FontColorOverride = IS14Palette.Muted;
             TankTemperatureLabel.Text = string.Empty;
             TankContentsLabel.Text = string.Empty;
             return;
@@ -430,16 +430,16 @@ public sealed partial class ModularChassisWindow : FancyWindow
                 "chassis-ui-tank-temperature",
                 ("celsius", (int) MathF.Round(state.TankTemperature - 273.15f)));
 
-        TankTemperatureLabel.FontColorOverride = ChassisStyle.Muted;
+        TankTemperatureLabel.FontColorOverride = IS14Palette.Muted;
 
         UpdateTankGases(state);
 
         // Whether the suit is holding pressure at all, as a tick or a cross. It is the
         // precondition for both the compressor and internals, so it gets its own line
         // rather than being explained again inside every message that depends on it.
-        var sealColor = state.TankCanPump ? ChassisStyle.Good : ChassisStyle.Bad;
+        var sealColor = state.TankCanPump ? IS14Palette.Good : IS14Palette.Bad;
 
-        TankSealRow.AddChild(ChassisStyle.Icon(
+        TankSealRow.AddChild(IS14Palette.Icon(
             UiIcon(state.TankCanPump ? IconCheck : IconCross),
             14f,
             sealColor));
@@ -458,11 +458,11 @@ public sealed partial class ModularChassisWindow : FancyWindow
             ? Loc.GetString("chassis-ui-tank-idle")
             : state.TankContents;
 
-        TankContentsLabel.FontColorOverride = state.TankPumping ? ChassisStyle.Accent : ChassisStyle.Muted;
+        TankContentsLabel.FontColorOverride = state.TankPumping ? IS14Palette.Accent : IS14Palette.Muted;
 
         _pumpButton.Selected = state.TankPumping;
         _pumpButton.Disabled = !state.TankCanPump;
-        _pumpButton.Accent = state.TankCanPump ? ChassisStyle.Accent : ChassisStyle.Muted;
+        _pumpButton.Accent = state.TankCanPump ? IS14Palette.Accent : IS14Palette.Muted;
         _pumpButton.ToolTip = Loc.GetString(state.TankCanPump
             ? "chassis-ui-tank-pump-tooltip"
             : "chassis-ui-tank-unsealed");
@@ -480,7 +480,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
 
         _internalsButton.Selected = state.TankInternalsOn;
         _internalsButton.Disabled = !canBreathe && !state.TankInternalsOn;
-        _internalsButton.Accent = canBreathe || state.TankInternalsOn ? ChassisStyle.Good : ChassisStyle.Muted;
+        _internalsButton.Accent = canBreathe || state.TankInternalsOn ? IS14Palette.Good : IS14Palette.Muted;
 
         _internalsButton.SetContent(
             UiIcon(IconInternals),
@@ -506,7 +506,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
             {
                 Text = Loc.GetString("chassis-ui-tank-empty"),
                 StyleClasses = { "LabelSubText" },
-                FontColorOverride = ChassisStyle.Muted,
+                FontColorOverride = IS14Palette.Muted,
             });
 
             return;
@@ -544,7 +544,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
             {
                 Text = Loc.GetString("chassis-ui-tank-share", ("percent", (int) MathF.Round(entry.Fraction * 100f))),
                 StyleClasses = { "LabelSubText" },
-                FontColorOverride = ChassisStyle.Muted,
+                FontColorOverride = IS14Palette.Muted,
             });
 
             TankGasContainer.AddChild(row);
@@ -557,7 +557,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
         {
             Text = Loc.GetString("chassis-ui-tank-rest", ("percent", (int) MathF.Round(rest * 100f))),
             StyleClasses = { "LabelSubText" },
-            FontColorOverride = ChassisStyle.Muted,
+            FontColorOverride = IS14Palette.Muted,
         });
     }
 
@@ -574,11 +574,11 @@ public sealed partial class ModularChassisWindow : FancyWindow
             || string.IsNullOrEmpty(proto.Color)
             || Color.TryFromHex("#" + proto.Color) is not { } color)
         {
-            return ChassisStyle.Text;
+            return IS14Palette.Text;
         }
 
         // Gas colours are picked to show up against a dark tile, not against panel grey.
-        return Color.InterpolateBetween(color, ChassisStyle.Text, 0.35f);
+        return Color.InterpolateBetween(color, IS14Palette.Text, 0.35f);
     }
 
     #endregion
@@ -647,7 +647,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
     {
         var color = PartColor(part);
 
-        var button = new ChassisButton
+        var button = new IS14Button
         {
             Accent = color,
             Selected = _selectedPart == part.Part && !_hardwareSelected,
@@ -673,7 +673,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
         {
             Text = Loc.GetString(SlotLocId(part.Slot)),
             StyleClasses = { "LabelSubText" },
-            FontColorOverride = ChassisStyle.Text,
+            FontColorOverride = IS14Palette.Text,
             HorizontalAlignment = HAlignment.Center,
         });
 
@@ -700,7 +700,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
     {
         var panel = new PanelContainer
         {
-            PanelOverride = ChassisStyle.Box(ChassisStyle.Backdrop, ChassisStyle.Border, 1f, 4f),
+            PanelOverride = IS14Palette.Box(IS14Palette.Backdrop, IS14Palette.Border, 1f, 4f),
             MinSize = new Vector2(80, 88),
         };
 
@@ -708,7 +708,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
         {
             Text = Loc.GetString(SlotLocId(slot)),
             StyleClasses = { "LabelSubText" },
-            FontColorOverride = ChassisStyle.Border,
+            FontColorOverride = IS14Palette.Border,
             HorizontalAlignment = HAlignment.Center,
             VerticalAlignment = VAlignment.Center,
         });
@@ -722,13 +722,13 @@ public sealed partial class ModularChassisWindow : FancyWindow
     private Control HardwareTile(ModularChassisUiState state)
     {
         var color = state.CoreName == null || state.PowerCut
-            ? ChassisStyle.Bad
+            ? IS14Palette.Bad
             : state.PanelOpen || state.InterfaceBroken || state.Overloaded
                 || state.DeployLinkCut || state.SealLinkCut
-                ? ChassisStyle.Warn
-                : ChassisStyle.Accent;
+                ? IS14Palette.Warn
+                : IS14Palette.Accent;
 
-        var button = new ChassisButton
+        var button = new IS14Button
         {
             Accent = color,
             Selected = _hardwareSelected,
@@ -761,7 +761,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
                 Texture = Icon("/Textures/_IS14/Objects/Modsuit/construction.rsi", "core-standard"),
                 Stretch = TextureRect.StretchMode.KeepCentered,
                 MinSize = new Vector2(40, 40),
-                ModulateSelfOverride = ChassisStyle.Bad,
+                ModulateSelfOverride = IS14Palette.Bad,
             });
         }
 
@@ -769,7 +769,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
         {
             Text = Loc.GetString("chassis-ui-hardware"),
             StyleClasses = { "LabelSubText" },
-            FontColorOverride = ChassisStyle.Text,
+            FontColorOverride = IS14Palette.Text,
             HorizontalAlignment = HAlignment.Center,
         });
 
@@ -798,11 +798,11 @@ public sealed partial class ModularChassisWindow : FancyWindow
     /// <summary>
     ///     Condition under the tile, so the doll shows wear without being opened.
     /// </summary>
-    private static Control IntegrityStrip(ChassisPartUiEntry part) => new IntegrityBar
+    private static Control IntegrityStrip(ChassisPartUiEntry part) => new ThresholdBar
     {
         Fraction = Fraction(part),
-        ModuleThreshold = part.ModuleThreshold,
-        UnsealThreshold = part.UnsealThreshold,
+        WarnThreshold = part.ModuleThreshold,
+        LowThreshold = part.UnsealThreshold,
         SetSize = new Vector2(48, 4),
         Margin = new Thickness(0, 3, 0, 0),
         HorizontalAlignment = HAlignment.Center,
@@ -813,14 +813,14 @@ public sealed partial class ModularChassisWindow : FancyWindow
     ///     stopped carrying its modules is the state a player most needs to notice.
     /// </summary>
     private static Color PartColor(ChassisPartUiEntry part) => part.Ruptured
-        ? ChassisStyle.Bad
+        ? IS14Palette.Bad
         : part.Broken
-            ? ChassisStyle.Warn
+            ? IS14Palette.Warn
             : part.Sealed
-                ? ChassisStyle.Good
+                ? IS14Palette.Good
                 : part.Deployed
-                    ? ChassisStyle.Accent
-                    : ChassisStyle.Muted;
+                    ? IS14Palette.Accent
+                    : IS14Palette.Muted;
 
     private static float Fraction(ChassisPartUiEntry part) =>
         part.MaxIntegrity > 0f ? Math.Clamp(part.Integrity / part.MaxIntegrity, 0f, 1f) : 1f;
@@ -854,21 +854,21 @@ public sealed partial class ModularChassisWindow : FancyWindow
 
     private void BuildPartDetail(ChassisPartUiEntry part, ModularChassisUiState state)
     {
-        DetailContainer.AddChild(ChassisStyle.Heading(part.Name));
+        DetailContainer.AddChild(IS14Palette.Heading(part.Name));
 
-        DetailContainer.AddChild(ChassisStyle.Sub(Loc.GetString(PartStateLocId(part)), PartColor(part)));
-        DetailContainer.AddChild(ChassisStyle.Rule());
+        DetailContainer.AddChild(IS14Palette.Sub(Loc.GetString(PartStateLocId(part)), PartColor(part)));
+        DetailContainer.AddChild(IS14Palette.Rule());
 
         BuildIntegrityBlock(part);
-        DetailContainer.AddChild(ChassisStyle.Rule());
+        DetailContainer.AddChild(IS14Palette.Rule());
 
         var id = part.Part;
 
         // A sealed piece is welded shut; unseal it before anything folds away.
-        var deploy = ChassisButton.Make(
+        var deploy = IS14Button.Make(
             UiIcon(part.Sealed ? IconNo : part.Deployed ? IconRetract : IconDeploy),
             Loc.GetString(part.Deployed ? "chassis-ui-retract" : "chassis-ui-deploy"),
-            part.Deployed ? ChassisStyle.Warn : ChassisStyle.Accent);
+            part.Deployed ? IS14Palette.Warn : IS14Palette.Accent);
 
         deploy.HorizontalExpand = true;
         deploy.Margin = new Thickness(0, 0, 4, 0);
@@ -877,10 +877,10 @@ public sealed partial class ModularChassisWindow : FancyWindow
 
         var canSeal = part.Deployed && (part.Sealed || !part.Ruptured);
 
-        var seal = ChassisButton.Make(
+        var seal = IS14Button.Make(
             UiIcon(!canSeal ? IconNo : part.Sealed ? IconUnseal : IconSeal),
             Loc.GetString(part.Sealed ? "chassis-ui-unseal" : "chassis-ui-seal"),
-            part.Sealed ? ChassisStyle.Good : ChassisStyle.Accent);
+            part.Sealed ? IS14Palette.Good : IS14Palette.Accent);
 
         seal.HorizontalExpand = true;
         seal.Selected = part.Sealed;
@@ -900,7 +900,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
         DetailContainer.AddChild(actions);
 
         if (part.Deployed && state.MaxCharge <= 0f)
-            DetailContainer.AddChild(ChassisStyle.Sub(NoChargeReason(state), ChassisStyle.Bad));
+            DetailContainer.AddChild(IS14Palette.Sub(NoChargeReason(state), IS14Palette.Bad));
     }
 
     /// <summary>
@@ -910,11 +910,11 @@ public sealed partial class ModularChassisWindow : FancyWindow
     private void BuildIntegrityBlock(ChassisPartUiEntry part)
     {
         var fraction = Fraction(part);
-        var bar = new IntegrityBar
+        var bar = new ThresholdBar
         {
             Fraction = fraction,
-            ModuleThreshold = part.ModuleThreshold,
-            UnsealThreshold = part.UnsealThreshold,
+            WarnThreshold = part.ModuleThreshold,
+            LowThreshold = part.UnsealThreshold,
             MinHeight = 8,
             HorizontalExpand = true,
         };
@@ -925,7 +925,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
             HorizontalExpand = true,
         };
 
-        var glyph = ChassisStyle.Icon(UiIcon(part.Broken ? IconNo : IconShield), 16f, bar.FillColor);
+        var glyph = IS14Palette.Icon(UiIcon(part.Broken ? IconNo : IconShield), 16f, bar.FillColor);
         glyph.Margin = new Thickness(0, 0, 6, 0);
         header.AddChild(glyph);
 
@@ -963,7 +963,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
             Margin = new Thickness(0, 5, 0, 0),
         };
 
-        var hammer = ChassisStyle.Icon(UiIcon(IconHammer), 16f, ChassisStyle.Accent);
+        var hammer = IS14Palette.Icon(UiIcon(IconHammer), 16f, IS14Palette.Accent);
         hammer.Margin = new Thickness(0, 0, 6, 0);
         fix.AddChild(hammer);
 
@@ -974,7 +974,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
                 : "chassis-ui-fault-structural"),
             HorizontalExpand = true,
             StyleClasses = { "LabelSubText" },
-            FontColorOverride = ChassisStyle.Accent,
+            FontColorOverride = IS14Palette.Accent,
         });
 
         DetailContainer.AddChild(fix);
@@ -986,7 +986,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
     /// </summary>
     private Control StatusRow(string labelLoc, bool ok)
     {
-        var color = ok ? ChassisStyle.Good : ChassisStyle.Bad;
+        var color = ok ? IS14Palette.Good : IS14Palette.Bad;
 
         var row = new BoxContainer
         {
@@ -995,7 +995,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
             Margin = new Thickness(0, 2, 0, 0),
         };
 
-        var glyph = ChassisStyle.Icon(UiIcon(ok ? IconCheck : IconCross), 14f, color);
+        var glyph = IS14Palette.Icon(UiIcon(ok ? IconCheck : IconCross), 14f, color);
         glyph.Margin = new Thickness(0, 0, 6, 0);
         row.AddChild(glyph);
 
@@ -1012,14 +1012,14 @@ public sealed partial class ModularChassisWindow : FancyWindow
 
     private void BuildHardwareDetail(ModularChassisUiState state)
     {
-        DetailContainer.AddChild(ChassisStyle.Heading(Loc.GetString("chassis-ui-hardware")));
-        DetailContainer.AddChild(ChassisStyle.Rule());
+        DetailContainer.AddChild(IS14Palette.Heading(Loc.GetString("chassis-ui-hardware")));
+        DetailContainer.AddChild(IS14Palette.Rule());
 
         DetailContainer.AddChild(HardwareRow(
             UiIcon(IconZap),
             "chassis-ui-hw-core",
             state.CoreName ?? Loc.GetString("chassis-ui-no-core"),
-            state.CoreName == null ? ChassisStyle.Bad : ChassisStyle.Good));
+            state.CoreName == null ? IS14Palette.Bad : IS14Palette.Good));
 
         if (state.CoreTakesCell)
         {
@@ -1027,14 +1027,14 @@ public sealed partial class ModularChassisWindow : FancyWindow
                 UiIcon(state.CoreCellName != null ? IconCheck : IconCross),
                 "chassis-ui-hw-cell",
                 state.CoreCellName ?? Loc.GetString("chassis-ui-no-cell"),
-                state.CoreCellName == null ? ChassisStyle.Bad : ChassisStyle.Good));
+                state.CoreCellName == null ? IS14Palette.Bad : IS14Palette.Good));
         }
 
         DetailContainer.AddChild(HardwareRow(
             UiIcon(IconPanel),
             "chassis-ui-hw-panel",
             Loc.GetString(state.PanelOpen ? "chassis-ui-panel-open" : "chassis-ui-panel-shut"),
-            state.PanelOpen ? ChassisStyle.Warn : ChassisStyle.Muted));
+            state.PanelOpen ? IS14Palette.Warn : IS14Palette.Muted));
 
         if (state.Locked is { } locked)
         {
@@ -1046,7 +1046,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
                     : locked
                         ? "chassis-ui-lock-engaged"
                         : "chassis-ui-lock-open"),
-                state.AccessWiped ? ChassisStyle.Bad : locked ? ChassisStyle.Good : ChassisStyle.Warn));
+                state.AccessWiped ? IS14Palette.Bad : locked ? IS14Palette.Good : IS14Palette.Warn));
         }
 
         // The DNA lock's own row. It used to have none, so pressing its button changed
@@ -1061,14 +1061,14 @@ public sealed partial class ModularChassisWindow : FancyWindow
                     : state.DnaLockImprinted
                         ? "chassis-ui-dna-imprinted"
                         : "chassis-ui-dna-blank"),
-                state.DnaLockBroken ? ChassisStyle.Bad : state.DnaLockImprinted ? ChassisStyle.Good : ChassisStyle.Warn));
+                state.DnaLockBroken ? IS14Palette.Bad : state.DnaLockImprinted ? IS14Palette.Good : IS14Palette.Warn));
         }
 
         DetailContainer.AddChild(HardwareRow(
             UiIcon(IconPower),
             "chassis-ui-hw-draw",
             Loc.GetString("chassis-ui-draw", ("draw", Num(state.Draw))),
-            ChassisStyle.Muted));
+            IS14Palette.Muted));
 
         BuildFaultList(state);
     }
@@ -1084,8 +1084,8 @@ public sealed partial class ModularChassisWindow : FancyWindow
     /// </summary>
     private void BuildFaultList(ModularChassisUiState state)
     {
-        DetailContainer.AddChild(ChassisStyle.Rule());
-        DetailContainer.AddChild(ChassisStyle.Heading(Loc.GetString("chassis-ui-faults")));
+        DetailContainer.AddChild(IS14Palette.Rule());
+        DetailContainer.AddChild(IS14Palette.Heading(Loc.GetString("chassis-ui-faults")));
 
         var any = false;
 
@@ -1098,31 +1098,31 @@ public sealed partial class ModularChassisWindow : FancyWindow
         // Ordered by what a wearer should deal with first: no power at all, then the
         // circuit, then the two links, then the readout, then the shell being live.
         if (state.PowerCut)
-            Fault(IconCross, "chassis-ui-fault-power-cut", ChassisStyle.Bad);
+            Fault(IconCross, "chassis-ui-fault-power-cut", IS14Palette.Bad);
 
         if (state.Overloaded)
-            Fault(IconZap, "chassis-ui-fault-overloaded", ChassisStyle.Warn);
+            Fault(IconZap, "chassis-ui-fault-overloaded", IS14Palette.Warn);
 
         if (state.Malfunctioning)
-            Fault(IconZap, "chassis-ui-fault-malfunctioning", ChassisStyle.Bad);
+            Fault(IconZap, "chassis-ui-fault-malfunctioning", IS14Palette.Bad);
 
         if (state.DeployLinkCut)
-            Fault(IconCross, "chassis-ui-fault-link-deploy", ChassisStyle.Bad);
+            Fault(IconCross, "chassis-ui-fault-link-deploy", IS14Palette.Bad);
 
         if (state.SealLinkCut)
-            Fault(IconCross, "chassis-ui-fault-link-seal", ChassisStyle.Bad);
+            Fault(IconCross, "chassis-ui-fault-link-seal", IS14Palette.Bad);
 
         if (state.InterfaceBroken)
-            Fault(IconCross, "chassis-ui-fault-interface", ChassisStyle.Bad);
+            Fault(IconCross, "chassis-ui-fault-interface", IS14Palette.Bad);
 
         if (state.Electrified)
-            Fault(IconZap, "chassis-ui-fault-electrified", ChassisStyle.Bad);
+            Fault(IconZap, "chassis-ui-fault-electrified", IS14Palette.Bad);
 
         if (state.DnaLockBroken)
-            Fault(IconCross, "chassis-ui-fault-dna-broken", ChassisStyle.Bad);
+            Fault(IconCross, "chassis-ui-fault-dna-broken", IS14Palette.Bad);
 
         if (!any)
-            DetailContainer.AddChild(ChassisStyle.Sub(Loc.GetString("chassis-ui-faults-none")));
+            DetailContainer.AddChild(IS14Palette.Sub(Loc.GetString("chassis-ui-faults-none")));
     }
 
     /// <summary>
@@ -1138,7 +1138,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
             Margin = new Thickness(0, 2),
         };
 
-        var glyph = ChassisStyle.Icon(icon, 16f, color);
+        var glyph = IS14Palette.Icon(icon, 16f, color);
         glyph.Margin = new Thickness(0, 0, 6, 0);
         row.AddChild(glyph);
 
@@ -1162,7 +1162,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
             Margin = new Thickness(0, 2),
         };
 
-        var glyph = ChassisStyle.Icon(icon, 16f, ChassisStyle.Muted);
+        var glyph = IS14Palette.Icon(icon, 16f, IS14Palette.Muted);
         glyph.Margin = new Thickness(0, 0, 6, 0);
         row.AddChild(glyph);
 
@@ -1200,7 +1200,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
             {
                 Text = Loc.GetString("chassis-ui-no-modules"),
                 StyleClasses = { "LabelSubText" },
-                FontColorOverride = ChassisStyle.Muted,
+                FontColorOverride = IS14Palette.Muted,
                 Margin = new Thickness(4),
             });
 
@@ -1221,9 +1221,9 @@ public sealed partial class ModularChassisWindow : FancyWindow
 
         var card = new PanelContainer
         {
-            PanelOverride = ChassisStyle.Box(
-                live ? ChassisStyle.PanelRaised : ChassisStyle.Backdrop,
-                live ? kindColor.WithAlpha(0.7f) : ChassisStyle.Border),
+            PanelOverride = IS14Palette.Box(
+                live ? IS14Palette.PanelRaised : IS14Palette.Backdrop,
+                live ? kindColor.WithAlpha(0.7f) : IS14Palette.Border),
             Margin = new Thickness(0, 0, 0, 4),
         };
 
@@ -1278,7 +1278,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
             Text = module.Name,
             HorizontalExpand = true,
             ClipText = true,
-            FontColorOverride = ChassisStyle.Text,
+            FontColorOverride = IS14Palette.Text,
         });
 
         text.AddChild(header);
@@ -1299,7 +1299,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
 
         // The whole text block is the expander. Making the card itself the button would
         // swallow clicks meant for the switch sitting inside it.
-        var expander = new ChassisButton
+        var expander = new IS14Button
         {
             Accent = kindColor,
             Selected = expanded,
@@ -1331,7 +1331,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
                 HorizontalExpand = true,
                 Margin = new Thickness(0, 4, 0, 0),
                 StyleClasses = { "LabelSubText" },
-                Modulate = ChassisStyle.Muted,
+                Modulate = IS14Palette.Muted,
             };
 
             prose.SetMessage(module.Description);
@@ -1367,7 +1367,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
 
         var iconChip = new PanelContainer
         {
-            PanelOverride = ChassisStyle.Box(ChassisStyle.Panel, ChassisStyle.Border, 1f, 2f),
+            PanelOverride = IS14Palette.Box(IS14Palette.Panel, IS14Palette.Border, 1f, 2f),
         };
 
         iconChip.AddChild(new SpriteView(module.Module, _entMan)
@@ -1402,10 +1402,10 @@ public sealed partial class ModularChassisWindow : FancyWindow
         // something they could already see and cost a whole row of the card to say it.
         var running = module.BlockReason == ModuleBlockReason.None;
 
-        var status = ChassisStyle.Icon(
+        var status = IS14Palette.Icon(
             UiIcon(running ? IconCheck : IconCross),
             14f,
-            running ? ChassisStyle.Good : ChassisStyle.Warn);
+            running ? IS14Palette.Good : IS14Palette.Warn);
 
         status.Margin = new Thickness(3, 0, 0, 0);
         status.ToolTip = Loc.GetString(running ? "chassis-ui-module-ready" : BlockLocId(module.BlockReason));
@@ -1488,10 +1488,10 @@ public sealed partial class ModularChassisWindow : FancyWindow
         {
             var blocked = module.BlockReason != ModuleBlockReason.None;
 
-            var button = ChassisButton.Make(
+            var button = IS14Button.Make(
                 UiIcon(blocked ? IconNo : ActionIcon(module, selected)),
                 ActionText(module, selected),
-                live ? ChassisStyle.Good : kindColor);
+                live ? IS14Palette.Good : kindColor);
 
             button.Selected = live;
             button.MinWidth = 116;
@@ -1507,10 +1507,10 @@ public sealed partial class ModularChassisWindow : FancyWindow
 
         var canEject = state.PanelOpen;
 
-        var eject = ChassisButton.Make(
+        var eject = IS14Button.Make(
             UiIcon(canEject ? IconEject : IconNo),
             Loc.GetString("chassis-ui-eject"),
-            canEject ? ChassisStyle.Warn : ChassisStyle.Muted,
+            canEject ? IS14Palette.Warn : IS14Palette.Muted,
             iconSize: 16f,
             padding: 4f);
 
@@ -1552,10 +1552,10 @@ public sealed partial class ModularChassisWindow : FancyWindow
             {
                 var on = entry.Value is true;
 
-                var button = ChassisButton.Make(
+                var button = IS14Button.Make(
                     UiIcon(on ? IconCheck : IconCross),
                     entry.Label,
-                    on ? ChassisStyle.Good : ChassisStyle.Muted,
+                    on ? IS14Palette.Good : IS14Palette.Muted,
                     iconSize: 14f,
                     padding: 3f);
 
@@ -1569,7 +1569,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
 
             case ModuleConfigKind.Button:
             {
-                var button = ChassisButton.Make(UiIcon(IconZap), entry.Label, ChassisStyle.Accent,
+                var button = IS14Button.Make(UiIcon(IconZap), entry.Label, IS14Palette.Accent,
                     iconSize: 14f, padding: 3f);
 
                 button.HorizontalExpand = true;
@@ -1599,7 +1599,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
                 var readout = new Label
                 {
                     Text = FormatConfigNumber(value),
-                    FontColorOverride = ChassisStyle.Accent,
+                    FontColorOverride = IS14Palette.Accent,
                 };
 
                 var header = new BoxContainer
@@ -1608,7 +1608,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
                     HorizontalExpand = true,
                 };
 
-                header.AddChild(new Label { Text = entry.Label, FontColorOverride = ChassisStyle.Muted });
+                header.AddChild(new Label { Text = entry.Label, FontColorOverride = IS14Palette.Muted });
                 header.AddChild(new Control { HorizontalExpand = true });
                 header.AddChild(readout);
 
@@ -1646,8 +1646,8 @@ public sealed partial class ModularChassisWindow : FancyWindow
                 {
                     var picked = entry.Value as string == choice;
 
-                    var button = ChassisButton.Make(null, choice,
-                        picked ? ChassisStyle.Good : ChassisStyle.Muted, padding: 3f);
+                    var button = IS14Button.Make(null, choice,
+                        picked ? IS14Palette.Good : IS14Palette.Muted, padding: 3f);
 
                     button.Selected = picked;
                     button.Margin = new Thickness(0, 0, 3, 0);
@@ -1673,43 +1673,43 @@ public sealed partial class ModularChassisWindow : FancyWindow
             Margin = new Thickness(0, 3, 0, 0),
         };
 
-        row.AddChild(ChassisStyle.IconChip(
+        row.AddChild(IS14Palette.IconChip(
             UiIcon(IconComplexity),
             module.Complexity.ToString(CultureInfo.InvariantCulture),
-            ChassisStyle.Muted,
+            IS14Palette.Muted,
             Loc.GetString("chassis-ui-complexity")));
 
         if (module.IdleDraw > 0f)
         {
-            row.AddChild(ChassisStyle.IconChip(
+            row.AddChild(IS14Palette.IconChip(
                 UiIcon(IconBolt),
                 Loc.GetString("chassis-ui-module-idle", ("value", Num(module.IdleDraw))),
-                ChassisStyle.Muted,
+                IS14Palette.Muted,
                 Loc.GetString("chassis-ui-module-idle-tooltip")));
         }
 
         if (module.ActiveDraw > 0f)
         {
-            row.AddChild(ChassisStyle.IconChip(
+            row.AddChild(IS14Palette.IconChip(
                 UiIcon(IconBolt),
                 Loc.GetString("chassis-ui-module-active", ("value", Num(module.ActiveDraw))),
-                ChassisStyle.Warn,
+                IS14Palette.Warn,
                 Loc.GetString("chassis-ui-module-active-tooltip")));
         }
 
         if (module.UseCost > 0f)
         {
-            row.AddChild(ChassisStyle.IconChip(
+            row.AddChild(IS14Palette.IconChip(
                 UiIcon(IconBolt),
                 Loc.GetString("chassis-ui-module-use", ("value", Num(module.UseCost))),
-                ChassisStyle.Warn,
+                IS14Palette.Warn,
                 Loc.GetString("chassis-ui-module-use-tooltip")));
         }
 
         // What kind of module this is sits at the far end of the numbers rather than
         // beside the name: the name is what you look for, the kind is what you confirm.
         row.AddChild(new Control { HorizontalExpand = true });
-        row.AddChild(ChassisStyle.Chip(Loc.GetString(KindLocId(module.Kind)), kindColor));
+        row.AddChild(IS14Palette.Chip(Loc.GetString(KindLocId(module.Kind)), kindColor));
 
         return row;
     }
@@ -1725,7 +1725,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
             Loc.GetString(state.AnyDeployed ? "chassis-ui-retract-all" : "chassis-ui-deploy-all"));
 
         _deployButton.Disabled = state.Active;
-        _deployButton.Accent = state.AnyDeployed ? ChassisStyle.Warn : ChassisStyle.Accent;
+        _deployButton.Accent = state.AnyDeployed ? IS14Palette.Warn : IS14Palette.Accent;
 
         _sealButton.SetContent(
             UiIcon(!state.AnyDeployed ? IconNo : state.Active ? IconUnseal : IconSeal),
@@ -1823,10 +1823,10 @@ public sealed partial class ModularChassisWindow : FancyWindow
 
     private static Color KindColor(ModuleKind kind) => kind switch
     {
-        ModuleKind.Toggleable => ChassisStyle.Accent,
-        ModuleKind.Usable => ChassisStyle.Warn,
+        ModuleKind.Toggleable => IS14Palette.Accent,
+        ModuleKind.Usable => IS14Palette.Warn,
         ModuleKind.Active => Color.FromHex("#E5883F"),
-        _ => ChassisStyle.Muted,
+        _ => IS14Palette.Muted,
     };
 
     private static string BlockLocId(ModuleBlockReason reason) => reason switch

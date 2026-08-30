@@ -6,15 +6,17 @@ using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
 using Robust.Shared.Utility;
 
-namespace Content.Client._IS14.Modular.Controls;
+namespace Content.Client._IS14.Controls;
 
 /// <summary>
-///     The chassis interface paints itself rather than borrowing the station's window
-///     styling: a suit readout should look like hardware bolted to your back, not like
-///     another cargo terminal. Everything here is plain style boxes, so no upstream
-///     stylesheet has to be touched.
+///     The shared look for IS14 interfaces that should read as hardware rather than as
+///     station software: dark ground, thin bright borders, one accent.
+///
+///     Everything here is plain style boxes built at runtime, so no upstream stylesheet
+///     has to be touched. Domains with their own identity — the Gosplan consoles, for
+///     one — keep their own palette and pass its colours into these controls instead.
 /// </summary>
-public static class ChassisStyle
+public static class IS14Palette
 {
     public static readonly Color Backdrop = Color.FromHex("#0E1218");
     public static readonly Color Panel = Color.FromHex("#161C24");
@@ -86,7 +88,7 @@ public static class ChassisStyle
 
     /// <summary>
     ///     A pill whose unit is a glyph rather than a word. Watts and complexity get
-    ///     printed on every module card in the bay, and spelling them out turns the card
+    ///     printed on every card in a dense list, and spelling them out turns the card
     ///     into a sentence; the symbol says the same thing in a quarter of the width.
     /// </summary>
     public static Control IconChip(Texture? icon, string text, Color color, string? tooltip = null)

@@ -4,10 +4,10 @@ using System.Numerics;
 using Robust.Client.Graphics;
 using Robust.Client.UserInterface;
 
-namespace Content.Client._IS14.Modular.Controls;
+namespace Content.Client._IS14.Controls;
 
 /// <summary>
-///     The suit's bottle, drawn as the dial it would actually be.
+///     A pressure vessel drawn as the dial it would actually be.
 ///
 ///     A bar would read the same as the charge meter next to it, and the two are not the
 ///     same kind of number — charge drains steadily, pressure jumps when the compressor
@@ -19,7 +19,7 @@ public sealed class PressureGauge : Control
     /// <summary>Fill fraction, 0 to 1.</summary>
     public float Fraction { get; set; }
 
-    /// <summary>No tank installed at all — the dial reads dead rather than empty.</summary>
+    /// <summary>Nothing installed at all — the dial reads dead rather than empty.</summary>
     public bool Present { get; set; }
 
     /// <summary>Compressor is pulling gas in; the needle gets a live tint.</summary>
@@ -27,6 +27,13 @@ public sealed class PressureGauge : Control
 
     /// <summary>Fraction below which the arc is drawn as a warning.</summary>
     public float LowFraction { get; set; } = 0.25f;
+
+    public Color DialColor { get; set; } = IS14Palette.Panel;
+    public Color RimColor { get; set; } = IS14Palette.Border;
+    public Color HubColor { get; set; } = IS14Palette.BorderBright;
+    public Color LowColor { get; set; } = IS14Palette.Bad;
+    public Color ActiveColor { get; set; } = IS14Palette.Accent;
+    public Color FullColor { get; set; } = IS14Palette.Good;
 
     private const float StartAngle = MathF.PI * 0.78f;
     private const float SweepAngle = MathF.PI * 1.44f;
@@ -39,12 +46,12 @@ public sealed class PressureGauge : Control
     }
 
     public Color NeedleColor => !Present
-        ? ChassisStyle.Border
+        ? RimColor
         : Fraction <= LowFraction
-            ? ChassisStyle.Bad
+            ? LowColor
             : Pumping
-                ? ChassisStyle.Accent
-                : ChassisStyle.Good;
+                ? ActiveColor
+                : FullColor;
 
     protected override void Draw(DrawingHandleScreen handle)
     {
@@ -58,14 +65,14 @@ public sealed class PressureGauge : Control
             return;
 
         // Face and bezel.
-        handle.DrawCircle(centre, radius, ChassisStyle.Panel);
-        DrawArc(handle, centre, radius, 0f, MathF.Tau, ChassisStyle.Border, 1f, 64);
+        handle.DrawCircle(centre, radius, DialColor);
+        DrawArc(handle, centre, radius, 0f, MathF.Tau, RimColor, 1f, 64);
 
         // The scale, with the low end called out.
         var low = Math.Clamp(LowFraction, 0f, 1f);
-        DrawArc(handle, centre, radius - 5f, StartAngle, SweepAngle * low, ChassisStyle.Bad.WithAlpha(0.55f), 3f);
+        DrawArc(handle, centre, radius - 5f, StartAngle, SweepAngle * low, LowColor.WithAlpha(0.55f), 3f);
         DrawArc(handle, centre, radius - 5f, StartAngle + SweepAngle * low, SweepAngle * (1f - low),
-            ChassisStyle.Border, 3f);
+            RimColor, 3f);
 
         // Filled portion.
         var fill = Present ? Math.Clamp(Fraction, 0f, 1f) : 0f;
@@ -78,7 +85,7 @@ public sealed class PressureGauge : Control
         var tip = centre + new Vector2(MathF.Cos(angle), MathF.Sin(angle)) * (radius - 9f);
 
         handle.DrawLine(centre, tip, NeedleColor);
-        handle.DrawCircle(centre, 3f, ChassisStyle.BorderBright);
+        handle.DrawCircle(centre, 3f, HubColor);
     }
 
     /// <summary>

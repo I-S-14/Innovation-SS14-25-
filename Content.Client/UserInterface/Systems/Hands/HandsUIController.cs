@@ -18,11 +18,10 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 using Content.Shared._NF.Interaction.Components;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Content.Client.UserInterface.Systems.Hands;
 
-public sealed class HandsUIController : UIController, IOnStateEntered<GameplayState>, IOnSystemChanged<HandsSystem>
+public sealed partial class HandsUIController : UIController, IOnStateEntered<GameplayState>, IOnSystemChanged<HandsSystem> //IS14-change: partial, additions live in _IS14/UserInterface/HandsUIController.IS14.cs
 {
     [Dependency] private readonly IEntityManager _entities = default!;
     [Dependency] private readonly IPlayerManager _player = default!;
@@ -203,16 +202,6 @@ public sealed class HandsUIController : UIController, IOnStateEntered<GameplaySt
 
         hand.Blocked = false;
     }
-
-    //IS14-change start: lets content mark up a hand slot without owning the controls
-    /// <summary>
-    ///     The button showing a given hand of the local player, if it is on screen.
-    /// </summary>
-    public bool TryGetHandButton(string handName, [NotNullWhen(true)] out HandButton? button)
-    {
-        return _handLookup.TryGetValue(handName, out button);
-    }
-    //IS14-change end
 
     private int GetHandContainerIndex(string containerName)
     {

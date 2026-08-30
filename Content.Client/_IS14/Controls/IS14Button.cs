@@ -4,17 +4,17 @@ using Robust.Client.Graphics;
 using Robust.Client.UserInterface.Controls;
 using Robust.Shared.Utility;
 
-namespace Content.Client._IS14.Modular.Controls;
+namespace Content.Client._IS14.Controls;
 
 /// <summary>
-///     A button that paints itself from the chassis palette instead of the station
+///     A button that paints itself from the IS14 palette instead of the station
 ///     stylesheet, so the whole readout keeps one look without editing upstream styles.
 ///     Used for everything the player can press here: the paper-doll tiles, the module
 ///     switches and the two big deploy controls.
 /// </summary>
-public sealed class ChassisButton : ContainerButton
+public sealed class IS14Button : ContainerButton
 {
-    private Color _accent = ChassisStyle.Accent;
+    private Color _accent = IS14Palette.Accent;
     private bool _selected;
 
     /// <summary>
@@ -58,7 +58,7 @@ public sealed class ChassisButton : ContainerButton
         }
     }
 
-    public ChassisButton()
+    public IS14Button()
     {
         DrawModeChanged();
     }
@@ -69,7 +69,7 @@ public sealed class ChassisButton : ContainerButton
 
         // The base constructor reaches this before our fields exist.
         if (_accent == default)
-            _accent = ChassisStyle.Accent;
+            _accent = IS14Palette.Accent;
 
         var mode = DrawMode;
 
@@ -79,12 +79,12 @@ public sealed class ChassisButton : ContainerButton
         var (background, border) = mode switch
         {
             DrawModeEnum.Pressed => (_accent.WithAlpha(0.28f), _accent),
-            DrawModeEnum.Hover => (ChassisStyle.PanelRaised, _accent.WithAlpha(0.75f)),
-            DrawModeEnum.Disabled => (ChassisStyle.Panel.WithAlpha(0.5f), ChassisStyle.Border),
-            _ => (ChassisStyle.PanelRaised, ChassisStyle.Border),
+            DrawModeEnum.Hover => (IS14Palette.PanelRaised, _accent.WithAlpha(0.75f)),
+            DrawModeEnum.Disabled => (IS14Palette.Panel.WithAlpha(0.5f), IS14Palette.Border),
+            _ => (IS14Palette.PanelRaised, IS14Palette.Border),
         };
 
-        StyleBoxOverride = ChassisStyle.Box(background, border, 1f, _padding);
+        StyleBoxOverride = IS14Palette.Box(background, border, 1f, _padding);
 
         Modulate = mode == DrawModeEnum.Disabled ? new Color(1f, 1f, 1f, 0.55f) : Color.White;
     }
@@ -93,14 +93,14 @@ public sealed class ChassisButton : ContainerButton
     ///     Builds the standard "icon then caption" button. Either half may be omitted:
     ///     an icon alone is how the compact controls in the module list are drawn.
     /// </summary>
-    public static ChassisButton Make(
+    public static IS14Button Make(
         Texture? icon,
         string? text,
         Color accent,
         float iconSize = 20f,
         float padding = 6f)
     {
-        var button = new ChassisButton
+        var button = new IS14Button
         {
             Accent = accent,
             Padding = padding,
@@ -114,7 +114,7 @@ public sealed class ChassisButton : ContainerButton
 
         if (icon != null)
         {
-            var rect = ChassisStyle.Icon(icon, iconSize);
+            var rect = IS14Palette.Icon(icon, iconSize);
 
             if (text != null)
                 rect.Margin = new Thickness(0, 0, 6, 0);
@@ -128,7 +128,7 @@ public sealed class ChassisButton : ContainerButton
             {
                 Text = text,
                 VerticalAlignment = VAlignment.Center,
-                FontColorOverride = ChassisStyle.Text,
+                FontColorOverride = IS14Palette.Text,
             });
         }
 
@@ -139,7 +139,7 @@ public sealed class ChassisButton : ContainerButton
     /// <summary>
     ///     The oversized controls along the bottom of the readout.
     /// </summary>
-    public static ChassisButton Big(Texture? icon, string text, Color accent)
+    public static IS14Button Big(Texture? icon, string text, Color accent)
     {
         var button = Make(icon, text, accent, iconSize: 32f, padding: 8f);
         button.HorizontalExpand = true;

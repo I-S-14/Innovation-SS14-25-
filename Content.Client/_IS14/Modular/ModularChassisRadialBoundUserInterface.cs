@@ -1,7 +1,7 @@
 // Licensed under IS14's EULA, see EULA.txt for more information.
 
 using Content.Client.UserInterface.Controls;
-using Content.Client._IS14.Modular.Controls;
+using Content.Client._IS14.Controls;
 using Content.Shared._IS14.Modular;
 using Content.Shared._IS14.Modular.Components;
 using Content.Shared._IS14.Modular.Systems;
@@ -86,24 +86,24 @@ public sealed class ModularChassisRadialBoundUserInterface : BoundUserInterface
             tooltip = Loc.GetString("chassis-radial-blocked",
                 ("module", name),
                 ("reason", Loc.GetString("chassis-module-unavailable")));
-            background = ChassisStyle.Muted;
+            background = IS14Palette.Muted;
         }
         else if (cooling)
         {
             tooltip = Loc.GetString("chassis-radial-blocked",
                 ("module", name),
                 ("reason", Loc.GetString("chassis-module-cooldown")));
-            background = ChassisStyle.Warn;
+            background = IS14Palette.Warn;
         }
         else if (comp.Active)
         {
             tooltip = Loc.GetString("chassis-radial-active", ("module", name));
-            background = ChassisStyle.Accent;
+            background = IS14Palette.Accent;
         }
         else
         {
             tooltip = name;
-            background = ChassisStyle.PanelRaised;
+            background = IS14Palette.PanelRaised;
         }
 
         // Blocked slices stay clickable. The suit refuses with a popup naming the real
