@@ -8,7 +8,6 @@ using Content.Shared._IS14.Modular.Systems;
 using JetBrains.Annotations;
 using Robust.Client.UserInterface;
 using Robust.Shared.Timing;
-using Robust.Shared.Utility;
 
 namespace Content.Client._IS14.Modular;
 
@@ -25,9 +24,6 @@ namespace Content.Client._IS14.Modular;
 [UsedImplicitly]
 public sealed class ModularChassisRadialBoundUserInterface : BoundUserInterface
 {
-    private static readonly SpriteSpecifier PanelIcon =
-        new SpriteSpecifier.Texture(new ResPath("/Textures/Interface/VerbIcons/settings.svg.192dpi.png"));
-
     [Dependency] private readonly IGameTiming _timing = default!;
 
     [ViewVariables]
@@ -52,32 +48,24 @@ public sealed class ModularChassisRadialBoundUserInterface : BoundUserInterface
     {
         var options = new List<RadialMenuOptionBase>();
 
-        if (EntMan.TryGetComponent<ModularChassisComponent>(Owner, out var chassis))
+        if (!EntMan.TryGetComponent<ModularChassisComponent>(Owner, out var chassis))
+            return options;
+
+        var chassisSystem = EntMan.System<SharedModularChassisSystem>();
+
+        foreach (var module in chassisSystem.GetModuleEntities((Owner, chassis)))
         {
-            var chassisSystem = EntMan.System<SharedModularChassisSystem>();
+            if (!EntMan.TryGetComponent<ChassisModuleComponent>(module, out var comp))
+                continue;
 
-            foreach (var module in chassisSystem.GetModuleEntities((Owner, chassis)))
-            {
-                if (!EntMan.TryGetComponent<ChassisModuleComponent>(module, out var comp))
-                    continue;
+            // Passive modules are left out on purpose. The ring is for the things there
+            // is a decision to make about; a module that is simply always on would be a
+            // slice you can click that does nothing.
+            if (comp.Kind == ModuleKind.Passive)
+                continue;
 
-                // Passive modules are left out on purpose. The ring is for the things
-                // there is a decision to make about; a module that is simply always on
-                // would be a slice you can click that does nothing.
-                if (comp.Kind == ModuleKind.Passive)
-                    continue;
-
-                options.Add(BuildModuleOption(module, comp));
-            }
+            options.Add(BuildModuleOption(module, comp));
         }
-
-        // Always last, and always present: the ring is never empty, and the full readout
-        // is reachable from it even on a suit with nothing installed.
-        options.Add(new RadialMenuActionOption<EntityUid>(_ => SendMessage(new ChassisOpenPanelMessage()), Owner)
-        {
-            IconSpecifier = RadialMenuIconSpecifier.With(PanelIcon),
-            ToolTip = Loc.GetString("chassis-radial-panel"),
-        });
 
         return options;
     }

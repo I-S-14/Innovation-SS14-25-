@@ -19,7 +19,6 @@ chassis-module-unavailable = Module unavailable.
 
 # Quick module ring
 
-chassis-radial-panel = Open the panel
 chassis-radial-active = { $module } — on
 chassis-radial-blocked = { $module } — { $reason }
 
@@ -33,6 +32,10 @@ modsuit-not-worn = The suit is not worn.
 modsuit-no-core = No core installed.
 modsuit-nothing-to-seal = Nothing to seal.
 modsuit-nothing-to-unseal = Nothing to unseal.
+modsuit-sealed-cannot-retract = Break the seal first.
+modsuit-seal-confirm = Press again to seal up.
+modsuit-unseal-confirm = Press again to break the seal.
+modsuit-no-switchable-modules = Nothing installed that can be switched.
 
 # Part popups
 
@@ -230,6 +233,8 @@ chassis-ui-hopper = Fuel hopper
 chassis-ui-hopper-tooltip = Load the core with fuel. It burns what it needs as it needs it.
 chassis-config-open-storage = Open
 chassis-config-pump = Compressor
+chassis-config-light-radius = Beam radius
+chassis-config-regulator-temperature = Body temperature, °C
 chassis-config-gas-oxygen = Oxygen
 chassis-config-gas-nitrogen = Nitrogen
 chassis-config-gas-carbondioxide = CO2

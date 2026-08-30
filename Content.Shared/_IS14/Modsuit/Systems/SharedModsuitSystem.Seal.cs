@@ -369,6 +369,9 @@ public sealed partial class SharedModsuitSystem
             return;
 
         var now = _timing.CurTime;
+
+        ExpireSealArming(now);
+
         var query = EntityQueryEnumerator<ModsuitControlComponent>();
 
         while (query.MoveNext(out var uid, out var comp))

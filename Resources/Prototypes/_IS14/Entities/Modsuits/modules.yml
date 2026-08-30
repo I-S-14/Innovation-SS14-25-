@@ -38,6 +38,9 @@
   - type: ModuleLight
     color: "#ffdbad"
     radius: 4.5
+    # Настраивается в панели: узкий луч в коридор, широкий в зал.
+    minRadius: 2
+    maxRadius: 6
     energy: 3
   - type: ModuleWornOverlay
     rsi: _IS14/Clothing/Modsuits/module_overlays.rsi
@@ -243,6 +246,10 @@
     - type: TemperatureProtection
       coolingCoefficient: 0.005
       heatingCoefficient: 0.005
+  # Защита решает, как быстро улица доберётся до носителя, а регулятор —
+  # где остановится его собственная температура. Без второго уже перегретый
+  # человек так перегретым и остаётся.
+  - type: ModuleThermalRegulator
 
 # ----------------------------------------------------------------- медицина
 

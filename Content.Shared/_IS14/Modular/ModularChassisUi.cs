@@ -313,13 +313,6 @@ public sealed class ChassisSealPartMessage : BoundUserInterfaceMessage
     }
 }
 
-/// <summary>
-///     Trade the quick ring for the full readout. Sent from the ring, because a client
-///     cannot open a bound interface on its own — only ask for one.
-/// </summary>
-[Serializable, NetSerializable]
-public sealed class ChassisOpenPanelMessage : BoundUserInterfaceMessage;
-
 /// <summary>Switch the whole chassis on or off.</summary>
 [Serializable, NetSerializable]
 public sealed class ChassisToggleActiveMessage : BoundUserInterfaceMessage;

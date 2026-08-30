@@ -1529,6 +1529,18 @@ public sealed partial class ModularChassisWindow : FancyWindow
     }
 
     /// <summary>
+    ///     Whole numbers read as whole numbers; anything else keeps one decimal. A beam
+    ///     radius of "4" should not be printed as "4.0" just because the temperature
+    ///     next to it wants a fraction.
+    /// </summary>
+    private static string FormatConfigNumber(float value)
+    {
+        return MathF.Abs(value - MathF.Round(value)) < 0.05f
+            ? MathF.Round(value).ToString("0")
+            : value.ToString("0.0");
+    }
+
+    /// <summary>
     ///     One of a module's settings. Rendered from the generic description the module
     ///     sends, so a new configurable module needs no window code at all.
     /// </summary>
@@ -1565,6 +1577,60 @@ public sealed partial class ModularChassisWindow : FancyWindow
                 button.OnPressed += _ => OnConfigureModule?.Invoke(module, entry.Key, null);
 
                 return button;
+            }
+
+            case ModuleConfigKind.Number when entry.Max > entry.Min:
+            {
+                var value = entry.Value switch
+                {
+                    float f => f,
+                    double d => (float) d,
+                    int i => i,
+                    _ => entry.Min,
+                };
+
+                var column = new BoxContainer
+                {
+                    Orientation = BoxContainer.LayoutOrientation.Vertical,
+                    HorizontalExpand = true,
+                    Margin = new Thickness(0, 2, 0, 0),
+                };
+
+                var readout = new Label
+                {
+                    Text = FormatConfigNumber(value),
+                    FontColorOverride = ChassisStyle.Accent,
+                };
+
+                var header = new BoxContainer
+                {
+                    Orientation = BoxContainer.LayoutOrientation.Horizontal,
+                    HorizontalExpand = true,
+                };
+
+                header.AddChild(new Label { Text = entry.Label, FontColorOverride = ChassisStyle.Muted });
+                header.AddChild(new Control { HorizontalExpand = true });
+                header.AddChild(readout);
+
+                var slider = new Slider
+                {
+                    MinValue = entry.Min,
+                    MaxValue = entry.Max,
+                    Value = Math.Clamp(value, entry.Min, entry.Max),
+                    HorizontalExpand = true,
+                    Margin = new Thickness(0, 2, 0, 0),
+                };
+
+                // The readout follows the handle, but the suit is only told once the
+                // player lets go. Sending on every pixel of a drag would put a message
+                // on the wire per frame for a setting nobody needs applied mid-drag.
+                slider.OnValueChanged += _ => readout.Text = FormatConfigNumber(slider.Value);
+                slider.OnReleased += _ => OnConfigureModule?.Invoke(module, entry.Key, slider.Value);
+
+                column.AddChild(header);
+                column.AddChild(slider);
+
+                return column;
             }
 
             case ModuleConfigKind.Choice when entry.Choices is { Length: > 0 }:

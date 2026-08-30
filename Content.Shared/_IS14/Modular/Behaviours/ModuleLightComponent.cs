@@ -17,6 +17,17 @@ public sealed partial class ModuleLightComponent : Component
     [DataField, AutoNetworkedField]
     public float Radius = 4.5f;
 
+    /// <summary>
+    ///     Bounds the wearer may dial the beam between. A lamp with a fixed radius is
+    ///     one the player has to work around; letting it go narrow for a corridor and
+    ///     wide for a room is the whole reason to carry a configurable one.
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public float MinRadius = 2f;
+
+    [DataField, AutoNetworkedField]
+    public float MaxRadius = 5f;
+
     [DataField, AutoNetworkedField]
     public float Energy = 3f;
 

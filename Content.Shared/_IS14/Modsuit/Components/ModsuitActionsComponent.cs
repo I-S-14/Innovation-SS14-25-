@@ -32,4 +32,28 @@ public sealed partial class ModsuitActionsComponent : Component
 
     [DataField, AutoNetworkedField]
     public EntityUid? ModulesActionEntity;
+
+    [DataField]
+    public EntProtoId? PanelAction = "ActionModsuitOpenPanel";
+
+    [DataField, AutoNetworkedField]
+    public EntityUid? PanelActionEntity;
+
+    /// <summary>
+    ///     When the armed seal button stops counting as armed.
+    ///
+    ///     Sealing and unsealing are both slow, loud and occasionally fatal — unsealing
+    ///     rather more so, since the room decides what happens next. One press arms the
+    ///     button and says so, the second one commits. A fat-fingered hotkey costs a
+    ///     glance at the icon rather than a lungful of whatever is outside.
+    /// </summary>
+    [ViewVariables, AutoNetworkedField]
+    public TimeSpan? SealArmedUntil;
+
+    /// <summary>
+    ///     How long the button stays armed before it forgets. Long enough to be a
+    ///     confirmation, short enough that it is never still armed later.
+    /// </summary>
+    [DataField]
+    public TimeSpan SealArmWindow = TimeSpan.FromSeconds(3);
 }

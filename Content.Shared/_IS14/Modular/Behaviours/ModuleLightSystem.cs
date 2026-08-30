@@ -11,10 +11,56 @@ public sealed class ModuleLightSystem : ModuleBehaviourSystem<ModuleLightCompone
 {
     [Dependency] private readonly SharedPointLightSystem _light = default!;
 
+    private const string RadiusKey = "radius";
+
+    public override void Initialize()
+    {
+        base.Initialize();
+
+        SubscribeLocalEvent<ModuleLightComponent, ModuleGetConfigEvent>(OnGetConfig);
+        SubscribeLocalEvent<ModuleLightComponent, ModuleConfigChangedEvent>(OnConfigChanged);
+    }
+
     /// <summary>
     ///     A lamp you cannot switch off would not be a module, it would be a fixture.
     /// </summary>
     protected override bool RequiresActive(Entity<ModuleLightComponent> ent) => true;
+
+    private void OnGetConfig(Entity<ModuleLightComponent> ent, ref ModuleGetConfigEvent args)
+    {
+        if (ent.Comp.MaxRadius <= ent.Comp.MinRadius)
+            return;
+
+        args.Entries.Add(new ModuleConfigEntry(
+            RadiusKey,
+            Loc.GetString("chassis-config-light-radius"),
+            ModuleConfigKind.Number,
+            ent.Comp.Radius,
+            min: ent.Comp.MinRadius,
+            max: ent.Comp.MaxRadius));
+    }
+
+    private void OnConfigChanged(Entity<ModuleLightComponent> ent, ref ModuleConfigChangedEvent args)
+    {
+        if (args.Handled || args.Key != RadiusKey || args.Value is not float radius)
+            return;
+
+        args.Handled = true;
+
+        ent.Comp.Radius = Math.Clamp(radius, ent.Comp.MinRadius, ent.Comp.MaxRadius);
+        Dirty(ent);
+
+        // Only touch the lamp if this module is the one currently driving it — the beam
+        // may belong to another module, or to nothing at all while this one is off.
+        if (!ent.Comp.Applied
+            || GetChassis(ent) is not { } chassis
+            || !_light.TryGetLight(chassis, out var light))
+        {
+            return;
+        }
+
+        _light.SetRadius(chassis, ent.Comp.Radius, light);
+    }
 
     protected override void Start(Entity<ModuleLightComponent> ent, EntityUid chassis)
     {

@@ -333,13 +333,30 @@ public sealed partial class SharedModsuitSystem
 
     /// <summary>
     ///     Deploys everything if anything is folded, otherwise retracts everything.
+    ///
+    ///     Folding a sealed suit is refused rather than done quietly. The plating coming
+    ///     off is what the seal is holding shut, so letting one button undo both made
+    ///     pressure free: no queue, no doafter, no sound — a wearer could step out of a
+    ///     closed suit in vacuum in a single press. Unsealing has its own button and its
+    ///     own cost, and this one now waits for it, exactly as the actuator wire does.
     /// </summary>
     public void ToggleDeployAll(Entity<ModsuitControlComponent> ent, EntityUid? user = null)
     {
-        if (AllPartsDeployed(ent))
-            RetractAll(ent, user);
-        else
+        if (!AllPartsDeployed(ent))
+        {
             DeployAll(ent, user);
+            return;
+        }
+
+        if (IsAnyPartSealed(ent))
+        {
+            if (user is { } uid)
+                PopupFail(ent, uid, "modsuit-sealed-cannot-retract");
+
+            return;
+        }
+
+        RetractAll(ent, user);
     }
 
     private void RefreshChassis(Entity<ModsuitControlComponent> ent)

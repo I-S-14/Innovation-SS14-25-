@@ -2,8 +2,10 @@
 
 using Content.Shared._IS14.Modsuit.Components;
 using Content.Shared._IS14.Modular;
+using Content.Shared._IS14.Modular.Components;
 using Content.Shared.Actions;
 using Content.Shared.Inventory.Events;
+using Robust.Shared.Utility;
 
 namespace Content.Shared._IS14.Modsuit.Systems;
 
@@ -21,6 +23,7 @@ public sealed partial class SharedModsuitSystem
         SubscribeLocalEvent<ModsuitControlComponent, ModsuitToggleDeployEvent>(OnToggleDeployAction);
         SubscribeLocalEvent<ModsuitControlComponent, ModsuitToggleSealEvent>(OnToggleSealAction);
         SubscribeLocalEvent<ModsuitControlComponent, ModsuitOpenModulesEvent>(OnOpenModulesAction);
+        SubscribeLocalEvent<ModsuitControlComponent, ModsuitOpenPanelEvent>(OnOpenPanelAction);
     }
 
     private void OnActionsEquipped(Entity<ModsuitActionsComponent> ent, ref GotEquippedEvent args)
@@ -32,6 +35,7 @@ public sealed partial class SharedModsuitSystem
         _actions.AddAction(args.Equipee, ref ent.Comp.DeployActionEntity, ent.Comp.DeployAction, ent);
         _actions.AddAction(args.Equipee, ref ent.Comp.SealActionEntity, ent.Comp.SealAction, ent);
         _actions.AddAction(args.Equipee, ref ent.Comp.ModulesActionEntity, ent.Comp.ModulesAction, ent);
+        _actions.AddAction(args.Equipee, ref ent.Comp.PanelActionEntity, ent.Comp.PanelAction, ent);
 
         Dirty(ent);
     }
@@ -48,6 +52,7 @@ public sealed partial class SharedModsuitSystem
         RemoveActionSafe(ent.Comp.DeployActionEntity);
         RemoveActionSafe(ent.Comp.SealActionEntity);
         RemoveActionSafe(ent.Comp.ModulesActionEntity);
+        RemoveActionSafe(ent.Comp.PanelActionEntity);
     }
 
     private void RemoveActionSafe(EntityUid? action)
@@ -81,7 +86,54 @@ public sealed partial class SharedModsuitSystem
         if (!CanCommandSeal(ent, args.Performer))
             return;
 
+        // A suit with no arming component behaves the old way rather than becoming
+        // unusable, which matters for anything that reuses the control without actions.
+        if (!TryComp<ModsuitActionsComponent>(ent, out var actions))
+        {
+            TryToggleSeal(ent, args.Performer);
+            return;
+        }
+
+        var now = _timing.CurTime;
+
+        if (actions.SealArmedUntil is not { } until || now >= until)
+        {
+            actions.SealArmedUntil = now + actions.SealArmWindow;
+            Dirty(ent.Owner, actions);
+            UpdateSealActionState(ent);
+
+            _popup.PopupClient(
+                Loc.GetString(IsAnyPartSealed(ent) ? "modsuit-unseal-confirm" : "modsuit-seal-confirm"),
+                ent,
+                args.Performer);
+
+            return;
+        }
+
+        actions.SealArmedUntil = null;
+        Dirty(ent.Owner, actions);
+
         TryToggleSeal(ent, args.Performer);
+        UpdateSealActionState(ent);
+    }
+
+    /// <summary>
+    ///     Drops the arming once its window passes, so the button is never found still
+    ///     lit from a press made minutes ago — which would defeat the whole point of it.
+    /// </summary>
+    private void ExpireSealArming(TimeSpan now)
+    {
+        var query = EntityQueryEnumerator<ModsuitActionsComponent, ModsuitControlComponent>();
+
+        while (query.MoveNext(out var uid, out var actions, out var control))
+        {
+            if (actions.SealArmedUntil is not { } until || now < until)
+                continue;
+
+            actions.SealArmedUntil = null;
+            Dirty(uid, actions);
+            UpdateSealActionState((uid, control));
+        }
     }
 
     /// <summary>
@@ -129,9 +181,48 @@ public sealed partial class SharedModsuitSystem
         if (!CanUseInterface(ent, args.Performer))
             return;
 
+        // An empty ring is worse than no ring: it opens, says nothing, and has to be
+        // dismissed. Passive modules do not count — they have no switch to offer.
+        if (!HasSwitchableModule(ent))
+        {
+            PopupFail(ent, args.Performer, "modsuit-no-switchable-modules");
+            return;
+        }
+
         // The ring, not the readout: this is the button pressed mid-fight to put the
-        // lamp on. The full panel is one option inside the ring for when it is not.
+        // lamp on. Reading the suit is a different job with its own button.
         _ui.TryToggleUi(ent.Owner, ModularChassisUiKey.Radial, args.Performer);
+    }
+
+    /// <summary>
+    ///     Whether anything installed can actually be switched, used or selected. Mirrors
+    ///     what the ring itself draws, so the two never disagree about being empty.
+    /// </summary>
+    private bool HasSwitchableModule(Entity<ModsuitControlComponent> ent)
+    {
+        if (!TryComp<ModularChassisComponent>(ent, out var chassis))
+            return false;
+
+        foreach (var module in _chassis.GetModules((ent.Owner, chassis)))
+        {
+            if (module.Comp.Kind != ModuleKind.Passive)
+                return true;
+        }
+
+        return false;
+    }
+
+    private void OnOpenPanelAction(Entity<ModsuitControlComponent> ent, ref ModsuitOpenPanelEvent args)
+    {
+        if (args.Handled)
+            return;
+
+        args.Handled = true;
+
+        if (!CanUseInterface(ent, args.Performer))
+            return;
+
+        _ui.TryToggleUi(ent.Owner, ModularChassisUiKey.Key, args.Performer);
     }
 
     /// <summary>
@@ -150,16 +241,36 @@ public sealed partial class SharedModsuitSystem
         return false;
     }
 
+    private static readonly ResPath ActionIcons = new("_IS14/Interface/Actions/modsuit.rsi");
+
+    private static readonly SpriteSpecifier SealIcon = new SpriteSpecifier.Rsi(ActionIcons, "activate");
+    private static readonly SpriteSpecifier SealArmedIcon = new SpriteSpecifier.Rsi(ActionIcons, "activate-ready");
+    private static readonly SpriteSpecifier UnsealIcon = new SpriteSpecifier.Rsi(ActionIcons, "unseal");
+    private static readonly SpriteSpecifier UnsealArmedIcon = new SpriteSpecifier.Rsi(ActionIcons, "unseal-ready");
+
     /// <summary>
-    ///     Keeps the seal action's toggle state in step with the suit, so the button
-    ///     reads as "unseal" once the suit is closed up.
+    ///     Keeps the buttons in step with the suit.
+    ///
+    ///     The seal button carries two separate facts, so it uses two channels: the icon
+    ///     says which way it will go — blue to close up, red to open — and the toggle says
+    ///     whether it is armed and waiting for the second press.
     /// </summary>
     private void UpdateSealActionState(Entity<ModsuitControlComponent> ent)
     {
         if (!TryComp<ModsuitActionsComponent>(ent, out var actions))
             return;
 
-        _actions.SetToggled(actions.SealActionEntity, IsAnyPartSealed(ent));
+        var willUnseal = IsAnyPartSealed(ent);
+
+        // Both icons move together: the armed state has to stay the same colour as the
+        // idle one, or arming a breach would light up in the "closing up" blue.
+        if (actions.SealActionEntity is { } seal)
+        {
+            _actions.SetIcon(seal, willUnseal ? UnsealIcon : SealIcon);
+            _actions.SetIconOn(seal, willUnseal ? UnsealArmedIcon : SealArmedIcon);
+        }
+
+        _actions.SetToggled(actions.SealActionEntity, actions.SealArmedUntil != null);
         _actions.SetToggled(actions.DeployActionEntity, AnyPartDeployed(ent));
     }
 }

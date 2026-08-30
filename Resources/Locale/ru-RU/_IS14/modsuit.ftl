@@ -19,7 +19,6 @@ chassis-module-unavailable = Модуль недоступен.
 
 # Радиальное меню модулей
 
-chassis-radial-panel = Открыть панель
 chassis-radial-active = { $module } — включён
 chassis-radial-blocked = { $module } — { $reason }
 
@@ -33,6 +32,10 @@ modsuit-not-worn = Костюм не надет.
 modsuit-no-core = Нет ядра.
 modsuit-nothing-to-seal = Герметизировать нечего.
 modsuit-nothing-to-unseal = Расшивать нечего.
+modsuit-sealed-cannot-retract = Сначала расшейте костюм.
+modsuit-seal-confirm = Нажмите ещё раз, чтобы загерметизировать.
+modsuit-unseal-confirm = Нажмите ещё раз, чтобы сорвать герметизацию.
+modsuit-no-switchable-modules = Переключать нечего — таких модулей не установлено.
 
 # Попапы частей
 
@@ -230,6 +233,8 @@ chassis-ui-hopper = Бункер топлива
 chassis-ui-hopper-tooltip = Загрузите ядро топливом. Оно сжигает столько, сколько нужно, и тогда, когда нужно.
 chassis-config-open-storage = Открыть
 chassis-config-pump = Компрессор
+chassis-config-light-radius = Радиус луча
+chassis-config-regulator-temperature = Температура тела, °C
 chassis-config-gas-oxygen = Кислород
 chassis-config-gas-nitrogen = Азот
 chassis-config-gas-carbondioxide = CO2

@@ -21,6 +21,15 @@ public sealed partial class ModsuitToggleSealEvent : InstantActionEvent;
 public sealed partial class ModsuitOpenModulesEvent : InstantActionEvent;
 
 /// <summary>
+///     Opens the suit's full readout.
+///
+///     Its own action rather than an option inside the ring: the ring is a gesture made
+///     mid-task and dismissed, the readout is a window sat in front of, and burying one
+///     behind the other made the slow thing cost a spin through the fast one.
+/// </summary>
+public sealed partial class ModsuitOpenPanelEvent : InstantActionEvent;
+
+/// <summary>
 ///     Fires an <see cref="ModuleKind.Active"/> module's special click at a target.
 /// </summary>
 public sealed partial class ModsuitModuleTargetEvent : EntityTargetActionEvent;

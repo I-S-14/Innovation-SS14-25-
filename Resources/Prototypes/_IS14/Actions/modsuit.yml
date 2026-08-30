@@ -6,8 +6,13 @@
   components:
   - type: Action
     icon:
-      sprite: _IS14/Objects/Modsuit/construction.rsi
-      state: chestplate
+      sprite: _IS14/Interface/Actions/modsuit.rsi
+      state: deploy
+    # Костюм сам дёргает SetToggled по развёрнутым частям, поэтому кнопка показывает
+    # то, что сделает следующим нажатием, а не то, что уже сделано.
+    iconOn:
+      sprite: _IS14/Interface/Actions/modsuit.rsi
+      state: retract
     itemIconStyle: BigAction
     useDelay: 1
   - type: InstantAction
@@ -21,8 +26,11 @@
   components:
   - type: Action
     icon:
-      sprite: _IS14/Objects/Modsuit/construction.rsi
-      state: core-standard
+      sprite: _IS14/Interface/Actions/modsuit.rsi
+      state: activate
+    iconOn:
+      sprite: _IS14/Interface/Actions/modsuit.rsi
+      state: activate-ready
     itemIconStyle: BigAction
     useDelay: 1
   - type: InstantAction
@@ -30,13 +38,27 @@
 
 - type: entity
   parent: BaseAction
-  id: ActionModsuitOpenModules
-  name: MODsuit modules
-  description: Brings up the module ring. The full panel is one of its options.
+  id: ActionModsuitOpenPanel
+  name: MODsuit panel
+  description: Opens the suit's readout — charge, plating, modules and their settings.
   components:
   - type: Action
     icon:
-      sprite: _IS14/Objects/Modsuit/modules.rsi
+      sprite: _IS14/Interface/Actions/modsuit.rsi
+      state: panel
+    itemIconStyle: BigAction
+  - type: InstantAction
+    event: !type:ModsuitOpenPanelEvent
+
+- type: entity
+  parent: BaseAction
+  id: ActionModsuitOpenModules
+  name: MODsuit modules
+  description: Brings up the module ring for quick switching.
+  components:
+  - type: Action
+    icon:
+      sprite: _IS14/Interface/Actions/modsuit.rsi
       state: module
     itemIconStyle: BigAction
   - type: InstantAction
