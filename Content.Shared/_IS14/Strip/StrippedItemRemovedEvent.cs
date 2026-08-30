@@ -1,6 +1,6 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
+// Licensed under IS14's EULA, see EULA.txt for more information.
 
-namespace Content.Shared.Strip;
+namespace Content.Shared._IS14.Strip;
 
 /// <summary>
 ///     Raised on an item a stripper is about to take out of somebody's inventory, before
