@@ -11,35 +11,14 @@
     back: ClothingBackpackSecurity
 
 - type: loadout
-  id: IS14LrrChiefBeret
-  equipment:
-    head: ClothingHeadIS14LrrChiefBeret
-
-- type: loadout
   id: IS14LrrChiefBoots
   equipment:
     shoes: ClothingShoesBootsJack
 
 - type: loadout
-  id: IS14LrrChiefCap
-  equipment:
-    head: ClothingHeadIS14LrrChiefCap
-
-- type: loadout
   id: IS14LrrChiefDuffel
   equipment:
     back: ClothingBackpackDuffelSecurity
-
-- type: loadout
-  id: IS14LrrChiefJacket
-  equipment:
-    outerClothing: ClothingOuterIS14LrrChiefJacket
-
-- type: loadout
-  id: IS14LrrChiefJumpsuit
-  equipment:
-    jumpsuit: ClothingUniformJumpsuitIS14LrrChiefJumpsuit
-  groupBy: "jumpsuit"
 
 - type: loadout
   id: IS14LrrChiefMilitiaBoots
@@ -64,21 +43,21 @@
   name: loadout-group-head
   minLimit: 0
   loadouts:
-  - IS14LrrChiefCap
-  - IS14LrrChiefBeret
+  - IS14MilitiaCap
+  - IS14MilitiaBeret
 
 - type: loadoutGroup
   id: IS14LrrChiefJumpsuit
   name: loadout-group-jumpsuit
   loadouts:
-  - IS14LrrChiefJumpsuit
+  - IS14MilitiaJumpsuit
+  - IS14MilitiaFormalJumpsuit
 
 - type: loadoutGroup
   id: IS14LrrChiefOuterClothing
   name: loadout-group-outerclothing
   minLimit: 0
   loadouts:
-  - IS14LrrChiefJacket
   - IS14LrrChiefArmorVest
 
 - type: loadoutGroup

@@ -21,31 +21,9 @@
     shoes: ClothingShoesBootsJack
 
 - type: loadout
-  id: IS14HosCap
-  equipment:
-    head: ClothingHeadIS14HosCap
-
-- type: loadout
   id: IS14HosDuffel
   equipment:
     back: ClothingBackpackDuffelSecurity
-
-- type: loadout
-  id: IS14HosJacket
-  equipment:
-    outerClothing: ClothingOuterIS14HosJacket
-
-- type: loadout
-  id: IS14HosJumpsuit
-  equipment:
-    jumpsuit: ClothingUniformJumpsuitIS14FormalHosMilitia
-  groupBy: "jumpsuit"
-
-- type: loadout
-  id: IS14HosJumpsuit_Formal
-  equipment:
-    jumpsuit: ClothingUniformJumpsuitIS14FormalHosMilitia
-  groupBy: "jumpsuit"
 
 - type: loadout
   id: IS14HosMilitiaBelt
@@ -113,12 +91,6 @@
   equipment:
     back: ClothingBackpackSatchelSecurity
 
-- type: loadout
-  id: IS14HosTactical
-  equipment:
-    jumpsuit: ClothingUniformJumpsuitIS14TacticalHosMilitia
-  groupBy: "jumpsuit"
-
 - type: loadoutGroup
   id: IS14HosBackpack
   name: loadout-group-backpack
@@ -150,7 +122,6 @@
   name: loadout-group-head
   minLimit: 0
   loadouts:
-  - IS14HosCap
   - IS14HosBeret
   - IS14HosMilitiaCap
   - IS14HosMilitiaBeret
@@ -159,9 +130,6 @@
   id: IS14HosJumpsuit
   name: loadout-group-jumpsuit
   loadouts:
-  - IS14HosJumpsuit
-  - IS14HosJumpsuit_Formal
-  - IS14HosTactical
   - IS14HosMilitiaJumpsuit
   - IS14HosMilitiaJumpskirt
 
@@ -177,7 +145,6 @@
   name: loadout-group-outerclothing
   minLimit: 0
   loadouts:
-  - IS14HosJacket
   - IS14HosArmorVest
   - IS14HosMilitiaJacket
   - IS14HosMilitiaGreatcoat

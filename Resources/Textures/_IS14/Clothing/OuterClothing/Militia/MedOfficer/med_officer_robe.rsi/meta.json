@@ -1,7 +1,7 @@
 {
   "version": 1,
   "license": "All Rights Reserved",
-  "copyright": "Created by ashotik3 (discord) for Innovation Station 14",
+  "copyright": "Created by Innovation Station SS14 art team for Innovation Station SS14",
   "size": {
     "x": 32,
     "y": 32
@@ -11,7 +11,14 @@
       "name": "icon"
     },
     {
+      "name": "icon-open"
+    },
+    {
       "name": "equipped-OUTERCLOTHING",
+      "directions": 4
+    },
+    {
+      "name": "open-equipped-OUTERCLOTHING",
       "directions": 4
     },
     {
@@ -20,6 +27,14 @@
     },
     {
       "name": "inhand-right",
+      "directions": 4
+    },
+    {
+      "name": "open-inhand-left",
+      "directions": 4
+    },
+    {
+      "name": "open-inhand-right",
       "directions": 4
     }
   ]

@@ -1,17 +1,6 @@
 # investigator clothing
 
 - type: entity
-  parent: ClothingUniformJumpskirtIS14Base
-  id: ClothingUniformJumpskirtIS14InvestigatorSkirt
-  components:
-  - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Militia/Investigator/investigator_skirt.rsi
-  - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Militia/Investigator/investigator_skirt.rsi
-    equipSound:
-      path: /Audio/Items/jumpsuit_equip.ogg
-
-- type: entity
   parent: ClothingUniformJumpsuitIS14Base
   id: ClothingUniformJumpsuitIS14Investigator
   components:

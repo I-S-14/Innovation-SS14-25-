@@ -41,12 +41,6 @@
     eyes: ClothingEyesIS14MilitiaEyeScanner
 
 - type: loadout
-  id: IS14PilotFormal
-  equipment:
-    jumpsuit: ClothingUniformJumpsuitIS14PilotFormal
-  groupBy: "jumpsuit"
-
-- type: loadout
   id: IS14PilotGlasses
   equipment:
     eyes: ClothingEyesIS14MilitiaGlasses
@@ -55,12 +49,6 @@
   id: IS14PilotJacket
   equipment:
     outerClothing: ClothingOuterIS14MilitiaFormalJacket
-
-- type: loadout
-  id: IS14PilotJumpskirt
-  equipment:
-    jumpsuit: ClothingUniformJumpskirtIS14PilotSkirt
-  groupBy: "jumpskirt"
 
 - type: loadout
   id: IS14PilotJumpsuit
@@ -77,12 +65,6 @@
   id: IS14PilotSatchel
   equipment:
     back: ClothingBackpackSatchelSecurity
-
-- type: loadout
-  id: IS14PilotTactical
-  equipment:
-    jumpsuit: ClothingUniformJumpsuitIS14PilotTactical
-  groupBy: "jumpsuit"
 
 - type: loadout
   id: IS14PilotVisor
@@ -132,9 +114,6 @@
   name: loadout-group-jumpsuit
   loadouts:
   - IS14PilotJumpsuit
-  - IS14PilotJumpskirt
-  - IS14PilotFormal
-  - IS14PilotTactical
 
 - type: loadoutGroup
   id: IS14PilotOuterClothing

@@ -51,12 +51,6 @@
     outerClothing: ClothingOuterIS14MilitiaFormalJacket
 
 - type: loadout
-  id: IS14InvestigatorJumpskirt
-  equipment:
-    jumpsuit: ClothingUniformJumpskirtIS14InvestigatorSkirt
-  groupBy: "jumpskirt"
-
-- type: loadout
   id: IS14InvestigatorJumpsuit
   equipment:
     jumpsuit: ClothingUniformJumpsuitIS14Investigator
@@ -120,7 +114,6 @@
   name: loadout-group-jumpsuit
   loadouts:
   - IS14InvestigatorJumpsuit
-  - IS14InvestigatorJumpskirt
 
 - type: loadoutGroup
   id: IS14InvestigatorOuterClothing

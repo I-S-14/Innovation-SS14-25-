@@ -73,3 +73,24 @@
       path: /Audio/_Goobstation/Items/handling/cloth_drop.ogg
       params:
         volume: -4
+
+- type: entity
+  abstract: true
+  parent: [ClothingOuterIS14Base, BaseFoldable]
+  id: ClothingOuterIS14FoldableBase
+  components:
+  - type: Appearance
+  - type: Foldable
+    canFoldInsideContainer: true
+    unfoldVerbText: fold-zip-verb
+    foldVerbText: fold-unzip-verb
+  - type: FoldableClothing
+    foldedEquippedPrefix: open
+    foldedHeldPrefix: open
+  - type: Sprite
+    layers:
+    - state: icon
+      map: [ "unfoldedLayer" ]
+    - state: icon-open
+      map: [ "foldedLayer" ]
+      visible: false

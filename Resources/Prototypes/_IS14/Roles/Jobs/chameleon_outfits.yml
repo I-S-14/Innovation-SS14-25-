@@ -32,7 +32,7 @@
   job: JobSeniorMilitia
   hasMindShield: true
   equipment:
-    head: ClothingHeadIS14SeniorMilitiaBeret
+    head: ClothingHeadIS14MilitiaBeret
     eyes: ClothingEyesIS14MilitiaEyeScanner
     mask: ClothingMaskGasSecurity
     outerClothing: ClothingOuterIS14SeniorMilitiaFormalJacket
@@ -66,7 +66,7 @@
   job: JobMedOfficer
   hasMindShield: true
   equipment:
-    head: ClothingHeadIS14MedOfficerCap
+    head: ClothingHeadIS14MedOfficerBeret
     eyes: ClothingEyesIS14MedEyeScanner
     mask: ClothingMaskSterile
     outerClothing: ClothingOuterIS14MedOfficerRobe
@@ -78,10 +78,10 @@
   job: JobLrrChief
   hasMindShield: true
   equipment:
-    head: ClothingHeadIS14LrrChiefCap
+    head: ClothingHeadIS14MilitiaCap
     eyes: ClothingEyesIS14MilitiaEyeScanner
     mask: ClothingMaskGasSecurity
-    outerClothing: ClothingOuterIS14LrrChiefJacket
+    outerClothing: ClothingOuterIS14MilitiaFormalJacket
     gloves: ClothingHandsGlovesColorBlack
     shoes: ClothingShoesIS14MilitiaBoots
 
@@ -101,7 +101,6 @@
   job: JobIvk
   equipment:
     head: ClothingHeadIS14IVKCap
-    mask: ClothingMaskIS14GasIVK
     outerClothing: ClothingOuterIS14IVKShinel
     gloves: ClothingHandsGlovesColorBlack
     shoes: ClothingShoesIS14MilitiaBoots
