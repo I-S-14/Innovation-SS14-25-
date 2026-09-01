@@ -293,6 +293,10 @@
         Cold: 0.75
         Shock: 0.75
         Caustic: 0.75
+  # Прочность вдвое против базовой: единственная тема, которую покупают ради
+  # того, чтобы в неё стреляли.
+  - type: ModsuitPart
+    maxIntegrity: 500
 
 - type: entity
   parent: IS14ModsuitPartChestplateBase
@@ -307,6 +311,8 @@
   - type: Armor
     modifiers:
       coefficients: *IS14ArmorSecurity
+  - type: ModsuitPart
+    maxIntegrity: 600
 
 - type: entity
   parent: IS14ModsuitPartGauntletsBase
@@ -321,6 +327,8 @@
   - type: Armor
     modifiers:
       coefficients: *IS14ArmorSecurity
+  - type: ModsuitPart
+    maxIntegrity: 400
 
 - type: entity
   parent: IS14ModsuitPartBootsBase
@@ -335,6 +343,8 @@
   - type: Armor
     modifiers:
       coefficients: *IS14ArmorSecurity
+  - type: ModsuitPart
+    maxIntegrity: 400
 
 - type: entity
   parent: IS14ModsuitControlBase
@@ -689,6 +699,10 @@
         Shock: 0.35
         Caustic: 0.35
         Radiation: 0.3
+  # Прочность втрое против базовой. Кроваво-красный переживает то, что снимает
+  # обычный МОД: у него нет ни ремонтной базы, ни второго костюма на замену.
+  - type: ModsuitPart
+    maxIntegrity: 750
 
 - type: entity
   parent: IS14ModsuitPartChestplateBase
@@ -703,6 +717,8 @@
   - type: Armor
     modifiers:
       coefficients: *IS14ArmorSyndicate
+  - type: ModsuitPart
+    maxIntegrity: 900
 
 - type: entity
   parent: IS14ModsuitPartGauntletsBase
@@ -717,6 +733,8 @@
   - type: Armor
     modifiers:
       coefficients: *IS14ArmorSyndicate
+  - type: ModsuitPart
+    maxIntegrity: 600
 
 - type: entity
   parent: IS14ModsuitPartBootsBase
@@ -731,6 +749,8 @@
   - type: Armor
     modifiers:
       coefficients: *IS14ArmorSyndicate
+  - type: ModsuitPart
+    maxIntegrity: 600
 
 - type: entity
   parent: [ IS14ModsuitControlBase, BaseSyndicateContraband ]
@@ -752,7 +772,6 @@
   - type: ModularChassis
     maxComplexity: 30
     integratedModules:
-    - IS14ModuleStorage
     - IS14ModuleArmorBooster
   - type: ItemSlots
     slots:
@@ -984,6 +1003,10 @@
         Cold: 0.6
         Shock: 0.6
         Caustic: 0.6
+  # Прочность вдвое против базовой — командная модель того же класса, что и
+  # у СБ, и снимают её обычно там же.
+  - type: ModsuitPart
+    maxIntegrity: 500
 
 - type: entity
   parent: IS14ModsuitPartChestplateBase
@@ -998,6 +1021,8 @@
   - type: Armor
     modifiers:
       coefficients: *IS14ArmorMagnate
+  - type: ModsuitPart
+    maxIntegrity: 600
 
 - type: entity
   parent: IS14ModsuitPartGauntletsBase
@@ -1012,6 +1037,8 @@
   - type: Armor
     modifiers:
       coefficients: *IS14ArmorMagnate
+  - type: ModsuitPart
+    maxIntegrity: 400
 
 - type: entity
   parent: IS14ModsuitPartBootsBase
@@ -1026,6 +1053,8 @@
   - type: Armor
     modifiers:
       coefficients: *IS14ArmorMagnate
+  - type: ModsuitPart
+    maxIntegrity: 400
 
 - type: entity
   parent: IS14ModsuitControlBase
