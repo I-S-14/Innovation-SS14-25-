@@ -1,0 +1,104 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+#
+# Три узла в Industrial. До этого все 35 рецептов лежали в статическом паке и
+# печатались с первой минуты, из-за чего синдикатский модуль стоил столько же
+# усилий, сколько фонарик.
+#
+# Тему открывает обшивка, а не костюм: каркасы печатаются с первой минуты и одни
+# на всех, так что узел покупает именно право собрать МОД этой специальности.
+# Ядер тут нет — их наука не делает вовсе, они приходят из карго.
+#
+# Позиции подобраны в свободных клетках слева от ветки утилизаторов; ветка
+# растёт вниз-влево и ни на что существующее не наезжает.
+
+- type: technology
+  id: IS14ModsuitTechnology
+  name: research-technology-is14-modsuit
+  icon:
+    sprite: _IS14/Clothing/Modsuits/engineering.rsi
+    state: control
+  discipline: Industrial
+  tier: 1
+  cost: 7500
+  position: -1,-4
+  technologyPrerequisites:
+  - SalvageEquipment
+  recipeUnlocks:
+  - IS14ModsuitPlatingEngineering
+  - IS14ModsuitPlatingAtmospheric
+  - IS14ModuleStorageLarge
+  - IS14ModuleRadProtection
+  - IS14ModuleThermalRegulator
+  - IS14ModuleWeldingProtection
+  - IS14ModuleMagboots
+  - IS14ModuleNoSlip
+  - IS14ModuleGps
+  - IS14ModuleTrayScanner
+  - IS14ModuleAtmosphericsSmall
+  - IS14ModuleMouthhole
+  - IS14ModsuitPlatingLoader
+  - IS14ModuleCleaner
+  - IS14ModuleMegaphone
+
+- type: technology
+  id: IS14ModsuitSpecialization
+  name: research-technology-is14-modsuit-specialization
+  icon:
+    sprite: _IS14/Clothing/Modsuits/medical.rsi
+    state: control
+  discipline: Industrial
+  tier: 2
+  cost: 12500
+  position: -1,-5
+  technologyPrerequisites:
+  - IS14ModsuitTechnology
+  recipeUnlocks:
+  - IS14ModsuitPlatingMedical
+  - IS14ModsuitPlatingSecurity
+  - IS14ModsuitPlatingMining
+  - IS14ModsuitPlatingResearch
+  - IS14ModsuitPlatingCorpsman
+  - IS14ModsuitPlatingCosmohonk
+  - IS14ModsuitPlatingAsteroid
+  - IS14ModuleHealthAnalyzer
+  - IS14ModuleDefibrillator
+  - IS14ModuleVisorMedical
+  - IS14ModuleVisorSecurity
+  - IS14ModuleVisorDiagnostic
+  - IS14ModuleDrill
+  - IS14ModuleOreBag
+  - IS14ModulePepper
+  - IS14ModuleConstructor
+  - IS14ModuleCrewMonitor
+  - IS14ModuleKineticCharge
+  - IS14ModuleDnaLock
+  - IS14ModuleHolster
+  - IS14ModuleInjector
+  - IS14ModuleVisorThermal
+
+- type: technology
+  id: IS14ModsuitAdvanced
+  name: research-technology-is14-modsuit-advanced
+  icon:
+    sprite: _IS14/Objects/Modsuit/construction.rsi
+    state: core-plasma
+  discipline: Industrial
+  tier: 3
+  cost: 20000
+  position: -2,-6
+  technologyPrerequisites:
+  - IS14ModsuitSpecialization
+  recipeUnlocks:
+  - IS14ModsuitPlatingMagnate
+  - IS14ModsuitPlatingRescue
+  - IS14ModsuitPlatingSafeguard
+  - IS14ModsuitPlatingAdvanced
+  - IS14ModsuitPlatingResponsory
+  - IS14ModsuitPlatingCorporate
+  - IS14ModuleAtmosphericsLarge
+  - IS14ModuleJetpack
+  - IS14ModuleJetpackAdvanced
+  - IS14ModuleEmpShield
+  - IS14ModuleArmorBooster
+  - IS14ModuleCompression
+  - IS14ModuleVisorNight

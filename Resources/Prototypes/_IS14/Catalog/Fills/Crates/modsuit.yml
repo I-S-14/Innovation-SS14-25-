@@ -1,0 +1,153 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+#
+# Ящики с МОДами. До этого файла костюм в раунде мог появиться только из
+# экзокостюмного фабрикатора — то есть почти никогда.
+#
+# В каждом ящике готовый к работе костюм: контроллер, ядро к нему, запасная ячейка
+# и профильные модули. Ядро кладётся явно — сами костюмы больше не появляются с ним
+# внутри, потому что собранный на станции МОД получает то ядро, которое в него
+# поставили руками.
+
+- type: entity
+  parent: CrateEngineeringSecure
+  id: IS14CrateModsuitEngineering
+  name: engineering MOD crate
+  description: A Nakamura Engineering MOD controller, a spare cell and a pair of modules.
+  components:
+  - type: StorageFill
+    contents:
+    - id: IS14ModsuitEngineering
+    - id: IS14ModCoreStandard
+    - id: PowerCellMedium
+    - id: IS14ModuleFlashlight
+    - id: IS14ModuleTrayScanner
+    - id: IS14ModuleAtmosphericsSmall
+
+- type: entity
+  parent: CrateEngineeringSecure
+  id: IS14CrateModsuitAtmospheric
+  name: atmospherics MOD crate
+  description: An atmospherics MOD controller with a large bottle and a thermal regulator.
+  components:
+  - type: StorageFill
+    contents:
+    - id: IS14ModsuitAtmospheric
+    - id: IS14ModCoreStandard
+    - id: PowerCellMedium
+    - id: IS14ModuleAtmosphericsLarge
+    - id: IS14ModuleThermalRegulator
+
+- type: entity
+  parent: CrateMedicalSecure
+  id: IS14CrateModsuitMedical
+  name: medical MOD crate
+  description: A medical MOD controller with an analyser and a defibrillator module.
+  components:
+  - type: StorageFill
+    contents:
+    - id: IS14ModsuitMedical
+    - id: IS14ModCoreStandard
+    - id: PowerCellMedium
+    - id: IS14ModuleHealthAnalyzer
+    - id: IS14ModuleDefibrillator
+    - id: IS14ModuleVisorMedical
+
+- type: entity
+  parent: CrateSecgear
+  id: IS14CrateModsuitSecurity
+  name: security MOD crate
+  description: A security MOD controller with a visor, armour booster and pepper launcher.
+  components:
+  - type: StorageFill
+    contents:
+    - id: IS14ModsuitSecurity
+    - id: IS14ModCoreStandard
+    - id: PowerCellMedium
+    - id: IS14ModuleVisorSecurity
+    - id: IS14ModuleArmorBooster
+    - id: IS14ModulePepper
+
+- type: entity
+  parent: CrateEngineeringSecure
+  id: IS14CrateModsuitMining
+  name: mining MOD crate
+  description: A mining MOD controller with a drill, an ore bag and a GPS.
+  components:
+  - type: StorageFill
+    contents:
+    - id: IS14ModsuitMining
+    - id: IS14ModCoreStandard
+    - id: PowerCellMedium
+    - id: IS14ModuleDrill
+    - id: IS14ModuleOreBag
+    - id: IS14ModuleGps
+
+- type: entity
+  parent: CrateScienceSecure
+  id: IS14CrateModsuitResearch
+  name: research MOD crate
+  description: A research MOD controller with a diagnostic visor and an EMP shield.
+  components:
+  - type: StorageFill
+    contents:
+    - id: IS14ModsuitResearch
+    - id: IS14ModCoreStandard
+    - id: PowerCellMedium
+    - id: IS14ModuleVisorDiagnostic
+    - id: IS14ModuleEmpShield
+
+# Костюм без специализации — то, что берут, когда нужен просто скафандр,
+# который потом соберут под себя.
+- type: entity
+  parent: CrateInternals
+  id: IS14CrateModsuitStandard
+  name: MOD crate
+  description: A plain MOD controller with a spare cell. Everything else is up to you.
+  components:
+  - type: StorageFill
+    contents:
+    - id: IS14ModsuitStandard
+    - id: IS14ModCoreStandard
+    - id: PowerCellMedium
+
+# Ядро — единственная часть МОДа, которую станция не производит. Наука печатает
+# оболочку, но запустить её нечем, пока снабжение не привезёт вот это.
+- type: entity
+  parent: CrateEngineeringSecure
+  id: IS14CrateModsuitCoreStandard
+  name: MOD core crate
+  description: Two standard MOD cores. Fit a power cell and the suit lives.
+  components:
+  - type: StorageFill
+    contents:
+    - id: IS14ModCoreStandard
+      amount: 2
+    - id: PowerCellMedium
+      amount: 2
+
+- type: entity
+  parent: CrateEngineeringSecure
+  id: IS14CrateModsuitCores
+  name: MOD plasma core crate
+  description: A plasma core and a spare standard core, for suits that outlive their batteries.
+  components:
+  - type: StorageFill
+    contents:
+    - id: IS14ModCorePlasma
+    - id: IS14ModCoreStandard
+    - id: PowerCellHigh
+
+- type: entity
+  parent: CrateGenericSteel
+  id: IS14CrateModsuitModules
+  name: MOD module crate
+  description: An assortment of general-purpose MOD modules.
+  components:
+  - type: StorageFill
+    contents:
+    - id: IS14ModuleFlashlight
+    - id: IS14ModuleStorage
+    - id: IS14ModuleMagboots
+    - id: IS14ModuleNoSlip
+    - id: IS14ModuleThermalRegulator
+    - id: IS14ModuleVisorNight

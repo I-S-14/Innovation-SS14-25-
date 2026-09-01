@@ -1,0 +1,49 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+
+# Заряд МОДа в строке алертов носителя. Категория та же, что у боргов и ИИ:
+# у одного существа батарея всё равно одна, и две иконки подряд только мешают.
+#
+# clientHandled: false — в отличие от борга клиент не считает заряд шасси сам,
+# расход крутится только на сервере (ChassisPowerSystem.Update), поэтому алерт
+# приезжает состоянием.
+- type: alert
+  id: IS14ModsuitCharge
+  category: Battery
+  icons:
+  - sprite: /Textures/Interface/Alerts/battery.rsi
+    state: battery0
+  - sprite: /Textures/Interface/Alerts/battery.rsi
+    state: battery1
+  - sprite: /Textures/Interface/Alerts/battery.rsi
+    state: battery2
+  - sprite: /Textures/Interface/Alerts/battery.rsi
+    state: battery3
+  - sprite: /Textures/Interface/Alerts/battery.rsi
+    state: battery4
+  - sprite: /Textures/Interface/Alerts/battery.rsi
+    state: battery5
+  - sprite: /Textures/Interface/Alerts/battery.rsi
+    state: battery6
+  - sprite: /Textures/Interface/Alerts/battery.rsi
+    state: battery7
+  - sprite: /Textures/Interface/Alerts/battery.rsi
+    state: battery8
+  - sprite: /Textures/Interface/Alerts/battery.rsi
+    state: battery9
+  - sprite: /Textures/Interface/Alerts/battery.rsi
+    state: battery10
+  name: alerts-is14-modsuit-charge-name
+  description: alerts-is14-modsuit-charge-desc
+  minSeverity: 0
+  maxSeverity: 10
+  clientHandled: false
+
+- type: alert
+  id: IS14ModsuitChargeNone
+  category: Battery
+  icons:
+  - sprite: /Textures/Interface/Alerts/battery.rsi
+    state: battery-none
+  name: alerts-is14-modsuit-nocharge-name
+  description: alerts-is14-modsuit-nocharge-desc
+  clientHandled: false

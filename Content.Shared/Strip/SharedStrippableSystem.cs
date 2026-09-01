@@ -2,6 +2,7 @@
 
 using System.Linq;
 using Content.Shared._Goobstation.Heretic.Components;
+using Content.Shared._IS14.Strip; //IS14-change
 using Content.Shared.Administration.Logs;
 using Content.Shared.CombatMode;
 using Content.Shared.Cuffs;
@@ -109,6 +110,20 @@ public abstract class SharedStrippableSystem : EntitySystem
 
         if (HasComp<StripMenuInvisibleComponent>(held)) // Goobstation
             return;
+
+        //IS14-change start
+        // Something held aimed at a filled slot can mean "use this on that" rather than
+        // "take that off them". Nothing subscribes by default, so every other item in the
+        // game strips exactly as it did before.
+        if (hasEnt && _handsSystem.GetActiveItem((user, userHands)) is { } tool)
+        {
+            var interactEv = new StrippedItemInteractUsingEvent(user, tool, strippable.Owner, args.Slot);
+            RaiseLocalEvent(held!.Value, ref interactEv);
+
+            if (interactEv.Handled)
+                return;
+        }
+        //IS14-change end
 
         if (_handsSystem.GetActiveItem((user, userHands)) is { } activeItem && !hasEnt)
             StartStripInsertInventory((user, userHands), strippable.Owner, activeItem, args.Slot);
@@ -350,6 +365,18 @@ public abstract class SharedStrippableSystem : EntitySystem
     {
         if (!CanStripRemoveInventory(user, target, item, slot))
             return;
+
+        //IS14-change start: some worn gear is owned by something else on the body. MOD
+        // plating folds back into its own suit instead of coming off into the stripper's
+        // hands, and it has to be asked before the unequip rather than after — the suit
+        // moves the piece itself, and a half-finished unequip underneath it would leave
+        // the plating on the floor.
+        var removed = new StrippedItemRemovedEvent(user, target, slot);
+        RaiseLocalEvent(item, ref removed);
+
+        if (removed.Handled)
+            return;
+        //IS14-change end
 
         if (!_inventorySystem.TryUnequip(user, target, slot, triggerHandContact: true))
             return;

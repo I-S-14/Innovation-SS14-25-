@@ -1,0 +1,137 @@
+<!--
+SPDX-FileCopyrightText: 2026 IS14
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<controls:FancyWindow
+    xmlns="https://spacestation14.io"
+    xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
+    xmlns:cust="clr-namespace:Content.Client._IS14.Controls"
+    Title="{Loc 'chassis-ui-title'}"
+    SetSize="900 700"
+    MinSize="820 620">
+
+    <PanelContainer Name="Backdrop" HorizontalExpand="True" VerticalExpand="True">
+        <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True" Margin="8">
+
+            <!-- Identification strip: what you are wearing, who is wearing it, what state it is in -->
+            <PanelContainer Name="HeaderPanel" HorizontalExpand="True">
+                <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="8 6">
+                    <SpriteView Name="ChassisIcon" SetSize="48 48" VerticalAlignment="Center" />
+                    <BoxContainer Orientation="Vertical" HorizontalExpand="True" Margin="10 0 0 0" VerticalAlignment="Center">
+                        <Label Name="SuitNameLabel" Text="—" StyleClasses="LabelHeading" ClipText="True" />
+                        <Label Name="WearerLabel" Text="—" StyleClasses="LabelSubText" />
+                    </BoxContainer>
+                    <BoxContainer Name="ChipsContainer" Orientation="Horizontal" VerticalAlignment="Center" />
+                    <BoxContainer Name="ActionsContainer" Orientation="Horizontal" VerticalAlignment="Center"
+                                  Margin="10 0 0 0" />
+                </BoxContainer>
+            </PanelContainer>
+
+            <BoxContainer Orientation="Horizontal" HorizontalExpand="True" VerticalExpand="True" Margin="0 8 0 0">
+
+                <!-- Shell: the suit laid out the way it sits on a body -->
+                <BoxContainer Orientation="Vertical" MinWidth="332" Margin="0 0 8 0">
+
+                    <PanelContainer Name="DollPanel" HorizontalExpand="True">
+                        <BoxContainer Orientation="Vertical" HorizontalExpand="True" Margin="8">
+                            <Label Name="ShellHeading" Text="{Loc 'chassis-ui-shell'}" StyleClasses="LabelKeyText" />
+                            <GridContainer Name="DollGrid" Columns="3" HSeparationOverride="4" VSeparationOverride="4"
+                                           HorizontalAlignment="Center" Margin="0 6 0 0" />
+                            <BoxContainer Name="ExtraPartsContainer" Orientation="Vertical" HorizontalExpand="True" />
+                        </BoxContainer>
+                    </PanelContainer>
+
+                    <!-- Expands with whatever tile is selected above -->
+                    <PanelContainer Name="DetailPanel" HorizontalExpand="True" VerticalExpand="True" Margin="0 8 0 0">
+                        <ScrollContainer HorizontalExpand="True" VerticalExpand="True">
+                            <BoxContainer Name="DetailContainer" Orientation="Vertical" HorizontalExpand="True" Margin="8" />
+                        </ScrollContainer>
+                    </PanelContainer>
+
+                </BoxContainer>
+
+                <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True">
+
+                    <!-- Power plant, and the bottle beside it -->
+                    <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
+                    <PanelContainer Name="PowerPanel" HorizontalExpand="True">
+                        <BoxContainer Orientation="Vertical" HorizontalExpand="True" Margin="8">
+
+                            <Label Text="{Loc 'chassis-ui-power'}" StyleClasses="LabelKeyText" />
+
+                            <!-- Cell above, readout below: a battery is a tall thing, and the numbers
+                                 belong under it the way they do on the cell itself. -->
+                            <cust:BatteryGauge Name="Battery" HorizontalAlignment="Center" Margin="0 6 0 0" />
+                            <BoxContainer Orientation="Vertical" HorizontalExpand="True" Margin="0 6 0 0">
+                                <Label Name="ChargePercentLabel" Text="—" Align="Center" StyleClasses="LabelHeading" />
+                                <Label Name="ChargeLabel" Text="—" Align="Center" StyleClasses="LabelSubText" />
+                                <Label Name="CoreLabel" Text="—" Align="Center" StyleClasses="LabelSubText" />
+                            </BoxContainer>
+
+                            <!-- What the installed core offers: a cell to pull, a hopper to fill. -->
+                            <BoxContainer Name="CoreControls" Orientation="Vertical" HorizontalExpand="True"
+                                          Margin="0 6 0 0" />
+
+                        </BoxContainer>
+                    </PanelContainer>
+
+                    <PanelContainer Name="TankPanel" Margin="8 0 0 0" MinWidth="240">
+                        <BoxContainer Orientation="Vertical" Margin="8" HorizontalExpand="True">
+                            <Label Text="{Loc 'chassis-ui-tank'}" StyleClasses="LabelKeyText" />
+
+                            <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="0 4 0 0">
+                                <cust:PressureGauge Name="Tank" VerticalAlignment="Center" />
+                                <BoxContainer Orientation="Vertical" HorizontalExpand="True" Margin="8 0 0 0"
+                                              VerticalAlignment="Center">
+                                    <Label Name="TankPressureLabel" Text="—" StyleClasses="LabelHeading" />
+                                    <Label Name="TankTemperatureLabel" Text="—" StyleClasses="LabelSubText" />
+                                    <BoxContainer Name="TankGasContainer" Orientation="Vertical" HorizontalExpand="True"
+                                                  Margin="0 2 0 0" />
+                                </BoxContainer>
+                            </BoxContainer>
+
+                            <BoxContainer Name="TankSealRow" Orientation="Horizontal" Margin="0 4 0 0" />
+                            <Label Name="TankContentsLabel" Text="—" StyleClasses="LabelSubText" Margin="0 2 0 0" />
+                            <!-- Stacked, not side by side: "Open valve" does not fit in half of a
+                                 panel this narrow, and a clipped verb is a mystery button. -->
+                            <BoxContainer Name="TankControls" Orientation="Vertical" HorizontalExpand="True"
+                                          Margin="0 4 0 0" />
+                        </BoxContainer>
+                    </PanelContainer>
+                    </BoxContainer>
+
+                    <!-- Module bay -->
+                    <PanelContainer Name="ModulesPanel" HorizontalExpand="True" VerticalExpand="True" Margin="0 8 0 0">
+                        <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True" Margin="8">
+
+                            <!-- The budget belongs next to the things that spend it, not next to the battery. -->
+                            <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
+                                <Label Text="{Loc 'chassis-ui-modules'}" StyleClasses="LabelKeyText"
+                                       VerticalAlignment="Center" />
+                                <Label Name="ModulesCountLabel" Text="" StyleClasses="LabelSubText"
+                                       Margin="6 0 0 0" HorizontalExpand="True" VerticalAlignment="Center" />
+                                <cust:SegmentBar Name="Complexity" MinWidth="210" VerticalAlignment="Center" />
+                                <Label Name="ComplexityLabel" Text="—" Margin="6 0 2 0" Align="Right"
+                                       StyleClasses="LabelSubText" VerticalAlignment="Center" />
+                                <BoxContainer Name="ComplexityIconBox" Orientation="Horizontal"
+                                              VerticalAlignment="Center" />
+                            </BoxContainer>
+
+                            <!-- HScrollEnabled must stay off: a scroll container that can scroll sideways measures
+                                 its children with infinite width, and text that is never told how much room it
+                                 has never wraps. -->
+                            <ScrollContainer HorizontalExpand="True" VerticalExpand="True" HScrollEnabled="False" Margin="0 6 0 0">
+                                <BoxContainer Name="ModulesContainer" Orientation="Vertical" HorizontalExpand="True" />
+                            </ScrollContainer>
+
+                        </BoxContainer>
+                    </PanelContainer>
+
+                </BoxContainer>
+            </BoxContainer>
+
+        </BoxContainer>
+    </PanelContainer>
+</controls:FancyWindow>

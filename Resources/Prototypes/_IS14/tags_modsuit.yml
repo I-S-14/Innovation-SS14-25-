@@ -1,0 +1,28 @@
+- type: Tag
+  id: IS14ModsuitVisor
+
+- type: Tag
+  id: IS14ModsuitStorage
+
+- type: Tag
+  id: IS14ModsuitTank
+
+# Отдельно от IS14ModsuitStorage: рудный мешок уживается с обычными отсеками,
+# но не со следующим рудным мешком — например бэ-эс версией.
+- type: Tag
+  id: IS14ModsuitOreStorage
+
+# Сборка МОДа. Граф сборки различает детали по тегам: шаг вставки умеет
+# проверить тег, но не тип прототипа, а шлем от ботинок отличать необходимо.
+
+- type: Tag
+  id: IS14ModsuitFrameHelmet
+
+- type: Tag
+  id: IS14ModsuitFrameChestplate
+
+- type: Tag
+  id: IS14ModsuitFrameGauntlets
+
+- type: Tag
+  id: IS14ModsuitFrameBoots

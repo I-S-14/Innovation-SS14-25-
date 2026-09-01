@@ -1,0 +1,108 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+#
+# Цены выставлены выше отдельного скафандра: МОД — это скафандр, броня и набор
+# инструментов сразу, и заказ его через карго должен быть решением, а не привычкой.
+# Дешевле по-прежнему собрать самим.
+#
+# Ядра — отдельная статья и единственная безальтернативная: фабрикатор их не печатает,
+# так что оболочка от науки без заказа отсюда так и останется оболочкой.
+
+- type: cargoProduct
+  id: IS14ModsuitEngineeringOrder
+  icon:
+    sprite: _IS14/Clothing/Modsuits/engineering.rsi
+    state: control
+  product: IS14CrateModsuitEngineering
+  cost: 6000
+  category: cargoproduct-category-name-engineering
+  group: market
+
+- type: cargoProduct
+  id: IS14ModsuitAtmosphericOrder
+  icon:
+    sprite: _IS14/Clothing/Modsuits/atmospheric.rsi
+    state: control
+  product: IS14CrateModsuitAtmospheric
+  cost: 6500
+  category: cargoproduct-category-name-atmospherics
+  group: market
+
+- type: cargoProduct
+  id: IS14ModsuitMedicalOrder
+  icon:
+    sprite: _IS14/Clothing/Modsuits/medical.rsi
+    state: control
+  product: IS14CrateModsuitMedical
+  cost: 7000
+  category: cargoproduct-category-name-medical
+  group: market
+
+- type: cargoProduct
+  id: IS14ModsuitSecurityOrder
+  icon:
+    sprite: _IS14/Clothing/Modsuits/security.rsi
+    state: control
+  product: IS14CrateModsuitSecurity
+  cost: 8000
+  category: cargoproduct-category-name-armory
+  group: market
+
+- type: cargoProduct
+  id: IS14ModsuitMiningOrder
+  icon:
+    sprite: _IS14/Clothing/Modsuits/mining.rsi
+    state: control
+  product: IS14CrateModsuitMining
+  cost: 6500
+  category: cargoproduct-category-name-cargo
+  group: market
+
+- type: cargoProduct
+  id: IS14ModsuitResearchOrder
+  icon:
+    sprite: _IS14/Clothing/Modsuits/research.rsi
+    state: control
+  product: IS14CrateModsuitResearch
+  cost: 6500
+  category: cargoproduct-category-name-science
+  group: market
+
+- type: cargoProduct
+  id: IS14ModsuitStandardOrder
+  icon:
+    sprite: _IS14/Clothing/Modsuits/standard.rsi
+    state: control
+  product: IS14CrateModsuitStandard
+  cost: 4500
+  category: cargoproduct-category-name-engineering
+  group: market
+
+- type: cargoProduct
+  id: IS14ModsuitCoreStandardOrder
+  icon:
+    sprite: _IS14/Objects/Modsuit/construction.rsi
+    state: core-standard
+  product: IS14CrateModsuitCoreStandard
+  cost: 1800
+  category: cargoproduct-category-name-engineering
+  group: market
+
+- type: cargoProduct
+  id: IS14ModsuitCoresOrder
+  icon:
+    sprite: _IS14/Objects/Modsuit/construction.rsi
+    state: core-plasma
+  product: IS14CrateModsuitCores
+  cost: 3500
+  category: cargoproduct-category-name-engineering
+  group: market
+
+- type: cargoProduct
+  id: IS14ModsuitModulesOrder
+  icon:
+    sprite: _IS14/Objects/Modsuit/modules.rsi
+    state: flashlight
+  product: IS14CrateModsuitModules
+  cost: 3000
+  category: cargoproduct-category-name-engineering
+  group: market

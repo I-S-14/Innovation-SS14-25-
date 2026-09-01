@@ -1,0 +1,145 @@
+# Железо модулей-предметов.
+#
+# Отдельные прототипы нужны, чтобы в руке было видно: это выдвижная часть МОД-костюма,
+# а не подобранный со стола инструмент. Иконку берём у самого модуля — с проводами и
+# креплениями, — а вот спрайты «в руке» и замах остаются от исходного предмета: слой
+# поверх иконки ломал и то и другое (анимация удара копирует спрайт оружия целиком).
+#
+# Принадлежность костюму дополнительно помечается значком поверх слота руки,
+# см. ChassisDeviceBadgeSystem.
+
+- type: entity
+  parent: HandheldHealthAnalyzer
+  id: IS14ModsuitHealthAnalyzer
+  # Разворачивается модулем, руками его брать неоткуда.
+  categories: [ HideSpawnMenu ]
+  name: MOD health analyzer
+  description: A scanning suite that folds out of a MOD suit gauntlet. It answers to the suit, not to you.
+  components:
+  # Список слоёв, а не state: у родителя объявлены layers, и одиночный state рядом
+  # с ними движок просто игнорирует.
+  - type: Sprite
+    sprite: _IS14/Objects/Modsuit/modules.rsi
+    layers:
+    - state: health
+  - type: Item
+    sprite: Objects/Specific/Medical/healthanalyzer.rsi
+    heldPrefix: analyzer
+    storedRotation: -90
+
+- type: entity
+  parent: MiningDrillDiamond
+  id: IS14ModsuitMiningDrill
+  # Разворачивается модулем, руками его брать неоткуда.
+  categories: [ HideSpawnMenu ]
+  name: MOD drill
+  description: A diamond-tipped drill that folds out of a MOD suit gauntlet. It answers to the suit, not to you.
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Modsuit/modules.rsi
+    state: drill
+  - type: Item
+    sprite: Objects/Tools/handdrill.rsi
+    storedRotation: -90
+
+- type: entity
+  parent: DefibrillatorOneHandedUnpowered
+  id: IS14ModsuitDefibrillator
+  # Разворачивается модулем, руками его брать неоткуда.
+  categories: [ HideSpawnMenu ]
+  name: MOD defibrillator
+  description: Paddles that fold out of a MOD suit gauntlet. They answer to the suit, not to you.
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Modsuit/modules.rsi
+    layers:
+    - state: defibrillator
+  - type: Item
+    sprite: Objects/Specific/Medical/defib.rsi
+    storedRotation: -90
+  # Электроды держат двумя руками. Если вторая занята, модуль просто не развернётся.
+  - type: MultiHandedItem
+
+- type: entity
+  parent: RCD
+  id: IS14ModsuitRcd
+  # Разворачивается модулем, руками его брать неоткуда.
+  categories: [ HideSpawnMenu ]
+  name: MOD constructor
+  description: A construction head that folds out of a MOD suit gauntlet. The suit spins its matter back up on its own.
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Modsuit/modules.rsi
+    state: constructor
+  - type: Item
+    sprite: Objects/Tools/rcd.rsi
+    storedRotation: -90
+  # Матрица костюма восстанавливает заряд сама: снабжать модуль картриджами
+  # означало бы носить с собой то, ради чего модуль и ставят.
+  - type: LimitedCharges
+    maxCharges: 30
+  - type: AutoRecharge
+    rechargeDuration: 8
+
+# Само облако. Белый вариант читался как пар из трубы; красный сразу говорит, что это
+# не туман, а чей-то костюм только что ответил.
+- type: entity
+  parent: TearGasSmokeWhite
+  id: IS14ModsuitPepperSmoke
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    color: "#E05252"
+
+# Облако перцового модуля: самосрабатывающая сущность, чтобы вся химия жила в YAML,
+# а модуль только ставил её под ноги нападающему.
+- type: entity
+  parent: BaseItem
+  id: IS14ModsuitPepperBurst
+  name: pepper burst
+  description: You should not be seeing this.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: Objects/Weapons/Grenades/tear_gas.rsi
+    state: icon
+    visible: false
+  - type: TriggerOnSpawn
+  - type: SmokeOnTrigger
+    duration: 5
+    spreadAmount: 3
+    smokePrototype: IS14ModsuitPepperSmoke
+    solution:
+      reagents:
+      - ReagentId: TearGas
+        Quantity: 15
+  - type: TimedDespawn
+    lifetime: 3
+
+# Развёртываемые приборы новых модулей. Как и остальные, руками их взять неоткуда:
+# модуль достаёт их из костюма и туда же убирает.
+- type: entity
+  parent: SprayBottleSpaceCleaner
+  id: IS14ModsuitCleaner
+  categories: [ HideSpawnMenu ]
+  name: MOD cleaning nozzle
+  description: A nozzle that folds out of a MOD suit gauntlet. Fed from a reservoir in the plating.
+  components:
+  # Только базовый слой: слой заливки от родителя ссылается на состояния его RSI,
+  # которых в модульном атласе нет, а без слоя SolutionContainerVisuals просто молчит.
+  - type: Sprite
+    sprite: _IS14/Objects/Modsuit/modules.rsi
+    layers:
+    - state: cleaner
+
+- type: entity
+  parent: Hypospray
+  id: IS14ModsuitInjector
+  categories: [ HideSpawnMenu ]
+  name: MOD injector
+  description: An injector built into a MOD suit gauntlet. Holds one dose and answers to the suit.
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Modsuit/modules.rsi
+    layers:
+    - state: injector

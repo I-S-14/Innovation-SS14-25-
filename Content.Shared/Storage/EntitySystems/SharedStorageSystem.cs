@@ -46,7 +46,7 @@ using Robust.Shared.Map.Enumerators;
 
 namespace Content.Shared.Storage.EntitySystems;
 
-public abstract class SharedStorageSystem : EntitySystem
+public abstract partial class SharedStorageSystem : EntitySystem //IS14-change: partial, additions live in _IS14/Storage/SharedStorageSystem.IS14.cs
 {
     [Dependency] private   readonly IConfigurationManager _cfg = default!;
     [Dependency] private   readonly IPrototypeManager _prototype = default!;
@@ -1607,7 +1607,7 @@ public abstract class SharedStorageSystem : EntitySystem
     /// <summary>
     /// Updates the occupied grid mask for the entity.
     /// </summary>
-    protected void UpdateOccupied(Entity<StorageComponent> ent)
+    public void UpdateOccupied(Entity<StorageComponent> ent)  //IS14-change: was protected; runtime-granted grids have to rebuild their own mask
     {
         ent.Comp.OccupiedGrid.Clear();
         RemoveOccupied(ent.Comp.Grid, ent.Comp.OccupiedGrid);

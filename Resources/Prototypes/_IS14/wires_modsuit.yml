@@ -1,0 +1,13 @@
+- type: wireLayout
+  id: IS14Modsuit
+  # Пустышки существуют ради цены ошибки: без них рабочие провода угадываются перебором
+  # быстрее, чем костюм успевает ударить током.
+  dummyWires: 2
+  wires:
+  # Два силовых: костюм тянет с любого одного, обрыв обоих вынимает ядро из цепи.
+  - !type:ModsuitPowerWireAction
+  - !type:ModsuitPowerWireAction
+  - !type:ModsuitDeployWireAction
+  - !type:ModsuitSealWireAction
+  - !type:ModsuitShockWireAction
+  - !type:ModsuitInterfaceWireAction

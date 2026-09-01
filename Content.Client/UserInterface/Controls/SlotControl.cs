@@ -12,7 +12,7 @@ using Robust.Shared.Prototypes;
 namespace Content.Client.UserInterface.Controls
 {
     [Virtual]
-    public abstract class SlotControl : Control, IEntityControl
+    public abstract partial class SlotControl : Control, IEntityControl
     {
         public static int DefaultButtonSize = 64;
 
@@ -203,6 +203,7 @@ namespace Content.Client.UserInterface.Controls
                 Visible = false
             });
 
+            IS14InitBadge(); //IS14-change: badge lives in _IS14/UserInterface/SlotControl.IS14.cs
             HighlightTexturePath = "slot_highlight";
             BlockedTexturePath = "blocked";
         }

@@ -123,6 +123,12 @@ public sealed class ActionButton : Control, IEntityControl
             Name = "Small Sprite",
             HorizontalAlignment = HAlignment.Right,
             VerticalAlignment = VAlignment.Bottom,
+            //IS14-change start: без явного размера SpriteView меряет себя по габаритам спрайта,
+            // а у надетой вещи спрайт погашен и бокс пустой — контрол схлопывался в ноль и
+            // угловой значок предмета не рисовался вовсе. У большого вида размер задан явно по
+            // той же причине; здесь его просто забыли. Четверть кнопки — 32x32.
+            SetSize = new Vector2(32, 32),
+            //IS14-change end
             Visible = false,
             OverrideDirection = Direction.South,
         };
@@ -254,6 +260,8 @@ public sealed class ActionButton : Control, IEntityControl
             }
         }
     }
+
+
 
     private void SetActionIcon(Texture? texture)
     {

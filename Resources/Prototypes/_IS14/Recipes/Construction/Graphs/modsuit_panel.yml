@@ -1,0 +1,133 @@
+# Броня технической панели МОД-костюма. Полная аналогия шлюзу: пластина кладётся в
+# открытую панель, приваривается, и снимается ломом (или сваркой, если приварена).
+#
+# Ни один узел не задаёт entity — граф общий для всех МОДов, и подкладка пластины
+# ничего не подменяет, только закрывает проводку.
+- type: constructionGraph
+  id: IS14ModsuitPanel
+  start: mod
+  graph:
+  - node: mod
+    actions:
+    - !type:SetWiresPanelSecurity
+      wiresAccessible: true
+    edges:
+    - to: rodsLoose
+      conditions:
+      - !type:WirePanel {}
+      steps:
+      - material: MetalRod
+        amount: 4
+        doAfter: 2
+
+    - to: steelLoose
+      conditions:
+      - !type:WirePanel {}
+      steps:
+      - material: Steel
+        amount: 2
+        doAfter: 3
+
+    - to: plasteelLoose
+      conditions:
+      - !type:WirePanel {}
+      steps:
+      - material: Plasteel
+        amount: 2
+        doAfter: 4
+
+## Прутья: дешёвая заглушка. Сдирается быстро, но одну попытку перебора стоит.
+  - node: rodsLoose
+    actions:
+    - !type:SetWiresPanelSecurity
+      examine: is14-modsuit-panel-rods
+      wiresAccessible: false
+    edges:
+    - to: mod
+      completed:
+      - !type:GivePrototype
+        prototype: PartRodMetal1
+        amount: 4
+      steps:
+      - tool: Prying
+        doAfter: 2
+
+    - to: rods
+      steps:
+      - tool: Welding
+        doAfter: 2
+
+  - node: rods
+    actions:
+    - !type:SetWiresPanelSecurity
+      examine: is14-modsuit-panel-rods-welded
+      wiresAccessible: false
+    edges:
+    - to: rodsLoose
+      steps:
+      - tool: Welding
+        doAfter: 5
+
+## Сталь: стандарт для служебного костюма.
+  - node: steelLoose
+    actions:
+    - !type:SetWiresPanelSecurity
+      examine: is14-modsuit-panel-steel
+      wiresAccessible: false
+    edges:
+    - to: mod
+      completed:
+      - !type:GivePrototype
+        prototype: SheetSteel1
+        amount: 2
+      steps:
+      - tool: Prying
+        doAfter: 4
+
+    - to: steel
+      steps:
+      - tool: Welding
+        doAfter: 3
+
+  - node: steel
+    actions:
+    - !type:SetWiresPanelSecurity
+      examine: is14-modsuit-panel-steel-welded
+      wiresAccessible: false
+    edges:
+    - to: steelLoose
+      steps:
+      - tool: Welding
+        doAfter: 10
+
+## Пласталь: столько же работы, сколько высокая секретность на двери.
+  - node: plasteelLoose
+    actions:
+    - !type:SetWiresPanelSecurity
+      examine: is14-modsuit-panel-plasteel
+      wiresAccessible: false
+    edges:
+    - to: mod
+      completed:
+      - !type:GivePrototype
+        prototype: SheetPlasteel1
+        amount: 2
+      steps:
+      - tool: Prying
+        doAfter: 6
+
+    - to: plasteel
+      steps:
+      - tool: Welding
+        doAfter: 4
+
+  - node: plasteel
+    actions:
+    - !type:SetWiresPanelSecurity
+      examine: is14-modsuit-panel-plasteel-welded
+      wiresAccessible: false
+    edges:
+    - to: plasteelLoose
+      steps:
+      - tool: Welding
+        doAfter: 15

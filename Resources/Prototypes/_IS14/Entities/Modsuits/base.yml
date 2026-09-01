@@ -1,0 +1,419 @@
+# Базовые прототипы МОД-костюма.
+# Тема = прототип-наследник: переопределяет спрайты частей, броню, лимит сложности и расход.
+
+# ---------------------------------------------------------------- части костюма
+
+- type: entity
+  abstract: true
+  parent: ClothingHeadBase
+  id: IS14ModsuitPartHelmetBase
+  name: MOD helmet
+  description: A helmet piece of a modular suit.
+  components:
+  - type: ModsuitPart
+    slot: head
+    slotFlag: HEAD
+    # Целостность: шлем берёт на себя попадания в голову.
+    maxIntegrity: 250
+    coveredParts:
+    - Head
+    sealPopup: modsuit-seal-helmet
+    unsealPopup: modsuit-unseal-helmet
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.1
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      coolingCoefficient: 0.01
+      heatingCoefficient: 0.01
+  - type: Sprite
+    layers:
+    - state: helmet
+      map: ["enum.ModsuitVisualLayers.Base"]
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.ModsuitVisuals.Sealed:
+        enum.ModsuitVisualLayers.Base:
+          True: { state: helmet-sealed }
+          False: { state: helmet }
+  - type: Clothing
+    equipDelay: 0
+    unequipDelay: 0
+  - type: Item
+    size: Normal
+  # Броня считается только по перечисленным здесь частям тела: без coverage список
+  # коэффициентов не применяется вообще, попадание просто проходит мимо. Поэтому
+  # каждая часть закрывает ровно то, что носит, а темы переопределяют лишь modifiers.
+  - type: Armor
+    coverage:
+    - Head
+    modifiers:
+      coefficients:
+        Blunt: 0.8
+        Slash: 0.8
+        Piercing: 0.8
+        Heat: 0.75
+        Cold: 0.75
+        Shock: 0.75
+        Caustic: 0.75
+
+- type: entity
+  abstract: true
+  parent: ClothingOuterBase
+  id: IS14ModsuitPartChestplateBase
+  name: MOD chestplate
+  description: A chestplate piece of a modular suit.
+  components:
+  - type: ModsuitPart
+    slot: outerClothing
+    slotFlag: OUTERCLOTHING
+    maxIntegrity: 300
+    coveredParts:
+    - Chest
+    - Groin
+    sealPopup: modsuit-seal-chestplate
+    unsealPopup: modsuit-unseal-chestplate
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.1
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      coolingCoefficient: 0.01
+      heatingCoefficient: 0.01
+  - type: Sprite
+    layers:
+    - state: chestplate
+      map: ["enum.ModsuitVisualLayers.Base"]
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.ModsuitVisuals.Sealed:
+        enum.ModsuitVisualLayers.Base:
+          True: { state: chestplate-sealed }
+          False: { state: chestplate }
+  - type: Clothing
+    equipDelay: 0
+    unequipDelay: 0
+  - type: AllowSuitStorage
+  # Нагрудник несёт на себе всю броню и всю механику костюма — в нём ходят медленно.
+  # Модификатор висит на самой части, поэтому убирается вместе с ней: сложенный МОД
+  # лежит в контроллере, вне слотов инвентаря, и в скорость не попадает.
+  - type: ClothingSpeedModifier
+    walkModifier: 0.8
+    sprintModifier: 0.8
+  # Броня — см. шлем: без coverage коэффициенты не применяются.
+  - type: Armor
+    coverage:
+    - Chest
+    - Groin
+    modifiers:
+      coefficients:
+        Blunt: 0.8
+        Slash: 0.8
+        Piercing: 0.8
+        Heat: 0.75
+        Cold: 0.75
+        Shock: 0.75
+        Caustic: 0.75
+
+- type: entity
+  abstract: true
+  parent: ClothingHandsBase
+  id: IS14ModsuitPartGauntletsBase
+  name: MOD gauntlets
+  description: A pair of gauntlets for a modular suit.
+  components:
+  - type: ModsuitPart
+    slot: gloves
+    slotFlag: GLOVES
+    maxIntegrity: 200
+    coveredParts:
+    - FullArms
+    sealPopup: modsuit-seal-gauntlets
+    unsealPopup: modsuit-unseal-gauntlets
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.1
+      lowPressureMultiplier: 1000
+  - type: Sprite
+    layers:
+    - state: gauntlets
+      map: ["enum.ModsuitVisualLayers.Base"]
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.ModsuitVisuals.Sealed:
+        enum.ModsuitVisualLayers.Base:
+          True: { state: gauntlets-sealed }
+          False: { state: gauntlets }
+  - type: Clothing
+    equipDelay: 0
+    unequipDelay: 0
+  # Броня — см. шлем: без coverage коэффициенты не применяются.
+  - type: Armor
+    coverage:
+    - Arm
+    - Hand
+    modifiers:
+      coefficients:
+        Blunt: 0.8
+        Slash: 0.8
+        Piercing: 0.8
+        Heat: 0.75
+        Cold: 0.75
+        Shock: 0.75
+        Caustic: 0.75
+
+- type: entity
+  abstract: true
+  parent: ClothingShoesBase
+  id: IS14ModsuitPartBootsBase
+  name: MOD boots
+  description: A pair of boots for a modular suit.
+  components:
+  - type: ModsuitPart
+    slot: shoes
+    slotFlag: FEET
+    maxIntegrity: 200
+    coveredParts:
+    - FullLegs
+    sealPopup: modsuit-seal-boots
+    unsealPopup: modsuit-unseal-boots
+    sealedComponents:
+    - type: PressureProtection
+      highPressureMultiplier: 0.1
+      lowPressureMultiplier: 1000
+  - type: Sprite
+    layers:
+    - state: boots
+      map: ["enum.ModsuitVisualLayers.Base"]
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.ModsuitVisuals.Sealed:
+        enum.ModsuitVisualLayers.Base:
+          True: { state: boots-sealed }
+          False: { state: boots }
+  - type: Clothing
+    equipDelay: 0
+    unequipDelay: 0
+  # Броня — см. шлем: без coverage коэффициенты не применяются.
+  - type: Armor
+    coverage:
+    - Leg
+    - Foot
+    modifiers:
+      coefficients:
+        Blunt: 0.8
+        Slash: 0.8
+        Piercing: 0.8
+        Heat: 0.75
+        Cold: 0.75
+        Shock: 0.75
+        Caustic: 0.75
+
+# ------------------------------------------------------------- блок управления
+
+- type: entity
+  abstract: true
+  parent: Clothing
+  id: IS14ModsuitControlBase
+  name: MOD control unit
+  description: The control unit of a modular suit. Worn on the back.
+  components:
+  - type: Sprite
+    layers:
+    - state: control
+      map: ["enum.ModsuitVisualLayers.Base"]
+    # Дуга поверх корпуса, когда провод тока взведён. Тот же спрайт, что у решётки под
+    # напряжением, и видно его там же, где на костюм и смотрят — в окне обыска.
+    - state: electrified
+      sprite: Effects/electricity.rsi
+      shader: unshaded
+      visible: false
+      map: ["enum.ElectrifiedLayers.Sparks"]
+  - type: GenericVisualizer
+    visuals:
+      enum.ModsuitVisuals.Sealed:
+        enum.ModsuitVisualLayers.Base:
+          True: { state: control-sealed }
+          False: { state: control }
+      enum.ElectrifiedVisuals.ShowSparks:
+        enum.ElectrifiedLayers.Sparks:
+          True: { visible: True }
+          False: { visible: False }
+  - type: Clothing
+    slots: [ back ]
+  - type: Item
+    size: Ginormous
+  # Ранец на спине мешает всегда, развёрнут костюм или нет: это его и носят.
+  - type: ClothingSpeedModifier
+    walkModifier: 0.95
+    sprintModifier: 0.95
+  - type: Appearance
+
+  # Слой шасси: модули, бюджет сложности, питание.
+  # Beam shape lives here: light modules only switch it on and set colour/radius.
+  # Unlike a handheld torch this light is switched from the suit UI, which is a
+  # server-side message — so the state has to be networked or the client stays dark.
+  - type: PointLight
+    enabled: false
+    mask: /Textures/Effects/LightMasks/cone.png
+    autoRot: true
+    radius: 4.5
+  - type: ModularChassis
+    maxComplexity: 15
+  - type: ChassisPower
+    baseDraw: 0.5
+  - type: ModCoreSlot
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        # Ядро вынимается ломом через открытую панель, а не альт-кликом:
+        # иначе костюм разряжают быстрее, чем успевают заметить.
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+  - type: ContainerContainer
+    containers:
+      chassis-modules: !type:Container
+      modsuit-parts: !type:Container
+      mod-core: !type:ContainerSlot
+
+  # Слой костюма: части, развёртывание, герметизация.
+  - type: ModsuitControl
+  - type: ModsuitActions
+
+  # Wire panel: the screwdriver hands panel state to WiresSystem, and the chassis
+  # mirrors it (see SharedModularChassisSystem.Interaction).
+  - type: WiresPanel
+  - type: Wires
+    boardName: modsuit-wires-board
+    layoutId: IS14Modsuit
+  # Броня панели: прутья, сталь или пласталь поверх проводки — ровно как на шлюзе.
+  # Граф ни одного узла не подменяет сущность, поэтому один и тот же годится всем МОДам.
+  - type: WiresPanelSecurity
+  - type: Construction
+    graph: IS14ModsuitPanel
+    node: mod
+    # У графа нет узла "start", а именно его ищет по умолчанию верба «разобрать» —
+    # и падает на нём. Брони панели она и не касается: пластина снимается ломом.
+    deconstructionTarget: null
+  # Подключение и отключение внутреннего дыхания проходит через эту задержку, и без
+  # записи с этим именем оно молча отказывает — костюм с баллоном обязан её иметь.
+  - type: UseDelay
+    delays:
+      gasTank:
+        length: 1.0
+  - type: ModsuitLock
+  - type: ModsuitSabotage
+  # Контроллер объявляет о себе вслух: взвод защиты и разряд слышны всей комнате, и это
+  # осознанно — ловушка, о которой никто не узнал, наказывает не того, кого надо.
+  - type: Speech
+    speechVerb: Robotic
+  - type: AccessReader
+
+  # E занято хранилищем — интерфейс открывается альт-взаимодействием (Alt+E, альт-клик).
+  # verbOnly убирает его с обычного E, altVerb переносит вербу в альтернативный список.
+  - type: ActivatableUI
+    key: enum.ModularChassisUiKey.Key
+    inHandsOnly: false
+    requiresComplex: false
+    requireActiveHand: false
+    verbOnly: true
+    altVerb: true
+    # Баллон от атмосферного модуля вешает на костюм свою альт-вербу «открыть клапан»,
+    # и на альт-клике она выигрывала у панели. Панель важнее.
+    verbPriority: 10
+  - type: UserInterface
+    interfaces:
+      enum.ModularChassisUiKey.Key:
+        type: ModularChassisBoundUserInterface
+      # Радиалка модулей с экшена. Отдельный ключ, а не режим основного: окно живёт,
+      # пока его не закроют, а кольцо — до первого клика.
+      enum.ModularChassisUiKey.Radial:
+        type: ModularChassisRadialBoundUserInterface
+      # Открывается кнопкой модуля хранения, а не кликом по костюму: клик занят
+      # основным интерфейсом.
+      enum.StorageUiKey.Key:
+        type: StorageBoundUserInterface
+      # Без этой записи панель проводов физически некуда открыть: WiresSystem
+      # ищет ровно этот ключ, и мультитул по открытой панели молча ничего не делал.
+      enum.WiresUiKey.Key:
+        type: WiresBoundUserInterface
+
+# ----------------------------------------------------------------------- ядра
+
+- type: entity
+  parent: BaseItem
+  id: IS14ModCoreStandard
+  name: MOD standard core
+  description: A MOD core running off a swappable power cell.
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Modsuit/construction.rsi
+    state: core-standard
+  - type: Item
+    size: Small
+  - type: ModCore
+  - type: ItemSlots
+    slots:
+      cell_slot:
+        name: power-cell-slot-component-slot-name-default
+        startingItem: PowerCellMedium
+  - type: PowerCellSlot
+    cellSlotId: cell_slot
+  - type: ContainerContainer
+    containers:
+      cell_slot: !type:ContainerSlot
+
+- type: entity
+  parent: BaseItem
+  id: IS14ModCorePlasma
+  name: MOD plasma core
+  description: A sealed core that runs on plasma. Feed it sheets or raw ore — the suit takes either, ore just goes further per unit of effort spent digging it up.
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Modsuit/construction.rsi
+    state: core-plasma
+  - type: Item
+    size: Small
+  - type: ModCore
+  # Собственная батарея, без слота ячейки: это ядро не меняют, а кормят.
+  - type: Battery
+    maxCharge: 4000
+    startingCharge: 1000
+  - type: ModCoreFuel
+    fuel:
+      Plasma: 400
+      PlasmaOre: 150
+  # Бункер: сюда складывают топливо, а ядро само сжигает его по мере надобности.
+  # Что именно сюда влезет, решает таблица топлива выше — второго списка нет.
+  - type: Storage
+    grid:
+    - 0,0,7,1
+    # Без явного предела хранилище берёт предметы на размер меньше себя, а ядро
+    # маленькое — листы и руда не пролезли бы в собственный бункер.
+    maxItemSize: Normal
+  - type: UserInterface
+    interfaces:
+      enum.StorageUiKey.Key:
+        type: StorageBoundUserInterface
+
+- type: entity
+  parent: IS14ModCoreStandard
+  id: IS14ModCoreInfinite
+  name: MOD infinite core
+  description: A core that never needs charging. You should not have this.
+  components:
+  - type: Sprite
+    state: core-infinite
+  - type: ModCore
+    infinite: true
+  - type: ItemSlots
+    slots:
+      cell_slot:
+        name: power-cell-slot-component-slot-name-default

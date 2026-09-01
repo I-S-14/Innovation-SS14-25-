@@ -1,0 +1,970 @@
+# Каталог модулей. Почти всё здесь — чистый YAML поверх библиотеки поведений;
+# собственный C# нужен только там, где механика действительно уникальна.
+
+- type: entity
+  abstract: true
+  parent: BaseItem
+  id: IS14ModuleBase
+  name: MOD module
+  description: A module for a modular suit.
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Modsuit/modules.rsi
+    state: module
+  - type: Item
+    size: Small
+  - type: ChassisModule
+
+# --------------------------------------------------------------------- общие
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleFlashlight
+  name: MOD flashlight module
+  description: A cluster of LEDs built into the suit helmet.
+  components:
+  - type: Sprite
+    state: flashlight
+  - type: ChassisModule
+    kind: Toggleable
+    complexity: 1
+    activeDraw: 0.3
+    requiredSlots:
+    - HEAD
+    activateSound:
+      path: /Audio/Items/flashlight_on.ogg
+    deactivateSound:
+      path: /Audio/Items/flashlight_off.ogg
+  - type: ModuleLight
+    color: "#ffdbad"
+    radius: 4.5
+    # Настраивается в панели: узкий луч в коридор, широкий в зал.
+    minRadius: 2
+    maxRadius: 6
+    energy: 3
+  - type: ModuleWornOverlay
+    rsi: _IS14/Clothing/Modsuits/module_overlays.rsi
+    targetSlot: HEAD
+    stateInactive: light
+    stateActive: light_on
+    unshaded: true
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleStorage
+  name: MOD storage module
+  description: A network of compartments built across the suit surface.
+  components:
+  - type: Sprite
+    state: storage
+  - type: ChassisModule
+    # Кнопка в интерфейсе открывает отсеки; шасси для этого включать не нужно.
+    kind: Usable
+    actionText: chassis-ui-module-open
+    actionIcon: /Textures/Interface/VerbIcons/open.svg.192dpi.png
+    allow: ChassisInactive
+    complexity: 3
+    conflicts:
+    - IS14ModsuitStorage
+  - type: Tag
+    tags:
+    - IS14ModsuitStorage
+  - type: ModuleStorage
+    grid:
+    - 0,0,5,3
+
+- type: entity
+  parent: IS14ModuleStorage
+  id: IS14ModuleStorageLarge
+  name: MOD expanded storage module
+  description: Hidden compartments spread the load so the cargo is barely felt.
+  components:
+  - type: Sprite
+    state: storage_large
+  - type: ChassisModule
+    complexity: 5
+    conflicts:
+    - IS14ModsuitStorage
+  - type: ModuleStorage
+    grid:
+    - 0,0,7,4
+
+# Синдикатское сжатие материи: больше стандарта и не печатается — как и вся
+# кроваво-красная линейка, попадает в раунд только готовым.
+- type: entity
+  parent: [ IS14ModuleStorage, BaseSyndicateContraband ]
+  id: IS14ModuleStorageSyndicate
+  name: MOD syndicate storage module
+  description: Matter compression lifted from somebody else's research. Holds more than the suit has room for, and says where it came from to anyone who looks.
+  components:
+  - type: Sprite
+    state: storage_syndi
+  - type: ChassisModule
+    complexity: 5
+    conflicts:
+    - IS14ModsuitStorage
+  - type: ModuleStorage
+    grid:
+    - 0,0,8,4
+
+# Аномальный карман. Ни рецепта, ни узла исследований: такое не изготавливают.
+- type: entity
+  parent: IS14ModuleStorage
+  id: IS14ModuleStorageHolding
+  name: MOD storage of holding module
+  description: A bluespace pocket sewn into the plating. Weight stops meaning anything once it is inside, and nobody at Nakamura will admit to building it.
+  components:
+  - type: Sprite
+    state: storage_holding
+  - type: ChassisModule
+    complexity: 6
+    conflicts:
+    - IS14ModsuitStorage
+  - type: ModuleStorage
+    grid:
+    - 0,0,9,5
+    maxItemSize: Huge
+
+# Ничего не стоит по сложности и почти ничего не вмещает — тот случай, когда
+# модуль ставят просто потому, что слот всё равно пустой.
+- type: entity
+  parent: IS14ModuleStorage
+  id: IS14ModuleStorageCase
+  name: MOD case storage module
+  description: A flat case clipped to the plating. Free to fit and barely worth the trouble, which is the entire argument for it.
+  components:
+  - type: Sprite
+    state: storage_case
+  - type: ChassisModule
+    complexity: 0
+    conflicts:
+    - IS14ModsuitStorage
+  - type: ModuleStorage
+    grid:
+    - 0,0,3,2
+    maxItemSize: Small
+
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleEmpShield
+  name: MOD EMP shield module
+  description: A screen around the suit's power train. Cuts an induced pulse to a tenth of what it would have taken out of the core, and covers anything else nested in the suit.
+  components:
+  - type: Sprite
+    state: empshield
+  - type: ChassisModule
+    # Экран — это клетка вокруг силовой цепи, а не прибор. Он держит и на
+    # сложенном костюме: ЭМИ-граната прилетает как раз в тот, что выключен.
+    # Заряд при этом тратится только пока костюм работает — обесточенное шасси
+    # вообще ничего не расходует.
+    allow: ChassisInactive
+    complexity: 3
+    idleDraw: 0.15
+  # Не EmpResistance на шасси: импульс прилетает в то, что держит заряд, а это
+  # батарея внутри ядра внутри костюма. Экран отвечает за всё, что внутри него.
+  - type: ModuleEmpShield
+
+# ------------------------------------------------------------------ визоры
+# Все визоры несут один тег, поэтому исключают друг друга, но уживаются
+# с не-визорными модулями зрения.
+
+- type: entity
+  abstract: true
+  parent: IS14ModuleBase
+  id: IS14ModuleVisorBase
+  components:
+  - type: ChassisModule
+    kind: Toggleable
+    complexity: 2
+    activeDraw: 0.15
+    requiredSlots:
+    - HEAD
+    conflicts:
+    - IS14ModsuitVisor
+  - type: Tag
+    tags:
+    - IS14ModsuitVisor
+
+- type: entity
+  parent: IS14ModuleVisorBase
+  id: IS14ModuleVisorMedical
+  name: MOD medical visor module
+  description: Projects medical readouts straight onto the helmet visor.
+  components:
+  - type: Sprite
+    state: medhud_visor
+  - type: ModuleGrantComponents
+    requireActive: true
+    components:
+    - type: ShowHealthBars
+      damageContainers:
+      - Biological
+    - type: ShowHealthIcons
+      damageContainers:
+      - Biological
+
+- type: entity
+  parent: IS14ModuleVisorBase
+  id: IS14ModuleVisorSecurity
+  name: MOD security visor module
+  description: Ties the visor into security databases.
+  components:
+  - type: Sprite
+    state: sechud_visor
+  - type: ModuleGrantComponents
+    requireActive: true
+    components:
+    - type: ShowJobIcons
+    - type: ShowMindShieldIcons
+    - type: ShowCriminalRecordIcons
+
+- type: entity
+  parent: IS14ModuleVisorBase
+  id: IS14ModuleVisorNight
+  name: MOD night visor module
+  description: Amplifies residual light, washing the view green.
+  components:
+  - type: Sprite
+    state: night_visor
+  # toggleAction: null — иначе ПНВ выдаёт собственную кнопку включения, и модуль
+  # оказывается выключателем выключателя. isActive: true — гасится снятием модуля.
+  - type: ModuleGrantComponents
+    requireActive: true
+    components:
+    - type: NightVision
+      toggleAction: null
+      isActive: true
+
+# ---------------------------------------------------------------- инженерия
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleRadProtection
+  name: MOD radiation protection module
+  description: Absorber woven through the chestplate. Cuts the radiation reaching the wearer to a fifth, the same as a dose of potassium iodide, and keeps doing it as long as the suit is sealed.
+  components:
+  - type: Sprite
+    state: radshield
+  - type: ChassisModule
+    complexity: 4
+    idleDraw: 0.15
+    requiredSlots:
+    - OUTERCLOTHING
+  - type: ModuleGrantComponents
+    components:
+    - type: RadiationProtection
+      modifier: PotassiumIodide
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleMagboots
+  name: MOD magnetic stability module
+  description: Powerful electromagnets in the soles.
+  components:
+  - type: Sprite
+    state: magnet
+  - type: ChassisModule
+    kind: Toggleable
+    complexity: 3
+    activeDraw: 0.8
+    requiredSlots:
+    - FEET
+  - type: ModuleGrantComponents
+    requireActive: true
+    components:
+    - type: NoSlip
+  # Даёт статус-иконку, иммунитет к разгерметизационному ветру и отмену невесомости.
+  - type: ModuleMagboots
+  - type: ModuleWornOverlay
+    rsi: _IS14/Clothing/Modsuits/module_overlays.rsi
+    targetSlot: FEET
+    stateActive: magnet
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleThermalRegulator
+  name: MOD thermal regulator module
+  description: Holds the wearer at a comfortable temperature.
+  components:
+  - type: Sprite
+    state: regulator
+  - type: ChassisModule
+    kind: Toggleable
+    complexity: 2
+    activeDraw: 0.5
+    requiredSlots:
+    - OUTERCLOTHING
+  - type: ModuleGrantComponents
+    requireActive: true
+    target: Chassis
+    components:
+    - type: TemperatureProtection
+      coolingCoefficient: 0.005
+      heatingCoefficient: 0.005
+  # Защита решает, как быстро улица доберётся до носителя, а регулятор —
+  # где остановится его собственная температура. Без второго уже перегретый
+  # человек так перегретым и остаётся.
+  - type: ModuleThermalRegulator
+
+# ----------------------------------------------------------------- медицина
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleHealthAnalyzer
+  name: MOD health analyzer module
+  description: A scanning suite that unfolds from the gauntlet.
+  components:
+  - type: Sprite
+    state: health
+  - type: ChassisModule
+    kind: Active
+    complexity: 2
+    useCost: 5
+    requiredSlots:
+    - GLOVES
+  - type: ModuleItem
+    devicePrototype: IS14ModsuitHealthAnalyzer
+  - type: ContainerContainer
+    containers:
+      module-device: !type:ContainerSlot
+
+# ------------------------------------------- модули с наносимым визуалом
+# Состояния берутся из module_overlays.rsi (конвертация mob/mod_modules.dmi).
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleWeldingProtection
+  name: MOD welding protection module
+  description: A polarised holographic overlay across the visor, rated for arc welding and solar eclipses alike.
+  components:
+  - type: Sprite
+    state: welding
+  - type: ChassisModule
+    kind: Toggleable
+    complexity: 2
+    activeDraw: 0.15
+    requiredSlots:
+    - HEAD
+  - type: ModuleGrantComponents
+    requireActive: true
+    components:
+    - type: EyeProtection
+  - type: ModuleWornOverlay
+    rsi: _IS14/Clothing/Modsuits/module_overlays.rsi
+    targetSlot: HEAD
+    stateActive: welding
+    unshaded: true
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleDrill
+  name: MOD drill module
+  description: A diamond-tipped drill that folds out of the gauntlet.
+  components:
+  - type: Sprite
+    state: drill
+  - type: ChassisModule
+    kind: Active
+    complexity: 4
+    useCost: 1.5
+    requiredSlots:
+    - GLOVES
+  - type: ModuleItem
+    devicePrototype: IS14ModsuitMiningDrill
+  - type: ContainerContainer
+    containers:
+      module-device: !type:ContainerSlot
+  - type: ModuleWornOverlay
+    rsi: _IS14/Clothing/Modsuits/module_overlays.rsi
+    targetSlot: GLOVES
+    stateActive: drill
+
+# ============================================================ навигация и HUD
+
+- type: entity
+  parent: IS14ModuleVisorBase
+  id: IS14ModuleVisorDiagnostic
+  name: MOD diagnostic visor module
+  description: Reads the state of synthetic frames straight off the helmet visor.
+  components:
+  - type: Sprite
+    state: diaghud_visor
+  - type: ModuleGrantComponents
+    requireActive: true
+    components:
+    - type: ShowHealthBars
+      damageContainers:
+      - Silicon
+      - Inorganic
+    - type: ShowHealthIcons
+      damageContainers:
+      - Silicon
+      - Inorganic
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleGps
+  name: MOD navigation module
+  description: A positioning set wired into the suit. Reads out wherever you have got to.
+  components:
+  - type: Sprite
+    state: gps
+  - type: ChassisModule
+    kind: Toggleable
+    complexity: 1
+    idleDraw: 0.05
+    activeDraw: 0.4
+    actionText: chassis-ui-module-open
+    actionIcon: /Textures/Interface/VerbIcons/open.svg.192dpi.png
+    allow: ChassisInactive
+  # Координаты видно всегда; карта стоит энергии и гаснет, когда окно закрыли.
+  - type: ModuleGrantComponents
+    target: Chassis
+    components:
+    - type: HandheldGPS
+  - type: ModuleInterface
+    key: enum.StationMapUiKey.Key
+  - type: StationMap
+  - type: UserInterface
+    interfaces:
+      enum.StationMapUiKey.Key:
+        type: StationMapBoundUserInterface
+
+# ================================================================= перемещение
+
+# Гасит нокдаун и оглушение от электродубинки, пока в ядре есть чем платить.
+# Не иммунитет: разряженный костюм ложится так же, как любой другой.
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleShockAbsorber
+  name: MOD shock absorption module
+  description: Dampeners threaded along the frame. A baton still hurts, but the suit takes the jolt that would have put you on the floor — for as long as the core can pay for it.
+  components:
+  - type: Sprite
+    state: no_baton
+  - type: ChassisModule
+    complexity: 2
+    requiredSlots:
+    - OUTERCLOTHING
+  - type: ModuleStunAbsorber
+    cost: 5
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleNoSlip
+  name: MOD gripping treads module
+  description: Micro-treads that bite into whatever the floor has been covered in.
+  components:
+  - type: Sprite
+    state: noslip
+  - type: ChassisModule
+    complexity: 2
+    idleDraw: 0.1
+    requiredSlots:
+    - FEET
+  - type: ModuleGrantComponents
+    components:
+    - type: NoSlip
+
+# ==================================================================== медицина
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleDefibrillator
+  name: MOD defibrillator module
+  description: Paddles that fold out of the gauntlet, charged off the suit's own core.
+  components:
+  - type: Sprite
+    state: defibrillator
+  - type: ChassisModule
+    kind: Active
+    complexity: 5
+    useCost: 25
+    requiredSlots:
+    - GLOVES
+  - type: ModuleItem
+    devicePrototype: IS14ModsuitDefibrillator
+  - type: ContainerContainer
+    containers:
+      module-device: !type:ContainerSlot
+  - type: ModuleWornOverlay
+    rsi: _IS14/Clothing/Modsuits/module_overlays.rsi
+    targetSlot: GLOVES
+    stateActive: defibrillator
+
+# ================================================================= инженерия
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleConstructor
+  name: MOD constructor module
+  description: A rapid construction device built into the gauntlet, fed from the suit.
+  components:
+  - type: Sprite
+    state: constructor
+  - type: ChassisModule
+    kind: Active
+    complexity: 5
+    useCost: 15
+    requiredSlots:
+    - GLOVES
+  - type: ModuleItem
+    devicePrototype: IS14ModsuitRcd
+  - type: ContainerContainer
+    containers:
+      module-device: !type:ContainerSlot
+
+# ================================================================== защита
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleArmorBooster
+  name: MOD armor booster module
+  description: Plating that stiffens on command. While switched on it cuts blunt and slash by a fifth and piercing by fifteen percent, and drains the core doing it.
+  components:
+  - type: Sprite
+    state: armor_booster
+  - type: ChassisModule
+    kind: Toggleable
+    complexity: 6
+    activeDraw: 1.2
+    requiredSlots:
+    - OUTERCLOTHING
+  # На шасси, а не на носителя: броня раздаётся через ретрансляцию по надетому,
+  # а блок управления как раз надет на спине.
+  - type: ModuleGrantComponents
+    requireActive: true
+    target: Chassis
+    components:
+    - type: Armor
+      modifiers:
+        coefficients:
+          Blunt: 0.8
+          Slash: 0.8
+          Piercing: 0.85
+  - type: ModuleWornOverlay
+    rsi: _IS14/Clothing/Modsuits/module_overlays.rsi
+    targetSlot: OUTERCLOTHING
+    stateInactive: armorbooster_off-elite
+    stateActive: armorbooster_on-elite
+
+# ================================================================ атмосферика
+# Баллон живёт на шасси, поэтому от него работают и внутренние дыхание, и джетпак.
+# Компрессор тянет выбранные газы прямо из воздуха вокруг и тратит на это заряд.
+
+- type: entity
+  abstract: true
+  parent: IS14ModuleBase
+  id: IS14ModuleAtmosphericsBase
+  components:
+  - type: ChassisModule
+    complexity: 4
+    idleDraw: 0.1
+    requiredSlots:
+    - OUTERCLOTHING
+    conflicts:
+    - IS14ModsuitTank
+  - type: Tag
+    tags:
+    - IS14ModsuitTank
+
+- type: entity
+  parent: IS14ModuleAtmosphericsBase
+  id: IS14ModuleAtmosphericsSmall
+  name: MOD atmospheric module
+  description: A two-and-a-half-litre bottle and a compressor that fills it from whatever you are standing in. Feeds the suit's internals and gives a jetpack something to push against. Pick which gases it keeps in the module's settings.
+  components:
+  - type: Sprite
+    state: atmospherics
+  - type: ModuleGasTank
+    volume: 2.5
+    filterRate: 0.03
+    filterDraw: 1.5
+
+- type: entity
+  parent: IS14ModuleAtmosphericsBase
+  id: IS14ModuleAtmosphericsLarge
+  name: MOD extended atmospheric module
+  description: The same compressor behind a ten-litre bottle. Four times the walk, twice the complexity, and it will not fit alongside much else.
+  components:
+  - type: Sprite
+    state: atmospherics_large
+  - type: ChassisModule
+    complexity: 8
+    idleDraw: 0.2
+    requiredSlots:
+    - OUTERCLOTHING
+    conflicts:
+    - IS14ModsuitTank
+  - type: ModuleGasTank
+    volume: 10
+    filterRate: 0.06
+    filterDraw: 2.5
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleJetpack
+  name: MOD jetpack module
+  description: Thruster ports along the plating. Burns the suit's own bottle, so it does nothing without an atmospheric module to feed it.
+  components:
+  - type: Sprite
+    state: jetpack
+  - type: ChassisModule
+    kind: Toggleable
+    complexity: 5
+    activeDraw: 0.6
+    requiredSlots:
+    - OUTERCLOTHING
+  # Не ModuleGrantComponents: джетпак — это железо плюс переключатель, а переключатель
+  # обычно приходит хотбар-действием при надевании. Компоненту, появившемуся посреди
+  # раунда, его никто не выдаст, поэтому модуль сам служит этим переключателем.
+  - type: ModuleJetpack
+    moleUsage: 0.0015
+  - type: ModuleWornOverlay
+    rsi: _IS14/Clothing/Modsuits/module_overlays.rsi
+    targetSlot: OUTERCLOTHING
+    stateInactive: jetpack
+    stateActive: jetpack_on
+
+# Та же механика, больше тяга. Сложность не растёт: в обмен идёт не место в
+# костюме, а то, что печатать его позволяют только под конец исследований.
+- type: entity
+  parent: IS14ModuleJetpack
+  id: IS14ModuleJetpackAdvanced
+  name: MOD advanced jetpack module
+  description: Wider ports and a controller that anticipates the drift. Same bottle, noticeably less swearing.
+  components:
+  - type: Sprite
+    state: jetpack_advanced
+  - type: ModuleJetpack
+    # Против базовых 1 / 0.25 / 1.2. Тяга примерно в полтора раза, и столько же
+    # прибавки к торможению — иначе «лучшая управляемость» вышла бы разгоном
+    # в стену. Расход бутылки чуть выше: мощность берётся не из воздуха.
+    moleUsage: 0.002
+    acceleration: 1.5
+    friction: 0.4
+    weightlessModifier: 1.5
+
+
+# =================================================================== хранение
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleOreBag
+  name: MOD ore satchel module
+  description: A satchel of its own that swallows ore and nothing else. Carried by the module rather than the suit, so it sits alongside the ordinary compartments instead of replacing them. Switched on, it drags loose ore off the floor as you walk.
+  components:
+  - type: Sprite
+    state: ore
+  - type: ChassisModule
+    kind: Toggleable
+    allow: ChassisInactive
+    complexity: 2
+    activeDraw: 0.15
+    conflicts:
+    - IS14ModsuitOreStorage
+  - type: Tag
+    tags:
+    - IS14ModsuitOreStorage
+  # Магнит тянет только то, что примет сам мешок: белый список у хранилища один.
+  - type: ModuleMagnet
+    range: 2
+    cost: 5
+  - type: UserInterface
+    interfaces:
+      enum.StorageUiKey.Key:
+        type: StorageBoundUserInterface
+  - type: Dumpable
+  - type: ModuleStorage
+    onChassis: false
+    canDump: true
+    maxItemSize: Normal
+    grid:
+    - 0,0,7,3
+    whitelist:
+      tags:
+      - Ore
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleCompression
+  name: MOD compression module
+  description: Folds the whole assembly down small enough to hang off a belt. The volume has to come from somewhere, so it cannot coexist with compartments.
+  components:
+  - type: Sprite
+    state: plate_compression
+  - type: ChassisModule
+    complexity: 4
+    idleDraw: 0.2
+    conflicts:
+    - IS14ModsuitStorage
+  - type: ModuleClothingSlots
+    slots: BELT
+
+# ================================================================== разведка
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleTrayScanner
+  name: MOD t-ray scanner module
+  description: Sweeps the floor for what was buried under it. Pipes, cables and disposal runs light up through plating.
+  components:
+  - type: Sprite
+    state: tray
+  - type: ChassisModule
+    kind: Toggleable
+    complexity: 2
+    activeDraw: 0.4
+    requiredSlots:
+    - HEAD
+  # Не ModuleGrantComponents: сканер должен висеть на костюме, а не на носителе, и
+  # вместе с ним нужна маска зрения. См. ModuleTrayScannerSystem.
+  - type: ModuleTrayScanner
+    range: 5
+
+# ==================================================================== защита
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModulePepper
+  name: MOD pepper deterrent module
+  description: A shoulder cannister that answers anyone who lays hands on the wearer. Fires on its own, never on command, and needs half a minute to build pressure again.
+  components:
+  - type: Sprite
+    state: pepper_shoulder
+  - type: ChassisModule
+    kind: Toggleable
+    complexity: 3
+    activeDraw: 0.2
+    useCost: 20
+    cooldown: 30
+    requiredSlots:
+    - OUTERCLOTHING
+  - type: ModulePepper
+  - type: ModuleWornOverlay
+    rsi: _IS14/Clothing/Modsuits/module_overlays.rsi
+    targetSlot: OUTERCLOTHING
+    stateActive: pepper
+    stateCooldown: pepper_used
+
+# ================================================================ обитаемость
+# То, что делает костюм местом, в котором можно провести смену, а не только
+# пережить разгерметизацию.
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleMouthhole
+  name: MOD eating apparatus module
+  description: An iris in the faceplate that closes around whatever you push through it. A sealed helmet is otherwise exactly as airtight against a sandwich as against vacuum.
+  components:
+  - type: Sprite
+    state: apparatus
+  - type: ChassisModule
+    kind: Passive
+    complexity: 1
+    # Без запечатанного шлема нечего и открывать.
+    requiredSlots:
+    - HEAD
+  - type: ModuleFaceOpening
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleCrewMonitor
+  name: MOD crew monitor module
+  description: A sensor readout built into the wrist. Shows the suit sensors of everyone still wearing theirs.
+  components:
+  - type: Sprite
+    state: scanner
+  - type: ChassisModule
+    kind: Toggleable
+    complexity: 1
+    idleDraw: 0.05
+    activeDraw: 0.4
+    actionText: chassis-ui-module-open
+    actionIcon: /Textures/Interface/VerbIcons/open.svg.192dpi.png
+    requiredSlots:
+    - GLOVES
+  - type: ModuleInterface
+    key: enum.CrewMonitoringUIKey.Key
+  - type: CrewMonitoringConsole
+  - type: DeviceNetwork
+    deviceNetId: Wireless
+    receiveFrequencyId: CrewMonitor
+  - type: WirelessNetworkConnection
+    range: 500
+  - type: StationLimitedNetwork
+  - type: UserInterface
+    interfaces:
+      enum.CrewMonitoringUIKey.Key:
+        type: CrewMonitoringBoundUserInterface
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleHolster
+  name: MOD holster module
+  description: A magnetic cradle under the arm. Holds one sidearm and nothing else — the suit checks.
+  components:
+  - type: Sprite
+    state: holster
+  - type: ChassisModule
+    # Кнопки нет: кобура — это слот на нагруднике, а не хранилище с интерфейсом.
+    # Слот держится, пока модуль установлен, чтобы оружие доставалось и из
+    # обесточенного МОДа.
+    kind: Passive
+    complexity: 2
+    requiredSlots:
+    - OUTERCLOTHING
+  - type: ModuleSuitSlot
+    part: outerClothing
+    slotId: modsuit-holster
+    slot:
+      name: modsuit-holster-slot
+      # Тот же вайтлист, что у наплечной кобуры: один пистолет и ничего больше.
+      whitelist:
+        tags:
+        - Sidearm
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleKineticCharge
+  name: MOD joint torsion ratchet module
+  description: Ratchets in the joints that bleed a little charge back out of your stride. It pays for the suit standing still, not for what you hang on it.
+  components:
+  - type: Sprite
+    state: joint_torsion
+  - type: ChassisModule
+    kind: Passive
+    complexity: 3
+    requiredSlots:
+    - FEET
+  - type: ModuleKineticCharge
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleDnaLock
+  name: MOD DNA lock module
+  description: A lock keyed to a person instead of a card. An imprinted suit will not unfold for anybody else, which turns a stolen MOD into a rucksack. An EMP wipes the imprint and an emag burns the module out.
+  components:
+  - type: Sprite
+    state: dnalock
+  - type: ChassisModule
+    # Работает и на выключенном костюме: замок, который снимается вместе с
+    # разряженной батареей, не замок.
+    kind: Usable
+    actionText: chassis-ui-module-dna-lock
+    allow: ChassisInactive
+    complexity: 2
+  # Ничего для «эмагуемости» объявлять не надо: GotEmaggedEvent прилетает в цель,
+  # а компонент Emag — это про инструмент, а не про то, что им ломают.
+  - type: ModuleDnaLock
+
+# =============================================================== новый круг
+# Модули на уже существующих поведениях: тепловизор, слот под шапку, папка для
+# бумаг, распылитель, инъектор и громкоговоритель.
+
+- type: entity
+  parent: IS14ModuleVisorBase
+  id: IS14ModuleVisorThermal
+  name: MOD thermal visor module
+  description: Reads heat instead of light, so a body behind a wall is still a body. Washes everything else out, which is the price.
+  components:
+  - type: Sprite
+    state: thermal_visor
+  # Та же оговорка, что у ПНВ: своя кнопка включения превратила бы модуль в
+  # выключатель выключателя, поэтому toggleAction снят, а гасится он снятием модуля.
+  - type: ModuleGrantComponents
+    requireActive: true
+    components:
+    - type: ThermalVision
+      toggleAction: null
+      isActive: true
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleHatHolder
+  name: MOD hat stabiliser module
+  description: A magnetic cradle on the crown of the helmet. A sealed MOD leaves no room for a hat, and some people would rather have the hat.
+  components:
+  - type: Sprite
+    state: hat_holder
+  - type: ChassisModule
+    kind: Passive
+    complexity: 1
+    requiredSlots:
+    - HEAD
+  - type: ModuleSuitSlot
+    part: head
+    slotId: modsuit-hat
+    showContents: true
+    wearableIn: HEAD
+    slot:
+      name: modsuit-hat-slot
+      whitelist:
+        components:
+        - Clothing
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleCleaner
+  name: MOD cleaning module
+  description: A nozzle in the gauntlet and a reservoir of space cleaner behind it. Janitorial work without putting the bucket down.
+  components:
+  - type: Sprite
+    state: cleaner
+  - type: ChassisModule
+    kind: Active
+    complexity: 2
+    useCost: 5
+    requiredSlots:
+    - GLOVES
+  - type: ModuleItem
+    devicePrototype: IS14ModsuitCleaner
+  - type: ContainerContainer
+    containers:
+      module-device: !type:ContainerSlot
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleInjector
+  name: MOD injector module
+  description: An injector that folds out of the wrist. Holds one dose of whatever was put in it, which is one dose more than you will have hands for.
+  components:
+  - type: Sprite
+    state: injector
+  - type: ChassisModule
+    kind: Active
+    complexity: 3
+    useCost: 5
+    requiredSlots:
+    - GLOVES
+  - type: ModuleItem
+    devicePrototype: IS14ModsuitInjector
+  - type: ContainerContainer
+    containers:
+      module-device: !type:ContainerSlot
+
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleMegaphone
+  name: MOD loudhailer module
+  description: Drives the helmet's speaker well past what it was built for. Everything you say arrives across the room whether the room wanted it or not.
+  components:
+  - type: Sprite
+    state: megaphone
+  - type: ChassisModule
+    kind: Toggleable
+    complexity: 2
+    activeDraw: 0.1
+    requiredSlots:
+    - HEAD
+  # Громкоговоритель вешается на носителя, а не на костюм: говорит человек.
+  - type: ModuleGrantComponents
+    requireActive: true
+    components:
+    - type: Loudspeaker
+      isActive: true
+      # Без этого модуль не делает ничего: оба флага влияния по умолчанию
+      # выключены, и обработчик в чате пропускает такой громкоговоритель.
+      affectChat: true
+      speechSounds: Loudspeaker
