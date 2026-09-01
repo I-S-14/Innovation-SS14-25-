@@ -271,6 +271,12 @@
       "name": "tray"
     },
     {
+      "name": "atmospherics"
+    },
+    {
+      "name": "atmospherics_large"
+    },
+    {
       "name": "atrocinator"
     },
     {

@@ -89,6 +89,62 @@
     grid:
     - 0,0,7,4
 
+# Синдикатское сжатие материи: больше стандарта и не печатается — как и вся
+# кроваво-красная линейка, попадает в раунд только готовым.
+- type: entity
+  parent: [ IS14ModuleStorage, BaseSyndicateContraband ]
+  id: IS14ModuleStorageSyndicate
+  name: MOD syndicate storage module
+  description: Matter compression lifted from somebody else's research. Holds more than the suit has room for, and says where it came from to anyone who looks.
+  components:
+  - type: Sprite
+    state: storage_syndi
+  - type: ChassisModule
+    complexity: 5
+    conflicts:
+    - IS14ModsuitStorage
+  - type: ModuleStorage
+    grid:
+    - 0,0,8,4
+
+# Аномальный карман. Ни рецепта, ни узла исследований: такое не изготавливают.
+- type: entity
+  parent: IS14ModuleStorage
+  id: IS14ModuleStorageHolding
+  name: MOD storage of holding module
+  description: A bluespace pocket sewn into the plating. Weight stops meaning anything once it is inside, and nobody at Nakamura will admit to building it.
+  components:
+  - type: Sprite
+    state: storage_holding
+  - type: ChassisModule
+    complexity: 6
+    conflicts:
+    - IS14ModsuitStorage
+  - type: ModuleStorage
+    grid:
+    - 0,0,9,5
+    maxItemSize: Huge
+
+# Ничего не стоит по сложности и почти ничего не вмещает — тот случай, когда
+# модуль ставят просто потому, что слот всё равно пустой.
+- type: entity
+  parent: IS14ModuleStorage
+  id: IS14ModuleStorageCase
+  name: MOD case storage module
+  description: A flat case clipped to the plating. Free to fit and barely worth the trouble, which is the entire argument for it.
+  components:
+  - type: Sprite
+    state: storage_case
+  - type: ChassisModule
+    complexity: 0
+    conflicts:
+    - IS14ModsuitStorage
+  - type: ModuleStorage
+    grid:
+    - 0,0,3,2
+    maxItemSize: Small
+
+
 - type: entity
   parent: IS14ModuleBase
   id: IS14ModuleEmpShield
@@ -377,6 +433,23 @@
 
 # ================================================================= перемещение
 
+# Гасит нокдаун и оглушение от электродубинки, пока в ядре есть чем платить.
+# Не иммунитет: разряженный костюм ложится так же, как любой другой.
+- type: entity
+  parent: IS14ModuleBase
+  id: IS14ModuleShockAbsorber
+  name: MOD shock absorption module
+  description: Dampeners threaded along the frame. A baton still hurts, but the suit takes the jolt that would have put you on the floor — for as long as the core can pay for it.
+  components:
+  - type: Sprite
+    state: no_baton
+  - type: ChassisModule
+    complexity: 2
+    requiredSlots:
+    - OUTERCLOTHING
+  - type: ModuleStunAbsorber
+    cost: 5
+
 - type: entity
   parent: IS14ModuleBase
   id: IS14ModuleNoSlip
@@ -503,7 +576,7 @@
   description: A two-and-a-half-litre bottle and a compressor that fills it from whatever you are standing in. Feeds the suit's internals and gives a jetpack something to push against. Pick which gases it keeps in the module's settings.
   components:
   - type: Sprite
-    state: plasma_stabilizer
+    state: atmospherics
   - type: ModuleGasTank
     volume: 2.5
     filterRate: 0.03
@@ -516,7 +589,7 @@
   description: The same compressor behind a ten-litre bottle. Four times the walk, twice the complexity, and it will not fit alongside much else.
   components:
   - type: Sprite
-    state: plasma_stabilizer
+    state: atmospherics_large
   - type: ChassisModule
     complexity: 8
     idleDraw: 0.2
@@ -553,6 +626,26 @@
     targetSlot: OUTERCLOTHING
     stateInactive: jetpack
     stateActive: jetpack_on
+
+# Та же механика, больше тяга. Сложность не растёт: в обмен идёт не место в
+# костюме, а то, что печатать его позволяют только под конец исследований.
+- type: entity
+  parent: IS14ModuleJetpack
+  id: IS14ModuleJetpackAdvanced
+  name: MOD advanced jetpack module
+  description: Wider ports and a controller that anticipates the drift. Same bottle, noticeably less swearing.
+  components:
+  - type: Sprite
+    state: jetpack_advanced
+  - type: ModuleJetpack
+    # Против базовых 1 / 0.25 / 1.2. Тяга примерно в полтора раза, и столько же
+    # прибавки к торможению — иначе «лучшая управляемость» вышла бы разгоном
+    # в стену. Расход бутылки чуть выше: мощность берётся не из воздуха.
+    moleUsage: 0.002
+    acceleration: 1.5
+    friction: 0.4
+    weightlessModifier: 1.5
+
 
 # =================================================================== хранение
 
@@ -813,31 +906,6 @@
 
 - type: entity
   parent: IS14ModuleBase
-  id: IS14ModuleOrganizer
-  name: MOD organiser module
-  description: A flat compartment behind the chestplate, sized for paperwork and nothing else. The suit refuses to close on anything thicker.
-  components:
-  - type: Sprite
-    state: organizer
-  - type: ChassisModule
-    kind: Usable
-    actionText: chassis-ui-module-open
-    actionIcon: /Textures/Interface/VerbIcons/open.svg.192dpi.png
-    allow: ChassisInactive
-    complexity: 1
-    requiredSlots:
-    - OUTERCLOTHING
-  - type: ModuleStorage
-    grid:
-    - 0,0,3,1
-    maxItemSize: Small
-    whitelist:
-      tags:
-      - Document
-      - Write
-
-- type: entity
-  parent: IS14ModuleBase
   id: IS14ModuleCleaner
   name: MOD cleaning module
   description: A nozzle in the gauntlet and a reservoir of space cleaner behind it. Janitorial work without putting the bucket down.
@@ -896,3 +964,7 @@
     components:
     - type: Loudspeaker
       isActive: true
+      # Без этого модуль не делает ничего: оба флага влияния по умолчанию
+      # выключены, и обработчик в чате пропускает такой громкоговоритель.
+      affectChat: true
+      speechSounds: Loudspeaker

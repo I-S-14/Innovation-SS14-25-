@@ -230,6 +230,241 @@
   - type: ModsuitAssemblyPlating
     result: IS14ModsuitMagnate
 
+
+- type: entity
+  parent: IS14ModsuitPlatingBase
+  id: IS14ModsuitPlatingRescue
+  name: rescue MOD plating
+  description: DeForest plating with the armour the medical model never had. Rated to walk into what it is pulling people out of.
+  components:
+  - type: Sprite
+    state: rescue-plating
+  - type: ModsuitAssemblyPlating
+    result: IS14ModsuitRescue
+
+- type: entity
+  parent: IS14ModsuitPlatingBase
+  id: IS14ModsuitPlatingSafeguard
+  name: safeguard MOD plating
+  description: Apadyne's heaviest shell. No visor glass anywhere on it, which tells you what it expects to meet.
+  components:
+  - type: Sprite
+    state: safeguard-plating
+  - type: ModsuitAssemblyPlating
+    result: IS14ModsuitSafeguard
+
+
+- type: entity
+  parent: IS14ModsuitPlatingBase
+  id: IS14ModsuitPlatingAdvanced
+  name: advanced MOD plating
+  description: Nakamura's all-rounder shell. Thin, fireproof, and built around fitting more inside than it protects.
+  components:
+  - type: Sprite
+    state: advanced-plating
+  - type: ModsuitAssemblyPlating
+    result: IS14ModsuitAdvanced
+
+- type: entity
+  parent: IS14ModsuitPlatingBase
+  id: IS14ModsuitPlatingResponsory
+  name: responsory MOD plating
+  description: Emergency response plating. Heavy, and paired with servos that make the weight somebody else’s problem.
+  components:
+  - type: Sprite
+    state: responsory-plating
+  - type: ModsuitAssemblyPlating
+    result: IS14ModsuitResponsory
+
+- type: entity
+  parent: IS14ModsuitPlatingBase
+  id: IS14ModsuitPlatingCorporate
+  name: corporate MOD plating
+  description: CentCom issue, and it does not pretend otherwise. The best shell the line can produce.
+  components:
+  - type: Sprite
+    state: corporate-plating
+  - type: ModsuitAssemblyPlating
+    result: IS14ModsuitCorporate
+
+- type: entity
+  parent: IS14ModsuitPlatingBase
+  id: IS14ModsuitPlatingCorpsman
+  name: corpsman MOD plating
+  description: Field colours over the DeForest medical shell. Identical underneath.
+  components:
+  - type: Sprite
+    state: corpsman-plating
+  - type: ModsuitAssemblyPlating
+    result: IS14ModsuitCorpsman
+
+- type: entity
+  parent: IS14ModsuitPlatingBase
+  id: IS14ModsuitPlatingAsteroid
+  name: asteroid MOD plating
+  description: The mining shell in a different finish. Scratched the same, just differently coloured.
+  components:
+  - type: Sprite
+    state: asteroid-plating
+  - type: ModsuitAssemblyPlating
+    result: IS14ModsuitAsteroid
+
+
+- type: entity
+  parent: IS14ModsuitPlatingBase
+  id: IS14ModsuitPlatingNinja
+  name: ninja MOD plating
+  description: Spider Clan shell. Nothing about it is meant to be seen, least of all by whoever finds it.
+  components:
+  - type: Sprite
+    state: ninja-plating
+  - type: ModsuitAssemblyPlating
+    result: IS14ModsuitNinja
+
+- type: entity
+  parent: [ IS14ModsuitPlatingBase, BaseSyndicateContraband ]
+  id: IS14ModsuitPlatingInterdyne
+  name: interdyne MOD plating
+  description: Interdyne field shell. Light enough that the servos underneath come out ahead.
+  components:
+  - type: Sprite
+    state: interdyne-plating
+  - type: ModsuitAssemblyPlating
+    result: IS14ModsuitInterdyne
+
+- type: entity
+  parent: [ IS14ModsuitPlatingBase, BaseSyndicateContraband ]
+  id: IS14ModsuitPlatingInfiltrator
+  name: infiltrator MOD plating
+  description: Assault shell for getting inside. Sealed, insulated, and deliberately unremarkable.
+  components:
+  - type: Sprite
+    state: infiltrator-plating
+  - type: ModsuitAssemblyPlating
+    result: IS14ModsuitInfiltrator
+
+- type: entity
+  parent: [ IS14ModsuitPlatingBase, BaseSyndicateContraband ]
+  id: IS14ModsuitPlatingElite
+  name: elite MOD plating
+  description: The heaviest shell the Syndicate fields, and the only one that costs the wearer no speed.
+  components:
+  - type: Sprite
+    state: elite-plating
+  - type: ModsuitAssemblyPlating
+    result: IS14ModsuitElite
+
+- type: entity
+  parent: IS14ModsuitPlatingBase
+  id: IS14ModsuitPlatingApocryphal
+  name: apocryphal MOD plating
+  description: Plating in the shape of plating. Nothing in the catalogue explains where it came from.
+  components:
+  - type: Sprite
+    state: apocryphal-plating
+  - type: ModsuitAssemblyPlating
+    result: IS14ModsuitApocryphal
+
+- type: entity
+  parent: IS14ModsuitPlatingBase
+  id: IS14ModsuitPlatingEnchanted
+  name: enchanted MOD plating
+  description: Shell that was never manufactured. It turns energy aside more readily than matter.
+  components:
+  - type: Sprite
+    state: enchanted-plating
+  - type: ModsuitAssemblyPlating
+    result: IS14ModsuitEnchanted
+
+- type: entity
+  parent: IS14ModsuitPlatingBase
+  id: IS14ModsuitPlatingChrono
+  name: chrono MOD plating
+  description: Timeline shell. Thick, sealed, and with nothing left over inside.
+  components:
+  - type: Sprite
+    state: chrono-plating
+  - type: ModsuitAssemblyPlating
+    result: IS14ModsuitChrono
+
+- type: entity
+  parent: IS14ModsuitPlatingBase
+  id: IS14ModsuitPlatingGlitch
+  name: glitch MOD plating
+  description: The shell is not certain it is there. Neither is anything hitting it.
+  components:
+  - type: Sprite
+    state: glitch-plating
+  - type: ModsuitAssemblyPlating
+    result: IS14ModsuitGlitch
+
+- type: entity
+  parent: IS14ModsuitPlatingBase
+  id: IS14ModsuitPlatingPrototype
+  name: prototype MOD plating
+  description: The first shell that held pressure. Kept because it worked, not because it was good.
+  components:
+  - type: Sprite
+    state: prototype-plating
+  - type: ModsuitAssemblyPlating
+    result: IS14ModsuitPrototype
+
+
+- type: entity
+  parent: IS14ModsuitPlatingBase
+  id: IS14ModsuitPlatingCosmohonk
+  name: cosmohonk MOD plating
+  description: Honk Co. shell. It holds pressure, which is the only serious thing about it.
+  components:
+  - type: Sprite
+    state: cosmohonk-plating
+  - type: ModsuitAssemblyPlating
+    result: IS14ModsuitCosmohonk
+
+- type: entity
+  parent: [ IS14ModsuitPlatingBase, BaseSyndicateContraband ]
+  id: IS14ModsuitPlatingHonkerative
+  name: honkerative MOD plating
+  description: A blood-red shell painted by somebody who thought the joke was worth the paperwork.
+  components:
+  - type: Sprite
+    state: honkerative-plating
+  - type: ModsuitAssemblyPlating
+    result: IS14ModsuitHonkerative
+
+- type: entity
+  parent: IS14ModsuitPlatingBase
+  id: IS14ModsuitPlatingInquisitory
+  name: inquisitory MOD plating
+  description: Response plating in the colours CentCom uses when the visit is not a rescue.
+  components:
+  - type: Sprite
+    state: inquisitory-plating
+  - type: ModsuitAssemblyPlating
+    result: IS14ModsuitInquisitory
+
+- type: entity
+  parent: IS14ModsuitPlatingBase
+  id: IS14ModsuitPlatingDebug
+  name: debug MOD plating
+  description: Test plating. Not meant to leave a development build.
+  components:
+  - type: Sprite
+    state: debug-plating
+  - type: ModsuitAssemblyPlating
+    result: IS14ModsuitDebug
+
+- type: entity
+  parent: IS14ModsuitPlatingBase
+  id: IS14ModsuitPlatingAdministrative
+  name: administrative MOD plating
+  description: Administrative plating. If this is in a round, somebody put it there on purpose.
+  components:
+  - type: Sprite
+    state: administrative-plating
+  - type: ModsuitAssemblyPlating
+    result: IS14ModsuitAdministrative
+
 # Синдикатская обшивка не печатается и не заказывается — она попадает в раунд
 # только готовым костюмом. Прототип существует ради полноты набора и аплинка.
 - type: entity

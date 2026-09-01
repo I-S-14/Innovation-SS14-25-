@@ -82,12 +82,11 @@
   ## Быт и бумаги
 
   Костюм — это ещё и место, где проводят смену. [bold]Крепление головных уборов[/bold] возвращает
-  шапку на запечатанный шлем, [bold]органайзер[/bold] держит бумаги за нагрудником, а
-  [bold]громкоговоритель[/bold] гонит динамик шлема так, что вас слышно через комнату.
+  шапку на запечатанный шлем, а [bold]громкоговоритель[/bold] гонит динамик шлема так, что
+  ваши реплики видно через комнату.
 
   <Box>
     <GuideEntityEmbed Entity="IS14ModuleHatHolder" Caption="шапка"/>
-    <GuideEntityEmbed Entity="IS14ModuleOrganizer" Caption="органайзер"/>
     <GuideEntityEmbed Entity="IS14ModuleMegaphone" Caption="громкость"/>
   </Box>
 

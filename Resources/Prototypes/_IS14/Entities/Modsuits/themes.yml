@@ -50,6 +50,7 @@
 - type: entity
   parent: IS14ModsuitControlBase
   id: IS14ModsuitStandard
+  categories: [ HideSpawnMenu ]
   name: standard MOD controller
   description: A civilian modular suit by Nakamura Engineering. Nothing remarkable, but dependable.
   components:
@@ -142,6 +143,7 @@
 - type: entity
   parent: IS14ModsuitControlBase
   id: IS14ModsuitEngineering
+  categories: [ HideSpawnMenu ]
   name: engineering MOD controller
   description: The Nakamura Engineering classic. Holds off heat and radiation at the cost of mobility.
   components:
@@ -160,6 +162,7 @@
     maxComplexity: 15
     integratedModules:
     - IS14ModuleRadProtection
+    - IS14ModuleWeldingProtection
   - type: ItemSlots
     slots:
       mod-core:
@@ -242,6 +245,7 @@
 - type: entity
   parent: IS14ModsuitControlBase
   id: IS14ModsuitMedical
+  categories: [ HideSpawnMenu ]
   name: medical MOD controller
   description: A light frame built for reaching people fast. Sealed against whatever they were breathing.
   components:
@@ -349,6 +353,7 @@
 - type: entity
   parent: IS14ModsuitControlBase
   id: IS14ModsuitSecurity
+  categories: [ HideSpawnMenu ]
   name: security MOD controller
   description: Riot plating on a modular frame. Slow, obvious, and hard to argue with.
   components:
@@ -426,6 +431,7 @@
 - type: entity
   parent: IS14ModsuitControlBase
   id: IS14ModsuitMining
+  categories: [ HideSpawnMenu ]
   name: mining MOD controller
   description: Built for rock and for whatever lives under it. Comes with the drill already in the wrist.
   components:
@@ -544,6 +550,7 @@
 - type: entity
   parent: IS14ModsuitControlBase
   id: IS14ModsuitAtmospheric
+  categories: [ HideSpawnMenu ]
   name: atmospheric MOD controller
   description: Rated for the far end of the thermometer in both directions. Heavy with it.
   components:
@@ -647,6 +654,7 @@
 - type: entity
   parent: IS14ModsuitControlBase
   id: IS14ModsuitResearch
+  categories: [ HideSpawnMenu ]
   name: research MOD controller
   description: Barely armoured, and deliberately — the frame gives up plating for hardpoints.
   components:
@@ -662,9 +670,7 @@
       gloves: IS14ModsuitGauntletsResearch
       shoes: IS14ModsuitBootsResearch
   - type: ModularChassis
-    maxComplexity: 22
-    integratedModules:
-    - IS14ModuleGps
+    maxComplexity: 15
   - type: ItemSlots
     slots:
       mod-core:
@@ -755,6 +761,7 @@
 - type: entity
   parent: [ IS14ModsuitControlBase, BaseSyndicateContraband ]
   id: IS14ModsuitSyndicate
+  categories: [ HideSpawnMenu ]
   name: blood-red MOD controller
   description: Someone spent a great deal of money making this quiet, fast and unpleasant.
   components:
@@ -770,9 +777,2034 @@
       gloves: IS14ModsuitGauntletsSyndicate
       shoes: IS14ModsuitBootsSyndicate
   - type: ModularChassis
-    maxComplexity: 30
+    maxComplexity: 18
     integratedModules:
     - IS14ModuleArmorBooster
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+
+# =========================================================== СПАСАТЕЛЬНЫЙ
+
+- type: entity
+  parent: IS14ModsuitPartHelmetBase
+  id: IS14ModsuitHelmetRescue
+  categories: [ HideSpawnMenu ]
+  name: rescue MOD helmet
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/rescue.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/rescue.rsi
+  # Броня спасателя: 40% от механики и 70% от огня и кислоты — тема рассчитана
+  # заходить туда, откуда выносят. Ядовитый профиль лучше медицинского.
+  - type: Armor
+    modifiers:
+      coefficients: &IS14ArmorRescue
+        Blunt: 0.6
+        Slash: 0.6
+        Piercing: 0.6
+        Heat: 0.3
+        Cold: 0.4
+        Shock: 0.5
+        Caustic: 0.3
+        Poison: 0.5
+
+- type: entity
+  parent: IS14ModsuitPartChestplateBase
+  id: IS14ModsuitChestplateRescue
+  categories: [ HideSpawnMenu ]
+  name: rescue MOD chestplate
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/rescue.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/rescue.rsi
+  # Сервоприводы и в руках, и в ногах: спасатель теряет 5% скорости против 10%
+  # у медика. За скорость его и берут — вытаскивать, а не лечить на месте.
+  - type: ClothingSpeedModifier
+    walkModifier: 0.95
+    sprintModifier: 0.95
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorRescue
+
+- type: entity
+  parent: IS14ModsuitPartGauntletsBase
+  id: IS14ModsuitGauntletsRescue
+  categories: [ HideSpawnMenu ]
+  name: rescue MOD gauntlets
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/rescue.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/rescue.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorRescue
+
+- type: entity
+  parent: IS14ModsuitPartBootsBase
+  id: IS14ModsuitBootsRescue
+  categories: [ HideSpawnMenu ]
+  name: rescue MOD boots
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/rescue.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/rescue.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorRescue
+
+- type: entity
+  parent: IS14ModsuitControlBase
+  id: IS14ModsuitRescue
+  categories: [ HideSpawnMenu ]
+  name: rescue MOD controller
+  description: The medical frame with the plating it always needed. Walks into fire and acid to bring somebody out, and moves faster than the model it replaces.
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/rescue.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/rescue.rsi
+  - type: ModsuitControl
+    sealedSlowdown: 0.5
+    partPrototypes:
+      head: IS14ModsuitHelmetRescue
+      outerClothing: IS14ModsuitChestplateRescue
+      gloves: IS14ModsuitGauntletsRescue
+      shoes: IS14ModsuitBootsRescue
+  - type: ModularChassis
+    # Уникальная тема: ёмкость выше обычных 15, но ниже потолка в 20.
+    maxComplexity: 18
+    integratedModules:
+    - IS14ModuleVisorMedical
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+
+# =========================================================== ОХРАННЫЙ
+
+- type: entity
+  parent: IS14ModsuitPartHelmetBase
+  id: IS14ModsuitHelmetSafeguard
+  categories: [ HideSpawnMenu ]
+  name: safeguard MOD helmet
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/safeguard.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/safeguard.rsi
+  # Верх линейки: 70% от механики против 50% у СБ, и почти столько же от огня
+  # и кислоты. Стекла в шлеме нет вовсе — вместо него камера и глухая плита.
+  - type: Armor
+    modifiers:
+      coefficients: &IS14ArmorSafeguard
+        Blunt: 0.3
+        Slash: 0.3
+        Piercing: 0.3
+        Heat: 0.3
+        Cold: 0.5
+        Shock: 0.5
+        Caustic: 0.35
+
+- type: entity
+  parent: IS14ModsuitPartChestplateBase
+  id: IS14ModsuitChestplateSafeguard
+  categories: [ HideSpawnMenu ]
+  name: safeguard MOD chestplate
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/safeguard.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/safeguard.rsi
+  # Радиаторы по бокам и переработанные суставы: 10% вместо базовых 20%.
+  # Единственная боевая тема, которая не замедляет сильнее обычной.
+  - type: ClothingSpeedModifier
+    walkModifier: 0.9
+    sprintModifier: 0.9
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorSafeguard
+
+- type: entity
+  parent: IS14ModsuitPartGauntletsBase
+  id: IS14ModsuitGauntletsSafeguard
+  categories: [ HideSpawnMenu ]
+  name: safeguard MOD gauntlets
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/safeguard.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/safeguard.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorSafeguard
+
+- type: entity
+  parent: IS14ModsuitPartBootsBase
+  id: IS14ModsuitBootsSafeguard
+  categories: [ HideSpawnMenu ]
+  name: safeguard MOD boots
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/safeguard.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/safeguard.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorSafeguard
+
+- type: entity
+  parent: IS14ModsuitControlBase
+  id: IS14ModsuitSafeguard
+  categories: [ HideSpawnMenu ]
+  name: safeguard MOD controller
+  description: Apadyne's answer to the riot model. Thicker plates, a blast visor instead of glass, and heatsinks down both sides — and somehow it is the faster of the two.
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/safeguard.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/safeguard.rsi
+  - type: ModsuitControl
+    sealedSlowdown: 0.75
+    partPrototypes:
+      head: IS14ModsuitHelmetSafeguard
+      outerClothing: IS14ModsuitChestplateSafeguard
+      gloves: IS14ModsuitGauntletsSafeguard
+      shoes: IS14ModsuitBootsSafeguard
+  - type: ModularChassis
+    # Уникальная тема: ёмкость выше обычных 15, но ниже потолка в 20.
+    maxComplexity: 17
+    integratedModules:
+    - IS14ModuleVisorSecurity
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+
+# =========================================================== ПРОДВИНУТЫЙ
+
+- type: entity
+  parent: IS14ModsuitPartHelmetBase
+  id: IS14ModsuitHelmetAdvanced
+  categories: [ HideSpawnMenu ]
+  name: advanced MOD helmet
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/advanced.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/advanced.rsi
+  # Универсал: 30% от механики, зато почти неуязвим к огню и кислоте.
+  # Броня по нижней границе — тему берут за ёмкость, а не за плиты.
+  - type: Armor
+    modifiers:
+      coefficients: &IS14ArmorAdvanced
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.7
+        Heat: 0.3
+        Cold: 0.5
+        Shock: 0.5
+        Caustic: 0.35
+
+- type: entity
+  parent: IS14ModsuitPartChestplateBase
+  id: IS14ModsuitChestplateAdvanced
+  categories: [ HideSpawnMenu ]
+  name: advanced MOD chestplate
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/advanced.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/advanced.rsi
+  # Лёгкая рама на 10% вместо базовых 20% — броня здесь принесена в жертву
+  # начинке, и это осознанный размен.
+  - type: ClothingSpeedModifier
+    walkModifier: 0.9
+    sprintModifier: 0.9
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorAdvanced
+
+- type: entity
+  parent: IS14ModsuitPartGauntletsBase
+  id: IS14ModsuitGauntletsAdvanced
+  categories: [ HideSpawnMenu ]
+  name: advanced MOD gauntlets
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/advanced.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/advanced.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorAdvanced
+
+- type: entity
+  parent: IS14ModsuitPartBootsBase
+  id: IS14ModsuitBootsAdvanced
+  categories: [ HideSpawnMenu ]
+  name: advanced MOD boots
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/advanced.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/advanced.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorAdvanced
+
+- type: entity
+  parent: IS14ModsuitControlBase
+  id: IS14ModsuitAdvanced
+  categories: [ HideSpawnMenu ]
+  name: advanced MOD controller
+  description: Nakamura's all-rounder. Light plating, but sealed against fire and most of what a lab can spill, and it carries more hardware than anything of its weight.
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/advanced.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/advanced.rsi
+  - type: ModsuitControl
+    sealedSlowdown: 0.6
+    partPrototypes:
+      head: IS14ModsuitHelmetAdvanced
+      outerClothing: IS14ModsuitChestplateAdvanced
+      gloves: IS14ModsuitGauntletsAdvanced
+      shoes: IS14ModsuitBootsAdvanced
+  - type: ModularChassis
+    maxComplexity: 18
+    integratedModules:
+    - IS14ModuleVisorDiagnostic
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+
+# =========================================================== ОТРЯД БЫСТРОГО РЕАГИРОВАНИЯ
+
+- type: entity
+  parent: IS14ModsuitPartHelmetBase
+  id: IS14ModsuitHelmetResponsory
+  categories: [ HideSpawnMenu ]
+  name: responsory MOD helmet
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/responsory.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/responsory.rsi
+  # Боевая тема ЦК: 60% от механики и почти полная стойкость к огню и кислоте.
+  - type: Armor
+    modifiers:
+      coefficients: &IS14ArmorResponsory
+        Blunt: 0.4
+        Slash: 0.4
+        Piercing: 0.4
+        Heat: 0.3
+        Cold: 0.45
+        Shock: 0.45
+        Caustic: 0.35
+
+- type: entity
+  parent: IS14ModsuitPartChestplateBase
+  id: IS14ModsuitChestplateResponsory
+  categories: [ HideSpawnMenu ]
+  name: responsory MOD chestplate
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/responsory.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/responsory.rsi
+  # Замедления нет вовсе: сервоприводы отряда полностью компенсируют вес плит.
+  # Единственный минус носителя — 5% от самого контроллера.
+  - type: ClothingSpeedModifier
+    walkModifier: 1.0
+    sprintModifier: 1.0
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorResponsory
+
+- type: entity
+  parent: IS14ModsuitPartGauntletsBase
+  id: IS14ModsuitGauntletsResponsory
+  categories: [ HideSpawnMenu ]
+  name: responsory MOD gauntlets
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/responsory.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/responsory.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorResponsory
+
+- type: entity
+  parent: IS14ModsuitPartBootsBase
+  id: IS14ModsuitBootsResponsory
+  categories: [ HideSpawnMenu ]
+  name: responsory MOD boots
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/responsory.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/responsory.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorResponsory
+
+- type: entity
+  parent: IS14ModsuitControlBase
+  id: IS14ModsuitResponsory
+  categories: [ HideSpawnMenu ]
+  name: responsory MOD controller
+  description: ERT issue. Heavy plating that somehow does not slow the wearer down, which is the part nobody outside CentCom can reproduce.
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/responsory.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/responsory.rsi
+  - type: ModsuitControl
+    sealedSlowdown: 1.0
+    partPrototypes:
+      head: IS14ModsuitHelmetResponsory
+      outerClothing: IS14ModsuitChestplateResponsory
+      gloves: IS14ModsuitGauntletsResponsory
+      shoes: IS14ModsuitBootsResponsory
+  - type: ModularChassis
+    maxComplexity: 18
+    integratedModules:
+    - IS14ModuleVisorSecurity
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+
+# =========================================================== КОРПОРАТИВНЫЙ
+
+- type: entity
+  parent: IS14ModsuitPartHelmetBase
+  id: IS14ModsuitHelmetCorporate
+  categories: [ HideSpawnMenu ]
+  name: corporate MOD helmet
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/corporate.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/corporate.rsi
+  # Верх всего каталога: 70% от механики и столько же от огня и кислоты.
+  # Выше по нашей шкале ничего не бывает — это и есть потолок.
+  - type: Armor
+    modifiers:
+      coefficients: &IS14ArmorCorporate
+        Blunt: 0.3
+        Slash: 0.3
+        Piercing: 0.3
+        Heat: 0.3
+        Cold: 0.4
+        Shock: 0.4
+        Caustic: 0.3
+
+- type: entity
+  parent: IS14ModsuitPartChestplateBase
+  id: IS14ModsuitChestplateCorporate
+  categories: [ HideSpawnMenu ]
+  name: corporate MOD chestplate
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/corporate.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/corporate.rsi
+  # Замедления нет: та же компенсация, что у отряда реагирования, только дороже.
+  - type: ClothingSpeedModifier
+    walkModifier: 1.0
+    sprintModifier: 1.0
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorCorporate
+
+- type: entity
+  parent: IS14ModsuitPartGauntletsBase
+  id: IS14ModsuitGauntletsCorporate
+  categories: [ HideSpawnMenu ]
+  name: corporate MOD gauntlets
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/corporate.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/corporate.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorCorporate
+
+- type: entity
+  parent: IS14ModsuitPartBootsBase
+  id: IS14ModsuitBootsCorporate
+  categories: [ HideSpawnMenu ]
+  name: corporate MOD boots
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/corporate.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/corporate.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorCorporate
+
+- type: entity
+  parent: IS14ModsuitControlBase
+  id: IS14ModsuitCorporate
+  categories: [ HideSpawnMenu ]
+  name: corporate MOD controller
+  description: The suit CentCom keeps for itself. Everything the line can do, with none of the compromises the budget usually forces.
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/corporate.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/corporate.rsi
+  - type: ModsuitControl
+    sealedSlowdown: 1.0
+    partPrototypes:
+      head: IS14ModsuitHelmetCorporate
+      outerClothing: IS14ModsuitChestplateCorporate
+      gloves: IS14ModsuitGauntletsCorporate
+      shoes: IS14ModsuitBootsCorporate
+  - type: ModularChassis
+    maxComplexity: 20
+    integratedModules:
+    - IS14ModuleVisorSecurity
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+
+# =========================================================== МЕДИЦИНСКИЙ «КОРПУСНОЙ» (скин)
+
+- type: entity
+  parent: IS14ModsuitPartHelmetBase
+  id: IS14ModsuitHelmetCorpsman
+  categories: [ HideSpawnMenu ]
+  name: corpsman MOD helmet
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/corpsman.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/corpsman.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorMedical
+
+- type: entity
+  parent: IS14ModsuitPartChestplateBase
+  id: IS14ModsuitChestplateCorpsman
+  categories: [ HideSpawnMenu ]
+  name: corpsman MOD chestplate
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/corpsman.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/corpsman.rsi
+  # Скин медицинской темы — статы один в один, включая облегчённую раму.
+  - type: ClothingSpeedModifier
+    walkModifier: 0.9
+    sprintModifier: 0.9
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorMedical
+
+- type: entity
+  parent: IS14ModsuitPartGauntletsBase
+  id: IS14ModsuitGauntletsCorpsman
+  categories: [ HideSpawnMenu ]
+  name: corpsman MOD gauntlets
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/corpsman.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/corpsman.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorMedical
+
+- type: entity
+  parent: IS14ModsuitPartBootsBase
+  id: IS14ModsuitBootsCorpsman
+  categories: [ HideSpawnMenu ]
+  name: corpsman MOD boots
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/corpsman.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/corpsman.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorMedical
+
+- type: entity
+  parent: IS14ModsuitControlBase
+  id: IS14ModsuitCorpsman
+  categories: [ HideSpawnMenu ]
+  name: corpsman MOD controller
+  description: The same DeForest frame in field colours. Identical underneath; the paint is the whole difference.
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/corpsman.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/corpsman.rsi
+  - type: ModsuitControl
+    sealedSlowdown: 0.6
+    partPrototypes:
+      head: IS14ModsuitHelmetCorpsman
+      outerClothing: IS14ModsuitChestplateCorpsman
+      gloves: IS14ModsuitGauntletsCorpsman
+      shoes: IS14ModsuitBootsCorpsman
+  - type: ModularChassis
+    maxComplexity: 15
+    integratedModules:
+    - IS14ModuleVisorMedical
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+
+# =========================================================== ШАХТЁРСКИЙ «АСТЕРОИД» (скин)
+
+- type: entity
+  parent: IS14ModsuitPartHelmetBase
+  id: IS14ModsuitHelmetAsteroid
+  categories: [ HideSpawnMenu ]
+  name: asteroid MOD helmet
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/asteroid.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/asteroid.rsi
+
+- type: entity
+  parent: IS14ModsuitPartChestplateBase
+  id: IS14ModsuitChestplateAsteroid
+  categories: [ HideSpawnMenu ]
+  name: asteroid MOD chestplate
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/asteroid.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/asteroid.rsi
+  # Скин шахтёрской темы: статы родителя, включая базовое замедление.
+  - type: ClothingSpeedModifier
+    walkModifier: 0.8
+    sprintModifier: 0.8
+
+- type: entity
+  parent: IS14ModsuitPartGauntletsBase
+  id: IS14ModsuitGauntletsAsteroid
+  categories: [ HideSpawnMenu ]
+  name: asteroid MOD gauntlets
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/asteroid.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/asteroid.rsi
+
+- type: entity
+  parent: IS14ModsuitPartBootsBase
+  id: IS14ModsuitBootsAsteroid
+  categories: [ HideSpawnMenu ]
+  name: asteroid MOD boots
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/asteroid.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/asteroid.rsi
+
+- type: entity
+  parent: IS14ModsuitControlBase
+  id: IS14ModsuitAsteroid
+  categories: [ HideSpawnMenu ]
+  name: asteroid MOD controller
+  description: The mining frame in a different finish. Same suit, same scratches, different colour of scratch.
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/asteroid.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/asteroid.rsi
+  - type: ModsuitControl
+    sealedSlowdown: 0.8
+    partPrototypes:
+      head: IS14ModsuitHelmetAsteroid
+      outerClothing: IS14ModsuitChestplateAsteroid
+      gloves: IS14ModsuitGauntletsAsteroid
+      shoes: IS14ModsuitBootsAsteroid
+  - type: ModularChassis
+    maxComplexity: 15
+    integratedModules:
+    - IS14ModuleVisorNight
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+
+# =========================================================== НИНДЗЯ
+
+- type: entity
+  parent: IS14ModsuitPartHelmetBase
+  id: IS14ModsuitHelmetNinja
+  categories: [ HideSpawnMenu ]
+  name: ninja MOD helmet
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/ninja.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/ninja.rsi
+  # Изоляция абсолютная: 70% от тока, огня и кислоты, 45% от механики.
+  - type: Armor
+    modifiers:
+      coefficients: &IS14ArmorNinja
+        Blunt: 0.55
+        Slash: 0.55
+        Piercing: 0.55
+        Heat: 0.3
+        Cold: 0.5
+        Shock: 0.3
+        Caustic: 0.3
+
+- type: entity
+  parent: IS14ModsuitPartChestplateBase
+  id: IS14ModsuitChestplateNinja
+  categories: [ HideSpawnMenu ]
+  name: ninja MOD chestplate
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/ninja.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/ninja.rsi
+  # Вес плит скомпенсирован полностью — костюм не замедляет вовсе.
+  - type: ClothingSpeedModifier
+    walkModifier: 1.0
+    sprintModifier: 1.0
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorNinja
+
+- type: entity
+  parent: IS14ModsuitPartGauntletsBase
+  id: IS14ModsuitGauntletsNinja
+  categories: [ HideSpawnMenu ]
+  name: ninja MOD gauntlets
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/ninja.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/ninja.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorNinja
+
+- type: entity
+  parent: IS14ModsuitPartBootsBase
+  id: IS14ModsuitBootsNinja
+  categories: [ HideSpawnMenu ]
+  name: ninja MOD boots
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/ninja.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/ninja.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorNinja
+
+- type: entity
+  parent: IS14ModsuitControlBase
+  id: IS14ModsuitNinja
+  categories: [ HideSpawnMenu ]
+  name: ninja MOD controller
+  description: Spider Clan hardware. Silent, insulated past the point where electricity means anything, and indifferent to what the floor is made of.
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/ninja.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/ninja.rsi
+  - type: ModsuitControl
+    sealedSlowdown: 1.0
+    partPrototypes:
+      head: IS14ModsuitHelmetNinja
+      outerClothing: IS14ModsuitChestplateNinja
+      gloves: IS14ModsuitGauntletsNinja
+      shoes: IS14ModsuitBootsNinja
+  - type: ModularChassis
+    maxComplexity: 15
+    integratedModules:
+    - IS14ModuleVisorNight
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+
+# =========================================================== ИНТЕРДАЙН
+
+- type: entity
+  parent: IS14ModsuitPartHelmetBase
+  id: IS14ModsuitHelmetInterdyne
+  categories: [ HideSpawnMenu ]
+  name: interdyne MOD helmet
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/interdyne.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/interdyne.rsi
+  # Полевой набор: 40% от механики, 70% от огня и кислоты.
+  - type: Armor
+    modifiers:
+      coefficients: &IS14ArmorInterdyne
+        Blunt: 0.6
+        Slash: 0.6
+        Piercing: 0.6
+        Heat: 0.3
+        Cold: 0.5
+        Shock: 0.5
+        Caustic: 0.3
+
+- type: entity
+  parent: IS14ModsuitPartChestplateBase
+  id: IS14ModsuitChestplateInterdyne
+  categories: [ HideSpawnMenu ]
+  name: interdyne MOD chestplate
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/interdyne.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/interdyne.rsi
+  # Единственная тема, которая носителя ускоряет: приводы отдают больше, чем
+  # весит броня. Расплата — вдвое больший расход ядра.
+  - type: ClothingSpeedModifier
+    walkModifier: 1.05
+    sprintModifier: 1.05
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorInterdyne
+
+- type: entity
+  parent: IS14ModsuitPartGauntletsBase
+  id: IS14ModsuitGauntletsInterdyne
+  categories: [ HideSpawnMenu ]
+  name: interdyne MOD gauntlets
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/interdyne.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/interdyne.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorInterdyne
+
+- type: entity
+  parent: IS14ModsuitPartBootsBase
+  id: IS14ModsuitBootsInterdyne
+  categories: [ HideSpawnMenu ]
+  name: interdyne MOD boots
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/interdyne.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/interdyne.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorInterdyne
+
+- type: entity
+  parent: [ IS14ModsuitControlBase, BaseSyndicateContraband ]
+  id: IS14ModsuitInterdyne
+  categories: [ HideSpawnMenu ]
+  name: interdyne MOD controller
+  description: Interdyne Pharmaceutics field kit. Built to move faster than whoever is looking for it, and it eats power to match.
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/interdyne.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/interdyne.rsi
+  - type: ModsuitControl
+    sealedSlowdown: 1.0
+    partPrototypes:
+      head: IS14ModsuitHelmetInterdyne
+      outerClothing: IS14ModsuitChestplateInterdyne
+      gloves: IS14ModsuitGauntletsInterdyne
+      shoes: IS14ModsuitBootsInterdyne
+  - type: ModularChassis
+    maxComplexity: 15
+    integratedModules:
+    - IS14ModuleVisorMedical
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+
+# =========================================================== ИНФИЛЬТРАТОР
+
+- type: entity
+  parent: IS14ModsuitPartHelmetBase
+  id: IS14ModsuitHelmetInfiltrator
+  categories: [ HideSpawnMenu ]
+  name: infiltrator MOD helmet
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/infiltrator.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/infiltrator.rsi
+  # Штурмовой профиль: 50% от механики, 70% от тока, огня и кислоты.
+  - type: Armor
+    modifiers:
+      coefficients: &IS14ArmorInfiltrator
+        Blunt: 0.5
+        Slash: 0.5
+        Piercing: 0.5
+        Heat: 0.3
+        Cold: 0.5
+        Shock: 0.3
+        Caustic: 0.3
+
+- type: entity
+  parent: IS14ModsuitPartChestplateBase
+  id: IS14ModsuitChestplateInfiltrator
+  categories: [ HideSpawnMenu ]
+  name: infiltrator MOD chestplate
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/infiltrator.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/infiltrator.rsi
+  # Замедления нет: проникновение важнее плит.
+  - type: ClothingSpeedModifier
+    walkModifier: 1.0
+    sprintModifier: 1.0
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorInfiltrator
+
+- type: entity
+  parent: IS14ModsuitPartGauntletsBase
+  id: IS14ModsuitGauntletsInfiltrator
+  categories: [ HideSpawnMenu ]
+  name: infiltrator MOD gauntlets
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/infiltrator.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/infiltrator.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorInfiltrator
+
+- type: entity
+  parent: IS14ModsuitPartBootsBase
+  id: IS14ModsuitBootsInfiltrator
+  categories: [ HideSpawnMenu ]
+  name: infiltrator MOD boots
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/infiltrator.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/infiltrator.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorInfiltrator
+
+- type: entity
+  parent: [ IS14ModsuitControlBase, BaseSyndicateContraband ]
+  id: IS14ModsuitInfiltrator
+  categories: [ HideSpawnMenu ]
+  name: infiltrator MOD controller
+  description: The suit that gets somebody in and back out again. Sealed, insulated, and quiet enough that the plating is the loudest part of it.
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/infiltrator.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/infiltrator.rsi
+  - type: ModsuitControl
+    sealedSlowdown: 1.0
+    partPrototypes:
+      head: IS14ModsuitHelmetInfiltrator
+      outerClothing: IS14ModsuitChestplateInfiltrator
+      gloves: IS14ModsuitGauntletsInfiltrator
+      shoes: IS14ModsuitBootsInfiltrator
+  - type: ModularChassis
+    maxComplexity: 15
+    integratedModules:
+    - IS14ModuleVisorNight
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+
+# =========================================================== ЭЛИТНЫЙ
+
+- type: entity
+  parent: IS14ModsuitPartHelmetBase
+  id: IS14ModsuitHelmetElite
+  categories: [ HideSpawnMenu ]
+  name: elite MOD helmet
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/elite.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/elite.rsi
+  # Верх синдикатской линейки: 65% от механики, 70% от тока, огня и кислоты.
+  - type: Armor
+    modifiers:
+      coefficients: &IS14ArmorElite
+        Blunt: 0.35
+        Slash: 0.35
+        Piercing: 0.35
+        Heat: 0.3
+        Cold: 0.4
+        Shock: 0.3
+        Caustic: 0.3
+
+- type: entity
+  parent: IS14ModsuitPartChestplateBase
+  id: IS14ModsuitChestplateElite
+  categories: [ HideSpawnMenu ]
+  name: elite MOD chestplate
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/elite.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/elite.rsi
+  # Не замедляет, несмотря на вес — за это и ценится.
+  - type: ClothingSpeedModifier
+    walkModifier: 1.0
+    sprintModifier: 1.0
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorElite
+
+- type: entity
+  parent: IS14ModsuitPartGauntletsBase
+  id: IS14ModsuitGauntletsElite
+  categories: [ HideSpawnMenu ]
+  name: elite MOD gauntlets
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/elite.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/elite.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorElite
+
+- type: entity
+  parent: IS14ModsuitPartBootsBase
+  id: IS14ModsuitBootsElite
+  categories: [ HideSpawnMenu ]
+  name: elite MOD boots
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/elite.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/elite.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorElite
+
+- type: entity
+  parent: [ IS14ModsuitControlBase, BaseSyndicateContraband ]
+  id: IS14ModsuitElite
+  categories: [ HideSpawnMenu ]
+  name: elite MOD controller
+  description: What the Syndicate issues when the job actually matters. Heavier than anything else they field, and it still does not slow the wearer down.
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/elite.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/elite.rsi
+  - type: ModsuitControl
+    sealedSlowdown: 1.0
+    partPrototypes:
+      head: IS14ModsuitHelmetElite
+      outerClothing: IS14ModsuitChestplateElite
+      gloves: IS14ModsuitGauntletsElite
+      shoes: IS14ModsuitBootsElite
+  - type: ModularChassis
+    maxComplexity: 19
+    integratedModules:
+    - IS14ModuleVisorSecurity
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+
+# =========================================================== АПОКРИФИЧЕСКИЙ
+
+- type: entity
+  parent: IS14ModsuitPartHelmetBase
+  id: IS14ModsuitHelmetApocryphal
+  categories: [ HideSpawnMenu ]
+  name: apocryphal MOD helmet
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/apocryphal.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/apocryphal.rsi
+  # Потолок брони: 70% по всему, что вообще считается. Аномалия, а не изделие.
+  - type: Armor
+    modifiers:
+      coefficients: &IS14ArmorApocryphal
+        Blunt: 0.3
+        Slash: 0.3
+        Piercing: 0.3
+        Heat: 0.3
+        Cold: 0.35
+        Shock: 0.3
+        Caustic: 0.3
+
+- type: entity
+  parent: IS14ModsuitPartChestplateBase
+  id: IS14ModsuitChestplateApocryphal
+  categories: [ HideSpawnMenu ]
+  name: apocryphal MOD chestplate
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/apocryphal.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/apocryphal.rsi
+  # Вес аномальной брони никуда не делся: замедление базовое, 20%.
+  - type: ClothingSpeedModifier
+    walkModifier: 0.8
+    sprintModifier: 0.8
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorApocryphal
+
+- type: entity
+  parent: IS14ModsuitPartGauntletsBase
+  id: IS14ModsuitGauntletsApocryphal
+  categories: [ HideSpawnMenu ]
+  name: apocryphal MOD gauntlets
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/apocryphal.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/apocryphal.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorApocryphal
+
+- type: entity
+  parent: IS14ModsuitPartBootsBase
+  id: IS14ModsuitBootsApocryphal
+  categories: [ HideSpawnMenu ]
+  name: apocryphal MOD boots
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/apocryphal.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/apocryphal.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorApocryphal
+
+- type: entity
+  parent: IS14ModsuitControlBase
+  id: IS14ModsuitApocryphal
+  categories: [ HideSpawnMenu ]
+  name: apocryphal MOD controller
+  description: Something wearing the shape of a suit. The plating answers to nothing in the catalogue and carries more than a frame has any business carrying.
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/apocryphal.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/apocryphal.rsi
+  - type: ModsuitControl
+    sealedSlowdown: 0.9
+    partPrototypes:
+      head: IS14ModsuitHelmetApocryphal
+      outerClothing: IS14ModsuitChestplateApocryphal
+      gloves: IS14ModsuitGauntletsApocryphal
+      shoes: IS14ModsuitBootsApocryphal
+  - type: ModularChassis
+    maxComplexity: 20
+    integratedModules:
+    - IS14ModuleVisorThermal
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+
+# =========================================================== ЗАЧАРОВАННЫЙ
+
+- type: entity
+  parent: IS14ModsuitPartHelmetBase
+  id: IS14ModsuitHelmetEnchanted
+  categories: [ HideSpawnMenu ]
+  name: enchanted MOD helmet
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/enchanted.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/enchanted.rsi
+  # Гасит энергию лучше вещества: 70% от тока и огня, 45% от механики.
+  - type: Armor
+    modifiers:
+      coefficients: &IS14ArmorEnchanted
+        Blunt: 0.55
+        Slash: 0.55
+        Piercing: 0.55
+        Heat: 0.3
+        Cold: 0.45
+        Shock: 0.3
+        Caustic: 0.3
+
+- type: entity
+  parent: IS14ModsuitPartChestplateBase
+  id: IS14ModsuitChestplateEnchanted
+  categories: [ HideSpawnMenu ]
+  name: enchanted MOD chestplate
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/enchanted.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/enchanted.rsi
+  # Не замедляет: вес у этой брони, кажется, необязателен.
+  - type: ClothingSpeedModifier
+    walkModifier: 1.0
+    sprintModifier: 1.0
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorEnchanted
+
+- type: entity
+  parent: IS14ModsuitPartGauntletsBase
+  id: IS14ModsuitGauntletsEnchanted
+  categories: [ HideSpawnMenu ]
+  name: enchanted MOD gauntlets
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/enchanted.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/enchanted.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorEnchanted
+
+- type: entity
+  parent: IS14ModsuitPartBootsBase
+  id: IS14ModsuitBootsEnchanted
+  categories: [ HideSpawnMenu ]
+  name: enchanted MOD boots
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/enchanted.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/enchanted.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorEnchanted
+
+- type: entity
+  parent: IS14ModsuitControlBase
+  id: IS14ModsuitEnchanted
+  categories: [ HideSpawnMenu ]
+  name: enchanted MOD controller
+  description: Plating that was never manufactured. It turns energy aside better than matter, which is the wrong way round for armour and the right way round for whatever made it.
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/enchanted.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/enchanted.rsi
+  - type: ModsuitControl
+    sealedSlowdown: 1.0
+    partPrototypes:
+      head: IS14ModsuitHelmetEnchanted
+      outerClothing: IS14ModsuitChestplateEnchanted
+      gloves: IS14ModsuitGauntletsEnchanted
+      shoes: IS14ModsuitBootsEnchanted
+  - type: ModularChassis
+    maxComplexity: 15
+    integratedModules:
+    - IS14ModuleVisorThermal
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+
+# =========================================================== ХРОНО
+
+- type: entity
+  parent: IS14ModsuitPartHelmetBase
+  id: IS14ModsuitHelmetChrono
+  categories: [ HideSpawnMenu ]
+  name: chrono MOD helmet
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/chrono.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/chrono.rsi
+  # Броня высокая и ровная: 65% почти по всему. Плата — ёмкость на минимуме.
+  - type: Armor
+    modifiers:
+      coefficients: &IS14ArmorChrono
+        Blunt: 0.35
+        Slash: 0.35
+        Piercing: 0.35
+        Heat: 0.3
+        Cold: 0.35
+        Shock: 0.35
+        Caustic: 0.3
+
+- type: entity
+  parent: IS14ModsuitPartChestplateBase
+  id: IS14ModsuitChestplateChrono
+  categories: [ HideSpawnMenu ]
+  name: chrono MOD chestplate
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/chrono.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/chrono.rsi
+  # Не замедляет — но и вместить в него почти нечего.
+  - type: ClothingSpeedModifier
+    walkModifier: 1.0
+    sprintModifier: 1.0
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorChrono
+
+- type: entity
+  parent: IS14ModsuitPartGauntletsBase
+  id: IS14ModsuitGauntletsChrono
+  categories: [ HideSpawnMenu ]
+  name: chrono MOD gauntlets
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/chrono.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/chrono.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorChrono
+
+- type: entity
+  parent: IS14ModsuitPartBootsBase
+  id: IS14ModsuitBootsChrono
+  categories: [ HideSpawnMenu ]
+  name: chrono MOD boots
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/chrono.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/chrono.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorChrono
+
+- type: entity
+  parent: IS14ModsuitControlBase
+  id: IS14ModsuitChrono
+  categories: [ HideSpawnMenu ]
+  name: chrono MOD controller
+  description: A timeline suit. Well plated, sealed against everything, and with almost no room inside for anything except itself.
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/chrono.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/chrono.rsi
+  - type: ModsuitControl
+    sealedSlowdown: 1.0
+    partPrototypes:
+      head: IS14ModsuitHelmetChrono
+      outerClothing: IS14ModsuitChestplateChrono
+      gloves: IS14ModsuitGauntletsChrono
+      shoes: IS14ModsuitBootsChrono
+  - type: ModularChassis
+    maxComplexity: 10
+    integratedModules:
+    - IS14ModuleVisorDiagnostic
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+
+# =========================================================== СБОЙНЫЙ
+
+- type: entity
+  parent: IS14ModsuitPartHelmetBase
+  id: IS14ModsuitHelmetGlitch
+  categories: [ HideSpawnMenu ]
+  name: glitch MOD helmet
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/glitch.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/glitch.rsi
+  # 50% от механики и 70% от тока, огня и кислоты, плюс изрядная ёмкость.
+  - type: Armor
+    modifiers:
+      coefficients: &IS14ArmorGlitch
+        Blunt: 0.5
+        Slash: 0.5
+        Piercing: 0.5
+        Heat: 0.3
+        Cold: 0.4
+        Shock: 0.3
+        Caustic: 0.3
+
+- type: entity
+  parent: IS14ModsuitPartChestplateBase
+  id: IS14ModsuitChestplateGlitch
+  categories: [ HideSpawnMenu ]
+  name: glitch MOD chestplate
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/glitch.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/glitch.rsi
+  # Не замедляет: масса у этой темы — вопрос дискуссионный.
+  - type: ClothingSpeedModifier
+    walkModifier: 1.0
+    sprintModifier: 1.0
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorGlitch
+
+- type: entity
+  parent: IS14ModsuitPartGauntletsBase
+  id: IS14ModsuitGauntletsGlitch
+  categories: [ HideSpawnMenu ]
+  name: glitch MOD gauntlets
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/glitch.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/glitch.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorGlitch
+
+- type: entity
+  parent: IS14ModsuitPartBootsBase
+  id: IS14ModsuitBootsGlitch
+  categories: [ HideSpawnMenu ]
+  name: glitch MOD boots
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/glitch.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/glitch.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorGlitch
+
+- type: entity
+  parent: IS14ModsuitControlBase
+  id: IS14ModsuitGlitch
+  categories: [ HideSpawnMenu ]
+  name: glitch MOD controller
+  description: The suit is not entirely convinced it exists. Neither is anything that hits it, which turns out to be an advantage.
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/glitch.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/glitch.rsi
+  - type: ModsuitControl
+    sealedSlowdown: 1.0
+    partPrototypes:
+      head: IS14ModsuitHelmetGlitch
+      outerClothing: IS14ModsuitChestplateGlitch
+      gloves: IS14ModsuitGauntletsGlitch
+      shoes: IS14ModsuitBootsGlitch
+  - type: ModularChassis
+    maxComplexity: 18
+    integratedModules:
+    - IS14ModuleVisorDiagnostic
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+
+# =========================================================== ПРОТОТИП
+
+- type: entity
+  parent: IS14ModsuitPartHelmetBase
+  id: IS14ModsuitHelmetPrototype
+  categories: [ HideSpawnMenu ]
+  name: prototype MOD helmet
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/prototype.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/prototype.rsi
+  # Брони почти нет — 30% от механики, нижняя граница. Тему берут за ёмкость.
+  - type: Armor
+    modifiers:
+      coefficients: &IS14ArmorPrototype
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.7
+        Heat: 0.3
+        Cold: 0.55
+        Shock: 0.55
+        Caustic: 0.45
+
+- type: entity
+  parent: IS14ModsuitPartChestplateBase
+  id: IS14ModsuitChestplatePrototype
+  categories: [ HideSpawnMenu ]
+  name: prototype MOD chestplate
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/prototype.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/prototype.rsi
+  # Самая тяжёлая рама набора: 30% замедления против базовых 20%. Первый
+  # рабочий образец никто не облегчал.
+  - type: ClothingSpeedModifier
+    walkModifier: 0.7
+    sprintModifier: 0.7
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorPrototype
+
+- type: entity
+  parent: IS14ModsuitPartGauntletsBase
+  id: IS14ModsuitGauntletsPrototype
+  categories: [ HideSpawnMenu ]
+  name: prototype MOD gauntlets
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/prototype.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/prototype.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorPrototype
+
+- type: entity
+  parent: IS14ModsuitPartBootsBase
+  id: IS14ModsuitBootsPrototype
+  categories: [ HideSpawnMenu ]
+  name: prototype MOD boots
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/prototype.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/prototype.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorPrototype
+
+- type: entity
+  parent: IS14ModsuitControlBase
+  id: IS14ModsuitPrototype
+  categories: [ HideSpawnMenu ]
+  name: prototype MOD controller
+  description: The first frame that worked, kept because it worked. Enormous capacity, almost no plating, and a power draw that shows its age.
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/prototype.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/prototype.rsi
+  - type: ModsuitControl
+    sealedSlowdown: 0.5
+    partPrototypes:
+      head: IS14ModsuitHelmetPrototype
+      outerClothing: IS14ModsuitChestplatePrototype
+      gloves: IS14ModsuitGauntletsPrototype
+      shoes: IS14ModsuitBootsPrototype
+  - type: ModularChassis
+    maxComplexity: 20
+    integratedModules:
+    - IS14ModuleVisorDiagnostic
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+
+# =========================================================== КОСМОХОНК
+
+- type: entity
+  parent: IS14ModsuitPartHelmetBase
+  id: IS14ModsuitHelmetCosmohonk
+  categories: [ HideSpawnMenu ]
+  name: cosmohonk MOD helmet
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/cosmohonk.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/cosmohonk.rsi
+  # Брони почти нет — нижняя граница по всему. Костюм не для боя.
+  - type: Armor
+    modifiers:
+      coefficients: &IS14ArmorCosmohonk
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.7
+        Heat: 0.5
+        Cold: 0.6
+        Shock: 0.6
+        Caustic: 0.7
+
+- type: entity
+  parent: IS14ModsuitPartChestplateBase
+  id: IS14ModsuitChestplateCosmohonk
+  categories: [ HideSpawnMenu ]
+  name: cosmohonk MOD chestplate
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/cosmohonk.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/cosmohonk.rsi
+  # Тяжелее любой станционной рамы: 30% замедления. Смешно всем, кроме носителя.
+  - type: ClothingSpeedModifier
+    walkModifier: 0.7
+    sprintModifier: 0.7
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorCosmohonk
+
+- type: entity
+  parent: IS14ModsuitPartGauntletsBase
+  id: IS14ModsuitGauntletsCosmohonk
+  categories: [ HideSpawnMenu ]
+  name: cosmohonk MOD gauntlets
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/cosmohonk.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/cosmohonk.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorCosmohonk
+
+- type: entity
+  parent: IS14ModsuitPartBootsBase
+  id: IS14ModsuitBootsCosmohonk
+  categories: [ HideSpawnMenu ]
+  name: cosmohonk MOD boots
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/cosmohonk.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/cosmohonk.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorCosmohonk
+
+- type: entity
+  parent: IS14ModsuitControlBase
+  id: IS14ModsuitCosmohonk
+  categories: [ HideSpawnMenu ]
+  name: cosmohonk MOD controller
+  description: Honk Co. pressure gear. It seals, it holds air, and every single design decision after that was made by somebody who found it funny.
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/cosmohonk.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/cosmohonk.rsi
+  - type: ModsuitControl
+    sealedSlowdown: 0.4
+    partPrototypes:
+      head: IS14ModsuitHelmetCosmohonk
+      outerClothing: IS14ModsuitChestplateCosmohonk
+      gloves: IS14ModsuitGauntletsCosmohonk
+      shoes: IS14ModsuitBootsCosmohonk
+  - type: ModularChassis
+    maxComplexity: 12
+    integratedModules:
+    - IS14ModuleVisorDiagnostic
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+
+# =========================================================== ХОНКЕРАТИВНЫЙ (скин синдиката)
+
+- type: entity
+  parent: IS14ModsuitPartHelmetBase
+  id: IS14ModsuitHelmetHonkerative
+  categories: [ HideSpawnMenu ]
+  name: honkerative MOD helmet
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/honkerative.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/honkerative.rsi
+  # Статы синдикатской темы: 60% от механики, 70% от тока и кислоты.
+  - type: Armor
+    modifiers:
+      coefficients: &IS14ArmorHonkerative
+        Blunt: 0.4
+        Slash: 0.4
+        Piercing: 0.4
+        Heat: 0.35
+        Cold: 0.5
+        Shock: 0.3
+        Caustic: 0.3
+
+- type: entity
+  parent: IS14ModsuitPartChestplateBase
+  id: IS14ModsuitChestplateHonkerative
+  categories: [ HideSpawnMenu ]
+  name: honkerative MOD chestplate
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/honkerative.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/honkerative.rsi
+  # Не замедляет — синдикатская рама под клоунской раскраской.
+  - type: ClothingSpeedModifier
+    walkModifier: 1.0
+    sprintModifier: 1.0
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorHonkerative
+
+- type: entity
+  parent: IS14ModsuitPartGauntletsBase
+  id: IS14ModsuitGauntletsHonkerative
+  categories: [ HideSpawnMenu ]
+  name: honkerative MOD gauntlets
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/honkerative.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/honkerative.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorHonkerative
+
+- type: entity
+  parent: IS14ModsuitPartBootsBase
+  id: IS14ModsuitBootsHonkerative
+  categories: [ HideSpawnMenu ]
+  name: honkerative MOD boots
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/honkerative.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/honkerative.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorHonkerative
+
+- type: entity
+  parent: [ IS14ModsuitControlBase, BaseSyndicateContraband ]
+  id: IS14ModsuitHonkerative
+  categories: [ HideSpawnMenu ]
+  name: honkerative MOD controller
+  description: Somebody at the Syndicate thought this was funny, and then somebody else signed off on the budget. It is a blood-red suit in every way that matters.
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/honkerative.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/honkerative.rsi
+  - type: ModsuitControl
+    sealedSlowdown: 1.0
+    partPrototypes:
+      head: IS14ModsuitHelmetHonkerative
+      outerClothing: IS14ModsuitChestplateHonkerative
+      gloves: IS14ModsuitGauntletsHonkerative
+      shoes: IS14ModsuitBootsHonkerative
+  - type: ModularChassis
+    maxComplexity: 20
+    integratedModules:
+    - IS14ModuleVisorNight
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+
+# =========================================================== ИНКВИЗИТОРСКИЙ (скин ОБР)
+
+- type: entity
+  parent: IS14ModsuitPartHelmetBase
+  id: IS14ModsuitHelmetInquisitory
+  categories: [ HideSpawnMenu ]
+  name: inquisitory MOD helmet
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/inquisitory.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/inquisitory.rsi
+  # Статы темы ОБР: 60% от механики, 70% от огня, 65% от кислоты.
+  - type: Armor
+    modifiers:
+      coefficients: &IS14ArmorInquisitory
+        Blunt: 0.4
+        Slash: 0.4
+        Piercing: 0.4
+        Heat: 0.3
+        Cold: 0.45
+        Shock: 0.45
+        Caustic: 0.35
+
+- type: entity
+  parent: IS14ModsuitPartChestplateBase
+  id: IS14ModsuitChestplateInquisitory
+  categories: [ HideSpawnMenu ]
+  name: inquisitory MOD chestplate
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/inquisitory.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/inquisitory.rsi
+  # Замедления нет: та же компенсация, что у остальной линейки ЦК.
+  - type: ClothingSpeedModifier
+    walkModifier: 1.0
+    sprintModifier: 1.0
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorInquisitory
+
+- type: entity
+  parent: IS14ModsuitPartGauntletsBase
+  id: IS14ModsuitGauntletsInquisitory
+  categories: [ HideSpawnMenu ]
+  name: inquisitory MOD gauntlets
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/inquisitory.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/inquisitory.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorInquisitory
+
+- type: entity
+  parent: IS14ModsuitPartBootsBase
+  id: IS14ModsuitBootsInquisitory
+  categories: [ HideSpawnMenu ]
+  name: inquisitory MOD boots
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/inquisitory.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/inquisitory.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorInquisitory
+
+- type: entity
+  parent: IS14ModsuitControlBase
+  id: IS14ModsuitInquisitory
+  categories: [ HideSpawnMenu ]
+  name: inquisitory MOD controller
+  description: The response frame in the colours CentCom uses when the visit is not a rescue.
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/inquisitory.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/inquisitory.rsi
+  - type: ModsuitControl
+    sealedSlowdown: 1.0
+    partPrototypes:
+      head: IS14ModsuitHelmetInquisitory
+      outerClothing: IS14ModsuitChestplateInquisitory
+      gloves: IS14ModsuitGauntletsInquisitory
+      shoes: IS14ModsuitBootsInquisitory
+  - type: ModularChassis
+    maxComplexity: 18
+    integratedModules:
+    - IS14ModuleVisorSecurity
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+
+# =========================================================== АДМИНИСТРАТИВНЫЙ
+
+- type: entity
+  parent: IS14ModsuitPartHelmetBase
+  id: IS14ModsuitHelmetAdministrative
+  categories: [ HideSpawnMenu ]
+  name: administrative MOD helmet
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/debug.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/debug.rsi
+  # Инструмент администрации, а не игровой предмет: коридор 30-70% на него
+  # намеренно не распространяется — костюм не должен ничего чувствовать.
+  - type: Armor
+    modifiers:
+      coefficients: &IS14ArmorAdministrative
+        Blunt: 0.05
+        Slash: 0.05
+        Piercing: 0.05
+        Heat: 0.05
+        Cold: 0.05
+        Shock: 0.05
+        Caustic: 0.05
+
+- type: entity
+  parent: IS14ModsuitPartChestplateBase
+  id: IS14ModsuitChestplateAdministrative
+  categories: [ HideSpawnMenu ]
+  name: administrative MOD chestplate
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/debug.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/debug.rsi
+  # Замедления нет и быть не может.
+  - type: ClothingSpeedModifier
+    walkModifier: 1.0
+    sprintModifier: 1.0
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorAdministrative
+
+- type: entity
+  parent: IS14ModsuitPartGauntletsBase
+  id: IS14ModsuitGauntletsAdministrative
+  categories: [ HideSpawnMenu ]
+  name: administrative MOD gauntlets
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/debug.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/debug.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorAdministrative
+
+- type: entity
+  parent: IS14ModsuitPartBootsBase
+  id: IS14ModsuitBootsAdministrative
+  categories: [ HideSpawnMenu ]
+  name: administrative MOD boots
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/debug.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/debug.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorAdministrative
+
+- type: entity
+  parent: IS14ModsuitControlBase
+  id: IS14ModsuitAdministrative
+  categories: [ HideSpawnMenu ]
+  name: administrative MOD controller
+  description: Not equipment. If you are wearing this and you are not staff, something has gone wrong.
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/debug.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/debug.rsi
+  - type: ModsuitControl
+    sealedSlowdown: 1.0
+    partPrototypes:
+      head: IS14ModsuitHelmetAdministrative
+      outerClothing: IS14ModsuitChestplateAdministrative
+      gloves: IS14ModsuitGauntletsAdministrative
+      shoes: IS14ModsuitBootsAdministrative
+  # Ёмкость заведомо больше любого набора модулей, какой можно собрать.
+  - type: ModularChassis
+    maxComplexity: 100
   - type: ItemSlots
     slots:
       mod-core:
@@ -785,11 +2817,91 @@
 # ============================================= отладочный набор для теста
 
 - type: entity
-  parent: IS14ModsuitEngineering
+  parent: IS14ModsuitPartHelmetBase
+  id: IS14ModsuitHelmetDebug
+  categories: [ HideSpawnMenu ]
+  name: debug MOD helmet
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/debug.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/debug.rsi
+  # Тестовый набор, а не игровой предмет — в коридор 30-70% намеренно не
+  # укладывается.
+  - type: Armor
+    modifiers:
+      coefficients: &IS14ArmorDebug
+        Blunt: 0.1
+        Slash: 0.1
+        Piercing: 0.1
+        Heat: 0.1
+        Cold: 0.1
+        Shock: 0.1
+        Caustic: 0.1
+
+- type: entity
+  parent: IS14ModsuitPartChestplateBase
+  id: IS14ModsuitChestplateDebug
+  categories: [ HideSpawnMenu ]
+  name: debug MOD chestplate
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/debug.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/debug.rsi
+  # Замедления нет: тестовый костюм не должен мешать тестировать.
+  - type: ClothingSpeedModifier
+    walkModifier: 1.0
+    sprintModifier: 1.0
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorDebug
+
+- type: entity
+  parent: IS14ModsuitPartGauntletsBase
+  id: IS14ModsuitGauntletsDebug
+  categories: [ HideSpawnMenu ]
+  name: debug MOD gauntlets
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/debug.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/debug.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorDebug
+
+- type: entity
+  parent: IS14ModsuitPartBootsBase
+  id: IS14ModsuitBootsDebug
+  categories: [ HideSpawnMenu ]
+  name: debug MOD boots
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/debug.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/debug.rsi
+  - type: Armor
+    modifiers:
+      coefficients: *IS14ArmorDebug
+
+- type: entity
+  parent: IS14ModsuitControlBase
   id: IS14ModsuitDebug
   name: debug MOD controller
   description: Every module and an infinite core. For testing.
   components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Modsuits/debug.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Modsuits/debug.rsi
+  - type: ModsuitControl
+    sealedSlowdown: 1.0
+    partPrototypes:
+      head: IS14ModsuitHelmetDebug
+      outerClothing: IS14ModsuitChestplateDebug
+      gloves: IS14ModsuitGauntletsDebug
+      shoes: IS14ModsuitBootsDebug
   - type: ModularChassis
     maxComplexity: 50
     integratedModules:
@@ -804,6 +2916,7 @@
       mod-core:
         name: mod-core-slot
         startingItem: IS14ModCoreInfinite
+        disableEject: true
         whitelist:
           components:
           - ModCore
@@ -879,6 +2992,7 @@
 - type: entity
   parent: IS14ModsuitControlBase
   id: IS14ModsuitCivilian
+  categories: [ HideSpawnMenu ]
   name: civilian MOD controller
   description: The cheapest shell that still holds pressure. No armour, no tricks, and nobody asks why you are wearing it.
   components:
@@ -953,6 +3067,7 @@
 - type: entity
   parent: IS14ModsuitControlBase
   id: IS14ModsuitLoader
+  categories: [ HideSpawnMenu ]
   name: loader MOD controller
   description: Built around the compartment rather than around the person. The magnet and the hold come with it; what you carry is up to you.
   components:
@@ -1059,6 +3174,7 @@
 - type: entity
   parent: IS14ModsuitControlBase
   id: IS14ModsuitMagnate
+  categories: [ HideSpawnMenu ]
   name: magnate MOD controller
   description: Command issue, and it looks it. The frame carries more hardware than anything else on the station, which is the point of being the person wearing it.
   components:
@@ -1073,11 +3189,478 @@
       gloves: IS14ModsuitGauntletsMagnate
       shoes: IS14ModsuitBootsMagnate
   - type: ModularChassis
-    maxComplexity: 15
+    maxComplexity: 17
   - type: ItemSlots
     slots:
       mod-core:
         name: mod-core-slot
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+# ================================== варианты с уже вставленным ядром
+
+- type: entity
+  parent: IS14ModsuitStandard
+  id: IS14ModsuitStandardFilled
+  suffix: Standard core
+  components:
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        startingItem: IS14ModCoreStandard
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+- type: entity
+  parent: IS14ModsuitCivilian
+  id: IS14ModsuitCivilianFilled
+  suffix: Standard core
+  components:
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        startingItem: IS14ModCoreStandard
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+- type: entity
+  parent: IS14ModsuitEngineering
+  id: IS14ModsuitEngineeringFilled
+  suffix: Standard core
+  components:
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        startingItem: IS14ModCoreStandard
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+- type: entity
+  parent: IS14ModsuitAtmospheric
+  id: IS14ModsuitAtmosphericFilled
+  suffix: Standard core
+  components:
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        startingItem: IS14ModCoreStandard
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+- type: entity
+  parent: IS14ModsuitMedical
+  id: IS14ModsuitMedicalFilled
+  suffix: Standard core
+  components:
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        startingItem: IS14ModCoreStandard
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+- type: entity
+  parent: IS14ModsuitSecurity
+  id: IS14ModsuitSecurityFilled
+  suffix: Standard core
+  components:
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        startingItem: IS14ModCoreStandard
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+- type: entity
+  parent: IS14ModsuitMining
+  id: IS14ModsuitMiningFilled
+  suffix: Standard core
+  components:
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        startingItem: IS14ModCoreStandard
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+- type: entity
+  parent: IS14ModsuitResearch
+  id: IS14ModsuitResearchFilled
+  suffix: Standard core
+  components:
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        startingItem: IS14ModCoreStandard
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+- type: entity
+  parent: IS14ModsuitLoader
+  id: IS14ModsuitLoaderFilled
+  suffix: Standard core
+  components:
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        startingItem: IS14ModCoreStandard
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+- type: entity
+  parent: IS14ModsuitMagnate
+  id: IS14ModsuitMagnateFilled
+  suffix: Standard core
+  components:
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        startingItem: IS14ModCoreStandard
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+- type: entity
+  parent: IS14ModsuitSyndicate
+  id: IS14ModsuitSyndicateFilled
+  suffix: Standard core
+  components:
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        startingItem: IS14ModCoreStandard
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+- type: entity
+  parent: IS14ModsuitRescue
+  id: IS14ModsuitRescueFilled
+  suffix: Standard core
+  components:
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        startingItem: IS14ModCoreStandard
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+- type: entity
+  parent: IS14ModsuitSafeguard
+  id: IS14ModsuitSafeguardFilled
+  suffix: Standard core
+  components:
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        startingItem: IS14ModCoreStandard
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+- type: entity
+  parent: IS14ModsuitAdvanced
+  id: IS14ModsuitAdvancedFilled
+  suffix: Standard core
+  components:
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        startingItem: IS14ModCoreStandard
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+- type: entity
+  parent: IS14ModsuitResponsory
+  id: IS14ModsuitResponsoryFilled
+  suffix: Standard core
+  components:
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        startingItem: IS14ModCoreStandard
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+- type: entity
+  parent: IS14ModsuitCorporate
+  id: IS14ModsuitCorporateFilled
+  suffix: Standard core
+  components:
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        startingItem: IS14ModCoreStandard
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+- type: entity
+  parent: IS14ModsuitCorpsman
+  id: IS14ModsuitCorpsmanFilled
+  suffix: Standard core
+  components:
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        startingItem: IS14ModCoreStandard
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+- type: entity
+  parent: IS14ModsuitAsteroid
+  id: IS14ModsuitAsteroidFilled
+  suffix: Standard core
+  components:
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        startingItem: IS14ModCoreStandard
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+- type: entity
+  parent: IS14ModsuitNinja
+  id: IS14ModsuitNinjaFilled
+  suffix: Standard core
+  components:
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        startingItem: IS14ModCoreStandard
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+- type: entity
+  parent: IS14ModsuitInterdyne
+  id: IS14ModsuitInterdyneFilled
+  suffix: Standard core
+  components:
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        startingItem: IS14ModCoreStandard
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+- type: entity
+  parent: IS14ModsuitInfiltrator
+  id: IS14ModsuitInfiltratorFilled
+  suffix: Standard core
+  components:
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        startingItem: IS14ModCoreStandard
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+- type: entity
+  parent: IS14ModsuitElite
+  id: IS14ModsuitEliteFilled
+  suffix: Standard core
+  components:
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        startingItem: IS14ModCoreStandard
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+- type: entity
+  parent: IS14ModsuitApocryphal
+  id: IS14ModsuitApocryphalFilled
+  suffix: Standard core
+  components:
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        startingItem: IS14ModCoreStandard
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+- type: entity
+  parent: IS14ModsuitEnchanted
+  id: IS14ModsuitEnchantedFilled
+  suffix: Standard core
+  components:
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        startingItem: IS14ModCoreStandard
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+- type: entity
+  parent: IS14ModsuitChrono
+  id: IS14ModsuitChronoFilled
+  suffix: Standard core
+  components:
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        startingItem: IS14ModCoreStandard
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+- type: entity
+  parent: IS14ModsuitGlitch
+  id: IS14ModsuitGlitchFilled
+  suffix: Standard core
+  components:
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        startingItem: IS14ModCoreStandard
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+- type: entity
+  parent: IS14ModsuitPrototype
+  id: IS14ModsuitPrototypeFilled
+  suffix: Standard core
+  components:
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        startingItem: IS14ModCoreStandard
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+- type: entity
+  parent: IS14ModsuitCosmohonk
+  id: IS14ModsuitCosmohonkFilled
+  suffix: Standard core
+  components:
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        startingItem: IS14ModCoreStandard
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+- type: entity
+  parent: IS14ModsuitHonkerative
+  id: IS14ModsuitHonkerativeFilled
+  suffix: Standard core
+  components:
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        startingItem: IS14ModCoreStandard
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+- type: entity
+  parent: IS14ModsuitInquisitory
+  id: IS14ModsuitInquisitoryFilled
+  suffix: Standard core
+  components:
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        startingItem: IS14ModCoreStandard
+        disableEject: true
+        whitelist:
+          components:
+          - ModCore
+
+- type: entity
+  parent: IS14ModsuitAdministrative
+  id: IS14ModsuitAdministrativeFilled
+  suffix: Infinite core
+  components:
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: mod-core-slot
+        startingItem: IS14ModCoreInfinite
         disableEject: true
         whitelist:
           components:
