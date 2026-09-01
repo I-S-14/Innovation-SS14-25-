@@ -6,6 +6,11 @@
     eyes: ClothingEyesIS14MedEyeScanner
 
 - type: loadout
+  id: IS14MedOfficerArmoredRobe
+  equipment:
+    outerClothing: ClothingOuterIS14MedOfficerArmoredRobe
+
+- type: loadout
   id: IS14MedOfficerBackpack
   equipment:
     back: ClothingBackpackSecurity
@@ -21,20 +26,9 @@
     shoes: ClothingShoesBootsJack
 
 - type: loadout
-  id: IS14MedOfficerCap
-  equipment:
-    head: ClothingHeadIS14MedOfficerCap
-
-- type: loadout
   id: IS14MedOfficerDuffel
   equipment:
     back: ClothingBackpackDuffelSecurity
-
-- type: loadout
-  id: IS14MedOfficerJumpskirt
-  equipment:
-    jumpsuit: ClothingUniformJumpskirtIS14MedOfficerSkirt
-  groupBy: "jumpskirt"
 
 - type: loadout
   id: IS14MedOfficerJumpsuit
@@ -89,7 +83,6 @@
   name: loadout-group-head
   minLimit: 0
   loadouts:
-  - IS14MedOfficerCap
   - IS14MedOfficerBeret
 
 - type: loadoutGroup
@@ -97,7 +90,6 @@
   name: loadout-group-jumpsuit
   loadouts:
   - IS14MedOfficerJumpsuit
-  - IS14MedOfficerJumpskirt
 
 - type: loadoutGroup
   id: IS14MedOfficerOuterClothing
@@ -105,6 +97,7 @@
   minLimit: 0
   loadouts:
   - IS14MedOfficerRobe
+  - IS14MedOfficerArmoredRobe
 
 - type: loadoutGroup
   id: IS14MedOfficerShoes

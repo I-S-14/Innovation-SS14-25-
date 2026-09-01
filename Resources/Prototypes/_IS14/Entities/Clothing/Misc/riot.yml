@@ -21,16 +21,6 @@
     equippedState: equipped-HEAD
 
 - type: entity
-  parent: ClothingHeadBase
-  id: ClothingHeadIS14RiotHelmet
-  components:
-  - type: Sprite
-    sprite: _IS14/Clothing/Head/Militia/riot_helmet.rsi
-  - type: Clothing
-    sprite: _IS14/Clothing/Head/Militia/riot_helmet.rsi
-    equippedState: equipped-HEAD
-
-- type: entity
   parent: ClothingOuterBase
   id: ClothingOuterIS14RiotVest
   components:

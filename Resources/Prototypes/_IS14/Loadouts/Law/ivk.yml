@@ -30,11 +30,6 @@
     back: ClothingBackpackDuffelSecurity
 
 - type: loadout
-  id: IS14IvkGasMask
-  equipment:
-    mask: ClothingMaskIS14GasIVK
-
-- type: loadout
   id: IS14IvkJumpskirt
   equipment:
     jumpsuit: ClothingUniformJumpskirtIS14IVK
@@ -76,13 +71,6 @@
   name: loadout-group-jumpsuit
   loadouts:
   - IS14IvkJumpskirt
-
-- type: loadoutGroup
-  id: IS14IvkMask
-  name: loadout-group-mask
-  minLimit: 0
-  loadouts:
-  - IS14IvkGasMask
 
 - type: loadoutGroup
   id: IS14IvkOuterClothing

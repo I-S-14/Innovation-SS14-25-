@@ -45,12 +45,6 @@
     outerClothing: ClothingOuterIS14MilitiaFormalJacket
 
 - type: loadout
-  id: IS14InternalControlExecutorJumpskirt
-  equipment:
-    jumpsuit: ClothingUniformJumpskirtIS14MilitiaFormalSkirt
-  groupBy: "jumpskirt"
-
-- type: loadout
   id: IS14InternalControlExecutorJumpsuit
   equipment:
     jumpsuit: ClothingUniformJumpsuitIS14MilitiaFormal
@@ -65,12 +59,6 @@
   id: IS14InternalControlExecutorSatchel
   equipment:
     back: ClothingBackpackSatchelSecurity
-
-- type: loadout
-  id: IS14InternalControlExecutorTactical
-  equipment:
-    jumpsuit: ClothingUniformJumpsuitIS14MilitiaTactical
-  groupBy: "jumpsuit"
 
 - type: loadoutGroup
   id: IS14InternalControlExecutorBackpack
@@ -111,8 +99,6 @@
   name: loadout-group-jumpsuit
   loadouts:
   - IS14InternalControlExecutorJumpsuit
-  - IS14InternalControlExecutorJumpskirt
-  - IS14InternalControlExecutorTactical
 
 - type: loadoutGroup
   id: IS14InternalControlExecutorOuterClothing

@@ -1,0 +1,16 @@
+ent-ClothingHeadIS14CrbOfficerBeret = CRB officer's beret
+    .desc = The red star on the front leaves the onlooker no arguments for resisting.
+ent-ClothingHeadIS14CrbOfficerCap = CRB officer's peaked cap
+    .desc = Its severity of style is in no way reminiscent of the caps of other states and regimes.
+ent-ClothingUniformJumpsuitIS14CrbOfficer = CRB officer's uniform
+    .desc = Regulation dress for official duty on site - outside of it, something less official is advised.
+ent-ClothingOuterIS14CrbOfficerShinel = CRB officer's protective greatcoat
+    .desc = Dense fibres with sewn-in armour plates let it survive several shots at point blank range, from a flamethrower.
+ent-ClothingOuterIS14CrbOfficerCoat = CRB officer's protective coat
+    .desc = Meant for official outdoor occasions, it sometimes stops a sniper round.
+ent-ClothingBeltIS14CrbOfficer = CRB officer's belt
+    .desc = The buckle is engraved with the USSP coat of arms, handy for leaving a mark on the punished.
+ent-ClothingShoesIS14CrbOfficerBoots = CRB officer's tactical boots
+    .desc = For trampling counter-revolutionary and anti-soviet scum; in their absence, kicking bureaucrats will do.
+ent-ClothingHandsIS14CrbOfficerGloves = CRB officer's tactical gloves
+    .desc = They leave no prints, do not conduct electricity, do not burn and do not tear - so says the spec sheet. One of those claims is definitely true.

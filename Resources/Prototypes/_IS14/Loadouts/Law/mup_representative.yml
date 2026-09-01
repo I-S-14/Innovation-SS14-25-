@@ -22,12 +22,6 @@
   groupBy: "jumpsuit"
 
 - type: loadout
-  id: IS14MupRepresentativeFormalBlack
-  equipment:
-    jumpsuit: ClothingUniformJumpsuitIS14FormalBlackMupRepresentative
-  groupBy: "jumpsuit"
-
-- type: loadout
   id: IS14MupRepresentativeJumpskirt
   equipment:
     jumpsuit: ClothingUniformJumpskirtIS14MupRepresentative
@@ -64,7 +58,6 @@
   - IS14MupRepresentativeJumpsuit
   - IS14MupRepresentativeJumpskirt
   - IS14MupRepresentativeFormal
-  - IS14MupRepresentativeFormalBlack
 
 - type: loadoutGroup
   id: IS14MupRepresentativeNeck

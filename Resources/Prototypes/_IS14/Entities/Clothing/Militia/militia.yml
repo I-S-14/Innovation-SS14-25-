@@ -56,51 +56,6 @@
 
 - type: entity
   parent: ClothingHeadBase
-  id: ClothingHeadIS14HatBlackMilitiaKubanka
-  components:
-  - type: Clothing
-    sprite: _IS14/Clothing/Head/Militia/militia_kubanka.rsi
-    equippedState: black-equipped-HELMET
-  - type: Appearance
-  - type: AddAccentClothing
-    accent: RussianAccent
-  - type: Sprite
-    sprite: _IS14/Clothing/Head/Militia/militia_kubanka.rsi
-    layers:
-    - state: icon-black
-
-- type: entity
-  parent: ClothingHeadHatUshanka
-  id: ClothingHeadIS14HatMilitiaUshanka
-  components:
-  - type: Clothing
-    sprite: _IS14/Clothing/Head/Militia/Militia/militia_ushanka.rsi
-  - type: Sprite
-    sprite: _IS14/Clothing/Head/Militia/Militia/militia_ushanka.rsi
-    layers:
-    - state: icon
-      map: [ "unfoldedLayer" ]
-    - state: icon-up
-      map: ["foldedLayer"]
-      visible: false
-
-- type: entity
-  parent: ClothingHeadBase
-  id: ClothingHeadIS14HatRedMilitiaKubanka
-  components:
-  - type: Clothing
-    sprite: _IS14/Clothing/Head/Militia/militia_kubanka.rsi
-    equippedState: red-equipped-HELMET
-  - type: Appearance
-  - type: AddAccentClothing
-    accent: RussianAccent
-  - type: Sprite
-    sprite: _IS14/Clothing/Head/Militia/militia_kubanka.rsi
-    layers:
-    - state: icon-red
-
-- type: entity
-  parent: ClothingHeadBase
   id: ClothingHeadIS14MilitiaBeret
   components:
   - type: Sprite
@@ -118,35 +73,6 @@
   - type: Clothing
     sprite: _IS14/Clothing/Head/Militia/Militia/militia_cap.rsi
     equippedState: equipped-HEAD
-
-- type: entity
-  parent: ClothingHeadBase
-  id: ClothingHeadIS14MilitiaKepka
-  components:
-  - type: Sprite
-    sprite: _IS14/Clothing/Head/Militia/Militia/militia_kepka.rsi
-  - type: Clothing
-    sprite: _IS14/Clothing/Head/Militia/Militia/militia_kepka.rsi
-    equippedState: equipped-HEAD
-
-- type: entity
-  parent: ClothingHeadBase
-  id: ClothingHeadIS14MilitiaMotorcycleHelmet
-  components:
-  - type: Sprite
-    sprite: _IS14/Clothing/Head/Militia/militia_motorcycle_helmet.rsi
-  - type: Clothing
-    sprite: _IS14/Clothing/Head/Militia/militia_motorcycle_helmet.rsi
-    equippedState: equipped-HEAD
-
-- type: entity
-  parent: ClothingHeadset
-  id: ClothingHeadsetIS14Militia
-  components:
-  - type: Sprite
-    sprite: _IS14/Clothing/Ears/Militia/militia_headset.rsi
-  - type: Clothing
-    sprite: _IS14/Clothing/Ears/Militia/militia_headset.rsi
 
 - type: entity
   parent: ClothingOuterHardsuitBase
@@ -210,28 +136,6 @@
     modifier: 0.5
 
 - type: entity
-  parent: ClothingUniformJumpskirtIS14Base
-  id: ClothingUniformJumpskirtIS14MilitiaFormalSkirt
-  components:
-  - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Militia/Militia/militia_formal_skirt.rsi
-  - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Militia/Militia/militia_formal_skirt.rsi
-    equipSound:
-      path: /Audio/Items/jumpsuit_equip.ogg
-
-- type: entity
-  parent: ClothingUniformJumpskirtIS14Base
-  id: ClothingUniformJumpskirtIS14MilitiaSkirt
-  components:
-  - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Militia/Militia/militia_skirt.rsi
-  - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Militia/Militia/militia_skirt.rsi
-    equipSound:
-      path: /Audio/Items/jumpsuit_equip.ogg
-
-- type: entity
   parent: ClothingUniformJumpsuitIS14Base
   id: ClothingUniformJumpsuitIS14MilitiaFormal
   components:
@@ -250,17 +154,6 @@
     sprite: _IS14/Clothing/Uniforms/Militia/Militia/militia_jumpsuit.rsi
   - type: Clothing
     sprite: _IS14/Clothing/Uniforms/Militia/Militia/militia_jumpsuit.rsi
-    equipSound:
-      path: /Audio/Items/jumpsuit_equip.ogg
-
-- type: entity
-  parent: ClothingUniformJumpsuitIS14Base
-  id: ClothingUniformJumpsuitIS14MilitiaTactical
-  components:
-  - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Militia/Militia/militia_tactical.rsi
-  - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Militia/Militia/militia_tactical.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg
 

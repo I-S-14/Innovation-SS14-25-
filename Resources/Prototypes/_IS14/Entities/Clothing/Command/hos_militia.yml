@@ -41,16 +41,6 @@
 
 - type: entity
   parent: ClothingHeadBase
-  id: ClothingHeadIS14HosCap
-  components:
-  - type: Sprite
-    sprite: _IS14/Clothing/Head/Militia/HosMilitia/hos_cap.rsi
-  - type: Clothing
-    sprite: _IS14/Clothing/Head/Militia/HosMilitia/hos_cap.rsi
-    equippedState: equipped-HEAD
-
-- type: entity
-  parent: ClothingHeadBase
   id: ClothingHeadIS14HosMilitiaBeret
   components:
   - type: Sprite
@@ -66,15 +56,6 @@
     sprite: _IS14/Clothing/Head/Command/HosMilitia/hos_militia_cap.rsi
   - type: Clothing
     sprite: _IS14/Clothing/Head/Command/HosMilitia/hos_militia_cap.rsi
-
-- type: entity
-  parent: ClothingHeadset
-  id: ClothingHeadsetIS14Hos
-  components:
-  - type: Sprite
-    sprite: _IS14/Clothing/Ears/Militia/HosMilitia/hos_headset.rsi
-  - type: Clothing
-    sprite: _IS14/Clothing/Ears/Militia/HosMilitia/hos_headset.rsi
 
 - type: entity
   parent: ClothingNeckBase
@@ -130,15 +111,6 @@
 
 - type: entity
   parent: ClothingOuterIS14Base
-  id: ClothingOuterIS14HosJacket
-  components:
-  - type: Sprite
-    sprite: _IS14/Clothing/OuterClothing/Militia/HosMilitia/hos_jacket.rsi
-  - type: Clothing
-    sprite: _IS14/Clothing/OuterClothing/Militia/HosMilitia/hos_jacket.rsi
-
-- type: entity
-  parent: ClothingOuterIS14Base
   id: ClothingOuterIS14HosMilitiaGreatcoat
   components:
   - type: Sprite
@@ -179,33 +151,11 @@
 
 - type: entity
   parent: ClothingUniformJumpsuitIS14Base
-  id: ClothingUniformJumpsuitIS14FormalHosMilitia
-  components:
-  - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Militia/HosMilitia/formal_hos_militia.rsi
-  - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Militia/HosMilitia/formal_hos_militia.rsi
-    equipSound:
-      path: /Audio/Items/jumpsuit_equip.ogg
-
-- type: entity
-  parent: ClothingUniformJumpsuitIS14Base
   id: ClothingUniformJumpsuitIS14HosMilitia
   components:
   - type: Sprite
     sprite: _IS14/Clothing/Uniforms/Command/HosMilitia/hos_militia.rsi
   - type: Clothing
     sprite: _IS14/Clothing/Uniforms/Command/HosMilitia/hos_militia.rsi
-    equipSound:
-      path: /Audio/Items/jumpsuit_equip.ogg
-
-- type: entity
-  parent: ClothingUniformJumpsuitIS14Base
-  id: ClothingUniformJumpsuitIS14TacticalHosMilitia
-  components:
-  - type: Sprite
-    sprite: _IS14/Clothing/Uniforms/Militia/HosMilitia/tactical_hos_militia.rsi
-  - type: Clothing
-    sprite: _IS14/Clothing/Uniforms/Militia/HosMilitia/tactical_hos_militia.rsi
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg

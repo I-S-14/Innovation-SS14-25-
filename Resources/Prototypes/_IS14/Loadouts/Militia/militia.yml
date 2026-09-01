@@ -16,11 +16,6 @@
     head: ClothingHeadIS14MilitiaBeret
 
 - type: loadout
-  id: IS14MilitiaBlackKubanka
-  equipment:
-    head: ClothingHeadIS14HatBlackMilitiaKubanka
-
-- type: loadout
   id: IS14MilitiaBoots
   equipment:
     shoes: ClothingShoesBootsJack
@@ -41,22 +36,10 @@
     outerClothing: ClothingOuterIS14MilitiaFormalJacket
 
 - type: loadout
-  id: IS14MilitiaFormalJumpskirt
-  equipment:
-    jumpsuit: ClothingUniformJumpskirtIS14MilitiaFormalSkirt
-  groupBy: "jumpskirt"
-
-- type: loadout
   id: IS14MilitiaFormalJumpsuit
   equipment:
     jumpsuit: ClothingUniformJumpsuitIS14MilitiaFormal
   groupBy: "jumpsuit"
-
-- type: loadout
-  id: IS14MilitiaJumpskirt
-  equipment:
-    jumpsuit: ClothingUniformJumpskirtIS14MilitiaSkirt
-  groupBy: "jumpskirt"
 
 - type: loadout
   id: IS14MilitiaJumpsuit
@@ -65,35 +48,14 @@
   groupBy: "jumpsuit"
 
 - type: loadout
-  id: IS14MilitiaKepka
-  equipment:
-    head: ClothingHeadIS14MilitiaKepka
-
-- type: loadout
   id: IS14MilitiaPilotka
   equipment:
     head: ClothingHeadIS14MilitiaPilotka
 
 - type: loadout
-  id: IS14MilitiaRedKubanka
-  equipment:
-    head: ClothingHeadIS14HatRedMilitiaKubanka
-
-- type: loadout
   id: IS14MilitiaSatchel
   equipment:
     back: ClothingBackpackSatchelSecurity
-
-- type: loadout
-  id: IS14MilitiaTactical
-  equipment:
-    jumpsuit: ClothingUniformJumpsuitIS14MilitiaTactical
-  groupBy: "jumpsuit"
-
-- type: loadout
-  id: IS14MilitiaUshanka
-  equipment:
-    head: ClothingHeadIS14HatMilitiaUshanka
 
 - type: loadout
   id: IS14MilitiaWinterBoots
@@ -124,21 +86,14 @@
   loadouts:
   - IS14MilitiaCap
   - IS14MilitiaBeret
-  - IS14MilitiaUshanka
-  - IS14MilitiaRedKubanka
-  - IS14MilitiaBlackKubanka
   - IS14MilitiaPilotka
-  - IS14MilitiaKepka
 
 - type: loadoutGroup
   id: IS14MilitiaJumpsuit
   name: loadout-group-jumpsuit
   loadouts:
   - IS14MilitiaJumpsuit
-  - IS14MilitiaJumpskirt
   - IS14MilitiaFormalJumpsuit
-  - IS14MilitiaFormalJumpskirt
-  - IS14MilitiaTactical
 
 - type: loadoutGroup
   id: IS14MilitiaOuterClothing

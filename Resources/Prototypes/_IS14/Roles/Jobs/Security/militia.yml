@@ -41,7 +41,7 @@
   id: IS14GearHosMilitia
   equipment:
     id: IS14_PdaHosMilitia
-    ears: ClothingHeadsetIS14Hos
+    ears: ClothingHeadsetAltSecurity
 
 - type: job
   id: JobMilitia
@@ -78,7 +78,7 @@
   id: IS14GearMilitia
   equipment:
     id: IS14_PdaMilitia
-    ears: ClothingHeadsetIS14Militia
+    ears: ClothingHeadsetAltSecurityRegular
 
 - type: job
   id: JobSeniorMilitia
@@ -119,7 +119,7 @@
   id: IS14GearSeniorMilitia
   equipment:
     id: IS14_PdaSeniorMilitia
-    ears: ClothingHeadsetIS14Militia
+    ears: ClothingHeadsetAltSecurityRegular
 
 - type: job
   id: IS_JobCadet
@@ -148,7 +148,7 @@
   id: IS14GearCadet
   equipment:
     id: IS14_PdaCadet
-    ears: ClothingHeadsetIS14Militia
+    ears: ClothingHeadsetAltSecurityRegular
 
 - type: job
   id: JobInvestigator
@@ -190,7 +190,7 @@
   id: IS14GearInvestigator
   equipment:
     id: IS14_PdaInvestigator
-    ears: ClothingHeadsetIS14Militia
+    ears: ClothingHeadsetAltSecurityRegular
 
 - type: job
   id: JobMedOfficer
@@ -232,7 +232,7 @@
   id: IS14GearMedOfficer
   equipment:
     id: IS14_PdaMedOfficer
-    ears: ClothingHeadsetIS14MedOfficer
+    ears: ClothingHeadsetBrigmedic
 
 - type: job
   id: JobLrrChief
@@ -274,7 +274,7 @@
   id: IS14GearLrrChief
   equipment:
     id: IS14_PdaLrrChief
-    ears: ClothingHeadsetIS14Militia
+    ears: ClothingHeadsetAltSecurityRegular
 
 - type: job
   id: IS_JobPilot
@@ -316,7 +316,7 @@
   id: IS14GearPilot
   equipment:
     id: IS14_PdaPilot
-    ears: ClothingHeadsetIS14Militia
+    ears: ClothingHeadsetIS14Pilot
 
 - type: job
   id: JobIvk
@@ -368,7 +368,7 @@
   id: IS14GearLawyer
   equipment:
     id: IS14_PdaLawyer
-    ears: ClothingHeadsetIS14Lawyer
+    ears: ClothingHeadsetLawyer
 
 - type: job
   id: JobMupRepresentative
@@ -394,4 +394,4 @@
   id: IS14GearMupRepresentative
   equipment:
     id: IS14_PdaJusticeRepresentative
-    ears: ClothingHeadsetIS14MupRepresentative
+    ears: ClothingHeadsetLawyer

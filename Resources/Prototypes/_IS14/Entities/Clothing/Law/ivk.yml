@@ -21,21 +21,6 @@
     equippedState: equipped-HEAD
 
 - type: entity
-  parent: ClothingMaskGas
-  id: ClothingMaskIS14GasIVK
-  components:
-  - type: Sprite
-    sprite: _IS14/Clothing/Masks/Minust/Ivk/ivk.rsi
-  - type: Clothing
-    sprite: _IS14/Clothing/Masks/Minust/Ivk/ivk.rsi
-  - type: Tag # Goobstation
-    tags:
-    - HamsterWearable
-    - WhitelistChameleon
-    - GasMask
-    - Mask
-
-- type: entity
   parent: ClothingOuterIS14Base
   id: ClothingOuterIS14IVKShinel
   components:
