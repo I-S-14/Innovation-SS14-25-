@@ -42,6 +42,21 @@
     unequipDelay: 0
   - type: Item
     size: Normal
+  # Броня считается только по перечисленным здесь частям тела: без coverage список
+  # коэффициентов не применяется вообще, попадание просто проходит мимо. Поэтому
+  # каждая часть закрывает ровно то, что носит, а темы переопределяют лишь modifiers.
+  - type: Armor
+    coverage:
+    - Head
+    modifiers:
+      coefficients:
+        Blunt: 0.8
+        Slash: 0.8
+        Piercing: 0.8
+        Heat: 0.75
+        Cold: 0.75
+        Shock: 0.75
+        Caustic: 0.75
 
 - type: entity
   abstract: true
@@ -81,6 +96,26 @@
     equipDelay: 0
     unequipDelay: 0
   - type: AllowSuitStorage
+  # Нагрудник несёт на себе всю броню и всю механику костюма — в нём ходят медленно.
+  # Модификатор висит на самой части, поэтому убирается вместе с ней: сложенный МОД
+  # лежит в контроллере, вне слотов инвентаря, и в скорость не попадает.
+  - type: ClothingSpeedModifier
+    walkModifier: 0.8
+    sprintModifier: 0.8
+  # Броня — см. шлем: без coverage коэффициенты не применяются.
+  - type: Armor
+    coverage:
+    - Chest
+    - Groin
+    modifiers:
+      coefficients:
+        Blunt: 0.8
+        Slash: 0.8
+        Piercing: 0.8
+        Heat: 0.75
+        Cold: 0.75
+        Shock: 0.75
+        Caustic: 0.75
 
 - type: entity
   abstract: true
@@ -115,6 +150,20 @@
   - type: Clothing
     equipDelay: 0
     unequipDelay: 0
+  # Броня — см. шлем: без coverage коэффициенты не применяются.
+  - type: Armor
+    coverage:
+    - Arm
+    - Hand
+    modifiers:
+      coefficients:
+        Blunt: 0.8
+        Slash: 0.8
+        Piercing: 0.8
+        Heat: 0.75
+        Cold: 0.75
+        Shock: 0.75
+        Caustic: 0.75
 
 - type: entity
   abstract: true
@@ -149,6 +198,20 @@
   - type: Clothing
     equipDelay: 0
     unequipDelay: 0
+  # Броня — см. шлем: без coverage коэффициенты не применяются.
+  - type: Armor
+    coverage:
+    - Leg
+    - Foot
+    modifiers:
+      coefficients:
+        Blunt: 0.8
+        Slash: 0.8
+        Piercing: 0.8
+        Heat: 0.75
+        Cold: 0.75
+        Shock: 0.75
+        Caustic: 0.75
 
 # ------------------------------------------------------------- блок управления
 
@@ -184,6 +247,10 @@
     slots: [ back ]
   - type: Item
     size: Ginormous
+  # Ранец на спине мешает всегда, развёрнут костюм или нет: это его и носят.
+  - type: ClothingSpeedModifier
+    walkModifier: 0.95
+    sprintModifier: 0.95
   - type: Appearance
 
   # Слой шасси: модули, бюджет сложности, питание.
