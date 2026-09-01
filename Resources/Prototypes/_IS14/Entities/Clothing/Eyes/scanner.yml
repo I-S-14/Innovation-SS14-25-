@@ -1,0 +1,11 @@
+# Структурный сканер: очки, рисующие планировку станции поверх FOV.
+# Дочерний прототип к штатным мезонам — апстримный не трогаем. Если решим, что это
+# должны уметь обычные инженерные очки, туда добавится ровно одна строка.
+
+- type: entity
+  parent: ClothingEyesGlassesMeson
+  id: ClothingEyesIS14StructuralScanner
+  name: structural scanner goggles
+  description: Meson goggles with a survey module wired into the bridge. Plating, walls and doors resolve through obstructions; anything that moves does not.
+  components:
+  - type: StructuralVision
