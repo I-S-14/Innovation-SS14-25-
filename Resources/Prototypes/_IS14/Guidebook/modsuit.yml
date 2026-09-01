@@ -8,6 +8,7 @@
   text: "/ServerInfo/_IS14/Guidebook/Modsuit/Modsuit.xml"
   children:
   - IS14ModsuitsStart
+  - IS14ModsuitsAssembly
   - IS14ModsuitsCore
   - IS14ModsuitsModules
   - IS14ModsuitsAir
@@ -21,31 +22,37 @@
   text: "/ServerInfo/_IS14/Guidebook/Modsuit/Start.xml"
 
 - type: guideEntry
+  id: IS14ModsuitsAssembly
+  name: "Сборка"
+  priority: 1
+  text: "/ServerInfo/_IS14/Guidebook/Modsuit/Assembly.xml"
+
+- type: guideEntry
   id: IS14ModsuitsCore
   name: "Ядро и питание"
-  priority: 1
+  priority: 2
   text: "/ServerInfo/_IS14/Guidebook/Modsuit/Core.xml"
 
 - type: guideEntry
   id: IS14ModsuitsModules
   name: "Модули и сложность"
-  priority: 2
+  priority: 3
   text: "/ServerInfo/_IS14/Guidebook/Modsuit/Modules.xml"
 
 - type: guideEntry
   id: IS14ModsuitsAir
   name: "Баллон и дыхание"
-  priority: 3
+  priority: 4
   text: "/ServerInfo/_IS14/Guidebook/Modsuit/Air.xml"
 
 - type: guideEntry
   id: IS14ModsuitsDamage
   name: "Повреждения и ремонт"
-  priority: 4
+  priority: 5
   text: "/ServerInfo/_IS14/Guidebook/Modsuit/Damage.xml"
 
 - type: guideEntry
   id: IS14ModsuitsSecurity
   name: "Замок, провода и взлом"
-  priority: 5
+  priority: 6
   text: "/ServerInfo/_IS14/Guidebook/Modsuit/Security.xml"

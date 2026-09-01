@@ -232,6 +232,7 @@ chassis-ui-no-cell = no cell
 chassis-ui-hopper = Fuel hopper
 chassis-ui-hopper-tooltip = Load the core with fuel. It burns what it needs as it needs it.
 chassis-config-open-storage = Open
+chassis-config-dump-storage = Dump all
 chassis-config-pump = Compressor
 chassis-config-light-radius = Beam radius
 chassis-config-regulator-temperature = Body temperature, °C
@@ -278,3 +279,12 @@ chassis-ui-dna-blank = blank
 chassis-ui-dna-broken = burnt out
 chassis-ui-fault-dna-broken = DNA lock burnt out — the module needs replacing.
 modsuit-hat-slot = Headwear
+
+# Шаги сборки МОДа. Имена показываются в осмотре заготовки и в справочнике по
+# сборке: движок сам подставляет их в «Далее: ...».
+is14-construction-step-mod-core = MOD core
+is14-construction-step-frame-helmet = MOD helmet frame
+is14-construction-step-frame-chestplate = MOD chestplate frame
+is14-construction-step-frame-gauntlets = MOD gauntlet frames
+is14-construction-step-frame-boots = MOD boot frames
+is14-construction-step-plating = any MOD plating

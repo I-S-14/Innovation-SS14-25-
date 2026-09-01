@@ -1,17 +1,186 @@
-# MVP production route: the exosuit fabricator prints cores, modules and finished suits.
-# The staged construction graph from the design doc replaces the whole-suit recipes later;
-# the module and core recipes carry over unchanged.
+# Экзокостюмный фабрикатор печатает детали, а не костюмы: четыре каркаса, обшивку
+# темы и модули. Собирают из этого руками — см. Entities/Modsuits/construction.yml.
+#
+# Ядер здесь нет ни одного, и это не упущение: ядро в раунде появляется только из
+# карго. Наука делает оболочку, снабжение — то, что заставляет её работать.
+
+# ----------------------------------------------------------- заготовка
+#
+# Корпус, на котором идёт вся сборка. Несущая часть костюма и потому самая
+# дорогая печать набора.
 
 - type: latheRecipe
-  id: IS14ModCoreStandard
-  result: IS14ModCoreStandard
+  id: IS14ModsuitShell
+  result: IS14ModsuitShell
+  categories:
+  - Robotics
+  completetime: 6
+  materials:
+    Steel: 500
+    Plastic: 200
+
+# ------------------------------------------------------- каркасы частей
+#
+# Одинаковы для всех тем: тему задаёт обшивка, а не железо под ней. Печатаются
+# с первой минуты — без обшивки это всё равно четыре куска металла.
+
+- type: latheRecipe
+  id: IS14ModsuitFrameHelmet
+  result: IS14ModsuitFrameHelmet
+  categories:
+  - Robotics
+  completetime: 3
+  materials:
+    Steel: 300
+    Glass: 150
+
+- type: latheRecipe
+  id: IS14ModsuitFrameChestplate
+  result: IS14ModsuitFrameChestplate
+  categories:
+  - Robotics
+  completetime: 3
+  materials:
+    Steel: 250
+    Plastic: 100
+
+- type: latheRecipe
+  id: IS14ModsuitFrameGauntlets
+  result: IS14ModsuitFrameGauntlets
+  categories:
+  - Robotics
+  completetime: 3
+  materials:
+    Steel: 250
+    Plastic: 100
+
+- type: latheRecipe
+  id: IS14ModsuitFrameBoots
+  result: IS14ModsuitFrameBoots
+  categories:
+  - Robotics
+  completetime: 3
+  materials:
+    Steel: 250
+    Plastic: 100
+
+# ------------------------------------------------------------- обшивки
+#
+# Обшивка несёт тему, поэтому в ней вся дорогая часть рецепта. Каркасы плюс
+# обшивка стоят примерно столько же, сколько раньше стоил цельный костюм, —
+# менялся способ, а не цена.
+
+- type: latheRecipe
+  id: IS14ModsuitPlatingStandard
+  result: IS14ModsuitPlatingStandard
+  categories:
+  - Robotics
+  completetime: 5
+  materials:
+    Steel: 700
+    Glass: 350
+    Plastic: 100
+
+- type: latheRecipe
+  id: IS14ModsuitPlatingCivilian
+  result: IS14ModsuitPlatingCivilian
   categories:
   - Robotics
   completetime: 4
   materials:
-    Steel: 500
-    Glass: 500
-    Plasma: 200
+    Steel: 400
+    Plastic: 200
+
+- type: latheRecipe
+  id: IS14ModsuitPlatingEngineering
+  result: IS14ModsuitPlatingEngineering
+  categories:
+  - Robotics
+  completetime: 6
+  materials:
+    Steel: 700
+    Glass: 350
+    Gold: 300
+    Plasma: 300
+
+- type: latheRecipe
+  id: IS14ModsuitPlatingAtmospheric
+  result: IS14ModsuitPlatingAtmospheric
+  categories:
+  - Robotics
+  completetime: 7
+  materials:
+    Steel: 900
+    Glass: 450
+    Plasma: 500
+
+- type: latheRecipe
+  id: IS14ModsuitPlatingMedical
+  result: IS14ModsuitPlatingMedical
+  categories:
+  - Robotics
+  completetime: 6
+  materials:
+    Steel: 400
+    Glass: 650
+    Silver: 300
+
+- type: latheRecipe
+  id: IS14ModsuitPlatingSecurity
+  result: IS14ModsuitPlatingSecurity
+  categories:
+  - Robotics
+  completetime: 7
+  materials:
+    Steel: 1200
+    Glass: 350
+    Plasteel: 500
+
+- type: latheRecipe
+  id: IS14ModsuitPlatingMining
+  result: IS14ModsuitPlatingMining
+  categories:
+  - Robotics
+  completetime: 6
+  materials:
+    Steel: 700
+    Glass: 250
+    Gold: 300
+
+- type: latheRecipe
+  id: IS14ModsuitPlatingResearch
+  result: IS14ModsuitPlatingResearch
+  categories:
+  - Robotics
+  completetime: 7
+  materials:
+    Steel: 400
+    Glass: 850
+    Silver: 400
+    Uranium: 200
+
+- type: latheRecipe
+  id: IS14ModsuitPlatingLoader
+  result: IS14ModsuitPlatingLoader
+  categories:
+  - Robotics
+  completetime: 7
+  materials:
+    Steel: 1100
+    Glass: 150
+    Plastic: 200
+
+- type: latheRecipe
+  id: IS14ModsuitPlatingMagnate
+  result: IS14ModsuitPlatingMagnate
+  categories:
+  - Robotics
+  completetime: 9
+  materials:
+    Steel: 1100
+    Glass: 450
+    Gold: 800
+    Silver: 400
 
 # ------------------------------------------------------------------- модули
 
@@ -213,17 +382,6 @@
     Plasteel: 300
 
 - type: latheRecipe
-  id: IS14ModCorePlasma
-  result: IS14ModCorePlasma
-  categories:
-  - Robotics
-  completetime: 6
-  materials:
-    Steel: 400
-    Glass: 300
-    Plasma: 400
-
-- type: latheRecipe
   id: IS14ModuleAtmosphericsSmall
   result: IS14ModuleAtmosphericsSmall
   categories:
@@ -296,87 +454,6 @@
     Steel: 300
     Plastic: 200
 
-# ------------------------------------------------------------------ костюмы
-
-- type: latheRecipe
-  id: IS14ModsuitStandard
-  result: IS14ModsuitStandard
-  categories:
-  - Robotics
-  completetime: 8
-  materials:
-    Steel: 2000
-    Glass: 500
-    Plastic: 500
-
-- type: latheRecipe
-  id: IS14ModsuitEngineering
-  result: IS14ModsuitEngineering
-  categories:
-  - Robotics
-  completetime: 10
-  materials:
-    Steel: 2000
-    Glass: 500
-    Gold: 300
-    Plasma: 300
-
-- type: latheRecipe
-  id: IS14ModsuitMedical
-  result: IS14ModsuitMedical
-  categories:
-  - Robotics
-  completetime: 10
-  materials:
-    Steel: 1500
-    Glass: 800
-    Silver: 300
-
-- type: latheRecipe
-  id: IS14ModsuitSecurity
-  result: IS14ModsuitSecurity
-  categories:
-  - Robotics
-  completetime: 12
-  materials:
-    Steel: 2500
-    Glass: 500
-    Plasteel: 500
-
-- type: latheRecipe
-  id: IS14ModsuitMining
-  result: IS14ModsuitMining
-  categories:
-  - Robotics
-  completetime: 11
-  materials:
-    Steel: 2000
-    Glass: 400
-    Gold: 300
-
-- type: latheRecipe
-  id: IS14ModsuitAtmospheric
-  result: IS14ModsuitAtmospheric
-  categories:
-  - Robotics
-  completetime: 12
-  materials:
-    Steel: 2200
-    Glass: 600
-    Plasma: 500
-
-- type: latheRecipe
-  id: IS14ModsuitResearch
-  result: IS14ModsuitResearch
-  categories:
-  - Robotics
-  completetime: 12
-  materials:
-    Steel: 1500
-    Glass: 1000
-    Silver: 400
-    Uranium: 200
-
 - type: latheRecipe
   id: IS14ModuleMouthhole
   result: IS14ModuleMouthhole
@@ -407,7 +484,6 @@
     Steel: 400
     Plastic: 200
 
-
 - type: latheRecipe
   id: IS14ModuleKineticCharge
   result: IS14ModuleKineticCharge
@@ -430,48 +506,9 @@
     Glass: 200
     Gold: 100
 
-
 # Раскладка по паку решает, что печатается с начала раунда, а что после
 # исследования. Статический пак — входной билет: простой костюм и пара модулей,
 # чтобы система вообще была видна в раунде. Всё остальное идёт через науку.
-
-# ------------------------------------------------------- новый круг: костюмы
-
-- type: latheRecipe
-  id: IS14ModsuitCivilian
-  result: IS14ModsuitCivilian
-  categories:
-  - Robotics
-  completetime: 8
-  materials:
-    Steel: 1200
-    Plastic: 400
-    Glass: 200
-
-- type: latheRecipe
-  id: IS14ModsuitLoader
-  result: IS14ModsuitLoader
-  categories:
-  - Robotics
-  completetime: 12
-  materials:
-    Steel: 2400
-    Plastic: 600
-    Glass: 300
-
-- type: latheRecipe
-  id: IS14ModsuitMagnate
-  result: IS14ModsuitMagnate
-  categories:
-  - Robotics
-  completetime: 16
-  materials:
-    Steel: 2400
-    Glass: 600
-    Gold: 800
-    Silver: 400
-
-# ------------------------------------------------------- новый круг: модули
 
 - type: latheRecipe
   id: IS14ModuleVisorThermal
@@ -538,9 +575,13 @@
 - type: latheRecipePack
   id: IS14ModsuitStatic
   recipes:
-  - IS14ModCoreStandard
-  - IS14ModsuitStandard
-  - IS14ModsuitCivilian
+  - IS14ModsuitShell
+  - IS14ModsuitFrameHelmet
+  - IS14ModsuitFrameChestplate
+  - IS14ModsuitFrameGauntlets
+  - IS14ModsuitFrameBoots
+  - IS14ModsuitPlatingStandard
+  - IS14ModsuitPlatingCivilian
   - IS14ModuleFlashlight
   - IS14ModuleStorage
   - IS14ModuleHatHolder
@@ -552,8 +593,8 @@
 - type: latheRecipePack
   id: IS14ModsuitDynamic
   recipes:
-  - IS14ModsuitEngineering
-  - IS14ModsuitAtmospheric
+  - IS14ModsuitPlatingEngineering
+  - IS14ModsuitPlatingAtmospheric
   - IS14ModuleStorageLarge
   - IS14ModuleRadProtection
   - IS14ModuleThermalRegulator
@@ -564,10 +605,10 @@
   - IS14ModuleTrayScanner
   - IS14ModuleAtmosphericsSmall
   - IS14ModuleMouthhole
-  - IS14ModsuitMedical
-  - IS14ModsuitSecurity
-  - IS14ModsuitMining
-  - IS14ModsuitResearch
+  - IS14ModsuitPlatingMedical
+  - IS14ModsuitPlatingSecurity
+  - IS14ModsuitPlatingMining
+  - IS14ModsuitPlatingResearch
   - IS14ModuleHealthAnalyzer
   - IS14ModuleDefibrillator
   - IS14ModuleVisorMedical
@@ -581,15 +622,14 @@
   - IS14ModuleKineticCharge
   - IS14ModuleDnaLock
   - IS14ModuleHolster
-  - IS14ModCorePlasma
   - IS14ModuleAtmosphericsLarge
   - IS14ModuleJetpack
   - IS14ModuleEmpShield
   - IS14ModuleArmorBooster
   - IS14ModuleCompression
   - IS14ModuleVisorNight
-  - IS14ModsuitLoader
-  - IS14ModsuitMagnate
+  - IS14ModsuitPlatingLoader
+  - IS14ModsuitPlatingMagnate
   - IS14ModuleVisorThermal
   - IS14ModuleCleaner
   - IS14ModuleInjector

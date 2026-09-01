@@ -1,6 +1,7 @@
 // Licensed under IS14's EULA, see EULA.txt for more information.
 
 using Content.Shared.Storage;
+using Content.Shared.Storage.Components;
 using Content.Shared.Storage.EntitySystems;
 using Robust.Shared.Containers;
 
@@ -14,11 +15,15 @@ namespace Content.Shared._IS14.Modular.Behaviours;
 /// </summary>
 public sealed class ModuleStorageSystem : ModuleBehaviourSystem<ModuleStorageComponent>
 {
+    [Dependency] private readonly DumpableSystem _dumpable = default!;
     [Dependency] private readonly SharedContainerSystem _container = default!;
     [Dependency] private readonly SharedStorageSystem _storage = default!;
 
     /// <summary>Settings key that opens the compartments.</summary>
     public const string OpenKey = "open";
+
+    /// <summary>Settings key that tips the compartments out.</summary>
+    public const string DumpKey = "dump";
 
     public override void Initialize()
     {
@@ -51,17 +56,64 @@ public sealed class ModuleStorageSystem : ModuleBehaviourSystem<ModuleStorageCom
             OpenKey,
             Loc.GetString("chassis-config-open-storage"),
             ModuleConfigKind.Button));
+
+        // Emptying a satchel one lump at a time is the sort of busywork a suit is
+        // supposed to remove. Only offered where dropping the lot is the intended
+        // gesture — see ModuleStorageComponent.CanDump.
+        if (ent.Comp.CanDump)
+        {
+            args.Entries.Add(new ModuleConfigEntry(
+                DumpKey,
+                Loc.GetString("chassis-config-dump-storage"),
+                ModuleConfigKind.Button));
+        }
     }
 
     private void OnConfigChanged(Entity<ModuleStorageComponent> ent, ref ModuleConfigChangedEvent args)
     {
-        if (args.Key != OpenKey || GetChassis(ent) is not { } chassis)
+        if (GetChassis(ent) is not { } chassis)
             return;
 
-        if (GetChassisUser(chassis) is { } user)
-            Open(ent, chassis, user);
+        switch (args.Key)
+        {
+            case OpenKey:
+                if (GetChassisUser(chassis) is { } opener)
+                    Open(ent, chassis, opener);
 
-        args.Handled = true;
+                args.Handled = true;
+                return;
+
+            case DumpKey when ent.Comp.CanDump:
+                if (GetChassisUser(chassis) is { } dumper)
+                    Dump(ent, chassis, dumper);
+
+                args.Handled = true;
+                return;
+        }
+    }
+
+    /// <summary>
+    ///     Tips the bag out where the wearer stands.
+    /// </summary>
+    private void Dump(Entity<ModuleStorageComponent> ent, EntityUid chassis, EntityUid user)
+    {
+        var host = ent.Comp.Host ?? (ent.Comp.OnChassis ? chassis : ent.Owner);
+
+        if (!TryComp<StorageComponent>(host, out var storage) || storage.Container.Count == 0)
+            return;
+
+        // The engine's dump path handles the scatter and the sound, and lets whatever the
+        // wearer is standing on claim the contents instead — a disposal unit, a table.
+        // Aimed at the wearer rather than a target, nothing claims it and the ore lands
+        // at their feet, which is the whole point of the button.
+        if (HasComp<DumpableComponent>(host))
+        {
+            _dumpable.DumpContents(host, user, user);
+            return;
+        }
+
+        // No Dumpable on the host — still empty it rather than leaving a dead button.
+        _container.EmptyContainer(storage.Container);
     }
 
     private bool Open(Entity<ModuleStorageComponent> ent, EntityUid chassis, EntityUid user)

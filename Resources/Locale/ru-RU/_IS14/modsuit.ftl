@@ -232,6 +232,7 @@ chassis-ui-no-cell = нет батареи
 chassis-ui-hopper = Бункер топлива
 chassis-ui-hopper-tooltip = Загрузите ядро топливом. Оно сжигает столько, сколько нужно, и тогда, когда нужно.
 chassis-config-open-storage = Открыть
+chassis-config-dump-storage = Высыпать всё
 chassis-config-pump = Компрессор
 chassis-config-light-radius = Радиус луча
 chassis-config-regulator-temperature = Температура тела, °C
@@ -278,3 +279,12 @@ chassis-ui-dna-blank = свободен
 chassis-ui-dna-broken = сожжён
 chassis-ui-fault-dna-broken = ДНК-замок сожжён — модуль под замену.
 modsuit-hat-slot = Головной убор
+
+# Шаги сборки МОДа. Имена показываются в осмотре заготовки и в справочнике по
+# сборке: движок сам подставляет их в «Далее: ...».
+is14-construction-step-mod-core = ядро МОД
+is14-construction-step-frame-helmet = каркас шлема МОД
+is14-construction-step-frame-chestplate = каркас нагрудника МОД
+is14-construction-step-frame-gauntlets = каркасы перчаток МОД
+is14-construction-step-frame-boots = каркасы ботинок МОД
+is14-construction-step-plating = любую обшивку МОД

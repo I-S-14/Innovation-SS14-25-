@@ -3,8 +3,10 @@
 # Ящики с МОДами. До этого файла костюм в раунде мог появиться только из
 # экзокостюмного фабрикатора — то есть почти никогда.
 #
-# В каждом ящике готовый к работе костюм: ядро уже стоит внутри прототипа
-# контроллера, поэтому докладываем только запасную ячейку и профильные модули.
+# В каждом ящике готовый к работе костюм: контроллер, ядро к нему, запасная ячейка
+# и профильные модули. Ядро кладётся явно — сами костюмы больше не появляются с ним
+# внутри, потому что собранный на станции МОД получает то ядро, которое в него
+# поставили руками.
 
 - type: entity
   parent: CrateEngineeringSecure
@@ -15,6 +17,7 @@
   - type: StorageFill
     contents:
     - id: IS14ModsuitEngineering
+    - id: IS14ModCoreStandard
     - id: PowerCellMedium
     - id: IS14ModuleFlashlight
     - id: IS14ModuleTrayScanner
@@ -29,6 +32,7 @@
   - type: StorageFill
     contents:
     - id: IS14ModsuitAtmospheric
+    - id: IS14ModCoreStandard
     - id: PowerCellMedium
     - id: IS14ModuleAtmosphericsLarge
     - id: IS14ModuleThermalRegulator
@@ -42,6 +46,7 @@
   - type: StorageFill
     contents:
     - id: IS14ModsuitMedical
+    - id: IS14ModCoreStandard
     - id: PowerCellMedium
     - id: IS14ModuleHealthAnalyzer
     - id: IS14ModuleDefibrillator
@@ -56,6 +61,7 @@
   - type: StorageFill
     contents:
     - id: IS14ModsuitSecurity
+    - id: IS14ModCoreStandard
     - id: PowerCellMedium
     - id: IS14ModuleVisorSecurity
     - id: IS14ModuleArmorBooster
@@ -70,6 +76,7 @@
   - type: StorageFill
     contents:
     - id: IS14ModsuitMining
+    - id: IS14ModCoreStandard
     - id: PowerCellMedium
     - id: IS14ModuleDrill
     - id: IS14ModuleOreBag
@@ -84,6 +91,7 @@
   - type: StorageFill
     contents:
     - id: IS14ModsuitResearch
+    - id: IS14ModCoreStandard
     - id: PowerCellMedium
     - id: IS14ModuleVisorDiagnostic
     - id: IS14ModuleEmpShield
@@ -99,12 +107,28 @@
   - type: StorageFill
     contents:
     - id: IS14ModsuitStandard
+    - id: IS14ModCoreStandard
     - id: PowerCellMedium
+
+# Ядро — единственная часть МОДа, которую станция не производит. Наука печатает
+# оболочку, но запустить её нечем, пока снабжение не привезёт вот это.
+- type: entity
+  parent: CrateEngineeringSecure
+  id: IS14CrateModsuitCoreStandard
+  name: MOD core crate
+  description: Two standard MOD cores. Fit a power cell and the suit lives.
+  components:
+  - type: StorageFill
+    contents:
+    - id: IS14ModCoreStandard
+      amount: 2
+    - id: PowerCellMedium
+      amount: 2
 
 - type: entity
   parent: CrateEngineeringSecure
   id: IS14CrateModsuitCores
-  name: MOD core crate
+  name: MOD plasma core crate
   description: A plasma core and a spare standard core, for suits that outlive their batteries.
   components:
   - type: StorageFill

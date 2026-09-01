@@ -68,7 +68,6 @@
     slots:
       mod-core:
         name: mod-core-slot
-        startingItem: IS14ModCoreStandard
         whitelist:
           components:
           - ModCore
@@ -165,7 +164,6 @@
     slots:
       mod-core:
         name: mod-core-slot
-        startingItem: IS14ModCoreStandard
         whitelist:
           components:
           - ModCore
@@ -267,7 +265,6 @@
       mod-core:
         name: mod-core-slot
         disableEject: true
-        startingItem: IS14ModCoreStandard
         whitelist:
           components:
           - ModCore
@@ -365,7 +362,6 @@
       mod-core:
         name: mod-core-slot
         disableEject: true
-        startingItem: IS14ModCoreStandard
         whitelist:
           components:
           - ModCore
@@ -443,7 +439,6 @@
       mod-core:
         name: mod-core-slot
         disableEject: true
-        startingItem: IS14ModCoreStandard
         whitelist:
           components:
           - ModCore
@@ -563,7 +558,6 @@
       mod-core:
         name: mod-core-slot
         disableEject: true
-        startingItem: IS14ModCoreStandard
         whitelist:
           components:
           - ModCore
@@ -666,7 +660,6 @@
       mod-core:
         name: mod-core-slot
         disableEject: true
-        startingItem: IS14ModCoreStandard
         whitelist:
           components:
           - ModCore
@@ -766,7 +759,6 @@
       mod-core:
         name: mod-core-slot
         disableEject: true
-        startingItem: IS14ModCoreStandard
         whitelist:
           components:
           - ModCore
@@ -888,7 +880,6 @@
       mod-core:
         name: mod-core-slot
         disableEject: true
-        startingItem: IS14ModCoreStandard
         whitelist:
           components:
           - ModCore
@@ -965,7 +956,6 @@
       mod-core:
         name: mod-core-slot
         disableEject: true
-        startingItem: IS14ModCoreStandard
         whitelist:
           components:
           - ModCore
@@ -1060,7 +1050,6 @@
       mod-core:
         name: mod-core-slot
         disableEject: true
-        startingItem: IS14ModCoreStandard
         whitelist:
           components:
           - ModCore

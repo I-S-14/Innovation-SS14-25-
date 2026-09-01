@@ -4,6 +4,10 @@
 # печатались с первой минуты, из-за чего синдикатский модуль стоил столько же
 # усилий, сколько фонарик.
 #
+# Тему открывает обшивка, а не костюм: каркасы печатаются с первой минуты и одни
+# на всех, так что узел покупает именно право собрать МОД этой специальности.
+# Ядер тут нет — их наука не делает вовсе, они приходят из карго.
+#
 # Позиции подобраны в свободных клетках слева от ветки утилизаторов; ветка
 # растёт вниз-влево и ни на что существующее не наезжает.
 
@@ -20,8 +24,8 @@
   technologyPrerequisites:
   - SalvageEquipment
   recipeUnlocks:
-  - IS14ModsuitEngineering
-  - IS14ModsuitAtmospheric
+  - IS14ModsuitPlatingEngineering
+  - IS14ModsuitPlatingAtmospheric
   - IS14ModuleStorageLarge
   - IS14ModuleRadProtection
   - IS14ModuleThermalRegulator
@@ -32,7 +36,7 @@
   - IS14ModuleTrayScanner
   - IS14ModuleAtmosphericsSmall
   - IS14ModuleMouthhole
-  - IS14ModsuitLoader
+  - IS14ModsuitPlatingLoader
   - IS14ModuleCleaner
   - IS14ModuleMegaphone
 
@@ -49,10 +53,10 @@
   technologyPrerequisites:
   - IS14ModsuitTechnology
   recipeUnlocks:
-  - IS14ModsuitMedical
-  - IS14ModsuitSecurity
-  - IS14ModsuitMining
-  - IS14ModsuitResearch
+  - IS14ModsuitPlatingMedical
+  - IS14ModsuitPlatingSecurity
+  - IS14ModsuitPlatingMining
+  - IS14ModsuitPlatingResearch
   - IS14ModuleHealthAnalyzer
   - IS14ModuleDefibrillator
   - IS14ModuleVisorMedical
@@ -82,8 +86,7 @@
   technologyPrerequisites:
   - IS14ModsuitSpecialization
   recipeUnlocks:
-  - IS14ModsuitMagnate
-  - IS14ModCorePlasma
+  - IS14ModsuitPlatingMagnate
   - IS14ModuleAtmosphericsLarge
   - IS14ModuleJetpack
   - IS14ModuleEmpShield

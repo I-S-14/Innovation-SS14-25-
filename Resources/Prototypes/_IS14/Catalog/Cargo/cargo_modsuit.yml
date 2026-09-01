@@ -2,7 +2,10 @@
 #
 # Цены выставлены выше отдельного скафандра: МОД — это скафандр, броня и набор
 # инструментов сразу, и заказ его через карго должен быть решением, а не привычкой.
-# Дешевле по-прежнему напечатать самим.
+# Дешевле по-прежнему собрать самим.
+#
+# Ядра — отдельная статья и единственная безальтернативная: фабрикатор их не печатает,
+# так что оболочка от науки без заказа отсюда так и останется оболочкой.
 
 - type: cargoProduct
   id: IS14ModsuitEngineeringOrder
@@ -71,6 +74,16 @@
     state: control
   product: IS14CrateModsuitStandard
   cost: 4500
+  category: cargoproduct-category-name-engineering
+  group: market
+
+- type: cargoProduct
+  id: IS14ModsuitCoreStandardOrder
+  icon:
+    sprite: _IS14/Objects/Modsuit/construction.rsi
+    state: core-standard
+  product: IS14CrateModsuitCoreStandard
+  cost: 1800
   category: cargoproduct-category-name-engineering
   group: market
 

@@ -1,0 +1,127 @@
+# Сборка МОДа.
+#
+# Заготовка ничем не выдаёт будущую специальность: и корпус, и все четыре каркаса
+# внутри одинаковы для любой темы. Каким выйдет костюм, решает обшивка — она же
+# последний шаг, поэтому отдел может печатать заготовки заранее и определяться со
+# специальностью, когда та понадобится.
+#
+# Граф намеренно в одно ребро шириной. Развилка на одиннадцать тем напрашивается,
+# но узел с одиннадцатью рёбрами не может сказать игроку, что делать дальше: пока
+# не предложена конкретная обшивка, единственного следующего шага не существует, и
+# осмотр молчит. Поэтому шаг обшивки общий, а тему из неё достаёт BuildModsuit.
+#
+# Ядро в цепочке первое и намеренно не печатается нигде: его можно только купить.
+# Собрать десять заготовок дешевле, чем получить десять ядер, и это тот обмен,
+# который наука со снабжением должны совершать.
+#
+# Шаг `store: mod-core` кладёт ядро в контейнер с тем же именем, что и слот ядра
+# готового МОДа, откуда BuildModsuit его и забирает.
+
+- type: constructionGraph
+  id: IS14Modsuit
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: assembly
+      steps:
+      - component: ModCore
+        name: is14-construction-step-mod-core
+        store: mod-core
+        icon:
+          sprite: _IS14/Objects/Modsuit/construction.rsi
+          state: core-standard
+        doAfter: 1
+        completed:
+        - !type:VisualizerDataInt
+          key: "enum.ModsuitAssemblyVisuals.Stage"
+          data: 1
+
+      - tool: Screwing
+        doAfter: 2
+        completed:
+        - !type:VisualizerDataInt
+          key: "enum.ModsuitAssemblyVisuals.Stage"
+          data: 2
+
+      - tag: IS14ModsuitFrameHelmet
+        name: is14-construction-step-frame-helmet
+        icon:
+          sprite: _IS14/Objects/Modsuit/construction.rsi
+          state: helmet
+        doAfter: 2
+        completed:
+        - !type:VisualizerDataInt
+          key: "enum.ModsuitAssemblyVisuals.Stage"
+          data: 3
+
+      - tag: IS14ModsuitFrameChestplate
+        name: is14-construction-step-frame-chestplate
+        icon:
+          sprite: _IS14/Objects/Modsuit/construction.rsi
+          state: chestplate
+        doAfter: 2
+        completed:
+        - !type:VisualizerDataInt
+          key: "enum.ModsuitAssemblyVisuals.Stage"
+          data: 4
+
+      - tag: IS14ModsuitFrameGauntlets
+        name: is14-construction-step-frame-gauntlets
+        icon:
+          sprite: _IS14/Objects/Modsuit/construction.rsi
+          state: gauntlets
+        doAfter: 2
+        completed:
+        - !type:VisualizerDataInt
+          key: "enum.ModsuitAssemblyVisuals.Stage"
+          data: 5
+
+      - tag: IS14ModsuitFrameBoots
+        name: is14-construction-step-frame-boots
+        icon:
+          sprite: _IS14/Objects/Modsuit/construction.rsi
+          state: boots
+        doAfter: 2
+        completed:
+        - !type:VisualizerDataInt
+          key: "enum.ModsuitAssemblyVisuals.Stage"
+          data: 6
+
+      - tool: Anchoring
+        doAfter: 2
+        completed:
+        - !type:VisualizerDataInt
+          key: "enum.ModsuitAssemblyVisuals.Stage"
+          data: 7
+
+      - tool: Screwing
+        doAfter: 2
+        completed:
+        - !type:VisualizerDataInt
+          key: "enum.ModsuitAssemblyVisuals.Stage"
+          data: 8
+
+  - node: assembly
+    edges:
+    - to: modsuit
+      steps:
+      # Любая обшивка подходит — какая вставлена, таким костюм и выйдет.
+      - component: ModsuitAssemblyPlating
+        name: is14-construction-step-plating
+        store: modsuit-plating
+        icon:
+          sprite: _IS14/Objects/Modsuit/construction.rsi
+          state: standard-plating
+        doAfter: 2
+        completed:
+        - !type:VisualizerDataInt
+          key: "enum.ModsuitAssemblyVisuals.Stage"
+          data: 9
+
+      - tool: Welding
+        doAfter: 3
+
+  - node: modsuit
+    actions:
+    - !type:BuildModsuit

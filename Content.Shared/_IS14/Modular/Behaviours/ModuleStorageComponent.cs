@@ -72,6 +72,22 @@ public sealed partial class ModuleStorageComponent : Component
     public ProtoId<ItemSizePrototype>? MaxItemSize;
 
     /// <summary>
+    ///     Whether the settings offer a button that tips the whole bag out at the wearer's
+    ///     feet.
+    ///
+    ///     Off by default, and deliberately so: for the suit's general pockets a single
+    ///     click that scatters everything you are carrying is a way to lose your things,
+    ///     not a convenience. It earns its place on a bag with one kind of cargo — the ore
+    ///     satchel, which is filled by walking and emptied all at once.
+    ///
+    ///     The host needs a <see cref="Content.Shared.Storage.Components.DumpableComponent"/>
+    ///     for the engine's dump path; without one this falls back to simply emptying the
+    ///     container, so the button is never dead.
+    /// </summary>
+    [DataField]
+    public bool CanDump;
+
+    /// <summary>
     ///     Entity the grid was actually granted to, so it is taken off the same one.
     /// </summary>
     [ViewVariables]
