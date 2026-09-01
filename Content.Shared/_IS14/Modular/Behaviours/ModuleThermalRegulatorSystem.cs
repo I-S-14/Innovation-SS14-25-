@@ -88,7 +88,8 @@ public sealed class ModuleThermalRegulatorSystem : ModuleBehaviourSystem<ModuleT
             ModuleConfigKind.Number,
             ent.Comp.Target - Zero,
             min: ent.Comp.MinTarget - Zero,
-            max: ent.Comp.MaxTarget - Zero));
+            max: ent.Comp.MaxTarget - Zero,
+            step: 1f));
     }
 
     private void OnConfigChanged(Entity<ModuleThermalRegulatorComponent> ent, ref ModuleConfigChangedEvent args)

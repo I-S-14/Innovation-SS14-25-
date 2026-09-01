@@ -909,9 +909,7 @@
       gloves: IS14ModsuitGauntletsMagnate
       shoes: IS14ModsuitBootsMagnate
   - type: ModularChassis
-    maxComplexity: 20
-    integratedModules:
-    - IS14ModuleVisorDiagnostic
+    maxComplexity: 15
   - type: ItemSlots
     slots:
       mod-core:

@@ -37,7 +37,8 @@ public sealed class ModuleLightSystem : ModuleBehaviourSystem<ModuleLightCompone
             ModuleConfigKind.Number,
             ent.Comp.Radius,
             min: ent.Comp.MinRadius,
-            max: ent.Comp.MaxRadius));
+            max: ent.Comp.MaxRadius,
+            step: 0.5f));
     }
 
     private void OnConfigChanged(Entity<ModuleLightComponent> ent, ref ModuleConfigChangedEvent args)

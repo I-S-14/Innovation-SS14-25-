@@ -250,39 +250,57 @@ public sealed partial class SharedModularChassisSystem : EntitySystem
     /// <summary>
     ///     Removes a module and drops it at the chassis' position.
     /// </summary>
-    public bool TryUninstall(
+    /// <summary>
+    ///     Whether a module would come out if asked, and what to say if not.
+    ///
+    ///     Split out so the interface can ask the same question it will later act on:
+    ///     a button that looks pressable and then refuses is worse than one that is
+    ///     visibly dead and says why on hover.
+    /// </summary>
+    public bool CanUninstall(
         Entity<ModularChassisComponent> chassis,
         Entity<ChassisModuleComponent> module,
-        EntityUid? user = null)
+        EntityUid? user,
+        out string? reason)
     {
+        reason = null;
+
         if (!module.Comp.Removable)
         {
-            if (user != null)
-            {
-                _popup.PopupClient(Loc.GetString("chassis-module-not-removable"), chassis, user.Value);
-                _audio.PlayPredicted(chassis.Comp.FailSound, chassis, user);
-            }
-
+            reason = "chassis-module-not-removable";
             return false;
         }
 
         if (!chassis.Comp.PanelOpen)
         {
-            if (user != null)
-            {
-                _popup.PopupClient(Loc.GetString("chassis-panel-closed"), chassis, user.Value);
-                _audio.PlayPredicted(chassis.Comp.FailSound, chassis, user);
-            }
-
+            reason = "chassis-panel-closed";
             return false;
         }
 
         var attempt = new ChassisUninstallModuleAttemptEvent(chassis, user, false);
         RaiseLocalEvent(module, ref attempt);
-        if (attempt.Cancelled)
+
+        if (!attempt.Cancelled)
+            return true;
+
+        reason = attempt.Reason;
+        return false;
+    }
+
+    public bool TryUninstall(
+        Entity<ModularChassisComponent> chassis,
+        Entity<ChassisModuleComponent> module,
+        EntityUid? user = null)
+    {
+        if (!CanUninstall(chassis, module, user, out var reason))
         {
             if (user != null)
+            {
+                if (reason != null)
+                    _popup.PopupClient(Loc.GetString(reason), chassis, user.Value);
+
                 _audio.PlayPredicted(chassis.Comp.FailSound, chassis, user);
+            }
 
             return false;
         }

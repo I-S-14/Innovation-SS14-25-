@@ -128,6 +128,13 @@ public sealed class ModuleConfigEntry
     public float Min { get; }
     public float Max { get; }
 
+    /// <summary>
+    ///     Granularity of a <see cref="ModuleConfigKind.Number"/>. Zero is continuous.
+    ///     A dial that only means anything in whole degrees should refuse to sit between
+    ///     them rather than quietly rounding behind the player's back.
+    /// </summary>
+    public float Step { get; }
+
     public ModuleConfigEntry(
         string key,
         string label,
@@ -135,7 +142,8 @@ public sealed class ModuleConfigEntry
         object? value = null,
         string[]? choices = null,
         float min = 0f,
-        float max = 0f)
+        float max = 0f,
+        float step = 0f)
     {
         Key = key;
         Label = label;
@@ -144,5 +152,6 @@ public sealed class ModuleConfigEntry
         Choices = choices;
         Min = min;
         Max = max;
+        Step = step;
     }
 }

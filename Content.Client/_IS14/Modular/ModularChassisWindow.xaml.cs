@@ -100,6 +100,43 @@ public sealed partial class ModularChassisWindow : FancyWindow
     /// <summary>Last state pushed, so a click on the doll can rebuild without a round trip.</summary>
     private ModularChassisUiState? _state;
 
+    #region Slider settling
+
+    /// <summary>
+    ///     The setting whose handle is being held right now, if any.
+    ///
+    ///     The suit pushes a fresh state on almost anything, charge included, and charge
+    ///     changes every tick — so the module list is rebuilt constantly. Rebuilding it
+    ///     under a held handle destroys the very control being dragged.
+    /// </summary>
+    private (NetEntity Module, string Key)? _draggedConfig;
+
+    /// <summary>
+    ///     A state that arrived while a handle was held, applied once it is let go.
+    /// </summary>
+    private ModularChassisUiState? _deferredState;
+
+    /// <summary>
+    ///     What the player set, kept until the suit's own state agrees. Without it the
+    ///     rebuild right after release shows the old value for the round trip and the
+    ///     slider visibly snaps back and then forward again.
+    /// </summary>
+    private readonly Dictionary<(NetEntity Module, string Key), float> _pendingConfig = new();
+
+    /// <summary>
+    ///     How many state pushes a pending value survives unconfirmed.
+    ///
+    ///     Acting on the setting pushes a state itself, so confirmation normally arrives
+    ///     within a push or two. The count only matters when the suit clamps what it was
+    ///     given and will therefore never echo it back — then the slider has to stop
+    ///     insisting and show what the suit actually did.
+    /// </summary>
+    private const int PendingConfigLife = 5;
+
+    private readonly Dictionary<(NetEntity Module, string Key), int> _pendingConfigAge = new();
+
+    #endregion
+
     /// <summary>Slots the paper doll has a fixed place for.</summary>
     private static readonly string[] DollSlots = { "head", "gloves", "outerClothing", "shoes" };
 
@@ -239,12 +276,73 @@ public sealed partial class ModularChassisWindow : FancyWindow
     {
         _state = state;
 
+        SettlePendingConfig(state);
+
         UpdateHeader(state);
         UpdatePower(state);
         UpdateDoll(state);
         UpdateDetail(state);
-        UpdateModules(state);
+
+        // Everything else redraws as usual; only the module list waits, because it is the
+        // only part holding a control the player has hold of.
+        if (_draggedConfig != null)
+            _deferredState = state;
+        else
+            UpdateModules(state);
+
         UpdateActions(state);
+    }
+
+    /// <summary>
+    ///     Drops pending values the suit has confirmed, and ages out the ones it never
+    ///     will — a setting clamped on arrival comes back as a different number, and the
+    ///     slider has to stop insisting on what was asked for.
+    /// </summary>
+    private void SettlePendingConfig(ModularChassisUiState state)
+    {
+        if (_pendingConfig.Count == 0)
+            return;
+
+        foreach (var module in state.Modules)
+        {
+            foreach (var entry in module.Config)
+            {
+                var id = (module.Module, entry.Key);
+
+                if (!_pendingConfig.TryGetValue(id, out var pending))
+                    continue;
+
+                if (entry.Value is float actual && MathHelper.CloseTo(actual, pending, 0.001f))
+                    Forget(id);
+            }
+        }
+
+        foreach (var id in _pendingConfigAge.Keys.ToArray())
+        {
+            if (++_pendingConfigAge[id] > PendingConfigLife)
+                Forget(id);
+        }
+
+        void Forget((NetEntity, string) id)
+        {
+            _pendingConfig.Remove(id);
+            _pendingConfigAge.Remove(id);
+        }
+    }
+
+    /// <summary>
+    ///     Called when a handle is let go: the list has been standing still while it was
+    ///     held, so whatever arrived meanwhile is applied now.
+    /// </summary>
+    private void EndConfigDrag()
+    {
+        _draggedConfig = null;
+
+        if (_deferredState is not { } state)
+            return;
+
+        _deferredState = null;
+        UpdateModules(state);
     }
 
     #region Header
@@ -1505,7 +1603,10 @@ public sealed partial class ModularChassisWindow : FancyWindow
         if (!module.Removable)
             return column;
 
-        var canEject = state.PanelOpen;
+        // The suit answers the same question the button will ask, so a module that would
+        // refuse — compression holding the suit on a belt, for one — comes up already
+        // dead with the reason on hover, instead of looking pressable and then failing.
+        var canEject = state.PanelOpen && module.EjectBlocked == null;
 
         var eject = IS14Button.Make(
             UiIcon(canEject ? IconEject : IconNo),
@@ -1516,7 +1617,12 @@ public sealed partial class ModularChassisWindow : FancyWindow
 
         eject.MinWidth = 116;
         eject.Disabled = !canEject;
-        eject.ToolTip = Loc.GetString(canEject ? "chassis-ui-eject-tooltip" : "chassis-ui-eject-needs-panel");
+        eject.ToolTip = Loc.GetString(
+            canEject
+                ? "chassis-ui-eject-tooltip"
+                : state.PanelOpen
+                    ? module.EjectBlocked!
+                    : "chassis-ui-eject-needs-panel");
 
         if (module.Kind != ModuleKind.Passive)
             eject.Margin = new Thickness(0, 4, 0, 0);
@@ -1581,13 +1687,20 @@ public sealed partial class ModularChassisWindow : FancyWindow
 
             case ModuleConfigKind.Number when entry.Max > entry.Min:
             {
-                var value = entry.Value switch
-                {
-                    float f => f,
-                    double d => (float) d,
-                    int i => i,
-                    _ => entry.Min,
-                };
+                var id = (module, entry.Key);
+
+                // What the player last set wins over what the suit last said, until the
+                // suit says the same thing back. Otherwise the rebuild that follows the
+                // release paints the old number for a whole round trip.
+                var value = _pendingConfig.TryGetValue(id, out var pending)
+                    ? pending
+                    : entry.Value switch
+                    {
+                        float f => f,
+                        double d => (float) d,
+                        int i => i,
+                        _ => entry.Min,
+                    };
 
                 var column = new BoxContainer
                 {
@@ -1596,10 +1709,13 @@ public sealed partial class ModularChassisWindow : FancyWindow
                     Margin = new Thickness(0, 2, 0, 0),
                 };
 
+                // The value is stamped on the row itself rather than left to a tooltip:
+                // a dial nobody can read the number off is a dial you have to guess at.
                 var readout = new Label
                 {
                     Text = FormatConfigNumber(value),
                     FontColorOverride = IS14Palette.Accent,
+                    StyleClasses = { "LabelKeyText" },
                 };
 
                 var header = new BoxContainer
@@ -1611,21 +1727,42 @@ public sealed partial class ModularChassisWindow : FancyWindow
                 header.AddChild(new Label { Text = entry.Label, FontColorOverride = IS14Palette.Muted });
                 header.AddChild(new Control { HorizontalExpand = true });
                 header.AddChild(readout);
+                header.AddChild(IS14Palette.Sub(
+                    $" {FormatConfigNumber(entry.Min)}–{FormatConfigNumber(entry.Max)}",
+                    IS14Palette.Border));
 
-                var slider = new Slider
+                var slider = new IS14Slider
                 {
                     MinValue = entry.Min,
                     MaxValue = entry.Max,
+                    Step = entry.Step,
                     Value = Math.Clamp(value, entry.Min, entry.Max),
                     HorizontalExpand = true,
                     Margin = new Thickness(0, 2, 0, 0),
                 };
 
+                // One notch per step where the range is short enough to count them;
+                // otherwise a fixed handful, purely so the eye has something to measure by.
+                if (entry.Step > 0f)
+                {
+                    var steps = (int) MathF.Round((entry.Max - entry.Min) / entry.Step);
+                    slider.Notches = steps is > 1 and <= 12 ? steps - 1 : 7;
+                }
+
                 // The readout follows the handle, but the suit is only told once the
                 // player lets go. Sending on every pixel of a drag would put a message
                 // on the wire per frame for a setting nobody needs applied mid-drag.
-                slider.OnValueChanged += _ => readout.Text = FormatConfigNumber(slider.Value);
-                slider.OnReleased += _ => OnConfigureModule?.Invoke(module, entry.Key, slider.Value);
+                slider.OnValueChanged += v => readout.Text = FormatConfigNumber(v);
+                slider.OnGrabbed += () => _draggedConfig = id;
+
+                slider.OnReleased += v =>
+                {
+                    _pendingConfig[id] = v;
+                    _pendingConfigAge[id] = 0;
+
+                    OnConfigureModule?.Invoke(module, entry.Key, v);
+                    EndConfigDrag();
+                };
 
                 column.AddChild(header);
                 column.AddChild(slider);

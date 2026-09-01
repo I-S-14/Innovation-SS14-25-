@@ -465,6 +465,10 @@ public sealed partial class SharedModsuitSystem
 
             _modules.CanUse((module, comp), (ent.Owner, ent.Comp2), ent.Comp1.Wearer, out var blockReason);
 
+            // Asked with no user so nobody gets shouted at: this runs on every refresh,
+            // and the answer is only used to grey the eject button out.
+            _chassis.CanUninstall((ent.Owner, ent.Comp2), (module, comp), null, out var ejectBlocked);
+
             state.Modules.Add(new ChassisModuleUiEntry
             {
                 Module = GetNetEntity(module),
@@ -478,6 +482,7 @@ public sealed partial class SharedModsuitSystem
                 Active = comp.Active,
                 Enabled = comp.Enabled,
                 Removable = comp.Removable,
+                EjectBlocked = ejectBlocked,
                 RequiredSlots = new List<SlotFlags>(comp.RequiredSlots),
                 ActionText = comp.ActionText,
                 ActionIcon = comp.ActionIcon,

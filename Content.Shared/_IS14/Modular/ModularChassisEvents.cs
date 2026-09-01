@@ -148,8 +148,12 @@ public record struct ChassisInstallModuleAttemptEvent(EntityUid Module, EntityUi
 }
 
 /// <summary>
-///     Raised on the module itself before it is pulled out. Cancel to refuse — and say
-///     why while cancelling, because the caller only reports that nothing happened.
+///     Raised on the module itself before it is pulled out. Cancel to refuse, and set
+///     <see cref="Reason"/> to say why.
+///
+///     A pure question with no side effects: handlers must not act on it, only answer.
+///     That is what lets the interface ask it too, so a module that would refuse comes up
+///     with its eject button already dead rather than looking pressable and then failing.
 ///
 ///     On the module rather than the chassis: what makes a module unsafe to remove is
 ///     something the module knows about itself, and the behaviour systems are already
@@ -159,8 +163,14 @@ public record struct ChassisInstallModuleAttemptEvent(EntityUid Module, EntityUi
 public record struct ChassisUninstallModuleAttemptEvent(EntityUid Chassis, EntityUid? User, bool Cancelled)
 {
     public readonly EntityUid Chassis = Chassis;
+
+    /// <summary>Who asked, or null when the interface is asking rather than a person.</summary>
     public readonly EntityUid? User = User;
+
     public bool Cancelled = Cancelled;
+
+    /// <summary>Locale id explaining the refusal. Shown as a popup and as the button's tooltip.</summary>
+    public string? Reason;
 }
 
 #endregion

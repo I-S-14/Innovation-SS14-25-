@@ -116,23 +116,6 @@
   - type: TimedDespawn
     lifetime: 3
 
-- type: entity
-  parent: HandheldCrewMonitor
-  id: IS14ModsuitCrewMonitor
-  # Разворачивается модулем, руками его брать неоткуда.
-  categories: [ HideSpawnMenu ]
-  name: MOD crew monitor
-  description: A sensor display that folds out of a MOD suit gauntlet. It answers to the suit, not to you.
-  components:
-  - type: Sprite
-    sprite: _IS14/Objects/Modsuit/modules.rsi
-    layers:
-    - state: scanner
-  - type: Item
-    sprite: Objects/Specific/Medical/handheldcrewmonitor.rsi
-    heldPrefix: scanner
-    storedRotation: -90
-
 # Развёртываемые приборы новых модулей. Как и остальные, руками их взять неоткуда:
 # модуль достаёт их из костюма и туда же убирает.
 - type: entity

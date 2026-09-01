@@ -43,10 +43,10 @@ public sealed class ModuleClothingSlotsSystem : ModuleBehaviourSystem<ModuleClot
         if (previous.HasFlag(slot.SlotFlags))
             return;
 
+        // Answer only — the popup belongs to whoever asked, because the interface asks
+        // this same question every refresh and must not shout while doing it.
         args.Cancelled = true;
-
-        if (args.User is { } user)
-            _popup.PopupClient(Loc.GetString("chassis-module-slots-in-use"), args.Chassis, user);
+        args.Reason = "chassis-module-slots-in-use";
     }
 
     /// <summary>

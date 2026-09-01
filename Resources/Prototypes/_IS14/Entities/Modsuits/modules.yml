@@ -686,16 +686,27 @@
   - type: Sprite
     state: scanner
   - type: ChassisModule
-    kind: Active
+    kind: Toggleable
     complexity: 1
-    useCost: 5
+    idleDraw: 0.05
+    activeDraw: 0.4
+    actionText: chassis-ui-module-open
+    actionIcon: /Textures/Interface/VerbIcons/open.svg.192dpi.png
     requiredSlots:
     - GLOVES
-  - type: ModuleItem
-    devicePrototype: IS14ModsuitCrewMonitor
-  - type: ContainerContainer
-    containers:
-      module-device: !type:ContainerSlot
+  - type: ModuleInterface
+    key: enum.CrewMonitoringUIKey.Key
+  - type: CrewMonitoringConsole
+  - type: DeviceNetwork
+    deviceNetId: Wireless
+    receiveFrequencyId: CrewMonitor
+  - type: WirelessNetworkConnection
+    range: 500
+  - type: StationLimitedNetwork
+  - type: UserInterface
+    interfaces:
+      enum.CrewMonitoringUIKey.Key:
+        type: CrewMonitoringBoundUserInterface
 
 - type: entity
   parent: IS14ModuleBase

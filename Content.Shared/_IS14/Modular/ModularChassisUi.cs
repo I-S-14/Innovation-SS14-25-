@@ -38,6 +38,13 @@ public sealed class ChassisModuleUiEntry
     public bool Removable;
 
     /// <summary>
+    ///     Locale id explaining why this module will not come out right now, or null when
+    ///     it would. The interface greys the eject button out and hangs this on it, so the
+    ///     refusal is visible before the click rather than after it.
+    /// </summary>
+    public string? EjectBlocked;
+
+    /// <summary>
     ///     Host slots this module needs. The interface draws the matching pieces of the
     ///     shell under its icon, so "why is this dead?" is answerable without reading.
     /// </summary>
