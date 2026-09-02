@@ -43,4 +43,4 @@ CorvaxGoob - это активно модифицируемый и основы�
 
 ✅Направляя вклад (Contributions), вы предоставляете лицензиару широкую лицензию
 
-Полный текст — [https://github.com/I-S-14/Innovation-SS14-25-/blob/master/EULA.txt|в EULA.txt]. Вопросы: andrey.koppalev@mail.ru
+Полный текст — в EULA.txt.](https://github.com/I-S-14/Innovation-SS14-25-/blob/master/EULA.txt). Вопросы: andrey.koppalev@mail.ru
