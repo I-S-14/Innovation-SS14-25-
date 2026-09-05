@@ -11,6 +11,9 @@
     snap:
     - Window
   components:
+  #IS14-change start
+  - type: StructuralVisionTarget # мезонные очки рисуют это сквозь стены
+  #IS14-change end
   - type: RCDDeconstructable
     deconstructable: false
   - type: MeleeSound

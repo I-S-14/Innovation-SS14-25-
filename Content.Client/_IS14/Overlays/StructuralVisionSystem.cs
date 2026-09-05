@@ -1,6 +1,7 @@
 // Licensed under IS14's EULA, see EULA.txt for more information.
 
 using Content.Client.Overlays;
+using Content.Client.SubFloor;
 using Content.Shared._IS14.Overlays;
 using Content.Shared.Inventory;
 using Content.Shared.Inventory.Events;
@@ -39,6 +40,33 @@ public sealed class StructuralVisionSystem : EquipmentHudSystem<StructuralVision
         SubscribeLocalEvent<StructuralVisionComponent, AfterAutoHandleStateEvent>(OnHandleState);
 
         _structural = new StructuralVisionOverlay();
+
+        // The scanner redraws the layout through the field of view. Anything else drawn in
+        // the normal entity pass is still cut by it, which is why a t-ray shows pipes in the
+        // room you are standing in and nothing next door. Listing its marker here hands those
+        // entities to the same stencil pass.
+        //
+        // The mining scanner needs nothing: it is a world-space overlay of its own and so is
+        // already drawn past the mask. It only ever looked broken because this overlay could
+        // be drawn on top of it — see LayoutZIndex.
+        AddSource<TrayRevealedComponent>();
+    }
+
+    /// <summary>
+    ///     Also redraw entities carrying <typeparamref name="T"/> inside the scanned area.
+    ///     For hooking up another scanner that marks what it has revealed with a component of
+    ///     its own; the marker is expected to exist only while that scanner is running, since
+    ///     nothing here checks whether the wearer is entitled to see it.
+    /// </summary>
+    public void AddSource<T>() where T : IComponent
+    {
+        if (!_structural.ExtraSources.Contains(typeof(T)))
+            _structural.ExtraSources.Add(typeof(T));
+    }
+
+    public void RemoveSource<T>() where T : IComponent
+    {
+        _structural.ExtraSources.Remove(typeof(T));
     }
 
     private void OnHandleState(Entity<StructuralVisionComponent> ent, ref AfterAutoHandleStateEvent args)
@@ -51,8 +79,7 @@ public sealed class StructuralVisionSystem : EquipmentHudSystem<StructuralVision
         base.UpdateInternal(args);
 
         // Two sources at once is a corner case, but it still has to resolve to something.
-        // The one that reaches furthest wins outright, colours included — blending two
-        // palettes would produce a third that nobody chose.
+        // The one that reaches furthest wins.
         StructuralVisionComponent? best = null;
 
         foreach (var comp in args.Components)

@@ -1,0 +1,18 @@
+# Softens the edge of the structural scanner's redraw.
+#
+# Same stencil as the redraw itself — ref 1 is what the FOV pass writes where it blacked the
+# screen out. Without it this pass would paint the FOV colour over everything the player can
+# actually see, because outside the shadow the shader's ring finds nothing to match and asks
+# for full strength.
+
+- type: shader
+  id: IS14StructuralVisionFeather
+  kind: source
+  path: "/Textures/Shaders/_IS14/structural_vision_feather.swsl"
+  stencil:
+    ref: 1
+    op: Keep
+    func: Equal
+  params:
+    featherWidth: 24.0
+    shadowThreshold: 0.06

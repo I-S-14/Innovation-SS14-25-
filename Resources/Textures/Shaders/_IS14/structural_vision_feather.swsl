@@ -1,0 +1,66 @@
+// Feathers the edge of the structural scanner's redraw.
+//
+// The scanner draws through the stencil the FOV pass leaves behind, and that stencil is
+// binary — a fragment is either in shadow or it is not — so the redraw ends in a hard line
+// wherever the field of view ends. This pass softens that line by painting the FOV colour
+// back over the redraw, at a strength that rises as the fragment approaches the boundary.
+//
+// The boundary is found in the screen texture, which is a copy of the viewport taken after
+// the FOV was applied and before the scanner drew anything: in shadow every pixel of it is
+// exactly the FOV colour. Sampling a ring around the fragment and counting how much of that
+// ring is still FOV-coloured gives distance-to-edge without ever needing the FOV mask
+// itself. Deep inside shadow the whole ring matches and the redraw is left alone; right on
+// the boundary about half of it matches and the redraw is gone.
+//
+// The one thing it cannot tell apart is open space, which is the FOV colour by nature. Next
+// to the void the ring reads as shadow and the feather does not kick in — there is nothing
+// out there to feather against, so it does not show.
+
+uniform sampler2D SCREEN_TEXTURE;
+
+// The FOV colour to match against and to fade towards. render.fov_color, passed in rather
+// than assumed, because a server is free to set it to something other than black.
+uniform highp vec4 fovColor;
+
+// Width of the feather, in screen pixels.
+uniform highp float featherWidth;
+
+// How far a pixel may drift from the FOV colour and still count as shadow. Loose enough to
+// survive colour banding, tight enough that a dim floor does not read as shadow.
+uniform highp float shadowThreshold;
+
+const highp int RingSamples = 8;
+const highp int Rings = 2;
+const highp float Tau = 6.28318530718;
+
+void fragment()
+{
+    highp vec2 uv = FRAGCOORD.xy * SCREEN_PIXEL_SIZE.xy;
+    highp float shadow = 0.0;
+
+    for (int i = 0; i < RingSamples; i++)
+    {
+        highp float angle = Tau * float(i) / float(RingSamples);
+        highp vec2 dir = vec2(cos(angle), sin(angle));
+
+        // Two rings rather than one. A single radius only tells us "closer than this or
+        // not", which lands as a visible step partway through the gradient.
+        for (int r = 1; r <= Rings; r++)
+        {
+            highp vec2 offset = dir * SCREEN_PIXEL_SIZE.xy * featherWidth * (float(r) / float(Rings));
+            highp vec3 sampled = zTextureSpec(SCREEN_TEXTURE, uv + offset).rgb;
+
+            shadow += 1.0 - smoothstep(shadowThreshold * 0.5,
+                                       shadowThreshold * 1.5,
+                                       distance(sampled, fovColor.rgb));
+        }
+    }
+
+    shadow = shadow / float(RingSamples * Rings);
+
+    // Half the ring in shadow means the fragment is sitting on the boundary. Everything
+    // from there down is fully faded; from there up it opens out to the untouched redraw.
+    highp float keep = clamp((shadow - 0.5) * 2.0, 0.0, 1.0);
+
+    COLOR = vec4(fovColor.rgb, 1.0 - keep);
+}

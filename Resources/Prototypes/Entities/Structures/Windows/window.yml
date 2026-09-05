@@ -10,6 +10,9 @@
     snap:
     - Window
   components:
+  #IS14-change start
+  - type: StructuralVisionTarget # мезонные очки рисуют это сквозь стены
+  #IS14-change end
   - type: Anchorable
     flags:
     - Anchorable
@@ -153,6 +156,9 @@
     snap:
     - Window
   components:
+  #IS14-change start
+  - type: StructuralVisionTarget # мезонные очки рисуют это сквозь стены
+  #IS14-change end
   - type: WallMount
     arc: 360 # interact despite grilles
   - type: Tag

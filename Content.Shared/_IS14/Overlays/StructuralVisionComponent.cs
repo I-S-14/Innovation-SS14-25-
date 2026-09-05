@@ -5,13 +5,15 @@ using Robust.Shared.GameStates;
 namespace Content.Shared._IS14.Overlays;
 
 /// <summary>
-///     Draws the station's structure — deck plating, walls, doors — on top of the field of
-///     view, so it stays readable through obstructions.
+///     Redraws the station's layout with its own sprites inside the area the field of view
+///     has blacked out, so it stays readable through obstructions. Floor tiles, plus every
+///     entity carrying <see cref="StructuralVisionTargetComponent"/> — walls, windows and
+///     grilles as shipped.
 ///
 ///     Nothing here reveals anything the client did not already hold. PVS is a radius, not
 ///     a line of sight (net.pvs_range, 25m by default), so the wall in the next room is
 ///     already in memory and is only hidden at draw time by the FOV mask. This declines to
-///     respect that mask, for three things and no others.
+///     respect that mask, for the layout and nothing else.
 ///
 ///     Deliberately blind to anything that moves: no mobs, no items, no machines. That is
 ///     what keeps it a map rather than a wallhack — it answers "where does this corridor
@@ -24,31 +26,36 @@ public sealed partial class StructuralVisionComponent : Component
 {
     /// <summary>
     ///     Reach of the scan, in metres. Past the PVS radius there is simply nothing on the
-    ///     client to draw, so raising this beyond it buys an invisible nothing.
+    ///     client to draw, so raising this beyond it buys an invisible nothing. The default
+    ///     covers a normal viewport outright, which keeps the cutoff off-screen instead of
+    ///     drawing a circle the wearer can see the edge of.
     /// </summary>
     [DataField, AutoNetworkedField]
-    public float Range = 14f;
+    public float Range = 20f;
 
     /// <summary>
-    ///     Deck plating. Faint on purpose: it covers every tile on screen, including the
-    ///     room the wearer is standing in, and has to tint that room rather than hide it.
+    ///     Multiplied into everything the scanner redraws.
+    ///
+    ///     Two jobs. It knocks the brightness down: the redraw is unlit, so at full strength
+    ///     it comes out brighter than the lit room next to it and the seam along the edge of
+    ///     the field of view turns into a hard line. And it warms the result — station
+    ///     plating and walls are cold grey to begin with, and unlit they read as flatly blue.
+    ///
+    ///     Per channel, so raising all three together only changes brightness. Dropping blue
+    ///     relative to red is what takes the chill off.
     /// </summary>
     [DataField, AutoNetworkedField]
-    public Color FloorColor = new Color(0.12f, 0.43f, 0.29f, 0.16f);
+    public Color Tint = new Color(0.62f, 0.59f, 0.52f);
 
     /// <summary>
-    ///     Anything that stops light: walls, windows, closed shutters. Read straight off the
-    ///     occluder, so it needs no tags and no edits to upstream prototypes — if the engine
-    ///     thinks it blocks sight, the scanner draws it.
+    ///     Width of the fade along the edge of the field of view, in screen pixels. Zero
+    ///     turns the extra pass off and leaves the hard edge.
+    ///
+    ///     The redraw is clipped by the stencil the FOV pass writes, which is binary, so
+    ///     without this it simply stops dead along the line where the field of view ends.
+    ///     Screen pixels rather than metres because that is the unit the seam is actually
+    ///     read in — a fixed number of them looks the same at any zoom.
     /// </summary>
     [DataField, AutoNetworkedField]
-    public Color WallColor = new Color(0.25f, 0.82f, 0.54f, 0.5f);
-
-    /// <summary>
-    ///     Doors, drawn open or shut alike. An open door stops occluding and would vanish
-    ///     from the wall pass — but a door is the one thing you are actually looking for on
-    ///     a floor plan, so it gets its own pass and its own colour.
-    /// </summary>
-    [DataField, AutoNetworkedField]
-    public Color DoorColor = new Color(0.49f, 0.88f, 1f, 0.6f);
+    public float Feather = 24f;
 }

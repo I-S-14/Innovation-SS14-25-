@@ -11,6 +11,9 @@
     snap:
     - Wall
   components:
+  #IS14-change start
+  - type: StructuralVisionTarget # мезонные очки рисуют это сквозь стены
+  #IS14-change end
   - type: Anchorable
     flags:
     - Anchorable
