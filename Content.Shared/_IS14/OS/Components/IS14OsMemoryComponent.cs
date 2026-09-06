@@ -1,3 +1,4 @@
+using Content.Shared._IS14.OS.Files;
 using Content.Shared._IS14.OS.Prototypes;
 using Robust.Shared.Prototypes;
 
@@ -27,6 +28,17 @@ public sealed partial class IS14OsMemoryComponent : Component
 
     [ViewVariables]
     public int UsedMemory;
+
+    /// <summary>Photos, saved notes and anything else the device holds that is not an app.</summary>
+    [DataField]
+    public List<OsFile> Files = new();
+
+    [DataField]
+    public int NextFileId = 1;
+
+    /// <summary>Memory taken by files. Tracked apart from apps so the readout can break it down.</summary>
+    [ViewVariables]
+    public int UsedFileMemory;
 }
 
 [DataDefinition]

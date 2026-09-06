@@ -76,6 +76,11 @@ namespace Content.Client.Hands
 
         protected override void Draw(in OverlayDrawArgs args)
         {
+            //IS14-change start: кадр камеры КПК — без HUD
+            if (Content.Client._IS14.Rendering.IS14CleanView.Hidden(args))
+                return;
+            //IS14-change end
+
             var mousePos = _inputManager.MouseScreenPosition;
 
             // Offscreen

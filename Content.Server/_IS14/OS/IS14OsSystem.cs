@@ -8,8 +8,11 @@ using Content.Server.Traitor.Uplink;
 using Content.Shared._IS14.OS.Components;
 using Content.Shared._IS14.OS.Prototypes;
 using Content.Shared._IS14.OS.UI;
+using Content.Server.Access.Systems;
 using Content.Shared.Access.Components;
 using Content.Shared.DeviceNetwork.Components;
+using Content.Shared.Hands.Components;
+using Content.Shared.Inventory;
 using Content.Shared.Interaction.Events;
 using Content.Shared.PDA;
 using Content.Shared.PDA.Ringer;
@@ -41,6 +44,7 @@ public sealed class IS14OsSystem : EntitySystem
     [Dependency] private readonly RingerSystem _ringer = default!;
     [Dependency] private readonly StoreSystem _store = default!;
     [Dependency] private readonly IS14OsPowerSystem _power = default!;
+    [Dependency] private readonly IdCardSystem _idCard = default!;
 
     /// <summary>
     ///     Devices whose state changed for a passive reason. Flushed at most once a second so a
@@ -107,6 +111,12 @@ public sealed class IS14OsSystem : EntitySystem
             if (Exists(uid))
                 UpdateUi(uid);
         }
+    }
+
+    /// <summary>A short confirmation tone — used when software finishes installing.</summary>
+    public void PlayInstalled(Entity<IS14OsDeviceComponent> ent)
+    {
+        _audio.PlayPvs(ent.Comp.InstallSound, ent);
     }
 
     /// <summary>Queues a passive refresh. Player actions call <see cref="UpdateUi"/> directly.</summary>
@@ -264,7 +274,7 @@ public sealed class IS14OsSystem : EntitySystem
         // exactly the phone behaviour — opening an app puts the previous one in the taskbar.
         while (CountVisible(ent.Comp) >= max)
         {
-            var victim = ent.Comp.Open.FirstOrDefault(a => !ent.Comp.Minimized.Contains(a));
+            var victim = PickVictim(ent.Comp, null);
             if (victim.Id == null)
                 break;
 
@@ -273,6 +283,9 @@ public sealed class IS14OsSystem : EntitySystem
 
         ent.Comp.Open.Add(app);
         ent.Comp.Minimized.Remove(app);
+
+        if (user != null)
+            _audio.PlayPvs(ent.Comp.AppSound, ent);
 
         var ev = new OsAppOpenedEvent(app, user);
         RaiseLocalEvent(ent, ref ev);
@@ -310,12 +323,35 @@ public sealed class IS14OsSystem : EntitySystem
         var max = Math.Max(1, _memory.GetProfile(ent.Comp)?.MaxWindows ?? 1);
         while (CountVisible(ent.Comp) > max)
         {
-            var victim = ent.Comp.Open.FirstOrDefault(a => a != app && !ent.Comp.Minimized.Contains(a));
+            var victim = PickVictim(ent.Comp, app);
             if (victim.Id == null)
                 break;
 
             ent.Comp.Minimized.Add(victim);
         }
+    }
+
+    /// <summary>
+    ///     Which visible window steps aside. Background-capable apps go last: shoving the
+    ///     messenger out of the way to open the calculator would lose you messages.
+    /// </summary>
+    private ProtoId<IS14OsAppPrototype> PickVictim(IS14OsDeviceComponent device, ProtoId<IS14OsAppPrototype>? keep)
+    {
+        var fallback = default(ProtoId<IS14OsAppPrototype>);
+
+        foreach (var app in device.Open)
+        {
+            if (app == keep || device.Minimized.Contains(app))
+                continue;
+
+            if (!_proto.TryIndex(app, out var proto) || !proto.Background)
+                return app;
+
+            if (fallback.Id == null)
+                fallback = app;
+        }
+
+        return fallback;
     }
 
     private static int CountVisible(IS14OsDeviceComponent device)
@@ -386,6 +422,7 @@ public sealed class IS14OsSystem : EntitySystem
                     if (entry.Undeletable)
                     {
                         _popup.PopupEntity(Loc.GetString("is14-os-cannot-uninstall"), ent, actor);
+                        _audio.PlayPvs(ent.Comp.ErrorSound, ent);
                         break;
                     }
 
@@ -476,6 +513,7 @@ public sealed class IS14OsSystem : EntitySystem
             MemoryTotal = memory != null ? _memory.GetTotalMemory((uid, device, memory)) : 0,
             MemorySystem = _memory.GetSystemMemory(device),
             MemoryUsed = memory?.UsedMemory ?? 0,
+            MemoryFiles = memory?.UsedFileMemory ?? 0,
             MemorySlotsFree = Math.Max(0, (profile?.MemorySlots ?? 0) - (memory?.UsedSlots ?? 0)),
             Battery = _power.GetCharge(uid),
             DeviceName = Name(uid),
@@ -511,15 +549,32 @@ public sealed class IS14OsSystem : EntitySystem
     /// </summary>
     private void FillStatus(EntityUid uid, OsShellState shell)
     {
+        // Whoever is carrying the device. A PDA that was never bound at spawn — an admin
+        // spawn, a spare from a locker, one built at a lathe — still has an honest answer to
+        // "whose is this", and blank rows are the least useful thing a status screen can show.
+        var carrier = FindCarrier(uid);
+
         if (TryComp(uid, out PdaComponent? pda))
         {
-            shell.OwnerName = pda.OwnerName;
+            shell.OwnerName = Trim(pda.OwnerName);
             shell.FlashlightOn = pda.FlashlightOn;
 
             if (TryComp(pda.ContainedId, out IdCardComponent? id))
             {
-                shell.IdName = id.FullName;
-                shell.IdJob = id.LocalizedJobTitle;
+                shell.IdName = Trim(id.FullName);
+                shell.IdJob = Trim(id.LocalizedJobTitle);
+            }
+        }
+
+        if (carrier is { } holder)
+        {
+            shell.OwnerName ??= Trim(Name(holder));
+
+            // The card in the holder's hands or pockets, when the device itself has none.
+            if ((shell.IdName == null || shell.IdJob == null) && _idCard.TryFindIdCard(holder, out var card))
+            {
+                shell.IdName ??= Trim(card.Comp.FullName);
+                shell.IdJob ??= Trim(card.Comp.LocalizedJobTitle);
             }
         }
 
@@ -532,7 +587,10 @@ public sealed class IS14OsSystem : EntitySystem
         if (TryComp(uid, out DeviceNetworkComponent? network))
             shell.Address = network.Address;
 
-        var station = _station.GetOwningStation(uid);
+        // A device inside a bag inside a locker can lose its own grid; the carrier still has one.
+        var station = _station.GetOwningStation(uid)
+            ?? (carrier is { } owner ? _station.GetOwningStation(owner) : null);
+
         if (station == null)
             return;
 
@@ -548,6 +606,33 @@ public sealed class IS14OsSystem : EntitySystem
             shell.AlertColor = details.Color;
             shell.AlertInstructions = details.AlertLevelInstruction;
         }
+    }
+
+    /// <summary>
+    ///     Walks out of pockets, bags and ID slots to whoever is actually holding the device.
+    ///     Contained entities parent to their container, so the chain ends at a person or at
+    ///     the grid the device is lying on.
+    /// </summary>
+    private EntityUid? FindCarrier(EntityUid uid)
+    {
+        var parent = Transform(uid).ParentUid;
+
+        for (var depth = 0; depth < 8 && parent.IsValid(); depth++)
+        {
+            if (HasComp<InventoryComponent>(parent) || HasComp<HandsComponent>(parent))
+                return parent;
+
+            parent = Transform(parent).ParentUid;
+        }
+
+        return null;
+    }
+
+    /// <summary>Blank strings are missing data, not data. Treating them as text is how a row
+    /// ends up showing nothing at all.</summary>
+    private static string? Trim(string? value)
+    {
+        return string.IsNullOrWhiteSpace(value) ? null : value;
     }
 
     private bool IsUplinkUnlocked(EntityUid uid)

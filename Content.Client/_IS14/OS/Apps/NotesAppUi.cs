@@ -31,6 +31,7 @@ public sealed class NotesAppUi : IS14OsAppUi
         base.Setup(bui);
 
         Fragment.OnSave += text => SendAppEvent(AppId, new OsNotesSaveEvent(text));
+        Fragment.OnExport += name => SendAppEvent(AppId, new OsNotesExportEvent(name));
     }
 
     public override void UpdateState(IS14OsAppState state)
@@ -53,6 +54,7 @@ public sealed partial class NotesAppFragment : BoxContainer
     private string _saved = string.Empty;
 
     public event Action<string>? OnSave;
+    public event Action<string>? OnExport;
 
     public NotesAppFragment()
     {
@@ -66,6 +68,16 @@ public sealed partial class NotesAppFragment : BoxContainer
         var sprites = _sysMan.GetEntitySystem<SpriteSystem>();
 
         SaveButton.Icon = IS14OsStyle.Resolve(sprites, IS14OsStyle.Save);
+        ExportButton.Icon = IS14OsStyle.Resolve(sprites, IS14OsStyle.Note);
+        ExportButton.Caption = Loc.GetString("is14-os-notes-export");
+        ExportButton.ToolTip = Loc.GetString("is14-os-notes-export-tooltip");
+        ExportButton.OnPressed += _ =>
+        {
+            // The first line makes a far better file name than "Note 3".
+            var text = Rope.Collapse(NoteEdit.TextRope);
+            var firstLine = text.Split('\n')[0].Trim();
+            OnExport?.Invoke(firstLine);
+        };
         SaveButton.Caption = Loc.GetString("is14-os-notes-save");
         NoteEdit.Placeholder = new Rope.Leaf(Loc.GetString("is14-os-notes-placeholder"));
 
@@ -80,6 +92,9 @@ public sealed partial class NotesAppFragment : BoxContainer
 
     public void UpdateState(OsNotesState state)
     {
+        if (state.Status != null)
+            SavedLabel.Text = Loc.GetString(state.Status);
+
         // Don't stomp on what the player is typing: only take the server's text when it is
         // genuinely different from what we last sent.
         if (state.Text == _saved)
@@ -94,6 +109,7 @@ public sealed partial class NotesAppFragment : BoxContainer
     {
         SavedLabel.FontColorOverride = palette.Good;
         SaveButton.Palette = palette;
+        ExportButton.Palette = palette;
 
         EditPanel.PanelOverride = new StyleBoxFlat
         {

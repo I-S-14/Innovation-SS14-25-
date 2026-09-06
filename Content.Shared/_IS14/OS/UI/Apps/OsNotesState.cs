@@ -7,9 +7,28 @@ public sealed class OsNotesState : IS14OsAppState
 {
     public string Text;
 
-    public OsNotesState(string text)
+    /// <summary>Loc id of the last export attempt, so saving gives feedback.</summary>
+    public string? Status;
+
+    public OsNotesState(string text, string? status = null)
     {
         Text = text;
+        Status = status;
+    }
+}
+
+/// <summary>
+///     Writes the note out as a file, which is what makes it sendable: the messenger attaches
+///     files, not app state.
+/// </summary>
+[Serializable, NetSerializable]
+public sealed class OsNotesExportEvent : IS14OsAppEvent
+{
+    public string Name;
+
+    public OsNotesExportEvent(string name)
+    {
+        Name = name;
     }
 }
 

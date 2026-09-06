@@ -1,0 +1,26 @@
+<apps:CameraAppFragment xmlns="https://spacestation14.io"
+                        xmlns:apps="clr-namespace:Content.Client._IS14.OS.Apps"
+                        xmlns:controls="clr-namespace:Content.Client._IS14.Controls"
+                        xmlns:viewport="clr-namespace:Content.Client.Viewport">
+    <!-- Viewfinder on the left, everything you can change on the right. The drag sheet sits on
+         top of the viewport: it aims the camera and swallows the click, so dragging here never
+         drags the window or pokes the world behind the picture. -->
+    <PanelContainer Name="ViewPanel" HorizontalExpand="True" VerticalExpand="True" Margin="0 0 4 0">
+        <viewport:ScalingViewport Name="View" HorizontalExpand="True" VerticalExpand="True"
+                                  MouseFilter="Ignore" />
+        <controls:DragSurface Name="ViewDrag" HorizontalExpand="True" VerticalExpand="True" />
+    </PanelContainer>
+
+    <BoxContainer Name="Panel" Orientation="Vertical" VerticalExpand="True" MinWidth="118">
+        <Label Name="ZoomLabel" HorizontalAlignment="Center" />
+        <Slider Name="ZoomSlider" HorizontalExpand="True" Margin="0 2 0 4" />
+        <controls:IconTile Name="CenterButton" Compact="True" IconSize="12" Margin="0 0 0 6" />
+
+        <Label Name="CountLabel" HorizontalAlignment="Center" />
+        <Label Name="StatusLabel" HorizontalAlignment="Center" Margin="0 2 0 0" />
+
+        <Control VerticalExpand="True" />
+        <controls:CircleButton Name="ShutterButton" Diameter="52" HorizontalAlignment="Center"
+                               Margin="0 0 0 4" />
+    </BoxContainer>
+</apps:CameraAppFragment>

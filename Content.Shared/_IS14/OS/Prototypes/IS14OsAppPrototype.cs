@@ -74,6 +74,13 @@ public sealed partial class IS14OsAppPrototype : IPrototype
     [DataField]
     public bool ClientOnly;
 
+    /// <summary>
+    ///     Worth keeping alive when minimised — a messenger that gets closed to make room stops
+    ///     being a messenger. The shell evicts these last.
+    /// </summary>
+    [DataField]
+    public bool Background;
+
     /// <summary>System apps: cannot be uninstalled and are always installed.</summary>
     [DataField]
     public bool Undeletable;

@@ -46,6 +46,9 @@ public sealed class OsShellState
     public int MemoryTotal;
     public int MemoryUsed;
     public int MemorySystem;
+
+    /// <summary>Taken by stored files, counted apart from apps so the readout can say which.</summary>
+    public int MemoryFiles;
     public int MemorySlotsFree;
 
     /// <summary>Charge 0..1, or null when the device does not run on a cell at all.</summary>

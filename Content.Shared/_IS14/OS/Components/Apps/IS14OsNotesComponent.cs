@@ -12,4 +12,7 @@ public sealed partial class IS14OsNotesComponent : Component
 
     [DataField]
     public int MaxLength = 4000;
+
+    [ViewVariables]
+    public string? Status;
 }

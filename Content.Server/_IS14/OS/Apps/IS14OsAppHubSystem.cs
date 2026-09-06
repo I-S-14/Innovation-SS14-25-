@@ -84,6 +84,7 @@ public sealed class IS14OsAppHubSystem : EntitySystem
             return;
         }
 
+        _os.PlayInstalled((ent.Owner, ent.Comp2));
         Abort(ent.Comp1, null);
     }
 

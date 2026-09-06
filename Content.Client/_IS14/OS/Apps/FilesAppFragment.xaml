@@ -18,7 +18,28 @@
             </BoxContainer>
         </BoxContainer>
     </PanelContainer>
-    <ScrollContainer HorizontalExpand="True" VerticalExpand="True">
-        <BoxContainer Name="AppList" Orientation="Vertical" HorizontalExpand="True" />
+
+    <controls:ChoiceStrip Name="Sections" Orientation="Horizontal" Margin="0 0 0 4" />
+
+    <ScrollContainer Name="ListScroll" HorizontalExpand="True" VerticalExpand="True">
+        <BoxContainer Name="EntryList" Orientation="Vertical" HorizontalExpand="True" />
     </ScrollContainer>
+
+    <!-- Preview of the one open file. Fills the app while shown: a photo is worth the space. -->
+    <BoxContainer Name="PreviewBox" Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True" Visible="False">
+        <BoxContainer Orientation="Horizontal" Margin="0 0 0 4">
+            <Label Name="PreviewTitle" HorizontalExpand="True" VerticalAlignment="Center" ClipText="True" />
+            <controls:IconTile Name="PreviewCloseButton" Compact="True" IconSize="12" />
+        </BoxContainer>
+        <PanelContainer Name="PreviewPanel" HorizontalExpand="True" VerticalExpand="True">
+            <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True" Margin="4">
+                <TextureRect Name="PreviewImage" Stretch="KeepAspectCentered"
+                             HorizontalExpand="True" VerticalExpand="True" Visible="False" />
+                <ScrollContainer Name="PreviewTextScroll" HorizontalExpand="True" VerticalExpand="True" Visible="False">
+                    <RichTextLabel Name="PreviewText" />
+                </ScrollContainer>
+            </BoxContainer>
+        </PanelContainer>
+        <Label Name="PreviewMeta" Margin="0 3 0 0" />
+    </BoxContainer>
 </apps:FilesAppFragment>

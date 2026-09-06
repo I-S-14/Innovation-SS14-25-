@@ -22,6 +22,10 @@
   - type: IS14OsMemory
     preinstalled:
     - AppNotes
+    - AppMessenger
+    - AppCamera
+    - AppGallery
+    - AppManifest
   # The lid is what drains the cell, so the player controls the drain (Docs §5.6).
   # A flat battery never blocks the ID slot: that stays mechanical.
   - type: PowerCellSlot

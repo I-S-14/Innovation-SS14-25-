@@ -66,6 +66,27 @@ public sealed partial class IS14OsDeviceComponent : Component
 
     [DataField]
     public SoundSpecifier? LidSound = new SoundPathSpecifier("/Audio/Machines/button.ogg");
+
+    /// <summary>An application coming up. Deliberately small: this fires often.</summary>
+    [DataField]
+    public SoundSpecifier? AppSound = new SoundPathSpecifier("/Audio/Machines/quickbeep.ogg")
+    {
+        Params = AudioParams.Default.WithVolume(-8f),
+    };
+
+    /// <summary>Something the player asked for could not happen.</summary>
+    [DataField]
+    public SoundSpecifier? ErrorSound = new SoundPathSpecifier("/Audio/Machines/buzz-two.ogg")
+    {
+        Params = AudioParams.Default.WithVolume(-6f),
+    };
+
+    /// <summary>Software finished installing.</summary>
+    [DataField]
+    public SoundSpecifier? InstallSound = new SoundPathSpecifier("/Audio/Machines/terminal_insert_disc.ogg")
+    {
+        Params = AudioParams.Default.WithVolume(-4f),
+    };
 }
 
 [Serializable, NetSerializable]

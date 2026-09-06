@@ -40,7 +40,7 @@ is14-os-notes-placeholder = Введите заметку...
 # Файлы
 is14-os-files-memory-caption = Память
 is14-os-files-memory = занято {$used} из {$total} ГК
-is14-os-files-memory-breakdown = система {$system} · приложения {$apps}
+is14-os-files-memory-breakdown = система {$system} · приложения {$apps} · файлы {$files}
 is14-os-files-memory-free = свободно {$free} ГК
 is14-os-files-system = Системный раздел
 is14-os-files-size = {$size} ГК
@@ -103,3 +103,67 @@ is14-os-board-no-slots = Свободных слотов расширения н
 
 is14-os-window-close = Закрыть
 is14-os-status-no-address = без сети
+
+# Файлы
+is14-os-files-section-apps = Приложения
+is14-os-files-section-files = Файлы ({$count})
+is14-os-files-empty = Файлов нет. Сделайте фото или сохраните заметку.
+is14-os-files-open = Открыть
+is14-os-files-delete = Удалить файл
+is14-os-files-close-preview = Закрыть
+is14-os-files-preview-meta = {$size} ГК · автор: {$author}
+is14-os-files-preview-broken = Файл повреждён и не читается.
+
+# Камера
+is14-os-app-camera-name = Камера
+is14-os-app-camera-desc = Снимает то, что перед вами, прямо в память устройства.
+is14-os-camera-shoot = Снять
+is14-os-camera-zoom = Зум ×{$zoom}
+is14-os-camera-center = К себе
+is14-os-camera-aim-hint = Потяните, чтобы навести кадр.
+is14-os-camera-count = Снимков: {$count}
+is14-os-camera-photo-name = Фото {$time}
+is14-os-camera-saved = Снимок сохранён.
+is14-os-camera-no-memory = Не хватает памяти для снимка.
+is14-os-camera-failed = Кадр испорчен, снимок не сохранён.
+
+# Галерея
+is14-os-app-gallery-name = Галерея
+is14-os-app-gallery-desc = Все снимки устройства одним взглядом.
+is14-os-gallery-count = Снимков: {$count}
+is14-os-gallery-memory = Файлы: {$size} GQ
+is14-os-gallery-empty = Снимков пока нет. Сделайте фото камерой.
+is14-os-gallery-loading = загрузка...
+is14-os-gallery-broken = не читается
+is14-os-gallery-back = Назад
+is14-os-gallery-delete = Удалить снимок
+is14-os-gallery-meta = Автор: {$author} · {$size} GQ
+
+# Мессенджер
+is14-os-app-messenger-name = Мессенджер
+is14-os-app-messenger-desc = Переписка с экипажем по станционной сети. Можно прикладывать файлы.
+is14-os-messenger-own = Ваш код: {$address}
+is14-os-messenger-directory = Справочник
+is14-os-messenger-directory-empty = В сети никого нет.
+is14-os-messenger-empty = Переписок пока нет. Загляните в справочник.
+is14-os-messenger-back = Назад
+is14-os-messenger-mute = Беззвучный режим
+is14-os-messenger-write = Написать
+is14-os-messenger-delete = Удалить переписку
+is14-os-messenger-send = Отправить
+is14-os-messenger-attach = Приложить файл
+is14-os-messenger-no-files = На устройстве нет файлов.
+is14-os-messenger-placeholder = Сообщение...
+is14-os-messenger-preview-attachment = [вложение]
+is14-os-messenger-photo-loading = Загрузка фото...
+is14-os-messenger-photo-broken = Фото недоступно.
+is14-os-messenger-too-fast = Слишком часто. Подождите секунду.
+is14-os-messenger-unreachable = Абонент недоступен.
+is14-os-messenger-no-file = Файл не найден.
+is14-os-messenger-their-memory = У получателя нет места для вложения.
+is14-os-notes-export = В файл
+is14-os-notes-export-tooltip = Сохранить заметку файлом, чтобы отправить её в мессенджере
+is14-os-notes-export-default = Заметка
+is14-os-notes-export-done = Заметка сохранена в файлы.
+is14-os-notes-export-empty = Пустую заметку сохранять нечего.
+is14-os-notes-export-no-memory = Не хватает памяти для файла.

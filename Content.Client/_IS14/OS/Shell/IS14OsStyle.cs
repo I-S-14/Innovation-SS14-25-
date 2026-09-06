@@ -17,6 +17,7 @@ public static class IS14OsStyle
     private const string Nano = "/Textures/Interface/Nano/";
     private const string Emote = "/Textures/Interface/Emotes/";
     private const string Action = "/Textures/Interface/Actions/";
+    private const string Default = "/Textures/Interface/Default/";
 
     public static readonly SpriteSpecifier Logo = New(Nano + "ntlogo.svg.png");
     public static readonly SpriteSpecifier Clock = New(Verb + "clock.svg.192dpi.png");
@@ -41,6 +42,16 @@ public static class IS14OsStyle
     public static readonly SpriteSpecifier Battery = New(Verb + "zap.svg.192dpi.png");
     public static readonly SpriteSpecifier Manifest = New(Action + "manifest.png");
     public static readonly SpriteSpecifier Store = New(Action + "shop.png");
+    public static readonly SpriteSpecifier Open = New(Verb + "open.svg.192dpi.png");
+    public static readonly SpriteSpecifier Photo = New(Verb + "examine.svg.192dpi.png");
+    public static readonly SpriteSpecifier Note = New(Nano + "lined_paper.svg.96dpi.png");
+    public static readonly SpriteSpecifier Send = New(Verb + "in.svg.192dpi.png");
+    public static readonly SpriteSpecifier Contacts = New(Verb + "group.svg.192dpi.png");
+    public static readonly SpriteSpecifier Back = New(Default + "left_arrow.svg.192dpi.png");
+    public static readonly SpriteSpecifier Attach = New(Verb + "pickup.svg.192dpi.png");
+    public static readonly SpriteSpecifier Mute = New(Verb + "bubbles.svg.192dpi.png");
+    public static readonly SpriteSpecifier Shutter = New(Verb + "die.svg.192dpi.png");
+    public static readonly SpriteSpecifier Center = New(Verb + "refresh.svg.192dpi.png");
 
     private static SpriteSpecifier New(string path)
     {

@@ -25,7 +25,9 @@
   undeletable: true
   order: 90
   size: 3
-  windowSize: 360,280
+  windowSize: 360,300
+  components:
+  - type: IS14OsFiles
 
 - type: osApp
   id: AppSettings
@@ -43,7 +45,9 @@
 
 - type: osApp
   id: AppNotes
-  icon: /Textures/Interface/Nano/lined_paper.svg.96dpi.png
+  icon:
+    sprite: /Textures/_CorvaxGoob/Interface/Misc/program_icons.rsi
+    state: notes
   name: is14-os-app-notes-name
   description: is14-os-app-notes-desc
   category: Work
@@ -85,14 +89,65 @@
 
 - type: osApp
   id: AppManifest
-  icon: /Textures/Interface/Actions/manifest.png
+  icon:
+    sprite: /Textures/Interface/Misc/program_icons.rsi
+    state: crew_manifest
   name: is14-os-app-manifest-name
   description: is14-os-app-manifest-desc
   category: Records
-  source: [ NtStore ]
+  source: [ NtStore, Preinstalled ]
   order: 30
   size: 6
   requiresNetwork: true
   windowSize: 360,320
   components:
   - type: IS14OsManifest
+
+- type: osApp
+  id: AppMessenger
+  icon:
+    sprite: /Textures/_DV/Misc/program_icons.rsi
+    state: nanochat
+  name: is14-os-app-messenger-name
+  description: is14-os-app-messenger-desc
+  category: Work
+  source: [ NtStore, Preinstalled ]
+  order: 5
+  size: 8
+  dataCap: 4
+  requiresNetwork: true
+  background: true
+  powerDraw: 0.04
+  windowSize: 380,340
+  components:
+  - type: IS14OsMessenger
+
+- type: osApp
+  id: AppCamera
+  icon:
+    sprite: /Textures/Interface/Actions/actions_ai.rsi
+    state: camera_jump
+  name: is14-os-app-camera-name
+  description: is14-os-app-camera-desc
+  category: Work
+  source: [ NtStore, Preinstalled ]
+  order: 25
+  size: 6
+  powerDraw: 0.08
+  windowSize: 400,300
+  components:
+  - type: IS14OsCamera
+
+- type: osApp
+  id: AppGallery
+  icon: /Textures/Interface/VerbIcons/examine.svg.192dpi.png
+  name: is14-os-app-gallery-name
+  description: is14-os-app-gallery-desc
+  category: Work
+  source: [ NtStore, Preinstalled ]
+  order: 26
+  size: 4
+  powerDraw: 0.03
+  windowSize: 380,340
+  components:
+  - type: IS14OsGallery
