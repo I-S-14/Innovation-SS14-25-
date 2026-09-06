@@ -1,0 +1,37 @@
+# Hardware models. See Docs/_IS14/os-design.md §4.2.
+
+- type: osProfile
+  id: OsProfileHandheld
+  formFactor: Handheld
+  maxWindows: 1          # one window: the screen is 400x320, a phone-style switcher reads better
+  memory: 64
+  systemMemory: 8
+  shellMode: Fullscreen
+  screenSize: 400,320
+  memorySlots: 1
+  bootTime: 1.6
+  sleepGrace: 30
+
+- type: osProfile
+  id: OsProfilePortable
+  formFactor: Portable
+  maxWindows: 3
+  memory: 128
+  systemMemory: 8
+  shellMode: Windowed
+  screenSize: 640,480
+  memorySlots: 2
+  bootTime: 2.2
+  sleepGrace: 30
+
+- type: osProfile
+  id: OsProfileStationary
+  formFactor: Stationary
+  maxWindows: 5
+  memory: 256
+  systemMemory: 8
+  shellMode: Windowed
+  screenSize: 800,600
+  memorySlots: 2
+  bootTime: 2.5
+  sleepGrace: 60

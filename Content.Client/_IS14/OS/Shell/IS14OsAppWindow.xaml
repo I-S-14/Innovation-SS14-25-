@@ -1,0 +1,30 @@
+<os:IS14OsAppWindow xmlns="https://spacestation14.io"
+                    xmlns:os="clr-namespace:Content.Client._IS14.OS.Shell"
+                    xmlns:controls="clr-namespace:Content.Client._IS14.Controls"
+                    MinSize="180 120">
+    <PanelContainer Name="Chrome" HorizontalExpand="True" VerticalExpand="True">
+        <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True">
+            <PanelContainer Name="TitleBarPanel" HorizontalExpand="True">
+                <BoxContainer Orientation="Horizontal" MinHeight="22" Margin="4 1">
+                    <TextureRect Name="TitleIcon" SetSize="14 14" Stretch="KeepAspectCentered"
+                                 VerticalAlignment="Center" Margin="0 0 5 0" />
+                    <Label Name="TitleLabel" HorizontalExpand="True" VerticalAlignment="Center" ClipText="True" />
+                    <TextureButton Name="MinimizeButton" SetSize="16 16"
+                                   VerticalAlignment="Center" Margin="0 0 4 0" />
+                    <TextureButton Name="CloseAppButton" SetSize="16 16"
+                                   VerticalAlignment="Center" />
+                </BoxContainer>
+            </PanelContainer>
+            <PanelContainer Name="ContentPanel" HorizontalExpand="True" VerticalExpand="True">
+                <BoxContainer Name="ContentHost" Orientation="Vertical"
+                              HorizontalExpand="True" VerticalExpand="True" Margin="6" />
+            </PanelContainer>
+            <!-- A full-width close along the bottom: on a fullscreen handheld the 16px glyph in
+                 the title bar is a poor target for the action people take most. -->
+            <PanelContainer Name="FooterPanel" HorizontalExpand="True">
+                <controls:IconTile Name="FooterCloseButton" Compact="True" IconSize="12"
+                                   HorizontalExpand="True" Margin="4 3" />
+            </PanelContainer>
+        </BoxContainer>
+    </PanelContainer>
+</os:IS14OsAppWindow>

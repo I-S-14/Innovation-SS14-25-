@@ -1,0 +1,46 @@
+# Themes are pure data — shell controls paint themselves from these at runtime (§8.1).
+
+- type: osTheme
+  id: OsNtOs
+  name: is14-os-theme-ntos
+  background: "#0E1218"
+  panel: "#161C24"
+  panelAlt: "#1E2732"
+  border: "#2B3949"
+  accent: "#4FB3E0"
+  text: "#D2DBE5"
+  textDim: "#7E8B9B"
+
+- type: osTheme
+  id: OsNtOsLight
+  name: is14-os-theme-ntos-light
+  background: "#D9DEE5"
+  panel: "#EDF1F5"
+  panelAlt: "#FFFFFF"
+  border: "#A9B4C0"
+  accent: "#1F6F9B"
+  text: "#1B2028"
+  textDim: "#5A6673"
+
+- type: osTheme
+  id: OsRetro95
+  name: is14-os-theme-retro
+  background: "#3A6EA5"
+  panel: "#C0C0C0"
+  panelAlt: "#DFDFDF"
+  border: "#808080"
+  accent: "#000080"
+  text: "#000000"
+  textDim: "#404040"
+
+- type: osTheme
+  id: OsTerminal
+  name: is14-os-theme-terminal
+  background: "#04120A"
+  panel: "#071A0F"
+  panelAlt: "#0B2616"
+  border: "#1E6B3C"
+  accent: "#4BE38A"
+  text: "#8FF5B4"
+  textDim: "#3E8C5C"
+  monospace: true

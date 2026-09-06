@@ -1,0 +1,15 @@
+# Memory expansion. The platform's only upgrade, because memory is its only real limit (§13).
+
+- type: entity
+  parent: BaseItem
+  id: IS14OsMemoryBoard
+  name: memory expansion board
+  description: A stick of solid-state memory for a personal device. Doubles what a PDA can hold.
+  components:
+  - type: Sprite
+    sprite: Objects/Misc/module.rsi
+    state: id_mod
+  - type: Item
+    size: Tiny
+  - type: IS14OsMemoryBoard
+    amount: 64

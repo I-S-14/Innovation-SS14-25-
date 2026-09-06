@@ -1,0 +1,12 @@
+<apps:StatusAppFragment xmlns="https://spacestation14.io"
+                        xmlns:apps="clr-namespace:Content.Client._IS14.OS.Apps"
+                        xmlns:controls="clr-namespace:Content.Client._IS14.Controls">
+    <controls:StatRow Name="OwnerRow" Framed="True" Margin="0 0 0 2" />
+    <controls:StatRow Name="JobRow" Framed="True" Margin="0 0 0 8" />
+    <controls:StatRow Name="StationRow" Framed="True" Margin="0 0 0 2" />
+    <controls:StatRow Name="AlertRow" Framed="True" Margin="0 0 0 2" />
+    <controls:StatRow Name="TimeRow" Framed="True" Margin="0 0 0 6" />
+    <RichTextLabel Name="InstructionsLabel" />
+    <Control VerticalExpand="True" />
+    <controls:StatRow Name="AddressRow" />
+</apps:StatusAppFragment>

@@ -1,0 +1,11 @@
+<apps:CalculatorAppFragment xmlns="https://spacestation14.io"
+                            xmlns:apps="clr-namespace:Content.Client._IS14.OS.Apps">
+    <PanelContainer Name="DisplayPanel" HorizontalExpand="True" Margin="0 0 0 6">
+        <BoxContainer Orientation="Vertical" Margin="8 6">
+            <Label Name="ExpressionLabel" Align="Right" />
+            <Label Name="DisplayLabel" Align="Right" />
+        </BoxContainer>
+    </PanelContainer>
+    <GridContainer Name="Keys" Columns="4" HorizontalExpand="True" VerticalExpand="True"
+                   HSeparationOverride="3" VSeparationOverride="3" />
+</apps:CalculatorAppFragment>

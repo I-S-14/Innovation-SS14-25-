@@ -1,0 +1,67 @@
+<os:IS14OsShellWindow xmlns="https://spacestation14.io"
+                      xmlns:os="clr-namespace:Content.Client._IS14.OS.Shell"
+                      xmlns:controls="clr-namespace:Content.Client._IS14.Controls"
+                      MinSize="460 420"
+                      SetSize="460 420">
+    <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True">
+
+        <!-- Status strip: device code, alert, battery and shift clock. Glanceable, always on. -->
+        <PanelContainer Name="StatusPanel" HorizontalExpand="True">
+            <BoxContainer Orientation="Horizontal" HorizontalExpand="True" MinHeight="20" Margin="5 1">
+                <TextureRect Name="AddressIcon" SetSize="12 12" Stretch="KeepAspectCentered"
+                             VerticalAlignment="Center" Margin="0 0 3 0" />
+                <Label Name="AddressLabel" VerticalAlignment="Center" />
+                <Control HorizontalExpand="True" />
+                <TextureRect Name="AlertIcon" SetSize="12 12" Stretch="KeepAspectCentered"
+                             VerticalAlignment="Center" Margin="0 0 2 0" Visible="False" />
+                <Label Name="AlertLabel" VerticalAlignment="Center" Margin="0 0 6 0" Visible="False" />
+                <TextureRect Name="BatteryIcon" SetSize="12 12" Stretch="KeepAspectCentered"
+                             VerticalAlignment="Center" Margin="0 0 2 0" Visible="False" />
+                <Label Name="BatteryLabel" VerticalAlignment="Center" Margin="0 0 6 0" Visible="False" />
+                <TextureRect Name="ClockIcon" SetSize="12 12" Stretch="KeepAspectCentered"
+                             VerticalAlignment="Center" Margin="0 0 3 0" />
+                <Label Name="TrayLabel" VerticalAlignment="Center" />
+            </BoxContainer>
+        </PanelContainer>
+
+        <!-- Desktop: shortcuts, app windows and the boot screen all stack in here. -->
+        <PanelContainer Name="DesktopPanel" HorizontalExpand="True" VerticalExpand="True">
+            <Control Name="DesktopRoot" HorizontalExpand="True" VerticalExpand="True" RectClipContent="True">
+
+                <!-- Shortcut grid, shown whenever nothing is open. -->
+                <ScrollContainer Name="ShortcutScroll" HorizontalExpand="True" VerticalExpand="True">
+                    <GridContainer Name="Shortcuts" Columns="3" Margin="8" HSeparationOverride="6" VSeparationOverride="6" />
+                </ScrollContainer>
+
+                <!-- Windows live in a LayoutContainer: BaseWindow drags itself relative to its
+                     parent and clamps to the parent's size, so they cannot leave the desktop. -->
+                <LayoutContainer Name="WindowLayer" HorizontalExpand="True" VerticalExpand="True" />
+
+                <PanelContainer Name="BootScreen" Visible="False" HorizontalExpand="True" VerticalExpand="True">
+                    <BoxContainer Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="240">
+                        <TextureRect Name="BootLogo" SetSize="64 64" Stretch="KeepAspectCentered"
+                                     HorizontalAlignment="Center" Margin="0 0 0 8" />
+                        <Label Name="BootLabel" Align="Center" Margin="0 0 0 6" />
+                        <ProgressBar Name="BootBar" MinHeight="6" MaxValue="1" Value="0" />
+                    </BoxContainer>
+                </PanelContainer>
+
+                <PanelContainer Name="StartMenuPanel" Visible="False"
+                                HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="4">
+                    <BoxContainer Orientation="Vertical" MinWidth="200" Margin="4">
+                        <Label Name="StartMenuHeader" Margin="2 0 0 4" />
+                        <BoxContainer Name="StartMenu" Orientation="Vertical" />
+                    </BoxContainer>
+                </PanelContainer>
+            </Control>
+        </PanelContainer>
+
+        <!-- Taskbar: start, one tile per open app, tray. On a handheld this is the task switcher. -->
+        <PanelContainer Name="TaskbarPanel" HorizontalExpand="True">
+            <BoxContainer Orientation="Horizontal" HorizontalExpand="True" MinHeight="30" Margin="3 2">
+                <controls:IconTile Name="StartButton" MinWidth="72" Compact="True" IconSize="16" />
+                <BoxContainer Name="TaskButtons" Orientation="Horizontal" HorizontalExpand="True" Margin="4 0" />
+            </BoxContainer>
+        </PanelContainer>
+    </BoxContainer>
+</os:IS14OsShellWindow>

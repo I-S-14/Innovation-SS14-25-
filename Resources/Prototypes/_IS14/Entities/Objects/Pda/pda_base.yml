@@ -8,9 +8,24 @@
   - type: Sprite
     layers:
     - state: "closed"
+      map: [ "enum.IS14OsVisualLayers.Base" ]
     - state: "unlit"
       shader: unshaded
       visible: false
+      map: [ "enum.IS14OsVisualLayers.Screen" ]
+  - type: Appearance
+  # IS14 OS: the lid is the session (Docs/_IS14/os-design.md §5.3). Z opens the lid, boots the
+  # OS and shows the screen; closing the window or stowing the PDA shuts it again.
+  - type: IS14OsDevice
+    profile: OsProfileHandheld
+    theme: OsNtOs
+  - type: IS14OsMemory
+    preinstalled:
+    - AppNotes
+  # The lid is what drains the cell, so the player controls the drain (Docs §5.6).
+  # A flat battery never blocks the ID slot: that stays mechanical.
+  - type: PowerCellSlot
+    cellSlotId: cell_slot
   - type: Pda
     paiSlot:
       priority: -2
@@ -37,9 +52,14 @@
       PDA-id: !type:ContainerSlot {}
       PDA-pen: !type:ContainerSlot {}
       PDA-pai: !type:ContainerSlot {}
-      Cartridge-Slot: !type:ContainerSlot {}
-      program-container: !type:Container
+      cell_slot: !type:ContainerSlot {}
   - type: ItemSlots
+    slots:
+      cell_slot:
+        # Below the ID slot so alt-click still reaches the card, which is what players want.
+        priority: -3
+        name: power-cell-slot-component-slot-name-default
+        startingItem: PowerCellSmall
   - type: Clothing
     quickEquip: false
     slots:
@@ -54,29 +74,10 @@
     savableAddress: false
   - type: WirelessNetworkConnection
     range: 500
-  - type: CartridgeLoader
-    uiKey: enum.PdaUiKey.Key
-    preinstalled:
-      - CrewManifestCartridge
-      - NotekeeperCartridge
-      - NanoTaskCartridge
-      - NewsReaderCartridge
-      - NanoChatCartridge # DeltaV
-    cartridgeSlot:
-      priority: -1
-      name: device-pda-slot-component-slot-name-cartridge
-      ejectSound: /Audio/Machines/id_swipe.ogg
-      insertSound: /Audio/Machines/id_insert.ogg
-      whitelist:
-        components:
-          - Cartridge
-  - type: ActivatableUI
-    key: enum.PdaUiKey.Key
-    singleUser: true
   - type: UserInterface
     interfaces:
-      enum.PdaUiKey.Key:
-        type: PdaBoundUserInterface
+      enum.IS14OsUiKey.Key:
+        type: IS14OsBui
       enum.StoreUiKey.Key:
         type: StoreBoundUserInterface
       enum.RingerUiKey.Key:

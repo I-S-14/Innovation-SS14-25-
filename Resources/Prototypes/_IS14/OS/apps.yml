@@ -1,0 +1,98 @@
+# Applications. An app is this prototype plus the components it puts on the device —
+# no entity is spawned per install. See Docs/_IS14/os-design.md §6.1.
+
+# --- System partition: installed on every device, cannot be removed. ---
+
+- type: osApp
+  id: AppStatus
+  icon: /Textures/Interface/VerbIcons/information.svg.192dpi.png
+  name: is14-os-app-status-name
+  description: is14-os-app-status-desc
+  category: System
+  source: [ Preinstalled ]
+  undeletable: true
+  order: 0
+  size: 2
+  windowSize: 340,240
+
+- type: osApp
+  id: AppFiles
+  icon: /Textures/Interface/VerbIcons/group.svg.192dpi.png
+  name: is14-os-app-files-name
+  description: is14-os-app-files-desc
+  category: System
+  source: [ Preinstalled ]
+  undeletable: true
+  order: 90
+  size: 3
+  windowSize: 360,280
+
+- type: osApp
+  id: AppSettings
+  icon: /Textures/Interface/Nano/gear.svg.192dpi.png
+  name: is14-os-app-settings-name
+  description: is14-os-app-settings-desc
+  category: System
+  source: [ Preinstalled ]
+  undeletable: true
+  order: 91
+  size: 3
+  windowSize: 340,240
+
+# --- Regular software: takes memory, can be uninstalled. ---
+
+- type: osApp
+  id: AppNotes
+  icon: /Textures/Interface/Nano/lined_paper.svg.96dpi.png
+  name: is14-os-app-notes-name
+  description: is14-os-app-notes-desc
+  category: Work
+  source: [ NtStore, Preinstalled ]
+  order: 10
+  size: 4
+  dataCap: 4
+  windowSize: 360,300
+  components:
+  - type: IS14OsNotes
+
+- type: osApp
+  id: AppHub
+  icon: /Textures/Interface/Actions/shop.png
+  name: is14-os-app-hub-name
+  description: is14-os-app-hub-desc
+  category: System
+  source: [ Preinstalled ]
+  undeletable: true
+  order: 89
+  size: 4
+  windowSize: 380,320
+  powerDraw: 0.05
+  components:
+  - type: IS14OsAppHub
+
+- type: osApp
+  id: AppCalculator
+  icon: /Textures/Interface/VerbIcons/plus.svg.192dpi.png
+  name: is14-os-app-calculator-name
+  description: is14-os-app-calculator-desc
+  category: Work
+  source: [ NtStore ]
+  order: 20
+  size: 2
+  clientOnly: true
+  powerDraw: 0.01
+  windowSize: 300,320
+
+- type: osApp
+  id: AppManifest
+  icon: /Textures/Interface/Actions/manifest.png
+  name: is14-os-app-manifest-name
+  description: is14-os-app-manifest-desc
+  category: Records
+  source: [ NtStore ]
+  order: 30
+  size: 6
+  requiresNetwork: true
+  windowSize: 360,320
+  components:
+  - type: IS14OsManifest
