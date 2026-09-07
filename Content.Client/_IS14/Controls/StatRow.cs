@@ -110,10 +110,16 @@ public sealed class StatRow : PanelContainer
             FontColorOverride = _palette.Muted,
         };
 
+        // ClipText makes a Label measure as zero wide (engine Label.MeasureOverride), so the
+        // value can only survive if it claims the leftover space itself: hand it the expand and
+        // right-align the text inside it, rather than pinning a zero-width control to the right
+        // of a spacer that has already eaten the row.
         _value = new Label
         {
             VerticalAlignment = VAlignment.Center,
-            HorizontalAlignment = HAlignment.Right,
+            Align = Label.AlignMode.Right,
+            HorizontalExpand = true,
+            Margin = new Thickness(8, 0, 0, 0),
             ClipText = true,
             FontColorOverride = _palette.Text,
             Visible = false,
@@ -134,7 +140,6 @@ public sealed class StatRow : PanelContainer
 
         row.AddChild(_icon);
         row.AddChild(_caption);
-        row.AddChild(new Control { HorizontalExpand = true, MouseFilter = MouseFilterMode.Ignore });
         row.AddChild(_value);
         row.AddChild(_trailing);
 

@@ -19,8 +19,8 @@ is14-os-app-files-name = Файлы
 is14-os-app-files-desc = Установленное ПО и свободная память.
 is14-os-app-settings-name = Настройки
 is14-os-app-settings-desc = Тема оформления и переключатели устройства.
-is14-os-app-notes-name = Заметки
-is14-os-app-notes-desc = Блокнот. При удалении приложения заметки пропадают.
+is14-os-app-notes-name = Редактор
+is14-os-app-notes-desc = Текстовый редактор с форматированием. При удалении приложения документ пропадает.
 
 # Состояние
 is14-os-status-unknown = неизвестно
@@ -32,10 +32,35 @@ is14-os-start-menu-header = Приложения
 is14-os-status-time = Время станции
 is14-os-status-address = Сетевой адрес
 
-# Заметки
+# Редактор
 is14-os-notes-save = Сохранить
 is14-os-notes-saved = Сохранено
-is14-os-notes-placeholder = Введите заметку...
+is14-os-notes-unsaved = Есть несохранённые правки
+is14-os-notes-placeholder = Текст документа...
+is14-os-notes-title-placeholder = Без названия
+is14-os-notes-preview = Просмотр
+is14-os-notes-edit = Правка
+is14-os-notes-count = Слов: {$words} · Знаков: {$chars}/{$max}
+is14-os-notes-bold = Полужирный
+is14-os-notes-bold-glyph = Ж
+is14-os-notes-italic = Курсив
+is14-os-notes-italic-glyph = К
+is14-os-notes-heading = Заголовок {$level}
+is14-os-notes-heading-glyph = З{$level}
+is14-os-notes-bullet = Маркер списка
+is14-os-notes-bullet-glyph = •
+is14-os-notes-color = Цвет текста
+is14-os-notes-color-glyph = Цвет
+is14-os-notes-clear = Убрать форматирование
+is14-os-notes-clear-glyph = ✕
+is14-os-notes-color-default = Обычный
+is14-os-notes-color-red = Красный
+is14-os-notes-color-orange = Оранжевый
+is14-os-notes-color-yellow = Жёлтый
+is14-os-notes-color-green = Зелёный
+is14-os-notes-color-cyan = Бирюзовый
+is14-os-notes-color-blue = Синий
+is14-os-notes-color-purple = Фиолетовый
 
 # Файлы
 is14-os-files-memory-caption = Память
@@ -162,8 +187,8 @@ is14-os-messenger-unreachable = Абонент недоступен.
 is14-os-messenger-no-file = Файл не найден.
 is14-os-messenger-their-memory = У получателя нет места для вложения.
 is14-os-notes-export = В файл
-is14-os-notes-export-tooltip = Сохранить заметку файлом, чтобы отправить её в мессенджере
-is14-os-notes-export-default = Заметка
-is14-os-notes-export-done = Заметка сохранена в файлы.
-is14-os-notes-export-empty = Пустую заметку сохранять нечего.
+is14-os-notes-export-tooltip = Сохранить документ файлом, чтобы отправить его в мессенджере
+is14-os-notes-export-default = Документ
+is14-os-notes-export-done = Документ сохранён в файлы.
+is14-os-notes-export-empty = Пустой документ сохранять нечего.
 is14-os-notes-export-no-memory = Не хватает памяти для файла.

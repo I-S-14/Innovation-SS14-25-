@@ -200,7 +200,21 @@ public sealed partial class FilesAppFragment : BoxContainer
             return;
         }
 
-        PreviewText.SetMessage(open.Text ?? string.Empty);
+        // Documents carry their formatting as markup, so a file written in the editor has to
+        // read here the way it looked there. Permissive: the text may be anything at all.
+        var text = open.Text ?? string.Empty;
+
+        FormattedMessage message;
+        try
+        {
+            message = FormattedMessage.FromMarkupPermissive(text);
+        }
+        catch (Exception)
+        {
+            message = FormattedMessage.FromUnformatted(text);
+        }
+
+        PreviewText.SetMessage(message, _palette.Text);
         PreviewTextScroll.Visible = true;
     }
 

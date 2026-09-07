@@ -55,7 +55,8 @@
   order: 10
   size: 4
   dataCap: 4
-  windowSize: 360,300
+  # The ribbon and the status bar need the room a plain notepad did not.
+  windowSize: 380,340
   components:
   - type: IS14OsNotes
 

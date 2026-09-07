@@ -1,12 +1,50 @@
 <apps:NotesAppFragment xmlns="https://spacestation14.io"
                        xmlns:apps="clr-namespace:Content.Client._IS14.OS.Apps"
                        xmlns:controls="clr-namespace:Content.Client._IS14.Controls">
+    <!-- The document's name. A word processor puts it in the title bar; a PDA has no room for
+         one, and the name is what the file ends up called anyway. -->
+    <BoxContainer Orientation="Horizontal" Margin="0 0 0 3">
+        <LineEdit Name="TitleEdit" HorizontalExpand="True" Margin="0 0 3 0" />
+        <controls:ToolButton Name="ViewButton" MinWidth="70" />
+    </BoxContainer>
+
+    <!-- Ribbon. -->
+    <PanelContainer Name="ToolbarPanel" Margin="0 0 0 3">
+        <BoxContainer Orientation="Horizontal" Margin="3 2">
+            <controls:ToolButton Name="BoldButton" Margin="0 0 2 0" />
+            <controls:ToolButton Name="ItalicButton" Margin="0 0 6 0" />
+            <controls:ToolButton Name="Head1Button" Margin="0 0 2 0" />
+            <controls:ToolButton Name="Head2Button" Margin="0 0 2 0" />
+            <controls:ToolButton Name="Head3Button" Margin="0 0 6 0" />
+            <controls:ToolButton Name="BulletButton" Margin="0 0 6 0" />
+            <controls:ToolButton Name="ColorButton" />
+            <Control HorizontalExpand="True" />
+            <controls:ToolButton Name="ClearButton" />
+        </BoxContainer>
+    </PanelContainer>
+
+    <!-- Colour picker: a row of swatches, folded away until the colour button asks for it. -->
+    <PanelContainer Name="ColorPanel" Margin="0 0 0 3" Visible="False">
+        <BoxContainer Name="ColorRow" Orientation="Horizontal" Margin="3 2" />
+    </PanelContainer>
+
+    <!-- The document itself, as markup source. -->
     <PanelContainer Name="EditPanel" HorizontalExpand="True" VerticalExpand="True">
         <TextEdit Name="NoteEdit" HorizontalExpand="True" VerticalExpand="True" />
     </PanelContainer>
+
+    <!-- ...and the same document as the reader will see it. -->
+    <PanelContainer Name="PreviewPanel" HorizontalExpand="True" VerticalExpand="True" Visible="False">
+        <ScrollContainer HorizontalExpand="True" VerticalExpand="True" HScrollEnabled="False" Margin="4 3">
+            <RichTextLabel Name="PreviewText" />
+        </ScrollContainer>
+    </PanelContainer>
+
+    <!-- Status bar. -->
     <BoxContainer Orientation="Horizontal" Margin="0 4 0 0">
-        <Label Name="SavedLabel" HorizontalExpand="True" VerticalAlignment="Center" />
+        <Label Name="CountLabel" VerticalAlignment="Center" Margin="0 0 6 0" />
+        <Label Name="SavedLabel" HorizontalExpand="True" VerticalAlignment="Center" ClipText="True" />
         <controls:IconTile Name="ExportButton" Compact="True" IconSize="14" Margin="0 0 3 0" />
-        <controls:IconTile Name="SaveButton" Compact="True" IconSize="14" MinWidth="100" />
+        <controls:IconTile Name="SaveButton" Compact="True" IconSize="14" MinWidth="96" />
     </BoxContainer>
 </apps:NotesAppFragment>

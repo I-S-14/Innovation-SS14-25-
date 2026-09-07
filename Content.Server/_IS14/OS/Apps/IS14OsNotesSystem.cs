@@ -8,9 +8,11 @@ using Content.Shared.PDA;
 namespace Content.Server._IS14.OS.Apps;
 
 /// <summary>
-///     Notes: the smallest app that actually owns data, and therefore the one that proves the
-///     "components on the device" model works end to end. Exporting turns a note into a file,
-///     which is the only form the messenger can send.
+///     The document editor. The smallest app that actually owns data, and therefore the one
+///     that proves the "components on the device" model works end to end. Formatting lives in
+///     the text itself as engine markup, so the server stores one string and never has to know
+///     what bold is. Exporting turns the document into a file, which is the only form the
+///     messenger can send.
 /// </summary>
 public sealed class IS14OsNotesSystem : EntitySystem
 {
@@ -33,7 +35,7 @@ public sealed class IS14OsNotesSystem : EntitySystem
         if (args.App != AppId)
             return;
 
-        args.State = new OsNotesState(ent.Comp.Text, ent.Comp.Status);
+        args.State = new OsNotesState(ent.Comp.Text, ent.Comp.Title, ent.Comp.Status);
     }
 
     private void OnAppEvent(Entity<IS14OsNotesComponent> ent, ref OsAppEventRaised args)
@@ -49,6 +51,7 @@ public sealed class IS14OsNotesSystem : EntitySystem
                     text = text[..ent.Comp.MaxLength];
 
                 ent.Comp.Text = text;
+                ent.Comp.Title = Clamp(save.Title);
                 ent.Comp.Status = null;
                 break;
 
@@ -69,11 +72,12 @@ public sealed class IS14OsNotesSystem : EntitySystem
         if (!TryComp(ent, out IS14OsDeviceComponent? device) || !TryComp(ent, out IS14OsMemoryComponent? memory))
             return;
 
-        name = name.Trim();
+        // The client sends the document's name; fall back to the saved one, then to a default.
+        name = Clamp(name);
+        if (name.Length == 0)
+            name = ent.Comp.Title;
         if (name.Length == 0)
             name = Loc.GetString("is14-os-notes-export-default");
-        else if (name.Length > MaxNameLength)
-            name = name[..MaxNameLength];
 
         var size = IS14OsFileSystem.SizeOf(ent.Comp.Text.Length);
         var author = CompOrNull<PdaComponent>(ent)?.OwnerName;
@@ -81,5 +85,13 @@ public sealed class IS14OsNotesSystem : EntitySystem
         var file = _files.TryAdd((ent.Owner, device, memory), name, OsFileKind.Text, size, author, ent.Comp.Text);
 
         ent.Comp.Status = file == null ? "is14-os-notes-export-no-memory" : "is14-os-notes-export-done";
+    }
+
+    /// <summary>A name is one short line: never trust the client for its length or its breaks.</summary>
+    private static string Clamp(string name)
+    {
+        name = name.ReplaceLineEndings(" ").Trim();
+
+        return name.Length > MaxNameLength ? name[..MaxNameLength] : name;
     }
 }

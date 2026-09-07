@@ -19,8 +19,8 @@ is14-os-app-files-name = Files
 is14-os-app-files-desc = Installed software and free memory.
 is14-os-app-settings-name = Settings
 is14-os-app-settings-desc = Theme and device toggles.
-is14-os-app-notes-name = Notes
-is14-os-app-notes-desc = A notepad. Notes are lost if the app is uninstalled.
+is14-os-app-notes-name = Editor
+is14-os-app-notes-desc = A text editor with formatting. The document is lost if the app is uninstalled.
 
 # Status
 is14-os-status-unknown = unknown
@@ -35,7 +35,32 @@ is14-os-status-address = Network address
 # Notes
 is14-os-notes-save = Save
 is14-os-notes-saved = Saved
-is14-os-notes-placeholder = Type a note...
+is14-os-notes-unsaved = Unsaved changes
+is14-os-notes-placeholder = Document text...
+is14-os-notes-title-placeholder = Untitled
+is14-os-notes-preview = Preview
+is14-os-notes-edit = Edit
+is14-os-notes-count = Words: {$words} · Chars: {$chars}/{$max}
+is14-os-notes-bold = Bold
+is14-os-notes-bold-glyph = B
+is14-os-notes-italic = Italic
+is14-os-notes-italic-glyph = I
+is14-os-notes-heading = Heading {$level}
+is14-os-notes-heading-glyph = H{$level}
+is14-os-notes-bullet = Bullet
+is14-os-notes-bullet-glyph = •
+is14-os-notes-color = Text colour
+is14-os-notes-color-glyph = Colour
+is14-os-notes-clear = Clear formatting
+is14-os-notes-clear-glyph = ✕
+is14-os-notes-color-default = Default
+is14-os-notes-color-red = Red
+is14-os-notes-color-orange = Orange
+is14-os-notes-color-yellow = Yellow
+is14-os-notes-color-green = Green
+is14-os-notes-color-cyan = Cyan
+is14-os-notes-color-blue = Blue
+is14-os-notes-color-purple = Purple
 
 # Files
 is14-os-files-memory-caption = Memory
@@ -162,8 +187,8 @@ is14-os-messenger-unreachable = Recipient unreachable.
 is14-os-messenger-no-file = File not found.
 is14-os-messenger-their-memory = The recipient has no room for the attachment.
 is14-os-notes-export = To file
-is14-os-notes-export-tooltip = Save the note as a file so it can be sent in the messenger
-is14-os-notes-export-default = Note
-is14-os-notes-export-done = Note saved to files.
+is14-os-notes-export-tooltip = Save the document as a file so it can be sent in the messenger
+is14-os-notes-export-default = Document
+is14-os-notes-export-done = Document saved to files.
 is14-os-notes-export-empty = Nothing to save.
 is14-os-notes-export-no-memory = Not enough memory for the file.
