@@ -1,0 +1,97 @@
+# Shared items between all miner-exploration roles - stuff needed for mining.
+# Salvage specialist lockers
+- type: entity
+  id: IS14ExpeditionLockerFilledHardsuit
+  suffix: Filled, Hardsuit
+  parent: IS14ExpeditionLocker
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:AllSelector
+        children:
+        - !type:NestedSelector
+          tableId: FillSalvageSpecialistHardsuitSpatio
+        - !type:NestedSelector
+          tableId: LockerFillSalvageSpecialist
+
+- type: entity
+  id: IS14ExpeditionLockerFilled
+  suffix: Filled
+  parent: IS14ExpeditionLocker
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:NestedSelector
+        tableId: LockerFillSalvageSpecialist
+
+# Shaft miner lockers
+- type: entity
+  id: IS14ExpeditionLockerMinerFilledHardsuit
+  suffix: Filled, Hardsuit
+  parent: IS14ExpeditionLockerFilled
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:AllSelector
+        children:
+        - !type:NestedSelector
+          tableId: FillShaftMinerExplorerSuit
+        - !type:NestedSelector
+          tableId: LockerFillShaftMiner
+
+- type: entity
+  id: IS14ExpeditionLockerMinerFilled
+  suffix: Filled
+  parent: IS14ExpeditionLockerFilled
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:NestedSelector
+        tableId: LockerFillShaftMiner
+
+- type: entityTable
+  id: IS14CargoLockerFillClothes
+  table: !type:AllSelector
+    children:
+    - id: ClothingUniformJumpsuitIS14CargoTechVest
+    - id: ClothingHeadIS14CargoTechCap
+    - id: ClothingHeadIS14PostmanPilotka
+    - id: ClothingUniformJumpsuitIS14CargoTech
+    - id: ClothingUniformJumpsuitIS14Postman
+    - id: ClothingUniformJumpskirtIS14Postman
+    - id: ClothingHeadIS14PostmanCap
+
+- type: entity
+  id: IS14CargoLockerFilled
+  suffix: Filled
+  parent: IS14CargoLocker
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:AllSelector
+        children:
+        - !type:NestedSelector
+          tableId: FillWardrobeCargo
+        - !type:NestedSelector
+          tableId: IS14CargoLockerFillClothes
+
+- type: entityTable
+  id: IS14CargoWideLockerFillClothes
+  table: !type:AllSelector
+    children:
+    - id: ClothingHeadIS14ExpeditionerBeret
+    - id: ClothingOuterIS14ExpeditionerArmor
+    - id: ClothingMaskIS14ExpeditionerRespirator
+    - id: ClothingOuterHardsuitIS14Expeditioner
+    - id: ClothingUniformJumpsuitIS14SeniorExpeditioner
+    - id: ClothingUniformJumpsuitIS14Expeditioner
+
+- type: entity
+  id: IS14CargoWideLockerFilled
+  suffix: Filled
+  parent: IS14CargoWideLocker
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:NestedSelector
+        tableId: IS14CargoWideLockerFillClothes

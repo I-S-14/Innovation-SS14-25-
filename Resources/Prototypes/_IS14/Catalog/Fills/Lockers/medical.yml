@@ -1,0 +1,74 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+- type: entity
+  parent: IS14MedicalV1Locker
+  id: IS14MedicalV1LockerFilled
+  suffix: Filled
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:NestedSelector
+        tableId: LockerFillMedicine
+
+- type: entity
+  parent: IS14ClosetWallMedical
+  id: IS14ClosetWallMedicalFilled
+  suffix: Filled
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:NestedSelector
+        tableId: LockerFillMedicine
+
+- type: entity
+  parent: IS14MedicalV2Locker
+  id: IS14MedicalV2LockerFilled
+  suffix: Filled
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:NestedSelector
+        tableId: LockerFillMedicalDoctor
+
+- type: entity
+  parent: IS14ClosetWallMedical
+  id: IS14ClosetWallMedicalDoctorFilled
+  suffix: Filled
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:NestedSelector
+        tableId: LockerFillMedicalDoctor
+
+- type: entity
+  parent: IS14MedicalFarmLocker
+  id: IS14MedicalFarmLockerFilled
+  suffix: Filled
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:NestedSelector
+        tableId: LockerFillChemistry
+
+- type: entity
+  parent: IS14MedicalFeldLocker
+  id: IS14MedicalFeldLockerFilled
+  suffix: Filled
+  components:
+  - type: StorageFill
+    contents:
+      - id: UndeterminedVoidsuitParamedic # Goob edit
+      - id: OxygenTankFilled
+      - id: NitrogenTankFilled
+      - id: ClothingOuterCoatParamedicWB
+      - id: ClothingHeadHatParamedicsoft
+      - id: ClothingOuterWinterPara
+      - id: ClothingUniformJumpsuitParamedic
+      - id: ClothingUniformJumpskirtParamedic
+      - id: ClothingEyesHudMedical
+      - id: ClothingHandsGlovesLatex
+      - id: ClothingHeadsetMedical
+      - id: ClothingMaskSterile
+      - id: HandheldGPSBasic
+      - id: MedkitFilled
+        prob: 0.3

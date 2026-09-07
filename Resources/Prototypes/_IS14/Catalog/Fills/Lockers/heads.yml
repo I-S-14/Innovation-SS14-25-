@@ -1,0 +1,502 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+- type: entityTable
+  id: IS14QuarterLockerFillClothes
+  table: !type:AllSelector
+    children:
+    - id: ClothingUniformJumpskirtIS14Qm
+    - id: ClothingUniformJumpsuitIS14Qm
+    - id: ClothingNeckIS14QmCloak
+    - id: ClothingBeltIS14Qm
+    - id: ClothingHeadIS14QmCap
+    - id: ClothingOuterIS14QmGreatcoat
+
+- type: entity
+  id: IS14QuarterLockerFilled
+  suffix: Filled
+  parent: IS14QuarterLocker
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:AllSelector
+        children:
+        - !type:NestedSelector
+          tableId: LockerFillQuarterMaster
+        - !type:NestedSelector
+          tableId: IS14QuarterLockerFillClothes
+
+# wall lockers
+
+- type: entity
+  id: IS14ClosetWallQMFilled
+  suffix: Filled
+  parent: IS14ClosetWallQM
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:AllSelector
+        children:
+        - !type:NestedSelector
+          tableId: LockerFillQuarterMaster
+        - !type:NestedSelector
+          tableId: IS14QuarterLockerFillClothes
+
+- type: entityTable
+  id: IS14CaptainLockerFillClothes
+  table: !type:AllSelector
+    children:
+    - id: ClothingHeadIS14CaptainCap
+    - id: ClothingNeckIS14CaptainCloak
+    - id: ClothingUniformJumpskirtIS14Captain
+    - id: ClothingUniformJumpsuitIS14Captain
+    - id: ClothingUniformJumpsuitIS14CaptainFormal
+    - id: ClothingHandsIS14CaptainGloves
+
+# No laser locker, used when the antique laser is placed in the special display crate
+- type: entity
+  id: IS14CaptainLockerLaser
+  suffix: Filled
+  parent: IS14CaptainLocker
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:AllSelector
+        children:
+        - !type:NestedSelector
+          tableId: LockerFillCaptainNoLaser
+        - !type:NestedSelector
+          tableId: IS14CaptainLockerFillClothes
+
+# No Laser + Laser locker
+- type: entity
+  id: IS14CaptainLockerFilled
+  suffix: Filled, AntiqueLaser
+  parent: IS14CaptainLocker
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:AllSelector
+        children:
+        - !type:NestedSelector
+          tableId: LockerFillCaptainLaser
+        - !type:NestedSelector
+          tableId: IS14CaptainLockerFillClothes
+
+# No Laser + Laser + Hardsuit locker
+- type: entity
+  id: IS14CaptainLockerFilledHardsuit
+  suffix: Filled, Hardsuit
+  parent: IS14CaptainLocker
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:AllSelector
+        children:
+        - !type:NestedSelector
+          tableId: LockerFillCaptainLaser
+        - !type:NestedSelector
+          tableId: FillCaptainHardsuit
+        - !type:NestedSelector
+          tableId: IS14CaptainLockerFillClothes
+
+# closet wall
+
+# No laser locker, used when the antique laser is placed in the special display crate
+- type: entity
+  id: IS14ClosetWallCaptainLaser
+  suffix: Filled
+  parent: IS14ClosetWallCaptain
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:AllSelector
+        children:
+        - !type:NestedSelector
+          tableId: LockerFillCaptainNoLaser
+        - !type:NestedSelector
+          tableId: IS14CaptainLockerFillClothes
+
+# No Laser + Laser locker
+- type: entity
+  id: IS14ClosetWallCaptainFilled
+  suffix: Filled, AntiqueLaser
+  parent: IS14ClosetWallCaptain
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:AllSelector
+        children:
+        - !type:NestedSelector
+          tableId: LockerFillCaptainLaser
+        - !type:NestedSelector
+          tableId: IS14CaptainLockerFillClothes
+
+# No Laser + Laser + Hardsuit locker
+- type: entity
+  id: IS14ClosetWallCaptainFilledHardsuit
+  suffix: Filled, Hardsuit
+  parent: IS14ClosetWallCaptain
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:AllSelector
+        children:
+        - !type:NestedSelector
+          tableId: LockerFillCaptainLaser
+        - !type:NestedSelector
+          tableId: FillCaptainHardsuit
+        - !type:NestedSelector
+          tableId: IS14CaptainLockerFillClothes
+
+- type: entityTable
+  id: IS14HoPLockerFillClothes
+  table: !type:AllSelector
+    children:
+    - id: ClothingHeadIS14HopBeret
+    - id: ClothingUniformJumpsuitIS14Hop
+    - id: ClothingUniformJumpsuitIS14HopFormal
+    - id: ClothingNeckIS14HopCloak
+    - id: ClothingHeadIS14HopCap
+
+- type: entity
+  id: IS14HoPLockerFilled
+  suffix: Filled
+  parent: IS14HoPLocker
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:AllSelector
+        children:
+        - !type:NestedSelector
+          tableId: LockerFillHeadOfPersonnel
+        - !type:NestedSelector
+          tableId: IS14HoPLockerFillClothes
+
+# closet wall
+
+- type: entity
+  id: IS14ClosetWallHoPFilled
+  suffix: Filled
+  parent: IS14ClosetWallHoP
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:AllSelector
+        children:
+        - !type:NestedSelector
+          tableId: LockerFillHeadOfPersonnel
+        - !type:NestedSelector
+          tableId: IS14HoPLockerFillClothes
+
+- type: entityTable
+  id: IS14CEEngineeringLockerFillClothes
+  table: !type:AllSelector
+    children:
+    - id: ClothingHeadIS14CeBeret
+    - id: ClothingUniformJumpsuitIS14Ce
+    - id: ClothingNeckIS14CeFormalCloak
+    - id: ClothingNeckIS14CeCloak
+    - id: ClothingUniformJumpsuitIS14CeWork
+
+# No hardsuit locker
+- type: entity
+  id: IS14CEEngineeringLockerFilled
+  suffix: Filled
+  parent: IS14CEEngineeringLocker
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:AllSelector
+        children:
+        - !type:NestedSelector
+          tableId: LockerFillChiefEngineerNoHardsuit
+        - !type:NestedSelector
+          tableId: IS14CEEngineeringLockerFillClothes
+
+# No hardsuit + hardsuit locker
+- type: entity
+  id: IS14CEEngineeringLockerFilledHardsuit
+  suffix: Filled, Hardsuit
+  parent: IS14CEEngineeringLocker
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:AllSelector
+        children:
+        - !type:NestedSelector
+          tableId: LockerFillChiefEngineerNoHardsuit
+        - !type:NestedSelector
+          tableId: FillChiefEngineerHardsuit
+        - !type:NestedSelector
+          tableId: IS14CEEngineeringLockerFillClothes
+
+# closet wall
+
+# No hardsuit locker
+- type: entity
+  id: IS14ClosetWallCEFilled
+  suffix: Filled
+  parent: IS14ClosetWallCE
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:AllSelector
+        children:
+        - !type:NestedSelector
+          tableId: LockerFillChiefEngineerNoHardsuit
+        - !type:NestedSelector
+          tableId: IS14CEEngineeringLockerFillClothes
+
+# No hardsuit + hardsuit locker
+- type: entity
+  id: IS14ClosetWallCEFilledHardsuit
+  suffix: Filled, Hardsuit
+  parent: IS14ClosetWallCE
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:AllSelector
+        children:
+        - !type:NestedSelector
+          tableId: LockerFillChiefEngineerNoHardsuit
+        - !type:NestedSelector
+          tableId: FillChiefEngineerHardsuit
+        - !type:NestedSelector
+          tableId: IS14CEEngineeringLockerFillClothes
+
+- type: entityTable
+  id: IS14SmoLockerFillClothes
+  table: !type:AllSelector
+    children:
+    - id: ClothingHeadIS14CmoBeret
+    - id: ClothingUniformJumpsuitIS14Cmo
+    - id: ClothingNeckIS14CmoFormalCloak
+    - id: ClothingOuterIS14CmoFormalRobe
+    - id: ClothingNeckIS14CmoCloak
+    - id: ClothingOuterIS14CmoRobe
+
+# No hardsuit locker
+- type: entity
+  id: IS14SmoLockerFilled
+  suffix: Filled
+  parent: IS14SmoLocker
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:AllSelector
+        children:
+        - !type:NestedSelector
+          tableId: LockerFillChiefMedicalOfficerNoHardsuit
+        - !type:NestedSelector
+          tableId: IS14SmoLockerFillClothes
+
+# No hardsuit + Hardsuit locker
+- type: entity
+  id: IS14SmoLockerFilledHardsuit
+  suffix: Filled, Hardsuit
+  parent: IS14SmoLocker
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:AllSelector
+        children:
+        - !type:NestedSelector
+          tableId: LockerFillChiefMedicalOfficerNoHardsuit
+        - !type:NestedSelector
+          tableId: FillChiefMedicalOfficerHardsuit
+        - !type:NestedSelector
+          tableId: IS14SmoLockerFillClothes
+
+# wall lockers
+
+# No hardsuit locker
+- type: entity
+  id: IS14ClosetWallCMOFilled
+  suffix: Filled
+  parent: IS14ClosetWallCMO
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:AllSelector
+        children:
+        - !type:NestedSelector
+          tableId: LockerFillChiefMedicalOfficerNoHardsuit
+        - !type:NestedSelector
+          tableId: IS14SmoLockerFillClothes
+
+# No hardsuit + Hardsuit locker
+- type: entity
+  id: IS14ClosetWallCMOFilledHardsuit
+  suffix: Filled, Hardsuit
+  parent: IS14ClosetWallCMO
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:AllSelector
+        children:
+        - !type:NestedSelector
+          tableId: LockerFillChiefMedicalOfficerNoHardsuit
+        - !type:NestedSelector
+          tableId: FillChiefMedicalOfficerHardsuit
+        - !type:NestedSelector
+          tableId: IS14SmoLockerFillClothes
+
+- type: entityTable
+  id: IS14RDLockerFillClothes
+  table: !type:AllSelector
+    children:
+    - id: ClothingHeadIS14RdBeret
+    - id: ClothingUniformJumpsuitIS14Rd
+    - id: ClothingOuterIS14RdLabCoat
+    - id: ClothingOuterIS14RdRobe
+
+# No hardsuit locker
+- type: entity
+  id: IS14RDLockerFilled
+  suffix: Filled
+  parent: IS14RDLocker
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:AllSelector
+        children:
+        - !type:NestedSelector
+          tableId: LockerFillResearchDirectorNoHardsuit
+        - !type:NestedSelector
+          tableId: IS14RDLockerFillClothes
+
+# No hardsuit + Hardsuit locker
+- type: entity
+  id: IS14RDLockerFilledHardsuit
+  suffix: Filled, Hardsuit
+  parent: IS14RDLocker
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:AllSelector
+        children:
+        - !type:NestedSelector
+          tableId: LockerFillResearchDirectorNoHardsuit
+        - !type:NestedSelector
+          tableId: FillResearchDirectorHardsuit
+        - !type:NestedSelector
+          tableId: IS14RDLockerFillClothes
+
+- type: entityTable
+  id: IS14HoSLockerFillClothes
+  table: !type:AllSelector
+    children:
+    - id: ClothingHeadIS14HosMilitiaBeret
+    - id: ClothingEyesIS14MilitiaVisor
+    - id: ClothingUniformJumpsuitIS14MilitiaSummer
+    - id: ClothingUniformJumpsuitIS14HosMilitia
+    - id: ClothingUniformJumpskirtIS14HosMilitia
+    - id: ClothingEyesIS14MilitiaGlasses
+    - id: ClothingOuterIS14HosMilitiaJacket
+    - id: ClothingHeadIS14MilitiaPilotka
+    - id: ClothingNeckIS14HosMilitiaCloak
+    - id: ClothingBeltIS14HosMilitia
+    - id: ClothingUniformJumpsuitIS14MilitiaCeremonial
+    - id: ClothingHeadIS14HatBlueMilitiaUshanka
+    - id: ClothingHandsIS14HosMilitiaGloves
+    - id: ClothingShoesIS14HosMilitiaBoots
+    - id: ClothingHeadIS14HosMilitiaCap
+    - id: ClothingOuterIS14HosMilitiaGreatcoat
+
+# No hardsuit locker
+- type: entity
+  id: IS14HoSLockerFilled
+  suffix: Filled
+  parent: IS14HoSLocker
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:AllSelector
+        children:
+        - !type:NestedSelector
+          tableId: LockerFillHeadOfSecurityNoHardsuit
+        - !type:NestedSelector
+          tableId: IS14HoSLockerFillClothes
+
+# No hardsuit + Hardsuit locker
+- type: entity
+  id: IS14HoSLockerFilledHardsuit
+  suffix: Filled, Hardsuit
+  parent: IS14HoSLocker
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:AllSelector
+        children:
+        - !type:NestedSelector
+          tableId: LockerFillHeadOfSecurityNoHardsuit
+        - !type:NestedSelector
+          tableId: FillHeadOfSecurityHardsuit
+        - !type:NestedSelector
+          tableId: IS14HoSLockerFillClothes
+
+# closet wall
+
+# No hardsuit locker
+- type: entity
+  id: IS14ClosetWallHoSFilled
+  suffix: Filled
+  parent: IS14ClosetWallHoS
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:AllSelector
+        children:
+        - !type:NestedSelector
+          tableId: LockerFillHeadOfSecurityNoHardsuit
+        - !type:NestedSelector
+          tableId: IS14HoSLockerFillClothes
+
+# No hardsuit + Hardsuit locker
+- type: entity
+  id: IS14ClosetWallHoSFilledHardsuit
+  suffix: Filled, Hardsuit
+  parent: IS14ClosetWallHoS
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:AllSelector
+        children:
+        - !type:NestedSelector
+          tableId: LockerFillHeadOfSecurityNoHardsuit
+        - !type:NestedSelector
+          tableId: FillHeadOfSecurityHardsuit
+        - !type:NestedSelector
+          tableId: IS14HoSLockerFillClothes
+
+- type: entity
+  id: IS14SafeFilled
+  suffix: Vault, Filled
+  parent: IS14Safe
+  components:
+  - type: AccessReader
+    access: [ [ "Command" ] ]
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:NestedSelector
+        tableId: LockerFillVault
+
+- type: entityTable
+  id: IS14BridgeAssistantLockerFillClothes
+  table: !type:AllSelector
+    children:
+    - id: ClothingUniformJumpskirtIS14CommandSecretary
+    - id: ClothingUniformJumpsuitIS14CommandSecretary
+    - id: ClothingOuterIS14CommandSecretaryCoat
+    - id: ClothingHeadIS14CommandSecretaryCap
+    - id: ClothingOuterIS14CommandSecretaryGreatcoat
+
+- type: entity
+  id: IS14BridgeAssistantLockerFilled
+  suffix: Filled
+  parent: IS14BridgeAssistantLocker
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:NestedSelector
+        tableId: IS14BridgeAssistantLockerFillClothes
