@@ -27,8 +27,13 @@
                 <controls:IconTile Name="AttachClearButton" Compact="True" IconSize="10" />
             </BoxContainer>
         </PanelContainer>
+        <!-- Emoji tray, folded away until the smiley button asks for it. -->
+        <PanelContainer Name="EmojiPanel" HorizontalExpand="True" Margin="0 3 0 0" Visible="False">
+            <GridContainer Name="EmojiGrid" Columns="8" Margin="3 2" />
+        </PanelContainer>
         <BoxContainer Orientation="Horizontal" Margin="0 4 0 0">
             <controls:IconTile Name="AttachButton" Compact="True" IconSize="12" Margin="0 0 3 0" />
+            <controls:IconTile Name="EmojiButton" Compact="True" IconSize="12" Margin="0 0 3 0" />
             <LineEdit Name="MessageEdit" HorizontalExpand="True" />
             <controls:IconTile Name="SendButton" Compact="True" IconSize="12" Margin="3 0 0 0" />
         </BoxContainer>

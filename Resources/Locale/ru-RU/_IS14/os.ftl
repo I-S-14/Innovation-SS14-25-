@@ -127,6 +127,7 @@ is14-os-board-installed = Плата установлена: +{$amount} ГК.
 is14-os-board-no-slots = Свободных слотов расширения нет.
 
 is14-os-window-close = Закрыть
+is14-os-window-minimize = Свернуть
 is14-os-status-no-address = без сети
 
 # Файлы
@@ -177,6 +178,7 @@ is14-os-messenger-write = Написать
 is14-os-messenger-delete = Удалить переписку
 is14-os-messenger-send = Отправить
 is14-os-messenger-attach = Приложить файл
+is14-os-messenger-emoji = Смайлики
 is14-os-messenger-no-files = На устройстве нет файлов.
 is14-os-messenger-placeholder = Сообщение...
 is14-os-messenger-preview-attachment = [вложение]

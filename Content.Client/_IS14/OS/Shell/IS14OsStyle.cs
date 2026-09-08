@@ -52,6 +52,7 @@ public static class IS14OsStyle
     public static readonly SpriteSpecifier Mute = New(Verb + "bubbles.svg.192dpi.png");
     public static readonly SpriteSpecifier Shutter = New(Verb + "die.svg.192dpi.png");
     public static readonly SpriteSpecifier Center = New(Verb + "refresh.svg.192dpi.png");
+    public static readonly SpriteSpecifier Emoji = New(Emote + "laugh.png");
 
     private static SpriteSpecifier New(string path)
     {

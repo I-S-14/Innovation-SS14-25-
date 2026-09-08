@@ -127,6 +127,7 @@ is14-os-board-installed = Board fitted: +{$amount} GQ.
 is14-os-board-no-slots = No free expansion slots.
 
 is14-os-window-close = Close
+is14-os-window-minimize = Minimise
 is14-os-status-no-address = offline
 
 # Files
@@ -177,6 +178,7 @@ is14-os-messenger-write = Write
 is14-os-messenger-delete = Delete conversation
 is14-os-messenger-send = Send
 is14-os-messenger-attach = Attach a file
+is14-os-messenger-emoji = Emoji
 is14-os-messenger-no-files = No files on this device.
 is14-os-messenger-placeholder = Message...
 is14-os-messenger-preview-attachment = [attachment]

@@ -1,8 +1,10 @@
 using System.IO;
 using System.Linq;
 using System.Numerics;
+using Content.Client._IS14.Chat;
 using Content.Client._IS14.Controls;
 using Content.Client._IS14.OS.Shell;
+using Content.Shared._IS14.Chat;
 using Content.Shared._IS14.OS.Files;
 using Content.Shared._IS14.OS.UI;
 using Content.Shared._IS14.OS.UI.Apps;
@@ -64,9 +66,13 @@ public sealed partial class MessengerAppFragment : BoxContainer
     /// <summary>Decoded photos held at once. Textures are not free, and a chat can be long.</summary>
     private const int MaxCachedPhotos = 24;
 
+    /// <summary>Side of an emoji in the tray, in virtual pixels.</summary>
+    private const float EmojiTileSize = 24f;
+
     [Dependency] private readonly IEntitySystemManager _sysMan = default!;
 
     private readonly SpriteSystem _sprites;
+    private readonly IS14EmojiSystem _emoji;
 
     /// <summary>Decoded attachments by file id. A null value means the payload was unreadable.</summary>
     private readonly Dictionary<int, Texture?> _photos = new();
@@ -98,6 +104,7 @@ public sealed partial class MessengerAppFragment : BoxContainer
         VerticalExpand = true;
 
         _sprites = _sysMan.GetEntitySystem<SpriteSystem>();
+        _emoji = _sysMan.GetEntitySystem<IS14EmojiSystem>();
 
         BackButton.Icon = Icon(IS14OsStyle.Back);
         BackButton.ToolTip = Loc.GetString("is14-os-messenger-back");
@@ -114,6 +121,11 @@ public sealed partial class MessengerAppFragment : BoxContainer
         AttachButton.Icon = Icon(IS14OsStyle.Attach);
         AttachButton.ToolTip = Loc.GetString("is14-os-messenger-attach");
         AttachButton.OnPressed += _ => TogglePicker();
+
+        EmojiButton.Icon = Icon(IS14OsStyle.Emoji);
+        EmojiButton.ToolTip = Loc.GetString("is14-os-messenger-emoji");
+        EmojiButton.OnPressed += _ => ToggleEmoji();
+        BuildEmojiTray();
 
         AttachClearButton.Icon = Icon(IS14OsStyle.Close);
         AttachClearButton.OnPressed += _ => SetAttachment(null);
@@ -444,8 +456,10 @@ public sealed partial class MessengerAppFragment : BoxContainer
 
         if (message.Text.Length > 0)
         {
+            // The text is turned into a message here rather than parsed as markup: shortcodes
+            // become emoji, and everything else stays the literal characters somebody typed.
             var label = new RichTextLabel();
-            label.SetMessage(message.Text);
+            label.SetMessage(_emoji.Format(message.Text), IS14EmojiText.Tags, _palette.Text);
             box.AddChild(label);
         }
 
@@ -553,6 +567,49 @@ public sealed partial class MessengerAppFragment : BoxContainer
         SetAttachment(null);
     }
 
+    /// <summary>
+    ///     The tray is built once from the registry: emoji are prototypes, so a new smiley is
+    ///     a YAML file and it shows up here on its own.
+    /// </summary>
+    private void BuildEmojiTray()
+    {
+        EmojiGrid.RemoveAllChildren();
+
+        foreach (var emoji in _emoji.Picker)
+        {
+            var code = _emoji.PrimaryCode(emoji);
+
+            var tile = new PictureTile
+            {
+                Palette = _palette,
+                PictureSize = EmojiTileSize,
+                Picture = _sprites.Frame0(emoji.Sprite),
+                ToolTip = emoji.Name is { } name ? $"{Loc.GetString(name)}  {code}" : code,
+                Margin = new Thickness(0, 0, 2, 2),
+            };
+
+            // Typing the shortcode is the real interface; the tray just saves you remembering it.
+            tile.OnPressed += _ =>
+            {
+                MessageEdit.InsertAtCursor(code);
+                MessageEdit.GrabKeyboardFocus();
+            };
+
+            EmojiGrid.AddChild(tile);
+        }
+
+        EmojiButton.Visible = EmojiGrid.ChildCount > 0;
+    }
+
+    private void ToggleEmoji()
+    {
+        EmojiPanel.Visible = !EmojiPanel.Visible;
+        EmojiButton.Selected = EmojiPanel.Visible;
+
+        if (EmojiPanel.Visible)
+            MessageEdit.GrabKeyboardFocus();
+    }
+
     private void GoBack()
     {
         if (_state?.OpenChat != null)
@@ -579,12 +636,26 @@ public sealed partial class MessengerAppFragment : BoxContainer
         MuteButton.Palette = palette;
         AttachButton.Palette = palette;
         AttachClearButton.Palette = palette;
+        EmojiButton.Palette = palette;
         SendButton.Palette = palette;
+
+        foreach (var child in EmojiGrid.Children)
+        {
+            if (child is PictureTile tile)
+                tile.Palette = palette;
+        }
 
         AttachPanel.PanelOverride = new StyleBoxFlat
         {
             BackgroundColor = palette.PanelRaised,
             BorderColor = palette.Accent,
+            BorderThickness = new Thickness(1),
+        };
+
+        EmojiPanel.PanelOverride = new StyleBoxFlat
+        {
+            BackgroundColor = palette.PanelRaised,
+            BorderColor = palette.Border,
             BorderThickness = new Thickness(1),
         };
 
