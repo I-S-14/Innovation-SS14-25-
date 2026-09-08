@@ -1,0 +1,9 @@
+<apps:ManifestAppFragment xmlns="https://spacestation14.io"
+                          xmlns:apps="clr-namespace:Content.Client._IS14.OS.Apps"
+                          xmlns:controls="clr-namespace:Content.Client._IS14.Controls">
+    <controls:StatRow Name="StationRow" Framed="True" Margin="0 0 0 4" />
+    <LineEdit Name="SearchEdit" HorizontalExpand="True" Margin="0 0 0 4" />
+    <ScrollContainer HorizontalExpand="True" VerticalExpand="True">
+        <BoxContainer Name="CrewList" Orientation="Vertical" HorizontalExpand="True" />
+    </ScrollContainer>
+</apps:ManifestAppFragment>

@@ -1,0 +1,79 @@
+# Which fork PDA each stock one becomes at spawn. See IS14PdaSwapSystem: the swap happens
+# before the spawner writes the ID card, so the replacement is named, given access and bound
+# to its owner by the stock code path.
+#
+# Deliberately absent: syndicate, ERT, deathsquad, wizard, pirate and central command kit.
+# Those carry working uplinks and special hardware, and the fork's PDAs are not a drop-in for
+# them yet (Docs/_IS14/os-design.md §18.1).
+
+- type: is14PdaSwap
+  id: IS14PdaSwapDefault
+  swaps:
+    # Command
+    CaptainPDA: IS14_PdaCaptain
+    HoPPDA: IS14_PdaHOP
+    CEPDA: IS14_PdaCE
+    CMOPDA: IS14_PdaCMO
+    HoSPDA: IS14_PdaHOS
+    QuartermasterPDA: IS14_PdaQM
+    RnDPDA: IS14_PdaRD
+
+    # Engineering
+    EngineerPDA: IS14_PdaEngineer
+    SeniorEngineerPDA: IS14_PdaSeniorEngineer
+    AtmosPDA: IS14_PdaAtmosphericTechnician
+    TechnicalAssistantPDA: IS14_PdaEngineerAssistant
+
+    # Medical
+    MedicalPDA: IS14_PdaDoctor
+    SeniorPhysicianPDA: IS14_PdaSeniorDoctor
+    MedicalInternPDA: IS14_PdaIntern
+    ParamedicPDA: IS14_PdaParamedic
+    ChemistryPDA: IS14_PdaPharmacist
+    PsychologistPDA: IS14_PdaPsychologist
+    BrigmedicPDA: IS14_PdaBrigmedic
+
+    # Science
+    SciencePDA: IS14_PdaScientist
+    SeniorResearcherPDA: IS14_PdaMentorScientist
+    ResearchAssistantPDA: IS14_PdaResearchAssistant
+    RoboticistPDA: IS14_PdaRoboticist
+
+    # Security and law
+    SecurityPDA: IS14_PdaSecurityOfficer
+    SeniorOfficerPDA: IS14_PdaSeniorOfficer
+    SecurityCadetPDA: IS14_PdaCadet
+    WardenPDA: IS14_PdaWarden
+    DetectivePDA: IS14_PdaDetective
+    LawyerPDA: IS14_PdaLawyer
+
+    # Cargo
+    CargoPDA: IS14_PdaCargoTechnician
+    SalvagePDA: IS14_PdaExpeditionist
+    MinerPDA: IS14_PdaExpeditionist
+    SeniorCourierPDA: IS14_PdaCourier
+
+    # Service
+    JanitorPDA: IS14_PdaJanitor
+    BotanistPDA: IS14_PdaBotanist
+    ChefPDA: IS14_PdaChef
+    BartenderPDA: IS14_PdaBartender
+    ChaplainPDA: IS14_PdaChaplain
+    LibrarianPDA: IS14_PdaLibrarian
+    ClownPDA: IS14_PdaClown
+    MimePDA: IS14_PdaMime
+    MusicianPDA: IS14_PdaMusician
+    ReporterPDA: IS14_PdaCorrespondent
+    ServiceWorkerPDA: IS14_PdaServiceWorker
+    PilotPDA: IS14_PdaPilot
+
+    # Everyone else
+    PassengerPDA: IS14_PdaAssistant
+    VisitorPDA: IS14_PdaAssistant
+    VisitorChaplainPDA: IS14_PdaChaplain
+    VisitorLawyerPDA: IS14_PdaLawyer
+    VisitorLibrarianPDA: IS14_PdaLibrarian
+    VisitorMedicalPDA: IS14_PdaDoctor
+    VisitorMusicianPDA: IS14_PdaMusician
+    VisitorClownPDA: IS14_PdaClown
+    AdminPDA: IS14_PdaAdministrator

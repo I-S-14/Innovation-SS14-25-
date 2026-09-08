@@ -1,0 +1,55 @@
+<apps:FilesAppFragment xmlns="https://spacestation14.io"
+                       xmlns:apps="clr-namespace:Content.Client._IS14.OS.Apps"
+                       xmlns:controls="clr-namespace:Content.Client._IS14.Controls">
+    <PanelContainer Name="MemoryPanel" HorizontalExpand="True" Margin="0 0 0 6">
+        <BoxContainer Orientation="Vertical" Margin="6 4">
+            <BoxContainer Orientation="Horizontal" Margin="0 0 0 4">
+                <TextureRect Name="MemoryIcon" SetSize="14 14" Stretch="KeepAspectCentered"
+                             VerticalAlignment="Center" Margin="0 0 5 0" />
+                <Label Name="MemoryCaption" VerticalAlignment="Center" />
+                <Control HorizontalExpand="True" />
+                <Label Name="MemoryValue" VerticalAlignment="Center" />
+            </BoxContainer>
+            <controls:ThresholdBar Name="MemoryBar" MinHeight="10" ShowTicks="True" />
+            <BoxContainer Orientation="Horizontal" Margin="0 3 0 0">
+                <Label Name="MemoryBreakdown" VerticalAlignment="Center" />
+                <Control HorizontalExpand="True" />
+                <Label Name="MemoryFree" VerticalAlignment="Center" />
+            </BoxContainer>
+        </BoxContainer>
+    </PanelContainer>
+
+    <controls:ChoiceStrip Name="Sections" Orientation="Horizontal" Margin="0 0 0 4" />
+
+    <!-- Rename bar. Lives here rather than inside the row being renamed: the list is rebuilt on
+         every state push, and a text box that is rebuilt under your fingers loses what you typed. -->
+    <PanelContainer Name="RenamePanel" HorizontalExpand="True" Margin="0 0 0 4" Visible="False">
+        <BoxContainer Orientation="Horizontal" Margin="4 2">
+            <LineEdit Name="RenameEdit" HorizontalExpand="True" Margin="0 0 3 0" />
+            <controls:IconTile Name="RenameConfirmButton" Compact="True" IconSize="12" Margin="0 0 3 0" />
+            <controls:IconTile Name="RenameCancelButton" Compact="True" IconSize="12" />
+        </BoxContainer>
+    </PanelContainer>
+
+    <ScrollContainer Name="ListScroll" HorizontalExpand="True" VerticalExpand="True">
+        <BoxContainer Name="EntryList" Orientation="Vertical" HorizontalExpand="True" />
+    </ScrollContainer>
+
+    <!-- Preview of the one open file. Fills the app while shown: a photo is worth the space. -->
+    <BoxContainer Name="PreviewBox" Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True" Visible="False">
+        <BoxContainer Orientation="Horizontal" Margin="0 0 0 4">
+            <Label Name="PreviewTitle" HorizontalExpand="True" VerticalAlignment="Center" ClipText="True" />
+            <controls:IconTile Name="PreviewCloseButton" Compact="True" IconSize="12" />
+        </BoxContainer>
+        <PanelContainer Name="PreviewPanel" HorizontalExpand="True" VerticalExpand="True">
+            <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True" Margin="4">
+                <TextureRect Name="PreviewImage" Stretch="KeepAspectCentered"
+                             HorizontalExpand="True" VerticalExpand="True" Visible="False" />
+                <ScrollContainer Name="PreviewTextScroll" HorizontalExpand="True" VerticalExpand="True" Visible="False">
+                    <RichTextLabel Name="PreviewText" />
+                </ScrollContainer>
+            </BoxContainer>
+        </PanelContainer>
+        <Label Name="PreviewMeta" Margin="0 3 0 0" />
+    </BoxContainer>
+</apps:FilesAppFragment>

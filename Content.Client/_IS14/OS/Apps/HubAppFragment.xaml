@@ -1,0 +1,26 @@
+<apps:HubAppFragment xmlns="https://spacestation14.io"
+                     xmlns:apps="clr-namespace:Content.Client._IS14.OS.Apps"
+                     xmlns:controls="clr-namespace:Content.Client._IS14.Controls">
+    <controls:StatRow Name="MemoryRow" Framed="True" Margin="0 0 0 4" />
+    <ScrollContainer Name="CategoryScroll" HScrollEnabled="True" VScrollEnabled="False" Margin="0 0 0 4">
+        <controls:ChoiceStrip Name="Categories" Orientation="Horizontal" />
+    </ScrollContainer>
+    <ScrollContainer HorizontalExpand="True" VerticalExpand="True">
+        <BoxContainer Name="Catalog" Orientation="Vertical" HorizontalExpand="True" />
+    </ScrollContainer>
+    <PanelContainer Name="DownloadPanel" Visible="False" HorizontalExpand="True" Margin="0 4 0 0">
+        <BoxContainer Orientation="Vertical" Margin="6 4">
+            <BoxContainer Orientation="Horizontal" Margin="0 0 0 3">
+                <Label Name="DownloadLabel" HorizontalExpand="True" VerticalAlignment="Center" />
+                <controls:IconTile Name="CancelButton" Compact="True" IconSize="12" />
+            </BoxContainer>
+            <ProgressBar Name="DownloadBar" MinHeight="8" MaxValue="1" Value="0" />
+        </BoxContainer>
+    </PanelContainer>
+    <PanelContainer Name="ErrorPanel" Visible="False" HorizontalExpand="True" Margin="0 4 0 0">
+        <BoxContainer Orientation="Horizontal" Margin="6 3">
+            <Label Name="ErrorLabel" HorizontalExpand="True" VerticalAlignment="Center" />
+            <controls:IconTile Name="DismissButton" Compact="True" IconSize="12" />
+        </BoxContainer>
+    </PanelContainer>
+</apps:HubAppFragment>

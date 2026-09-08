@@ -73,7 +73,7 @@
         "license": {
             "$id": "#/properties/license",
             "default": "",
-            "description": "The license for the associated icon states. Restricted to SS14-compatible asset licenses.",
+            "description": "The license for the associated icon states. Restricted to SS14-compatible asset licenses. IS14-change: Apache-2.0 added for icon sets published under it, such as Google Material Symbols.",
             "enum": [
                 "CC-BY-3.0",
                 "CC-BY-4.0",
@@ -84,6 +84,7 @@
                 "CC-BY-NC-SA-3.0",
                 "CC-BY-NC-SA-4.0",
                 "CC0-1.0",
+                "Apache-2.0",
                 "All Rights Reserved",
                 "EULA"
             ],

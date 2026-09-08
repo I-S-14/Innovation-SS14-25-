@@ -150,7 +150,11 @@ public abstract partial class SharedHandsSystem : EntitySystem
                     return false;
             }
             var activeHand = GetActiveHand(session.AttachedEntity.Value);
-            TryDrop(ent, activeHand!, coords); // Supress nullable, because if active hand has something, it exists.
+            //IS14-change start: с курсором над окном UI координаты приходят невалидными —
+            // роняем под ноги вместо броска в сторону нуля карты и спама ошибок в лог.
+            // Supress nullable, because if active hand has something, it exists.
+            TryDrop(ent, activeHand!, coords.IsValid(EntityManager) ? coords : null);
+            //IS14-change end
             // Goobstation end
         }
 

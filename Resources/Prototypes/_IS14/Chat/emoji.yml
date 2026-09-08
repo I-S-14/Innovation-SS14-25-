@@ -1,0 +1,66 @@
+# Emoji. One prototype per smiley: the codes people type and the sprite it becomes.
+# Adding one takes nothing but an entry here — no code, no new art needed, since the sprite is
+# an ordinary SpriteSpecifier and the whole game's textures are fair game.
+#
+# Codes are matched longest-first, so a code that contains another one (">:(" over ":(") wins.
+#
+# Picking a sprite: check how much of its frame the drawing actually fills before using it.
+# These emote icons are ~22x22 inside a 32x32 frame, which reads fine at `size`. Sprites meant
+# to be worn or placed in the world usually do not: the IPC head screens, for one, are 5x5 of
+# art in a 32x32 frame and render as a speck no matter what size you ask for.
+
+- type: emoji
+  id: EmojiSmile
+  name: is14-emoji-smile
+  order: 0
+  codes: [ ":)", ":-)", ":D", ":smile:" ]
+  sprite: /Textures/Interface/Emotes/laugh.png
+
+- type: emoji
+  id: EmojiSad
+  name: is14-emoji-sad
+  order: 1
+  codes: [ ":(", ":-(", ":'(", ":sad:" ]
+  sprite: /Textures/Interface/Emotes/cry.png
+
+- type: emoji
+  id: EmojiWow
+  name: is14-emoji-wow
+  order: 2
+  codes: [ ":o", ":O", ":wow:" ]
+  sprite: /Textures/_Goobstation/Interface/Emotes/gulp.png
+
+- type: emoji
+  id: EmojiScream
+  name: is14-emoji-scream
+  order: 3
+  codes: [ "D:", ":scream:" ]
+  sprite: /Textures/Interface/Emotes/scream.png
+
+- type: emoji
+  id: EmojiHeart
+  name: is14-emoji-heart
+  order: 4
+  codes: [ "<3", ":heart:" ]
+  sprite: /Textures/_Goobstation/Interface/Emotes/purr.png
+
+- type: emoji
+  id: EmojiSalute
+  name: is14-emoji-salute
+  order: 5
+  codes: [ "o7", ":salute:" ]
+  sprite: /Textures/Interface/Emotes/salute.png
+
+- type: emoji
+  id: EmojiClap
+  name: is14-emoji-clap
+  order: 6
+  codes: [ ":clap:" ]
+  sprite: /Textures/Interface/Emotes/clap.png
+
+- type: emoji
+  id: EmojiSkull
+  name: is14-emoji-skull
+  order: 7
+  codes: [ "x_x", ":skull:" ]
+  sprite: /Textures/Interface/Emotes/deathgasp.png
