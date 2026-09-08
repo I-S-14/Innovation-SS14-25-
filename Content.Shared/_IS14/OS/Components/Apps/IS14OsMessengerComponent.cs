@@ -49,6 +49,10 @@ public sealed partial class IS14OsMessengerComponent : Component
     [ViewVariables]
     public string? Error;
 
+    /// <summary>
+    ///     Fallback for a device with no ringer of its own. Anything that has one rings the
+    ///     tune its owner set in Settings instead.
+    /// </summary>
     [DataField]
     public SoundSpecifier NotifySound = new SoundPathSpecifier("/Audio/Effects/Cargo/ping.ogg");
 }

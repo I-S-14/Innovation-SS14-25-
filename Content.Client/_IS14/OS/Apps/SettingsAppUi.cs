@@ -74,7 +74,8 @@ public sealed partial class SettingsAppFragment : BoxContainer
         ThemeCaption.Text = Loc.GetString("is14-os-settings-theme");
         AboutRow.Caption = Loc.GetString("is14-os-settings-about-caption");
 
-        ThemeStrip.OnChoiceSelected += id => OnSetTheme?.Invoke(id);
+        ThemePicker.Placeholder = Loc.GetString("is14-os-settings-theme-none");
+        ThemePicker.OnItemSelected += id => OnSetTheme?.Invoke(id);
     }
 
     public void UpdateShell(OsShellState shell)
@@ -137,8 +138,9 @@ public sealed partial class SettingsAppFragment : BoxContainer
     }
 
     /// <summary>
-    ///     Themes are shown as their own accent colour rather than as a list of names — you pick
-    ///     a look by seeing it.
+    ///     Themes are folded into a dropdown, each entry carrying its own accent colour: the
+    ///     list of looks is worth a click, but not the standing height it used to cost on a
+    ///     screen this small.
     /// </summary>
     private void RebuildThemes(OsShellState shell)
     {
@@ -155,7 +157,7 @@ public sealed partial class SettingsAppFragment : BoxContainer
             items.Add(new ChoiceStripItem(id, Loc.GetString(proto.Name), Swatch: proto.Accent));
         }
 
-        ThemeStrip.SetItems(items, shell.ThemeId);
+        ThemePicker.SetItems(items, shell.ThemeId);
     }
 
     public void ApplyTheme(IS14ThemePalette palette)
@@ -164,7 +166,7 @@ public sealed partial class SettingsAppFragment : BoxContainer
 
         ThemeCaption.FontColorOverride = palette.Text;
         ThemeIcon.ModulateSelfOverride = palette.Accent;
-        ThemeStrip.Palette = palette;
+        ThemePicker.Palette = palette;
         AboutRow.Palette = palette;
 
         if (_shell != null)

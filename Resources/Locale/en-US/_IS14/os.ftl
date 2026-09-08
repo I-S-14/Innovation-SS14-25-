@@ -17,7 +17,7 @@ is14-os-theme-terminal = Terminal
 # Apps
 is14-os-app-status-name = Status
 is14-os-app-status-desc = Device owner, station and alert level.
-is14-os-app-files-name = Files
+is14-os-app-files-name = Explorer
 is14-os-app-files-desc = Installed software and free memory.
 is14-os-app-settings-name = Settings
 is14-os-app-settings-desc = Theme and device toggles.
@@ -75,6 +75,7 @@ is14-os-files-uninstall = Remove
 
 # Settings
 is14-os-settings-theme = Theme
+is14-os-settings-theme-none = Not set
 is14-os-settings-flashlight-on = Turn flashlight on
 is14-os-settings-flashlight-off = Turn flashlight off
 is14-os-settings-about-caption = Device
@@ -83,9 +84,9 @@ is14-os-settings-ringtone = Ringtone
 is14-os-settings-uplink = Syndicate uplink
 is14-os-settings-uplink-lock = Lock uplink
 
-# App store
-is14-os-app-hub-name = Store
-is14-os-app-hub-desc = Download software from the NT repository.
+# Software installer
+is14-os-app-hub-name = Installer
+is14-os-app-hub-desc = Install software from the NT repository.
 is14-os-hub-free = Free
 is14-os-hub-free-value = {$free} of {$total} GQ
 is14-os-hub-category-all = All
@@ -96,7 +97,7 @@ is14-os-hub-no-access = No access
 is14-os-hub-downloading = Downloading: {$app}
 is14-os-hub-cancel = Cancel download
 is14-os-hub-dismiss = Dismiss
-is14-os-hub-error-memory = Not enough memory. Remove something in Files.
+is14-os-hub-error-memory = Not enough memory. Remove something in Explorer.
 is14-os-hub-error-access = Access denied: the ID card does not qualify.
 
 # Categories
@@ -138,6 +139,10 @@ is14-os-files-section-files = Files ({$count})
 is14-os-files-empty = No files. Take a photo or save a note.
 is14-os-files-open = Open
 is14-os-files-delete = Delete file
+is14-os-files-rename = Rename
+is14-os-files-rename-placeholder = New file name
+is14-os-files-rename-confirm = Save name
+is14-os-files-rename-cancel = Cancel rename
 is14-os-files-close-preview = Close
 is14-os-files-preview-meta = {$size} GQ · by {$author}
 is14-os-files-preview-broken = The file is corrupt and cannot be read.
@@ -186,6 +191,10 @@ is14-os-messenger-emoji = Emoji
 is14-os-messenger-no-files = No files on this device.
 is14-os-messenger-placeholder = Message...
 is14-os-messenger-preview-attachment = [attachment]
+
+# The line in the main chat when a message lands on a carried PDA. The "Reply" link opens
+# the messenger on that conversation; device and chat are filled in by the server.
+is14-os-messenger-chat-notification = [color=#7BC8F0][bold]Messenger[/bold][/color] [bold]{ $name }[/bold]: { $message }  [is14reply="Reply" device="{ $device }" chat="{ $address }"/]
 is14-os-messenger-photo-loading = Loading photo...
 is14-os-messenger-photo-broken = Photo unavailable.
 is14-os-messenger-too-fast = Too fast. Give it a second.
@@ -195,6 +204,6 @@ is14-os-messenger-their-memory = The recipient has no room for the attachment.
 is14-os-notes-export = To file
 is14-os-notes-export-tooltip = Save the document as a file so it can be sent in the messenger
 is14-os-notes-export-default = Document
-is14-os-notes-export-done = Document saved to files.
+is14-os-notes-export-done = Document saved to Explorer.
 is14-os-notes-export-empty = Nothing to save.
 is14-os-notes-export-no-memory = Not enough memory for the file.

@@ -17,7 +17,7 @@ is14-os-theme-terminal = Терминал
 # Приложения
 is14-os-app-status-name = Состояние
 is14-os-app-status-desc = Владелец устройства, станция и уровень тревоги.
-is14-os-app-files-name = Файлы
+is14-os-app-files-name = Проводник
 is14-os-app-files-desc = Установленное ПО и свободная память.
 is14-os-app-settings-name = Настройки
 is14-os-app-settings-desc = Тема оформления и переключатели устройства.
@@ -75,6 +75,7 @@ is14-os-files-uninstall = Удалить
 
 # Настройки
 is14-os-settings-theme = Тема оформления
+is14-os-settings-theme-none = Не выбрана
 is14-os-settings-flashlight-on = Включить фонарик
 is14-os-settings-flashlight-off = Выключить фонарик
 is14-os-settings-about-caption = Устройство
@@ -84,8 +85,8 @@ is14-os-settings-uplink = Аплинк Синдиката
 is14-os-settings-uplink-lock = Заблокировать аплинк
 
 # Магазин приложений
-is14-os-app-hub-name = Магазин
-is14-os-app-hub-desc = Загрузка приложений из репозитория НТ.
+is14-os-app-hub-name = Установщик
+is14-os-app-hub-desc = Установка приложений из репозитория НТ.
 is14-os-hub-free = Свободно
 is14-os-hub-free-value = {$free} из {$total} ГК
 is14-os-hub-category-all = Все
@@ -96,7 +97,7 @@ is14-os-hub-no-access = Нет доступа
 is14-os-hub-downloading = Загрузка: {$app}
 is14-os-hub-cancel = Отменить загрузку
 is14-os-hub-dismiss = Скрыть
-is14-os-hub-error-memory = Недостаточно памяти. Удалите что-нибудь в «Файлах».
+is14-os-hub-error-memory = Недостаточно памяти. Удалите что-нибудь в «Проводнике».
 is14-os-hub-error-access = Отказано в доступе: ID-карта не подходит.
 
 # Категории
@@ -138,6 +139,10 @@ is14-os-files-section-files = Файлы ({$count})
 is14-os-files-empty = Файлов нет. Сделайте фото или сохраните заметку.
 is14-os-files-open = Открыть
 is14-os-files-delete = Удалить файл
+is14-os-files-rename = Переименовать
+is14-os-files-rename-placeholder = Новое имя файла
+is14-os-files-rename-confirm = Сохранить имя
+is14-os-files-rename-cancel = Отменить переименование
 is14-os-files-close-preview = Закрыть
 is14-os-files-preview-meta = {$size} ГК · автор: {$author}
 is14-os-files-preview-broken = Файл повреждён и не читается.
@@ -186,6 +191,10 @@ is14-os-messenger-emoji = Смайлики
 is14-os-messenger-no-files = На устройстве нет файлов.
 is14-os-messenger-placeholder = Сообщение...
 is14-os-messenger-preview-attachment = [вложение]
+
+# Строка в общем чате, когда сообщение пришло на надетый КПК. Ссылка "Ответить"
+# открывает мессенджер сразу на этой переписке; device и chat подставляет сервер.
+is14-os-messenger-chat-notification = [color=#7BC8F0][bold]Мессенджер[/bold][/color] [bold]{ $name }[/bold]: { $message }  [is14reply="Ответить" device="{ $device }" chat="{ $address }"/]
 is14-os-messenger-photo-loading = Загрузка фото...
 is14-os-messenger-photo-broken = Фото недоступно.
 is14-os-messenger-too-fast = Слишком часто. Подождите секунду.
@@ -195,6 +204,6 @@ is14-os-messenger-their-memory = У получателя нет места дл�
 is14-os-notes-export = В файл
 is14-os-notes-export-tooltip = Сохранить документ файлом, чтобы отправить его в мессенджере
 is14-os-notes-export-default = Документ
-is14-os-notes-export-done = Документ сохранён в файлы.
+is14-os-notes-export-done = Документ сохранён в Проводник.
 is14-os-notes-export-empty = Пустой документ сохранять нечего.
 is14-os-notes-export-no-memory = Не хватает памяти для файла.

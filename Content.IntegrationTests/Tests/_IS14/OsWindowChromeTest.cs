@@ -7,11 +7,14 @@ using System.Numerics;
 using Content.Client._IS14.Controls;
 using Content.Client._IS14.OS.Shell;
 using Content.IntegrationTests.Pair;
+using Content.Shared._IS14.OS.Prototypes;
 using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
+using Robust.Client.ResourceManagement;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
 using Robust.Shared.Maths;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
 
 namespace Content.IntegrationTests.Tests._IS14;
@@ -150,6 +153,62 @@ public sealed class OsWindowChromeTest
         });
 
         Assert.That(width, Is.GreaterThan(0f), "the clipped caption was laid out at zero width");
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>
+    ///     Every app's icon. The path lives in YAML, so a mistyped or moved texture is not a
+    ///     build error — and the engine quietly swaps a missing file for noSprite.png rather
+    ///     than complaining, so the only way to catch it is to compare against that fallback.
+    /// </summary>
+    [Test]
+    public async Task AppIconsResolve()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings
+        {
+            Connected = true,
+        });
+        var client = pair.Client;
+        var protoMan = client.ResolveDependency<IPrototypeManager>();
+
+        var faults = new List<string>();
+
+        await client.WaitPost(() =>
+        {
+            var sprites = client.System<SpriteSystem>();
+            var cache = client.ResolveDependency<IResourceCache>();
+
+            // What the cache hands back for anything it could not find.
+            var missing = cache.GetResource<TextureResource>("/Textures/noSprite.png").Texture;
+
+            foreach (var app in protoMan.EnumeratePrototypes<IS14OsAppPrototype>())
+            {
+                if (app.Icon == null)
+                {
+                    faults.Add($"{app.ID}: no icon at all");
+                    continue;
+                }
+
+                try
+                {
+                    var texture = IS14OsStyle.Resolve(sprites, app.Icon);
+
+                    if (texture == null)
+                        faults.Add($"{app.ID}: icon resolved to nothing");
+                    else if (ReferenceEquals(texture, missing))
+                        faults.Add($"{app.ID}: {app.Icon} is not there, so it fell back to noSprite");
+                    else if (texture.Size.X < 8 || texture.Size.Y < 8)
+                        faults.Add($"{app.ID}: icon is only {texture.Size}");
+                }
+                catch (Exception e)
+                {
+                    faults.Add($"{app.ID}: {e.GetType().Name} — {e.Message}");
+                }
+            }
+        });
+
+        Assert.That(faults, Is.Empty, "app icons that would not draw");
 
         await pair.CleanReturnAsync();
     }

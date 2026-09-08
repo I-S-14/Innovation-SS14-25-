@@ -1,0 +1,9 @@
+# Icons for the IS14 OS applications. Rasterised from the SVG originals to 64x64 white
+# glyphs with the shape in the alpha channel: every OS control tints its icon with the
+# active theme colour, so the source has to be pure white for the tint to land exactly.
+
+- files: ["camera.png", "files.png", "gallery.png", "hub.png", "manifest.png",
+          "messenger.png", "notes.png", "settings.png", "status.png"]
+  license: "Apache-2.0"
+  copyright: "Google Material Symbols, rasterised and recoloured for Innovation Station"
+  source: "https://fonts.google.com/icons"

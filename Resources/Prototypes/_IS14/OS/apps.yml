@@ -5,7 +5,7 @@
 
 - type: osApp
   id: AppStatus
-  icon: /Textures/Interface/VerbIcons/information.svg.192dpi.png
+  icon: /Textures/_IS14/Interface/OS/Apps/status.png
   name: is14-os-app-status-name
   description: is14-os-app-status-desc
   category: System
@@ -17,7 +17,7 @@
 
 - type: osApp
   id: AppFiles
-  icon: /Textures/Interface/VerbIcons/group.svg.192dpi.png
+  icon: /Textures/_IS14/Interface/OS/Apps/files.png
   name: is14-os-app-files-name
   description: is14-os-app-files-desc
   category: System
@@ -31,7 +31,7 @@
 
 - type: osApp
   id: AppSettings
-  icon: /Textures/Interface/Nano/gear.svg.192dpi.png
+  icon: /Textures/_IS14/Interface/OS/Apps/settings.png
   name: is14-os-app-settings-name
   description: is14-os-app-settings-desc
   category: System
@@ -45,9 +45,7 @@
 
 - type: osApp
   id: AppNotes
-  icon:
-    sprite: /Textures/_CorvaxGoob/Interface/Misc/program_icons.rsi
-    state: notes
+  icon: /Textures/_IS14/Interface/OS/Apps/notes.png
   name: is14-os-app-notes-name
   description: is14-os-app-notes-desc
   category: Work
@@ -62,7 +60,7 @@
 
 - type: osApp
   id: AppHub
-  icon: /Textures/Interface/Actions/shop.png
+  icon: /Textures/_IS14/Interface/OS/Apps/hub.png
   name: is14-os-app-hub-name
   description: is14-os-app-hub-desc
   category: System
@@ -90,9 +88,7 @@
 
 - type: osApp
   id: AppManifest
-  icon:
-    sprite: /Textures/Interface/Misc/program_icons.rsi
-    state: crew_manifest
+  icon: /Textures/_IS14/Interface/OS/Apps/manifest.png
   name: is14-os-app-manifest-name
   description: is14-os-app-manifest-desc
   category: Records
@@ -106,9 +102,7 @@
 
 - type: osApp
   id: AppMessenger
-  icon:
-    sprite: /Textures/_DV/Misc/program_icons.rsi
-    state: nanochat
+  icon: /Textures/_IS14/Interface/OS/Apps/messenger.png
   name: is14-os-app-messenger-name
   description: is14-os-app-messenger-desc
   category: Work
@@ -126,9 +120,7 @@
 
 - type: osApp
   id: AppCamera
-  icon:
-    sprite: /Textures/Interface/Actions/actions_ai.rsi
-    state: camera_jump
+  icon: /Textures/_IS14/Interface/OS/Apps/camera.png
   name: is14-os-app-camera-name
   description: is14-os-app-camera-desc
   category: Work
@@ -143,7 +135,7 @@
 
 - type: osApp
   id: AppGallery
-  icon: /Textures/Interface/VerbIcons/examine.svg.192dpi.png
+  icon: /Textures/_IS14/Interface/OS/Apps/gallery.png
   name: is14-os-app-gallery-name
   description: is14-os-app-gallery-desc
   category: Work

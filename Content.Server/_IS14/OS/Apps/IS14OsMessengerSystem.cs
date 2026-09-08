@@ -1,5 +1,8 @@
+using System.Globalization;
 using System.Linq;
+using Content.Server.Chat.Managers;
 using Content.Server.Station.Systems;
+using Content.Shared.Chat;
 using Content.Shared._IS14.OS.Components;
 using Content.Shared._IS14.OS.Components.Apps;
 using Content.Shared._IS14.OS.Files;
@@ -8,8 +11,13 @@ using Content.Shared._IS14.OS.UI.Apps;
 using Content.Shared.Access.Components;
 using Content.Shared.DeviceNetwork.Components;
 using Content.Shared.PDA;
+using Content.Shared.PDA.Ringer;
+using Robust.Server.GameObjects;
 using Robust.Shared.Audio.Systems;
+using Robust.Shared.Containers;
+using Robust.Shared.Player;
 using Robust.Shared.Timing;
+using Robust.Shared.Utility;
 
 namespace Content.Server._IS14.OS.Apps;
 
@@ -26,6 +34,9 @@ public sealed class IS14OsMessengerSystem : EntitySystem
     public const string AppId = "AppMessenger";
 
     [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private readonly IChatManager _chat = default!;
+    [Dependency] private readonly SharedContainerSystem _container = default!;
+    [Dependency] private readonly SharedRingerSystem _ringer = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly StationSystem _station = default!;
     [Dependency] private readonly IS14OsSystem _os = default!;
@@ -37,6 +48,8 @@ public sealed class IS14OsMessengerSystem : EntitySystem
 
         SubscribeLocalEvent<IS14OsMessengerComponent, OsAppGetStateEvent>(OnGetState);
         SubscribeLocalEvent<IS14OsMessengerComponent, OsAppEventRaised>(OnAppEvent);
+
+        SubscribeNetworkEvent<OsMessengerOpenRequest>(OnOpenRequest);
     }
 
     #region State
@@ -283,7 +296,7 @@ public sealed class IS14OsMessengerSystem : EntitySystem
             Attachment = deliveredAttachment,
         });
 
-        Notify((target, targetMessenger));
+        Notify((target, targetMessenger), ownAddress, GetOwnerName(ent), text, deliveredAttachment != null);
         _os.UpdateUi(target);
     }
 
@@ -322,12 +335,97 @@ public sealed class IS14OsMessengerSystem : EntitySystem
             log.Messages.RemoveAt(0);
     }
 
-    private void Notify(Entity<IS14OsMessengerComponent> ent)
+    /// <summary>
+    ///     Ring, and put the message in the owner's chat so it can be read without stopping to
+    ///     take the device out. The chat line carries a reply link straight back to the
+    ///     conversation — a notification you cannot act on just means opening the app anyway.
+    /// </summary>
+    private void Notify(Entity<IS14OsMessengerComponent> ent,
+        string fromAddress,
+        string fromName,
+        string text,
+        bool attachment)
     {
-        if (ent.Comp.Muted)
+        if (!ent.Comp.Muted)
+        {
+            // The tune the owner picked in Settings. The OS already hands them the ringer UI,
+            // and a ringtone that nothing ever plays is a setting that does nothing.
+            if (TryComp(ent, out RingerComponent? ringer))
+                _ringer.RingerPlayRingtone((ent.Owner, ringer));
+            else
+                _audio.PlayPvs(ent.Comp.NotifySound, ent);
+        }
+
+        // Only for a device someone is actually carrying: a PDA on a table has no reader, and
+        // a chat line about it would be a message from nowhere.
+        if (GetHolder(ent) is not { } holder || !TryComp(holder, out ActorComponent? actor))
             return;
 
-        _audio.PlayPvs(ent.Comp.NotifySound, ent);
+        var preview = text.Length == 0 && attachment
+            ? Loc.GetString("is14-os-messenger-preview-attachment")
+            : text;
+
+        // Names and message bodies are written by players, so they are text and never markup.
+        var wrapped = Loc.GetString("is14-os-messenger-chat-notification",
+            ("name", FormattedMessage.EscapeText(fromName)),
+            ("message", FormattedMessage.EscapeText(preview)),
+            ("device", GetNetEntity(ent.Owner).Id.ToString(CultureInfo.InvariantCulture)),
+            ("address", fromAddress));
+
+        _chat.ChatMessageToOne(
+            ChatChannel.Notifications,
+            preview,
+            wrapped,
+            EntityUid.Invalid,
+            false,
+            actor.PlayerSession.Channel);
+    }
+
+    /// <summary>
+    ///     Whoever is wearing or holding the device, if anyone. A slot or a hand puts the
+    ///     device directly in a container on the person; anything deeper (a bag, a crate) is
+    ///     not being read and deliberately gets no notification.
+    /// </summary>
+    private EntityUid? GetHolder(EntityUid device)
+    {
+        if (!_container.TryGetContainingContainer((device, null), out var container))
+            return null;
+
+        return HasComp<ActorComponent>(container.Owner) ? container.Owner : null;
+    }
+
+    /// <summary>
+    ///     The reply link on a chat notification. The link names the device, but chat markup is
+    ///     parsed with every tag allowed, so anyone can type that tag naming any device — the
+    ///     claim is only worth what this check makes it.
+    /// </summary>
+    private void OnOpenRequest(OsMessengerOpenRequest msg, EntitySessionEventArgs args)
+    {
+        if (args.SenderSession.AttachedEntity is not { } user)
+            return;
+
+        var device = GetEntity(msg.Device);
+
+        if (!TryComp(device, out IS14OsDeviceComponent? deviceComp)
+            || !TryComp(device, out IS14OsMessengerComponent? messenger)
+            || GetHolder(device) != user)
+        {
+            return;
+        }
+
+        _os.OpenLid((device, deviceComp), user, openUi: true);
+
+        if (!_os.OpenApp((device, deviceComp), AppId, user))
+            return;
+
+        messenger.OpenChat = msg.Address;
+        messenger.Error = null;
+        messenger.ViewPhoto = null;
+
+        if (messenger.Chats.TryGetValue(msg.Address, out var log))
+            log.Unread = false;
+
+        _os.UpdateUi(device);
     }
 
     private EntityUid? FindByAddress(string address)

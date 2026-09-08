@@ -38,6 +38,7 @@ public sealed class FilesAppUi : IS14OsAppUi
         Fragment.OnUninstall += app => Bui.SendUninstall(app);
         Fragment.OnOpenFile += file => SendAppEvent(AppId, new OsFileOpenEvent(file));
         Fragment.OnDeleteFile += file => SendAppEvent(AppId, new OsFileDeleteEvent(file));
+        Fragment.OnRenameFile += (file, name) => SendAppEvent(AppId, new OsFileRenameEvent(file, name));
     }
 
     public override void UpdateShell(OsShellState shell)
@@ -73,6 +74,10 @@ public sealed partial class FilesAppFragment : BoxContainer
     private readonly SpriteSystem _sprites;
     private readonly Texture? _deleteIcon;
     private readonly Texture? _openIcon;
+    private readonly Texture? _renameIcon;
+
+    /// <summary>The file whose name is being edited in the rename bar, if any.</summary>
+    private int? _renaming;
 
     private IS14ThemePalette _palette = IS14ThemePalette.Default;
     private OsShellState? _shell;
@@ -84,6 +89,7 @@ public sealed partial class FilesAppFragment : BoxContainer
     public event Action<string>? OnUninstall;
     public event Action<int?>? OnOpenFile;
     public event Action<int>? OnDeleteFile;
+    public event Action<int, string>? OnRenameFile;
 
     public FilesAppFragment()
     {
@@ -97,6 +103,18 @@ public sealed partial class FilesAppFragment : BoxContainer
         _sprites = _sysMan.GetEntitySystem<SpriteSystem>();
         _deleteIcon = IS14OsStyle.Resolve(_sprites, IS14OsStyle.Delete);
         _openIcon = IS14OsStyle.Resolve(_sprites, IS14OsStyle.Open);
+        _renameIcon = IS14OsStyle.Resolve(_sprites, IS14OsStyle.Rename);
+
+        RenameEdit.PlaceHolder = Loc.GetString("is14-os-files-rename-placeholder");
+        RenameEdit.OnTextEntered += _ => ConfirmRename();
+
+        RenameConfirmButton.Icon = IS14OsStyle.Resolve(_sprites, IS14OsStyle.Save);
+        RenameConfirmButton.ToolTip = Loc.GetString("is14-os-files-rename-confirm");
+        RenameConfirmButton.OnPressed += _ => ConfirmRename();
+
+        RenameCancelButton.Icon = IS14OsStyle.Resolve(_sprites, IS14OsStyle.Close);
+        RenameCancelButton.ToolTip = Loc.GetString("is14-os-files-rename-cancel");
+        RenameCancelButton.OnPressed += _ => EndRename();
 
         MemoryIcon.Texture = IS14OsStyle.Resolve(_sprites, IS14OsStyle.Memory);
         MemoryCaption.Text = Loc.GetString("is14-os-files-memory-caption");
@@ -112,6 +130,7 @@ public sealed partial class FilesAppFragment : BoxContainer
         Sections.OnChoiceSelected += id =>
         {
             _section = id;
+            EndRename();
             Rebuild();
         };
     }
@@ -158,6 +177,9 @@ public sealed partial class FilesAppFragment : BoxContainer
         PreviewBox.Visible = showing;
         ListScroll.Visible = !showing;
         Sections.Visible = !showing;
+
+        if (showing)
+            EndRename();
 
         if (open == null)
         {
@@ -226,6 +248,15 @@ public sealed partial class FilesAppFragment : BoxContainer
     {
         if (_shell == null)
             return;
+
+        // The file can go away underneath the rename bar: deleted from the gallery, or the
+        // memory wiped. Editing the name of something that no longer exists is a dead end.
+        if (_renaming is { } renaming && _files?.Files.All(f => f.Id != renaming) != false)
+        {
+            _renaming = null;
+            RenamePanel.Visible = false;
+            RenameEdit.Text = string.Empty;
+        }
 
         RebuildSections();
 
@@ -341,6 +372,21 @@ public sealed partial class FilesAppFragment : BoxContainer
             };
             open.OnPressed += _ => OnOpenFile?.Invoke(file.Id);
 
+            var rename = new IconTile
+            {
+                Palette = _palette,
+                Compact = true,
+                Icon = _renameIcon,
+                IconSize = 12,
+                Selected = _renaming == file.Id,
+                ToolTip = Loc.GetString("is14-os-files-rename"),
+                Margin = new Thickness(0, 0, 3, 0),
+            };
+
+            var id = file.Id;
+            var name = file.Name;
+            rename.OnPressed += _ => BeginRename(id, name);
+
             var delete = new IconTile
             {
                 Palette = _palette,
@@ -356,11 +402,51 @@ public sealed partial class FilesAppFragment : BoxContainer
             };
 
             buttons.AddChild(open);
+            buttons.AddChild(rename);
             buttons.AddChild(delete);
             row.SetTrailing(buttons);
 
             EntryList.AddChild(row);
         }
+    }
+
+    #endregion
+
+    #region Renaming
+
+    private void BeginRename(int file, string name)
+    {
+        _renaming = file;
+
+        RenamePanel.Visible = true;
+        RenameEdit.Text = name;
+        RenameEdit.GrabKeyboardFocus();
+
+        // Select the old name so the first keystroke replaces it, as any rename box does.
+        RenameEdit.CursorPosition = name.Length;
+        RenameEdit.SelectionStart = 0;
+
+        Rebuild();
+    }
+
+    private void ConfirmRename()
+    {
+        if (_renaming is { } file && RenameEdit.Text.Trim().Length > 0)
+            OnRenameFile?.Invoke(file, RenameEdit.Text);
+
+        EndRename();
+    }
+
+    private void EndRename()
+    {
+        if (_renaming == null)
+            return;
+
+        _renaming = null;
+        RenamePanel.Visible = false;
+        RenameEdit.Text = string.Empty;
+
+        Rebuild();
     }
 
     #endregion
@@ -391,6 +477,26 @@ public sealed partial class FilesAppFragment : BoxContainer
 
         Sections.Palette = palette;
         PreviewCloseButton.Palette = palette;
+        RenameConfirmButton.Palette = palette;
+        RenameCancelButton.Palette = palette;
+
+        RenamePanel.PanelOverride = new StyleBoxFlat
+        {
+            BackgroundColor = palette.PanelRaised,
+            BorderColor = palette.Accent,
+            BorderThickness = new Thickness(1),
+        };
+
+        RenameEdit.StyleBoxOverride = new StyleBoxFlat
+        {
+            BackgroundColor = palette.Backdrop,
+            BorderColor = palette.Border,
+            BorderThickness = new Thickness(1),
+            ContentMarginLeftOverride = 4,
+            ContentMarginRightOverride = 4,
+            ContentMarginTopOverride = 2,
+            ContentMarginBottomOverride = 2,
+        };
 
         MemoryBar.BackgroundColor = palette.Backdrop;
         MemoryBar.TickColor = palette.Border;

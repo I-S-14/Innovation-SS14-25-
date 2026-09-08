@@ -34,11 +34,12 @@ public sealed partial class IS14OsShellWindow : FancyWindow
     /// <summary>Settings has its own button, so it is always one press away from anywhere.</summary>
     private const string SettingsApp = "AppSettings";
 
-    /// <summary>Width of a task tab that still has room for the app's name.</summary>
-    private const float NamedTabWidth = 104f;
-
-    /// <summary>...and of one cut down to the icon and its close button.</summary>
+    /// <summary>Width of a task tab cut down to the icon and its close button.</summary>
     private const float IconTabWidth = 48f;
+
+    /// <summary>The close cross on a tab, and the gap to the next tab.</summary>
+    private const float TabCloseWidth = 18f;
+    private const float TabGap = 3f;
 
     private readonly Dictionary<string, IS14OsAppWindow> _windows = new();
 
@@ -268,30 +269,48 @@ public sealed partial class IS14OsShellWindow : FancyWindow
     {
         TaskButtons.RemoveAllChildren();
 
-        // Names go first when the strip runs out of room: a row of squeezed half-words is
-        // worse than a row of icons, and the icon is what people actually aim at.
-        var named = FitsNamedTabs(shell);
+        var tabs = new List<(Control Tab, IconTile Tile)>();
 
         foreach (var appId in shell.Open)
         {
             if (appId.Id is not { } id || !_proto.TryIndex<IS14OsAppPrototype>(id, out var app))
                 continue;
 
-            TaskButtons.AddChild(BuildTaskTab(shell, app, named));
+            var tab = BuildTaskTab(shell, app);
+            tabs.Add(tab);
+            TaskButtons.AddChild(tab.Tab);
         }
-    }
 
-    /// <summary>
-    ///     Whether every open window can still show its name. Measured against the strip's real
-    ///     width once it has been laid out, and against the device's screen before that.
-    /// </summary>
-    private bool FitsNamedTabs(OsShellState shell)
-    {
+        if (tabs.Count == 0)
+            return;
+
+        // How wide a tab has to be is a question about the font and the translation, not a
+        // number to guess: a fixed width is what left "Мессенджер" a couple of letters short.
+        // The tabs are in the tree by now, so measuring them picks up the real UI scale.
+        var widest = 0f;
+        foreach (var (_, tile) in tabs)
+        {
+            tile.Measure(Vector2Helpers.Infinity);
+            widest = MathF.Max(widest, tile.DesiredSize.X);
+        }
+
+        // Names go first when the strip runs out of room: a row of squeezed half-words is
+        // worse than a row of icons, and the icon is what people actually aim at.
         var available = TaskStrip.Size.X > 0
             ? TaskStrip.Size.X
             : shell.ScreenSize.X - 90f;
 
-        return shell.Open.Count * (NamedTabWidth + 3f) <= available;
+        var named = tabs.Count * (widest + TabCloseWidth + TabGap) <= available;
+
+        foreach (var (_, tile) in tabs)
+        {
+            if (!named)
+                tile.Caption = null;
+
+            // Named tabs are given exactly the width their longest name measured, so nothing
+            // is ever clipped; it is all-or-nothing between full names and bare icons.
+            tile.MinWidth = named ? widest : IconTabWidth - TabCloseWidth;
+        }
     }
 
     /// <summary>
@@ -299,7 +318,7 @@ public sealed partial class IS14OsShellWindow : FancyWindow
     ///     close it outright. Closing from here is the point — otherwise clearing a stack of
     ///     windows means opening every one of them first.
     /// </summary>
-    private Control BuildTaskTab(OsShellState shell, IS14OsAppPrototype app, bool named)
+    private (Control Tab, IconTile Tile) BuildTaskTab(OsShellState shell, IS14OsAppPrototype app)
     {
         var id = app.ID;
         var name = Loc.GetString(app.Name);
@@ -308,7 +327,7 @@ public sealed partial class IS14OsShellWindow : FancyWindow
         var tab = new BoxContainer
         {
             Orientation = BoxContainer.LayoutOrientation.Horizontal,
-            Margin = new Thickness(0, 0, 3, 0),
+            Margin = new Thickness(0, 0, TabGap, 0),
         };
 
         var tile = new IconTile
@@ -316,11 +335,9 @@ public sealed partial class IS14OsShellWindow : FancyWindow
             Palette = _palette,
             Compact = true,
             Icon = ResolveAppIcon(app),
-            Caption = named ? name : null,
-            ClipCaption = true,
+            Caption = name,
             IconSize = 14,
             Selected = !minimized,
-            MinWidth = named ? NamedTabWidth - 20f : IconTabWidth - 20f,
             ToolTip = name,
         };
 
@@ -338,7 +355,7 @@ public sealed partial class IS14OsShellWindow : FancyWindow
             Glyph = GlyphButton.Mark.Cross,
             Danger = true,
             GlyphSize = 9,
-            MinSize = new Vector2(18, 20),
+            MinSize = new Vector2(TabCloseWidth, 20),
             VerticalAlignment = VAlignment.Center,
             ToolTip = Loc.GetString("is14-os-taskbar-close"),
         };
@@ -348,7 +365,7 @@ public sealed partial class IS14OsShellWindow : FancyWindow
         tab.AddChild(tile);
         tab.AddChild(close);
 
-        return tab;
+        return (tab, tile);
     }
 
     private void ToggleStartMenu()
