@@ -4,6 +4,9 @@
 
 - files: ["camera.png", "files.png", "gallery.png", "hub.png", "manifest.png",
           "messenger.png", "notes.png", "settings.png", "status.png"]
-  license: "Apache-2.0"
-  copyright: "Google Material Symbols, rasterised and recoloured for Innovation Station"
+  # "Custom" means the real license is named in the copyright field. The list of licenses
+  # this file may use lives in the engine submodule, which the fork does not patch, and
+  # Apache-2.0 is not in it.
+  license: "Custom"
+  copyright: "Google Material Symbols, licensed Apache-2.0, rasterised and recoloured for Innovation Station"
   source: "https://fonts.google.com/icons"
