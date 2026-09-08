@@ -1,0 +1,223 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+- type: entityTable
+  id: IS14PizdecFillLockerClothes
+  table: !type:AllSelector
+    children:
+    - id: ClothingHeadIS14CrbOfficerBeret
+    - id: ClothingOuterIS14CrbOfficerShinel
+    - id: ClothingOuterIS14CrbOfficerCoat
+    - id: ClothingBeltIS14CrbOfficer
+    - id: ClothingShoesIS14CrbOfficerBoots
+    - id: ClothingHandsIS14CrbOfficerGloves
+    - id: ClothingUniformJumpsuitIS14CrbOfficer
+    - id: ClothingHeadIS14CrbOfficerCap
+
+- type: entity
+  id: IS14PizdecLockerFilled
+  suffix: Filled
+  parent: IS14PizdecLocker
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:NestedSelector
+        tableId: IS14PizdecFillLockerClothes
+
+- type: entityTable
+  id: IS14WardenLockerFillClothes
+  table: !type:AllSelector
+    children:
+    - id: ClothingUniformJumpsuitIS14MilitiaSummer
+    - id: ClothingEyesIS14MilitiaVisor
+    - id: ClothingEyesIS14MilitiaGlasses
+    - id: ClothingHeadIS14MilitiaPilotka
+    - id: ClothingBeltIS14Militia
+    - id: ClothingShoesIS14MilitiaBoots
+    - id: ClothingHeadIS14HatBlueMilitiaUshanka
+    - id: ClothingUniformJumpsuitIS14MilitiaCeremonial
+    - id: ClothingBeltIS14MilitiaWebbing
+    - id: ClothingEyesIS14MilitiaEyeScanner
+    - id: ClothingOuterIS14MilitiaShinel
+    - id: ClothingOuterIS14MilitiaFormalJacket
+    - id: ClothingHeadIS14MilitiaCap
+
+- type: entity
+  id: IS14WardenLockerFilledHardsuit
+  suffix: Filled, Hardsuit
+  parent: IS14WardenLocker
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:AllSelector
+        children:
+        - !type:NestedSelector
+          tableId: FillLockerWarden
+        - !type:NestedSelector
+          tableId: FillLockerWardenHarduit
+        - !type:NestedSelector
+          tableId: IS14WardenLockerFillClothes
+
+- type: entity
+  id: IS14WardenLockerFilled
+  suffix: Filled
+  parent: IS14WardenLocker
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:AllSelector
+        children:
+        - !type:NestedSelector
+          tableId: FillLockerWarden
+        - !type:NestedSelector
+          tableId: IS14WardenLockerFillClothes
+
+- type: entityTable
+  id: IS14SecLockerFillClothes
+  table: !type:AllSelector
+    children:
+    - id: ClothingBeltIS14MilitiaWebbing
+    - id: ClothingEyesIS14MilitiaVisor
+    - id: ClothingHeadIS14MilitiaBeret
+    - id: ClothingEyesIS14MilitiaEyeScanner
+    - id: ClothingUniformJumpsuitIS14MilitiaSummer
+    - id: ClothingUniformJumpsuitIS14MilitiaJumpsuit
+    - id: ClothingOuterIS14MilitiaShinel
+    - id: ClothingEyesIS14MilitiaGlasses
+    - id: ClothingOuterIS14MilitiaFormalJacket
+    - id: ClothingHeadIS14MilitiaPilotka
+    - id: ClothingBeltIS14Militia
+    - id: ClothingShoesIS14MilitiaBoots
+    - id: ClothingHeadIS14HatBlueMilitiaUshanka
+    - id: ClothingHeadIS14MilitiaCap
+
+- type: entity
+  id: IS14SecLockerFilled
+  suffix: Filled
+  parent: IS14SecLocker
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:AllSelector
+        children:
+        - !type:NestedSelector
+          tableId: FillLockerSecurity
+        - !type:NestedSelector
+          tableId: IS14SecLockerFillClothes
+
+# wide lockers
+
+- type: entity
+  id: IS14SecurityWideLockerFilled
+  suffix: Filled
+  parent: IS14SecurityWideLocker
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:AllSelector
+        children:
+        - !type:NestedSelector
+          tableId: FillLockerSecurity
+        - !type:NestedSelector
+          tableId: IS14SecLockerFillClothes
+
+- type: entityTable
+  id: IS14BrigmedicLockerFillClothes
+  table: !type:AllSelector
+    children:
+    - id: ClothingHeadIS14MedOfficerBeret
+    - id: ClothingUnderIS14Tights
+    - id: ClothingEyesIS14MilitiaVisor
+    - id: ClothingEyesIS14MedEyeScanner
+    - id: ClothingUniformJumpsuitIS14MedOfficerJumpsuit
+    - id: ClothingOuterIS14MedOfficerRobe
+    - id: ClothingShoesIS14MilitiaBoots
+
+- type: entity
+  id: IS14BrigmedicLockerFilled
+  suffix: Filled
+  parent: IS14BrigmedicLocker
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:AllSelector
+        children:
+        - !type:NestedSelector
+          tableId: FillLockerBrigmedic
+        - !type:NestedSelector
+          tableId: IS14BrigmedicLockerFillClothes
+
+- type: entityTable
+  id: IS14PilotLockerFillClothes
+  table: !type:AllSelector
+    children:
+    - id: ClothingUniformJumpsuitIS14PilotJumpsuit
+    - id: ClothingBeltIS14MilitiaWebbing
+    - id: ClothingEyesIS14MilitiaVisor
+    - id: ClothingHeadsetIS14Pilot
+
+- type: entity
+  id: IS14PilotLockerFilled
+  suffix: Filled
+  parent: IS14PilotLocker
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:AllSelector
+        children:
+        - !type:NestedSelector
+          tableId: FillLockerSecurity
+        - !type:NestedSelector
+          tableId: IS14PilotLockerFillClothes
+
+- type: entity
+  id: IS14BombSuitLockerFilled
+  parent: IS14BombSuitLocker
+  suffix: Filled
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:NestedSelector
+        tableId: FillClosetBomb
+
+- type: entityTable
+  id: IS14EvidenceLockerFillClothes
+  table: !type:AllSelector
+    children:
+    - id: ClothingBeltIS14MilitiaWebbing
+    - id: ClothingEyesIS14MilitiaVisor
+    - id: ClothingOuterIS14InvestigatorCoat
+    - id: ClothingOuterIS14InvestigatorTrenchcoat
+    - id: ClothingUniformJumpsuitIS14Investigator
+    - id: ClothingHeadIS14InvestigatorHat
+
+- type: entity
+  id: IS14EvidenceLockerFilled
+  suffix: Filled
+  parent: LockerDetective
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:AllSelector
+        children:
+        - !type:NestedSelector
+          tableId: FillLockerDetective
+        - !type:NestedSelector
+          tableId: IS14EvidenceLockerFillClothes
+
+- type: entityTable
+  id: IS14PrisonLockerFillClothes
+  table: !type:AllSelector
+    children:
+    - id: ClothingUniformJumpsuitIS14Prisoner
+    - id: ClothingHeadIS14PrisonerCap
+    - id: ClothingShoesColorBlack
+
+- type: entity
+  id: IS14PrisonLockerFilled
+  parent: IS14PrisonLocker
+  suffix: Filled
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:NestedSelector
+        tableId: IS14PrisonLockerFillClothes

@@ -1,0 +1,41 @@
+- type: entityTable
+  id: IS14LawLockerFillClothes
+  table: !type:AllSelector
+    children:
+    - id: ClothingUniformJumpskirtIS14MupRepresentative
+    - id: ClothingUniformJumpskirtIS14Lawyer
+    - id: ClothingUniformJumpsuitIS14MupRepresentative
+    - id: ClothingUniformJumpsuitIS14Lawyer
+    - id: ClothingUniformJumpsuitIS14FormalMupRepresentative
+    - id: ClothingNeckIS14MupRepresentative
+    - id: ClothingHeadIS14MupRepresentativeCap
+
+- type: entity
+  id: IS14LawLockerFilled
+  parent: IS14LawLocker
+  suffix: Filled
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:NestedSelector
+        tableId: IS14LawLockerFillClothes
+
+- type: entityTable
+  id: IS14LawWideLockerFillClothes
+  table: !type:AllSelector
+    children:
+    - id: ClothingHeadIS14IVKBeret
+    - id: ClothingOuterIS14IVKVest
+    - id: ClothingUniformJumpsuitIS14Cmo
+    - id: ClothingHeadIS14IVKCap
+    - id: ClothingOuterIS14IVKShinel
+
+- type: entity
+  id: IS14LawWideLockerFilled
+  parent: IS14LawWideLocker
+  suffix: Filled
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:NestedSelector
+        tableId: IS14LawWideLockerFillClothes
