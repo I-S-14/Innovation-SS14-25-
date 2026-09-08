@@ -54,6 +54,12 @@ public static class IS14OsStyle
     public static readonly SpriteSpecifier Center = New(Verb + "refresh.svg.192dpi.png");
     public static readonly SpriteSpecifier Emoji = New(Emote + "laugh.png");
 
+    /// <summary>The shell's own launcher mark: a plus in a circle, drawn for IS14.</summary>
+    public static readonly SpriteSpecifier Apps =
+        new SpriteSpecifier.Rsi(new ResPath("/Textures/_IS14/Interface/OS/os_shell.rsi"), "apps");
+
+    public static readonly SpriteSpecifier Settings = New(Nano + "gear.svg.192dpi.png");
+
     private static SpriteSpecifier New(string path)
     {
         return new SpriteSpecifier.Texture(new ResPath(path));

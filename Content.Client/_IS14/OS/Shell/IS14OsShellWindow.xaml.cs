@@ -31,6 +31,15 @@ public sealed partial class IS14OsShellWindow : FancyWindow
     private SpriteSystem _sprites = default!;
     private ClientGameTicker? _ticker;
 
+    /// <summary>Settings has its own button, so it is always one press away from anywhere.</summary>
+    private const string SettingsApp = "AppSettings";
+
+    /// <summary>Width of a task tab that still has room for the app's name.</summary>
+    private const float NamedTabWidth = 104f;
+
+    /// <summary>...and of one cut down to the icon and its close button.</summary>
+    private const float IconTabWidth = 48f;
+
     private readonly Dictionary<string, IS14OsAppWindow> _windows = new();
 
     private OsShellState? _shell;
@@ -49,11 +58,19 @@ public sealed partial class IS14OsShellWindow : FancyWindow
         RobustXamlLoader.Load(this);
         IoCManager.InjectDependencies(this);
 
-        StartButton.Caption = Loc.GetString("is14-os-start");
+        StartButton.ToolTip = Loc.GetString("is14-os-start");
         StartMenuHeader.Text = Loc.GetString("is14-os-start-menu-header");
         BootLabel.Text = Loc.GetString("is14-os-booting");
 
         StartButton.OnPressed += _ => ToggleStartMenu();
+
+        SettingsButton.ToolTip = Loc.GetString("is14-os-taskbar-settings");
+        SettingsButton.OnPressed += _ =>
+        {
+            StartMenuPanel.Visible = false;
+            StartButton.Selected = false;
+            OnOpenApp?.Invoke(SettingsApp);
+        };
     }
 
     public void Setup(IS14OsBui bui, IPrototypeManager proto)
@@ -63,7 +80,8 @@ public sealed partial class IS14OsShellWindow : FancyWindow
         _sprites = _sysMan.GetEntitySystem<SpriteSystem>();
         _ticker = _sysMan.GetEntitySystem<ClientGameTicker>();
 
-        StartButton.Icon = IS14OsStyle.Resolve(_sprites, IS14OsStyle.Logo);
+        StartButton.Icon = IS14OsStyle.Resolve(_sprites, IS14OsStyle.Apps);
+        SettingsButton.Icon = IS14OsStyle.Resolve(_sprites, IS14OsStyle.Settings);
         BootLogo.Texture = IS14OsStyle.Resolve(_sprites, IS14OsStyle.Logo);
         ClockIcon.Texture = IS14OsStyle.Resolve(_sprites, IS14OsStyle.Clock);
         AlertIcon.Texture = IS14OsStyle.Resolve(_sprites, IS14OsStyle.Alert);
@@ -250,36 +268,87 @@ public sealed partial class IS14OsShellWindow : FancyWindow
     {
         TaskButtons.RemoveAllChildren();
 
+        // Names go first when the strip runs out of room: a row of squeezed half-words is
+        // worse than a row of icons, and the icon is what people actually aim at.
+        var named = FitsNamedTabs(shell);
+
         foreach (var appId in shell.Open)
         {
             if (appId.Id is not { } id || !_proto.TryIndex<IS14OsAppPrototype>(id, out var app))
                 continue;
 
-            var minimized = shell.Minimized.Any(m => m.Id == id);
-
-            var tile = new IconTile
-            {
-                Palette = _palette,
-                Compact = true,
-                Icon = ResolveAppIcon(app),
-                Caption = Loc.GetString(app.Name),
-                IconSize = 14,
-                Selected = !minimized,
-                MinWidth = 104,
-                Margin = new Thickness(0, 0, 3, 0),
-                ToolTip = Loc.GetString(app.Name),
-            };
-
-            tile.OnPressed += _ =>
-            {
-                if (minimized)
-                    OnFocusApp?.Invoke(id);
-                else
-                    OnMinimizeApp?.Invoke(id);
-            };
-
-            TaskButtons.AddChild(tile);
+            TaskButtons.AddChild(BuildTaskTab(shell, app, named));
         }
+    }
+
+    /// <summary>
+    ///     Whether every open window can still show its name. Measured against the strip's real
+    ///     width once it has been laid out, and against the device's screen before that.
+    /// </summary>
+    private bool FitsNamedTabs(OsShellState shell)
+    {
+        var available = TaskStrip.Size.X > 0
+            ? TaskStrip.Size.X
+            : shell.ScreenSize.X - 90f;
+
+        return shell.Open.Count * (NamedTabWidth + 3f) <= available;
+    }
+
+    /// <summary>
+    ///     One window on the taskbar: press the body to raise or hide it, press the cross to
+    ///     close it outright. Closing from here is the point — otherwise clearing a stack of
+    ///     windows means opening every one of them first.
+    /// </summary>
+    private Control BuildTaskTab(OsShellState shell, IS14OsAppPrototype app, bool named)
+    {
+        var id = app.ID;
+        var name = Loc.GetString(app.Name);
+        var minimized = shell.Minimized.Any(m => m.Id == id);
+
+        var tab = new BoxContainer
+        {
+            Orientation = BoxContainer.LayoutOrientation.Horizontal,
+            Margin = new Thickness(0, 0, 3, 0),
+        };
+
+        var tile = new IconTile
+        {
+            Palette = _palette,
+            Compact = true,
+            Icon = ResolveAppIcon(app),
+            Caption = named ? name : null,
+            ClipCaption = true,
+            IconSize = 14,
+            Selected = !minimized,
+            MinWidth = named ? NamedTabWidth - 20f : IconTabWidth - 20f,
+            ToolTip = name,
+        };
+
+        tile.OnPressed += _ =>
+        {
+            if (minimized)
+                OnFocusApp?.Invoke(id);
+            else
+                OnMinimizeApp?.Invoke(id);
+        };
+
+        var close = new GlyphButton
+        {
+            Palette = _palette,
+            Glyph = GlyphButton.Mark.Cross,
+            Danger = true,
+            GlyphSize = 9,
+            MinSize = new Vector2(18, 20),
+            VerticalAlignment = VAlignment.Center,
+            ToolTip = Loc.GetString("is14-os-taskbar-close"),
+        };
+
+        close.OnPressed += _ => OnCloseApp?.Invoke(id);
+
+        tab.AddChild(tile);
+        tab.AddChild(close);
+
+        return tab;
     }
 
     private void ToggleStartMenu()
@@ -429,7 +498,17 @@ public sealed partial class IS14OsShellWindow : FancyWindow
             BorderThickness = new Thickness(1),
         };
 
+        // The strip is sunk into the taskbar so the windows inside it read as a group,
+        // separate from the shell's own two buttons on either side.
+        TaskStrip.PanelOverride = new StyleBoxFlat
+        {
+            BackgroundColor = theme.Background,
+            BorderColor = theme.Border,
+            BorderThickness = new Thickness(1),
+        };
+
         StartButton.Palette = _palette;
+        SettingsButton.Palette = _palette;
         StartMenuHeader.FontColorOverride = theme.Accent;
         BootLabel.FontColorOverride = theme.Accent;
         BootLogo.ModulateSelfOverride = theme.Accent;

@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Linq;
 using System.IO;
 using System.Numerics;
 using Content.Client._IS14.Controls;
@@ -32,6 +33,9 @@ public sealed class CameraAppUi : IS14OsAppUi
 
     private CameraAppFragment Fragment => _fragment ??= new CameraAppFragment();
 
+    /// <summary>Where the pictures end up, and the one place worth jumping to from here.</summary>
+    private const string GalleryApp = "AppGallery";
+
     public override string AppId => "AppCamera";
 
     public override Control Root => Fragment;
@@ -41,6 +45,13 @@ public sealed class CameraAppUi : IS14OsAppUi
         base.Setup(bui);
 
         Fragment.OnCapture += bytes => SendAppEvent(AppId, new OsCameraCaptureEvent(bytes));
+        Fragment.OnOpenGallery += () => OpenApp(GalleryApp);
+    }
+
+    public override void UpdateShell(OsShellState shell)
+    {
+        // No gallery installed, no button: a shortcut to nothing is worse than no shortcut.
+        Fragment.SetGalleryAvailable(shell.Installed.Any(app => app.Id == GalleryApp));
     }
 
     public override void UpdateState(IS14OsAppState state)
@@ -89,6 +100,7 @@ public sealed partial class CameraAppFragment : BoxContainer
     private bool _capturing;
 
     public event Action<byte[]>? OnCapture;
+    public event Action? OnOpenGallery;
 
     public CameraAppFragment()
     {
@@ -121,6 +133,11 @@ public sealed partial class CameraAppFragment : BoxContainer
         CenterButton.Caption = Loc.GetString("is14-os-camera-center");
         CenterButton.ToolTip = Loc.GetString("is14-os-camera-center");
         CenterButton.OnPressed += _ => _pan = Vector2.Zero;
+
+        GalleryButton.Icon = IS14OsStyle.Resolve(sprites, IS14OsStyle.Photo);
+        GalleryButton.Caption = Loc.GetString("is14-os-camera-gallery");
+        GalleryButton.ToolTip = Loc.GetString("is14-os-camera-gallery-tooltip");
+        GalleryButton.OnPressed += _ => OnOpenGallery?.Invoke();
 
         ShutterButton.ToolTip = Loc.GetString("is14-os-camera-shoot");
         ShutterButton.OnPressed += _ => Capture();
@@ -226,6 +243,12 @@ public sealed partial class CameraAppFragment : BoxContainer
         StatusLabel.Text = state.Status == null ? string.Empty : Loc.GetString(state.Status);
     }
 
+    /// <summary>Hides the shortcut when there is no gallery on the device to jump to.</summary>
+    public void SetGalleryAvailable(bool available)
+    {
+        GalleryButton.Visible = available;
+    }
+
     public void ApplyTheme(IS14ThemePalette palette)
     {
         ViewPanel.PanelOverride = new StyleBoxFlat
@@ -240,6 +263,7 @@ public sealed partial class CameraAppFragment : BoxContainer
         ZoomLabel.FontColorOverride = palette.Accent;
 
         CenterButton.Palette = palette;
+        GalleryButton.Palette = palette;
         ShutterButton.Palette = palette;
 
         // The stock slider is Nanotrasen green whatever the theme says, so it gets repainted

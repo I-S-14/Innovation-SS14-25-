@@ -2,7 +2,9 @@
 
 is14-os-cannot-uninstall = Системное ПО удалить нельзя.
 
-is14-os-start = Пуск
+is14-os-start = Приложения
+is14-os-taskbar-settings = Настройки
+is14-os-taskbar-close = Закрыть окно
 
 is14-os-booting = Загрузка IS14 OS...
 
@@ -146,6 +148,8 @@ is14-os-app-camera-desc = Снимает то, что перед вами, пр�
 is14-os-camera-shoot = Снять
 is14-os-camera-zoom = Зум ×{$zoom}
 is14-os-camera-center = К себе
+is14-os-camera-gallery = Галерея
+is14-os-camera-gallery-tooltip = Открыть галерею со снимками
 is14-os-camera-aim-hint = Потяните, чтобы навести кадр.
 is14-os-camera-count = Снимков: {$count}
 is14-os-camera-photo-name = Фото {$time}

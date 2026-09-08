@@ -5,7 +5,9 @@
   formFactor: Handheld
   maxWindows: 1          # one window: the screen is 400x320, a phone-style switcher reads better
   memory: 64
-  systemMemory: 8
+  # 8 GQ of shell plus the permanent apps (messenger 8, camera 6, gallery 4): system
+  # software reserves nothing itself, so the partition has to account for it here.
+  systemMemory: 26
   shellMode: Fullscreen
   screenSize: 400,320
   memorySlots: 1
@@ -17,7 +19,7 @@
   formFactor: Portable
   maxWindows: 3
   memory: 128
-  systemMemory: 8
+  systemMemory: 26
   shellMode: Windowed
   screenSize: 640,480
   memorySlots: 2
@@ -29,7 +31,7 @@
   formFactor: Stationary
   maxWindows: 5
   memory: 256
-  systemMemory: 8
+  systemMemory: 26
   shellMode: Windowed
   screenSize: 800,600
   memorySlots: 2

@@ -2,7 +2,9 @@
 
 is14-os-cannot-uninstall = System software cannot be removed.
 
-is14-os-start = Start
+is14-os-start = Apps
+is14-os-taskbar-settings = Settings
+is14-os-taskbar-close = Close window
 
 is14-os-booting = Booting IS14 OS...
 
@@ -146,6 +148,8 @@ is14-os-app-camera-desc = Photographs what is in front of you, straight into dev
 is14-os-camera-shoot = Shoot
 is14-os-camera-zoom = Zoom x{$zoom}
 is14-os-camera-center = Recentre
+is14-os-camera-gallery = Gallery
+is14-os-camera-gallery-tooltip = Open the photo gallery
 is14-os-camera-aim-hint = Drag to aim the frame.
 is14-os-camera-count = Photos: {$count}
 is14-os-camera-photo-name = Photo {$time}

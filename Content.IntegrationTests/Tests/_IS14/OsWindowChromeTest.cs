@@ -5,11 +5,14 @@
 using System.Collections.Generic;
 using System.Numerics;
 using Content.Client._IS14.Controls;
+using Content.Client._IS14.OS.Shell;
 using Content.IntegrationTests.Pair;
+using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
 using Robust.Shared.Maths;
+using Robust.Shared.Utility;
 
 namespace Content.IntegrationTests.Tests._IS14;
 
@@ -41,7 +44,7 @@ public sealed class OsWindowChromeTest
                 button.Measure(new Vector2(64, 64));
                 button.Arrange(new UIBox2(0, 0, button.DesiredSize.X, button.DesiredSize.Y));
 
-                var found = Find(button);
+                var found = Find<TextureRect>(button);
 
                 if (found == null)
                 {
@@ -74,14 +77,91 @@ public sealed class OsWindowChromeTest
         await pair.CleanReturnAsync();
     }
 
-    private static TextureRect? Find(Control control)
+    /// <summary>
+    ///     The shell's own glyphs, including the launcher mark drawn for IS14. A mistyped state
+    ///     name or a malformed RSI only shows up when the taskbar tries to draw itself.
+    /// </summary>
+    [Test]
+    public async Task ShellIconsResolve()
     {
-        if (control is TextureRect rect)
-            return rect;
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings
+        {
+            Connected = true,
+        });
+        var client = pair.Client;
+
+        var missing = new List<string>();
+
+        await client.WaitPost(() =>
+        {
+            var sprites = client.System<SpriteSystem>();
+
+            var icons = new (string Name, SpriteSpecifier Sprite)[]
+            {
+                (nameof(IS14OsStyle.Apps), IS14OsStyle.Apps),
+                (nameof(IS14OsStyle.Settings), IS14OsStyle.Settings),
+                (nameof(IS14OsStyle.Photo), IS14OsStyle.Photo),
+            };
+
+            foreach (var (name, sprite) in icons)
+            {
+                if (IS14OsStyle.Resolve(sprites, sprite) == null)
+                    missing.Add(name);
+            }
+        });
+
+        Assert.That(missing, Is.Empty, "shell icons that did not resolve to a texture");
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>
+    ///     A taskbar tab clips the app's name to keep every tab the same width. Clipped labels
+    ///     measure as zero wide in the engine, so this checks the name is still given room —
+    ///     the same trap that once emptied every value column in the OS.
+    /// </summary>
+    [Test]
+    public async Task ClippedCaptionsKeepTheirWidth()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var client = pair.Client;
+        var uiMan = client.ResolveDependency<IUserInterfaceManager>();
+
+        var width = -1f;
+
+        await client.WaitPost(() =>
+        {
+            var tile = new IconTile
+            {
+                Compact = true,
+                ClipCaption = true,
+                Caption = "Мессенджер",
+                MinWidth = 96,
+            };
+
+            uiMan.RootControl.AddChild(tile);
+
+            tile.Measure(new Vector2(200, 40));
+            tile.Arrange(new UIBox2(0, 0, 96, 24));
+
+            width = Find<Label>(tile)?.Size.X ?? -1f;
+
+            uiMan.RootControl.RemoveChild(tile);
+        });
+
+        Assert.That(width, Is.GreaterThan(0f), "the clipped caption was laid out at zero width");
+
+        await pair.CleanReturnAsync();
+    }
+
+    private static T? Find<T>(Control control) where T : Control
+    {
+        if (control is T match)
+            return match;
 
         foreach (var child in control.Children)
         {
-            if (Find(child) is { } found)
+            if (Find<T>(child) is { } found)
                 return found;
         }
 

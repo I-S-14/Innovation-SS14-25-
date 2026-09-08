@@ -113,6 +113,7 @@
   description: is14-os-app-messenger-desc
   category: Work
   source: [ NtStore, Preinstalled ]
+  undeletable: true
   order: 5
   size: 8
   dataCap: 4
@@ -132,6 +133,7 @@
   description: is14-os-app-camera-desc
   category: Work
   source: [ NtStore, Preinstalled ]
+  undeletable: true
   order: 25
   size: 6
   powerDraw: 0.08
@@ -146,6 +148,7 @@
   description: is14-os-app-gallery-desc
   category: Work
   source: [ NtStore, Preinstalled ]
+  undeletable: true
   order: 26
   size: 4
   powerDraw: 0.03

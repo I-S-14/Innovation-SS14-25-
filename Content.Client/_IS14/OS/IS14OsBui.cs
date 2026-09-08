@@ -49,6 +49,12 @@ public sealed class IS14OsBui : BoundUserInterface
         SendMessage(new IS14OsAppMessage(app, ev));
     }
 
+    /// <summary>Lets one app hand the player over to another — camera to gallery, say.</summary>
+    public void SendOpenApp(ProtoId<IS14OsAppPrototype> app)
+    {
+        SendMessage(new IS14OsShellMessage(OsShellAction.OpenApp, app));
+    }
+
     public void SendUninstall(ProtoId<IS14OsAppPrototype> app)
     {
         SendMessage(new IS14OsShellMessage(OsShellAction.UninstallApp, app));

@@ -14,7 +14,8 @@
     <BoxContainer Name="Panel" Orientation="Vertical" VerticalExpand="True" MinWidth="118">
         <Label Name="ZoomLabel" HorizontalAlignment="Center" />
         <Slider Name="ZoomSlider" HorizontalExpand="True" Margin="0 2 0 4" />
-        <controls:IconTile Name="CenterButton" Compact="True" IconSize="12" Margin="0 0 0 6" />
+        <controls:IconTile Name="CenterButton" Compact="True" IconSize="12" Margin="0 0 0 2" />
+        <controls:IconTile Name="GalleryButton" Compact="True" IconSize="12" Margin="0 0 0 6" />
 
         <Label Name="CountLabel" HorizontalAlignment="Center" />
         <Label Name="StatusLabel" HorizontalAlignment="Center" Margin="0 2 0 0" />

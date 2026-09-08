@@ -56,11 +56,16 @@
             </Control>
         </PanelContainer>
 
-        <!-- Taskbar: start, one tile per open app, tray. On a handheld this is the task switcher. -->
+        <!-- Taskbar: launcher on the left, the open windows in their own sunken strip, and
+             settings pinned to the right. The strip is what tells the two apart: everything
+             inside it is a window you can raise, everything outside it is the shell itself. -->
         <PanelContainer Name="TaskbarPanel" HorizontalExpand="True">
             <BoxContainer Orientation="Horizontal" HorizontalExpand="True" MinHeight="30" Margin="3 2">
-                <controls:IconTile Name="StartButton" MinWidth="72" Compact="True" IconSize="16" />
-                <BoxContainer Name="TaskButtons" Orientation="Horizontal" HorizontalExpand="True" Margin="4 0" />
+                <controls:IconTile Name="StartButton" Compact="True" IconSize="18" MinWidth="34" />
+                <PanelContainer Name="TaskStrip" HorizontalExpand="True" Margin="4 0">
+                    <BoxContainer Name="TaskButtons" Orientation="Horizontal" HorizontalExpand="True" Margin="2 1" />
+                </PanelContainer>
+                <controls:IconTile Name="SettingsButton" Compact="True" IconSize="18" MinWidth="34" />
             </BoxContainer>
         </PanelContainer>
     </BoxContainer>

@@ -46,4 +46,10 @@ public abstract class IS14OsAppUi
     {
         Bui.SendAppEvent(appId, ev);
     }
+
+    /// <summary>Opens another app on the same device. The server still checks it is installed.</summary>
+    protected void OpenApp(string appId)
+    {
+        Bui.SendOpenApp(appId);
+    }
 }

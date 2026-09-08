@@ -42,9 +42,10 @@ public sealed class IconTile : ContainerButton
 
             _icon.Margin = value ? new Thickness(0, 0, 6, 0) : new Thickness(0, 0, 0, 3);
             _swatch.Margin = _icon.Margin;
-            _caption.HorizontalAlignment = value ? HAlignment.Left : HAlignment.Center;
             _caption.VerticalAlignment = value ? VAlignment.Center : VAlignment.Top;
             _caption.Align = value ? Label.AlignMode.Left : Label.AlignMode.Center;
+
+            UpdateCaptionLayout();
         }
     }
 
@@ -109,7 +110,29 @@ public sealed class IconTile : ContainerButton
     public bool ClipCaption
     {
         get => _caption.ClipText;
-        set => _caption.ClipText = value;
+        set
+        {
+            _caption.ClipText = value;
+            UpdateCaptionLayout();
+        }
+    }
+
+    /// <summary>
+    ///     A Label with ClipText measures as zero wide (engine Label.MeasureOverride), so a
+    ///     clipped caption only survives if it claims the tile's leftover width itself — and
+    ///     an alignment other than stretch would shrink it straight back to nothing.
+    /// </summary>
+    private void UpdateCaptionLayout()
+    {
+        var clip = _caption.ClipText;
+
+        _caption.HorizontalExpand = clip;
+        _caption.HorizontalAlignment = clip
+            ? HAlignment.Stretch
+            : Compact ? HAlignment.Left : HAlignment.Center;
+
+        _layout.HorizontalExpand = clip;
+        _layout.HorizontalAlignment = clip ? HAlignment.Stretch : HAlignment.Center;
     }
 
     /// <summary>Latched on: drawn as held down, for the entry that is currently in front.</summary>

@@ -20,11 +20,10 @@
     profile: OsProfileHandheld
     theme: OsNtOs
   - type: IS14OsMemory
+    # Messenger, camera and gallery are undeletable now, so the system partition installs them
+    # on its own; only the software the player may actually throw away is listed here.
     preinstalled:
     - AppNotes
-    - AppMessenger
-    - AppCamera
-    - AppGallery
     - AppManifest
   # The lid is what drains the cell, so the player controls the drain (Docs §5.6).
   # A flat battery never blocks the ID slot: that stays mechanical.
