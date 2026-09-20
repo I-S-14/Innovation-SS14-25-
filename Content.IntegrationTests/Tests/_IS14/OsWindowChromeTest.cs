@@ -81,6 +81,42 @@ public sealed class OsWindowChromeTest
     }
 
     /// <summary>
+    ///     An application window on a stationary console has to be draggable, and dragging is
+    ///     the engine's, not ours: BaseWindow does it in MouseMove. What it needs from us is to
+    ///     be allowed to hear the mouse — Control.MouseFilter defaults to Ignore, and BaseWindow
+    ///     does not set it (DefaultWindow does it in its constructor, FancyWindow in its XAML).
+    ///     Without it the window is deaf: it will not drag and will not raise itself, while the
+    ///     buttons inside it keep working, so it merely looks stuck.
+    /// </summary>
+    [Test]
+    public async Task AppWindowsCanBeDraggedAndRaised()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var client = pair.Client;
+
+        await client.WaitPost(() =>
+        {
+            var window = new IS14OsAppWindow();
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(window.MouseFilter, Is.EqualTo(Control.MouseFilterMode.Stop),
+                    "the window cannot receive a click, so it can neither drag nor raise itself");
+
+                // Windowed is the default state; a console never asks for fullscreen, so the
+                // window must arrive resizable rather than waiting to be told.
+                Assert.That(window.Resizable, Is.True, "a windowed app window is not resizable");
+            });
+
+            // Fullscreen is the handheld mode: one app fills the screen and stops moving.
+            window.SetFullscreen(true);
+            Assert.That(window.Resizable, Is.False, "a fullscreen window kept its resize handles");
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>
     ///     The shell's own glyphs, including the launcher mark drawn for IS14. A mistyped state
     ///     name or a malformed RSI only shows up when the taskbar tries to draw itself.
     /// </summary>

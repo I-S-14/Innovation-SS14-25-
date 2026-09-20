@@ -41,6 +41,7 @@ public sealed class IS14OsMessengerSystem : EntitySystem
     [Dependency] private readonly StationSystem _station = default!;
     [Dependency] private readonly IS14OsSystem _os = default!;
     [Dependency] private readonly IS14OsFileSystem _files = default!;
+    [Dependency] private readonly IS14OsMemorySystem _memory = default!;
 
     public override void Initialize()
     {
@@ -333,6 +334,94 @@ public sealed class IS14OsMessengerSystem : EntitySystem
 
         while (log.Messages.Count > ent.Comp.MaxMessagesPerChat)
             log.Messages.RemoveAt(0);
+
+        ChargeHistory(ent);
+    }
+
+    /// <summary>Characters of chat history that fit in one GQ.</summary>
+    private const int CharsPerUnit = 4096;
+
+    /// <summary>
+    ///     Charges the conversation history against the device and, when it no longer fits,
+    ///     forgets the oldest messages until it does. History is allowed to be lost; the app is
+    ///     never allowed to stop accepting messages, which is the whole promise of §7.3 — the
+    ///     player runs out of history, never out of road.
+    /// </summary>
+    private void ChargeHistory(Entity<IS14OsMessengerComponent> ent)
+    {
+        if (!TryComp(ent, out IS14OsDeviceComponent? device) || !TryComp(ent, out IS14OsMemoryComponent? memory))
+            return;
+
+        var target = (ent.Owner, device, memory);
+
+        // Bounded rather than "while (true)": DropOldest returning false already ends this, but
+        // a trim loop with no ceiling is the kind of thing that hangs a server at 3 AM.
+        for (var attempt = 0; attempt < 64; attempt++)
+        {
+            var wanted = MeasureHistory(ent.Comp);
+
+            if (_memory.SetDataUsage(target, AppId, wanted) >= wanted)
+                return;
+
+            if (!DropOldest(ent.Comp))
+                return;
+        }
+    }
+
+    private static int MeasureHistory(IS14OsMessengerComponent messenger)
+    {
+        var chars = 0;
+
+        foreach (var log in messenger.Chats.Values)
+        {
+            // The name is stored per conversation and the address is its key; both are part of
+            // what the history costs, which is why an inbox full of one-line pings still adds up.
+            chars += log.Name.Length + (log.Job?.Length ?? 0);
+
+            foreach (var message in log.Messages)
+            {
+                chars += message.Text.Length;
+            }
+        }
+
+        return (int) MathF.Ceiling(chars / (float) CharsPerUnit);
+    }
+
+    /// <summary>
+    ///     Forgets the single oldest message on the device. An emptied conversation goes with
+    ///     it: an entry with no messages in it is a row that says nothing.
+    /// </summary>
+    private static bool DropOldest(IS14OsMessengerComponent messenger)
+    {
+        string? oldestChat = null;
+        var oldest = TimeSpan.MaxValue;
+
+        foreach (var (address, log) in messenger.Chats)
+        {
+            if (log.Messages.Count == 0)
+            {
+                oldestChat = address;
+                oldest = TimeSpan.MinValue;
+                break;
+            }
+
+            if (log.Messages[0].Time >= oldest)
+                continue;
+
+            oldest = log.Messages[0].Time;
+            oldestChat = address;
+        }
+
+        if (oldestChat == null || !messenger.Chats.TryGetValue(oldestChat, out var target))
+            return false;
+
+        if (target.Messages.Count > 0)
+            target.Messages.RemoveAt(0);
+
+        if (target.Messages.Count == 0)
+            messenger.Chats.Remove(oldestChat);
+
+        return true;
     }
 
     /// <summary>

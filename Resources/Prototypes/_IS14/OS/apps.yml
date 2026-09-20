@@ -39,7 +39,9 @@
   undeletable: true
   order: 91
   size: 3
-  windowSize: 340,240
+  windowSize: 340,260
+  components:
+  - type: IS14OsSettings
 
 # --- Regular software: takes memory, can be uninstalled. ---
 
@@ -49,7 +51,7 @@
   name: is14-os-app-notes-name
   description: is14-os-app-notes-desc
   category: Work
-  source: [ NtStore, Preinstalled ]
+  source: [ NtStore, Preinstalled, Disk ]
   order: 10
   size: 4
   dataCap: 4
@@ -79,7 +81,7 @@
   name: is14-os-app-calculator-name
   description: is14-os-app-calculator-desc
   category: Work
-  source: [ NtStore ]
+  source: [ NtStore, Disk ]
   order: 20
   size: 2
   clientOnly: true
@@ -92,7 +94,7 @@
   name: is14-os-app-manifest-name
   description: is14-os-app-manifest-desc
   category: Records
-  source: [ NtStore, Preinstalled ]
+  source: [ NtStore, Preinstalled, Disk ]
   order: 30
   size: 6
   requiresNetwork: true
@@ -125,6 +127,9 @@
   description: is14-os-app-camera-desc
   category: Work
   source: [ NtStore, Preinstalled ]
+  # A camera shoots what its owner is looking at, which a machine bolted to the floor is not
+  # doing; the gallery goes with it, since it is a view onto the photos that camera takes.
+  deviceFlags: [ Handheld, Portable ]
   undeletable: true
   order: 25
   size: 6
@@ -140,6 +145,7 @@
   description: is14-os-app-gallery-desc
   category: Work
   source: [ NtStore, Preinstalled ]
+  deviceFlags: [ Handheld, Portable ]
   undeletable: true
   order: 26
   size: 4
@@ -147,3 +153,117 @@
   windowSize: 380,340
   components:
   - type: IS14OsGallery
+
+- type: osApp
+  id: AppNews
+  icon: /Textures/_IS14/Interface/OS/Apps/news.png
+  name: is14-os-app-news-name
+  description: is14-os-app-news-desc
+  category: Records
+  source: [ NtStore, Disk ]
+  order: 35
+  size: 4
+  requiresNetwork: true
+  windowSize: 380,320
+  components:
+  - type: IS14OsNews
+
+- type: osApp
+  id: AppTasks
+  icon: /Textures/_IS14/Interface/OS/Apps/tasks.png
+  name: is14-os-app-tasks-name
+  description: is14-os-app-tasks-desc
+  category: Work
+  source: [ NtStore, Disk ]
+  order: 15
+  size: 3
+  dataCap: 2
+  powerDraw: 0.02
+  windowSize: 360,300
+  components:
+  - type: IS14OsTasks
+
+# --- Head-of-department software (Docs §12). Stationary only: these are the consoles the
+# departments already had, moved onto the platform so a head can put two of them side by side.
+# Payroll and orders carry no data component of their own — which fund a payroll console
+# administers, and which account an order console spends from, are properties of that console,
+# so the console entity declares them and the app is only a window onto what is already there.
+
+- type: osApp
+  id: AppPayroll
+  icon: /Textures/_IS14/Interface/OS/Apps/payroll.png
+  name: is14-os-app-payroll-name
+  description: is14-os-app-payroll-desc
+  category: Finance
+  source: [ Preinstalled ]
+  deviceFlags: Stationary
+  order: 40
+  size: 16
+  requiresNetwork: true
+  powerDraw: 0.06
+  windowSize: 620,560
+
+- type: osApp
+  id: AppOrders
+  icon: /Textures/_IS14/Interface/OS/Apps/orders.png
+  name: is14-os-app-orders-name
+  description: is14-os-app-orders-desc
+  category: Supply
+  source: [ Preinstalled ]
+  deviceFlags: Stationary
+  order: 41
+  size: 16
+  requiresNetwork: true
+  powerDraw: 0.06
+  windowSize: 420,420
+
+- type: osApp
+  id: AppTreasury
+  icon: /Textures/_IS14/Interface/OS/Apps/treasury.png
+  name: is14-os-app-treasury-name
+  description: is14-os-app-treasury-desc
+  category: Finance
+  source: [ NtStore, Preinstalled, Disk ]
+  deviceFlags: Stationary
+  requiredAccess: [ Command ]
+  order: 42
+  size: 12
+  requiresNetwork: true
+  powerDraw: 0.05
+  windowSize: 420,520
+  components:
+  - type: TreasuryConsole
+
+- type: osApp
+  id: AppGosplan
+  icon: /Textures/_IS14/Interface/OS/Apps/gosplan.png
+  name: is14-os-app-gosplan-name
+  description: is14-os-app-gosplan-desc
+  category: Finance
+  source: [ NtStore, Preinstalled, Disk ]
+  deviceFlags: Stationary
+  order: 43
+  size: 12
+  requiresNetwork: true
+  powerDraw: 0.05
+  windowSize: 520,560
+  components:
+  - type: GosplanConsole
+
+- type: osApp
+  id: AppEconomyMonitor
+  icon: /Textures/_IS14/Interface/OS/Apps/economy.png
+  name: is14-os-app-economy-name
+  description: is14-os-app-economy-desc
+  category: Finance
+  source: [ NtStore, Preinstalled, Disk ]
+  deviceFlags: Stationary
+  requiredAccess: [ Command ]
+  order: 44
+  size: 20
+  requiresNetwork: true
+  powerDraw: 0.08
+  windowSize: 780,560
+  components:
+  - type: EconomyMonitorConsole
+

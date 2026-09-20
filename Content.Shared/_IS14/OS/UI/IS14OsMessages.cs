@@ -33,6 +33,9 @@ public enum OsShellAction : byte
     ShowUplink,
     LockUplink,
     CloseLid,
+
+    /// <summary>Client has no picture cached for the current wallpaper and wants the bytes.</summary>
+    RequestWallpaper,
 }
 
 /// <summary>Envelope for app traffic. The server verifies the app is installed and open first.</summary>

@@ -1,0 +1,22 @@
+# Desktop wallpapers. Separate from the theme on purpose: the theme is how the shell paints
+# itself, the wallpaper is a picture behind it, and a player can mix any two (Docs §8.3).
+
+- type: osWallpaper
+  id: OsWallpaperBanner
+  name: is14-os-wallpaper-banner
+  texture: /Textures/_IS14/Interface/OS/Wallpapers/banner.png
+
+- type: osWallpaper
+  id: OsWallpaperNebula
+  name: is14-os-wallpaper-nebula
+  texture: /Textures/_IS14/Interface/OS/Wallpapers/nebula.png
+
+- type: osWallpaper
+  id: OsWallpaperGrid
+  name: is14-os-wallpaper-grid
+  texture: /Textures/_IS14/Interface/OS/Wallpapers/grid.png
+
+- type: osWallpaper
+  id: OsWallpaperSteel
+  name: is14-os-wallpaper-steel
+  texture: /Textures/_IS14/Interface/OS/Wallpapers/steel.png

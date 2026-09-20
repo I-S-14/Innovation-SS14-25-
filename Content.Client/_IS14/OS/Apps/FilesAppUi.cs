@@ -39,6 +39,10 @@ public sealed class FilesAppUi : IS14OsAppUi
         Fragment.OnOpenFile += file => SendAppEvent(AppId, new OsFileOpenEvent(file));
         Fragment.OnDeleteFile += file => SendAppEvent(AppId, new OsFileDeleteEvent(file));
         Fragment.OnRenameFile += (file, name) => SendAppEvent(AppId, new OsFileRenameEvent(file, name));
+        Fragment.OnDiskInstall += app => SendAppEvent(AppId, new OsDiskInstallEvent(app));
+        Fragment.OnDiskCopy += (file, toDisk) => SendAppEvent(AppId, new OsDiskCopyEvent(file, toDisk));
+        Fragment.OnDiskDelete += file => SendAppEvent(AppId, new OsDiskDeleteEvent(file));
+        Fragment.OnDismissError += () => SendAppEvent(AppId, new OsFilesDismissErrorEvent());
     }
 
     public override void UpdateShell(OsShellState shell)
@@ -63,6 +67,7 @@ public sealed partial class FilesAppFragment : BoxContainer
 {
     private const string SectionApps = "apps";
     private const string SectionFiles = "files";
+    private const string SectionDisk = "disk";
 
     /// <summary>Above this share of memory the readout warns; above the second it shouts.</summary>
     private const float WarnAt = 0.7f;
@@ -75,6 +80,9 @@ public sealed partial class FilesAppFragment : BoxContainer
     private readonly Texture? _deleteIcon;
     private readonly Texture? _openIcon;
     private readonly Texture? _renameIcon;
+    private readonly Texture? _toDeviceIcon;
+    private readonly Texture? _toDiskIcon;
+    private readonly Texture? _diskIcon;
 
     /// <summary>The file whose name is being edited in the rename bar, if any.</summary>
     private int? _renaming;
@@ -90,6 +98,10 @@ public sealed partial class FilesAppFragment : BoxContainer
     public event Action<int?>? OnOpenFile;
     public event Action<int>? OnDeleteFile;
     public event Action<int, string>? OnRenameFile;
+    public event Action<string>? OnDiskInstall;
+    public event Action<int, bool>? OnDiskCopy;
+    public event Action<int>? OnDiskDelete;
+    public event Action? OnDismissError;
 
     public FilesAppFragment()
     {
@@ -104,6 +116,9 @@ public sealed partial class FilesAppFragment : BoxContainer
         _deleteIcon = IS14OsStyle.Resolve(_sprites, IS14OsStyle.Delete);
         _openIcon = IS14OsStyle.Resolve(_sprites, IS14OsStyle.Open);
         _renameIcon = IS14OsStyle.Resolve(_sprites, IS14OsStyle.Rename);
+        _toDeviceIcon = IS14OsStyle.Resolve(_sprites, IS14OsStyle.Download);
+        _toDiskIcon = IS14OsStyle.Resolve(_sprites, IS14OsStyle.SaveFile);
+        _diskIcon = IS14OsStyle.Resolve(_sprites, IS14OsStyle.Disk);
 
         RenameEdit.PlaceHolder = Loc.GetString("is14-os-files-rename-placeholder");
         RenameEdit.OnTextEntered += _ => ConfirmRename();
@@ -122,6 +137,10 @@ public sealed partial class FilesAppFragment : BoxContainer
         // Used memory is the bad direction, so the usual "low is bad" colours are flipped.
         MemoryBar.LowThreshold = WarnAt;
         MemoryBar.WarnThreshold = FullAt;
+
+        DismissButton.Icon = IS14OsStyle.Resolve(_sprites, IS14OsStyle.Close);
+        DismissButton.ToolTip = Loc.GetString("is14-os-hub-dismiss");
+        DismissButton.OnPressed += _ => OnDismissError?.Invoke();
 
         PreviewCloseButton.Icon = IS14OsStyle.Resolve(_sprites, IS14OsStyle.Close);
         PreviewCloseButton.ToolTip = Loc.GetString("is14-os-files-close-preview");
@@ -146,7 +165,8 @@ public sealed partial class FilesAppFragment : BoxContainer
         MemoryValue.Text = Loc.GetString("is14-os-files-memory", ("used", used), ("total", shell.MemoryTotal));
         MemoryBreakdown.Text = Loc.GetString("is14-os-files-memory-breakdown",
             ("system", shell.MemorySystem),
-            ("apps", Math.Max(0, shell.MemoryUsed - shell.MemoryFiles)),
+            ("apps", Math.Max(0, shell.MemoryUsed - shell.MemoryFiles - shell.MemoryData)),
+            ("data", shell.MemoryData),
             ("files", shell.MemoryFiles));
         MemoryFree.Text = Loc.GetString("is14-os-files-memory-free", ("free", free));
 
@@ -163,6 +183,11 @@ public sealed partial class FilesAppFragment : BoxContainer
     public void UpdateState(OsFilesState state)
     {
         _files = state;
+
+        ErrorPanel.Visible = state.Error != null;
+        if (state.Error != null)
+            ErrorLabel.Text = Loc.GetString(state.Error);
+
         UpdatePreview(state);
         Rebuild();
     }
@@ -236,7 +261,7 @@ public sealed partial class FilesAppFragment : BoxContainer
             message = FormattedMessage.FromUnformatted(text);
         }
 
-        PreviewText.SetMessage(message, _palette.Text);
+        PreviewText.SetMessage(message, IS14DocumentText.Tags, _palette.Text);
         PreviewTextScroll.Visible = true;
     }
 
@@ -267,6 +292,8 @@ public sealed partial class FilesAppFragment : BoxContainer
 
         if (_section == SectionApps)
             RebuildApps(_shell);
+        else if (_section == SectionDisk)
+            RebuildDisk();
         else
             RebuildFiles();
     }
@@ -275,11 +302,149 @@ public sealed partial class FilesAppFragment : BoxContainer
     {
         var fileCount = _files?.Files.Count ?? 0;
 
-        Sections.SetItems(new List<ChoiceStripItem>
+        var items = new List<ChoiceStripItem>
         {
             new(SectionApps, Loc.GetString("is14-os-files-section-apps")),
             new(SectionFiles, Loc.GetString("is14-os-files-section-files", ("count", fileCount))),
-        }, _section);
+        };
+
+        if (_files?.Disk != null)
+            items.Add(new ChoiceStripItem(SectionDisk, Loc.GetString("is14-os-files-section-disk"), _diskIcon));
+        else if (_section == SectionDisk)
+            _section = SectionFiles;   // the disk was pulled out from under the tab
+
+        Sections.SetItems(items, _section);
+    }
+
+    /// <summary>
+    ///     What is on the disk, and the two things worth doing with it: install the software,
+    ///     take the files. Copying the other way lives on the device file rows instead, next to
+    ///     the file being copied, because that is where the player is looking at it.
+    /// </summary>
+    private void RebuildDisk()
+    {
+        if (_files?.Disk is not { } disk)
+            return;
+
+        EntryList.AddChild(new StatRow
+        {
+            Palette = _palette,
+            Icon = _diskIcon,
+            Caption = disk.Name,
+            Value = Loc.GetString("is14-os-files-memory", ("used", disk.Used), ("total", disk.Capacity)),
+            Margin = new Thickness(0, 0, 0, 3),
+        });
+
+        if (disk.Apps.Count == 0 && disk.Files.Count == 0)
+        {
+            EntryList.AddChild(new Label
+            {
+                Text = Loc.GetString("is14-os-files-disk-empty"),
+                FontColorOverride = _palette.Muted,
+            });
+
+            return;
+        }
+
+        foreach (var appId in disk.Apps)
+        {
+            if (appId.Id is not { } id || !_proto.TryIndex<IS14OsAppPrototype>(id, out var app))
+                continue;
+
+            var row = new StatRow
+            {
+                Palette = _palette,
+                Framed = true,
+                Icon = IS14OsStyle.Resolve(_sprites, app.Icon ?? IS14OsStyle.Fallback),
+                Caption = Loc.GetString(app.Name),
+                Value = Loc.GetString("is14-os-files-size", ("size", app.Size)),
+                Margin = new Thickness(0, 0, 0, 2),
+                ToolTip = app.Description == null ? null : Loc.GetString(app.Description),
+            };
+
+            var already = _shell?.Installed.Any(a => a.Id == id) == true;
+            var incompatible = disk.Incompatible.Any(a => a.Id == id);
+
+            // A program that cannot run here is not a button worth pressing: say so on the row
+            // rather than letting the press be the way the player finds out.
+            if (incompatible)
+                row.ModulateSelfOverride = _palette.Muted;
+
+            var install = new IconTile
+            {
+                Palette = _palette,
+                Compact = true,
+                Icon = _toDeviceIcon,
+                IconSize = 12,
+                Disabled = already || incompatible,
+                ToolTip = Loc.GetString(incompatible
+                    ? "is14-os-disk-error-device"
+                    : already
+                        ? "is14-os-hub-installed"
+                        : "is14-os-files-disk-install"),
+            };
+
+            install.OnPressed += _ =>
+            {
+                install.Disabled = true;
+                OnDiskInstall?.Invoke(id);
+            };
+
+            row.SetTrailing(install);
+            EntryList.AddChild(row);
+        }
+
+        foreach (var file in disk.Files)
+        {
+            var row = new StatRow
+            {
+                Palette = _palette,
+                Framed = true,
+                Icon = IS14OsStyle.Resolve(_sprites,
+                    file.Kind == OsFileKind.Photo ? IS14OsStyle.Photo : IS14OsStyle.Note),
+                Caption = file.Name,
+                Value = Loc.GetString("is14-os-files-size", ("size", file.Size)),
+                Margin = new Thickness(0, 0, 0, 2),
+            };
+
+            var buttons = new BoxContainer { Orientation = LayoutOrientation.Horizontal };
+            var id = file.Id;
+
+            var copy = new IconTile
+            {
+                Palette = _palette,
+                Compact = true,
+                Icon = _toDeviceIcon,
+                IconSize = 12,
+                ToolTip = Loc.GetString("is14-os-files-disk-copy-in"),
+                Margin = new Thickness(0, 0, 3, 0),
+            };
+            copy.OnPressed += _ => OnDiskCopy?.Invoke(id, false);
+            buttons.AddChild(copy);
+
+            if (disk.Writable)
+            {
+                var erase = new IconTile
+                {
+                    Palette = _palette,
+                    Compact = true,
+                    Icon = _deleteIcon,
+                    IconSize = 12,
+                    ToolTip = Loc.GetString("is14-os-files-disk-erase"),
+                };
+
+                erase.OnPressed += _ =>
+                {
+                    erase.Disabled = true;
+                    OnDiskDelete?.Invoke(id);
+                };
+
+                buttons.AddChild(erase);
+            }
+
+            row.SetTrailing(buttons);
+            EntryList.AddChild(row);
+        }
     }
 
     private void RebuildApps(OsShellState shell)
@@ -402,6 +567,26 @@ public sealed partial class FilesAppFragment : BoxContainer
             };
 
             buttons.AddChild(open);
+
+            // Only offered when a writable disk is actually in the drive: a button that is
+            // always there and usually does nothing teaches the player to ignore it.
+            if (_files.Disk is { Writable: true })
+            {
+                var toDisk = new IconTile
+                {
+                    Palette = _palette,
+                    Compact = true,
+                    Icon = _toDiskIcon,
+                    IconSize = 12,
+                    ToolTip = Loc.GetString("is14-os-files-disk-copy-out"),
+                    Margin = new Thickness(0, 0, 3, 0),
+                };
+
+                var copyId = file.Id;
+                toDisk.OnPressed += _ => OnDiskCopy?.Invoke(copyId, true);
+                buttons.AddChild(toDisk);
+            }
+
             buttons.AddChild(rename);
             buttons.AddChild(delete);
             row.SetTrailing(buttons);
@@ -454,6 +639,15 @@ public sealed partial class FilesAppFragment : BoxContainer
     public void ApplyTheme(IS14ThemePalette palette)
     {
         _palette = palette;
+
+        DismissButton.Palette = palette;
+        ErrorLabel.FontColorOverride = palette.Bad;
+        ErrorPanel.PanelOverride = new StyleBoxFlat
+        {
+            BackgroundColor = palette.Panel,
+            BorderColor = palette.Bad,
+            BorderThickness = new Thickness(1),
+        };
 
         MemoryPanel.PanelOverride = new StyleBoxFlat
         {

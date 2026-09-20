@@ -42,6 +42,15 @@ public abstract class IS14OsAppUi
     {
     }
 
+    /// <summary>
+    ///     The window is about to be closed. The server drops app events for an app that is no
+    ///     longer open, so anything an app still has to say has to be said here — afterwards is
+    ///     too late, not merely late.
+    /// </summary>
+    public virtual void Closing()
+    {
+    }
+
     protected void SendAppEvent(string appId, IS14OsAppEvent ev)
     {
         Bui.SendAppEvent(appId, ev);

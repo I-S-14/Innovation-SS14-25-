@@ -511,6 +511,31 @@ namespace Content.Server.Cargo.Systems
 
         #endregion
 
+        //IS14-change start
+        /// <summary>
+        /// Builds the order console's state without pushing it into a BUI, so the IS14 OS can
+        /// show the same orders inside an application (Docs/_IS14/os-design.md §12.2).
+        /// Returns null when the console has no station or no order database behind it.
+        /// </summary>
+        public CargoConsoleInterfaceState? BuildOrderState(EntityUid consoleUid)
+        {
+            if (!TryComp<CargoOrderConsoleComponent>(consoleUid, out var console))
+                return null;
+
+            var station = _station.GetOwningStation(consoleUid);
+            if (!TryComp<StationCargoOrderDatabaseComponent>(station, out var orderDatabase))
+                return null;
+
+            return new CargoConsoleInterfaceState(
+                MetaData(station.Value).EntityName,
+                GetOutstandingOrderCount((station.Value, orderDatabase), console.Account),
+                orderDatabase.Capacity,
+                GetNetEntity(station.Value),
+                RelevantOrders((station.Value, orderDatabase), (consoleUid, console)),
+                GetAvailableProducts((consoleUid, console)));
+        }
+        //IS14-change end
+
         private void UpdateOrderState(EntityUid consoleUid, EntityUid? station)
         {
             if (!TryComp<CargoOrderConsoleComponent>(consoleUid, out var console))

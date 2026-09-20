@@ -19,6 +19,7 @@ public static class IS14OsStyle
     private const string Action = "/Textures/Interface/Actions/";
     private const string Default = "/Textures/Interface/Default/";
     private const string AppIcons = "/Textures/_IS14/Interface/OS/Apps/";
+    private const string OsIcons = "/Textures/_IS14/Interface/OS/Icons/";
 
     public static readonly SpriteSpecifier Logo = New(Nano + "ntlogo.svg.png");
     public static readonly SpriteSpecifier Clock = New(Verb + "clock.svg.192dpi.png");
@@ -61,6 +62,13 @@ public static class IS14OsStyle
 
     public static readonly SpriteSpecifier Settings = New(AppIcons + "settings.png");
     public static readonly SpriteSpecifier Rename = New("/Textures/Interface/pencil.png");
+    public static readonly SpriteSpecifier SaveFile = New("/Textures/_IS14/Interface/OS/Icons/save.png");
+    public static readonly SpriteSpecifier Signal = New(OsIcons + "signal.png");
+    public static readonly SpriteSpecifier Disk = New(OsIcons + "disk.png");
+    public static readonly SpriteSpecifier Wallpaper = New(OsIcons + "wallpaper.png");
+    public static readonly SpriteSpecifier Check = New(OsIcons + "check.png");
+    public static readonly SpriteSpecifier Box = New(OsIcons + "box.png");
+    public static readonly SpriteSpecifier Plus = New(Verb + "plus.svg.192dpi.png");
 
     private static SpriteSpecifier New(string path)
     {

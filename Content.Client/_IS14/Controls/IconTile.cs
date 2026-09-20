@@ -40,11 +40,10 @@ public sealed class IconTile : ContainerButton
                 ? BoxContainer.LayoutOrientation.Horizontal
                 : BoxContainer.LayoutOrientation.Vertical;
 
-            _icon.Margin = value ? new Thickness(0, 0, 6, 0) : new Thickness(0, 0, 0, 3);
-            _swatch.Margin = _icon.Margin;
             _caption.VerticalAlignment = value ? VAlignment.Center : VAlignment.Top;
             _caption.Align = value ? Label.AlignMode.Left : Label.AlignMode.Center;
 
+            UpdateIconSpacing();
             UpdateCaptionLayout();
         }
     }
@@ -66,7 +65,25 @@ public sealed class IconTile : ContainerButton
         {
             _caption.Text = value;
             _caption.Visible = !string.IsNullOrEmpty(value);
+
+            UpdateIconSpacing();
         }
+    }
+
+    /// <summary>
+    ///     The gap between the icon and the caption only exists when there is a caption. Left
+    ///     in unconditionally it becomes dead space on one side of an icon-only tile, and the
+    ///     glyph sits visibly off-centre in its own button.
+    /// </summary>
+    private void UpdateIconSpacing()
+    {
+        var gap = !string.IsNullOrEmpty(_caption.Text);
+
+        _icon.Margin = Compact
+            ? new Thickness(0, 0, gap ? 6 : 0, 0)
+            : new Thickness(0, 0, 0, gap ? 3 : 0);
+
+        _swatch.Margin = _icon.Margin;
     }
 
     public float IconSize

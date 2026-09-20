@@ -23,6 +23,7 @@ public sealed class IS14OsAppHubSystem : EntitySystem
     [Dependency] private readonly IS14OsSystem _os = default!;
     [Dependency] private readonly IS14OsMemorySystem _memory = default!;
     [Dependency] private readonly AccessReaderSystem _access = default!;
+    [Dependency] private readonly IS14OsNetworkSystem _network = default!;
 
     public const string AppId = "AppHub";
 
@@ -61,7 +62,18 @@ public sealed class IS14OsAppHubSystem : EntitySystem
                 continue;
             }
 
-            hub.Downloaded += hub.Speed * step;
+            // Signal sets the rate, and losing it altogether stops the transfer where it
+            // stands. This is the "run to a console to finish the download" moment (Docs §7.1).
+            var rate = hub.Speed * _network.GetSpeedMultiplier(_network.GetSignal(uid, device));
+
+            if (rate <= 0f)
+            {
+                Abort(hub, "is14-os-hub-error-network");
+                _os.UpdateUi(uid, device);
+                continue;
+            }
+
+            hub.Downloaded += rate * step;
 
             if (hub.Downloaded < proto.Size)
             {
@@ -176,6 +188,12 @@ public sealed class IS14OsAppHubSystem : EntitySystem
         if (proto.Size > _memory.GetFreeMemory((ent.Owner, device, memory)))
         {
             ent.Comp.Error = "is14-os-hub-error-memory";
+            return;
+        }
+
+        if (_network.GetSpeedMultiplier(_network.GetSignal(ent.Owner, device)) <= 0f)
+        {
+            ent.Comp.Error = "is14-os-hub-error-network";
             return;
         }
 

@@ -33,4 +33,12 @@ public sealed partial class PayrollConsoleComponent : Component
     /// </summary>
     [ViewVariables]
     public readonly List<PayrollLogEntry> Log = new();
+
+    /// <summary>
+    /// Localized result of the last operation. Kept here rather than passed straight into a
+    /// UI state because the console now has two front ends — the standalone window and the OS
+    /// application — and both have to be able to read the same answer.
+    /// </summary>
+    [ViewVariables]
+    public string Status = string.Empty;
 }

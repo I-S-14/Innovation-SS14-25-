@@ -11,6 +11,7 @@ using Robust.Client.ResourceManagement;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
 using Robust.Client.UserInterface.XAML;
+using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 
 namespace Content.Client._IS14.OS.Apps;
@@ -39,6 +40,15 @@ public sealed class NotesAppUi : IS14OsAppUi
         Fragment.OnExport += name => SendAppEvent(AppId, new OsNotesExportEvent(name));
     }
 
+    /// <summary>
+    ///     Last chance to keep what the writer typed: the moment the window is gone the server
+    ///     stops accepting the app's events, so an unsaved document would go with it.
+    /// </summary>
+    public override void Closing()
+    {
+        Fragment.Flush();
+    }
+
     public override void UpdateState(IS14OsAppState state)
     {
         if (state is OsNotesState notes)
@@ -59,6 +69,13 @@ public sealed partial class NotesAppFragment : BoxContainer
 
     /// <summary>Kept in step with the server's cap so the counter can warn before it truncates.</summary>
     private const int MaxLength = 4000;
+
+    /// <summary>
+    ///     How long the writer has to stop typing before the document is written back to the
+    ///     device. Short enough that nothing is lost in practice, long enough that holding a
+    ///     key down does not send a message per character.
+    /// </summary>
+    private const float AutoSaveDelay = 1.5f;
 
     /// <summary>Word's palette is a grid; a PDA gets one row. Hex, so the file reads the same anywhere.</summary>
     private static readonly (string Hex, string Loc)[] Swatches =
@@ -84,6 +101,9 @@ public sealed partial class NotesAppFragment : BoxContainer
     /// <summary>Set while the app writes into the controls itself, so that does not read as an edit.</summary>
     private bool _loading;
 
+    private bool _dirty;
+    private float _idle;
+
     public event Action<string, string>? OnSave;
     public event Action<string>? OnExport;
 
@@ -107,14 +127,11 @@ public sealed partial class NotesAppFragment : BoxContainer
         NoteEdit.Placeholder = new Rope.Leaf(Loc.GetString("is14-os-notes-placeholder"));
         NoteEdit.OnTextChanged += _ => MarkEdited();
 
-        SaveButton.Icon = IS14OsStyle.Resolve(sprites, IS14OsStyle.Save);
-        SaveButton.Caption = Loc.GetString("is14-os-notes-save");
-        SaveButton.OnPressed += _ => Save();
-
-        ExportButton.Icon = IS14OsStyle.Resolve(sprites, IS14OsStyle.Note);
-        ExportButton.Caption = Loc.GetString("is14-os-notes-export");
-        ExportButton.ToolTip = Loc.GetString("is14-os-notes-export-tooltip");
-        ExportButton.OnPressed += _ => OnExport?.Invoke(ExportName());
+        // One button, and it is not "save": the document keeps itself on the device. This is
+        // the one thing that has to be asked for - turning it into a file other people can read.
+        SaveFileButton.Icon = IS14OsStyle.Resolve(sprites, IS14OsStyle.SaveFile);
+        SaveFileButton.ToolTip = Loc.GetString("is14-os-notes-export-tooltip");
+        SaveFileButton.OnPressed += _ => OnExport?.Invoke(ExportName());
 
         Refresh();
     }
@@ -133,6 +150,15 @@ public sealed partial class NotesAppFragment : BoxContainer
         ItalicButton.Text = Loc.GetString("is14-os-notes-italic-glyph");
         ItalicButton.ToolTip = Loc.GetString("is14-os-notes-italic");
         ItalicButton.OnPressed += _ => Wrap("[italic]", "[/italic]");
+
+        BoldItalicButton.Font = _resource.GetFont(FontDir + "NotoSans-BoldItalic.ttf", ToolFontSize);
+        BoldItalicButton.Text = Loc.GetString("is14-os-notes-bolditalic-glyph");
+        BoldItalicButton.ToolTip = Loc.GetString("is14-os-notes-bolditalic");
+        BoldItalicButton.OnPressed += _ => Wrap("[bolditalic]", "[/bolditalic]");
+
+        MonoButton.Text = Loc.GetString("is14-os-notes-mono-glyph");
+        MonoButton.ToolTip = Loc.GetString("is14-os-notes-mono");
+        MonoButton.OnPressed += _ => Wrap("[mono]", "[/mono]");
 
         SetupHeading(Head1Button, 1);
         SetupHeading(Head2Button, 2);
@@ -211,6 +237,10 @@ public sealed partial class NotesAppFragment : BoxContainer
     ///     Wraps the selection in a tag pair, or opens an empty one at the caret. Both are what
     ///     a formatting button does in a word processor: with text selected it formats it, with
     ///     nothing selected it turns the style on for whatever gets typed next.
+    ///
+    ///     Pressing it on text that already carries the tag takes it off again. A button that
+    ///     only ever adds would leave <c>[bold][bold]x[/bold][/bold]</c> behind, and the writer
+    ///     cannot see the difference until it is time to pick the brackets out by hand.
     /// </summary>
     private void Wrap(string open, string close)
     {
@@ -218,6 +248,9 @@ public sealed partial class NotesAppFragment : BoxContainer
         var lower = NoteEdit.SelectionLower.Index;
         var upper = NoteEdit.SelectionUpper.Index;
         var selected = text[lower..upper];
+
+        if (TryUnwrap(text, lower, upper, selected, open, close))
+            return;
 
         NoteEdit.InsertAtCursor(open + selected + close);
 
@@ -227,6 +260,34 @@ public sealed partial class NotesAppFragment : BoxContainer
 
         // InsertAtCursor raises OnTextChanged for us, so the status bar is already up to date.
         NoteEdit.GrabKeyboardFocus();
+    }
+
+    /// <summary>
+    ///     Takes the tag pair off again, whether the writer selected the tags along with the
+    ///     text or only the text between them.
+    /// </summary>
+    private bool TryUnwrap(string text, int lower, int upper, string selected, string open, string close)
+    {
+        if (selected.Length >= open.Length + close.Length
+            && selected.StartsWith(open, StringComparison.Ordinal)
+            && selected.EndsWith(close, StringComparison.Ordinal))
+        {
+            var inner = selected[open.Length..^close.Length];
+            SetText(text[..lower] + inner + text[upper..], lower + inner.Length);
+            return true;
+        }
+
+        if (lower >= open.Length
+            && upper + close.Length <= text.Length
+            && string.CompareOrdinal(text, lower - open.Length, open, 0, open.Length) == 0
+            && string.CompareOrdinal(text, upper, close, 0, close.Length) == 0)
+        {
+            var start = lower - open.Length;
+            SetText(text[..start] + selected + text[(upper + close.Length)..], start + selected.Length);
+            return true;
+        }
+
+        return false;
     }
 
     /// <summary>A bullet belongs at the start of its line, not wherever the caret happens to sit.</summary>
@@ -280,8 +341,36 @@ public sealed partial class NotesAppFragment : BoxContainer
         MarkEdited();
     }
 
+    /// <summary>Writes the document back to the device if anything changed since last time.</summary>
+    public void Flush()
+    {
+        if (_dirty)
+            Save();
+    }
+
+    /// <summary>
+    ///     The document saves itself once the writer pauses. A note that survives only if you
+    ///     remember to press a button is a note that gets lost, and on a device someone can
+    ///     make you drop there is no reliable moment to press it.
+    /// </summary>
+    protected override void FrameUpdate(FrameEventArgs args)
+    {
+        base.FrameUpdate(args);
+
+        if (!_dirty)
+            return;
+
+        _idle += args.DeltaSeconds;
+
+        if (_idle >= AutoSaveDelay)
+            Save();
+    }
+
     private void Save()
     {
+        _dirty = false;
+        _idle = 0f;
+
         _saved = Rope.Collapse(NoteEdit.TextRope);
         _savedTitle = TitleEdit.Text.Trim();
 
@@ -311,9 +400,10 @@ public sealed partial class NotesAppFragment : BoxContainer
         if (_loading)
             return;
 
-        var dirty = Rope.Collapse(NoteEdit.TextRope) != _saved || TitleEdit.Text.Trim() != _savedTitle;
+        _dirty = Rope.Collapse(NoteEdit.TextRope) != _saved || TitleEdit.Text.Trim() != _savedTitle;
+        _idle = 0f;
 
-        if (dirty)
+        if (_dirty)
         {
             SavedLabel.Text = Loc.GetString("is14-os-notes-unsaved");
             SavedLabel.FontColorOverride = _palette.Warn;
@@ -356,7 +446,7 @@ public sealed partial class NotesAppFragment : BoxContainer
             message = FormattedMessage.FromUnformatted(text);
         }
 
-        PreviewText.SetMessage(message, _palette.Text);
+        PreviewText.SetMessage(message, IS14DocumentText.Tags, _palette.Text);
     }
 
     public void UpdateState(OsNotesState state)
@@ -376,6 +466,8 @@ public sealed partial class NotesAppFragment : BoxContainer
 
         _saved = state.Text;
         _savedTitle = state.Title;
+        _dirty = false;
+        _idle = 0f;
 
         NoteEdit.TextRope = new Rope.Leaf(state.Text);
         TitleEdit.Text = state.Title;
@@ -464,11 +556,12 @@ public sealed partial class NotesAppFragment : BoxContainer
         SavedLabel.FontColorOverride = palette.Good;
         CountLabel.FontColorOverride = palette.Muted;
 
-        SaveButton.Palette = palette;
-        ExportButton.Palette = palette;
+        SaveFileButton.Palette = palette;
 
         BoldButton.Palette = palette;
         ItalicButton.Palette = palette;
+        BoldItalicButton.Palette = palette;
+        MonoButton.Palette = palette;
         Head1Button.Palette = palette;
         Head2Button.Palette = palette;
         Head3Button.Palette = palette;

@@ -49,6 +49,9 @@ public sealed class OsShellState
 
     /// <summary>Taken by stored files, counted apart from apps so the readout can say which.</summary>
     public int MemoryFiles;
+
+    /// <summary>Taken by application data — chat history and the like — rather than by programs.</summary>
+    public int MemoryData;
     public int MemorySlotsFree;
 
     /// <summary>Charge 0..1, or null when the device does not run on a cell at all.</summary>
@@ -61,6 +64,15 @@ public sealed class OsShellState
     /// <summary>Themes this device is allowed to switch to right now.</summary>
     public List<ProtoId<IS14OsThemePrototype>> Themes = new();
 
+    /// <summary>
+    ///     Current wallpaper: a wallpaper prototype id, or "photo:{id}" for one of the device's
+    ///     own pictures. The client caches by this string and only asks for bytes when it changes.
+    /// </summary>
+    public string? Wallpaper;
+
+    /// <summary>PNG bytes of a photo wallpaper, sent once in answer to a client request.</summary>
+    public byte[]? WallpaperData;
+
     // Tray / status readouts. Kept in the shell rather than in an app state because the
     // taskbar shows them too.
     public string DeviceName = string.Empty;
@@ -72,6 +84,9 @@ public sealed class OsShellState
     public Color AlertColor = Color.White;
     public string? AlertInstructions;
     public string? Address;
+
+    /// <summary>Link to the station network. Drives the tray indicator and networked apps (§9).</summary>
+    public OsSignal Signal;
     public bool FlashlightOn;
     public bool HasFlashlight;
     public bool HasRinger;

@@ -1,0 +1,15 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+#
+# Cheap on purpose. A disk is not power, it is a way to move software and files around by hand,
+# and the interesting thing about it is that it can be carried off — which only matters if they
+# are common enough for people to actually keep things on them.
+
+- type: cargoProduct
+  id: IS14OsDisksOrder
+  icon:
+    sprite: Objects/Misc/module.rsi
+    state: datadisk_base
+  product: IS14CrateOsDisks
+  cost: 700
+  category: cargoproduct-category-name-service
+  group: market

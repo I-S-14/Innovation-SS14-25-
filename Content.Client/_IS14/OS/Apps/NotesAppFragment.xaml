@@ -12,7 +12,9 @@
     <PanelContainer Name="ToolbarPanel" Margin="0 0 0 3">
         <BoxContainer Orientation="Horizontal" Margin="3 2">
             <controls:ToolButton Name="BoldButton" Margin="0 0 2 0" />
-            <controls:ToolButton Name="ItalicButton" Margin="0 0 6 0" />
+            <controls:ToolButton Name="ItalicButton" Margin="0 0 2 0" />
+            <controls:ToolButton Name="BoldItalicButton" Margin="0 0 2 0" />
+            <controls:ToolButton Name="MonoButton" Margin="0 0 6 0" />
             <controls:ToolButton Name="Head1Button" Margin="0 0 2 0" />
             <controls:ToolButton Name="Head2Button" Margin="0 0 2 0" />
             <controls:ToolButton Name="Head3Button" Margin="0 0 6 0" />
@@ -44,7 +46,6 @@
     <BoxContainer Orientation="Horizontal" Margin="0 4 0 0">
         <Label Name="CountLabel" VerticalAlignment="Center" Margin="0 0 6 0" />
         <Label Name="SavedLabel" HorizontalExpand="True" VerticalAlignment="Center" ClipText="True" />
-        <controls:IconTile Name="ExportButton" Compact="True" IconSize="14" Margin="0 0 3 0" />
-        <controls:IconTile Name="SaveButton" Compact="True" IconSize="14" MinWidth="96" />
+        <controls:IconTile Name="SaveFileButton" Compact="True" IconSize="14" MinWidth="30" />
     </BoxContainer>
 </apps:NotesAppFragment>

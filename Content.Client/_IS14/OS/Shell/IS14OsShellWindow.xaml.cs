@@ -1,3 +1,4 @@
+using System.IO;
 using System.Linq;
 using System.Numerics;
 using Content.Client._IS14.Controls;
@@ -34,6 +35,12 @@ public sealed partial class IS14OsShellWindow : FancyWindow
     /// <summary>Settings has its own button, so it is always one press away from anywhere.</summary>
     private const string SettingsApp = "AppSettings";
 
+    /// <summary>Mirrors IS14OsSystem.PhotoWallpaperPrefix; shared code cannot see the server one.</summary>
+    private const string PhotoWallpaperPrefix = "photo:";
+
+    /// <summary>Status strip, taskbar and title bar: what the window costs around the desktop.</summary>
+    private static readonly Vector2 ChromeSize = new(60, 100);
+
     /// <summary>Width of a task tab cut down to the icon and its close button.</summary>
     private const float IconTabWidth = 48f;
 
@@ -46,6 +53,13 @@ public sealed partial class IS14OsShellWindow : FancyWindow
     private OsShellState? _shell;
     private IS14ThemePalette _palette = IS14ThemePalette.Default;
     private string? _lastThemeId;
+
+    /// <summary>Wallpaper the rect currently shows, so a photo is decoded once, not per push.</summary>
+    private string? _wallpaperId;
+    private bool _wallpaperAsked;
+
+    /// <summary>Desktop size the window has already been sized for.</summary>
+    private Vector2? _screenSize;
 
     public event Action<string>? OnOpenApp;
     public event Action<string>? OnCloseApp;
@@ -88,6 +102,7 @@ public sealed partial class IS14OsShellWindow : FancyWindow
         AlertIcon.Texture = IS14OsStyle.Resolve(_sprites, IS14OsStyle.Alert);
         BatteryIcon.Texture = IS14OsStyle.Resolve(_sprites, IS14OsStyle.Battery);
         AddressIcon.Texture = IS14OsStyle.Resolve(_sprites, IS14OsStyle.Address);
+        SignalIcon.Texture = IS14OsStyle.Resolve(_sprites, IS14OsStyle.Signal);
     }
 
     protected override void FrameUpdate(FrameEventArgs args)
@@ -120,6 +135,8 @@ public sealed partial class IS14OsShellWindow : FancyWindow
         if (booting)
             StartMenuPanel.Visible = false;
 
+        ApplyScreenSize(state.Shell);
+        UpdateWallpaper(state.Shell);
         SyncWindows(state);
         RebuildTaskbar(state.Shell);
         RebuildShortcuts(state.Shell);
@@ -165,7 +182,7 @@ public sealed partial class IS14OsShellWindow : FancyWindow
                 window.Initialize(appId, ui);
                 window.Title = Loc.GetString(app.Name);
                 window.Icon = ResolveAppIcon(app);
-                window.OnCloseRequested += id => OnCloseApp?.Invoke(id);
+                window.OnCloseRequested += RequestClose;
                 window.OnMinimizeRequested += id => OnMinimizeApp?.Invoke(id);
                 window.OnFocusRequested += id => OnFocusApp?.Invoke(id);
 
@@ -192,16 +209,77 @@ public sealed partial class IS14OsShellWindow : FancyWindow
         }
 
         // Server list order is z-order: the last open app is on top.
+        var topmost = state.Shell.Open.Count > 0 ? state.Shell.Open[^1].Id : null;
+
         foreach (var windowState in state.Windows)
         {
-            if (windowState.App.Id is { } id
-                && _windows.TryGetValue(id, out var window)
-                && window.Visible
-                && window.Parent != null)
-            {
+            if (windowState.App.Id is not { } id || !_windows.TryGetValue(id, out var window))
+                continue;
+
+            window.Focused = id == topmost;
+
+            if (window.Visible && window.Parent != null)
                 window.SetPositionLast();
+        }
+    }
+
+    /// <summary>
+    ///     Sizes the window to the device's screen. Without this every device got the PDA's
+    ///     460x420 no matter what its profile said, which makes a five-window console useless:
+    ///     the whole point of a stationary machine is two windows side by side (§12.3).
+    ///     The constant is the shell's own chrome — status strip, taskbar and title bar — and is
+    ///     exactly what the handheld's hand-picked 460x420 was over its 400x320 desktop.
+    /// </summary>
+    private void ApplyScreenSize(OsShellState shell)
+    {
+        if (_screenSize == shell.ScreenSize || shell.ScreenSize.X <= 0 || shell.ScreenSize.Y <= 0)
+            return;
+
+        _screenSize = shell.ScreenSize;
+
+        var size = shell.ScreenSize + ChromeSize;
+        MinSize = size;
+        SetSize = size;
+    }
+
+    /// <summary>
+    ///     Puts up the current wallpaper. A prototype one is a texture path the client can load
+    ///     itself; a photo has to be asked for, and is asked for exactly once per picture — the
+    ///     bytes must never become part of the routine state push (Docs §4.5).
+    /// </summary>
+    private void UpdateWallpaper(OsShellState shell)
+    {
+        if (shell.Wallpaper != _wallpaperId)
+        {
+            _wallpaperId = shell.Wallpaper;
+            _wallpaperAsked = false;
+            WallpaperRect.Texture = null;
+
+            if (_wallpaperId != null && !_wallpaperId.StartsWith(PhotoWallpaperPrefix)
+                && _proto.TryIndex<IS14OsWallpaperPrototype>(_wallpaperId, out var proto))
+            {
+                WallpaperRect.Texture = IS14OsStyle.Resolve(_sprites, new SpriteSpecifier.Texture(proto.Texture));
             }
         }
+
+        if (shell.WallpaperData is { } data && WallpaperRect.Texture == null)
+        {
+            using var stream = new MemoryStream(data);
+            WallpaperRect.Texture = Texture.LoadFromPNGStream(stream);
+        }
+
+        // One request per picture: a photo that was deleted out from under us would otherwise
+        // have the client asking again on every single state push.
+        if (WallpaperRect.Texture == null
+            && !_wallpaperAsked
+            && _wallpaperId != null
+            && _wallpaperId.StartsWith(PhotoWallpaperPrefix))
+        {
+            _wallpaperAsked = true;
+            _bui?.SendShellAction(OsShellAction.RequestWallpaper);
+        }
+
+        WallpaperRect.Visible = WallpaperRect.Texture != null;
     }
 
     private Vector2 NextCascadePosition()
@@ -360,12 +438,24 @@ public sealed partial class IS14OsShellWindow : FancyWindow
             ToolTip = Loc.GetString("is14-os-taskbar-close"),
         };
 
-        close.OnPressed += _ => OnCloseApp?.Invoke(id);
+        close.OnPressed += _ => RequestClose(id);
 
         tab.AddChild(tile);
         tab.AddChild(close);
 
         return (tab, tile);
+    }
+
+    /// <summary>
+    ///     Closing an app, from its own title bar or from its taskbar tab. Both go through
+    ///     here so the app gets told first: after the server closes it, it can no longer save.
+    /// </summary>
+    private void RequestClose(string appId)
+    {
+        if (_windows.TryGetValue(appId, out var window))
+            window.Ui.Closing();
+
+        OnCloseApp?.Invoke(appId);
     }
 
     private void ToggleStartMenu()
@@ -437,7 +527,33 @@ public sealed partial class IS14OsShellWindow : FancyWindow
         AddressLabel.FontColorOverride = _palette.Muted;
         AddressIcon.ModulateSelfOverride = _palette.Muted;
 
+        UpdateSignal(_shell.Signal);
         UpdateBattery(_shell.Battery);
+    }
+
+    /// <summary>
+    ///     Link readout. One glyph and one word: the player has to be able to tell "the
+    ///     messenger is broken" from "comms are down" without opening anything.
+    /// </summary>
+    private void UpdateSignal(OsSignal signal)
+    {
+        SignalLabel.Text = Loc.GetString(signal switch
+        {
+            OsSignal.Wired => "is14-os-signal-wired",
+            OsSignal.Good => "is14-os-signal-good",
+            OsSignal.Low => "is14-os-signal-low",
+            _ => "is14-os-signal-none",
+        });
+
+        var color = signal switch
+        {
+            OsSignal.None => _palette.Bad,
+            OsSignal.Low => _palette.Warn,
+            _ => _palette.Muted,
+        };
+
+        SignalLabel.FontColorOverride = color;
+        SignalIcon.ModulateSelfOverride = color;
     }
 
     /// <summary>

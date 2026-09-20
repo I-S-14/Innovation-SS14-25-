@@ -9,4 +9,13 @@ public sealed partial class IS14OsFilesComponent : Component
 {
     [ViewVariables]
     public int? OpenFile;
+
+    /// <summary>
+    ///     Loc id of the last refused disk operation, shown until dismissed. A button that does
+    ///     nothing when pressed is indistinguishable from a broken one, and every reason a disk
+    ///     install can fail — wrong kind of device, no room, already installed — is something
+    ///     the player can act on once they are told.
+    /// </summary>
+    [ViewVariables]
+    public string? Error;
 }

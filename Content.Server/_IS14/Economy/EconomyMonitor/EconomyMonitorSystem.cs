@@ -215,10 +215,51 @@ public sealed class EconomyMonitorSystem : EntitySystem
         }
     }
 
+    /// <summary>
+    ///     Entry point for the OS application (Docs §12.2): the same messages, the same handlers.
+    /// </summary>
+    public void HandleMessage(Entity<EconomyMonitorConsoleComponent> ent, BoundUserInterfaceMessage message)
+    {
+        switch (message)
+        {
+            case EconomyMonitorDeleteMessage delete:
+                OnDelete(ent, ref delete);
+                break;
+
+            case EconomyMonitorPrintMessage print:
+                OnPrint(ent, ref print);
+                break;
+        }
+    }
+
+    /// <summary>
+    ///     Builds the console's state, or null when no monitor server answers on its network.
+    ///     Shared by the standalone console and the OS app.
+    /// </summary>
+    public EconomyMonitorUiState? BuildState(Entity<EconomyMonitorConsoleComponent> ent)
+    {
+        if (!TryFindServer(ent.Comp.NetworkId, out _, out var server))
+            return null;
+
+        // The client draws the map off the grid's NavMapComponent, so make sure the grid the
+        // console is standing on actually has one before promising it a map.
+        var gridUid = Transform(ent.Owner).GridUid;
+        if (gridUid != null)
+            EnsureComp<NavMapComponent>(gridUid.Value);
+
+        return BuildState(ent.Owner, server);
+    }
+
     private void SendState(EntityUid consoleUid, EntityUid contextUid, EconomyMonitorServerComponent server)
     {
         _pendingRefresh.Remove(consoleUid);
 
+        if (_ui.HasUi(consoleUid, EconomyMonitorUiKey.Key))
+            _ui.SetUiState(consoleUid, EconomyMonitorUiKey.Key, BuildState(contextUid, server));
+    }
+
+    private EconomyMonitorUiState BuildState(EntityUid contextUid, EconomyMonitorServerComponent server)
+    {
         var records = new List<EconomyTransactionRecord>(server.Log);
         records.Reverse();
 
@@ -227,8 +268,7 @@ public sealed class EconomyMonitorSystem : EntitySystem
         var xform = Transform(contextUid);
         var gridEnt = xform.GridUid.HasValue ? GetNetEntity(xform.GridUid.Value) : (NetEntity?)null;
 
-        _ui.SetUiState(consoleUid, EconomyMonitorUiKey.Key,
-            new EconomyMonitorUiState(records, vendors, gridEnt));
+        return new EconomyMonitorUiState(records, vendors, gridEnt);
     }
 
     private List<EconomyVendorBlipInfo> CollectVendors(EntityUid consoleUid)

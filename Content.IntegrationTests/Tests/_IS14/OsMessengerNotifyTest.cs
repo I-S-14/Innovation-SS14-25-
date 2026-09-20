@@ -8,6 +8,7 @@ using Content.Client._IS14.OS;
 using Content.IntegrationTests.Pair;
 using Content.Server._IS14.OS.Apps;
 using Content.Server.GameTicking;
+using Content.Server.Power.Components;
 using Content.Shared._IS14.OS.Components;
 using Content.Shared._IS14.OS.Components.Apps;
 using Content.Shared._IS14.OS.UI;
@@ -75,6 +76,13 @@ public sealed class OsMessengerNotifyTest
 
             // A second device, on the floor next to them, to send from.
             theirs = entMan.SpawnEntity("IS14_PdaAssistant", entMan.GetComponent<TransformComponent>(player).Coordinates);
+
+            // The messenger needs a station link, and the link is the station's telecomms
+            // (Docs §9). The test map is bare, so put the server the fiction assumes on it —
+            // and tell it not to want an APC, since a bare map has no power either.
+            var telecomms = entMan.SpawnEntity("TelecomServerFilled",
+                entMan.GetComponent<TransformComponent>(player).Coordinates);
+            entMan.GetComponent<ApcPowerReceiverComponent>(telecomms).NeedsPower = false;
         });
 
         await pair.RunTicksSync(10);

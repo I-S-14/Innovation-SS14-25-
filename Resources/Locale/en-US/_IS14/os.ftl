@@ -13,6 +13,7 @@ is14-os-theme-ntos = Dark theme
 is14-os-theme-ntos-light = Light theme
 is14-os-theme-retro = Retro
 is14-os-theme-terminal = Terminal
+is14-os-theme-command = Command
 
 # Apps
 is14-os-app-status-name = Status
@@ -35,7 +36,6 @@ is14-os-status-time = Station time
 is14-os-status-address = Network address
 
 # Notes
-is14-os-notes-save = Save
 is14-os-notes-saved = Saved
 is14-os-notes-unsaved = Unsaved changes
 is14-os-notes-placeholder = Document text...
@@ -47,6 +47,10 @@ is14-os-notes-bold = Bold
 is14-os-notes-bold-glyph = B
 is14-os-notes-italic = Italic
 is14-os-notes-italic-glyph = I
+is14-os-notes-bolditalic = Bold italic
+is14-os-notes-bolditalic-glyph = BI
+is14-os-notes-mono = Monospace
+is14-os-notes-mono-glyph = 000
 is14-os-notes-heading = Heading {$level}
 is14-os-notes-heading-glyph = H{$level}
 is14-os-notes-bullet = Bullet
@@ -67,7 +71,7 @@ is14-os-notes-color-purple = Purple
 # Files
 is14-os-files-memory-caption = Memory
 is14-os-files-memory = {$used} of {$total} GQ used
-is14-os-files-memory-breakdown = system {$system} · apps {$apps} · files {$files}
+is14-os-files-memory-breakdown = system {$system} · apps {$apps} · data {$data} · files {$files}
 is14-os-files-memory-free = {$free} GQ free
 is14-os-files-system = System partition
 is14-os-files-size = {$size} GQ
@@ -99,6 +103,22 @@ is14-os-hub-cancel = Cancel download
 is14-os-hub-dismiss = Dismiss
 is14-os-hub-error-memory = Not enough memory. Remove something in Explorer.
 is14-os-hub-error-access = Access denied: the ID card does not qualify.
+is14-os-hub-error-network = No station link. The download stopped.
+
+# Network
+is14-os-signal-none = no signal
+is14-os-signal-low = weak signal
+is14-os-signal-good = online
+is14-os-signal-wired = wired
+is14-os-network-lost = NETWORK UNAVAILABLE
+
+# Wallpaper
+is14-os-settings-wallpaper = Wallpaper
+is14-os-settings-wallpaper-none = No wallpaper
+is14-os-wallpaper-banner = Red banner
+is14-os-wallpaper-nebula = Nebula
+is14-os-wallpaper-grid = Blueprint
+is14-os-wallpaper-steel = Steel
 
 # Categories
 is14-os-category-system = System
@@ -202,8 +222,91 @@ is14-os-messenger-unreachable = Recipient unreachable.
 is14-os-messenger-no-file = File not found.
 is14-os-messenger-their-memory = The recipient has no room for the attachment.
 is14-os-notes-export = To file
-is14-os-notes-export-tooltip = Save the document as a file so it can be sent in the messenger
+is14-os-notes-export-tooltip = Save the document as a separate file so it can be sent in the messenger. The text itself is kept on its own.
 is14-os-notes-export-default = Document
 is14-os-notes-export-done = Document saved to Explorer.
 is14-os-notes-export-empty = Nothing to save.
 is14-os-notes-export-no-memory = Not enough memory for the file.
+
+# Disks
+is14-os-disk-slot = disk
+is14-os-files-section-disk = Disk
+is14-os-files-disk-empty = The disk is empty.
+is14-os-files-disk-install = Install from disk
+is14-os-files-disk-copy-in = Copy to device
+is14-os-files-disk-copy-out = Copy to disk
+is14-os-files-disk-erase = Erase from disk
+is14-os-disk-error-no-disk = No disk in the drive.
+is14-os-disk-error-missing = That is not on the disk.
+is14-os-disk-error-installed = Already installed.
+is14-os-disk-error-device = Will not run on this device: the program is for stationary machines only.
+is14-os-disk-error-memory = Not enough memory. Remove something.
+is14-os-disk-error-disk-full = No room left on the disk.
+is14-os-disk-error-readonly = The disk is write-protected.
+is14-os-disk-error-refused = The install failed.
+
+ent-IS14OsDiskBase = data disk
+    .desc = A solid-state disk for a personal device.
+ent-IS14OsDiskBlank = blank disk
+    .desc = Nothing on it yet. Supply sells them by the box, and what ends up on one is nobody's business but the owner's.
+ent-IS14OsDiskOffice = office software disk
+    .desc = The everyday kit, pressed onto a disk. Installs without asking the station for anything.
+ent-IS14OsDiskCommand = command software disk
+    .desc = Treasury, the plan board and the economy monitor. Only a stationary console will take them.
+ent-IS14CrateOsDisks = data disk crate
+    .desc = Blank disks for personal devices, and one with the usual software already on it.
+
+# News
+is14-os-app-news-name = News
+is14-os-app-news-desc = The station press. Does not work without a station link.
+is14-os-news-summary = Issues
+is14-os-news-count = {$count} ({$unread} new)
+is14-os-news-none = none
+is14-os-news-empty = The press has nothing to say yet.
+is14-os-news-open = Read
+is14-os-news-back = Back to list
+is14-os-news-byline = {$author}, {$time}
+
+# Tasks
+is14-os-app-tasks-name = Tasks
+is14-os-app-tasks-desc = A shift to-do list. Kept on the device; no link needed.
+is14-os-tasks-placeholder = Something to do...
+is14-os-tasks-add = Add
+is14-os-tasks-done = Mark done
+is14-os-tasks-undo = Mark not done
+is14-os-tasks-remove = Remove
+is14-os-tasks-clear = Clear done
+is14-os-tasks-clear-tooltip = Removes every ticked task at once.
+is14-os-tasks-count = {$done} of {$total} done
+is14-os-tasks-empty = Nothing to do. Suspicious.
+
+# Head-of-department console applications
+is14-os-app-payroll-name = Payroll
+is14-os-app-payroll-desc = Department salaries, bonuses and fines. Needs a station link.
+is14-os-app-treasury-name = Treasury
+is14-os-app-treasury-desc = Station funds and treasury transfers. Needs command access.
+is14-os-app-gosplan-name = Gosplan
+is14-os-app-gosplan-desc = The soc-competition board: the station plan and how it is going.
+is14-os-app-economy-name = Economy
+is14-os-app-economy-desc = Station transaction log and the vending machine map.
+is14-os-app-orders-name = Orders
+is14-os-app-orders-desc = Department orders: the supply catalogue and the shipping queue.
+
+# Orders
+is14-os-orders-station = Station
+is14-os-orders-capacity = {$station} · {$count} of {$capacity} orders
+is14-os-orders-section-catalog = Catalogue
+is14-os-orders-section-orders = Queue ({$count})
+is14-os-orders-search = Search the catalogue...
+is14-os-orders-catalog-empty = Nothing found.
+is14-os-orders-empty = No orders.
+is14-os-orders-offline = No link to the order database.
+is14-os-orders-price = {$price} cr.
+is14-os-orders-order = Order
+is14-os-orders-amount = Amount
+is14-os-orders-confirm = Place order
+is14-os-orders-cancel = Cancel
+is14-os-orders-entry = {$product} x{$amount}
+is14-os-orders-requester = Requested by: {$requester}
+is14-os-orders-approve = Approve
+is14-os-orders-remove = Remove order

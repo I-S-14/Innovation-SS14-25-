@@ -1,0 +1,180 @@
+# Head-of-department consoles running IS14 OS (Docs/_IS14/os-design.md §12).
+#
+# A head sits down and gets a desktop rather than one screen: orders open on the left, payroll
+# on the right, and the plan board underneath — which is the whole reason the platform has
+# windows at all. The old single-purpose consoles are deliberately left in place and working;
+# these are additional machines, so the migration can be rolled back at any point (§16.3).
+#
+# The console entity carries the console components itself — which fund a payroll console
+# administers is a property of that console, not of the software — and the OS installs the
+# matching applications on top.
+
+- type: entity
+  parent: IS14BaseComputer
+  id: IS14OsConsoleBase
+  abstract: true
+  components:
+  # No lid on a machine bolted to the floor: it runs whenever the APC feeds it, and cutting
+  # the power really does take the whole desktop away.
+  - type: IS14OsDevice
+    profile: OsProfileStationary
+    theme: OsCommand
+    lidless: true
+    defaultApp: AppStatus
+  - type: IS14OsMemory
+  - type: DeviceNetwork
+    deviceNetId: Wired
+    receiveFrequencyId: PDA
+    prefix: device-address-prefix-console
+  - type: ActivatableUI
+    key: enum.IS14OsUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.IS14OsUiKey.Key:
+        type: IS14OsBui
+      enum.WiresUiKey.Key:
+        type: WiresBoundUserInterface
+  # A drive, because the software that only runs on a stationary machine ships on a disk that
+  # can only be read by one — a console with nowhere to put that disk is the one machine the
+  # command disk exists for and cannot be used on.
+  - type: ContainerContainer
+    containers:
+      os_disk: !type:ContainerSlot {}
+  - type: ItemSlots
+    slots:
+      os_disk:
+        name: is14-os-disk-slot
+        whitelist:
+          components:
+          - IS14OsDisk
+
+- type: entity
+  parent: IS14OsConsoleBase
+  id: IS14OsHeadConsoleBase
+  abstract: true
+  name: рабочая консоль главы отдела
+  description: Терминал главы отдела с оконной операционной системой. Заказы, зарплаты и план — на одном экране.
+  components:
+  - type: PointLight
+    color: "#c9a53b"
+  - type: ActivatableUIRequiresAccess
+  - type: CargoOrderConsole
+  - type: IS14OsMemory
+    preinstalled:
+    - AppPayroll
+    - AppOrders
+    - AppGosplan
+
+- type: entity
+  parent: IS14OsHeadConsoleBase
+  id: IS14OsHeadConsoleEngineering
+  name: рабочая консоль старшего инженера
+  components:
+  - type: AccessReader
+    access: [[ "ChiefEngineer" ], [ "Captain" ]]
+  - type: PayrollConsole
+    managedAccount: StationEngineering
+  - type: CargoOrderConsole
+    account: Engineering
+
+- type: entity
+  parent: IS14OsHeadConsoleBase
+  id: IS14OsHeadConsoleMedical
+  name: рабочая консоль главврача
+  components:
+  - type: AccessReader
+    access: [[ "ChiefMedicalOfficer" ], [ "Captain" ]]
+  - type: PayrollConsole
+    managedAccount: StationMedical
+  - type: CargoOrderConsole
+    account: Medical
+
+- type: entity
+  parent: IS14OsHeadConsoleBase
+  id: IS14OsHeadConsoleSecurity
+  name: рабочая консоль главы милиции
+  components:
+  - type: AccessReader
+    access: [[ "HeadOfSecurity" ], [ "Captain" ]]
+  - type: PayrollConsole
+    managedAccount: StationSecurity
+  - type: CargoOrderConsole
+    account: Security
+
+- type: entity
+  parent: IS14OsHeadConsoleBase
+  id: IS14OsHeadConsoleCargo
+  name: рабочая консоль квартирмейстера
+  components:
+  - type: AccessReader
+    access: [[ "Quartermaster" ], [ "Captain" ]]
+  - type: PayrollConsole
+    managedAccount: StationCargo
+  - type: CargoOrderConsole
+    account: Cargo
+
+- type: entity
+  parent: IS14OsHeadConsoleBase
+  id: IS14OsHeadConsoleResearch
+  name: рабочая консоль научного руководителя
+  components:
+  - type: AccessReader
+    access: [[ "ResearchDirector" ], [ "Captain" ]]
+  - type: PayrollConsole
+    managedAccount: StationResearch
+  - type: CargoOrderConsole
+    account: Science
+
+- type: entity
+  parent: IS14OsHeadConsoleBase
+  id: IS14OsHeadConsoleService
+  name: рабочая консоль главы персонала
+  components:
+  - type: AccessReader
+    access: [[ "HeadOfPersonnel" ], [ "Captain" ]]
+  - type: PayrollConsole
+    managedAccount: StationService
+  - type: CargoOrderConsole
+    account: Service
+
+# The captain's desk: the whole economy on one screen, which is the one place that is
+# supposed to be able to see all of it at once.
+- type: entity
+  parent: IS14OsHeadConsoleBase
+  id: IS14OsHeadConsoleCommand
+  name: рабочая консоль капитана
+  description: Терминал капитана с оконной операционной системой. Казна, план, мониторинг экономики и зарплаты командования.
+  components:
+  - type: AccessReader
+    access: [[ "Captain" ]]
+  - type: PayrollConsole
+    managedAccount: StationTreasury
+  - type: TreasuryConsole
+  - type: GosplanConsole
+  - type: EconomyMonitorConsole
+  - type: IS14OsMemory
+    preinstalled:
+    - AppPayroll
+    - AppTreasury
+    - AppGosplan
+    - AppEconomyMonitor
+
+# Department terminal: the shared machine in the office, with none of the head's own software
+# on it. Anyone in the department can use it — which is the point of it existing (§10).
+- type: entity
+  parent: IS14OsConsoleBase
+  id: IS14OsDepartmentTerminal
+  name: терминал отдела
+  description: Общий терминал отдела с оконной операционной системой.
+  components:
+  - type: PointLight
+    color: "#4FB3E0"
+  - type: IS14OsDevice
+    profile: OsProfileStationary
+    theme: OsNtOs
+    lidless: true
+    defaultApp: AppStatus
+  - type: IS14OsMemory
+    preinstalled:
+    - AppNews
+    - AppTasks

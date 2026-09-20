@@ -1,0 +1,14 @@
+# Glyphs for the OS chrome, as opposed to the app icons one folder over. Same treatment:
+# rasterised from SVG to white with the shape in the alpha, because the controls tint them.
+
+- files: ["save.png"]
+  # "Custom" means the real license is named in the copyright field; the list this file may
+  # use lives in the engine submodule and has no Apache-2.0 entry.
+  license: "Custom"
+  copyright: "Google Material Symbols, licensed Apache-2.0, rasterised and recoloured for Innovation Station"
+  source: "https://fonts.google.com/icons"
+
+- files: ["signal.png", "disk.png", "wallpaper.png", "check.png", "box.png"]
+  license: "AGPL-3.0-or-later"
+  copyright: "Drawn for Innovation Station SS14"
+  source: "https://github.com/Innovation-Station-14"

@@ -9,6 +9,7 @@ using Content.Shared._IS14.OS.Components;
 using Content.Shared._IS14.OS.Prototypes;
 using Content.Shared._IS14.OS.UI;
 using Content.Server.Access.Systems;
+using Content.Server.Power.Components;
 using Content.Shared.Access.Components;
 using Content.Shared.DeviceNetwork.Components;
 using Content.Shared.Hands.Components;
@@ -19,6 +20,7 @@ using Content.Shared.PDA.Ringer;
 using Content.Shared.Light.Components;
 using Content.Shared.Light.EntitySystems;
 using Content.Shared.Popups;
+using Content.Shared.Power;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Containers;
 using Robust.Shared.Prototypes;
@@ -45,6 +47,8 @@ public sealed class IS14OsSystem : EntitySystem
     [Dependency] private readonly StoreSystem _store = default!;
     [Dependency] private readonly IS14OsPowerSystem _power = default!;
     [Dependency] private readonly IdCardSystem _idCard = default!;
+    [Dependency] private readonly IS14OsNetworkSystem _network = default!;
+    [Dependency] private readonly IS14OsFileSystem _files = default!;
 
     /// <summary>
     ///     Devices whose state changed for a passive reason. Flushed at most once a second so a
@@ -56,6 +60,9 @@ public sealed class IS14OsSystem : EntitySystem
     private TimeSpan _nextFlush;
 
     private static readonly TimeSpan FlushInterval = TimeSpan.FromSeconds(1);
+
+    /// <summary>Marks a wallpaper id as pointing at a stored photo rather than a prototype.</summary>
+    public const string PhotoWallpaperPrefix = "photo:";
 
     public override void Initialize()
     {
@@ -69,6 +76,8 @@ public sealed class IS14OsSystem : EntitySystem
 
         SubscribeLocalEvent<IS14OsDeviceComponent, IS14OsShellMessage>(OnShellMessage);
         SubscribeLocalEvent<IS14OsDeviceComponent, IS14OsAppMessage>(OnAppMessage);
+
+        SubscribeLocalEvent<IS14OsDeviceComponent, PowerChangedEvent>(OnPowerChanged);
 
         SubscribeLocalEvent<IS14OsDeviceComponent, EntGotInsertedIntoContainerMessage>(OnStowed);
         SubscribeLocalEvent<IS14OsDeviceComponent, DroppedEvent>(OnDropped);
@@ -130,10 +139,14 @@ public sealed class IS14OsSystem : EntitySystem
         var memory = EnsureComp<IS14OsMemoryComponent>(ent);
         _memory.SetupDevice((ent.Owner, ent.Comp, memory));
 
+        // A lidless device has no session to open: it is on whenever it has power. One that
+        // runs off the station grid waits for PowerChangedEvent instead of assuming it.
         if (ent.Comp.Lidless)
         {
             ent.Comp.LidOpen = true;
-            PowerOn(ent, cold: true);
+
+            if (!TryComp(ent, out ApcPowerReceiverComponent? receiver) || receiver.Powered)
+                PowerOn(ent, cold: true);
         }
 
         UpdateVisuals(ent);
@@ -223,6 +236,32 @@ public sealed class IS14OsSystem : EntitySystem
         ent.Comp.Minimized.Clear();
     }
 
+    /// <summary>
+    ///     Mains power for the machines that have no lid (Docs §10). Cutting the APC really does
+    ///     take a head's whole desktop away, which is the point of the console being furniture
+    ///     rather than something in a pocket.
+    /// </summary>
+    private void OnPowerChanged(Entity<IS14OsDeviceComponent> ent, ref PowerChangedEvent args)
+    {
+        if (!ent.Comp.Lidless)
+            return;
+
+        if (args.Powered == ent.Comp.Powered)
+            return;
+
+        if (args.Powered)
+        {
+            PowerOn(ent, cold: true);
+        }
+        else
+        {
+            PowerOff(ent);
+            _ui.CloseUi(ent.Owner, IS14OsUiKey.Key);
+        }
+
+        UpdateVisuals(ent);
+    }
+
     /// <summary>Stowing or dropping the device shuts the lid — no sessions running in a pocket.</summary>
     private void OnStowed(Entity<IS14OsDeviceComponent> ent, ref EntGotInsertedIntoContainerMessage args)
     {
@@ -261,6 +300,20 @@ public sealed class IS14OsSystem : EntitySystem
 
         if (!_memory.IsInstalled(memory, app))
             return false;
+
+        // Opening a networked app with no link would show an empty window and no reason for it.
+        if (_proto.TryIndex(app, out var proto)
+            && proto.RequiresNetwork
+            && _network.GetSignal(ent.Owner, ent.Comp) == OsSignal.None)
+        {
+            if (user != null)
+            {
+                _popup.PopupEntity(Loc.GetString("is14-os-network-lost"), ent, user.Value);
+                _audio.PlayPvs(ent.Comp.ErrorSound, ent);
+            }
+
+            return false;
+        }
 
         if (ent.Comp.Open.Contains(app))
         {
@@ -466,6 +519,10 @@ public sealed class IS14OsSystem : EntitySystem
             case OsShellAction.CloseLid:
                 CloseLid(ent);
                 return;
+
+            case OsShellAction.RequestWallpaper:
+                ent.Comp.WallpaperRequested = true;
+                break;
         }
 
         UpdateUi(ent.Owner, ent.Comp);
@@ -514,8 +571,10 @@ public sealed class IS14OsSystem : EntitySystem
             MemorySystem = _memory.GetSystemMemory(device),
             MemoryUsed = memory?.UsedMemory ?? 0,
             MemoryFiles = memory?.UsedFileMemory ?? 0,
+            MemoryData = memory?.UsedDataMemory ?? 0,
             MemorySlotsFree = Math.Max(0, (profile?.MemorySlots ?? 0) - (memory?.UsedSlots ?? 0)),
             Battery = _power.GetCharge(uid),
+            Signal = _network.GetSignal(uid, device),
             DeviceName = Name(uid),
             Open = new List<ProtoId<IS14OsAppPrototype>>(device.Open),
             Minimized = new List<ProtoId<IS14OsAppPrototype>>(device.Minimized),
@@ -523,6 +582,8 @@ public sealed class IS14OsSystem : EntitySystem
 
         if (memory != null)
             shell.Installed.AddRange(memory.Installed.Keys);
+
+        FillWallpaper(uid, device, memory, shell);
 
         foreach (var theme in _proto.EnumeratePrototypes<IS14OsThemePrototype>())
         {
@@ -541,6 +602,30 @@ public sealed class IS14OsSystem : EntitySystem
         }
 
         _ui.SetUiState(uid, IS14OsUiKey.Key, new IS14OsUiState(shell, windows));
+    }
+
+    /// <summary>
+    ///     Wallpaper. The id goes out every push because it is a short string; the picture goes
+    ///     out only when the client says it has nothing cached for that id, and exactly once.
+    /// </summary>
+    private void FillWallpaper(EntityUid uid,
+        IS14OsDeviceComponent device,
+        IS14OsMemoryComponent? memory,
+        OsShellState shell)
+    {
+        if (device.WallpaperPhoto is { } photoId)
+        {
+            shell.Wallpaper = PhotoWallpaperPrefix + photoId;
+
+            if (device.WallpaperRequested && memory != null)
+                shell.WallpaperData = _files.Get(memory, photoId)?.Data;
+        }
+        else if (device.Wallpaper is { Id: { } id })
+        {
+            shell.Wallpaper = id;
+        }
+
+        device.WallpaperRequested = false;
     }
 
     /// <summary>
@@ -613,7 +698,7 @@ public sealed class IS14OsSystem : EntitySystem
     ///     Contained entities parent to their container, so the chain ends at a person or at
     ///     the grid the device is lying on.
     /// </summary>
-    private EntityUid? FindCarrier(EntityUid uid)
+    public EntityUid? FindCarrier(EntityUid uid)
     {
         var parent = Transform(uid).ParentUid;
 

@@ -1,0 +1,16 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+#
+# Blank disks by the crate, plus one pressed office disk so the crate is worth ordering even
+# for a department that has nothing to copy yet.
+
+- type: entity
+  parent: CrateGenericSteel
+  id: IS14CrateOsDisks
+  name: data disk crate
+  description: Blank disks for personal devices, and one with the usual software already on it.
+  components:
+  - type: StorageFill
+    contents:
+    - id: IS14OsDiskBlank
+      amount: 4
+    - id: IS14OsDiskOffice

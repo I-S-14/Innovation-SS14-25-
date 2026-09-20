@@ -51,7 +51,7 @@ public sealed class IS14OsFileSystem : EntitySystem
 
         ent.Comp2.Files.Add(file);
         ent.Comp2.UsedFileMemory += size;
-        ent.Comp2.UsedMemory += size;
+        _memory.Recalculate(ent.Comp2);
         return file;
     }
 
@@ -63,7 +63,7 @@ public sealed class IS14OsFileSystem : EntitySystem
 
         memory.Files.Remove(file);
         memory.UsedFileMemory = Math.Max(0, memory.UsedFileMemory - file.Size);
-        memory.UsedMemory = Math.Max(0, memory.UsedMemory - file.Size);
+        _memory.Recalculate(memory);
         return true;
     }
 

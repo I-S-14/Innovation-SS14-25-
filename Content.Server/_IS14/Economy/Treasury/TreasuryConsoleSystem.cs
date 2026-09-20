@@ -83,7 +83,28 @@ public sealed class TreasuryConsoleSystem : EntitySystem
         SendState(ent.Owner, Loc.GetString("is14-treasury-status-done", ("amount", args.Amount), ("target", targetName)));
     }
 
+    /// <summary>
+    ///     Entry point for the OS application (Docs §12.2): the same message, the same handler.
+    /// </summary>
+    public void HandleMessage(Entity<TreasuryConsoleComponent> ent, BoundUserInterfaceMessage message)
+    {
+        if (message is TreasuryTransferMessage transfer)
+            OnTransfer(ent, ref transfer);
+    }
+
     private void SendState(EntityUid console, string status = "")
+    {
+        // The status line is the answer to the last operation, and an operation can now come
+        // from a front end with no BUI behind it, so the console remembers it.
+        if (status.Length > 0 && TryComp<TreasuryConsoleComponent>(console, out var comp))
+            comp.Status = status;
+
+        if (_ui.HasUi(console, TreasuryConsoleUiKey.Key))
+            _ui.SetUiState(console, TreasuryConsoleUiKey.Key, BuildState(console));
+    }
+
+    /// <summary>Builds the console's state. Shared by the standalone console and the OS app.</summary>
+    public TreasuryConsoleUiState BuildState(EntityUid console)
     {
         var accounts = new List<TreasuryAccountEntry>();
 
@@ -107,6 +128,6 @@ public sealed class TreasuryConsoleSystem : EntitySystem
             }
         }
 
-        _ui.SetUiState(console, TreasuryConsoleUiKey.Key, new TreasuryConsoleUiState(accounts, status));
+        return new TreasuryConsoleUiState(accounts, CompOrNull<TreasuryConsoleComponent>(console)?.Status ?? string.Empty);
     }
 }

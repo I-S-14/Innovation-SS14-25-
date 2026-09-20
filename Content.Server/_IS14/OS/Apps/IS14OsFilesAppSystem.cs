@@ -2,7 +2,9 @@ using Content.Shared._IS14.OS.Components;
 using Content.Shared._IS14.OS.Components.Apps;
 using Content.Shared._IS14.OS.Files;
 using Content.Shared._IS14.OS.UI;
+using Content.Shared._IS14.OS.Prototypes;
 using Content.Shared._IS14.OS.UI.Apps;
+using Robust.Shared.Prototypes;
 
 namespace Content.Server._IS14.OS.Apps;
 
@@ -18,6 +20,7 @@ public sealed class IS14OsFilesAppSystem : EntitySystem
     private const int MaxNameLength = 32;
 
     [Dependency] private readonly IS14OsFileSystem _files = default!;
+    [Dependency] private readonly IS14OsDiskSystem _disks = default!;
 
     public override void Initialize()
     {
@@ -48,6 +51,35 @@ public sealed class IS14OsFilesAppSystem : EntitySystem
             };
         }
 
+        if (_disks.GetDisk(ent) is { } disk)
+        {
+            var info = new OsDiskInfo
+            {
+                Name = Name(disk.Owner),
+                Used = disk.Comp.UsedMemory,
+                Capacity = disk.Comp.Capacity,
+                Writable = disk.Comp.Writable,
+                Apps = new List<ProtoId<IS14OsAppPrototype>>(disk.Comp.Apps),
+            };
+
+            foreach (var file in disk.Comp.Files)
+                info.Files.Add(file.ToMeta());
+
+            // Software this device could never run is marked here rather than left for the
+            // player to discover by pressing a button that quietly refuses.
+            if (TryComp(ent, out IS14OsDeviceComponent? flagDevice))
+            {
+                foreach (var app in info.Apps)
+                {
+                    if (!_disks.CanRun(flagDevice, app))
+                        info.Incompatible.Add(app);
+                }
+            }
+
+            state.Disk = info;
+        }
+
+        state.Error = ent.Comp.Error;
         args.State = state;
     }
 
@@ -71,6 +103,43 @@ public sealed class IS14OsFilesAppSystem : EntitySystem
                 _files.Remove(memory, delete.File);
                 break;
 
+            case OsDiskInstallEvent install:
+                ent.Comp.Error = TryComp(ent, out IS14OsDeviceComponent? installDevice)
+                    && _disks.GetDisk(ent) is { } installDisk
+                        ? _disks.Install((ent.Owner, installDevice, memory), installDisk, install.App)
+                        : "is14-os-disk-error-no-disk";
+
+                break;
+
+            case OsDiskCopyEvent copy:
+                if (_disks.GetDisk(ent) is not { } copyDisk)
+                {
+                    ent.Comp.Error = "is14-os-disk-error-no-disk";
+                }
+                else if (copy.ToDisk)
+                {
+                    ent.Comp.Error = _disks.CopyToDisk(memory, copyDisk, copy.File);
+                }
+                else
+                {
+                    ent.Comp.Error = TryComp(ent, out IS14OsDeviceComponent? copyDevice)
+                        ? _disks.CopyToDevice((ent.Owner, copyDevice, memory), copyDisk, copy.File)
+                        : "is14-os-disk-error-no-disk";
+                }
+
+                break;
+
+            case OsDiskDeleteEvent diskDelete:
+                ent.Comp.Error = _disks.GetDisk(ent) is { } deleteDisk
+                    ? _disks.Delete(deleteDisk, diskDelete.File)
+                    : "is14-os-disk-error-no-disk";
+
+                break;
+
+            case OsFilesDismissErrorEvent:
+                ent.Comp.Error = null;
+                break;
+
             case OsFileRenameEvent rename:
                 if (_files.Get(memory, rename.File) is { } file)
                 {
@@ -86,7 +155,10 @@ public sealed class IS14OsFilesAppSystem : EntitySystem
     /// <summary>Closing the app drops the payload too; nothing should keep streaming unseen.</summary>
     private void OnClosed(Entity<IS14OsFilesComponent> ent, ref OsAppClosedEvent args)
     {
-        if (args.App == AppId)
-            ent.Comp.OpenFile = null;
+        if (args.App != AppId)
+            return;
+
+        ent.Comp.OpenFile = null;
+        ent.Comp.Error = null;
     }
 }

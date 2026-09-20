@@ -1,0 +1,7 @@
+# Desktop wallpapers. Unlike the OS glyphs these are full colour: nothing tints them, they
+# sit behind the windows, so they are drawn dark enough that window chrome stays readable.
+
+- files: ["nebula.png", "grid.png", "banner.png", "steel.png"]
+  license: "AGPL-3.0-or-later"
+  copyright: "Drawn for Innovation Station SS14"
+  source: "https://github.com/Innovation-Station-14"

@@ -1,0 +1,84 @@
+# Removable media for IS14 OS (Docs/_IS14/os-design.md §7.4). Software on a disk exists so it
+# can be carried, lent, stolen and destroyed — everything a download cannot be.
+
+- type: entity
+  abstract: true
+  parent: BaseItem
+  id: IS14OsDiskBase
+  name: data disk
+  description: A solid-state disk for a personal device.
+  components:
+  - type: Sprite
+    sprite: Objects/Misc/module.rsi
+    layers:
+    - state: datadisk_base
+    - state: datadisk_label
+      color: "#4FB3E0"
+  - type: Item
+    size: Tiny
+  - type: IS14OsDisk
+
+- type: entity
+  parent: IS14OsDiskBase
+  id: IS14OsDiskBlank
+  name: blank disk
+  description: Nothing on it yet. Supply sells them by the box, and what ends up on one is nobody's business but the owner's.
+  components:
+  - type: Sprite
+    sprite: Objects/Misc/module.rsi
+    layers:
+    - state: datadisk_base
+    - state: datadisk_label
+      color: "#8B93A0"
+  - type: IS14OsDisk
+    capacity: 24
+    writable: true
+
+# Pressed disks: a fixed set of software, and no writing to them. The reason to want one when
+# the app store exists is that the store needs the station network and a disk does not — a disk
+# is what still works when comms are down, and what somebody can take off you.
+
+- type: entity
+  parent: IS14OsDiskBase
+  id: IS14OsDiskOffice
+  name: office software disk
+  description: The everyday kit, pressed onto a disk. Installs without asking the station for anything.
+  components:
+  - type: Sprite
+    sprite: Objects/Misc/module.rsi
+    layers:
+    - state: datadisk_base
+    - state: datadisk_label
+      color: "#4FB3E0"
+  - type: IS14OsDisk
+    writable: false
+    capacity: 0
+    apps:
+    - AppNotes
+    - AppTasks
+    - AppCalculator
+    - AppManifest
+    - AppNews
+
+# Stationary software only: these three run on a console, not in a pocket, which is why this
+# disk is worth locking up rather than worth stealing off a body.
+- type: entity
+  parent: IS14OsDiskBase
+  id: IS14OsDiskCommand
+  name: command software disk
+  description: Treasury, the plan board and the economy monitor. Only a stationary console will take them.
+  components:
+  - type: Sprite
+    sprite: Objects/Misc/module.rsi
+    layers:
+    - state: datadisk_base
+    - state: datadisk_label
+      color: "#C9A53B"
+  - type: IS14OsDisk
+    writable: false
+    capacity: 0
+    apps:
+    - AppTreasury
+    - AppGosplan
+    - AppEconomyMonitor
+

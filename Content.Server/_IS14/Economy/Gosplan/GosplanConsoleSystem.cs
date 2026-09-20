@@ -70,11 +70,17 @@ public sealed class GosplanConsoleSystem : EntitySystem
 
     private void SendState(EntityUid console)
     {
+        if (_ui.HasUi(console, GosplanConsoleUiKey.Key))
+            _ui.SetUiState(console, GosplanConsoleUiKey.Key, BuildState(console));
+    }
+
+    /// <summary>Builds the board's state. Shared by the standalone board and the OS app.</summary>
+    public GosplanConsoleUiState BuildState(EntityUid console)
+    {
         if (_station.GetOwningStation(console) is not { } station
             || !TryComp<StationPlanComponent>(station, out var plan))
         {
-            _ui.SetUiState(console, GosplanConsoleUiKey.Key, new GosplanConsoleUiState { Active = false });
-            return;
+            return new GosplanConsoleUiState { Active = false };
         }
 
         var cap = _cfg.GetCVar(IS14CVars.GosplanOverfulfillmentCap);
@@ -108,7 +114,7 @@ public sealed class GosplanConsoleSystem : EntitySystem
 
         var secondsLeft = (int)Math.Max(0, (plan.NextEvaluation - _timing.CurTime).TotalSeconds);
 
-        _ui.SetUiState(console, GosplanConsoleUiKey.Key, new GosplanConsoleUiState
+        return new GosplanConsoleUiState
         {
             Active = true,
             PeriodIndex = plan.PeriodIndex,
@@ -123,6 +129,6 @@ public sealed class GosplanConsoleSystem : EntitySystem
             FailThreshold = _cfg.GetCVar(IS14CVars.GosplanFailureThreshold),
             OverThreshold = _cfg.GetCVar(IS14CVars.GosplanOverfulfillmentThreshold),
             PayoutCap = cap,
-        });
+        };
     }
 }

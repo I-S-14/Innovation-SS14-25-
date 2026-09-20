@@ -35,6 +35,15 @@
         <BoxContainer Name="EntryList" Orientation="Vertical" HorizontalExpand="True" />
     </ScrollContainer>
 
+    <!-- Why the last thing you pressed did nothing. Same strip as the app store uses, because
+         it answers the same question and should not need learning twice. -->
+    <PanelContainer Name="ErrorPanel" Visible="False" HorizontalExpand="True" Margin="0 4 0 0">
+        <BoxContainer Orientation="Horizontal" Margin="6 3">
+            <Label Name="ErrorLabel" HorizontalExpand="True" VerticalAlignment="Center" />
+            <controls:IconTile Name="DismissButton" Compact="True" IconSize="12" />
+        </BoxContainer>
+    </PanelContainer>
+
     <!-- Preview of the one open file. Fills the app while shown: a photo is worth the space. -->
     <BoxContainer Name="PreviewBox" Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True" Visible="False">
         <BoxContainer Orientation="Horizontal" Margin="0 0 0 4">

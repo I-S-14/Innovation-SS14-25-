@@ -10,3 +10,9 @@
   license: "Custom"
   copyright: "Google Material Symbols, licensed Apache-2.0, rasterised and recoloured for Innovation Station"
   source: "https://fonts.google.com/icons"
+
+- files: ["news.png", "tasks.png", "payroll.png", "treasury.png", "gosplan.png",
+          "economy.png", "orders.png"]
+  license: "AGPL-3.0-or-later"
+  copyright: "Drawn for Innovation Station SS14"
+  source: "https://github.com/Innovation-Station-14"

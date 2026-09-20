@@ -386,7 +386,45 @@ public sealed class PayrollConsoleSystem : EntitySystem
 
     // ── Presentation ──────────────────────────────────────────────────────────
 
+    /// <summary>
+    ///     Entry point for the OS application (Docs §12.2). Same messages, same handlers — the
+    ///     only thing the platform changes is how they arrive, so there is exactly one copy of
+    ///     the payroll rules and both front ends obey it.
+    /// </summary>
+    public void HandleMessage(Entity<PayrollConsoleComponent> ent, BoundUserInterfaceMessage message)
+    {
+        switch (message)
+        {
+            case PayrollSetSalaryMessage salary:
+                OnSetSalary(ent, ref salary);
+                break;
+
+            case PayrollBonusMessage bonus:
+                OnBonus(ent, ref bonus);
+                break;
+
+            case PayrollFineMessage fine:
+                OnFine(ent, ref fine);
+                break;
+        }
+    }
+
     private void SendState(Entity<PayrollConsoleComponent> console, string status = "")
+    {
+        // The status line is the result of the last operation, and an operation can now be
+        // driven from a place that has no BUI at all. Parking it on the component is what lets
+        // the OS app show the same answer the standalone console would have shown.
+        if (status.Length > 0)
+            console.Comp.Status = status;
+
+        if (_ui.HasUi(console.Owner, PayrollConsoleUiKey.Key))
+            _ui.SetUiState(console.Owner, PayrollConsoleUiKey.Key, BuildState(console));
+
+        _pendingRefresh.Remove(console.Owner);
+    }
+
+    /// <summary>Builds the console's state. Shared by the standalone console and the OS app.</summary>
+    public PayrollConsoleUiState BuildState(Entity<PayrollConsoleComponent> console)
     {
         var fundName = console.Comp.ManagedAccount.Id;
         if (_prototypes.TryIndex(console.Comp.ManagedAccount, out var proto))
@@ -425,9 +463,7 @@ public sealed class PayrollConsoleSystem : EntitySystem
         var log = new List<PayrollLogEntry>(console.Comp.Log);
         log.Reverse();
 
-        _pendingRefresh.Remove(console.Owner);
-
-        _ui.SetUiState(console.Owner, PayrollConsoleUiKey.Key, new PayrollConsoleUiState(
+        return new PayrollConsoleUiState(
             fundName,
             fundBalance,
             employees,
@@ -435,7 +471,7 @@ public sealed class PayrollConsoleSystem : EntitySystem
             GetPayableBonus(bonusPool, fundBalance),
             _cfg.GetCVar(IS14CVars.PayrollMaxFine),
             log,
-            status));
+            console.Comp.Status);
     }
 
     private string GetEmployeeName(EntityUid employee, JobSalaryComponent salary)

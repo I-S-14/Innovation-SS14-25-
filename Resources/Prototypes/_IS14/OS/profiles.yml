@@ -31,7 +31,9 @@
   formFactor: Stationary
   maxWindows: 5
   memory: 256
-  systemMemory: 26
+  # Shell 8 plus the messenger 8: no camera and no gallery on a machine bolted to the floor,
+  # so the partition must not go on reserving the 10 GQ those two cost.
+  systemMemory: 16
   shellMode: Windowed
   screenSize: 800,600
   memorySlots: 2

@@ -7,4 +7,10 @@ namespace Content.Server._IS14.Economy.Treasury;
 [RegisterComponent]
 public sealed partial class TreasuryConsoleComponent : Component
 {
+    /// <summary>
+    /// Localized result of the last transfer. Kept here because the console now has two front
+    /// ends — the standalone window and the OS application — and both read the same answer.
+    /// </summary>
+    [ViewVariables]
+    public string Status = string.Empty;
 }

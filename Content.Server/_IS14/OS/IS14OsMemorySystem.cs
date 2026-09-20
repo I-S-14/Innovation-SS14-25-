@@ -41,6 +41,58 @@ public sealed class IS14OsMemorySystem : EntitySystem
         return memory.Installed.ContainsKey(app);
     }
 
+    /// <summary>
+    ///     Recomputes the single used-memory figure from its three parts. Everything that moves
+    ///     memory goes through here rather than adjusting the total by hand: an install, a
+    ///     photo and a chat message all touch it, and three places nudging one counter is how
+    ///     that counter ends up wrong by the end of a shift.
+    /// </summary>
+    public void Recalculate(IS14OsMemoryComponent memory)
+    {
+        var apps = 0;
+        var data = 0;
+
+        foreach (var entry in memory.Installed.Values)
+        {
+            apps += entry.Size;
+            data += entry.DataUsed;
+        }
+
+        memory.UsedDataMemory = data;
+        memory.UsedMemory = apps + data + memory.UsedFileMemory;
+    }
+
+    /// <summary>
+    ///     Reports how much room an app's own data now takes and charges it. The return value
+    ///     is what actually fitted: an app that asked for more than its <c>DataCap</c>, or more
+    ///     than the device has left, is expected to throw away its oldest data and ask again.
+    ///     Nothing ever refuses to store a message — the platform's promise is that the player
+    ///     never reaches a dead end, only an older history (Docs §7.3).
+    /// </summary>
+    public int SetDataUsage(Entity<IS14OsDeviceComponent, IS14OsMemoryComponent> ent,
+        ProtoId<IS14OsAppPrototype> appId,
+        int units)
+    {
+        if (!ent.Comp2.Installed.TryGetValue(appId, out var entry))
+            return 0;
+
+        var cap = _proto.TryIndex(appId, out var app) ? app.DataCap : 0;
+        var allowed = Math.Clamp(units, 0, Math.Max(0, cap));
+
+        // Whatever this app is already charged for is not competing with itself for space.
+        var headroom = GetFreeMemory(ent) + entry.DataUsed;
+        allowed = Math.Min(allowed, Math.Max(0, headroom));
+
+        entry.DataUsed = allowed;
+        Recalculate(ent.Comp2);
+        return allowed;
+    }
+
+    public int GetDataUsage(IS14OsMemoryComponent memory, ProtoId<IS14OsAppPrototype> appId)
+    {
+        return memory.Installed.TryGetValue(appId, out var entry) ? entry.DataUsed : 0;
+    }
+
     public int GetTotalMemory(Entity<IS14OsDeviceComponent, IS14OsMemoryComponent> ent)
     {
         var profile = GetProfile(ent.Comp1);
@@ -87,7 +139,7 @@ public sealed class IS14OsMemorySystem : EntitySystem
             Size = size,
             Undeletable = app.Undeletable,
         };
-        ent.Comp2.UsedMemory += size;
+        Recalculate(ent.Comp2);
         return true;
     }
 
@@ -104,7 +156,7 @@ public sealed class IS14OsMemorySystem : EntitySystem
             EntityManager.RemoveComponents(ent.Owner, app.Components);
 
         ent.Comp2.Installed.Remove(appId);
-        ent.Comp2.UsedMemory = Math.Max(0, ent.Comp2.UsedMemory - entry.Size);
+        Recalculate(ent.Comp2);
         return true;
     }
 

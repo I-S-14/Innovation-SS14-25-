@@ -32,6 +32,14 @@ public sealed partial class IS14OsAppWindow : BaseWindow
 
     private bool _fullscreen;
 
+    /// <summary>
+    ///     Whether the shell already considers this the top window. Clicking the window it is
+    ///     already on must not cost a message: every focus request rebuilds and re-sends the
+    ///     whole shell state, and on a console with the economy monitor open that state is not
+    ///     small.
+    /// </summary>
+    public bool Focused { get; set; }
+
     public event Action<string>? OnCloseRequested;
     public event Action<string>? OnMinimizeRequested;
     public event Action<string>? OnFocusRequested;
@@ -55,6 +63,12 @@ public sealed partial class IS14OsAppWindow : BaseWindow
     public IS14OsAppWindow()
     {
         RobustXamlLoader.Load(this);
+
+        // Control.MouseFilter defaults to Ignore, and BaseWindow does not set it: DefaultWindow
+        // does it in its constructor, FancyWindow in its XAML. Without this the window never
+        // sees a click at all, so it neither drags nor raises itself — the buttons inside it
+        // still work, which is what made the windows look merely "stuck" rather than deaf.
+        MouseFilter = MouseFilterMode.Stop;
 
         MinimizeButton.Glyph = GlyphButton.Mark.Bar;
         MinimizeButton.ToolTip = Loc.GetString("is14-os-window-minimize");
@@ -122,6 +136,12 @@ public sealed partial class IS14OsAppWindow : BaseWindow
     protected override void KeyBindDown(GUIBoundKeyEventArgs args)
     {
         base.KeyBindDown(args);
+
+        // A handheld shows one window at a time, so there is nothing to raise; and a window
+        // already on top has nothing to gain either.
+        if (_fullscreen || Focused)
+            return;
+
         OnFocusRequested?.Invoke(AppId);
     }
 

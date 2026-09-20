@@ -39,6 +39,14 @@ public sealed partial class IS14OsMemoryComponent : Component
     /// <summary>Memory taken by files. Tracked apart from apps so the readout can break it down.</summary>
     [ViewVariables]
     public int UsedFileMemory;
+
+    /// <summary>
+    ///     Memory taken by application data — chat history and the like — as opposed to the
+    ///     programs themselves. Broken out so "clear the messages, keep the messenger" is a
+    ///     thing the player can see the value of before doing it (Docs §7.3).
+    /// </summary>
+    [ViewVariables]
+    public int UsedDataMemory;
 }
 
 [DataDefinition]
@@ -50,6 +58,10 @@ public sealed partial class OsInstallEntry
     /// <summary>Memory this install actually reserved, cached so uninstall stays symmetric.</summary>
     [DataField]
     public int Size;
+
+    /// <summary>Memory this app's own data has grown into, never above the app's DataCap.</summary>
+    [DataField]
+    public int DataUsed;
 
     /// <summary>Preinstalled system software cannot be removed by the user.</summary>
     [DataField]

@@ -44,3 +44,20 @@
   text: "#8FF5B4"
   textDim: "#3E8C5C"
   monospace: true
+
+# The look of the head-of-department consoles (§8.3). Not unlockable: a head who switches away
+# from it has to be able to switch back, and an unlockable theme is one the picker never offers.
+- type: osTheme
+  id: OsCommand
+  name: is14-os-theme-command
+  background: "#12100A"
+  panel: "#1C1810"
+  panelAlt: "#2A2416"
+  border: "#4A3E1E"
+  accent: "#C9A53B"
+  text: "#E8DFC4"
+  textDim: "#93835A"
+  good: "#B8C46A"
+  warning: "#D9A44F"
+  bad: "#C05A4A"
+

@@ -11,6 +11,9 @@
                 <TextureRect Name="AddressIcon" SetSize="12 12" Stretch="KeepAspectCentered"
                              VerticalAlignment="Center" Margin="0 0 3 0" />
                 <Label Name="AddressLabel" VerticalAlignment="Center" />
+                <TextureRect Name="SignalIcon" SetSize="12 12" Stretch="KeepAspectCentered"
+                             VerticalAlignment="Center" Margin="6 0 3 0" />
+                <Label Name="SignalLabel" VerticalAlignment="Center" />
                 <Control HorizontalExpand="True" />
                 <TextureRect Name="AlertIcon" SetSize="12 12" Stretch="KeepAspectCentered"
                              VerticalAlignment="Center" Margin="0 0 2 0" Visible="False" />
@@ -27,6 +30,11 @@
         <!-- Desktop: shortcuts, app windows and the boot screen all stack in here. -->
         <PanelContainer Name="DesktopPanel" HorizontalExpand="True" VerticalExpand="True">
             <Control Name="DesktopRoot" HorizontalExpand="True" VerticalExpand="True" RectClipContent="True">
+
+                <!-- Wallpaper sits under everything else and is the only part of the desktop
+                     the theme does not paint: it is a picture, not a colour role. -->
+                <TextureRect Name="WallpaperRect" Visible="False" Stretch="KeepAspectCovered"
+                             HorizontalExpand="True" VerticalExpand="True" />
 
                 <!-- Shortcut grid, shown whenever nothing is open. -->
                 <ScrollContainer Name="ShortcutScroll" HorizontalExpand="True" VerticalExpand="True">

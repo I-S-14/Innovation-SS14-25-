@@ -54,6 +54,25 @@ public sealed partial class IS14OsDeviceComponent : Component
     [ViewVariables]
     public HashSet<ProtoId<IS14OsAppPrototype>> Minimized = new();
 
+    /// <summary>
+    ///     Wallpaper prototype the desktop shows behind everything, or null for the theme's
+    ///     flat background. Overridden by <see cref="WallpaperPhoto"/> when that is set.
+    /// </summary>
+    [DataField]
+    public ProtoId<IS14OsWallpaperPrototype>? Wallpaper;
+
+    /// <summary>Id of a photo on this device used as wallpaper instead of a prototype.</summary>
+    [DataField]
+    public int? WallpaperPhoto;
+
+    /// <summary>
+    ///     Set when the client says it has no picture for the current wallpaper. The bytes ride
+    ///     along with exactly one state push and then this clears — a photo in every update
+    ///     would be the one thing §4.5 exists to prevent.
+    /// </summary>
+    [ViewVariables]
+    public bool WallpaperRequested;
+
     /// <summary>RSI state shown when the lid is open. IS14 PDA art already ships these.</summary>
     [DataField]
     public string OpenState = "base";
