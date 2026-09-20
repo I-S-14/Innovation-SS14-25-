@@ -48,14 +48,46 @@ public sealed partial class StampWidget : PanelContainer
         set => StampedByLabel.Orientation = value;
     }
 
+    private StampDisplayInfo? _info;
+    private float _alpha = 1.0f;
+
     public StampDisplayInfo StampInfo
     {
         set
         {
-            if (value.StampLargeIcon is { } icon)
+            _info = value;
+            Refresh();
+        }
+    }
+
+    /// <summary>
+    ///     Opacity of the stamp. Below 1 it reads as a placement preview rather than ink that
+    ///     has already hit the page.
+    /// </summary>
+    public float Alpha
+    {
+        get => _alpha;
+        set
+        {
+            _alpha = value;
+            Refresh();
+        }
+    }
+
+    private void Refresh()
+    {
+        if (_info is not { } info)
+            return;
+
+        if (info.StampLargeIcon is { } icon)
+        {
+            // The frames don't depend on alpha, so only resolve the sprite the first time.
+            if (_iconFrames == null)
                 SetLargeIcon(icon);
-            else
-                SetTextStamp(value);
+        }
+        else
+        {
+            SetTextStamp(info);
         }
     }
 
@@ -84,7 +116,9 @@ public sealed partial class StampWidget : PanelContainer
         var sprites = IoCManager.Resolve<IEntityManager>().System<SpriteSystem>();
         var state = sprites.RsiStateLike(icon);
 
-        _iconFrames = new Texture[state.AnimationFrameCount];
+        // A bare texture reports no animation frames at all, but still hands out frame 0, so it
+        // has to be treated as a single still frame rather than an empty animation.
+        _iconFrames = new Texture[Math.Max(state.AnimationFrameCount, 1)];
         for (var i = 0; i < _iconFrames.Length; i++)
         {
             _iconFrames[i] = state.GetFrame(RsiDirection.South, i);
@@ -116,9 +150,10 @@ public sealed partial class StampWidget : PanelContainer
     /// </summary>
     private void SetTextStamp(StampDisplayInfo info)
     {
+        var color = info.StampedColor.WithAlpha(info.StampedColor.A * _alpha);
         StampedByLabel.Text = Loc.GetString(info.StampedName);
-        StampedByLabel.FontColorOverride = info.StampedColor;
-        ModulateSelfOverride = info.StampedColor;
+        StampedByLabel.FontColorOverride = color;
+        ModulateSelfOverride = color;
     }
 
     protected override void FrameUpdate(FrameEventArgs args)
@@ -150,7 +185,7 @@ public sealed partial class StampWidget : PanelContainer
         base.Draw(handle);
 
         if (_iconFrames != null)
-            handle.DrawTextureRect(_iconFrames[_iconFrame], PixelSizeBox);
+            handle.DrawTextureRect(_iconFrames[_iconFrame], PixelSizeBox, Color.White.WithAlpha(_alpha));
 
         // Restore a sane transform+shader
         handle.SetTransform(Matrix3x2.Identity);

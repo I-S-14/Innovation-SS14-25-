@@ -28,6 +28,14 @@ public sealed partial class PaperComponent : Component
     [DataField, AutoNetworkedField]
     public bool EditingDisabled;
 
+    //IS14-change start: a signature waiting to be positioned by the player who asked for it.
+    // Runtime only and deliberately not networked as a component field; it reaches the one client
+    // that needs it through the UI state, which is guaranteed to arrive with the open interface.
+    public EntityUid? SignatureRequestedBy;
+
+    public string? SignatureRequestedName;
+    //IS14-change end
+
     /// <summary>
     /// Sound played after writing to the paper.
     /// </summary>
@@ -41,11 +49,22 @@ public sealed partial class PaperComponent : Component
         public readonly List<StampDisplayInfo> StampedBy;
         public readonly PaperAction Mode;
 
-        public PaperBoundUserInterfaceState(string text, List<StampDisplayInfo> stampedBy, PaperAction mode = PaperAction.Read)
+        //IS14-change start: who may currently place a signature, and how it reads
+        public readonly NetEntity? SignatureRequestedBy;
+        public readonly string? SignatureRequestedName;
+        //IS14-change end
+
+        public PaperBoundUserInterfaceState(string text,
+            List<StampDisplayInfo> stampedBy,
+            PaperAction mode = PaperAction.Read,
+            NetEntity? signatureRequestedBy = null, //IS14-change
+            string? signatureRequestedName = null) //IS14-change
         {
             Text = text;
             StampedBy = stampedBy;
             Mode = mode;
+            SignatureRequestedBy = signatureRequestedBy; //IS14-change
+            SignatureRequestedName = signatureRequestedName; //IS14-change
         }
     }
 

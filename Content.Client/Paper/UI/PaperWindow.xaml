@@ -4,6 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 <paper:PaperWindow xmlns="https://spacestation14.io"
     xmlns:paper="clr-namespace:Content.Client.Paper.UI"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Paper.UI"
     MouseFilter="Stop" Resizable="True" MinSize="150 150"
     SetSize="510 660"> <!-- Provide some reasonable sizes by default. Can be changed by the component -->
 
@@ -35,6 +36,9 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                         <TextureButton Name="FooterImage" HorizontalAlignment="Center" VerticalAlignment="Top" MouseFilter="Ignore"/>
                     </BoxContainer>
                     <paper:StampCollection Name="StampDisplay" VerticalAlignment="Bottom" Margin="6"/>
+                    <!--IS14-change start: overlay for stamps the player aimed themselves, plus the placement preview-->
+                    <is14:StampPlacementLayer Name="StampPlacement" Access="Public" Margin="6"/>
+                    <!--IS14-change end-->
 
                 </PanelContainer>
             </ScrollContainer>

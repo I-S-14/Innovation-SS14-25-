@@ -4,15 +4,15 @@
 
 - type: entity
   parent: RubberStampBase
-  id: RubberStampIS14Base
+  id: IS14RubberStampBase
   abstract: true
   components:
   - type: Sprite
     sprite: _IS14/Objects/Misc/Stamps/stamps.rsi
 
 - type: entity
-  parent: RubberStampIS14Base
-  id: RubberStampIS14Captain
+  parent: IS14RubberStampBase
+  id: IS14RubberStampCaptain
   components:
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-captain
@@ -25,8 +25,8 @@
     state: captain
 
 - type: entity
-  parent: RubberStampIS14Base
-  id: RubberStampIS14HeadOfPersonnel
+  parent: IS14RubberStampBase
+  id: IS14RubberStampHeadOfPersonnel
   components:
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-hop
@@ -39,8 +39,8 @@
     state: hop
 
 - type: entity
-  parent: RubberStampIS14Base
-  id: RubberStampIS14CommandSecretary
+  parent: IS14RubberStampBase
+  id: IS14RubberStampCommandSecretary
   components:
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-command-secretary
@@ -53,8 +53,8 @@
     state: command_secretary
 
 - type: entity
-  parent: RubberStampIS14Base
-  id: RubberStampIS14ChiefEngineer
+  parent: IS14RubberStampBase
+  id: IS14RubberStampChiefEngineer
   components:
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-ce
@@ -67,8 +67,8 @@
     state: ce
 
 - type: entity
-  parent: RubberStampIS14Base
-  id: RubberStampIS14SeniorEngineer
+  parent: IS14RubberStampBase
+  id: IS14RubberStampSeniorEngineer
   components:
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-senior-engineer
@@ -81,8 +81,8 @@
     state: senior_engineer
 
 - type: entity
-  parent: RubberStampIS14Base
-  id: RubberStampIS14ChiefMedicalOfficer
+  parent: IS14RubberStampBase
+  id: IS14RubberStampChiefMedicalOfficer
   components:
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-cmo
@@ -95,8 +95,8 @@
     state: cmo
 
 - type: entity
-  parent: RubberStampIS14Base
-  id: RubberStampIS14SeniorPhysician
+  parent: IS14RubberStampBase
+  id: IS14RubberStampSeniorPhysician
   components:
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-senior-physician
@@ -109,8 +109,8 @@
     state: senior_physician
 
 - type: entity
-  parent: RubberStampIS14Base
-  id: RubberStampIS14Psychologist
+  parent: IS14RubberStampBase
+  id: IS14RubberStampPsychologist
   components:
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-psychologist
@@ -123,8 +123,8 @@
     state: psychologist
 
 - type: entity
-  parent: RubberStampIS14Base
-  id: RubberStampIS14Pharmacist
+  parent: IS14RubberStampBase
+  id: IS14RubberStampPharmacist
   components:
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-pharmacist
@@ -137,8 +137,8 @@
     state: pharmacist
 
 - type: entity
-  parent: RubberStampIS14Base
-  id: RubberStampIS14ResearchDirector
+  parent: IS14RubberStampBase
+  id: IS14RubberStampResearchDirector
   components:
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-rd
@@ -151,8 +151,8 @@
     state: rd
 
 - type: entity
-  parent: RubberStampIS14Base
-  id: RubberStampIS14SeniorResearcher
+  parent: IS14RubberStampBase
+  id: IS14RubberStampSeniorResearcher
   components:
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-senior-researcher
@@ -165,8 +165,8 @@
     state: senior_researcher
 
 - type: entity
-  parent: RubberStampIS14Base
-  id: RubberStampIS14HosMilitia
+  parent: IS14RubberStampBase
+  id: IS14RubberStampHosMilitia
   components:
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-hos-militia
@@ -179,8 +179,8 @@
     state: hos_militia
 
 - type: entity
-  parent: RubberStampIS14Base
-  id: RubberStampIS14SeniorMilitia
+  parent: IS14RubberStampBase
+  id: IS14RubberStampSeniorMilitia
   components:
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-senior-militia
@@ -193,8 +193,8 @@
     state: senior_militia
 
 - type: entity
-  parent: RubberStampIS14Base
-  id: RubberStampIS14LrrChief
+  parent: IS14RubberStampBase
+  id: IS14RubberStampLrrChief
   components:
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-lrr-chief
@@ -207,8 +207,8 @@
     state: lrr_chief
 
 - type: entity
-  parent: RubberStampIS14Base
-  id: RubberStampIS14Investigator
+  parent: IS14RubberStampBase
+  id: IS14RubberStampInvestigator
   components:
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-investigator
@@ -221,8 +221,8 @@
     state: investigator
 
 - type: entity
-  parent: RubberStampIS14Base
-  id: RubberStampIS14MedOfficer
+  parent: IS14RubberStampBase
+  id: IS14RubberStampMedOfficer
   components:
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-med-officer
@@ -235,8 +235,8 @@
     state: med_officer
 
 - type: entity
-  parent: RubberStampIS14Base
-  id: RubberStampIS14SpaceSecurity
+  parent: IS14RubberStampBase
+  id: IS14RubberStampSpaceSecurity
   components:
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-space-security
@@ -249,8 +249,8 @@
     state: space_security
 
 - type: entity
-  parent: RubberStampIS14Base
-  id: RubberStampIS14Qm
+  parent: IS14RubberStampBase
+  id: IS14RubberStampQm
   components:
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-qm
@@ -263,8 +263,8 @@
     state: qm
 
 - type: entity
-  parent: RubberStampIS14Base
-  id: RubberStampIS14SeniorExpeditioner
+  parent: IS14RubberStampBase
+  id: IS14RubberStampSeniorExpeditioner
   components:
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-senior-expeditioner
@@ -277,8 +277,8 @@
     state: senior_expeditioner
 
 - type: entity
-  parent: RubberStampIS14Base
-  id: RubberStampIS14Mailman
+  parent: IS14RubberStampBase
+  id: IS14RubberStampMailman
   components:
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-mailman
@@ -291,8 +291,8 @@
     state: mailman
 
 - type: entity
-  parent: RubberStampIS14Base
-  id: RubberStampIS14ServiceAdmin
+  parent: IS14RubberStampBase
+  id: IS14RubberStampServiceAdmin
   components:
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-service-admin
@@ -305,8 +305,8 @@
     state: service_admin
 
 - type: entity
-  parent: RubberStampIS14Base
-  id: RubberStampIS14Chaplain
+  parent: IS14RubberStampBase
+  id: IS14RubberStampChaplain
   components:
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-chaplain
@@ -319,8 +319,8 @@
     state: chaplain
 
 - type: entity
-  parent: RubberStampIS14Base
-  id: RubberStampIS14Clown
+  parent: IS14RubberStampBase
+  id: IS14RubberStampClown
   components:
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-clown
@@ -333,8 +333,8 @@
     state: clown
 
 - type: entity
-  parent: RubberStampIS14Base
-  id: RubberStampIS14Mime
+  parent: IS14RubberStampBase
+  id: IS14RubberStampMime
   components:
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-mime
@@ -347,8 +347,8 @@
     state: mime
 
 - type: entity
-  parent: RubberStampIS14Base
-  id: RubberStampIS14Moko
+  parent: IS14RubberStampBase
+  id: IS14RubberStampMoko
   components:
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-moko
@@ -361,8 +361,8 @@
     state: moko
 
 - type: entity
-  parent: RubberStampIS14Base
-  id: RubberStampIS14Crb
+  parent: IS14RubberStampBase
+  id: IS14RubberStampCrb
   components:
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-crb
@@ -375,8 +375,8 @@
     state: crb
 
 - type: entity
-  parent: RubberStampIS14Base
-  id: RubberStampIS14Approved
+  parent: IS14RubberStampBase
+  id: IS14RubberStampApproved
   components:
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-approved
@@ -389,8 +389,8 @@
     state: approved
 
 - type: entity
-  parent: RubberStampIS14Base
-  id: RubberStampIS14Denied
+  parent: IS14RubberStampBase
+  id: IS14RubberStampDenied
   components:
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-denied
@@ -403,8 +403,8 @@
     state: denied
 
 - type: entity
-  parent: RubberStampIS14Base
-  id: RubberStampIS14MupRepresentative
+  parent: IS14RubberStampBase
+  id: IS14RubberStampMupRepresentative
   components:
   - type: Stamp
     stampedName: stamp-component-stamped-name-mup
@@ -417,8 +417,8 @@
     state: mup_representative
 
 - type: entity
-  parent: RubberStampIS14Base
-  id: RubberStampIS14Lawyer
+  parent: IS14RubberStampBase
+  id: IS14RubberStampLawyer
   components:
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14lawyer
