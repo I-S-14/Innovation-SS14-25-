@@ -3,6 +3,7 @@
 using Robust.Shared.Serialization;
 using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
+using Robust.Shared.Utility; //IS14-change: sprite specifier stamp icons
 
 namespace Content.Shared.Paper;
 
@@ -26,8 +27,10 @@ public partial struct StampDisplayInfo
     [DataField("stampedColor")]
     public Color StampedColor;
 
+    //IS14-change start: the large icon is a sprite specifier so it can point at an animated RSI state
     [DataField]
-    public string? StampLargeIcon; // goob
+    public SpriteSpecifier? StampLargeIcon;
+    //IS14-change end
 
     [DataField]
     public string? StampFont; // goob
@@ -63,10 +66,13 @@ public sealed partial class StampComponent : Component
     [DataField("sound")]
     public SoundSpecifier? Sound = null;
 
+    //IS14-change start: the large icon is a sprite specifier so it can point at an animated RSI state
     /// <summary>
-    ///     The sprite state of the stamp to display on the paper when read from stamp Sprite path.
+    ///     The large icon drawn over the paper when the document is read. Either a bare texture path
+    ///     or an RSI state; an animated state is played back frame by frame.
     /// </summary>
     [DataField]
-    public string? StampLargeIcon = null; // Goob Stamp
+    public SpriteSpecifier? StampLargeIcon = null;
+    //IS14-change end
 
 }

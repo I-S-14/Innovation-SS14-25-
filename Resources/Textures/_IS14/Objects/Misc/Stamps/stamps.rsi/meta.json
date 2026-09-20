@@ -1,0 +1,101 @@
+{
+  "version": 1,
+  "license": "All Rights Reserved",
+  "copyright": "made for innovation station by melvilla (discord)",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "captain"
+    },
+    {
+      "name": "hop"
+    },
+    {
+      "name": "command_secretary"
+    },
+    {
+      "name": "ce"
+    },
+    {
+      "name": "senior_engineer"
+    },
+    {
+      "name": "cmo"
+    },
+    {
+      "name": "senior_physician"
+    },
+    {
+      "name": "psychologist"
+    },
+    {
+      "name": "pharmacist"
+    },
+    {
+      "name": "rd"
+    },
+    {
+      "name": "senior_researcher"
+    },
+    {
+      "name": "hos_militia"
+    },
+    {
+      "name": "senior_militia"
+    },
+    {
+      "name": "lrr_chief"
+    },
+    {
+      "name": "investigator"
+    },
+    {
+      "name": "med_officer"
+    },
+    {
+      "name": "space_security"
+    },
+    {
+      "name": "qm"
+    },
+    {
+      "name": "senior_expeditioner"
+    },
+    {
+      "name": "mailman"
+    },
+    {
+      "name": "service_admin"
+    },
+    {
+      "name": "chaplain"
+    },
+    {
+      "name": "clown"
+    },
+    {
+      "name": "mime"
+    },
+    {
+      "name": "mup_representative"
+    },
+    {
+      "name": "lawyer"
+    },
+    {
+      "name": "moko"
+    },
+    {
+      "name": "crb"
+    },
+    {
+      "name": "approved"
+    },
+    {
+      "name": "denied"
+    }
+  ]
+}
