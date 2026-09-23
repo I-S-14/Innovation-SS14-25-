@@ -37,6 +37,10 @@ public sealed class PaperSystem : EntitySystem
     private static readonly ProtoId<TagPrototype> WriteIgnoreStampsTag = "WriteIgnoreStamps";
     private static readonly ProtoId<TagPrototype> WriteTag = "Write";
 
+    //IS14-change: the one greyscale stamp state that gets tinted with the stamp's own ink. Every
+    // other state is hand-coloured already and must be drawn untinted.
+    private const string ColoredStampState = "paper_stamp-colored";
+
     public override void Initialize()
     {
         base.Initialize();
@@ -238,9 +242,13 @@ public sealed class PaperSystem : EntitySystem
             if (entity.Comp.StampState == null && TryComp<AppearanceComponent>(entity, out var appearance))
             {
                 entity.Comp.StampState = spriteStampState;
+                entity.Comp.StampColor = spriteStampState == ColoredStampState //IS14-change
+                    ? stampInfo.StampedColor
+                    : Color.White;
                 // Would be nice to be able to display multiple sprites on the paper
                 // but most of the existing images overlap
                 _appearance.SetData(entity, PaperVisuals.Stamp, entity.Comp.StampState, appearance);
+                _appearance.SetData(entity, PaperVisuals.StampColor, entity.Comp.StampColor, appearance); //IS14-change
             }
         }
         return true;
@@ -256,6 +264,7 @@ public sealed class PaperSystem : EntitySystem
 
         target.Comp.StampedBy = new List<StampDisplayInfo>(source.Comp.StampedBy);
         target.Comp.StampState = source.Comp.StampState;
+        target.Comp.StampColor = source.Comp.StampColor; //IS14-change: carry the tint over too
         Dirty(target);
 
         if (TryComp<AppearanceComponent>(target, out var appearance))

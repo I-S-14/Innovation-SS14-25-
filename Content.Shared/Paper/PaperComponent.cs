@@ -25,6 +25,12 @@ public sealed partial class PaperComponent : Component
     [DataField("stampState"), AutoNetworkedField]
     public string? StampState { get; set; }
 
+    //IS14-change start: the shared greyscale stamp state is tinted per stamp, so the world sprite
+    // matches the ink of the impression instead of needing its own coloured sprite.
+    [DataField, AutoNetworkedField]
+    public Color StampColor { get; set; } = Color.White;
+    //IS14-change end
+
     [DataField, AutoNetworkedField]
     public bool EditingDisabled;
 
@@ -108,7 +114,8 @@ public sealed partial class PaperComponent : Component
     public enum PaperVisuals : byte
     {
         Status,
-        Stamp
+        Stamp,
+        StampColor //IS14-change: tint for the shared greyscale stamp state
     }
 
     [Serializable, NetSerializable]

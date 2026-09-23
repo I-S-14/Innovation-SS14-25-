@@ -17,7 +17,7 @@
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-captain
     stampedColor: "#B6000D"
-    stampState: paper_stamp-cap
+    stampState: paper_stamp-colored
     stampLargeIcon:
       sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
       state: captain
@@ -31,7 +31,7 @@
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-hop
     stampedColor: "#B6000D"
-    stampState: paper_stamp-hop
+    stampState: paper_stamp-colored
     stampLargeIcon:
       sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
       state: hop
@@ -45,7 +45,7 @@
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-command-secretary
     stampedColor: "#B6000D"
-    stampState: paper_stamp-hop
+    stampState: paper_stamp-colored
     stampLargeIcon:
       sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
       state: command_secretary
@@ -87,7 +87,7 @@
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-cmo
     stampedColor: "#34BD20"
-    stampState: paper_stamp-cmo
+    stampState: paper_stamp-colored
     stampLargeIcon:
       sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
       state: cmo
@@ -101,7 +101,7 @@
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-senior-physician
     stampedColor: "#34BD20"
-    stampState: paper_stamp-cmo
+    stampState: paper_stamp-colored
     stampLargeIcon:
       sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
       state: senior_physician
@@ -115,7 +115,7 @@
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-psychologist
     stampedColor: "#34BD20"
-    stampState: paper_stamp-psychologist
+    stampState: paper_stamp-colored
     stampLargeIcon:
       sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
       state: psychologist
@@ -171,7 +171,7 @@
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-hos-militia
     stampedColor: "#3D8EA7"
-    stampState: paper_stamp-hos
+    stampState: paper_stamp-colored
     stampLargeIcon:
       sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
       state: hos_militia
@@ -227,7 +227,7 @@
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-med-officer
     stampedColor: "#3D8EA7"
-    stampState: paper_stamp-hos
+    stampState: paper_stamp-colored
     stampLargeIcon:
       sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
       state: med_officer
@@ -241,7 +241,7 @@
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-space-security
     stampedColor: "#3D8EA7"
-    stampState: paper_stamp-hos
+    stampState: paper_stamp-colored
     stampLargeIcon:
       sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
       state: space_security
@@ -255,7 +255,7 @@
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-qm
     stampedColor: "#4B8BF5"
-    stampState: paper_stamp-qm
+    stampState: paper_stamp-colored
     stampLargeIcon:
       sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
       state: qm
@@ -269,7 +269,7 @@
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-senior-expeditioner
     stampedColor: "#4B8BF5"
-    stampState: paper_stamp-qm
+    stampState: paper_stamp-colored
     stampLargeIcon:
       sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
       state: senior_expeditioner
@@ -339,7 +339,7 @@
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-mime
     stampedColor: "#969696"
-    stampState: paper_stamp-mime
+    stampState: paper_stamp-colored
     stampLargeIcon:
       sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
       state: mime
@@ -353,7 +353,7 @@
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14-moko
     stampedColor: "#FFBD1F"
-    stampState: paper_stamp-centcom
+    stampState: paper_stamp-colored
     stampLargeIcon:
       sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
       state: moko
@@ -409,7 +409,7 @@
   - type: Stamp
     stampedName: stamp-component-stamped-name-mup
     stampedColor: "#513726"
-    stampState: paper_stamp-lawyer
+    stampState: paper_stamp-colored
     stampLargeIcon:
       sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
       state: mup_representative
@@ -423,7 +423,7 @@
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14lawyer
     stampedColor: "#a46e4b"
-    stampState: paper_stamp-lawyer
+    stampState: paper_stamp-colored
     stampLargeIcon:
       sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
       state: lawyer
