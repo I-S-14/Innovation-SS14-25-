@@ -1,4 +1,4 @@
-stamp-component-stamped-name-mup = Представитель МЮП
+stamp-component-stamped-name-mup = Представитель МЮиП
 stamp-component-stamped-name-is14lawyer = Юрист
 
 stamp-component-stamped-name-is14-captain = Капитан
@@ -26,6 +26,6 @@ stamp-component-stamped-name-is14-chaplain = Священник
 stamp-component-stamped-name-is14-clown = Клоун
 stamp-component-stamped-name-is14-mime = Мим
 stamp-component-stamped-name-is14-moko = МОКО
-stamp-component-stamped-name-is14-crb = Оперативник ГСО
+stamp-component-stamped-name-is14-crb = Агент ЦРБ
 stamp-component-stamped-name-is14-approved = ПРИНЯТО
 stamp-component-stamped-name-is14-denied = ОТКАЗАНО

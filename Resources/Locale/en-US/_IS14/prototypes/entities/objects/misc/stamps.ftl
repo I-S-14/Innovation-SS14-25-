@@ -1,89 +1,89 @@
 ent-IS14RubberStampCaptain = captain's rubber stamp
-    .desc = As heavy as responsibility for the whole facility. One strike and the matter is settled at a level answerable only to the Party.
+    .desc = A sterile clerical stamp. On the black market it goes for three credits.
 
 ent-IS14RubberStampHeadOfPersonnel = head of personnel's rubber stamp
-    .desc = It decides who you are and which department you belong to. Losing it counts as losing control of the staffing table.
+    .desc = The artefact that separates a labourer from a specialist, and a worker from their wages.
 
 ent-IS14RubberStampCommandSecretary = command secretary's rubber stamp
-    .desc = Officially, mere clerical work. In practice, the only thing separating an order from a scrap of paper.
+    .desc = The grease on the handle does not inspire confidence, but a stamp is a stamp. It just smells of lubricant.
 
 ent-IS14RubberStampChiefEngineer = chief engineer's rubber stamp
-    .desc = It smells of solder and machine oil. The impression comes out slightly smudged, much like the deadline of the last scheduled overhaul.
+    .desc = No nicks, no scratches, no oil stains, and yet the impression it leaves still smells of diesel, oil and fuel residue. Delicious.
 
 ent-IS14RubberStampSeniorEngineer = senior engineering specialist's rubber stamp
-    .desc = It certifies that the assembly was built to spec rather than by intuition. The latter, admittedly, happens more often.
+    .desc = Partly bent, partly cut off, with an angle grinder notch down one side. Runs on a mix of fuel oil and machine oil, which gives it that distinctive yellow tint and aroma.
 
 ent-IS14RubberStampChiefMedicalOfficer = chief medical officer's rubber stamp
-    .desc = Green, sterile and not open to discussion. Its impression closes a medical record tighter than a cryopod lid.
+    .desc = It can grant sick leave and help you dodge service, and the going rate for its use starts at a thousand Soviet credits.
 
 ent-IS14RubberStampSeniorPhysician = senior medical specialist's rubber stamp
-    .desc = Applied wherever the chief physician didn't get round to it. Patients never notice the difference, and neither does the review board.
+    .desc = Always wanted over in chemistry, for signing out medicine, bandages, plasters, spirits and narcotics of varying severity.
 
 ent-IS14RubberStampPsychologist = psychologist's rubber stamp
-    .desc = It certifies that the worker is mentally fit for labour in open space. The qualifier 'conditionally' did not fit into the impression.
+    .desc = Divides the living beings of the facility into orderlies and patients.
 
 ent-IS14RubberStampPharmacist = pharmacist's rubber stamp
-    .desc = Orange, like the warning label on a vial. Without it a prescription is just a list of chemicals.
+    .desc = Grants the right to carry medicine, state-issue spirits and narcotics of varying severity.
 
 ent-IS14RubberStampResearchDirector = research director's rubber stamp
-    .desc = The ink is unstable and faintly shimmers: a side effect of approving something that should not have been approved. Research assures you it is safe.
+    .desc = It sits on every research report and is the most comprehensible part of it. For show it runs on nano-ink that shimmers to a set algorithm.
 
 ent-IS14RubberStampSeniorResearcher = senior research specialist's rubber stamp
-    .desc = The impression twitches, as if not entirely in agreement with itself. The lab writes it off as residual radiation.
+    .desc = It can account for half the facility going missing during an experiment. Only half, though.
 
 ent-IS14RubberStampHosMilitia = chief of militia's rubber stamp
-    .desc = Blue, heavy and not subject to appeal. It gets used once, usually on somebody's fate.
+    .desc = Mostly serves as a stand for a chair, or a stand on a chair. It also does for administrative work: trading weaponry for vodka and a snack.
 
 ent-IS14RubberStampSeniorMilitia = senior militiaman's rubber stamp
-    .desc = It closes out a shift, a report and a couple of questionable detentions. Command needn't hear about the last part.
+    .desc = Created to lend administrative legitimacy to militia excess. It does not, however, protect against resistance.
 
 ent-IS14RubberStampLrrChief = licensing chief's rubber stamp
-    .desc = It permits what would otherwise be a criminal charge. The difference between a hunting carbine and armed insurrection fits into a single impression.
+    .desc = Slippery with grease, but indispensable for the partial mass mobilisation of the facility.
 
 ent-IS14RubberStampInvestigator = investigator's rubber stamp
-    .desc = It seals a report so firmly that rewriting it is no longer an option. Which is exactly why it is guarded more closely than a sidearm.
+    .desc = A replica of Leonid Kanevsky's autograph is engraved on the handle.
 
 ent-IS14RubberStampMedOfficer = medical officer's rubber stamp
-    .desc = It sits on the line between the infirmary and the cell. It certifies that the detainee walked there under their own power.
+    .desc = Goes on the death certificates of visitors to the militia station, and on the “Waiver of Claims Against Militia Personnel”.
 
 ent-IS14RubberStampSpaceSecurity = space security officer's rubber stamp
-    .desc = Applied in vacuum, in a hardsuit and usually in a hurry. The impression is only more convincing for it.
+    .desc = Made by militia command so that space security officers would not sit alone in their office without a stamp of their own.
 
 ent-IS14RubberStampQm = head of supply's rubber stamp
-    .desc = Without it no crate leaves the warehouse, and that is the one doctrine everybody on the facility actually observes.
+    .desc = An essential household item in Supply. Excellent for tenderising meat.
 
 ent-IS14RubberStampSeniorExpeditioner = senior expeditioner's rubber stamp
-    .desc = An invoice bearing it is considered the truth. What is actually in the crate is a secondary question.
+    .desc = It has an elevated coefficient of going missing on expedition, which is why it is made of plastic.
 
 ent-IS14RubberStampMailman = mailman's rubber stamp
-    .desc = It cancels a postage stamp and a conscience in one motion. Delivered is delivered.
+    .desc = Stamps at a speed equal to the speed of delivery. Takes just as long to dry.
 
 ent-IS14RubberStampServiceAdmin = service administrator's rubber stamp
-    .desc = It approves the menu, the shift rota and world harmony in the bar. The last one with mixed results.
+    .desc = Belongs on every poster and advertisement for off-duty events.
 
 ent-IS14RubberStampChaplain = chaplain's rubber stamp
-    .desc = Grey and severe. It certifies that which is not really subject to certification, but the registry insisted.
+    .desc = Nominally consecrated. With enough determination it can burn crosses reading “I Serve the Soviet Union” onto the foreheads of devils and other unclean things.
 
 ent-IS14RubberStampClown = clown's rubber stamp
-    .desc = The only stamp in the Union whose impression reads 'NOT APPROVED'. It carries no legal weight, but ruins a mood flawlessly.
+    .desc = As was once said, there are always two of them: a master and an apprentice, both clowns. The first passes the stamp to the second.
 
 ent-IS14RubberStampMime = mime's rubber stamp
-    .desc = Applied in silence. Nobody is going to explain what exactly has been approved.
+    .desc = The bearer has taken a vow of silence. If you have seen them speak, it should be taken away and applied to their forehead.
 
 ent-IS14RubberStampMoko = MOKO rubber stamp
-    .desc = Gold like the epaulettes, and just as non-negotiable. Where it lands, questions stop.
+    .desc = Uses nothing but the gold ink of the “Snowy Yolk” ink works. Can serve as an ornament in an antique collection.
 
-ent-IS14RubberStampCrb = state security operative's rubber stamp
-    .desc = Black, without a single needless flourish. A document bearing this impression is most likely one you were not supposed to see.
+ent-IS14RubberStampCrb = CRB agent's rubber stamp
+    .desc = Better not to see it at all, and if you have, tell the truth and nothing but the truth. Doubles as a soldering iron.
 
 ent-IS14RubberStampApproved = approval rubber stamp
-    .desc = A hammer, a sickle and one short word. Whatever happens further up the chain is no longer your concern.
+    .desc = Informs the reader that their documents have been accepted for review. And then for pulping into clean paper.
 
 ent-IS14RubberStampDenied = denial rubber stamp
-    .desc = Red, merciless and beloved by the registry. Appeals are filed in triplicate and rejected as well.
+    .desc = If you are seeing this, your efforts were not sufficient. Try offering money.
 
 ent-IS14RubberStampMupRepresentative = MUP representative's rubber stamp
-    .desc = The impression of the Ministry of Justice and Rights: the last instance between a worker and a tribunal.
+    .desc = The last instance between a worker and a tribunal. In practice it usually speeds up the latter.
 
 ent-IS14RubberStampLawyer = legal officer's rubber stamp
-    .desc = Brown with old ink and even older cases. It certifies that you were within your rights. In theory.
+    .desc = It gives you a chance to at least try to contest a ruling by the militia or the facility's management. It earns no respect.

@@ -26,6 +26,6 @@ stamp-component-stamped-name-is14-chaplain = Chaplain
 stamp-component-stamped-name-is14-clown = Clown
 stamp-component-stamped-name-is14-mime = Mime
 stamp-component-stamped-name-is14-moko = MOKO
-stamp-component-stamped-name-is14-crb = State Security Operative
+stamp-component-stamped-name-is14-crb = CRB Agent
 stamp-component-stamped-name-is14-approved = APPROVED
 stamp-component-stamped-name-is14-denied = DENIED
