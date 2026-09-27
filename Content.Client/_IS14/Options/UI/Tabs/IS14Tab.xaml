@@ -1,0 +1,19 @@
+<!--
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<Control xmlns="https://spacestation14.io"
+         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+         xmlns:ui="clr-namespace:Content.Client.Options.UI">
+    <BoxContainer Orientation="Vertical">
+        <ScrollContainer VerticalExpand="True" HScrollEnabled="False">
+            <BoxContainer Orientation="Vertical" Margin="8">
+                <Label Text="{Loc 'ui-options-is14-header-stamps'}"
+                       StyleClasses="LabelKeyText"/>
+                <CheckBox Name="StampRandomTiltCheckBox" Text="{Loc 'ui-options-is14-stamp-random-tilt'}" />
+                <ui:OptionSlider Name="StampMaxTiltSlider" Title="{Loc 'ui-options-is14-stamp-max-tilt'}" />
+            </BoxContainer>
+        </ScrollContainer>
+        <ui:OptionsTabControlRow Name="Control" Access="Public" />
+    </BoxContainer>
+</Control>

@@ -39,12 +39,6 @@ public sealed class StampPlacementLayer : Control
     private const float GhostAlpha = 0.45f;
 
     /// <summary>
-    ///     How far the preview is randomly tilted from upright when it first appears, in radians.
-    ///     A little wobble makes a stamped page look hand-worked instead of typeset.
-    /// </summary>
-    private const float TiltRange = 0.09f;
-
-    /// <summary>
     ///     How far one notch of the scroll wheel turns the preview, in radians. Eight notches
     ///     take it from upright to the steepest angle the server will accept.
     /// </summary>
@@ -246,7 +240,7 @@ public sealed class StampPlacementLayer : Control
         }
 
         if (!_rotatedByPlayer)
-            _ghostRotation = _random.NextFloat(-TiltRange, TiltRange);
+            _ghostRotation = RandomTilt();
 
         _ghost = new StampWidget
         {
@@ -259,6 +253,22 @@ public sealed class StampPlacementLayer : Control
         AddChild(_ghost);
         MouseFilter = MouseFilterMode.Stop;
         InvalidateArrange();
+    }
+
+    /// <summary>
+    ///     A small random angle for a freshly picked up stamp, so that a page full of impressions
+    ///     looks hand-worked rather than typeset. Both the switch and the size of the wobble are
+    ///     per-player options; with the switch off a stamp starts upright.
+    /// </summary>
+    private float RandomTilt()
+    {
+        if (!_cfg.GetCVar(IS14CVars.StampRandomTilt))
+            return 0.0f;
+
+        var degrees = Math.Clamp(_cfg.GetCVar(IS14CVars.StampMaxTilt), 0, 90);
+        var range = MathF.Min(degrees * MathF.PI / 180.0f, StampPlacementSystem.MaxRotation);
+
+        return range <= 0.0f ? 0.0f : _random.NextFloat(-range, range);
     }
 
     protected override void MouseMove(GUIMouseMoveEventArgs args)
