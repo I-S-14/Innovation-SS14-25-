@@ -6,14 +6,14 @@ using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
 using Robust.Client.UserInterface.CustomControls;
 using Robust.Client.UserInterface.XAML;
+using Robust.Shared.Input;
 using Robust.Shared.Utility;
 
 namespace Content.Client._IS14.OS.Shell;
 
 /// <summary>
-///     One application window inside the desktop. Built on the engine's BaseWindow, which
-///     already drags relative to its parent and clamps to the parent's size — so a window can
-///     never leave the device screen and no custom window manager is needed (Docs §5.1).
+///     One application window inside the desktop, built on the engine's BaseWindow — which
+///     handles raising and resizing, while moving is done here (see <see cref="MouseMove"/>).
 ///     In fullscreen mode (handhelds) the same window simply fills the desktop and stops
 ///     dragging: one implementation, two shell modes.
 /// </summary>
@@ -39,6 +39,12 @@ public sealed partial class IS14OsAppWindow : BaseWindow
     ///     small.
     /// </summary>
     public bool Focused { get; set; }
+
+    /// <summary>Whether this window is currently being moved by us rather than resized by base.</summary>
+    private bool _moving;
+
+    /// <summary>Where inside the window the player grabbed it, so it does not jump on the first move.</summary>
+    private Vector2 _grabOffset;
 
     public event Action<string>? OnCloseRequested;
     public event Action<string>? OnMinimizeRequested;
@@ -137,12 +143,72 @@ public sealed partial class IS14OsAppWindow : BaseWindow
     {
         base.KeyBindDown(args);
 
+        if (args.Function == EngineKeyFunctions.UIClick)
+        {
+            _moving = GetDragModeFor(args.RelativePosition) == DragMode.Move;
+
+            // RelativePosition is measured from this window's top-left, which is exactly the
+            // grip offset the move has to preserve.
+            _grabOffset = args.RelativePosition;
+        }
+
         // A handheld shows one window at a time, so there is nothing to raise; and a window
         // already on top has nothing to gain either.
         if (_fullscreen || Focused)
             return;
 
         OnFocusRequested?.Invoke(AppId);
+    }
+
+    protected override void KeyBindUp(GUIBoundKeyEventArgs args)
+    {
+        base.KeyBindUp(args);
+
+        if (args.Function == EngineKeyFunctions.UIClick)
+            _moving = false;
+    }
+
+    /// <summary>
+    ///     Moving the window, done here rather than left to BaseWindow, which gets it wrong for
+    ///     a desktop that is not the whole screen. The engine clamps the <em>cursor</em> to the
+    ///     parent's size and then subtracts the grip offset, so how far a window can be pushed
+    ///     depends on where along the title bar it was grabbed — grab the right-hand end and it
+    ///     stops early, grab the left-hand end and it sails past. It also compares a screen-space
+    ///     cursor against a parent-space size, which only lines up when the parent sits at the
+    ///     top-left of the screen; our desktop is nested inside the shell window and never does.
+    ///
+    ///     So: work in parent space, and clamp the <em>window</em>, not the cursor. Resizing and
+    ///     the resize cursors are still the engine's, hence the fall-through.
+    /// </summary>
+    protected override void MouseMove(GUIMouseMoveEventArgs args)
+    {
+        if (!_moving || _fullscreen || Parent == null)
+        {
+            base.MouseMove(args);
+            return;
+        }
+
+        var cursor = args.GlobalPosition - Parent.GlobalPosition;
+
+        LayoutContainer.SetPosition(this, ClampToDesktop(cursor, _grabOffset, Size, Parent.Size));
+    }
+
+    /// <summary>
+    ///     Where a dragged window lands: the cursor in desktop space, less where the window was
+    ///     grabbed, kept wholly inside the desktop.
+    ///
+    ///     Static and on its own because the property that matters is a fact about this
+    ///     arithmetic and nothing else — how far a window can be pushed must not depend on where
+    ///     along its title bar it was picked up, which is exactly what clamping the cursor
+    ///     instead of the window gets wrong.
+    /// </summary>
+    public static Vector2 ClampToDesktop(Vector2 cursorInDesktop, Vector2 grabOffset, Vector2 windowSize, Vector2 desktopSize)
+    {
+        // A window bigger than the desktop has nowhere to go; pin it rather than letting the
+        // limit go negative and flip the clamp inside out.
+        var limit = Vector2.Max(desktopSize - windowSize, Vector2.Zero);
+
+        return Vector2.Clamp(cursorInDesktop - grabOffset, Vector2.Zero, limit);
     }
 
     protected override DragMode GetDragModeFor(Vector2 relativeMousePos)

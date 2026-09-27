@@ -117,6 +117,48 @@ public sealed class OsWindowChromeTest
     }
 
     /// <summary>
+    ///     How far a window can be dragged must not depend on where along its title bar it was
+    ///     picked up. The engine's own BaseWindow gets this wrong: it clamps the cursor to the
+    ///     parent and then subtracts the grip offset, so grabbing the right-hand end of the bar
+    ///     stops the window early and grabbing the left-hand end sails it past. We clamp the
+    ///     window instead, and this is the arithmetic that says so.
+    /// </summary>
+    [Test]
+    public void DragRangeDoesNotDependOnWhereTheWindowWasGrabbed()
+    {
+        var desktop = new Vector2(800, 600);
+        var window = new Vector2(300, 200);
+
+        // Far past the right-hand and bottom edges, so the clamp is what decides where it lands.
+        var shoved = new Vector2(5000, 5000);
+        var expectedMax = desktop - window;
+
+        foreach (var grab in new[] { new Vector2(2, 4), new Vector2(150, 10), new Vector2(298, 26) })
+        {
+            Assert.Multiple(() =>
+            {
+                Assert.That(IS14OsAppWindow.ClampToDesktop(shoved, grab, window, desktop),
+                    Is.EqualTo(expectedMax),
+                    $"grabbed at {grab}, the window stopped somewhere else on the right");
+
+                // And the same in the other direction: hard against the top-left corner.
+                Assert.That(IS14OsAppWindow.ClampToDesktop(new Vector2(-5000, -5000), grab, window, desktop),
+                    Is.EqualTo(Vector2.Zero),
+                    $"grabbed at {grab}, the window slid off the top-left");
+            });
+        }
+
+        // In the middle of the desktop the grip is preserved exactly: the window must not jump
+        // under the cursor when the drag starts.
+        Assert.That(IS14OsAppWindow.ClampToDesktop(new Vector2(400, 300), new Vector2(150, 10), window, desktop),
+            Is.EqualTo(new Vector2(250, 290)));
+
+        // A window larger than the desktop has nowhere to go and is pinned, not flung.
+        Assert.That(IS14OsAppWindow.ClampToDesktop(shoved, Vector2.Zero, new Vector2(900, 700), desktop),
+            Is.EqualTo(Vector2.Zero));
+    }
+
+    /// <summary>
     ///     The shell's own glyphs, including the launcher mark drawn for IS14. A mistyped state
     ///     name or a malformed RSI only shows up when the taskbar tries to draw itself.
     /// </summary>
