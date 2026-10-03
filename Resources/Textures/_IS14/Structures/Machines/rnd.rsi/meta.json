@@ -1,0 +1,108 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from BandaStation (tgstation fork), icons/obj/machines/research.dmi",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "d_analyzer"
+    },
+    {
+      "name": "d_analyzer_t"
+    },
+    {
+      "name": "d_analyzer_process",
+      "delays": [
+        [
+          0.09,
+          0.09,
+          0.09,
+          0.09,
+          0.09,
+          0.09,
+          0.09,
+          0.09,
+          0.09,
+          0.09,
+          0.09,
+          0.09,
+          0.09,
+          0.09,
+          0.09,
+          0.09,
+          0.09,
+          0.09,
+          0.09,
+          0.09,
+          0.09,
+          0.09,
+          0.09,
+          0.09,
+          0.09,
+          0.09,
+          0.09
+        ]
+      ]
+    },
+    {
+      "name": "ecto_sniffer"
+    },
+    {
+      "name": "ecto_sniffer_flick",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "tdoppler",
+      "directions": 4,
+      "delays": [
+        [
+          0.8,
+          0.2
+        ],
+        [
+          0.8,
+          0.2
+        ],
+        [
+          0.8,
+          0.2
+        ],
+        [
+          0.8,
+          0.2
+        ]
+      ]
+    },
+    {
+      "name": "tdoppler_screen-off"
+    },
+    {
+      "name": "tdoppler_cable"
+    },
+    {
+      "name": "tdoppler_open"
+    },
+    {
+      "name": "explosive_compressor",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ]
+      ]
+    }
+  ]
+}

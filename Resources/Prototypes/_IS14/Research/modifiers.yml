@@ -1,0 +1,193 @@
+# SPDX-FileCopyrightText: 2025 IS14
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# Station-wide numbers research can move. A technology touches these through
+# `!type:IS14ModifierEffect`, which is how research pays off in something other than recipes.
+#
+# Adding a knob: a prototype here plus one place that reads it via
+# IS14ResearchModifierSystem.GetModifier. Nothing in the research code changes.
+
+# ─── Yields ─────────────────────────────────────────────────────────────────
+
+- type: is14ResearchModifier
+  id: ResearchPayout
+  name: is14-modifier-research-payout
+  default: 1
+  minimum: 0.25
+  maximum: 4
+
+- type: is14ResearchModifier
+  id: ResearchPayoutScience
+  name: is14-modifier-research-payout-science
+  pointType: Science
+  default: 1
+  minimum: 0.25
+  maximum: 4
+
+- type: is14ResearchModifier
+  id: ResearchPayoutIndustrial
+  name: is14-modifier-research-payout-industrial
+  pointType: Industrial
+  default: 1
+  minimum: 0.25
+  maximum: 4
+
+- type: is14ResearchModifier
+  id: ResearchPayoutMilitary
+  name: is14-modifier-research-payout-military
+  pointType: Military
+  default: 1
+  minimum: 0.25
+  maximum: 4
+
+- type: is14ResearchModifier
+  id: ResearchPayoutBiological
+  name: is14-modifier-research-payout-biological
+  pointType: Biological
+  default: 1
+  minimum: 0.25
+  maximum: 4
+
+- type: is14ResearchModifier
+  id: ResearchPayoutSocial
+  name: is14-modifier-research-payout-social
+  pointType: Social
+  default: 1
+  minimum: 0.25
+  maximum: 4
+
+# How much a repeated measurement still pays. Zero means the novelty rule is untouched;
+# methodology research raises the floor so refining old results stays worthwhile.
+- type: is14ResearchModifier
+  id: ExperimentNoveltyRetention
+  name: is14-modifier-novelty-retention
+  default: 0
+  minimum: 0
+  maximum: 0.6
+
+# ─── Production ─────────────────────────────────────────────────────────────
+
+# Multiplies how long a lathe takes, so lower is better.
+- type: is14ResearchModifier
+  id: LatheSpeed
+  name: is14-modifier-lathe-speed
+  default: 1
+  minimum: 0.35
+  maximum: 2
+  higherIsBetter: false
+
+# Multiplies how much material a print eats, so lower is better.
+- type: is14ResearchModifier
+  id: LatheMaterialEfficiency
+  name: is14-modifier-lathe-materials
+  default: 1
+  minimum: 0.4
+  maximum: 2
+  higherIsBetter: false
+
+# ─── Наладка по цехам ───────────────────────────────────────────────────────
+
+# The same two numbers as above, but scoped to one workshop: `lathes` lists the lathe
+# prototypes (children included), so "наладка медицинского цеха" leaves the ammo bench alone.
+# This is what makes a tuning upgrade a choice between departments rather than a flat bonus.
+
+- type: is14ResearchModifier
+  id: LatheSpeedScience
+  name: is14-modifier-lathe-speed-science
+  knob: Speed
+  lathes: [ Protolathe, CircuitImprinter ]
+  default: 1
+  minimum: 0.5
+  maximum: 1.5
+  higherIsBetter: false
+
+- type: is14ResearchModifier
+  id: LatheMaterialScience
+  name: is14-modifier-lathe-materials-science
+  knob: Material
+  lathes: [ Protolathe, CircuitImprinter ]
+  default: 1
+  minimum: 0.5
+  maximum: 1.5
+  higherIsBetter: false
+
+- type: is14ResearchModifier
+  id: LatheSpeedMedical
+  name: is14-modifier-lathe-speed-medical
+  knob: Speed
+  lathes: [ MedicalTechFab, Biofabricator ]
+  default: 1
+  minimum: 0.5
+  maximum: 1.5
+  higherIsBetter: false
+
+- type: is14ResearchModifier
+  id: LatheMaterialMedical
+  name: is14-modifier-lathe-materials-medical
+  knob: Material
+  lathes: [ MedicalTechFab, Biofabricator ]
+  default: 1
+  minimum: 0.5
+  maximum: 1.5
+  higherIsBetter: false
+
+- type: is14ResearchModifier
+  id: LatheSpeedArms
+  name: is14-modifier-lathe-speed-arms
+  knob: Speed
+  lathes: [ SecurityTechFab, AmmoTechFab ]
+  default: 1
+  minimum: 0.5
+  maximum: 1.5
+  higherIsBetter: false
+
+- type: is14ResearchModifier
+  id: LatheMaterialArms
+  name: is14-modifier-lathe-materials-arms
+  knob: Material
+  lathes: [ SecurityTechFab, AmmoTechFab ]
+  default: 1
+  minimum: 0.5
+  maximum: 1.5
+  higherIsBetter: false
+
+- type: is14ResearchModifier
+  id: LatheSpeedIndustrial
+  name: is14-modifier-lathe-speed-industrial
+  knob: Speed
+  lathes: [ Autolathe, ExosuitFabricator, OreProcessor, Sheetifier ]
+  default: 1
+  minimum: 0.5
+  maximum: 1.5
+  higherIsBetter: false
+
+- type: is14ResearchModifier
+  id: LatheMaterialIndustrial
+  name: is14-modifier-lathe-materials-industrial
+  knob: Material
+  lathes: [ Autolathe, ExosuitFabricator, OreProcessor, Sheetifier ]
+  default: 1
+  minimum: 0.5
+  maximum: 1.5
+  higherIsBetter: false
+
+- type: is14ResearchModifier
+  id: LatheSpeedService
+  name: is14-modifier-lathe-speed-service
+  knob: Speed
+  lathes: [ UniformPrinter, Biogenerator ]
+  default: 1
+  minimum: 0.5
+  maximum: 1.5
+  higherIsBetter: false
+
+- type: is14ResearchModifier
+  id: LatheMaterialService
+  name: is14-modifier-lathe-materials-service
+  knob: Material
+  lathes: [ UniformPrinter, Biogenerator ]
+  default: 1
+  minimum: 0.5
+  maximum: 1.5
+  higherIsBetter: false

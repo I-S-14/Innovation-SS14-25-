@@ -1,0 +1,87 @@
+# SPDX-FileCopyrightText: 2025 IS14
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# Portable half of the NIC loops: an instrument that has to be carried to the subject,
+# and the paperwork that only another player can fill in.
+
+# Biological data. The subject stays where it is, which is the whole reason this is a
+# handheld instrument and not a bench: bodies are heavy and medics are busy.
+- type: entity
+  parent: BaseItem
+  id: IS14PathologyScanner
+  name: патологоанатомический сканер
+  description: Снимает с тела причину смерти и видовые особенности. Новая причина смерти — данные; десятый застреленный — уже нет.
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Medical/healthanalyzer.rsi
+    state: analyzer
+  - type: Item
+    size: Small
+    heldPrefix: analyzer
+  - type: IS14ExperimentScanner
+    pointType: Biological
+    baseValue: 40
+    requireDead: true
+    mode: Mob
+    profileNamespace: pathology
+    delay: 4
+    whitelist:
+      components:
+      - MobState
+
+# Social data. Worthless blank, worth something once a living crew member answers it.
+- type: entity
+  parent: BaseItem
+  id: IS14SurveyForm
+  name: социологическая анкета
+  description: Бланк опроса НИЦ. Пока не заполнен — просто бумага. Дайте его товарищу и попросите ответить.
+  components:
+  - type: Sprite
+    sprite: Objects/Misc/bureaucracy.rsi
+    state: acquisition_form
+  - type: Item
+    size: Tiny
+  - type: IS14SurveyForm
+    fillTime: 4
+
+# ---------------------------------------------------------------------------
+# Volunteers (phase 4, 5.3): consent on paper, data from the living
+# ---------------------------------------------------------------------------
+
+# The form exists so that consent is a physical object: it can be refused, handed over,
+# forged or lost. The volunteer signs it themselves — "use in hand".
+- type: entity
+  parent: BaseItem
+  id: IS14ConsentForm
+  name: бланк согласия
+  description: Согласие на участие в биологическом исследовании НИЦ. Подписывает сам добровольец — применить в руке. За участие платят из бюджета науки.
+  components:
+  - type: Sprite
+    sprite: Objects/Misc/bureaucracy.rsi
+    state: nano_paper
+  - type: Item
+    size: Tiny
+  - type: IS14ConsentForm
+    signTime: 3
+
+# Examines a living volunteer: blood, reactions, stress data. Pays the station in biological
+# data and the volunteer in credits — which is how money gets from science back to the crew.
+- type: entity
+  parent: BaseItem
+  id: IS14VolunteerScanner
+  name: сканер добровольцев
+  description: Снимает показатели с живого человека. С подписанным согласием — полноценные данные и оплата добровольцу; без согласия — испорченные данные и запись в журнале.
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Medical/healthanalyzer.rsi
+    state: analyzer
+  - type: Item
+    size: Small
+    heldPrefix: analyzer
+  - type: IS14VolunteerScanner
+    pointType: Biological
+    baseValue: 45
+    fee: 150
+    delay: 4
+    channel: Science

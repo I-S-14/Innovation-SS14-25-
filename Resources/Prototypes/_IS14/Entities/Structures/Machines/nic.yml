@@ -1,0 +1,510 @@
+# SPDX-FileCopyrightText: 2025 IS14
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# НИЦ — научно-исследовательский центр. Phase 0-1 of Docs/_IS14/research-design.md:
+# one live loop per currency, and a console that spends all five.
+#
+# Runs alongside the upstream R&D console: unlocks still land in the same research server,
+# so lathes keep working exactly as before. Only the payment is ours.
+
+# ---------------------------------------------------------------------------
+# Console
+# ---------------------------------------------------------------------------
+
+- type: entity
+  parent: IS14ComputerResearch
+  id: IS14NicConsole
+  name: консоль НИЦ
+  description: Терминал научно-исследовательского центра. Показывает все виды научных данных станции и обменивает их на технологии.
+  components:
+  - type: IS14ResearchConsole
+    branches:
+    - IS14Fundamental
+    - IS14Materials
+    - IS14Energetics
+    - IS14Medicine
+    - IS14Cybernetics
+    - IS14Armament
+    - IS14Society
+  - type: ActiveRadio
+    channels:
+    - Science
+  - type: ActivatableUI
+    key: enum.IS14ResearchConsoleUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.IS14ResearchConsoleUiKey.Key:
+        type: IS14ResearchConsoleBui
+      enum.ResearchClientUiKey.Key:
+        type: ResearchClientBoundUserInterface
+      enum.WiresUiKey.Key:
+        type: WiresBoundUserInterface
+
+# ---------------------------------------------------------------------------
+# Experiment benches: hand it a sample, it pays the station
+# ---------------------------------------------------------------------------
+
+# Deliberately not ConstructibleMachine: these are phase-1 prototypes with no board or
+# construction graph yet, and a Machine component without a board only causes confusion.
+- type: entity
+  abstract: true
+  parent: BaseMachinePowered
+  id: IS14BaseExperimentBench
+  components:
+  - type: ApcPowerReceiver
+    powerLoad: 300
+  - type: Appearance
+  - type: InteractionOutline
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Pullable
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.35,-0.35,0.35,0.35"
+        density: 190
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Metallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 200
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          SheetSteel1:
+            min: 1
+            max: 2
+
+# Scientific data: the NIC's own baseline. Anything unfamiliar is worth a look, so the whole
+# station can carry junk in — cheap per sample, and the archive kills repetition.
+- type: entity
+  parent: IS14BaseExperimentBench
+  id: IS14UniversalAnalyzer
+  name: универсальный анализатор
+  description: Сканирует любой предмет и снимает с него научные данные. Первый образец каждого вида даёт результат, десятый — только подтверждение.
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/artifact_analyzer.rsi
+    snapCardinals: true
+    layers:
+    - state: icon
+  - type: IS14ExperimentBench
+    pointType: Science
+    baseValue: 12
+    consume: false
+    mode: Prototype
+    profileNamespace: scan
+    whitelist:
+      components:
+      - Item
+
+# Industrial data: materials and hardware, fed by cargo and engineering.
+- type: entity
+  parent: IS14BaseExperimentBench
+  id: IS14MaterialsBench
+  name: материаловедческий стенд
+  description: Разбирает образцы материалов на состав. Новый сплав или невиданная руда — промышленные данные; двадцатый стальной лист — нет.
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/sheetifier.rsi
+    snapCardinals: true
+    layers:
+    - state: base_machine
+  - type: IS14ExperimentBench
+    pointType: Industrial
+    baseValue: 25
+    consume: true
+    mode: Material
+    profileNamespace: material
+    whitelist:
+      components:
+      - PhysicalComposition
+
+# Military data: dismantling captured hardware. The biggest single source, and it only works
+# if security actually hands the confiscated things over.
+- type: entity
+  parent: IS14BaseExperimentBench
+  id: IS14TrophyBench
+  name: стенд разбора трофеев
+  description: Разбирает оружие и контрабандные образцы на военные данные. Образец при этом уничтожается — согласуйте с СБ заранее.
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/techfab.rsi
+    snapCardinals: true
+    layers:
+    - state: icon
+    - state: sci
+  - type: IS14ExperimentBench
+    pointType: Military
+    baseValue: 45
+    consume: true
+    mode: Prototype
+    profileNamespace: trophy
+    channel: Science
+    whitelist:
+      components:
+      - Gun
+      - Contraband
+      - MeleeWeapon
+  # Procedure matters: a biohazard suit, sealed gear or eye protection cuts the odds, and a
+  # failure that already happened once is less likely the second time.
+  - type: IS14ExperimentRisk
+    risk: 0.25
+    safety:
+      components:
+      - DiseaseProtection
+      - PressureProtection
+      - EyeProtection
+
+# Social data: the questionnaire drop-box. Blank forms are refused — the currency exists
+# only because a living crew member has to answer something.
+- type: entity
+  parent: IS14BaseExperimentBench
+  id: IS14SurveyReceiver
+  name: приёмник анкет
+  description: Считывает заполненные социологические анкеты. Чем выше должность респондента, тем ценнее ответы. Одного и того же товарища дважды опрашивать бесполезно.
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/diagnoser.rsi
+    snapCardinals: true
+    layers:
+    - state: icon
+  - type: IS14ExperimentBench
+    pointType: Social
+    baseValue: 35
+    consume: true
+    mode: Custom
+    profileNamespace: survey
+    whitelist:
+      components:
+      - IS14SurveyForm
+
+# ---------------------------------------------------------------------------
+# Doppler array: military data from measured violence
+# ---------------------------------------------------------------------------
+
+# ---------------------------------------------------------------------------
+# Tachyon-doppler array: military data from measured violence
+# ---------------------------------------------------------------------------
+
+# Directional on purpose, like tgstation's: it only sees blasts in the cone it faces, so the test
+# site becomes a real place on the station and the array has to be aimed at it.
+- type: entity
+  parent: BaseMachinePowered
+  id: IS14DopplerArray
+  name: тахионно-доплеровский массив
+  description: Измеряет взрывы на расстоянии по распаду тахионов и ведёт журнал замеров. Смотрит только в ту сторону, куда развёрнут. Данные платят за превышение прежнего рекорда, а не за повторение одного и того же заряда.
+  components:
+  - type: Sprite
+    # noRot with a four-direction state: the picture stays upright and the frame changes with the
+    # array's facing, instead of the whole bitmap being spun around.
+    sprite: _IS14/Structures/Machines/rnd.rsi
+    noRot: true
+    layers:
+    - state: tdoppler_cable
+    - state: tdoppler
+    # The dark screen sits on top and is hidden while the array has power.
+    - state: tdoppler_screen-off
+      map: ["enum.PowerDeviceVisualLayers.Powered"]
+  - type: ApcPowerReceiver
+    powerLoad: 500
+  - type: PointLight
+    radius: 1.8
+    energy: 2.2
+    color: "#dc373b"
+  - type: LitOnPowered
+  - type: IS14DopplerArray
+    pointType: Military
+    baseValue: 40
+    minDistance: 8
+    maxDistance: 120
+    fieldOfView: 50
+    referenceIntensity: 60
+    repeatFraction: 0.1
+    channel: Science
+  - type: ActivatableUI
+    key: enum.IS14DopplerArrayUiKey.Key
+  - type: ActivatableUIRequiresPower
+  - type: UserInterface
+    interfaces:
+      enum.IS14DopplerArrayUiKey.Key:
+        type: IS14DopplerArrayBui
+  - type: ActiveRadio
+    channels:
+    - Science
+  # Aiming the array is the whole point, so it turns even while bolted down.
+  - type: Rotatable
+    rotateWhileAnchored: true
+  # Examine it and an arrow shows which way the sensor looks, like the TEG circulators do.
+  - type: IS14FacingArrow
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.PowerDeviceVisuals.Powered:
+        enum.PowerDeviceVisualLayers.Powered:
+          True: { visible: false }
+          False: { visible: true }
+  # BaseMachine ships `noRot: true` on the transform, which is NoLocalRotation and makes
+  # RotatableSystem drop the turn verbs entirely. A directional sensor has to allow it.
+  - type: Transform
+    anchored: true
+    noRot: false
+  - type: Anchorable
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.4,-0.4,0.4,0.4"
+        density: 190
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Metallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 200
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          SheetSteel1:
+            min: 1
+            max: 3
+
+# ---------------------------------------------------------------------------
+# Survey terminal: prints the blanks
+# ---------------------------------------------------------------------------
+
+- type: entity
+  parent: BaseMachinePowered
+  id: IS14SurveyTerminal
+  name: терминал соцопроса
+  description: Печатает бланки социологических анкет. Заполнять их придётся живым товарищам — терминал за них не ответит.
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/fax_machine.rsi
+    snapCardinals: true
+    layers:
+    - state: icon
+  - type: ApcPowerReceiver
+    powerLoad: 200
+  - type: IS14SurveyPrinter
+    formPrototype: IS14SurveyForm
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.35,-0.35,0.35,0.35"
+        density: 190
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Metallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 150
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+
+# ---------------------------------------------------------------------------
+# Destructive analyzer — the tgstation classic: the sample does not come back
+# ---------------------------------------------------------------------------
+
+- type: entity
+  parent: BaseMachinePowered
+  id: IS14DestructiveAnalyzer
+  name: деструктивный анализатор
+  description: Разбирает предмет до основания и читает из него всё, что тот способен рассказать. Образец не возвращается. Если станция такое ещё не умеет делать — разбор удешевляет соответствующую тему.
+  components:
+  - type: Sprite
+    sprite: _IS14/Structures/Machines/destructive_scanner.rsi
+    snapCardinals: true
+    offset: 0,0.5
+    layers:
+    - state: tube_open
+    - state: tube_on
+      shader: unshaded
+      map: ["enum.PowerDeviceVisualLayers.Powered"]
+  - type: ApcPowerReceiver
+    powerLoad: 600
+  - type: PointLight
+    radius: 1.8
+    energy: 2.5
+    color: "#5a9ad6"
+  - type: LitOnPowered
+  - type: IS14DestructiveAnalyzer
+    pointType: Industrial
+    baseValue: 30
+    referenceMaterial: 400
+    reverseEngineeringDiscount: 0.15
+    maxDiscount: 0.5
+    channel: Science
+    whitelist:
+      components:
+      - Item
+  - type: ActiveRadio
+    channels:
+    - Science
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.PowerDeviceVisuals.Powered:
+        enum.PowerDeviceVisualLayers.Powered:
+          True: { visible: true }
+          False: { visible: false }
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.45,-0.45,0.45,0.45"
+        density: 190
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Metallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 250
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          SheetSteel1:
+            min: 2
+            max: 4
+
+# ---------------------------------------------------------------------------
+# Engineering telemetry (phase 1): industrial data for records, not for uptime
+# ---------------------------------------------------------------------------
+
+# An engine that simply runs is worth nothing. An engine that ran harder than it ever has is
+# worth a lot — which is the only way to make engineering risk its own infrastructure.
+- type: entity
+  parent: IS14BaseExperimentBench
+  id: IS14EngineTelemetry
+  name: регистратор телеметрии
+  description: Пишет выработку станции и платит за рекорд пиковой генерации. Двигатель, который просто работает, данных не даёт.
+  components:
+  # The sprite of the machine that used to tick points on its own, now doing honest work.
+  - type: Sprite
+    sprite: Structures/Machines/rndpointsource.rsi
+    snapCardinals: true
+    layers:
+    - state: rndpointsource
+  - type: IS14EngineTelemetry
+    pointType: Industrial
+    baseValue: 120
+    minimumWatts: 50000
+    channel: Science
+  - type: ActiveRadio
+    channels:
+    - Science
+
+# Atmospherics: the mixture in a tank or a canister is the sample. A composition nobody has
+# made before is data, a record temperature or pressure is more data, and the twentieth
+# canister of the same mix is not. The container is handed back.
+- type: entity
+  parent: IS14BaseExperimentBench
+  id: IS14AtmosBench
+  name: атмосферный стенд
+  description: Читает состав газовой смеси из баллона или канистры. Новая смесь — промышленные данные, рекордная температура или давление — ещё больше. Ёмкость возвращается.
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/gasrecycler.rsi
+    snapCardinals: true
+    layers:
+    - state: icon
+  - type: IS14ExperimentBench
+    pointType: Industrial
+    baseValue: 35
+    consume: false
+    mode: Custom
+    profileNamespace: gasmix
+    whitelist:
+      components:
+      - GasTank
+      - GasCanister
+  # Procedure matters: a biohazard suit, sealed gear or eye protection cuts the odds, and a
+  # failure that already happened once is less likely the second time.
+  - type: IS14ExperimentRisk
+    risk: 0.2
+    safety:
+      components:
+      - DiseaseProtection
+      - PressureProtection
+      - EyeProtection
+  - type: ActiveRadio
+    channels:
+    - Science
+
+# Prints blank consent forms. Reuses the questionnaire printer wholesale: the only
+# difference is which form comes out.
+- type: entity
+  parent: IS14SurveyTerminal
+  id: IS14ConsentTerminal
+  name: терминал согласий
+  description: Печатает бланки согласия на участие в исследованиях. Подпись ставит доброволец, не вы.
+  components:
+  - type: IS14SurveyPrinter
+    formPrototype: IS14ConsentForm
+    cooldown: 8
