@@ -1,0 +1,48 @@
+<!--
+SPDX-FileCopyrightText: 2025 IS14
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<controls:FancyWindow
+    xmlns="https://spacestation14.io"
+    xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
+    xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+    xmlns:customControls="clr-namespace:Content.Client.Administration.UI.CustomControls"
+    Title="{Loc 'is14-workorder-window-title'}"
+    MinSize="520 520"
+    SetSize="560 620">
+
+    <BoxContainer Orientation="Vertical" Margin="8" HorizontalExpand="True" VerticalExpand="True">
+
+        <PanelContainer HorizontalExpand="True">
+            <PanelContainer.PanelOverride>
+                <gfx:StyleBoxFlat BackgroundColor="#16161A" />
+            </PanelContainer.PanelOverride>
+            <BoxContainer Orientation="Vertical" Margin="8 6" HorizontalExpand="True">
+                <Label Name="DepartmentLabel" StyleClasses="LabelKeyText" />
+                <Label Name="TermsLabel" StyleClasses="LabelSmall" />
+                <Label Name="BudgetLabel" StyleClasses="LabelSmall" />
+            </BoxContainer>
+        </PanelContainer>
+
+        <customControls:HSeparator StyleClasses="LowDivider" Margin="0 6 0 6" />
+
+        <Label Text="{Loc 'is14-workorder-current'}" StyleClasses="LabelSmall" />
+        <RichTextLabel Name="OrderLabel" HorizontalExpand="True" Margin="0 2 0 4" />
+        <Button Name="CancelButton"
+                Text="{Loc 'is14-workorder-cancel'}"
+                HorizontalExpand="True"
+                MinHeight="30"
+                Visible="False" />
+
+        <customControls:HSeparator StyleClasses="LowDivider" Margin="0 6 0 6" />
+
+        <Label Text="{Loc 'is14-workorder-available'}" StyleClasses="LabelSmall" />
+        <ScrollContainer HScrollEnabled="False" VerticalExpand="True" HorizontalExpand="True" Margin="0 4 0 0">
+            <BoxContainer Name="RowContainer" Orientation="Vertical" HorizontalExpand="True" />
+        </ScrollContainer>
+
+    </BoxContainer>
+
+</controls:FancyWindow>

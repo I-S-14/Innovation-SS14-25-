@@ -1,0 +1,58 @@
+# SPDX-FileCopyrightText: 2025 IS14
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# Publications. Phase 4, 5.2 of Docs/_IS14/research-design.md: a result is not a result until
+# the people who answer for it have stamped it and the Academy of Sciences has it in writing.
+# This is also the one place where science earns credits instead of spending them.
+
+- type: entity
+  parent: Paper
+  id: IS14PublicationPaper
+  name: научная работа
+  description: Отчёт НИЦ о полученном результате. Без печатей научного руководителя и капитана — черновик.
+  components:
+  - type: IS14Publication
+
+- type: entity
+  parent: IS14BaseExperimentBench
+  id: IS14PublicationPrinter
+  name: редакционный терминал
+  description: Печатает научную работу по последнему полученному результату. Печати ставит не он.
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/tech_disk_printer.rsi
+    snapCardinals: true
+    layers:
+    - state: icon
+  - type: IS14PublicationPrinter
+    cooldown: 10
+
+- type: entity
+  parent: IS14BaseExperimentBench
+  id: IS14PublicationReceiver
+  name: приёмник Академии наук
+  description: Принимает подписанные научные работы и переводит на счёт науки оплату из Академии. Один результат — одна работа.
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/fax_machine.rsi
+    snapCardinals: true
+    layers:
+    - state: icon
+  - type: IS14PublicationReceiver
+    baseValue: 25
+    payment: 1200
+    channel: Science
+  - type: ActiveRadio
+    channels:
+    - Science
+
+# The paper that makes work on captured hardware legal. Stamped by the research director;
+# without it the bench still works and the log remembers who ran it.
+- type: entity
+  parent: Paper
+  id: IS14SanctionForm
+  name: санкция на трофейные работы
+  description: Разрешение на обратную разработку изъятого образца. Без печати научного руководителя — не документ.
+  components:
+  - type: IS14SanctionForm

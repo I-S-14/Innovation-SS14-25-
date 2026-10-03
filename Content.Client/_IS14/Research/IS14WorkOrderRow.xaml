@@ -1,0 +1,35 @@
+<!--
+SPDX-FileCopyrightText: 2025 IS14
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<is14:IS14WorkOrderRow
+    xmlns="https://spacestation14.io"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Research"
+    Orientation="Vertical"
+    HorizontalExpand="True"
+    Margin="0 0 0 4">
+
+    <PanelContainer Name="RowPanel" HorizontalExpand="True">
+        <BoxContainer Orientation="Horizontal" Margin="8 5" HorizontalExpand="True">
+
+            <TextureRect Name="IconRect"
+                         MinSize="28 28"
+                         Stretch="KeepAspectCentered"
+                         VerticalAlignment="Center" />
+
+            <BoxContainer Orientation="Vertical" HorizontalExpand="True" Margin="6 0 0 0">
+                <Label Name="NameLabel" StyleClasses="LabelKeyText" />
+                <Label Name="BranchLabel" StyleClasses="LabelSmall" />
+            </BoxContainer>
+
+            <Button Name="OrderButton"
+                    Text="{Loc 'is14-workorder-order'}"
+                    StyleClasses="ButtonSquare"
+                    VerticalAlignment="Center" />
+
+        </BoxContainer>
+    </PanelContainer>
+
+</is14:IS14WorkOrderRow>

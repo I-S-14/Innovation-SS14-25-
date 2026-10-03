@@ -1,0 +1,121 @@
+# SPDX-FileCopyrightText: 2025 IS14
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# Department order terminals. Phase 4, 5.5 of Docs/_IS14/research-design.md: a head commissions
+# a topic, and when the NIC delivers it the department pays in its own kind of data and out of
+# its own budget.
+#
+# One terminal per department, because the department is what differs: its currency, its
+# budget, and who may sign. The rates live on the terminal, so a generous department is a
+# prototype change and not a code change.
+
+- type: entity
+  abstract: true
+  parent: BaseComputer
+  id: IS14BaseWorkOrderConsole
+  components:
+  - type: Sprite
+    noRot: true
+    sprite: Structures/Machines/computers.rsi
+    layers:
+    - map: ["computerLayerBody"]
+      state: computer
+    - map: ["computerLayerKeyboard"]
+      state: generic_keyboard
+    - map: ["computerLayerScreen"]
+      state: request
+    - map: ["enum.WiresVisualLayers.MaintenancePanel"]
+      state: generic_panel_open
+  # A research client so the terminal knows what has already been delivered: an order for
+  # something the NIC finished an hour ago would be a nuisance, not a commission.
+  - type: ResearchClient
+  - type: ActivatableUI
+    key: enum.IS14WorkOrderUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.IS14WorkOrderUiKey.Key:
+        type: IS14WorkOrderBui
+  - type: ActiveRadio
+    channels:
+    - Science
+
+- type: entity
+  parent: IS14BaseWorkOrderConsole
+  id: IS14WorkOrderConsoleEngineering
+  name: терминал заявок инженерии
+  description: Отсюда главный инженер заказывает НИЦ нужную технологию. Заявка оплачивается из бюджета инженерии и промышленными данными.
+  components:
+  - type: IS14WorkOrderConsole
+    department: Engineering
+    departmentName: is14-workorder-department-engineering
+    account: StationEngineering
+    pointType: Industrial
+    bonus: 60
+    payment: 2000
+  - type: AccessReader
+    access: [["Engineering"]]
+
+- type: entity
+  parent: IS14BaseWorkOrderConsole
+  id: IS14WorkOrderConsoleMedical
+  name: терминал заявок медотсека
+  description: Отсюда главврач заказывает НИЦ нужную технологию. Заявка оплачивается из бюджета медотсека и биологическими данными.
+  components:
+  - type: IS14WorkOrderConsole
+    department: Medical
+    departmentName: is14-workorder-department-medical
+    account: StationMedical
+    pointType: Biological
+    bonus: 60
+    payment: 2000
+  - type: AccessReader
+    access: [["Medical"]]
+
+- type: entity
+  parent: IS14BaseWorkOrderConsole
+  id: IS14WorkOrderConsoleSecurity
+  name: терминал заявок СБ
+  description: Отсюда глава СБ заказывает НИЦ нужную технологию. Заявка оплачивается из бюджета безопасности и военными данными.
+  components:
+  - type: IS14WorkOrderConsole
+    department: Security
+    departmentName: is14-workorder-department-security
+    account: StationSecurity
+    pointType: Military
+    bonus: 60
+    payment: 2000
+  - type: AccessReader
+    access: [["Security"]]
+
+- type: entity
+  parent: IS14BaseWorkOrderConsole
+  id: IS14WorkOrderConsoleCargo
+  name: терминал заявок снабжения
+  description: Отсюда квартирмейстер заказывает НИЦ нужную технологию. Заявка оплачивается из бюджета карго и промышленными данными.
+  components:
+  - type: IS14WorkOrderConsole
+    department: Cargo
+    departmentName: is14-workorder-department-cargo
+    account: StationCargo
+    pointType: Industrial
+    bonus: 50
+    payment: 2500
+  - type: AccessReader
+    access: [["Cargo"]]
+
+- type: entity
+  parent: IS14BaseWorkOrderConsole
+  id: IS14WorkOrderConsoleService
+  name: терминал заявок сервиса
+  description: Отсюда глава персонала заказывает НИЦ нужную технологию. Заявка оплачивается из бюджета сервисной службы и социологическими данными.
+  components:
+  - type: IS14WorkOrderConsole
+    department: Service
+    departmentName: is14-workorder-department-service
+    account: StationService
+    pointType: Social
+    bonus: 50
+    payment: 1500
+  - type: AccessReader
+    access: [["HeadOfPersonnel"], ["Service"]]

@@ -1,0 +1,56 @@
+# SPDX-FileCopyrightText: 2025 IS14
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# Breakthrough samples supply can order. Phase 3 of Docs/_IS14/research-design.md: a
+# breakthrough must never be a dead end, so the two samples that have no station-side source
+# can be bought with credits — expensively, and through cargo, which makes the NIC owe the
+# supply department a favour.
+#
+# Deliberately not everything: the supermatter sliver, the anomaly core, the artifact relic and
+# the tissue samples come from the station itself or from an expedition. Those are the ones
+# worth a scene.
+
+- type: entity
+  parent: CrateScienceSecure
+  id: IS14CrateBluespaceCrystal
+  name: bluespace crystal crate
+  description: Contains a single bluespace crystal, packed in foam. Requires Science access to open.
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:AllSelector
+        children:
+        - id: MaterialBSCrystal1
+
+- type: entity
+  parent: CrateScienceSecure
+  id: IS14CratePositronicBrain
+  name: positronic brain crate
+  description: Contains one factory-fresh positronic brain. Whether it stays intact is up to the department. Requires Science access to open.
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:AllSelector
+        children:
+        - id: PositronicBrain
+
+- type: cargoProduct
+  id: IS14BluespaceCrystal
+  icon:
+    sprite: _Goobstation/Objects/Materials/materials.rsi
+    state: bluespace_crystal
+  product: IS14CrateBluespaceCrystal
+  cost: 6500
+  category: cargoproduct-category-name-science
+  group: market
+
+- type: cargoProduct
+  id: IS14PositronicBrain
+  icon:
+    sprite: Objects/Specific/Robotics/mmi.rsi
+    state: posibrain
+  product: IS14CratePositronicBrain
+  cost: 3000
+  category: cargoproduct-category-name-science
+  group: market

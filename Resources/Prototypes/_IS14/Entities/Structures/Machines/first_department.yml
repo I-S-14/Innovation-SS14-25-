@@ -1,0 +1,39 @@
+# SPDX-FileCopyrightText: 2025 IS14
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# The First Department. Phase 5 of Docs/_IS14/research-design.md: confiscated enemy hardware is
+# the only thing that uncovers a hidden line of research, and security is the only department
+# that legally has any. Revealing is not researching — the topic still has to be bought.
+#
+# No whitelist on the bench on purpose: the requirement table is the filter, so anything else
+# gets an honest "nothing to learn here" instead of silence.
+
+- type: entity
+  parent: IS14BaseExperimentBench
+  id: IS14ReverseEngineeringBench
+  name: стенд обратной разработки
+  description: Разбирает трофейную технику противника и открывает закрытые направления исследований. Работа без санкции научного руководителя — состав преступления, но стенд вас не остановит.
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/techfab.rsi
+    snapCardinals: true
+    layers:
+    - state: icon
+    - state: sec
+  - type: IS14ReverseEngineeringBench
+    duration: 6
+    channel: Science
+  - type: ActiveRadio
+    channels:
+    - Science
+
+- type: entity
+  parent: IS14SurveyTerminal
+  id: IS14SanctionTerminal
+  name: терминал санкций
+  description: Печатает бланки санкции на работу с трофейными образцами. Печать ставит научный руководитель.
+  components:
+  - type: IS14SurveyPrinter
+    formPrototype: IS14SanctionForm
+    cooldown: 8
