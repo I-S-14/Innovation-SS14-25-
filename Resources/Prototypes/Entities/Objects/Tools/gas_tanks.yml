@@ -72,6 +72,11 @@
     sprite: Objects/Tanks/oxygen.rsi
   - type: Clothing
     sprite: Objects/Tanks/oxygen.rsi
+  #IS14-change start: half of the ordnance mix, so the transfer valve can whitelist it
+  - type: Tag
+    tags:
+    - IS14OrdnanceTank
+  #IS14-change end
 
 - type: entity
   parent: GasTankRoundBase
@@ -271,3 +276,8 @@
     slots:
     - Belt
     - suitStorage
+  #IS14-change start: the other half of the ordnance mix
+  - type: Tag
+    tags:
+    - IS14OrdnanceTank
+  #IS14-change end

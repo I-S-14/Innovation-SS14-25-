@@ -1,0 +1,28 @@
+# SPDX-FileCopyrightText: 2025 IS14
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# Outputs of the ordnance launch console. Three moments around one launch, so the chamber can be
+# wired however the mapper or the department likes: doors on the early and late ports, the driver
+# on the launch port, and anything else — sirens, lights, airlocks — on whichever fits.
+#
+# defaultLinks mean a single click with the network configurator wires the obvious thing: shutters
+# open on the early port and close on the late one, the mass driver fires on the launch port.
+
+- type: sourcePort
+  id: IS14LaunchPre
+  name: is14-signal-port-name-launch-pre
+  description: is14-signal-port-description-launch-pre
+  defaultLinks: [ Open ]
+
+- type: sourcePort
+  id: IS14Launch
+  name: is14-signal-port-name-launch
+  description: is14-signal-port-description-launch
+  defaultLinks: [ Trigger ]
+
+- type: sourcePort
+  id: IS14LaunchPost
+  name: is14-signal-port-name-launch-post
+  description: is14-signal-port-description-launch-post
+  defaultLinks: [ Close ]

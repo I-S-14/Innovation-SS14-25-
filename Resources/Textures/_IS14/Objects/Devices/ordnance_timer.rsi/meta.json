@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from BandaStation (tgstation fork), icons/obj/devices/new_assemblies.dmi",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "timer"
+    },
+    {
+      "name": "timer_light",
+      "delays": [
+        [
+          0.3,
+          0.7
+        ]
+      ]
+    }
+  ]
+}

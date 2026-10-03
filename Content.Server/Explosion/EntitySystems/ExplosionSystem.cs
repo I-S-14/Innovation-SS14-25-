@@ -338,6 +338,17 @@ public sealed partial class ExplosionSystem : SharedExplosionSystem
             CanCreateVacuum = canCreateVacuum,
             Cause = cause
         };
+        //IS14-change start: blast telemetry for the NIC doppler array — nothing else carries
+        // the epicentre and the total intensity together.
+        RaiseLocalEvent(new Content.Shared._IS14.Explosion.IS14ExplosionQueuedEvent(
+            epicenter,
+            type.ID,
+            totalIntensity,
+            slope,
+            maxTileIntensity,
+            cause));
+        //IS14-change end
+
         _explosionQueue.Enqueue(boom);
         _queuedExplosions.Add(boom);
     }

@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from BandaStation (tgstation fork), icons/obj/devices/assemblies.dmi",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "valve_1"
+    },
+    {
+      "name": "valve"
+    },
+    {
+      "name": "valve_cables"
+    }
+  ]
+}

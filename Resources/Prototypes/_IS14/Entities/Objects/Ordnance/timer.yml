@@ -1,0 +1,27 @@
+# SPDX-FileCopyrightText: 2025 IS14
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# Detonation timer — the part that gives a transfer valve a countdown.
+#
+# On its own it does nothing at all. Fitted to an unwrenched manual valve it becomes that valve's
+# timer: the delay is set on the assembly, and the valve opens when it runs out. Without it the
+# valve is still a bomb, just one that goes off in your hands.
+- type: entity
+  parent: BaseItem
+  id: IS14OrdnanceTimer
+  name: детонационный таймер
+  description: Отсчитывает и замыкает. Сам по себе бесполезен — смысл появляется, когда его ставят на что-нибудь.
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Devices/ordnance_timer.rsi
+    state: timer
+  - type: Item
+    size: Tiny
+  - type: IS14OrdnanceTimer
+  - type: StaticPrice
+    price: 40
+  - type: PhysicalComposition
+    materialComposition:
+      Steel: 20
+      Plastic: 20

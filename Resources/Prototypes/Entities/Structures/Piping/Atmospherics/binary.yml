@@ -308,6 +308,17 @@
           map: [ "enum.PipeVisualLayers.Pipe" ]
         - state: pumpManualValve
           map: [ "enum.SubfloorLayers.FirstLayer", "enabled" ]
+        #IS14-change start: loaded with tanks the valve is drawn as the assembly instead,
+        # and the pipework above is hidden. See IS14TransferValveVisualsSystem.
+        - sprite: _IS14/Objects/Devices/transfer_valve.rsi
+          state: valve
+          map: [ "enum.IS14TransferValveVisualLayers.Assembly" ]
+          visible: false
+        - sprite: _IS14/Objects/Devices/transfer_valve.rsi
+          state: valve_cables
+          map: [ "enum.IS14TransferValveVisualLayers.Trigger" ]
+          visible: false
+        #IS14-change end
     - type: AtmosPipeLayers
       alternativePrototypes:
         Primary: GasValve
@@ -322,6 +333,35 @@
             False: { state: pumpManualValve }
     - type: PipeColorVisuals
     - type: GasValve
+    #IS14-change start: unwrenched, this same valve is the ordnance transfer valve —
+    # two tanks on one valve, opened by hand or by its own timer. See IS14TransferValveSystem.
+    - type: IS14TransferValve
+    - type: ItemSlots
+      slots:
+        # Never swapping: with swapping on, the second tank knocks the first one out into your
+        # hands instead of falling through to the empty slot, so only one could ever be fitted.
+        is14_valve_tank_a:
+          name: is14-transfer-valve-slot-a
+          swap: false
+          whitelist:
+            tags:
+            - IS14OrdnanceTank
+          whitelistFailPopup: is14-transfer-valve-wrong-tank
+        is14_valve_tank_b:
+          name: is14-transfer-valve-slot-b
+          swap: false
+          whitelist:
+            tags:
+            - IS14OrdnanceTank
+          whitelistFailPopup: is14-transfer-valve-wrong-tank
+        # No timer fitted, no countdown: a bare valve simply opens when it is opened.
+        is14_valve_trigger:
+          name: is14-transfer-valve-slot-trigger
+          swap: false
+          whitelist:
+            components:
+            - IS14OrdnanceTimer
+    #IS14-change end
     - type: NodeContainer
       nodes:
         inlet:
@@ -354,6 +394,11 @@
     - type: ContainerContainer # Goobstation - ventcrawl
       containers:
         VentCrawlerTube: !type:Container
+        #IS14-change start: the transfer valve's tanks and its trigger
+        is14_valve_tank_a: !type:ContainerSlot
+        is14_valve_tank_b: !type:ContainerSlot
+        is14_valve_trigger: !type:ContainerSlot
+        #IS14-change end
 
 - type: entity
   parent: GasBinaryBase

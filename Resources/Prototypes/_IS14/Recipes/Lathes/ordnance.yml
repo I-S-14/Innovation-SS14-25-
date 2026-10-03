@@ -1,0 +1,21 @@
+# SPDX-FileCopyrightText: 2025 IS14
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# Печать деталей орднанса. Сама бомба — это клапан со склада и два баллона из атмоса;
+# наука печатает только то, что делает подрыв управляемым.
+
+- type: latheRecipe
+  id: IS14OrdnanceTimer
+  result: IS14OrdnanceTimer
+  completetime: 2
+  materials:
+    Steel: 100
+    Plastic: 100
+
+# Динамический пак: рецепт открывается технологией «Детонационные процессы»,
+# но станок должен знать о нём заранее, иначе открывать будет нечего.
+- type: latheRecipePack
+  id: IS14OrdnanceDynamic
+  recipes:
+  - IS14OrdnanceTimer

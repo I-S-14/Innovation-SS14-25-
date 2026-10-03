@@ -1,0 +1,109 @@
+# SPDX-FileCopyrightText: 2025 IS14
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# Пусковая камера ордананса: плита масс-драйвера и пульт запуска.
+#
+# Схема из SS13: заряд кладут на плиту, пульт отсчитывает время, открывает блэст-двери,
+# драйвер выбрасывает груз в ту сторону, куда развёрнут, и камера снова герметизируется.
+# Всё, что рядом с пультом (двери и драйвер), считается частью одной установки.
+
+- type: entity
+  parent: BaseMachinePowered
+  id: IS14MassDriver
+  name: масс-драйвер
+  description: Пружинно-поршневая плита, вышвыривающая всё, что на ней лежит, в ту сторону, куда развёрнута. Ничего не поджигает — таймер остаётся заботой заряда.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    # Плита лежит в полу, поэтому рисуется под предметами и не крутится картинкой.
+    sprite: _IS14/Structures/Machines/mass_driver.rsi
+    noRot: true
+    drawdepth: FloorObjects
+    layers:
+    - state: mass_driver
+  - type: ApcPowerReceiver
+    powerLoad: 400
+  - type: IS14MassDriver
+    range: 20
+    speed: 14
+  # Fired by signal: link the launch console's launch output to this port.
+  - type: DeviceLinkSink
+    ports:
+    - Trigger
+  - type: DeviceNetwork
+    deviceNetId: Wireless
+    receiveFrequencyId: BasicDevice
+  - type: WirelessNetworkConnection
+    range: 200
+  # Направление броска — это и есть настройка установки, поэтому крутится даже прикрученным.
+  - type: Transform
+    anchored: true
+    noRot: false
+  - type: Rotatable
+    rotateWhileAnchored: true
+  - type: IS14FacingArrow
+  - type: Anchorable
+  - type: Appearance
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.45,-0.45,0.45,0.45"
+        density: 190
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+        hard: false
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Metallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 200
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          SheetSteel1:
+            min: 1
+            max: 3
+
+- type: entity
+  parent: IS14BaseComputer
+  id: IS14LaunchConsole
+  name: пульт запуска
+  description: Управляет пусковой камерой — отсчёт, блэст-двери, масс-драйвер. Всё оборудование в радиусе считается частью установки.
+  components:
+  - type: IS14LaunchConsole
+  # Три выхода вокруг одного пуска: заблаговременный (шлюзы открываются), сам пуск
+  # (масс-драйвер) и поздний (шлюзы закрываются). Связываются сетевым конфигуратором.
+  - type: DeviceLinkSource
+    ports:
+    - IS14LaunchPre
+    - IS14Launch
+    - IS14LaunchPost
+  - type: DeviceNetwork
+    deviceNetId: Wireless
+    receiveFrequencyId: BasicDevice
+  - type: WirelessNetworkConnection
+    range: 200
+  - type: ActivatableUI
+    key: enum.IS14LaunchConsoleUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.IS14LaunchConsoleUiKey.Key:
+        type: IS14LaunchConsoleBui
+      enum.WiresUiKey.Key:
+        type: WiresBoundUserInterface

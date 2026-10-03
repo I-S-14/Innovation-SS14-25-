@@ -3,3 +3,8 @@
 
 - type: Tag
   id: IS14BunkMattress
+
+# Tanks the transfer valve accepts: a full-size oxygen tank and a plasma tank, the two halves of
+# the classic ordnance mix. Emergency and pocket tanks hold far too little gas to be worth a bomb.
+- type: Tag
+  id: IS14OrdnanceTank

@@ -28,6 +28,9 @@ namespace Content.Server.Entry
             "ToggleableLightWieldable", // Goobstation
             "HideClothingLayerClothing", // Goobstation
             "ItemSlotRenderer", // WWDP EDIT
+            //IS14-change start: client-side presentation components
+            "IS14FacingArrow",
+            //IS14-change end
         };
     }
 }

@@ -1,0 +1,50 @@
+<!--
+SPDX-FileCopyrightText: 2025 IS14
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<is14:IS14LaunchConsoleWindow
+    xmlns="https://spacestation14.io"
+    xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Ordnance"
+    Title="{Loc 'is14-launch-console-title'}"
+    MinSize="360 240"
+    SetSize="400 280">
+
+    <BoxContainer Orientation="Vertical" Margin="10" HorizontalExpand="True" VerticalExpand="True">
+
+        <PanelContainer HorizontalExpand="True">
+            <PanelContainer.PanelOverride>
+                <gfx:StyleBoxFlat BackgroundColor="#1B1B1E" />
+            </PanelContainer.PanelOverride>
+
+            <BoxContainer Orientation="Vertical" Margin="8 6" HorizontalExpand="True">
+                <Label Name="StatusLabel" StyleClasses="LabelKeyText" />
+                <Label Name="HardwareLabel" StyleClasses="LabelSubText" Margin="0 4 0 0" />
+            </BoxContainer>
+        </PanelContainer>
+
+        <BoxContainer Orientation="Horizontal" Margin="0 10 0 0" HorizontalExpand="True">
+            <Label Text="{Loc 'is14-launch-console-countdown'}" VerticalAlignment="Center" />
+            <Control HorizontalExpand="True" />
+            <SpinBox Name="CountdownSpin" MinWidth="120" />
+        </BoxContainer>
+
+        <Control VerticalExpand="True" />
+
+        <Button Name="LaunchButton"
+                Text="{Loc 'is14-launch-console-launch'}"
+                HorizontalExpand="True"
+                MinHeight="38" />
+
+        <Button Name="AbortButton"
+                Text="{Loc 'is14-launch-console-abort'}"
+                HorizontalExpand="True"
+                MinHeight="30"
+                Margin="0 6 0 0"
+                Visible="False" />
+
+    </BoxContainer>
+
+</is14:IS14LaunchConsoleWindow>

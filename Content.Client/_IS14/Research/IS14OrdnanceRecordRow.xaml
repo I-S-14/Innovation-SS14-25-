@@ -1,0 +1,31 @@
+<!--
+SPDX-FileCopyrightText: 2025 IS14
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<is14:IS14OrdnanceRecordRow
+    xmlns="https://spacestation14.io"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Research"
+    Orientation="Vertical"
+    HorizontalExpand="True"
+    Margin="0 0 0 4">
+
+    <PanelContainer Name="RowPanel" HorizontalExpand="True">
+        <BoxContainer Orientation="Vertical" Margin="8 5" HorizontalExpand="True">
+
+            <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
+                <Label Name="TitleLabel" StyleClasses="LabelKeyText" VerticalAlignment="Center" />
+                <Control MinWidth="8" />
+                <Label Name="VerdictLabel" StyleClasses="LabelSmall" VerticalAlignment="Center" />
+                <Control HorizontalExpand="True" />
+                <Button Name="PrintButton" Text="{Loc 'is14-doppler-window-print'}" StyleClasses="ButtonSquare" />
+                <Button Name="DeleteButton" Text="✕" MinWidth="28" StyleClasses="ButtonSquare" Margin="4 0 0 0" />
+            </BoxContainer>
+
+            <RichTextLabel Name="BodyLabel" HorizontalExpand="True" Margin="0 3 0 0" />
+
+        </BoxContainer>
+    </PanelContainer>
+
+</is14:IS14OrdnanceRecordRow>

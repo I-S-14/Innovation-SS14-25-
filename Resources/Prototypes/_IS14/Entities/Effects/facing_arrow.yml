@@ -1,0 +1,23 @@
+# SPDX-FileCopyrightText: 2025 IS14
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# Floating arrow that shows which way a directional machine faces. Spawned client-side on examine
+# and parented to the machine, so it inherits the machine's rotation; the glyph points along the
+# facing because a rotation of zero is south in this engine and the arrow is drawn pointing down.
+- type: entity
+  id: IS14FacingArrowEffect
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: Markers/teg_arrow.rsi
+    color: "#FFFFFFBB"
+    drawdepth: Effects
+    layers:
+    - state: arrow
+      offset: 0, -0.9
+  - type: TimedDespawn
+    lifetime: 2
+  - type: Tag
+    tags:
+    - HideContextMenu

@@ -249,6 +249,16 @@
       map: [ "enum.PipeVisualLayers.Pipe" ]
     - state: pumpManualValve
       map: [ "enum.SubfloorLayers.FirstLayer", "enabled" ]
+    #IS14-change start: same assembly layers as the primary valve, see binary.yml
+    - sprite: _IS14/Objects/Devices/transfer_valve.rsi
+      state: valve
+      map: [ "enum.IS14TransferValveVisualLayers.Assembly" ]
+      visible: false
+    - sprite: _IS14/Objects/Devices/transfer_valve.rsi
+      state: valve_cables
+      map: [ "enum.IS14TransferValveVisualLayers.Trigger" ]
+      visible: false
+    #IS14-change end
   - type: Construction
     node: valveAlt1
 
@@ -265,6 +275,16 @@
       map: [ "enum.PipeVisualLayers.Pipe" ]
     - state: pumpManualValve
       map: [ "enum.SubfloorLayers.FirstLayer", "enabled" ]
+    #IS14-change start: same assembly layers as the primary valve, see binary.yml
+    - sprite: _IS14/Objects/Devices/transfer_valve.rsi
+      state: valve
+      map: [ "enum.IS14TransferValveVisualLayers.Assembly" ]
+      visible: false
+    - sprite: _IS14/Objects/Devices/transfer_valve.rsi
+      state: valve_cables
+      map: [ "enum.IS14TransferValveVisualLayers.Trigger" ]
+      visible: false
+    #IS14-change end
   - type: Construction
     node: valveAlt2
 

@@ -219,6 +219,9 @@
     - Genetics
     - XenobioPack
     - XenobagHoldingPack
+    #IS14-change start: ordnance parts, unlocked by IS14Detonics
+    - IS14OrdnanceDynamic
+    #IS14-change end
     # Einstein Engines Packs
     - Translators
     - TranslatorImplanters

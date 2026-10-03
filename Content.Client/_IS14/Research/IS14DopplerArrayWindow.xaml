@@ -1,0 +1,42 @@
+<!--
+SPDX-FileCopyrightText: 2025 IS14
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<is14:IS14DopplerArrayWindow
+    xmlns="https://spacestation14.io"
+    xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+    xmlns:customControls="clr-namespace:Content.Client.Administration.UI.CustomControls"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Research"
+    Title="{Loc 'is14-doppler-window-title'}"
+    MinSize="520 380"
+    SetSize="620 520">
+
+    <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True" Margin="8">
+
+        <PanelContainer HorizontalExpand="True">
+            <PanelContainer.PanelOverride>
+                <gfx:StyleBoxFlat BackgroundColor="#1B1B1E" />
+            </PanelContainer.PanelOverride>
+
+            <BoxContainer Orientation="Vertical" Margin="8 6" HorizontalExpand="True">
+                <Label Name="FacingLabel" StyleClasses="LabelKeyText" />
+                <RichTextLabel Name="BestLabel" HorizontalExpand="True" Margin="0 4 0 0" />
+                <RichTextLabel Name="HintLabel" HorizontalExpand="True" Margin="0 4 0 0" />
+            </BoxContainer>
+        </PanelContainer>
+
+        <customControls:HSeparator StyleClasses="LowDivider" Margin="0 8 0 6" />
+
+        <Label Text="{Loc 'is14-doppler-window-log'}" StyleClasses="LabelSmall" />
+
+        <ScrollContainer HScrollEnabled="False" HorizontalExpand="True" VerticalExpand="True" Margin="0 4 0 0">
+            <BoxContainer Name="RecordsContainer" Orientation="Vertical" HorizontalExpand="True" />
+        </ScrollContainer>
+
+        <Label Name="EmptyLabel" Text="{Loc 'is14-doppler-window-empty'}" StyleClasses="LabelSubText" Margin="0 6 0 0" />
+
+    </BoxContainer>
+
+</is14:IS14DopplerArrayWindow>
