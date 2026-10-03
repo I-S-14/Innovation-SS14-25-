@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "license": "EULA",
+    "copyright": "Created by Nir for Innovation Station 14",
+    "size": {
+        "x": 38,
+        "y": 38
+    },
+    "states": [
+        {
+            "name": "icon"
+        },
+        {
+            "name": "icon-activated"
+        }
+    ]
+}
