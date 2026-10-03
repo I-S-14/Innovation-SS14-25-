@@ -1,0 +1,66 @@
+# SPDX-FileCopyrightText: 2025 IS14
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# The five kinds of research data — see Docs/_IS14/research-design.md.
+# Each one has a donor department and a loop that cannot be run passively.
+
+- type: is14ResearchPointType
+  id: Science
+  name: is14-research-point-science
+  shortName: is14-research-point-science-short
+  description: is14-research-point-science-desc
+  donor: is14-research-donor-science
+  color: "#9a6ef0"
+  sortOrder: 0
+  icon:
+    sprite: Interface/Misc/research_disciplines.rsi
+    state: experimental
+
+- type: is14ResearchPointType
+  id: Industrial
+  name: is14-research-point-industrial
+  shortName: is14-research-point-industrial-short
+  description: is14-research-point-industrial-desc
+  donor: is14-research-donor-industrial
+  color: "#eeac34"
+  sortOrder: 1
+  icon:
+    sprite: Interface/Misc/research_disciplines.rsi
+    state: industrial
+
+- type: is14ResearchPointType
+  id: Military
+  name: is14-research-point-military
+  shortName: is14-research-point-military-short
+  description: is14-research-point-military-desc
+  donor: is14-research-donor-military
+  color: "#dc373b"
+  sortOrder: 2
+  icon:
+    sprite: Interface/Misc/research_disciplines.rsi
+    state: arsenal
+
+- type: is14ResearchPointType
+  id: Biological
+  name: is14-research-point-biological
+  shortName: is14-research-point-biological-short
+  description: is14-research-point-biological-desc
+  donor: is14-research-donor-biological
+  color: "#4bb8a5"
+  sortOrder: 3
+  icon:
+    sprite: Interface/Misc/research_disciplines.rsi
+    state: biochemical
+
+- type: is14ResearchPointType
+  id: Social
+  name: is14-research-point-social
+  shortName: is14-research-point-social-short
+  description: is14-research-point-social-desc
+  donor: is14-research-donor-social
+  color: "#7ecd48"
+  sortOrder: 4
+  icon:
+    sprite: Interface/Misc/research_disciplines.rsi
+    state: civilianservices

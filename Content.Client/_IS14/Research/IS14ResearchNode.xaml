@@ -1,0 +1,24 @@
+<!--
+SPDX-FileCopyrightText: 2025 IS14
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<is14:IS14ResearchNode
+    xmlns="https://spacestation14.io"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Research"
+    SetSize="64 64">
+
+    <TextureRect Name="IconRect"
+                 Stretch="KeepAspectCentered"
+                 TextureScale="2 2"
+                 HorizontalAlignment="Center"
+                 VerticalAlignment="Center" />
+
+    <!-- Transparent, on top: the whole square is the button. -->
+    <Button Name="NodeButton"
+            ModulateSelfOverride="#00000000"
+            HorizontalExpand="True"
+            VerticalExpand="True" />
+
+</is14:IS14ResearchNode>

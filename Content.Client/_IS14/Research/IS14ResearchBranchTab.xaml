@@ -1,0 +1,48 @@
+<!--
+SPDX-FileCopyrightText: 2025 IS14
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<is14:IS14ResearchBranchTab
+    xmlns="https://spacestation14.io"
+    xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Research"
+    Orientation="Vertical"
+    HorizontalExpand="True"
+    VerticalExpand="True">
+
+    <PanelContainer HorizontalExpand="True" VerticalExpand="True" RectClipContent="True">
+        <PanelContainer.PanelOverride>
+            <gfx:StyleBoxFlat BackgroundColor="#101014" />
+        </PanelContainer.PanelOverride>
+
+        <!-- No scrollbars: the map is dragged with the mouse. -->
+        <is14:IS14ResearchMap Name="Map" HorizontalExpand="True" VerticalExpand="True" />
+
+        <Label Text="{Loc 'is14-research-map-drag-hint'}"
+               StyleClasses="LabelSubText"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Bottom"
+               Margin="8 0 0 6" />
+    </PanelContainer>
+
+    <!-- Zoom and recentre. The slider and the wheel drive the same value, and the button is
+         the way back when a branch has been dragged off the screen. -->
+    <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="0 4 0 0">
+        <Label Text="{Loc 'is14-research-map-zoom'}" StyleClasses="LabelSmall" VerticalAlignment="Center" />
+        <Slider Name="ZoomSlider"
+                MinValue="0.4"
+                MaxValue="1.6"
+                Value="1"
+                HorizontalExpand="True"
+                MinWidth="120"
+                VerticalAlignment="Center"
+                Margin="6 0 6 0" />
+        <Button Name="CenterButton"
+                Text="{Loc 'is14-research-map-center'}"
+                StyleClasses="ButtonSquare"
+                VerticalAlignment="Center" />
+    </BoxContainer>
+
+</is14:IS14ResearchBranchTab>

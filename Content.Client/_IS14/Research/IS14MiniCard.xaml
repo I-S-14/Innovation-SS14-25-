@@ -1,0 +1,37 @@
+<!--
+SPDX-FileCopyrightText: 2025 IS14
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<is14:IS14MiniCard
+    xmlns="https://spacestation14.io"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Research"
+    Orientation="Horizontal"
+    HorizontalExpand="True"
+    Margin="0 0 0 2">
+
+    <!-- Colour strip: the discipline a requirement belongs to, or the state of the entry. -->
+    <PanelContainer Name="Strip"
+                    StyleClasses="PdaBackground"
+                    MaxWidth="8"
+                    MinWidth="8"
+                    Margin="0 0 -4 0" />
+
+    <Button Name="Main"
+            Disabled="True"
+            StyleClasses="ButtonSquare"
+            HorizontalExpand="True">
+        <BoxContainer Orientation="Horizontal" Margin="2 1">
+            <TextureRect Name="IconRect"
+                         MinSize="20 20"
+                         Stretch="KeepAspectCentered"
+                         VerticalAlignment="Center" />
+            <RichTextLabel Name="NameLabel"
+                           StyleClasses="LabelSubText"
+                           VerticalAlignment="Center"
+                           Margin="5 0 0 0" />
+        </BoxContainer>
+    </Button>
+
+</is14:IS14MiniCard>

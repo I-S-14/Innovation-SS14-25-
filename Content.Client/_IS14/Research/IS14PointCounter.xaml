@@ -1,0 +1,37 @@
+<!--
+SPDX-FileCopyrightText: 2025 IS14
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<is14:IS14PointCounter
+    xmlns="https://spacestation14.io"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Research"
+    Orientation="Vertical"
+    Margin="0 0 8 0"
+    MinWidth="120">
+
+    <PanelContainer Name="CounterPanel" HorizontalExpand="True">
+        <BoxContainer Orientation="Vertical" Margin="6 4" HorizontalExpand="True">
+
+            <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
+                <TextureRect Name="IconRect"
+                             MinSize="16 16"
+                             Stretch="KeepAspectCentered"
+                             VerticalAlignment="Center" />
+                <Label Name="NameLabel"
+                       StyleClasses="LabelSmall"
+                       Margin="4 0 0 0"
+                       VerticalAlignment="Center" />
+            </BoxContainer>
+
+            <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="0 2 0 0">
+                <Label Name="AmountLabel" StyleClasses="LabelHeading" />
+                <Control HorizontalExpand="True" />
+                <Label Name="IncomeLabel" StyleClasses="LabelSmall" VerticalAlignment="Bottom" />
+            </BoxContainer>
+
+        </BoxContainer>
+    </PanelContainer>
+
+</is14:IS14PointCounter>

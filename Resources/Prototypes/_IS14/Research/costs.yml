@@ -1,0 +1,656 @@
+# SPDX-FileCopyrightText: 2025 IS14
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# Compatibility prices for the UPSTREAM technology tree — see Docs/_IS14/research-design.md.
+# The IS14 tree itself lives in technologies.yml / tech_data.yml; this file only matters for a
+# console whose branches include an upstream discipline.
+#
+# The prototype id IS the technology id. Technologies missing from this table fall back to
+# their upstream `cost` divided by 100 and charged as scientific data, so nothing breaks
+# when upstream adds a technology.
+#
+# Generated from the upstream prices, then rescaled and split:
+#   tier 1 — one currency, 15-40      (a shift's worth of one department's work)
+#   tier 2 — two currencies, 70/30    (50-120)
+#   tier 3 — three currencies, 55/30/15 (150-300; nothing at the top is single-currency)
+#
+# Hand edits are expected and welcome: this file is the balance knob for the whole tree.
+
+# --------------------------------------------------------------------------
+# Arsenal
+# --------------------------------------------------------------------------
+
+- type: is14Technology
+  id: AdvancedRiotControl
+  costs:
+    Military: 35
+
+- type: is14Technology
+  id: DraconicMunitions
+  costs:
+    Military: 40
+
+- type: is14Technology
+  id: ExplosiveTechnology
+  costs:
+    Military: 35
+
+- type: is14Technology
+  id: NonlethalAmmunition
+  costs:
+    Military: 20
+
+- type: is14Technology
+  id: RestraintTechnology
+  costs:
+    Military: 15
+
+- type: is14Technology
+  id: SalvageWeapons
+  costs:
+    Military: 20
+
+- type: is14Technology
+  id: SpecialMeans
+  costs:
+    Military: 20
+
+- type: is14Technology
+  id: UraniumMunitions
+  costs:
+    Military: 30
+
+- type: is14Technology
+  id: WeaponLaserCellRevolverTech
+  costs:
+    Military: 20
+
+- type: is14Technology
+  id: WeaponizedLaserManipulation
+  costs:
+    Military: 30
+
+- type: is14Technology
+  id: BasicShuttleArmament
+  costs:
+    Military: 55
+    Industrial: 25
+
+- type: is14Technology
+  id: ConcentratedLaserWeaponry
+  costs:
+    Military: 50
+    Industrial: 20
+
+- type: is14Technology
+  id: DualWieldingTechnology
+  costs:
+    Military: 50
+    Industrial: 20
+
+- type: is14Technology
+  id: EnergyBoltBasedWeaponry
+  costs:
+    Military: 45
+    Industrial: 20
+
+- type: is14Technology
+  id: Gygax
+  costs:
+    Military: 85
+    Industrial: 35
+
+- type: is14Technology
+  id: SecurityCaptureDevice
+  costs:
+    Military: 50
+    Industrial: 20
+
+- type: is14Technology
+  id: WaveParticleHarnessing
+  costs:
+    Military: 50
+    Industrial: 20
+
+- type: is14Technology
+  id: WeaponLaserCellSMGTech
+  costs:
+    Military: 50
+    Industrial: 20
+
+- type: is14Technology
+  id: AdvancedShuttleWeapon
+  costs:
+    Military: 120
+    Industrial: 65
+    Science: 30
+
+- type: is14Technology
+  id: BlueSpaceMunitions
+  costs:
+    Military: 130
+    Science: 70
+    Industrial: 35
+
+- type: is14Technology
+  id: Durand
+  costs:
+    Military: 165
+    Industrial: 90
+    Science: 45
+
+- type: is14Technology
+  id: ExplosiveMechAmmunition
+  costs:
+    Military: 140
+    Industrial: 75
+    Science: 40
+
+- type: is14Technology
+  id: PortableMicrofusionWeaponry
+  costs:
+    Military: 120
+    Industrial: 65
+    Science: 30
+
+- type: is14Technology
+  id: SmartWeaponry
+  costs:
+    Military: 105
+    Industrial: 60
+    Science: 30
+
+- type: is14Technology
+  id: WeaponLaserCellLMGTech
+  costs:
+    Military: 105
+    Industrial: 60
+    Science: 30
+
+- type: is14Technology
+  id: WeaponLaserCellSniperTech
+  costs:
+    Military: 105
+    Industrial: 60
+    Science: 30
+
+# --------------------------------------------------------------------------
+# CivilianServices
+# --------------------------------------------------------------------------
+
+- type: is14Technology
+  id: AccessibilityTech
+  costs:
+    Social: 20
+
+- type: is14Technology
+  id: AdvancedEntertainment
+  costs:
+    Social: 30
+
+- type: is14Technology
+  id: AudioVisualCommunication
+  costs:
+    Social: 20
+
+- type: is14Technology
+  id: CritterMechs
+  costs:
+    Biological: 30
+
+- type: is14Technology
+  id: Hydroponics
+  costs:
+    Biological: 25
+
+- type: is14Technology
+  id: MeatManipulation
+  costs:
+    Biological: 30
+
+- type: is14Technology
+  id: MedicalDefense
+  costs:
+    Biological: 20
+
+- type: is14Technology
+  id: RescueTechnology
+  costs:
+    Biological: 30
+
+- type: is14Technology
+  id: WokrBelts
+  costs:
+    Social: 20
+
+- type: is14Technology
+  id: AdvancedCleaning
+  costs:
+    Social: 50
+    Industrial: 20
+
+- type: is14Technology
+  id: AdvancedSpray
+  costs:
+    Social: 50
+    Industrial: 20
+
+- type: is14Technology
+  id: AdvancedTreatment
+  costs:
+    Biological: 50
+    Industrial: 20
+
+- type: is14Technology
+  id: Autodoc
+  costs:
+    Biological: 50
+    Industrial: 20
+
+- type: is14Technology
+  id: BasicAugmentation
+  costs:
+    Biological: 40
+    Industrial: 15
+
+- type: is14Technology
+  id: BasicCybernetics
+  costs:
+    Industrial: 45
+    Biological: 35
+
+- type: is14Technology
+  id: BasicTranslation
+  costs:
+    Social: 55
+    Science: 25
+
+- type: is14Technology
+  id: BiochemicalStasis
+  costs:
+    Biological: 45
+    Industrial: 20
+
+- type: is14Technology
+  id: BluespaceCargoTransport
+  costs:
+    Social: 70
+    Biological: 30
+
+- type: is14Technology
+  id: CombatAugmentation
+  costs:
+    Biological: 45
+    Military: 35
+    Industrial: 20
+
+- type: is14Technology
+  id: ExtendedCommunications
+  costs:
+    Social: 50
+    Industrial: 20
+
+- type: is14Technology
+  id: FauxAstroTiles
+  costs:
+    Social: 40
+    Industrial: 15
+
+- type: is14Technology
+  id: HONKMech
+  costs:
+    Social: 45
+    Industrial: 20
+
+- type: is14Technology
+  id: HONKWeapons
+  costs:
+    Social: 40
+    Industrial: 20
+
+- type: is14Technology
+  id: ImplantedTools
+  costs:
+    Social: 50
+    Biological: 20
+
+- type: is14Technology
+  id: MechanizedTreatment
+  costs:
+    Biological: 40
+    Industrial: 15
+
+- type: is14Technology
+  id: MedipenFilling
+  costs:
+    Biological: 50
+    Industrial: 20
+
+- type: is14Technology
+  id: PushHorn
+  costs:
+    Social: 35
+    Industrial: 15
+
+- type: is14Technology
+  id: RadioMusicCommunications
+  costs:
+    Social: 50
+    Industrial: 20
+
+- type: is14Technology
+  id: AdvancedCybernetics
+  costs:
+    Industrial: 90
+    Biological: 70
+    Science: 40
+
+- type: is14Technology
+  id: AdvancedTranslation
+  costs:
+    Social: 130
+    Science: 65
+    Industrial: 30
+
+- type: is14Technology
+  id: BluespaceChemistry
+  costs:
+    Social: 120
+    Biological: 65
+    Industrial: 30
+
+- type: is14Technology
+  id: Cloning
+  costs:
+    Biological: 140
+    Industrial: 70
+    Science: 40
+
+- type: is14Technology
+  id: HighEndSurgery
+  costs:
+    Biological: 130
+    Science: 55
+    Industrial: 25
+
+- type: is14Technology
+  id: ServiceBluespaceChemistry
+  costs:
+    Social: 90
+    Biological: 50
+    Industrial: 25
+
+# --------------------------------------------------------------------------
+# Experimental
+# --------------------------------------------------------------------------
+
+- type: is14Technology
+  id: AlternativeResearch
+  costs:
+    Science: 20
+
+- type: is14Technology
+  id: AnomalyCoreHarnessing
+  costs:
+    Science: 40
+
+- type: is14Technology
+  id: BasicAnomalousResearch
+  costs:
+    Science: 30
+
+- type: is14Technology
+  id: BasicRobotics
+  costs:
+    Industrial: 30
+    Science: 15
+
+- type: is14Technology
+  id: BasicXenoArcheology
+  costs:
+    Science: 20
+
+- type: is14Technology
+  id: BluespaceTheory
+  costs:
+    Science: 40
+
+- type: is14Technology
+  id: MagnetsTech
+  costs:
+    Science: 30
+
+- type: is14Technology
+  id: ModsuitsTech
+  costs:
+    Industrial: 20
+
+- type: is14Technology
+  id: Xenobiology
+  costs:
+    Science: 25
+    Biological: 15
+
+- type: is14Technology
+  id: AbnormalArtifactManipulation
+  costs:
+    Science: 40
+    Industrial: 15
+
+- type: is14Technology
+  id: AdvancedAnomalyResearch
+  costs:
+    Science: 50
+    Industrial: 20
+
+- type: is14Technology
+  id: AdvancedRobotics
+  costs:
+    Industrial: 70
+    Science: 45
+    Social: 15
+
+- type: is14Technology
+  id: DeterrenceTechnologies
+  costs:
+    Science: 45
+    Industrial: 20
+
+- type: is14Technology
+  id: ExperimentalScience
+  costs:
+    Science: 45
+    Industrial: 20
+
+- type: is14Technology
+  id: GravityManipulation
+  costs:
+    Science: 50
+    Industrial: 20
+
+- type: is14Technology
+  id: NightVisionTech
+  costs:
+    Science: 50
+    Industrial: 20
+
+- type: is14Technology
+  id: Pinpointers
+  costs:
+    Science: 45
+    Industrial: 20
+
+- type: is14Technology
+  id: ThermalVisionTech
+  costs:
+    Science: 50
+    Industrial: 20
+
+- type: is14Technology
+  id: XenoCompatibility
+  costs:
+    Science: 70
+    Biological: 30
+
+- type: is14Technology
+  id: XenobagHolding
+  costs:
+    Science: 50
+    Biological: 20
+
+- type: is14Technology
+  id: BluespaceMining
+  costs:
+    Science: 90
+    Industrial: 50
+    Biological: 25
+
+- type: is14Technology
+  id: BluespaceTimeManipulation
+  costs:
+    Science: 105
+    Industrial: 60
+    Biological: 30
+
+- type: is14Technology
+  id: QuantumLeaping
+  costs:
+    Science: 105
+    Industrial: 60
+    Biological: 30
+
+# --------------------------------------------------------------------------
+# Industrial
+# --------------------------------------------------------------------------
+
+- type: is14Technology
+  id: AdvancedPowerGeneration
+  costs:
+    Industrial: 40
+
+- type: is14Technology
+  id: AdvancedPowercells
+  costs:
+    Industrial: 30
+
+- type: is14Technology
+  id: AtmosphericTech
+  costs:
+    Industrial: 30
+
+- type: is14Technology
+  id: IS14ModsuitTechnology
+  costs:
+    Industrial: 30
+
+- type: is14Technology
+  id: IndustrialEngineering
+  costs:
+    Industrial: 40
+
+- type: is14Technology
+  id: MechanicalCompression
+  costs:
+    Industrial: 40
+
+- type: is14Technology
+  id: Plumbing
+  costs:
+    Industrial: 30
+
+- type: is14Technology
+  id: PowerGeneration
+  costs:
+    Industrial: 35
+
+- type: is14Technology
+  id: RipleyAPLU
+  costs:
+    Industrial: 30
+
+- type: is14Technology
+  id: SalvageEquipment
+  costs:
+    Industrial: 40
+
+- type: is14Technology
+  id: SpaceScanning
+  costs:
+    Industrial: 20
+
+- type: is14Technology
+  id: AdvancedAtmospherics
+  costs:
+    Industrial: 45
+    Science: 20
+
+- type: is14Technology
+  id: AdvancedToolsTechnology
+  costs:
+    Industrial: 50
+    Science: 20
+
+- type: is14Technology
+  id: Clarke
+  costs:
+    Industrial: 50
+    Science: 20
+
+- type: is14Technology
+  id: IS14ModsuitSpecialization
+  costs:
+    Industrial: 60
+    Science: 25
+
+- type: is14Technology
+  id: KineticModifications
+  costs:
+    Industrial: 50
+    Science: 20
+
+- type: is14Technology
+  id: MassExcavation
+  costs:
+    Industrial: 60
+    Science: 25
+
+- type: is14Technology
+  id: Ripley2
+  costs:
+    Industrial: 50
+    Science: 20
+
+- type: is14Technology
+  id: Shuttlecraft
+  costs:
+    Industrial: 50
+    Science: 20
+
+- type: is14Technology
+  id: BluespaceConstructionStorage
+  costs:
+    Science: 80
+    Industrial: 45
+    Military: 20
+
+- type: is14Technology
+  id: BluespaceStorage
+  costs:
+    Science: 120
+    Industrial: 65
+    Military: 30
+
+- type: is14Technology
+  id: IS14ModsuitAdvanced
+  costs:
+    Industrial: 120
+    Science: 65
+    Military: 30
+
+- type: is14Technology
+  id: OptimizedMicrogalvanism
+  costs:
+    Industrial: 105
+    Science: 60
+    Military: 30

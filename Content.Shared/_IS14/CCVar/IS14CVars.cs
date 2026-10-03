@@ -128,4 +128,41 @@ public sealed partial class IS14CVars
     /// </summary>
     public static readonly CVarDef<bool> FineSetsWantedStatus =
         CVarDef.Create("is14.fine_sets_wanted_status", true, CVar.SERVERONLY);
+
+    /*
+     * NIC — research data, the five currencies the science department runs on.
+     */
+
+    /// <summary>
+    /// Scientific data the station starts the shift with: enough for one tier-1 topic, so
+    /// the department has something to decide about before any instrument is even switched on.
+    /// </summary>
+    public static readonly CVarDef<int> ResearchStartupGrant =
+        CVarDef.Create("is14.research_startup_grant", 30, CVar.SERVERONLY);
+
+    /// <summary>
+    /// Multiplier on every payout from every instrument. The single knob for "science is
+    /// too slow" or "science is too fast" without touching a hundred prototypes.
+    /// </summary>
+    public static readonly CVarDef<float> ResearchPayoutMultiplier =
+        CVarDef.Create("is14.research_payout_multiplier", 1f, CVar.SERVERONLY);
+
+    /// <summary>
+    /// How many topics Gosplan declares a priority each shift. They cost less, which is what
+    /// makes reading the map worthwhile on a station where the tree itself never moves.
+    /// </summary>
+    public static readonly CVarDef<int> ResearchPriorityCount =
+        CVarDef.Create("is14.research_priority_count", 3, CVar.SERVERONLY);
+
+    /// <summary>Discount on a priority topic, 0..1.</summary>
+    public static readonly CVarDef<float> ResearchPriorityDiscount =
+        CVarDef.Create("is14.research_priority_discount", 0.25f, CVar.SERVERONLY);
+
+    /// <summary>
+    /// Cuts the upstream passive research income — the server's own trickle and the endless
+    /// points of anomalous vessels. On by default: data is earned at an instrument, not waited
+    /// for. Turn it off only if the old research console is meant to work as it used to.
+    /// </summary>
+    public static readonly CVarDef<bool> ResearchCutUpstreamPassive =
+        CVarDef.Create("is14.research_cut_upstream_passive", true, CVar.SERVERONLY);
 }

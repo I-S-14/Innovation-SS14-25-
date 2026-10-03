@@ -1,0 +1,104 @@
+<!--
+SPDX-FileCopyrightText: 2025 IS14
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<is14:IS14ResearchDetails
+    xmlns="https://spacestation14.io"
+    xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+    xmlns:customControls="clr-namespace:Content.Client.Administration.UI.CustomControls"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Research"
+    Orientation="Vertical"
+    VerticalExpand="True"
+    HorizontalExpand="False"
+    SetWidth="300">
+
+    <PanelContainer VerticalExpand="True" HorizontalExpand="True">
+        <PanelContainer.PanelOverride>
+            <gfx:StyleBoxFlat BackgroundColor="#16161A" />
+        </PanelContainer.PanelOverride>
+
+        <BoxContainer Orientation="Vertical" Margin="10 8" HorizontalExpand="True" VerticalExpand="True">
+
+            <Label Name="HintLabel" StyleClasses="LabelSubText" />
+
+            <BoxContainer Name="Body" Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True" Visible="False">
+
+                <!-- Header: the branch mark, the technology's own icon and its name -->
+                <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
+                    <TextureRect Name="DisciplineIcon"
+                                 MinSize="26 26"
+                                 Stretch="KeepAspectCentered"
+                                 VerticalAlignment="Center" />
+                    <TextureRect Name="TechnologyIcon"
+                                 MinSize="32 32"
+                                 Stretch="KeepAspectCentered"
+                                 VerticalAlignment="Center"
+                                 Margin="4 0 0 0" />
+                    <BoxContainer Orientation="Vertical" HorizontalExpand="True" Margin="6 0 0 0">
+                        <RichTextLabel Name="NameLabel" HorizontalExpand="True" />
+                        <RichTextLabel Name="BranchLabel" HorizontalExpand="True" />
+                    </BoxContainer>
+                    <Button Name="CloseButton" Text="✕" MinWidth="28" VerticalAlignment="Top" />
+                </BoxContainer>
+
+                <customControls:HSeparator StyleClasses="LowDivider" Margin="0 6 0 6" />
+
+                <RichTextLabel Name="SummaryLabel" HorizontalExpand="True" Margin="0 0 0 6" />
+
+                <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
+                    <Label Text="{Loc 'is14-research-map-cost'}" StyleClasses="LabelSmall" VerticalAlignment="Center" />
+                    <BoxContainer Name="CostContainer" Orientation="Horizontal" Margin="6 0 0 0" />
+                </BoxContainer>
+                <RichTextLabel Name="DiscountLabel" HorizontalExpand="True" Margin="0 2 0 0" />
+                <RichTextLabel Name="PriorityLabel" HorizontalExpand="True" Margin="0 2 0 0" />
+
+                <ScrollContainer HScrollEnabled="False" VerticalExpand="True" HorizontalExpand="True" Margin="0 6 0 0">
+                    <BoxContainer Orientation="Vertical" HorizontalExpand="True">
+
+                        <Label Name="EffectsHeader" Text="{Loc 'is14-research-map-effects'}" StyleClasses="LabelSmall" />
+                        <BoxContainer Name="EffectsContainer" Orientation="Vertical" Margin="0 2 0 8" />
+
+                        <!-- A breakthrough: what object has to be destroyed before the topic
+                             can be touched at all. Above the prerequisites, because it is the
+                             hardest requirement on the card. -->
+                        <Label Name="BreakthroughHeader"
+                               Text="{Loc 'is14-research-map-breakthrough'}"
+                               StyleClasses="LabelSmall" />
+                        <customControls:HSeparator Name="BreakthroughDivider" StyleClasses="LowDivider" Margin="0 2 0 4" />
+                        <BoxContainer Name="BreakthroughContainer" Orientation="Vertical" Margin="0 0 0 4" />
+                        <RichTextLabel Name="BreakthroughStatusLabel" HorizontalExpand="True" Margin="0 0 0 8" />
+
+                        <Label Name="ExclusiveHeader"
+                               Text="{Loc 'is14-research-map-exclusive'}"
+                               StyleClasses="LabelSmall" />
+                        <customControls:HSeparator Name="ExclusiveDivider" StyleClasses="LowDivider" Margin="0 2 0 4" />
+                        <BoxContainer Name="ExclusiveContainer" Orientation="Vertical" Margin="0 0 0 8" />
+
+                        <Label Text="{Loc 'is14-research-map-prereqs'}" StyleClasses="LabelSmall" />
+                        <customControls:HSeparator StyleClasses="LowDivider" Margin="0 2 0 4" />
+                        <RichTextLabel Name="NoPrereqLabel"
+                                       HorizontalExpand="True"
+                                       Margin="0 0 0 8" />
+                        <BoxContainer Name="PrereqContainer" Orientation="Vertical" Margin="0 0 0 8" />
+
+                        <Label Name="UnlocksHeader" Text="{Loc 'is14-research-map-unlocks'}" StyleClasses="LabelSmall" />
+                        <customControls:HSeparator Name="UnlocksDivider" StyleClasses="LowDivider" Margin="0 2 0 4" />
+                        <BoxContainer Name="UnlocksContainer" Orientation="Vertical" Margin="0 0 0 4" />
+
+                    </BoxContainer>
+                </ScrollContainer>
+
+                <RichTextLabel Name="StatusLabel" HorizontalExpand="True" Margin="0 4 0 4" />
+
+                <Button Name="ResearchButton"
+                        Text="{Loc 'is14-research-card-button'}"
+                        HorizontalExpand="True"
+                        MinHeight="34" />
+
+            </BoxContainer>
+        </BoxContainer>
+    </PanelContainer>
+
+</is14:IS14ResearchDetails>

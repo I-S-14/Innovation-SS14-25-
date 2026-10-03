@@ -1,0 +1,61 @@
+<!--
+SPDX-FileCopyrightText: 2025 IS14
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<is14:IS14ResearchConsoleWindow
+    xmlns="https://spacestation14.io"
+    xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Research"
+    Title="{Loc 'is14-research-console-title'}"
+    MinSize="760 500"
+    SetSize="1320 780">
+
+    <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True">
+
+        <!-- Balances: the five currencies and what came in recently -->
+        <PanelContainer Margin="8 8 8 4" HorizontalExpand="True">
+            <PanelContainer.PanelOverride>
+                <gfx:StyleBoxFlat BackgroundColor="#1B1B1E" />
+            </PanelContainer.PanelOverride>
+
+            <BoxContainer Orientation="Vertical" Margin="8 6" HorizontalExpand="True">
+
+                <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
+                    <Label Name="BranchLabel" StyleClasses="LabelKeyText" VerticalAlignment="Center" />
+                    <Control MinWidth="12" />
+                    <Label Name="ServerLabel" StyleClasses="LabelSmall" VerticalAlignment="Center" />
+                    <Control HorizontalExpand="True" />
+                    <Label Name="IncomeHintLabel" StyleClasses="LabelSmall" VerticalAlignment="Center" />
+                </BoxContainer>
+
+                <BoxContainer Name="PointsContainer"
+                              Orientation="Horizontal"
+                              HorizontalExpand="True"
+                              Margin="0 6 0 0" />
+
+            </BoxContainer>
+        </PanelContainer>
+
+        <BoxContainer Orientation="Horizontal" HorizontalExpand="True" VerticalExpand="True" Margin="8 4 8 8">
+
+            <!-- Branches as a narrow strip of tags: the full names are long enough to eat a third
+                 of the window, and they are already written above the map and in the tooltip. -->
+            <BoxContainer Name="BranchStrip"
+                          Orientation="Vertical"
+                          VerticalExpand="True"
+                          MinWidth="54"
+                          Margin="0 0 6 0" />
+
+            <!-- Every branch map lives here; exactly one is visible. -->
+            <Control Name="MapArea" HorizontalExpand="True" VerticalExpand="True" />
+
+            <!-- Only shown while a topic is selected, so the map gets the whole window otherwise. -->
+            <is14:IS14ResearchDetails Name="Details" Margin="6 0 0 0" Visible="False" />
+
+        </BoxContainer>
+
+    </BoxContainer>
+
+</is14:IS14ResearchConsoleWindow>
