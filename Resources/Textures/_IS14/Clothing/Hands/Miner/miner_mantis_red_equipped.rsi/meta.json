@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "license": "EULA",
+    "copyright": "Created by Nir for Innovation Station 14",
+    "size": {
+        "x": 32,
+        "y": 32
+    },
+    "states": [
+		{
+            "name": "inhand-left",
+            "directions": 4
+        },
+        {
+            "name": "inhand-right",
+            "directions": 4
+        },
+        {
+            "name": "equipped-HAND",
+            "directions": 4
+        },
+        {
+            "name": "activated-equipped-HAND",
+            "directions": 4
+        }
+    ]
+}

@@ -1,0 +1,21 @@
+- type: entity
+  parent: [ BaseSword, BaseCargoContraband ]
+  id: IS14MinerShashka
+  name: miner shashka
+  description: Nothing special
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Weapons/Melee/miner_shashka.rsi
+  - type: MeleeWeapon
+    attackRate: 1.0
+    damage:
+      types:
+        Slash: 15
+    soundHit:
+      collection: MetalThud
+    angle: 0
+    animation: WeaponArcThrust
+    range: 2
+  - type: Tag
+    tags:
+    - IS14MinerShashka
