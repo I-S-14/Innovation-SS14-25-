@@ -4,6 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 <DefaultWindow xmlns="https://spacestation14.io"
             xmlns:tabs="clr-namespace:Content.Client.Options.UI.Tabs"
+            xmlns:is14="clr-namespace:Content.Client._IS14.Options.UI.Tabs"
             Title="{Loc 'ui-options-title'}"
             MinSize="800 450">
     <TabContainer Name="Tabs" Access="Public">
@@ -14,5 +15,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         <tabs:AccessibilityTab Name="AccessibilityTab" />
         <tabs:AdminOptionsTab Name="AdminOptionsTab" />
         <tabs:NetworkTab Name="NetworkTab" />
+        <!--IS14-change: appended last so the existing tab indices do not shift-->
+        <is14:IS14Tab Name="IS14Tab" />
     </TabContainer>
 </DefaultWindow>

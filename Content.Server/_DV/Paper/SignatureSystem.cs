@@ -5,6 +5,9 @@ using Content.Goobstation.Shared.Devil;
 using Content.Server.Access.Systems;
 using Content.Server.Popups;
 using Content.Shared.Paper;
+using Content.Shared._IS14.Paper; //IS14-change: signature placement
+using System.Numerics; //IS14-change: signature placement
+using static Content.Shared.Paper.PaperComponent; //IS14-change: PaperUiKey
 using Content.Server.Paper;
 using Content.Shared.Popups;
 using Content.Shared.Tag;
@@ -21,9 +24,11 @@ public sealed class SignatureSystem : EntitySystem
     [Dependency] private readonly PaperSystem _paper = default!;
     [Dependency] private readonly PopupSystem _popup = default!;
     [Dependency] private readonly TagSystem _tags = default!;
+    [Dependency] private readonly SharedUserInterfaceSystem _uiSystem = default!; //IS14-change: signature placement
 
     // The sprite used to visualize "signatures" on paper entities.
     private const string SignatureStampState = "paper_stamp-signature";
+
 
     public override void Initialize()
     {
@@ -43,7 +48,8 @@ public sealed class SignatureSystem : EntitySystem
         {
             Act = () =>
             {
-                TrySignPaper(ent, user, pen);
+                //IS14-change: signing no longer lands blind, it opens the page to be aimed
+                OfferSignaturePlacement(ent, user, pen);
             },
             Text = Loc.GetString("paper-sign-verb"),
             DoContactInteraction = true,
@@ -52,13 +58,35 @@ public sealed class SignatureSystem : EntitySystem
         args.Verbs.Add(verb);
     }
 
+    //IS14-change start: signatures are placed by hand, like stamps
     /// <summary>
-    ///     Tries to add a signature to the paper with signer's name.
+    ///     Opens the document for the signer and hands the UI a signature to position. Nothing is
+    ///     written yet; <see cref="TrySignPaper"/> runs once they have picked a spot.
     /// </summary>
-    public bool TrySignPaper(Entity<PaperComponent> paper, EntityUid signer, EntityUid pen)
+    public void OfferSignaturePlacement(Entity<PaperComponent> paper, EntityUid signer, EntityUid pen)
     {
-        var comp = paper.Comp;
+        // Cheap rejections up front, so a signature that would be refused never opens the page.
+        if (!CanSign(paper, signer, pen))
+        {
+            _popup.PopupEntity(Loc.GetString("paper-signed-failure", ("target", paper.Owner)),
+                signer,
+                signer,
+                PopupType.SmallCaution);
+            return;
+        }
 
+        paper.Comp.SignatureRequestedBy = signer;
+        paper.Comp.SignatureRequestedName = DetermineEntitySignature(signer);
+
+        _uiSystem.OpenUi(paper.Owner, PaperUiKey.Key, signer);
+        _paper.UpdateUserInterface(paper);
+    }
+
+    /// <summary>
+    ///     Whether this pen and this signer are allowed to sign this document at all.
+    /// </summary>
+    public bool CanSign(Entity<PaperComponent> paper, EntityUid signer, EntityUid pen)
+    {
         var ev = new SignAttemptEvent(paper, signer);
         RaiseLocalEvent(pen, ref ev);
         if (ev.Cancelled)
@@ -66,7 +94,22 @@ public sealed class SignatureSystem : EntitySystem
 
         var paperEvent = new BeingSignedAttemptEvent(paper, signer); // Goobstation
         RaiseLocalEvent(paper.Owner, ref paperEvent);
-        if (paperEvent.Cancelled)
+        return !paperEvent.Cancelled;
+    }
+    //IS14-change end
+
+    /// <summary>
+    ///     Tries to add a signature to the paper with signer's name.
+    /// </summary>
+    public bool TrySignPaper(Entity<PaperComponent> paper,
+        EntityUid signer,
+        EntityUid pen,
+        Vector2? position = null, //IS14-change: where the signer put it, null for a blind signature
+        float rotation = 0.0f) //IS14-change
+    {
+        var comp = paper.Comp;
+
+        if (!CanSign(paper, signer, pen)) //IS14-change: the attempt events moved into CanSign
             return false;
 
         var signatureName = DetermineEntitySignature(signer);
@@ -74,7 +117,9 @@ public sealed class SignatureSystem : EntitySystem
         var stampInfo = new StampDisplayInfo()
         {
             StampedName = signatureName,
-            StampedColor = Color.DarkSlateGray, //TODO Make this configurable depending on the pen.
+            StampedColor = StampPlacementSystem.SignatureColor, //IS14-change: shared with the preview
+            Position = position, //IS14-change
+            Rotation = rotation, //IS14-change
         };
 
         if (!comp.StampedBy.Contains(stampInfo) && _paper.TryStamp(paper, stampInfo, SignatureStampState))
@@ -107,7 +152,7 @@ public sealed class SignatureSystem : EntitySystem
         }
     }
 
-    private string DetermineEntitySignature(EntityUid uid)
+    public string DetermineEntitySignature(EntityUid uid) //IS14-change: was private, the placement flow needs it
     {
         // Goobstation - Allow devils to sign their true name.
         if (TryComp<DevilComponent>(uid, out var devilComp) && !string.IsNullOrWhiteSpace(devilComp.TrueName))

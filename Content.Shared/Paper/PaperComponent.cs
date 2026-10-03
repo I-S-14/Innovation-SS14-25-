@@ -25,8 +25,22 @@ public sealed partial class PaperComponent : Component
     [DataField("stampState"), AutoNetworkedField]
     public string? StampState { get; set; }
 
+    //IS14-change start: the shared greyscale stamp state is tinted per stamp, so the world sprite
+    // matches the ink of the impression instead of needing its own coloured sprite.
+    [DataField, AutoNetworkedField]
+    public Color StampColor { get; set; } = Color.White;
+    //IS14-change end
+
     [DataField, AutoNetworkedField]
     public bool EditingDisabled;
+
+    //IS14-change start: a signature waiting to be positioned by the player who asked for it.
+    // Runtime only and deliberately not networked as a component field; it reaches the one client
+    // that needs it through the UI state, which is guaranteed to arrive with the open interface.
+    public EntityUid? SignatureRequestedBy;
+
+    public string? SignatureRequestedName;
+    //IS14-change end
 
     /// <summary>
     /// Sound played after writing to the paper.
@@ -41,11 +55,22 @@ public sealed partial class PaperComponent : Component
         public readonly List<StampDisplayInfo> StampedBy;
         public readonly PaperAction Mode;
 
-        public PaperBoundUserInterfaceState(string text, List<StampDisplayInfo> stampedBy, PaperAction mode = PaperAction.Read)
+        //IS14-change start: who may currently place a signature, and how it reads
+        public readonly NetEntity? SignatureRequestedBy;
+        public readonly string? SignatureRequestedName;
+        //IS14-change end
+
+        public PaperBoundUserInterfaceState(string text,
+            List<StampDisplayInfo> stampedBy,
+            PaperAction mode = PaperAction.Read,
+            NetEntity? signatureRequestedBy = null, //IS14-change
+            string? signatureRequestedName = null) //IS14-change
         {
             Text = text;
             StampedBy = stampedBy;
             Mode = mode;
+            SignatureRequestedBy = signatureRequestedBy; //IS14-change
+            SignatureRequestedName = signatureRequestedName; //IS14-change
         }
     }
 
@@ -89,7 +114,8 @@ public sealed partial class PaperComponent : Component
     public enum PaperVisuals : byte
     {
         Status,
-        Stamp
+        Stamp,
+        StampColor //IS14-change: tint for the shared greyscale stamp state
     }
 
     [Serializable, NetSerializable]

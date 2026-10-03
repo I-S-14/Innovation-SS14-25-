@@ -128,4 +128,31 @@ public sealed partial class IS14CVars
     /// </summary>
     public static readonly CVarDef<bool> FineSetsWantedStatus =
         CVarDef.Create("is14.fine_sets_wanted_status", true, CVar.SERVERONLY);
+
+    /*
+     * Paperwork — stamps and signatures placed by hand on a document.
+     */
+
+    /// <summary>
+    /// Most impressions a single document may carry, stamps and signatures together.
+    /// The whole list is networked to everyone who reads the document, so this is what keeps
+    /// a page from being buried under hundreds of them. Replicated because the client hides
+    /// the placement preview once a page is full.
+    /// </summary>
+    public static readonly CVarDef<int> PaperMaxStamps =
+        CVarDef.Create("is14.paper_max_stamps", 32, CVar.SERVER | CVar.REPLICATED);
+
+    /// <summary>
+    /// Whether a stamp about to be placed starts at a small random angle, so that a stamped page
+    /// reads as hand-worked rather than typeset. Purely cosmetic and per-player.
+    /// </summary>
+    public static readonly CVarDef<bool> StampRandomTilt =
+        CVarDef.Create("is14.stamp_random_tilt", true, CVar.CLIENTONLY | CVar.ARCHIVE);
+
+    /// <summary>
+    /// Largest angle in degrees the random tilt may reach. Clamped to what the server accepts,
+    /// so raising it past that does nothing.
+    /// </summary>
+    public static readonly CVarDef<int> StampMaxTilt =
+        CVarDef.Create("is14.stamp_max_tilt", 5, CVar.CLIENTONLY | CVar.ARCHIVE);
 }

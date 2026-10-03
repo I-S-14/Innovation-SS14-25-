@@ -37,6 +37,10 @@ public sealed class PaperSystem : EntitySystem
     private static readonly ProtoId<TagPrototype> WriteIgnoreStampsTag = "WriteIgnoreStamps";
     private static readonly ProtoId<TagPrototype> WriteTag = "Write";
 
+    //IS14-change: the one greyscale stamp state that gets tinted with the stamp's own ink. Every
+    // other state is hand-coloured already and must be drawn untinted.
+    private const string ColoredStampState = "paper_stamp-colored";
+
     public override void Initialize()
     {
         base.Initialize();
@@ -101,8 +105,10 @@ public sealed class PaperSystem : EntitySystem
 
             if (entity.Comp.StampedBy.Count > 0)
             {
+                //IS14-change: a page can carry several impressions from the same stamp now, so
+                // don't repeat the name once per impression.
                 var commaSeparated =
-                    string.Join(", ", entity.Comp.StampedBy.Select(s => Loc.GetString(s.StampedName)));
+                    string.Join(", ", entity.Comp.StampedBy.Select(s => Loc.GetString(s.StampedName)).Distinct());
                 args.PushMarkup(
                     Loc.GetString(
                         "paper-component-examine-detail-stamped-by",
@@ -155,28 +161,24 @@ public sealed class PaperSystem : EntitySystem
             return;
         }
 
-        // If a stamp, attempt to stamp paper
-        if (TryComp<StampComponent>(args.Used, out var stampComp) && TryStamp(entity, GetStampInfo(stampComp), stampComp.StampState))
+        //IS14-change start: a stamp no longer lands immediately. It opens the document so the
+        // player can aim the stamp themselves; StampPlacementSystem applies it on click.
+        if (HasComp<StampComponent>(args.Used))
         {
-            // successfully stamped, play popup
-            var stampPaperOtherMessage = Loc.GetString("paper-component-action-stamp-paper-other",
-                    ("user", args.User),
-                    ("target", args.Target),
-                    ("stamp", args.Used));
-
-            _popupSystem.PopupEntity(stampPaperOtherMessage, args.User, Filter.PvsExcept(args.User, entityManager: EntityManager), true);
-            var stampPaperSelfMessage = Loc.GetString("paper-component-action-stamp-paper-self",
-                    ("target", args.Target),
-                    ("stamp", args.Used));
-            _popupSystem.PopupClient(stampPaperSelfMessage, args.User, args.User);
-
-            _audio.PlayPredicted(stampComp.Sound, entity, args.User);
-
+            // OpenUi doesn't raise BeforeActivatableUIOpenEvent, so the mode has to be set here or
+            // the document can come up in the editor if it was last opened for writing.
+            entity.Comp.Mode = PaperAction.Read;
+            _uiSystem.OpenUi(entity.Owner, PaperUiKey.Key, args.User);
             UpdateUserInterface(entity);
+            args.Handled = true;
         }
+        //IS14-change end
     }
 
-    private static StampDisplayInfo GetStampInfo(StampComponent stamp)
+    /// <summary>
+    ///     Snapshot of a stamp, as it should appear on a page.
+    /// </summary>
+    public static StampDisplayInfo GetStampInfo(StampComponent stamp) //IS14-change: was private, the placement system needs it
     {
         return new StampDisplayInfo
         {
@@ -240,9 +242,13 @@ public sealed class PaperSystem : EntitySystem
             if (entity.Comp.StampState == null && TryComp<AppearanceComponent>(entity, out var appearance))
             {
                 entity.Comp.StampState = spriteStampState;
+                entity.Comp.StampColor = spriteStampState == ColoredStampState //IS14-change
+                    ? stampInfo.StampedColor
+                    : Color.White;
                 // Would be nice to be able to display multiple sprites on the paper
                 // but most of the existing images overlap
                 _appearance.SetData(entity, PaperVisuals.Stamp, entity.Comp.StampState, appearance);
+                _appearance.SetData(entity, PaperVisuals.StampColor, entity.Comp.StampColor, appearance); //IS14-change
             }
         }
         return true;
@@ -258,6 +264,7 @@ public sealed class PaperSystem : EntitySystem
 
         target.Comp.StampedBy = new List<StampDisplayInfo>(source.Comp.StampedBy);
         target.Comp.StampState = source.Comp.StampState;
+        target.Comp.StampColor = source.Comp.StampColor; //IS14-change: carry the tint over too
         Dirty(target);
 
         if (TryComp<AppearanceComponent>(target, out var appearance))
@@ -292,7 +299,14 @@ public sealed class PaperSystem : EntitySystem
 
     public void UpdateUserInterface(Entity<PaperComponent> entity)
     {
-        _uiSystem.SetUiState(entity.Owner, PaperUiKey.Key, new PaperBoundUserInterfaceState(entity.Comp.Content, entity.Comp.StampedBy, entity.Comp.Mode));
+        //IS14-change: carry the pending signature offer through to the client that asked for it
+        _uiSystem.SetUiState(entity.Owner,
+            PaperUiKey.Key,
+            new PaperBoundUserInterfaceState(entity.Comp.Content,
+                entity.Comp.StampedBy,
+                entity.Comp.Mode,
+                GetNetEntity(entity.Comp.SignatureRequestedBy),
+                entity.Comp.SignatureRequestedName));
     }
 
     private void OnUseInHand(Entity<PaperComponent> entity, ref UseInHandEvent args)

@@ -316,10 +316,15 @@ namespace Content.Client.Paper.UI
 
             StampDisplay.RemoveAllChildren();
             StampDisplay.RemoveStamps();
+            //IS14-change start: stamps the player aimed themselves go on the placement layer;
+            // everything else (faxes, mapped-in paperwork) keeps the automatic layout.
+            StampPlacement.SetStamps(state.StampedBy);
             foreach(var stamper in state.StampedBy)
             {
-                StampDisplay.AddStamp(new StampWidget{ StampInfo = stamper });
+                if (stamper.Position == null)
+                    StampDisplay.AddStamp(new StampWidget{ StampInfo = stamper });
             }
+            //IS14-change end
         }
 
         /// <summary>

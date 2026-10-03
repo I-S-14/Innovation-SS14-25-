@@ -1,42 +1,431 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# Every IS14 stamp shares one item RSI and one paper-overlay RSI; the state name matches the stamp.
+
 - type: entity
-  parent: BaseItem
-  id: RubberStampIS14MupRepresentative
+  parent: RubberStampBase
+  id: IS14RubberStampBase
+  abstract: true
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Misc/Stamps/stamps.rsi
+
+- type: entity
+  parent: IS14RubberStampBase
+  id: IS14RubberStampCaptain
+  components:
+  - type: Stamp
+    stampedName: stamp-component-stamped-name-is14-captain
+    stampedColor: "#B6000D"
+    stampState: paper_stamp-colored
+    stampLargeIcon:
+      sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
+      state: captain
+  - type: Sprite
+    state: captain
+
+- type: entity
+  parent: IS14RubberStampBase
+  id: IS14RubberStampHeadOfPersonnel
+  components:
+  - type: Stamp
+    stampedName: stamp-component-stamped-name-is14-hop
+    stampedColor: "#B6000D"
+    stampState: paper_stamp-colored
+    stampLargeIcon:
+      sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
+      state: hop
+  - type: Sprite
+    state: hop
+
+- type: entity
+  parent: IS14RubberStampBase
+  id: IS14RubberStampCommandSecretary
+  components:
+  - type: Stamp
+    stampedName: stamp-component-stamped-name-is14-command-secretary
+    stampedColor: "#B6000D"
+    stampState: paper_stamp-colored
+    stampLargeIcon:
+      sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
+      state: command_secretary
+  - type: Sprite
+    state: command_secretary
+
+- type: entity
+  parent: IS14RubberStampBase
+  id: IS14RubberStampChiefEngineer
+  components:
+  - type: Stamp
+    stampedName: stamp-component-stamped-name-is14-ce
+    stampedColor: "#FFBD1F"
+    stampState: paper_stamp-ce
+    stampLargeIcon:
+      sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
+      state: ce
+  - type: Sprite
+    state: ce
+
+- type: entity
+  parent: IS14RubberStampBase
+  id: IS14RubberStampSeniorEngineer
+  components:
+  - type: Stamp
+    stampedName: stamp-component-stamped-name-is14-senior-engineer
+    stampedColor: "#FFBD1F"
+    stampState: paper_stamp-ce
+    stampLargeIcon:
+      sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
+      state: senior_engineer
+  - type: Sprite
+    state: senior_engineer
+
+- type: entity
+  parent: IS14RubberStampBase
+  id: IS14RubberStampChiefMedicalOfficer
+  components:
+  - type: Stamp
+    stampedName: stamp-component-stamped-name-is14-cmo
+    stampedColor: "#34BD20"
+    stampState: paper_stamp-colored
+    stampLargeIcon:
+      sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
+      state: cmo
+  - type: Sprite
+    state: cmo
+
+- type: entity
+  parent: IS14RubberStampBase
+  id: IS14RubberStampSeniorPhysician
+  components:
+  - type: Stamp
+    stampedName: stamp-component-stamped-name-is14-senior-physician
+    stampedColor: "#34BD20"
+    stampState: paper_stamp-colored
+    stampLargeIcon:
+      sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
+      state: senior_physician
+  - type: Sprite
+    state: senior_physician
+
+- type: entity
+  parent: IS14RubberStampBase
+  id: IS14RubberStampPsychologist
+  components:
+  - type: Stamp
+    stampedName: stamp-component-stamped-name-is14-psychologist
+    stampedColor: "#34BD20"
+    stampState: paper_stamp-colored
+    stampLargeIcon:
+      sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
+      state: psychologist
+  - type: Sprite
+    state: psychologist
+
+- type: entity
+  parent: IS14RubberStampBase
+  id: IS14RubberStampPharmacist
+  components:
+  - type: Stamp
+    stampedName: stamp-component-stamped-name-is14-pharmacist
+    stampedColor: "#EE7E43"
+    stampState: paper_stamp-generic
+    stampLargeIcon:
+      sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
+      state: pharmacist
+  - type: Sprite
+    state: pharmacist
+
+- type: entity
+  parent: IS14RubberStampBase
+  id: IS14RubberStampResearchDirector
+  components:
+  - type: Stamp
+    stampedName: stamp-component-stamped-name-is14-rd
+    stampedColor: "#56D1F1"
+    stampState: paper_stamp-rd
+    stampLargeIcon:
+      sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
+      state: rd
+  - type: Sprite
+    state: rd
+
+- type: entity
+  parent: IS14RubberStampBase
+  id: IS14RubberStampSeniorResearcher
+  components:
+  - type: Stamp
+    stampedName: stamp-component-stamped-name-is14-senior-researcher
+    stampedColor: "#56D1F1"
+    stampState: paper_stamp-rd
+    stampLargeIcon:
+      sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
+      state: senior_researcher
+  - type: Sprite
+    state: senior_researcher
+
+- type: entity
+  parent: IS14RubberStampBase
+  id: IS14RubberStampHosMilitia
+  components:
+  - type: Stamp
+    stampedName: stamp-component-stamped-name-is14-hos-militia
+    stampedColor: "#3D8EA7"
+    stampState: paper_stamp-colored
+    stampLargeIcon:
+      sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
+      state: hos_militia
+  - type: Sprite
+    state: hos_militia
+
+- type: entity
+  parent: IS14RubberStampBase
+  id: IS14RubberStampSeniorMilitia
+  components:
+  - type: Stamp
+    stampedName: stamp-component-stamped-name-is14-senior-militia
+    stampedColor: "#3D8EA7"
+    stampState: paper_stamp-warden
+    stampLargeIcon:
+      sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
+      state: senior_militia
+  - type: Sprite
+    state: senior_militia
+
+- type: entity
+  parent: IS14RubberStampBase
+  id: IS14RubberStampLrrChief
+  components:
+  - type: Stamp
+    stampedName: stamp-component-stamped-name-is14-lrr-chief
+    stampedColor: "#3D8EA7"
+    stampState: paper_stamp-warden
+    stampLargeIcon:
+      sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
+      state: lrr_chief
+  - type: Sprite
+    state: lrr_chief
+
+- type: entity
+  parent: IS14RubberStampBase
+  id: IS14RubberStampInvestigator
+  components:
+  - type: Stamp
+    stampedName: stamp-component-stamped-name-is14-investigator
+    stampedColor: "#3D8EA7"
+    stampState: paper_stamp-detective
+    stampLargeIcon:
+      sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
+      state: investigator
+  - type: Sprite
+    state: investigator
+
+- type: entity
+  parent: IS14RubberStampBase
+  id: IS14RubberStampMedOfficer
+  components:
+  - type: Stamp
+    stampedName: stamp-component-stamped-name-is14-med-officer
+    stampedColor: "#3D8EA7"
+    stampState: paper_stamp-colored
+    stampLargeIcon:
+      sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
+      state: med_officer
+  - type: Sprite
+    state: med_officer
+
+- type: entity
+  parent: IS14RubberStampBase
+  id: IS14RubberStampSpaceSecurity
+  components:
+  - type: Stamp
+    stampedName: stamp-component-stamped-name-is14-space-security
+    stampedColor: "#3D8EA7"
+    stampState: paper_stamp-colored
+    stampLargeIcon:
+      sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
+      state: space_security
+  - type: Sprite
+    state: space_security
+
+- type: entity
+  parent: IS14RubberStampBase
+  id: IS14RubberStampQm
+  components:
+  - type: Stamp
+    stampedName: stamp-component-stamped-name-is14-qm
+    stampedColor: "#4B8BF5"
+    stampState: paper_stamp-colored
+    stampLargeIcon:
+      sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
+      state: qm
+  - type: Sprite
+    state: qm
+
+- type: entity
+  parent: IS14RubberStampBase
+  id: IS14RubberStampSeniorExpeditioner
+  components:
+  - type: Stamp
+    stampedName: stamp-component-stamped-name-is14-senior-expeditioner
+    stampedColor: "#4B8BF5"
+    stampState: paper_stamp-colored
+    stampLargeIcon:
+      sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
+      state: senior_expeditioner
+  - type: Sprite
+    state: senior_expeditioner
+
+- type: entity
+  parent: IS14RubberStampBase
+  id: IS14RubberStampMailman
+  components:
+  - type: Stamp
+    stampedName: stamp-component-stamped-name-is14-mailman
+    stampedColor: "#4B8BF5"
+    stampState: paper_stamp-generic
+    stampLargeIcon:
+      sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
+      state: mailman
+  - type: Sprite
+    state: mailman
+
+- type: entity
+  parent: IS14RubberStampBase
+  id: IS14RubberStampServiceAdmin
+  components:
+  - type: Stamp
+    stampedName: stamp-component-stamped-name-is14-service-admin
+    stampedColor: "#629A5D"
+    stampState: paper_stamp-generic
+    stampLargeIcon:
+      sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
+      state: service_admin
+  - type: Sprite
+    state: service_admin
+
+- type: entity
+  parent: IS14RubberStampBase
+  id: IS14RubberStampChaplain
+  components:
+  - type: Stamp
+    stampedName: stamp-component-stamped-name-is14-chaplain
+    stampedColor: "#969696"
+    stampState: paper_stamp-chaplain
+    stampLargeIcon:
+      sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
+      state: chaplain
+  - type: Sprite
+    state: chaplain
+
+- type: entity
+  parent: IS14RubberStampBase
+  id: IS14RubberStampClown
+  components:
+  - type: Stamp
+    stampedName: stamp-component-stamped-name-is14-clown
+    stampedColor: "#E800E8"
+    stampState: paper_stamp-clown
+    stampLargeIcon:
+      sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
+      state: clown
+  - type: Sprite
+    state: clown
+
+- type: entity
+  parent: IS14RubberStampBase
+  id: IS14RubberStampMime
+  components:
+  - type: Stamp
+    stampedName: stamp-component-stamped-name-is14-mime
+    stampedColor: "#969696"
+    stampState: paper_stamp-colored
+    stampLargeIcon:
+      sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
+      state: mime
+  - type: Sprite
+    state: mime
+
+- type: entity
+  parent: IS14RubberStampBase
+  id: IS14RubberStampMoko
+  components:
+  - type: Stamp
+    stampedName: stamp-component-stamped-name-is14-moko
+    stampedColor: "#FFBD1F"
+    stampState: paper_stamp-colored
+    stampLargeIcon:
+      sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
+      state: moko
+  - type: Sprite
+    state: moko
+
+- type: entity
+  parent: IS14RubberStampBase
+  id: IS14RubberStampCrb
+  components:
+  - type: Stamp
+    stampedName: stamp-component-stamped-name-is14-crb
+    stampedColor: "#3E3E3E"
+    stampState: paper_stamp-generic
+    stampLargeIcon:
+      sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
+      state: crb
+  - type: Sprite
+    state: crb
+
+- type: entity
+  parent: IS14RubberStampBase
+  id: IS14RubberStampApproved
+  components:
+  - type: Stamp
+    stampedName: stamp-component-stamped-name-is14-approved
+    stampedColor: "#34BD20"
+    stampState: paper_stamp-ok
+    stampLargeIcon:
+      sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
+      state: approved
+  - type: Sprite
+    state: approved
+
+- type: entity
+  parent: IS14RubberStampBase
+  id: IS14RubberStampDenied
+  components:
+  - type: Stamp
+    stampedName: stamp-component-stamped-name-is14-denied
+    stampedColor: "#B6000D"
+    stampState: paper_stamp-deny
+    stampLargeIcon:
+      sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
+      state: denied
+  - type: Sprite
+    state: denied
+
+- type: entity
+  parent: IS14RubberStampBase
+  id: IS14RubberStampMupRepresentative
   components:
   - type: Stamp
     stampedName: stamp-component-stamped-name-mup
-    stampState: "paper_stamp-generic"
     stampedColor: "#513726"
-    sound:
-      path: /Audio/Items/Stamp/thick_stamp_sub.ogg
-      params:
-        volume: -2
-        maxDistance: 5
+    stampState: paper_stamp-colored
+    stampLargeIcon:
+      sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
+      state: mup_representative
   - type: Sprite
-    sprite: _IS14/Objects/Misc/Stamps/mup_representative.rsi
-    state: icon
-  - type: Item
-    size: Tiny
-  - type: StealTarget
-    stealGroup: Stamp
+    state: mup_representative
 
 - type: entity
-  parent: BaseItem
-  id: RubberStampIS14Lawyer
+  parent: IS14RubberStampBase
+  id: IS14RubberStampLawyer
   components:
   - type: Stamp
     stampedName: stamp-component-stamped-name-is14lawyer
-    stampState: "paper_stamp-generic"
     stampedColor: "#a46e4b"
-    sound:
-      path: /Audio/Items/Stamp/thick_stamp_sub.ogg
-      params:
-        volume: -2
-        maxDistance: 5
+    stampState: paper_stamp-colored
+    stampLargeIcon:
+      sprite: _IS14/Interface/Paper/Stamps/stamps.rsi
+      state: lawyer
   - type: Sprite
-    sprite: _IS14/Objects/Misc/Stamps/lawyer.rsi
-    state: icon
-  - type: Item
-    size: Tiny
-  - type: StealTarget
-    stealGroup: Stamp
-
+    state: lawyer
