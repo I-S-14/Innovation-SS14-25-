@@ -40,7 +40,7 @@
   name: is14-tech-labautomation
   discipline: IS14Fundamental
   tier: 2
-  cost: 6000
+  cost: 4000
   position: 5,3
   icon:
     sprite: Interface/Misc/research_disciplines.rsi
@@ -53,7 +53,7 @@
   name: is14-tech-precisionsensors
   discipline: IS14Fundamental
   tier: 3
-  cost: 10000
+  cost: 6500
   position: 5,2
   icon:
     sprite: Interface/Misc/research_disciplines.rsi
@@ -66,7 +66,7 @@
   name: is14-tech-experimentalphysics
   discipline: IS14Fundamental
   tier: 4
-  cost: 17500
+  cost: 13500
   position: 5,1
   icon:
     sprite: Objects/Misc/module.rsi
@@ -81,7 +81,7 @@
   name: is14-tech-statisticalmethods
   discipline: IS14Fundamental
   tier: 2
-  cost: 4000
+  cost: 2500
   position: 6,3
   icon:
     sprite: Interface/Misc/research_disciplines.rsi
@@ -245,8 +245,6 @@
   technologyPrerequisites:
   - IS14ArtifactStructure
   recipeUnlocks:
-  - Pinpointer
-  - PinpointerArtifact
   - PinpointerAnomaly
   - PinpointerBorg
 
@@ -268,13 +266,15 @@
   name: is14-tech-artifactreconstruction
   discipline: IS14Fundamental
   tier: 4
-  cost: 22000
+  cost: 14500
   position: 10,5
   icon:
     sprite: Interface/Misc/research_disciplines.rsi
     state: experimental
   technologyPrerequisites:
   - IS14AncientTechnology
+  recipeUnlocks:
+  - PinpointerArtifact
 
 - type: technology
   id: IS14FieldArchaeology
@@ -288,6 +288,8 @@
     state: experimental
   technologyPrerequisites:
   - IS14ArtifactStudies
+  recipeUnlocks:
+  - Pinpointer
 
 - type: technology
   id: IS14SubspaceMath
@@ -353,7 +355,7 @@
   name: is14-tech-quantumtransport
   discipline: IS14Fundamental
   tier: 4
-  cost: 30000
+  cost: 24500
   position: 9,9
   icon:
     sprite: Objects/Devices/swapper.rsi
@@ -376,6 +378,8 @@
     state: experimental
   technologyPrerequisites:
   - IS14BluespaceTheory
+  recipeUnlocks:
+  - ComputerIFFCircuitboard
 
 - type: technology
   id: IS14Xenobiology
@@ -393,7 +397,6 @@
   - SlimeScannerXenobio
   - XenobiologyBountyComputerCircuitboard
   - SlimeGrinderMachineCircuitboard
-  - ClothingBackpackXenoBioTank
 
 - type: technology
   id: IS14XenoCompatibility
@@ -443,13 +446,15 @@
   name: is14-tech-exoticfauna
   discipline: IS14Fundamental
   tier: 3
-  cost: 12500
+  cost: 9500
   position: 6,8
   icon:
     sprite: Interface/Misc/research_disciplines.rsi
     state: experimental
   technologyPrerequisites:
   - IS14Xenobiology
+  recipeUnlocks:
+  - ClothingBackpackXenoBioTank
 
 - type: technology
   id: IS14Servomechanics
@@ -641,7 +646,7 @@
   name: is14-tech-secretenergetics
   discipline: IS14Fundamental
   tier: 3
-  cost: 18000
+  cost: 15000
   position: 4,5
   hidden: true
   icon:
@@ -734,7 +739,7 @@
   name: is14-tech-metalscience
   discipline: IS14Materials
   tier: 1
-  cost: 2500
+  cost: 1500
   position: 3,3
   icon:
     sprite: Interface/Misc/research_disciplines.rsi
@@ -775,26 +780,35 @@
   name: is14-tech-metamaterials
   discipline: IS14Materials
   tier: 4
-  cost: 23000
+  cost: 16500
   position: 3,0
   icon:
     sprite: Interface/Misc/research_disciplines.rsi
     state: industrial
   technologyPrerequisites:
   - IS14HighStrengthAlloys
+  recipeUnlocks:
+  - WelderExperimental
+  - FauxTileAstroIce
+  - FauxTileAstroSnow
 
 - type: technology
   id: IS14SurfaceTreatment
   name: is14-tech-surfacetreatment
   discipline: IS14Materials
   tier: 2
-  cost: 4500
+  cost: 3500
   position: 4,2
   icon:
     sprite: Interface/Misc/research_disciplines.rsi
     state: industrial
   technologyPrerequisites:
   - IS14MetalScience
+  recipeUnlocks:
+  - FauxTileAstroAsteroidSand
+  - FauxTileDesertAstroSand
+  - FauxTileAstroIronsand
+  - FauxTileAstroIronsandBorderless
 
 - type: technology
   id: IS14Geology
@@ -849,7 +863,6 @@
   - MiningDrillDiamond
   - MechEquipmentDrillDiamond
   - AdvancedMineralScannerEmpty
-  - OreBagOfHolding
 
 - type: technology
   id: IS14MiningLogistics
@@ -863,6 +876,9 @@
     state: industrial
   technologyPrerequisites:
   - IS14OreProcessing
+  recipeUnlocks:
+  - OreBagOfHolding
+  - StorageBinCircuitboard
 
 - type: technology
   id: IS14PrecisionMachining
@@ -891,11 +907,6 @@
   - IS14PrecisionMachining
   recipeUnlocks:
   - LatheUpgradeKitHyper
-  - LatheUpgradeKitCryo
-  - RoboticArmCircuitboard
-  - ConstructorCircuitboard
-  - StorageBinCircuitboard
-  - InteractorCircuitboard
   - SheetifierMachineCircuitboard
 
 - type: technology
@@ -919,13 +930,17 @@
   name: is14-tech-flexiblelines
   discipline: IS14Materials
   tier: 4
-  cost: 24000
+  cost: 18500
   position: 7,4
   icon:
     sprite: Interface/Misc/research_disciplines.rsi
     state: industrial
   technologyPrerequisites:
   - IS14AdditiveFabrication
+  recipeUnlocks:
+  - RoboticArmCircuitboard
+  - ConstructorCircuitboard
+  - InteractorCircuitboard
 
 - type: technology
   id: IS14QualityControl
@@ -939,6 +954,8 @@
     state: industrial
   technologyPrerequisites:
   - IS14PrecisionMachining
+  recipeUnlocks:
+  - LatheUpgradeKitCryo
 
 - type: technology
   id: IS14Hydraulics
@@ -1005,7 +1022,6 @@
   recipeUnlocks:
   - PowerDrill
   - JawsOfLife
-  - WelderExperimental
 
 - type: technology
   id: IS14CuttingWelding
@@ -1038,12 +1054,6 @@
   - FauxTileJungleAstroGrass
   - FauxTileDarkAstroGrass
   - FauxTileLightAstroGrass
-  - FauxTileAstroIce
-  - FauxTileAstroSnow
-  - FauxTileAstroAsteroidSand
-  - FauxTileDesertAstroSand
-  - FauxTileAstroIronsand
-  - FauxTileAstroIronsandBorderless
 
 - type: technology
   id: IS14ShopSpeed
@@ -1076,7 +1086,7 @@
   name: is14-tech-thermodynamics
   discipline: IS14Energetics
   tier: 1
-  cost: 2000
+  cost: 1500
   position: 3,4
   icon:
     sprite: Interface/Misc/research_disciplines.rsi
@@ -1098,9 +1108,6 @@
   - PortableGeneratorPacmanMachineCircuitboard
   - PortableGeneratorSuperPacmanMachineCircuitboard
   - PortableGeneratorJrPacmanMachineCircuitboard
-  - SolarControlComputerCircuitboard
-  - SolarTrackerElectronics
-  - EmitterCircuitboard
 
 - type: technology
   id: IS14EnergyStorage
@@ -1116,7 +1123,6 @@
   - IS14PowerEngineering
   recipeUnlocks:
   - PowerCellHigh
-  - TurboItemRechargerCircuitboard
   - SMESAdvancedMachineCircuitboard
 
 - type: technology
@@ -1131,6 +1137,9 @@
     state: industrial
   technologyPrerequisites:
   - IS14EnergyStorage
+  recipeUnlocks:
+  - SolarControlComputerCircuitboard
+  - SolarTrackerElectronics
 
 - type: technology
   id: IS14FusionPower
@@ -1146,7 +1155,6 @@
   - IS14GridEngineering
   recipeUnlocks:
   - TeslaCoilCircuitboard
-  - RadiationCollectorCircuitboard
 
 - type: technology
   id: IS14CrystalPhysics
@@ -1179,13 +1187,15 @@
   name: is14-tech-supermatterengineering
   discipline: IS14Energetics
   tier: 3
-  cost: 27000
+  cost: 19000
   position: 6,1
   icon:
     sprite: Interface/Misc/research_disciplines.rsi
     state: industrial
   technologyPrerequisites:
   - IS14SupermatterPhysics
+  recipeUnlocks:
+  - EmitterCircuitboard
 
 - type: technology
   id: IS14AtmosphericTech
@@ -1201,7 +1211,6 @@
   - IS14Thermodynamics
   recipeUnlocks:
   - ThermomachineFreezerMachineCircuitBoard
-  - GasRecyclerMachineCircuitboard
 
 - type: technology
   id: IS14AdvancedAtmospherics
@@ -1216,7 +1225,6 @@
   technologyPrerequisites:
   - IS14AtmosphericTech
   recipeUnlocks:
-  - HellfireFreezerMachineCircuitBoard
   - PortableScrubberMachineCircuitBoard
   - HolofanProjector
 
@@ -1232,19 +1240,23 @@
     state: industrial
   technologyPrerequisites:
   - IS14AdvancedAtmospherics
+  recipeUnlocks:
+  - GasRecyclerMachineCircuitboard
 
 - type: technology
   id: IS14TritiumProduction
   name: is14-tech-tritiumproduction
   discipline: IS14Energetics
   tier: 4
-  cost: 23000
+  cost: 17500
   position: 7,4
   icon:
     sprite: Interface/Misc/research_disciplines.rsi
     state: industrial
   technologyPrerequisites:
   - IS14GasMixtures
+  recipeUnlocks:
+  - HellfireFreezerMachineCircuitBoard
 
 - type: technology
   id: IS14Cryogenics
@@ -1267,7 +1279,6 @@
   - CryostasisCigarette
   - NTBodyBag
   - PrisonerBodyBag
-  - RadiationBodyBag
 
 - type: technology
   id: IS14Superconductivity
@@ -1281,6 +1292,8 @@
     state: industrial
   technologyPrerequisites:
   - IS14Cryogenics
+  recipeUnlocks:
+  - TurboItemRechargerCircuitboard
 
 - type: technology
   id: IS14PlasmaPhysics
@@ -1321,6 +1334,8 @@
     state: base
   technologyPrerequisites:
   - IS14PlasmaContainment
+  recipeUnlocks:
+  - MiniGravityGeneratorCircuitboard
 
 - type: technology
   id: IS14Propulsion
@@ -1336,11 +1351,8 @@
   - IS14Thermodynamics
   recipeUnlocks:
   - ShuttleRemoteControlSystemCircuitboard
-  - ComputerIFFCircuitboard
   - ShuttleConsoleCircuitboard
   - ThrusterMachineCircuitboard
-  - GyroscopeMachineCircuitboard
-  - MiniGravityGeneratorCircuitboard
   - MachineFTLDriveCircuitboard
 
 - type: technology
@@ -1355,13 +1367,15 @@
     state: industrial
   technologyPrerequisites:
   - IS14Propulsion
+  recipeUnlocks:
+  - GyroscopeMachineCircuitboard
 
 - type: technology
   id: IS14Dosimetry
   name: is14-tech-dosimetry
   discipline: IS14Energetics
   tier: 1
-  cost: 3500
+  cost: 2500
   position: 2,4
   icon:
     sprite: Interface/Misc/research_disciplines.rsi
@@ -1381,6 +1395,8 @@
     state: industrial
   technologyPrerequisites:
   - IS14Dosimetry
+  recipeUnlocks:
+  - RadiationBodyBag
 
 - type: technology
   id: IS14IsotopeSources
@@ -1394,6 +1410,8 @@
     state: industrial
   technologyPrerequisites:
   - IS14RadiationShielding
+  recipeUnlocks:
+  - RadiationCollectorCircuitboard
 
 - type: technology
   id: IS14Pathology
@@ -1420,7 +1438,6 @@
   - IS14Pathology
   recipeUnlocks:
   - FillableMedipen
-  - MachineMedipenRefillerCircuitboard
 
 - type: technology
   id: IS14AdvancedTreatment
@@ -1439,7 +1456,6 @@
   - EnergyScalpel
   - AdvancedRetractor
   - EnergyCautery
-  - AdvancedBoneGel
 
 - type: technology
   id: IS14CombatPharmacology
@@ -1519,6 +1535,8 @@
     state: biochemical
   technologyPrerequisites:
   - IS14Epidemiology
+  recipeUnlocks:
+  - MachineMedipenRefillerCircuitboard
 
 - type: technology
   id: IS14SurgicalTechnology
@@ -1575,13 +1593,15 @@
   name: is14-tech-tissueengineering
   discipline: IS14Medicine
   tier: 4
-  cost: 29000
+  cost: 19000
   position: 6,4
   icon:
     sprite: Interface/Misc/research_disciplines.rsi
     state: biochemical
   technologyPrerequisites:
   - IS14HighEndSurgery
+  recipeUnlocks:
+  - AdvancedBoneGel
 
 - type: technology
   id: IS14Genetics
@@ -1595,6 +1615,8 @@
     state: biochemical
   technologyPrerequisites:
   - IS14Pathology
+  recipeUnlocks:
+  - MedicalScannerMachineCircuitboard
 
 - type: technology
   id: IS14Cloning
@@ -1611,22 +1633,8 @@
   recipeUnlocks:
   - CloningConsoleComputerCircuitboard
   - CloningPodMachineCircuitboard
-  - MedicalScannerMachineCircuitboard
   - CloningPodMachineCircuitboardRecipe
   - CloningConsoleComputerCircuitboardRecipe
-
-- type: technology
-  id: IS14Mutagenesis
-  name: is14-tech-mutagenesis
-  discipline: IS14Medicine
-  tier: 3
-  cost: 17000
-  position: 5,7
-  icon:
-    sprite: Interface/Misc/research_disciplines.rsi
-    state: biochemical
-  technologyPrerequisites:
-  - IS14Cloning
 
 - type: technology
   id: IS14MedShopSpeed
@@ -1785,13 +1793,10 @@
   technologyPrerequisites:
   - IS14ControlSystems
   recipeUnlocks:
-  - SurveillanceCameraRouterCircuitboard
-  - SurveillanceCameraWirelessRouterCircuitboard
   - SurveillanceWirelessCameraMovableCircuitboard
   - SurveillanceWirelessCameraAnchoredCircuitboard
   - SurveillanceCameraMonitorCircuitboard
   - SurveillanceWirelessCameraMonitorCircuitboard
-  - TelecomServerCircuitboard
   - HolopadMachineCircuitboard
 
 - type: technology
@@ -1806,6 +1811,10 @@
     state: industrial
   technologyPrerequisites:
   - IS14ComputingSystems
+  recipeUnlocks:
+  - TelecomServerCircuitboard
+  - SurveillanceCameraRouterCircuitboard
+  - SurveillanceCameraWirelessRouterCircuitboard
 
 - type: technology
   id: IS14PositronicTheory
@@ -2122,7 +2131,6 @@
   technologyPrerequisites:
   - IS14Ballistics
   recipeUnlocks:
-  - SignallerAdvanced
   - ShrapnelPayload
   - CableDetStack1
   - EmptyDetonator
@@ -2140,6 +2148,9 @@
     state: arsenal
   technologyPrerequisites:
   - IS14Detonics
+  recipeUnlocks:
+  - SignallerAdvanced
+  - GrenadeBlast
 
 - type: technology
   id: IS14ShuttleArmament
@@ -2159,7 +2170,6 @@
   - PowerCageMedium
   - MagazineGrenadeEmpty
   - GrenadeFlash
-  - GrenadeBlast
   - ShuttleGunSvalinnMachineGunCircuitboard
   - ShuttleGunPerforatorCircuitboard
   - ShuttleGunFriendshipCircuitboard
@@ -2380,14 +2390,10 @@
   - RootSpeakTranslator
   - MofficTranslator
   - ValyrianStandardTranslator
-  - ChittinTranslator
   - SiikMaasTranslator
   - MarishTranslator
   - ChevalTranslatorImplanter
   - NewKinPidginTranslator
-  - SchechiTranslator
-  - GruntishTranslator
-  - YowKriolTranslator
 
 - type: technology
   id: IS14AdvancedTranslation
@@ -2435,6 +2441,11 @@
     state: civilianservices
   technologyPrerequisites:
   - IS14Linguistics
+  recipeUnlocks:
+  - ChittinTranslator
+  - SchechiTranslator
+  - GruntishTranslator
+  - YowKriolTranslator
 
 - type: technology
   id: IS14Press
@@ -2466,7 +2477,6 @@
   - IS14Press
   recipeUnlocks:
   - PushHorn
-  - JukeboxCircuitBoard
   - DawInstrumentMachineCircuitboard
   - SynthesizerInstrument
 
@@ -2525,7 +2535,6 @@
   - VehicleHoverchairSci
   - PrescriptionGlasses
   - EnvirosuitExtinguisherRefill
-  - TinfoilHats
 
 - type: technology
   id: IS14WorkwearRigs
@@ -2618,7 +2627,6 @@
   recipeUnlocks:
   - FatExtractorMachineCircuitboard
   - BiofabricatorMachineCircuitboard
-  - BiomassReclaimerMachineCircuitboard
 
 - type: technology
   id: IS14Agronomy
@@ -2636,7 +2644,6 @@
   - PlantBagOfHolding
   - SeedExtractorMachineCircuitboard
   - HydroponicsTrayMachineCircuitboard
-  - ReagentGrinderIndustrialMachineCircuitboard
 
 - type: technology
   id: IS14FoodIndustry
@@ -2650,13 +2657,16 @@
     state: civilianservices
   technologyPrerequisites:
   - IS14Agronomy
+  recipeUnlocks:
+  - BiomassReclaimerMachineCircuitboard
+  - ReagentGrinderIndustrialMachineCircuitboard
 
 - type: technology
   id: IS14Psychometrics
   name: is14-tech-psychometrics
   discipline: IS14Society
   tier: 1
-  cost: 4000
+  cost: 3000
   position: 1,5
   icon:
     sprite: Interface/Misc/research_disciplines.rsi
@@ -2676,16 +2686,20 @@
     state: civilianservices
   technologyPrerequisites:
   - IS14Psychometrics
+  recipeUnlocks:
+  - TinfoilHats
 
 - type: technology
   id: IS14CollectiveDynamics
   name: is14-tech-collectivedynamics
   discipline: IS14Society
   tier: 3
-  cost: 15500
+  cost: 11000
   position: 1,7
   icon:
     sprite: Interface/Misc/research_disciplines.rsi
     state: civilianservices
   technologyPrerequisites:
   - IS14SocialPsychology
+  recipeUnlocks:
+  - JukeboxCircuitBoard

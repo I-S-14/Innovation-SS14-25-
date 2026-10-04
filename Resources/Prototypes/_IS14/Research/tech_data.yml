@@ -11,11 +11,6 @@
   summary: is14-techsummary-metrology
   costs:
     Science: 15
-  effects:
-  - !type:IS14GrantPointsEffect
-    description: is14-effect-metrology-0
-    pointType: Science
-    amount: 10
 
 - type: is14Technology
   id: IS14SpectralAnalysis
@@ -27,48 +22,28 @@
   id: IS14LabAutomation
   summary: is14-techsummary-labautomation
   costs:
-    Science: 45
-    Industrial: 15
-  effects:
-  - !type:IS14ModifierEffect
-    description: is14-effect-labautomation-0
-    modifier: ResearchPayoutScience
-    delta: 0.1
+    Science: 30
+    Industrial: 10
 
 - type: is14Technology
   id: IS14PrecisionSensors
   summary: is14-techsummary-precisionsensors
   costs:
-    Science: 70
-    Industrial: 30
-  effects:
-  - !type:IS14ModifierEffect
-    description: is14-effect-precisionsensors-0
-    modifier: ResearchPayout
-    delta: 0.05
+    Science: 45
+    Industrial: 20
 
 - type: is14Technology
   id: IS14ExperimentalPhysics
   summary: is14-techsummary-experimentalphysics
   costs:
-    Science: 130
-    Industrial: 45
-  effects:
-  - !type:IS14GrantPointsEffect
-    description: is14-effect-experimentalphysics-0
-    pointType: Science
-    amount: 30
+    Science: 100
+    Industrial: 35
 
 - type: is14Technology
   id: IS14StatisticalMethods
   summary: is14-techsummary-statisticalmethods
   costs:
-    Science: 40
-  effects:
-  - !type:IS14ModifierEffect
-    description: is14-effect-statisticalmethods-0
-    modifier: ExperimentNoveltyRetention
-    delta: 0.1
+    Science: 25
 
 - type: is14Technology
   id: IS14ScientificRecords
@@ -168,13 +143,8 @@
   id: IS14ArtifactReconstruction
   summary: is14-techsummary-artifactreconstruction
   costs:
-    Science: 150
-    Industrial: 70
-  effects:
-  - !type:IS14GrantPointsEffect
-    description: is14-effect-artifactreconstruction-0
-    pointType: Science
-    amount: 50
+    Science: 100
+    Industrial: 45
 
 - type: is14Technology
   id: IS14FieldArchaeology
@@ -222,14 +192,9 @@
   id: IS14QuantumTransport
   summary: is14-techsummary-quantumtransport
   costs:
-    Science: 180
-    Industrial: 90
-    Military: 30
-  effects:
-  - !type:IS14GrantPointsEffect
-    description: is14-effect-quantumtransport-0
-    pointType: Science
-    amount: 40
+    Science: 150
+    Industrial: 70
+    Military: 25
 
 - type: is14Technology
   id: IS14BluespaceComms
@@ -287,13 +252,8 @@
   id: IS14ExoticFauna
   summary: is14-techsummary-exoticfauna
   costs:
-    Military: 30
-    Biological: 95
-  effects:
-  - !type:IS14ModifierEffect
-    description: is14-effect-exoticfauna-0
-    modifier: ResearchPayoutBiological
-    delta: 0.15
+    Military: 25
+    Biological: 70
 
 - type: is14Technology
   id: IS14Servomechanics
@@ -369,8 +329,8 @@
   id: IS14SecretEnergetics
   summary: is14-techsummary-secretenergetics
   costs:
-    Science: 60
-    Military: 120
+    Science: 50
+    Military: 100
   contraband:
     name: is14-contraband-secretenergetics
     samples:
@@ -384,10 +344,6 @@
     description: is14-effect-secretenergetics-0
     modifier: ResearchPayoutMilitary
     delta: 0.2
-  - !type:IS14GrantPointsEffect
-    description: is14-effect-secretenergetics-1
-    pointType: Military
-    amount: 40
 
 - type: is14Technology
   id: IS14SecretInfiltration
@@ -490,22 +446,12 @@
   summary: is14-techsummary-metallurgy
   costs:
     Industrial: 15
-  effects:
-  - !type:IS14GrantPointsEffect
-    description: is14-effect-metallurgy-0
-    pointType: Industrial
-    amount: 10
 
 - type: is14Technology
   id: IS14MetalScience
   summary: is14-techsummary-metalscience
   costs:
-    Industrial: 25
-  effects:
-  - !type:IS14GrantPointsEffect
-    description: is14-effect-metalscience-0
-    pointType: Industrial
-    amount: 15
+    Industrial: 15
 
 - type: is14Technology
   id: IS14Composites
@@ -525,24 +471,14 @@
   id: IS14Metamaterials
   summary: is14-techsummary-metamaterials
   costs:
-    Science: 80
-    Industrial: 150
-  effects:
-  - !type:IS14ModifierEffect
-    description: is14-effect-metamaterials-0
-    modifier: LatheMaterialEfficiency
-    delta: -0.1
+    Science: 55
+    Industrial: 110
 
 - type: is14Technology
   id: IS14SurfaceTreatment
   summary: is14-techsummary-surfacetreatment
   costs:
-    Industrial: 45
-  effects:
-  - !type:IS14ModifierEffect
-    description: is14-effect-surfacetreatment-0
-    modifier: LatheMaterialIndustrial
-    delta: -0.05
+    Industrial: 35
 
 - type: is14Technology
   id: IS14Geology
@@ -571,11 +507,6 @@
   costs:
     Industrial: 80
     Social: 25
-  effects:
-  - !type:IS14ModifierEffect
-    description: is14-effect-mininglogistics-0
-    modifier: ResearchPayoutIndustrial
-    delta: 0.1
 
 - type: is14Technology
   id: IS14PrecisionMachining
@@ -601,13 +532,8 @@
   id: IS14FlexibleLines
   summary: is14-techsummary-flexiblelines
   costs:
-    Science: 70
-    Industrial: 170
-  effects:
-  - !type:IS14ModifierEffect
-    description: is14-effect-flexiblelines-0
-    modifier: LatheSpeed
-    delta: -0.1
+    Science: 55
+    Industrial: 130
 
 - type: is14Technology
   id: IS14QualityControl
@@ -684,12 +610,7 @@
   id: IS14Thermodynamics
   summary: is14-techsummary-thermodynamics
   costs:
-    Industrial: 20
-  effects:
-  - !type:IS14GrantPointsEffect
-    description: is14-effect-thermodynamics-0
-    pointType: Industrial
-    amount: 10
+    Industrial: 15
 
 - type: is14Technology
   id: IS14PowerEngineering
@@ -710,11 +631,6 @@
   costs:
     Science: 30
     Industrial: 85
-  effects:
-  - !type:IS14ModifierEffect
-    description: is14-effect-gridengineering-0
-    modifier: LatheSpeed
-    delta: -0.05
 
 - type: is14Technology
   id: IS14FusionPower
@@ -749,14 +665,9 @@
   id: IS14SupermatterEngineering
   summary: is14-techsummary-supermatterengineering
   costs:
-    Science: 90
-    Industrial: 150
-    Military: 30
-  effects:
-  - !type:IS14GrantPointsEffect
-    description: is14-effect-supermatterengineering-0
-    pointType: Industrial
-    amount: 60
+    Science: 60
+    Industrial: 110
+    Military: 20
 
 - type: is14Technology
   id: IS14AtmosphericTech
@@ -777,24 +688,14 @@
   costs:
     Industrial: 90
     Military: 30
-  effects:
-  - !type:IS14ModifierEffect
-    description: is14-effect-gasmixtures-0
-    modifier: ResearchPayoutMilitary
-    delta: 0.1
 
 - type: is14Technology
   id: IS14TritiumProduction
   summary: is14-techsummary-tritiumproduction
   costs:
-    Science: 60
-    Industrial: 130
-    Military: 40
-  effects:
-  - !type:IS14ModifierEffect
-    description: is14-effect-tritiumproduction-0
-    modifier: ResearchPayoutMilitary
-    delta: 0.2
+    Science: 45
+    Industrial: 100
+    Military: 30
 
 - type: is14Technology
   id: IS14Cryogenics
@@ -849,13 +750,8 @@
   id: IS14Dosimetry
   summary: is14-techsummary-dosimetry
   costs:
-    Science: 25
+    Science: 15
     Biological: 10
-  effects:
-  - !type:IS14ModifierEffect
-    description: is14-effect-dosimetry-0
-    modifier: ResearchPayoutBiological
-    delta: 0.05
 
 - type: is14Technology
   id: IS14RadiationShielding
@@ -953,14 +849,9 @@
   id: IS14TissueEngineering
   summary: is14-techsummary-tissueengineering
   costs:
-    Science: 50
-    Industrial: 80
-    Biological: 160
-  effects:
-  - !type:IS14GrantPointsEffect
-    description: is14-effect-tissueengineering-0
-    pointType: Biological
-    amount: 50
+    Science: 30
+    Industrial: 50
+    Biological: 110
 
 - type: is14Technology
   id: IS14Genetics
@@ -968,11 +859,6 @@
   costs:
     Science: 15
     Biological: 35
-  effects:
-  - !type:IS14ModifierEffect
-    description: is14-effect-genetics-0
-    modifier: ResearchPayoutBiological
-    delta: 0.1
 
 - type: is14Technology
   id: IS14Cloning
@@ -980,18 +866,6 @@
   costs:
     Industrial: 35
     Biological: 80
-
-- type: is14Technology
-  id: IS14Mutagenesis
-  summary: is14-techsummary-mutagenesis
-  costs:
-    Science: 50
-    Biological: 120
-  effects:
-  - !type:IS14ModifierEffect
-    description: is14-effect-mutagenesis-0
-    modifier: ResearchPayoutBiological
-    delta: 0.15
 
 - type: is14Technology
   id: IS14MedShopSpeed
@@ -1072,11 +946,6 @@
   costs:
     Science: 55
     Industrial: 25
-  effects:
-  - !type:IS14ModifierEffect
-    description: is14-effect-networksystems-0
-    modifier: ResearchPayout
-    delta: 0.05
 
 - type: is14Technology
   id: IS14PositronicTheory
@@ -1214,11 +1083,6 @@
   costs:
     Science: 25
     Military: 60
-  effects:
-  - !type:IS14ModifierEffect
-    description: is14-effect-blastmetrology-0
-    modifier: ResearchPayoutMilitary
-    delta: 0.15
 
 - type: is14Technology
   id: IS14ShuttleArmament
@@ -1425,12 +1289,7 @@
   summary: is14-techsummary-psychometrics
   costs:
     Biological: 10
-    Social: 30
-  effects:
-  - !type:IS14ModifierEffect
-    description: is14-effect-psychometrics-0
-    modifier: ResearchPayoutSocial
-    delta: 0.1
+    Social: 20
 
 - type: is14Technology
   id: IS14SocialPsychology
@@ -1443,10 +1302,5 @@
   id: IS14CollectiveDynamics
   summary: is14-techsummary-collectivedynamics
   costs:
-    Science: 45
-    Social: 110
-  effects:
-  - !type:IS14ModifierEffect
-    description: is14-effect-collectivedynamics-0
-    modifier: ResearchPayoutSocial
-    delta: 0.2
+    Science: 30
+    Social: 80

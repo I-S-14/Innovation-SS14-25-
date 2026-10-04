@@ -57,7 +57,7 @@ DIRECTIONS = {
 Node = collections.namedtuple(
     'Node',
     'id name depth lane prereqs costs sources icon_from recipes effects summary breakthrough '
-    'exclusive hidden contraband tier',
+    'exclusive hidden contraband tier without',
 )
 
 Ray = collections.namedtuple('Ray', 'id name direction nodes')
@@ -72,9 +72,10 @@ Breakthrough = collections.namedtuple('Breakthrough', 'name samples icon hint po
 
 def node(id_, name, depth, costs, lane=0, prereqs=None, sources=(), icon_from=None, recipes=(),
          effects=(), summary='', breakthrough=None, exclusive=None, hidden=False, contraband=None,
-         tier=None):
+         tier=None, without=()):
     return Node(id_, name, depth, lane, prereqs, costs, list(sources), icon_from, list(recipes),
-                list(effects), summary, breakthrough, exclusive, hidden, contraband, tier)
+                list(effects), summary, breakthrough, exclusive, hidden, contraband, tier,
+                list(without))
 
 
 def grant_points(point_type, amount, text):
@@ -100,21 +101,19 @@ TREE = collections.OrderedDict()
 # блюспейс вниз-вправо, радиология вниз. Слева — слоты наладки и методологии.
 TREE['IS14Fundamental'] = Branch(
     center=node('IS14Metrology', 'Метрология и стандартизация', 0, {SCI: 15},
-                summary='Единые эталоны измерений — точка, с которой начинается любая наука станции.',
-                effects=[grant_points(SCI, 10, 'Разово начисляет 10 научных данных')]),
+                summary='Единые эталоны измерений — точка, с которой начинается любая наука станции.'),
     rays=[
         Ray('instruments', 'Приборостроение', 'N', [
             node('IS14SpectralAnalysis', 'Спектральный анализ', 1, {SCI: 25},
                  summary='Разложение излучения по спектру — основа всей приборной науки.'),
-            node('IS14LabAutomation', 'Лабораторная автоматика', 2, {SCI: 45, IND: 15},
+            node('IS14LabAutomation', 'Лабораторная автоматика', 2, {SCI: 30, IND: 10},
                  summary='Стенды, которые ведут измерение сами и не врут от усталости.'),
-            node('IS14PrecisionSensors', 'Прецизионная сенсорика', 3, {SCI: 70, IND: 30},
+            node('IS14PrecisionSensors', 'Прецизионная сенсорика', 3, {SCI: 45, IND: 20},
                  summary='Датчики, различающие то, что раньше считалось шумом.'),
-            node('IS14ExperimentalPhysics', 'Экспериментальная физика', 4, {SCI: 130, IND: 45},
+            node('IS14ExperimentalPhysics', 'Экспериментальная физика', 4, {SCI: 100, IND: 35},
                  sources=['ExperimentalScience'],
-                 summary='Установки, собранные под один единственный вопрос.',
-                 effects=[grant_points(SCI, 30, 'Разово начисляет 30 научных данных')]),
-            node('IS14StatisticalMethods', 'Статистическая обработка', 2, {SCI: 40}, lane=1,
+                 summary='Установки, собранные под один единственный вопрос.'),
+            node('IS14StatisticalMethods', 'Статистическая обработка', 2, {SCI: 25}, lane=1,
                  prereqs=['IS14SpectralAnalysis'],
                  summary='Как отличить результат от совпадения.'),
             node('IS14ScientificRecords', 'Научная документация', 3, {SCI: 50, SOC: 20}, lane=1,
@@ -157,7 +156,7 @@ TREE['IS14Fundamental'] = Branch(
                  recipes=['ArtifactCrusherMachineCircuitboard'],
                  summary='Узлы, связи и предел прочности. Даёт дробитель артефактов.'),
             node('IS14NodeCartography', 'Узловая картография', 3, {SCI: 75, IND: 25},
-                 sources=['Pinpointers'],
+                 sources=['Pinpointers'], without=['PinpointerArtifact', 'Pinpointer'],
                  summary='Карта узлов артефакта и пеленгаторы к ней: искать стало осмысленно.'),
             node('IS14AncientTechnology', 'Древние технологии', 4, {SCI: 70, IND: 35},
                  summary='Чужая инженерия в разобранном виде. Нужна целая реликвия.',
@@ -167,12 +166,13 @@ TREE['IS14Fundamental'] = Branch(
                      icon='ArtifactFragment1',
                      hint='Привозят с экспедиций и находят в руинах.',
                      point_type=SCI, payout=60)),
-            node('IS14ArtifactReconstruction', 'Реконструкция устройств', 5, {SCI: 150, IND: 70},
-                 summary='Повторить то, что собрали не люди. Иногда даже работает.',
-                 effects=[grant_points(SCI, 50, 'Разово начисляет 50 научных данных')]),
+            node('IS14ArtifactReconstruction', 'Реконструкция устройств', 5, {SCI: 100, IND: 45},
+                 recipes=['PinpointerArtifact'],
+                 summary='Повторить то, что собрали не люди. Даёт артефактный пеленгатор — '
+                         'собранный по чужой схеме и потому точнее штатного.'),
             node('IS14FieldArchaeology', 'Полевая археология', 2, {SCI: 45, IND: 15}, lane=1,
-                 prereqs=['IS14ArtifactStudies'],
-                 summary='Как достать находку, не превратив её в осколки.'),
+                 prereqs=['IS14ArtifactStudies'], recipes=['Pinpointer'],
+                 summary='Как достать находку, не превратив её в осколки. Даёт пеленгатор.'),
         ]),
         Ray('bluespace', 'Блюспейс-технологии', 'SE', [
             node('IS14SubspaceMath', 'Подпространственная математика', 1, {SCI: 50},
@@ -192,20 +192,20 @@ TREE['IS14Fundamental'] = Branch(
             node('IS14Desynchronisation', 'Десинхронизация', 4, {SCI: 140, IND: 60}, lane=-1,
                  prereqs=['IS14BluespaceNavigation'], sources=['BluespaceTimeManipulation'],
                  summary='Сдвиг объекта во времени на доли секунды. Выглядит как исчезновение.'),
-            node('IS14QuantumTransport', 'Квантовый транспорт', 4, {SCI: 180, IND: 90, MIL: 30},
+            node('IS14QuantumTransport', 'Квантовый транспорт', 4, {SCI: 150, IND: 70, MIL: 25},
                  sources=['QuantumLeaping'],
-                 summary='Перемещение материи без прохождения пути между точками.',
-                 effects=[grant_points(SCI, 40, 'Разово начисляет 40 научных данных')]),
+                 summary='Перемещение материи без прохождения пути между точками.'),
             node('IS14BluespaceComms', 'Блюспейс-связь', 3, {SCI: 85, SOC: 35}, lane=1,
-                 prereqs=['IS14BluespaceTheory'],
-                 summary='Канал, которому всё равно, где находится собеседник.'),
+                 prereqs=['IS14BluespaceTheory'], recipes=['ComputerIFFCircuitboard'],
+                 summary='Канал, которому всё равно, где находится собеседник. '
+                         'Даёт консоль опознавания: шаттл виден за пределами связи.'),
         ]),
         # Первый отдел: эти темы не существуют на карте, пока СБ не сдаст трофей.
         # Ни одна обычная тема от них не зависит — иначе дерево зависело бы от того,
         # поймали ли в этом раунде предателя.
         Ray('xenobio', 'Ксенобиология', 'S', [
             node('IS14Xenobiology', 'Ксенобиология', 1, {BIO: 30, SCI: 15},
-                 sources=['Xenobiology'],
+                 sources=['Xenobiology'], without=['ClothingBackpackXenoBioTank'],
                  summary='Чужая биология: слаймы, выводки, поведение.'),
             node('IS14XenoCompatibility', 'Ксеносовместимость', 2, {BIO: 70, SCI: 30},
                  sources=['XenoCompatibility'],
@@ -227,9 +227,11 @@ TREE['IS14Fundamental'] = Branch(
                      icon='FoodMeatSlime',
                      hint='Остаётся от слайма. Ксенобиолог поделится, если попросить.',
                      point_type=BIO, payout=50)),
-            node('IS14ExoticFauna', 'Экзотическая фауна', 3, {BIO: 95, MIL: 30}, lane=1,
+            node('IS14ExoticFauna', 'Экзотическая фауна', 3, {BIO: 70, MIL: 25}, lane=1,
                  prereqs=['IS14Xenobiology'],
-                 summary='Лаваландская живность: чем опасна и что из неё можно сделать.'),
+                 recipes=['ClothingBackpackXenoBioTank'],
+                 summary='Лаваландская живность: чем опасна и что из неё можно сделать. '
+                         'Даёт рюкзак-переноску для образцов.'),
         ]),
         Ray('robotics', 'Робототехника', 'SW', [
             node('IS14Servomechanics', 'Сервомеханика', 1, {IND: 30},
@@ -265,12 +267,11 @@ TREE['IS14Fundamental'] = Branch(
                  summary='Один корпус, десять профессий — вопрос модуля.'),
         ]),
         Ray('firstdepartment', 'Первый отдел', 'W', [
-            node('IS14SecretEnergetics', 'Трофейная энергетика', 1, {MIL: 120, SCI: 60},
+            node('IS14SecretEnergetics', 'Трофейная энергетика', 1, {MIL: 100, SCI: 50},
                  prereqs=['IS14Metrology'], hidden=True, tier=3,
                  summary='Разбор чужого энергетического клинка: как они держат плазму в руке.',
                  effects=[modifier('ResearchPayoutMilitary', 0.2,
-                                   'Военные измерения приносят на 20% больше'),
-                          grant_points(MIL, 40, 'Разово начисляет 40 военных данных')],
+                                   'Военные измерения приносят на 20% больше')],
                  contraband=Breakthrough(
                      name='энергетический клинок',
                      samples=['EnergySword'],
@@ -337,18 +338,23 @@ TREE['IS14Materials'] = Branch(
                 summary='Сплавы, режимы плавки и контроль качества — начало любого производства.'),
     rays=[
         Ray('alloys', 'Материаловедение', 'N', [
-            node('IS14MetalScience', 'Металловедение', 1, {IND: 25},
+            node('IS14MetalScience', 'Металловедение', 1, {IND: 15},
                  summary='Структура металла под микроскопом: почему сплав держит и когда он лопнет.'),
             node('IS14Composites', 'Композитные материалы', 2, {IND: 55, SCI: 20},
                  sources=['MechanicalCompression'],
                  summary='Слоистые и армированные материалы под нагрузку.'),
             node('IS14HighStrengthAlloys', 'Высокопрочные сплавы', 3, {IND: 100, SCI: 40},
                  summary='Сплавы, которые держат то, что не держит сталь.'),
-            node('IS14Metamaterials', 'Метаматериалы', 4, {IND: 150, SCI: 80},
-                 summary='Материал со свойствами, которых нет ни у одного его компонента.'),
-            node('IS14SurfaceTreatment', 'Поверхностная обработка', 2, {IND: 45}, lane=1,
+            node('IS14Metamaterials', 'Метаматериалы', 4, {IND: 110, SCI: 55},
+                 recipes=['WelderExperimental', 'FauxTileAstroIce', 'FauxTileAstroSnow'],
+                 summary='Материал со свойствами, которых нет ни у одного его компонента: '
+                         'опытный сварочник и синтетические покрытия, не тающие под ногами.'),
+            node('IS14SurfaceTreatment', 'Поверхностная обработка', 2, {IND: 35}, lane=1,
                  prereqs=['IS14MetalScience'],
-                 summary='Закалка, напыление и покрытия: деталь живёт дольше смены.'),
+                 recipes=['FauxTileAstroAsteroidSand', 'FauxTileDesertAstroSand',
+                          'FauxTileAstroIronsand', 'FauxTileAstroIronsandBorderless'],
+                 summary='Закалка, напыление и покрытия: деталь живёт дольше смены, '
+                         'а пол оранжереи выглядит как грунт.'),
         ]),
         Ray('mining', 'Горное дело', 'NE', [
             node('IS14Geology', 'Геология и разведка', 1, {IND: 20, SCI: 10},
@@ -360,11 +366,13 @@ TREE['IS14Materials'] = Branch(
             node('IS14DeepExcavation', 'Глубокая выемка', 3, {IND: 95, SCI: 30},
                  sources=['MassExcavation'],
                  recipes=['MiningDrillDiamond', 'MechEquipmentDrillDiamond',
-                          'AdvancedMineralScannerEmpty', 'OreBagOfHolding'],
-                 summary='Алмазный бур, глубинный сканер и сумка, в которую влезает жила.'),
+                          'AdvancedMineralScannerEmpty'],
+                 summary='Алмазный бур и глубинный сканер: порода больше не выбирает за шахтёра.'),
             node('IS14MiningLogistics', 'Шахтная логистика', 3, {IND: 80, SOC: 25}, lane=1,
                  prereqs=['IS14OreProcessing'],
-                 summary='Поток руды без пробок на складе.'),
+                 recipes=['OreBagOfHolding', 'StorageBinCircuitboard'],
+                 summary='Поток руды без пробок на складе: блюспейс-сумка под жилу '
+                         'и складской бункер под остальное.'),
         ]),
         Ray('shop', 'Цех и автоматизация', 'E', [
             node('IS14PrecisionMachining', 'Точная механообработка', 1, {IND: 25},
@@ -372,15 +380,22 @@ TREE['IS14Materials'] = Branch(
                  summary='Допуски, оснастка и метрология цеха.'),
             node('IS14IndustrialAutomation', 'Промышленная автоматизация', 2, {IND: 60, SCI: 25},
                  sources=['IndustrialEngineering'],
+                 without=['RoboticArmCircuitboard', 'ConstructorCircuitboard',
+                          'InteractorCircuitboard', 'StorageBinCircuitboard',
+                          'LatheUpgradeKitCryo'],
                  summary='Линии без человека: меньше брака и ручных операций.'),
             node('IS14AdditiveFabrication', 'Аддитивное производство', 3, {IND: 130, SCI: 45},
                  sources=['OptimizedMicrogalvanism'],
                  summary='Послойный синтез изделий вместо обработки заготовки.'),
-            node('IS14FlexibleLines', 'Гибкие производственные линии', 4, {IND: 170, SCI: 70},
-                 summary='Цех, который переналаживается под заказ, а не под план.'),
+            node('IS14FlexibleLines', 'Гибкие производственные линии', 4, {IND: 130, SCI: 55},
+                 recipes=['RoboticArmCircuitboard', 'ConstructorCircuitboard',
+                          'InteractorCircuitboard'],
+                 summary='Цех, который переналаживается под заказ, а не под план: '
+                         'манипулятор, конструктор и интерактор на линию.'),
             node('IS14QualityControl', 'Технический контроль', 2, {IND: 45, SOC: 15}, lane=1,
-                 prereqs=['IS14PrecisionMachining'],
-                 summary='Военпред в цеху: брак не уходит на станцию.'),
+                 prereqs=['IS14PrecisionMachining'], recipes=['LatheUpgradeKitCryo'],
+                 summary='Военпред в цеху: брак не уходит на станцию. '
+                         'Даёт криогенный набор модернизации станка.'),
         ]),
         Ray('logistics', 'Трубы и склад', 'SE', [
             node('IS14Hydraulics', 'Гидравлика и трубопроводы', 1, {IND: 25},
@@ -396,12 +411,15 @@ TREE['IS14Materials'] = Branch(
         ]),
         Ray('tools', 'Инструмент и оснастка', 'S', [
             node('IS14PowerTools', 'Силовой инструмент', 1, {IND: 30},
-                 recipes=['PowerDrill', 'JawsOfLife', 'WelderExperimental'],
-                 summary='Гидравлические ножницы, перфоратор и опытный сварочник.'),
+                 recipes=['PowerDrill', 'JawsOfLife'],
+                 summary='Гидравлические ножницы и перфоратор.'),
             node('IS14CuttingWelding', 'Сварка и резка', 2, {IND: 50, SCI: 15},
                  summary='Соединить и разделить металл быстрее, чем руками.'),
             node('IS14StructuralEngineering', 'Строительные конструкции', 3, {IND: 90, SCI: 25},
                  sources=['FauxAstroTiles'],
+                 without=['FauxTileAstroIce', 'FauxTileAstroSnow', 'FauxTileAstroAsteroidSand',
+                          'FauxTileDesertAstroSand', 'FauxTileAstroIronsand',
+                          'FauxTileAstroIronsandBorderless'],
                  summary='Плиты, каркасы и отделка: станция растёт по проекту.'),
         ]),
         Ray('shoptuning', 'Наладка промышленного цеха', 'NW', [
@@ -422,20 +440,24 @@ TREE['IS14Materials'] = Branch(
 
 # ─── Энергетика и атмосферные процессы ─────────────────────────────────────
 TREE['IS14Energetics'] = Branch(
-    center=node('IS14Thermodynamics', 'Техническая термодинамика', 0, {IND: 20},
+    center=node('IS14Thermodynamics', 'Техническая термодинамика', 0, {IND: 15},
                 summary='Расчёт тепловых процессов: основа и энергетики, и атмосферной техники.'),
     rays=[
         Ray('power', 'Электроэнергетика', 'N', [
             node('IS14PowerEngineering', 'Генерация энергии', 1, {IND: 25},
                  sources=['PowerGeneration'],
-                 summary='Генераторы, солнечные панели и эмиттеры.'),
+                 without=['SolarControlComputerCircuitboard', 'SolarTrackerElectronics',
+                          'EmitterCircuitboard'],
+                 summary='Генераторы: пакман и его старшие братья.'),
             node('IS14EnergyStorage', 'Накопление энергии', 2, {IND: 50, SCI: 15},
-                 sources=['AdvancedPowercells'],
+                 sources=['AdvancedPowercells'], without=['TurboItemRechargerCircuitboard'],
                  summary='Ёмкие ячейки: энергия есть и после того, как генератор встал.'),
             node('IS14GridEngineering', 'Электрические сети', 3, {IND: 85, SCI: 30},
-                 summary='Распределение и защита: одна авария не гасит станцию целиком.'),
+                 recipes=['SolarControlComputerCircuitboard', 'SolarTrackerElectronics'],
+                 summary='Распределение и защита: одна авария не гасит станцию целиком. '
+                         'Даёт автоматику солнечных массивов.'),
             node('IS14FusionPower', 'Термоядерная энергетика', 4, {IND: 140, SCI: 60},
-                 sources=['AdvancedPowerGeneration'],
+                 sources=['AdvancedPowerGeneration'], without=['RadiationCollectorCircuitboard'],
                  summary='Энергия синтеза: дорого, опасно, окупается.'),
         ]),
         Ray('supermatter', 'Физика суперматерии', 'NE', [
@@ -450,27 +472,34 @@ TREE['IS14Energetics'] = Branch(
                      hint='Откалывают от станционного кристалла. Радиоактивен — не носить в кармане.',
                      point_type=SCI, payout=70)),
             node('IS14SupermatterEngineering', 'Суперматериальная энергетика', 3,
-                 {IND: 150, SCI: 90, MIL: 30},
-                 summary='Энергия на пределе того, что станция способна удержать.'),
+                 {IND: 110, SCI: 60, MIL: 20},
+                 recipes=['EmitterCircuitboard'],
+                 summary='Энергия на пределе того, что станция способна удержать. '
+                         'Даёт плату эмиттера — без неё кристалл не поджечь.'),
         ]),
         Ray('atmos', 'Атмосферные процессы', 'E', [
             node('IS14AtmosphericTech', 'Атмосферная техника', 1, {IND: 25},
-                 sources=['AtmosphericTech'],
-                 summary='Теплообменники, рециркуляция и контроль состава.'),
+                 sources=['AtmosphericTech'], without=['GasRecyclerMachineCircuitboard'],
+                 summary='Теплообменники и контроль состава.'),
             node('IS14AdvancedAtmospherics', 'Продвинутый атмос', 2, {IND: 60, SCI: 25},
-                 sources=['AdvancedAtmospherics'],
-                 summary='Морозильники на пределе, скрубберы и голофаны.'),
+                 sources=['AdvancedAtmospherics'], without=['HellfireFreezerMachineCircuitBoard'],
+                 summary='Скрубберы, голофаны и морозильник потяжелее.'),
             node('IS14GasMixtures', 'Газовые смеси', 3, {IND: 90, MIL: 30},
-                 summary='Смеси под задачу: от дыхательной до той, которой рвут полигон.'),
-            node('IS14TritiumProduction', 'Производство трития', 4, {IND: 130, SCI: 60, MIL: 40},
-                 summary='Премиальное топливо орднанса и термояда, выращенное в атмосе.'),
+                 recipes=['GasRecyclerMachineCircuitboard'],
+                 summary='Смеси под задачу: от дыхательной до той, которой рвут полигон. '
+                         'Даёт газовый рециклер — смесь можно разобрать обратно.'),
+            node('IS14TritiumProduction', 'Производство трития', 4, {IND: 100, SCI: 45, MIL: 30},
+                 recipes=['HellfireFreezerMachineCircuitBoard'],
+                 summary='Премиальное топливо орднанса и термояда, выращенное в атмосе. '
+                         'Даёт морозильник «Хеллфайр» для горячего контура.'),
         ]),
         Ray('cryo', 'Криогеника', 'SE', [
             node('IS14Cryogenics', 'Криогеника', 1, {IND: 30, BIO: 15},
-                 sources=['BiochemicalStasis'],
+                 sources=['BiochemicalStasis'], without=['RadiationBodyBag'],
                  summary='Глубокий холод: стазис, консервация, криокапсулы.'),
             node('IS14Superconductivity', 'Сверхпроводимость', 2, {IND: 65, SCI: 30},
-                 summary='Ток без потерь, пока хватает холода.'),
+                 recipes=['TurboItemRechargerCircuitboard'],
+                 summary='Ток без потерь, пока хватает холода. Даёт плату турбозарядника.'),
         ]),
         Ray('plasma', 'Физика плазмы', 'S', [
             node('IS14PlasmaPhysics', 'Физика плазмы', 1, {IND: 35, SCI: 20},
@@ -479,23 +508,28 @@ TREE['IS14Energetics'] = Branch(
                  prereqs=['IS14PlasmaPhysics', 'IS14FieldTheory'],
                  summary='Поле вместо стенки. Требует теории поля.'),
             node('IS14GravityControl', 'Гравитационные системы', 3, {SCI: 100, IND: 80},
-                 sources=['GravityManipulation'],
-                 summary='Управляемое искривление поля тяжести.'),
+                 sources=['GravityManipulation'], recipes=['MiniGravityGeneratorCircuitboard'],
+                 summary='Управляемое искривление поля тяжести. Даёт малый гравигенератор.'),
         ]),
         Ray('thrusters', 'Движители', 'SW', [
             node('IS14Propulsion', 'Реактивные движители', 1, {IND: 35, SCI: 15},
                  sources=['Shuttlecraft'],
-                 summary='Двигатели, гироскопы и консоли: шаттл слушается руля.'),
+                 without=['GyroscopeMachineCircuitboard', 'MiniGravityGeneratorCircuitboard',
+                          'ComputerIFFCircuitboard'],
+                 summary='Двигатели и консоли: шаттл слушается руля.'),
             node('IS14InertialSystems', 'Инерционные системы', 2, {IND: 70, SCI: 30},
-                 summary='Стабилизация корпуса и компенсация перегрузок.'),
+                 recipes=['GyroscopeMachineCircuitboard'],
+                 summary='Стабилизация корпуса и компенсация перегрузок. Даёт гироскоп.'),
         ]),
         Ray('radiology', 'Радиология', 'W', [
-            node('IS14Dosimetry', 'Дозиметрия', 1, {SCI: 25, BIO: 10},
+            node('IS14Dosimetry', 'Дозиметрия', 1, {SCI: 15, BIO: 10},
                  summary='Считать излучение раньше, чем его посчитает врач.'),
             node('IS14RadiationShielding', 'Радиационная защита', 2, {SCI: 50, IND: 25},
-                 summary='Экранирование, регламент и то, что остаётся от нарушителя регламента.'),
+                 recipes=['RadiationBodyBag'],
+                 summary='Экранирование, регламент и мешок для того, кто регламент нарушил.'),
             node('IS14IsotopeSources', 'Изотопные источники', 3, {SCI: 80, IND: 40},
-                 summary='Излучение как источник энергии и как инструмент измерения.'),
+                 recipes=['RadiationCollectorCircuitboard'],
+                 summary='Излучение как источник энергии: даёт плату радиационного коллектора.'),
         ]),
     ],
 )
@@ -510,10 +544,10 @@ TREE['IS14Medicine'] = Branch(
     rays=[
         Ray('pharma', 'Фармакология', 'N', [
             node('IS14Pharmacology', 'Фармакология', 1, {BIO: 25},
-                 sources=['MedipenFilling'],
+                 sources=['MedipenFilling'], without=['MachineMedipenRefillerCircuitboard'],
                  summary='Синтез и дозирование лекарственных средств.'),
             node('IS14AdvancedTreatment', 'Продвинутая терапия', 2, {BIO: 55, SCI: 20},
-                 sources=['AdvancedTreatment'],
+                 sources=['AdvancedTreatment'], without=['AdvancedBoneGel'],
                  summary='Препараты и приборы, вытаскивающие с того света.'),
             node('IS14CombatPharmacology', 'Боевая фармакология', 3, {BIO: 100, MIL: 50},
                  summary='Стимуляторы под нагрузкой. Абонемент выдаётся вместе с печенью.'),
@@ -530,7 +564,8 @@ TREE['IS14Medicine'] = Branch(
                  sources=['RescueTechnology'],
                  summary='Болезнь как процесс на станции, а не в одном пациенте.'),
             node('IS14VaccineProduction', 'Производство вакцин', 3, {BIO: 110, IND: 40},
-                 summary='От штамма до ампулы на весь экипаж.'),
+                 recipes=['MachineMedipenRefillerCircuitboard'],
+                 summary='От штамма до ампулы на весь экипаж: даёт линию заправки медипенов.'),
         ]),
         Ray('surgery', 'Хирургия', 'E', [
             node('IS14SurgicalTechnology', 'Хирургические технологии', 1, {BIO: 30, IND: 10},
@@ -543,19 +578,20 @@ TREE['IS14Medicine'] = Branch(
                  sources=['HighEndSurgery'],
                  recipes=['MedicalScannerMachineCircuitboardRecipe'],
                  summary='Операции, которые раньше считались вскрытием.'),
-            node('IS14TissueEngineering', 'Тканевая инженерия', 4, {BIO: 160, IND: 80, SCI: 50},
-                 summary='Выращивание органов и тканей под пациента.'),
+            node('IS14TissueEngineering', 'Тканевая инженерия', 4, {BIO: 110, IND: 50, SCI: 30},
+                 recipes=['AdvancedBoneGel'],
+                 summary='Выращивание органов и тканей под пациента. '
+                         'Даёт улучшенный костный гель — та же технология в тюбике.'),
         ]),
         Ray('genetics', 'Генетика', 'SE', [
             node('IS14Genetics', 'Генетика', 1, {BIO: 35, SCI: 15},
-                 summary='Чтение генома и первые осмысленные правки.'),
+                 recipes=['MedicalScannerMachineCircuitboard'],
+                 summary='Чтение генома и первые осмысленные правки. Даёт плату медсканера.'),
             node('IS14Cloning', 'Клонирование', 2, {BIO: 80, IND: 35},
-                 sources=['Cloning'],
+                 sources=['Cloning'], without=['MedicalScannerMachineCircuitboard'],
                  recipes=['CloningPodMachineCircuitboardRecipe',
                           'CloningConsoleComputerCircuitboardRecipe'],
                  summary='Воссоздание организма по записи. Этику обсудим потом.'),
-            node('IS14Mutagenesis', 'Мутагенез', 3, {BIO: 120, SCI: 50},
-                 summary='Направленная мутация: иногда получается именно то, что хотели.'),
         ]),
         Ray('medtuning', 'Наладка медицинского цеха', 'NW', [
             node('IS14MedShopSpeed', 'Медцех: поток', 1, {BIO: 35},
@@ -600,9 +636,14 @@ TREE['IS14Cybernetics'] = Branch(
         Ray('computing', 'Вычислительная техника', 'E', [
             node('IS14ComputingSystems', 'Вычислительная техника', 1, {SCI: 30, SOC: 10},
                  sources=['AudioVisualCommunication'],
-                 summary='Машинная обработка данных, камеры, серверы и голопады.'),
+                 without=['TelecomServerCircuitboard', 'SurveillanceCameraRouterCircuitboard',
+                          'SurveillanceCameraWirelessRouterCircuitboard'],
+                 summary='Машинная обработка данных: камеры, мониторы и голопады.'),
             node('IS14NetworkSystems', 'Сети и серверы', 2, {SCI: 55, IND: 25},
-                 summary='Станция, в которой машины разговаривают друг с другом.'),
+                 recipes=['TelecomServerCircuitboard', 'SurveillanceCameraRouterCircuitboard',
+                          'SurveillanceCameraWirelessRouterCircuitboard'],
+                 summary='Станция, в которой машины разговаривают друг с другом: '
+                         'телеком-сервер и роутеры камер.'),
             node('IS14PositronicTheory', 'Теория позитронного мозга', 3, {SCI: 90, IND: 40},
                  summary='Как устроено мышление машины. Нужен готовый позитронный мозг.',
                  breakthrough=Breakthrough(
@@ -675,14 +716,16 @@ TREE['IS14Armament'] = Branch(
         ]),
         Ray('ordnance', 'Детоника', 'E', [
             node('IS14Detonics', 'Детонационные процессы', 1, {MIL: 30, IND: 15},
-                 sources=['ExplosiveTechnology'],
+                 sources=['ExplosiveTechnology'], without=['SignallerAdvanced'],
                  recipes=['IS14OrdnanceTimer'],
                  summary='Управляемый взрыв. Даёт детонационный таймер и доплеровский массив.',
                  effects=[grant_entity('IS14DopplerArray', 'Выдаёт доплеровский массив')]),
             node('IS14BlastMetrology', 'Полигонные измерения', 2, {MIL: 60, SCI: 25},
-                 summary='Метрология взрыва: рекорд считается только если он измерен.'),
+                 recipes=['SignallerAdvanced', 'GrenadeBlast'],
+                 summary='Метрология взрыва: рекорд считается только если он измерен. '
+                         'Даёт дальний сигнальщик и фугасную гранату для пристрелки.'),
             node('IS14ShuttleArmament', 'Корабельное вооружение', 3, {MIL: 110, IND: 60},
-                 sources=['BasicShuttleArmament'],
+                 sources=['BasicShuttleArmament'], without=['GrenadeBlast'],
                  summary='Орудийные комплексы для шаттлов.'),
             node('IS14AdvancedShuttleArmament', 'Тяжёлое корабельное вооружение', 4,
                  {MIL: 150, IND: 80},
@@ -739,13 +782,18 @@ TREE['IS14Society'] = Branch(
                  summary='Музыка и эфир по всей станции. Вкус диджея не исследуется.'),
             node('IS14Linguistics', 'Прикладная лингвистика', 2, {SOC: 50, SCI: 20},
                  sources=['BasicTranslation'],
+                 without=['ChittinTranslator', 'SchechiTranslator', 'GruntishTranslator',
+                          'YowKriolTranslator'],
                  summary='Машинный перевод и работа с чужими языками.'),
             node('IS14AdvancedTranslation', 'Синхронный перевод', 3, {SOC: 95, SCI: 40},
                  sources=['AdvancedTranslation'],
                  summary='Понимать всех на станции, включая тех, кого понимать не хочется.'),
             node('IS14Cryptography', 'Служебная криптография', 3, {SOC: 80, MIL: 35}, lane=1,
                  prereqs=['IS14Linguistics'],
-                 summary='Канал, который читает только тот, кому положено.'),
+                 recipes=['ChittinTranslator', 'SchechiTranslator', 'GruntishTranslator',
+                          'YowKriolTranslator'],
+                 summary='Канал, который читает только тот, кому положено — '
+                         'и переводчики редких языков, до которых лингвистика не добралась.'),
         ]),
         Ray('press', 'Пресса и досуг', 'NE', [
             node('IS14Press', 'Печать и пресса', 1, {SOC: 25},
@@ -753,9 +801,8 @@ TREE['IS14Society'] = Branch(
                  summary='Редакционный сервер и наборный карандаш: газету надо на чём-то делать.'),
             node('IS14Entertainment', 'Индустрия развлечений', 2, {SOC: 60, IND: 25},
                  sources=['AdvancedEntertainment', 'PushHorn'],
-                 recipes=['JukeboxCircuitBoard', 'DawInstrumentMachineCircuitboard',
-                          'SynthesizerInstrument'],
-                 summary='Досуг экипажа как отрасль: музыкальный автомат, студия и синтезатор.'),
+                 recipes=['DawInstrumentMachineCircuitboard', 'SynthesizerInstrument'],
+                 summary='Досуг экипажа как отрасль: студия и синтезатор.'),
             node('IS14ClownTechnology', 'Клоунская техника', 3, {SOC: 90, IND: 40},
                  sources=['HONKMech'],
                  summary='Да, это тоже наука. Ответственность за последствия — на заказчике.'),
@@ -765,7 +812,7 @@ TREE['IS14Society'] = Branch(
         ]),
         Ray('living', 'Быт и сервис', 'E', [
             node('IS14Ergonomics', 'Эргономика', 1, {SOC: 25, IND: 15},
-                 sources=['AccessibilityTech'],
+                 sources=['AccessibilityTech'], without=['TinfoilHats'],
                  summary='Рабочая среда: от поручней до доступной консоли.'),
             node('IS14WorkwearRigs', 'Рабочая оснастка', 2, {SOC: 45, IND: 25}, lane=-1,
                  prereqs=['IS14Ergonomics'], sources=['WokrBelts'],
@@ -782,21 +829,28 @@ TREE['IS14Society'] = Branch(
         ]),
         Ray('food', 'Пищевые технологии', 'SE', [
             node('IS14FoodTechnology', 'Пищевые технологии', 1, {SOC: 25, BIO: 10},
-                 sources=['MeatManipulation'],
+                 sources=['MeatManipulation'], without=['BiomassReclaimerMachineCircuitboard'],
                  summary='Промышленная переработка: биомасса, жир, фабрикаторы.'),
             node('IS14Agronomy', 'Агрономия', 2, {SOC: 50, BIO: 25},
-                 sources=['Hydroponics'],
+                 sources=['Hydroponics'], without=['ReagentGrinderIndustrialMachineCircuitboard'],
                  summary='Гидропоника и семена: ботаника выходит на поток.'),
             node('IS14FoodIndustry', 'Пищевая промышленность', 3, {SOC: 90, IND: 35},
-                 summary='Кухня масштаба станции. Шеф всё ещё главный.'),
+                 recipes=['BiomassReclaimerMachineCircuitboard',
+                          'ReagentGrinderIndustrialMachineCircuitboard'],
+                 summary='Кухня масштаба станции: переработчик биомассы и промышленная мельница. '
+                         'Шеф всё ещё главный.'),
         ]),
         Ray('psych', 'Психология', 'S', [
-            node('IS14Psychometrics', 'Психологическая экспертиза', 1, {SOC: 30, BIO: 10},
+            node('IS14Psychometrics', 'Психологическая экспертиза', 1, {SOC: 20, BIO: 10},
                  summary='Интервью и стресс-данные: экипаж как объект наблюдения.'),
             node('IS14SocialPsychology', 'Социальная психология', 2, {SOC: 65, BIO: 25},
-                 summary='Поведение коллектива под нагрузкой — и как его выправлять.'),
-            node('IS14CollectiveDynamics', 'Коллективная динамика', 3, {SOC: 110, SCI: 45},
-                 summary='Почему смена развалилась — в цифрах, а не в рапорте.'),
+                 recipes=['TinfoilHats'],
+                 summary='Поведение коллектива под нагрузкой. Побочный результат программы — '
+                         'шапочка из фольги, и отдел утверждает, что она работает.'),
+            node('IS14CollectiveDynamics', 'Коллективная динамика', 3, {SOC: 80, SCI: 30},
+                 recipes=['JukeboxCircuitBoard'],
+                 summary='Почему смена развалилась — в цифрах, а не в рапорте. '
+                         'Вывод первый: экипажу нужен музыкальный автомат.'),
         ]),
     ],
 )
@@ -1080,6 +1134,26 @@ def validate(upstream, recipes, entities, modifiers):
 
         problems.extend(check_effects(where, entry.effects, entities, modifiers))
 
+        # A topic may not pay back the data it was bought with: that is a discount wearing the
+        # costume of a reward. A grant has to beat its own price in that currency.
+        for kind, fields, _ in entry.effects:
+            if kind != 'IS14GrantPointsEffect':
+                continue
+
+            price = entry.costs.get(fields['pointType'], 0)
+
+            if fields['amount'] <= price:
+                problems.append('%s is bought for %d %s and pays back %d of it'
+                                % (where, price, fields['pointType'], fields['amount']))
+
+        # Percent buffs are a choice or a secret, never a reward for walking the tree: they
+        # live on the two halves of a fork, on the classified topics and in the random slots.
+        for kind, _, _ in entry.effects:
+            if (kind == 'IS14ModifierEffect'
+                    and entry.exclusive is None
+                    and not entry.hidden):
+                problems.append('%s buffs research without being a fork or classified' % where)
+
     for group in UPGRADE_GROUPS:
         if group.branch not in TREE:
             problems.append('slot %s sits in unknown branch %s' % (group.id, group.branch))
@@ -1095,12 +1169,98 @@ def validate(upstream, recipes, entities, modifiers):
             problems.extend(check_effects('%s/%s' % (group.id, variant.id), variant.effects,
                                           entities, modifiers))
 
+            # Same rule as in the tree: a variant may not refund its own price.
+            for kind, fields, _ in variant.effects:
+                if kind != 'IS14GrantPointsEffect':
+                    continue
+
+                price = variant.costs.get(fields['pointType'], 0)
+
+                if fields['amount'] <= price:
+                    problems.append('%s/%s is bought for %d %s and pays back %d of it'
+                                    % (group.id, variant.id, price, fields['pointType'],
+                                       fields['amount']))
+
     for group, count in exclusive.items():
         if count < 2:
             problems.append('exclusive group %s has a single member' % group)
 
+    problems.extend(check_recipes(upstream))
+    problems.extend(check_dead_ends(upstream))
+
     if problems:
         raise SystemExit('generation refused:\n  ' + '\n  '.join(problems))
+
+
+def check_dead_ends(upstream):
+    """
+    Nothing in the tree may cost data and give nothing back. A topic earns its price by
+    unlocking a recipe, carrying an effect, paying out a breakthrough sample — or by being the
+    prerequisite of something that does.
+    """
+    problems = []
+    needed = collections.Counter()
+
+    for branch, ray, index, entry in iter_nodes():
+        for prereq in prereqs_of(branch, ray, index, entry):
+            needed[prereq] += 1
+
+    for group in UPGRADE_GROUPS:
+        for prereq in group.prereqs:
+            needed[prereq] += 1
+
+    for branch, _, _, entry in iter_nodes():
+        unlocks = {recipe
+                   for source in entry.sources if source in upstream
+                   for recipe in upstream[source][1]} - set(entry.without) | set(entry.recipes)
+
+        if (not unlocks
+                and not entry.effects
+                and entry.breakthrough is None
+                and not needed[entry.id]):
+            problems.append('%s/%s costs data and gives nothing' % (branch, entry.id))
+
+    return problems
+
+
+def check_recipes(upstream):
+    """
+    Recipes are a finite pool: every one of them must be unlocked by exactly one topic. A
+    `without` on a topic hands one of its inherited recipes to a neighbour, which is how one
+    upstream technology is split across several of ours — and the easiest way to lose a recipe
+    or hand it to nobody, so both halves of every handover are checked here.
+    """
+    problems = []
+    unlocked = collections.Counter()
+    claimed = set()
+    handed = set()
+
+    for branch, _, _, entry in iter_nodes():
+        inherited = {recipe
+                     for source in entry.sources if source in upstream
+                     for recipe in upstream[source][1]}
+
+        for recipe in entry.without:
+            if recipe not in inherited:
+                problems.append('%s/%s hands over %s, which it never inherited'
+                                % (branch, entry.id, recipe))
+
+            handed.add(recipe)
+
+        for recipe in entry.recipes:
+            claimed.add(recipe)
+
+        for recipe in inherited - set(entry.without) | set(entry.recipes):
+            unlocked[recipe] += 1
+
+    for recipe in sorted(handed - claimed):
+        problems.append('recipe %s was handed over and nobody picked it up' % recipe)
+
+    for recipe, count in sorted(unlocked.items()):
+        if count > 1:
+            problems.append('recipe %s is unlocked by %d topics' % (recipe, count))
+
+    return problems
 
 
 def check_effects(where, effects, entities, modifiers):
@@ -1237,8 +1397,6 @@ def locale_lines(node_id, name, summary, effects, breakthrough=None, contraband=
 
 
 def main():
-    apply_theory_effects()
-
     upstream = parse_upstream()
     recipes = parse_ids('Resources/Prototypes/**/*.yml', 'latheRecipe')
     entities = parse_ids('Resources/Prototypes/**/*.yml', 'entity')
@@ -1327,7 +1485,8 @@ def main():
                     continue
 
                 for recipe in source_recipes:
-                    if recipe not in unlocks:
+                    # Handed over to another topic: see `without`.
+                    if recipe not in unlocks and recipe not in entry.without:
                         unlocks.append(recipe)
 
             for recipe in entry.recipes:
@@ -1417,81 +1576,20 @@ def write(path, text):
 
 
 
-# ─── Что дают «теоретические» темы ─────────────────────────────────────────
-# Крупные сделки с минусами живут в случайных слотах и развилках. Здесь — маленькие,
-# безусловные прибавки на темах, которые иначе были бы просто перемычками: приборный луч
-# повышает отдачу приборов, цеховой — качество печати своего цеха. Отдельной таблицей, потому
-# что это балансный слой: его правят целиком, а не выискивая строки по дереву.
-THEORY_EFFECTS = {
-    'IS14LabAutomation': [
-        modifier('ResearchPayoutScience', 0.1, 'Научные измерения приносят на 10% больше')],
-    'IS14PrecisionSensors': [
-        modifier('ResearchPayout', 0.05, 'Все измерения приносят на 5% больше данных')],
-    'IS14StatisticalMethods': [
-        modifier('ExperimentNoveltyRetention', 0.1, 'Повторные измерения приносят больше')],
-    'IS14Dosimetry': [
-        modifier('ResearchPayoutBiological', 0.05, 'Биологические измерения приносят на 5% больше')],
-    'IS14SurfaceTreatment': [
-        modifier('LatheMaterialIndustrial', -0.05, 'Промышленные латы расходуют на 5% меньше материалов')],
-    'IS14Metamaterials': [
-        modifier('LatheMaterialEfficiency', -0.1, 'Латы расходуют на 10% меньше материалов')],
-    'IS14FlexibleLines': [
-        modifier('LatheSpeed', -0.1, 'Латы печатают на 10% быстрее')],
-    'IS14MiningLogistics': [
-        modifier('ResearchPayoutIndustrial', 0.1, 'Промышленные измерения приносят на 10% больше')],
-    'IS14GridEngineering': [
-        modifier('LatheSpeed', -0.05, 'Латы печатают на 5% быстрее')],
-    'IS14GasMixtures': [
-        modifier('ResearchPayoutMilitary', 0.1, 'Военные измерения приносят на 10% больше')],
-    'IS14TritiumProduction': [
-        modifier('ResearchPayoutMilitary', 0.2, 'Военные измерения приносят на 20% больше')],
-    'IS14SupermatterEngineering': [
-        grant_points(IND, 60, 'Разово начисляет 60 промышленных данных')],
-    'IS14Genetics': [
-        modifier('ResearchPayoutBiological', 0.1, 'Биологические измерения приносят на 10% больше')],
-    'IS14Mutagenesis': [
-        modifier('ResearchPayoutBiological', 0.15, 'Биологические измерения приносят на 15% больше')],
-    'IS14ExoticFauna': [
-        modifier('ResearchPayoutBiological', 0.15, 'Биологические измерения приносят на 15% больше')],
-    'IS14TissueEngineering': [
-        grant_points(BIO, 50, 'Разово начисляет 50 биологических данных')],
-    'IS14NetworkSystems': [
-        modifier('ResearchPayout', 0.05, 'Все измерения приносят на 5% больше данных')],
-    'IS14BlastMetrology': [
-        modifier('ResearchPayoutMilitary', 0.15, 'Военные измерения приносят на 15% больше')],
-    'IS14Psychometrics': [
-        modifier('ResearchPayoutSocial', 0.1, 'Анкетирование приносит на 10% больше')],
-    'IS14CollectiveDynamics': [
-        modifier('ResearchPayoutSocial', 0.2, 'Анкетирование приносит на 20% больше')],
-    # Центры веток — входной билет, и он что-то даёт: иначе первая покупка смены выглядит
-    # как налог. По образцу метрологии, патанатомии и социометрии.
-    'IS14Metallurgy': [
-        grant_points(IND, 10, 'Разово начисляет 10 промышленных данных')],
-    'IS14Thermodynamics': [
-        grant_points(IND, 10, 'Разово начисляет 10 промышленных данных')],
-    'IS14MetalScience': [
-        grant_points(IND, 15, 'Разово начисляет 15 промышленных данных')],
-}
-
-
-def apply_theory_effects():
-    """Folds the balance table into the tree before anything reads it."""
-    for branch, data in TREE.items():
-        if data.center.id in THEORY_EFFECTS:
-            TREE[branch] = data._replace(
-                center=data.center._replace(
-                    effects=data.center.effects + THEORY_EFFECTS[data.center.id]))
-
-        for ray in data.rays:
-            for index, entry in enumerate(ray.nodes):
-                if entry.id in THEORY_EFFECTS:
-                    ray.nodes[index] = entry._replace(
-                        effects=entry.effects + THEORY_EFFECTS[entry.id])
-
-    unknown = set(THEORY_EFFECTS) - {entry.id for _, _, _, entry in iter_nodes()}
-
-    if unknown:
-        raise SystemExit('theory effects for unknown topics: %s' % ', '.join(sorted(unknown)))
+# ─── Чего в дереве нет ─────────────────────────────────────────────────────
+# Раньше здесь лежала таблица «теоретических» прибавок: процент к выплатам на каждой второй
+# перемычке. Её больше нет, и это правило, а не экономия строк.
+#
+# Процент или очки живут только там, где есть выбор или гриф:
+#   • случайные слоты (UPGRADE_GROUPS) — методология смены, и она каждый раз другая;
+#   • взаимоисключающие развилки (exclusive) — финансирование, наладка цехов;
+#   • скрытые темы Первого отдела — им нельзя открыть рецепт, они под грифом.
+# Всё остальное открывает предметы либо служит перемычкой и стоит соответственно дешево.
+#
+# И ни одна тема не возвращает очки, которые за неё заплатили: «потрать 20, получи 10» — это
+# скидка, переодетая в награду. Разовая выплата осталась только у госплановского гранта,
+# где она больше цены и является смыслом темы, и у авральной публикации из слота, где за неё
+# платят минусом к дальнейшей отдаче.
 
 
 if __name__ == '__main__':
