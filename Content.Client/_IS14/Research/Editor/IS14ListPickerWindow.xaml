@@ -1,0 +1,31 @@
+<!--
+SPDX-FileCopyrightText: 2025 IS14
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<is14:IS14ListPickerWindow
+    xmlns="https://spacestation14.io"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Research.Editor"
+    Title="Выбор"
+    MinSize="440 520"
+    SetSize="440 520">
+
+    <BoxContainer Orientation="Vertical" Margin="8" HorizontalExpand="True" VerticalExpand="True">
+
+        <LineEdit Name="SearchEdit" PlaceHolder="Поиск по идентификатору или названию" />
+
+        <Label Name="HintLabel" StyleClasses="LabelSubText" Margin="0 4 0 4" />
+
+        <ItemList Name="Items" VerticalExpand="True" HorizontalExpand="True" />
+
+        <BoxContainer Orientation="Horizontal" Margin="0 6 0 0" HorizontalExpand="True">
+            <Label Name="CountLabel" StyleClasses="LabelSubText" VerticalAlignment="Center" />
+            <Control HorizontalExpand="True" />
+            <Button Name="ClearButton" Text="Очистить" />
+            <Button Name="ConfirmButton" Text="Выбрать" StyleClasses="OpenRight" Margin="6 0 0 0" />
+        </BoxContainer>
+
+    </BoxContainer>
+
+</is14:IS14ListPickerWindow>

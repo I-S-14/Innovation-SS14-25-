@@ -1,0 +1,23 @@
+<!--
+SPDX-FileCopyrightText: 2025 IS14
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<is14:IS14EditorNode
+    xmlns="https://spacestation14.io"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Research.Editor"
+    SetSize="64 64">
+
+    <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True">
+        <TextureRect Name="IconRect"
+                     Stretch="KeepAspectCentered"
+                     VerticalExpand="True"
+                     HorizontalAlignment="Center" />
+        <Label Name="NameLabel"
+               StyleClasses="LabelSubText"
+               Align="Center"
+               ClipText="True" />
+    </BoxContainer>
+
+</is14:IS14EditorNode>

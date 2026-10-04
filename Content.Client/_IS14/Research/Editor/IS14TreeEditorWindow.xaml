@@ -1,0 +1,69 @@
+<!--
+SPDX-FileCopyrightText: 2025 IS14
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<is14:IS14TreeEditorWindow
+    xmlns="https://spacestation14.io"
+    xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+    xmlns:customControls="clr-namespace:Content.Client.Administration.UI.CustomControls"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Research.Editor"
+    Title="Редактор дерева исследований"
+    MinSize="1000 640"
+    SetSize="1280 800">
+
+    <BoxContainer Orientation="Vertical" Margin="8" HorizontalExpand="True" VerticalExpand="True">
+
+        <!-- Toolbar: what is being edited, and what to do with it. -->
+        <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
+            <OptionButton Name="BranchButton" MinWidth="220" />
+            <Button Name="AddButton" Text="+ тема" Margin="6 0 0 0" />
+            <Button Name="CloneButton" Text="Дублировать" Margin="4 0 0 0" />
+            <Button Name="DeleteButton" Text="Удалить" Margin="4 0 0 0" />
+            <customControls:VSeparator Margin="8 0 8 0" />
+            <Button Name="ReloadButton" Text="Взять из игры" />
+            <Button Name="OpenButton" Text="Открыть черновик" Margin="4 0 0 0" />
+            <Button Name="SaveButton" Text="Сохранить" Margin="4 0 0 0" StyleClasses="OpenRight" />
+            <Button Name="FolderButton" Text="Папка" Margin="4 0 0 0" />
+        </BoxContainer>
+
+        <!-- Canvas and the panel for the selected topic. -->
+        <BoxContainer Orientation="Horizontal" HorizontalExpand="True" VerticalExpand="True" Margin="0 8 0 0">
+            <PanelContainer HorizontalExpand="True" VerticalExpand="True">
+                <PanelContainer.PanelOverride>
+                    <gfx:StyleBoxFlat BackgroundColor="#101013" />
+                </PanelContainer.PanelOverride>
+                <is14:IS14EditorMap Name="Map" HorizontalExpand="True" VerticalExpand="True" />
+            </PanelContainer>
+            <is14:IS14NodeInspector Name="Inspector" Margin="8 0 0 0" />
+        </BoxContainer>
+
+        <!-- View controls and what the rules say about the tree right now. -->
+        <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="0 8 0 0">
+            <Label Text="Масштаб" StyleClasses="LabelSubText" VerticalAlignment="Center" />
+            <Slider Name="ZoomSlider"
+                    MinValue="0.3"
+                    MaxValue="1.6"
+                    Value="1"
+                    SetWidth="160"
+                    Margin="6 0 6 0"
+                    VerticalAlignment="Center" />
+            <Button Name="CenterButton" Text="Центрировать" />
+            <customControls:VSeparator Margin="8 0 8 0" />
+            <Label Name="StatusLabel" StyleClasses="LabelSubText" VerticalAlignment="Center"
+                   HorizontalExpand="True" ClipText="True" />
+        </BoxContainer>
+
+        <PanelContainer Margin="0 6 0 0">
+            <PanelContainer.PanelOverride>
+                <gfx:StyleBoxFlat BackgroundColor="#16161A" />
+            </PanelContainer.PanelOverride>
+            <ScrollContainer HScrollEnabled="False" MinHeight="86" MaxHeight="86">
+                <BoxContainer Name="ProblemContainer" Orientation="Vertical" Margin="6 4" HorizontalExpand="True" />
+            </ScrollContainer>
+        </PanelContainer>
+
+    </BoxContainer>
+
+</is14:IS14TreeEditorWindow>

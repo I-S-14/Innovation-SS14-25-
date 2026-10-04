@@ -1,0 +1,54 @@
+<!--
+SPDX-FileCopyrightText: 2025 IS14
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<is14:IS14SpritePickerWindow
+    xmlns="https://spacestation14.io"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Research.Editor"
+    xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+    Title="Спрайт"
+    MinSize="760 560"
+    SetSize="820 600">
+
+    <BoxContainer Orientation="Vertical" Margin="8" HorizontalExpand="True" VerticalExpand="True">
+
+        <BoxContainer Orientation="Horizontal" HorizontalExpand="True" VerticalExpand="True">
+
+            <!-- Left: every .rsi in the content tree, filtered by path. -->
+            <BoxContainer Orientation="Vertical" SetWidth="380" VerticalExpand="True">
+                <LineEdit Name="PathEdit" PlaceHolder="Путь: machines, clothing/hands, _IS14 …" />
+                <Label Name="PathCountLabel" StyleClasses="LabelSubText" Margin="0 4 0 4"
+                       HorizontalExpand="True" ClipText="True" />
+                <ItemList Name="Paths" VerticalExpand="True" HorizontalExpand="True" />
+            </BoxContainer>
+
+            <!-- Right: the states of the selected .rsi, with previews. -->
+            <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True" Margin="8 0 0 0">
+                <Label Name="SelectedLabel" StyleClasses="LabelSubText"
+                       HorizontalExpand="True" ClipText="True" />
+                <PanelContainer VerticalExpand="True" HorizontalExpand="True" Margin="0 4 0 0">
+                    <PanelContainer.PanelOverride>
+                        <gfx:StyleBoxFlat BackgroundColor="#16161A" />
+                    </PanelContainer.PanelOverride>
+                    <ItemList Name="States" VerticalExpand="True" HorizontalExpand="True" />
+                </PanelContainer>
+            </BoxContainer>
+
+        </BoxContainer>
+
+        <BoxContainer Orientation="Horizontal" Margin="0 6 0 0" HorizontalExpand="True">
+            <TextureRect Name="PreviewRect"
+                         MinSize="32 32"
+                         Stretch="KeepAspectCentered"
+                         VerticalAlignment="Center" />
+            <Label Name="ResultLabel" Margin="8 0 8 0" VerticalAlignment="Center"
+                   HorizontalExpand="True" ClipText="True" />
+            <Button Name="ConfirmButton" Text="Поставить спрайт" Disabled="True"
+                    MinWidth="150" StyleClasses="OpenRight" />
+        </BoxContainer>
+
+    </BoxContainer>
+
+</is14:IS14SpritePickerWindow>

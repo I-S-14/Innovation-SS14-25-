@@ -1,0 +1,164 @@
+<!--
+SPDX-FileCopyrightText: 2025 IS14
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
+<is14:IS14NodeInspector
+    xmlns="https://spacestation14.io"
+    xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+    xmlns:customControls="clr-namespace:Content.Client.Administration.UI.CustomControls"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Research.Editor"
+    Orientation="Vertical"
+    SetWidth="380"
+    VerticalExpand="True">
+
+    <PanelContainer VerticalExpand="True" HorizontalExpand="True">
+        <PanelContainer.PanelOverride>
+            <gfx:StyleBoxFlat BackgroundColor="#16161A" />
+        </PanelContainer.PanelOverride>
+
+        <BoxContainer Orientation="Vertical" Margin="8" VerticalExpand="True">
+
+            <Label Name="HintLabel"
+                   Text="Выберите тему на карте или добавьте новую."
+                   StyleClasses="LabelSubText" />
+
+            <ScrollContainer Name="Body" HScrollEnabled="False" VerticalExpand="True" Visible="False">
+                <BoxContainer Orientation="Vertical" HorizontalExpand="True">
+
+                    <Label Text="Идентификатор" StyleClasses="LabelSmall" />
+                    <LineEdit Name="IdEdit" PlaceHolder="IS14FieldTheory" />
+
+                    <Label Text="Название" StyleClasses="LabelSmall" Margin="0 6 0 0" />
+                    <LineEdit Name="NameEdit" PlaceHolder="Теория поля" />
+
+                    <Label Text="Описание на карточке" StyleClasses="LabelSmall" Margin="0 6 0 0" />
+                    <LineEdit Name="SummaryEdit" PlaceHolder="Что эта тема даёт, в двух словах" />
+
+                    <BoxContainer Orientation="Horizontal" Margin="0 6 0 0">
+                        <BoxContainer Orientation="Vertical" HorizontalExpand="True">
+                            <Label Text="Ветка" StyleClasses="LabelSmall" />
+                            <OptionButton Name="BranchButton" HorizontalExpand="True" />
+                        </BoxContainer>
+                        <BoxContainer Orientation="Vertical" Margin="6 0 0 0" SetWidth="80">
+                            <Label Text="Тир" StyleClasses="LabelSmall" />
+                            <OptionButton Name="TierButton" HorizontalExpand="True" />
+                        </BoxContainer>
+                    </BoxContainer>
+
+                    <BoxContainer Orientation="Horizontal" Margin="0 6 0 0">
+                        <BoxContainer Orientation="Vertical" SetWidth="80">
+                            <Label Text="Клетка X" StyleClasses="LabelSmall" />
+                            <LineEdit Name="PositionXEdit" />
+                        </BoxContainer>
+                        <BoxContainer Orientation="Vertical" Margin="6 0 0 0" SetWidth="80">
+                            <Label Text="Клетка Y" StyleClasses="LabelSmall" />
+                            <LineEdit Name="PositionYEdit" />
+                        </BoxContainer>
+                        <BoxContainer Orientation="Vertical" Margin="6 0 0 0" HorizontalExpand="True">
+                            <Label Text="Развилка (группа)" StyleClasses="LabelSmall" />
+                            <LineEdit Name="ExclusiveEdit" PlaceHolder="например funding" />
+                        </BoxContainer>
+                    </BoxContainer>
+
+                    <CheckBox Name="HiddenCheck" Text="Скрытая тема (вскрывается контрабандой)" Margin="0 6 0 0" />
+
+                    <customControls:HSeparator StyleClasses="LowDivider" Margin="0 8 0 6" />
+
+                    <Label Text="Цена" StyleClasses="LabelSmall" />
+                    <BoxContainer Name="CostContainer" Orientation="Vertical" Margin="0 2 0 0" />
+
+                    <customControls:HSeparator StyleClasses="LowDivider" Margin="0 8 0 6" />
+
+                    <Label Text="Иконка" StyleClasses="LabelSmall" />
+                    <BoxContainer Orientation="Horizontal" Margin="0 2 0 0">
+                        <TextureRect Name="IconPreview"
+                                     MinSize="32 32"
+                                     Stretch="KeepAspectCentered"
+                                     VerticalAlignment="Center" />
+                        <Label Name="IconLabel" StyleClasses="LabelSubText" Margin="6 0 0 0"
+                               VerticalAlignment="Center" HorizontalExpand="True"
+                               ClipText="True" />
+                        <Button Name="IconButton" Text="Выбрать" MinWidth="80" />
+                    </BoxContainer>
+
+                    <customControls:HSeparator StyleClasses="LowDivider" Margin="0 8 0 6" />
+
+                    <BoxContainer Orientation="Horizontal">
+                        <Label Text="Предпосылки" StyleClasses="LabelSmall" VerticalAlignment="Center"
+                               HorizontalExpand="True" />
+                        <Button Name="PrereqButton" Text="Изменить" />
+                    </BoxContainer>
+                    <RichTextLabel Name="PrereqLabel" HorizontalExpand="True" Margin="0 2 0 0" />
+
+                    <BoxContainer Orientation="Horizontal" Margin="0 8 0 0">
+                        <Label Text="Открывает рецепты" StyleClasses="LabelSmall" VerticalAlignment="Center"
+                               HorizontalExpand="True" />
+                        <Button Name="RecipeButton" Text="Изменить" />
+                    </BoxContainer>
+                    <RichTextLabel Name="RecipeLabel" HorizontalExpand="True" Margin="0 2 0 0" />
+
+                    <customControls:HSeparator StyleClasses="LowDivider" Margin="0 8 0 6" />
+
+                    <CheckBox Name="BreakthroughCheck" Text="Требует прорыв (образец в анализатор)" />
+                    <BoxContainer Name="BreakthroughBox" Orientation="Vertical" Visible="False" Margin="0 4 0 0">
+                        <Label Text="Как называется образец" StyleClasses="LabelSmall" />
+                        <LineEdit Name="SampleNameEdit" PlaceHolder="блюспейс-кристалл" />
+                        <Label Text="Где его искать" StyleClasses="LabelSmall" Margin="0 4 0 0" />
+                        <LineEdit Name="SampleHintEdit" PlaceHolder="Снабжение возит под заказ" />
+                        <BoxContainer Orientation="Horizontal" Margin="0 4 0 0">
+                            <Label Text="Прототипы" StyleClasses="LabelSmall" VerticalAlignment="Center"
+                                   HorizontalExpand="True" />
+                            <Button Name="SampleButton" Text="Изменить" />
+                        </BoxContainer>
+                        <RichTextLabel Name="SampleLabel" HorizontalExpand="True" />
+                        <BoxContainer Orientation="Horizontal" Margin="0 4 0 0">
+                            <BoxContainer Orientation="Vertical" HorizontalExpand="True">
+                                <Label Text="Платит валютой" StyleClasses="LabelSmall" />
+                                <OptionButton Name="SamplePointButton" HorizontalExpand="True" />
+                            </BoxContainer>
+                            <BoxContainer Orientation="Vertical" Margin="6 0 0 0" SetWidth="90">
+                                <Label Text="Выплата" StyleClasses="LabelSmall" />
+                                <LineEdit Name="SamplePayoutEdit" />
+                            </BoxContainer>
+                        </BoxContainer>
+                    </BoxContainer>
+
+                    <customControls:HSeparator StyleClasses="LowDivider" Margin="0 8 0 6" />
+
+                    <BoxContainer Orientation="Horizontal">
+                        <Label Text="Эффекты" StyleClasses="LabelSmall" VerticalAlignment="Center"
+                               HorizontalExpand="True" />
+                        <Button Name="EffectAddButton" Text="+" MinWidth="32" />
+                        <Button Name="EffectRemoveButton" Text="−" MinWidth="32" Margin="4 0 0 0" />
+                    </BoxContainer>
+                    <ItemList Name="EffectList" MinHeight="90" Margin="0 2 0 0" />
+                    <BoxContainer Name="EffectBox" Orientation="Vertical" Visible="False" Margin="0 4 0 0">
+                        <BoxContainer Orientation="Horizontal">
+                            <BoxContainer Orientation="Vertical" HorizontalExpand="True">
+                                <Label Text="Тип" StyleClasses="LabelSmall" />
+                                <OptionButton Name="EffectKindButton" HorizontalExpand="True" />
+                            </BoxContainer>
+                            <BoxContainer Orientation="Vertical" Margin="6 0 0 0" SetWidth="90">
+                                <Label Text="Значение" StyleClasses="LabelSmall" />
+                                <LineEdit Name="EffectValueEdit" />
+                            </BoxContainer>
+                        </BoxContainer>
+                        <BoxContainer Orientation="Horizontal" Margin="0 4 0 0">
+                            <Label Name="EffectTargetLabel" StyleClasses="LabelSubText"
+                                   VerticalAlignment="Center" HorizontalExpand="True"
+                                   ClipText="True" />
+                            <Button Name="EffectTargetButton" Text="Выбрать" MinWidth="80" />
+                        </BoxContainer>
+                        <Label Text="Описание для карточки" StyleClasses="LabelSmall" Margin="0 4 0 0" />
+                        <LineEdit Name="EffectDescriptionEdit" />
+                    </BoxContainer>
+
+                </BoxContainer>
+            </ScrollContainer>
+
+        </BoxContainer>
+    </PanelContainer>
+
+</is14:IS14NodeInspector>
