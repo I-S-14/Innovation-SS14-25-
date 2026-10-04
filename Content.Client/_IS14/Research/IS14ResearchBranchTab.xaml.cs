@@ -36,6 +36,12 @@ public sealed partial class IS14ResearchBranchTab : BoxContainer
         Map.Place(node, new Vector2(column * IS14ResearchNode.ColumnStride, row * IS14ResearchNode.RowStride));
     }
 
+    /// <summary>Slides the map so this node sits in the middle of the viewport.</summary>
+    public void CenterOn(IS14ResearchNode node)
+    {
+        Map.CenterOn(node);
+    }
+
     /// <summary>Screen rectangle of the map, used to decide whether a drag pans or moves the window.</summary>
     public UIBox2 MapRect => Map.GlobalRect;
 

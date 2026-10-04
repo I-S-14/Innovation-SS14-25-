@@ -37,6 +37,9 @@ public sealed partial class IS14ResearchConsoleWindow : FancyWindow
     private readonly List<IS14ResearchBranchTab> _tabs = new();
     private readonly List<Button> _branchButtons = new();
 
+    /// <summary>Which branch tab a technology was drawn on, so a jump can switch to it.</summary>
+    private readonly Dictionary<string, int> _nodeBranch = new();
+
     private string? _selected;
     private bool _built;
 
@@ -60,6 +63,8 @@ public sealed partial class IS14ResearchConsoleWindow : FancyWindow
 
         Details.OnResearchPressed += id => OnResearchPressed?.Invoke(id);
         Details.OnClosePressed += Deselect;
+        Details.OnTechnologyPressed += Open;
+        Details.CanOpen = _nodes.ContainsKey;
     }
 
     public void UpdateState(IS14ResearchConsoleUiState state)
@@ -238,6 +243,7 @@ public sealed partial class IS14ResearchConsoleWindow : FancyWindow
             _tabs.Clear();
             _branchButtons.Clear();
             _nodes.Clear();
+            _nodeBranch.Clear();
         }
 
         _built = true;
@@ -283,6 +289,7 @@ public sealed partial class IS14ResearchConsoleWindow : FancyWindow
                 node.OnSelected += Select;
 
                 _nodes[tech.ID] = node;
+                _nodeBranch[tech.ID] = _tabs.Count;
                 tab.AddNode(node, tech.Position.X, tech.Position.Y);
             }
 
@@ -386,6 +393,22 @@ public sealed partial class IS14ResearchConsoleWindow : FancyWindow
         _selected = null;
         Details.Clear();
         Details.Visible = false;
+    }
+
+    /// <summary>
+    /// Opens a technology named on the card of another one: switches to its branch, selects it
+    /// and slides the map onto it, so a chain of prerequisites can be walked by clicking.
+    /// </summary>
+    private void Open(string technologyId)
+    {
+        if (!_nodes.TryGetValue(technologyId, out var node)
+            || !_nodeBranch.TryGetValue(technologyId, out var branch)
+            || branch >= _tabs.Count)
+            return;
+
+        ShowBranch(branch);
+        Select(technologyId);
+        _tabs[branch].CenterOn(node);
     }
 
     private void Select(string technologyId)

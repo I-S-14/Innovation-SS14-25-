@@ -116,6 +116,7 @@ is14-research-map-discount = Reverse engineering: -{ $percent }%
 is14-research-map-no-prereqs = No preceding topics required.
 is14-research-map-prereq-done = Already researched.
 is14-research-map-prereq-missing = Not researched yet.
+is14-research-map-open-hint = Click to open this topic on the map.
 
 # ─── Randomised upgrade effects ─────────────────────────────────────────────
 is14-effect-grant-calibration = Grants 10 scientific data once

@@ -34,6 +34,18 @@ public sealed partial class IS14ResearchDetails : BoxContainer
 
     public event Action? OnClosePressed;
 
+    /// <summary>
+    /// Another technology named on this card was clicked: a prerequisite or the alternative a
+    /// fork rules out. The console answers by opening that one and centring the map on it.
+    /// </summary>
+    public event Action<string>? OnTechnologyPressed;
+
+    /// <summary>
+    /// Whether a technology is actually drawn on the map. A card for something the station
+    /// cannot see — a topic still hidden — stays inert instead of becoming a dead link.
+    /// </summary>
+    public Func<string, bool>? CanOpen;
+
     public IS14ResearchDetails()
     {
         RobustXamlLoader.Load(this);
@@ -176,7 +188,8 @@ public sealed partial class IS14ResearchDetails : BoxContainer
                 : Loc.GetString("is14-research-map-prereq-missing");
 
             var card = new IS14MiniCard();
-            card.SetCard(name, _sprites.Frame0(prereq.Icon), color, tooltip);
+            card.SetCard(name, _sprites.Frame0(prereq.Icon), color, Linkable(prereq.ID, tooltip));
+            Link(card, prereq.ID);
             PrereqContainer.AddChild(card);
         }
     }
@@ -248,9 +261,10 @@ public sealed partial class IS14ResearchDetails : BoxContainer
                 Loc.GetString(sibling.Name),
                 _sprites.Frame0(sibling.Icon),
                 taken ? Color.FromHex("#a33b40") : Color.FromHex("#9a9a9a"),
-                Loc.GetString(taken
+                Linkable(sibling.ID, Loc.GetString(taken
                     ? "is14-research-map-exclusive-taken"
-                    : "is14-research-map-exclusive-open"));
+                    : "is14-research-map-exclusive-open")));
+            Link(card, sibling.ID);
             ExclusiveContainer.AddChild(card);
         }
     }
@@ -336,6 +350,23 @@ public sealed partial class IS14ResearchDetails : BoxContainer
     private void SetStatus(string locId, string color)
     {
         StatusLabel.SetMessage(FormattedMessage.FromMarkupOrThrow(Colored(Loc.GetString(locId), color)));
+    }
+
+    /// <summary>Makes a card naming another technology open it, if the map has that node.</summary>
+    private void Link(IS14MiniCard card, string technologyId)
+    {
+        if (CanOpen?.Invoke(technologyId) == false)
+            return;
+
+        card.SetLink(() => OnTechnologyPressed?.Invoke(technologyId));
+    }
+
+    /// <summary>Adds the "click me" line to a tooltip, for a card that is in fact clickable.</summary>
+    private string Linkable(string technologyId, string tooltip)
+    {
+        return CanOpen?.Invoke(technologyId) == false
+            ? tooltip
+            : $"{tooltip}\n{Loc.GetString("is14-research-map-open-hint")}";
     }
 
     /// <summary>

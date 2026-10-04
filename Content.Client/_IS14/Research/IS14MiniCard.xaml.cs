@@ -44,4 +44,14 @@ public sealed partial class IS14MiniCard : BoxContainer
         control.SetMessage(FormattedMessage.FromUnformatted(tooltip));
         Main.TooltipSupplier = _ => control;
     }
+
+    /// <summary>
+    /// Turns the card into a link. Cards are inert by default — they are a picture of a
+    /// requirement, not a control — but a card naming another technology is worth clicking.
+    /// </summary>
+    public void SetLink(Action onPressed)
+    {
+        Main.Disabled = false;
+        Main.OnPressed += _ => onPressed();
+    }
 }

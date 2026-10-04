@@ -101,6 +101,7 @@ is14-research-map-discount = Обратная разработка: −{ $percen
 is14-research-map-no-prereqs = Предшествующих тем не требуется.
 is14-research-map-prereq-done = Тема изучена.
 is14-research-map-prereq-missing = Тема ещё не изучена.
+is14-research-map-open-hint = Нажмите, чтобы открыть эту тему на карте.
 
 is14-research-map-drag-hint = Карта перетаскивается мышью
 

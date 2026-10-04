@@ -40,6 +40,13 @@ public sealed class IS14ResearchMap : LayoutContainer
     private bool _centered;
     private float _zoom = 1f;
 
+    /// <summary>
+    /// A node to slide into view as soon as the map has a size. A jump from the detail panel can
+    /// land on a branch that was never drawn, and until the first frame the viewport is 0x0, so
+    /// centring has to wait for it.
+    /// </summary>
+    private Control? _pendingFocus;
+
     /// <summary>Raised when the wheel changes the zoom, so the slider can follow it.</summary>
     public event Action<float>? OnZoomChanged;
 
@@ -90,6 +97,29 @@ public sealed class IS14ResearchMap : LayoutContainer
     {
         _offset = (Size - _contentSize * _zoom) / 2f;
         ApplyLayout();
+        _centered = true;
+    }
+
+    /// <summary>
+    /// Slides the map so one node sits in the middle, the zoom untouched. Used when a
+    /// prerequisite is clicked in the detail panel: the eye should not have to find it.
+    /// </summary>
+    public void CenterOn(Control child)
+    {
+        if (!_basePositions.TryGetValue(child, out var position))
+            return;
+
+        if (Size.X <= 0 || Size.Y <= 0)
+        {
+            _pendingFocus = child;
+            return;
+        }
+
+        var half = new Vector2(IS14ResearchNode.Size, IS14ResearchNode.Size) * _zoom / 2f;
+
+        _offset = Size / 2f - (position * _zoom + half);
+        ApplyLayout();
+        _centered = true;
     }
 
     protected override void MouseWheel(GUIMouseWheelEventArgs args)
@@ -138,10 +168,17 @@ public sealed class IS14ResearchMap : LayoutContainer
 
     protected override void Draw(DrawingHandleScreen handle)
     {
-        if (!_centered && Size.X > 0 && Size.Y > 0)
+        if (Size.X > 0 && Size.Y > 0)
         {
-            Center();
-            _centered = true;
+            if (_pendingFocus is { } focus)
+            {
+                _pendingFocus = null;
+                CenterOn(focus);
+            }
+            else if (!_centered)
+            {
+                Center();
+            }
         }
 
         foreach (var child in Children)
