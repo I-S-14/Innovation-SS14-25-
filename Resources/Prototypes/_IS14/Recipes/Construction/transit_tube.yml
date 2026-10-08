@@ -1,0 +1,79 @@
+- type: construction
+  id: IS14TransitTube
+  graph: IS14TransitTube
+  startNode: start
+  targetNode: tube
+  category: construction-category-utilities
+  objectType: Structure
+  placementMode: SnapgridCenter
+  canBuildInImpassable: false
+
+- type: construction
+  id: IS14TransitTubeBend
+  graph: IS14TransitTube
+  startNode: start
+  targetNode: bend
+  category: construction-category-utilities
+  objectType: Structure
+  placementMode: SnapgridCenter
+  canBuildInImpassable: false
+
+- type: construction
+  id: IS14TransitTubeBendMirrored
+  graph: IS14TransitTube
+  startNode: start
+  targetNode: bend_mirrored
+  category: construction-category-utilities
+  objectType: Structure
+  placementMode: SnapgridCenter
+  canBuildInImpassable: false
+
+- type: construction
+  id: IS14TransitTubeJunction
+  graph: IS14TransitTube
+  startNode: start
+  targetNode: junction
+  category: construction-category-utilities
+  objectType: Structure
+  placementMode: SnapgridCenter
+  canBuildInImpassable: false
+
+- type: construction
+  id: IS14TransitTubePod
+  graph: IS14TransitTube
+  startNode: start
+  targetNode: pod
+  category: construction-category-utilities
+  objectType: Structure
+  placementMode: SnapgridCenter
+  canBuildInImpassable: true
+
+- type: construction
+  id: IS14TransitTubeCrossing
+  graph: IS14TransitTube
+  startNode: start
+  targetNode: crossing
+  category: construction-category-utilities
+  objectType: Structure
+  placementMode: SnapgridCenter
+  canBuildInImpassable: false
+
+- type: construction
+  id: IS14TransitTubeStation
+  graph: IS14TransitTube
+  startNode: start
+  targetNode: station
+  category: construction-category-utilities
+  objectType: Structure
+  placementMode: SnapgridCenter
+  canBuildInImpassable: false
+
+- type: construction
+  id: IS14TransitTubeTerminus
+  graph: IS14TransitTube
+  startNode: start
+  targetNode: terminus
+  category: construction-category-utilities
+  objectType: Structure
+  placementMode: SnapgridCenter
+  canBuildInImpassable: false
