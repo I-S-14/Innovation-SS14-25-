@@ -43,7 +43,7 @@ public sealed class TransitTubePodSystem : EntitySystem
     /// <summary>
     /// Floor on a single hop so that a chain of zero-delay sections cannot lock up the update loop.
     /// </summary>
-    private const float MinimumHopTimeMinimumHopTime = 0.05f;
+    private const float MinimumHopTime = 0.05f;
 
     public override void Initialize()
     {
