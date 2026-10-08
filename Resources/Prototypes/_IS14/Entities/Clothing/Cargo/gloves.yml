@@ -1,0 +1,75 @@
+- type: entity
+  parent: [ ClothingHandsBase, BaseToggleClothing ]
+  id: IS14MinerGloves
+  abstract: true
+  components:
+  - type: Sprite
+    layers:
+    - state: icon
+      map: [ "enum.ToggleableVisuals.Layer" ]
+  - type: Appearance
+  - type: Item
+    size: Small
+    storedRotation: -90
+  - type: ComponentToggler
+    components:
+    - type: MeleeWeapon
+      attackRate: 1.5
+      damage:
+        types:
+          Blunt: 12
+      soundHit:
+        collection: Punch
+      animation: WeaponArcFist
+      mustBeEquippedToUse: true
+      canWideSwing: false
+  - type: ItemTogglePrefix
+    prefixOn: activated
+  - type: ToggleClothingPrefix
+    prefixOn: activated
+  - type: GenericVisualizer
+    visuals:
+      enum.ToggleableVisuals.Enabled:
+        enum.ToggleableVisuals.Layer:
+          True: {state: icon-activated}
+          False: {state: icon}
+  - type: ToggleClothing
+    action: ActionOutClaws
+    mustEquip: false
+  - type: Tag
+    tags:
+    - WhitelistChameleon
+
+
+- type: entity
+  parent: IS14MinerGloves
+  id: IS14MinerGlovesRed
+  name: miner red gloves
+  description: very cool gloves
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Hands/Miner/miner_mantis_red.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Hands/Miner/miner_mantis_red_equipped.rsi
+
+- type: entity
+  parent: IS14MinerGloves
+  id: IS14MinerGlovesBlue
+  name: miner blue gloves
+  description: very cool gloves
+  components:
+  - type: Sprite
+    sprite: _IS14/Clothing/Hands/Miner/miner_mantis_blue.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Hands/Miner/miner_mantis_blue_equipped.rsi
+
+- type: entity
+  parent: BaseAction
+  id: ActionOutClaws
+  name: Out Claws
+  description: Out claws of your gloves
+  components:
+  - type: Action
+    itemIconStyle: BigItem
+  - type: InstantAction
+    event: !type:ToggleActionEvent
