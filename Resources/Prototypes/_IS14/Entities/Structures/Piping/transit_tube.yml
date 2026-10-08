@@ -1,0 +1,291 @@
+# Транзитные трубы: сеть, по которой капсулы возят экипаж между станциями.
+
+
+- type: entity
+  id: IS14TransitTubeBase
+  parent: BaseStructure
+  abstract: true
+  name: transit tube
+  description: A length of the transit network. Pods carry the crew along it.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    sprite: _IS14/Structures/Piping/transit_tube.rsi
+    drawdepth: FloorObjects
+    layers:
+    - map: [ "enum.TransitTubeJointLayers.Shape" ]
+      state: tube
+    # Стыки между секциями рисуются отдельными слоями.
+    - map: [ "enum.TransitTubeJointLayers.North" ]
+      sprite: _IS14/Structures/Piping/transit_tube_joints.rsi
+      state: joint_north
+      visible: false
+    - map: [ "enum.TransitTubeJointLayers.South" ]
+      sprite: _IS14/Structures/Piping/transit_tube_joints.rsi
+      state: joint_south
+      visible: false
+    - map: [ "enum.TransitTubeJointLayers.East" ]
+      sprite: _IS14/Structures/Piping/transit_tube_joints.rsi
+      state: joint_east
+      visible: false
+    - map: [ "enum.TransitTubeJointLayers.West" ]
+      sprite: _IS14/Structures/Piping/transit_tube_joints.rsi
+      state: joint_west
+      visible: false
+    - map: [ "enum.TransitTubeJointLayers.NorthEast" ]
+      sprite: _IS14/Structures/Piping/transit_tube_joints.rsi
+      state: joint_northeast
+      visible: false
+    - map: [ "enum.TransitTubeJointLayers.NorthWest" ]
+      sprite: _IS14/Structures/Piping/transit_tube_joints.rsi
+      state: joint_northwest
+      visible: false
+  - type: Appearance
+  - type: InteractionOutline
+  - type: Climbable
+  - type: TransitTube
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.5,-0.5,0.5,0.5"
+        density: 60
+        mask:
+        - TableMask
+        layer:
+        - TableLayer
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: Metallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 150
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          SheetSteel1:
+            min: 1
+            max: 1
+          SheetPlastic1:
+            min: 1
+            max: 1
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: StaticPrice
+    price: 60
+
+- type: entity
+  id: IS14TransitTubeTurnableBase
+  parent: IS14TransitTubeBase
+  abstract: true
+  components:
+  - type: Rotatable
+    rotateWhileAnchored: true
+
+- type: entity
+  id: IS14TransitTubeCrossingBase
+  parent: IS14TransitTubeTurnableBase
+  abstract: true
+  components:
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.5,-0.5,0.5,0.5"
+        hard: false
+        mask:
+        - TableMask
+
+- type: entity
+  id: IS14TransitTube
+  parent: IS14TransitTubeTurnableBase
+  description: A straight run of tube. Its four turns are the vertical, the horizontal and both diagonals.
+  components:
+  - type: Icon
+    sprite: _IS14/Structures/Piping/transit_tube.rsi
+    state: tube
+  - type: TransitTubeStraight
+  - type: TransitTube
+    shape: tube
+  - type: Construction
+    graph: IS14TransitTube
+    node: tube
+
+- type: entity
+  id: IS14TransitTubeCrossing
+  parent: IS14TransitTubeCrossingBase
+  name: walkway transit tube
+  description: A run of tube with a ladder welded onto it, for stepping over the line instead of walking around it.
+  components:
+  - type: Icon
+    sprite: _IS14/Structures/Piping/transit_tube.rsi
+    state: crossing
+  - type: TransitTubeStraight
+  - type: TransitTube
+    shape: crossing
+  - type: Construction
+    graph: IS14TransitTube
+    node: crossing
+
+- type: entity
+  id: IS14TransitTubeBend
+  parent: IS14TransitTubeTurnableBase
+  name: transit tube bend
+  description: A forty five degree corner. It has eight of them and only four turns to be placed on, so the rest are screwed round afterwards.
+  components:
+  - type: Icon
+    sprite: _IS14/Structures/Piping/transit_tube.rsi
+    state: bend
+  - type: TransitTubeBend
+  - type: TransitTube
+    shape: bend
+    diagonalShape: bend_diagonal
+  - type: Construction
+    graph: IS14TransitTube
+    node: bend
+
+# Вторая половина восьмёрки, выставленная сразу: те же четыре поворота, но отсчитанные
+# на 45 градусов. Отвёртка по-прежнему водит секцию по всем восьми углам, так что от
+# обычного изгиба это отличается только тем, на каком из них секция встаёт при установке.
+- type: entity
+  id: IS14TransitTubeBendMirrored
+  parent: IS14TransitTubeBend
+  suffix: Mirrored
+  description: A forty five degree corner, set down on the other four of its eight corners. A screwdriver still walks it round all of them.
+  components:
+  - type: Icon
+    sprite: _IS14/Structures/Piping/transit_tube.rsi
+    state: bend_diagonal
+  - type: TransitTubeBend
+    diagonal: true
+  - type: Construction
+    graph: IS14TransitTube
+    node: bend_mirrored
+
+- type: entity
+  id: IS14TransitTubeJunction
+  parent: IS14TransitTubeBase
+  name: transit tube junction
+  description: Where a straight run splits into two diagonal branches. A screwdriver picks which of them a pod takes by default.
+  components:
+  - type: Icon
+    sprite: _IS14/Structures/Piping/transit_tube.rsi
+    state: junction
+  - type: Rotatable
+    rotateWhileAnchored: true
+  - type: TransitTubeJunction
+  - type: TransitTube
+    shape: junction
+  - type: GenericVisualizer
+    visuals:
+      enum.TransitTubeVisuals.Flipped:
+        enum.TransitTubeJointLayers.Shape:
+          True: { state: junction_flipped }
+          False: { state: junction }
+  - type: Construction
+    graph: IS14TransitTube
+    node: junction
+
+- type: entity
+  id: IS14TransitTubeStation
+  parent: IS14TransitTubeBase
+  name: transit tube station
+  description: A stop on the transit network. A screwdriver swings its preferred direction over.
+  components:
+  - type: Icon
+    sprite: _IS14/Structures/Piping/transit_tube.rsi
+    state: station_closed
+  - type: Rotatable
+    rotateWhileAnchored: true
+  - type: TransitTubeStation
+  - type: TransitTube
+    shape: station_closed
+  - type: GenericVisualizer
+    visuals:
+      enum.TransitTubeStationVisuals.State:
+        enum.TransitTubeJointLayers.Shape:
+          Closed: { state: station_closed }
+          Opening: { state: station_opening }
+          Open: { state: station_open }
+          Closing: { state: station_closing }
+  - type: ContainerContainer
+    containers:
+      board: !type:Container
+  - type: Construction
+    graph: IS14TransitTube
+    node: station
+    containers:
+    - board
+
+- type: entity
+  id: IS14TransitTubeTerminus
+  parent: IS14TransitTubeBase
+  name: transit tube terminus
+  description: The end of a line. A pod sent off from here leaves the way it came.
+  components:
+  - type: Icon
+    sprite: _IS14/Structures/Piping/transit_tube.rsi
+    state: terminus_closed
+  - type: Rotatable
+    rotateWhileAnchored: true
+  - type: TransitTubeStation
+    terminus: true
+  - type: TransitTube
+    shape: terminus_closed
+  - type: GenericVisualizer
+    visuals:
+      enum.TransitTubeStationVisuals.State:
+        enum.TransitTubeJointLayers.Shape:
+          Closed: { state: terminus_closed }
+          Opening: { state: terminus_opening }
+          Open: { state: terminus_open }
+          Closing: { state: terminus_closing }
+  - type: ContainerContainer
+    containers:
+      board: !type:Container
+  - type: Construction
+    graph: IS14TransitTube
+    node: terminus
+    containers:
+    - board
+
+- type: entity
+  id: IS14TransitTubePod
+  name: transit pod
+  description: A pod of the transit network. A person fits inside, provided they do not mind the ride.
+  components:
+  - type: Transform
+    anchored: false
+  - type: Sprite
+    sprite: _IS14/Structures/Piping/transit_tube.rsi
+    drawdepth: FloorTiles
+    layers:
+    - map: [ "base" ]
+      state: pod
+  - type: Icon
+    sprite: _IS14/Structures/Piping/transit_tube.rsi
+    state: pod
+  - type: Appearance
+  - type: Clickable
+  - type: InteractionOutline
+  - type: TransitTubePod
+  - type: ContainerContainer
+    containers:
+      transit_tube_pod: !type:Container
+  - type: GenericVisualizer
+    visuals:
+      enum.TransitTubePodVisuals.Occupied:
+        base:
+          True: { state: pod_occupied }
+          False: { state: pod }
+  - type: Construction
+    graph: IS14TransitTube
+    node: pod
