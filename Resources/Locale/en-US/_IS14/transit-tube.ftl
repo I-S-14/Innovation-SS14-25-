@@ -1,0 +1,10 @@
+is14-transit-tube-pod-wrecked = The pod is thrown out of the tube and comes apart!
+is14-transit-tube-station-no-pod = There is no pod here.
+is14-transit-tube-pod-enter = You climb into the pod.
+is14-transit-tube-pod-unload = You empty the pod onto the floor.
+is14-transit-tube-pod-forms = A pod forms around you.
+is14-transit-tube-station-redirected = You send the stop's pods the other way.
+is14-transit-tube-adjust-occupied = Take the pod out first.
+is14-transit-tube-junction-redirected = You send the junction's pods down the other branch.
+is14-transit-tube-turned = You swing the section over.
+is14-transit-tube-adjust-nothing = There is nothing to adjust here.

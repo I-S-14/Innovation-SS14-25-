@@ -1,0 +1,10 @@
+is14-transit-tube-pod-wrecked = Капсулу выбрасывает из трубы, и она разлетается на части!
+is14-transit-tube-station-no-pod = Капсулы здесь нет.
+is14-transit-tube-pod-enter = Вы забираетесь в капсулу.
+is14-transit-tube-pod-unload = Вы выгружаете содержимое капсулы на пол.
+is14-transit-tube-pod-forms = Вокруг вас формируется капсула.
+is14-transit-tube-station-redirected = Теперь станция отправляет капсулы в другую сторону.
+is14-transit-tube-adjust-occupied = Сначала уберите отсюда капсулу.
+is14-transit-tube-junction-redirected = Теперь развилка уводит капсулы на другую ветку.
+is14-transit-tube-turned = Вы доворачиваете секцию.
+is14-transit-tube-adjust-nothing = Здесь нечего настраивать.

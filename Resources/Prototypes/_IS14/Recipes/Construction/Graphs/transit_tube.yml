@@ -1,0 +1,219 @@
+- type: constructionGraph
+  id: IS14TransitTube
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: tube
+      steps:
+      - material: Steel
+        amount: 2
+        doAfter: 1
+      - material: Plastic
+        amount: 2
+        doAfter: 1
+    - to: bend
+      steps:
+      - material: Steel
+        amount: 2
+        doAfter: 1
+      - material: Plastic
+        amount: 2
+        doAfter: 1
+    - to: bend_mirrored
+      steps:
+      - material: Steel
+        amount: 2
+        doAfter: 1
+      - material: Plastic
+        amount: 2
+        doAfter: 1
+    - to: junction
+      steps:
+      - material: Steel
+        amount: 2
+        doAfter: 1
+      - material: Plastic
+        amount: 2
+        doAfter: 1
+    - to: pod
+      steps:
+      - material: Steel
+        amount: 2
+        doAfter: 1
+      - material: Plastic
+        amount: 2
+        doAfter: 1
+    - to: crossing
+      steps:
+      - material: Steel
+        amount: 2
+        doAfter: 1
+      - material: Plastic
+        amount: 2
+        doAfter: 1
+      - material: MetalRod
+        amount: 4
+        doAfter: 1
+    - to: station
+      steps:
+      - material: Steel
+        amount: 2
+        doAfter: 1
+      - material: Plastic
+        amount: 2
+        doAfter: 1
+      - component: DoorElectronics
+        store: board
+        name: construction-graph-component-door-electronics-circuit-board
+        icon:
+          sprite: "Objects/Misc/module.rsi"
+          state: "door_electronics"
+    - to: terminus
+      steps:
+      - material: Steel
+        amount: 2
+        doAfter: 1
+      - material: Plastic
+        amount: 2
+        doAfter: 1
+      - component: DoorElectronics
+        store: board
+        name: construction-graph-component-door-electronics-circuit-board
+        icon:
+          sprite: "Objects/Misc/module.rsi"
+          state: "door_electronics"
+  - node: tube
+    entity: IS14TransitTube
+    edges:
+    - to: crossing
+      steps:
+      - material: MetalRod
+        amount: 4
+        doAfter: 1
+    - to: start
+      completed:
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 2
+      - !type:SpawnPrototype
+        prototype: SheetPlastic1
+        amount: 2
+      - !type:DestroyEntity
+      steps:
+      - tool: Anchoring
+        doAfter: 2
+  - node: bend
+    entity: IS14TransitTubeBend
+    edges:
+    - to: start
+      completed:
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 2
+      - !type:SpawnPrototype
+        prototype: SheetPlastic1
+        amount: 2
+      - !type:DestroyEntity
+      steps:
+      - tool: Anchoring
+        doAfter: 2
+  - node: bend_mirrored
+    entity: IS14TransitTubeBendMirrored
+    edges:
+    - to: start
+      completed:
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 2
+      - !type:SpawnPrototype
+        prototype: SheetPlastic1
+        amount: 2
+      - !type:DestroyEntity
+      steps:
+      - tool: Anchoring
+        doAfter: 2
+  - node: junction
+    entity: IS14TransitTubeJunction
+    edges:
+    - to: start
+      completed:
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 2
+      - !type:SpawnPrototype
+        prototype: SheetPlastic1
+        amount: 2
+      - !type:DestroyEntity
+      steps:
+      - tool: Anchoring
+        doAfter: 2
+  - node: pod
+    entity: IS14TransitTubePod
+    edges:
+    - to: start
+      completed:
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 2
+      - !type:SpawnPrototype
+        prototype: SheetPlastic1
+        amount: 2
+      - !type:DestroyEntity
+      steps:
+      - tool: Anchoring
+        doAfter: 2
+  - node: crossing
+    entity: IS14TransitTubeCrossing
+    edges:
+    - to: start
+      completed:
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 2
+      - !type:SpawnPrototype
+        prototype: SheetPlastic1
+        amount: 2
+      - !type:SpawnPrototype
+        prototype: PartRodMetal1
+        amount: 4
+      - !type:DestroyEntity
+      steps:
+      - tool: Anchoring
+        doAfter: 2
+  - node: station
+    entity: IS14TransitTubeStation
+    edges:
+    - to: start
+      completed:
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 2
+      - !type:SpawnPrototype
+        prototype: SheetPlastic1
+        amount: 2
+      - !type:EmptyAllContainers
+        pickup: true
+        emptyAtUser: true
+      - !type:DestroyEntity
+      steps:
+      - tool: Anchoring
+        doAfter: 2
+  - node: terminus
+    entity: IS14TransitTubeTerminus
+    edges:
+    - to: start
+      completed:
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 2
+      - !type:SpawnPrototype
+        prototype: SheetPlastic1
+        amount: 2
+      - !type:EmptyAllContainers
+        pickup: true
+        emptyAtUser: true
+      - !type:DestroyEntity
+      steps:
+      - tool: Anchoring
+        doAfter: 2
