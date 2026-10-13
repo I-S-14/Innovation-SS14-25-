@@ -1,0 +1,109 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+
+- type: entity
+  parent: [BaseCyborgTool, RCDRecharging]
+  id: CyborgToolRCD
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
+    layers:
+    - state: tools-rcd
+
+- type: entity
+  parent: [BaseCyborgTool, RPDRecharging]
+  id: CyborgToolRPD
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
+    layers:
+    - state: tools-rpd
+
+# tg's cyborg welder; the lit sprite sits on the flame layer the toggle visualizer drives.
+- type: entity
+  parent: [BaseCyborgTool, WelderIndustrial]
+  id: CyborgToolWelder
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
+    layers:
+    - state: indwelder_cyborg
+    - state: indwelder_cyborg-on
+      visible: false
+      shader: unshaded
+      map: ["enum.ToggleableVisuals.Layer"]
+
+- type: entity
+  parent: [BaseCyborgTool, Wrench]
+  id: CyborgToolWrench
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
+    layers:
+    - state: toolkit_engiborg_wrench
+
+# Own item: the upstream wirecutters randomize a layer this sprite doesn't have.
+- type: entity
+  parent: [BaseCyborgTool, BaseItem]
+  id: CyborgToolWirecutter
+  name: cyborg wirecutters
+  description: Wirecutters built into a cyborg's arm.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
+    layers:
+    - state: toolkit_engiborg_cutters
+  - type: Item
+    size: Small
+    storedRotation: -90
+  - type: Tag
+    tags:
+    - PlantSampleTaker
+    - Wirecutter
+  - type: Tool
+    qualities:
+    - Cutting
+    useSound:
+      path: /Audio/Items/wirecutter.ogg
+  - type: MeleeWeapon
+    wideAnimationRotation: -90
+    attackRate: 1
+    damage:
+      types:
+        Piercing: 2
+    soundHit:
+      path: "/Audio/Items/wirecutter.ogg"
+
+- type: entity
+  parent: [BaseCyborgTool, Multitool]
+  id: CyborgToolMultitool
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
+    layers:
+    - state: toolkit_engiborg_multitool
+
+- type: entity
+  parent: [BaseCyborgTool, trayScanner]
+  id: CyborgToolTrayScanner
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [BaseCyborgTool, GasAnalyzer]
+  id: CyborgToolGasAnalyzer
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [BaseCyborgTool, RemoteSignaller]
+  id: CyborgToolSignaller
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
+    layers:
+    - state: new_assemblies-signaller

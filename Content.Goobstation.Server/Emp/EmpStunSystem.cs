@@ -5,6 +5,7 @@ using Content.Shared._EinsteinEngines.Silicon.Components;
 using Content.Shared.Emp;
 using Content.Shared.Silicons.Borgs.Components;
 using Content.Shared.Stunnable;
+using Content.Shared._IS14.Cyborgs.Components; // IS14-change
 
 namespace Content.Goobstation.Server.Emp;
 
@@ -18,6 +19,9 @@ public sealed class EmpStunSystem : EntitySystem
 
         SubscribeLocalEvent<SiliconComponent, EmpPulseEvent>(OnEmpParalyze);
         SubscribeLocalEvent<BorgChassisComponent, EmpPulseEvent>(OnEmpParalyze);
+        //IS14-change start - tgstation-style cyborgs
+        SubscribeLocalEvent<CyborgComponent, EmpPulseEvent>(OnEmpParalyze);
+        //IS14-change end
     }
 
     private void OnEmpParalyze(EntityUid uid, Component component, ref EmpPulseEvent args)

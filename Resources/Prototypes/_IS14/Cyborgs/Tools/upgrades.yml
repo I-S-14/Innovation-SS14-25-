@@ -1,0 +1,53 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+
+# Tools given by service upgrade boards, with tg's silicon sprites.
+
+- type: entity
+  parent: [BaseCyborgTool, HydroponicsToolMiniHoe]
+  id: CyborgToolCultivator
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
+    layers:
+    - state: sili_cultivator
+
+- type: entity
+  parent: [BaseCyborgTool, HydroponicsToolSpade]
+  id: CyborgToolSpade
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
+    layers:
+    - state: sili_shovel
+
+- type: entity
+  parent: [BaseCyborgTool, HydroponicsToolClippers]
+  id: CyborgToolSecateur
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
+    layers:
+    - state: sili_secateur
+
+- type: entity
+  parent: [BaseCyborgTool, KitchenKnife]
+  id: CyborgToolKnife
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
+    layers:
+    - state: sili_knife
+
+- type: entity
+  parent: [BaseCyborgTool, RollingPin]
+  id: CyborgToolRollingPin
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
+    layers:
+    - state: sili_rolling_pin

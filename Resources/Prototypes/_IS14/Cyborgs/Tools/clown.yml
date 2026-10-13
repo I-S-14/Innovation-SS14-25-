@@ -1,0 +1,61 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+
+- type: entity
+  parent: [BaseCyborgTool, CrayonRainbow]
+  id: CyborgToolCrayonRainbow
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
+    layers:
+    - state: crayons-crayonrainbow
+
+- type: entity
+  parent: [BaseCyborgTool, BikeHornInstrument]
+  id: CyborgToolBikeHornInstrument
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
+    layers:
+    - state: musician-bike_horn
+
+- type: entity
+  parent: [BaseCyborgTool, RubberStampClown]
+  id: CyborgToolStampClown
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
+    layers:
+    - state: bureaucracy-stamp-clown
+
+- type: entity
+  parent: [BaseCyborgTool, BikeHorn]
+  id: CyborgToolBikeHorn
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
+    layers:
+    - state: horn-bike_horn
+
+- type: entity
+  parent: [BaseCyborgTool, ClownRecorder]
+  id: CyborgToolClownRecorder
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [BaseCyborgTool, PushHorn]
+  id: CyborgToolPushHorn
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [BaseCyborgTool, BorgLauncherCreamPie]
+  id: CyborgToolPieCannon
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [BaseCyborgTool, HoloprojectorClownBorg]
+  id: CyborgToolHoloprojectorClown
+  categories: [ HideSpawnMenu ]

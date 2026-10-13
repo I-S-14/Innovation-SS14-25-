@@ -702,9 +702,13 @@
   - type: EntityTableSpawner
     table: !type:GroupSelector
       children:
-      - id: PlayerBorgSyndicateAssaultGhostRole
-      - id: PlayerBorgSyndicateSaboteurGhostRole
+      #IS14-change start - tgstation-style cyborgs
+      # - id: PlayerBorgSyndicateAssaultGhostRole
+      # - id: PlayerBorgSyndicateSaboteurGhostRole
+      - id: IS14CyborgSyndicateAssaultGhostRole
+      - id: IS14CyborgSyndicateSaboteurGhostRole
         weight: 0.5 # Saboteurs are kinda like cyborg medics, we want less.
+      #IS14-change end
 
 - type: entity
   parent: EngineeringBorgChassisDerelict

@@ -1,0 +1,15 @@
+<!--
+Licensed under IS14's EULA, see EULA.txt for more information.
+-->
+
+<is14:CyborgPickEntry
+    xmlns="https://spacestation14.io"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Cyborgs.UI"
+    StyleClasses="button"
+    ToggleMode="True">
+
+    <BoxContainer Orientation="Horizontal" SeparationOverride="6" Margin="4">
+        <is14:CyborgSkinPreview Name="Preview" VerticalAlignment="Center" />
+        <Label Name="NameLabel" VerticalAlignment="Center" HorizontalExpand="True" Visible="False" />
+    </BoxContainer>
+</is14:CyborgPickEntry>

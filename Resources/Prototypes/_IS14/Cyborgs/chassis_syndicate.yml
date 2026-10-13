@@ -1,0 +1,123 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+
+# Syndicate cyborgs on the tgstation-style system. Mirrors upstream BaseBorgChassisSyndicate.
+- type: entity
+  parent: BaseCyborgIonStormable
+  id: BaseCyborgSyndicate
+  abstract: true
+  components:
+  - type: NpcFactionMember
+    factions:
+    - Syndicate
+  - type: Access
+    tags:
+    - NuclearOperative
+    - SyndicateAgent
+  - type: AccessReader
+    access: [["SyndicateAgent"], ["NuclearOperative"]]
+  - type: SiliconLawProvider
+    laws: SyndicateStatic
+    subverted: true
+  - type: Cyborg
+    inherentRadioChannels:
+    - Syndicate
+  - type: IntrinsicRadioTransmitter
+    channels:
+    - Syndicate
+  - type: ActiveRadio
+    channels:
+    - Syndicate
+  - type: ShowSyndicateIcons
+  - type: MovementAlwaysTouching
+  - type: Speech
+    speechVerb: Robotic
+    speechSounds: SyndieBorg
+    allowedEmotes:
+    - Laugh
+    - Sigh
+    - Crying
+    - Whistle
+  - type: Vocal
+    sounds:
+      Unsexed: UnisexSiliconSyndicate
+  - type: PointLight
+    color: "#dd200b"
+  - type: ContainerFill
+    containers:
+      cyborg_brain:
+      - PositronicBrain
+  - type: ItemSlots
+    slots:
+      cell_slot:
+        name: power-cell-slot-component-slot-name-default
+        startingItem: PowerCellHyper
+  - type: StartingMindRole
+    mindRole: "MindRoleSiliconBrain"
+    silent: true
+
+- type: entity
+  parent: BaseCyborgSyndicate
+  id: IS14CyborgSyndicateAssault
+  name: syndicate assault cyborg
+  description: A lean, mean killing machine with access to a variety of deadly tools.
+  suffix: IS14, operative
+  components:
+  - type: Cyborg
+    model: CyborgModelSyndicateAssault
+    inherentRadioChannels:
+    - Syndicate
+  - type: NukeOperative
+
+- type: entity
+  parent: BaseCyborgSyndicate
+  id: IS14CyborgSyndicateMedical
+  name: syndicate medical cyborg
+  description: A combat medical cyborg. Has limited offensive potential, but makes more than up for it with its support capabilities.
+  suffix: IS14, operative
+  components:
+  - type: Cyborg
+    model: CyborgModelSyndicateMedical
+    inherentRadioChannels:
+    - Syndicate
+  - type: NukeOperative
+
+- type: entity
+  parent: BaseCyborgSyndicate
+  id: IS14CyborgSyndicateSaboteur
+  name: syndicate saboteur cyborg
+  description: A streamlined engineering cyborg, equipped with covert modules.
+  suffix: IS14, operative
+  components:
+  - type: Cyborg
+    model: CyborgModelSyndicateSaboteur
+    inherentRadioChannels:
+    - Syndicate
+  - type: NukeOperative
+
+- type: entity
+  parent: IS14CyborgSyndicateAssault
+  id: IS14CyborgSyndicateAssaultGhostRole
+  suffix: IS14, ghost role
+  components:
+  - type: GhostRole
+    name: ghost-role-information-syndicate-cyborg-assault-name
+    description: ghost-role-information-syndicate-cyborg-description
+    rules: ghost-role-information-silicon-rules
+    raffle:
+      settings: default
+    job: Borg
+  - type: GhostTakeoverAvailable
+
+- type: entity
+  parent: IS14CyborgSyndicateSaboteur
+  id: IS14CyborgSyndicateSaboteurGhostRole
+  suffix: IS14, ghost role
+  components:
+  - type: GhostRole
+    name: ghost-role-information-syndicate-cyborg-saboteur-name
+    description: ghost-role-information-syndicate-cyborg-description
+    rules: ghost-role-information-silicon-rules
+    raffle:
+      settings: default
+    job: Borg
+  - type: GhostTakeoverAvailable

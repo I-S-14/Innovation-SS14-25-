@@ -1,0 +1,19 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+
+- type: entity
+  parent: BaseAction
+  id: ActionCyborgAutoWash
+  name: Auto-wash
+  description: Mop every tile you drive over with water from the internal tank, the mess goes into the tank. Slows you down and drains the cell.
+  components:
+  - type: Action
+    itemIconStyle: NoItem
+    icon:
+      sprite: Interface/Actions/actions_borg.rsi
+      state: cleaning-module
+    iconOn:
+      sprite: Interface/Actions/actions_borg.rsi
+      state: adv-cleaning-module
+    useDelay: 1
+  - type: InstantAction
+    event: !type:CyborgToggleAutoWashEvent

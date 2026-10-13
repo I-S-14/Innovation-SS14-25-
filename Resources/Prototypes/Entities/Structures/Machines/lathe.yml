@@ -378,7 +378,10 @@
     runningState: fab-active
     staticPacks:
     - RoboticsStatic
-    - BorgModulesStatic
+    #IS14-change start - tgstation-style cyborgs replace the module system
+    # - BorgModulesStatic
+    - IS14CyborgStatic
+    #IS14-change end
     - BorgLimbsStatic
     #IS14-change start
     - IS14ModsuitStatic
@@ -393,7 +396,10 @@
     - PowerCellsStatic
     dynamicPacks:
     - Robotics
-    - BorgModules
+    #IS14-change start - tgstation-style cyborgs replace the module system
+    # - BorgModules
+    - IS14CyborgUpgrades
+    #IS14-change end
     - MechParts
     - MechEquipment
     # Goobstation Packs
@@ -403,7 +409,9 @@
     - IS14ModsuitDynamic
     #IS14-change end
     - PowerCages
-    - BorgModulesGoob
+    #IS14-change start - tgstation-style cyborgs replace the module system
+    # - BorgModulesGoob
+    #IS14-change end
     - BasicCybernetics
     - MedicalCybernetics
     - AdvancedCybernetics

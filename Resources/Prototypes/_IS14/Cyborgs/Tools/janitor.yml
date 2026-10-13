@@ -1,0 +1,65 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+
+- type: entity
+  parent: [BaseCyborgTool, BorgTrashBag]
+  id: CyborgToolTrashBag
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [BaseCyborgTool, MopItem]
+  id: CyborgToolMop
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [BaseCyborgTool, BorgBucket]
+  id: CyborgToolBucket
+  categories: [ HideSpawnMenu ]
+  components:
+  # Comes full: this is the auto-wash tank, water out, mess in.
+  - type: SolutionContainerManager
+    solutions:
+      drink:
+        maxVol: 500
+        reagents:
+        - ReagentId: Water
+          Quantity: 500
+
+- type: entity
+  parent: [BaseCyborgTool, LightReplacer]
+  id: CyborgToolLightReplacer
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
+    layers:
+    - state: janitor-lightreplacer
+
+- type: entity
+  parent: [BaseCyborgTool, HoloprojectorBorg]
+  id: CyborgToolHoloprojector
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
+    layers:
+    - state: tool-signmaker
+
+- type: entity
+  parent: [BaseCyborgTool, BorgSprayBottle]
+  id: CyborgToolSprayBottle
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [BaseCyborgTool, WireBrush]
+  id: CyborgToolWireBrush
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
+    layers:
+    - state: tools-wirebrush
+
+- type: entity
+  parent: [BaseCyborgTool, Plunger]
+  id: CyborgToolPlunger
+  categories: [ HideSpawnMenu ]

@@ -1,0 +1,384 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+
+# Ports of tgstation's /obj/item/robot_model/*. The kits follow tg; cyborg-only items SS14 lacks
+# live in Tools/synthesizers.yml.
+
+- type: cyborgModel
+  id: CyborgModelEngineering
+  hudIcon: engineer
+  name: cyborg-model-engineering
+  description: cyborg-model-engineering-desc
+  order: 10
+  skins:
+  - CyborgSkinEngineering
+  - CyborgSkinGoobEngineeringAntique
+  - CyborgSkinLandmateTreads
+  - CyborgSkinGoobEngineeringNoble
+  - CyborgSkinCanEngineering
+  - CyborgSkinGoobEngineeringRover
+  - CyborgSkinSpiderEngineering
+  - CyborgSkinGoobEngineeringStandart
+  - CyborgSkinEngBot
+  - CyborgSkinGoobEngineeringCricket
+  - CyborgSkinChiefmate
+  radioChannels:
+  - Engineering
+  basicTools:
+  - CyborgToolFlash
+  - CyborgToolRCD
+  - CyborgToolRPD
+  - CyborgToolExtinguisher
+  - CyborgToolWelder
+  - CyborgToolOmnitool
+  - CyborgToolOmnitool
+  - CyborgToolMultitool
+  - CyborgToolTrayScanner
+  - CyborgToolGasAnalyzer
+  - CyborgToolSignaller
+  - CyborgToolSheetSteel
+  - CyborgToolSheetGlass
+  - CyborgToolRods
+  - CyborgToolCableApc
+  - CyborgToolCableMV
+  - CyborgToolCableHV
+  addComponents:
+  - type: MovementIgnoreGravity
+  # tg's meson toggle; SS14 mesons only protect eyes, night vision is the closest to seeing the walls.
+  - type: NightVision
+
+- type: cyborgModel
+  id: CyborgModelMedical
+  hudIcon: medical
+  name: cyborg-model-medical
+  description: cyborg-model-medical-desc
+  order: 20
+  skins:
+  - CyborgSkinMedical
+  - CyborgSkinChiefDoctor
+  - CyborgSkinGoobMedicalNoble
+  - CyborgSkinGoobMedicalQualified
+  - CyborgSkinGoobMedicalRover
+  - CyborgSkinGoobMedicalMedbot
+  - CyborgSkinGoobMedicalAdvanced
+  - CyborgSkinGoobMedicalStandart
+  - CyborgSkinGoobMedicalCricket
+  - CyborgSkinGoobMedicalNeedles
+  radioChannels:
+  - Medical
+  basicTools:
+  - CyborgToolFlash
+  - CyborgToolHealthAnalyzer
+  - CyborgToolHypo
+  - CyborgToolBeaker
+  - CyborgToolDropper
+  - CyborgToolSyringe
+  - CyborgToolMedicalOmnitool
+  - CyborgToolMedicalOmnitool
+  - CyborgToolBoneGel
+  - CyborgToolGauze
+  - CyborgToolExtinguisher
+  - CyborgToolRollerBed
+  - CyborgToolLollipop
+  - CyborgToolChemBag
+
+- type: cyborgModel
+  id: CyborgModelJanitor
+  hudIcon: janitor
+  name: cyborg-model-janitor
+  description: cyborg-model-janitor-desc
+  order: 30
+  skins:
+  - CyborgSkinJanitor
+  - CyborgSkinGoobJanitorNoble
+  - CyborgSkinCanJanitor
+  - CyborgSkinGoobJanitorRover
+  - CyborgSkinSpiderJanitor
+  - CyborgSkinGoobJanitorStandart
+  - CyborgSkinGoobJanitorCricket
+  - CyborgSkinJanBot
+  - CyborgSkinGoobJanitorMopbot
+  radioChannels:
+  - Service
+  basicTools:
+  - CyborgToolFlash
+  - CyborgToolScrewdriver
+  - CyborgToolCrowbar
+  - CyborgToolSoap
+  - CyborgToolTrashBag
+  - CyborgToolExtinguisher
+  - CyborgToolMop
+  - CyborgToolBucket
+  - CyborgToolLightReplacer
+  - CyborgToolHoloprojector
+  - CyborgToolSprayBottle
+  - CyborgToolWireBrush
+  - CyborgToolPlunger
+  - CyborgToolFloorTile
+  addComponents:
+  - type: CyborgAutoWash
+
+- type: cyborgModel
+  id: CyborgModelMiner
+  hudIcon: miner
+  name: cyborg-model-miner
+  description: cyborg-model-miner-desc
+  order: 40
+  skins:
+  - CyborgSkinMiner
+  - CyborgSkinGoobMinerCoffin
+  - CyborgSkinGoobMinerNoble
+  - CyborgSkinCanMiner
+  - CyborgSkinGoobMinerSquat
+  - CyborgSkinLavaland
+  - CyborgSkinSpiderMiner
+  - CyborgSkinGoobMinerAdvanced
+  - CyborgSkinGoobMinerCricket
+  radioChannels:
+  - Supply
+  basicTools:
+  - CyborgToolFlash
+  - CyborgToolOreBag
+  - CyborgToolMiningDrill
+  - CyborgToolShovel
+  - CyborgToolCrowbar
+  - CyborgToolWelderMini
+  - CyborgToolExtinguisher
+  - CyborgToolKineticAccelerator
+  - CyborgToolGPS
+  - CyborgToolMiningScanner
+
+- type: cyborgModel
+  id: CyborgModelService
+  hudIcon: service
+  name: cyborg-model-service
+  description: cyborg-model-service-desc
+  order: 50
+  skins:
+  - CyborgSkinService
+  - CyborgSkinArachne
+  - CyborgSkinGoobServiceBrobot
+  - CyborgSkinGoobServiceRich
+  - CyborgSkinBro
+  - CyborgSkinGoobServiceWaitress
+  - CyborgSkinGoobServiceNoble
+  - CyborgSkinKent
+  - CyborgSkinGoobServiceStandart
+  - CyborgSkinHandy
+  - CyborgSkinGoobServiceRover
+  - CyborgSkinWaitress
+  - CyborgSkinGoobServiceCricket
+  - CyborgSkinTophat
+  radioChannels:
+  - Service
+  basicTools:
+  - CyborgToolFlash
+  - CyborgToolShaker
+  - CyborgToolBarSpoon
+  - CyborgToolRSF
+  - CyborgToolBeaker
+  - CyborgToolDropper
+  - CyborgToolPen
+  - CyborgToolCrayon
+  - CyborgToolSprayPainter
+  - CyborgToolExtinguisher
+  - CyborgToolHandLabeler
+  - CyborgToolGuitar
+  - CyborgToolSynthesizer
+  - CyborgToolLighter
+  - CyborgToolLollipop
+  - CyborgToolBooksBag
+  - CyborgToolStampApproved
+  - CyborgToolStampDenied
+
+- type: cyborgModel
+  id: CyborgModelPeacekeeper
+  hudIcon: standard
+  name: cyborg-model-peacekeeper
+  description: cyborg-model-peacekeeper-desc
+  order: 60
+  skins:
+  - CyborgSkinPeacekeeper
+  - CyborgSkinPeaceBot
+  - CyborgSkinSpiderPeacekeeper
+  basicTools:
+  - CyborgToolFlash
+  - CyborgToolPeaceHypo
+  - CyborgToolCookieSynth
+  - CyborgToolHarmAlarm
+  - CyborgToolProjectileDampener
+  - CyborgToolHoloprojectorSecurity
+  - CyborgToolExtinguisher
+  - CyborgToolLollipop
+
+- type: cyborgModel
+  id: CyborgModelClown
+  hudIcon: brobot
+  name: cyborg-model-clown
+  description: cyborg-model-clown-desc
+  order: 70
+  skins:
+  - CyborgSkinClownDefault
+  radioChannels:
+  - Service
+  basicTools:
+  - CyborgToolFlash
+  - CyborgToolCrayonRainbow
+  - CyborgToolBikeHornInstrument
+  - CyborgToolStampClown
+  - CyborgToolBikeHorn
+  - CyborgToolClownRecorder
+  - CyborgToolPushHorn
+  - CyborgToolSoap
+  - CyborgToolPieCannon
+  - CyborgToolHoloprojectorClown
+  - CyborgToolLollipop
+  - CyborgToolExtinguisher
+
+- type: cyborgModel
+  id: CyborgModelSecurity
+  hudIcon: security
+  name: cyborg-model-security
+  description: cyborg-model-security-desc
+  order: 80
+  skins:
+  - CyborgSkinSecurity
+  radioChannels:
+  - Security
+  basicTools:
+  - CyborgToolFlash
+  - CyborgToolZipties
+  - CyborgToolDisabler
+  - CyborgToolExtinguisher
+
+# IS14's Yasari cyborg, moved over from the upstream module system. Admin only, not selectable.
+- type: cyborgModel
+  id: CyborgModelYasari
+  hudIcon: security
+  name: cyborg-model-yasari
+  description: cyborg-model-yasari-desc
+  selectable: false
+  order: 100
+  skins:
+  - CyborgSkinYasari
+  radioChannels:
+  - Security
+  basicTools:
+  - CyborgToolFlash
+  - CyborgToolOmnitool
+  - CyborgToolMultitool
+  - CyborgToolWelder
+  - CyborgToolExtinguisher
+  - CyborgToolGPS
+  - CyborgToolTetherGun
+  - CyborgToolDisabler
+  - CyborgToolZipties
+  addComponents:
+  - type: NightVision
+
+# Syndicate models, applied directly by the spawning entity.
+- type: cyborgModel
+  id: CyborgModelSyndicateAssault
+  hudIcon: malf
+  name: cyborg-model-syndicate-assault
+  selectable: false
+  order: 200
+  skins:
+  - CyborgSkinSyndicateAssault
+  basicTools:
+  - CyborgToolFlash
+  - CyborgToolEnergySwordDouble
+  - CyborgToolL6C
+  - CyborgToolEmag
+  - CyborgToolSyndicateJaws
+  - CyborgToolExtinguisher
+  - CyborgToolPinpointer
+
+- type: cyborgModel
+  id: CyborgModelSyndicateMedical
+  hudIcon: malf
+  name: cyborg-model-syndicate-medical
+  selectable: false
+  order: 210
+  skins:
+  - CyborgSkinSyndicateMedical
+  basicTools:
+  - CyborgToolFlash
+  - CyborgToolSyndicateHypo
+  - CyborgToolDefibrillator
+  - CyborgToolHealthAnalyzer
+  - CyborgToolMedicalOmnitool
+  - CyborgToolMedicalOmnitool
+  - CyborgToolBoneGel
+  - CyborgToolGauze
+  - CyborgToolEnergySword
+  - CyborgToolRollerBed
+  - CyborgToolSyndicateJaws
+  - CyborgToolExtinguisher
+  - CyborgToolPinpointer
+
+- type: cyborgModel
+  id: CyborgModelSyndicateSaboteur
+  hudIcon: malf
+  name: cyborg-model-syndicate-saboteur
+  selectable: false
+  order: 220
+  skins:
+  - CyborgSkinSyndicateSaboteur
+  basicTools:
+  - CyborgToolFlash
+  - CyborgToolRCD
+  - CyborgToolRPD
+  - CyborgToolZipties
+  - CyborgToolExtinguisher
+  - CyborgToolWelder
+  - CyborgToolGasAnalyzer
+  - CyborgToolOmnitool
+  - CyborgToolOmnitool
+  - CyborgToolMultitool
+  - CyborgToolSheetSteel
+  - CyborgToolSheetGlass
+  - CyborgToolRods
+  - CyborgToolCableApc
+  - CyborgToolPinpointer
+  - CyborgToolChameleonProjector
+  - CyborgToolEmag
+  - CyborgToolAccessBreaker
+
+# Derelict cyborgs from the space events: a worn generic kit, picked skin decides the look.
+- type: cyborgModel
+  id: CyborgModelDerelict
+  hudIcon: standard
+  name: cyborg-model-derelict
+  selectable: false
+  order: 300
+  skins:
+  - CyborgSkinDerelict
+  - CyborgSkinDerelictEngineering
+  - CyborgSkinDerelictMedical
+  - CyborgSkinDerelictJanitor
+  - CyborgSkinDerelictMiner
+  basicTools:
+  - CyborgToolFlash
+  - CyborgToolOmnitool
+  - CyborgToolMultitool
+  - CyborgToolWelder
+  - CyborgToolExtinguisher
+  - CyborgToolGPS
+  - CyborgToolHealthAnalyzer
+
+- type: cyborgModel
+  id: CyborgModelDerelictSyndicate
+  hudIcon: malf
+  name: cyborg-model-derelict-syndicate
+  selectable: false
+  order: 310
+  skins:
+  - CyborgSkinDerelictSyndicate
+  basicTools:
+  - CyborgToolFlash
+  - CyborgToolEnergySword
+  - CyborgToolSyndicateJaws
+  - CyborgToolOmnitool
+  - CyborgToolWelder
+  - CyborgToolExtinguisher
+  - CyborgToolPinpointer

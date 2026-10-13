@@ -1,0 +1,278 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+
+# Goob Station's chassis subtypes (Paradise sprites) from the old borg system.
+
+# Engineering
+- type: cyborgSkin
+  id: CyborgSkinGoobEngineeringAntique
+  name: cyborg-skin-goob-engineering-antique
+  sprite: _Goobstation/Mobs/Silicon/Engineering/antique.rsi
+  bodyState: engineer
+  eyesState: engineer_e
+  noMindEyesState: engineer_e_r
+  lightState: engineer_l
+
+- type: cyborgSkin
+  id: CyborgSkinGoobEngineeringStandart
+  name: cyborg-skin-goob-engineering-standart
+  sprite: _Goobstation/Mobs/Silicon/Engineering/standart.rsi
+  bodyState: engineer
+  eyesState: engineer_e
+  noMindEyesState: engineer_e_r
+  lightState: engineer_l
+
+- type: cyborgSkin
+  id: CyborgSkinGoobEngineeringNoble
+  name: cyborg-skin-goob-engineering-noble
+  sprite: _Goobstation/Mobs/Silicon/Engineering/noble.rsi
+  bodyState: engineer
+  eyesState: engineer_e
+  noMindEyesState: engineer_e_r
+  lightState: engineer_l
+
+- type: cyborgSkin
+  id: CyborgSkinGoobEngineeringCricket
+  name: cyborg-skin-goob-engineering-cricket
+  sprite: _Goobstation/Mobs/Silicon/Engineering/cricket.rsi
+  bodyState: engineer
+  eyesState: engineer_e
+  noMindEyesState: engineer_e_r
+  lightState: engineer_l
+
+- type: cyborgSkin
+  id: CyborgSkinGoobEngineeringRover
+  name: cyborg-skin-goob-engineering-rover
+  sprite: _Goobstation/Mobs/Silicon/Engineering/rover.rsi
+  bodyState: engineer
+  eyesState: engineer_e
+  noMindEyesState: engineer_e_r
+  lightState: engineer_l
+
+# Medical
+- type: cyborgSkin
+  id: CyborgSkinGoobMedicalStandart
+  name: cyborg-skin-goob-medical-standart
+  sprite: _Goobstation/Mobs/Silicon/Medical/standart.rsi
+  bodyState: medical
+  eyesState: medical_e
+  noMindEyesState: medical_e_r
+  lightState: medical_l
+
+- type: cyborgSkin
+  id: CyborgSkinGoobMedicalMedbot
+  name: cyborg-skin-goob-medical-medbot
+  sprite: _Goobstation/Mobs/Silicon/Medical/medbot.rsi
+  bodyState: medical
+  eyesState: medical_e
+  noMindEyesState: medical_e_r
+  lightState: medical_l
+
+- type: cyborgSkin
+  id: CyborgSkinGoobMedicalNeedles
+  name: cyborg-skin-goob-medical-needles
+  sprite: _Goobstation/Mobs/Silicon/Medical/needles.rsi
+  bodyState: medical
+  eyesState: medical_e
+  noMindEyesState: medical_e_r
+  lightState: medical_l
+
+- type: cyborgSkin
+  id: CyborgSkinGoobMedicalAdvanced
+  name: cyborg-skin-goob-medical-advanced
+  sprite: _Goobstation/Mobs/Silicon/Medical/advanced.rsi
+  bodyState: medical
+  eyesState: medical_e
+  noMindEyesState: medical_e_r
+  lightState: medical_l
+
+- type: cyborgSkin
+  id: CyborgSkinGoobMedicalQualified
+  name: cyborg-skin-goob-medical-qualified
+  sprite: _Goobstation/Mobs/Silicon/Medical/qualified.rsi
+  bodyState: medical
+  eyesState: medical_e
+  noMindEyesState: medical_e_r
+  lightState: medical_l
+
+- type: cyborgSkin
+  id: CyborgSkinGoobMedicalNoble
+  name: cyborg-skin-goob-medical-noble
+  sprite: _Goobstation/Mobs/Silicon/Medical/noble.rsi
+  bodyState: medical
+  eyesState: medical_e
+  noMindEyesState: medical_e_r
+  lightState: medical_l
+
+- type: cyborgSkin
+  id: CyborgSkinGoobMedicalCricket
+  name: cyborg-skin-goob-medical-cricket
+  sprite: _Goobstation/Mobs/Silicon/Medical/cricket.rsi
+  bodyState: medical
+  eyesState: medical_e
+  noMindEyesState: medical_e_r
+  lightState: medical_l
+
+- type: cyborgSkin
+  id: CyborgSkinGoobMedicalRover
+  name: cyborg-skin-goob-medical-rover
+  sprite: _Goobstation/Mobs/Silicon/Medical/rover.rsi
+  bodyState: medical
+  eyesState: medical_e
+  noMindEyesState: medical_e_r
+  lightState: medical_l
+
+# Janitor
+- type: cyborgSkin
+  id: CyborgSkinGoobJanitorMopbot
+  name: cyborg-skin-goob-janitor-mopbot
+  sprite: _Goobstation/Mobs/Silicon/Janitor/mopbot.rsi
+  bodyState: janitor
+  eyesState: janitor_e
+  noMindEyesState: janitor_e_r
+  lightState: janitor_l
+
+- type: cyborgSkin
+  id: CyborgSkinGoobJanitorStandart
+  name: cyborg-skin-goob-janitor-standart
+  sprite: _Goobstation/Mobs/Silicon/Janitor/standart.rsi
+  bodyState: janitor
+  eyesState: janitor_e
+  noMindEyesState: janitor_e_r
+  lightState: janitor_l
+
+- type: cyborgSkin
+  id: CyborgSkinGoobJanitorNoble
+  name: cyborg-skin-goob-janitor-noble
+  sprite: _Goobstation/Mobs/Silicon/Janitor/noble.rsi
+  bodyState: janitor
+  eyesState: janitor_e
+  noMindEyesState: janitor_e_r
+  lightState: janitor_l
+
+- type: cyborgSkin
+  id: CyborgSkinGoobJanitorCricket
+  name: cyborg-skin-goob-janitor-cricket
+  sprite: _Goobstation/Mobs/Silicon/Janitor/cricket.rsi
+  bodyState: janitor
+  eyesState: janitor_e
+  noMindEyesState: janitor_e_r
+  lightState: janitor_l
+
+- type: cyborgSkin
+  id: CyborgSkinGoobJanitorRover
+  name: cyborg-skin-goob-janitor-rover
+  sprite: _Goobstation/Mobs/Silicon/Janitor/rover.rsi
+  bodyState: janitor
+  eyesState: janitor_e
+  noMindEyesState: janitor_e_r
+  lightState: janitor_l
+
+# Miner
+- type: cyborgSkin
+  id: CyborgSkinGoobMinerAdvanced
+  name: cyborg-skin-goob-miner-advanced
+  sprite: _Goobstation/Mobs/Silicon/Miner/advanced.rsi
+  bodyState: miner
+  eyesState: miner_e
+  noMindEyesState: miner_e_r
+  lightState: miner_l
+
+- type: cyborgSkin
+  id: CyborgSkinGoobMinerCoffin
+  name: cyborg-skin-goob-miner-coffin
+  sprite: _Goobstation/Mobs/Silicon/Miner/coffin.rsi
+  bodyState: miner
+  eyesState: miner_e
+  noMindEyesState: miner_e_r
+  lightState: miner_l
+
+- type: cyborgSkin
+  id: CyborgSkinGoobMinerNoble
+  name: cyborg-skin-goob-miner-noble
+  sprite: _Goobstation/Mobs/Silicon/Miner/noble.rsi
+  bodyState: miner
+  eyesState: miner_e
+  noMindEyesState: miner_e_r
+  lightState: miner_l
+
+- type: cyborgSkin
+  id: CyborgSkinGoobMinerCricket
+  name: cyborg-skin-goob-miner-cricket
+  sprite: _Goobstation/Mobs/Silicon/Miner/cricket.rsi
+  bodyState: miner
+  eyesState: miner_e
+  noMindEyesState: miner_e_r
+  lightState: miner_l
+
+- type: cyborgSkin
+  id: CyborgSkinGoobMinerSquat
+  name: cyborg-skin-goob-miner-squat
+  sprite: _Goobstation/Mobs/Silicon/Miner/squat.rsi
+  bodyState: miner
+  eyesState: miner_e
+  noMindEyesState: miner_e_r
+  lightState: miner_l
+
+# Service
+- type: cyborgSkin
+  id: CyborgSkinGoobServiceStandart
+  name: cyborg-skin-goob-service-standart
+  sprite: _Goobstation/Mobs/Silicon/Service/standart.rsi
+  bodyState: service
+  eyesState: service_e
+  noMindEyesState: service_e_r
+  lightState: service_l
+
+- type: cyborgSkin
+  id: CyborgSkinGoobServiceBrobot
+  name: cyborg-skin-goob-service-brobot
+  sprite: _Goobstation/Mobs/Silicon/Service/brobot.rsi
+  bodyState: service
+  eyesState: service_e
+  noMindEyesState: service_e_r
+  lightState: service_l
+
+- type: cyborgSkin
+  id: CyborgSkinGoobServiceWaitress
+  name: cyborg-skin-goob-service-waitress
+  sprite: _Goobstation/Mobs/Silicon/Service/waitress.rsi
+  bodyState: service
+  eyesState: service_e
+  noMindEyesState: service_e_r
+  lightState: service_l
+
+- type: cyborgSkin
+  id: CyborgSkinGoobServiceCricket
+  name: cyborg-skin-goob-service-cricket
+  sprite: _Goobstation/Mobs/Silicon/Service/cricket.rsi
+  bodyState: service
+  eyesState: service_e
+  noMindEyesState: service_e_r
+  lightState: service_l
+
+- type: cyborgSkin
+  id: CyborgSkinGoobServiceNoble
+  name: cyborg-skin-goob-service-noble
+  sprite: _Goobstation/Mobs/Silicon/Service/noble.rsi
+  bodyState: service
+  eyesState: service_e
+  noMindEyesState: service_e_r
+  lightState: service_l
+
+- type: cyborgSkin
+  id: CyborgSkinGoobServiceRich
+  name: cyborg-skin-goob-service-rich
+  sprite: _Goobstation/Mobs/Silicon/Service/rich.rsi
+  bodyState: service
+  eyesState: service_e
+  noMindEyesState: service_e_r
+  lightState: service_l
+
+- type: cyborgSkin
+  id: CyborgSkinGoobServiceRover
+  name: cyborg-skin-goob-service-rover
+  sprite: _Goobstation/Mobs/Silicon/Service/rover.rsi
+  bodyState: service
+  eyesState: service_e
+  noMindEyesState: service_e_r
+  lightState: service_l

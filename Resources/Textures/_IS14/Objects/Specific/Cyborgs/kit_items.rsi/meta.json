@@ -1,0 +1,326 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from BandaStation (https://github.com/ss220club/BandaStation), icons/obj (various)",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "crayons-crayonrainbow"
+    },
+    {
+      "name": "crayons-spraycan"
+    },
+    {
+      "name": "horn-air_horn"
+    },
+    {
+      "name": "horn-bike_horn"
+    },
+    {
+      "name": "musician-guitar"
+    },
+    {
+      "name": "musician-synth"
+    },
+    {
+      "name": "musician-bike_horn"
+    },
+    {
+      "name": "paint-paint_neutral"
+    },
+    {
+      "name": "statue-chisel"
+    },
+    {
+      "name": "card-emag",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "chronos-chronogun"
+    },
+    {
+      "name": "cigarettes-zippo"
+    },
+    {
+      "name": "cosmetic-razor"
+    },
+    {
+      "name": "cosmetic-lipstick"
+    },
+    {
+      "name": "circuitry_n_data-boris",
+      "delays": [
+        [
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "flash-flash"
+    },
+    {
+      "name": "mecha_equipment-mecha_grenadelnchr"
+    },
+    {
+      "name": "new_assemblies-signaller"
+    },
+    {
+      "name": "scanner-health"
+    },
+    {
+      "name": "scanner-t-ray0"
+    },
+    {
+      "name": "scanner-advmining0"
+    },
+    {
+      "name": "scanner-analyzer",
+      "delays": [
+        [
+          1.0,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "syndie_gadget-shield0"
+    },
+    {
+      "name": "tool-signmaker",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "tool-cargo_tagger"
+    },
+    {
+      "name": "tool-decal_sprayer_borg"
+    },
+    {
+      "name": "tracker-pinpointer"
+    },
+    {
+      "name": "tracker-gps-b"
+    },
+    {
+      "name": "voice-taperecorder_idle"
+    },
+    {
+      "name": "voice-megaphone"
+    },
+    {
+      "name": "bottles-shaker"
+    },
+    {
+      "name": "mixed_drinks-threemileislandglass",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "containers-enzyme"
+    },
+    {
+      "name": "containers-tray"
+    },
+    {
+      "name": "chemical-dropper0"
+    },
+    {
+      "name": "chemical-beakerlarge"
+    },
+    {
+      "name": "chemical-bag"
+    },
+    {
+      "name": "defib-syndiepaddles0"
+    },
+    {
+      "name": "medical_bed-emerg_folded"
+    },
+    {
+      "name": "stack_medical-gauze"
+    },
+    {
+      "name": "surgery_tools-bone-gel"
+    },
+    {
+      "name": "surgery_tools-bloodfilter"
+    },
+    {
+      "name": "surgery_tools-esaw"
+    },
+    {
+      "name": "syringe-syringe_0"
+    },
+    {
+      "name": "syringe-borghypo"
+    },
+    {
+      "name": "syringe-borghypo_s"
+    },
+    {
+      "name": "mining-marker"
+    },
+    {
+      "name": "mining-handdrill"
+    },
+    {
+      "name": "mining-satchel"
+    },
+    {
+      "name": "mining-shovel"
+    },
+    {
+      "name": "mining-sheetsnatcher"
+    },
+    {
+      "name": "scrolls-blueprints"
+    },
+    {
+      "name": "bureaucracy-stamp-clown"
+    },
+    {
+      "name": "bureaucracy-pen"
+    },
+    {
+      "name": "bureaucracy-labeler0"
+    },
+    {
+      "name": "equipment-flyswatter"
+    },
+    {
+      "name": "harvest-sunflower"
+    },
+    {
+      "name": "janitor-mop"
+    },
+    {
+      "name": "janitor-bucket"
+    },
+    {
+      "name": "janitor-lightreplacer"
+    },
+    {
+      "name": "janitor-trashbag"
+    },
+    {
+      "name": "janitor-sprayer_large"
+    },
+    {
+      "name": "signs-picket"
+    },
+    {
+      "name": "stack_objects-coil"
+    },
+    {
+      "name": "stack_objects-pipecleaner"
+    },
+    {
+      "name": "stack_objects-sheet-glass"
+    },
+    {
+      "name": "stack_objects-rods"
+    },
+    {
+      "name": "stack_objects-sheet-metal"
+    },
+    {
+      "name": "storage-evidenceobj"
+    },
+    {
+      "name": "storage-moneybag"
+    },
+    {
+      "name": "tiles-tile"
+    },
+    {
+      "name": "tools-fire_extinguisher0"
+    },
+    {
+      "name": "tools-wirebrush"
+    },
+    {
+      "name": "tools-miniFE0"
+    },
+    {
+      "name": "tools-rtd"
+    },
+    {
+      "name": "tools-rpd"
+    },
+    {
+      "name": "tools-rsf"
+    },
+    {
+      "name": "tools-miniwelder"
+    },
+    {
+      "name": "tools-rcd"
+    },
+    {
+      "name": "tools-ircd"
+    },
+    {
+      "name": "toy-rag"
+    },
+    {
+      "name": "baton-stunbaton"
+    },
+    {
+      "name": "ballistic-l6_cyborg"
+    },
+    {
+      "name": "energy-laser"
+    },
+    {
+      "name": "energy-kineticgun_b"
+    },
+    {
+      "name": "energy-disabler"
+    },
+    {
+      "name": "pneumaticCannon-piecannon"
+    },
+    {
+      "name": "restraints-cuff"
+    },
+    {
+      "name": "transforming_energy-e_sword"
+    },
+    {
+      "name": "soap-nanotrasen"
+    }
+  ]
+}

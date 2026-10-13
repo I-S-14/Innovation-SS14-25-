@@ -1,0 +1,41 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+
+- type: entity
+  parent: [BaseCyborgTool, BorgOreBag]
+  id: CyborgToolOreBag
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [BaseCyborgTool, MiningDrill]
+  id: CyborgToolMiningDrill
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
+    layers:
+    - state: mining-handdrill
+
+- type: entity
+  parent: [BaseCyborgTool, Shovel]
+  id: CyborgToolShovel
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
+    layers:
+    - state: mining-shovel
+
+- type: entity
+  parent: [BaseCyborgTool, WelderMini]
+  id: CyborgToolWelderMini
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [BaseCyborgTool, WeaponProtoKineticAccelerator]
+  id: CyborgToolKineticAccelerator
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [BaseCyborgTool, AdvancedMineralScannerUnpowered]
+  id: CyborgToolMiningScanner
+  categories: [ HideSpawnMenu ]

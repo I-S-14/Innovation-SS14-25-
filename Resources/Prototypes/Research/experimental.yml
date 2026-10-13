@@ -14,6 +14,10 @@
   - ProximitySensor
   - Drone # Goobstation
   - AiRemoteBrain # Goobstation
+  #IS14-change start - tgstation-style cyborg upgrade boards
+  - CyborgUpgradeIonThrusters
+  - CyborgUpgradeSelfRepair
+  #IS14-change end
   position: -1,0
 
 - type: technology

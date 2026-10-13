@@ -1,0 +1,190 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+
+- type: entity
+  parent: [BaseCyborgTool, Syringe]
+  id: CyborgToolSyringe
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [BaseCyborgTool, Scalpel]
+  id: CyborgToolScalpel
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/robot_items.rsi
+    layers:
+    - state: toolkit_medborg_scalpel
+
+- type: entity
+  parent: [BaseCyborgTool, Hemostat]
+  id: CyborgToolHemostat
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/robot_items.rsi
+    layers:
+    - state: toolkit_medborg_hemostat
+
+- type: entity
+  parent: [BaseCyborgTool, Retractor]
+  id: CyborgToolRetractor
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/robot_items.rsi
+    layers:
+    - state: toolkit_medborg_retractor
+
+- type: entity
+  parent: [BaseCyborgTool, Cautery]
+  id: CyborgToolCautery
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/robot_items.rsi
+    layers:
+    - state: toolkit_medborg_cautery
+
+- type: entity
+  parent: [BaseCyborgTool, SawElectric]
+  id: CyborgToolSaw
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/robot_items.rsi
+    layers:
+    - state: toolkit_medborg_saw
+
+- type: entity
+  parent: [BaseCyborgTool, Drill]
+  id: CyborgToolDrill
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/robot_items.rsi
+    layers:
+    - state: toolkit_medborg_drill
+
+- type: entity
+  parent: [BaseCyborgTool, BoneGel]
+  id: CyborgToolBoneGel
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [BaseCyborgTool, Bonesetter]
+  id: CyborgToolBonesetter
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/robot_items.rsi
+    layers:
+    - state: toolkit_medborg_bonesetter
+
+# tg's silicon emergency bed: deploys a roller bed where you click, packs it back on click.
+- type: entity
+  parent: [BaseCyborgTool, BaseItem]
+  id: CyborgToolRollerBed
+  name: roller bed deployer
+  description: A built-in roller bed. Click the floor to deploy it, click the empty bed to pack it back.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
+    layers:
+    - state: medical_bed-emerg_folded
+  - type: Item
+    size: Normal
+  - type: CyborgBedDeployer
+
+- type: entity
+  parent: [BaseCyborgTool, ChemBag]
+  id: CyborgToolChemBag
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
+    layers:
+    - state: chemical-bag
+
+# tg's /obj/item/borg/cyborg_omnitool/medical: every surgery tool in one, cycled on use.
+# Shitmed tells tools apart by components, so each mode brings its own.
+- type: entity
+  parent: [BaseCyborgTool, BaseItem]
+  id: CyborgToolMedicalOmnitool
+  name: cyborg surgical omni-toolset
+  description: Every surgical tool a medical cyborg needs, built into its arm. Switch tools with a press.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/robot_items.rsi
+    layers:
+    - state: toolkit_medborg_scalpel
+  - type: Item
+    size: Small
+  - type: Tag
+    tags:
+    - SurgeryTool
+  - type: CyborgMultiTool
+    modes:
+    - name: cyborg-multitool-mode-scalpel
+      state: toolkit_medborg_scalpel
+      components:
+      - type: Scalpel
+      - type: Sharp
+      - type: SurgeryTool
+        startSound:
+          path: /Audio/_Shitmed/Medical/Surgery/scalpel1.ogg
+        endSound:
+          path: /Audio/_Shitmed/Medical/Surgery/scalpel2.ogg
+    - name: cyborg-multitool-mode-hemostat
+      state: toolkit_medborg_hemostat
+      components:
+      - type: Hemostat
+      - type: Tweezers
+      - type: Tending
+      - type: SurgeryTool
+        startSound:
+          path: /Audio/_Shitmed/Medical/Surgery/retractor1.ogg
+        endSound:
+          path: /Audio/_Shitmed/Medical/Surgery/hemostat1.ogg
+    - name: cyborg-multitool-mode-retractor
+      state: toolkit_medborg_retractor
+      components:
+      - type: Retractor
+      - type: SurgeryTool
+        startSound:
+          path: /Audio/_Shitmed/Medical/Surgery/retractor1.ogg
+        endSound:
+          path: /Audio/_Shitmed/Medical/Surgery/retractor2.ogg
+    - name: cyborg-multitool-mode-cautery
+      state: toolkit_medborg_cautery
+      components:
+      - type: Cautery
+      - type: AlwaysHot
+      - type: SurgeryTool
+        startSound:
+          path: /Audio/_Shitmed/Medical/Surgery/cautery1.ogg
+        endSound:
+          path: /Audio/_Shitmed/Medical/Surgery/cautery2.ogg
+    - name: cyborg-multitool-mode-saw
+      state: toolkit_medborg_saw
+      components:
+      - type: BoneSaw
+        speed: 1.5
+      - type: SurgeryTool
+        startSound:
+          path: /Audio/_Shitmed/Medical/Surgery/saw.ogg
+    - name: cyborg-multitool-mode-drill
+      state: toolkit_medborg_drill
+      components:
+      - type: Drill
+      - type: SurgeryTool
+        startSound:
+          path: /Audio/_Shitmed/Medical/Surgery/saw.ogg
+    - name: cyborg-multitool-mode-bonesetter
+      state: toolkit_medborg_bonesetter
+      components:
+      - type: BoneSetter
+      - type: SurgeryTool
+        startSound:
+          path: /Audio/_Shitmed/Medical/Surgery/bone_setter.ogg

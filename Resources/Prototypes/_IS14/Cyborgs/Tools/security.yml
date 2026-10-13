@@ -1,0 +1,21 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+
+- type: entity
+  parent: [BaseCyborgTool, Zipties]
+  id: CyborgToolZipties
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
+    layers:
+    - state: restraints-cuff
+
+- type: entity
+  parent: [BaseCyborgTool, WeaponDisablerAdvanced]
+  id: CyborgToolDisabler
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [BaseCyborgTool, WeaponTetherGun]
+  id: CyborgToolTetherGun
+  categories: [ HideSpawnMenu ]

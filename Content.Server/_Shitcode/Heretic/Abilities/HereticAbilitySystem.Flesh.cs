@@ -27,6 +27,7 @@ using Content.Shared.Weapons.Ranged.Components;
 using Robust.Shared.Audio;
 using Robust.Shared.Containers;
 using Robust.Shared.Prototypes;
+using Content.Shared._IS14.Cyborgs.Components; // IS14-change
 
 namespace Content.Server.Heretic.Abilities;
 
@@ -237,7 +238,9 @@ public sealed partial class HereticAbilitySystem
         FixedPoint2 hp,
         EntityUid? hostile)
     {
-        if (_mobstate.IsDead(uid) || HasComp<GhoulComponent>(uid) || HasComp<BorgChassisComponent>(uid))
+        //IS14-change start - tgstation-style cyborgs count as borgs
+        if (_mobstate.IsDead(uid) || HasComp<GhoulComponent>(uid) || (HasComp<BorgChassisComponent>(uid) || HasComp<CyborgComponent>(uid)))
+        //IS14-change end
             return null;
 
         var xform = Transform(uid);

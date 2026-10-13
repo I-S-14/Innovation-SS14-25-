@@ -1,0 +1,63 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+
+- type: latheRecipe
+  parent: BaseRoboticsRecipe
+  id: IS14CyborgEndoskeleton
+  result: IS14CyborgEndoskeleton
+  materials:
+    Steel: 1500
+
+- type: latheRecipe
+  parent: BaseBorgModuleRecipe
+  id: CyborgUpgradeReclassification
+  result: CyborgUpgradeReclassification
+
+- type: latheRecipe
+  parent: BaseBorgModuleRecipe
+  id: CyborgUpgradeBotanyTools
+  result: CyborgUpgradeBotanyTools
+
+- type: latheRecipe
+  parent: BaseBorgModuleRecipe
+  id: CyborgUpgradeKitchenTools
+  result: CyborgUpgradeKitchenTools
+
+- type: latheRecipe
+  parent: BaseBorgModuleRecipe
+  id: CyborgUpgradeAdvancedMop
+  result: CyborgUpgradeAdvancedMop
+
+- type: latheRecipe
+  parent: BaseBorgModuleRecipe
+  id: CyborgUpgradeDefibrillator
+  result: CyborgUpgradeDefibrillator
+
+- type: latheRecipe
+  parent: BaseGoldBorgModuleRecipe
+  id: CyborgUpgradeIonThrusters
+  result: CyborgUpgradeIonThrusters
+
+- type: latheRecipe
+  parent: BaseGoldBorgModuleRecipe
+  id: CyborgUpgradeSelfRepair
+  result: CyborgUpgradeSelfRepair
+
+- type: latheRecipe
+  parent: BaseGoldBorgModuleRecipe
+  id: CyborgUpgradeDiamondDrill
+  result: CyborgUpgradeDiamondDrill
+
+- type: latheRecipe
+  parent: BaseGoldBorgModuleRecipe
+  id: CyborgUpgradeSatchelOfHolding
+  result: CyborgUpgradeSatchelOfHolding
+
+- type: latheRecipe
+  parent: BaseGoldBorgModuleRecipe
+  id: CyborgUpgradeAdvancedSurgery
+  result: CyborgUpgradeAdvancedSurgery
+
+- type: latheRecipe
+  parent: BaseGoldBorgModuleRecipe
+  id: CyborgUpgradeAdvancedTools
+  result: CyborgUpgradeAdvancedTools

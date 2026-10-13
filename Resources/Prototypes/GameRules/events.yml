@@ -1030,7 +1030,10 @@
   - type: SpaceSpawnRule
     spawnDistance: 0
   - type: AntagSpawner
-    prototype: PlayerBorgDerelictGhostRole
+    #IS14-change start - tgstation-style cyborg
+    # prototype: PlayerBorgDerelictGhostRole
+    prototype: IS14CyborgDerelictGhostRole
+    #IS14-change end
   - type: AntagSelection
     definitions:
     - spawnerPrototype: SpawnPointGhostDerelictCyborg
@@ -1122,7 +1125,10 @@
   - type: SpaceSpawnRule
     spawnDistance: 0
   - type: AntagSpawner
-    prototype: PlayerBorgSyndicateDerelictGhostRole
+    #IS14-change start - tgstation-style cyborg
+    # prototype: PlayerBorgSyndicateDerelictGhostRole
+    prototype: IS14CyborgDerelictSyndicateGhostRole
+    #IS14-change end
   - type: AntagSelection
     definitions:
     - spawnerPrototype: SpawnPointGhostDerelictSyndicateAssaultCyborg

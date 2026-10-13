@@ -1,0 +1,43 @@
+<!--
+Licensed under IS14's EULA, see EULA.txt for more information.
+-->
+
+<is14:CyborgMaintenanceWindow
+    xmlns="https://spacestation14.io"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Cyborgs.UI"
+    Title="{Loc 'cyborg-maintenance-title'}"
+    Resizable="False"
+    MinSize="360 280">
+
+    <BoxContainer Orientation="Vertical" Margin="10" SeparationOverride="8">
+        <BoxContainer Orientation="Horizontal" SeparationOverride="6">
+            <Label Text="{Loc 'cyborg-maintenance-model'}" StyleClasses="LabelSubText" MinWidth="80" />
+            <Label Name="ModelLabel" HorizontalExpand="True" />
+        </BoxContainer>
+
+        <BoxContainer Orientation="Horizontal" SeparationOverride="6">
+            <Label Text="{Loc 'cyborg-maintenance-brain'}" StyleClasses="LabelSubText" MinWidth="80" />
+            <Label Name="BrainLabel" HorizontalExpand="True" ClipText="True" />
+            <Button Name="EjectBrainButton" Text="{Loc 'cyborg-maintenance-eject'}" />
+        </BoxContainer>
+
+        <BoxContainer Orientation="Horizontal" SeparationOverride="6">
+            <Label Text="{Loc 'cyborg-maintenance-cell'}" StyleClasses="LabelSubText" MinWidth="80" />
+            <ProgressBar Name="ChargeBar"
+                         MinValue="0"
+                         MaxValue="1"
+                         HorizontalExpand="True"
+                         VerticalAlignment="Center"
+                         MinHeight="14" />
+            <Label Name="ChargeLabel" MinWidth="44" />
+            <Button Name="EjectCellButton" Text="{Loc 'cyborg-maintenance-eject'}" />
+        </BoxContainer>
+
+        <Label Text="{Loc 'cyborg-maintenance-upgrades'}" StyleClasses="LabelHeading" Margin="0 4 0 0" />
+        <BoxContainer Name="UpgradeList" Orientation="Vertical" SeparationOverride="4" />
+        <Label Name="NoUpgradesLabel"
+               Text="{Loc 'cyborg-maintenance-no-upgrades'}"
+               StyleClasses="LabelSubText"
+               Visible="False" />
+    </BoxContainer>
+</is14:CyborgMaintenanceWindow>

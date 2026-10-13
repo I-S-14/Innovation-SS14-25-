@@ -1,0 +1,206 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+
+# Ports of tgstation's /obj/item/borg/upgrade boards.
+
+- type: entity
+  parent: BaseItem
+  id: BaseCyborgUpgrade
+  name: cyborg upgrade board
+  description: A board that adds new capabilities to a cyborg.
+  abstract: true
+  components:
+  - type: Item
+    storedRotation: -90
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/robot_items.rsi
+  - type: StaticPrice
+    price: 100
+  - type: GuideHelp
+    guides:
+    - Cyborgs
+    - Robotics
+
+- type: entity
+  parent: BaseCyborgUpgrade
+  id: CyborgUpgradeReclassification
+  name: cyborg reclassification board
+  description: Resets the cyborg's model so it can pick a new one. Used up on install.
+  components:
+  - type: Sprite
+    layers:
+    - state: module_general
+  - type: CyborgUpgrade
+    resetModel: true
+
+- type: entity
+  parent: BaseCyborgUpgrade
+  id: CyborgUpgradeIonThrusters
+  name: ion thruster upgrade
+  description: Lets the cyborg move without gravity.
+  components:
+  - type: Sprite
+    layers:
+    - state: module_general
+  - type: CyborgUpgrade
+    addComponents:
+    - type: MovementIgnoreGravity
+
+- type: entity
+  parent: BaseCyborgUpgrade
+  id: CyborgUpgradeSelfRepair
+  name: self-repair module
+  description: Slowly repairs the chassis while the cyborg is active.
+  components:
+  - type: Sprite
+    layers:
+    - state: module_general
+  - type: CyborgUpgrade
+    addComponents:
+    - type: PassiveDamage
+      allowedStates:
+      - Alive
+      interval: 2
+      damage:
+        groups:
+          Brute: -1
+          Burn: -1
+
+- type: entity
+  parent: BaseCyborgUpgrade
+  id: CyborgUpgradeIllegal
+  name: illegal equipment module
+  description: Unlocks the hidden tools of the cyborg's model.
+  components:
+  - type: Sprite
+    layers:
+    - state: module_illegal
+  - type: CyborgUpgrade
+    unlockEmagTools: true
+
+- type: entity
+  parent: BaseCyborgUpgrade
+  id: CyborgUpgradeDiamondDrill
+  name: mining cyborg diamond drill
+  description: A diamond drill for mining cyborgs.
+  components:
+  - type: Sprite
+    layers:
+    - state: module_miner
+  - type: CyborgUpgrade
+    models:
+    - CyborgModelMiner
+    tools:
+    - MiningDrillDiamond
+
+- type: entity
+  parent: BaseCyborgUpgrade
+  id: CyborgUpgradeSatchelOfHolding
+  name: mining cyborg satchel of holding
+  description: A bluespace ore bag for mining cyborgs.
+  components:
+  - type: Sprite
+    layers:
+    - state: module_miner
+  - type: CyborgUpgrade
+    models:
+    - CyborgModelMiner
+    tools:
+    - OreBagOfHolding
+
+- type: entity
+  parent: BaseCyborgUpgrade
+  id: CyborgUpgradeAdvancedMop
+  name: janitor cyborg advanced mop
+  description: An advanced mop for janitor cyborgs.
+  components:
+  - type: Sprite
+    layers:
+    - state: module_janitor
+  - type: CyborgUpgrade
+    models:
+    - CyborgModelJanitor
+    tools:
+    - AdvMopItem
+
+- type: entity
+  parent: BaseCyborgUpgrade
+  id: CyborgUpgradeDefibrillator
+  name: medical cyborg defibrillator
+  description: A built-in defibrillator for medical cyborgs.
+  components:
+  - type: Sprite
+    layers:
+    - state: module_medical
+  - type: CyborgUpgrade
+    models:
+    - CyborgModelMedical
+    tools:
+    - DefibrillatorOneHandedUnpowered
+
+- type: entity
+  parent: BaseCyborgUpgrade
+  id: CyborgUpgradeAdvancedSurgery
+  name: cyborg surgical omni-tool upgrade
+  description: Advanced surgical tools for medical cyborgs.
+  components:
+  - type: Sprite
+    layers:
+    - state: module_medical
+  - type: CyborgUpgrade
+    models:
+    - CyborgModelMedical
+    tools:
+    - EnergyScalpel
+    - EnergyCautery
+    - AdvancedRetractor
+
+- type: entity
+  parent: BaseCyborgUpgrade
+  id: CyborgUpgradeAdvancedTools
+  name: cyborg engineering omni-tool upgrade
+  description: Advanced tools for engineering cyborgs.
+  components:
+  - type: Sprite
+    layers:
+    - state: module_engineer
+  - type: CyborgUpgrade
+    models:
+    - CyborgModelEngineering
+    tools:
+    - JawsOfLife
+    - PowerDrill
+    - WelderExperimental
+
+- type: entity
+  parent: BaseCyborgUpgrade
+  id: CyborgUpgradeBotanyTools
+  name: service cyborg botany tools
+  description: Gardening tools for service cyborgs.
+  components:
+  - type: Sprite
+    layers:
+    - state: module_service
+  - type: CyborgUpgrade
+    models:
+    - CyborgModelService
+    tools:
+    - CyborgToolCultivator
+    - CyborgToolSpade
+    - CyborgToolSecateur
+    - PlantBag
+
+- type: entity
+  parent: BaseCyborgUpgrade
+  id: CyborgUpgradeKitchenTools
+  name: service cyborg kitchen toolset
+  description: Kitchen tools for service cyborgs.
+  components:
+  - type: Sprite
+    layers:
+    - state: module_service
+  - type: CyborgUpgrade
+    models:
+    - CyborgModelService
+    tools:
+    - CyborgToolKnife
+    - CyborgToolRollingPin

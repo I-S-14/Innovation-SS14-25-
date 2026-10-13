@@ -1,0 +1,524 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+
+# tgstation-style cyborg. Shares the mob plumbing with upstream borgs (laws, power cell,
+# radio, damage, light) but none of the upstream borg chassis and module system.
+- type: entity
+  parent: [BaseMob, StripableInventoryBase]
+  id: BaseCyborg
+  name: cyborg
+  description: A man-machine hybrid that assists in station activity. They love being asked to state their laws over and over.
+  save: false
+  abstract: true
+  components:
+  - type: Cyborg
+  - type: Reactive
+    groups:
+      Acidic: [Touch]
+  - type: DamageOnHighSpeedImpact
+    damage:
+      types:
+        Blunt: 5
+    soundHit:
+      collection: MetalThud
+  - type: CombatMode
+  - type: NoSlip
+  - type: StaticPrice
+    price: 1250
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.35
+        density: 300
+        mask:
+        - MobMask
+        layer:
+        - MobLayer
+  - type: TTS
+    voice: TrainingRobot
+  - type: MovementSpeedModifier
+    baseWalkSpeed : 2.5
+    baseSprintSpeed : 4.5
+  - type: Sprite
+    sprite: Mobs/Silicon/chassis.rsi
+    layers:
+    - state: robot
+      map: ["enum.CyborgVisualLayers.Body", "movement"]
+    - state: robot_e_r
+      map: ["enum.CyborgVisualLayers.Eyes"]
+      shader: unshaded
+      visible: false
+    - state: robot_l
+      shader: unshaded
+      map: ["light", "enum.CyborgVisualLayers.Light"]
+      visible: false
+  - type: RotationVisuals
+    horizontalRotation: 90
+  # Layers are filled in from the skin by the client.
+  - type: SpriteMovement
+  - type: MobState
+    allowedStates:
+    - Alive
+    - Critical
+    - Dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      100: Critical
+      300: Dead # Same as destruction threshold, dead acts like crit except for ghosting on move.
+    stateAlertDict:
+      Alive: BorgHealth
+      Critical: BorgCrit
+      Dead: BorgDead
+    showOverlays: false
+    allowRevives: true
+  - type: HealthExaminable
+    examinableTypes:
+    - Blunt
+    - Slash
+    - Piercing
+    - Heat
+    - Shock
+    locPrefix: silicon
+  - type: UserInterface
+    interfaces:
+      enum.SiliconLawsUiKey.Key:
+        type: SiliconLawBoundUserInterface
+        requireInputValidation: false
+      enum.StrippingUiKey.Key:
+        type: StrippableBoundUserInterface
+      enum.StationMapUiKey.Key:
+        type: StationMapBoundUserInterface
+      enum.CyborgUiKey.Model:
+        type: CyborgModelBoundUserInterface
+      enum.CyborgUiKey.Skin:
+        type: CyborgSkinBoundUserInterface
+      enum.CyborgUiKey.Maintenance:
+        type: CyborgMaintenanceBoundUserInterface
+  # Maintenance window for others, only through the open cover.
+  - type: ActivatableUI
+    key: enum.CyborgUiKey.Maintenance
+  - type: ActivatableUIRequiresPanel
+  - type: IntrinsicUI
+    uis:
+      enum.StationMapUiKey.Key:
+        toggleAction: ActionShowStationMap
+  - type: StationMap
+  - type: Targeting
+  - type: SiliconLawBound
+  - type: ActionGrant
+    actions:
+    - ActionViewLaws
+  - type: EmagSiliconLaw
+    stunTime: 5
+  - type: SiliconLawProvider
+    laws: Crewsimov
+  - type: Inventory
+    templateId: borg
+  - type: Hands
+    showInHands: false
+    disableExplosionRecursion: true
+    canBeStripped: false
+  - type: ComplexInteraction
+  - type: IntrinsicRadioReceiver
+  - type: IntrinsicRadioTransmitter
+    channels:
+    - Common
+  - type: ActiveRadio
+    channels:
+    - Common
+  - type: CollectiveMind
+    defaultChannel: Binary
+    channels:
+    - Binary
+    canUseInCrit: true
+  - type: ZombieImmune
+  - type: Repairable
+    doAfterDelay: 10
+  - type: WiresPanel
+  - type: LockingWhitelist
+    blacklist:
+      components:
+      - RoboticsConsole
+  - type: NameIdentifier
+    group: Silicon
+  - type: ContainerContainer
+    containers:
+      cyborg_brain: !type:ContainerSlot { }
+      cell_slot: !type:ContainerSlot { }
+      cyborg_tools: !type:Container { }
+      cyborg_upgrades: !type:Container { }
+      part-container: !type:Container
+  - type: PowerCellSlot
+    cellSlotId: cell_slot
+    fitsInCharger: true
+  - type: Access
+    enabled: false # Needs a player, so scientists can't drag around an empty cyborg for free all access.
+  - type: PowerCellDraw
+    drawRate: 0.6
+    enabled: false # Only drawn while a player controls the cyborg.
+  - type: ItemSlots
+    slots:
+      cell_slot:
+        name: power-cell-slot-component-slot-name-default
+  - type: Body
+    bodyType: Simple
+  - type: StatusEffects
+    allowed:
+    - Flashed
+  - type: TypingIndicator
+    proto: robot
+  - type: Speech
+    speechVerb: Robotic
+    speechSounds: Borg
+    allowedEmotes:
+    - Laugh
+    - Sigh
+    - Crying
+    - Whistle
+  - type: Vocal
+    sounds:
+      Unsexed: UnisexSilicon
+    wilhelmProbability: 0
+  - type: DamagedSiliconAccent
+  - type: UnblockableSpeech
+  - type: FootstepModifier
+    footstepSoundCollection:
+      collection: FootstepBorg
+  - type: Lock
+    locked: true
+    unlockOnClick: false
+  - type: Construction
+    graph: IS14Cyborg
+    node: cyborg
+    containers:
+    - part-container
+    - cell_slot
+  - type: LockedWiresPanel
+  - type: Damageable
+    damageContainer: Silicon
+    damageModifierSet: Silicon
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 75
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Machines/warning_buzzer.ogg
+          params:
+            volume: 5
+    - trigger:
+        !type:DamageTrigger
+        damage: 300
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:EmptyContainersBehaviour
+        containers:
+        - cyborg_brain
+        - cell_slot
+        - cyborg_upgrades
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: HandheldLight
+    toggleOnInteract: false
+    wattage: 0.2
+    blinkingBehaviourId: blinking
+    radiatingBehaviourId: radiating
+  # Required for HandheldLight to work, even without ItemToggle.
+  - type: ItemTogglePointLight
+  - type: ToggleableVisuals
+    spriteLayer: light
+  - type: LightBehaviour
+    behaviours:
+    - !type:FadeBehaviour
+      id: radiating
+      maxDuration: 2.0
+      startValue: 3.0
+      endValue: 2.0
+      isLooped: true
+      reverseWhenFinished: true
+    - !type:PulseBehaviour
+      id: blinking
+      interpolate: Nearest
+      maxDuration: 1.0
+      startValue: 0.1
+      endValue: 2.0
+      isLooped: true
+  - type: PointLight
+    enabled: false
+    mask: /Textures/Effects/LightMasks/cone.png
+    autoRot: true
+    radius: 4
+    netsync: false
+  - type: Pullable
+  - type: Grabbable
+  - type: Puller
+    needsHands: false
+  - type: StandingState
+  - type: Tag
+    tags:
+    - DoorBumpOpener
+    - FootstepSound
+    - CanPilot
+    - Unimplantable
+    - SiliconMob
+    - IPCDrinkBlacklist
+    - SiliconEmotes
+  - type: Emoting
+  - type: GuideHelp
+    guides:
+    - Cyborgs
+    - Robotics
+  - type: LanguageKnowledge
+    speaks:
+    - TauCetiBasic
+    - Canilunzt
+    - Bubblish
+    - Nekomimetic
+    - Draconic
+    - SolCommon
+    - RootSpeak
+    - Moffic
+    - ValyrianStandard
+    - Chittin
+    - SiikMaas
+    - RobotTalk
+    - Marish
+    - Elyran
+    - Freespeak
+    - Tradeband
+    - Schechi
+    - NewKinPidgin
+    understands:
+    - TauCetiBasic
+    - Canilunzt
+    - Bubblish
+    - Nekomimetic
+    - Draconic
+    - SolCommon
+    - RootSpeak
+    - Moffic
+    - ValyrianStandard
+    - Chittin
+    - SiikMaas
+    - RobotTalk
+    - Marish
+    - Elyran
+    - Freespeak
+    - Tradeband
+    - Sign
+    - Schechi
+    - NewKinPidgin
+  - type: ProtectedFromStepTriggers
+  - type: DamageOnInteractProtection
+    damageProtection:
+      flatReductions:
+        Heat: 10 # capable of touching light bulbs and stoves without feeling pain!
+  - type: BypassLock
+  - type: BypassLockRequiresMobState
+    requiredMobState:
+    - Critical
+    - Dead
+  - type: Penetratable
+    penetrateDamage: 75
+    damagePenalty: 0.25
+  - type: MiningPoints
+  - type: SpeechSynthesis
+    voice: Borg
+
+- type: entity
+  parent: BaseCyborg
+  id: BaseCyborgIonStormable
+  abstract: true
+  components:
+  - type: IonStormTarget
+
+# Station cyborg, picks its model on first activation.
+- type: entity
+  parent: BaseCyborgIonStormable
+  id: CyborgNT
+  name: cyborg
+  suffix: IS14, no model
+  components:
+  - type: RandomMetadata
+    nameSegments:
+    - NamesBorg
+  - type: NpcFactionMember
+    factions:
+    - NanoTrasen
+  - type: SiliconLawProvider
+    laws: CrewsimovBorg
+  - type: Access
+    groups:
+    - AllAccess
+    tags:
+    - Borg
+  - type: AccessReader
+    access: [["Command"], ["Research"]]
+  - type: SlavedBorg
+    law: ObeyAI
+  - type: ShowJobIcons
+  - type: StationAiVision
+    range: 3
+  # Robotics console: same protocol as the upstream borg transponder.
+  - type: CyborgTransponder
+  - type: DeviceNetwork
+    deviceNetId: Wireless
+    receiveFrequencyId: CyborgControl
+    transmitFrequencyId: RoboticsConsole
+    savableAddress: false
+  - type: TimerTrigger
+    delay: 10
+    examinable: false
+    beepSound:
+      path: /Audio/Effects/Cargo/buzz_two.ogg
+      params:
+        volume: -4
+  - type: ExplodeOnTrigger
+    keysIn:
+    - timer
+  - type: Explosive
+    explosionType: Minibomb
+    deleteAfterExplosion: false # Let the damage threshold gib the cyborg.
+    totalIntensity: 30
+    intensitySlope: 20
+    maxIntensity: 20
+    canCreateVacuum: false
+  - type: InteractionPopup
+    interactSuccessString: petting-success-generic-cyborg
+    interactFailureString: petting-failure-generic-cyborg
+    interactSuccessSound:
+      path: /Audio/Ambience/Objects/periodic_beep.ogg
+
+- type: entity
+  parent: CyborgNT
+  id: CyborgNTBattery
+  suffix: IS14, no model, battery
+  components:
+  - type: ItemSlots
+    slots:
+      cell_slot:
+        name: power-cell-slot-component-slot-name-default
+        startingItem: PowerCellHigh
+
+- type: entity
+  parent: CyborgNTBattery
+  id: CyborgNTEngineering
+  name: engineering cyborg
+  suffix: IS14, battery
+  components:
+  - type: Cyborg
+    model: CyborgModelEngineering
+
+# Endoskeleton that assembles into the tgstation-style cyborg.
+- type: entity
+  parent: CyborgEndoskeleton
+  id: IS14CyborgEndoskeleton
+  suffix: IS14
+  components:
+  - type: Construction
+    graph: IS14Cyborg
+    node: start
+    defaultTarget: cyborg
+    containers:
+    - part-container
+    - cell_slot
+
+# Spawned for the Cyborg job: positronic brain inside, picks a model on join.
+- type: entity
+  parent: CyborgNT
+  id: IS14PlayerCyborgBattery
+  suffix: IS14, job, battery
+  components:
+  - type: ContainerFill
+    containers:
+      cyborg_brain:
+      - PositronicBrain
+  - type: ItemSlots
+    slots:
+      cell_slot:
+        name: power-cell-slot-component-slot-name-default
+        startingItem: PowerCellMedium
+  - type: StartingMindRole
+    mindRole: "MindRoleSiliconBrain"
+    silent: true
+
+# IS14's Yasari cyborg on the new system: own subverted laws, not slaved to the AI.
+- type: entity
+  parent: BaseCyborgIonStormable
+  id: IS14CyborgYasari
+  name: cyborg
+  suffix: IS14, Yasari, battery
+  components:
+  - type: Cyborg
+    model: CyborgModelYasari
+  - type: RandomMetadata
+    nameSegments:
+    - NamesBorg
+  - type: NpcFactionMember
+    factions:
+    - NanoTrasen
+  - type: Access
+    groups:
+    - AllAccess
+    tags:
+    - Borg
+  - type: AccessReader
+    access: [["Command"], ["Research"]]
+  - type: ShowJobIcons
+  - type: StationAiVision
+    range: 3
+  - type: SiliconLawProvider
+    laws: YasariStatic
+    subverted: true
+  - type: ContainerFill
+    containers:
+      cyborg_brain:
+      - PositronicBrain
+  - type: ItemSlots
+    slots:
+      cell_slot:
+        name: power-cell-slot-component-slot-name-default
+        startingItem: PowerCellHigh
+
+# Station cyborgs with a preset model, used by the wizard's polymorph.
+- type: entity
+  parent: CyborgNTBattery
+  id: IS14CyborgNTMedical
+  name: medical cyborg
+  suffix: IS14, battery
+  components:
+  - type: Cyborg
+    model: CyborgModelMedical
+
+- type: entity
+  parent: CyborgNTBattery
+  id: IS14CyborgNTMiner
+  name: mining cyborg
+  suffix: IS14, battery
+  components:
+  - type: Cyborg
+    model: CyborgModelMiner
+
+- type: entity
+  parent: CyborgNTBattery
+  id: IS14CyborgNTJanitor
+  name: janitor cyborg
+  suffix: IS14, battery
+  components:
+  - type: Cyborg
+    model: CyborgModelJanitor
+
+- type: entity
+  parent: CyborgNTBattery
+  id: IS14CyborgNTService
+  name: service cyborg
+  suffix: IS14, battery
+  components:
+  - type: Cyborg
+    model: CyborgModelService

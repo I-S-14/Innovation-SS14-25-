@@ -1,0 +1,108 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+
+# Tools shared by several models.
+
+# Base for every built-in cyborg tool. The mechanics come from the parent item,
+# the marker keeps the tool inside the cyborg.
+- type: entity
+  abstract: true
+  id: BaseCyborgTool
+  components:
+  - type: CyborgTool
+
+- type: entity
+  parent: [BaseCyborgTool, Flash]
+  id: CyborgToolFlash
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [BaseCyborgTool, BorgFireExtinguisher]
+  id: CyborgToolExtinguisher
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [BaseCyborgTool, Crowbar]
+  id: CyborgToolCrowbar
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
+    layers:
+    - state: toolkit_engiborg_crowbar
+
+# Own item: the upstream screwdriver randomizes a layer this sprite doesn't have.
+- type: entity
+  parent: [BaseCyborgTool, BaseItem]
+  id: CyborgToolScrewdriver
+  name: cyborg screwdriver
+  description: A screwdriver built into a cyborg's arm.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
+    layers:
+    - state: toolkit_engiborg_screwdriver
+  - type: Item
+    size: Small
+    storedRotation: -90
+  - type: Tag
+    tags:
+    - Screwdriver
+  - type: Tool
+    qualities:
+    - Screwing
+    useSound:
+      collection: Screwdriver
+  - type: MeleeWeapon
+    wideAnimationRotation: -90
+    attackRate: 1
+    damage:
+      types:
+        Piercing: 6
+    soundHit:
+      path: "/Audio/Weapons/bladeslice.ogg"
+
+- type: entity
+  parent: [BaseCyborgTool, LargeBeaker]
+  id: CyborgToolBeaker
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [BaseCyborgTool, BorgDropper]
+  id: CyborgToolDropper
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [BaseCyborgTool, HandheldHealthAnalyzer]
+  id: CyborgToolHealthAnalyzer
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
+    layers:
+    - state: scanner-health
+
+- type: entity
+  parent: [BaseCyborgTool, LauncherLollypopRegenerating]
+  id: CyborgToolLollipop
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/robot_items.rsi
+    layers:
+    - state: lollipop
+
+- type: entity
+  parent: [BaseCyborgTool, SoapNT]
+  id: CyborgToolSoap
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [BaseCyborgTool, BorgHandheldGPSBasic]
+  id: CyborgToolGPS
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
+    layers:
+    - state: tracker-gps-b

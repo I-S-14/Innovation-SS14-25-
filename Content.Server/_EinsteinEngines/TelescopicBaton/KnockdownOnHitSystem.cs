@@ -8,6 +8,7 @@ using Content.Shared.Silicons.Borgs.Components;
 using Content.Shared.StatusEffect;
 using Content.Shared.Stunnable;
 using Content.Shared.Weapons.Melee.Events;
+using Content.Shared._IS14.Cyborgs.Components; // IS14-change
 
 namespace Content.Server._EinsteinEngines.TelescopicBaton;
 
@@ -38,7 +39,9 @@ public sealed class KnockdownOnHitSystem : EntitySystem
 
         List<EntityUid> knockedDown = new(); // Goobstation
         foreach (var target in
-                 args.HitEntities.Where(e => !HasComp<BorgChassisComponent>(e) && _mobState.IsAlive(e))) // Goob edit
+                 //IS14-change start - tgstation-style cyborgs count as borgs
+                 args.HitEntities.Where(e => !(HasComp<BorgChassisComponent>(e) || HasComp<CyborgComponent>(e)) && _mobState.IsAlive(e))) // Goob edit
+                 //IS14-change end
         {
             if (_stun.TryKnockdown(target,
                 entity.Comp.Duration,

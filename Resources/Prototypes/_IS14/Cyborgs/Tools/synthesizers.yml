@@ -1,0 +1,277 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+
+# Cyborg-only tools from tgstation that have no SS14 counterpart.
+
+# tg's /obj/item/borg/cyborg_omnitool/engineering.
+- type: entity
+  parent: [BaseCyborgTool, PowerDrill]
+  id: CyborgToolOmnitool
+  name: cyborg omni-toolset
+  description: A set of engineering tools built into a cyborg's arm. Switch between them with a press.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
+    layers:
+    - state: toolkit_engiborg
+  - type: Tool
+    qualities:
+    - Prying
+    useSound:
+      path: /Audio/Items/crowbar.ogg
+  - type: ToolTileCompatible
+  - type: MultipleTool
+    statusShowBehavior: true
+    entries:
+    - behavior: Prying
+      sprite:
+        sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
+        state: toolkit_engiborg_crowbar
+      useSound:
+        path: /Audio/Items/crowbar.ogg
+      changeSound:
+        path: /Audio/Items/change_drill.ogg
+    - behavior: Anchoring
+      sprite:
+        sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
+        state: toolkit_engiborg_wrench
+      useSound:
+        path: /Audio/Items/ratchet.ogg
+      changeSound:
+        path: /Audio/Items/change_drill.ogg
+    - behavior: Screwing
+      sprite:
+        sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
+        state: toolkit_engiborg_screwdriver
+      useSound:
+        collection: Screwdriver
+      changeSound:
+        path: /Audio/Items/change_drill.ogg
+    - behavior: Cutting
+      sprite:
+        sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
+        state: toolkit_engiborg_cutters
+      useSound:
+        path: /Audio/Items/wirecutter.ogg
+      changeSound:
+        path: /Audio/Items/change_drill.ogg
+
+# Stack synthesizers: refill from the power cell and never run out.
+- type: entity
+  abstract: true
+  id: BaseCyborgStackSynthesizer
+  components:
+  - type: CyborgStackSynthesizer
+
+- type: entity
+  parent: [BaseCyborgStackSynthesizer, BaseCyborgTool, SheetSteel]
+  id: CyborgToolSheetSteel
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [BaseCyborgStackSynthesizer, BaseCyborgTool, SheetGlass]
+  id: CyborgToolSheetGlass
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [BaseCyborgStackSynthesizer, BaseCyborgTool, PartRodMetal]
+  id: CyborgToolRods
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [BaseCyborgStackSynthesizer, BaseCyborgTool, CableApcStack]
+  id: CyborgToolCableApc
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: CyborgStackSynthesizer
+    chargePerUnit: 1
+
+- type: entity
+  parent: [BaseCyborgStackSynthesizer, BaseCyborgTool, CableMVStack]
+  id: CyborgToolCableMV
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: CyborgStackSynthesizer
+    chargePerUnit: 1
+
+- type: entity
+  parent: [BaseCyborgStackSynthesizer, BaseCyborgTool, CableHVStack]
+  id: CyborgToolCableHV
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: CyborgStackSynthesizer
+    chargePerUnit: 1
+
+- type: entity
+  parent: [BaseCyborgStackSynthesizer, BaseCyborgTool, FloorTileItemSteel]
+  id: CyborgToolFloorTile
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: CyborgStackSynthesizer
+    chargePerUnit: 2
+
+- type: entity
+  parent: [BaseCyborgStackSynthesizer, BaseCyborgTool, Gauze]
+  id: CyborgToolGauze
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: CyborgStackSynthesizer
+    regenDelay: 5
+
+# tg's borghypo: synthesizes the chosen medicine.
+- type: entity
+  parent: [BaseCyborgTool, BorgHypo]
+  id: CyborgToolHypo
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: UserInterface
+    interfaces:
+      enum.CyborgReagentUiKey.Key:
+        type: CyborgReagentBoundUserInterface
+  - type: CyborgReagentSynthesizer
+    solution: hypospray
+    reagents:
+    - Bicaridine
+    - Tricordrazine
+    - Kelotane
+    - Dexalin
+    - Saline
+    - Dylovene
+    emagReagents:
+    - ChloralHydrate
+    - Lexorin
+    - Toxin
+
+# tg's peace borghypo.
+- type: entity
+  parent: [BaseCyborgTool, BorgHypo]
+  id: CyborgToolPeaceHypo
+  name: peace hypospray
+  description: An integrated hypospray that calms down anyone who gets too excited.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: UserInterface
+    interfaces:
+      enum.CyborgReagentUiKey.Key:
+        type: CyborgReagentBoundUserInterface
+  - type: CyborgReagentSynthesizer
+    solution: hypospray
+    reagents:
+    - Pax
+    - Haloperidol
+    emagReagents:
+    - ChloralHydrate
+    - Nocturine
+
+# tg's borgshaker: pours any basic drink.
+- type: entity
+  parent: [BaseCyborgTool, DrinkShaker]
+  id: CyborgToolShaker
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
+    layers:
+    - state: bottles-shaker
+  - type: UserInterface
+    interfaces:
+      enum.TransferAmountUiKey.Key:
+        type: TransferAmountBoundUserInterface
+      enum.CyborgReagentUiKey.Key:
+        type: CyborgReagentBoundUserInterface
+  - type: CyborgReagentSynthesizer
+    solution: drink
+    regenAmount: 5
+    chargePerUnit: 0.5
+    reagents:
+    - Beer
+    - Vodka
+    - Rum
+    - Wine
+    - Whiskey
+    - Gin
+    - Tequila
+    - Vermouth
+    - Cognac
+    - Cola
+    - SodaWater
+    - TonicWater
+    - Water
+    - Ice
+    - Coffee
+    - Tea
+    - Milk
+    - Cream
+    - JuiceOrange
+    - JuiceLime
+
+# Dispensers: print items where the cyborg clicks, use in hand to switch.
+- type: entity
+  parent: [BaseCyborgTool, BaseItem]
+  id: CyborgToolCookieSynth
+  name: cookie synthesizer
+  description: Prints a fresh cookie. A peacekeeper's best argument.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: Objects/Consumable/Food/Baked/misc.rsi
+    state: COOKIE!!!
+  - type: UseDelay
+    delay: 3
+  - type: CyborgDispenser
+    chargeCost: 15
+    options:
+    - FoodBakedCookie
+    - FoodBakedCookieSugar
+
+- type: entity
+  parent: [BaseCyborgTool, BaseItem]
+  id: CyborgToolRSF
+  name: rapid service fabricator
+  description: Prints glasses, plates, paper and other service supplies.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
+    layers:
+    - state: tools-rsf
+  - type: UseDelay
+    delay: 1
+  - type: CyborgDispenser
+    chargeCost: 10
+    options:
+    - DrinkGlass
+    - FoodPlate
+    - Paper
+    - Cigarette
+    - d6Dice
+
+# tg's harm alarm.
+- type: entity
+  parent: [BaseCyborgTool, BaseItem]
+  id: CyborgToolHarmAlarm
+  name: sonic harm prevention tool
+  description: Releases a loud alarm that rattles anyone nearby into calming down.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
+    layers:
+    - state: voice-megaphone
+  - type: UseDelay
+    delay: 20
+  - type: CyborgHarmAlarm
+
+# tg's hyperkinetic dampening projector.
+- type: entity
+  parent: [BaseCyborgTool, BaseItem]
+  id: CyborgToolProjectileDampener
+  name: hyperkinetic dampening projector
+  description: Projects a field that slows down and weakens projectiles flying near the cyborg. Drains power while on.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
+    layers:
+    - state: syndie_gadget-shield0
+  - type: CyborgProjectileDampener
