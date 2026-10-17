@@ -39,7 +39,10 @@
     - id: CameraBug
     - id: SyndicateJawsOfLife
     - id: RadioJammer
-    - id: BorgModuleMartyr
+    #IS14-change start - tgstation-style cyborgs take upgrade boards
+    # - id: BorgModuleMartyr
+    - id: IS14CyborgUpgradeMartyr
+    #IS14-change end
     - id: ScramImplant
     - id: FakeMindShieldImplanter
       amount: !type:RangeNumberSelector

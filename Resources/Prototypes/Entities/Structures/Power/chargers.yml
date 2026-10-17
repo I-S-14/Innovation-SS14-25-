@@ -324,6 +324,9 @@
       - Silicon # EE IPCs
       - Inventory #Goobstation - Modsuits
       - Drone # Goobstation - Drone recharging
+      #IS14-change start - tgstation-style cyborgs
+      - Cyborg
+      #IS14-change end
   - type: Construction
     containers:
     - machine_parts
