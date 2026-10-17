@@ -42,14 +42,18 @@ public sealed class CyborgHudTest
 
         EntityUid cyborg = default;
         var toolCount = 0;
+        var storedCount = 0;
         await server.WaitPost(() =>
         {
-            cyborg = sEntMan.SpawnEntity("CyborgNTEngineering", map.GridCoords);
+            cyborg = sEntMan.SpawnEntity("IS14CyborgNTEngineering", map.GridCoords);
             var mindSys = sEntMan.System<MindSystem>();
             var mind = mindSys.CreateMind(session.UserId, "CyborgHudTest");
             mindSys.TransferTo(mind, cyborg, mind: mind.Comp);
             playerMan.SetAttachedEntity(session, cyborg);
-            toolCount = sEntMan.GetComponent<CyborgComponent>(cyborg).ToolContainer.ContainedEntities.Count;
+            storedCount = sEntMan.GetComponent<CyborgComponent>(cyborg).ToolContainer.ContainedEntities.Count;
+            // Emag tools stay hidden from the HUD until the cyborg is emagged.
+            toolCount = sEntMan.GetComponent<CyborgComponent>(cyborg).ToolContainer.ContainedEntities
+                .Count(tool => !sEntMan.GetComponent<CyborgToolComponent>(tool).EmagTool);
         });
 
         await pair.RunTicksSync(30);
@@ -87,7 +91,7 @@ public sealed class CyborgHudTest
         {
             var cyborgSys = sEntMan.System<SharedCyborgSystem>();
             var comp = sEntMan.GetComponent<CyborgComponent>(cyborg);
-            Assert.That(comp.ToolContainer.ContainedEntities, Has.Count.EqualTo(toolCount - 1));
+            Assert.That(comp.ToolContainer.ContainedEntities, Has.Count.EqualTo(storedCount - 1));
             Assert.That(comp.Active, "a cyborg with a player and a cell is active");
             Assert.That(cyborgSys.EnumerateTools((cyborg, comp)), Has.Exactly(toolCount).Items);
         });
@@ -114,13 +118,13 @@ public sealed class CyborgHudTest
         var sEntMan = server.ResolveDependency<IEntityManager>();
         var playerMan = server.ResolveDependency<IPlayerManager>();
         var session = playerMan.GetSessionById(client.Session!.UserId);
-        var model = server.ResolveDependency<IPrototypeManager>().Index<CyborgModelPrototype>("CyborgModelMedical");
+        var model = server.ResolveDependency<IPrototypeManager>().Index<CyborgModelPrototype>("IS14CyborgModelMedical");
         var skin = model.Skins[^1];
 
         EntityUid cyborg = default;
         await server.WaitPost(() =>
         {
-            cyborg = sEntMan.SpawnEntity("CyborgNTBattery", map.GridCoords);
+            cyborg = sEntMan.SpawnEntity("IS14CyborgNTBattery", map.GridCoords);
             var mindSys = sEntMan.System<MindSystem>();
             var mind = mindSys.CreateMind(session.UserId, "CyborgModelWindowTest");
             mindSys.TransferTo(mind, cyborg, mind: mind.Comp);

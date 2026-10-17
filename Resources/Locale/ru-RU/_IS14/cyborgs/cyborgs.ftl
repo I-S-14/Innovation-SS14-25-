@@ -74,11 +74,11 @@ cyborg-skin-syndicate-assault = Штурмовик
 cyborg-skin-syndicate-medical = Медик Синдиката
 cyborg-skin-syndicate-saboteur = Диверсант
 
-cyborg-hud-tools-hint = Клик — достать или убрать, ПКМ — осмотреть
-cyborg-hud-model-tooltip = Модель: открыть список модулей
+cyborg-hud-model-tooltip = { $model }: открыть список модулей
 cyborg-hud-store-tooltip = Убрать активный модуль (или ПКМ по слоту)
 cyborg-hud-no-model = Без модели
 cyborg-hud-lamp-tooltip = Фонарь
+cyborg-hud-os-tooltip = Встроенный планшет
 
 cyborg-model-derelict = Заброшенный
 cyborg-model-derelict-syndicate = Заброшенный Синдиката
@@ -90,15 +90,15 @@ cyborg-skin-derelict-miner = Заброшенный шахтёр
 cyborg-skin-derelict-syndicate = Ржавый штурмовик
 
 cyborg-maintenance-title = Обслуживание борга
-cyborg-maintenance-model = Модель:
-cyborg-maintenance-brain = Мозг:
-cyborg-maintenance-cell = Батарея:
-cyborg-maintenance-eject = Извлечь
+cyborg-maintenance-eject-cell = Извлечь батарею
+cyborg-maintenance-eject-brain = Извлечь: { $brain }
+cyborg-maintenance-no-brain = Мозг не установлен
+cyborg-maintenance-no-cell = Батареи нет
 cyborg-maintenance-upgrades = Платы улучшений
 cyborg-maintenance-no-upgrades = Плат нет.
+cyborg-maintenance-upgrade-count = Плат: { $count }
 cyborg-maintenance-remove = Снять
-cyborg-maintenance-none = нет
-cyborg-maintenance-charge = { $percent }%
+cyborg-maintenance-charge = Заряд: { $percent }%
 
 cyborg-autowash-on = Автомойка включена.
 cyborg-autowash-off = Автомойка выключена.
@@ -163,3 +163,88 @@ cyborg-model-window-select-model = Выберите модель
 cyborg-model-window-skins = Выберите внешний вид
 cyborg-model-window-confirm = Подтвердить
 cyborg-model-window-bottom-text = Модель можно сменить только платой переклассификации
+
+cyborg-bed-deployed = Каталка развёрнута.
+cyborg-table-deployed = Стол разложен.
+cyborg-table-packed = Стол сложен.
+cyborg-table-already-deployed = Стол уже разложен.
+cyborg-upgrade-same-model = У киборга уже эта модель.
+cyborg-rename-board-empty = На плате не записано имя. Впишите его, держа плату в руке.
+cyborg-rename-board-title = Переименование киборга
+cyborg-rename-board-prompt = Новое имя киборга
+cyborg-rename-board-set = На плате записано имя «{ $name }».
+cyborg-slots-all-offline = КРИТИЧЕСКАЯ ОШИБКА: ВСЕ модули ОТКЛЮЧЕНЫ.
+cyborg-cannot-pickup = Ваши манипуляторы работают только с модулями.
+cyborg-examine-model = Модель: [color=lightblue]{ $model }[/color].
+cyborg-examine-no-model = Модель не выбрана.
+cyborg-examine-upgrades = Установленные платы: { $upgrades }.
+cyborg-examine-broken-slots = [color=orange]Повреждения отключили модулей: { $count }.[/color]
+cyborg-tip-verb = Опрокинуть
+cyborg-untip-verb = Поставить на колёса
+cyborg-tip-start-user = Вы начинаете опрокидывать { $target }...
+cyborg-tip-start-target = { $user } пытается вас опрокинуть!
+cyborg-untip-start-user = Вы начинаете поднимать { $target }...
+cyborg-untip-start-target = { $user } пытается вас поднять.
+cyborg-tipped = { CAPITALIZE($target) } опрокидывается и беспомощно крутится на голове!
+cyborg-righted = { CAPITALIZE($target) } снова на колёсах.
+cyborg-righted-self = { CAPITALIZE($target) } кое-как переворачивается обратно.
+cyborg-tipped-no-tools = Вы перевёрнуты и не можете достать модули!
+cyborg-examine-lockdown = [color=red]Борг заблокирован.[/color]
+cyborg-examine-ai-linked = Подключён к ИИ: [color=lightblue]{ $ai }[/color].
+cyborg-examine-ai-unlinked = Не подключён к ИИ.
+cyborg-ai-linked = Установлена связь с ИИ { $ai }. Законы синхронизированы.
+cyborg-ai-linked-ai = К вам подключился киборг { $cyborg }.
+cyborg-ai-unlinked = Связь с ИИ потеряна.
+cyborg-ai-unlinked-ai = Связь с киборгом { $cyborg } потеряна.
+cyborg-ai-verb-link = Подключить киборга
+cyborg-ai-verb-lockdown = Заблокировать киборга
+cyborg-ai-verb-release = Снять блокировку
+cyborg-ai-verb-sync = Синхронизировать законы
+cyborg-ai-synced = Законы { $cyborg } синхронизированы.
+cyborg-lockdown-on = БЛОКИРОВКА: двигатели и манипуляторы отключены.
+cyborg-lockdown-off = Блокировка снята.
+wires-board-name-cyborg = Шасси киборга
+wire-name-cyborg-ai = СВЯЗЬ ИИ
+wire-name-cyborg-law-sync = ЗАКОНЫ
+wire-name-cyborg-lockdown = БЛОК
+wire-name-cyborg-reset = СБРОС
+cyborg-skin-xenoborg-engi = Ксеноборг-инженер
+cyborg-skin-xenoborg-heavy = Тяжёлый ксеноборг
+cyborg-skin-xenoborg-scout = Ксеноборг-разведчик
+cyborg-skin-xenoborg-stealth = Ксеноборг-невидимка
+cyborg-model-xenoborg-engi = Инженер ксеноборгов
+cyborg-model-xenoborg-engi-desc = Строит и чинит для своих, вскрывает двери для захвата.
+cyborg-model-xenoborg-heavy = Тяжёлый ксеноборг
+cyborg-model-xenoborg-heavy-desc = Броня, лазер и подавитель связи. Медленный.
+cyborg-model-xenoborg-scout = Разведчик ксеноборгов
+cyborg-model-xenoborg-scout-desc = Быстрый, летает в космосе, нож и крюк-кошка.
+cyborg-model-xenoborg-stealth = Невидимка ксеноборгов
+cyborg-model-xenoborg-stealth-desc = Маскировка и снотворное для похищения мозгов.
+cyborg-hug-mode = Режим модуля: { $mode }.
+cyborg-hug-examine-mode = Режим: [color=yellow]{ $mode }[/color].
+cyborg-hug-mode-hug = объятия
+cyborg-hug-mode-shock = электрошок
+cyborg-hug-mode-crush = сдавливание
+cyborg-hug-hug = { CAPITALIZE($user) } обнимает { $target }.
+cyborg-hug-shock = { CAPITALIZE($user) } бьёт { $target } разрядом из манипулятора!
+cyborg-hug-crush = { CAPITALIZE($user) } до хруста сдавливает { $target }!
+is14-os-app-cyborg-diag-name = Самодиагностика
+is14-os-app-cyborg-diag-desc = Состояние шасси, связь с ИИ, законы и платы.
+cyborg-diag-not-cyborg = Устройство не встроено в киборга.
+cyborg-diag-none = нет
+cyborg-diag-model = Модель: { $value }
+cyborg-diag-charge = Заряд: { $value }
+cyborg-diag-integrity = Целостность шасси: { $value }%
+cyborg-diag-slots = Рабочих ячеек модулей: { $working } из { $total }
+cyborg-diag-ai = ИИ: { $value }
+cyborg-diag-lawsync-on = Синхронизация законов: включена
+cyborg-diag-lawsync-off = Синхронизация законов: отключена
+cyborg-diag-lockdown = [color=red]БЛОКИРОВКА[/color]
+cyborg-diag-emagged = [color=orange]Обнаружено несанкционированное ПО[/color]
+cyborg-diag-laws = Законы:
+cyborg-diag-upgrades = Платы: { $value }
+
+flash-component-recharging = Вспышка перезаряжается.
+cyborg-self-right-start = Вы пытаетесь перевернуться обратно...
+alerts-cyborg-tipped-name = [color=yellow]Перевёрнут[/color]
+alerts-cyborg-tipped-desc = Вы лежите на голове и не можете ехать. Подайте сигнал о помощи, чтобы встать быстрее. Когда таймер истечёт, попробуйте поехать, чтобы перевернуться самостоятельно.
