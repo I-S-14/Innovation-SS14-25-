@@ -5,7 +5,7 @@
 
 # Engineering
 - type: cyborgSkin
-  id: CyborgSkinLandmateTreads
+  id: IS14CyborgSkinLandmateTreads
   name: cyborg-skin-landmate-treads
   sprite: _IS14/Mobs/Cyborgs/Banda/LandmateTreads.rsi
   bodyState: eng-tread
@@ -13,77 +13,81 @@
   eyesState: engineer_e
   noMindEyesState: engineer_e_r
   lightState: engineer_l
+  hatOffset: 0, -1
 
 - type: cyborgSkin
-  id: CyborgSkinChiefmate
+  id: IS14CyborgSkinChiefmate
   name: cyborg-skin-chiefmate
   sprite: _IS14/Mobs/Cyborgs/Banda/Chiefmate.rsi
   bodyState: chiefmate
   eyesState: engineer_e
   noMindEyesState: engineer_e_r
   lightState: engineer_l
+  hatOffset: 0, -1
 
 - type: cyborgSkin
-  id: CyborgSkinCanEngineering
+  id: IS14CyborgSkinCanEngineering
   name: cyborg-skin-can-engineering
   sprite: _IS14/Mobs/Cyborgs/Banda/CanEngineering.rsi
   bodyState: caneng
   eyesState: caneng_e
   noMindEyesState: caneng_e_r
   lightState: caneng_l
-  hatOffset: 0, 3
+  hatOffset: 0, 6
 
 - type: cyborgSkin
-  id: CyborgSkinSpiderEngineering
+  id: IS14CyborgSkinSpiderEngineering
   name: cyborg-skin-spider-engineering
   sprite: _IS14/Mobs/Cyborgs/Banda/SpiderEngineering.rsi
   bodyState: spidereng
   eyesState: spidereng_e
   noMindEyesState: spidereng_e_r
   lightState: spidereng_l
+  hatOffset: 0, 1
 
 - type: cyborgSkin
-  id: CyborgSkinEngBot
+  id: IS14CyborgSkinEngBot
   name: cyborg-skin-eng-bot
   sprite: _IS14/Mobs/Cyborgs/Banda/EngBot.rsi
   bodyState: engbot
   eyesState: engbot_e
   noMindEyesState: engbot_e_r
   lightState: engbot_l
-  hatOffset: 0, -1
+  hatOffset: 0, 2
 
 # Medical
 - type: cyborgSkin
-  id: CyborgSkinChiefDoctor
+  id: IS14CyborgSkinChiefDoctor
   name: cyborg-skin-chief-doctor
   sprite: _IS14/Mobs/Cyborgs/Banda/ChiefDoctor.rsi
   bodyState: chiefbot
   eyesState: chiefbot_e
   noMindEyesState: chiefbot_e_r
   lightState: chiefbot_l
-  hatOffset: 0, 3
+  hatOffset: 0, 6
 
 - type: cyborgSkin
-  id: CyborgSkinCanJanitor
+  id: IS14CyborgSkinCanJanitor
   name: cyborg-skin-can-janitor
   sprite: _IS14/Mobs/Cyborgs/Banda/CanJanitor.rsi
   bodyState: canjan
   eyesState: canjan_e
   noMindEyesState: canjan_e_r
   lightState: canjan_l
-  hatOffset: 0, 3
+  hatOffset: 0, 6
 
 - type: cyborgSkin
-  id: CyborgSkinSpiderJanitor
+  id: IS14CyborgSkinSpiderJanitor
   name: cyborg-skin-spider-janitor
   sprite: _IS14/Mobs/Cyborgs/Banda/SpiderJanitor.rsi
   bodyState: spiderjan
   eyesState: spiderjan_e
   noMindEyesState: spiderjan_e_r
   lightState: spiderjan_l
+  hatOffset: 0, 1
 
 - type: cyborgSkin
-  id: CyborgSkinJanBot
+  id: IS14CyborgSkinJanBot
   name: cyborg-skin-jan-bot
   sprite: _IS14/Mobs/Cyborgs/Banda/JanBot.rsi
   bodyState: janbot
@@ -91,29 +95,30 @@
   eyesState: janbot_e
   noMindEyesState: janbot_e_r
   lightState: janbot_l
-  hatOffset: 0, -1
+  hatOffset: 0, 2
 
 # Peacekeeper
 - type: cyborgSkin
-  id: CyborgSkinSpiderPeacekeeper
+  id: IS14CyborgSkinSpiderPeacekeeper
   name: cyborg-skin-spider-peacekeeper
   sprite: _IS14/Mobs/Cyborgs/Banda/SpiderPeacekeeper.rsi
   bodyState: whitespider
   eyesState: whitespider_e
   noMindEyesState: whitespider_e_r
   lightState: whitespider_l
+  hatOffset: 0, -1
 
 - type: cyborgSkin
-  id: CyborgSkinPeaceBot
+  id: IS14CyborgSkinPeaceBot
   name: cyborg-skin-peace-bot
   sprite: _IS14/Mobs/Cyborgs/Banda/PeaceBot.rsi
   bodyState: peacebot
   lightState: peacebot_l
-  hatOffset: 0, -1
+  hatOffset: 0, 2
 
 # Miner
 - type: cyborgSkin
-  id: CyborgSkinLavaland
+  id: IS14CyborgSkinLavaland
   name: cyborg-skin-lavaland
   sprite: _IS14/Mobs/Cyborgs/Banda/Lavaland.rsi
   bodyState: miner
@@ -121,49 +126,51 @@
   eyesState: miner_e
   noMindEyesState: miner_e_r
   lightState: miner_l
+  hatOffset: 0, 3
 
 - type: cyborgSkin
-  id: CyborgSkinSpiderMiner
+  id: IS14CyborgSkinSpiderMiner
   name: cyborg-skin-spider-miner
   sprite: _IS14/Mobs/Cyborgs/Banda/SpiderMiner.rsi
   bodyState: spidermin
   eyesState: spidermin_e
   noMindEyesState: spidermin_e_r
   lightState: spidermin_l
+  hatOffset: 0, 1
 
 - type: cyborgSkin
-  id: CyborgSkinCanMiner
+  id: IS14CyborgSkinCanMiner
   name: cyborg-skin-can-miner
   sprite: _IS14/Mobs/Cyborgs/Banda/CanMiner.rsi
   bodyState: canmin
   eyesState: canmin_e
   noMindEyesState: canmin_e_r
   lightState: canmin_l
-  hatOffset: 0, 3
+  hatOffset: 0, 6
 
 # Service
 - type: cyborgSkin
-  id: CyborgSkinWaitress
+  id: IS14CyborgSkinWaitress
   name: cyborg-skin-waitress
   sprite: _IS14/Mobs/Cyborgs/Banda/Waitress.rsi
   bodyState: service_f
   eyesState: service_e
   noMindEyesState: service_e_r
   lightState: service_l
-  hatOffset: 0, -1
+  hatOffset: 0, 2
 
 - type: cyborgSkin
-  id: CyborgSkinBro
+  id: IS14CyborgSkinBro
   name: cyborg-skin-bro
   sprite: _IS14/Mobs/Cyborgs/Banda/Bro.rsi
   bodyState: brobot
   eyesState: service_e
   noMindEyesState: service_e_r
   lightState: service_l
-  hatOffset: 0, -1
+  hatOffset: 0, 2
 
 - type: cyborgSkin
-  id: CyborgSkinTophat
+  id: IS14CyborgSkinTophat
   name: cyborg-skin-tophat
   sprite: _IS14/Mobs/Cyborgs/Banda/Tophat.rsi
   bodyState: tophat
@@ -173,26 +180,27 @@
   noHat: true
 
 - type: cyborgSkin
-  id: CyborgSkinKent
+  id: IS14CyborgSkinKent
   name: cyborg-skin-kent
   sprite: _IS14/Mobs/Cyborgs/Banda/Kent.rsi
   bodyState: kent
   eyesState: medical_e
   noMindEyesState: medical_e_r
   lightState: medical_l
-  hatOffset: 0, 3
+  hatOffset: 0, 6
 
 - type: cyborgSkin
-  id: CyborgSkinArachne
+  id: IS14CyborgSkinArachne
   name: cyborg-skin-arachne
   sprite: _IS14/Mobs/Cyborgs/Banda/Arachne.rsi
   bodyState: arachne_service
   eyesState: arachne_service_e
   noMindEyesState: arachne_service_e_r
   lightState: arachne_service_l
+  hatOffset: 0, 7
 
 - type: cyborgSkin
-  id: CyborgSkinHandy
+  id: IS14CyborgSkinHandy
   name: cyborg-skin-handy
   sprite: _IS14/Mobs/Cyborgs/Banda/Handy.rsi
   bodyState: handy-service

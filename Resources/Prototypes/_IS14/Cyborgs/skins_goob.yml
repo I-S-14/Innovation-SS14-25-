@@ -4,116 +4,128 @@
 
 # Engineering
 - type: cyborgSkin
-  id: CyborgSkinGoobEngineeringAntique
+  id: IS14CyborgSkinGoobEngineeringAntique
   name: cyborg-skin-goob-engineering-antique
   sprite: _Goobstation/Mobs/Silicon/Engineering/antique.rsi
   bodyState: engineer
   eyesState: engineer_e
   noMindEyesState: engineer_e_r
   lightState: engineer_l
+  hatOffset: 0, 6
 
 - type: cyborgSkin
-  id: CyborgSkinGoobEngineeringStandart
+  id: IS14CyborgSkinGoobEngineeringStandart
   name: cyborg-skin-goob-engineering-standart
   sprite: _Goobstation/Mobs/Silicon/Engineering/standart.rsi
   bodyState: engineer
   eyesState: engineer_e
   noMindEyesState: engineer_e_r
   lightState: engineer_l
+  hatOffset: 0, 1
 
 - type: cyborgSkin
-  id: CyborgSkinGoobEngineeringNoble
+  id: IS14CyborgSkinGoobEngineeringNoble
   name: cyborg-skin-goob-engineering-noble
   sprite: _Goobstation/Mobs/Silicon/Engineering/noble.rsi
   bodyState: engineer
   eyesState: engineer_e
   noMindEyesState: engineer_e_r
   lightState: engineer_l
+  hatOffset: 0, 7
 
 - type: cyborgSkin
-  id: CyborgSkinGoobEngineeringCricket
+  id: IS14CyborgSkinGoobEngineeringCricket
   name: cyborg-skin-goob-engineering-cricket
   sprite: _Goobstation/Mobs/Silicon/Engineering/cricket.rsi
   bodyState: engineer
   eyesState: engineer_e
   noMindEyesState: engineer_e_r
   lightState: engineer_l
+  hatOffset: 0, 6
 
 - type: cyborgSkin
-  id: CyborgSkinGoobEngineeringRover
+  id: IS14CyborgSkinGoobEngineeringRover
   name: cyborg-skin-goob-engineering-rover
   sprite: _Goobstation/Mobs/Silicon/Engineering/rover.rsi
   bodyState: engineer
   eyesState: engineer_e
   noMindEyesState: engineer_e_r
   lightState: engineer_l
+  hatOffset: 0, 5
 
 # Medical
 - type: cyborgSkin
-  id: CyborgSkinGoobMedicalStandart
+  id: IS14CyborgSkinGoobMedicalStandart
   name: cyborg-skin-goob-medical-standart
   sprite: _Goobstation/Mobs/Silicon/Medical/standart.rsi
   bodyState: medical
   eyesState: medical_e
   noMindEyesState: medical_e_r
   lightState: medical_l
+  hatOffset: 0, 1
 
 - type: cyborgSkin
-  id: CyborgSkinGoobMedicalMedbot
+  id: IS14CyborgSkinGoobMedicalMedbot
   name: cyborg-skin-goob-medical-medbot
   sprite: _Goobstation/Mobs/Silicon/Medical/medbot.rsi
   bodyState: medical
   eyesState: medical_e
   noMindEyesState: medical_e_r
   lightState: medical_l
+  hatOffset: 0, 3
 
 - type: cyborgSkin
-  id: CyborgSkinGoobMedicalNeedles
+  id: IS14CyborgSkinGoobMedicalNeedles
   name: cyborg-skin-goob-medical-needles
   sprite: _Goobstation/Mobs/Silicon/Medical/needles.rsi
   bodyState: medical
   eyesState: medical_e
   noMindEyesState: medical_e_r
   lightState: medical_l
+  hatOffset: 0, 4
 
 - type: cyborgSkin
-  id: CyborgSkinGoobMedicalAdvanced
+  id: IS14CyborgSkinGoobMedicalAdvanced
   name: cyborg-skin-goob-medical-advanced
   sprite: _Goobstation/Mobs/Silicon/Medical/advanced.rsi
   bodyState: medical
   eyesState: medical_e
   noMindEyesState: medical_e_r
   lightState: medical_l
+  hatOffset: 0, 7
 
 - type: cyborgSkin
-  id: CyborgSkinGoobMedicalQualified
+  id: IS14CyborgSkinGoobMedicalQualified
   name: cyborg-skin-goob-medical-qualified
   sprite: _Goobstation/Mobs/Silicon/Medical/qualified.rsi
   bodyState: medical
   eyesState: medical_e
   noMindEyesState: medical_e_r
   lightState: medical_l
+  hatOffset: 0, 7
 
 - type: cyborgSkin
-  id: CyborgSkinGoobMedicalNoble
+  id: IS14CyborgSkinGoobMedicalNoble
   name: cyborg-skin-goob-medical-noble
   sprite: _Goobstation/Mobs/Silicon/Medical/noble.rsi
   bodyState: medical
   eyesState: medical_e
   noMindEyesState: medical_e_r
   lightState: medical_l
+  hatOffset: 0, 7
 
 - type: cyborgSkin
-  id: CyborgSkinGoobMedicalCricket
+  id: IS14CyborgSkinGoobMedicalCricket
   name: cyborg-skin-goob-medical-cricket
   sprite: _Goobstation/Mobs/Silicon/Medical/cricket.rsi
   bodyState: medical
   eyesState: medical_e
   noMindEyesState: medical_e_r
   lightState: medical_l
+  hatOffset: 0, 6
 
 - type: cyborgSkin
-  id: CyborgSkinGoobMedicalRover
+  id: IS14CyborgSkinGoobMedicalRover
   name: cyborg-skin-goob-medical-rover
   sprite: _Goobstation/Mobs/Silicon/Medical/rover.rsi
   bodyState: medical
@@ -123,156 +135,173 @@
 
 # Janitor
 - type: cyborgSkin
-  id: CyborgSkinGoobJanitorMopbot
+  id: IS14CyborgSkinGoobJanitorMopbot
   name: cyborg-skin-goob-janitor-mopbot
   sprite: _Goobstation/Mobs/Silicon/Janitor/mopbot.rsi
   bodyState: janitor
   eyesState: janitor_e
   noMindEyesState: janitor_e_r
   lightState: janitor_l
+  hatOffset: 0, 6
 
 - type: cyborgSkin
-  id: CyborgSkinGoobJanitorStandart
+  id: IS14CyborgSkinGoobJanitorStandart
   name: cyborg-skin-goob-janitor-standart
   sprite: _Goobstation/Mobs/Silicon/Janitor/standart.rsi
   bodyState: janitor
   eyesState: janitor_e
   noMindEyesState: janitor_e_r
   lightState: janitor_l
+  hatOffset: 0, 1
 
 - type: cyborgSkin
-  id: CyborgSkinGoobJanitorNoble
+  id: IS14CyborgSkinGoobJanitorNoble
   name: cyborg-skin-goob-janitor-noble
   sprite: _Goobstation/Mobs/Silicon/Janitor/noble.rsi
   bodyState: janitor
   eyesState: janitor_e
   noMindEyesState: janitor_e_r
   lightState: janitor_l
+  hatOffset: 0, 7
 
 - type: cyborgSkin
-  id: CyborgSkinGoobJanitorCricket
+  id: IS14CyborgSkinGoobJanitorCricket
   name: cyborg-skin-goob-janitor-cricket
   sprite: _Goobstation/Mobs/Silicon/Janitor/cricket.rsi
   bodyState: janitor
   eyesState: janitor_e
   noMindEyesState: janitor_e_r
   lightState: janitor_l
+  hatOffset: 0, 6
 
 - type: cyborgSkin
-  id: CyborgSkinGoobJanitorRover
+  id: IS14CyborgSkinGoobJanitorRover
   name: cyborg-skin-goob-janitor-rover
   sprite: _Goobstation/Mobs/Silicon/Janitor/rover.rsi
   bodyState: janitor
   eyesState: janitor_e
   noMindEyesState: janitor_e_r
   lightState: janitor_l
+  hatOffset: 0, 4
 
 # Miner
 - type: cyborgSkin
-  id: CyborgSkinGoobMinerAdvanced
+  id: IS14CyborgSkinGoobMinerAdvanced
   name: cyborg-skin-goob-miner-advanced
   sprite: _Goobstation/Mobs/Silicon/Miner/advanced.rsi
   bodyState: miner
   eyesState: miner_e
   noMindEyesState: miner_e_r
   lightState: miner_l
+  hatOffset: 0, 7
 
 - type: cyborgSkin
-  id: CyborgSkinGoobMinerCoffin
+  id: IS14CyborgSkinGoobMinerCoffin
   name: cyborg-skin-goob-miner-coffin
   sprite: _Goobstation/Mobs/Silicon/Miner/coffin.rsi
   bodyState: miner
   eyesState: miner_e
   noMindEyesState: miner_e_r
   lightState: miner_l
+  hatOffset: 0, 7
 
 - type: cyborgSkin
-  id: CyborgSkinGoobMinerNoble
+  id: IS14CyborgSkinGoobMinerNoble
   name: cyborg-skin-goob-miner-noble
   sprite: _Goobstation/Mobs/Silicon/Miner/noble.rsi
   bodyState: miner
   eyesState: miner_e
   noMindEyesState: miner_e_r
   lightState: miner_l
+  hatOffset: 0, 7
 
 - type: cyborgSkin
-  id: CyborgSkinGoobMinerCricket
+  id: IS14CyborgSkinGoobMinerCricket
   name: cyborg-skin-goob-miner-cricket
   sprite: _Goobstation/Mobs/Silicon/Miner/cricket.rsi
   bodyState: miner
   eyesState: miner_e
   noMindEyesState: miner_e_r
   lightState: miner_l
+  hatOffset: 0, 6
 
 - type: cyborgSkin
-  id: CyborgSkinGoobMinerSquat
+  id: IS14CyborgSkinGoobMinerSquat
   name: cyborg-skin-goob-miner-squat
   sprite: _Goobstation/Mobs/Silicon/Miner/squat.rsi
   bodyState: miner
   eyesState: miner_e
   noMindEyesState: miner_e_r
   lightState: miner_l
+  hatOffset: 0, 3
 
 # Service
 - type: cyborgSkin
-  id: CyborgSkinGoobServiceStandart
+  id: IS14CyborgSkinGoobServiceStandart
   name: cyborg-skin-goob-service-standart
   sprite: _Goobstation/Mobs/Silicon/Service/standart.rsi
   bodyState: service
   eyesState: service_e
   noMindEyesState: service_e_r
   lightState: service_l
+  hatOffset: 0, 1
 
 - type: cyborgSkin
-  id: CyborgSkinGoobServiceBrobot
+  id: IS14CyborgSkinGoobServiceBrobot
   name: cyborg-skin-goob-service-brobot
   sprite: _Goobstation/Mobs/Silicon/Service/brobot.rsi
   bodyState: service
   eyesState: service_e
   noMindEyesState: service_e_r
   lightState: service_l
+  hatOffset: 0, 3
 
 - type: cyborgSkin
-  id: CyborgSkinGoobServiceWaitress
+  id: IS14CyborgSkinGoobServiceWaitress
   name: cyborg-skin-goob-service-waitress
   sprite: _Goobstation/Mobs/Silicon/Service/waitress.rsi
   bodyState: service
   eyesState: service_e
   noMindEyesState: service_e_r
   lightState: service_l
+  hatOffset: 0, 3
 
 - type: cyborgSkin
-  id: CyborgSkinGoobServiceCricket
+  id: IS14CyborgSkinGoobServiceCricket
   name: cyborg-skin-goob-service-cricket
   sprite: _Goobstation/Mobs/Silicon/Service/cricket.rsi
   bodyState: service
   eyesState: service_e
   noMindEyesState: service_e_r
   lightState: service_l
+  hatOffset: 0, 6
 
 - type: cyborgSkin
-  id: CyborgSkinGoobServiceNoble
+  id: IS14CyborgSkinGoobServiceNoble
   name: cyborg-skin-goob-service-noble
   sprite: _Goobstation/Mobs/Silicon/Service/noble.rsi
   bodyState: service
   eyesState: service_e
   noMindEyesState: service_e_r
   lightState: service_l
+  hatOffset: 0, 7
 
 - type: cyborgSkin
-  id: CyborgSkinGoobServiceRich
+  id: IS14CyborgSkinGoobServiceRich
   name: cyborg-skin-goob-service-rich
   sprite: _Goobstation/Mobs/Silicon/Service/rich.rsi
   bodyState: service
   eyesState: service_e
   noMindEyesState: service_e_r
   lightState: service_l
+  hatOffset: 0, 3
 
 - type: cyborgSkin
-  id: CyborgSkinGoobServiceRover
+  id: IS14CyborgSkinGoobServiceRover
   name: cyborg-skin-goob-service-rover
   sprite: _Goobstation/Mobs/Silicon/Service/rover.rsi
   bodyState: service
   eyesState: service_e
   noMindEyesState: service_e_r
   lightState: service_l
+  hatOffset: 0, 1

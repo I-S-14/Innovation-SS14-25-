@@ -2,7 +2,7 @@
 
 # Shown before a model is picked.
 - type: cyborgSkin
-  id: CyborgSkinStandard
+  id: IS14CyborgSkinStandard
   name: cyborg-skin-standard
   sprite: Mobs/Silicon/chassis.rsi
   bodyState: robot
@@ -11,16 +11,17 @@
   lightState: robot_l
 
 - type: cyborgSkin
-  id: CyborgSkinEngineering
+  id: IS14CyborgSkinEngineering
   name: cyborg-skin-engineering
   sprite: Mobs/Silicon/chassis.rsi
   bodyState: engineer
   eyesState: engineer_e
   noMindEyesState: engineer_e_r
   lightState: engineer_l
+  hatOffset: 0, -1
 
 - type: cyborgSkin
-  id: CyborgSkinMedical
+  id: IS14CyborgSkinMedical
   name: cyborg-skin-medical
   sprite: Mobs/Silicon/chassis.rsi
   bodyState: medical
@@ -28,9 +29,10 @@
   eyesState: medical_e
   noMindEyesState: medical_e_r
   lightState: medical_l
+  hatOffset: 0, 6
 
 - type: cyborgSkin
-  id: CyborgSkinJanitor
+  id: IS14CyborgSkinJanitor
   name: cyborg-skin-janitor
   sprite: Mobs/Silicon/chassis.rsi
   bodyState: janitor
@@ -38,9 +40,10 @@
   eyesState: janitor_e
   noMindEyesState: janitor_e_r
   lightState: janitor_l
+  hatOffset: 0, -2
 
 - type: cyborgSkin
-  id: CyborgSkinMiner
+  id: IS14CyborgSkinMiner
   name: cyborg-skin-miner
   sprite: Mobs/Silicon/chassis.rsi
   bodyState: miner
@@ -48,81 +51,90 @@
   eyesState: miner_e
   noMindEyesState: miner_e_r
   lightState: miner_l
+  hatOffset: 0, 3
 
 - type: cyborgSkin
-  id: CyborgSkinService
+  id: IS14CyborgSkinService
   name: cyborg-skin-service
   sprite: Mobs/Silicon/chassis.rsi
   bodyState: service
   eyesState: service_e
   noMindEyesState: service_e_r
   lightState: service_l
+  hatOffset: 0, 2
 
 - type: cyborgSkin
-  id: CyborgSkinPeacekeeper
+  id: IS14CyborgSkinPeacekeeper
   name: cyborg-skin-peacekeeper
   sprite: Mobs/Silicon/chassis.rsi
   bodyState: peace
   eyesState: peace_e
   noMindEyesState: peace_e_r
   lightState: peace_l
+  hatOffset: 0, 1
 
 - type: cyborgSkin
-  id: CyborgSkinClownDefault
+  id: IS14CyborgSkinClownDefault
   name: cyborg-skin-clown-default
   sprite: Mobs/Silicon/chassis.rsi
   bodyState: clown
   eyesState: clown_e
   noMindEyesState: clown_e_r
   lightState: clown_l
+  hatOffset: 0, 1
 
 - type: cyborgSkin
-  id: CyborgSkinSecurity
+  id: IS14CyborgSkinSecurity
   name: cyborg-skin-security
   sprite: _IS14/Mobs/Cyborgs/Tg/Security.rsi
   bodyState: sec
   eyesState: sec_e
   noMindEyesState: sec_e_r
   lightState: sec_l
+  hatOffset: 0, 6
 
 # IS14's own Yasari cyborg.
 - type: cyborgSkin
-  id: CyborgSkinYasari
+  id: IS14CyborgSkinYasari
   name: cyborg-skin-yasari
   sprite: _IS14/Mobs/Silicon/chassis.rsi
   bodyState: yasari
   eyesState: yasari_empty
   noMindEyesState: yasari_empty
   lightState: yasari_e
+  hatOffset: 0, 7
 
 # Syndicate chassis from upstream chassis.rsi. They have no "no mind" eyes.
 - type: cyborgSkin
-  id: CyborgSkinSyndicateAssault
+  id: IS14CyborgSkinSyndicateAssault
   name: cyborg-skin-syndicate-assault
   sprite: Mobs/Silicon/chassis.rsi
   bodyState: synd_sec
   eyesState: synd_sec_e
   lightState: synd_sec_l
+  hatOffset: 0, 6
 
 - type: cyborgSkin
-  id: CyborgSkinSyndicateMedical
+  id: IS14CyborgSkinSyndicateMedical
   name: cyborg-skin-syndicate-medical
   sprite: Mobs/Silicon/chassis.rsi
   bodyState: synd_medical
   eyesState: synd_medical_e
   lightState: synd_medical_l
+  hatOffset: 0, 6
 
 - type: cyborgSkin
-  id: CyborgSkinSyndicateSaboteur
+  id: IS14CyborgSkinSyndicateSaboteur
   name: cyborg-skin-syndicate-saboteur
   sprite: Mobs/Silicon/chassis.rsi
   bodyState: synd_engi
   eyesState: synd_engi_e
   lightState: synd_engi_l
+  hatOffset: 0, -1
 
 # Derelict chassis from upstream chassis.rsi, worn down versions of the station skins.
 - type: cyborgSkin
-  id: CyborgSkinDerelict
+  id: IS14CyborgSkinDerelict
   name: cyborg-skin-derelict
   sprite: Mobs/Silicon/chassis.rsi
   bodyState: derelict
@@ -131,16 +143,17 @@
   lightState: derelict_l
 
 - type: cyborgSkin
-  id: CyborgSkinDerelictEngineering
+  id: IS14CyborgSkinDerelictEngineering
   name: cyborg-skin-derelict-engineering
   sprite: Mobs/Silicon/chassis.rsi
   bodyState: engineer_derelict
   eyesState: engineer_e
   noMindEyesState: engineer_e_r
   lightState: engineer_l
+  hatOffset: 0, -1
 
 - type: cyborgSkin
-  id: CyborgSkinDerelictJanitor
+  id: IS14CyborgSkinDerelictJanitor
   name: cyborg-skin-derelict-janitor
   sprite: Mobs/Silicon/chassis.rsi
   bodyState: janitor_derelict
@@ -148,9 +161,10 @@
   eyesState: janitor_e
   noMindEyesState: janitor_e_r
   lightState: janitor_l
+  hatOffset: 0, -2
 
 - type: cyborgSkin
-  id: CyborgSkinDerelictMedical
+  id: IS14CyborgSkinDerelictMedical
   name: cyborg-skin-derelict-medical
   sprite: Mobs/Silicon/chassis.rsi
   bodyState: medical_derelict
@@ -158,9 +172,10 @@
   eyesState: medical_e
   noMindEyesState: medical_e_r
   lightState: medical_l
+  hatOffset: 0, 6
 
 - type: cyborgSkin
-  id: CyborgSkinDerelictMiner
+  id: IS14CyborgSkinDerelictMiner
   name: cyborg-skin-derelict-miner
   sprite: Mobs/Silicon/chassis.rsi
   bodyState: miner_derelict
@@ -168,11 +183,13 @@
   eyesState: miner_e
   noMindEyesState: miner_e_r
   lightState: miner_l
+  hatOffset: 0, 3
 
 - type: cyborgSkin
-  id: CyborgSkinDerelictSyndicate
+  id: IS14CyborgSkinDerelictSyndicate
   name: cyborg-skin-derelict-syndicate
   sprite: Mobs/Silicon/chassis.rsi
   bodyState: synd_sec_derelict
   eyesState: synd_sec_derelict_e
   lightState: synd_sec_derelict_l
+  hatOffset: 0, 6
