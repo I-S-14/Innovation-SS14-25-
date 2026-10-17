@@ -1,0 +1,39 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+
+# tg's silicon tablet (modularInterface): an IS14 OS device built into every cyborg, opened from the HUD.
+# No cell slot, so it neither drains nor shows a battery: the chassis powers it.
+- type: entity
+  id: IS14CyborgOsDevice
+  name: built-in tablet
+  description: The cyborg's integrated computer. Messenger, crew manifest and notes.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Devices/pda/Research/scientist.rsi
+    layers:
+    - state: "closed"
+      map: [ "enum.IS14OsVisualLayers.Base" ]
+    - state: "unlit"
+      shader: unshaded
+      visible: false
+      map: [ "enum.IS14OsVisualLayers.Screen" ]
+  - type: Appearance
+  - type: IS14OsDevice
+    profile: OsProfileHandheld
+    theme: OsNtOs
+  - type: IS14OsMemory
+    preinstalled:
+    - AppNotes
+    - AppManifest
+    - IS14AppCyborgDiagnostics
+  - type: DeviceNetwork
+    deviceNetId: Wireless
+    receiveFrequencyId: PDA
+    prefix: device-address-prefix-console
+    savableAddress: false
+  - type: WirelessNetworkConnection
+    range: 500
+  - type: UserInterface
+    interfaces:
+      enum.IS14OsUiKey.Key:
+        type: IS14OsBui
