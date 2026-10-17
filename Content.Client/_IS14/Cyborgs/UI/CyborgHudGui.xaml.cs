@@ -68,7 +68,7 @@ public sealed partial class CyborgHudGui : BoxContainer
     /// <summary>
     /// Rebuilds the slot row. Each slot is a hand, its held item and its background state.
     /// </summary>
-    public void SetSlots(IReadOnlyList<(string Hand, EntityUid? Item, string Background)> slots)
+    public void SetSlots(IReadOnlyList<(string Hand, EntityUid? Item, string Background, bool Blocked)> slots)
     {
         if (_slotHands.Count != slots.Count)
         {
@@ -99,6 +99,7 @@ public sealed partial class CyborgHudGui : BoxContainer
             _slotHands[i] = slots[i].Hand;
             _slots[i].SetBackground(slots[i].Background);
             _slots[i].SetEntity(slots[i].Item);
+            _slots[i].SetBlocked(slots[i].Blocked);
         }
     }
 

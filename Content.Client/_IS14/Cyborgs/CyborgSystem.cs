@@ -109,6 +109,12 @@ public sealed class CyborgSystem : SharedCyborgSystem
         UpdateAppearance(ent);
     }
 
+    // Spawn menu previews never get a state or appearance update, so draw the skin right away.
+    protected override void OnCyborgStartup(Entity<CyborgComponent> ent)
+    {
+        UpdateAppearance(ent);
+    }
+
     protected override void OnInserted(Entity<CyborgComponent> ent, ref EntInsertedIntoContainerMessage args)
     {
         base.OnInserted(ent, ref args);

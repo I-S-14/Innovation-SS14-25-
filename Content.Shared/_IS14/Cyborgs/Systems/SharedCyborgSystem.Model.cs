@@ -198,11 +198,16 @@ public abstract partial class SharedCyborgSystem
     }
 
     /// <summary>
-    /// The skin currently shown, falling back to the default one.
+    /// The skin currently shown. Before one is picked: the model's first skin, the one map init gives it,
+    /// then the default.
     /// </summary>
     public CyborgSkinPrototype? GetSkin(CyborgComponent cyborg)
     {
-        return _proto.TryIndex(cyborg.Skin ?? cyborg.DefaultSkin, out var skin) ? skin : null;
+        var id = cyborg.Skin;
+        if (id == null && _proto.TryIndex(cyborg.Model, out var model) && model.Skins.Count > 0)
+            id = model.Skins[0];
+
+        return _proto.TryIndex(id ?? cyborg.DefaultSkin, out var skin) ? skin : null;
     }
 
     protected virtual void UpdateRadioChannels(Entity<CyborgComponent> ent, CyborgModelPrototype? model)

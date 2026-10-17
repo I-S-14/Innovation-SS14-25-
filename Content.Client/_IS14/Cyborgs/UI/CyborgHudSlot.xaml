@@ -25,6 +25,13 @@ Licensed under IS14's EULA, see EULA.txt for more information.
                  HorizontalAlignment="Center"
                  VerticalAlignment="Center"
                  Visible="False" />
+    <!-- Crossed circle over an offline slot, the upstream blocked hand texture. -->
+    <TextureRect Name="BlockedRect"
+                 TextureScale="2 2"
+                 Stretch="KeepCentered"
+                 HorizontalExpand="True"
+                 VerticalExpand="True"
+                 Visible="False" />
     <!-- Use delay sweep, like the upstream hand buttons. -->
     <cooldown:CooldownGraphic Name="CooldownDisplay" Visible="False" />
 </is14:CyborgHudSlot>

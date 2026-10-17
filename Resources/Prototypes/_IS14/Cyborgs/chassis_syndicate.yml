@@ -65,6 +65,10 @@
   description: A lean, mean killing machine with access to a variety of deadly tools.
   suffix: IS14, operative
   components:
+  # Prototype icons show the skin this chassis spawns with.
+  - type: Icon
+    sprite: Mobs/Silicon/chassis.rsi
+    state: synd_sec
   - type: Cyborg
     model: IS14CyborgModelSyndicateAssault
     inherentRadioChannels:
@@ -78,6 +82,10 @@
   description: A combat medical cyborg. Has limited offensive potential, but makes more than up for it with its support capabilities.
   suffix: IS14, operative
   components:
+  # Prototype icons show the skin this chassis spawns with.
+  - type: Icon
+    sprite: Mobs/Silicon/chassis.rsi
+    state: synd_medical
   - type: Cyborg
     model: IS14CyborgModelSyndicateMedical
     inherentRadioChannels:
@@ -91,6 +99,10 @@
   description: A streamlined engineering cyborg, equipped with covert modules.
   suffix: IS14, operative
   components:
+  # Prototype icons show the skin this chassis spawns with.
+  - type: Icon
+    sprite: Mobs/Silicon/chassis.rsi
+    state: synd_engi
   - type: Cyborg
     model: IS14CyborgModelSyndicateSaboteur
     inherentRadioChannels:

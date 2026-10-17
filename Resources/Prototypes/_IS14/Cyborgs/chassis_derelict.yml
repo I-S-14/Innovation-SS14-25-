@@ -8,6 +8,10 @@
   description: A man-machine hybrid that assists in station activity. This one is in a state of great disrepair.
   suffix: IS14, derelict
   components:
+  # Prototype icons show the skin this chassis spawns with.
+  - type: Icon
+    sprite: Mobs/Silicon/chassis.rsi
+    state: derelict
   - type: CyborgAiLink
     autoLink: false
     lawSync: false
@@ -66,6 +70,10 @@
   description: A lean, mean killing machine. This one is more rust-orange than blood-red.
   suffix: IS14, derelict
   components:
+  # Prototype icons show the skin this chassis spawns with.
+  - type: Icon
+    sprite: Mobs/Silicon/chassis.rsi
+    state: synd_sec_derelict
   - type: Cyborg
     model: IS14CyborgModelDerelictSyndicate
     inherentRadioChannels:

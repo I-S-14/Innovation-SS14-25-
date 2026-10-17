@@ -60,12 +60,18 @@ public abstract partial class SharedCyborgSystem
             return;
 
         var id = args.Container.ID;
-        if (!id.StartsWith(ent.Comp.ToolHandPrefix + "-") ||
-            !int.TryParse(id.AsSpan(ent.Comp.ToolHandPrefix.Length + 1), out var index))
-            return;
-
-        if (!IsSlotWorking(ent.Comp, index))
+        if (TryGetToolSlotIndex(ent.Comp, id, out var index) && !IsSlotWorking(ent.Comp, index))
             args.Cancel();
+    }
+
+    /// <summary>
+    /// The slot number behind a tool hand id, the reverse of <see cref="GetToolHandId"/>.
+    /// </summary>
+    public bool TryGetToolSlotIndex(CyborgComponent cyborg, string handId, out int index)
+    {
+        index = -1;
+        return handId.StartsWith(cyborg.ToolHandPrefix + "-") &&
+               int.TryParse(handId.AsSpan(cyborg.ToolHandPrefix.Length + 1), out index);
     }
 
     /// <summary>
@@ -194,8 +200,16 @@ public abstract partial class SharedCyborgSystem
             return false;
         }
 
+        // The active slot first, so the player decides where a module goes; then the first free one.
         string? freeHand = null;
-        for (var i = 0; i < ent.Comp.ToolSlots - ent.Comp.BrokenSlots; i++)
+        if (CompOrNull<HandsComponent>(ent)?.ActiveHandId is { } active &&
+            TryGetToolSlotIndex(ent.Comp, active, out var activeIndex) && IsSlotWorking(ent.Comp, activeIndex) &&
+            _hands.HandIsEmpty(ent.Owner, active))
+        {
+            freeHand = active;
+        }
+
+        for (var i = 0; freeHand == null && i < ent.Comp.ToolSlots - ent.Comp.BrokenSlots; i++)
         {
             var handId = GetToolHandId(ent.Comp, i);
             if (_hands.HandIsEmpty(ent.Owner, handId))

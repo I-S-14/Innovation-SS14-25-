@@ -162,9 +162,13 @@
   parent: IS14BaseXenoborg
   id: IS14XenoborgEngi
   name: engi xenoborg
-  suffix: with brain
+  suffix: IS14, with brain
   description: A man-machine hybrid that aims to replicate itself. This one seems to be an engineering type, as it has more tools for supporting the other Xenoborgs.
   components:
+  # Prototype icons show the skin this chassis spawns with.
+  - type: Icon
+    sprite: Mobs/Silicon/chassis.rsi
+    state: xenoborg_engi
   - type: Cyborg
     model: IS14CyborgModelXenoborgEngi
     defaultSkin: IS14CyborgSkinXenoborgEngi
@@ -181,9 +185,13 @@
   parent: IS14BaseXenoborg
   id: IS14XenoborgHeavy
   name: heavy xenoborg
-  suffix: with brain
+  suffix: IS14, with brain
   description: A man-machine hybrid that aims to replicate itself. This type has heavy lasers and is covered in thick armor plates. It may be tougher, but its speed matches its brawn.
   components:
+  # Prototype icons show the skin this chassis spawns with.
+  - type: Icon
+    sprite: Mobs/Silicon/chassis.rsi
+    state: xenoborg_heavy
   - type: Cyborg
     model: IS14CyborgModelXenoborgHeavy
     defaultSkin: IS14CyborgSkinXenoborgHeavy
@@ -244,9 +252,13 @@
   parent: IS14BaseXenoborg
   id: IS14XenoborgScout
   name: scout xenoborg
-  suffix: with brain
+  suffix: IS14, with brain
   description: A man-machine hybrid that aims to replicate itself. This one is a fast scout with tiny thrusters and a sharp knife.
   components:
+  # Prototype icons show the skin this chassis spawns with.
+  - type: Icon
+    sprite: Mobs/Silicon/chassis.rsi
+    state: xenoborg_scout
   - type: Cyborg
     model: IS14CyborgModelXenoborgScout
     defaultSkin: IS14CyborgSkinXenoborgScout
@@ -264,9 +276,13 @@
   parent: IS14BaseXenoborg
   id: IS14XenoborgStealth
   name: stealth xenoborg
-  suffix: with brain
+  suffix: IS14, with brain
   description: A man-machine hybrid that aims to replicate itself. This one hides from sight and puts its targets to sleep.
   components:
+  # Prototype icons show the skin this chassis spawns with.
+  - type: Icon
+    sprite: Mobs/Silicon/chassis.rsi
+    state: xenoborg_stealth
   - type: Cyborg
     model: IS14CyborgModelXenoborgStealth
     defaultSkin: IS14CyborgSkinXenoborgStealth
@@ -280,7 +296,7 @@
 - type: entity
   parent: IS14XenoborgEngi
   id: IS14XenoborgEngiPrinted
-  suffix: printed
+  suffix: IS14, printed
   components:
   - type: ContainerFill
     containers:
@@ -294,7 +310,7 @@
 - type: entity
   parent: IS14XenoborgHeavy
   id: IS14XenoborgHeavyPrinted
-  suffix: printed
+  suffix: IS14, printed
   components:
   - type: ContainerFill
     containers:
@@ -308,7 +324,7 @@
 - type: entity
   parent: IS14XenoborgScout
   id: IS14XenoborgScoutPrinted
-  suffix: printed
+  suffix: IS14, printed
   components:
   - type: ContainerFill
     containers:
@@ -322,7 +338,7 @@
 - type: entity
   parent: IS14XenoborgStealth
   id: IS14XenoborgStealthPrinted
-  suffix: printed
+  suffix: IS14, printed
   components:
   - type: ContainerFill
     containers:

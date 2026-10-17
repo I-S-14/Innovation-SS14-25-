@@ -109,6 +109,14 @@ public abstract partial class SharedCyborgSystem : EntitySystem
         ent.Comp.ToolContainer = _container.EnsureContainer<Container>(ent.Owner, ent.Comp.ToolContainerId);
         ent.Comp.UpgradeContainer = _container.EnsureContainer<Container>(ent.Owner, ent.Comp.UpgradeContainerId);
         ent.Comp.OsContainer = _container.EnsureContainer<ContainerSlot>(ent.Owner, ent.Comp.OsContainerId);
+        OnCyborgStartup(ent);
+    }
+
+    /// <summary>
+    /// After the containers are set up. The client draws the skin here, which is all a spawn menu preview gets.
+    /// </summary>
+    protected virtual void OnCyborgStartup(Entity<CyborgComponent> ent)
+    {
     }
 
     private void OnMapInit(Entity<CyborgComponent> ent, ref MapInitEvent args)

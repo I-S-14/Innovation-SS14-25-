@@ -84,6 +84,17 @@ public sealed partial class CyborgHudSlot : ContainerButton
         Background.ModulateSelfOverride = highlight ? Color.FromHex("#7CFF7C") : null;
     }
 
+    /// <summary>
+    /// Shows the crossed circle of a slot the cyborg can't use right now.
+    /// </summary>
+    public void SetBlocked(bool blocked)
+    {
+        if (blocked && BlockedRect.Texture == null)
+            BlockedRect.Texture = Theme.ResolveTextureOrNull("blocked")?.Texture;
+
+        BlockedRect.Visible = blocked;
+    }
+
     public void SetEntity(EntityUid? entity)
     {
         Entity = entity;

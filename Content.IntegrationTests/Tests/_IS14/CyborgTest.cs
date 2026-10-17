@@ -946,6 +946,43 @@ public sealed class CyborgTest
     }
 
     /// <summary>
+    ///     A module taken from the kit goes into the active slot when it is free and working.
+    /// </summary>
+    [Test]
+    public async Task ToolGoesToActiveSlot()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+        var entMan = server.ResolveDependency<IEntityManager>();
+        var cyborgSys = entMan.System<SharedCyborgSystem>();
+        var hands = entMan.System<SharedHandsSystem>();
+
+        await server.WaitAssertion(() =>
+        {
+            var uid = entMan.SpawnEntity(EngineeringProto, map.GridCoords);
+            var cyborg = entMan.GetComponent<CyborgComponent>(uid);
+            cyborgSys.SetActive((uid, cyborg), true);
+            var tools = cyborg.ToolContainer.ContainedEntities.ToList();
+            Entity<CyborgToolComponent> Tool(int i) => (tools[i], entMan.GetComponent<CyborgToolComponent>(tools[i]));
+
+            var third = cyborgSys.GetToolHandId(cyborg, 2);
+            hands.SetActiveHand(uid, third);
+            Assert.That(cyborgSys.TryDeployTool((uid, cyborg), Tool(0)));
+            Assert.That(hands.IsHolding(uid, tools[0], out var hand) && hand == third,
+                "the module should land in the active third slot");
+
+            // The active slot is taken now, so the next one goes to the first free slot.
+            Assert.That(cyborgSys.TryDeployTool((uid, cyborg), Tool(1)));
+            Assert.That(hands.IsHolding(uid, tools[1], out hand) && hand == cyborgSys.GetToolHandId(cyborg, 0));
+
+            entMan.DeleteEntity(uid);
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>
     ///     Stowing a lit welder turns it off.
     /// </summary>
     [Test]

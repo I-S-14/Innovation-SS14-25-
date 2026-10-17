@@ -192,7 +192,7 @@ public sealed class CyborgHudUIController : UIController, IOnSystemChanged<Cybor
             _gui.SetModel("nomod", Loc.GetString("cyborg-hud-no-model"));
 
         var activeHand = hands.Value.Comp.ActiveHandId;
-        var slots = new List<(string, EntityUid?, string)>();
+        var slots = new List<(string, EntityUid?, string, bool)>();
         for (var i = 0; i < comp.ToolSlots; i++)
         {
             var hand = _cyborg.GetToolHandId(comp, i);
@@ -200,10 +200,11 @@ public sealed class CyborgHudUIController : UIController, IOnSystemChanged<Cybor
 
             // screen_cyborg only has three numbered slots.
             var number = Math.Clamp(i + 1, 1, 3);
-            var background = !comp.Active || !_cyborg.IsSlotWorking(comp, i) ? $"inv{number}_b"
+            var blocked = !comp.Active || !_cyborg.IsSlotWorking(comp, i);
+            var background = blocked ? $"inv{number}_b"
                 : hand == activeHand ? $"inv{number}_a"
                 : $"inv{number}";
-            slots.Add((hand, item, background));
+            slots.Add((hand, item, background, blocked));
         }
 
         _gui.SetSlots(slots);

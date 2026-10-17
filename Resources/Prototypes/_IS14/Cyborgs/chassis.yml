@@ -431,6 +431,10 @@
   name: engineering cyborg
   suffix: IS14, battery
   components:
+  # Prototype icons show the skin this chassis spawns with.
+  - type: Icon
+    sprite: Mobs/Silicon/chassis.rsi
+    state: engineer
   - type: Cyborg
     model: IS14CyborgModelEngineering
 
@@ -474,6 +478,10 @@
   name: Yasari
   suffix: IS14, Yasari, battery
   components:
+  # Prototype icons show the skin this chassis spawns with.
+  - type: Icon
+    sprite: _IS14/Mobs/Silicon/chassis.rsi
+    state: yasari
   - type: Cyborg
     model: IS14CyborgModelYasari
   - type: RandomMetadata
@@ -512,6 +520,10 @@
   name: medical cyborg
   suffix: IS14, battery
   components:
+  # Prototype icons show the skin this chassis spawns with.
+  - type: Icon
+    sprite: Mobs/Silicon/chassis.rsi
+    state: medical
   - type: Cyborg
     model: IS14CyborgModelMedical
 
@@ -521,6 +533,10 @@
   name: mining cyborg
   suffix: IS14, battery
   components:
+  # Prototype icons show the skin this chassis spawns with.
+  - type: Icon
+    sprite: Mobs/Silicon/chassis.rsi
+    state: miner
   - type: Cyborg
     model: IS14CyborgModelMiner
 
@@ -530,6 +546,10 @@
   name: janitor cyborg
   suffix: IS14, battery
   components:
+  # Prototype icons show the skin this chassis spawns with.
+  - type: Icon
+    sprite: Mobs/Silicon/chassis.rsi
+    state: janitor
   - type: Cyborg
     model: IS14CyborgModelJanitor
 
@@ -539,5 +559,9 @@
   name: service cyborg
   suffix: IS14, battery
   components:
+  # Prototype icons show the skin this chassis spawns with.
+  - type: Icon
+    sprite: Mobs/Silicon/chassis.rsi
+    state: service
   - type: Cyborg
     model: IS14CyborgModelService
