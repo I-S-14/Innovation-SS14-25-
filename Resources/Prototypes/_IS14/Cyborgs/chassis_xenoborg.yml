@@ -1,0 +1,334 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+
+# Xenoborg chassis on the tgstation-style system. Mirrors upstream BaseXenoborgChassis,
+# BaseXenoborgTransponder and xenoborgs.yml. Models and boards are in xenoborgs.yml.
+- type: entity
+  parent: IS14BaseCyborg
+  id: IS14BaseXenoborg
+  name: xenoborg
+  description: A man-machine hybrid that aims to replicate itself. They love extracting brains to insert into fresh Xenoborg chassis to grow their army.
+  abstract: true
+  save: false
+  components:
+  - type: CyborgAiLink
+    autoLink: false
+    lawSync: false
+  - type: RandomMetadata
+    nameSegments:
+    - NamesXenoborg
+  - type: NameIdentifier
+    group: Xenoborg
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      125: Critical
+      375: Dead
+    stateAlertDict:
+      Alive: BorgHealth
+      Critical: BorgCrit
+      Dead: BorgDead
+    showOverlays: false
+    allowRevives: true
+  - type: EmagSiliconLaw
+    stunTime: 5
+  - type: SiliconLawProvider
+    laws: XenoborgLawset
+    subverted: true
+  - type: CollectiveMind
+    defaultChannel: Binary
+    channels:
+    - Binary
+  - type: IntrinsicRadioTransmitter
+    channels:
+    - Xenoborg
+  - type: ActiveRadio
+    channels:
+    - Mothership
+    - Xenoborg
+  - type: Repairable
+    doAfterDelay: 13
+  - type: TypingIndicator
+    proto: xenoborg
+  - type: Speech
+    speechVerb: Robotic
+    speechSounds: Xenoborg
+    allowedEmotes:
+    - Laugh
+    - Sigh
+    - Crying
+    - Whistle
+  - type: Vocal
+    sounds:
+      Unsexed: UnisexSiliconXenoborg
+    wilhelmProbability: 0
+  - type: FootstepModifier
+    footstepSoundCollection:
+      collection: FootstepXenoborg
+  - type: NpcFactionMember
+    factions:
+    - Xenoborg
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 90
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Machines/warning_buzzer_xenoborg.ogg
+          params:
+            volume: 5
+    - trigger:
+        !type:DamageTrigger
+        damage: 375
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          PinpointerMothershipPiece:
+            min: 1
+            max: 1
+      - !type:EmptyContainersBehaviour
+        containers:
+        - cyborg_brain
+        - cell_slot
+        - cyborg_upgrades
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: PointLight
+    color: "#3010ff"
+    energy: 7
+  - type: GuideHelp
+    guides:
+    - Cyborgs
+    - Robotics
+    - Xenoborgs
+  - type: Access
+    tags:
+    - Xenoborg
+  - type: AccessReader
+    access: [["Xenoborg"]]
+  - type: ShowJobIcons
+  - type: ShowElectrocutionHUD
+  - type: InteractionPopup
+    interactSuccessSound:
+      path: /Audio/Ambience/Objects/periodic_beep.ogg
+  - type: Xenoborg
+  - type: BypassLock
+    bypassDelay: 15
+  # The mothership's robotics console, BaseXenoborgTransponder upstream.
+  - type: CyborgTransponder
+  - type: DeviceNetwork
+    deviceNetId: Wireless
+    receiveFrequencyId: Xenoborg
+    transmitFrequencyId: Mothership
+    savableAddress: false
+  - type: SurveillanceCamera
+    networkSet: true
+    nameSet: true
+    mobile: true
+    id: Xenoborg
+    useEntityNameAsCameraId: true
+  - type: TimerTrigger
+    delay: 10
+    examinable: false
+    beepSound:
+      path: /Audio/Effects/Cargo/buzz_two.ogg
+      params:
+        volume: -4
+  - type: ExplodeOnTrigger
+    keysIn:
+    - timer
+  - type: Explosive
+    explosionType: Minibomb
+    deleteAfterExplosion: false
+    totalIntensity: 200
+    intensitySlope: 20
+    maxIntensity: 100
+    canCreateVacuum: false
+  - type: ItemSlots
+    slots:
+      cell_slot:
+        name: power-cell-slot-component-slot-name-default
+        startingItem: PowerCellHigh
+  - type: ContainerFill
+    containers:
+      cyborg_brain:
+      - MMIFilled
+
+- type: entity
+  parent: IS14BaseXenoborg
+  id: IS14XenoborgEngi
+  name: engi xenoborg
+  suffix: with brain
+  description: A man-machine hybrid that aims to replicate itself. This one seems to be an engineering type, as it has more tools for supporting the other Xenoborgs.
+  components:
+  - type: Cyborg
+    model: IS14CyborgModelXenoborgEngi
+    defaultSkin: IS14CyborgSkinXenoborgEngi
+    inherentRadioChannels:
+    - Xenoborg
+    listenRadioChannels:
+    - Mothership
+  - type: ShowHealthBars
+    damageContainers:
+    - Inorganic
+    - Silicon
+
+- type: entity
+  parent: IS14BaseXenoborg
+  id: IS14XenoborgHeavy
+  name: heavy xenoborg
+  suffix: with brain
+  description: A man-machine hybrid that aims to replicate itself. This type has heavy lasers and is covered in thick armor plates. It may be tougher, but its speed matches its brawn.
+  components:
+  - type: Cyborg
+    model: IS14CyborgModelXenoborgHeavy
+    defaultSkin: IS14CyborgSkinXenoborgHeavy
+    inherentRadioChannels:
+    - Xenoborg
+    listenRadioChannels:
+    - Mothership
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 1.2
+    baseSprintSpeed: 2.2
+  - type: MovementAlwaysTouching
+  - type: FlashImmunity
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      250: Critical
+      750: Dead
+    stateAlertDict:
+      Alive: BorgHealth
+      Critical: BorgCrit
+      Dead: BorgDead
+    showOverlays: false
+    allowRevives: true
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 190
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Machines/warning_buzzer_xenoborg.ogg
+          params:
+            volume: 5
+    - trigger:
+        !type:DamageTrigger
+        damage: 750
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          PinpointerMothershipPiece:
+            min: 1
+            max: 1
+      - !type:EmptyContainersBehaviour
+        containers:
+        - cyborg_brain
+        - cell_slot
+        - cyborg_upgrades
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: Repairable
+    doAfterDelay: 25
+
+- type: entity
+  parent: IS14BaseXenoborg
+  id: IS14XenoborgScout
+  name: scout xenoborg
+  suffix: with brain
+  description: A man-machine hybrid that aims to replicate itself. This one is a fast scout with tiny thrusters and a sharp knife.
+  components:
+  - type: Cyborg
+    model: IS14CyborgModelXenoborgScout
+    defaultSkin: IS14CyborgSkinXenoborgScout
+    inherentRadioChannels:
+    - Xenoborg
+    listenRadioChannels:
+    - Mothership
+  - type: MovementAlwaysTouching
+  - type: FlashImmunity
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3
+    baseSprintSpeed: 6
+
+- type: entity
+  parent: IS14BaseXenoborg
+  id: IS14XenoborgStealth
+  name: stealth xenoborg
+  suffix: with brain
+  description: A man-machine hybrid that aims to replicate itself. This one hides from sight and puts its targets to sleep.
+  components:
+  - type: Cyborg
+    model: IS14CyborgModelXenoborgStealth
+    defaultSkin: IS14CyborgSkinXenoborgStealth
+    inherentRadioChannels:
+    - Xenoborg
+    listenRadioChannels:
+    - Mothership
+  - type: MovementAlwaysTouching
+
+# Printed by the mothership: no brain, a printed cell.
+- type: entity
+  parent: IS14XenoborgEngi
+  id: IS14XenoborgEngiPrinted
+  suffix: printed
+  components:
+  - type: ContainerFill
+    containers:
+      cyborg_brain: []
+  - type: ItemSlots
+    slots:
+      cell_slot:
+        name: power-cell-slot-component-slot-name-default
+        startingItem: PowerCellHighPrinted
+
+- type: entity
+  parent: IS14XenoborgHeavy
+  id: IS14XenoborgHeavyPrinted
+  suffix: printed
+  components:
+  - type: ContainerFill
+    containers:
+      cyborg_brain: []
+  - type: ItemSlots
+    slots:
+      cell_slot:
+        name: power-cell-slot-component-slot-name-default
+        startingItem: PowerCellHighPrinted
+
+- type: entity
+  parent: IS14XenoborgScout
+  id: IS14XenoborgScoutPrinted
+  suffix: printed
+  components:
+  - type: ContainerFill
+    containers:
+      cyborg_brain: []
+  - type: ItemSlots
+    slots:
+      cell_slot:
+        name: power-cell-slot-component-slot-name-default
+        startingItem: PowerCellHighPrinted
+
+- type: entity
+  parent: IS14XenoborgStealth
+  id: IS14XenoborgStealthPrinted
+  suffix: printed
+  components:
+  - type: ContainerFill
+    containers:
+      cyborg_brain: []
+  - type: ItemSlots
+    slots:
+      cell_slot:
+        name: power-cell-slot-component-slot-name-default
+        startingItem: PowerCellHighPrinted

@@ -78,6 +78,15 @@ public sealed partial class XenoborgSystem : EntitySystem
             // so brute force it is...
             _borg.Destroy(xenoborgEnt);
         }
+
+        //IS14-change start - xenoborgs on the tgstation-style cyborg system
+        var is14Query = AllEntityQuery<XenoborgComponent, Content.Shared._IS14.Cyborgs.Components.CyborgTransponderComponent>();
+        while (is14Query.MoveNext(out var xenoborgEnt, out _, out var transponder))
+        {
+            if (!HasComp<MothershipCoreComponent>(xenoborgEnt))
+                EntityManager.System<Content.Server._IS14.Cyborgs.CyborgTransponderSystem>().Destroy((xenoborgEnt, transponder));
+        }
+        //IS14-change end
     }
 
     private void OnXenoborgMindAdded(EntityUid ent, XenoborgComponent comp, MindAddedMessage args)
