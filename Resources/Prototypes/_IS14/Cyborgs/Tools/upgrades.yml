@@ -3,8 +3,8 @@
 # Tools given by service upgrade boards, with tg's silicon sprites.
 
 - type: entity
-  parent: [BaseCyborgTool, HydroponicsToolMiniHoe]
-  id: CyborgToolCultivator
+  parent: [IS14BaseCyborgTool, HydroponicsToolMiniHoe]
+  id: IS14CyborgToolCultivator
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
@@ -13,8 +13,8 @@
     - state: sili_cultivator
 
 - type: entity
-  parent: [BaseCyborgTool, HydroponicsToolSpade]
-  id: CyborgToolSpade
+  parent: [IS14BaseCyborgTool, HydroponicsToolSpade]
+  id: IS14CyborgToolSpade
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
@@ -23,8 +23,8 @@
     - state: sili_shovel
 
 - type: entity
-  parent: [BaseCyborgTool, HydroponicsToolClippers]
-  id: CyborgToolSecateur
+  parent: [IS14BaseCyborgTool, HydroponicsToolClippers]
+  id: IS14CyborgToolSecateur
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
@@ -33,8 +33,8 @@
     - state: sili_secateur
 
 - type: entity
-  parent: [BaseCyborgTool, KitchenKnife]
-  id: CyborgToolKnife
+  parent: [IS14BaseCyborgTool, KitchenKnife]
+  id: IS14CyborgToolKnife
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
@@ -43,8 +43,8 @@
     - state: sili_knife
 
 - type: entity
-  parent: [BaseCyborgTool, RollingPin]
-  id: CyborgToolRollingPin
+  parent: [IS14BaseCyborgTool, RollingPin]
+  id: IS14CyborgToolRollingPin
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite

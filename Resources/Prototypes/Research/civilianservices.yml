@@ -179,8 +179,11 @@
   #IS14-change start - tgstation-style cyborg upgrade boards
   # - BorgModuleAdvancedTopical
   # - BorgModuleAdvancedSurgery # Shitmed - does it make sense to have it before advanced surg? Don't know, but this spices up medborgs.
-  - CyborgUpgradeDefibrillator
-  - CyborgUpgradeAdvancedSurgery
+  - IS14CyborgUpgradeDefibrillator
+  - IS14CyborgUpgradeAdvancedSurgery
+  - IS14CyborgUpgradeExpandedHypo
+  - IS14CyborgUpgradeBluespaceSyringe
+  - IS14CyborgUpgradeCrewPinpointer
   #IS14-change end
   - AdvancedJetInjector
   # Goobstation R&D Console rework start
@@ -205,7 +208,8 @@
   - MegaSprayBottle
   #IS14-change start - tgstation-style cyborg upgrade boards
   # - BorgModuleAdvancedCleaning
-  - CyborgUpgradeAdvancedMop
+  - IS14CyborgUpgradeAdvancedMop
+  - IS14CyborgUpgradeTrashBagOfHolding
   #IS14-change end
   # Goobstation R&D Console rework start
   position: -1,4

@@ -7,7 +7,7 @@ namespace Content.Shared._IS14.Cyborgs.Components;
 
 /// <summary>
 /// tgstation's silicon emergency bed: click the floor to deploy a roller bed, click the bed
-/// with the tool to pack it back. One bed out at a time.
+/// with the tool to pack it back. One bed out at a time. Also the service rolling table dock.
 /// </summary>
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 public sealed partial class CyborgBedDeployerComponent : Component
@@ -17,4 +17,16 @@ public sealed partial class CyborgBedDeployerComponent : Component
 
     [DataField, AutoNetworkedField]
     public EntityUid? Deployed;
+
+    [DataField]
+    public LocId DeployedPopup = "cyborg-bed-deployed";
+
+    [DataField]
+    public LocId PackedPopup = "cyborg-bed-packed";
+
+    [DataField]
+    public LocId AlreadyDeployedPopup = "cyborg-bed-already-deployed";
+
+    [DataField]
+    public LocId OccupiedPopup = "cyborg-bed-occupied";
 }

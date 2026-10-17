@@ -2,6 +2,7 @@
 
 using System.Linq;
 using Content.Server.Administration.Managers;
+using Content.Server._IS14.OS;
 using Content.Server.Light.EntitySystems;
 using Content.Shared._IS14.Cyborgs;
 using Content.Shared.Containers.ItemSlots;
@@ -11,6 +12,9 @@ using Content.Shared.PowerCell;
 using Content.Shared.PowerCell.Components;
 using Robust.Shared.Timing;
 using Content.Shared._IS14.Cyborgs.Components;
+using Content.Shared._IS14.OS.Components;
+using Content.Shared._IS14.OS.UI;
+using Content.Shared.Popups;
 using Content.Shared._IS14.Cyborgs.Prototypes;
 using Content.Shared._IS14.Cyborgs.Systems;
 using Content.Shared.Radio;
@@ -32,6 +36,8 @@ public sealed class CyborgSystem : SharedCyborgSystem
     [Dependency] private readonly PowerCellSystem _powerCell = default!;
     [Dependency] private readonly SharedBatterySystem _battery = default!;
     [Dependency] private readonly SharedUserInterfaceSystem _ui = default!;
+    [Dependency] private readonly IS14OsSystem _os = default!;
+    [Dependency] private readonly SharedPopupSystem _popup = default!;
 
     private static readonly TimeSpan MaintenanceRefresh = TimeSpan.FromSeconds(1);
     private TimeSpan _nextMaintenanceRefresh;
@@ -43,6 +49,7 @@ public sealed class CyborgSystem : SharedCyborgSystem
         base.Initialize();
 
         SubscribeAllEvent<CyborgToggleLampRequest>(OnToggleLampRequest);
+        SubscribeAllEvent<CyborgToggleOsRequest>(OnToggleOsRequest);
 
         Subs.BuiEvents<CyborgComponent>(CyborgUiKey.Maintenance, subs =>
         {
@@ -101,12 +108,20 @@ public sealed class CyborgSystem : SharedCyborgSystem
         }
 
         var brain = ent.Comp.BrainEntity is { } brainEnt ? Name(brainEnt) : null;
-        _ui.SetUiState(ent.Owner, CyborgUiKey.Maintenance, new CyborgMaintenanceBuiState(brain, charge, model, upgrades));
+        _ui.SetUiState(ent.Owner, CyborgUiKey.Maintenance,
+            new CyborgMaintenanceBuiState(brain, charge, model, upgrades));
     }
 
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
+
+        var transforming = EntityQueryEnumerator<CyborgComponent>();
+        while (transforming.MoveNext(out var uid, out var cyborg))
+        {
+            if (cyborg.TransformEnd != null)
+                UpdateTransform((uid, cyborg));
+        }
 
         // The cell drains while the window is open, keep the charge bar current.
         if (_timing.CurTime < _nextMaintenanceRefresh)
@@ -117,6 +132,10 @@ public sealed class CyborgSystem : SharedCyborgSystem
         while (query.MoveNext(out var uid, out var cyborg))
         {
             UpdateMaintenanceUi((uid, cyborg));
+
+            // Keeps the self-diagnosis app on the built-in tablet live while it is on screen.
+            if (cyborg.OsEntity is { } os && _ui.IsUiOpen(os, IS14OsUiKey.Key))
+                _os.MarkDirty(os);
         }
     }
 
@@ -128,6 +147,28 @@ public sealed class CyborgSystem : SharedCyborgSystem
             return;
 
         _light.ToggleStatus(uid, (uid, light));
+    }
+
+    // The HUD tablet button: like tg's modularInterface, the screen of the built-in device.
+    private void OnToggleOsRequest(CyborgToggleOsRequest msg, EntitySessionEventArgs args)
+    {
+        if (args.SenderSession.AttachedEntity is not { } uid || !TryComp<CyborgComponent>(uid, out var cyborg) ||
+            cyborg.OsEntity is not { } os || !TryComp<IS14OsDeviceComponent>(os, out var device))
+            return;
+
+        if (_ui.IsUiOpen(os, IS14OsUiKey.Key, uid))
+        {
+            _os.CloseLid((os, device));
+            return;
+        }
+
+        if (!cyborg.Active)
+        {
+            _popup.PopupEntity(Loc.GetString("cyborg-tools-no-power"), uid, uid);
+            return;
+        }
+
+        _os.OpenLid((os, device), uid, openUi: true);
     }
 
     public override bool CanPlayerBeBorged(ICommonSession session)
@@ -145,6 +186,9 @@ public sealed class CyborgSystem : SharedCyborgSystem
             transmitter.Channels = new HashSet<ProtoId<RadioChannelPrototype>>(channels);
 
         if (TryComp<ActiveRadioComponent>(ent, out var activeRadio))
+        {
             activeRadio.Channels = new HashSet<ProtoId<RadioChannelPrototype>>(channels);
+            activeRadio.Channels.UnionWith(ent.Comp.ListenRadioChannels);
+        }
     }
 }

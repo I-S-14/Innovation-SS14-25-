@@ -13,6 +13,8 @@ using Content.Shared.Movement.Systems;
 using Content.Shared.Popups;
 using Content.Shared.PowerCell;
 using Robust.Shared.Map.Components;
+using Robust.Shared.Audio;
+using Robust.Shared.Audio.Systems;
 using Robust.Shared.Network;
 
 namespace Content.Shared._IS14.Cyborgs.Systems;
@@ -24,6 +26,7 @@ public sealed class CyborgAutoWashSystem : EntitySystem
     [Dependency] private readonly MovementSpeedModifierSystem _movementSpeed = default!;
     [Dependency] private readonly PowerCellSystem _powerCell = default!;
     [Dependency] private readonly SharedActionsSystem _actions = default!;
+    [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly SharedCyborgSystem _cyborg = default!;
@@ -63,6 +66,7 @@ public sealed class CyborgAutoWashSystem : EntitySystem
 
         ent.Comp.Enabled = false;
         _movementSpeed.RefreshMovementSpeedModifiers(ent.Owner);
+        ent.Comp.LoopStream = _audio.Stop(ent.Comp.LoopStream);
     }
 
     private void OnToggle(Entity<CyborgAutoWashComponent> ent, ref CyborgToggleAutoWashEvent args)
@@ -85,6 +89,7 @@ public sealed class CyborgAutoWashSystem : EntitySystem
 
         _actions.SetToggled(ent.Comp.ActionEntity, ent.Comp.Enabled);
         _movementSpeed.RefreshMovementSpeedModifiers(ent.Owner);
+        UpdateSound(ent);
         _popup.PopupClient(Loc.GetString(ent.Comp.Enabled ? "cyborg-autowash-on" : "cyborg-autowash-off"), ent, ent);
     }
 
@@ -140,9 +145,11 @@ public sealed class CyborgAutoWashSystem : EntitySystem
     /// <summary>
     /// The mop's swap: water from the tank goes into the puddle, as much of the mess goes into the tank.
     /// </summary>
-    private bool Wash(Entity<CyborgAutoWashComponent> ent, Entity<SolutionComponent> reservoir, Entity<PuddleComponent> puddle)
+    private bool Wash(Entity<CyborgAutoWashComponent> ent, Entity<SolutionComponent> reservoir,
+        Entity<PuddleComponent> puddle)
     {
-        if (!_solution.ResolveSolution(puddle.Owner, puddle.Comp.SolutionName, ref puddle.Comp.Solution, out var puddleSolution) ||
+        if (!_solution.ResolveSolution(puddle.Owner, puddle.Comp.SolutionName, ref puddle.Comp.Solution,
+            out var puddleSolution) ||
             puddleSolution.Volume <= 0)
             return true;
 
@@ -181,7 +188,8 @@ public sealed class CyborgAutoWashSystem : EntitySystem
     /// <summary>
     /// The tank is the janitor kit's internal tank, wherever it is: stored or held.
     /// </summary>
-    private bool TryGetReservoir(Entity<CyborgAutoWashComponent> ent, [NotNullWhen(true)] out Entity<SolutionComponent>? reservoir)
+    private bool TryGetReservoir(Entity<CyborgAutoWashComponent> ent,
+        [NotNullWhen(true)] out Entity<SolutionComponent>? reservoir)
     {
         reservoir = null;
         if (!TryComp<CyborgComponent>(ent, out var cyborg))
@@ -214,6 +222,28 @@ public sealed class CyborgAutoWashSystem : EntitySystem
         Dirty(ent);
         _actions.SetToggled(ent.Comp.ActionEntity, false);
         _movementSpeed.RefreshMovementSpeedModifiers(ent.Owner);
+        UpdateSound(ent);
         _popup.PopupEntity(Loc.GetString(reason), ent, ent);
+    }
+
+    // Server only: the looping stream is an entity everyone nearby hears.
+    private void UpdateSound(Entity<CyborgAutoWashComponent> ent)
+    {
+        if (_net.IsClient)
+            return;
+
+        if (!ent.Comp.Enabled)
+        {
+            if (ent.Comp.LoopStream == null)
+                return;
+
+            ent.Comp.LoopStream = _audio.Stop(ent.Comp.LoopStream);
+            _audio.PlayPvs(ent.Comp.EndSound, ent);
+            return;
+        }
+
+        _audio.PlayPvs(ent.Comp.StartSound, ent);
+        ent.Comp.LoopStream = _audio.PlayPvs(ent.Comp.LoopSound, ent,
+            AudioParams.Default.WithLoop(true).WithVolume(-4f))?.Entity;
     }
 }

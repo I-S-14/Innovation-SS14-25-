@@ -49,12 +49,14 @@ public sealed class CyborgMultiToolSystem : EntitySystem
         EntityManager.AddComponents(ent.Owner, mode.Components);
         Dirty(ent);
 
-        _popup.PopupEntity(Loc.GetString("cyborg-multitool-mode", ("mode", Loc.GetString(mode.Name))), args.User, args.User);
+        _popup.PopupEntity(Loc.GetString("cyborg-multitool-mode", ("mode", Loc.GetString(mode.Name))), args.User,
+            args.User);
     }
 
     private void OnExamined(Entity<CyborgMultiToolComponent> ent, ref ExaminedEvent args)
     {
         if (ent.Comp.Current < ent.Comp.Modes.Count)
-            args.PushMarkup(Loc.GetString("cyborg-multitool-mode", ("mode", Loc.GetString(ent.Comp.Modes[ent.Comp.Current].Name))));
+            args.PushMarkup(Loc.GetString("cyborg-multitool-mode",
+                ("mode", Loc.GetString(ent.Comp.Modes[ent.Comp.Current].Name))));
     }
 }

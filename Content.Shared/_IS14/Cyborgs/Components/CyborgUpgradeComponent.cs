@@ -1,6 +1,7 @@
 // Licensed under IS14's EULA, see EULA.txt for more information.
 
 using Content.Shared._IS14.Cyborgs.Prototypes;
+using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 
@@ -26,6 +27,13 @@ public sealed partial class CyborgUpgradeComponent : Component
     public List<EntProtoId> Tools = new();
 
     /// <summary>
+    /// Basic tools of the model taken away while the board is installed, like tg's items_to_remove.
+    /// Usually the ones <see cref="Tools"/> improve on.
+    /// </summary>
+    [DataField]
+    public List<EntProtoId> Replaces = new();
+
+    /// <summary>
     /// Components added to the cyborg while the board is installed.
     /// </summary>
     [DataField]
@@ -42,4 +50,16 @@ public sealed partial class CyborgUpgradeComponent : Component
     /// </summary>
     [DataField]
     public bool ResetModel;
+
+    /// <summary>
+    /// Switches the cyborg to this model and is used up, like tg's borg model pickers.
+    /// </summary>
+    [DataField]
+    public ProtoId<CyborgModelPrototype>? SetModel;
+
+    /// <summary>
+    /// Played on the cyborg when the board goes in.
+    /// </summary>
+    [DataField]
+    public SoundSpecifier? InstallSound;
 }

@@ -15,8 +15,9 @@
   - Drone # Goobstation
   - AiRemoteBrain # Goobstation
   #IS14-change start - tgstation-style cyborg upgrade boards
-  - CyborgUpgradeIonThrusters
-  - CyborgUpgradeSelfRepair
+  - IS14CyborgUpgradeIonThrusters
+  - IS14CyborgUpgradeSelfRepair
+  - IS14CyborgUpgradeDisablerCooler
   #IS14-change end
   position: -1,0
 

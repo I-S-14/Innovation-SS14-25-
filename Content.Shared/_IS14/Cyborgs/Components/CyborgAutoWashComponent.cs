@@ -6,6 +6,8 @@ using Robust.Shared.GameStates;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
 
+using Robust.Shared.Audio;
+
 namespace Content.Shared._IS14.Cyborgs.Components;
 
 /// <summary>
@@ -19,7 +21,7 @@ public sealed partial class CyborgAutoWashComponent : Component
     public bool Enabled;
 
     [DataField]
-    public EntProtoId Action = "ActionCyborgAutoWash";
+    public EntProtoId Action = "IS14ActionCyborgAutoWash";
 
     [DataField, AutoNetworkedField]
     public EntityUid? ActionEntity;
@@ -40,7 +42,7 @@ public sealed partial class CyborgAutoWashComponent : Component
     /// The built-in tool whose solution is the washing tank: water out, mess in.
     /// </summary>
     [DataField]
-    public EntProtoId ReservoirTool = "CyborgToolBucket";
+    public EntProtoId ReservoirTool = "IS14CyborgToolBucket";
 
     [DataField]
     public string ReservoirSolution = "drink";
@@ -53,6 +55,19 @@ public sealed partial class CyborgAutoWashComponent : Component
 
     [ViewVariables]
     public EntityCoordinates? LastTile;
+
+    // tg's /datum/looping_sound/wash.
+    [DataField]
+    public SoundSpecifier StartSound = new SoundPathSpecifier("/Audio/_IS14/Cyborgs/wash_start.ogg");
+
+    [DataField]
+    public SoundSpecifier LoopSound = new SoundPathSpecifier("/Audio/_IS14/Cyborgs/wash1.ogg");
+
+    [DataField]
+    public SoundSpecifier EndSound = new SoundPathSpecifier("/Audio/_IS14/Cyborgs/wash_end.ogg");
+
+    [ViewVariables]
+    public EntityUid? LoopStream;
 }
 
 public sealed partial class CyborgToggleAutoWashEvent : InstantActionEvent;

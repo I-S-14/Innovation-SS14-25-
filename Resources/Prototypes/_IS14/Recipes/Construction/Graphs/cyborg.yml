@@ -36,4 +36,4 @@
         doAfter: 0.5
 
   - node: cyborg
-    entity: CyborgNT
+    entity: IS14CyborgNT

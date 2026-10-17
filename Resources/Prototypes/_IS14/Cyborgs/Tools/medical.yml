@@ -1,104 +1,18 @@
 # Licensed under IS14's EULA, see EULA.txt for more information.
 
 - type: entity
-  parent: [BaseCyborgTool, Syringe]
-  id: CyborgToolSyringe
+  parent: [IS14BaseCyborgTool, Syringe]
+  id: IS14CyborgToolSyringe
   categories: [ HideSpawnMenu ]
 
 - type: entity
-  parent: [BaseCyborgTool, Scalpel]
-  id: CyborgToolScalpel
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: Sprite
-    sprite: _IS14/Objects/Specific/Cyborgs/robot_items.rsi
-    layers:
-    - state: toolkit_medborg_scalpel
-
-- type: entity
-  parent: [BaseCyborgTool, Hemostat]
-  id: CyborgToolHemostat
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: Sprite
-    sprite: _IS14/Objects/Specific/Cyborgs/robot_items.rsi
-    layers:
-    - state: toolkit_medborg_hemostat
-
-- type: entity
-  parent: [BaseCyborgTool, Retractor]
-  id: CyborgToolRetractor
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: Sprite
-    sprite: _IS14/Objects/Specific/Cyborgs/robot_items.rsi
-    layers:
-    - state: toolkit_medborg_retractor
-
-- type: entity
-  parent: [BaseCyborgTool, Cautery]
-  id: CyborgToolCautery
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: Sprite
-    sprite: _IS14/Objects/Specific/Cyborgs/robot_items.rsi
-    layers:
-    - state: toolkit_medborg_cautery
-
-- type: entity
-  parent: [BaseCyborgTool, SawElectric]
-  id: CyborgToolSaw
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: Sprite
-    sprite: _IS14/Objects/Specific/Cyborgs/robot_items.rsi
-    layers:
-    - state: toolkit_medborg_saw
-
-- type: entity
-  parent: [BaseCyborgTool, Drill]
-  id: CyborgToolDrill
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: Sprite
-    sprite: _IS14/Objects/Specific/Cyborgs/robot_items.rsi
-    layers:
-    - state: toolkit_medborg_drill
-
-- type: entity
-  parent: [BaseCyborgTool, BoneGel]
-  id: CyborgToolBoneGel
+  parent: [IS14BaseCyborgTool, BoneGel]
+  id: IS14CyborgToolBoneGel
   categories: [ HideSpawnMenu ]
 
 - type: entity
-  parent: [BaseCyborgTool, Bonesetter]
-  id: CyborgToolBonesetter
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: Sprite
-    sprite: _IS14/Objects/Specific/Cyborgs/robot_items.rsi
-    layers:
-    - state: toolkit_medborg_bonesetter
-
-# tg's silicon emergency bed: deploys a roller bed where you click, packs it back on click.
-- type: entity
-  parent: [BaseCyborgTool, BaseItem]
-  id: CyborgToolRollerBed
-  name: roller bed deployer
-  description: A built-in roller bed. Click the floor to deploy it, click the empty bed to pack it back.
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: Sprite
-    sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
-    layers:
-    - state: medical_bed-emerg_folded
-  - type: Item
-    size: Normal
-  - type: CyborgBedDeployer
-
-- type: entity
-  parent: [BaseCyborgTool, ChemBag]
-  id: CyborgToolChemBag
+  parent: [IS14BaseCyborgTool, ChemBag]
+  id: IS14CyborgToolChemBag
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
@@ -106,11 +20,32 @@
     layers:
     - state: chemical-bag
 
+# Storage for the medical cyborg's treatment and body bags, a 4x4 first aid kit.
+- type: entity
+  parent: [IS14BaseCyborgTool, Medkit]
+  id: IS14CyborgToolMedkit
+  name: cyborg medkit
+  description: A first aid kit built into a cyborg's chassis, for ointments, bandages and body bags.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Storage
+    maxItemSize: Small
+    grid:
+    - 0,0,3,3
+    whitelist:
+      tags:
+      - Ointment
+      - Brutepack
+      - Bloodpack
+      - Gauze
+      - Tourniquet
+      - BodyBag
+
 # tg's /obj/item/borg/cyborg_omnitool/medical: every surgery tool in one, cycled on use.
 # Shitmed tells tools apart by components, so each mode brings its own.
 - type: entity
-  parent: [BaseCyborgTool, BaseItem]
-  id: CyborgToolMedicalOmnitool
+  parent: [IS14BaseCyborgTool, BaseItem]
+  id: IS14CyborgToolMedicalOmnitool
   name: cyborg surgical omni-toolset
   description: Every surgical tool a medical cyborg needs, built into its arm. Switch tools with a press.
   categories: [ HideSpawnMenu ]
@@ -188,3 +123,20 @@
       - type: SurgeryTool
         startSound:
           path: /Audio/_Shitmed/Medical/Surgery/bone_setter.ogg
+
+# Given by the advanced syringe board.
+- type: entity
+  parent: [IS14BaseCyborgTool, SyringeBluespace]
+  id: IS14CyborgToolSyringeBluespace
+  categories: [ HideSpawnMenu ]
+
+# Given by the crew pinpointer board: remote access to the crew monitor.
+- type: entity
+  parent: [IS14BaseCyborgTool, HandheldCrewMonitor]
+  id: IS14CyborgToolCrewMonitor
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
+    layers:
+    - state: tracker-pinpointer

@@ -7,6 +7,7 @@ using Content.Shared.Emag.Systems;
 using Content.Shared.Silicons.Laws;
 using Content.Shared.Wires;
 using Robust.Shared.Containers;
+using Robust.Shared.Prototypes;
 
 namespace Content.Shared._IS14.Cyborgs.Systems;
 
@@ -48,8 +49,22 @@ public abstract partial class SharedCyborgSystem
             return false;
         }
 
+        var rename = CompOrNull<CyborgRenameBoardComponent>(upgrade);
+        if (rename != null && string.IsNullOrWhiteSpace(rename.NewName))
+        {
+            _popup.PopupClient(Loc.GetString("cyborg-rename-board-empty"), ent, user);
+            return false;
+        }
+
+        if (upgrade.Comp.SetModel is { } newModel && ent.Comp.Model == newModel)
+        {
+            _popup.PopupClient(Loc.GetString("cyborg-upgrade-same-model"), ent, user);
+            return false;
+        }
+
+        var consumed = upgrade.Comp.ResetModel || upgrade.Comp.SetModel != null || rename != null;
         var proto = Prototype(upgrade)?.ID;
-        if (!upgrade.Comp.ResetModel && proto != null &&
+        if (!consumed && proto != null &&
             ent.Comp.UpgradeContainer.ContainedEntities.Any(e => Prototype(e)?.ID == proto))
         {
             _popup.PopupClient(Loc.GetString("cyborg-upgrade-duplicate"), ent, user);
@@ -59,6 +74,7 @@ public abstract partial class SharedCyborgSystem
         _adminLog.Add(LogType.Action, LogImpact.Medium,
             $"{ToPrettyString(user):player} installed upgrade {ToPrettyString(upgrade.Owner)} into cyborg {ToPrettyString(ent.Owner)}");
         _popup.PopupClient(Loc.GetString("cyborg-upgrade-installed", ("upgrade", Name(upgrade))), ent, user);
+        _audio.PlayPredicted(upgrade.Comp.InstallSound, ent.Owner, user);
 
         // Spawning tools and resetting the model is server only, the client stops here.
         if (_net.IsClient)
@@ -68,6 +84,24 @@ public abstract partial class SharedCyborgSystem
         {
             QueueDel(upgrade);
             ResetModel(ent);
+            return true;
+        }
+
+        if (upgrade.Comp.SetModel is { } model)
+        {
+            QueueDel(upgrade);
+            ApplyModel(ent, model, force: true);
+            StartTransform(ent);
+            ent.Comp.SkinChosen = false;
+            if (_mind.TryGetMind(ent.Owner, out _, out _) && _proto.Index(model).Skins.Count > 1)
+                OpenSkinMenu(ent);
+            return true;
+        }
+
+        if (rename?.NewName is { } name)
+        {
+            QueueDel(upgrade);
+            _metaData.SetEntityName(ent.Owner, name);
             return true;
         }
 
@@ -84,6 +118,8 @@ public abstract partial class SharedCyborgSystem
 
     private void ApplyUpgrade(Entity<CyborgComponent> ent, Entity<CyborgUpgradeComponent> upgrade)
     {
+        RemoveReplacedTools(ent, upgrade.Comp);
+
         foreach (var tool in upgrade.Comp.Tools)
         {
             SpawnTool(ent, tool, emagTool: false, upgrade.Owner);
@@ -111,6 +147,8 @@ public abstract partial class SharedCyborgSystem
                 Del(board);
                 continue;
             }
+
+            RemoveReplacedTools(ent, upgrade);
 
             foreach (var tool in upgrade.Tools)
             {
@@ -144,6 +182,7 @@ public abstract partial class SharedCyborgSystem
         _container.Remove(board, ent.Comp.UpgradeContainer);
         EntityManager.RemoveComponents(ent.Owner, upgrade.AddComponents);
         ReapplyComponents(ent);
+        RestoreReplacedTools(ent, upgrade);
 
         // Only the board unlocked them if the cyborg was never emagged for real.
         if (upgrade.UnlockEmagTools && !_emag.CheckFlag(ent.Owner, EmagType.Interaction) &&
@@ -162,6 +201,44 @@ public abstract partial class SharedCyborgSystem
         }
 
         return true;
+    }
+
+    /// <summary>
+    /// Deletes the model's own copies of the tools a board replaces.
+    /// </summary>
+    private void RemoveReplacedTools(Entity<CyborgComponent> ent, CyborgUpgradeComponent upgrade)
+    {
+        if (upgrade.Replaces.Count == 0)
+            return;
+
+        foreach (var tool in EnumerateAllTools(ent).ToList())
+        {
+            if (CompOrNull<CyborgToolComponent>(tool)?.SourceUpgrade != null ||
+                Prototype(tool)?.ID is not { } id || !upgrade.Replaces.Contains(id))
+                continue;
+
+            StoreTool(ent, tool);
+            Del(tool);
+        }
+    }
+
+    /// <summary>
+    /// Gives back the model tools a removed board replaced, unless another installed board still replaces them.
+    /// </summary>
+    private void RestoreReplacedTools(Entity<CyborgComponent> ent, CyborgUpgradeComponent upgrade)
+    {
+        if (upgrade.Replaces.Count == 0 || !_proto.TryIndex(ent.Comp.Model, out var model))
+            return;
+
+        var stillReplaced = ent.Comp.UpgradeContainer.ContainedEntities
+            .SelectMany(b => CompOrNull<CyborgUpgradeComponent>(b)?.Replaces ?? new List<EntProtoId>())
+            .ToHashSet();
+
+        foreach (var proto in model.BasicTools)
+        {
+            if (upgrade.Replaces.Contains(proto) && !stillReplaced.Contains(proto))
+                SpawnTool(ent, proto, emagTool: false);
+        }
     }
 
     // Removing one source of a component must not strip it from the model or another board that also gives it.

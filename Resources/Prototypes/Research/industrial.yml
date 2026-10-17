@@ -229,7 +229,7 @@
     - JawsOfLife
     #IS14-change start - tgstation-style cyborg upgrade boards
     # - BorgModuleAdvancedTool
-    - CyborgUpgradeAdvancedTools
+    - IS14CyborgUpgradeAdvancedTools
     #IS14-change end
     - SignallerAdvanced # Moved from explosives research
   # Goobstation R&D Console rework start
@@ -253,8 +253,8 @@
     - AdvancedMineralScannerEmpty
     #IS14-change start - tgstation-style cyborg upgrade boards
     # - BorgModuleAdvancedMining
-    - CyborgUpgradeDiamondDrill
-    - CyborgUpgradeSatchelOfHolding
+    - IS14CyborgUpgradeDiamondDrill
+    - IS14CyborgUpgradeSatchelOfHolding
     #IS14-change end
     - MechEquipmentDrillDiamond # Goobstation
   # Goobstation R&D Console rework start

@@ -26,5 +26,5 @@ public sealed partial class CyborgDispenserComponent : Component
     public float ChargeCost = 20f;
 
     [DataField]
-    public SoundSpecifier? DispenseSound = new SoundPathSpecifier("/Audio/Machines/machine_vend.ogg");
+    public SoundSpecifier? DispenseSound = new SoundPathSpecifier("/Audio/_IS14/Cyborgs/dispense_click.ogg");
 }

@@ -1,8 +1,8 @@
 # Licensed under IS14's EULA, see EULA.txt for more information.
 
 - type: entity
-  parent: [BaseCyborgTool, RCDRecharging]
-  id: CyborgToolRCD
+  parent: [IS14BaseCyborgTool, RCDRecharging]
+  id: IS14CyborgToolRCD
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
@@ -11,8 +11,8 @@
     - state: tools-rcd
 
 - type: entity
-  parent: [BaseCyborgTool, RPDRecharging]
-  id: CyborgToolRPD
+  parent: [IS14BaseCyborgTool, RPDRecharging]
+  id: IS14CyborgToolRPD
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
@@ -22,8 +22,8 @@
 
 # tg's cyborg welder; the lit sprite sits on the flame layer the toggle visualizer drives.
 - type: entity
-  parent: [BaseCyborgTool, WelderIndustrial]
-  id: CyborgToolWelder
+  parent: [IS14BaseCyborgTool, WelderIndustrial]
+  id: IS14CyborgToolWelder
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
@@ -34,73 +34,51 @@
       visible: false
       shader: unshaded
       map: ["enum.ToggleableVisuals.Layer"]
-
-- type: entity
-  parent: [BaseCyborgTool, Wrench]
-  id: CyborgToolWrench
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: Sprite
+  # Fuel gauge drawn over the HUD slot only, the welder itself stays clean.
+  - type: CyborgHudGauge
+    solution: Welder
     sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
-    layers:
-    - state: toolkit_engiborg_wrench
+    states:
+    - indwelder_cyborg0
+    - indwelder_cyborg25
+    - indwelder_cyborg50
+    - indwelder_cyborg75
+    - indwelder_cyborg100
 
 # Own item: the upstream wirecutters randomize a layer this sprite doesn't have.
+# Holds the engineering cyborg's materials now that it carries them instead of synthesizing.
 - type: entity
-  parent: [BaseCyborgTool, BaseItem]
-  id: CyborgToolWirecutter
-  name: cyborg wirecutters
-  description: Wirecutters built into a cyborg's arm.
+  parent: [IS14BaseCyborgTool, ConstructionBag]
+  id: IS14CyborgToolConstructionBag
   categories: [ HideSpawnMenu ]
   components:
-  - type: Sprite
-    sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
-    layers:
-    - state: toolkit_engiborg_cutters
-  - type: Item
-    size: Small
-    storedRotation: -90
-  - type: Tag
-    tags:
-    - PlantSampleTaker
-    - Wirecutter
-  - type: Tool
-    qualities:
-    - Cutting
-    useSound:
-      path: /Audio/Items/wirecutter.ogg
-  - type: MeleeWeapon
-    wideAnimationRotation: -90
-    attackRate: 1
-    damage:
-      types:
-        Piercing: 2
-    soundHit:
-      path: "/Audio/Items/wirecutter.ogg"
+  # Click opens the bag, alt click switches the magnet.
+  - type: ItemToggle
+    onUse: false
+    onActivate: false
+    soundActivate:
+      collection: sparks
+      params:
+        variation: 0.250
+    soundDeactivate:
+      collection: sparks
+      params:
+        variation: 0.250
+  - type: CyborgAltToggle
 
 - type: entity
-  parent: [BaseCyborgTool, Multitool]
-  id: CyborgToolMultitool
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: Sprite
-    sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
-    layers:
-    - state: toolkit_engiborg_multitool
-
-- type: entity
-  parent: [BaseCyborgTool, trayScanner]
-  id: CyborgToolTrayScanner
+  parent: [IS14BaseCyborgTool, trayScanner]
+  id: IS14CyborgToolTrayScanner
   categories: [ HideSpawnMenu ]
 
 - type: entity
-  parent: [BaseCyborgTool, GasAnalyzer]
-  id: CyborgToolGasAnalyzer
+  parent: [IS14BaseCyborgTool, GasAnalyzer]
+  id: IS14CyborgToolGasAnalyzer
   categories: [ HideSpawnMenu ]
 
 - type: entity
-  parent: [BaseCyborgTool, RemoteSignaller]
-  id: CyborgToolSignaller
+  parent: [IS14BaseCyborgTool, RemoteSignaller]
+  id: IS14CyborgToolSignaller
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite

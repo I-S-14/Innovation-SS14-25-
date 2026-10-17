@@ -1,8 +1,8 @@
 # Licensed under IS14's EULA, see EULA.txt for more information.
 
 - type: entity
-  parent: [BaseCyborgTool, HoloprojectorSecurity]
-  id: CyborgToolHoloprojectorSecurity
+  parent: [IS14BaseCyborgTool, HoloprojectorSecurity]
+  id: IS14CyborgToolHoloprojectorSecurity
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite

@@ -39,11 +39,11 @@ public sealed class CyborgBedDeployerSystem : EntitySystem
 
             if (TryComp<StrapComponent>(target, out var strap) && strap.BuckledEntities.Count > 0)
             {
-                _popup.PopupClient(Loc.GetString("cyborg-bed-occupied"), target, args.User);
+                _popup.PopupClient(Loc.GetString(ent.Comp.OccupiedPopup), target, args.User);
                 return;
             }
 
-            _popup.PopupClient(Loc.GetString("cyborg-bed-packed"), target, args.User);
+            _popup.PopupClient(Loc.GetString(ent.Comp.PackedPopup), target, args.User);
             ent.Comp.Deployed = null;
             Dirty(ent);
             PredictedQueueDel(target);
@@ -58,7 +58,7 @@ public sealed class CyborgBedDeployerSystem : EntitySystem
 
         if (ent.Comp.Deployed != null)
         {
-            _popup.PopupClient(Loc.GetString("cyborg-bed-already-deployed"), ent, args.User);
+            _popup.PopupClient(Loc.GetString(ent.Comp.AlreadyDeployedPopup), ent, args.User);
             return;
         }
 
@@ -68,5 +68,6 @@ public sealed class CyborgBedDeployerSystem : EntitySystem
 
         ent.Comp.Deployed = Spawn(ent.Comp.Bed, args.ClickLocation);
         Dirty(ent);
+        _popup.PopupEntity(Loc.GetString(ent.Comp.DeployedPopup), ent.Comp.Deployed.Value, args.User);
     }
 }

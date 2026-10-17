@@ -40,7 +40,8 @@ public sealed class CyborgProjectileDampenerSystem : EntitySystem
         args.Handled = true;
         ent.Comp.Active = !ent.Comp.Active;
         Dirty(ent);
-        _popup.PopupClient(Loc.GetString(ent.Comp.Active ? "cyborg-dampener-on" : "cyborg-dampener-off"), ent, args.User);
+        _popup.PopupClient(Loc.GetString(ent.Comp.Active ? "cyborg-dampener-on" : "cyborg-dampener-off"), ent,
+            args.User);
     }
 
     public override void Update(float frameTime)
@@ -83,7 +84,8 @@ public sealed class CyborgProjectileDampenerSystem : EntitySystem
                 projectile.Comp.Damage *= dampener.DamageMultiplier;
 
                 if (TryComp<PhysicsComponent>(projectile, out var physics))
-                    _physics.SetLinearVelocity(projectile, physics.LinearVelocity * dampener.SpeedMultiplier, body: physics);
+                    _physics.SetLinearVelocity(projectile, physics.LinearVelocity * dampener.SpeedMultiplier,
+                        body: physics);
             }
         }
     }

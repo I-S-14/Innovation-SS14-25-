@@ -4,7 +4,7 @@
 # radio, damage, light) but none of the upstream borg chassis and module system.
 - type: entity
   parent: [BaseMob, StripableInventoryBase]
-  id: BaseCyborg
+  id: IS14BaseCyborg
   name: cyborg
   description: A man-machine hybrid that assists in station activity. They love being asked to state their laws over and over.
   save: false
@@ -96,6 +96,8 @@
         type: CyborgSkinBoundUserInterface
       enum.CyborgUiKey.Maintenance:
         type: CyborgMaintenanceBoundUserInterface
+      enum.WiresUiKey.Key:
+        type: WiresBoundUserInterface
   # Maintenance window for others, only through the open cover.
   - type: ActivatableUI
     key: enum.CyborgUiKey.Maintenance
@@ -114,6 +116,23 @@
     stunTime: 5
   - type: SiliconLawProvider
     laws: Crewsimov
+  - type: CyborgTippable
+  # tg's ridable cyborgs: drag yourself onto one to ride on its back. Tipping it throws the rider off.
+  - type: Strap
+    position: Stand
+    buckleOffset: 0,0.3
+    buckleOnInteractHand: false
+    unbuckleDoafterTime: 0.5
+    whitelist:
+      components:
+      - HumanoidAppearance
+  # tg's connected_ai, law sync and lockdown, with their wires behind the cover.
+  - type: CyborgAiLink
+  - type: Wires
+    boardName: wires-board-name-cyborg
+    layoutId: IS14Cyborg
+  # Lets the AI work the cyborg's verbs, like locking it down.
+  - type: StationAiWhitelist
   - type: Inventory
     templateId: borg
   - type: Hands
@@ -332,16 +351,16 @@
     voice: Borg
 
 - type: entity
-  parent: BaseCyborg
-  id: BaseCyborgIonStormable
+  parent: IS14BaseCyborg
+  id: IS14BaseCyborgIonStormable
   abstract: true
   components:
   - type: IonStormTarget
 
 # Station cyborg, picks its model on first activation.
 - type: entity
-  parent: BaseCyborgIonStormable
-  id: CyborgNT
+  parent: IS14BaseCyborgIonStormable
+  id: IS14CyborgNT
   name: cyborg
   suffix: IS14, no model
   components:
@@ -396,8 +415,8 @@
       path: /Audio/Ambience/Objects/periodic_beep.ogg
 
 - type: entity
-  parent: CyborgNT
-  id: CyborgNTBattery
+  parent: IS14CyborgNT
+  id: IS14CyborgNTBattery
   suffix: IS14, no model, battery
   components:
   - type: ItemSlots
@@ -407,13 +426,13 @@
         startingItem: PowerCellHigh
 
 - type: entity
-  parent: CyborgNTBattery
-  id: CyborgNTEngineering
+  parent: IS14CyborgNTBattery
+  id: IS14CyborgNTEngineering
   name: engineering cyborg
   suffix: IS14, battery
   components:
   - type: Cyborg
-    model: CyborgModelEngineering
+    model: IS14CyborgModelEngineering
 
 # Endoskeleton that assembles into the tgstation-style cyborg.
 - type: entity
@@ -431,7 +450,7 @@
 
 # Spawned for the Cyborg job: positronic brain inside, picks a model on join.
 - type: entity
-  parent: CyborgNT
+  parent: IS14CyborgNT
   id: IS14PlayerCyborgBattery
   suffix: IS14, job, battery
   components:
@@ -450,13 +469,13 @@
 
 # IS14's Yasari cyborg on the new system: own subverted laws, not slaved to the AI.
 - type: entity
-  parent: BaseCyborgIonStormable
+  parent: IS14BaseCyborgIonStormable
   id: IS14CyborgYasari
-  name: cyborg
+  name: Yasari
   suffix: IS14, Yasari, battery
   components:
   - type: Cyborg
-    model: CyborgModelYasari
+    model: IS14CyborgModelYasari
   - type: RandomMetadata
     nameSegments:
     - NamesBorg
@@ -488,37 +507,37 @@
 
 # Station cyborgs with a preset model, used by the wizard's polymorph.
 - type: entity
-  parent: CyborgNTBattery
+  parent: IS14CyborgNTBattery
   id: IS14CyborgNTMedical
   name: medical cyborg
   suffix: IS14, battery
   components:
   - type: Cyborg
-    model: CyborgModelMedical
+    model: IS14CyborgModelMedical
 
 - type: entity
-  parent: CyborgNTBattery
+  parent: IS14CyborgNTBattery
   id: IS14CyborgNTMiner
   name: mining cyborg
   suffix: IS14, battery
   components:
   - type: Cyborg
-    model: CyborgModelMiner
+    model: IS14CyborgModelMiner
 
 - type: entity
-  parent: CyborgNTBattery
+  parent: IS14CyborgNTBattery
   id: IS14CyborgNTJanitor
   name: janitor cyborg
   suffix: IS14, battery
   components:
   - type: Cyborg
-    model: CyborgModelJanitor
+    model: IS14CyborgModelJanitor
 
 - type: entity
-  parent: CyborgNTBattery
+  parent: IS14CyborgNTBattery
   id: IS14CyborgNTService
   name: service cyborg
   suffix: IS14, battery
   components:
   - type: Cyborg
-    model: CyborgModelService
+    model: IS14CyborgModelService

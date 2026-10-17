@@ -133,7 +133,8 @@ public sealed class CyborgReagentSynthesizerSystem : EntitySystem
     /// <summary>
     /// Switches to another reagent. What was synthesized so far is flushed.
     /// </summary>
-    public void Select(Entity<CyborgReagentSynthesizerComponent> ent, ProtoId<ReagentPrototype> reagent, EntityUid? user)
+    public void Select(Entity<CyborgReagentSynthesizerComponent> ent, ProtoId<ReagentPrototype> reagent,
+        EntityUid? user)
     {
         if (ent.Comp.Selected == reagent)
             return;
@@ -145,7 +146,8 @@ public sealed class CyborgReagentSynthesizerSystem : EntitySystem
             _solution.RemoveAllSolution(solution.Value);
 
         if (user != null && _proto.TryIndex(reagent, out var proto))
-            _popup.PopupClient(Loc.GetString("cyborg-reagent-selected", ("reagent", proto.LocalizedName)), ent, user.Value);
+            _popup.PopupClient(Loc.GetString("cyborg-reagent-selected", ("reagent", proto.LocalizedName)), ent,
+                user.Value);
     }
 
     public override void Update(float frameTime)

@@ -8,7 +8,7 @@ namespace Content.Shared._IS14.Cyborgs.Components;
 /// Marks an item as a built-in cyborg tool. It lives in the cyborg's tool storage,
 /// can only be held in a tool slot and can't be dropped or handed over.
 /// </summary>
-[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState(true)]
 public sealed partial class CyborgToolComponent : Component
 {
     /// <summary>

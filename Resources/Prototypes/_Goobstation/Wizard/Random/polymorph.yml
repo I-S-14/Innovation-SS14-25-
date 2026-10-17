@@ -32,9 +32,9 @@
     # PlayerBorgJanitor: 30
     # PlayerBorgMedical: 30
     # PlayerBorgService: 30
-    CyborgNTBattery: 30
+    IS14CyborgNTBattery: 30
     IS14CyborgNTMiner: 30
-    CyborgNTEngineering: 30
+    IS14CyborgNTEngineering: 30
     IS14CyborgNTJanitor: 30
     IS14CyborgNTMedical: 30
     IS14CyborgNTService: 30

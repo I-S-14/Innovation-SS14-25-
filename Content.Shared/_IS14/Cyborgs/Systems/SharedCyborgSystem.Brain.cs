@@ -1,10 +1,12 @@
 // Licensed under IS14's EULA, see EULA.txt for more information.
 
+using Content.Shared._CorvaxNext.Silicons.Borgs.Components;
 using Content.Shared._IS14.Cyborgs.Components;
 using Content.Shared.Database;
 using Content.Shared.Interaction;
 using Content.Shared.Mind.Components;
 using Content.Shared.Silicons.Borgs.Components;
+using Content.Shared.StationAi;
 using Content.Shared.Verbs;
 using Content.Shared.Wires;
 using Robust.Shared.Player;
@@ -49,7 +51,9 @@ public abstract partial class SharedCyborgSystem
             return;
         }
 
-        if (!HasComp<BorgBrainComponent>(args.Used))
+        // tg's B.O.R.I.S. module takes the place of a brain and turns the chassis into an AI shell.
+        var boris = HasComp<AiRemoteBrainComponent>(args.Used);
+        if (!boris && !HasComp<BorgBrainComponent>(args.Used))
             return;
 
         args.Handled = true;
@@ -60,7 +64,7 @@ public abstract partial class SharedCyborgSystem
             return;
         }
 
-        if (ent.Comp.BrainEntity != null || _whitelist.IsWhitelistFail(ent.Comp.BrainWhitelist, args.Used))
+        if (ent.Comp.BrainEntity != null || !boris && _whitelist.IsWhitelistFail(ent.Comp.BrainWhitelist, args.Used))
             return;
 
         if (TryComp<ActorComponent>(args.Used, out var actor) && !CanPlayerBeBorged(actor.PlayerSession))
@@ -70,13 +74,25 @@ public abstract partial class SharedCyborgSystem
             return;
         }
 
-        _container.Insert(args.Used, ent.Comp.BrainContainer);
+        if (_container.Insert(args.Used, ent.Comp.BrainContainer))
+            _audio.PlayPredicted(ent.Comp.BrainInsertSound, ent.Owner, args.User);
+
         _adminLog.Add(LogType.Action, LogImpact.Medium,
             $"{ToPrettyString(args.User):player} installed brain {ToPrettyString(args.Used)} into cyborg {ToPrettyString(ent.Owner)}");
     }
 
     private void OnBrainInserted(Entity<CyborgComponent> ent, EntityUid brain)
     {
+        if (HasComp<AiRemoteBrainComponent>(brain))
+        {
+            _appearance.SetData(ent.Owner, CyborgVisuals.HasBrain, true);
+
+            // The remote control and its "back to AI" action live on the server.
+            if (_net.IsServer)
+                EnsureComp<AiRemoteControllerComponent>(ent);
+            return;
+        }
+
         if (!HasComp<BorgBrainComponent>(brain))
             return;
 
@@ -91,6 +107,13 @@ public abstract partial class SharedCyborgSystem
     {
         RemComp<CyborgInstalledBrainComponent>(brain);
         _appearance.SetData(ent.Owner, CyborgVisuals.HasBrain, false);
+
+        // Shutting the controller down sends the AI back to its core.
+        if (HasComp<AiRemoteBrainComponent>(brain) && _net.IsServer)
+        {
+            RemComp<AiRemoteControllerComponent>(ent);
+            RemComp<StationAiVisionComponent>(ent);
+        }
 
         if (HasComp<BorgBrainComponent>(brain) && _mind.TryGetMind(ent.Owner, out var mindId, out var mind))
             _mind.TransferTo(mindId, brain, mind: mind);

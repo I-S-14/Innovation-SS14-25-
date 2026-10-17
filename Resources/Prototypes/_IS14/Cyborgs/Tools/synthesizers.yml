@@ -4,8 +4,8 @@
 
 # tg's /obj/item/borg/cyborg_omnitool/engineering.
 - type: entity
-  parent: [BaseCyborgTool, PowerDrill]
-  id: CyborgToolOmnitool
+  parent: [IS14BaseCyborgTool, PowerDrill]
+  id: IS14CyborgToolOmnitool
   name: cyborg omni-toolset
   description: A set of engineering tools built into a cyborg's arm. Switch between them with a press.
   categories: [ HideSpawnMenu ]
@@ -19,6 +19,11 @@
     - Prying
     useSound:
       path: /Audio/Items/crowbar.ogg
+  # The multitool is part of the set, like tg's: wire hacking and multitool checks need the tag.
+  - type: Tag
+    tags:
+    - Powerdrill
+    - Multitool
   - type: ToolTileCompatible
   - type: MultipleTool
     statusShowBehavior: true
@@ -55,64 +60,70 @@
         path: /Audio/Items/wirecutter.ogg
       changeSound:
         path: /Audio/Items/change_drill.ogg
+    - behavior: Pulsing
+      sprite:
+        sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
+        state: toolkit_engiborg_multitool
+      changeSound:
+        path: /Audio/Items/change_drill.ogg
 
 # Stack synthesizers: refill from the power cell and never run out.
 - type: entity
   abstract: true
-  id: BaseCyborgStackSynthesizer
+  id: IS14BaseCyborgStackSynthesizer
   components:
   - type: CyborgStackSynthesizer
 
 - type: entity
-  parent: [BaseCyborgStackSynthesizer, BaseCyborgTool, SheetSteel]
-  id: CyborgToolSheetSteel
+  parent: [IS14BaseCyborgStackSynthesizer, IS14BaseCyborgTool, SheetSteel]
+  id: IS14CyborgToolSheetSteel
   categories: [ HideSpawnMenu ]
 
 - type: entity
-  parent: [BaseCyborgStackSynthesizer, BaseCyborgTool, SheetGlass]
-  id: CyborgToolSheetGlass
+  parent: [IS14BaseCyborgStackSynthesizer, IS14BaseCyborgTool, SheetGlass]
+  id: IS14CyborgToolSheetGlass
   categories: [ HideSpawnMenu ]
 
 - type: entity
-  parent: [BaseCyborgStackSynthesizer, BaseCyborgTool, PartRodMetal]
-  id: CyborgToolRods
+  parent: [IS14BaseCyborgStackSynthesizer, IS14BaseCyborgTool, PartRodMetal]
+  id: IS14CyborgToolRods
   categories: [ HideSpawnMenu ]
 
 - type: entity
-  parent: [BaseCyborgStackSynthesizer, BaseCyborgTool, CableApcStack]
-  id: CyborgToolCableApc
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: CyborgStackSynthesizer
-    chargePerUnit: 1
-
-- type: entity
-  parent: [BaseCyborgStackSynthesizer, BaseCyborgTool, CableMVStack]
-  id: CyborgToolCableMV
+  parent: [IS14BaseCyborgStackSynthesizer, IS14BaseCyborgTool, CableApcStack]
+  id: IS14CyborgToolCableApc
   categories: [ HideSpawnMenu ]
   components:
   - type: CyborgStackSynthesizer
     chargePerUnit: 1
 
 - type: entity
-  parent: [BaseCyborgStackSynthesizer, BaseCyborgTool, CableHVStack]
-  id: CyborgToolCableHV
+  parent: [IS14BaseCyborgStackSynthesizer, IS14BaseCyborgTool, CableMVStack]
+  id: IS14CyborgToolCableMV
   categories: [ HideSpawnMenu ]
   components:
   - type: CyborgStackSynthesizer
     chargePerUnit: 1
 
 - type: entity
-  parent: [BaseCyborgStackSynthesizer, BaseCyborgTool, FloorTileItemSteel]
-  id: CyborgToolFloorTile
+  parent: [IS14BaseCyborgStackSynthesizer, IS14BaseCyborgTool, CableHVStack]
+  id: IS14CyborgToolCableHV
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: CyborgStackSynthesizer
+    chargePerUnit: 1
+
+- type: entity
+  parent: [IS14BaseCyborgStackSynthesizer, IS14BaseCyborgTool, FloorTileItemSteel]
+  id: IS14CyborgToolFloorTile
   categories: [ HideSpawnMenu ]
   components:
   - type: CyborgStackSynthesizer
     chargePerUnit: 2
 
 - type: entity
-  parent: [BaseCyborgStackSynthesizer, BaseCyborgTool, Gauze]
-  id: CyborgToolGauze
+  parent: [IS14BaseCyborgStackSynthesizer, IS14BaseCyborgTool, Gauze]
+  id: IS14CyborgToolGauze
   categories: [ HideSpawnMenu ]
   components:
   - type: CyborgStackSynthesizer
@@ -120,8 +131,8 @@
 
 # tg's borghypo: synthesizes the chosen medicine.
 - type: entity
-  parent: [BaseCyborgTool, BorgHypo]
-  id: CyborgToolHypo
+  parent: [IS14BaseCyborgTool, BorgHypo]
+  id: IS14CyborgToolHypo
   categories: [ HideSpawnMenu ]
   components:
   - type: UserInterface
@@ -144,8 +155,8 @@
 
 # tg's peace borghypo.
 - type: entity
-  parent: [BaseCyborgTool, BorgHypo]
-  id: CyborgToolPeaceHypo
+  parent: [IS14BaseCyborgTool, BorgHypo]
+  id: IS14CyborgToolPeaceHypo
   name: peace hypospray
   description: An integrated hypospray that calms down anyone who gets too excited.
   categories: [ HideSpawnMenu ]
@@ -165,8 +176,8 @@
 
 # tg's borgshaker: pours any basic drink.
 - type: entity
-  parent: [BaseCyborgTool, DrinkShaker]
-  id: CyborgToolShaker
+  parent: [IS14BaseCyborgTool, DrinkShaker]
+  id: IS14CyborgToolShaker
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
@@ -204,11 +215,14 @@
     - Cream
     - JuiceOrange
     - JuiceLime
+    emagReagents:
+    - Blood
+    - CarpoToxin
 
 # Dispensers: print items where the cyborg clicks, use in hand to switch.
 - type: entity
-  parent: [BaseCyborgTool, BaseItem]
-  id: CyborgToolCookieSynth
+  parent: [IS14BaseCyborgTool, BaseItem]
+  id: IS14CyborgToolCookieSynth
   name: cookie synthesizer
   description: Prints a fresh cookie. A peacekeeper's best argument.
   categories: [ HideSpawnMenu ]
@@ -218,6 +232,10 @@
     state: COOKIE!!!
   - type: UseDelay
     delay: 3
+  - type: UserInterface
+    interfaces:
+      enum.CyborgDispenserUiKey.Key:
+        type: CyborgDispenserBoundUserInterface
   - type: CyborgDispenser
     chargeCost: 15
     options:
@@ -225,8 +243,8 @@
     - FoodBakedCookieSugar
 
 - type: entity
-  parent: [BaseCyborgTool, BaseItem]
-  id: CyborgToolRSF
+  parent: [IS14BaseCyborgTool, BaseItem]
+  id: IS14CyborgToolRSF
   name: rapid service fabricator
   description: Prints glasses, plates, paper and other service supplies.
   categories: [ HideSpawnMenu ]
@@ -237,19 +255,24 @@
     - state: tools-rsf
   - type: UseDelay
     delay: 1
+  - type: UserInterface
+    interfaces:
+      enum.CyborgDispenserUiKey.Key:
+        type: CyborgDispenserBoundUserInterface
   - type: CyborgDispenser
     chargeCost: 10
     options:
     - DrinkGlass
     - FoodPlate
     - Paper
+    - Pen
     - Cigarette
     - d6Dice
 
 # tg's harm alarm.
 - type: entity
-  parent: [BaseCyborgTool, BaseItem]
-  id: CyborgToolHarmAlarm
+  parent: [IS14BaseCyborgTool, BaseItem]
+  id: IS14CyborgToolHarmAlarm
   name: sonic harm prevention tool
   description: Releases a loud alarm that rattles anyone nearby into calming down.
   categories: [ HideSpawnMenu ]
@@ -264,8 +287,8 @@
 
 # tg's hyperkinetic dampening projector.
 - type: entity
-  parent: [BaseCyborgTool, BaseItem]
-  id: CyborgToolProjectileDampener
+  parent: [IS14BaseCyborgTool, BaseItem]
+  id: IS14CyborgToolProjectileDampener
   name: hyperkinetic dampening projector
   description: Projects a field that slows down and weakens projectiles flying near the cyborg. Drains power while on.
   categories: [ HideSpawnMenu ]
@@ -275,3 +298,132 @@
     layers:
     - state: syndie_gadget-shield0
   - type: CyborgProjectileDampener
+
+# Given by the expanded hypospray board, tg's EXPANDED_MEDICAL_REAGENTS on top of the base ones.
+- type: entity
+  parent: IS14CyborgToolHypo
+  id: IS14CyborgToolHypoExpanded
+  name: expanded borghypo
+  description: A cyborg hypospray with an advanced synthesiser for complex medicines.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: CyborgReagentSynthesizer
+    solution: hypospray
+    reagents:
+    - Bicaridine
+    - Tricordrazine
+    - Kelotane
+    - Dexalin
+    - Saline
+    - Dylovene
+    - Bruizine
+    - Dermaline
+    - Arithrazine
+    - Doxarubixadone
+    - Phalanximine
+    - Oculine
+    - Haloperidol
+    - Tramadol
+    emagReagents:
+    - ChloralHydrate
+    - Lexorin
+    - Toxin
+
+# tg's clown borghypo.
+- type: entity
+  parent: [IS14BaseCyborgTool, BorgHypo]
+  id: IS14CyborgToolClownHypo
+  name: laughter hypospray
+  description: An integrated hypospray that makes everyone's day better. Mostly.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: UserInterface
+    interfaces:
+      enum.CyborgReagentUiKey.Key:
+        type: CyborgReagentBoundUserInterface
+  - type: CyborgReagentSynthesizer
+    solution: hypospray
+    reagents:
+    - Laughter
+    emagReagents:
+    - Honk
+
+# A pouring container that fills itself, the base of the enzyme bottle and the condiment synthesiser.
+- type: entity
+  parent: [IS14BaseCyborgTool, BaseItem]
+  id: IS14BaseCyborgCondimentSynth
+  abstract: true
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
+    layers:
+    - state: containers-enzyme
+  - type: Item
+    size: Small
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 30
+  - type: DrainableSolution
+    solution: food
+  - type: ExaminableSolution
+    solution: food
+  - type: SolutionTransfer
+    canChangeTransferAmount: true
+    minTransferAmount: 1
+    maxTransferAmount: 30
+  - type: UserInterface
+    interfaces:
+      enum.CyborgReagentUiKey.Key:
+        type: CyborgReagentBoundUserInterface
+
+# tg's enzyme bottle in the service kit, refills itself.
+- type: entity
+  parent: IS14BaseCyborgCondimentSynth
+  id: IS14CyborgToolEnzyme
+  name: universal enzyme
+  description: A built-in bottle of universal enzyme that refills itself.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: CyborgReagentSynthesizer
+    solution: food
+    regenAmount: 2
+    chargePerUnit: 0.5
+    reagents:
+    - Enzyme
+
+# Given by the condiment synthesiser board, tg's EXPANDED_SERVICE_REAGENTS plus SS14's sauces.
+- type: entity
+  parent: IS14BaseCyborgCondimentSynth
+  id: IS14CyborgToolCondimentSynth
+  name: condiment synthesiser
+  description: Synthesizes the basics of any kitchen, from flour to hot sauce.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 50
+  - type: CyborgReagentSynthesizer
+    solution: food
+    regenAmount: 5
+    chargePerUnit: 0.5
+    reagents:
+    - Flour
+    - Sugar
+    - TableSalt
+    - Blackpepper
+    - Rice
+    - Cornmeal
+    - Oil
+    - OilOlive
+    - Egg
+    - CocoaPowder
+    - Butter
+    - Vinegar
+    - Ketchup
+    - Mustard
+    - Mayo
+    - Soysauce
+    - BbqSauce
+    - Hotsauce

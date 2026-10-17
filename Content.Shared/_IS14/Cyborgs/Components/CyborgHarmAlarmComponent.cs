@@ -25,5 +25,5 @@ public sealed partial class CyborgHarmAlarmComponent : Component
     public float ChargeCost = 30f;
 
     [DataField]
-    public SoundSpecifier Sound = new SoundPathSpecifier("/Audio/Machines/alarm.ogg");
+    public SoundSpecifier Sound = new SoundPathSpecifier("/Audio/_IS14/Cyborgs/harmalarm.ogg");
 }

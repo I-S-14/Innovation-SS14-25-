@@ -2,7 +2,7 @@
 
 - type: entity
   parent: BaseAction
-  id: ActionCyborgAutoWash
+  id: IS14ActionCyborgAutoWash
   name: Auto-wash
   description: Mop every tile you drive over with water from the internal tank, the mess goes into the tank. Slows you down and drains the cell.
   components:

@@ -1,6 +1,8 @@
 // Licensed under IS14's EULA, see EULA.txt for more information.
 
 using Content.Shared.Radio;
+using Content.Shared.Stacks;
+using Content.Shared.Whitelist;
 using Robust.Shared.Prototypes;
 
 namespace Content.Shared._IS14.Cyborgs.Prototypes;
@@ -51,6 +53,19 @@ public sealed partial class CyborgModelPrototype : IPrototype
     /// </summary>
     [DataField]
     public List<EntProtoId> EmagTools = new();
+
+    /// <summary>
+    /// Stacks the cyborg may pick up into a free module slot, like the engineering cyborg's sheets and cables.
+    /// Everything else stays out of its hands.
+    /// </summary>
+    [DataField]
+    public List<ProtoId<StackPrototype>> PickupStacks = new();
+
+    /// <summary>
+    /// Other things the cyborg may pick up into a free module slot.
+    /// </summary>
+    [DataField]
+    public EntityWhitelist? PickupWhitelist;
 
     /// <summary>
     /// Radio channels added on top of <see cref="Components.CyborgComponent.InherentRadioChannels"/>.

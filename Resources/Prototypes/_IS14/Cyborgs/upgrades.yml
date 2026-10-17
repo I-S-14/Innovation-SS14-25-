@@ -4,7 +4,7 @@
 
 - type: entity
   parent: BaseItem
-  id: BaseCyborgUpgrade
+  id: IS14BaseCyborgUpgrade
   name: cyborg upgrade board
   description: A board that adds new capabilities to a cyborg.
   abstract: true
@@ -21,8 +21,8 @@
     - Robotics
 
 - type: entity
-  parent: BaseCyborgUpgrade
-  id: CyborgUpgradeReclassification
+  parent: IS14BaseCyborgUpgrade
+  id: IS14CyborgUpgradeReclassification
   name: cyborg reclassification board
   description: Resets the cyborg's model so it can pick a new one. Used up on install.
   components:
@@ -33,8 +33,8 @@
     resetModel: true
 
 - type: entity
-  parent: BaseCyborgUpgrade
-  id: CyborgUpgradeIonThrusters
+  parent: IS14BaseCyborgUpgrade
+  id: IS14CyborgUpgradeIonThrusters
   name: ion thruster upgrade
   description: Lets the cyborg move without gravity.
   components:
@@ -46,8 +46,8 @@
     - type: MovementIgnoreGravity
 
 - type: entity
-  parent: BaseCyborgUpgrade
-  id: CyborgUpgradeSelfRepair
+  parent: IS14BaseCyborgUpgrade
+  id: IS14CyborgUpgradeSelfRepair
   name: self-repair module
   description: Slowly repairs the chassis while the cyborg is active.
   components:
@@ -66,8 +66,8 @@
           Burn: -1
 
 - type: entity
-  parent: BaseCyborgUpgrade
-  id: CyborgUpgradeIllegal
+  parent: IS14BaseCyborgUpgrade
+  id: IS14CyborgUpgradeIllegal
   name: illegal equipment module
   description: Unlocks the hidden tools of the cyborg's model.
   components:
@@ -78,53 +78,60 @@
     unlockEmagTools: true
 
 - type: entity
-  parent: BaseCyborgUpgrade
-  id: CyborgUpgradeDiamondDrill
+  parent: IS14BaseCyborgUpgrade
+  id: IS14CyborgUpgradeDiamondDrill
   name: mining cyborg diamond drill
-  description: A diamond drill for mining cyborgs.
+  description: A diamond drill replacing the mining cyborg's drill and shovel.
   components:
   - type: Sprite
     layers:
     - state: module_miner
   - type: CyborgUpgrade
     models:
-    - CyborgModelMiner
+    - IS14CyborgModelMiner
     tools:
     - MiningDrillDiamond
+    replaces:
+    - IS14CyborgToolMiningDrill
+    - IS14CyborgToolShovel
 
 - type: entity
-  parent: BaseCyborgUpgrade
-  id: CyborgUpgradeSatchelOfHolding
+  parent: IS14BaseCyborgUpgrade
+  id: IS14CyborgUpgradeSatchelOfHolding
   name: mining cyborg satchel of holding
-  description: A bluespace ore bag for mining cyborgs.
+  description: A bluespace ore bag replacing the mining cyborg's satchel.
   components:
   - type: Sprite
     layers:
     - state: module_miner
   - type: CyborgUpgrade
     models:
-    - CyborgModelMiner
+    - IS14CyborgModelMiner
     tools:
     - OreBagOfHolding
+    replaces:
+    - IS14CyborgToolOreBag
 
 - type: entity
-  parent: BaseCyborgUpgrade
-  id: CyborgUpgradeAdvancedMop
+  parent: IS14BaseCyborgUpgrade
+  id: IS14CyborgUpgradeAdvancedMop
   name: janitor cyborg advanced mop
-  description: An advanced mop for janitor cyborgs.
+  description: An advanced mop replacing the janitor cyborg's mop.
   components:
   - type: Sprite
     layers:
     - state: module_janitor
   - type: CyborgUpgrade
     models:
-    - CyborgModelJanitor
+    - IS14CyborgModelJanitor
     tools:
     - AdvMopItem
+    replaces:
+    - IS14CyborgToolMop
 
 - type: entity
-  parent: BaseCyborgUpgrade
-  id: CyborgUpgradeDefibrillator
+  parent: IS14BaseCyborgUpgrade
+  id: IS14CyborgUpgradeDefibrillator
   name: medical cyborg defibrillator
   description: A built-in defibrillator for medical cyborgs.
   components:
@@ -133,13 +140,13 @@
     - state: module_medical
   - type: CyborgUpgrade
     models:
-    - CyborgModelMedical
+    - IS14CyborgModelMedical
     tools:
     - DefibrillatorOneHandedUnpowered
 
 - type: entity
-  parent: BaseCyborgUpgrade
-  id: CyborgUpgradeAdvancedSurgery
+  parent: IS14BaseCyborgUpgrade
+  id: IS14CyborgUpgradeAdvancedSurgery
   name: cyborg surgical omni-tool upgrade
   description: Advanced surgical tools for medical cyborgs.
   components:
@@ -148,15 +155,15 @@
     - state: module_medical
   - type: CyborgUpgrade
     models:
-    - CyborgModelMedical
+    - IS14CyborgModelMedical
     tools:
     - EnergyScalpel
     - EnergyCautery
     - AdvancedRetractor
 
 - type: entity
-  parent: BaseCyborgUpgrade
-  id: CyborgUpgradeAdvancedTools
+  parent: IS14BaseCyborgUpgrade
+  id: IS14CyborgUpgradeAdvancedTools
   name: cyborg engineering omni-tool upgrade
   description: Advanced tools for engineering cyborgs.
   components:
@@ -165,15 +172,17 @@
     - state: module_engineer
   - type: CyborgUpgrade
     models:
-    - CyborgModelEngineering
+    - IS14CyborgModelEngineering
     tools:
     - JawsOfLife
     - PowerDrill
     - WelderExperimental
+    replaces:
+    - IS14CyborgToolWelder
 
 - type: entity
-  parent: BaseCyborgUpgrade
-  id: CyborgUpgradeBotanyTools
+  parent: IS14BaseCyborgUpgrade
+  id: IS14CyborgUpgradeBotanyTools
   name: service cyborg botany tools
   description: Gardening tools for service cyborgs.
   components:
@@ -182,16 +191,16 @@
     - state: module_service
   - type: CyborgUpgrade
     models:
-    - CyborgModelService
+    - IS14CyborgModelService
     tools:
-    - CyborgToolCultivator
-    - CyborgToolSpade
-    - CyborgToolSecateur
+    - IS14CyborgToolCultivator
+    - IS14CyborgToolSpade
+    - IS14CyborgToolSecateur
     - PlantBag
 
 - type: entity
-  parent: BaseCyborgUpgrade
-  id: CyborgUpgradeKitchenTools
+  parent: IS14BaseCyborgUpgrade
+  id: IS14CyborgUpgradeKitchenTools
   name: service cyborg kitchen toolset
   description: Kitchen tools for service cyborgs.
   components:
@@ -200,7 +209,226 @@
     - state: module_service
   - type: CyborgUpgrade
     models:
-    - CyborgModelService
+    - IS14CyborgModelService
     tools:
-    - CyborgToolKnife
-    - CyborgToolRollingPin
+    - IS14CyborgToolKnife
+    - IS14CyborgToolRollingPin
+
+- type: entity
+  parent: IS14BaseCyborgUpgrade
+  id: IS14CyborgUpgradeRename
+  name: cyborg rename board
+  description: Write a new name with it in hand, then install it to rename the cyborg. Used up on install.
+  components:
+  - type: Sprite
+    layers:
+    - state: module_general
+  - type: CyborgUpgrade
+  - type: CyborgRenameBoard
+
+- type: entity
+  parent: IS14BaseCyborgUpgrade
+  id: IS14CyborgUpgradeClown
+  name: borg model picker (Clown)
+  description: Turns a cyborg into a clown cyborg, honk. Used up on install.
+  components:
+  - type: Sprite
+    layers:
+    - state: module_honk
+  - type: CyborgUpgrade
+    setModel: IS14CyborgModelClown
+
+- type: entity
+  parent: IS14BaseCyborgUpgrade
+  id: IS14CyborgUpgradeDisablerCooler
+  name: cyborg rapid disabler cooling module
+  description: Cools the mounted disabler of a security cyborg so it recharges much faster.
+  components:
+  - type: Sprite
+    layers:
+    - state: module_security
+  - type: CyborgUpgrade
+    models:
+    - IS14CyborgModelSecurity
+    tools:
+    - IS14CyborgToolDisablerCooled
+    replaces:
+    - IS14CyborgToolDisabler
+
+- type: entity
+  parent: IS14BaseCyborgUpgrade
+  id: IS14CyborgUpgradeTrashBagOfHolding
+  name: janitor cyborg trash bag of holding
+  description: A bluespace trash bag replacing the janitor cyborg's trash bag.
+  components:
+  - type: Sprite
+    layers:
+    - state: module_janitor
+  - type: CyborgUpgrade
+    models:
+    - IS14CyborgModelJanitor
+    tools:
+    - IS14CyborgToolTrashBagOfHolding
+    replaces:
+    - IS14CyborgToolTrashBag
+
+- type: entity
+  parent: IS14BaseCyborgUpgrade
+  id: IS14CyborgUpgradeExpandedHypo
+  name: medical cyborg expanded hypospray
+  description: Lets the medical cyborg's hypospray synthesize advanced medicines.
+  components:
+  - type: Sprite
+    layers:
+    - state: module_medical
+  - type: CyborgUpgrade
+    models:
+    - IS14CyborgModelMedical
+    tools:
+    - IS14CyborgToolHypoExpanded
+    replaces:
+    - IS14CyborgToolHypo
+
+- type: entity
+  parent: IS14BaseCyborgUpgrade
+  id: IS14CyborgUpgradeBluespaceSyringe
+  name: advanced syringe
+  description: Bluespace technology that expands the capacity of the medical cyborg's syringe.
+  components:
+  - type: Sprite
+    layers:
+    - state: module_medical
+  - type: CyborgUpgrade
+    models:
+    - IS14CyborgModelMedical
+    tools:
+    - IS14CyborgToolSyringeBluespace
+    replaces:
+    - IS14CyborgToolSyringe
+
+- type: entity
+  parent: IS14BaseCyborgUpgrade
+  id: IS14CyborgUpgradeBeakerApparatus
+  name: beaker storage apparatus
+  description: A second beaker for medical cyborgs.
+  components:
+  - type: Sprite
+    layers:
+    - state: module_medical
+  - type: CyborgUpgrade
+    models:
+    - IS14CyborgModelMedical
+    tools:
+    - IS14CyborgToolBeaker
+
+- type: entity
+  parent: IS14BaseCyborgUpgrade
+  id: IS14CyborgUpgradeCrewPinpointer
+  name: medical cyborg crew pinpointer
+  description: Gives a medical cyborg remote access to the crew monitor.
+  components:
+  - type: Sprite
+    layers:
+    - state: module_medical
+  - type: CyborgUpgrade
+    models:
+    - IS14CyborgModelMedical
+    - IS14CyborgModelSyndicateMedical
+    tools:
+    - IS14CyborgToolCrewMonitor
+
+- type: entity
+  parent: IS14BaseCyborgUpgrade
+  id: IS14CyborgUpgradeGlassApparatus
+  name: glass storage apparatus
+  description: A drinking glass for service cyborgs.
+  components:
+  - type: Sprite
+    layers:
+    - state: module_service
+  - type: CyborgUpgrade
+    models:
+    - IS14CyborgModelService
+    tools:
+    - IS14CyborgToolDrinkGlass
+
+- type: entity
+  parent: IS14BaseCyborgUpgrade
+  id: IS14CyborgUpgradeCondimentSynth
+  name: service cyborg condiment synthesiser
+  description: Lets a service cyborg synthesize flour, sugar, salt, sauces and other condiments.
+  components:
+  - type: Sprite
+    layers:
+    - state: module_service
+  - type: CyborgUpgrade
+    models:
+    - IS14CyborgModelService
+    tools:
+    - IS14CyborgToolCondimentSynth
+
+- type: entity
+  parent: IS14BaseCyborgUpgrade
+  id: IS14CyborgUpgradeRollingTable
+  name: service cyborg rolling table dock
+  description: A folding table for service cyborgs to serve from anywhere.
+  components:
+  - type: Sprite
+    layers:
+    - state: module_service
+  - type: CyborgUpgrade
+    models:
+    - IS14CyborgModelService
+    tools:
+    - IS14CyborgToolTableDock
+
+# tg's borg expander, with BandaStation's 1.25 scale.
+- type: entity
+  parent: IS14BaseCyborgUpgrade
+  id: IS14CyborgUpgradeExpander
+  name: borg expander
+  description: A cyborg resizer, it makes a cyborg huge.
+  components:
+  - type: Sprite
+    layers:
+    - state: module_general
+  - type: CyborgUpgrade
+    installSound:
+      path: /Audio/Items/ratchet.ogg
+    addComponents:
+    - type: ScaleVisuals
+      scale: 1.25, 1.25
+
+# Sold in the uplink in place of the old weapon and martyr modules; fit any model.
+- type: entity
+  parent: [IS14BaseCyborgUpgrade, BaseSyndicateContraband]
+  id: IS14CyborgUpgradeSyndicateWeapon
+  name: syndicate weapon cyborg module
+  description: Arms any cyborg with an advanced laser pistol and an energy dagger.
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Robotics/borgmodule.rsi
+    layers:
+    - state: syndicate
+    - state: icon-syndicate
+  - type: CyborgUpgrade
+    tools:
+    - IS14CyborgToolSyndicatePistol
+    - IS14CyborgToolSyndicateDagger
+  - type: StaticPrice
+    price: 2500
+
+- type: entity
+  parent: [IS14BaseCyborgUpgrade, BaseSyndicateContraband]
+  id: IS14CyborgUpgradeMartyr
+  name: martyr cyborg module
+  description: Turns any cyborg into a walking bomb. Make sure it is loyal to your cause.
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Robotics/borgmodule.rsi
+    layers:
+    - state: syndicateborgbomb
+    - state: icon-bomb
+  - type: CyborgUpgrade
+    tools:
+    - IS14CyborgToolMartyr

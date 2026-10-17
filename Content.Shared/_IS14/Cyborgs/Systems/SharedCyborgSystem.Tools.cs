@@ -4,6 +4,9 @@ using System.Diagnostics.CodeAnalysis;
 using Content.Shared._IS14.Cyborgs.Components;
 using Content.Shared.Hands.Components;
 using Content.Shared.Interaction.Components;
+using Content.Shared.Item;
+using Content.Shared.Stacks;
+using Robust.Shared.Containers;
 using Robust.Shared.Prototypes;
 
 namespace Content.Shared._IS14.Cyborgs.Systems;
@@ -15,6 +18,65 @@ public abstract partial class SharedCyborgSystem
         SubscribeAllEvent<CyborgToggleToolRequest>(OnToggleToolRequest);
         SubscribeAllEvent<CyborgStoreToolRequest>(OnStoreToolRequest);
         SubscribeAllEvent<CyborgOpenModelMenuRequest>(OnOpenModelMenuRequest);
+        SubscribeLocalEvent<CyborgComponent, PickupAttemptEvent>(OnPickupAttempt);
+        SubscribeLocalEvent<CyborgComponent, ContainerIsInsertingAttemptEvent>(OnSlotInsertAttempt);
+    }
+
+    // Like tg, a cyborg's hands are its module slots: it can't pick up anything but its own tools
+    // and what its model allows, like the engineering cyborg's sheets. Deploying a tool uses DoPickup,
+    // which skips this check.
+    private void OnPickupAttempt(Entity<CyborgComponent> ent, ref PickupAttemptEvent args)
+    {
+        if (CompOrNull<CyborgToolComponent>(args.Item)?.Cyborg == ent.Owner)
+            return;
+
+        if (!HasComp<CyborgToolComponent>(args.Item) && CanPickUp(ent.Comp, args.Item))
+            return;
+
+        args.Cancel();
+        if (args.ShowPopup)
+            _popup.PopupClient(Loc.GetString("cyborg-cannot-pickup"), ent, ent);
+    }
+
+    /// <summary>
+    /// Whether the cyborg's model lets it hold this item in a module slot.
+    /// </summary>
+    public bool CanPickUp(CyborgComponent cyborg, EntityUid item)
+    {
+        if (cyborg.Model == null || !_proto.TryIndex(cyborg.Model, out var model))
+            return false;
+
+        if (model.PickupStacks.Count > 0 && TryComp<StackComponent>(item, out var stack) &&
+            model.PickupStacks.Contains(stack.StackTypeId))
+            return true;
+
+        return _whitelist.IsWhitelistPass(model.PickupWhitelist, item);
+    }
+
+    // An offline slot holds nothing, picked up or deployed.
+    private void OnSlotInsertAttempt(Entity<CyborgComponent> ent, ref ContainerIsInsertingAttemptEvent args)
+    {
+        if (args.Cancelled)
+            return;
+
+        var id = args.Container.ID;
+        if (!id.StartsWith(ent.Comp.ToolHandPrefix + "-") ||
+            !int.TryParse(id.AsSpan(ent.Comp.ToolHandPrefix.Length + 1), out var index))
+            return;
+
+        if (!IsSlotWorking(ent.Comp, index))
+            args.Cancel();
+    }
+
+    /// <summary>
+    /// Empties a module slot: a tool goes back into the chassis, anything picked up is dropped.
+    /// </summary>
+    public void ClearSlot(Entity<CyborgComponent> ent, EntityUid held)
+    {
+        if (HasComp<CyborgToolComponent>(held))
+            StoreTool(ent, held);
+        else
+            _hands.TryDrop(ent.Owner, held, checkActionBlocker: false);
     }
 
     private bool TryGetSenderCyborg(EntitySessionEventArgs args, out Entity<CyborgComponent> cyborg)
@@ -53,8 +115,8 @@ public abstract partial class SharedCyborgSystem
         if (hand == null || !hand.StartsWith(ent.Comp.ToolHandPrefix))
             return;
 
-        if (_hands.TryGetHeldItem(ent.Owner, hand, out var held) && HasComp<CyborgToolComponent>(held))
-            StoreTool(ent, held.Value);
+        if (_hands.TryGetHeldItem(ent.Owner, hand, out var held))
+            ClearSlot(ent, held.Value);
     }
 
     // A cyborg that closed the model picker without choosing gets it back from the HUD.
@@ -123,8 +185,17 @@ public abstract partial class SharedCyborgSystem
         if (!ent.Comp.ToolContainer.Contains(tool) || !IsToolAvailable(ent.Comp, tool))
             return false;
 
+        if (ent.Comp.TransformEnd != null)
+            return false;
+
+        if (CompOrNull<CyborgTippableComponent>(ent)?.Tipped == true)
+        {
+            _popup.PopupClient(Loc.GetString("cyborg-tipped-no-tools"), ent.Owner, ent.Owner);
+            return false;
+        }
+
         string? freeHand = null;
-        for (var i = 0; i < ent.Comp.ToolSlots; i++)
+        for (var i = 0; i < ent.Comp.ToolSlots - ent.Comp.BrokenSlots; i++)
         {
             var handId = GetToolHandId(ent.Comp, i);
             if (_hands.HandIsEmpty(ent.Owner, handId))
@@ -136,7 +207,9 @@ public abstract partial class SharedCyborgSystem
 
         if (freeHand == null)
         {
-            _popup.PopupClient(Loc.GetString("cyborg-tools-slots-full"), ent.Owner, ent.Owner);
+            _popup.PopupClient(Loc.GetString(ent.Comp.BrokenSlots >= ent.Comp.ToolSlots
+                ? "cyborg-slots-all-offline"
+                : "cyborg-tools-slots-full"), ent.Owner, ent.Owner);
             return false;
         }
 
@@ -155,6 +228,8 @@ public abstract partial class SharedCyborgSystem
     /// </summary>
     public void StoreTool(Entity<CyborgComponent> ent, EntityUid tool)
     {
+        // A stowed welder or energy blade doesn't keep burning inside the chassis.
+        _itemToggle.TryDeactivate(tool, ent.Owner, showPopup: false);
         RemComp<UnremoveableComponent>(tool);
         _container.Insert(tool, ent.Comp.ToolContainer);
     }
@@ -166,9 +241,8 @@ public abstract partial class SharedCyborgSystem
 
         for (var i = 0; i < ent.Comp.ToolSlots; i++)
         {
-            if (_hands.TryGetHeldItem(ent.Owner, GetToolHandId(ent.Comp, i), out var held) &&
-                HasComp<CyborgToolComponent>(held))
-                StoreTool(ent, held.Value);
+            if (_hands.TryGetHeldItem(ent.Owner, GetToolHandId(ent.Comp, i), out var held))
+                ClearSlot(ent, held.Value);
         }
     }
 

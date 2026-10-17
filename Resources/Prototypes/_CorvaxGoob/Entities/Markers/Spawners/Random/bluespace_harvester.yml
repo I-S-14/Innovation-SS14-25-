@@ -386,7 +386,7 @@
     # - BorgChassisService
     # - BorgChassisMedical
     - IS14CyborgNTMiner
-    - CyborgNTEngineering
+    - IS14CyborgNTEngineering
     - IS14CyborgNTJanitor
     - IS14CyborgNTService
     - IS14CyborgNTMedical

@@ -21,6 +21,7 @@ public sealed class CyborgDispenserSystem : EntitySystem
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly PowerCellSystem _powerCell = default!;
     [Dependency] private readonly UseDelaySystem _useDelay = default!;
+    [Dependency] private readonly SharedUserInterfaceSystem _ui = default!;
 
     public override void Initialize()
     {
@@ -28,6 +29,7 @@ public sealed class CyborgDispenserSystem : EntitySystem
 
         SubscribeLocalEvent<CyborgDispenserComponent, UseInHandEvent>(OnUseInHand);
         SubscribeLocalEvent<CyborgDispenserComponent, AfterInteractEvent>(OnAfterInteract);
+        SubscribeLocalEvent<CyborgDispenserComponent, CyborgDispenserSelectMessage>(OnSelectMessage);
     }
 
     private void OnUseInHand(Entity<CyborgDispenserComponent> ent, ref UseInHandEvent args)
@@ -36,11 +38,32 @@ public sealed class CyborgDispenserSystem : EntitySystem
             return;
 
         args.Handled = true;
-        ent.Comp.Selected = (ent.Comp.Selected + 1) % ent.Comp.Options.Count;
+
+        // A radial menu like the RCD's where the tool has one, cycling otherwise.
+        if (_ui.HasUi(ent.Owner, CyborgDispenserUiKey.Key))
+        {
+            _ui.TryToggleUi(ent.Owner, CyborgDispenserUiKey.Key, args.User);
+            return;
+        }
+
+        Select(ent, (ent.Comp.Selected + 1) % ent.Comp.Options.Count, args.User);
+    }
+
+    private void OnSelectMessage(Entity<CyborgDispenserComponent> ent, ref CyborgDispenserSelectMessage args)
+    {
+        if (args.Index < 0 || args.Index >= ent.Comp.Options.Count)
+            return;
+
+        Select(ent, args.Index, args.Actor);
+    }
+
+    private void Select(Entity<CyborgDispenserComponent> ent, int index, EntityUid user)
+    {
+        ent.Comp.Selected = index;
         Dirty(ent);
 
-        if (_proto.TryIndex(ent.Comp.Options[ent.Comp.Selected], out var proto))
-            _popup.PopupClient(Loc.GetString("cyborg-dispenser-selected", ("item", proto.Name)), ent, args.User);
+        if (_proto.TryIndex(ent.Comp.Options[index], out var proto))
+            _popup.PopupClient(Loc.GetString("cyborg-dispenser-selected", ("item", proto.Name)), ent, user);
     }
 
     private void OnAfterInteract(Entity<CyborgDispenserComponent> ent, ref AfterInteractEvent args)

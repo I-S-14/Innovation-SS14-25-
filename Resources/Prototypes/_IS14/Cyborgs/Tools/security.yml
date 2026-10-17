@@ -1,21 +1,58 @@
 # Licensed under IS14's EULA, see EULA.txt for more information.
 
+# tg's cyborg zipties: every use makes a fresh pair, the tool itself stays.
 - type: entity
-  parent: [BaseCyborgTool, Zipties]
-  id: CyborgToolZipties
+  parent: [IS14BaseCyborgTool, BaseItem]
+  id: IS14CyborgToolZipties
+  name: ziptie dispenser
+  description: Makes a fresh pair of zipties for every restraint. Never runs out.
   categories: [ HideSpawnMenu ]
   components:
+  - type: Item
+    size: Small
+  - type: CyborgCuffDispenser
   - type: Sprite
     sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
     layers:
     - state: restraints-cuff
 
 - type: entity
-  parent: [BaseCyborgTool, WeaponDisablerAdvanced]
-  id: CyborgToolDisabler
+  parent: [IS14BaseCyborgTool, WeaponDisablerAdvanced]
+  id: IS14CyborgToolDisabler
   categories: [ HideSpawnMenu ]
 
 - type: entity
-  parent: [BaseCyborgTool, WeaponTetherGun]
-  id: CyborgToolTetherGun
+  parent: [IS14BaseCyborgTool, WeaponTetherGun]
+  id: IS14CyborgToolTetherGun
   categories: [ HideSpawnMenu ]
+
+# tg's cyborg stun baton, charged from its own recharging cell.
+- type: entity
+  parent: [IS14BaseCyborgTool, Stunbaton]
+  id: IS14CyborgToolStunbaton
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: BatterySelfRecharger
+    autoRechargeRate: 25
+
+# Given by the rapid disabler cooling module.
+- type: entity
+  parent: IS14CyborgToolDisabler
+  id: IS14CyborgToolDisablerCooled
+  name: cooled disabler
+  description: A cyborg disabler with an extra cooling loop. Recharges much faster.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: BatterySelfRecharger
+    autoRechargeRate: 100
+
+# Emag tool of the security model, tg's cyborg laser gun.
+- type: entity
+  parent: [IS14BaseCyborgTool, WeaponLaserGun]
+  id: IS14CyborgToolLaser
+  name: cyborg laser gun
+  description: A built-in laser that draws on its own recharging cell.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: BatterySelfRecharger
+    autoRechargeRate: 30

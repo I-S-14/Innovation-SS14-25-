@@ -1,18 +1,18 @@
 # Licensed under IS14's EULA, see EULA.txt for more information.
 
 - type: entity
-  parent: [BaseCyborgTool, BorgTrashBag]
-  id: CyborgToolTrashBag
+  parent: [IS14BaseCyborgTool, BorgTrashBag]
+  id: IS14CyborgToolTrashBag
   categories: [ HideSpawnMenu ]
 
 - type: entity
-  parent: [BaseCyborgTool, MopItem]
-  id: CyborgToolMop
+  parent: [IS14BaseCyborgTool, MopItem]
+  id: IS14CyborgToolMop
   categories: [ HideSpawnMenu ]
 
 - type: entity
-  parent: [BaseCyborgTool, BorgBucket]
-  id: CyborgToolBucket
+  parent: [IS14BaseCyborgTool, BorgBucket]
+  id: IS14CyborgToolBucket
   categories: [ HideSpawnMenu ]
   components:
   # Comes full: this is the auto-wash tank, water out, mess in.
@@ -25,8 +25,8 @@
           Quantity: 500
 
 - type: entity
-  parent: [BaseCyborgTool, LightReplacer]
-  id: CyborgToolLightReplacer
+  parent: [IS14BaseCyborgTool, LightReplacer]
+  id: IS14CyborgToolLightReplacer
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
@@ -35,8 +35,8 @@
     - state: janitor-lightreplacer
 
 - type: entity
-  parent: [BaseCyborgTool, HoloprojectorBorg]
-  id: CyborgToolHoloprojector
+  parent: [IS14BaseCyborgTool, HoloprojectorBorg]
+  id: IS14CyborgToolHoloprojector
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
@@ -45,13 +45,13 @@
     - state: tool-signmaker
 
 - type: entity
-  parent: [BaseCyborgTool, BorgSprayBottle]
-  id: CyborgToolSprayBottle
+  parent: [IS14BaseCyborgTool, BorgSprayBottle]
+  id: IS14CyborgToolSprayBottle
   categories: [ HideSpawnMenu ]
 
 - type: entity
-  parent: [BaseCyborgTool, WireBrush]
-  id: CyborgToolWireBrush
+  parent: [IS14BaseCyborgTool, WireBrush]
+  id: IS14CyborgToolWireBrush
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
@@ -60,6 +60,41 @@
     - state: tools-wirebrush
 
 - type: entity
-  parent: [BaseCyborgTool, Plunger]
-  id: CyborgToolPlunger
+  parent: [IS14BaseCyborgTool, Plunger]
+  id: IS14CyborgToolPlunger
   categories: [ HideSpawnMenu ]
+
+# Emag tool of the janitor model, tg's lube spray. Refills itself with space lube.
+- type: entity
+  parent: IS14CyborgToolSprayBottle
+  id: IS14CyborgToolLubeSpray
+  name: lube spray
+  description: A built-in sprayer full of space lube. Not for cleaning.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      drink:
+        maxVol: 100
+  - type: UserInterface
+    interfaces:
+      enum.CyborgReagentUiKey.Key:
+        type: CyborgReagentBoundUserInterface
+  - type: CyborgReagentSynthesizer
+    solution: drink
+    regenAmount: 5
+    reagents:
+    - SpaceLube
+
+# Given by the trash bag of holding board.
+- type: entity
+  parent: IS14CyborgToolTrashBag
+  id: IS14CyborgToolTrashBagOfHolding
+  name: trash bag of holding
+  description: A bluespace trash bag for janitor cyborgs. Holds a lot more.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Storage
+    maxItemSize: Huge
+    grid:
+    - 0,0,11,9

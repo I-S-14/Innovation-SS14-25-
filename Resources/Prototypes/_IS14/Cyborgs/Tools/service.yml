@@ -1,13 +1,13 @@
 # Licensed under IS14's EULA, see EULA.txt for more information.
 
 - type: entity
-  parent: [BaseCyborgTool, BarSpoon]
-  id: CyborgToolBarSpoon
+  parent: [IS14BaseCyborgTool, BarSpoon]
+  id: IS14CyborgToolBarSpoon
   categories: [ HideSpawnMenu ]
 
 - type: entity
-  parent: [BaseCyborgTool, Pen]
-  id: CyborgToolPen
+  parent: [IS14BaseCyborgTool, Pen]
+  id: IS14CyborgToolPen
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
@@ -16,8 +16,8 @@
     - state: bureaucracy-pen
 
 - type: entity
-  parent: [BaseCyborgTool, HandLabeler]
-  id: CyborgToolHandLabeler
+  parent: [IS14BaseCyborgTool, HandLabeler]
+  id: IS14CyborgToolHandLabeler
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
@@ -26,8 +26,8 @@
     - state: bureaucracy-labeler0
 
 - type: entity
-  parent: [BaseCyborgTool, ElectricGuitarInstrument]
-  id: CyborgToolGuitar
+  parent: [IS14BaseCyborgTool, ElectricGuitarInstrument]
+  id: IS14CyborgToolGuitar
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
@@ -36,8 +36,8 @@
     - state: musician-guitar
 
 - type: entity
-  parent: [BaseCyborgTool, SynthesizerInstrument]
-  id: CyborgToolSynthesizer
+  parent: [IS14BaseCyborgTool, SynthesizerInstrument]
+  id: IS14CyborgToolSynthesizer
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
@@ -46,31 +46,62 @@
     - state: musician-synth
 
 - type: entity
-  parent: [BaseCyborgTool, Lighter]
-  id: CyborgToolLighter
+  parent: [IS14BaseCyborgTool, Lighter]
+  id: IS14CyborgToolLighter
   categories: [ HideSpawnMenu ]
 
 - type: entity
-  parent: [BaseCyborgTool, BooksBag]
-  id: CyborgToolBooksBag
+  parent: [IS14BaseCyborgTool, BooksBag]
+  id: IS14CyborgToolBooksBag
   categories: [ HideSpawnMenu ]
 
 - type: entity
-  parent: [BaseCyborgTool, RubberStampApproved]
-  id: CyborgToolStampApproved
+  parent: [IS14BaseCyborgTool, RubberStampApproved]
+  id: IS14CyborgToolStampApproved
   categories: [ HideSpawnMenu ]
 
 - type: entity
-  parent: [BaseCyborgTool, RubberStampDenied]
-  id: CyborgToolStampDenied
+  parent: [IS14BaseCyborgTool, RubberStampDenied]
+  id: IS14CyborgToolStampDenied
   categories: [ HideSpawnMenu ]
 
 - type: entity
-  parent: [BaseCyborgTool, CrayonBorg]
-  id: CyborgToolCrayon
+  parent: [IS14BaseCyborgTool, CrayonBorg]
+  id: IS14CyborgToolCrayon
   categories: [ HideSpawnMenu ]
 
 - type: entity
-  parent: [BaseCyborgTool, SprayPainterBorg]
-  id: CyborgToolSprayPainter
+  parent: [IS14BaseCyborgTool, SprayPainterBorg]
+  id: IS14CyborgToolSprayPainter
   categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, RagItem]
+  id: IS14CyborgToolRag
+  categories: [ HideSpawnMenu ]
+
+# Given by the glass storage apparatus board.
+- type: entity
+  parent: [IS14BaseCyborgTool, DrinkGlass]
+  id: IS14CyborgToolDrinkGlass
+  categories: [ HideSpawnMenu ]
+
+# Given by the rolling table dock board: a table to serve from, deployed like the medical roller bed.
+- type: entity
+  parent: [IS14BaseCyborgTool, BaseItem]
+  id: IS14CyborgToolTableDock
+  name: rolling table dock
+  description: A folded serving table. Click the floor to set it up, click the table to fold it back.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
+    layers:
+    - state: containers-tray
+  - type: Item
+    size: Normal
+  - type: CyborgBedDeployer
+    bed: Table
+    deployedPopup: cyborg-table-deployed
+    packedPopup: cyborg-table-packed
+    alreadyDeployedPopup: cyborg-table-already-deployed

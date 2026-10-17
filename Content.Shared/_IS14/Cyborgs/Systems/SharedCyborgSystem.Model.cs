@@ -47,6 +47,45 @@ public abstract partial class SharedCyborgSystem
         }
         else if (model.Skins.Count > 1)
             OpenSkinMenu(ent);
+
+        StartTransform(ent);
+    }
+
+    /// <summary>
+    /// tg's do_transform_animation: smoke, a few seconds stuck in place and the sound of tools. Server only.
+    /// </summary>
+    public void StartTransform(Entity<CyborgComponent> ent)
+    {
+        if (_net.IsClient)
+            return;
+
+        StoreAllTools(ent);
+        ent.Comp.TransformEnd = _timing.CurTime + ent.Comp.TransformTime;
+        ent.Comp.NextTransformSound = _timing.CurTime;
+        Dirty(ent);
+        _movementSpeed.RefreshMovementSpeedModifiers(ent.Owner);
+        Spawn(ent.Comp.TransformEffect, Transform(ent.Owner).Coordinates);
+    }
+
+    protected void UpdateTransform(Entity<CyborgComponent> ent)
+    {
+        if (ent.Comp.TransformEnd is not { } end)
+            return;
+
+        if (_timing.CurTime >= end)
+        {
+            ent.Comp.TransformEnd = null;
+            Dirty(ent);
+            _movementSpeed.RefreshMovementSpeedModifiers(ent.Owner);
+            return;
+        }
+
+        if (_timing.CurTime < ent.Comp.NextTransformSound)
+            return;
+
+        // tg plays one of its tool sounds every 1.2 seconds.
+        ent.Comp.NextTransformSound = _timing.CurTime + TimeSpan.FromSeconds(1.2);
+        _audio.PlayPvs(ent.Comp.TransformSound, ent.Owner);
     }
 
     private void OnSelectSkinMessage(Entity<CyborgComponent> ent, ref CyborgSelectSkinMessage args)

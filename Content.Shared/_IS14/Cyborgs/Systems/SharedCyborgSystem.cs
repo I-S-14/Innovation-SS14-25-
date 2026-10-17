@@ -30,6 +30,7 @@ using Robust.Shared.Network;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
+using Content.Shared.Item.ItemToggle;
 
 namespace Content.Shared._IS14.Cyborgs.Systems;
 
@@ -50,6 +51,7 @@ public abstract partial class SharedCyborgSystem : EntitySystem
     [Dependency] private readonly SharedHandheldLightSystem _handheldLight = default!;
     [Dependency] private readonly SharedHandsSystem _hands = default!;
     [Dependency] private readonly ItemSlotsSystem _itemSlots = default!;
+    [Dependency] private readonly ItemToggleSystem _itemToggle = default!;
     [Dependency] private readonly SharedMindSystem _mind = default!;
     [Dependency] private readonly MobStateSystem _mobState = default!;
     [Dependency] private readonly MovementSpeedModifierSystem _movementSpeed = default!;
@@ -58,6 +60,8 @@ public abstract partial class SharedCyborgSystem : EntitySystem
     [Dependency] private readonly SharedUserInterfaceSystem _ui = default!;
     [Dependency] private readonly EntityWhitelistSystem _whitelist = default!;
     [Dependency] private readonly EmagSystem _emag = default!;
+    [Dependency] private readonly MetaDataSystem _metaData = default!;
+    [Dependency] private readonly MobThresholdSystem _mobThreshold = default!;
 
     public override void Initialize()
     {
@@ -67,6 +71,8 @@ public abstract partial class SharedCyborgSystem : EntitySystem
         InitializeModel();
         InitializeTools();
         InitializeUpgrades();
+        InitializeSlots();
+        InitializeExamine();
 
         SubscribeLocalEvent<TryGetIdentityShortInfoEvent>(OnTryGetIdentityShortInfo);
         SubscribeLocalEvent<CyborgComponent, ComponentStartup>(OnStartup);
@@ -102,6 +108,7 @@ public abstract partial class SharedCyborgSystem : EntitySystem
         ent.Comp.BrainContainer = _container.EnsureContainer<ContainerSlot>(ent.Owner, ent.Comp.BrainContainerId);
         ent.Comp.ToolContainer = _container.EnsureContainer<Container>(ent.Owner, ent.Comp.ToolContainerId);
         ent.Comp.UpgradeContainer = _container.EnsureContainer<Container>(ent.Owner, ent.Comp.UpgradeContainerId);
+        ent.Comp.OsContainer = _container.EnsureContainer<ContainerSlot>(ent.Owner, ent.Comp.OsContainerId);
     }
 
     private void OnMapInit(Entity<CyborgComponent> ent, ref MapInitEvent args)
@@ -118,6 +125,10 @@ public abstract partial class SharedCyborgSystem : EntitySystem
 
         if (_net.IsServer && ent.Comp.Model is { } model)
             ApplyModel(ent, model, force: true);
+
+        // The built-in OS device is server spawned and networked into its slot.
+        if (_net.IsServer && ent.Comp.OsDevice is { } os && ent.Comp.OsEntity == null)
+            _container.Insert(Spawn(os, Transform(ent.Owner).Coordinates), ent.Comp.OsContainer);
     }
 
     protected virtual void OnInserted(Entity<CyborgComponent> ent, ref EntInsertedIntoContainerMessage args)
@@ -141,7 +152,8 @@ public abstract partial class SharedCyborgSystem : EntitySystem
     private void OnMindAdded(Entity<CyborgComponent> ent, ref MindAddedMessage args)
     {
         // Unpredicted because the event is raised on the server.
-        _popup.PopupEntity(Loc.GetString("borg-mind-added", ("name", Identity.Name(ent.Owner, EntityManager))), ent.Owner);
+        _popup.PopupEntity(Loc.GetString("borg-mind-added", ("name", Identity.Name(ent.Owner, EntityManager))),
+            ent.Owner);
 
         TryActivate(ent);
 
@@ -158,7 +170,8 @@ public abstract partial class SharedCyborgSystem : EntitySystem
     private void OnMindRemoved(Entity<CyborgComponent> ent, ref MindRemovedMessage args)
     {
         // Unpredicted because the event is raised on the server.
-        _popup.PopupEntity(Loc.GetString("borg-mind-removed", ("name", Identity.Name(ent.Owner, EntityManager))), ent.Owner);
+        _popup.PopupEntity(Loc.GetString("borg-mind-removed", ("name", Identity.Name(ent.Owner, EntityManager))),
+            ent.Owner);
 
         SetActive(ent, false);
 
@@ -176,6 +189,10 @@ public abstract partial class SharedCyborgSystem : EntitySystem
             TryActivate(ent, args.Origin);
         else
             SetActive(ent, false, args.Origin);
+
+        // Mob state changes come from the server.
+        if (args.NewMobState == MobState.Dead && _net.IsServer)
+            _audio.PlayPvs(ent.Comp.DeathSound, ent);
     }
 
     private void OnPowerCellSlotEmpty(Entity<CyborgComponent> ent, ref PowerCellSlotEmptyEvent args)
@@ -216,6 +233,12 @@ public abstract partial class SharedCyborgSystem : EntitySystem
     // Without power the cyborg crawls at walking speed.
     private void OnRefreshMovementSpeed(Entity<CyborgComponent> ent, ref RefreshMovementSpeedModifiersEvent args)
     {
+        if (ent.Comp.TransformEnd != null)
+        {
+            args.ModifySpeed(0f, 0f);
+            return;
+        }
+
         if (ent.Comp.Active)
             return;
 
