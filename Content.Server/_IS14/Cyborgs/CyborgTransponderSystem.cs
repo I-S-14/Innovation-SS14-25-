@@ -3,6 +3,7 @@
 using Content.Goobstation.Maths.FixedPoint;
 using Content.Server.DeviceNetwork.Systems;
 using Content.Server.Silicons.Laws;
+using Content.Shared._CorvaxNext.Silicons.Borgs.Components;
 using Content.Shared._IS14.Cyborgs.Components;
 using Content.Shared._IS14.Cyborgs.Systems;
 using Content.Shared.Containers.ItemSlots;
@@ -79,7 +80,7 @@ public sealed class CyborgTransponderSystem : EntitySystem
                 cyborg.UpgradeContainer.ContainedEntities.Count,
                 HasBrain(cyborg) && !transponder.FakeDisabled,
                 transponder.NextDisable == null && !transponder.FakeDisabling,
-                false);
+                HasComp<AiRemoteControllerComponent>(uid));
 
             var payload = new NetworkPayload
             {
@@ -120,7 +121,8 @@ public sealed class CyborgTransponderSystem : EntitySystem
 
     private void Disable(Entity<CyborgTransponderComponent> ent)
     {
-        if (!TryComp<CyborgComponent>(ent, out var cyborg) || cyborg.BrainEntity == null || ent.Comp.NextDisable != null)
+        if (!TryComp<CyborgComponent>(ent, out var cyborg) || cyborg.BrainEntity == null
+            || ent.Comp.NextDisable != null)
             return;
 
         // Refresh the console right away.
@@ -151,7 +153,7 @@ public sealed class CyborgTransponderSystem : EntitySystem
         _cyborg.TryEjectBrain((ent.Owner, ent.Comp2));
     }
 
-    private void Destroy(Entity<CyborgTransponderComponent> ent)
+    public void Destroy(Entity<CyborgTransponderComponent> ent)
     {
         // Stealthy until someone notices the cyborg didn't explode.
         if (CheckEmagged(ent, "destroyed"))

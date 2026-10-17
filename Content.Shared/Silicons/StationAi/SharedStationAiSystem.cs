@@ -182,6 +182,17 @@ public abstract partial class SharedStationAiSystem : EntitySystem
 
     private void OnAiBuiCheck(Entity<StationAiWhitelistComponent> ent, ref BoundUserInterfaceCheckRangeEvent args)
     {
+        //IS14-change start - tgstation-style cyborgs keep remote interfaces open within sight
+        if (HasComp<Content.Shared._IS14.Cyborgs.Components.CyborgComponent>(args.Actor))
+        {
+            args.Result = EntityManager.System<Content.Shared._IS14.Cyborgs.Systems.CyborgRemoteControlSystem>()
+                .InRemoteRange(args.Actor, args.Target)
+                ? BoundUserInterfaceRangeResult.Pass
+                : BoundUserInterfaceRangeResult.Fail;
+            return;
+        }
+        //IS14-change end
+
         if (!HasComp<StationAiHeldComponent>(args.Actor))
             return;
 
