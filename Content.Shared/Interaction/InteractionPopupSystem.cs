@@ -59,6 +59,11 @@ public sealed class InteractionPopupSystem : EntitySystem
         if (args.Handled || user == target)
             return;
 
+        //IS14-change start - tgstation-style cyborgs hug and pet only through their hug module
+        if (HasComp<Content.Shared._IS14.Cyborgs.Components.CyborgComponent>(user) && HasComp<MobStateComponent>(uid))
+            return;
+        //IS14-change end
+
         //Handling does nothing and this thing annoyingly plays way too often.
         // HUH? What does this comment even mean?
 

@@ -3,7 +3,7 @@
 # The square border of a hyperkinetic dampening field, radius 3, drawn around the cyborg like tg.
 # Spawned client side while the dampener is on, follows the cyborg without turning with it.
 - type: entity
-  id: CyborgDampenerFieldEffect
+  id: IS14CyborgDampenerFieldEffect
   categories: [ HideSpawnMenu ]
   save: false
   components:
@@ -84,3 +84,23 @@
     - state: projectile_dampen_southeast
       offset: 3, -3
       shader: unshaded
+
+# tg's do_smoke for the model transform animation: a quiet puff around the cyborg.
+- type: entity
+  parent: AdminInstantEffectBase
+  id: IS14CyborgTransformSmoke
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: SmokeOnTrigger
+    duration: 2
+    spreadAmount: 1
+
+# tg's do_transform_delay picks one of these four times.
+- type: soundCollection
+  id: IS14CyborgTransform
+  files:
+  - /Audio/Items/drill_use.ogg
+  - /Audio/Items/jaws_cut.ogg
+  - /Audio/Items/jaws_pry.ogg
+  - /Audio/Items/welder.ogg
+  - /Audio/Items/ratchet.ogg
