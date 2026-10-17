@@ -5,6 +5,7 @@ Licensed under IS14's EULA, see EULA.txt for more information.
 <is14:CyborgHudSlot
     xmlns="https://spacestation14.io"
     xmlns:is14="clr-namespace:Content.Client._IS14.Cyborgs.UI"
+    xmlns:cooldown="clr-namespace:Content.Client.Cooldown"
     SetSize="64 64"
     MouseFilter="Stop">
 
@@ -17,4 +18,13 @@ Licensed under IS14's EULA, see EULA.txt for more information.
                 SetSize="64 64"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center" />
+    <!-- Fill gauge of the held tool, drawn on the slot only. -->
+    <TextureRect Name="Gauge"
+                 Stretch="Scale"
+                 SetSize="64 64"
+                 HorizontalAlignment="Center"
+                 VerticalAlignment="Center"
+                 Visible="False" />
+    <!-- Use delay sweep, like the upstream hand buttons. -->
+    <cooldown:CooldownGraphic Name="CooldownDisplay" Visible="False" />
 </is14:CyborgHudSlot>

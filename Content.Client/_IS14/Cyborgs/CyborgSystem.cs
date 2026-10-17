@@ -45,6 +45,7 @@ public sealed class CyborgSystem : SharedCyborgSystem
         SubscribeLocalEvent<CyborgComponent, LocalPlayerDetachedEvent>(OnPlayerDetached);
         SubscribeLocalEvent<EquipmentVisualsUpdatedEvent>(OnEquipmentVisualsUpdated);
         SubscribeLocalEvent<CyborgComponent, ComponentShutdown>((uid, _, _) => _hats.Remove(uid));
+        SubscribeLocalEvent<CyborgToolComponent, AfterAutoHandleStateEvent>(OnToolState);
     }
 
     private const string HatSlot = "head";
@@ -95,6 +96,14 @@ public sealed class CyborgSystem : SharedCyborgSystem
         UpdateToolsUi(ent);
     }
 
+    // A tool's emag flag can arrive after the tool itself, so the HUD would briefly list hidden emag tools.
+    private void OnToolState(Entity<CyborgToolComponent> ent, ref AfterAutoHandleStateEvent args)
+    {
+        if (ent.Comp.Cyborg is { } cyborg && cyborg == _player.LocalEntity
+            && TryComp<CyborgComponent>(cyborg, out var comp))
+            UpdateToolsUi((cyborg, comp));
+    }
+
     private void OnAppearanceChanged(Entity<CyborgComponent> ent, ref AppearanceChangeEvent args)
     {
         UpdateAppearance(ent);
@@ -140,6 +149,11 @@ public sealed class CyborgSystem : SharedCyborgSystem
     public void RequestToggleLamp()
     {
         RaiseNetworkEvent(new CyborgToggleLampRequest());
+    }
+
+    public void RequestToggleOs()
+    {
+        RaiseNetworkEvent(new CyborgToggleOsRequest());
     }
 
     public void RequestModelMenu()
@@ -198,7 +212,11 @@ public sealed class CyborgSystem : SharedCyborgSystem
             return;
 
         var rsi = skin.Sprite.ToString();
-        movement.MovementLayers[MovementLayerKey] = new PrototypeLayerData { RsiPath = rsi, State = skin.MovingBodyState };
+        movement.MovementLayers[MovementLayerKey] = new PrototypeLayerData
+        {
+            RsiPath = rsi,
+            State = skin.MovingBodyState,
+        };
         movement.NoMovementLayers[MovementLayerKey] = new PrototypeLayerData { RsiPath = rsi, State = skin.BodyState };
     }
 

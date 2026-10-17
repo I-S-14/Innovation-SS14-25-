@@ -93,9 +93,11 @@ public sealed class CyborgHudUIController : UIController, IOnSystemChanged<Cybor
             _gui.ToolSecondaryPressed += tool => _examine.DoExamine(tool);
             _gui.SlotPressed += OnSlotPressed;
             _gui.SlotSecondaryPressed += hand => _cyborg.RequestStoreTool(hand);
+            _gui.SlotAltPressed += hand => _hands.UIHandAltActivateItem(hand);
             _gui.StorePressed += () => _cyborg.RequestStoreTool(null);
             _gui.ModelPressed += OnModelPressed;
             _gui.LampPressed += () => _cyborg.RequestToggleLamp();
+            _gui.OsPressed += () => _cyborg.RequestToggleOs();
         }
 
         if (_gui.Parent != hotbar)
@@ -198,13 +200,14 @@ public sealed class CyborgHudUIController : UIController, IOnSystemChanged<Cybor
 
             // screen_cyborg only has three numbered slots.
             var number = Math.Clamp(i + 1, 1, 3);
-            var background = !comp.Active ? $"inv{number}_b"
+            var background = !comp.Active || !_cyborg.IsSlotWorking(comp, i) ? $"inv{number}_b"
                 : hand == activeHand ? $"inv{number}_a"
                 : $"inv{number}";
             slots.Add((hand, item, background));
         }
 
         _gui.SetSlots(slots);
+        _gui.SetOs(comp.OsEntity);
 
         var tools = new List<(EntityUid, string, bool)>();
         foreach (var tool in _cyborg.EnumerateTools(cyborg))

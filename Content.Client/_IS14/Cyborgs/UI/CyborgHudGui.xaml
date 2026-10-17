@@ -22,31 +22,25 @@ Licensed under IS14's EULA, see EULA.txt for more information.
                               BorderColor="#3E5A3E"
                               BorderThickness="2" />
         </PanelContainer.PanelOverride>
-        <BoxContainer Orientation="Vertical" Margin="8 6" SeparationOverride="4">
-            <BoxContainer Orientation="Horizontal" SeparationOverride="12">
-                <Label Name="ModelLabel" StyleClasses="LabelHeading" HorizontalExpand="True" />
-                <Label Name="HintLabel"
-                       Text="{Loc 'cyborg-hud-tools-hint'}"
-                       StyleClasses="LabelSubText"
-                       VerticalAlignment="Center" />
-            </BoxContainer>
-            <GridContainer Name="ToolGrid"
-                           Columns="8"
-                           HSeparationOverride="2"
-                           VSeparationOverride="2" />
-        </BoxContainer>
+        <GridContainer Name="ToolGrid"
+                       Columns="8"
+                       Margin="6"
+                       HSeparationOverride="2"
+                       VSeparationOverride="2" />
     </PanelContainer>
 
     <!-- tgstation's bottom bar: model, three slots, store. -->
     <BoxContainer Orientation="Horizontal" HorizontalAlignment="Center" SeparationOverride="2">
+        <is14:CyborgHudSlot Name="ModelButton" />
+        <BoxContainer Name="SlotRow" Orientation="Horizontal" SeparationOverride="2" Margin="6 0" />
+        <is14:CyborgHudSlot Name="StoreButton" ToolTip="{Loc 'cyborg-hud-store-tooltip'}" />
+        <is14:CyborgHudSlot Name="LampButton" ToolTip="{Loc 'cyborg-hud-lamp-tooltip'}" Margin="6 0 0 0" />
+        <is14:CyborgHudSlot Name="OsButton" ToolTip="{Loc 'cyborg-hud-os-tooltip'}" Visible="False" />
+        <!-- Held module status, at the far end so the model button never covers it. -->
         <inventory:ItemStatusPanel Name="StatusPanel"
                                    SetWidth="125"
                                    SetHeight="60"
                                    VerticalAlignment="Bottom"
-                                   Margin="0 0 6 2" />
-        <is14:CyborgHudSlot Name="ModelButton" ToolTip="{Loc 'cyborg-hud-model-tooltip'}" />
-        <BoxContainer Name="SlotRow" Orientation="Horizontal" SeparationOverride="2" Margin="6 0" />
-        <is14:CyborgHudSlot Name="StoreButton" ToolTip="{Loc 'cyborg-hud-store-tooltip'}" />
-        <is14:CyborgHudSlot Name="LampButton" ToolTip="{Loc 'cyborg-hud-lamp-tooltip'}" Margin="6 0 0 0" />
+                                   Margin="10 0 0 2" />
     </BoxContainer>
 </is14:CyborgHudGui>

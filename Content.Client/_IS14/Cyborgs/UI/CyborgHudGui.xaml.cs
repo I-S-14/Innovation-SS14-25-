@@ -18,9 +18,11 @@ public sealed partial class CyborgHudGui : BoxContainer
     public event Action<EntityUid>? ToolSecondaryPressed;
     public event Action<string>? SlotPressed;
     public event Action<string>? SlotSecondaryPressed;
+    public event Action<string>? SlotAltPressed;
     public event Action? ModelPressed;
     public event Action? StorePressed;
     public event Action? LampPressed;
+    public event Action? OsPressed;
 
     private readonly List<CyborgHudSlot> _slots = new();
     private readonly List<string> _slotHands = new();
@@ -40,11 +42,16 @@ public sealed partial class CyborgHudGui : BoxContainer
     {
         RobustXamlLoader.Load(this);
 
+        // Sits right of the bar: flat edge towards the buttons, like the upstream left-hand panel.
+        StatusPanel.SetSide(HandUILocation.Left);
+
         StoreButton.SetBackground("store");
         StoreButton.OnPressed += _ => StorePressed?.Invoke();
         ModelButton.OnPressed += _ => ModelPressed?.Invoke();
         LampButton.SetBackground("lamp_off");
         LampButton.OnPressed += _ => LampPressed?.Invoke();
+        OsButton.SetBackground("template");
+        OsButton.OnPressed += _ => OsPressed?.Invoke();
     }
 
     public void SetToolsOpen(bool open)
@@ -55,7 +62,7 @@ public sealed partial class CyborgHudGui : BoxContainer
     public void SetModel(string hudIcon, string name)
     {
         ModelButton.SetBackground(hudIcon);
-        ModelLabel.Text = name;
+        ModelButton.ToolTip = Loc.GetString("cyborg-hud-model-tooltip", ("model", name));
     }
 
     /// <summary>
@@ -71,10 +78,16 @@ public sealed partial class CyborgHudGui : BoxContainer
 
             for (var i = 0; i < slots.Count; i++)
             {
-                var slot = new CyborgHudSlot();
+                var slot = new CyborgHudSlot { ShowGauge = true };
                 var index = i;
                 slot.OnPressed += _ => SlotPressed?.Invoke(_slotHands[index]);
                 slot.OnSecondaryPressed += _ => SlotSecondaryPressed?.Invoke(_slotHands[index]);
+                slot.OnAltPressed += _ => SlotAltPressed?.Invoke(_slotHands[index]);
+                slot.OnExaminePressed += s =>
+                {
+                    if (s.Entity is { } held)
+                        ToolSecondaryPressed?.Invoke(held);
+                };
                 SlotRow.AddChild(slot);
                 _slots.Add(slot);
                 _slotHands.Add(string.Empty);
@@ -103,8 +116,18 @@ public sealed partial class CyborgHudGui : BoxContainer
             cell.SetEntity(tool);
             cell.OnPressed += _ => ToolPressed?.Invoke(tool);
             cell.OnSecondaryPressed += _ => ToolSecondaryPressed?.Invoke(tool);
+            cell.OnExaminePressed += _ => ToolSecondaryPressed?.Invoke(tool);
             ToolGrid.AddChild(cell);
         }
+    }
+
+    /// <summary>
+    /// tg's tablet button shows the tablet itself.
+    /// </summary>
+    public void SetOs(EntityUid? device)
+    {
+        OsButton.Visible = device != null;
+        OsButton.SetEntity(device);
     }
 
     public void SetLamp(bool on)

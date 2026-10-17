@@ -20,8 +20,9 @@ public sealed partial class CyborgUpgradeRow : BoxContainer
         RemoveButton.OnPressed += _ => OnRemove?.Invoke();
     }
 
-    public void SetName(string name)
+    public void SetBoard(EntityUid? board, string name)
     {
+        BoardView.SetEntity(board);
         NameLabel.Text = name;
     }
 }

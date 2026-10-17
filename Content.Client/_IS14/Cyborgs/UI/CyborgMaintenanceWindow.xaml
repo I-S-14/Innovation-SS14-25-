@@ -1,43 +1,76 @@
 <!--
 Licensed under IS14's EULA, see EULA.txt for more information.
+Laid out like the upstream BorgMenu.
 -->
 
 <is14:CyborgMaintenanceWindow
     xmlns="https://spacestation14.io"
     xmlns:is14="clr-namespace:Content.Client._IS14.Cyborgs.UI"
+    xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+    xmlns:customControls="clr-namespace:Content.Client.Administration.UI.CustomControls"
     Title="{Loc 'cyborg-maintenance-title'}"
-    Resizable="False"
-    MinSize="360 280">
+    MinSize="600 350"
+    SetSize="650 450">
 
-    <BoxContainer Orientation="Vertical" Margin="10" SeparationOverride="8">
-        <BoxContainer Orientation="Horizontal" SeparationOverride="6">
-            <Label Text="{Loc 'cyborg-maintenance-model'}" StyleClasses="LabelSubText" MinWidth="80" />
-            <Label Name="ModelLabel" HorizontalExpand="True" />
+    <BoxContainer Orientation="Horizontal" HorizontalExpand="True" VerticalExpand="True">
+        <!-- Left: cell, chassis, name and brain. -->
+        <BoxContainer Orientation="Vertical" VerticalExpand="True" HorizontalExpand="True" Margin="15 10 15 15">
+            <BoxContainer Orientation="Horizontal">
+                <ProgressBar Name="ChargeBar" HorizontalExpand="True" MinValue="0" Value="1" MaxValue="1">
+                    <Label Name="ChargeLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5 0 0 0" />
+                </ProgressBar>
+                <Control MinWidth="5" />
+                <Button Name="EjectCellButton" Text="{Loc 'cyborg-maintenance-eject-cell'}" StyleClasses="OpenLeft" />
+            </BoxContainer>
+            <customControls:HSeparator Margin="0 10 0 10" />
+            <PanelContainer VerticalExpand="True">
+                <PanelContainer.PanelOverride>
+                    <gfx:StyleBoxFlat BackgroundColor="#1B1B1E" />
+                </PanelContainer.PanelOverride>
+                <BoxContainer HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <SpriteView Name="CyborgSprite" Scale="5 5" OverrideDirection="South" />
+                </BoxContainer>
+            </PanelContainer>
+            <customControls:HSeparator Margin="0 10 0 10" />
+            <BoxContainer Orientation="Horizontal">
+                <Label Name="NameLabel" HorizontalExpand="True" ClipText="True" />
+                <Label Name="ModelLabel" StyleClasses="LabelSubText" Margin="10 0 0 0" />
+            </BoxContainer>
+            <Control MinHeight="10" />
+            <Button Name="EjectBrainButton" HorizontalExpand="True" MinHeight="40" StyleClasses="OpenLeft">
+                <BoxContainer Orientation="Horizontal" SeparationOverride="6">
+                    <SpriteView Name="BrainView" VerticalAlignment="Center" />
+                    <Label Name="BrainLabel" VerticalAlignment="Center" ClipText="True" HorizontalExpand="True" />
+                </BoxContainer>
+            </Button>
         </BoxContainer>
 
-        <BoxContainer Orientation="Horizontal" SeparationOverride="6">
-            <Label Text="{Loc 'cyborg-maintenance-brain'}" StyleClasses="LabelSubText" MinWidth="80" />
-            <Label Name="BrainLabel" HorizontalExpand="True" ClipText="True" />
-            <Button Name="EjectBrainButton" Text="{Loc 'cyborg-maintenance-eject'}" />
-        </BoxContainer>
+        <customControls:VSeparator />
 
-        <BoxContainer Orientation="Horizontal" SeparationOverride="6">
-            <Label Text="{Loc 'cyborg-maintenance-cell'}" StyleClasses="LabelSubText" MinWidth="80" />
-            <ProgressBar Name="ChargeBar"
-                         MinValue="0"
-                         MaxValue="1"
-                         HorizontalExpand="True"
-                         VerticalAlignment="Center"
-                         MinHeight="14" />
-            <Label Name="ChargeLabel" MinWidth="44" />
-            <Button Name="EjectCellButton" Text="{Loc 'cyborg-maintenance-eject'}" />
+        <!-- Right: installed upgrade boards. -->
+        <BoxContainer Orientation="Vertical" VerticalExpand="True" HorizontalExpand="True" Margin="15 10 15 15">
+            <Label Text="{Loc 'cyborg-maintenance-upgrades'}" Margin="0 0 0 5" />
+            <PanelContainer VerticalExpand="True">
+                <PanelContainer.PanelOverride>
+                    <gfx:StyleBoxFlat BackgroundColor="#1B1B1E" />
+                </PanelContainer.PanelOverride>
+                <BoxContainer Orientation="Vertical" VerticalExpand="True">
+                    <ScrollContainer HScrollEnabled="False" HorizontalExpand="True" VerticalExpand="True">
+                        <BoxContainer Name="UpgradeList" Orientation="Vertical" HorizontalExpand="True" />
+                    </ScrollContainer>
+                    <Label Name="NoUpgradesLabel"
+                           Text="{Loc 'cyborg-maintenance-no-upgrades'}"
+                           StyleClasses="LabelSubText"
+                           HorizontalAlignment="Center"
+                           Margin="5"
+                           Visible="False" />
+                    <Label Name="UpgradeCounter"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Bottom"
+                           StyleClasses="WindowFooterText"
+                           Margin="5" />
+                </BoxContainer>
+            </PanelContainer>
         </BoxContainer>
-
-        <Label Text="{Loc 'cyborg-maintenance-upgrades'}" StyleClasses="LabelHeading" Margin="0 4 0 0" />
-        <BoxContainer Name="UpgradeList" Orientation="Vertical" SeparationOverride="4" />
-        <Label Name="NoUpgradesLabel"
-               Text="{Loc 'cyborg-maintenance-no-upgrades'}"
-               StyleClasses="LabelSubText"
-               Visible="False" />
     </BoxContainer>
 </is14:CyborgMaintenanceWindow>

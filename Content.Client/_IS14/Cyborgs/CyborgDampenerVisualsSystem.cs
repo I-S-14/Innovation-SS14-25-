@@ -21,7 +21,7 @@ public sealed class CyborgDampenerVisualsSystem : EntitySystem
     [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly SpriteSystem _sprite = default!;
 
-    private const string FieldEffect = "CyborgDampenerFieldEffect";
+    private const string FieldEffect = "IS14CyborgDampenerFieldEffect";
     private static readonly ResPath FieldRsi = new("/Textures/_IS14/Effects/dampener_field.rsi");
     private const string ShimmerState = "projectile_dampen_effect";
     private const string ShimmerLayer = "cyborg-dampened";

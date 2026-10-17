@@ -135,3 +135,24 @@ public enum CyborgVisualLayers : byte
     Eyes,
     Light,
 }
+
+[Serializable, NetSerializable]
+public enum CyborgDispenserUiKey : byte
+{
+    Key,
+}
+
+/// <summary>
+/// Picks what a cyborg dispenser prints, sent from its radial menu.
+/// </summary>
+[Serializable, NetSerializable]
+public sealed class CyborgDispenserSelectMessage(int index) : BoundUserInterfaceMessage
+{
+    public int Index = index;
+}
+
+/// <summary>
+/// Sent from the cyborg HUD: opens or closes the built-in OS device.
+/// </summary>
+[Serializable, NetSerializable]
+public sealed class CyborgToggleOsRequest : EntityEventArgs;

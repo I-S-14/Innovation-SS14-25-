@@ -14,7 +14,7 @@ public sealed class CyborgMaintenanceBoundUserInterface(EntityUid owner, Enum ui
         base.Open();
 
         _window = this.CreateWindow<CyborgMaintenanceWindow>();
-        _window.Title = EntMan.GetComponent<MetaDataComponent>(Owner).EntityName;
+        _window.SetCyborg(Owner);
         _window.EjectBrainPressed += () => SendMessage(new CyborgMaintenanceEjectBrainMessage());
         _window.EjectCellPressed += () => SendMessage(new CyborgMaintenanceEjectCellMessage());
         _window.RemoveUpgradePressed += board => SendMessage(new CyborgMaintenanceRemoveUpgradeMessage(board));
