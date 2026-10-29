@@ -19,14 +19,18 @@
 - type: latheRecipe
   parent: BaseXenoborgRecipe
   id: XenoborgEngiRecipe
-  result: XenoborgEngiPrinted
+  #IS14-change start - xenoborgs on the tgstation-style cyborg system
+  result: IS14XenoborgEngiPrinted
+  #IS14-change end
   materials:
     Steel: 3000
 
 - type: latheRecipe
   parent: BaseXenoborgRecipe
   id: XenoborgHeavyRecipe
-  result: XenoborgHeavyPrinted
+  #IS14-change start - xenoborgs on the tgstation-style cyborg system
+  result: IS14XenoborgHeavyPrinted
+  #IS14-change end
   materials:
     Steel: 2000
     Plasteel: 1000
@@ -34,7 +38,9 @@
 - type: latheRecipe
   parent: BaseXenoborgRecipe
   id: XenoborgScoutRecipe
-  result: XenoborgScoutPrinted
+  #IS14-change start - xenoborgs on the tgstation-style cyborg system
+  result: IS14XenoborgScoutPrinted
+  #IS14-change end
   materials:
     Steel: 2000
     Plastic: 1000
@@ -42,7 +48,9 @@
 - type: latheRecipe
   parent: BaseXenoborgRecipe
   id: XenoborgStealthRecipe
-  result: XenoborgStealthPrinted
+  #IS14-change start - xenoborgs on the tgstation-style cyborg system
+  result: IS14XenoborgStealthPrinted
+  #IS14-change end
   materials:
     Steel: 2000
     Glass: 1000
@@ -54,7 +62,9 @@
 - type: latheRecipe
   parent: BaseXenoborgModulesRecipe
   id: XenoborgModuleDoorControlRecipe
-  result: XenoborgModuleDoorControl
+  #IS14-change start - xenoborgs on the tgstation-style cyborg system
+  result: IS14CyborgUpgradeXenoborgDoorControl
+  #IS14-change end
   materials:
     Steel: 1500
     Glass: 1500
@@ -64,7 +74,9 @@
 - type: latheRecipe
   parent: BaseXenoborgModulesRecipe
   id: XenoborgModuleHeavyLaserRecipe
-  result: XenoborgModuleHeavyLaser
+  #IS14-change start - xenoborgs on the tgstation-style cyborg system
+  result: IS14CyborgUpgradeXenoborgHeavyLaser
+  #IS14-change end
   materials:
     Steel: 1500
     Glass: 1500
@@ -74,7 +86,9 @@
 - type: latheRecipe
   parent: BaseXenoborgModulesRecipe
   id: XenoborgModuleEnergySwordRecipe
-  result: XenoborgModuleEnergySword
+  #IS14-change start - xenoborgs on the tgstation-style cyborg system
+  result: IS14CyborgUpgradeXenoborgEnergySword
+  #IS14-change end
   materials:
     Steel: 1500
     Glass: 1500
@@ -84,6 +98,8 @@
 - type: latheRecipe
   parent: BaseXenoborgModulesRecipe
   id: XenoborgModuleSuperCloakDeviceRecipe
-  result: XenoborgModuleSuperCloakDevice
+  #IS14-change start - xenoborgs on the tgstation-style cyborg system
+  result: IS14CyborgUpgradeXenoborgSuperCloak
+  #IS14-change end
   materials:
     Glass: 3000

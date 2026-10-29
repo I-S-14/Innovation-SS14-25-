@@ -16,7 +16,10 @@
           cost: 2
         - proto: BluespaceBeaker
           cost: 2
-        - proto: CyborgEndoskeleton
+        #IS14-change start - tgstation-style cyborg
+        # - proto: CyborgEndoskeleton
+        - proto: IS14CyborgEndoskeleton
+        #IS14-change end
           cost: 3
           prob: 0.5
         - proto: ChemDispenserMachineCircuitboard

@@ -1,0 +1,15 @@
+<!--
+Licensed under IS14's EULA, see EULA.txt for more information.
+-->
+
+<is14:CyborgUpgradeRow
+    xmlns="https://spacestation14.io"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Cyborgs.UI"
+    Orientation="Horizontal"
+    SeparationOverride="6"
+    Margin="4 2">
+
+    <SpriteView Name="BoardView" VerticalAlignment="Center" SetSize="32 32" />
+    <Label Name="NameLabel" HorizontalExpand="True" ClipText="True" VerticalAlignment="Center" />
+    <Button Name="RemoveButton" Text="{Loc 'cyborg-maintenance-remove'}" StyleClasses="OpenLeft" />
+</is14:CyborgUpgradeRow>

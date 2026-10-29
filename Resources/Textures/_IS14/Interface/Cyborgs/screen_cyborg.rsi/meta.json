@@ -1,0 +1,307 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from BandaStation (https://github.com/ss220club/BandaStation), icons/hud/screen_cyborg.dmi",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "radio"
+    },
+    {
+      "name": "panel"
+    },
+    {
+      "name": "store"
+    },
+    {
+      "name": "fire0"
+    },
+    {
+      "name": "fire1"
+    },
+    {
+      "name": "health7"
+    },
+    {
+      "name": "health6",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "health5"
+    },
+    {
+      "name": "health4"
+    },
+    {
+      "name": "health3"
+    },
+    {
+      "name": "health2"
+    },
+    {
+      "name": "health1"
+    },
+    {
+      "name": "health0"
+    },
+    {
+      "name": "combat"
+    },
+    {
+      "name": "combat_off"
+    },
+    {
+      "name": "floor_change"
+    },
+    {
+      "name": "talk_wheel"
+    },
+    {
+      "name": "navigate"
+    },
+    {
+      "name": "memories"
+    },
+    {
+      "name": "inv1"
+    },
+    {
+      "name": "inv2"
+    },
+    {
+      "name": "inv3"
+    },
+    {
+      "name": "medical",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.3,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "janitor",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "engineer",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.3,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "nomod",
+      "delays": [
+        [
+          0.5,
+          0.5
+        ]
+      ]
+    },
+    {
+      "name": "brobot",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.3,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "standard",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.3,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "pull"
+    },
+    {
+      "name": "hydroponics",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.3,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "security",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.3,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "service",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.3,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "miner",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.3,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "malf",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.3,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "kilt",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.3,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "inv2_a"
+    },
+    {
+      "name": "inv3_a"
+    },
+    {
+      "name": "inv1_a"
+    },
+    {
+      "name": "zone_sel"
+    },
+    {
+      "name": "lamp_off"
+    },
+    {
+      "name": "lamp_on"
+    },
+    {
+      "name": "blank"
+    },
+    {
+      "name": "template"
+    },
+    {
+      "name": "reserved"
+    },
+    {
+      "name": "ionpulse0"
+    },
+    {
+      "name": "ionpulse1",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "inv2_b"
+    },
+    {
+      "name": "inv3_b"
+    },
+    {
+      "name": "inv1_b"
+    },
+    {
+      "name": "scroll_up"
+    },
+    {
+      "name": "scroll_down"
+    }
+  ]
+}

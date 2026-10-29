@@ -1,0 +1,362 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+
+# Cyborg-only tools from tgstation that have no SS14 counterpart.
+
+# tg's /obj/item/borg/cyborg_omnitool/engineering.
+- type: entity
+  parent: [IS14BaseCyborgTool, PowerDrill]
+  id: IS14CyborgToolOmnitool
+  name: cyborg omni-toolset
+  description: A set of engineering tools built into a cyborg's arm. Switch between them with a press.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
+    layers:
+    - state: toolkit_engiborg
+  - type: Tool
+    qualities:
+    - Prying
+    useSound:
+      path: /Audio/Items/crowbar.ogg
+  # The multitool is part of the set, like tg's: wire hacking and multitool checks need the tag.
+  - type: Tag
+    tags:
+    - Powerdrill
+    - Multitool
+  - type: ToolTileCompatible
+  - type: MultipleTool
+    statusShowBehavior: true
+    entries:
+    - behavior: Prying
+      sprite:
+        sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
+        state: toolkit_engiborg_crowbar
+      useSound:
+        path: /Audio/Items/crowbar.ogg
+      changeSound:
+        path: /Audio/Items/change_drill.ogg
+    - behavior: Anchoring
+      sprite:
+        sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
+        state: toolkit_engiborg_wrench
+      useSound:
+        path: /Audio/Items/ratchet.ogg
+      changeSound:
+        path: /Audio/Items/change_drill.ogg
+    - behavior: Screwing
+      sprite:
+        sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
+        state: toolkit_engiborg_screwdriver
+      useSound:
+        collection: Screwdriver
+      changeSound:
+        path: /Audio/Items/change_drill.ogg
+    - behavior: Cutting
+      sprite:
+        sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
+        state: toolkit_engiborg_cutters
+      useSound:
+        path: /Audio/Items/wirecutter.ogg
+      changeSound:
+        path: /Audio/Items/change_drill.ogg
+    - behavior: Pulsing
+      sprite:
+        sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
+        state: toolkit_engiborg_multitool
+      changeSound:
+        path: /Audio/Items/change_drill.ogg
+
+# Stack synthesizers: refill from the power cell and never run out.
+- type: entity
+  abstract: true
+  id: IS14BaseCyborgStackSynthesizer
+  components:
+  - type: CyborgStackSynthesizer
+
+- type: entity
+  parent: [IS14BaseCyborgStackSynthesizer, IS14BaseCyborgTool, SheetSteel]
+  id: IS14CyborgToolSheetSteel
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgStackSynthesizer, IS14BaseCyborgTool, SheetGlass]
+  id: IS14CyborgToolSheetGlass
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgStackSynthesizer, IS14BaseCyborgTool, PartRodMetal]
+  id: IS14CyborgToolRods
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgStackSynthesizer, IS14BaseCyborgTool, CableApcStack]
+  id: IS14CyborgToolCableApc
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: CyborgStackSynthesizer
+    chargePerUnit: 1
+
+- type: entity
+  parent: [IS14BaseCyborgStackSynthesizer, IS14BaseCyborgTool, CableMVStack]
+  id: IS14CyborgToolCableMV
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: CyborgStackSynthesizer
+    chargePerUnit: 1
+
+- type: entity
+  parent: [IS14BaseCyborgStackSynthesizer, IS14BaseCyborgTool, CableHVStack]
+  id: IS14CyborgToolCableHV
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: CyborgStackSynthesizer
+    chargePerUnit: 1
+
+- type: entity
+  parent: [IS14BaseCyborgStackSynthesizer, IS14BaseCyborgTool, FloorTileItemSteel]
+  id: IS14CyborgToolFloorTile
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: CyborgStackSynthesizer
+    chargePerUnit: 2
+
+# tg's borghypo: synthesizes the chosen medicine.
+- type: entity
+  parent: [IS14BaseCyborgTool, BorgHypo]
+  id: IS14CyborgToolHypo
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: UserInterface
+    interfaces:
+      enum.CyborgReagentUiKey.Key:
+        type: CyborgReagentBoundUserInterface
+  - type: CyborgReagentSynthesizer
+    solution: hypospray
+    reagents:
+    - Bicaridine
+    - Tricordrazine
+    - Kelotane
+    - Dexalin
+    - Saline
+    - Dylovene
+    emagReagents:
+    - ChloralHydrate
+    - Lexorin
+    - Toxin
+
+# tg's peace borghypo.
+- type: entity
+  parent: [IS14BaseCyborgTool, BorgHypo]
+  id: IS14CyborgToolPeaceHypo
+  name: peace hypospray
+  description: An integrated hypospray that calms down anyone who gets too excited.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: UserInterface
+    interfaces:
+      enum.CyborgReagentUiKey.Key:
+        type: CyborgReagentBoundUserInterface
+  - type: CyborgReagentSynthesizer
+    solution: hypospray
+    reagents:
+    - Pax
+    - Haloperidol
+    emagReagents:
+    - ChloralHydrate
+    - Nocturine
+
+# Dispensers: print items where the cyborg clicks, use in hand to switch.
+- type: entity
+  parent: [IS14BaseCyborgTool, BaseItem]
+  id: IS14CyborgToolCookieSynth
+  name: cookie synthesizer
+  description: Prints a fresh cookie. A peacekeeper's best argument.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: Objects/Consumable/Food/Baked/misc.rsi
+    state: COOKIE!!!
+  - type: UseDelay
+    delay: 3
+  - type: UserInterface
+    interfaces:
+      enum.CyborgDispenserUiKey.Key:
+        type: CyborgDispenserBoundUserInterface
+  - type: CyborgDispenser
+    chargeCost: 15
+    options:
+    - FoodBakedCookie
+    - FoodBakedCookieSugar
+
+# Not in the service kit for now, kept for later.
+- type: entity
+  parent: [IS14BaseCyborgTool, BaseItem]
+  id: IS14CyborgToolRSF
+  name: rapid service fabricator
+  description: Prints glasses, plates, paper and other service supplies.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
+    layers:
+    - state: tools-rsf
+  - type: UseDelay
+    delay: 1
+  - type: UserInterface
+    interfaces:
+      enum.CyborgDispenserUiKey.Key:
+        type: CyborgDispenserBoundUserInterface
+  - type: CyborgDispenser
+    chargeCost: 10
+    options:
+    - DrinkGlass
+    - FoodPlate
+    - Paper
+    - Pen
+    - Cigarette
+    - d6Dice
+
+# tg's harm alarm.
+- type: entity
+  parent: [IS14BaseCyborgTool, BaseItem]
+  id: IS14CyborgToolHarmAlarm
+  name: sonic harm prevention tool
+  description: Releases a loud alarm that rattles anyone nearby into calming down.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
+    layers:
+    - state: voice-megaphone
+  - type: UseDelay
+    delay: 20
+  - type: CyborgHarmAlarm
+
+# tg's hyperkinetic dampening projector.
+- type: entity
+  parent: [IS14BaseCyborgTool, BaseItem]
+  id: IS14CyborgToolProjectileDampener
+  name: hyperkinetic dampening projector
+  description: Projects a field that slows down and weakens projectiles flying near the cyborg. Drains power while on.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
+    layers:
+    - state: syndie_gadget-shield0
+  - type: CyborgProjectileDampener
+
+# Given by the expanded hypospray board, tg's EXPANDED_MEDICAL_REAGENTS on top of the base ones.
+- type: entity
+  parent: IS14CyborgToolHypo
+  id: IS14CyborgToolHypoExpanded
+  name: expanded borghypo
+  description: A cyborg hypospray with an advanced synthesiser for complex medicines.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: CyborgReagentSynthesizer
+    solution: hypospray
+    reagents:
+    - Bicaridine
+    - Tricordrazine
+    - Kelotane
+    - Dexalin
+    - Saline
+    - Dylovene
+    - Bruizine
+    - Dermaline
+    - Arithrazine
+    - Doxarubixadone
+    - Phalanximine
+    - Oculine
+    - Haloperidol
+    - Tramadol
+    emagReagents:
+    - ChloralHydrate
+    - Lexorin
+    - Toxin
+
+# tg's clown borghypo.
+- type: entity
+  parent: [IS14BaseCyborgTool, BorgHypo]
+  id: IS14CyborgToolClownHypo
+  name: laughter hypospray
+  description: An integrated hypospray that makes everyone's day better. Mostly.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: UserInterface
+    interfaces:
+      enum.CyborgReagentUiKey.Key:
+        type: CyborgReagentBoundUserInterface
+  - type: CyborgReagentSynthesizer
+    solution: hypospray
+    reagents:
+    - Laughter
+    emagReagents:
+    - Honk
+
+# A pouring container that fills itself, the base of the condiment synthesiser.
+- type: entity
+  parent: [IS14BaseCyborgTool, BaseItem]
+  id: IS14BaseCyborgCondimentSynth
+  abstract: true
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
+    layers:
+    - state: containers-enzyme
+  - type: Item
+    size: Small
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 30
+  - type: DrainableSolution
+    solution: food
+  - type: ExaminableSolution
+    solution: food
+  - type: SolutionTransfer
+    canChangeTransferAmount: true
+    minTransferAmount: 1
+    maxTransferAmount: 30
+  - type: UserInterface
+    interfaces:
+      enum.CyborgReagentUiKey.Key:
+        type: CyborgReagentBoundUserInterface
+
+# Given by the condiment synthesiser board, tg's EXPANDED_SERVICE_REAGENTS plus SS14's sauces.
+- type: entity
+  parent: IS14BaseCyborgCondimentSynth
+  id: IS14CyborgToolCondimentSynth
+  name: condiment synthesiser
+  description: Synthesizes the basics of any kitchen, from flour to hot sauce.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 50
+  - type: CyborgReagentSynthesizer
+    solution: food
+    regenAmount: 5
+    chargePerUnit: 0.5
+    reagents:
+    - Flour
+    - Sugar
+    - TableSalt
+    - Blackpepper
+    - Rice
+    - Cornmeal
+    - Oil
+    - OilOlive
+    - Egg
+    - CocoaPowder
+    - Butter
+    - Vinegar
+    - Ketchup
+    - Mustard
+    - Mayo
+    - Soysauce
+    - BbqSauce
+    - Hotsauce

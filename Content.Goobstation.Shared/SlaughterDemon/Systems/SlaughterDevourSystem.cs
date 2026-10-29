@@ -13,6 +13,7 @@ using Content.Shared.Popups;
 using Content.Shared.Silicons.Borgs.Components;
 using Robust.Shared.Containers;
 using Robust.Shared.Player;
+using Content.Shared._IS14.Cyborgs.Components; // IS14-change
 
 namespace Content.Goobstation.Shared.SlaughterDemon.Systems;
 
@@ -129,7 +130,9 @@ public sealed class SlaughterDevourSystem : EntitySystem
         {
             _popup.PopupEntity(Loc.GetString("slaughter-devour-humanoid"), devourer);
         }
-        else if (HasComp<BorgChassisComponent>(target) || HasComp<SiliconComponent>(target))
+        //IS14-change start - tgstation-style cyborgs count as borgs
+        else if ((HasComp<BorgChassisComponent>(target) || HasComp<CyborgComponent>(target)) || HasComp<SiliconComponent>(target))
+        //IS14-change end
         {
             _popup.PopupEntity(Loc.GetString("slaughter-devour-robot"), devourer);
             toHeal = component.ToHealNonCrew;

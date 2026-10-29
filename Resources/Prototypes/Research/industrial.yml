@@ -227,7 +227,10 @@
     - WelderExperimental
     - PowerDrill
     - JawsOfLife
-    - BorgModuleAdvancedTool
+    #IS14-change start - tgstation-style cyborg upgrade boards
+    # - BorgModuleAdvancedTool
+    - IS14CyborgUpgradeAdvancedTools
+    #IS14-change end
     - SignallerAdvanced # Moved from explosives research
   # Goobstation R&D Console rework start
   position: 2,-5
@@ -248,7 +251,11 @@
     - OreBagOfHolding
     - MiningDrillDiamond
     - AdvancedMineralScannerEmpty
-    - BorgModuleAdvancedMining
+    #IS14-change start - tgstation-style cyborg upgrade boards
+    # - BorgModuleAdvancedMining
+    - IS14CyborgUpgradeDiamondDrill
+    - IS14CyborgUpgradeSatchelOfHolding
+    #IS14-change end
     - MechEquipmentDrillDiamond # Goobstation
   # Goobstation R&D Console rework start
   position: 0,-6

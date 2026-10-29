@@ -1,0 +1,133 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+
+# The items of the old xenoborg modules as built-in tools.
+
+- type: entity
+  parent: [IS14BaseCyborgTool, XenoborgMaterialBag]
+  id: IS14CyborgToolXenoXenoborgMaterialBag
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, PinpointerMothership]
+  id: IS14CyborgToolXenoPinpointerMothership
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, HandheldGPSBasic]
+  id: IS14CyborgToolXenoHandheldGPSBasic
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, Multitool]
+  id: IS14CyborgToolXenoMultitool
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, Wirecutter]
+  id: IS14CyborgToolXenoWirecutter
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, AccessBreaker]
+  id: IS14CyborgToolXenoAccessBreaker
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, SelfRechargingFireExtinguisher]
+  id: IS14CyborgToolXenoSelfRechargingFireExtinguisher
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, Crowbar]
+  id: IS14CyborgToolXenoCrowbar
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, Wrench]
+  id: IS14CyborgToolXenoWrench
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, Screwdriver]
+  id: IS14CyborgToolXenoScrewdriver
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, RefuelingWelder]
+  id: IS14CyborgToolXenoRefuelingWelder
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, WeaponLaserGunXenoborg]
+  id: IS14CyborgToolXenoWeaponLaserGunXenoborg
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, XenoborgRadioJammer]
+  id: IS14CyborgToolXenoXenoborgRadioJammer
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, KukriKnife]
+  id: IS14CyborgToolXenoKukriKnife
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, JetpackXenoborg]
+  id: IS14CyborgToolXenoJetpackXenoborg
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, HandHeldMassScannerBorg]
+  id: IS14CyborgToolXenoHandHeldMassScannerBorg
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, HandheldStationMapUnpowered]
+  id: IS14CyborgToolXenoHandheldStationMapUnpowered
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, WeaponGrapplingGun]
+  id: IS14CyborgToolXenoWeaponGrapplingGun
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, NocturineHypo]
+  id: IS14CyborgToolXenoNocturineHypo
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, ChameleonProjectorNoBattery]
+  id: IS14CyborgToolXenoChameleonProjectorNoBattery
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, CloakingDevice]
+  id: IS14CyborgToolXenoCloakingDevice
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, DoorRemoteXenoborg]
+  id: IS14CyborgToolXenoDoorRemoteXenoborg
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, AccessConfiguratorXenoborg]
+  id: IS14CyborgToolXenoAccessConfiguratorXenoborg
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, WeaponLaserCannonXenoborg]
+  id: IS14CyborgToolXenoWeaponLaserCannonXenoborg
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, EnergyDaggerLoudBlue]
+  id: IS14CyborgToolXenoEnergyDaggerLoudBlue
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, SuperCloakingDevice]
+  id: IS14CyborgToolXenoSuperCloakingDevice
+  categories: [ HideSpawnMenu ]

@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from BandaStation (https://github.com/ss220club/BandaStation), icons/mob/silicon/robot_items.dmi",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "elecarm",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "charger_charge"
+    },
+    {
+      "name": "charger_draw"
+    },
+    {
+      "name": "connector"
+    },
+    {
+      "name": "hugmodule"
+    },
+    {
+      "name": "lollipop"
+    },
+    {
+      "name": "borg_beaker_apparatus"
+    },
+    {
+      "name": "borg_beaker_apparatus_arm"
+    },
+    {
+      "name": "borg_hardware_apparatus"
+    },
+    {
+      "name": "borg_hardware_apparatus_arm1"
+    },
+    {
+      "name": "borg_hardware_apparatus_arm2"
+    },
+    {
+      "name": "borg_stack_apparatus"
+    },
+    {
+      "name": "borg_stack_apparatus_arm1"
+    },
+    {
+      "name": "borg_stack_apparatus_arm2"
+    },
+    {
+      "name": "borg_service_apparatus"
+    },
+    {
+      "name": "toolkit_medborg"
+    },
+    {
+      "name": "toolkit_medborg_cautery"
+    },
+    {
+      "name": "toolkit_medborg_scalpel"
+    },
+    {
+      "name": "toolkit_medborg_hemostat"
+    },
+    {
+      "name": "toolkit_medborg_saw"
+    },
+    {
+      "name": "toolkit_medborg_drill"
+    },
+    {
+      "name": "toolkit_medborg_bonesetter"
+    },
+    {
+      "name": "toolkit_medborg_retractor"
+    },
+    {
+      "name": "toolkit_medborg_surgicaldrapes"
+    },
+    {
+      "name": "module_medical"
+    },
+    {
+      "name": "module_general"
+    },
+    {
+      "name": "module_honk"
+    },
+    {
+      "name": "module_service"
+    },
+    {
+      "name": "selfrepair_on"
+    },
+    {
+      "name": "selfrepair_off"
+    },
+    {
+      "name": "module_security"
+    },
+    {
+      "name": "module_illegal"
+    },
+    {
+      "name": "module_peace"
+    },
+    {
+      "name": "module_janitor"
+    },
+    {
+      "name": "module_miner"
+    },
+    {
+      "name": "module_engineer"
+    }
+  ]
+}

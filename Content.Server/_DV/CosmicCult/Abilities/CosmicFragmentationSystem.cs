@@ -14,6 +14,7 @@ using Content.Shared.Silicons.Borgs.Components;
 using Content.Shared.Silicons.Laws.Components;
 using Robust.Shared.Containers;
 using Robust.Shared.Prototypes;
+using Content.Shared._IS14.Cyborgs.Components; // IS14-change
 
 namespace Content.Server._DV.CosmicCult.Abilities;
 
@@ -38,6 +39,9 @@ public sealed class CosmicFragmentationSystem : EntitySystem
         SubscribeLocalEvent<AILawUpdatedEvent>(OnLawInserted);
 
         SubscribeLocalEvent<BorgChassisComponent, MalignFragmentationEvent>(OnFragmentBorg);
+        //IS14-change start - tgstation-style cyborgs
+        SubscribeLocalEvent<CyborgComponent, MalignFragmentationEvent>(OnFragmentCyborg);
+        //IS14-change end
         SubscribeLocalEvent<SiliconLawUpdaterComponent, MalignFragmentationEvent>(OnFragmentAi);
 
         SubscribeLocalEvent<CosmicCultComponent, EventCosmicFragmentation>(OnCosmicFragmentation);
@@ -94,8 +98,20 @@ public sealed class CosmicFragmentationSystem : EntitySystem
         RaiseLocalEvent(target, ref evt);
     }
 
+    //IS14-change start - tgstation-style cyborgs share the borg fragmentation
+    private void OnFragmentCyborg(Entity<CyborgComponent> ent, ref MalignFragmentationEvent args)
+    {
+        FragmentBorg(ent.Owner);
+    }
+
     private void OnFragmentBorg(Entity<BorgChassisComponent> ent, ref MalignFragmentationEvent args)
     {
+        FragmentBorg(ent.Owner);
+    }
+
+    private void FragmentBorg(EntityUid ent)
+    {
+    //IS14-change end
         if (!_mind.TryGetMind(ent, out var mindId, out var mind))
             return;
         var wisp = Spawn("CosmicChantryWisp", Transform(ent).Coordinates);

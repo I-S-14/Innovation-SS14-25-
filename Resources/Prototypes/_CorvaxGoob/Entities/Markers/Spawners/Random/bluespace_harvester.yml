@@ -379,11 +379,18 @@
       state: engineer
   - type: RandomSpawner
     prototypes:
-    - BorgChassisMining
-    - BorgChassisEngineer
-    - BorgChassisJanitor
-    - BorgChassisService
-    - BorgChassisMedical
+    #IS14-change start - tgstation-style cyborgs
+    # - BorgChassisMining
+    # - BorgChassisEngineer
+    # - BorgChassisJanitor
+    # - BorgChassisService
+    # - BorgChassisMedical
+    - IS14CyborgNTMiner
+    - IS14CyborgNTEngineering
+    - IS14CyborgNTJanitor
+    - IS14CyborgNTService
+    - IS14CyborgNTMedical
+    #IS14-change end
     chance: 1.0
     offset: 0.0
 

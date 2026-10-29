@@ -118,6 +118,16 @@ public abstract class SharedFlashSystem : EntitySystem
         if (_useDelay.IsDelayed(ent.Owner))
             return false;
 
+        //IS14-change start - an empty self-recharging flash (the cyborg's) says it is recharging
+        if (HasComp<AutoRechargeComponent>(ent.Owner)
+            && TryComp<LimitedChargesComponent>(ent.Owner, out var recharging)
+            && _sharedCharges.IsEmpty((ent.Owner, recharging)))
+        {
+            _popup.PopupClient(Loc.GetString("flash-component-recharging"), user);
+            return false;
+        }
+        //IS14-change end
+
         if (TryComp<LimitedChargesComponent>(ent.Owner, out var charges)
             && _sharedCharges.IsEmpty((ent.Owner, charges)))
             return false;
@@ -129,6 +139,14 @@ public abstract class SharedFlashSystem : EntitySystem
         active.ActiveUntil = _timing.CurTime + ent.Comp.FlashingTime;
         Dirty(ent.Owner, active);
         _appearance.SetData(ent.Owner, FlashVisuals.Flashing, true);
+
+        //IS14-change start - a self-recharging flash (the cyborg's) does not burn out
+        if (HasComp<AutoRechargeComponent>(ent.Owner) && _sharedCharges.IsEmpty((ent.Owner, charges)))
+        {
+            _popup.PopupClient(Loc.GetString("flash-component-recharging"), user);
+            return true;
+        }
+        //IS14-change end
 
         if (_sharedCharges.IsEmpty((ent.Owner, charges)))
         {
