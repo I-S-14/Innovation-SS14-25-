@@ -4,18 +4,26 @@ using Content.Shared.Radio;
 using Content.Shared.Stacks;
 using Content.Shared.Whitelist;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.Array;
 
 namespace Content.Shared._IS14.Cyborgs.Prototypes;
 
 /// <summary>
 /// A cyborg model in the tgstation sense: a fixed kit of tools, radio channels and traits
-/// the cyborg receives when it picks this model.
+/// the cyborg receives when it picks this model. Inherits, so event models can reuse a station kit.
 /// </summary>
 [Prototype]
-public sealed partial class CyborgModelPrototype : IPrototype
+public sealed partial class CyborgModelPrototype : IPrototype, IInheritingPrototype
 {
     [IdDataField]
     public string ID { get; private set; } = default!;
+
+    [ParentDataField(typeof(AbstractPrototypeIdArraySerializer<CyborgModelPrototype>))]
+    public string[]? Parents { get; private set; }
+
+    [NeverPushInheritance]
+    [AbstractDataField]
+    public bool Abstract { get; private set; }
 
     [DataField(required: true)]
     public LocId Name;
@@ -66,6 +74,13 @@ public sealed partial class CyborgModelPrototype : IPrototype
     /// </summary>
     [DataField]
     public EntityWhitelist? PickupWhitelist;
+
+    /// <summary>
+    /// Entity prototypes the cyborg may pick up, with everything inheriting from them, for items that share
+    /// no tag or component, like plates. Abstract prototypes can't be listed: the parent walk skips them.
+    /// </summary>
+    [DataField]
+    public List<EntProtoId> PickupPrototypes = new();
 
     /// <summary>
     /// Radio channels added on top of <see cref="Components.CyborgComponent.InherentRadioChannels"/>.

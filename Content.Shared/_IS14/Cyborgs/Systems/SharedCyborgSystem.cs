@@ -6,6 +6,7 @@ using Content.Shared.Access.Systems;
 using Content.Shared.Administration.Logs;
 using Content.Shared.Body.Events;
 using Content.Shared.Containers.ItemSlots;
+using Content.Shared.Destructible;
 using Content.Shared.Emag.Systems;
 using Content.Shared.Hands.Components;
 using Content.Shared.Hands.EntitySystems;
@@ -29,8 +30,10 @@ using Robust.Shared.Containers;
 using Robust.Shared.Network;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Random;
 using Robust.Shared.Timing;
 using Content.Shared.Item.ItemToggle;
+using Content.Shared.Storage;
 
 namespace Content.Shared._IS14.Cyborgs.Systems;
 
@@ -42,6 +45,7 @@ public abstract partial class SharedCyborgSystem : EntitySystem
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly INetManager _net = default!;
     [Dependency] private readonly IPrototypeManager _proto = default!;
+    [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly ISharedPlayerManager _player = default!;
     [Dependency] private readonly ISharedAdminLogManager _adminLog = default!;
     [Dependency] private readonly SharedAccessSystem _access = default!;
@@ -89,6 +93,7 @@ public abstract partial class SharedCyborgSystem : EntitySystem
         SubscribeLocalEvent<CyborgComponent, RefreshMovementSpeedModifiersEvent>(OnRefreshMovementSpeed);
         SubscribeLocalEvent<CyborgComponent, ActivatableUIOpenAttemptEvent>(OnUiOpenAttempt);
         SubscribeLocalEvent<CyborgComponent, BeingGibbedEvent>(OnBeingGibbed);
+        SubscribeLocalEvent<CyborgComponent, DestructionEventArgs>(OnDestruction);
         SubscribeLocalEvent<CyborgComponent, GetCharactedDeadIcEvent>(OnGetDeadIc);
         SubscribeLocalEvent<CyborgComponent, GetCharacterUnrevivableIcEvent>(OnGetUnrevivableIc);
     }
@@ -130,6 +135,9 @@ public abstract partial class SharedCyborgSystem : EntitySystem
 
 
         _movementSpeed.RefreshMovementSpeedModifiers(ent.Owner);
+
+        if (_net.IsServer && ent.Comp.Model == null && ent.Comp.RandomModels.Count > 0)
+            ent.Comp.Model = _random.Pick(ent.Comp.RandomModels);
 
         if (_net.IsServer && ent.Comp.Model is { } model)
             ApplyModel(ent, model, force: true);
@@ -271,8 +279,31 @@ public abstract partial class SharedCyborgSystem : EntitySystem
 
         _container.EmptyContainer(ent.Comp.BrainContainer);
 
-        // Built-in tools don't survive the chassis.
+        // Built-in tools don't survive the chassis, what they carried does.
+        DropToolLoot(ent);
         DeleteAllTools(ent);
+    }
+
+    // Broken down by damage: the brain and the cell fall out through the destructible behaviours.
+    private void OnDestruction(Entity<CyborgComponent> ent, ref DestructionEventArgs args)
+    {
+        DropToolLoot(ent);
+    }
+
+    /// <summary>
+    /// Drops what the cyborg carried: the items picked up into its slots and whatever its bags held,
+    /// the ore bag's ore, the book bag's books and so on.
+    /// </summary>
+    private void DropToolLoot(Entity<CyborgComponent> ent)
+    {
+        StoreAllTools(ent);
+
+        var coords = Transform(ent.Owner).Coordinates;
+        foreach (var tool in ent.Comp.ToolContainer.ContainedEntities)
+        {
+            if (TryComp<StorageComponent>(tool, out var storage))
+                _container.EmptyContainer(storage.Container, force: true, destination: coords);
+        }
     }
 
     private void OnGetDeadIc(Entity<CyborgComponent> ent, ref GetCharactedDeadIcEvent args)

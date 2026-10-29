@@ -38,7 +38,7 @@ Licensed under IS14's EULA, see EULA.txt for more information.
         <is14:CyborgHudSlot Name="OsButton" ToolTip="{Loc 'cyborg-hud-os-tooltip'}" Visible="False" />
         <!-- Held module status, at the far end so the model button never covers it. -->
         <inventory:ItemStatusPanel Name="StatusPanel"
-                                   SetWidth="125"
+                                   SetWidth="200"
                                    SetHeight="60"
                                    VerticalAlignment="Bottom"
                                    Margin="10 0 0 2" />

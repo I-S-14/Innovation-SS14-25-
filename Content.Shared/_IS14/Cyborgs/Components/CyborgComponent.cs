@@ -46,6 +46,13 @@ public sealed partial class CyborgComponent : Component
     public ProtoId<CyborgModelPrototype>? Model;
 
     /// <summary>
+    /// Without a <see cref="Model"/>, one of these is picked at map init instead of letting the player choose,
+    /// like the derelict cyborgs that drift in with a random specialization.
+    /// </summary>
+    [DataField]
+    public List<ProtoId<CyborgModelPrototype>> RandomModels = new();
+
+    /// <summary>
     /// The current skin. When null the <see cref="DefaultSkin"/> is shown.
     /// </summary>
     [DataField, AutoNetworkedField]

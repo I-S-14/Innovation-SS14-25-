@@ -18,6 +18,26 @@ Licensed under IS14's EULA, see EULA.txt for more information.
                 SetSize="64 64"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center" />
+    <!-- A tool's own grid icon in place of its sprite, its on/off indicator
+         and what is drawn over it while stowed. -->
+    <TextureRect Name="HudIcon"
+                 Stretch="Scale"
+                 SetSize="64 64"
+                 HorizontalAlignment="Center"
+                 VerticalAlignment="Center"
+                 Visible="False" />
+    <TextureRect Name="HudIconIndicator"
+                 Stretch="Scale"
+                 SetSize="64 64"
+                 HorizontalAlignment="Center"
+                 VerticalAlignment="Center"
+                 Visible="False" />
+    <TextureRect Name="HudIconOverlay"
+                 Stretch="Scale"
+                 SetSize="64 64"
+                 HorizontalAlignment="Center"
+                 VerticalAlignment="Center"
+                 Visible="False" />
     <!-- Fill gauge of the held tool, drawn on the slot only. -->
     <TextureRect Name="Gauge"
                  Stretch="Scale"
@@ -25,8 +45,10 @@ Licensed under IS14's EULA, see EULA.txt for more information.
                  HorizontalAlignment="Center"
                  VerticalAlignment="Center"
                  Visible="False" />
-    <!-- Crossed circle over an offline slot, the upstream blocked hand texture. -->
+    <!-- Crossed circle over an offline slot, the upstream blocked hand texture.
+         Tinted black: the red one blends into the red offline background. -->
     <TextureRect Name="BlockedRect"
+                 ModulateSelfOverride="#000000"
                  TextureScale="2 2"
                  Stretch="KeepCentered"
                  HorizontalExpand="True"

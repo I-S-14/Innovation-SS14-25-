@@ -111,7 +111,7 @@ public sealed partial class CyborgHudGui : BoxContainer
         ToolGrid.RemoveAllChildren();
         foreach (var (tool, name, held) in tools)
         {
-            var cell = new CyborgHudSlot { ToolTip = name };
+            var cell = new CyborgHudSlot { ToolTip = name, ShowHudIcon = true };
             cell.SetBackground("template");
             cell.SetHighlight(held);
             cell.SetEntity(tool);

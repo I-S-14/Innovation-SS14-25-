@@ -1,12 +1,14 @@
 // Licensed under IS14's EULA, see EULA.txt for more information.
 
+using Content.Client._IS14.Cyborgs.UI;
+using Content.Client.Items;
 using Content.Shared._IS14.Cyborgs.Components;
 using Robust.Client.GameObjects;
 
 namespace Content.Client._IS14.Cyborgs;
 
 /// <summary>
-/// Shows the current mode of a cycling cyborg tool on its sprite.
+/// Shows the current mode of a cycling cyborg tool on its sprite and in its item status.
 /// </summary>
 public sealed class CyborgMultiToolVisualsSystem : EntitySystem
 {
@@ -18,6 +20,7 @@ public sealed class CyborgMultiToolVisualsSystem : EntitySystem
 
         SubscribeLocalEvent<CyborgMultiToolComponent, AfterAutoHandleStateEvent>(OnState);
         SubscribeLocalEvent<CyborgMultiToolComponent, ComponentStartup>(OnStartup);
+        Subs.ItemStatus<CyborgMultiToolComponent>(ent => new CyborgMultiToolStatusControl(ent.Comp));
     }
 
     private void OnState(Entity<CyborgMultiToolComponent> ent, ref AfterAutoHandleStateEvent args)

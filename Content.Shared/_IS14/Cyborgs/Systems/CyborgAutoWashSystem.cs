@@ -7,8 +7,10 @@ using Content.Shared._IS14.Cyborgs.Components;
 using Content.Shared.Chemistry.Components;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Fluids;
-using Content.Shared.Actions;
 using Content.Shared.Fluids.Components;
+using Content.Shared.Interaction;
+using Content.Shared.Item.ItemToggle;
+using Content.Shared.Item.ItemToggle.Components;
 using Content.Shared.Movement.Systems;
 using Content.Shared.Popups;
 using Content.Shared.PowerCell;
@@ -23,13 +25,12 @@ public sealed class CyborgAutoWashSystem : EntitySystem
 {
     [Dependency] private readonly INetManager _net = default!;
     [Dependency] private readonly EntityLookupSystem _lookup = default!;
+    [Dependency] private readonly ItemToggleSystem _toggle = default!;
     [Dependency] private readonly MovementSpeedModifierSystem _movementSpeed = default!;
     [Dependency] private readonly PowerCellSystem _powerCell = default!;
-    [Dependency] private readonly SharedActionsSystem _actions = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
-    [Dependency] private readonly SharedCyborgSystem _cyborg = default!;
     [Dependency] private readonly SharedMapSystem _map = default!;
     [Dependency] private readonly SharedPuddleSystem _puddle = default!;
     [Dependency] private readonly SharedSolutionContainerSystem _solution = default!;
@@ -41,56 +42,84 @@ public sealed class CyborgAutoWashSystem : EntitySystem
     {
         base.Initialize();
 
-        SubscribeLocalEvent<CyborgAutoWashComponent, ComponentStartup>(OnStartup);
         SubscribeLocalEvent<CyborgAutoWashComponent, ComponentShutdown>(OnShutdown);
-        SubscribeLocalEvent<CyborgAutoWashComponent, CyborgToggleAutoWashEvent>(OnToggle);
+        SubscribeLocalEvent<CyborgAutoWashToolComponent, ItemToggleActivateAttemptEvent>(OnToolActivateAttempt);
+        SubscribeLocalEvent<CyborgAutoWashToolComponent, ItemToggledEvent>(OnToolToggled);
+        // Before the mop logic, which would pour the tank's mess into the container instead.
+        SubscribeLocalEvent<CyborgAutoWashToolComponent, AfterInteractEvent>(OnToolAfterInteract,
+            before: [typeof(SharedAbsorbentSystem)]);
         SubscribeLocalEvent<CyborgAutoWashComponent, RefreshMovementSpeedModifiersEvent>(OnRefreshSpeed);
         SubscribeLocalEvent<CyborgAutoWashComponent, MoveEvent>(OnMove);
     }
 
-    // The component comes and goes with the janitor model, long after map init, so the action
-    // is granted on startup. The server owns it, the client gets it networked.
-    private void OnStartup(Entity<CyborgAutoWashComponent> ent, ref ComponentStartup args)
-    {
-        if (_net.IsClient)
-            return;
-
-        _actions.AddAction(ent.Owner, ref ent.Comp.ActionEntity, ent.Comp.Action);
-        Dirty(ent);
-    }
-
     private void OnShutdown(Entity<CyborgAutoWashComponent> ent, ref ComponentShutdown args)
     {
-        if (_net.IsServer)
-            _actions.RemoveAction(ent.Owner, ent.Comp.ActionEntity);
-
         ent.Comp.Enabled = false;
+        ent.Comp.Tool = null;
         _movementSpeed.RefreshMovementSpeedModifiers(ent.Owner);
         ent.Comp.LoopStream = _audio.Stop(ent.Comp.LoopStream);
     }
 
-    private void OnToggle(Entity<CyborgAutoWashComponent> ent, ref CyborgToggleAutoWashEvent args)
+    private void OnToolActivateAttempt(Entity<CyborgAutoWashToolComponent> ent,
+        ref ItemToggleActivateAttemptEvent args)
     {
-        if (args.Handled)
+        // tg refuses to start with an empty bucket.
+        if (HasWater(ent))
+            return;
+
+        args.Cancelled = true;
+        args.Popup = Loc.GetString("cyborg-autowash-no-water");
+    }
+
+    /// <summary>
+    /// Clicking a container with water, like a water tank, a sink or a bucket, fills the tank with its water.
+    /// Anything else in the container stays there.
+    /// </summary>
+    private void OnToolAfterInteract(Entity<CyborgAutoWashToolComponent> ent, ref AfterInteractEvent args)
+    {
+        if (args.Handled || !args.CanReach || args.Target is not { } target || HasComp<PuddleComponent>(target) ||
+            !_solution.TryGetDrainableSolution(target, out var sourceSoln, out var source) ||
+            !_solution.TryGetSolution(ent.Owner, ent.Comp.Solution, out var tankSoln, out var tank))
+            return;
+
+        var water = source.GetTotalPrototypeQuantity(_puddle.GetAbsorbentReagents(source));
+        if (water <= FixedPoint2.Zero)
             return;
 
         args.Handled = true;
 
-        // tg refuses to start with an empty bucket.
-        if (!ent.Comp.Enabled && !HasWater(ent))
+        var amount = FixedPoint2.Min(water, tank.AvailableVolume);
+        if (amount <= FixedPoint2.Zero)
         {
-            _popup.PopupClient(Loc.GetString("cyborg-autowash-no-water"), ent, ent);
+            _popup.PopupClient(Loc.GetString("cyborg-tank-full", ("tool", ent.Owner)), args.User, args.User);
             return;
         }
 
-        ent.Comp.Enabled = !ent.Comp.Enabled;
-        ent.Comp.LastTile = null;
-        Dirty(ent);
+        var drawn = source.SplitSolutionWithOnly(amount, _puddle.GetAbsorbentReagents(source));
+        _solution.UpdateChemicals(sourceSoln.Value);
+        _solution.TryAddSolution(tankSoln.Value, drawn);
 
-        _actions.SetToggled(ent.Comp.ActionEntity, ent.Comp.Enabled);
-        _movementSpeed.RefreshMovementSpeedModifiers(ent.Owner);
-        UpdateSound(ent);
-        _popup.PopupClient(Loc.GetString(ent.Comp.Enabled ? "cyborg-autowash-on" : "cyborg-autowash-off"), ent, ent);
+        _audio.PlayPredicted(ent.Comp.FillSound, target, args.User);
+        _popup.PopupClient(Loc.GetString("cyborg-tank-filled", ("amount", drawn.Volume), ("target", target)),
+            args.User, args.User);
+    }
+
+    private void OnToolToggled(Entity<CyborgAutoWashToolComponent> ent, ref ItemToggledEvent args)
+    {
+        if (CompOrNull<CyborgToolComponent>(ent)?.Cyborg is not { } cyborg ||
+            !TryComp<CyborgAutoWashComponent>(cyborg, out var wash) ||
+            wash.Enabled == args.Activated)
+            return;
+
+        wash.Enabled = args.Activated;
+        wash.Tool = args.Activated ? ent.Owner : null;
+        wash.LastTile = null;
+        Dirty(cyborg, wash);
+
+        _movementSpeed.RefreshMovementSpeedModifiers(cyborg);
+        UpdateSound((cyborg, wash));
+        _popup.PopupClient(Loc.GetString(args.Activated ? "cyborg-autowash-on" : "cyborg-autowash-off"), cyborg,
+            cyborg);
     }
 
     private void OnRefreshSpeed(Entity<CyborgAutoWashComponent> ent, ref RefreshMovementSpeedModifiersEvent args)
@@ -129,7 +158,7 @@ public sealed class CyborgAutoWashSystem : EntitySystem
         if (_puddles.Count == 0)
             return;
 
-        if (!TryGetReservoir(ent, out var reservoir))
+        if (!TryGetTank(ent, out var reservoir))
         {
             Disable(ent, "cyborg-autowash-no-tank");
             return;
@@ -185,44 +214,40 @@ public sealed class CyborgAutoWashSystem : EntitySystem
         return true;
     }
 
-    /// <summary>
-    /// The tank is the janitor kit's internal tank, wherever it is: stored or held.
-    /// </summary>
-    private bool TryGetReservoir(Entity<CyborgAutoWashComponent> ent,
-        [NotNullWhen(true)] out Entity<SolutionComponent>? reservoir)
+    private bool TryGetTank(Entity<CyborgAutoWashComponent> ent,
+        [NotNullWhen(true)] out Entity<SolutionComponent>? tank)
     {
-        reservoir = null;
-        if (!TryComp<CyborgComponent>(ent, out var cyborg))
-            return false;
-
-        foreach (var tool in _cyborg.EnumerateTools((ent.Owner, cyborg)))
-        {
-            if (Prototype(tool)?.ID != ent.Comp.ReservoirTool.Id)
-                continue;
-
-            if (_solution.TryGetSolution(tool, ent.Comp.ReservoirSolution, out reservoir, out _))
-                return true;
-        }
-
-        return false;
+        tank = null;
+        return TryComp<CyborgAutoWashToolComponent>(ent.Comp.Tool, out var tool) &&
+            _solution.TryGetSolution(ent.Comp.Tool.Value, tool.Solution, out tank, out _);
     }
 
-    private bool HasWater(Entity<CyborgAutoWashComponent> ent)
+    private bool HasWater(Entity<CyborgAutoWashToolComponent> tool)
     {
-        if (!TryGetReservoir(ent, out var reservoir))
+        if (!_solution.TryGetSolution(tool.Owner, tool.Comp.Solution, out _, out var solution))
             return false;
 
-        var solution = reservoir.Value.Comp.Solution;
         return solution.GetTotalPrototypeQuantity(_puddle.GetAbsorbentReagents(solution)) > FixedPoint2.Zero;
     }
 
+    /// <summary>
+    /// Switches the wand off, which stops washing through <see cref="OnToolToggled"/>.
+    /// </summary>
     private void Disable(Entity<CyborgAutoWashComponent> ent, LocId reason)
     {
-        ent.Comp.Enabled = false;
-        Dirty(ent);
-        _actions.SetToggled(ent.Comp.ActionEntity, false);
-        _movementSpeed.RefreshMovementSpeedModifiers(ent.Owner);
-        UpdateSound(ent);
+        if (ent.Comp.Tool is { } tool)
+            _toggle.TryDeactivate(tool, predicted: false, showPopup: false);
+
+        // No wand to switch off: stop washing directly.
+        if (ent.Comp.Enabled)
+        {
+            ent.Comp.Enabled = false;
+            ent.Comp.Tool = null;
+            Dirty(ent);
+            _movementSpeed.RefreshMovementSpeedModifiers(ent.Owner);
+            UpdateSound(ent);
+        }
+
         _popup.PopupEntity(Loc.GetString(reason), ent, ent);
     }
 

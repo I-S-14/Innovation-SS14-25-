@@ -50,7 +50,19 @@ public abstract partial class SharedCyborgSystem
             model.PickupStacks.Contains(stack.StackTypeId))
             return true;
 
-        return _whitelist.IsWhitelistPass(model.PickupWhitelist, item);
+        if (_whitelist.IsWhitelistPass(model.PickupWhitelist, item))
+            return true;
+
+        if (model.PickupPrototypes.Count == 0 || Prototype(item) is not { } proto)
+            return false;
+
+        foreach (var parent in _proto.EnumerateParents<EntityPrototype>(proto, includeSelf: true))
+        {
+            if (model.PickupPrototypes.Contains(parent.ID))
+                return true;
+        }
+
+        return false;
     }
 
     // An offline slot holds nothing, picked up or deployed.
