@@ -6,12 +6,10 @@ using Content.Goobstation.Shared.Loudspeaker.Events; // goob - loudspeakers
 using Content.Server._CorvaxGoob.Announcer;
 using Content.Server._EinsteinEngines.Language; // Einstein Engines - Language
 using Content.Server._Goobstation.Wizard.Systems;
+using System.Globalization;
 using Content.Server.Administration.Logs;
 using Content.Server.Administration.Managers;
 using Content.Server.Chat.Managers;
-using Content.Server.GameTicking;
-using Content.Server.Speech.EntitySystems;
-using Content.Server.Speech.Prototypes;
 using Content.Server.Station.Systems;
 using Content.Shared._CorvaxGoob.Chat;
 using Content.Shared._EinsteinEngines.Language; // Einstein Engines - Language
@@ -21,34 +19,23 @@ using Content.Shared.ActionBlocker;
 using Content.Shared.Administration;
 using Content.Shared.CCVar;
 using Content.Shared.Chat;
-using Content.Shared.Database;
 using Content.Shared.Examine;
-using Content.Shared.Ghost;
-using Content.Shared.IdentityManagement;
+using Content.Shared.GameTicking;
+using Content.Shared.Ghost.Components;
 using Content.Shared.Mobs.Systems;
-using Content.Shared.Players;
 using Content.Shared.Players.RateLimiting;
-using Content.Shared.Radio;
-using Content.Shared.Station.Components;
-using Content.Shared.Whitelist;
+using Content.Shared.Speech.EntitySystems;
 using Robust.Server.Player;
-using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Configuration;
 using Robust.Shared.Console;
-using Robust.Shared.Network;
 using Robust.Shared.Player;
-using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Replays;
 using Robust.Shared.Utility;
 using System.Collections.Immutable; // Goobstation - Starlight collective mind port
-using System.Collections.Immutable; // Goobstation - Starlight collective mind port
-using System.Globalization;
 using System.Globalization;
 using System.Linq;
-using System.Linq;
-using System.Text;
 using System.Text;
 using Content.Shared._RMC14.CCVar;
 
@@ -110,6 +97,8 @@ public sealed partial class ChatSystem : SharedChatSystem
     private bool _critLoocEnabled;
     private bool _DeadchatEnabled = true; // RMC14
     private readonly bool _adminLoocEnabled = true;
+
+    private bool _deadChatEnabled = true;
 
     public override void Initialize()
     {

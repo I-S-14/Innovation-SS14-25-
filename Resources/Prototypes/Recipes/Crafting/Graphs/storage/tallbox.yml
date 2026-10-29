@@ -36,7 +36,7 @@
     edges:
     - to: done
       steps:
-      - material: Steel
+      - material: Plasteel
         amount: 4
       - material: Cable
         amount: 2
@@ -55,7 +55,7 @@
         locked: false
       completed:
       - !type:SpawnPrototype
-        prototype: SheetSteel1
+        prototype: SheetPlasteel1
         amount: 4
       - !type:SpawnPrototype
         prototype: CableApcStack1
@@ -71,7 +71,7 @@
     edges:
     - to: done
       steps:
-      - material: Steel
+      - material: Plasteel
         amount: 4
       - material: Cable
         amount: 2
@@ -95,7 +95,7 @@
         locked: false
       completed:
       - !type:SpawnPrototype
-        prototype: SheetSteel1
+        prototype: SheetPlasteel1
         amount: 4
       - !type:SpawnPrototype
         prototype: CableApcStack1

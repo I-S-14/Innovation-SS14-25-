@@ -59,11 +59,8 @@ public sealed partial class DefibrillatorComponent : Component
     [DataField]
     public bool AllowDoAfterMovement = true;
 
-    [DataField]
-    public bool CanDefibCrit = true;
-
     /// <summary>
-    /// The sound when someone is zapped.
+    /// The sound to play when someone is zapped.
     /// </summary>
     [ViewVariables(VVAccess.ReadWrite), DataField("zapSound")]
     public SoundSpecifier? ZapSound = new SoundPathSpecifier("/Audio/Items/Defib/defib_zap.ogg");

@@ -6,7 +6,7 @@ using Content.Client.Items;
 
 namespace Content.Client.GPS.Systems;
 
-public sealed class HandheldGpsSystem : EntitySystem
+public sealed partial class HandheldGpsSystem : EntitySystem
 {
     public override void Initialize()
     {

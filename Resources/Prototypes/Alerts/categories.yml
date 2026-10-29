@@ -35,3 +35,6 @@
 
 - type: alertCategory
   id: Battery
+
+- type: alertCategory
+  id: Chemicals

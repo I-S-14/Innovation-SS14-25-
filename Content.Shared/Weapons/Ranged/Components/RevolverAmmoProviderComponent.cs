@@ -17,36 +17,37 @@ public sealed partial class RevolverAmmoProviderComponent : AmmoProviderComponen
      * for example 7 entities when revolver spawns (1 for the revolver and 6 cylinders) we can instead defer it.
      */
 
-    [DataField("whitelist")]
+    [DataField]
     public EntityWhitelist? Whitelist;
 
+    [ViewVariables]
     public Container AmmoContainer = default!;
 
     [DataField("currentSlot")]
     public int CurrentIndex;
 
-    [DataField("capacity")]
+    [DataField]
     public int Capacity = 6;
 
     // Like BallisticAmmoProvider we defer spawning until necessary
     // AmmoSlots is the instantiated ammo and Chambers is the unspawned ammo (that may or may not have been shot).
 
     // TODO: Using an array would be better but this throws!
-    [DataField("ammoSlots")]
+    [DataField]
     public List<EntityUid?> AmmoSlots = new();
 
-    [DataField("chambers")]
+    [DataField]
     public bool?[] Chambers = Array.Empty<bool?>();
 
     [DataField("proto")]
     public EntProtoId? FillPrototype = "CartridgeMagnum";
 
-    [DataField("soundEject")]
+    [DataField]
     public SoundSpecifier? SoundEject = new SoundPathSpecifier("/Audio/Weapons/Guns/MagOut/revolver_magout.ogg");
 
-    [DataField("soundInsert")]
+    [DataField]
     public SoundSpecifier? SoundInsert = new SoundPathSpecifier("/Audio/Weapons/Guns/MagIn/revolver_magin.ogg");
 
-    [DataField("soundSpin")]
+    [DataField]
     public SoundSpecifier? SoundSpin = new SoundPathSpecifier("/Audio/Weapons/Guns/Misc/revolver_spin.ogg");
 }

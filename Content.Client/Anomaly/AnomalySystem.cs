@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Numerics;
+using Content.Client.Anomaly.UI;
 using Content.Client.Gravity;
+using Content.Client.Items;
 using Content.Shared.Anomaly;
 using Content.Shared.Anomaly.Components;
 using Robust.Client.GameObjects;
@@ -11,9 +13,9 @@ namespace Content.Client.Anomaly;
 
 public sealed partial class AnomalySystem : SharedAnomalySystem
 {
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly FloatingVisualizerSystem _floating = default!;
-    [Dependency] private readonly SpriteSystem _sprite = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private FloatingVisualizerSystem _floating = default!;
+    [Dependency] private SpriteSystem _sprite = default!;
 
     /// <inheritdoc/>
     public override void Initialize()
@@ -25,6 +27,8 @@ public sealed partial class AnomalySystem : SharedAnomalySystem
         SubscribeLocalEvent<AnomalyComponent, AnimationCompletedEvent>(OnAnimationComplete);
 
         SubscribeLocalEvent<AnomalySupercriticalComponent, ComponentShutdown>(OnShutdown);
+
+        Subs.ItemStatus<CorePoweredThrowerComponent>(entity => new AnomalyStatusControl(entity));
     }
 
     private void OnStartup(EntityUid uid, AnomalyComponent component, ComponentStartup args)
@@ -44,10 +48,10 @@ public sealed partial class AnomalySystem : SharedAnomalySystem
         if (args.Sprite is not { } sprite)
             return;
 
-        if (!Appearance.TryGetData<bool>(uid, AnomalyVisuals.IsPulsing, out var pulsing, args.Component))
+        if (!args.TryGetData<bool>(AnomalyVisuals.IsPulsing, out var pulsing))
             pulsing = false;
 
-        if (Appearance.TryGetData<bool>(uid, AnomalyVisuals.Supercritical, out var super, args.Component) && super)
+        if (args.TryGetData<bool>(AnomalyVisuals.Supercritical, out var super) && super)
             pulsing = super;
 
         if (HasComp<AnomalySupercriticalComponent>(uid))

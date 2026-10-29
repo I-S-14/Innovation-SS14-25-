@@ -20,24 +20,24 @@ public sealed partial class LimitedItemGiverComponent : Component
     /// <summary>
     /// Selects what entities can be given out by the giver.
     /// </summary>
-    [DataField("spawnEntries", required: true)]
+    [DataField(required: true)]
     public List<EntitySpawnEntry> SpawnEntries = default!;
 
     /// <summary>
     /// The (localized) message shown upon receiving something.
     /// </summary>
-    [DataField("receivedPopup", required: true)]
-    public string ReceivedPopup = default!;
+    [DataField(required: true)]
+    public LocId ReceivedPopup = default!;
 
     /// <summary>
     /// The (localized) message shown upon being denied.
     /// </summary>
-    [DataField("deniedPopup", required: true)]
-    public string DeniedPopup = default!;
+    [DataField(required: true)]
+    public LocId DeniedPopup = default!;
 
     /// <summary>
     /// The holiday required for this giver to work, if any.
     /// </summary>
-    [DataField("requiredHoliday"), ViewVariables(VVAccess.ReadWrite)]
-    public ProtoId<HolidayPrototype>? RequiredHoliday = null;
+    [DataField]
+    public ProtoId<HolidayPrototype>? RequiredHoliday;
 }

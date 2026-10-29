@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Numerics;
-using Content.Server.Beam.Components;
 using Content.Shared.Beam;
 using Content.Shared.Beam.Components;
 using Content.Shared.GameTicking;
@@ -9,20 +8,21 @@ using Content.Shared.Physics;
 using Robust.Server.GameObjects;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Map;
-using Robust.Shared.Physics;
 using Robust.Shared.Physics.Collision.Shapes;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Systems;
+using Robust.Shared.Prototypes;
 
 namespace Content.Server.Beam;
 
-public sealed class BeamSystem : SharedBeamSystem
+public sealed partial class BeamSystem : SharedBeamSystem
 {
-    [Dependency] private readonly FixtureSystem _fixture = default!;
-    [Dependency] private readonly TransformSystem _transform = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
-    [Dependency] private readonly SharedBroadphaseSystem _broadphase = default!;
-    [Dependency] private readonly SharedPhysicsSystem _physics = default!;
+    [Dependency] private FixtureSystem _fixture = default!;
+    [Dependency] private TransformSystem _transform = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private SharedBroadphaseSystem _broadphase = default!;
+
+    private static readonly EntProtoId VirtualBeamEntityControllerId = "VirtualBeamEntityController";
 
     public uint NextIndex { get; private set; } // Goobstation
 
@@ -102,10 +102,10 @@ public sealed class BeamSystem : SharedBeamSystem
         Action<EntityUid>? beamAction = null) // Goob edit
     {
         var beamSpawnPos = beamStartPos;
-        var ent = Spawn(prototype, beamSpawnPos);
-        var shape = new EdgeShape(distanceCorrection, new Vector2(0,0));
+        var ent = Spawn(prototype, beamSpawnPos, rotation: userAngle);
+        var shape = new EdgeShape(distanceCorrection, new Vector2(0, 0));
 
-        if (!TryComp<PhysicsComponent>(ent, out var physics) || !TryComp<BeamComponent>(ent, out var beam))
+        if (!TryComp<BeamComponent>(ent, out var beam))
             return;
 
         beamAction?.Invoke(ent); // Goobstation
@@ -122,9 +122,8 @@ public sealed class BeamSystem : SharedBeamSystem
             manager: manager,
             body: physics);
 
-        _physics.SetBodyType(ent, BodyType.Dynamic, manager: manager, body: physics);
-        _physics.SetCanCollide(ent, true, manager: manager, body: physics);
-        _broadphase.RegenerateContacts((ent, physics, manager));
+            _broadphase.RegenerateContacts((ent, physics));
+        }
 
         var distanceLength = distanceCorrection.Length();
 
@@ -136,7 +135,7 @@ public sealed class BeamSystem : SharedBeamSystem
 
         else
         {
-            var controllerEnt = Spawn("VirtualBeamEntityController", beamSpawnPos);
+            var controllerEnt = Spawn(VirtualBeamEntityControllerId, beamSpawnPos);
             beam.VirtualBeamController = controllerEnt;
 
             _audio.PlayPvs(beam.Sound, ent);
@@ -146,10 +145,11 @@ public sealed class BeamSystem : SharedBeamSystem
         }
 
         //Create the rest of the beam, sprites handled through the BeamVisualizerEvent
-        for (var i = 0; i < distanceLength-1; i++)
+        for (var i = 0; i < distanceLength - 1; i++)
         {
             beamSpawnPos = beamSpawnPos.Offset(calculatedDistance.Normalized());
             var newEnt = Spawn(prototype, beamSpawnPos);
+            _transform.SetWorldRotation(newEnt, userAngle);
 
             beamAction?.Invoke(newEnt); // Goobstation
             Comp<BeamComponent>(newEnt).BeamIndex = NextIndex; // Goobstation
@@ -182,21 +182,21 @@ public sealed class BeamSystem : SharedBeamSystem
         var userMapPos = _transform.GetMapCoordinates(user);
         var targetMapPos = _transform.GetMapCoordinates(target);
 
-        //The distance between the target and the user.
-        var calculatedDistance = targetMapPos.Position - userMapPos.Position;
-        var userAngle = calculatedDistance.ToWorldAngle();
-
         if (userMapPos.MapId != targetMapPos.MapId)
             return false; // Goob edit
 
-        //Where the start of the beam will spawn
-        var beamStartPos = userMapPos.Offset(calculatedDistance.Normalized());
+        //The distance between the target and the user.
+        var calculatedDistance = targetMapPos.Position - userMapPos.Position;
+        var userAngle = calculatedDistance.ToWorldAngle();
 
         //Don't divide by zero
         if (calculatedDistance.Length() == 0)
             return false; // Goob edit
 
-        if (controller != null && TryComp<BeamComponent>(controller, out var controllerBeamComp))
+        //Where the start of the beam will spawn
+        var beamStartPos = userMapPos.Offset(calculatedDistance.Normalized());
+
+        if (TryComp<BeamComponent>(controller, out var controllerBeamComp))
         {
             controllerBeamComp.HitTargets.Add(user);
             controllerBeamComp.HitTargets.Add(target);

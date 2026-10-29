@@ -1,25 +1,19 @@
 # SPDX-License-Identifier: MIT
 
 - type: construction
+  parent: BaseItemMisc
   id: PowerCellPotato
   graph: PowerCellPotato
-  startNode: start
   targetNode: potatobattery
-  category: construction-category-misc
-  objectType: Item
 
 - type: construction
+  parent: BaseItemMisc
   id: PotatoAI
   graph: PotatoAI
-  startNode: start
   targetNode: potatoai
-  category: construction-category-misc
-  objectType: Item
 
 - type: construction
+  parent: BaseItemMisc
   id: PotatoAIChip
   graph: PotatoAIChip
-  startNode: start
   targetNode: potatoaichip
-  category: construction-category-misc
-  objectType: Item

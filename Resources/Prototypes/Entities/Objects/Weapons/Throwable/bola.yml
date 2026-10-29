@@ -2,11 +2,11 @@
 # Goob edit - energy bola
 
 - type: entity
-  name: bola
+  abstract: true
   parent: [BaseItem, BaseSecurityContraband]
   id: BaseBola
   description: Linked together with some spare cuffs and metal.
-  abstract: true
+  name: bola
   components:
   - type: Item
     size: Normal
@@ -17,7 +17,24 @@
     sound: /Audio/Weapons/bolathrow.ogg
   - type: EmitSoundOnLand
     sound: /Audio/Effects/snap.ogg
-  - type: LandAtCursor
+  - type: Damageable
+  - type: Injurable
+    damageContainer: Inorganic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 15
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: DamageOnLand
+    damage:
+      types:
+        Blunt: 5
   - type: Ensnaring
     freeTime: 2.0
     breakoutTime: 3.5 #all bola should generally be fast to remove
@@ -32,38 +49,26 @@
     trigger: !type:CombatDoAfterThrownEvent
     delay: 1.5
     dropCancelDelay: 0.005
+  - type: LandAtCursor
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeCircle
+          radius: 0.4
+        density: 20 # derived from base_item
+        mask:
+        - ItemMask
+        restitution: 0.3
+        friction: 0.2
 
 - type: entity
-  name: bola
   parent: BaseBola
   id: Bola
+  name: makeshift bola
   components:
   - type: Construction
     graph: Bola
     node: bola
-  - type: Damageable
-    damageContainer: Inorganic
-  - type: Destructible
-    thresholds:
-    - trigger:
-        !type:DamageTrigger
-        damage: 75
-      behaviors:
-        - !type:DoActsBehavior
-          acts: [ "Destruction" ]
-    - trigger:
-        !type:DamageTrigger
-        damage: 15
-      behaviors:
-      - !type:PlaySoundBehavior
-        sound:
-          collection: MetalBreak
-      - !type:DoActsBehavior
-        acts: [ "Destruction" ]
-  - type: DamageOnLand
-    damage:
-      types:
-        Blunt: 5
   - type: ThrowableBlocked
     behavior: Damage
     damage:
@@ -107,3 +112,26 @@
         - ItemMask
         restitution: 0.3
         friction: 0.2
+
+- type: entity
+  parent: BaseBola
+  id: SecurityBola
+  name: tactical bola
+  description: A bola, comprised of steel anchors linked together with a wire cable. Reliable and reusable.
+  components:
+  - type: Sprite
+    sprite: Objects/Weapons/Throwable/securitybola.rsi
+    state: icon
+  - type: DamageOnLand
+    damage:
+      types:
+        Blunt: 0 #reusable, in contrast to makeshift
+  - type: Ensnaring
+    freeTime: 2.0 #slightly slower free time than makeshift
+    breakoutTime: 2.5 #slightly slower breakout time than makeshift
+    walkSpeed: 0.65
+    sprintSpeed: 0.65
+    staminaDamage: 0 # anything but this is gamebreaking
+    canThrowTrigger: true
+    canMoveBreakout: true
+    maxEnsnares: 1

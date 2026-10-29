@@ -31,6 +31,10 @@ public sealed partial class GuideEntityEmbed : BoxContainer, IDocumentTag
     [Dependency] private readonly IEntityManager _entityManager = default!;
     [Dependency] private readonly IEntitySystemManager _systemManager = default!;
     [Dependency] private readonly IUserInterfaceManager _ui = default!;
+    [Dependency] private IEntityManager _entityManager = default!;
+    [Dependency] private IEntitySystemManager _systemManager = default!;
+    [Dependency] private ILogManager _logManager = default!;
+    [Dependency] private IUserInterfaceManager _ui = default!;
 
     private readonly TagSystem _tagSystem;
     private readonly ExamineSystem _examineSystem;

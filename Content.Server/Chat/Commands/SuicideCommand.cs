@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Server.Popups;
+using Content.Server.Suicide;
 using Content.Shared.Administration;
 using Content.Shared.Mind;
 using Robust.Shared.Console;
@@ -9,9 +10,9 @@ using Robust.Shared.Enums;
 namespace Content.Server.Chat.Commands
 {
     [AnyCommand]
-    internal sealed class SuicideCommand : IConsoleCommand
+    internal sealed partial class SuicideCommand : IConsoleCommand
     {
-        [Dependency] private readonly IEntityManager _e = default!;
+        [Dependency] private IEntityManager _e = default!;
 
         public string Command => "suicide";
 

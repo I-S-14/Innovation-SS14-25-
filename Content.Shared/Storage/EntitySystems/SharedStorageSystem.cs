@@ -1,6 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-
-using System.Collections.Frozen;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Content.Shared.ActionBlocker;
@@ -24,7 +22,6 @@ using Content.Shared.Popups;
 using Content.Shared.Stacks;
 using Content.Shared.Storage.Components;
 using Content.Shared.Tag;
-using Content.Shared.Timing;
 using Content.Shared.Storage.Events;
 using Content.Shared.Verbs;
 using Content.Shared.Whitelist;
@@ -41,6 +38,8 @@ using Robust.Shared.Random;
 using Robust.Shared.Serialization;
 using Robust.Shared.Utility;
 using Content.Shared.Rounding;
+using Content.Shared.Timing.Components;
+using Content.Shared.Timing.Systems;
 using Robust.Shared.Collections;
 using Robust.Shared.Map.Enumerators;
 
@@ -48,34 +47,33 @@ namespace Content.Shared.Storage.EntitySystems;
 
 public abstract partial class SharedStorageSystem : EntitySystem //IS14-change: partial, additions live in _IS14/Storage/SharedStorageSystem.IS14.cs
 {
-    [Dependency] private   readonly IConfigurationManager _cfg = default!;
-    [Dependency] private   readonly IPrototypeManager _prototype = default!;
-    [Dependency] protected readonly IRobustRandom Random = default!;
-    [Dependency] private   readonly ISharedAdminLogManager _adminLog = default!;
+    [Dependency] private IConfigurationManager _cfg = default!;
+    [Dependency] protected IRobustRandom Random = default!;
+    [Dependency] private ISharedAdminLogManager _adminLog = default!;
 
-    [Dependency] protected readonly ActionBlockerSystem ActionBlocker = default!;
-    [Dependency] private   readonly EntityLookupSystem _entityLookupSystem = default!;
-    [Dependency] private   readonly EntityWhitelistSystem _whitelistSystem = default!;
-    [Dependency] private   readonly InventorySystem _inventory = default!;
-    [Dependency] private   readonly SharedAppearanceSystem _appearance = default!;
-    [Dependency] protected readonly SharedAudioSystem Audio = default!;
-    [Dependency] protected readonly SharedContainerSystem ContainerSystem = default!;
-    [Dependency] private   readonly SharedDoAfterSystem _doAfterSystem = default!;
-    [Dependency] protected readonly SharedEntityStorageSystem EntityStorage = default!;
-    [Dependency] private   readonly SharedInteractionSystem _interactionSystem = default!;
-    [Dependency] protected readonly SharedItemSystem ItemSystem = default!;
-    [Dependency] private   readonly SharedPopupSystem _popupSystem = default!;
-    [Dependency] private   readonly SharedHandsSystem _sharedHandsSystem = default!;
-    [Dependency] private   readonly SharedStackSystem _stack = default!;
-    [Dependency] protected readonly SharedTransformSystem TransformSystem = default!;
-    [Dependency] protected readonly SharedUserInterfaceSystem UI = default!;
-    [Dependency] private   readonly TagSystem _tag = default!;
-    [Dependency] protected readonly UseDelaySystem UseDelay = default!;
+    [Dependency] protected ActionBlockerSystem ActionBlocker = default!;
+    [Dependency] private EntityLookupSystem _entityLookupSystem = default!;
+    [Dependency] private EntityWhitelistSystem _whitelistSystem = default!;
+    [Dependency] private InventorySystem _inventory = default!;
+    [Dependency] private SharedAppearanceSystem _appearance = default!;
+    [Dependency] protected SharedAudioSystem Audio = default!;
+    [Dependency] protected SharedContainerSystem ContainerSystem = default!;
+    [Dependency] private SharedDoAfterSystem _doAfterSystem = default!;
+    [Dependency] protected SharedEntityStorageSystem EntityStorage = default!;
+    [Dependency] private SharedInteractionSystem _interactionSystem = default!;
+    [Dependency] protected SharedItemSystem ItemSystem = default!;
+    [Dependency] private SharedPopupSystem _popupSystem = default!;
+    [Dependency] private SharedHandsSystem _sharedHandsSystem = default!;
+    [Dependency] private SharedStackSystem _stack = default!;
+    [Dependency] protected SharedTransformSystem TransformSystem = default!;
+    [Dependency] protected SharedUserInterfaceSystem UI = default!;
+    [Dependency] private TagSystem _tag = default!;
+    [Dependency] protected UseDelaySystem UseDelay = default!;
 
-    private EntityQuery<ItemComponent> _itemQuery;
-    private EntityQuery<StackComponent> _stackQuery;
-    private EntityQuery<TransformComponent> _xformQuery;
-    private EntityQuery<UserInterfaceUserComponent> _userQuery;
+    [Dependency] private EntityQuery<ItemComponent> _itemQuery = default!;
+    [Dependency] private EntityQuery<StackComponent> _stackQuery = default!;
+    [Dependency] private EntityQuery<TransformComponent> _xformQuery = default!;
+    [Dependency] private EntityQuery<UserInterfaceUserComponent> _userQuery = default!;
 
     /// <summary>
     /// Whether we're allowed to go up-down storage via UI.
@@ -83,11 +81,12 @@ public abstract partial class SharedStorageSystem : EntitySystem //IS14-change: 
     public bool NestedStorage = true;
 
     public static readonly ProtoId<ItemSizePrototype> DefaultStorageMaxItemSize = "Normal";
+    public static readonly ProtoId<TagPrototype> BypassOpenStorageLimitTag = "BypassOpenStorageLimit";
 
     public const float AreaInsertDelayPerItem = 0.075f;
     private static AudioParams _audioParams = AudioParams.Default
         .WithMaxDistance(7f)
-        .WithVolume(-2f);
+        .AddVolume(-2f);
 
     private ItemSizePrototype _defaultStorageMaxItemSize = default!;
 
@@ -100,9 +99,6 @@ public abstract partial class SharedStorageSystem : EntitySystem //IS14-change: 
 
     private readonly List<EntityUid> _entList = new();
     private readonly HashSet<EntityUid> _entSet = new();
-
-    private readonly List<ItemSizePrototype> _sortedSizes = new();
-    private FrozenDictionary<string, ItemSizePrototype> _nextSmallest = FrozenDictionary<string, ItemSizePrototype>.Empty;
 
     private const string QuickInsertUseDelayID = "quickInsert";
     private const string OpenUiUseDelayID = "storage";
@@ -123,11 +119,7 @@ public abstract partial class SharedStorageSystem : EntitySystem //IS14-change: 
     {
         base.Initialize();
 
-        _itemQuery = GetEntityQuery<ItemComponent>();
-        _stackQuery = GetEntityQuery<StackComponent>();
-        _xformQuery = GetEntityQuery<TransformComponent>();
-        _userQuery = GetEntityQuery<UserInterfaceUserComponent>();
-        _prototype.PrototypesReloaded += OnPrototypesReloaded;
+        ProtoMan.PrototypesReloaded += OnPrototypesReloaded;
 
         Subs.CVar(_cfg, CCVars.StorageLimit, OnStorageLimitChanged, true);
 
@@ -174,23 +166,21 @@ public abstract partial class SharedStorageSystem : EntitySystem //IS14-change: 
 
         Subs.CVar(_cfg, CCVars.NestedStorage, OnNestedStorageCvar, true);
 
-        UpdatePrototypeCache();
+        CacheDefaultStorageSize();
     }
 
     private void OnItemSizeChanged(ref ItemSizeChangedEvent ev)
     {
-        var itemEnt = new Entity<ItemComponent?>(ev.Entity, null);
-
-        if (!TryGetStorageLocation(itemEnt, out var container, out var storage, out var loc))
-        {
+        if (!TryGetContainingStorage(ev.Entity, out var storage))
             return;
-        }
 
-        UpdateOccupied((container.Owner, storage));
+        var loc = storage.Value.Comp.StoredItems[ev.Entity];
 
-        if (!ItemFitsInGridLocation((itemEnt.Owner, itemEnt.Comp), (container.Owner, storage), loc))
+        UpdateOccupied(storage.Value);
+
+        if (!ItemFitsInGridLocation(ev.Entity, storage.Value.AsNullable(), loc))
         {
-            ContainerSystem.Remove(itemEnt.Owner, container, force: true);
+            ContainerSystem.Remove(ev.Entity, storage.Value.Comp.Container, force: true);
         }
     }
 
@@ -237,35 +227,20 @@ public abstract partial class SharedStorageSystem : EntitySystem //IS14-change: 
 
     public override void Shutdown()
     {
-        _prototype.PrototypesReloaded -= OnPrototypesReloaded;
+        ProtoMan.PrototypesReloaded -= OnPrototypesReloaded;
     }
 
     private void OnPrototypesReloaded(PrototypesReloadedEventArgs args)
     {
-        // TODO: This should update all entities in storage as well.
-        if (args.ByType.ContainsKey(typeof(ItemSizePrototype))
-            || (args.Removed?.ContainsKey(typeof(ItemSizePrototype)) ?? false))
-        {
-            UpdatePrototypeCache();
-        }
+        // TODO: This should update all entities in storage.
+
+        if (args.WasModified<ItemSizePrototype>())
+            CacheDefaultStorageSize();
     }
 
-    private void UpdatePrototypeCache()
+    private void CacheDefaultStorageSize()
     {
-        _defaultStorageMaxItemSize = _prototype.Index(DefaultStorageMaxItemSize);
-        _sortedSizes.Clear();
-        _sortedSizes.AddRange(_prototype.EnumeratePrototypes<ItemSizePrototype>());
-        _sortedSizes.Sort();
-
-        var nextSmallest = new KeyValuePair<string, ItemSizePrototype>[_sortedSizes.Count];
-        for (var i = 0; i < _sortedSizes.Count; i++)
-        {
-            var k = _sortedSizes[i].ID;
-            var v = _sortedSizes[Math.Max(i - 1, 0)];
-            nextSmallest[i] = new(k, v);
-        }
-
-        _nextSmallest = nextSmallest.ToFrozenDictionary();
+        _defaultStorageMaxItemSize = ProtoMan.Index(DefaultStorageMaxItemSize);
     }
 
     private void OnComponentInit(EntityUid uid, StorageComponent storageComp, ComponentInit args)
@@ -350,31 +325,29 @@ public abstract partial class SharedStorageSystem : EntitySystem //IS14-change: 
     /// <summary>
     /// Tries to get the storage location of an item.
     /// </summary>
-    public bool TryGetStorageLocation(Entity<ItemComponent?> itemEnt, [NotNullWhen(true)] out BaseContainer? container, [NotNullWhen(true)] out StorageComponent? storage, out ItemStorageLocation loc)
+    public bool TryGetContainingStorage(EntityUid uid, [NotNullWhen(true)] out Entity<StorageComponent>? storage)
     {
-        loc = default;
         storage = null;
 
-        if (!ContainerSystem.TryGetContainingContainer(itemEnt.Owner, out container) ||
+        if (!ContainerSystem.TryGetContainingContainer(uid, out var container) ||
             container.ID != StorageComponent.ContainerId ||
-            !TryComp(container.Owner, out storage) ||
-            !_itemQuery.Resolve(itemEnt, ref itemEnt.Comp, false))
+            !TryComp(container.Owner, out StorageComponent? storageComp))
         {
             return false;
         }
 
-        loc = storage.StoredItems[itemEnt];
+        storage = (container.Owner, storageComp);
         return true;
     }
 
     public void OpenStorageUI(EntityUid uid, EntityUid actor, StorageComponent? storageComp = null, bool silent = true)
     {
         // Handle recursively opening nested storages.
-        if (ContainerSystem.TryGetContainingContainer(uid, out var container) &&
-            UI.IsUiOpen(container.Owner, StorageComponent.StorageUiKey.Key, actor))
+        if (TryGetContainingStorage(uid, out var parentStorage) &&
+            UI.IsUiOpen(parentStorage.Value.Owner, StorageComponent.StorageUiKey.Key, actor))
         {
             _nestedCheck = true;
-            HideStorageWindow(container.Owner, actor);
+            HideStorageWindow(parentStorage.Value.Owner, actor);
             OpenStorageUIInternal(uid, actor, storageComp, silent: true);
             _nestedCheck = false;
         }
@@ -382,7 +355,7 @@ public abstract partial class SharedStorageSystem : EntitySystem //IS14-change: 
         {
             // If you need something more sophisticated for multi-UI you'll need to code some smarter
             // interactions.
-            if (_openStorageLimit == 1)
+            if (_openStorageLimit == 1 && !_tag.HasTag(actor, BypassOpenStorageLimitTag))
                 UI.CloseUserUis<StorageComponent.StorageUiKey>(actor);
 
             OpenStorageUIInternal(uid, actor, storageComp, silent: silent);
@@ -415,7 +388,7 @@ public abstract partial class SharedStorageSystem : EntitySystem //IS14-change: 
         }
     }
 
-    public virtual void UpdateUI(Entity<StorageComponent?> entity) {}
+    public virtual void UpdateUI(Entity<StorageComponent?> entity) { }
 
     private void AddTransferVerbs(EntityUid uid, StorageComponent component, GetVerbsEvent<UtilityVerb> args)
     {
@@ -529,11 +502,12 @@ public abstract partial class SharedStorageSystem : EntitySystem //IS14-change: 
             _entityLookupSystem.GetEntitiesInRange(args.ClickLocation, storageComp.AreaInsertRadius, _entSet, LookupFlags.Dynamic | LookupFlags.Sundries);
             var delay = 0f;
 
-            foreach (var entity in _entSet)
+            // TODO: Remove OrderBy when this issue is fixed in RT https://github.com/space-wizards/RobustToolbox/issues/6241
+            foreach (var entity in _entSet.OrderBy(e => GetNetEntity(e)))
             {
                 if (entity == args.User
                     || !_itemQuery.TryGetComponent(entity, out var itemComp) // Need comp to get item size to get weight
-                    || !_prototype.Resolve(itemComp.Size, out var itemSize)
+                    || !ProtoMan.Resolve(itemComp.Size, out var itemSize)
                     || !CanInsert(uid, entity, out _, storageComp, item: itemComp)
                     || !_interactionSystem.InRangeUnobstructed(args.User, entity))
                 {
@@ -771,8 +745,8 @@ public abstract partial class SharedStorageSystem : EntitySystem //IS14-change: 
         var itemEnt = new Entity<ItemComponent?>(itemUid.Value, itemComp);
 
         // Validate the source storage
-        if (!TryGetStorageLocation(itemEnt, out var container, out _, out _) ||
-            !ValidateInput(args, GetNetEntity(container.Owner), out _, out _))
+        if (!TryGetContainingStorage(itemEnt.Owner, out var sourceStorage) ||
+            !ValidateInput(args, GetNetEntity(sourceStorage.Value.Owner), out _, out _))
         {
             return;
         }
@@ -820,6 +794,7 @@ public abstract partial class SharedStorageSystem : EntitySystem //IS14-change: 
     {
         if (args.UiKey is not StorageComponent.StorageUiKey.Key ||
             _openStorageLimit == -1 ||
+            _tag.HasTag(args.Actor, BypassOpenStorageLimitTag) ||
             _nestedCheck ||
             args.Message is not OpenBoundInterfaceMessage)
             return;
@@ -969,7 +944,8 @@ public abstract partial class SharedStorageSystem : EntitySystem //IS14-change: 
             || Resolve(target, ref targetLock, false) && targetLock.Locked)
             return;
 
-        foreach (var entity in entities.ToArray())
+        // TODO: Remove OrderBy when this issue is fixed in RT https://github.com/space-wizards/RobustToolbox/issues/6241
+        foreach (var entity in entities.ToArray().OrderBy(e => GetNetEntity(e)))
         {
             Insert(target, entity, out _, user: user, targetComp, playSound: false);
         }
@@ -1168,7 +1144,8 @@ public abstract partial class SharedStorageSystem : EntitySystem //IS14-change: 
 
         var toInsertCount = insertStack.Count;
 
-        foreach (var ent in storageComp.Container.ContainedEntities)
+        // TODO: Remove OrderBy when this issue is fixed in RT https://github.com/space-wizards/RobustToolbox/issues/6241
+        foreach (var ent in storageComp.Container.ContainedEntities.OrderBy(e => GetNetEntity(e)))
         {
             if (!_stackQuery.TryGetComponent(ent, out var containedStack))
                 continue;
@@ -1213,13 +1190,13 @@ public abstract partial class SharedStorageSystem : EntitySystem //IS14-change: 
 
         if (!CanInsert(ent, toInsert.Value, out var reason, ent.Comp))
         {
-            _popupSystem.PopupClient(Loc.GetString(reason ?? "comp-storage-cant-insert"), ent, player);
+            _popupSystem.PopupEntity(Loc.GetString(reason ?? "comp-storage-cant-insert"), ent, player);
             return false;
         }
 
         if (!_sharedHandsSystem.CanDrop(player, toInsert.Value))
         {
-            _popupSystem.PopupClient(Loc.GetString("comp-storage-cant-drop", ("entity", toInsert.Value)), ent, player);
+            _popupSystem.PopupEntity(Loc.GetString("comp-storage-cant-drop", ("entity", toInsert.Value)), ent, player);
             return false;
         }
 
@@ -1241,7 +1218,7 @@ public abstract partial class SharedStorageSystem : EntitySystem //IS14-change: 
 
         if (!Insert(uid, toInsert, out _, user: player, uid.Comp, playSound: playSound))
         {
-            _popupSystem.PopupClient(Loc.GetString("comp-storage-cant-insert"), uid, player);
+            _popupSystem.PopupEntity(Loc.GetString("comp-storage-cant-insert"), uid, player);
             return false;
         }
         return true;
@@ -1779,7 +1756,7 @@ public abstract partial class SharedStorageSystem : EntitySystem //IS14-change: 
         // If we specify a max item size, use that
         if (uid.Comp.MaxItemSize != null)
         {
-            if (_prototype.Resolve(uid.Comp.MaxItemSize.Value, out var proto))
+            if (ProtoMan.Resolve(uid.Comp.MaxItemSize.Value, out var proto))
                 return proto;
 
             Log.Error($"{ToPrettyString(uid.Owner)} tried to get invalid item size prototype: {uid.Comp.MaxItemSize.Value}. Stack trace:\\n{Environment.StackTrace}");
@@ -1790,7 +1767,7 @@ public abstract partial class SharedStorageSystem : EntitySystem //IS14-change: 
 
         // if there is no max item size specified, the value used
         // is one below the item size of the storage entity.
-        return _nextSmallest[item.Size];
+        return ItemSystem.GetSizeSmaller(item.Size) ?? ItemSystem.GetSmallestSize();
     }
 
     /// <summary>

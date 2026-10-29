@@ -16,6 +16,10 @@
     icon:
       sprite: _Goobstation/Wizard/actions.rsi # Goob edit
       state: knock
+  - type: Sprite
+    sprite: Objects/Magic/magicactions.rsi
+    layers:
+    - state: knock
   - type: InstantAction
     event: !type:KnockSpellEvent
       range: 3 # Goob edit

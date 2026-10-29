@@ -4,7 +4,11 @@ using Content.Shared.Inventory;
 
 namespace Content.Shared.Temperature;
 
-public sealed class ModifyChangedTemperatureEvent : EntityEventArgs, IInventoryRelayEvent
+/// <summary>
+/// This event is raised before heat is exchanged so that the conductance of the exchange can be changed.
+/// </summary>
+[ByRefEvent]
+public record struct BeforeHeatExchangeEvent() : IInventoryRelayEvent
 {
     public SlotFlags TargetSlots { get; } = ~SlotFlags.POCKET;
 
@@ -18,18 +22,17 @@ public sealed class ModifyChangedTemperatureEvent : EntityEventArgs, IInventoryR
     }
 }
 
-public sealed class OnTemperatureChangeEvent : EntityEventArgs
+/// <summary>
+/// This event is raised after heat is exchanged to inform other systems that temperature has changed.
+/// </summary>
+/// <param name="CurrentTemperature">Current temperature of this entity.</param>
+/// <param name="LastTemperature">Previous temperature of this entity.</param>
+[ByRefEvent]
+public record struct TemperatureChangedEvent(float CurrentTemperature, float LastTemperature)
 {
-    public readonly float CurrentTemperature;
-    public readonly float LastTemperature;
-    public readonly float TemperatureDelta;
-
-    public OnTemperatureChangeEvent(float current, float last, float delta)
-    {
-        CurrentTemperature = current;
-        LastTemperature = last;
-        TemperatureDelta = delta;
-    }
+    public readonly float CurrentTemperature = CurrentTemperature;
+    public readonly float LastTemperature = LastTemperature;
+    public readonly float TemperatureDelta = CurrentTemperature - LastTemperature;
 }
 
 // Goobstation

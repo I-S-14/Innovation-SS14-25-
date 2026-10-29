@@ -8,6 +8,7 @@ using Content.Shared.DoAfter;
 using Content.Shared.Examine;
 using Content.Shared.Interaction;
 using Content.Shared.Item.ItemToggle;
+using Content.Shared.Localizations;
 using Content.Shared.Maps;
 using Content.Shared.Popups;
 using Content.Shared.Timing;
@@ -39,6 +40,19 @@ public abstract partial class SharedToolSystem : EntitySystem
     [Dependency] private   readonly TileSystem _tiles = default!;
     [Dependency] private   readonly TurfSystem _turfs = default!;
     [Dependency] private   readonly UseDelaySystem _delay = default!; // Goobstation
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] protected ISharedAdminLogManager AdminLogger = default!;
+    [Dependency] private ITileDefinitionManager _tileDefManager = default!;
+    [Dependency] private SharedAudioSystem _audioSystem = default!;
+    [Dependency] private SharedDoAfterSystem _doAfterSystem = default!;
+    [Dependency] protected SharedInteractionSystem InteractionSystem = default!;
+    [Dependency] protected ItemToggleSystem ItemToggle = default!;
+    [Dependency] private SharedMapSystem _maps = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] protected SharedSolutionContainerSystem SolutionContainerSystem = default!;
+    [Dependency] private SharedTransformSystem _transformSystem = default!;
+    [Dependency] private TileSystem _tiles = default!;
+    [Dependency] private TurfSystem _turfs = default!;
 
     public const string CutQuality = "Cutting";
     public const string PulseQuality = "Pulsing";
@@ -182,6 +196,19 @@ public abstract partial class SharedToolSystem : EntitySystem
         if (!CanStartToolUse(tool, user, target, fuel, toolQualitiesNeeded, toolComponent))
             return false;
 
+        string examineText;
+        var qualitiesText = GetQualitiesText(toolQualitiesNeeded, true);
+
+        if (target is not null)
+        {
+            examineText = Loc.GetString("tool-component-target-doafter-examine",
+                ("user", user),
+                ("quality", qualitiesText),
+                ("target", target.Value));
+        }
+        else
+            examineText = Loc.GetString("tool-component-doafter-examine", ("quality", qualitiesText));
+
         var toolEvent = new ToolDoAfterEvent(fuel, doAfterEv, GetNetEntity(target));
         var doAfterLength = delay / toolComponent.SpeedModifier; // Goob - doAfterLength var
         var doAfterArgs = new DoAfterArgs(EntityManager, user, doAfterLength, toolEvent, tool, target: target, used: tool)
@@ -235,6 +262,32 @@ public abstract partial class SharedToolSystem : EntitySystem
             out _,
             fuel,
             toolComponent);
+    }
+
+    /// <summary>
+    ///     Method used to get the localized names of the quality prototypes.
+    /// </summary>
+    /// <returns>Localized combined string from the quality prototypes names</returns>
+    public string GetQualitiesText(IEnumerable<ProtoId<ToolQualityPrototype>> qualities, bool lowercase = false)
+    {
+        // Create a list to store tool quality names
+        var toolQualities = new List<string>();
+
+        // Loop through tool qualities and add localized names to the list
+        foreach (var toolQuality in qualities)
+        {
+            if (!ProtoMan.Resolve(toolQuality, out var protoToolQuality))
+                continue;
+
+            var toAdd = Loc.GetString(protoToolQuality.Name);
+            if (lowercase)
+                toAdd = toAdd.ToLower();
+
+            toolQualities.Add(toAdd);
+        }
+
+        // Combine the qualities into a single string and localize the final message
+        return ContentLocalizationManager.FormatList(toolQualities);
     }
 
     /// <summary>

@@ -105,6 +105,12 @@ public sealed partial class PlayerPanel : FancyWindow
     {
         TrustScore.Text = Loc.GetString("player-panel-trust-score", ("trustScore", trustScore));
     }
+
+    public void SetAccountCreationDate(DateTime? date)
+    {
+        AccountCreationDate.Text = date != null ? Loc.GetString("player-panel-account-creation", ("date", date.Value)) : null;
+    }
+
     public void SetPlaytime(TimeSpan playtime)
     {
         Playtime.Text = Loc.GetString("player-panel-playtime",

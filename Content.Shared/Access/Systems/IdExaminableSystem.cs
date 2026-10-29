@@ -13,10 +13,10 @@ using Robust.Shared.Utility;
 
 namespace Content.Shared.Access.Systems;
 
-public sealed class IdExaminableSystem : EntitySystem
+public sealed partial class IdExaminableSystem : EntitySystem
 {
-    [Dependency] private readonly ExamineSystemShared _examineSystem = default!;
-    [Dependency] private readonly InventorySystem _inventorySystem = default!;
+    [Dependency] private ExamineSystemShared _examineSystem = default!;
+    [Dependency] private InventorySystem _inventorySystem = default!;
 
     [Dependency] private readonly SharedUserInterfaceSystem _ui = default!; // Goobstation-WantedMenu
     [Dependency] private readonly AccessReaderSystem _accessReader = default!; // Goobstation-WantedMenu

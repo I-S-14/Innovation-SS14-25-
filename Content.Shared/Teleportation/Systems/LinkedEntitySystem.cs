@@ -11,9 +11,9 @@ namespace Content.Shared.Teleportation.Systems;
 ///     This does not do anything on its own (outside of deleting entities that have 0 links, if that option is true)
 ///     Systems can do whatever they please with the linked entities, such as <see cref="SharedPortalSystem"/>.
 /// </summary>
-public sealed class LinkedEntitySystem : EntitySystem
+public sealed partial class LinkedEntitySystem : EntitySystem
 {
-    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
+    [Dependency] private SharedAppearanceSystem _appearance = default!;
 
     /// <inheritdoc/>
     public override void Initialize()
@@ -59,8 +59,16 @@ public sealed class LinkedEntitySystem : EntitySystem
         Dirty(first, firstLink);
         Dirty(second, secondLink);
 
-        return firstLink.LinkedEntities.Add(second)
-            && secondLink.LinkedEntities.Add(first);
+        if (firstLink.LinkedEntities.Add(second) && secondLink.LinkedEntities.Add(first))
+        {
+            var firstEv = new LinkedEntityChangedEvent(firstLink.LinkedEntities);
+            RaiseLocalEvent(first, ref firstEv);
+            var secondEv = new LinkedEntityChangedEvent(secondLink.LinkedEntities);
+            RaiseLocalEvent(second, ref secondEv);
+            return true;
+        }
+
+        return false;
     }
 
     /// <summary>
@@ -76,7 +84,15 @@ public sealed class LinkedEntitySystem : EntitySystem
 
         Dirty(source, firstLink);
 
-        return firstLink.LinkedEntities.Add(target);
+        if (firstLink.LinkedEntities.Add(target))
+        {
+            var ev = new LinkedEntityChangedEvent(firstLink.LinkedEntities);
+            RaiseLocalEvent(source, ref ev);
+            return true;
+        }
+
+        return false;
+
     }
 
     /// <summary>
@@ -105,6 +121,11 @@ public sealed class LinkedEntitySystem : EntitySystem
 
         Dirty(first, firstLink);
         Dirty(second, secondLink);
+
+        var firstEv = new LinkedEntityChangedEvent(firstLink.LinkedEntities);
+        RaiseLocalEvent(first, ref firstEv);
+        var secondEv = new LinkedEntityChangedEvent(secondLink.LinkedEntities);
+        RaiseLocalEvent(second, ref secondEv);
 
         if (firstLink.LinkedEntities.Count == 0 && firstLink.DeleteOnEmptyLinks)
             QueueDel(first);
@@ -137,3 +158,6 @@ public sealed class LinkedEntitySystem : EntitySystem
 
     #endregion
 }
+
+[ByRefEvent]
+public readonly record struct LinkedEntityChangedEvent(HashSet<EntityUid> NewLinks);

@@ -14,6 +14,6 @@ public sealed partial class RandomSpawnRuleComponent : Component
     /// <summary>
     /// The entity to be spawned.
     /// </summary>
-    [DataField("prototype", required: true)]
-    public EntProtoId Prototype = string.Empty;
+    [DataField(required: true)]
+    public EntProtoId Prototype;
 }

@@ -13,7 +13,7 @@ using Robust.Shared.Timing;
 namespace Content.Client.Maps;
 
 /// <inheritdoc />
-public sealed class GridDraggingSystem : SharedGridDraggingSystem
+public sealed partial class GridDraggingSystem : SharedGridDraggingSystem
 {
     [Dependency] private readonly IEyeManager _eyeManager = default!;
     [Dependency] private readonly IGameTiming _gameTiming = default!;
@@ -21,6 +21,12 @@ public sealed class GridDraggingSystem : SharedGridDraggingSystem
     [Dependency] private readonly SharedMapSystem _mapSystem = default!;
     [Dependency] private readonly InputSystem _inputSystem = default!;
     [Dependency] private readonly SharedTransformSystem _transformSystem = default!;
+    [Dependency] private IEyeManager _eyeManager = default!;
+    [Dependency] private IGameTiming _gameTiming = default!;
+    [Dependency] private IInputManager _inputManager = default!;
+    [Dependency] private SharedMapSystem _mapSystem = default!;
+    [Dependency] private InputSystem _inputSystem = default!;
+    [Dependency] private SharedTransformSystem _transformSystem = default!;
 
     public bool Enabled { get; set; }
 

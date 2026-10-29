@@ -16,9 +16,10 @@
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
   metabolisms:
-    Drink:
+    Digestion:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:ModifyStatusEffect
         effectProto: StatusEffectDrowsiness
@@ -45,19 +46,32 @@
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
   metabolisms:
-    Drink:
+    Digestion:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 4
 
 - type: reagent
   id: ChangelingSting
   name: reagent-name-changeling-sting
-  parent: BaseSoda
+  parent: [ BaseSoda, BaseAlcohol ]
   desc: reagent-desc-changeling-sting
   physicalDesc: reagent-physical-desc-fizzy
   flavor: soda
   color: "#2E6671"
+  metabolisms:
+    Digestion:
+      effects:
+      - !type:Satiate
+        satiationType: Chemicals
+        factor: 0.5
+        conditions:
+        - !type:MetabolizerTypeCondition
+          type: [ Changeling ]
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
 
 - type: reagent
   id: DrGibb
@@ -215,9 +229,10 @@
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
   metabolisms:
-    Drink:
+    Digestion:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 4
 
 - type: reagent

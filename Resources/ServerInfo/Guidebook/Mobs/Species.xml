@@ -8,11 +8,11 @@ SPDX-License-Identifier: AGPL-3.0-or-later
   Нанотразен нанимает разнообразные разумные виды.
 
   <Box>
-    <GuideEntityEmbed Entity="MobArachnid" Caption="Арахнид"/>
-    <GuideEntityEmbed Entity="MobDiona" Caption="Диона"/>
-    <GuideEntityEmbed Entity="MobDwarf" Caption="Дварф"/>
-    <GuideEntityEmbed Entity="MobGingerbread" Caption="Пряничный человечек"/>
-    <GuideEntityEmbed Entity="MobHarpy" Caption="Гарпия"/>
+    <GuideEntityEmbed Entity="AppearanceArachnid" Caption="Arachnid"/>
+    <GuideEntityEmbed Entity="AppearanceDiona" Caption="Diona"/>
+    <GuideEntityEmbed Entity="AppearanceDwarf" Caption="Dwarf"/>
+    <GuideEntityEmbed Entity="AppearanceHuman" Caption="Human"/>
+    <GuideEntityEmbed Entity="AppearanceMoth" Caption="Moth Person"/>
   </Box>
   <Box>
     <GuideEntityEmbed Entity="MobHuman" Caption="Человек"/>

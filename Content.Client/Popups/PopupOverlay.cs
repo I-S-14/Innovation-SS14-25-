@@ -65,7 +65,6 @@ public sealed class PopupOverlay : Overlay
         if (args.ViewportControl == null)
             return;
 
-        args.DrawingHandle.SetTransform(Matrix3x2.Identity);
         args.DrawingHandle.UseShader(_shader);
         var scale = _configManager.GetCVar(CVars.DisplayUIScale);
 
@@ -73,8 +72,6 @@ public sealed class PopupOverlay : Overlay
             scale = _uiManager.DefaultUIScale;
 
         DrawWorld(args.ScreenHandle, args, scale);
-
-        args.DrawingHandle.UseShader(null);
     }
 
     private void DrawWorld(DrawingHandleScreen worldHandle, OverlayDrawArgs args, float scale)
@@ -103,7 +100,7 @@ public sealed class PopupOverlay : Overlay
 
             // Should handle fade here too wyci.
             if (!args.WorldBounds.Contains(mapPos.Position) || !_examine.InRangeUnOccluded(viewPos, mapPos, distance,
-                    e => e == popup.InitialPos.EntityId || e == ourEntity, entMan: _entManager))
+                    e => e == popup.InitialPos.EntityId || e == ourEntity))
                 continue;
 
             var pos = Vector2.Transform(mapPos.Position, matrix).Rounded(); // Goob

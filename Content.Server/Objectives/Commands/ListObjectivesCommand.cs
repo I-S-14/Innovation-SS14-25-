@@ -14,8 +14,8 @@ namespace Content.Server.Objectives.Commands
     [AdminCommand(AdminFlags.Admin)] // CorvaxGoob-AdminListObjectives
     public sealed class ListObjectivesCommand : LocalizedCommands
     {
-        [Dependency] private readonly IEntityManager _entities = default!;
-        [Dependency] private readonly IPlayerManager _players = default!;
+        [Dependency] private IEntityManager _entities = default!;
+        [Dependency] private IPlayerManager _players = default!;
 
         public override string Command => "lsobjectives";
 

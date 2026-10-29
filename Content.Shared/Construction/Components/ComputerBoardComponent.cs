@@ -10,7 +10,7 @@ namespace Content.Shared.Construction.Components
     [RegisterComponent]
     public sealed partial class ComputerBoardComponent : Component
     {
-        [DataField("prototype")]
-        public EntProtoId? Prototype { get; private set; }
+        [DataField]
+        public EntProtoId? Prototype;
     }
 }

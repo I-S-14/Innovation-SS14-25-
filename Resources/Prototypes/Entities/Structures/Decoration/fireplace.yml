@@ -1,12 +1,13 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 - type: entity
+  parent: [ BaseStructure, StructureHealthFurnitureStrong ]
   id: Fireplace
-  parent: BaseStructure
   name: fireplace
   description: A place that has fire. Cozy!
   components:
   - type: Sprite
+    noRot: true
     sprite: Structures/Decoration/fireplace.rsi
     layers:
       - state: fireplace
@@ -37,18 +38,20 @@
     energy: 3
     color: "#FF6F00"
   - type: Damageable
-    damageContainer: StructuralInorganic
-    damageModifierSet: Metallic
+    damageModifierSet: RockMod
   - type: Destructible
     thresholds:
-      - trigger:
-          !type:DamageTrigger
-          damage: 200
-        behaviors:
-          - !type:DoActsBehavior
-            acts: [ "Destruction" ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 80
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/break_stone.ogg
   - type: AlwaysHot
   - type: Construction # Frontier
     graph: FiresGraph # Frontier
     node: FireplaceNode # Frontier  
-    
+  - type: IgnitionSource
+    temperature: 700
+    ignited: true

@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 - type: entity
+  parent: SolutionTile
   id: FloorWaterEntity
   name: water
   description: A real thirst quencher.
@@ -9,16 +10,13 @@
     snap:
     - Wall
   components:
-  - type: FloorOccluder
   - type: Transform
     anchored: true
   - type: SyncSprite
   - type: Clickable
   - type: Sprite
-    sprite: Tiles/Planet/water.rsi
+    sprite: Tiles/TileEntities/liquid-water.rsi
     drawdepth: BelowFloor
-    layers:
-      - state: shoreline_water
   - type: SolutionContainerManager
     solutions:
       pool:
@@ -27,6 +25,12 @@
         - ReagentId: Water
           Quantity: 9999999
 #CorvaxGoob-errorfix-start ахуенное решение было избежать - обработки, но наплодить столько же ошибок
+  - type: Solution
+    id: pool
+    solution:
+      reagents:
+      - ReagentId: Water
+        Quantity: 7680
   - type: SolutionRegeneration
     duration: 99999
     solution: tank
@@ -89,3 +93,39 @@
   # Goobstation - fishing
   - type: CosmicCorruptible # DeltaV - Cosmic Cult
     convertTo: FloorCosmicDecay
+  - type: IconSmooth
+    key: water
+    states:
+    - !type:CornerSpriteSmoothing
+      mask: [ water, walls ]
+      base: water
+  - type: PlacementReplacement
+    key: tileOverlay
+
+- type: entity
+  parent: FloorWaterEntity
+  id: FloorSwimmingPoolEntity
+  name: swimming pool
+  description: Refreshing and relaxing!
+  components:
+  - type: FloorOccluder
+  - type: Sprite
+    sprite: Tiles/TileEntities/swimming-pool.rsi
+  - type: IconSmooth
+    key: pool
+    states:
+    - !type:CornerSpriteSmoothing
+      mask: [ pool ]
+      base: water
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.25,-0.25,0.25,0.25"
+        layer:
+        - SlipLayer
+        mask:
+        - ItemMask
+        density: 1000
+        hard: false

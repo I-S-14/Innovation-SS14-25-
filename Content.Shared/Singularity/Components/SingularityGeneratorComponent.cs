@@ -3,8 +3,9 @@
 using Robust.Shared.Prototypes;
 
 using Content.Shared.Physics;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
 using Robust.Shared.GameStates;
+using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
+using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Singularity.Components;
 

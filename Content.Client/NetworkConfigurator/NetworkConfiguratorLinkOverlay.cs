@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-using Content.Client.NetworkConfigurator.Systems;
-using Content.Shared.DeviceNetwork.Components;
+using Content.Shared.DeviceConfigurator.Components;
+using Content.Shared.DeviceConfigurator.Systems;
+using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
 using Robust.Shared.Enums;
 using Robust.Shared.Map;
@@ -9,10 +10,10 @@ using Robust.Shared.Random;
 
 namespace Content.Client.NetworkConfigurator;
 
-public sealed class NetworkConfiguratorLinkOverlay : Overlay
+public sealed partial class NetworkConfiguratorLinkOverlay : Overlay
 {
-    [Dependency] private readonly IEntityManager _entityManager = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
+    [Dependency] private IEntityManager _entityManager = default!;
+    [Dependency] private IRobustRandom _random = default!;
     private readonly DeviceListSystem _deviceListSystem;
     private readonly SharedTransformSystem _transformSystem;
 
@@ -57,7 +58,7 @@ public sealed class NetworkConfiguratorLinkOverlay : Overlay
                 continue;
             }
 
-            foreach (var device in _deviceListSystem.GetAllDevices(uid, deviceList))
+            foreach (var device in _deviceListSystem.GetAllDevices((uid, deviceList)))
             {
                 if (_entityManager.Deleted(device))
                 {

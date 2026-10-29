@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+using Content.Shared.Roles;
+using Content.Shared.Station.Systems;
 using Robust.Shared.GameStates;
+using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Station.Components;
 
@@ -8,7 +11,7 @@ namespace Content.Shared.Station.Components;
 /// Stores core information about a station, namely its config and associated grids.
 /// All station entities will have this component.
 /// </summary>
-[RegisterComponent, NetworkedComponent, AutoGenerateComponentState, Access(typeof(SharedStationSystem))]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState, Access(typeof(StationSystem))]
 public sealed partial class StationDataComponent : Component
 {
     /// <summary>
@@ -16,6 +19,12 @@ public sealed partial class StationDataComponent : Component
     /// </summary>
     [DataField]
     public StationConfig? StationConfig;
+
+    /// <summary>
+    /// The map-specific profile used to order jobs on this station.
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public ProtoId<JobWeightPrototype>? JobWeights;
 
     /// <summary>
     /// List of all grids this station is part of.

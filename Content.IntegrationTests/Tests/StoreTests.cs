@@ -2,6 +2,8 @@
 using Content.Shared._Goobstation.Wizard.Refund;
 // <Trauma>
 using System.Linq;
+using Content.IntegrationTests.Fixtures;
+using Content.Server.PDA.Ringer;
 using Content.Server.Traitor.Uplink;
 using Content.Shared.Inventory;
 using Content.Shared.Mind;
@@ -15,7 +17,7 @@ using Content.Goobstation.Maths.FixedPoint;
 namespace Content.IntegrationTests.Tests;
 
 [TestFixture]
-public sealed class StoreTests
+public sealed class StoreTests : GameTest
 {
 
     [TestPrototypes]
@@ -31,10 +33,11 @@ public sealed class StoreTests
     - idcard
   - type: Pda
 ";
+
     [Test]
     public async Task StoreDiscountAndRefund()
     {
-        await using var pair = await PoolManager.GetServerClient();
+        var pair = Pair;
         var server = pair.Server;
 
         var testMap = await pair.CreateTestMap();
@@ -56,6 +59,7 @@ public sealed class StoreTests
         EntityUid pda = default;
 
         var uplinkSystem = entManager.System<UplinkSystem>();
+        var ringerSystem = entManager.System<RingerSystem>();
 
         var listingPrototypes = prototypeManager.EnumeratePrototypes<ListingPrototype>()
                                                 .ToArray();
@@ -66,7 +70,7 @@ public sealed class StoreTests
             var invSystem = entManager.System<InventorySystem>();
             var mindSystem = entManager.System<SharedMindSystem>();
 
-            human = entManager.SpawnEntity("HumanUniformDummy", coordinates);
+            human = entManager.SpawnEntity("MobHuman", coordinates);
             uniform = entManager.SpawnEntity("UniformDummy", coordinates);
             pda = entManager.SpawnEntity("InventoryPdaDummy", coordinates);
 
@@ -81,8 +85,11 @@ public sealed class StoreTests
             uplinkSystem.AddUplink(human, originalBalance, null, out _, out _, pda, true);
             // </Trauma>
 
-            var storeComponent = entManager.GetComponent<StoreComponent>(pda);
-            var discountComponent = entManager.GetComponent<StoreDiscountComponent>(pda);
+            Assert.That(notes != null);
+            ringerSystem.TryMatchRingtoneToStore(notes, out var storeEnt);
+            Assert.That(storeEnt.HasValue);
+            var storeComponent = entManager.GetComponent<StoreComponent>(storeEnt.Value);
+            var discountComponent = entManager.GetComponent<StoreDiscountComponent>(storeEnt.Value);
             Assert.That(
                 discountComponent.Discounts,
                 Has.Exactly(8).Items,
@@ -128,8 +135,8 @@ public sealed class StoreTests
                     Assert.That(plainDiscountedCost.Value, Is.LessThan(prototypeCost.Value), "Expected discounted cost to be lower then prototype cost.");
 
 
-                    var buyMsg = new StoreBuyListingMessage(discountedListingItem.ID){Actor = human};
-                    server.EntMan.EventBus.RaiseLocalEvent(pda, buyMsg);
+                    var buyMsg = new StoreBuyListingMessage(discountedListingItem.ID, null){Actor = human};
+                    server.EntMan.EventBus.RaiseLocalEvent(storeEnt.Value, buyMsg);
 
                     var newBalance = storeComponent.Balance[UplinkSystem.TelecrystalCurrencyPrototype];
                     Assert.That(newBalance.Value, Is.EqualTo((originalBalance - plainDiscountedCost).Value), "Expected to have balance reduced by discounted cost");
@@ -169,7 +176,5 @@ public sealed class StoreTests
             }
 
         });
-
-        await pair.CleanReturnAsync();
     }
 }

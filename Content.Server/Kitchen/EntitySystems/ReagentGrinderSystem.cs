@@ -23,25 +23,8 @@ using System.Linq;
 using Content.Server.Jittering;
 using Content.Shared.Jittering;
 using Content.Shared.Kitchen.EntitySystems;
-using Content.Shared.Power;
 
-namespace Content.Server.Kitchen.EntitySystems
-{
-    [UsedImplicitly]
-    internal sealed class ReagentGrinderSystem : SharedReagentGrinderSystem
-    {
-        [Dependency] private readonly IGameTiming _timing = default!;
-        [Dependency] private readonly SharedSolutionContainerSystem _solutionContainersSystem = default!;
-        [Dependency] private readonly ItemSlotsSystem _itemSlotsSystem = default!;
-        [Dependency] private readonly SharedPopupSystem _popupSystem = default!;
-        [Dependency] private readonly UserInterfaceSystem _userInterfaceSystem = default!;
-        [Dependency] private readonly StackSystem _stackSystem = default!;
-        [Dependency] private readonly SharedAudioSystem _audioSystem = default!;
-        [Dependency] private readonly SharedAppearanceSystem _appearanceSystem = default!;
-        [Dependency] private readonly SharedContainerSystem _containerSystem = default!;
-        [Dependency] private readonly SharedDestructibleSystem _destructible = default!;
-        [Dependency] private readonly RandomHelperSystem _randomHelper = default!;
-        [Dependency] private readonly JitteringSystem _jitter = default!;
+namespace Content.Server.Kitchen.EntitySystems;
 
         public override void Initialize()
         {

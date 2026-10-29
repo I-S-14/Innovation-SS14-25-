@@ -26,7 +26,7 @@ namespace Content.Shared.Construction.Steps
             return new ConstructionGuideEntry
             {
                 Localization = "construction-presenter-arbitrary-step",
-                Arguments = new (string, object)[]{("name", stepName)},
+                Arguments = [("name", stepName), ("amount", Amount)],
                 Icon = Icon,
             };
         }

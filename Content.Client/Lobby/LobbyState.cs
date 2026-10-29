@@ -5,7 +5,7 @@ using Content.Client._durkcode.ServerCurrency; CorvaxGoob-Coins
 using Content.Client._RMC14.LinkAccount;
 CorvaxGoob-Coins-end */
 using Content.Client.Audio;
-using Content.Client.GameTicking.Managers;
+using Content.Client.GameTicking;
 using Content.Client.LateJoin;
 using Content.Client.Lobby.UI;
 using Content.Client.Message;
@@ -25,7 +25,7 @@ using Robust.Shared.Timing;
 
 namespace Content.Client.Lobby
 {
-    public sealed class LobbyState : Robust.Client.State.State
+    public sealed partial class LobbyState : Robust.Client.State.State
     {
         [Dependency] private readonly IBaseClient _baseClient = default!;
         [Dependency] private readonly IConfigurationManager _cfg = default!;

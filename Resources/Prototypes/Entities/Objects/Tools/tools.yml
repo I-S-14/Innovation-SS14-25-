@@ -68,6 +68,7 @@
       path: /Audio/Items/wirecutter.ogg
       params:
         variation: 0.125
+  - type: BotanySampleTaker
 
 - type: entity
   name: screwdriver
@@ -228,11 +229,11 @@
   - type: UserInterface
     interfaces:
       enum.NetworkConfiguratorUiKey.List:
-        type: NetworkConfiguratorBoundUserInterface
+        type: NetworkConfiguratorListBoundUserInterface
       enum.NetworkConfiguratorUiKey.Configure:
         type: NetworkConfiguratorBoundUserInterface
       enum.NetworkConfiguratorUiKey.Link:
-        type: NetworkConfiguratorBoundUserInterface
+        type: NetworkConfiguratorLinkBoundUserInterface
   - type: Tag
     tags:
     - Multitool
@@ -257,54 +258,54 @@
   id: NetworkConfigurator
   description: A tool for linking devices together. Has two modes, a list mode for mass linking devices and a linking mode for advanced device linking.
   components:
-  - type: EmitSoundOnLand
-    sound:
-      path: /Audio/Items/multitool_drop.ogg
-  - type: Sprite
-    sprite: Objects/Tools/network_configurator.rsi
-    layers:
-    - state: icon
-    - state: mode-link
-      map: ["enum.NetworkConfiguratorLayers.ModeLight"]
-      shader: unshaded
-  - type: Item
-    size: Small
-  - type: Clothing
-    sprite: Objects/Tools/network_configurator.rsi
-    quickEquip: false
-    slots:
-    - Belt
-  - type: Appearance
-  - type: GenericVisualizer
-    visuals:
-      enum.NetworkConfiguratorVisuals.Mode:
-        enum.NetworkConfiguratorLayers.ModeLight:
-          True: { state: mode-link }
-          False: { state: mode-list }
-  - type: NetworkConfigurator
-  - type: ActivatableUI
-    key: enum.NetworkConfiguratorUiKey.List
-    inHandsOnly: true
-  - type: Tag
-    tags:
-    - DoorElectronicsConfigurator
-  - type: UserInterface
-    interfaces:
-      enum.NetworkConfiguratorUiKey.List:
-        type: NetworkConfiguratorBoundUserInterface
-      enum.NetworkConfiguratorUiKey.Configure:
-        type: NetworkConfiguratorBoundUserInterface
-      enum.NetworkConfiguratorUiKey.Link:
-        type: NetworkConfiguratorBoundUserInterface
-  - type: StaticPrice
-    price: 56
-  - type: GuideHelp
-    guides:
-    - Networking
-  - type: PhysicalComposition #Goobstation - Recycle update
-    materialComposition:
-      Steel: 25
-      Plastic: 25
+    - type: EmitSoundOnLand
+      sound:
+        path: /Audio/Items/multitool_drop.ogg
+    - type: Sprite
+      sprite: Objects/Tools/network_configurator.rsi
+      layers:
+      - state: icon
+      - state: mode-link
+        map: ["enum.NetworkConfiguratorLayers.ModeLight"]
+        shader: unshaded
+    - type: Item
+      size: Small
+    - type: Clothing
+      sprite: Objects/Tools/network_configurator.rsi
+      quickEquip: false
+      slots:
+      - Belt
+    - type: Appearance
+    - type: GenericVisualizer
+      visuals:
+        enum.NetworkConfiguratorVisuals.Mode:
+          enum.NetworkConfiguratorLayers.ModeLight:
+            True: { state: mode-link }
+            False: { state: mode-list }
+    - type: NetworkConfigurator
+    - type: ActivatableUI
+      key: enum.NetworkConfiguratorUiKey.List
+      inHandsOnly: true
+    - type: Tag
+      tags:
+      - DoorElectronicsConfigurator
+    - type: UserInterface
+      interfaces:
+        enum.NetworkConfiguratorUiKey.List:
+          type: NetworkConfiguratorListBoundUserInterface
+        enum.NetworkConfiguratorUiKey.Configure:
+          type: NetworkConfiguratorBoundUserInterface
+        enum.NetworkConfiguratorUiKey.Link:
+          type: NetworkConfiguratorLinkBoundUserInterface
+    - type: StaticPrice
+      price: 56
+    - type: GuideHelp
+      guides:
+      - Networking
+    - type: PhysicalComposition #Goobstation - Recycle update
+      materialComposition:
+        Steel: 25
+        Plastic: 25
 
 #Power tools
 #Later on these should switch probably switch damage when changing the tool behavior.
@@ -467,7 +468,6 @@
     maxCharges: 90
   - type: Sprite
     sprite: Objects/Tools/rpd.rsi
-
 
 - type: entity
   id: RCDEmpty

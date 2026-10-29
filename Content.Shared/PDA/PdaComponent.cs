@@ -2,7 +2,10 @@
 
 using Robust.Shared.Prototypes;
 using Robust.Shared.GameStates;
+using Content.Shared.AlertLevel;
 using Content.Shared.Containers.ItemSlots;
+using Robust.Shared.GameStates;
+using Robust.Shared.Prototypes;
 
 namespace Content.Shared.PDA
 {
@@ -13,12 +16,12 @@ namespace Content.Shared.PDA
         public const string PdaPenSlotId = "PDA-pen";
         public const string PdaPaiSlotId = "PDA-pai";
 
-        [DataField("idSlot")]
+        [DataField]
         public ItemSlot IdSlot = new();
 
-        [DataField("penSlot")]
+        [DataField]
         public ItemSlot PenSlot = new();
-        [DataField("paiSlot")]
+        [DataField]
         public ItemSlot PaiSlot = new();
 
         // Really this should just be using ItemSlot.StartingItem. However, seeing as we have so many different starting
@@ -27,6 +30,7 @@ namespace Content.Shared.PDA
         [DataField("id")]
         public EntProtoId? IdCard;
 
+        // TODO: Fix persistence
         [ViewVariables] public EntityUid? ContainedId;
         [ViewVariables] public EntityUid? ContainedPen;//goob addition for pen
         [ViewVariables] public bool FlashlightOn;
@@ -37,7 +41,8 @@ namespace Content.Shared.PDA
         // as well.
         [ViewVariables(VVAccess.ReadWrite)] public EntityUid? PdaOwner;
         [ViewVariables] public string? StationName;
-        [ViewVariables] public string? StationAlertLevel;
+        [ViewVariables]
+        public ProtoId<AlertLevelPrototype>? StationAlertLevel;
         [ViewVariables] public Color StationAlertColor = Color.White;
         [ViewVariables] public string? StationAlertInstructions; // CorvaxGoob-custom-alert-instructions-in-pda
     }

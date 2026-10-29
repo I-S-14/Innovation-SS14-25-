@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
+# Living things, like animals or animal parts
 - type: damageContainer
   id: Biological
   supportedGroups:
@@ -11,6 +12,19 @@
   supportedTypes: # Goobstation
     - Holy
 
+# "Living" things that are predominantly static, like walls of meat
+- type: damageContainer
+  id: StructuralBiological
+  supportedGroups:
+  - Brute
+  - Burn
+  - Toxin
+  - Airloss
+  - Genetic
+  supportedTypes:
+  - Structural
+
+# Not living things that are typically items, like sheets of metal or a tool
 - type: damageContainer
   id: Inorganic
   supportedGroups:
@@ -19,6 +33,8 @@
     - Heat
     - Shock
 
+# Not living things that are "well-built" and rarely move, like machines or tables
+# If it's on wheels it probably belongs here, too
 - type: damageContainer
   id: StructuralInorganic
   supportedGroups:
@@ -44,15 +60,6 @@
     - Brute
   supportedTypes:
     - Heat
-
-- type: damageContainer
-  id: Box
-  supportedGroups:
-    - Brute
-    - Burn
-    - Toxin
-  supportedTypes:
-    - Shock
 
 - type: damageContainer
   id: ShadowHaze

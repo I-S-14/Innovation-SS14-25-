@@ -63,9 +63,6 @@ namespace Content.Shared.Light.Components
         [DataField, AutoNetworkedField, AutoPausedField]
         public TimeSpan LastThunk;
 
-        [DataField, AutoPausedField]
-        public TimeSpan? LastGhostBlink;
-
         [DataField]
         public ProtoId<SinkPortPrototype> OnPort = "On";
 

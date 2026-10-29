@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+using Content.IntegrationTests.Fixtures;
 using Content.Shared.Inventory;
 using Robust.Shared.GameObjects;
 
@@ -9,7 +10,7 @@ namespace Content.IntegrationTests.Tests
     // i.e. the interaction between uniforms and the pocket/ID slots.
     // and also how big items don't fit in pockets.
     [TestFixture]
-    public sealed class HumanInventoryUniformSlotsTest
+    public sealed class HumanInventoryUniformSlotsTest : GameTest
     {
         [TestPrototypes]
         private const string Prototypes = @"
@@ -57,7 +58,7 @@ namespace Content.IntegrationTests.Tests
         [Test]
         public async Task Test()
         {
-            await using var pair = await PoolManager.GetServerClient();
+            var pair = Pair;
             var server = pair.Server;
             var testMap = await pair.CreateTestMap();
             var coordinates = testMap.GridCoords;
@@ -132,8 +133,6 @@ namespace Content.IntegrationTests.Tests
 
                 mapSystem.DeleteMap(testMap.MapId);
             });
-
-            await pair.CleanReturnAsync();
         }
 
         private static bool IsDescendant(EntityUid descendant, EntityUid parent, IEntityManager entManager)

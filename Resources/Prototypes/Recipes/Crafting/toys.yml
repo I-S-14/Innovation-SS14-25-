@@ -1,25 +1,19 @@
 # SPDX-License-Identifier: MIT
 
 - type: construction
+  parent: BaseItemMisc
   id: PlushieGhostRevenant
   graph: PlushieGhostRevenant
-  startNode: start
   targetNode: plushie
-  category: construction-category-misc
-  objectType: Item
 
 - type: construction
+  parent: BaseClothing
   id: ClothingOuterSuitIan
   graph: ClothingOuterSuitIan
-  startNode: start
   targetNode: suit
-  category: construction-category-misc
-  objectType: Item
 
 - type: construction
+  parent: BaseItemMisc
   id: MoproachShoes
   graph: MoproachShoes
-  startNode: start
   targetNode: shoes
-  category: construction-category-misc
-  objectType: Item

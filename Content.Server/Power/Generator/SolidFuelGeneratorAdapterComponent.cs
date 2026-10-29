@@ -24,19 +24,18 @@ public sealed partial class SolidFuelGeneratorAdapterComponent : Component
     /// <summary>
     /// The material to accept as fuel.
     /// </summary>
-    [DataField("fuelMaterial")]
-    [ViewVariables(VVAccess.ReadWrite)]
+    [DataField]
     public ProtoId<MaterialPrototype> FuelMaterial = "Plasma";
 
     /// <summary>
     /// How much material (can be fractional) is left in the generator.
     /// </summary>
-    [DataField("fractionalMaterial"), ViewVariables(VVAccess.ReadWrite)]
+    [DataField]
     public float FractionalMaterial;
 
     /// <summary>
     /// Value to multiply material amount by to get fuel amount.
     /// </summary>
-    [DataField("multiplier"), ViewVariables(VVAccess.ReadWrite)]
+    [DataField]
     public float Multiplier;
 }

@@ -9,7 +9,8 @@
   - type: Sprite
     sprite: Clothing/Neck/Cloaks/centcomcloakformal.rsi
   - type: StealTarget
-    stealGroup: HeadCloak # leaving this here because I suppose it might be interesting?
+    stealGroup:
+    - HeadCloak # leaving this here because I suppose it might be interesting?
 
 - type: entity
   parent: [ClothingNeckBase, BaseCommandContraband]
@@ -20,7 +21,8 @@
   - type: Sprite
     sprite: _Goobstation/Clothing/Neck/Cloaks/cap.rsi # Goob Station - cloak resprite
   - type: StealTarget
-    stealGroup: HeadCloak
+    stealGroup:
+    - HeadCloak
 
 - type: entity
   parent: [ClothingNeckBase, BaseCommandContraband]
@@ -31,7 +33,8 @@
   - type: Sprite
     sprite: _Goobstation/Clothing/Neck/Cloaks/hos.rsi # Goob Station - cloak resprite
   - type: StealTarget
-    stealGroup: HeadCloak
+    stealGroup:
+    - HeadCloak
 
 - type: entity
   parent: [ClothingNeckBase, BaseCommandContraband]
@@ -53,7 +56,8 @@
   - type: Sprite
     sprite: _Goobstation/Clothing/Neck/Cloaks/ChiefEngineer/greence.rsi # Goob Station - cloak resprite
   - type: StealTarget
-    stealGroup: HeadCloak
+    stealGroup:
+    - HeadCloak
 
 - type: entity
   parent: [ClothingNeckBase, BaseCommandContraband]
@@ -64,7 +68,8 @@
   - type: Sprite
     sprite: _Goobstation/Clothing/Neck/Cloaks/cmo.rsi # Goob Station - cloak resprite
   - type: StealTarget
-    stealGroup: HeadCloak
+    stealGroup:
+    - HeadCloak
 
 - type: entity
   parent: [ClothingNeckBase, BaseCommandContraband]
@@ -75,7 +80,8 @@
   - type: Sprite
     sprite: _Goobstation/Clothing/Neck/Cloaks/rd.rsi # Goob Station - cloak resprite
   - type: StealTarget
-    stealGroup: HeadCloak
+    stealGroup:
+    - HeadCloak
 
 - type: entity
   parent: [ClothingNeckBase, BaseCommandContraband]
@@ -86,7 +92,8 @@
   - type: Sprite
     sprite: _Goobstation/Clothing/Neck/Cloaks/qm.rsi # Goob Station - cloak resprite
   - type: StealTarget
-    stealGroup: HeadCloak
+    stealGroup:
+    - HeadCloak
 
 - type: entity
   parent: [ClothingNeckBase, BaseCommandContraband]
@@ -97,7 +104,8 @@
   - type: Sprite
     sprite: _Goobstation/Clothing/Neck/Cloaks/hop.rsi # Goob Station - cloak resprite
   - type: StealTarget
-    stealGroup: HeadCloak
+    stealGroup:
+    - HeadCloak
 
 - type: entity
   parent: ClothingNeckBase
@@ -126,7 +134,8 @@
   - type: Sprite
     sprite: Clothing/Neck/Cloaks/capcloakformal.rsi
   - type: StealTarget
-    stealGroup: HeadCloak
+    stealGroup:
+    - HeadCloak
 
 - type: entity
   parent: ClothingNeckBase
@@ -137,7 +146,8 @@
   - type: Sprite
     sprite: Clothing/Neck/Cloaks/admin.rsi
   - type: StealTarget
-    stealGroup: HeadCloak
+    stealGroup:
+    - HeadCloak
 
 - type: entity
   parent: ClothingNeckBase

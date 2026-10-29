@@ -68,13 +68,10 @@ ui-options-tab-controls = Controls
 ui-options-tab-audio = Audio
 ui-options-tab-network = Network
 ui-options-tab-misc = General
-
 ui-options-apply = Save & apply
 ui-options-reset-all = Reset changed
 ui-options-default = Reset to defaults
-
 ui-options-value-percent = { TOSTRING($value, "P0") }
-
 # Misc/General menu
 
 ui-options-discordrich = Enable Discord Rich Presence
@@ -84,7 +81,6 @@ ui-options-general-cursor = Cursor
 ui-options-general-speech = Speech
 ui-options-general-storage = Storage
 ui-options-general-accessibility = Accessibility
-
 ## Audio menu
 
 ui-options-master-volume = Master Volume:
@@ -99,19 +95,20 @@ ui-options-restart-sounds = Round Restart Sounds
 ui-options-event-music = Event Music
 ui-options-admin-sounds = Play Admin Sounds
 ui-options-bwoink-sound = Play AHelp Notification Sound
+ui-options-mute-unfocused = Mute audio when unfocused
+ui-options-audio-device = Output device:
+ui-options-audio-device-default = System default
+ui-options-audio-hrtf = Enable HRTF Audio Processing (Requires Restart)
 ui-options-volume-label = Volume
 # Goobstation - Highlight Volume
 ui-options-highlight-volume = Chat Highlight Ping Volume:
-
 ## Graphics menu
 
 ui-options-display-label = Display
 ui-options-quality-label = Quality
 ui-options-misc-label = Misc
 ui-options-interface-label = Interface
-
-
-ui-options-auto-fill-highlights = Auto-fill the highlights with the character's information
+ui-options-auto-fill-highlights = Automatically set the highlights list based on your character's name and job
 ui-options-highlights-color = Highlights color:
 ui-options-highlights-color-example = This is highlighted text.
 ui-options-show-held-item = Show held item next to cursor
@@ -122,6 +119,9 @@ ui-options-show-looc-on-head = Show LOOC chat above characters head
 ui-options-fancy-speech = Show names in speech bubbles
 ui-options-fancy-name-background = Add background to speech bubble names
 ui-options-vsync = VSync
+ui-options-max-fps = Maximum FPS:
+ui-options-max-fps-display-rate = Display Rate
+ui-options-max-fps-tooltip = Maximum framerate the client should run at. Set to 0 for no limit. This has no effect if VSync is enabled.
 ui-options-fullscreen = Fullscreen
 ui-options-lighting-label = Lighting Quality:
 ui-options-lighting-very-low = Very Low
@@ -144,6 +144,7 @@ ui-options-hud-theme-clockwork = Clockwork
 ui-options-hud-theme-retro = Retro
 ui-options-hud-theme-minimalist = Minimalist
 ui-options-hud-theme-ashen = Ashen
+ui-options-hud-theme-trasen = Trasen-Knox
 ui-options-hud-layout-default = Default
 ui-options-hud-layout-separated = Separated
 ui-options-vp-stretch = Stretch viewport to fit game window
@@ -167,18 +168,16 @@ ui-options-ambient-occlusion = Show Ambient Occlusion
 ui-options-fps-counter = Show FPS counter
 ui-options-vp-width = Viewport width:
 ui-options-hud-layout = HUD layout:
-
+ui-options-sharpness = Sharpness:
 ## Controls menu
 
 ui-options-hold-to-attack-melee = Hold to attack (melee)
 ui-options-hold-to-attack-ranged = Hold to attack (ranged)
-
 ui-options-binds-reset-all = Reset ALL keybinds
 ui-options-binds-explanation = Click to change binding, right-click to clear
 ui-options-unbound = Unbound
 ui-options-bind-reset = Reset
 ui-options-key-prompt = Press a key...
-
 ui-options-header-movement = Movement
 ui-options-header-camera = Camera
 ui-options-header-interaction-basic = Basic Interaction
@@ -190,25 +189,21 @@ ui-options-header-shuttle = Shuttle
 ui-options-header-map-editor = Map Editor
 ui-options-header-dev = Development
 ui-options-header-general = General
-
 ui-options-hotkey-keymap = Use US QWERTY Keys
 ui-options-hotkey-toggle-walk = Toggle Walk
 ui-options-hotkey-default-walk = Walk by default
-
 ui-options-function-move-up = Move Up
 ui-options-function-move-left = Move Left
 ui-options-function-move-down = Move Down
 ui-options-function-move-right = Move Right
 ui-options-function-walk = Walk
 ui-options-function-toggle-knockdown = Toggle Crawling
-
 ui-options-function-camera-rotate-left = Rotate left
 ui-options-function-camera-rotate-right = Rotate right
 ui-options-function-camera-reset = Reset
 ui-options-function-zoom-in = Zoom in
 ui-options-function-zoom-out = Zoom out
 ui-options-function-reset-zoom = Reset zoom
-
 ui-options-function-use = Use
 ui-options-function-use-secondary = Use secondary
 ui-options-function-alt-use = Alt use
@@ -225,7 +220,6 @@ ui-options-function-move-stored-item = Move stored item
 ui-options-function-rotate-stored-item = Rotate stored item
 ui-options-function-save-item-location = Save item location
 ui-options-static-storage-ui = Lock storage window to hotbar
-
 ui-options-function-smart-equip-backpack = Smart-equip to backpack
 ui-options-function-smart-equip-belt = Smart-equip to belt
 ui-options-function-smart-equip-suit-storage = Smart-equip to suit storage
@@ -242,7 +236,6 @@ ui-options-function-point = Point at location
 ui-options-function-rotate-object-clockwise = Rotate clockwise
 ui-options-function-rotate-object-counterclockwise = Rotate counterclockwise
 ui-options-function-flip-object = Flip
-
 ui-options-function-focus-chat-input-window = Focus chat
 ui-options-function-focus-local-chat-window = Focus chat (IC)
 ui-options-function-focus-emote = Focus chat (Emote)
@@ -273,11 +266,9 @@ ui-options-function-window-close-all = Close all windows
 ui-options-function-window-close-recent = Close recent window
 ui-options-function-show-escape-menu = Toggle game menu
 ui-options-function-escape-context = Close recent window or toggle game menu
-
 ui-options-function-take-screenshot = Take screenshot
 ui-options-function-take-screenshot-no-ui = Take screenshot (without UI)
 ui-options-function-toggle-fullscreen = Toggle fullscreen
-
 ui-options-function-editor-place-object = Place object
 ui-options-function-editor-cancel-place = Cancel placement
 ui-options-function-editor-grid-place = Place in grid
@@ -285,7 +276,6 @@ ui-options-function-editor-line-place = Place line
 ui-options-function-editor-rotate-object = Rotate
 ui-options-function-editor-flip-object = Flip
 ui-options-function-editor-copy-object = Copy
-
 ui-options-function-show-debug-console = Open Console
 ui-options-function-show-debug-monitors = Show Debug Monitors
 ui-options-function-inspect-entity = Inspect Entity
@@ -295,7 +285,6 @@ ui-options-function-inspect-server-component-tooltip = Open a ViewVariables wind
 ui-options-function-inspect-client-component = Inspect Client Component
 ui-options-function-inspect-client-component-tooltip = Open a ViewVariables window with the client component set by the "quickinspect" command for the entity your mouse is currently hovering over.
 ui-options-function-hide-ui = Hide UI
-
 ui-options-function-hotbar1 = Hotbar slot 1
 ui-options-function-hotbar2 = Hotbar slot 2
 ui-options-function-hotbar3 = Hotbar slot 3
@@ -336,7 +325,6 @@ ui-options-function-loadoutshift7 = Hotbar Loadout Shift+7
 ui-options-function-loadoutshift8 = Hotbar Loadout Shift+8
 ui-options-function-loadoutshift9 = Hotbar Loadout Shift+9
 ui-options-function-loadoutshift0 = Hotbar Loadout Shift+0
-
 ui-options-function-shuttle-strafe-up = Strafe up
 ui-options-function-shuttle-strafe-right = Strafe right
 ui-options-function-shuttle-strafe-left = Strafe left
@@ -344,62 +332,73 @@ ui-options-function-shuttle-strafe-down = Strafe down
 ui-options-function-shuttle-rotate-left = Rotate left
 ui-options-function-shuttle-rotate-right = Rotate right
 ui-options-function-shuttle-brake = Brake
-
 ## Network menu
 
 ui-options-net-predict = Client-side prediction
-
 ui-options-net-interp-ratio = State buffer size
 ui-options-net-interp-ratio-tooltip = Increasing this will generally make the game more resistant
                                       to server->client packet-loss, however in doing so it
                                       effectively adds slightly more latency and requires the
                                       client to predict more future ticks.
-
 ui-options-net-predict-tick-bias = Prediction tick bias
 ui-options-net-predict-tick-bias-tooltip = Increasing this will generally make the game more resistant
                                            to client->server packet-loss, however in doing so it
                                            effectively adds slightly more latency and requires the
                                            client to predict more future ticks.
-
 ui-options-net-pvs-spawn = PVS entity spawn budget
 ui-options-net-pvs-spawn-tooltip = This limits the rate at which the server will send newly spawned
                                        entities to the client. Lowering this can help reduce
                                        stuttering due to entity spawning, but can lead to pop-in.
-
 ui-options-net-pvs-entry = PVS entity budget
 ui-options-net-pvs-entry-tooltip = This limits the rate at which the server will send newly visible
                                        entities to the client. Lowering this can help reduce
                                        stuttering, but can lead to pop-in.
-
 ui-options-net-pvs-leave = PVS detach rate
 ui-options-net-pvs-leave-tooltip = This limits the rate at which the client will remove
                                        out-of-view entities. Lowering this can help reduce
                                        stuttering when walking around, but could occasionally
                                        lead to mispredicts and other issues.
-
 ## Toggle window console command
 cmd-options-desc = Opens options menu, optionally with a specific tab selected.
 cmd-options-help = Usage: options [tab]
-
 ## Accessibility menu
 
-ui-options-accessability-header-visuals = Visuals
-ui-options-accessability-header-content = Content
-
+ui-options-accessibility-header-reduced-motion = Reduced Motion
+ui-options-accessibility-header-visuals = Visuals
+ui-options-accessibility-header-content = Content
 ui-options-enable-color-name = Add colors to character names
 ui-options-colorblind-friendly = Colorblind friendly mode
-ui-options-reduced-motion = Reduce motion of visual effects
-ui-options-screen-shake-intensity = Screen shake intensity
+ui-options-reduced-motion = Reduce general visual effects
+ui-options-reduced-motion-tooltip = Toggle on to show alternative sprites with reduced motion for some items.
+# accessibility option tooltips taken from CVar summary blocks.
 
+ui-options-disable-ai-static = AI camera static
+ui-options-disable-ai-static-tooltip = Replaces the AI static camera effect with a plain gradient.
+ui-options-disable-blurry-vision = Blurry vision
+ui-options-disable-blurry-vision-tooltip = Replaces the movement in the blurry shader with a static effect.
+ui-options-disable-drunk-overlay = Drunk overlay
+ui-options-disable-drunk-overlay-tooltip = Replaces the movement in the drunk shader with a static offset.
+ui-options-disable-flash-effect = Flash
+ui-options-disable-flash-effect-tooltip = Replaces the 'flash' effect with a reduced movement equivalent.
+ui-options-disable-heat-distortion = Heat distortion
+ui-options-disable-heat-distortion-tooltip = Decreases motion on the heat distortion shader.
+ui-options-disable-nv-noise = Night vision overlay
+ui-options-disable-nv-noise-tooltip = Disables the noise effect on the night vision overlay.
+ui-options-disable-rainbow-overlay = Rainbow overlay
+ui-options-disable-rainbow-overlay-tooltip = Replaces the movement in the rainbow overlay shader with a static offset.
+ui-options-disable-singulo-warp = Singularity
+ui-options-disable-singulo-warp-tooltip = Disables the screen warping effect on the singularity.
+ui-options-screen-shake-intensity = Screen shake intensity
 ui-options-chat-window-opacity = Chat window opacity
 ui-options-speech-bubble-text-opacity = Speech bubble text opacity
 ui-options-speech-bubble-speaker-opacity = Speech bubble speaker opacity
 ui-options-speech-bubble-background-opacity = Speech bubble background opacity
 # Goobstation - Highlight chat sounds!
 ui-options-highlight-sound = Play sound on highlight
-
+ui-options-chat-preview = Show chat preview bubbles when typing
+ui-options-preview-bubble-background-opacity = Preview bubble background opacity
+ui-options-vacuum-overlay-intensity = Vacuum overlay intensity
 ui-options-censor-nudity = Censor character nudity
-
 ## Admin menu
 
 ## Shitmed Change
@@ -415,41 +414,35 @@ ui-options-function-target-left-leg = Target left leg
 ui-options-function-target-right-leg = Target right leg
 ui-options-function-target-left-foot = Target left foot
 ui-options-function-target-right-foot = Target right foot
-
 ui-options-admin-player-panel = Admin Menu Players List
-
 ui-options-admin-player-tab-symbol-setting = Character column antag symbols
 ui-options-admin-player-tab-symbol-setting-off = No antag symbol
 ui-options-admin-player-tab-symbol-setting-basic = Show standard antag symbol
 ui-options-admin-player-tab-symbol-setting-specific = Show specific antag symbol
-
 ui-options-admin-player-tab-role-setting = Role display settings
 ui-options-admin-player-tab-role-setting-roletype = Show role type
 ui-options-admin-player-tab-role-setting-subtype = Show subtype
 ui-options-admin-player-tab-role-setting-roletypesubtype = Show role type and subtype
 ui-options-admin-player-tab-role-setting-subtyperoletype = Show subtype and role type
-
 ui-options-admin-player-tab-color-setting = Color settings
 ui-options-admin-player-tab-color-setting-off = I hate colors
 ui-options-admin-player-tab-color-setting-character = Colorize antag character names
 ui-options-admin-player-tab-color-setting-roletype = Colorize all role types
 ui-options-admin-player-tab-color-setting-both = Colorize both
-
 ui-options-admin-overlay-title = Admin Overlay
-
 ui-options-admin-overlay-antag-format = Antag label style
 ui-options-admin-overlay-antag-format-binary = Show antag status
 ui-options-admin-overlay-antag-format-roletype = Show role type
 ui-options-admin-overlay-antag-format-subtype = Show subtype
 ui-options-admin-overlay-antag-format-off = Don't show antag status/roletype
-
 ui-options-admin-overlay-antag-symbol = Antag symbol style
 ui-options-admin-overlay-antag-symbol-off = No antag symbol
 ui-options-admin-overlay-antag-symbol-basic = Show standard antag symbol
 ui-options-admin-overlay-antag-symbol-specific = Show specific antag symbol
-
 ui-options-admin-enable-overlay-playtime = Show playtime
 ui-options-admin-enable-overlay-starting-job = Show starting job
 ui-options-admin-overlay-merge-distance = Stack merge distance
 ui-options-admin-overlay-ghost-fade-distance = Ghost overlay fade range from mouse
 ui-options-admin-overlay-ghost-hide-distance = Ghost overlay hide range from mouse
+ui-options-admin-strip-overlay-title = Strip Overlay
+ui-options-admin-strip-overlay-setting = Show strip overlay by default

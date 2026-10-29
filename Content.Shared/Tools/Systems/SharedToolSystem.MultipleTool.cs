@@ -71,17 +71,19 @@ public abstract partial class SharedToolSystem
         tool.UseSound = current.UseSound;
         tool.Qualities.Clear();
         tool.Qualities.UnionWith(current.Behavior);
+        Dirty(uid, tool);
 
         // TODO: Replace this with a better solution later
         if (TryComp<PryingComponent>(uid, out var pryComp))
         {
             pryComp.Enabled = current.Behavior.Contains("Prying");
+            Dirty(uid, pryComp);
         }
 
         if (playSound && current.ChangeSound != null)
             _audioSystem.PlayPredicted(current.ChangeSound, uid, user);
 
-        if (_protoMan.TryIndex(current.Behavior.First(), out ToolQualityPrototype? quality))
+        if (ProtoMan.TryIndex(current.Behavior.First(), out ToolQualityPrototype? quality))
             multiple.CurrentQualityName = Loc.GetString(quality.Name);
     }
 }

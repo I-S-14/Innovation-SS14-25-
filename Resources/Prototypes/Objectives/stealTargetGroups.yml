@@ -57,6 +57,7 @@
     sprite: Objects/Consumable/Food/meat.rsi
     state: corgi
     #
+
 - type: stealTargetGroup
   id: CaptainIDCard
   name: steal-target-groups-captain-id-card
@@ -111,6 +112,13 @@
   sprite:
     sprite: Objects/Misc/bedsheets.rsi
     state: sheetNT
+
+- type: stealTargetGroup
+  id: HeadHardsuit
+  name: steal-target-groups-heads-hardsuits
+  sprite:
+    sprite: Clothing/OuterClothing/Hardsuits/security-red.rsi
+    state: icon
 
 - type: stealTargetGroup
   id: Stamp
@@ -174,6 +182,13 @@
   sprite:
     sprite: Objects/Power/power_cells.rsi
     state: medium
+
+- type: stealTargetGroup
+  id: ClothingEyesHuds
+  name: steal-target-groups-huds
+  sprite:
+    sprite: Clothing/Eyes/Hud/sec.rsi
+    state: icon
 
 # Thief single item
 
@@ -267,13 +282,6 @@
   sprite:
     sprite: Objects/Misc/module.rsi
     state: cpuboard
-
-- type: stealTargetGroup
-  id: ClothingEyesHudBeer
-  name: steal-target-groups-clothing-eyes-hud-beer
-  sprite:
-    sprite: Clothing/Eyes/Hud/beergoggles.rsi
-    state: icon
 
 - type: stealTargetGroup
   id: Bible

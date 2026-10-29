@@ -54,7 +54,7 @@
 
 - type: entity
   name: syndicate pinpointer
-  description: Produced specifically for nuclear operative missions, get that disk!
+  description: A handheld tracking device produced by the Syndicate for their nuclear operatives. Keep upright to retain accuracy.
   id: PinpointerSyndicateNuclear
   parent: [ PinpointerBase, BaseSyndicateContraband ]
   components:
@@ -121,7 +121,7 @@
   parent: [ PinpointerBase, BaseXenoborgContraband ]
   id: PinpointerMothership
   name: core pinpointer
-  description: A handheld tracking device that leads to the direction of the Mothership core.
+  description: A handheld tracking device that leads to the direction of the Mothership core. Keep upright to retain accuracy.
   components:
   - type: Sprite
     layers:
@@ -161,15 +161,12 @@
   - type: Tag
     tags:
     - MothershipPinpointerPiece
-  - type: Construction
-    graph: RepairMothershipPinpointer
-    node: start
 
 - type: entity
   parent: PinpointerMothership
   id: PinpointerMothershipRepaired
   name: repaired core pinpointer
-  description: A handheld tracking device that leads to the direction of the Mothership core. This one has seen better days.
+  description: A handheld tracking device that leads to the direction of the Mothership core. This one has seen better days. Keep upright to retain accuracy.
   components:
   - type: Sprite
     layers:

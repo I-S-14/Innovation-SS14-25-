@@ -1,8 +1,5 @@
-<!--
-SPDX-License-Identifier: MIT
--->
-
 <ui:ChangelogWindow xmlns="https://spacestation14.io"
+                    xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
                     xmlns:ui="clr-namespace:Content.Client.Changelog"
                     Title="{Loc 'changelog-window-title'}"
                     MinSize="500 400"
@@ -11,7 +8,7 @@ SPDX-License-Identifier: MIT
     <PanelContainer StyleClasses="BackgroundPanel" />
     <BoxContainer Orientation="Vertical">
         <TabContainer Name="Tabs" Access="Public" HorizontalExpand="True" VerticalExpand="True" />
-        <PanelContainer StyleClasses="LowDivider" />
+        <controls:Separator StyleClasses="LowDivider"/>
         <Label Name="VersionLabel" Access="Public" HorizontalAlignment="Right" StyleClasses="LabelSubText" Margin="4 0" />
     </BoxContainer>
 </ui:ChangelogWindow>

@@ -1,6 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-
-using Content.Server.Body.Systems;
 using Content.Server.Destructible;
 using Content.Server.Polymorph.Components;
 using Content.Server.Popups;
@@ -8,7 +6,10 @@ using Content.Server.Storage.Components;
 using Content.Server.Storage.EntitySystems;
 using Content.Server.Stunnable;
 using Content.Shared.Body.Components;
+using Content.Shared.Administration.Logs;
+using Content.Shared.Body;
 using Content.Shared.Damage.Systems;
+using Content.Shared.Database;
 using Content.Shared.Examine;
 using Content.Shared.Popups;
 using Content.Shared.Storage.Components;
@@ -24,9 +25,9 @@ using Robust.Shared.Random;
 
 namespace Content.Server.ImmovableRod;
 
-public sealed class ImmovableRodSystem : EntitySystem
+public sealed partial class ImmovableRodSystem : EntitySystem
 {
-    [Dependency] private readonly IRobustRandom _random = default!;
+    [Dependency] private IRobustRandom _random = default!;
 
     [Dependency] private readonly BodySystem _bodySystem = default!;
     [Dependency] private readonly PopupSystem _popup = default!;
@@ -76,7 +77,6 @@ public sealed class ImmovableRodSystem : EntitySystem
             _physics.SetFriction(uid, phys, 0f);
             _physics.SetBodyStatus(uid, phys, BodyStatus.InAir);
 
-            var xform = Transform(uid);
             var (worldPos, worldRot) = _transform.GetWorldPositionRotation(uid);
             var vel = worldRot.ToWorldVec() * component.MaxSpeed;
 
@@ -90,7 +90,7 @@ public sealed class ImmovableRodSystem : EntitySystem
             }
 
             _physics.ApplyLinearImpulse(uid, vel, body: phys);
-            xform.LocalRotation = (vel - worldPos).ToWorldAngle() + MathHelper.PiOver2;
+            _transform.SetLocalRotationNoLerp(uid, (vel - worldPos).ToWorldAngle() + MathHelper.PiOver2);
         }
     }
 
@@ -115,7 +115,9 @@ public sealed class ImmovableRodSystem : EntitySystem
         {
             // oh god.
             var coords = Transform(uid).Coordinates;
+
             _popup.PopupCoordinates(Loc.GetString("immovable-rod-collided-rod-not-good"), coords, PopupType.LargeCaution);
+            _adminLogger.Add(LogType.Gib, LogImpact.Low, $"{ToPrettyString(uid)} and {ToPrettyString(ent)} created singularity at X:{coords.X} Y:{coords.Y}");
 
             Del(uid);
             Del(ent);
@@ -124,7 +126,7 @@ public sealed class ImmovableRodSystem : EntitySystem
             return;
         }
 
-        // dont delete/hurt self if polymoprhed into a rod
+        // Don't delete/hurt self if polymorphed into a rod
         if (TryComp<PolymorphedEntityComponent>(uid, out var polymorphed))
         {
             if (polymorphed.Parent == ent)
@@ -132,14 +134,17 @@ public sealed class ImmovableRodSystem : EntitySystem
         }
 
         // gib or damage em
-        if (TryComp<BodyComponent>(ent, out var body))
+        if (HasComp<BodyComponent>(ent))
         {
             component.MobCount++;
-            _popup.PopupEntity(Loc.GetString("immovable-rod-penetrated-mob", ("rod", uid), ("mob", ent)), uid, PopupType.LargeCaution);
 
-            if (!component.ShouldGib)
+            var coords = Transform(uid).Coordinates;
+
+            _adminLogger.Add(LogType.Gib, LogImpact.Medium, $"Entity {ToPrettyString(uid)} hit {ToPrettyString(ent)} at X:{coords.X} Y:{coords.Y}");
+
+            if (!component.ShouldGib || !_destructible.DestroyEntity(ent))
             {
-                if (component.Damage == null)
+                if (component.Damage is null)
                     return;
 
                 component.DamagedEntities.Add(ent); // Goobstation
@@ -149,7 +154,8 @@ public sealed class ImmovableRodSystem : EntitySystem
                 return;
             }
 
-            _bodySystem.GibBody(ent, body: body);
+            _gibbing.Gib(ent);
+            _popup.PopupEntity(Loc.GetString("immovable-rod-penetrated-mob", ("rod", uid), ("mob", ent)), uid, PopupType.LargeCaution);
             return;
         }
 

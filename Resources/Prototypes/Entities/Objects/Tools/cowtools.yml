@@ -22,11 +22,13 @@
   - type: Tool
     qualities:
     - Cutting
+    - Shearing
     useSound:
       path: /Audio/Items/wirecutter.ogg
     speedModifier: 0.05
   - type: Item
     sprite: Objects/Tools/Cowtools/haycutters.rsi
+  - type: BotanySampleTaker
 
 - type: entity
   name: moodriver

@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # End points - the eventual goal is that almost all foods and drinks metabolize into either these, or reagents that build up (e.g. theobromine, caffeine,... )
+
 - type: reagent
   id: Nutriment #Anything that isn't better suited to vitamin, protein, or sugar. we aren't doing a super in-depth simulator.
   name: reagent-name-nutriment
@@ -9,9 +10,12 @@
   flavor: nutriment
   color: "#24591F"
   metabolisms:
-    Food:
+    Digestion:
+      metabolismRate: 1
       effects:
-      - !type:SatiateHunger
+      - !type:Satiate
+        satiationType: Hunger
+        factor: 3
   plantMetabolism:
   - !type:PlantAdjustNutrition
     amount: 1.5
@@ -84,9 +88,10 @@
   puddleSpriteSet: Powder # Goob
   meltingPoint: 146.0
   metabolisms:
-    Food:
+    Digestion:
       effects:
-      - !type:SatiateHunger
+      - !type:Satiate
+        satiationType: Hunger
         conditions:
         - !type:ReagentCondition #Only satiates when eaten with nutriment
           reagent: Nutriment

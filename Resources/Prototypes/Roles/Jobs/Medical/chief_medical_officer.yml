@@ -26,11 +26,9 @@
       inverted: true
       species:
       - Abductor
-  weight: 10
   startingGear: CMOGear
   icon: "JobIconChiefMedicalOfficer"
   supervisors: job-supervisors-captain
-  canBeAntag: false
   skills: # CorvaxGoob-Skills
   - Surgery
   - MedicalEquipment

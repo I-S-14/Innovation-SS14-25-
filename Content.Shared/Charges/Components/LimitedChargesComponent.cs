@@ -2,6 +2,7 @@
 
 using Content.Shared.Charges.Systems;
 using Content.Goobstation.Maths.FixedPoint;
+using Content.Shared.Popups;
 using Robust.Shared.GameStates;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
 
@@ -13,6 +14,18 @@ namespace Content.Shared.Charges.Components;
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState, Access(typeof(SharedChargesSystem))]
 public sealed partial class LimitedChargesComponent : Component
 {
+    /// <summary>
+    /// Localization ID of the popup shown when the entity has no charges left.
+    /// </summary>
+    [DataField]
+    public LocId? OnFailPopup;
+
+    /// <summary>
+    /// The type the fail popup should show up as.
+    /// </summary>
+    [DataField]
+    public PopupType OnFailPopupType = PopupType.SmallCaution;
+
     [DataField, AutoNetworkedField]
     public int LastCharges;
 

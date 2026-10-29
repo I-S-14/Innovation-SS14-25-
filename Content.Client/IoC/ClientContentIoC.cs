@@ -5,12 +5,14 @@ using Content.Client._durkcode.ServerCurrency;
 using Content.Client._RMC14.LinkAccount;
 CorvaxGoob-Coins-end */
 using Content.Client.Administration.Managers;
+using Content.Client.Audio.Midi;
 using Content.Client.Changelog;
 using Content.Client.Chat.Managers;
 using Content.Client.Clickable;
 using Content.Client.Corvax.ExportSprites;
 using Content.Client.DebugMon;
 using Content.Client.Eui;
+using Content.Client.FeedbackPopup;
 using Content.Client.Fullscreen;
 using Content.Client.GameTicking.Managers;
 using Content.Client.GhostKick;
@@ -30,6 +32,7 @@ using Content.Client.Lobby;
 using Content.Client.Players.RateLimiting;
 using Content.Shared.Administration.Managers;
 using Content.Shared.Chat;
+using Content.Shared.FeedbackSystem;
 using Content.Shared.IoC;
 using Content.Shared.Players.PlayTimeTracking;
 using Content.Shared.Players.RateLimiting;
@@ -75,6 +78,9 @@ namespace Content.Client.IoC
             collection.Register<LinkAccountManager>(); // RMC14
             CorvaxGoob-Coins-end */
             collection.Register<ClientsidePlaytimeTrackingManager>();
+            collection.Register<ClientFeedbackManager>();
+            collection.Register<ISharedFeedbackManager, ClientFeedbackManager>();
+            collection.Register<MidiFileCollectionManager>();
         }
     }
 }

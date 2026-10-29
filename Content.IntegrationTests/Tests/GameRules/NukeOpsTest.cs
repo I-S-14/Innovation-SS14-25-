@@ -3,9 +3,9 @@
 #nullable enable
 using System.Collections.Generic;
 using System.Linq;
+using Content.IntegrationTests.Fixtures;
 using Content.Server.Body.Components;
 using Content.Server.GameTicking;
-using Content.Server.GameTicking.Presets;
 using Content.Server.GameTicking.Rules.Components;
 using Content.Server.Mind;
 using Content.Server.Roles;
@@ -15,7 +15,11 @@ using Content.Shared.CCVar;
 using Content.Shared.Damage;
 using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.Damage.Components;
+using Content.Shared.Damage.Systems;
+using Content.Shared.FixedPoint;
 using Content.Shared.GameTicking;
+using Content.Shared.GameTicking.Prototypes;
+using Content.Shared.GameTicking.Rules.Components;
 using Content.Shared.Hands.Components;
 using Content.Shared.Inventory;
 using Content.Shared.NPC.Prototypes;
@@ -33,11 +37,19 @@ using Robust.Shared.Prototypes;
 namespace Content.IntegrationTests.Tests.GameRules;
 
 [TestFixture]
-[Category("GameRuleTests")]
-public sealed class NukeOpsTest
+public sealed class NukeOpsTest : GameTest
 {
     private static readonly ProtoId<NpcFactionPrototype> SyndicateFaction = "Syndicate";
     private static readonly ProtoId<NpcFactionPrototype> NanotrasenFaction = "NanoTrasen";
+
+    public override PoolSettings PoolSettings => new()
+    {
+        Dirty = true,
+        DummyTicker = false,
+        Connected = true,
+        InLobby = true
+    };
+
 
     /// <summary>
     /// Check that a nuke ops game mode can start without issue. I.e., that the nuke station and such all get loaded.
@@ -45,24 +57,19 @@ public sealed class NukeOpsTest
     [Test]
     public async Task TryStopNukeOpsFromConstantlyFailing()
     {
-        await using var pair = await PoolManager.GetServerClient(new PoolSettings
-        {
-            Dirty = true,
-            DummyTicker = false,
-            Connected = true,
-            InLobby = true
-        });
+        var pair = Pair;
 
         var server = pair.Server;
         var client = pair.Client;
         var entMan = server.EntMan;
         var mapSys = server.System<MapSystem>();
-        var ticker = server.System<GameTicker>();
+        var ticker = server.System<ServerGameTicker>();
         var mindSys = server.System<MindSystem>();
         var roleSys = server.System<RoleSystem>();
         var invSys = server.System<InventorySystem>();
         var factionSys = server.System<NpcFactionSystem>();
         var roundEndSys = server.System<RoundEndSystem>();
+        var damageSys = server.System<DamageableSystem>();
 
         server.CfgMan.SetCVar(CCVars.GridFill, true);
 
@@ -270,6 +277,5 @@ public sealed class NukeOpsTest
         });
 
         ticker.SetGamePreset((GamePresetPrototype?) null);
-        await pair.CleanReturnAsync();
     }
 }

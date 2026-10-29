@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 #Wizard outfit startingGear definitions.
+
 - type: startingGear
   id: WizardBlueGear
   equipment:
@@ -21,7 +22,7 @@
   parent: WizardBlueGear
   equipment:
     jumpsuit: ClothingUniformJumpsuitColorRed
-    head: ClothingHeadHatRedwizard
+    head: ClothingHeadHatWizardRed
     outerClothing: ClothingOuterWizardRed
 
 - type: startingGear
@@ -29,7 +30,7 @@
   parent: WizardBlueGear
   equipment:
     jumpsuit: ClothingUniformJumpsuitColorPurple
-    head: ClothingHeadHatVioletwizard
+    head: ClothingHeadHatWizardViolet
     outerClothing: ClothingOuterWizardViolet
 
 - type: startingGear

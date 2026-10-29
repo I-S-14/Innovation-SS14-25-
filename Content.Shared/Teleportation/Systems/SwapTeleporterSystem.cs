@@ -22,7 +22,7 @@ namespace Content.Shared.Teleportation.Systems;
 /// <summary>
 /// This handles <see cref="SwapTeleporterComponent"/>
 /// </summary>
-public sealed class SwapTeleporterSystem : EntitySystem
+public sealed partial class SwapTeleporterSystem : EntitySystem
 {
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly INetManager _net = default!;
@@ -45,8 +45,6 @@ public sealed class SwapTeleporterSystem : EntitySystem
         SubscribeLocalEvent<SwapTeleporterComponent, ExaminedEvent>(OnExamined);
 
         SubscribeLocalEvent<SwapTeleporterComponent, ComponentShutdown>(OnShutdown);
-
-        _xformQuery = GetEntityQuery<TransformComponent>();
     }
 
     private void OnInteract(Entity<SwapTeleporterComponent> ent, ref AfterInteractEvent args)
@@ -75,13 +73,13 @@ public sealed class SwapTeleporterSystem : EntitySystem
 
         if (comp.LinkedEnt != null)
         {
-            _popup.PopupClient(Loc.GetString("swap-teleporter-popup-link-fail-already"), uid, args.User);
+            _popup.PopupEntity(Loc.GetString("swap-teleporter-popup-link-fail-already"), uid, args.User);
             return;
         }
 
         if (targetComp.LinkedEnt != null)
         {
-            _popup.PopupClient(Loc.GetString("swap-teleporter-popup-link-fail-already-other"), uid, args.User);
+            _popup.PopupEntity(Loc.GetString("swap-teleporter-popup-link-fail-already-other"), uid, args.User);
             return;
         }
 
@@ -91,7 +89,7 @@ public sealed class SwapTeleporterSystem : EntitySystem
         Dirty(target, targetComp);
         _appearance.SetData(uid, SwapTeleporterVisuals.Linked, true);
         _appearance.SetData(target, SwapTeleporterVisuals.Linked, true);
-        _popup.PopupClient(Loc.GetString("swap-teleporter-popup-link-create"), uid, args.User);
+        _popup.PopupEntity(Loc.GetString("swap-teleporter-popup-link-create"), uid, args.User);
     }
 
     private void OnGetAltVerb(Entity<SwapTeleporterComponent> ent, ref GetVerbsEvent<AlternativeVerb> args)
@@ -134,7 +132,7 @@ public sealed class SwapTeleporterSystem : EntitySystem
 
         if (comp.LinkedEnt == null)
         {
-            _popup.PopupClient(Loc.GetString("swap-teleporter-popup-teleport-cancel-link"), ent, user);
+            _popup.PopupEntity(Loc.GetString("swap-teleporter-popup-teleport-cancel-link"), ent, user);
             return;
         }
 
@@ -147,7 +145,7 @@ public sealed class SwapTeleporterSystem : EntitySystem
 
         if (_timing.CurTime < comp.NextTeleportUse)
         {
-            _popup.PopupClient(Loc.GetString("swap-teleporter-popup-teleport-cancel-time"), ent, user);
+            _popup.PopupEntity(Loc.GetString("swap-teleporter-popup-teleport-cancel-time"), ent, user);
             return;
         }
 
@@ -185,7 +183,7 @@ public sealed class SwapTeleporterSystem : EntitySystem
             return;
         }
 
-        _popup.PopupClient(Loc.GetString("swap-teleporter-popup-teleport-other",
+        _popup.PopupEntity(Loc.GetString("swap-teleporter-popup-teleport-other",
             ("entity", Identity.Entity(linkedEnt, EntityManager))),
             teleEnt,
             otherTeleEnt,
@@ -238,7 +236,7 @@ public sealed class SwapTeleporterSystem : EntitySystem
         Dirty(ent, ent.Comp);
 
         if (user != null)
-            _popup.PopupClient(Loc.GetString("swap-teleporter-popup-link-destroyed"), ent, user.Value);
+            _popup.PopupEntity(Loc.GetString("swap-teleporter-popup-link-destroyed"), ent, user.Value);
         else
             _popup.PopupEntity(Loc.GetString("swap-teleporter-popup-link-destroyed"), ent);
 
@@ -253,7 +251,7 @@ public sealed class SwapTeleporterSystem : EntitySystem
         if (HasComp<MapGridComponent>(parent) || HasComp<MapComponent>(parent))
             return ent;
 
-        if (!_xformQuery.TryGetComponent(parent, out var parentXform) || parentXform.Anchored)
+        if (!TryComp(parent, out TransformComponent? parentXform) || parentXform.Anchored)
             return ent;
 
         if (!TryComp<PhysicsComponent>(parent, out var body) || body.BodyType == BodyType.Static)

@@ -13,7 +13,7 @@ using Robust.Shared.Network;
 
 namespace Content.Shared.Sticky.Systems;
 
-public sealed class StickySystem : EntitySystem
+public sealed partial class StickySystem : EntitySystem
 {
     [Dependency] private readonly EntityWhitelistSystem _whitelist = default!;
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
@@ -23,6 +23,13 @@ public sealed class StickySystem : EntitySystem
     [Dependency] private readonly SharedInteractionSystem _interaction = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly INetManager _net = default!;
+    [Dependency] private EntityWhitelistSystem _whitelist = default!;
+    [Dependency] private SharedAppearanceSystem _appearance = default!;
+    [Dependency] private SharedContainerSystem _container = default!;
+    [Dependency] private SharedDoAfterSystem _doAfter = default!;
+    [Dependency] private SharedHandsSystem _hands = default!;
+    [Dependency] private SharedInteractionSystem _interaction = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
 
     private const string StickerSlotId = "stickers_container";
 
@@ -99,7 +106,7 @@ public sealed class StickySystem : EntitySystem
         if (comp.StickPopupStart != null)
         {
             var msg = Loc.GetString(comp.StickPopupStart);
-            _popup.PopupClient(msg, user, user);
+            _popup.PopupEntity(msg, user, user);
         }
 
         // start sticking object to target
@@ -114,7 +121,7 @@ public sealed class StickySystem : EntitySystem
 
     private void OnStickyDoAfter(Entity<StickyComponent> ent, ref StickyDoAfterEvent args)
     {
-        // target is the sticky item when unsticking and the surface when sticking, it will never be null
+        // target is the surface when sticking/unsticking, it will never be null
         if (args.Handled || args.Cancelled || args.Args.Target is not {} target)
             return;
 
@@ -156,7 +163,7 @@ public sealed class StickySystem : EntitySystem
         if (comp.UnstickPopupStart != null)
         {
             var msg = Loc.GetString(comp.UnstickPopupStart);
-            _popup.PopupClient(msg, user, user);
+            _popup.PopupEntity(msg, user, user);
         }
 
         // start unsticking object
@@ -185,7 +192,7 @@ public sealed class StickySystem : EntitySystem
         if (comp.StickPopupSuccess != null)
         {
             var msg = Loc.GetString(comp.StickPopupSuccess);
-            _popup.PopupClient(msg, user, user);
+            _popup.PopupEntity(msg, user, user);
         }
 
         // send information to appearance that entity is stuck
@@ -229,7 +236,7 @@ public sealed class StickySystem : EntitySystem
         if (comp.UnstickPopupSuccess != null)
         {
             var msg = Loc.GetString(comp.UnstickPopupSuccess);
-            _popup.PopupClient(msg, user, user);
+            _popup.PopupEntity(msg, user, user);
         }
 
         comp.StuckTo = null;

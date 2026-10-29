@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-
-using Content.Server.Atmos.EntitySystems;
 using Content.Server.Body.Systems;
 using Content.Server.Medical.Components;
 using Content.Shared.Bed.Sleep;
+using Content.Shared.Atmos;
 using Content.Shared.Medical.Cryogenics;
 
 namespace Content.Server.Medical

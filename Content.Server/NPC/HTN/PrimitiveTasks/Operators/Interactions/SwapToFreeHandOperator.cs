@@ -2,8 +2,8 @@
 
 using System.Threading;
 using System.Threading.Tasks;
-using Content.Server.Hands.Systems;
 using Content.Shared.Hands.Components;
+using Content.Shared.Hands.EntitySystems;
 
 namespace Content.Server.NPC.HTN.PrimitiveTasks.Operators.Interactions;
 
@@ -13,7 +13,8 @@ namespace Content.Server.NPC.HTN.PrimitiveTasks.Operators.Interactions;
 /// </summary>
 public sealed partial class SwapToFreeHandOperator : HTNOperator
 {
-    [Dependency] private readonly IEntityManager _entManager = default!;
+    [Dependency] private IEntityManager _entManager = default!;
+    [Dependency] private SharedHandsSystem _handsSystem = default!;
 
     public override async Task<(bool Valid, Dictionary<string, object>? Effects)> Plan(NPCBlackboard blackboard, CancellationToken cancelToken)
     {
@@ -43,9 +44,8 @@ public sealed partial class SwapToFreeHandOperator : HTNOperator
     {
         // TODO: Need interaction cooldown
         var owner = blackboard.GetValue<EntityUid>(NPCBlackboard.Owner);
-        var handSystem = _entManager.System<HandsSystem>();
 
-        if (!handSystem.TrySelectEmptyHand(owner))
+        if (!_handsSystem.TrySelectEmptyHand(owner))
         {
             return HTNOperatorStatus.Failed;
         }

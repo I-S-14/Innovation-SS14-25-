@@ -6,6 +6,7 @@ using Content.Goobstation.Shared.NTR.Events;
 using Content.Server._Goobstation.Wizard.Store;
 using Content.Server.Actions;
 using Content.Server.Administration.Logs;
+using Content.Shared.Mindshield;
 using Content.Server.Stack;
 using Content.Server.Store.Components;
 using Content.Shared._Goobstation.Wizard.Refund; // Goob
@@ -14,12 +15,10 @@ using Content.Shared.Database;
 using Content.Goobstation.Maths.FixedPoint;
 using Content.Goobstation.Shared.ManifestListings;
 using Content.Shared.Hands.EntitySystems;
-using Content.Shared.Mind;
-using Content.Shared.PDA.Ringer;
+using Content.Shared.NPC.Systems;
 using Content.Shared.Store;
 using Content.Shared.Store.Components;
 using Content.Shared.UserInterface;
-using Robust.Server.GameObjects;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
@@ -39,6 +38,15 @@ public sealed partial class StoreSystem
     [Dependency] private readonly StackSystem _stack = default!;
     [Dependency] private readonly UserInterfaceSystem _ui = default!;
     [Dependency] private readonly SparksSystem _sparks = default!; // CorvaxGoob
+    [Dependency] private IAdminLogManager _admin = default!;
+    [Dependency] private ActionContainerSystem _actionContainer = default!;
+    [Dependency] private ActionsSystem _actions = default!;
+    [Dependency] private ActionUpgradeSystem _actionUpgrade = default!;
+    [Dependency] private NpcFactionSystem _npcFaction = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private SharedHandsSystem _hands = default!;
+    [Dependency] private StackSystem _stack = default!;
+    [Dependency] private MindShieldSystem _mindShield = default!;
 
     private void InitializeUi()
     {
@@ -59,72 +67,12 @@ public sealed partial class StoreSystem
         ent.Comp.BoughtEntities.Remove(args.Uid);
     }
 
-    /// <summary>
-    /// Toggles the store Ui open and closed
-    /// </summary>
-    /// <param name="user">the person doing the toggling</param>
-    /// <param name="storeEnt">the store being toggled</param>
-    /// <param name="component"></param>
-    public void ToggleUi(EntityUid user, EntityUid storeEnt, StoreComponent? component = null)
+    private void RemoteStoreRelay(Entity<RemoteStoreComponent> entity, object ev)
     {
-        if (!Resolve(storeEnt, ref component))
+        if (entity.Comp.Store == null || !TryComp<StoreComponent>(entity.Comp.Store, out var store))
             return;
 
-        if (!TryComp<ActorComponent>(user, out var actor))
-            return;
-
-        if (!_ui.TryToggleUi(storeEnt, StoreUiKey.Key, actor.PlayerSession))
-            return;
-
-        UpdateUserInterface(user, storeEnt, component);
-    }
-
-    /// <summary>
-    /// Closes the store UI for everyone, if it's open
-    /// </summary>
-    public void CloseUi(EntityUid uid, StoreComponent? component = null)
-    {
-        if (!Resolve(uid, ref component))
-            return;
-
-        _ui.CloseUi(uid, StoreUiKey.Key);
-    }
-
-    /// <summary>
-    /// Updates the user interface for a store and refreshes the listings
-    /// </summary>
-    /// <param name="user">The person who if opening the store ui. Listings are filtered based on this.</param>
-    /// <param name="store">The store entity itself</param>
-    /// <param name="component">The store component being refreshed.</param>
-    public void UpdateUserInterface(EntityUid? user, EntityUid store, StoreComponent? component = null)
-    {
-        if (!Resolve(store, ref component))
-            return;
-
-        //this is the person who will be passed into logic for all listing filtering.
-        if (user != null) //if we have no "buyer" for this update, then don't update the listings
-        {
-            component.LastAvailableListings = GetAvailableListings(component.AccountOwner ?? user.Value, store, component).ToHashSet();
-        }
-
-        //dictionary for all currencies, including 0 values for currencies on the whitelist
-        Dictionary<ProtoId<CurrencyPrototype>, FixedPoint2> allCurrency = new();
-        foreach (var supported in component.CurrencyWhitelist)
-        {
-            allCurrency.Add(supported, FixedPoint2.Zero);
-
-            if (component.Balance.TryGetValue(supported, out var value))
-                allCurrency[supported] = value;
-        }
-
-        // TODO: if multiple users are supposed to be able to interact with a single BUI & see different
-        // stores/listings, this needs to use session specific BUI states.
-
-        // only tell operatives to lock their uplink if it can be locked
-        var showFooter = HasComp<RingerUplinkComponent>(store);
-
-        var state = new StoreUpdateState(component.LastAvailableListings, allCurrency, showFooter, component.RefundAllowed);
-        _ui.SetUiState(store, StoreUiKey.Key, state);
+        RaiseLocalEvent(entity.Comp.Store.Value, ev);
     }
 
     private void OnRequestUpdate(EntityUid uid, StoreComponent component, StoreRequestUpdateInterfaceMessage args)
@@ -199,6 +147,13 @@ public sealed partial class StoreSystem
             component.BalanceSpent[currency] += value;
         }
 
+        //apply components
+        if (listing.ProductComponents != null)
+        {
+            if (ProtoMan.Resolve(listing.ProductComponents, out var productComponentsEntity))
+                EntityManager.AddComponents(buyer, productComponentsEntity.Components);
+        }
+
         //spawn entity
         if (listing.ProductEntity != null)
         {
@@ -227,7 +182,7 @@ public sealed partial class StoreSystem
             EntityUid? actionId;
             // I guess we just allow duplicate actions?
             // Allow duplicate actions and just have a single list buy for the buy-once ones.
-            if (listing.ApplyToMob || !_mind.TryGetMind(buyer, out var mind, out _))
+            if (listing.ApplyToMob || !Mind.TryGetMind(buyer, out var mind, out _))
                 actionId = _actions.AddAction(buyer, listing.ProductAction);
             else
                 actionId = _actionContainer.AddAction(mind, listing.ProductAction);
@@ -316,9 +271,24 @@ public sealed partial class StoreSystem
         // Goob edit end
 
         //log dat shit.
+        var logImpact = LogImpact.Low;
+        var logExtraInfo = "";
+        if (component.ExpectedFaction?.Count > 0 && !_npcFaction.IsMemberOfAny(buyer, component.ExpectedFaction))
+        {
+            logImpact = LogImpact.High;
+            logExtraInfo = ", but was not from an expected faction";
+
+            _mindShield.GetMindshieldStatus(buyer, out var isMindshielded, out _);
+            if (isMindshielded)
+            {
+                logImpact = LogImpact.Extreme;
+                logExtraInfo += " while also possessing a mindshield";
+            }
+        }
+
         _admin.Add(LogType.StorePurchase,
-            LogImpact.Low,
-            $"{ToPrettyString(buyer):player} purchased listing \"{ListingLocalisationHelpers.GetLocalisedNameOrEntityName(listing, _proto)}\" from {ToPrettyString(uid)}");
+            logImpact,
+            $"{ToPrettyString(buyer):player} purchased listing \"{ListingLocalisationHelpers.GetLocalisedNameOrEntityName(listing, ProtoMan)}\" from {ToPrettyString(uid)}{logExtraInfo}.");
 
         listing.PurchaseAmount++; //track how many times something has been purchased
         _audio.PlayGlobal(component.BuySuccessSound, msg.Actor); //cha-ching! // Goob edit
@@ -358,7 +328,7 @@ public sealed partial class StoreSystem
             return;
 
         //make sure a malicious client didn't send us random shit
-        if (!_proto.TryIndex<CurrencyPrototype>(msg.Currency, out var proto))
+        if (!ProtoMan.TryIndex<CurrencyPrototype>(msg.Currency, out var proto))
             return;
 
         //we need an actually valid entity to spawn. This check has been done earlier, but just in case.

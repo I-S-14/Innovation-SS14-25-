@@ -35,7 +35,7 @@ public sealed class PlayerPanelEuiState(
     public readonly bool Frozen = frozen;
     public readonly bool CanAhelp = canAhelp;
     public readonly float TrustScore = trustScore;
-    public readonly TimeSpan? AccountAge = accountAge;
+    public readonly DateTime? AccountCreationDate = accountCreationDate;
 }
 
 

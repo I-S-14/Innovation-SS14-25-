@@ -19,11 +19,12 @@ using Robust.Shared.Physics;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Systems;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Random;
 using Robust.Shared.Timing;
 
 namespace Content.Shared.Tiles;
 
-public sealed class FloorTileSystem : EntitySystem
+public sealed partial class FloorTileSystem : EntitySystem
 {
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly INetManager _netManager = default!;
@@ -38,8 +39,23 @@ public sealed class FloorTileSystem : EntitySystem
     [Dependency] private readonly SharedPhysicsSystem _physics = default!;
     [Dependency] private readonly SharedMapSystem _map = default!;
     [Dependency] private readonly TurfSystem _turf = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private INetManager _netManager = default!;
+    [Dependency] private ITileDefinitionManager _tileDefinitionManager = default!;
+    [Dependency] private ISharedAdminLogManager _adminLogger = default!;
+    [Dependency] private EntityLookupSystem _lookup = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private SharedStackSystem _stackSystem = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private TileSystem _tile = default!;
+    [Dependency] private SharedPhysicsSystem _physics = default!;
+    [Dependency] private SharedMapSystem _map = default!;
+    [Dependency] private TurfSystem _turf = default!;
+    [Dependency] private EntityQuery<PhysicsComponent> _physicsQuery = default!;
 
     private static readonly Vector2 CheckRange = new(1f, 1f);
+
 
     /// <summary>
     ///     A recycled hashset used to check for walls when trying to place tiles on turfs.
@@ -69,9 +85,6 @@ public sealed class FloorTileSystem : EntitySystem
         if (locationMap.MapId == MapId.Nullspace)
             return;
 
-        var physicQuery = GetEntityQuery<PhysicsComponent>();
-        var transformQuery = GetEntityQuery<TransformComponent>();
-
         var map = _transform.ToMapCoordinates(location);
 
         // Disallow placement close to grids.
@@ -98,7 +111,7 @@ public sealed class FloorTileSystem : EntitySystem
             return;
         }
 
-        var userPos = _transform.ToMapCoordinates(transformQuery.GetComponent(args.User).Coordinates).Position;
+        var userPos = _transform.ToMapCoordinates(Transform(args.User).Coordinates).Position;
         var dir = userPos - map.Position;
         var canAccessCenter = false;
         if (dir.LengthSquared() > 0.01)
@@ -116,7 +129,7 @@ public sealed class FloorTileSystem : EntitySystem
             _lookup.GetEntitiesInTile(tileRef.Value, _turfCheck);
             foreach (var ent in _turfCheck)
             {
-                if (physicQuery.TryGetComponent(ent, out var phys) &&
+                if (_physicsQuery.TryGetComponent(ent, out var phys) &&
                     phys.BodyType == BodyType.Static &&
                     phys.Hard &&
                     (phys.CollisionLayer & (int)CollisionGroup.Impassable) != 0)
@@ -138,7 +151,7 @@ public sealed class FloorTileSystem : EntitySystem
 
                 if (!CanPlaceTile(gridUid, mapGrid, tile.GridIndices, out var reason))
                 {
-                    _popup.PopupClient(reason, args.User, args.User);
+                    _popup.PopupEntity(reason, args.User, args.User);
                     return;
                 }
 
@@ -196,8 +209,9 @@ public sealed class FloorTileSystem : EntitySystem
     {
         _adminLogger.Add(LogType.Tile, LogImpact.Low, $"{ToPrettyString(user):actor} placed tile {_tileDefinitionManager[tileId].Name} at {ToPrettyString(gridUid)} {location}");
 
-        var tileDef = (ContentTileDefinition) _tileDefinitionManager[tileId];
-        var random = new System.Random((int)_timing.CurTick.Value);
+        var tileDef = (ContentTileDefinition)_tileDefinitionManager[tileId];
+        var random = new RobustRandom();
+        random.SetSeed((int)_timing.CurTick.Value);
         var variant = _tile.PickVariant(tileDef, random);
 
         var tileRef = _map.GetTileRef(gridUid, mapGrid, location.Offset(new Vector2(offset, offset)));

@@ -26,7 +26,7 @@ public sealed partial class SSDIndicatorComponent : Component
     /// The icon displayed next to the associated entity when it is SSD.
     /// </summary>
     [DataField]
-    public ProtoId<SsdIconPrototype> Icon = "SSDIcon";
+    public ProtoId<StatusIconPrototype> Icon = "SSDIcon";
 
     /// <summary>
     /// Goobstation: Whether a player has ever controlled this entity.

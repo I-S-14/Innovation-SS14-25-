@@ -16,6 +16,8 @@ using Content.Shared.Lock;
 using Content.Shared.NameIdentifier;
 using Content.Shared.PDA;
 using Content.Shared.StationRecords;
+using Content.Shared.StationRecords.Components;
+using Content.Shared.StationRecords.Systems;
 using Content.Shared.Tag;
 using Robust.Shared.Containers;
 using Robust.Shared.Collections;
@@ -25,17 +27,17 @@ using Robust.Shared.Timing;
 
 namespace Content.Shared.Access.Systems;
 
-public sealed class AccessReaderSystem : EntitySystem
+public sealed partial class AccessReaderSystem : EntitySystem
 {
-    [Dependency] private readonly IPrototypeManager _prototype = default!;
-    [Dependency] private readonly InventorySystem _inventorySystem = default!;
-    [Dependency] private readonly IGameTiming _gameTiming = default!;
-    [Dependency] private readonly EmagSystem _emag = default!;
-    [Dependency] private readonly TagSystem _tag = default!;
-    [Dependency] private readonly SharedGameTicker _gameTicker = default!;
-    [Dependency] private readonly SharedHandsSystem _handsSystem = default!;
-    [Dependency] private readonly SharedContainerSystem _containerSystem = default!;
-    [Dependency] private readonly SharedStationRecordsSystem _recordsSystem = default!;
+    [Dependency] private InventorySystem _inventorySystem = default!;
+    [Dependency] private IGameTiming _gameTiming = default!;
+    [Dependency] private EmagSystem _emag = default!;
+    [Dependency] private TagSystem _tag = default!;
+    [Dependency] private GameTicker _gameTicker = default!;
+    [Dependency] private SharedHandsSystem _handsSystem = default!;
+    [Dependency] private SharedContainerSystem _containerSystem = default!;
+    [Dependency] private StationRecordsSystem _recordsSystem = default!;
+    [Dependency] private IdentitySystem _identity = default!;
 
     private static readonly ProtoId<TagPrototype> PreventAccessLoggingTag = "PreventAccessLogging";
 
@@ -43,6 +45,7 @@ public sealed class AccessReaderSystem : EntitySystem
     {
         base.Initialize();
 
+        SubscribeLocalEvent<AccessReaderComponent, MapInitEvent>(OnMapInit);
         SubscribeLocalEvent<AccessReaderComponent, ExaminedEvent>(OnExamined);
         SubscribeLocalEvent<AccessReaderComponent, GotEmaggedEvent>(OnEmagged);
         SubscribeLocalEvent<AccessReaderComponent, LinkAttemptEvent>(OnLinkAttempt);
@@ -54,6 +57,12 @@ public sealed class AccessReaderSystem : EntitySystem
         SubscribeLocalEvent<AccessReaderComponent, ComponentHandleState>(OnHandleState);
     }
 
+    private void OnMapInit(Entity<AccessReaderComponent> ent, ref MapInitEvent args)
+    {
+        ent.Comp.AccessListsOriginal ??= [.. ent.Comp.AccessLists];
+        Dirty(ent);
+    }
+
     private void OnExamined(Entity<AccessReaderComponent> ent, ref ExaminedEvent args)
     {
         if (!ent.Comp.ShouldShowExaminationText) // Goobstation - Wanted Menu
@@ -61,8 +70,6 @@ public sealed class AccessReaderSystem : EntitySystem
 
         if (!GetMainAccessReader(ent, out var mainAccessReader))
             return;
-
-        mainAccessReader.Value.Comp.AccessListsOriginal ??= new(mainAccessReader.Value.Comp.AccessLists);
 
         var accessHasBeenModified = mainAccessReader.Value.Comp.AccessLists.Count != mainAccessReader.Value.Comp.AccessListsOriginal.Count;
 
@@ -141,12 +148,12 @@ public sealed class AccessReaderSystem : EntitySystem
         component.AccessLogLimit = state.AccessLogLimit;
     }
 
-    private void OnLinkAttempt(EntityUid uid, AccessReaderComponent component, LinkAttemptEvent args)
+    private void OnLinkAttempt(EntityUid uid, AccessReaderComponent component, ref LinkAttemptEvent args)
     {
         if (args.User == null) // AutoLink (and presumably future external linkers) have no user.
             return;
         if (!IsAllowed(args.User.Value, uid, component))
-            args.Cancel();
+            args.Cancelled = true;
     }
 
     private void OnEmagged(EntityUid uid, AccessReaderComponent reader, ref GotEmaggedEvent args)
@@ -869,7 +876,7 @@ public sealed class AccessReaderSystem : EntitySystem
     private bool FindAccessTagsItem(EntityUid uid, out HashSet<ProtoId<AccessLevelPrototype>> tags)
     {
         tags = new();
-        var ev = new GetAccessTagsEvent(tags, _prototype);
+        var ev = new GetAccessTagsEvent(tags, ProtoMan);
         RaiseLocalEvent(uid, ref ev);
 
         return tags.Count != 0;
@@ -919,12 +926,7 @@ public sealed class AccessReaderSystem : EntitySystem
 
         // TODO pass the ID card on IsAllowed() instead of using this expensive method
         // Set name if the accessor has a card and that card has a name and allows itself to be recorded
-        var getIdentityShortInfoEvent = new TryGetIdentityShortInfoEvent(ent, accessor, true);
-        RaiseLocalEvent(getIdentityShortInfoEvent);
-        if (getIdentityShortInfoEvent.Title != null)
-        {
-            name = getIdentityShortInfoEvent.Title;
-        }
+        name = _identity.GetIdentityShortInfo(accessor, ent, true) ?? name;
 
         LogAccess(ent, name ?? Loc.GetString("access-reader-unknown-id"));
     }
@@ -966,7 +968,7 @@ public sealed class AccessReaderSystem : EntitySystem
             {
                 var accessName = Loc.GetString("access-reader-unknown-id");
 
-                if (_prototype.Resolve(access, out var accessProto) && !string.IsNullOrWhiteSpace(accessProto.Name))
+                if (ProtoMan.Resolve(access, out var accessProto) && !string.IsNullOrWhiteSpace(accessProto.Name))
                     accessName = Loc.GetString(accessProto.Name);
 
                 sb.Append(Loc.GetString("access-reader-access-label", ("access", accessName)));

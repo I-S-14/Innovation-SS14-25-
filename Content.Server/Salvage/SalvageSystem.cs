@@ -9,8 +9,6 @@ using Content.Shared.Radio;
 using Content.Shared.Salvage;
 using Robust.Server.GameObjects;
 using Robust.Shared.Configuration;
-using Robust.Shared.Map;
-using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Content.Server.Chat.Managers;
 using Content.Server.Gravity;
@@ -59,9 +57,6 @@ namespace Content.Server.Salvage
         {
             base.Initialize();
 
-            _gridQuery = GetEntityQuery<MapGridComponent>();
-            _xformQuery = GetEntityQuery<TransformComponent>();
-
             InitializeExpeditions();
             InitializeMagnet();
             InitializeRunner();
@@ -70,7 +65,7 @@ namespace Content.Server.Salvage
         private void Report(EntityUid source, string channelName, string messageKey, params (string, object)[] args)
         {
             var message = args.Length == 0 ? Loc.GetString(messageKey) : Loc.GetString(messageKey, args);
-            var channel = _prototypeManager.Index<RadioChannelPrototype>(channelName);
+            var channel = ProtoMan.Index<RadioChannelPrototype>(channelName);
             _radioSystem.SendRadioMessage(source, message, channel, source);
         }
 

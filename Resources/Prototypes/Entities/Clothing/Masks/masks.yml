@@ -151,7 +151,6 @@
   - type: IngestionBlocker
     blockSmokeIngestion: true # Goobstation
 
-
 - type: entity
   parent: [ ClothingMaskGasAtmos, BaseCentcommContraband ]
   id: ClothingMaskGasCentcom
@@ -295,14 +294,25 @@
     price: 30 # increases in price after decomposed into raw materials
 
 - type: entity
-  parent: ClothingMaskBase
+  parent: [ClothingMaskBase, BaseFoldable]
   id: ClothingMaskClownBase
   abstract: true
   name: clown wig and mask
   description: A true prankster's facial attire. A clown is incomplete without his wig and mask.
   components:
+  - type: Foldable
+    canFoldInsideContainer: true
+  - type: FoldableClothing
+    foldedEquippedPrefix: opened
+    foldedHeldPrefix: opened
   - type: Sprite
     sprite: Clothing/Mask/clown.rsi
+    layers:
+    - state: icon
+      map: [ "unfoldedLayer" ]
+    - state: icon-opened
+      map: [ "foldedLayer" ]
+      visible: false
   - type: Clothing
     sprite: Clothing/Mask/clown.rsi
   - type: BreathMask
@@ -321,32 +331,12 @@
     color: "#e93790"
 
 - type: entity
-  parent: [ClothingMaskClownBase, BaseFoldable]
+  parent: ClothingMaskClownBase
   id: ClothingMaskClown
   description: A clown mask featuring a foldable wig; a true prankster's attire.
   components:
-  - type: Appearance
-  - type: Foldable
-    canFoldInsideContainer: true
-  - type: FoldableClothing
-    foldedEquippedPrefix: opened
-    foldedHeldPrefix: opened
   - type: Sprite
     sprite: Clothing/Mask/clown.rsi
-    layers:
-    - state: icon
-      map: [ "unfoldedLayer" ]
-    - state: icon-opened
-      map: [ "foldedLayer" ]
-      visible: false
-  - type: Tag
-    tags:
-    - ClownMask
-    - HamsterWearable
-    - WhitelistChameleon
-  - type: HideLayerClothing
-    slots:
-    - Snout
 
 - type: entity
   parent: ClothingMaskClownBase
@@ -360,14 +350,6 @@
   - type: Construction
     graph: BananaClownMask
     node: mask
-  - type: Tag
-    tags:
-    - ClownMask
-    - HamsterWearable
-    - WhitelistChameleon
-  - type: HideLayerClothing
-    slots:
-    - Snout
 
 - type: entity
   parent: [ClothingMaskClownBase, BaseSecurityContraband]
@@ -388,14 +370,6 @@
         Slash: 0.95
         Piercing: 0.95
         Heat: 0.95
-  - type: Tag
-    tags:
-    - ClownMask
-    - HamsterWearable
-    - WhitelistChameleon
-  - type: HideLayerClothing
-    slots:
-    - Snout
   - type: IngestionBlocker
     blockSmokeIngestion: true # Goobstation
 
@@ -489,8 +463,8 @@
     equipDelay: 3
     unequipDelay: 3
   - type: IngestionBlocker
-  - type: AddAccentClothing
-    accent: MumbleAccent
+  - type: MumbleAccent
+    relayAccent: true
   - type: EmoteBlocker
     blocksCategories:
     - Vocal
@@ -544,8 +518,8 @@
   - type: Clothing
     sprite: Clothing/Mask/cluwne.rsi
   - type: Unremoveable
-  - type: AddAccentClothing
-    accent: StutteringAccent
+  - type: StutteringAccent
+    relayAccent: true
 
 - type: entity
   parent: [ ClothingMaskGas, BaseSecurityContraband ]
@@ -610,9 +584,9 @@
     - Mask
 
 - type: entity
-  parent: [ ClothingMaskGas, BaseCentcommContraband ]
+  parent: [ ClothingMaskGas, BaseTaskForceContraband ]
   id: ClothingMaskGasERT
-  name: ert gas mask
+  name: ERT gas mask
   description: The gas mask of the elite squad of the ERT.
   components:
   - type: Sprite
@@ -939,9 +913,6 @@
     sprite: Clothing/Mask/italian_moustache.rsi
   - type: Item
     storedRotation: -90
-  - type: AddAccentClothing
-    accent: ReplacementAccent
-    replacement: italian
   - type: HandheldTranslator # Goob - Magic Moustache
     spoken:
     - SpaceItalian
@@ -971,7 +942,7 @@
     - IPCMaskWearable # EE - IPCs
 
 - type: entity
-  parent: ClothingMaskBase
+  parent: [ ClothingMaskGas, WeldingMaskBase, ClothingMaskBase ]
   id: ClothingMaskWeldingGas
   name: welding gas mask
   description: A gas mask with built in welding goggles and face shield. Looks like a skull, clearly designed by a nerd.
@@ -984,8 +955,6 @@
   - type: BreathMask
   - type: IngestionBlocker
   - type: IdentityBlocker
-  - type: FlashImmunity
-  - type: EyeProtection
   - type: WeldingMaskOverlay # Goob
     texture: /Textures/_Funkystation/Clothing/Head/Welding/weldingOverlayWeak.png # Goob
   - type: PhysicalComposition #Goobstation - Recycle update
@@ -1001,6 +970,9 @@
   - type: HideLayerClothing
     slots:
     - Snout
+  - type: ImageOverlay
+    pathToOverlayImage: "/Textures/Clothing/Head/Welding/weldingTexture.png"
+    additionalColorOverlay: "#00000050"
 
 # Entity tables
 - type: entityTable

@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # Species
+
 - type: loadoutEffectGroup
   id: NitrogenBreather
   effects:
@@ -42,6 +43,7 @@
     species:
     - Vox
     - Plasmaman
+
 # Goobstation end
 
 - type: loadoutEffectGroup
@@ -111,13 +113,6 @@
     - Resomi
     - Tajaran
     - Shadowkin
-
-- type: loadoutEffectGroup
-  id: OxygenBreatherMimeMoth
-  effects:
-  - !type:SpeciesLoadoutEffect
-    species:
-    - Moth
 
 - type: loadout
   id: EmergencyOxygenMime
@@ -203,7 +198,26 @@
     back:
     - BoxSurvivalSlotsSecurityNitrogen # Goobstation - Slots Based Survival Boxes
 
-# Syndicate
+# Antagonist
+
+- type: loadout
+  id: EmergencyOxygenExtendedAntag
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: OxygenBreather
+  storage:
+    back:
+    - BoxSurvivalDeluxeExtended
+
+- type: loadout
+  id: EmergencyNitrogenExtendedAntag
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: NitrogenBreather
+  storage:
+    back:
+    - BoxSurvivalDeluxeExtendedNitrogen
+
 - type: loadout
   id: EmergencyOxygenSyndicate
   effects:

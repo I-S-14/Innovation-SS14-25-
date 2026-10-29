@@ -1,73 +1,56 @@
 {
-  "version": 1,
-  "license": "CC-BY-SA-3.0",
-  "copyright": "Made by \uD835\uDE3D\uD835\uDE5A\uD835\uDE61\uD835\uDE56\uD835\uDE6E#7441. Vox states by Flareguy for SS14, vulp version made by YERO, feroxi by RedTerror. Hydrakin sprites by bobbble (discord)",
-  "copyright": "Made by EmoGarbage404. Vox states by Flareguy for SS14. Reptilian states by TiniestShark (Github)",
-  "copyright": "Made by belay5(discord 677967153139548202)",
-  "size": {
-    "x": 32,
-    "y": 32
-  },
-  "states": [
-    {
-      "name": "icon"
+    "version": 1,
+    "license": "CC-BY-SA-3.0",
+    "copyright": "Made by EmoGarbage404. Vox states by Flareguy for SS14. Reptilian and Light states by TiniestShark (Github)",
+    "size": {
+        "x": 32,
+        "y": 32
     },
-    {
-      "name": "icon-unshaded"
-    },
-    {
-      "name": "icon-flash"
-    },
-    {
-      "name": "light-overlay"
-    },
-    {
-      "name": "equipped-head",
-      "directions": 4
-    },
-    {
-      "name": "equipped-head-unshaded",
-      "directions": 4
-    },
-    {
-      "name": "equipped-head-vox",
-      "directions": 4
-    },
-    {
-      "name": "equipped-head-unshaded-vox",
-      "directions": 4
-    },
-    {
-      "name": "equipped-head-reptilian",
-      "directions": 4
-    },
-    {
-      "name": "equipped-head-unshaded-reptilian",
-      "directions": 4
-    },
-    {
-      "name": "equipped-head-vulpkanin",
-      "directions": 4
-    },
-    {
-      "name": "equipped-head-unshaded-vulpkanin",
-      "directions": 4
-    },
-    {
-      "name": "equipped-head-feroxi",
-      "directions": 4
-    },
-    {
-      "name": "equipped-head-unshaded-feroxi",
-      "directions": 4
-    },
-    {
-      "name": "equipped-head-hydrakin",
-      "directions": 4
-    },
-    {
-      "name": "equipped-head-unshaded-hydrakin",
-      "directions": 4
-    }
-  ]
+    "states": [
+        {
+            "name": "icon"
+        },
+        {
+            "name": "icon-unshaded"
+        },
+        {
+            "name": "light-overlay"
+        },
+        {
+            "name": "equipped-head",
+            "directions": 4
+        },
+        {
+            "name": "equipped-head-unshaded",
+            "directions": 4
+        },
+        {
+            "name": "equipped-head-light",
+            "directions": 4
+        },
+        {
+            "name": "equipped-head-vox",
+            "directions": 4
+        },
+        {
+            "name": "equipped-head-light-vox",
+            "directions": 4
+        },
+        {
+            "name": "equipped-head-unshaded-vox",
+            "directions": 4
+        },
+        {
+            "name": "equipped-head-reptilian",
+            "directions": 4
+        },
+        {
+            "name": "equipped-head-light-reptilian",
+            "directions": 4
+        },
+        {
+            "name": "equipped-head-unshaded-reptilian",
+            "directions": 4
+        }
+    ]
 }

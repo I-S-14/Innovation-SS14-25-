@@ -1,11 +1,23 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # Base component for edible food-like items
 #
+
 - type: entity
   abstract: true
-  parent: BaseItem
-  id: EdibleBase
+  parent: [BaseItem, SolutionFood, SolutionSmall]
+  id: FoodBase
   components:
+  - type: Appearance
+  - type: HeatTint # Goob - Heat tint
+    colorGradient:
+    - temperature: 200
+      color: "#6699FF"
+    - temperature: 293
+      color: "#FFFFFF"
+    - temperature: 350
+      color: "#FF6600"
+    - temperature: 600
+      color: "#FF2200"
   - type: FlavorProfile
     flavors:
       - food
@@ -20,21 +32,10 @@
 #
 - type: entity
   abstract: true
-  parent: EdibleBase
-  id: FoodBase
+  parent: FoodBase
+  id: FoodBaseTrash
   components:
   - type: SpaceGarbage
-  - type: Appearance
-  - type: HeatTint # Goob - Heat tint
-    colorGradient:
-    - temperature: 200
-      color: "#6699FF"
-    - temperature: 293
-      color: "#FFFFFF"
-    - temperature: 350
-      color: "#FF6600"
-    - temperature: 600
-      color: "#FF2200"
 
 # This base type is used to cover all of the "obvious" things that should be doable to open-package food.
 # Practically this means injection.
@@ -42,7 +43,7 @@
 
 - type: entity
   abstract: true
-  parent: FoodBase
+  parent: FoodBaseTrash
   id: FoodInjectableBase
   components:
   - type: InjectableSolution

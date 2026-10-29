@@ -6,6 +6,49 @@
 
 # for basic traits etc.
 # used by the random clone spawner
+
+- type: cloningSettings
+  id: TraitsMental
+  components:
+  - Pacified
+  - Paracusia
+  - LightweightDrunk
+
+# Traits that root in physical things in your body.
+- type: cloningSettings
+  id: TraitsPhysical
+  components:
+  - BlackAndWhiteOverlay
+  - Narcolepsy
+  - ImpairedMobility
+  # - LegsParalyzed (you get healed)
+  - PermanentBlindness
+  - Snoring
+  - Unrevivable
+
+- type: cloningSettings
+  parent: [TraitsMental, TraitsPhysical]
+  id: Traits
+
+# all antagonist roles
+- type: cloningSettings
+  id: Antag
+  parent: BaseClone
+  components:
+  - HeadRevolutionary
+  - Revolutionary
+  - NukeOperative
+  forceCloning: true # Goob - IPC/Vox cloning for paradox ghostrole
+
+- type: cloningSettings
+  abstract: true
+  id: BaseEquipmentBlacklist
+  equipmentBlacklist:
+    components:
+    - AttachedClothing # helmets, which are part of the suit
+    - Implanter # they will spawn full again, but you already get the implant. And we can't do item slot copying yet
+    - VirtualItem
+
 - type: cloningSettings
   id: BaseClone
   components:
@@ -87,16 +130,6 @@
     - Implanter # they will spawn full again, but you already get the implant. And we can't do item slot copying yet # Goobstation?
     - VirtualItem
 
-# all antagonist roles
-- type: cloningSettings
-  id: Antag
-  parent: BaseClone
-  components:
-  - HeadRevolutionary
-  - Revolutionary
-  - NukeOperative
-  forceCloning: true # Goob - IPC/Vox cloning for paradox ghostrole
-
 # for cloning pods
 - type: cloningSettings
   id: CloningPod
@@ -153,3 +186,32 @@
     state: preview
   - type: RandomCloneSpawner
     settings: BaseClone
+
+# for plant clones
+- type: cloningSettings
+  id: PlantClone
+  components:
+  - Plant
+  - PlantHarvest
+  - PlantChemicals
+  - PlantGrowth
+  - PlantAtmospheric
+  - PlantConsumeExudeGas
+  - PlantWeedPest
+  - PlantToxins
+  # traits
+  - PlantTraitKudzu
+  - PlantTraitLigneous
+  - PlantTraitScream
+  - PlantTraitUnviable
+  - PlantTraitSeedless
+
+# for plant lifecycle clones
+- type: cloningSettings
+  id: PlantLifecycleClone
+  parent: PlantClone
+  components:
+  # traits
+  - PlantTraitSampled
+  eventComponents:
+  - PlantHolder

@@ -6,7 +6,6 @@ using Content.Server.Pinpointer;
 using Content.Server.StationEvents.Components;
 using Content.Shared.EntityTable;
 using Content.Shared.GameTicking.Components;
-using Content.Shared.Station.Components;
 using Content.Shared.Storage;
 using Robust.Shared.Map;
 using Robust.Shared.Player;
@@ -21,27 +20,15 @@ namespace Content.Server.StationEvents.Events;
 /// <remarks>
 /// This entire file is rewritten, ignore upstream changes.
 /// </remarks>
-public sealed class VentCrittersRule : StationEventSystem<VentCrittersRuleComponent>
+public sealed partial class VentCrittersRule : StationEventSystem<VentCrittersRuleComponent>
 {
-    /*
-     * DO NOT COPY PASTE THIS TO MAKE YOUR MOB EVENT.
-     * USE THE PROTOTYPE.
-     */
-
-    [Dependency] private readonly AntagSelectionSystem _antag = default!;
-    [Dependency] private readonly EntityTableSystem _entityTable = default!;
-    [Dependency] private readonly ISharedPlayerManager _player = default!;
-    [Dependency] private readonly NavMapSystem _navMap = default!;
-    [Dependency] private readonly SharedTransformSystem _transform = default!;
-
-    private List<EntityCoordinates> _locations = new();
-
-    protected override void Added(EntityUid uid, VentCrittersRuleComponent comp, GameRuleComponent gameRule, GameRuleAddedEvent args)
+    protected override void Started(Entity<VentCrittersRuleComponent, GameRuleComponent> ent, ref GameRuleStartedEvent args)
     {
-        PickLocation(comp);
-        if (comp.Location is not {} coords)
-        {
-            ForceEndSelf(uid, gameRule);
+        base.Started(ent, ref args);
+
+        var critterRule = ent.Comp1;
+        var validLocations = Station.GetEntitiesWithComponentOnStation<VentCritterSpawnLocationComponent>(true);
+        if (validLocations.Count == 0)
             return;
         }
 

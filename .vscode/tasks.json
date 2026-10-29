@@ -14,13 +14,35 @@
                 "/consoleloggerparameters:ErrorsOnly" // i love not being able to find errors because 50000000 warnings
             ],
             "group": {
-                "kind": "build",
-                "isDefault": true
+                "kind": "build"
             },
             "presentation": {
                 "reveal": "silent"
             },
-            "problemMatcher": "$msCompile"
+            "problemMatcher": "$msCompile",
+            "runOptions": {
+                "instanceLimit": 1
+            }
+        },
+        {
+            "label": "build (C# Dev Kit)",
+            "detail": "needs C# Dev Kit extention. use the (build) task instead if you dont have the extention.",
+            "type": "dotnet",
+            "task": "build",
+            "icon": {
+                "id": "build",
+                "color": "terminal.ansiBlue"
+            },
+            "group": {
+                "kind": "build"
+            },
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile",
+            "runOptions": {
+                "instanceLimit": 1
+            }
         },
         {
             "label": "build - Tools",

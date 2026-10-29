@@ -15,7 +15,8 @@ public interface IWeightedRandomPrototype : IPrototype
 }
 
 public interface IWeightedRandomPrototype<TProto> : IPrototype
-    where TProto : class, IPrototype
+where
+    TProto: class, IPrototype
 {
     [ViewVariables]
     public Dictionary<ProtoId<TProto>, float> Weights { get; }

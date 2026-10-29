@@ -17,13 +17,13 @@ public sealed partial class BuyerAntagCondition : ListingCondition
     /// <summary>
     /// A whitelist of antag roles that can purchase this listing. Only one needs to be found.
     /// </summary>
-    [DataField("whitelist")]
+    [DataField]
     public HashSet<ProtoId<AntagPrototype>>? Whitelist;
 
     /// <summary>
     /// A blacklist of antag roles that cannot purchase this listing. Only one needs to be found.
     /// </summary>
-    [DataField("blacklist")]
+    [DataField]
     public HashSet<ProtoId<AntagPrototype>>? Blacklist;
 
     public override bool Condition(ListingConditionArgs args)

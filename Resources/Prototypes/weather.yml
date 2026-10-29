@@ -18,101 +18,6 @@
     - WeatherImmune
 
 - type: weather
-  id: AshfallLight
-  sprite:
-    sprite: /Textures/Effects/weather.rsi
-    state: ashfall_light
-  sound:
-    path: /Audio/Effects/Weather/snowstorm_weak.ogg
-    params:
-      loop: true
-      volume: -6
-
-- type: weather
-  id: AshfallHeavy
-  sprite:
-    sprite: /Textures/Effects/weather.rsi
-    state: ashfall_heavy
-  sound:
-    path: /Audio/Effects/Weather/snowstorm.ogg
-    params:
-      loop: true
-      volume: -6
-
-- type: weather
-  id: Fallout
-  sprite:
-    sprite: /Textures/Effects/weather.rsi
-    state: fallout
-  sound:
-    path: /Audio/Effects/Weather/snowstorm_weak.ogg
-    params:
-      loop: true
-      volume: -6
-
-- type: weather
-  id: Hail
-  sprite:
-    sprite: /Textures/Effects/weather.rsi
-    state: hail
-  sound:
-    path:
-      /Audio/Effects/Weather/rain.ogg
-    params:
-      loop: true
-      volume: -6
-
-- type: weather
-  id: Rain
-  sprite:
-    sprite: /Textures/Effects/weather.rsi
-    state: rain
-  sound:
-    collection: Rain
-    params:
-      loop: true
-      volume: -6
-
-- type: soundCollection
-  id: Rain
-  files:
-    - /Audio/Effects/Weather/rain.ogg
-    - /Audio/Effects/Weather/rain2.ogg
-
-- type: weather
-  id: Sandstorm
-  sprite:
-    sprite: /Textures/Effects/weather.rsi
-    state: sandstorm
-  sound:
-    path: /Audio/Effects/Weather/snowstorm_weak.ogg
-    params:
-      loop: true
-      volume: -6
-
-- type: weather
-  id: SandstormHeavy
-  sprite:
-    sprite: /Textures/Effects/weather.rsi
-    state: sandstorm_heavy
-  sound:
-    path: /Audio/Effects/Weather/snowstorm.ogg
-    params:
-      loop: true
-      volume: -6
-
-- type: weather
-  id: SnowfallLight
-  sprite:
-    sprite: /Textures/Effects/weather.rsi
-    state: snowfall_light
-  sound:
-    path: /Audio/Effects/Weather/snowstorm_weak.ogg
-    params:
-      loop: true
-      volume: -6
-
-- type: weather
   id: SnowfallMedium
   sprite:
     sprite: /Textures/Effects/weather.rsi
@@ -145,6 +50,7 @@
     params:
       loop: true
       volume: -20
+
 ##
 
 - type: weather

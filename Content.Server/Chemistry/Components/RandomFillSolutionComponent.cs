@@ -15,12 +15,12 @@ public sealed partial class RandomFillSolutionComponent : Component
     /// <summary>
     ///     Solution name which to add reagents to.
     /// </summary>
-    [DataField("solution")]
-    public string Solution { get; set; } = "default";
+    [DataField]
+    public string Solution = "solution";
 
     /// <summary>
     ///     Weighted random fill prototype Id. Used to pick reagent and quantity.
     /// </summary>
-    [DataField("weightedRandomId", required: true)]
+    [DataField(required: true)]
     public ProtoId<WeightedRandomFillSolutionPrototype>? WeightedRandomId;
 }

@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-
-using Content.Server.Body.Systems;
 using Content.Server.Stack;
 using Content.Shared.Body.Components;
+using Content.Shared.Gibbing;
 using Content.Shared.Storage.Components;
 using Content.Shared.Whitelist;
 using Content.Shared.Xenoarchaeology.Equipment;
@@ -13,12 +12,16 @@ using Robust.Shared.Random;
 namespace Content.Server.Xenoarchaeology.Equipment.Systems;
 
 /// <inheritdoc/>
-public sealed class ArtifactCrusherSystem : SharedArtifactCrusherSystem
+public sealed partial class ArtifactCrusherSystem : SharedArtifactCrusherSystem
 {
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly BodySystem _body = default!;
     [Dependency] private readonly StackSystem _stack = default!;
     [Dependency] private readonly EntityWhitelistSystem _whitelistSystem = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private GibbingSystem _gibbing = default!;
+    [Dependency] private StackSystem _stack = default!;
+    [Dependency] private EntityWhitelistSystem _whitelistSystem = default!;
 
     // TODO: Move to shared once StackSystem spawning is in Shared and we have RandomPredicted
     public override void FinishCrushing(Entity<ArtifactCrusherComponent, EntityStorageComponent> ent)
@@ -43,10 +46,7 @@ public sealed class ArtifactCrusherSystem : SharedArtifactCrusherSystem
                 }
             }
 
-            if (!TryComp<BodyComponent>(contained, out var body))
-                Del(contained);
-
-            var gibs = _body.GibBody(contained, body: body, gibOrgans: true);
+            var gibs = _gibbing.Gib(contained);
             foreach (var gib in gibs)
             {
                 ContainerSystem.Insert((gib, null, null, null), crusher.OutputContainer);

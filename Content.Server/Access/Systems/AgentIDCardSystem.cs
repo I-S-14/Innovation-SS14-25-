@@ -14,14 +14,24 @@ using System.Diagnostics.CodeAnalysis;
 using Content.Shared._DV.NanoChat; // DeltaV
 using Content.Server.Clothing.Systems;
 using Content.Server.Implants;
+using Content.Shared.Access.Components;
+using Content.Shared.Access.Systems;
+using Content.Shared.Clothing.Components;
 using Content.Shared.Implants;
 using Content.Shared.Inventory;
-using Content.Shared.Lock;
 using Content.Shared.PDA;
 
-namespace Content.Server.Access.Systems
+namespace Content.Server.Access.Systems;
+
+/// <inheritdoc />
+public sealed partial class AgentIdCardSystem : SharedAgentIdCardSystem
 {
-    public sealed class AgentIDCardSystem : SharedAgentIdCardSystem
+    [Dependency] private SharedIdCardSystem _card = default!;
+    [Dependency] private ChameleonClothingSystem _chameleon = default!;
+    [Dependency] private ChameleonControllerSystem _chamController = default!;
+
+    [SubscribeLocalEvent]
+    private void OnChameleonControllerOutfitChangedItem(Entity<AgentIDCardComponent> ent, ref InventoryRelayedEvent<ChameleonControllerOutfitSelectedEvent> args)
     {
         [Dependency] private readonly PopupSystem _popupSystem = default!;
         [Dependency] private readonly IdCardSystem _cardSystem = default!;
@@ -55,33 +65,34 @@ namespace Content.Server.Access.Systems
             Dirty(ent, comp);
         }
 
-        private void OnChameleonControllerOutfitChangedItem(Entity<AgentIDCardComponent> ent, ref InventoryRelayedEvent<ChameleonControllerOutfitSelectedEvent> args)
-        {
-            if (!TryComp<IdCardComponent>(ent, out var idCardComp))
-                return;
+        var jobIcon = args.Args.ChameleonOutfit.Icon ?? jobProto?.Icon;
+        var jobName = args.Args.ChameleonOutfit.Name ?? jobProto?.Name ?? "";
 
-            _prototypeManager.Resolve(args.Args.ChameleonOutfit.Job, out var jobProto);
+        if (jobIcon != null)
+            _card.TryChangeJobIcon(ent, ProtoMan.Index(jobIcon.Value), idCardComp);
 
-            var jobIcon = args.Args.ChameleonOutfit.Icon ?? jobProto?.Icon;
-            var jobName = args.Args.ChameleonOutfit.Name ?? jobProto?.Name ?? "";
+        if (jobName != "")
+            _card.TryChangeJobTitle(ent, Loc.GetString(jobName), idCardComp);
 
-            if (jobIcon != null)
-                _cardSystem.TryChangeJobIcon(ent, _prototypeManager.Index(jobIcon.Value), idCardComp);
+        // If you have forced departments use those over the jobs actual departments.
+        if (args.Args.ChameleonOutfit.Departments?.Count > 0)
+            _card.TryChangeJobDepartment(ent, args.Args.ChameleonOutfit.Departments, idCardComp);
+        else if (jobProto != null)
+            _card.TryChangeJobDepartment(ent, jobProto, idCardComp);
 
-            if (jobName != "")
-                _cardSystem.TryChangeJobTitle(ent, Loc.GetString(jobName), idCardComp);
+        // Ensure that you chameleon IDs in PDAs correctly. Yes this is sus...
 
-            // If you have forced departments use those over the jobs actual departments.
-            if (args.Args.ChameleonOutfit?.Departments?.Count > 0)
-                _cardSystem.TryChangeJobDepartment(ent, args.Args.ChameleonOutfit.Departments, idCardComp);
-            else if (jobProto != null)
-                _cardSystem.TryChangeJobDepartment(ent, jobProto, idCardComp);
+        // There is one weird interaction: If the job / icon don't match the PDAs job the chameleon will be updated
+        // to the PDAs IDs sprite but the icon and job title will not match. There isn't a way to get around this
+        // really as there is no tie between job -> pda or pda -> job.
 
-            // Ensure that you chameleon IDs in PDAs correctly. Yes this is sus...
+        var idSlotGear = _chamController.GetGearForSlot(args, "id");
+        if (idSlotGear == null)
+            return;
 
-            // There is one weird interaction: If the job / icon don't match the PDAs job the chameleon will be updated
-            // to the PDAs IDs sprite but the icon and job title will not match. There isn't a way to get around this
-            // really as there is no tie between job -> pda or pda -> job.
+        var proto = ProtoMan.Index(idSlotGear);
+        if (!proto.TryComp<PdaComponent>(out var comp, EntityManager.ComponentFactory))
+            return;
 
             var idSlotGear = _chamController.GetGearForSlot(args, "id");
             if (idSlotGear == null)

@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 
+using Content.Shared.Dataset;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
@@ -10,90 +11,91 @@ namespace Content.Shared.RatKing;
 [AutoGenerateComponentState]
 public sealed partial class RatKingComponent : Component
 {
-    [DataField("actionRaiseArmy")]
+    [DataField]
     public EntProtoId ActionRaiseArmy = "ActionRatKingRaiseArmy";
 
     /// <summary>
     ///     The action for the Raise Army ability
     /// </summary>
-    [DataField("actionRaiseArmyEntity")]
+    [DataField]
     public EntityUid? ActionRaiseArmyEntity;
 
     /// <summary>
     ///     The amount of hunger one use of Raise Army consumes
     /// </summary>
-    [ViewVariables(VVAccess.ReadWrite), DataField("hungerPerArmyUse", required: true)]
+    [DataField(required: true)]
     public float HungerPerArmyUse = 25f;
 
     /// <summary>
     ///     The entity prototype of the mob that Raise Army summons
     /// </summary>
-    [ViewVariables(VVAccess.ReadWrite), DataField("armyMobSpawnId")]
+    [DataField]
     public EntProtoId ArmyMobSpawnId = "MobRatServant";
 
-    [DataField("actionDomain")]
+    [DataField]
     public EntProtoId ActionDomain = "ActionRatKingDomain";
 
     /// <summary>
     ///     The action for the Domain ability
     /// </summary>
-    [DataField("actionDomainEntity")]
+    [DataField]
     public EntityUid? ActionDomainEntity;
 
     /// <summary>
     ///     The amount of hunger one use of Domain consumes
     /// </summary>
-    [DataField("hungerPerDomainUse", required: true), ViewVariables(VVAccess.ReadWrite)]
+    [DataField(required: true)]
     public float HungerPerDomainUse = 50f;
 
     /// <summary>
     ///     How many moles of ammonia are released after one use of Domain
     /// </summary>
-    [DataField("molesAmmoniaPerDomain"), ViewVariables(VVAccess.ReadWrite)]
-    public float MolesAmmoniaPerDomain = 300f;
+    [DataField]
+    public float MolesAmmoniaPerDomain = 200f;
 
     /// <summary>
     /// The current order that the Rat King assigned.
     /// </summary>
-    [DataField("currentOrders"), ViewVariables(VVAccess.ReadWrite)]
+    [DataField("currentOrders")]
     [AutoNetworkedField]
     public RatKingOrderType CurrentOrder = RatKingOrderType.Follow;
 
     /// <summary>
     /// The servants that the rat king is currently controlling
     /// </summary>
-    [DataField("servants")]
+    [DataField]
     public HashSet<EntityUid> Servants = new();
 
-    [DataField("actionOrderStay")]
+    // what the FUCK is a list :eagle:
+    [DataField]
     public EntProtoId ActionOrderStay = "ActionRatKingOrderStay";
 
-    [DataField("actionOrderStayEntity")]
+    [DataField]
     public EntityUid? ActionOrderStayEntity;
 
-    [DataField("actionOrderFollow")]
+    [DataField]
     public EntProtoId ActionOrderFollow = "ActionRatKingOrderFollow";
 
-    [DataField("actionOrderFollowEntity")]
+    [DataField]
     public EntityUid? ActionOrderFollowEntity;
 
-    [DataField("actionOrderCheeseEm")]
+    [DataField]
     public EntProtoId ActionOrderCheeseEm = "ActionRatKingOrderCheeseEm";
 
-    [DataField("actionOrderCheeseEmEntity")]
+    [DataField]
     public EntityUid? ActionOrderCheeseEmEntity;
 
-    [DataField("actionOrderLoose")]
+    [DataField]
     public EntProtoId ActionOrderLoose = "ActionRatKingOrderLoose";
 
-    [DataField("actionOrderLooseEntity")]
+    [DataField]
     public EntityUid? ActionOrderLooseEntity;
 
     /// <summary>
     /// A dictionary with an order type to the corresponding callout dataset.
     /// </summary>
-    [DataField("orderCallouts")]
-    public Dictionary<RatKingOrderType, string> OrderCallouts = new()
+    [DataField]
+    public Dictionary<RatKingOrderType, ProtoId<LocalizedDatasetPrototype>> OrderCallouts = new()
     {
         { RatKingOrderType.Stay, "RatKingCommandStay" },
         { RatKingOrderType.Follow, "RatKingCommandFollow" },

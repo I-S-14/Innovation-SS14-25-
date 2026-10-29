@@ -1,20 +1,20 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Server.Administration;
-using Content.Server.Atmos.Components;
 using Content.Server.Atmos.EntitySystems;
 using Content.Shared.Administration;
 using Content.Shared.Atmos;
+using Content.Shared.Atmos.Components;
 using Robust.Shared.Console;
 using Robust.Shared.Map;
 
 namespace Content.Server.Atmos.Commands;
 
 [AdminCommand(AdminFlags.Admin)]
-public sealed class AddMapAtmosCommand : LocalizedCommands
+public sealed partial class AddMapAtmosCommand : LocalizedEntityCommands
 {
-    [Dependency] private readonly IEntityManager _entities = default!;
-    private SharedMapSystem _mapSystem => _entities.System<SharedMapSystem>();
+    [Dependency] private IEntityManager _entities = default!;
+    [Dependency] private SharedMapSystem _map = default!;
 
     private const string _cmd = "cmd-set-map-atmos";
     public override string Command => "setmapatmos";

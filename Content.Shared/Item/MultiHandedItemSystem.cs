@@ -11,13 +11,17 @@ using Robust.Shared.Timing;
 
 namespace Content.Shared.Item;
 
-public sealed class MultiHandedItemSystem : EntitySystem
+public sealed partial class MultiHandedItemSystem : EntitySystem
 {
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly SharedHandsSystem _hands = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly SharedVirtualItemSystem _virtualItem = default!;
     [Dependency] private readonly SharedContainerSystem _container = default!; // Goobstation
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private SharedHandsSystem _hands = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private SharedVirtualItemSystem _virtualItem = default!;
 
     /// <inheritdoc/>
     public override void Initialize()
@@ -53,7 +57,7 @@ public sealed class MultiHandedItemSystem : EntitySystem
         args.Cancel();
 
         if (args.ShowPopup)
-            _popup.PopupPredictedCursor(
+            _popup.PopupCursor(
                 Loc.GetString("multi-handed-item-pick-up-fail",
                     ("number", ent.Comp.HandsNeeded - 1),
                     ("item", ent.Owner)),
@@ -65,7 +69,10 @@ public sealed class MultiHandedItemSystem : EntitySystem
         if (args.BlockingEntity != ent.Owner || _timing.ApplyingState)
             return;
 
-        _hands.TryDrop(args.User, ent.Owner);
+        // If the virtual item was dropped independently, drop the real item as well. If the real item cannot be
+        // dropped (for example, because it is glued), restore the virtual item to keep the item multi-handed.
+        if (!_hands.TryDrop(args.User, ent.Owner) && _hands.IsHolding(args.User, ent.Owner))
+            _virtualItem.TrySpawnVirtualItemInHand(ent.Owner, args.User);
     }
 
     // everything below is Goobstation

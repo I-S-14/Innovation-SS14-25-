@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-
-using Content.Server.Weapons.Ranged.Systems;
 using Content.Shared.Weapons.Ranged.Events;
+using Content.Shared.Weapons.Ranged.Systems;
 
 namespace Content.Server.NPC.HTN.Preconditions;
 
@@ -10,7 +9,8 @@ namespace Content.Server.NPC.HTN.Preconditions;
 /// </summary>
 public sealed partial class GunAmmoPrecondition : HTNPrecondition
 {
-    [Dependency] private readonly IEntityManager _entManager = default!;
+    [Dependency] private IEntityManager _entManager = default!;
+    [Dependency] private SharedGunSystem _gunSystem = default!;
 
     [DataField]
     public float MinPercent = 0f;
@@ -21,9 +21,8 @@ public sealed partial class GunAmmoPrecondition : HTNPrecondition
     public override bool IsMet(NPCBlackboard blackboard)
     {
         var owner = blackboard.GetValue<EntityUid>(NPCBlackboard.Owner);
-        var gunSystem = _entManager.System<GunSystem>();
 
-        if (!gunSystem.TryGetGun(owner, out var gun))
+        if (!_gunSystem.TryGetGun(owner, out var gun))
         {
             return false;
         }

@@ -2,7 +2,7 @@
 
 - type: entity
   id: BaseLathe
-  parent: [ BaseMachinePowered, ConstructibleMachine, BaseAutomatedMachine ] # Goob: Automation
+  parent: [ BaseMachinePowered, ConstructibleMachine, BaseConstructibleMachineDestructible, BaseAutomatedMachine ]
   abstract: true
   name: lathe
   components:
@@ -25,15 +25,11 @@
     thresholds:
     - trigger:
         !type:DamageTrigger
-        damage: 100
+        damage: 175
       behaviors:
       - !type:PlaySoundBehavior
         sound:
           collection: MetalBreak
-      - !type:ChangeConstructionNodeBehavior
-        node: machineFrame
-      - !type:DoActsBehavior
-        acts: ["Destruction"]
   - type: WiresPanel
   - type: ESForcedFacingUi # Goob
   - type: ActivatableUI
@@ -75,6 +71,11 @@
   # Goobstation
   - type: SpamEmitSoundRequirePower
   - type: OreSiloClient
+  - type: ApcPowerReceiver
+    powerLoad: 150
+  - type: PowerState
+    idlePowerDraw: 150
+    workingPowerDraw: 1000
 
 # a lathe that can be sped up with space lube / slowed down with glue
 - type: entity
@@ -87,16 +88,20 @@
     modifiers:
       SpaceLube: 0.25
       SpaceGlue: 5
-  - type: SolutionContainerManager
+  - type: SolutionManager
     solutions:
-      lube:
-        maxVol: 250
+    - SolutionLatheLube
   - type: Spillable
     solution: lube
   - type: RefillableSolution
     solution: lube
   - type: ExaminableSolution
     solution: lube
+
+- type: entity
+  parent: [SolutionLube, SolutionLarge]
+  id: SolutionLatheLube # Its own prototype since some lathes might interface with solutions in other ways
+  categories: [ HideSpawnMenu ]
 
 - type: entity
   abstract: true
@@ -679,7 +684,8 @@
     # CorvaxGoob Packs
     - SyndicateBodyBagsStatic # AdvancedBodyBags
   - type: StealTarget
-    stealGroup: MedicalTechFabCircuitboard
+    stealGroup:
+    - MedicalTechFabCircuitboard
   - type: MaterialStorage
     whitelist: *StandardMaterialWhitelist
   - type: OreSiloClient
@@ -699,6 +705,7 @@
     containers:
     - blueprint
   # CorvaxGoob-end
+  - type: AmbientMusicMarkerMedical
 
 - type: entity
   parent: [BaseLatheLube]
@@ -904,8 +911,6 @@
   name: cutter machine
   description: This is a cutter. It cuts. Add variety to your station floor with eye-pleasing patterns! Don't stick your fingers in.
   components:
-  - type: Transform
-    noRot: false
   - type: Sprite
     sprite: Structures/Machines/cuttermachine.rsi
     snapCardinals: true

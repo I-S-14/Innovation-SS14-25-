@@ -2,6 +2,7 @@
 
 using Content.Client.Stylesheets;
 using Content.Client.UserInterface.Controls;
+using Content.Shared.DeviceNetwork;
 using Content.Shared.Lock;
 using Content.Shared.Robotics;
 using Content.Shared.Robotics.Components;
@@ -16,8 +17,8 @@ namespace Content.Client.Robotics.UI;
 [GenerateTypedNameReferences]
 public sealed partial class RoboticsConsoleWindow : FancyWindow
 {
-    [Dependency] private readonly IEntityManager _entMan = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private IEntityManager _entMan = default!;
+    [Dependency] private IGameTiming _timing = default!;
     private readonly LockSystem _lock;
     private readonly SpriteSystem _sprite;
 
@@ -25,8 +26,8 @@ public sealed partial class RoboticsConsoleWindow : FancyWindow
     public Action<string>? OnDisablePressed;
     public Action<string>? OnDestroyPressed;
 
-    private string? _selected;
-    private Dictionary<string, CyborgControlData> _cyborgs = new();
+    private LocDeviceAddress? _selected;
+    private Dictionary<LocDeviceAddress, CyborgControlData> _cyborgs = new();
 
     public EntityUid Entity;
 
@@ -42,7 +43,7 @@ public sealed partial class RoboticsConsoleWindow : FancyWindow
 
         Cyborgs.OnItemSelected += args =>
         {
-            if (Cyborgs[args.ItemIndex].Metadata is not string address)
+            if (Cyborgs[args.ItemIndex].Metadata is not LocDeviceAddress address)
                 return;
 
             _selected = address;
@@ -63,11 +64,11 @@ public sealed partial class RoboticsConsoleWindow : FancyWindow
         // Corvax-Goob-MutableLaws-End
         DisableButton.OnPressed += _ =>
         {
-            OnDisablePressed?.Invoke(_selected!);
+            OnDisablePressed?.Invoke(_selected!.Value);
         };
         DestroyButton.OnPressed += _ =>
         {
-            OnDestroyPressed?.Invoke(_selected!);
+            OnDestroyPressed?.Invoke(_selected!.Value);
         };
 
         // cant put multiple styles in xaml for some reason

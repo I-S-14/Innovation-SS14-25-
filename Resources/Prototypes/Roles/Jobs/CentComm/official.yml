@@ -9,7 +9,6 @@
   startingGear: CentcomGear
   icon: "JobIconNanotrasen"
   supervisors: job-supervisors-centcom # Goobstation
-  canBeAntag: false
   skills: # CorvaxGoob-Skills
   - All
   requirements:
@@ -61,6 +60,7 @@
     - HandheldFaxOfficial # NTRs fax is huge, do you expect me to use some POOR person fax?
     - BoxFolderCentComClipboard # Solely for holding and looking menacing.
     - DeterrentCaseFilled
+
 # Goobstation - End
 
 - type: chameleonOutfit

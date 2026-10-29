@@ -193,7 +193,7 @@
         emote: Scream
         probability: 0.3
   metabolisms:
-    Poison:
+    Bloodstream:
       metabolismRate : 3.00 # High damage, high metabolism rate. You need a lot of units to crit. Simulates acid burning through you fast.
       effects:
       - !type:HealthChange
@@ -218,9 +218,10 @@
   color: "#48b3b8"
   physicalDesc: reagent-physical-desc-ferrous
   metabolisms:
-    Drink:
+    Bloodstream:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: -1.5
       - !type:HealthChange
         ignoreResistances: true
@@ -254,7 +255,7 @@
         emote: Scream
         probability: 0.2
   metabolisms:
-    Poison:
+    Bloodstream:
       metabolismRate: 3.00 # High damage, high metabolism rate. You need a lot of units to crit. Simulates acid burning through you fast.
       effects:
       - !type:HealthChange
@@ -304,7 +305,7 @@
         emote: Scream
         probability: 0.1
   metabolisms:
-    Poison:
+    Bloodstream:
       metabolismRate: 3.00 # Okay damage, high metabolism rate. You need a lot of units to crit. Simulates acid burning through you fast.
       effects:
       - !type:HealthChange
@@ -333,11 +334,12 @@
   color: "#00ff5f"
   puddleSpriteSet: Acid # Goob
   puddleColor: "#00ff5fCC" # Goob
-  boilingPoint: 340282300000000000000000000000000000000 # Ethidium bromide, which doesn't boil.
+  boilingPoint: 340282300 # Ethidium bromide, which doesn't boil.
   meltingPoint: 261.0
   plantMetabolism:
   - !type:PlantAdjustMutationLevel
     amount: 1
+    mutationTable: RandomPlantMutations
   metabolisms:
     Poison:
       effects:
@@ -383,12 +385,13 @@
   contrabandSeverity: Syndicate
   color: "#6b0007"
   metabolisms:
-    Poison:
+    Bloodstream:
       effects:
       - !type:HealthChange
         damage:
-          groups:
-            Airloss: 10
+          types:
+            Asphyxiation: 5
+            Bloodloss: 5
 
 - type: reagent
   id: MindbreakerToxin
@@ -403,7 +406,7 @@
   - !type:PlantAdjustToxins
     amount: 10
   metabolisms:
-    Poison:
+    Bloodstream:
       effects:
       - !type:ModifyStatusEffect
         effectProto: StatusEffectSeeingRainbow
@@ -467,21 +470,21 @@
   meltingPoint: 351
   boilingPoint: 554 # I'm not a chemist, but it boils at 295, lower than melting point, idk how it works so I gave it higher value
   metabolisms:
-    Poison:
+    Bloodstream:
       metabolismRate: 0.05
       effects:
       - !type:HealthChange
         conditions:
         - !type:MetabolizerTypeCondition
-          type: [Animal] # Applying damage to the mobs with lower metabolism capabilities
+          type: [ Animal, Arachnid ] # Applying damage to the mobs with lower metabolism capabilities
         damage:
           types:
             Poison: 0.4
       - !type:Vomit
         probability: 0.04 #Scaled for time, not metabolismrate.
         conditions:
-          - !type:MetabolizerTypeCondition
-            type: [Animal]
+        - !type:MetabolizerTypeCondition
+          type: [ Animal, Arachnid ]
 
 - type: reagent
   id: Amatoxin
@@ -548,7 +551,7 @@
   color: "#7e916e"
   worksOnTheDead: true
   metabolisms:
-    Medicine:
+    Bloodstream:
       effects:
         - !type:CauseZombieInfection
           conditions:
@@ -674,28 +677,6 @@
             Poison: 0.1 #goobstation, was 0.06
 
 - type: reagent
-  id: Pax
-  name: reagent-name-pax
-  group: Narcotics
-  desc: reagent-desc-pax
-  physicalDesc: reagent-physical-desc-soothing
-  allowedDepartments:
-  - Security
-  - Medical
-  color: "#AAAAAA"
-  metabolisms:
-    Poison:
-      effects:
-      - !type:GenericStatusEffect
-        key: Pacified
-        component: Pacified
-        time: 4
-      - !type:ImmunityModifier #Goobstation
-        gainRateModifier: -0.00111111111111 #double spaceacilin penalty
-        strengthModifier: -0.0088888888888 #ditto
-        statusLifetime: 1.5 # 1.5s per 1u
-
-- type: reagent
   id: Honk
   name: reagent-name-honk
   group: Toxins
@@ -792,8 +773,9 @@
   flavor: medicine
   color: "#435166"
   plantMetabolism:
-  - !type:PlantMutateChemicals
-    randomPickBotanyReagent: EvilRandomFillSolution
+  - !type:PlantAdjustMutationLevel
+    amount: 1
+    mutationTable: EvilPlantMutations
   - !type:PlantAdjustToxins
     amount: 10
   metabolisms:
@@ -914,9 +896,10 @@
   flavor: trashy
   physicalDesc: reagent-physical-desc-nondescript
   metabolisms:
-    Food:
+    Digestion:
       effects:
-      - !type:SatiateHunger
+      - !type:Satiate
+        satiationType: Hunger
         factor: 1
         conditions:
         - !type:MetabolizerTypeCondition
@@ -932,11 +915,150 @@
   flavor: sharp
   color: "#96424f"
   metabolisms:
-    Poison:
+    Bloodstream:
       effects:
-      - !type:ModifyStatusEffect
-        effectProto: StatusEffectHemorrhage
-        time: 21 # 7 bleed ticks, you bleed every 3 seconds by default.
-        type: Update
+      - !type:HealthChange
+        damage:
+          types:
+            Poison: 1.5 # TODO: Remove when bloodloss is more interesting. This is basically meant to give a bit more strength short-term before bloodloss damage kicks in.
       - !type:ModifyBleed
-        amount: 0.5
+        amount: 1
+      - !type:ModifyBloodLevel
+        amount: -5
+      - !type:ModifyBloodLevel
+        amount: -5
+        conditions:
+        - !type:BloodLevelCondition
+          min: 0.5 # Stronger when at least 50% blood
+      - !type:PopupMessage
+        type: Local
+        visualType: MediumCaution
+        messages:
+        - hemorrhinol-effect-1
+        - hemorrhinol-effect-2
+        - hemorrhinol-effect-3
+        - hemorrhinol-effect-4
+        probability: 0.1
+      - !type:Jitter
+        probability: 0.25
+
+- type: reagent
+  id: Hivarol
+  name: reagent-name-hivarol
+  group: Toxins
+  desc: reagent-desc-hivarol
+  physicalDesc: reagent-physical-desc-sickly
+  flavor: sharp
+  color: "#96424f"
+  metabolisms:
+    Bloodstream:
+      effects:
+      - !type:HealthChange
+        conditions:
+        - !type:ReagentCondition
+          reagent: Hivarol
+          min: 4
+        - !type:MetabolizerTypeCondition
+          type: [ Changeling ]
+        damage:
+          types:
+            Shock: 3
+      - !type:PopupMessage
+        conditions:
+        - !type:ReagentCondition
+          reagent: Hivarol
+          min: 4
+        - !type:MetabolizerTypeCondition
+          type: [ Changeling ]
+        type: Local
+        visualType: Large
+        messages: [ "generic-reagent-effect-burning-insides" ]
+        probability: 0.33
+      - !type:Emote
+        conditions:
+        - !type:ReagentCondition
+          reagent: Hivarol
+          min: 4
+        - !type:MetabolizerTypeCondition
+          type: [ Changeling ]
+        emote: Scream
+        probability: 0.5
+      - !type:Jitter
+        conditions:
+        - !type:ReagentCondition
+          reagent: Hivarol
+          min: 4
+        - !type:MetabolizerTypeCondition
+          type: [ Changeling ]
+
+- type: reagent
+  id: PhosphoricAcid
+  name: reagent-name-phosphoric-acid
+  desc: reagent-name-phosphoric-acid
+  physicalDesc: reagent-physical-desc-oily
+  group: Toxins
+  flavor: sour
+  color: "#236931" # Not actually green IRL but is often dyed green when diluted.
+  plantMetabolism:
+  - !type:PlantAdjustNutrition
+    amount: 2
+  - !type:PlantAdjustHealth
+    amount: -0.5
+  reactiveEffects:
+    Acidic:
+      methods: [ Touch ]
+      effects:
+      - !type:HealthChange
+        ignoreResistances: false
+        damage:
+          types:
+            Caustic: 0.1
+      - !type:Emote
+        emote: Scream
+        probability: 0.1
+  metabolisms:
+    Bloodstream:
+      metabolismRate: 0.2 # Phosphoric Acid is a relatively slow acid.
+      effects:
+      - !type:HealthChange
+        damage:
+          types:
+            Caustic: 0.3
+      - !type:PopupMessage
+        type: Local
+        visualType: Large
+        messages: [ "generic-reagent-effect-burning-insides" ]
+        probability: 0.2
+      - !type:Emote
+        emote: Scream
+        probability: 0.1
+
+- type: reagent
+  id: HardlightToxin
+  name: reagent-name-hardlight-toxin
+  group: Toxins
+  desc: reagent-desc-hardlight-toxin
+  evaporationSpeed: 100 # Dissolves basically instantly if you *somehow* spill it
+  color: "#00FF00"
+  physicalDesc: reagent-physical-desc-glowing
+  contrabandSeverity: Syndicate
+  metabolisms:
+    Bloodstream: # TODO Make this a metabolite!!!
+      metabolismRate: 2.5 # It's basically pure energy so it metabolizes very fast
+      effects:
+      - !type:HealthChange
+        damage:
+          types:
+            Radiation: 1
+      - !type:StaminaDamage
+        damage: 10
+      - !type:ModifyStatusEffect
+        effectProto: StatusEffectKnockdown
+        time: 1.5
+        delay: 2.5
+      - !type:MovementSpeedModifier
+        effectProto: TaserSlowdownStatusEffect
+        time: 1.5
+        delay: 2.5
+        walkSpeedModifier: 0.5
+        sprintSpeedModifier: 0.5

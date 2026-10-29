@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 - type: entity
-  parent: [ BaseMachinePowered, ConstructibleMachine ]
+  parent: [ BaseMachinePowered, ConstructibleMachine, BaseConstructibleMachineDestructible ]
   id: SalvageMagnet
   name: salvage magnet
   description: Pulls in salvage.
@@ -56,11 +56,3 @@
   - type: SalvageMagnet
   - type: ApcPowerReceiver
     powerLoad: 1000
-
-- type: weightedRandomEntity
-  id: RandomAsteroidPool
-  weights:
-    AsteroidSalvageSmall: 3
-    AsteroidSalvageMedium: 7
-    AsteroidSalvageLarge: 5
-    AsteroidSalvageHuge: 3

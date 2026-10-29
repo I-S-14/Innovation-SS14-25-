@@ -14,15 +14,12 @@ using Content.Shared.Administration.Logs;
 using Content.Shared.Construction.Prototypes;
 using Content.Shared.Database;
 using Content.Shared.Humanoid;
-using Content.Shared.Humanoid.Markings;
 using Content.Shared.Preferences;
-using Content.Shared.Preferences.Loadouts;
 using Content.Shared.Roles;
-using Content.Shared.Traits;
 using Microsoft.EntityFrameworkCore;
-using Robust.Shared.Enums;
 using Robust.Shared.Network;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Serialization.Manager;
 using Robust.Shared.Utility;
 
 namespace Content.Server.Database
@@ -31,21 +28,23 @@ namespace Content.Server.Database
     {
         private readonly ISawmill _opsLog;
         public event Action<DatabaseNotification>? OnNotificationReceived;
+        private readonly ISerializationManager _serialization;
 
         /// <param name="opsLog">Sawmill to trace log database operations to.</param>
-        public ServerDbBase(ISawmill opsLog)
+        public ServerDbBase(ISawmill opsLog, ISerializationManager serialization)
         {
+            _serialization = serialization;
             _opsLog = opsLog;
         }
 
         #region Preferences
-        public async Task<PlayerPreferences?> GetPlayerPreferencesAsync(
+        public async Task<Preference?> GetPlayerPreferencesAsync(
             NetUserId userId,
             CancellationToken cancel = default)
         {
             await using var db = await GetDb(cancel);
 
-            var prefs = await db.DbContext
+            return await db.DbContext
                 .Preference
                 .Include(p => p.Profiles).ThenInclude(h => h.Jobs)
                 .Include(p => p.Profiles).ThenInclude(h => h.Antags)
@@ -56,22 +55,6 @@ namespace Content.Server.Database
                     .ThenInclude(group => group.Loadouts)
                 .AsSplitQuery()
                 .SingleOrDefaultAsync(p => p.UserId == userId.UserId, cancel);
-
-            if (prefs is null)
-                return null;
-
-            var maxSlot = prefs.Profiles.Max(p => p.Slot) + 1;
-            var profiles = new Dictionary<int, ICharacterProfile>(maxSlot);
-            foreach (var profile in prefs.Profiles)
-            {
-                profiles[profile.Slot] = ConvertProfiles(profile);
-            }
-
-            var constructionFavorites = new List<ProtoId<ConstructionPrototype>>(prefs.ConstructionFavorites.Count);
-            foreach (var favorite in prefs.ConstructionFavorites)
-                constructionFavorites.Add(new ProtoId<ConstructionPrototype>(favorite));
-
-            return new PlayerPreferences(profiles, prefs.SelectedCharacterSlot, Color.FromHex(prefs.AdminOOCColor), constructionFavorites);
         }
 
         public async Task SaveSelectedCharacterIndexAsync(NetUserId userId, int index)
@@ -83,21 +66,39 @@ namespace Content.Server.Database
             await db.DbContext.SaveChangesAsync();
         }
 
-        public async Task SaveCharacterSlotAsync(NetUserId userId, ICharacterProfile? profile, int slot)
+        /// <summary>
+        /// Only intended for use in unit tests - drops the organ marking data from a profile in the given slot
+        /// </summary>
+        /// <param name="userId">The user whose profile to modify</param>
+        /// <param name="slot">The slot index to modify</param>
+        public async Task MakeCharacterSlotLegacyAsync(NetUserId userId, int slot)
         {
             await using var db = await GetDb();
 
-            if (profile is null)
+            var oldProfile = await db.DbContext.Profile
+                .Include(p => p.Preference)
+                .Where(p => p.Preference.UserId == userId.UserId)
+                .AsSplitQuery()
+                .SingleOrDefaultAsync(h => h.Slot == slot);
+
+            if (oldProfile == null)
+                return;
+
+            oldProfile.OrganMarkings = null;
+            oldProfile.Markings = JsonSerializer.SerializeToDocument(new List<string>());
+
+            await db.DbContext.SaveChangesAsync();
+        }
+
+        public async Task SaveCharacterSlotAsync(NetUserId userId, HumanoidCharacterProfile? humanoid, int slot)
+        {
+            await using var db = await GetDb();
+
+            if (humanoid is null)
             {
                 await DeleteCharacterSlot(db.DbContext, userId, slot);
                 await db.DbContext.SaveChangesAsync();
                 return;
-            }
-
-            if (profile is not HumanoidCharacterProfile humanoid)
-            {
-                // TODO: Handle other ICharacterProfile implementations properly
-                throw new NotImplementedException();
             }
 
             var oldProfile = db.DbContext.Profile
@@ -140,7 +141,7 @@ namespace Content.Server.Database
             db.Profile.Remove(profile);
         }
 
-        public async Task<PlayerPreferences> InitPrefsAsync(NetUserId userId, ICharacterProfile defaultProfile)
+        public async Task<Preference> InitPrefsAsync(NetUserId userId, HumanoidCharacterProfile defaultProfile)
         {
             await using var db = await GetDb();
 
@@ -159,7 +160,7 @@ namespace Content.Server.Database
 
             await db.DbContext.SaveChangesAsync();
 
-            return new PlayerPreferences(new[] { new KeyValuePair<int, ICharacterProfile>(0, defaultProfile) }, 0, Color.FromHex(prefs.AdminOOCColor), []);
+            return prefs;
         }
 
         public async Task DeleteSlotAndSetSelectedIndex(NetUserId userId, int deleteSlot, int newSlot)
@@ -300,13 +301,8 @@ namespace Content.Server.Database
         private static Profile ConvertProfiles(HumanoidCharacterProfile humanoid, int slot, Profile? profile = null)
         {
             profile ??= new Profile();
-            var appearance = (HumanoidCharacterAppearance) humanoid.CharacterAppearance;
-            List<string> markingStrings = new();
-            foreach (var marking in appearance.Markings)
-            {
-                markingStrings.Add(marking.ToString());
-            }
-            var markings = JsonSerializer.SerializeToDocument(markingStrings);
+            var appearance = humanoid.Appearance;
+            var dataNode = _serialization.WriteValue(appearance.Markings, alwaysWrite: true, notNullableOverride: true);
 
             profile.CharacterName = humanoid.Name;
             profile.FlavorText = humanoid.FlavorText;
@@ -314,15 +310,30 @@ namespace Content.Server.Database
             profile.TTSVoice = humanoid.TTSVoice; // CorvaxGoob-TTS
             profile.Age = humanoid.Age;
             profile.Sex = humanoid.Sex.ToString();
+            profile.Voice = humanoid.Voice.ToString();
             profile.Gender = humanoid.Gender.ToString();
-            profile.HairName = appearance.HairStyleId;
-            profile.HairColor = appearance.HairColor.ToHex();
-            profile.FacialHairName = appearance.FacialHairStyleId;
-            profile.FacialHairColor = appearance.FacialHairColor.ToHex();
             profile.EyeColor = appearance.EyeColor.ToHex();
             profile.SkinColor = appearance.SkinColor.ToHex();
             profile.SpawnPriority = (int) humanoid.SpawnPriority;
-            profile.Markings = markings;
+            profile.OrganMarkings = JsonSerializer.SerializeToDocument(dataNode.ToJsonNode());
+
+            // support for downgrades - at some point this should be removed
+            var legacyMarkings = appearance.Markings
+                .SelectMany(organ => organ.Value.Values)
+                .SelectMany(i => i)
+                .Select(marking => marking.ToLegacyDbString())
+                .ToList();
+            var flattenedMarkings = appearance.Markings.SelectMany(it => it.Value)
+                .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            var hairMarking = flattenedMarkings.FirstOrNull(kvp => kvp.Key == HumanoidVisualLayers.Hair)?.Value.FirstOrNull();
+            var facialHairMarking = flattenedMarkings.FirstOrNull(kvp => kvp.Key == HumanoidVisualLayers.FacialHair)?.Value.FirstOrNull();
+            profile.Markings =
+                JsonSerializer.SerializeToDocument(legacyMarkings.Select(marking => marking.ToString()).ToList());
+            profile.HairName = hairMarking?.MarkingId ?? HairStyles.DefaultHairStyle;
+            profile.FacialHairName = facialHairMarking?.MarkingId ?? HairStyles.DefaultFacialHairStyle;
+            profile.HairColor = (hairMarking?.MarkingColors[0] ?? Color.Black).ToHex();
+            profile.FacialHairColor = (facialHairMarking?.MarkingColors[0] ?? Color.Black).ToHex();
+
             profile.Slot = slot;
             profile.PreferenceUnavailable = (DbPreferenceUnavailableMode) humanoid.PreferenceUnavailable;
 
@@ -942,7 +953,7 @@ INSERT INTO player_round (players_id, rounds_id) VALUES ({players[player]}, {id}
                     if (attempt >= maxRetryAttempts)
                     {
                         _opsLog.Error($"Max retry attempts reached. Failed to save {logs.Count} admin logs.");
-                        return;
+                        throw;
                     }
 
                     _opsLog.Warning($"Retrying in {retryDelay.TotalSeconds} seconds...");
@@ -1322,24 +1333,37 @@ INSERT INTO player_round (players_id, rounds_id) VALUES ({players[player]}, {id}
 
         public async Task<List<IAdminRemarksRecord>> GetAllAdminRemarks(Guid player)
         {
-            await using var db = await GetDb();
-            List<IAdminRemarksRecord> notes = new();
-            notes.AddRange(
-                (await (from note in db.DbContext.AdminNotes
-                        where note.PlayerUserId == player &&
-                              !note.Deleted &&
-                              (note.ExpirationTime == null || DateTime.UtcNow < note.ExpirationTime)
-                        select note)
-                    .Include(note => note.Round)
-                    .ThenInclude(r => r!.Server)
-                    .Include(note => note.CreatedBy)
-                    .Include(note => note.LastEditedBy)
-                    .Include(note => note.Player)
-                    .ToListAsync()).Select(MakeAdminNoteRecord));
-            notes.AddRange(await GetActiveWatchlistsImpl(db, player));
-            notes.AddRange(await GetMessagesImpl(db, player));
-            notes.AddRange(await GetBansAsNotesForUser(db, player));
-            return notes;
+            return await ParallelCollect<IAdminRemarksRecord>(
+                async () =>
+                {
+                    await using var db = await GetDb();
+                    return (await (from note in db.DbContext.AdminNotes
+                            where note.PlayerUserId == player &&
+                                  !note.Deleted &&
+                                  (note.ExpirationTime == null || DateTime.UtcNow < note.ExpirationTime)
+                            select note)
+                        .Include(note => note.Round)
+                        .ThenInclude(r => r!.Server)
+                        .Include(note => note.CreatedBy)
+                        .Include(note => note.LastEditedBy)
+                        .Include(note => note.Player)
+                        .ToListAsync()).Select(MakeAdminNoteRecord);
+                },
+                async () =>
+                {
+                    await using var db = await GetDb();
+                    return await GetActiveWatchlistsImpl(db, player);
+                },
+                async () =>
+                {
+                    await using var db = await GetDb();
+                    return await GetMessagesImpl(db, player);
+                },
+                async () =>
+                {
+                    await using var db = await GetDb();
+                    return await GetBansAsNotesForUser(db, player);
+                });
         }
         public async Task EditAdminNote(int id, string message, NoteSeverity severity, bool secret, Guid editedBy, DateTimeOffset editedAt, DateTimeOffset? expiryTime)
         {
@@ -1968,6 +1992,13 @@ INSERT INTO player_round (players_id, rounds_id) VALUES ({players[player]}, {id}
             }
 
             return [..results];
+        }
+
+        private static async Task<List<T>> ParallelCollect<T>(params IEnumerable<Func<Task<IEnumerable<T>>>> tasks)
+        {
+            var taskInstances = tasks.Select(a => a());
+            var results = await Task.WhenAll(taskInstances);
+            return results.SelectMany(x => x).ToList();
         }
     }
 }

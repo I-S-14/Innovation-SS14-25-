@@ -2,10 +2,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Content.IntegrationTests;
+using Content.IntegrationTests.Utility;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Reflection;
 using Robust.Shared.Serialization.Markdown.Validation;
@@ -23,6 +25,7 @@ namespace Content.YAMLLinter
 
         private static async Task<int> Main(string[] _)
         {
+            GameDataScrounger.NoScrounging = true; // Ugly hack for YAML Linter.
             PoolManager.Startup();
             var stopwatch = new Stopwatch();
             stopwatch.Start();

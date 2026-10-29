@@ -40,10 +40,7 @@
         - MidImpassable
   - type: WarpPoint
     follow: true
-    location: immovable rod
-    blacklist:
-      tags:
-      - GhostOnlyWarp
+    location: location-immovable-rod
   - type: Tag # DeltaV - Prevent the warp point from being chosen for bombing/effigy targets
     tags:
       - GhostOnlyWarp

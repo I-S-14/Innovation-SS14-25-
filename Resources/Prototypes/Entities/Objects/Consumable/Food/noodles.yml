@@ -4,7 +4,7 @@
 
 - type: entity
   abstract: true
-  parent: FoodInjectableBase
+  parent: [SolutionSmall, FoodInjectableBase]
   id: FoodNoodlesBase
   description: Now that's a nice pasta!
   components:
@@ -13,13 +13,14 @@
     - 0,0,1,0
   - type: Sprite
     sprite: Objects/Consumable/Food/noodles.rsi
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 25
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 20
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 30
+  - type: Tag
+    tags:
+    - FinishedMeal
 
 # Noodles
 
@@ -36,6 +37,7 @@
       - pasta
   - type: Sprite
     state: boiled
+
 # Tastes like pasta.
 
 - type: entity
@@ -52,13 +54,22 @@
       - tomato
   - type: Sprite
     state: tomato
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 45
+      - ReagentId: Vitamin
+        Quantity: 5
   - type: Tag
     tags:
-    - Fruit
+    - FinishedMeal
+    - Fruit # because tomatos are fruit
+
 # Tastes like pasta, tomato.
 
 - type: entity
-  parent: FoodNoodlesBase
+  parent: [SolutionNormal, FoodNoodlesBase]
   id: FoodNoodlesCopy
   name: copypasta
   description: You probably shouldn't try this, you always hear people talking about how bad it is...
@@ -85,6 +96,14 @@
           Quantity: 12
         - ReagentId: Vitamin
           Quantity: 8
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 90
+      - ReagentId: Vitamin
+        Quantity: 10
+
 # Tastes like pasta, bad humor.
 
 - type: entity
@@ -110,9 +129,18 @@
           Quantity: 8
         - ReagentId: Vitamin
           Quantity: 4
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 40
+      - ReagentId: Protein
+        Quantity: 5
   - type: Tag
     tags:
+    - FinishedMeal
     - Meat
+
 # Tastes like pasta, meat.
 
 - type: entity
@@ -129,15 +157,11 @@
       - meaty
   - type: Sprite
     state: spesslaw
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 15
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 8
-        - ReagentId: Vitamin
-          Quantity: 6
+  - type: Tag
+    tags:
+    - FinishedMeal
+    - Meat
+
 # Tastes like pasta, meat.
 
 - type: entity
@@ -163,7 +187,18 @@
           Quantity: 7
         - ReagentId: Vitamin
           Quantity: 6
-# Tastes like pasta, tomato.
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 45
+      - ReagentId: Vitamin
+        Quantity: 12
+  - type: Tag
+    tags:
+    - FinishedMeal
+
+# Tastes like pasta, oily, eggplant, and carrot.
 
 - type: entity
   parent: FoodNoodlesBase
@@ -188,4 +223,10 @@
           Quantity: 8
         - ReagentId: Vitamin
           Quantity: 1
-# Tastes like pasta, butter.
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 30
+      - ReagentId: Butter
+        Quantity: 5

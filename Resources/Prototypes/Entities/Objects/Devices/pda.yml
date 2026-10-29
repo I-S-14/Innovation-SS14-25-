@@ -2,7 +2,7 @@
 
 - type: entity
   abstract: true
-  parent: [ BaseItem, StorePresetUplink ] #PDA's have uplinks so they have to inherit the data.
+  parent: [ BaseItem ]
   id: BasePDA
   name: PDA
   description: Personal Data Assistant.
@@ -58,7 +58,8 @@
       PDA-pen: !type:ContainerSlot {}
       PDA-pai: !type:ContainerSlot {}
       Cartridge-Slot: !type:ContainerSlot {}
-      program-container: !type:Container
+      preinstalled-program-container: !type:Container
+      removable-program-container: !type:Container
   - type: ItemSlots
   - type: Clothing
     quickEquip: false
@@ -79,7 +80,7 @@
     receiveFrequencyId: PDA
     prefix: device-address-prefix-console
     savableAddress: false
-  - type: WirelessNetworkConnection
+  - type: WirelessNetwork
     range: 500
   - type: CartridgeLoader
     uiKey: enum.PdaUiKey.Key
@@ -97,6 +98,14 @@
       whitelist:
         components:
           - Cartridge
+  - type: EntityTableContainerFill
+    containers:
+      preinstalled-program-container: !type:AllSelector
+        children:
+        - id: CrewManifestCartridge
+        - id: NotekeeperCartridge
+        - id: NanoTaskCartridge
+        - id: NewsReaderCartridge
   - type: ActivatableUI
     key: enum.PdaUiKey.Key
     singleUser: true
@@ -113,6 +122,7 @@
         type: InstrumentBoundUserInterface
       enum.HealthAnalyzerUiKey.Key:
         type: HealthAnalyzerBoundUserInterface
+  - type: RemoteStore # PDAs can access uplinks so they need this component.
   - type: Tag
     tags:
     - DoorBumpOpener
@@ -175,6 +185,15 @@
     #IS14-change start
     - IS14FineCartridge
     #IS14-change end
+  - type: EntityTableContainerFill
+    containers:
+      preinstalled-program-container: !type:AllSelector
+        children:
+        - id: CrewManifestCartridge
+        - id: NotekeeperCartridge
+        - id: NanoTaskCartridge
+        - id: NewsReaderCartridge
+        - id: WantedListCartridge
 
 - type: entity
   parent: BasePDA
@@ -190,6 +209,15 @@
       - NewsReaderCartridge
       - MedTekCartridge
       - NanoChatCartridge # DeltaV
+  - type: EntityTableContainerFill
+    containers:
+      preinstalled-program-container: !type:AllSelector
+        children:
+        - id: CrewManifestCartridge
+        - id: NotekeeperCartridge
+        - id: NanoTaskCartridge
+        - id: NewsReaderCartridge
+        - id: MedTekCartridge
 
 - type: entity
   parent: BasePDA
@@ -317,8 +345,6 @@
     borderColor: "#d7d7d0"
   - type: Icon
     state: pda-cook
-  - type: ReplacementAccent # for random sentience event
-    accent: italian
 
 - type: entity
   parent: BasePDA
@@ -425,7 +451,7 @@
         components:
         - IdCard
     penSlot:
-      startingItem: Pen
+      startingItem: CrayonMime
       priority: -1
       whitelist:
         tags:
@@ -434,6 +460,7 @@
       insertSound: null
   - type: CartridgeLoader
     cartridgeSlot:
+      priority: 1
       ejectSound: null
       insertSound: null
       whitelist:
@@ -449,7 +476,15 @@
     accentHColor: "#333333"
   - type: Icon
     state: pda-mime
-  - type: Muted # for random sentience event
+  - type: EntityTableContainerFill
+    containers:
+      preinstalled-program-container: !type:AllSelector
+        children:
+        - id: CrewManifestCartridge
+        - id: NewsReaderCartridge
+  - type: PermanentStatusEffects # for random sentience event
+    statusEffects:
+    - TraitStatusEffectMuted
 
 - type: entity
   name: chaplain PDA
@@ -506,6 +541,15 @@
     - NewsReaderCartridge
     - AstroNavCartridge
     - NanoChatCartridge # DeltaV
+  - type: EntityTableContainerFill
+    containers:
+      preinstalled-program-container: !type:AllSelector
+        children:
+        - id: CrewManifestCartridge
+        - id: NotekeeperCartridge
+        - id: NanoTaskCartridge
+        - id: NewsReaderCartridge
+        - id: AstroNavCartridge
 
 - type: entity
   parent: BasePDA
@@ -552,6 +596,15 @@
       - NewsReaderCartridge
       - AstroNavCartridge
       - NanoChatCartridge # DeltaV
+  - type: EntityTableContainerFill
+    containers:
+      preinstalled-program-container: !type:AllSelector
+        children:
+        - id: CrewManifestCartridge
+        - id: NotekeeperCartridge
+        - id: NanoTaskCartridge
+        - id: NewsReaderCartridge
+        - id: AstroNavCartridge
 
 - type: entity
   parent: BasePDA
@@ -903,6 +956,16 @@
     - WantedListCartridge
     - LogProbeCartridge
     - NanoChatCartridge # DeltaV
+  - type: EntityTableContainerFill
+    containers:
+      preinstalled-program-container: !type:AllSelector
+        children:
+        - id: CrewManifestCartridge
+        - id: NotekeeperCartridge
+        - id: NanoTaskCartridge
+        - id: NewsReaderCartridge
+        - id: WantedListCartridge
+        - id: LogProbeCartridge
 
 - type: entity
   parent: BaseSecurityPDA
@@ -976,6 +1039,18 @@
       - LogProbeCartridge
       - AstroNavCartridge
       - NanoChatCartridge # DeltaV
+  - type: EntityTableContainerFill
+    containers:
+      preinstalled-program-container: !type:AllSelector
+        children:
+        - id: CrewManifestCartridge
+        - id: NotekeeperCartridge
+        - id: NanoTaskCartridge
+        - id: NewsReaderCartridge
+        - id: MedTekCartridge
+        - id: WantedListCartridge
+        - id: LogProbeCartridge
+        - id: AstroNavCartridge
 
 - type: entity
   parent: CentcomPDA
@@ -1004,6 +1079,18 @@
       - MedTekCartridge
       - AstroNavCartridge
       - NanoChatCartridge # DeltaV
+  - type: EntityTableContainerFill
+    containers:
+      preinstalled-program-container: !type:AllSelector
+        children:
+        - id: CrewManifestCartridge
+        - id: NotekeeperCartridge
+        - id: NanoTaskCartridge
+        - id: NewsReaderCartridge
+        - id: LogProbeCartridge
+        - id: WantedListCartridge
+        - id: MedTekCartridge
+        - id: AstroNavCartridge
   - type: Tag #  Ignore Chameleon tags
     tags:
     - DoorBumpOpener
@@ -1095,7 +1182,16 @@
 
 - type: entity
   parent: ClearPDA
+  id: PrisonerPDA # This mostly just exists for the sake of the chameleon UI giving a clear PDA with a prisoner ID
+  suffix: Prisoner
+  components:
+  - type: Pda
+    id: PrisonerIDCard
+
+- type: entity
+  parent: ClearPDA
   id: VisitorPDA
+  suffix: Visitor
   components:
   - type: Pda
     id: VisitorIDCard
@@ -1126,6 +1222,12 @@
       - NotekeeperCartridge
       - NanoTaskCartridge
       - NanoChatCartridge # DeltaV
+  - type: EntityTableContainerFill
+    containers:
+      preinstalled-program-container: !type:AllSelector
+        children:
+        - id: NotekeeperCartridge
+        - id: NanoTaskCartridge
 
 - type: entity
   parent: [ SyndiPDA, BaseSyndicateContraband ]
@@ -1158,12 +1260,13 @@
        pda-syndi-corpsman
   - type: Icon
     state: pda-syndi-corpsman
-  - type: CartridgeLoader
-    uiKey: enum.PdaUiKey.Key
-    preinstalled:
-      - NotekeeperCartridge
-      - NanoTaskCartridge
-      - MedTekCartridge
+  - type: EntityTableContainerFill
+    containers:
+      preinstalled-program-container: !type:AllSelector
+        children:
+        - id: NotekeeperCartridge
+        - id: NanoTaskCartridge
+        - id: MedTekCartridge
 
 - type: entity
   parent: [ SyndiOperativePDA, BaseSyndicateContraband ]
@@ -1213,6 +1316,18 @@
       - LogProbeCartridge
       - AstroNavCartridge
       - NanoChatCartridge # DeltaV
+  - type: EntityTableContainerFill
+    containers:
+      preinstalled-program-container: !type:AllSelector
+        children:
+        - id: CrewManifestCartridge
+        - id: NotekeeperCartridge
+        - id: NanoTaskCartridge
+        - id: NewsReaderCartridge
+        - id: MedTekCartridge
+        - id: WantedListCartridge
+        - id: LogProbeCartridge
+        - id: AstroNavCartridge
 
 - type: entity
   parent: ERTLeaderPDA
@@ -1296,6 +1411,7 @@
       - LogProbeCartridge
       - AstroNavCartridge
       - NanoChatCartridge
+
 # CorvaxGoob-changes-end.
 
 - type: entity
@@ -1316,6 +1432,25 @@
     accentVColor: "#447987"
   - type: Icon
     state: pda-medical
+
+- type: entity
+  parent: BasePDA
+  id: TramDriverPDA
+  name: tram driver PDA
+  description: A serious driver will always arrive on time.
+  components:
+  - type: Pda
+    id: TramDriverIDCard
+  - type: Appearance
+    appearanceDataInit:
+     enum.PdaVisuals.PdaType:
+       !type:String
+       pda-tramdriver
+  - type: PdaBorderColor
+    borderColor: "#454a50"
+    accentVColor: "#ffc500"
+  - type: Icon
+    state: pda-tramdriver
 
 - type: entity
   parent: BasePDA
@@ -1367,6 +1502,16 @@
     - WantedListCartridge
     - LogProbeCartridge
     - NanoChatCartridge # DeltaV
+  - type: EntityTableContainerFill
+    containers:
+      preinstalled-program-container: !type:AllSelector
+        children:
+        - id: CrewManifestCartridge
+        - id: NotekeeperCartridge
+        - id: NanoTaskCartridge
+        - id: NewsReaderCartridge
+        - id: WantedListCartridge
+        - id: LogProbeCartridge
 
 - type: entity
   parent: BaseMedicalPDA
@@ -1396,6 +1541,16 @@
     - WantedListCartridge
     - MedTekCartridge
     - NanoChatCartridge # DeltaV
+  - type: EntityTableContainerFill
+    containers:
+      preinstalled-program-container: !type:AllSelector
+        children:
+        - id: CrewManifestCartridge
+        - id: NotekeeperCartridge
+        - id: NanoTaskCartridge
+        - id: NewsReaderCartridge
+        - id: WantedListCartridge
+        - id: MedTekCartridge
 
 - type: entity
   parent: ClownPDA
@@ -1509,7 +1664,7 @@
   description: Smells like postage stamps and shuttle fuel.
   components:
   - type: Pda
-    id: CargoIDCard
+    id: SeniorCourierIDCard
   - type: Appearance
     appearanceDataInit:
      enum.PdaVisuals.PdaType:
@@ -1594,6 +1749,22 @@
         type: ChameleonBoundUserInterface
 
 - type: entity
+  parent: ChameleonPDA
+  id: ChameleonAgentPDA
+  suffix: Chameleon, Agent ID
+  components:
+  - type: Pda
+    id: AgentIDCard
+
+- type: entity
+  parent: PassengerPDA
+  id: SyndiCovertPDA
+  suffix: Adaptive
+  components:
+  - type: Pda
+    id: SyndicateIDCardAdaptivePassenger
+
+- type: entity
   parent: BaseWidePDA
   id: WizardPDA
   name: wizard PDA
@@ -1620,6 +1791,7 @@
 - type: entity
   parent: ClearPDA
   id: ScurretPDA
+  suffix: Scurret
   description: A temporary PDA granted to scurret temps. Doesn't do much. Wawa!
   components:
   - type: Pda

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Server.Explosion.EntitySystems;
+using Content.Shared.Weapons.Ranged.Systems;
 using Robust.Shared.Containers;
 using Robust.Shared.Prototypes;
 
@@ -37,16 +38,16 @@ public sealed partial class ProjectileGrenadeComponent : Component
     public bool RandomAngle = false;
 
     /// <summary>
-    /// The minimum speed the projectiles may come out at
+    /// The minimum speed the projectiles may come out at, to vary the spread.
     /// </summary>
     [DataField]
-    public float MinVelocity = 2f;
+    public float MinVelocity = 42f;
 
     /// <summary>
-    /// The maximum speed the projectiles may come out at
+    /// The maximum speed the projectiles may come out at, to vary the spread.
     /// </summary>
     [DataField]
-    public float MaxVelocity = 6f;
+    public float MaxVelocity = 46f;
 
     /// <summary>
     /// The trigger key that will activate the grenade.

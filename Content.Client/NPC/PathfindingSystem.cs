@@ -16,7 +16,7 @@ using Robust.Shared.Utility;
 
 namespace Content.Client.NPC
 {
-    public sealed class PathfindingSystem : SharedPathfindingSystem
+    public sealed partial class PathfindingSystem : SharedPathfindingSystem
     {
         [Dependency] private readonly IEyeManager _eyeManager = default!;
         [Dependency] private readonly IGameTiming _timing = default!;
@@ -26,6 +26,14 @@ namespace Content.Client.NPC
         [Dependency] private readonly NPCSteeringSystem _steering = default!;
         [Dependency] private readonly MapSystem _mapSystem = default!;
         [Dependency] private readonly SharedTransformSystem _transformSystem = default!;
+        [Dependency] private IEyeManager _eyeManager = default!;
+        [Dependency] private IGameTiming _timing = default!;
+        [Dependency] private IInputManager _inputManager = default!;
+        [Dependency] private IOverlayManager _overlayManager = default!;
+        [Dependency] private IResourceCache _cache = default!;
+        [Dependency] private NPCSteeringSystem _steering = default!;
+        [Dependency] private MapSystem _mapSystem = default!;
+        [Dependency] private SharedTransformSystem _transformSystem = default!;
 
         public PathfindingDebugMode Modes
         {
@@ -256,7 +264,7 @@ namespace Content.Client.NPC
                                 text.AppendLine(flagStr);
                             }
 
-                            screenHandle.DrawString(_font, mousePos.Position, text.ToString());
+                            screenHandle.DrawString(_font, mousePos.Position, text.ToString(), 1, Color.White, TextOutline.Default);
                             found = true;
                             break;
                         }
@@ -553,6 +561,9 @@ namespace Content.Client.NPC
 
                 foreach (var route in _system.Routes)
                 {
+                    if (route.Message.Costs.Values.Count == 0)
+                        continue;
+
                     var highestGScore = route.Message.Costs.Values.Max();
 
                     foreach (var (node, cost) in route.Message.Costs)
@@ -572,8 +583,6 @@ namespace Content.Client.NPC
                     }
                 }
             }
-
-            worldHandle.SetTransform(Matrix3x2.Identity);
         }
     }
 }

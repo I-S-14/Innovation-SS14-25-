@@ -1,9 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 - type: construction
+  parent: BaseWeapon
   id: HornBananium
   graph: BananiumHorn
-  startNode: start
   targetNode: bananiumHorn
-  category: construction-category-weapons
-  objectType: Item

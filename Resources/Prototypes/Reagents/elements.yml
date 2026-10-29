@@ -361,7 +361,7 @@
   boilingPoint: 445.0
   meltingPoint: 120.0
   metabolisms:
-    Poison:
+    Bloodstream:
       effects:
       - !type:HealthChange
         damage:
@@ -394,6 +394,7 @@
   plantMetabolism:
   - !type:PlantAdjustMutationLevel
     amount: 0.6
+    mutationTable: RandomPlantMutations
   - !type:PlantAdjustToxins
     amount: 4
   - !type:PlantAdjustHealth
@@ -402,7 +403,7 @@
     probability: 0.2
     amount: 0.1
   metabolisms:
-    Poison:
+    Bloodstream:
       effects:
       - !type:HealthChange
         damage:

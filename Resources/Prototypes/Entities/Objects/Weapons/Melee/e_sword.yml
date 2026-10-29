@@ -113,6 +113,7 @@
   id: EnergySword
   description: A very loud & dangerous sword with a beam made of pure, concentrated plasma. Cuts through unarmored targets like butter.
   components:
+  - type: ItemToggleExaminableStatus
   - type: Sprite
     sprite: Objects/Weapons/Melee/e_sword.rsi
     layers:
@@ -146,6 +147,7 @@
   id: EnergyDaggerLoud
   description: A not as loud and dangerous dagger with a beam made of pure, concentrated plasma. This one is completely undisguised.
   components:
+  - type: ItemToggleExaminableStatus
   - type: ItemToggle
     soundActivate:
       path: /Audio/Weapons/ebladeon.ogg
@@ -175,7 +177,9 @@
         volume: -3
   - type: ComponentToggler
     components:
-    - type: Sharp
+    - type: Tool
+      qualities:
+      - Slicing
     - type: DisarmMalus
       malus: 0.4
     - type: Execution
@@ -245,7 +249,9 @@
         Slash: 1
   - type: ComponentToggler
     components:
-    - type: Sharp
+    - type: Tool
+      qualities:
+      - Slicing
     - type: DisarmMalus
       malus: 0.4
     - type: Execution
@@ -321,6 +327,7 @@
   id: EnergyCutlass
   description: An exotic energy weapon.
   components:
+  - type: ItemToggleExaminableStatus
   - type: ItemToggleMeleeWeapon
     activatedDamage:
         types:
@@ -431,6 +438,7 @@
     deconstructionTarget: null
     graph: EnergyDoubleSwordGraph
     node: desword
+  - type: ItemToggleExaminableStatus
 
 # Item will look weird in handslot. Will need to adjust handstorage visuals in a future PR
 #- type: entity

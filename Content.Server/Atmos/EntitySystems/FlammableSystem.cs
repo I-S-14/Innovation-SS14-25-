@@ -18,12 +18,14 @@ using Content.Shared.Projectiles;
 using Content.Shared.Rejuvenate;
 using Content.Shared.Temperature;
 using Content.Shared.Throwing;
-using Content.Shared.Timing;
 using Content.Shared.Toggleable;
 using Content.Shared.Weapons.Melee.Events;
 using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.Hands;
 using Content.Shared.Temperature.Components;
+using Content.Shared.FixedPoint;
+using Content.Shared.Timing.Systems;
+using JetBrains.Annotations;
 using Robust.Server.Audio;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Events;
@@ -41,35 +43,35 @@ namespace Content.Server.Atmos.EntitySystems
 {
     public sealed partial class FlammableSystem : EntitySystem // Goob - made partial
     {
-        [Dependency] private readonly ActionBlockerSystem _actionBlockerSystem = default!;
-        [Dependency] private readonly AtmosphereSystem _atmosphereSystem = default!;
-        [Dependency] private readonly StunSystem _stunSystem = default!;
-        [Dependency] private readonly TemperatureSystem _temperatureSystem = default!;
-        [Dependency] private readonly SharedIgnitionSourceSystem _ignitionSourceSystem = default!;
-        [Dependency] private readonly DamageableSystem _damageableSystem = default!;
-        [Dependency] private readonly AlertsSystem _alertsSystem = default!;
-        [Dependency] private readonly FixtureSystem _fixture = default!;
-        [Dependency] private readonly IAdminLogManager _adminLogger = default!;
-        [Dependency] private readonly InventorySystem _inventory = default!;
-        [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
-        [Dependency] private readonly SharedPopupSystem _popup = default!;
-        [Dependency] private readonly UseDelaySystem _useDelay = default!;
-        [Dependency] private readonly AudioSystem _audio = default!;
-        [Dependency] private readonly IRobustRandom _random = default!;
+        [Dependency] private ActionBlockerSystem _actionBlockerSystem = default!;
+        [Dependency] private AtmosphereSystem _atmosphereSystem = default!;
+        [Dependency] private StunSystem _stunSystem = default!;
+        [Dependency] private TemperatureSystem _temperatureSystem = default!;
+        [Dependency] private SharedIgnitionSourceSystem _ignitionSourceSystem = default!;
+        [Dependency] private DamageableSystem _damageableSystem = default!;
+        [Dependency] private AlertsSystem _alertsSystem = default!;
+        [Dependency] private FixtureSystem _fixture = default!;
+        [Dependency] private IAdminLogManager _adminLogger = default!;
+        [Dependency] private InventorySystem _inventory = default!;
+        [Dependency] private SharedAppearanceSystem _appearance = default!;
+        [Dependency] private SharedPopupSystem _popup = default!;
+        [Dependency] private UseDelaySystem _useDelay = default!;
+        [Dependency] private AudioSystem _audio = default!;
+        [Dependency] private IRobustRandom _random = default!;
+        [Dependency] private IGameTiming _timing = default!;
 
-        private EntityQuery<InventoryComponent> _inventoryQuery;
-        private EntityQuery<PhysicsComponent> _physicsQuery;
+        [Dependency] private EntityQuery<InventoryComponent> _inventoryQuery = default!;
+        [Dependency] private EntityQuery<PhysicsComponent> _physicsQuery = default!;
 
         private static readonly TimeSpan UpdateTime = TimeSpan.FromSeconds(1);
 
         private readonly Dictionary<Entity<FlammableComponent>, float> _fireEvents = new();
 
+        private const int FirestackEnergy = 37500; // joules release when on fire
+
         public override void Initialize()
         {
             UpdatesAfter.Add(typeof(AtmosphereSystem));
-
-            _inventoryQuery = GetEntityQuery<InventoryComponent>();
-            _physicsQuery = GetEntityQuery<PhysicsComponent>();
 
             SubscribeLocalEvent<FlammableComponent, MapInitEvent>(OnMapInit);
             SubscribeLocalEvent<FlammableComponent, InteractUsingEvent>(OnInteractUsing);
@@ -78,6 +80,7 @@ namespace Content.Server.Atmos.EntitySystems
             SubscribeLocalEvent<FlammableComponent, TileFireEvent>(OnTileFire);
             SubscribeLocalEvent<FlammableComponent, RejuvenateEvent>(OnRejuvenate);
             SubscribeLocalEvent<FlammableComponent, ResistFireAlertEvent>(OnResistFireAlert);
+            SubscribeLocalEvent<FlammableComponent, AttackedEvent>(OnAttacked);
             Subs.SubscribeWithRelay<FlammableComponent, ExtinguishEvent>(OnExtinguishEvent);
 
 
@@ -97,7 +100,7 @@ namespace Content.Server.Atmos.EntitySystems
         {
             // You know I'm really not sure if having AdjustFireStacks *after* Extinguish,
             // but I'm just moving this code, not questioning it.
-            Extinguish(ent, ent.Comp);
+            TryExtinguish(ent.AsNullable());
             AdjustFireStacks(ent, args.FireStacksAdjustment, ent.Comp);
         }
 
@@ -168,14 +171,7 @@ namespace Content.Server.Atmos.EntitySystems
             if (args.Handled)
                 return;
 
-            var isHotEvent = new IsHotEvent();
-            RaiseLocalEvent(args.Used, isHotEvent);
-
-            if (!isHotEvent.IsHot)
-                return;
-
-            Ignite(uid, args.Used, flammable, args.User);
-            args.Handled = true;
+            args.Handled = TryIgniteFromHotSource((uid, flammable), args.Used, args.User);
         }
 
         private void OnExtinguishActivateInWorld(EntityUid uid, ExtinguishOnInteractComponent component, ActivateInWorldEvent args)
@@ -191,7 +187,7 @@ namespace Content.Server.Atmos.EntitySystems
 
             args.Handled = true;
 
-            if (!TryComp(uid, out UseDelayComponent? useDelay) || !_useDelay.TryResetDelay((uid, useDelay), true))
+            if (!_useDelay.TryResetDelay(uid, true))
                 return;
 
             _audio.PlayPvs(component.ExtinguishAttemptSound, uid);
@@ -266,9 +262,9 @@ namespace Content.Server.Atmos.EntitySystems
                 _fireEvents[ent] = tempDelta;
         }
 
-        private void OnRejuvenate(EntityUid uid, FlammableComponent component, RejuvenateEvent args)
+        private void OnRejuvenate(Entity<FlammableComponent> ent, ref RejuvenateEvent args)
         {
-            Extinguish(uid, component);
+            TryExtinguish(ent.AsNullable());
         }
 
         private void OnResistFireAlert(Entity<FlammableComponent> ent, ref ResistFireAlertEvent args)
@@ -280,6 +276,11 @@ namespace Content.Server.Atmos.EntitySystems
             args.Handled = true;
         }
 
+        private void OnAttacked(Entity<FlammableComponent> ent, ref AttackedEvent args)
+        {
+            TryIgniteFromHotSource(ent, args.Used, args.User);
+        }
+
         public void UpdateAppearance(EntityUid uid, FlammableComponent? flammable = null, AppearanceComponent? appearance = null)
         {
             if (!Resolve(uid, ref flammable, ref appearance))
@@ -287,6 +288,11 @@ namespace Content.Server.Atmos.EntitySystems
 
             _appearance.SetData(uid, FireVisuals.OnFire, flammable.OnFire, appearance);
             _appearance.SetData(uid, FireVisuals.FireStacks, flammable.FireStacks, appearance);
+
+            if (flammable.Displacement != null)
+                _appearance.SetData(uid, FireVisuals.FireDisplacement, flammable.Displacement.Value.Id, appearance);
+            else
+                _appearance.RemoveData(uid, FireVisuals.FireDisplacement);
 
             // Also enable toggleable-light visuals
             // This is intended so that matches & candles can re-use code for un-shaded layers on in-hand sprites.
@@ -323,7 +329,7 @@ namespace Content.Server.Atmos.EntitySystems
 
             if (flammable.FireStacks <= 0)
             {
-                Extinguish(uid, flammable);
+                TryExtinguish((uid, flammable));
             }
             else if (ignite) // Goob - fix ignite being ignored&unused
             {
@@ -336,8 +342,14 @@ namespace Content.Server.Atmos.EntitySystems
             }
         }
 
+        /// <summary>
+        /// Extinguishes an entity if it can be extinguished.
+        /// </summary>
+        [PublicAPI]
+        [Obsolete("Use TryExtinguish(Entity<FlammableComponent>) instead.")]
         public void Extinguish(EntityUid uid, FlammableComponent? flammable = null)
         {
+            // Maintaining prior resolve behavior.
             if (!Resolve(uid, ref flammable))
                 return;
 
@@ -351,10 +363,17 @@ namespace Content.Server.Atmos.EntitySystems
             flammable.FireStacks = 0;
             flammable.FireProtectionPenetration = 0f; // Goob - fire prot
 
-            _ignitionSourceSystem.SetIgnited(uid, false);
+            if (!ent.Comp.OnFire || !ent.Comp.CanExtinguish)
+                return false;
+
+            _adminLogger.Add(LogType.Flammable, $"{ToPrettyString(ent):entity} stopped being on fire damage");
+            ent.Comp.OnFire = false;
+            ent.Comp.FireStacks = 0;
+
+            _ignitionSourceSystem.SetIgnited(ent.Owner, false);
 
             var extinguished = new ExtinguishedEvent();
-            RaiseLocalEvent(uid, ref extinguished);
+            RaiseLocalEvent(ent, ref extinguished);
 
             UpdateAppearance(uid, flammable);
             _alertsSystem.ClearAlert(uid, flammable.FireAlert); // Goob - Fix Fire Alert
@@ -411,6 +430,18 @@ namespace Content.Server.Atmos.EntitySystems
             }
 
 
+        }
+
+        private bool TryIgniteFromHotSource(Entity<FlammableComponent> ent, EntityUid hotSource, EntityUid user)
+        {
+            var isHotEvent = new IsHotEvent();
+            RaiseLocalEvent(hotSource, isHotEvent);
+
+            if (!isHotEvent.IsHot)
+                return false;
+
+            Ignite(ent.Owner, hotSource, ent.Comp, user);
+            return true;
         }
 
         public void Resist(EntityUid uid,
@@ -501,7 +532,7 @@ namespace Content.Server.Atmos.EntitySystems
                     // If we're in an oxygenless environment, put the fire out.
                     if (air == null || air.GetMoles(Gas.Oxygen) < 1f)
                     {
-                        Extinguish(uid, flammable);
+                        TryExtinguish((uid, flammable));
                         continue;
                     }
 
@@ -526,13 +557,34 @@ namespace Content.Server.Atmos.EntitySystems
                     if (multiplier > 0f && !_spellblade.IsHoldingItemWithComponent<FireSpellbladeEnchantmentComponent>(uid)) // Goob check
                         _damageableSystem.TryChangeDamage(uid, flammable.Damage * flammable.FireStacks * multiplier, interruptsDoAfters: false, targetPart: TargetBodyPart.All, partMultiplier: 2f); // Goob - shitmed targeting, nerf fire delimbing cuz Lavaland
 
-                    AdjustFireStacks(uid, flammable.FirestackFade * (flammable.Resisting ? 10f : 1f), flammable, flammable.OnFire);
+                    AdjustFireStacks(uid, flammable.FirestackFade * (flammable.Resisting ? 15f : 1f), flammable, flammable.OnFire);
                 }
                 else
                 {
-                    Extinguish(uid, flammable);
+                    TryExtinguish((uid, flammable));
                 }
             }
+        }
+
+        public void CopyComponent(Entity<FlammableComponent?> entity, EntityUid clone)
+        {
+            if (!Resolve(entity, ref entity.Comp, false))
+                return;
+
+            // Don't clone being on fire here.
+            var cloneComp = EnsureComp<FlammableComponent>(clone);
+            cloneComp.Displacement = entity.Comp.Displacement;
+            cloneComp.AlwaysCombustible = entity.Comp.AlwaysCombustible;
+            cloneComp.CanExtinguish = entity.Comp.CanExtinguish;
+            cloneComp.Damage = entity.Comp.Damage.Clone();
+            cloneComp.FirestackFade = entity.Comp.FirestackFade;
+            cloneComp.FirestacksOnIgnite = entity.Comp.FirestacksOnIgnite;
+            cloneComp.MaximumFireStacks = entity.Comp.MaximumFireStacks;
+            cloneComp.MinimumFireStacks = entity.Comp.MinimumFireStacks;
+            cloneComp.ResistTime = entity.Comp.ResistTime;
+            Dirty(clone, cloneComp);
+
+            UpdateAppearance(clone, cloneComp);
         }
     }
 }

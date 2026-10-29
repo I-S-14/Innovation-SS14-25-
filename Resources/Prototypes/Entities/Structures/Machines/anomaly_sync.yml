@@ -2,7 +2,7 @@
 
 - type: entity
   id: MachineAnomalySynchronizer
-  parent: [ BaseMachinePowered, ConstructibleMachine ]
+  parent: [ BaseMachinePowered, ConstructibleMachine, BaseConstructibleMachineDestructible ]
   name: anomaly synchronizer
   description: A sophisticated device that reads changes in anomalous waves, and converts them into energy signals.
   components:
@@ -11,7 +11,7 @@
     board: AnomalySynchronizerCircuitboard
   - type: DeviceNetwork
     deviceNetId: Wireless
-  - type: WirelessNetworkConnection
+  - type: WirelessNetwork
     range: 100
   - type: DeviceNetworkRequiresPower
   - type: DeviceLinkSource
@@ -45,6 +45,14 @@
         mask:
         - ItemMask
         hard: True
+  - type: Destructible
+    thresholds:
+    - trigger: !type:DamageTrigger
+        damage: 175
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalGlassBreak
   - type: Transform
     anchored: true
     noRot: false

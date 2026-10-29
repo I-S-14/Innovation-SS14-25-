@@ -6,7 +6,7 @@ using Content.Shared.Inventory;
 
 namespace Content.Server.Inventory
 {
-    public sealed class ServerInventorySystem : InventorySystem
+    public sealed partial class ServerInventorySystem : InventorySystem
     {
         [Dependency] private readonly ToggleableClothingSystem _toggleableClothing = default!; // Goob edit
 

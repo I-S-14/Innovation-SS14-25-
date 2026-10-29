@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # Generic borg
+
 - type: borgType
   id: generic
 
@@ -14,6 +15,7 @@
     - BorgModuleScience #until sciborgs are added
 
   defaultModules:
+  - BorgModulePrying
   - BorgModuleTool
   - BorgModuleInflatable
   - BorgModuleArtifact
@@ -32,7 +34,6 @@
   petSuccessString: petting-success-generic-cyborg
   petFailureString: petting-failure-generic-cyborg
 
-
 # Engineering borg
 - type: borgType
   id: engineering
@@ -48,6 +49,7 @@
     - BorgModuleEngineering
 
   defaultModules:
+  - BorgModulePrying
   - BorgModuleTool
   - BorgModuleConstruction
   - BorgModuleRCD
@@ -69,7 +71,6 @@
   # Pet
   petSuccessString: petting-success-engineer-cyborg
   petFailureString: petting-failure-engineer-cyborg
-
 
 # Salvage borg
 - type: borgType
@@ -115,7 +116,6 @@
   petSuccessString: petting-success-salvage-cyborg
   petFailureString: petting-failure-salvage-cyborg
 
-
 # Janitor borg
 - type: borgType
   id: janitor
@@ -131,6 +131,7 @@
     - BorgModuleJanitor
 
   defaultModules:
+  - BorgModulePrying
   - BorgModuleCleaning
   - BorgModuleCustodial
 
@@ -151,7 +152,6 @@
   # Pet
   petSuccessString: petting-success-janitor-cyborg
   petFailureString: petting-failure-janitor-cyborg
-
 
 # Medical borg
 - type: borgType
@@ -209,7 +209,6 @@
   # Sounds
   footstepCollection:
     collection: FootstepHoverBorg
-
 
 # Service borg
 - type: borgType

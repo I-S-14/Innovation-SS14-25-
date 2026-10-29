@@ -52,6 +52,8 @@
       params:
         volume: -2
   # Goobstation edit end
+  - type: WirelessNetwork
+    range: 15
 
 - type: entity
   parent: RemoteSignaller
@@ -69,5 +71,7 @@
       - state: advanced-inhand-right
   - type: WirelessNetworkConnection
     range: 500000 # goobstation
+  - type: WirelessNetwork
+    range: 50
   - type: StaticPrice
     price: 30

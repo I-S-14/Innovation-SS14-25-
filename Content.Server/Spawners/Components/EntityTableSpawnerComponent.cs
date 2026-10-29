@@ -6,6 +6,9 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Server.Spawners.Components;
 
+/// <summary>
+/// A spawner that randomly spawns entities according to an <see cref="EntityTableSelector"/>.
+/// </summary>
 [RegisterComponent, EntityCategory("Spawner"), Access(typeof(ConditionalSpawnerSystem))]
 public sealed partial class EntityTableSpawnerComponent : Component
 {
@@ -16,8 +19,11 @@ public sealed partial class EntityTableSpawnerComponent : Component
     public EntityTableSelector Table = default!;
 
     /// <summary>
-    /// Scatter of entity spawn coordinates
+    /// Maximum distance in meters to scatter spawned entities from the spawner.
     /// </summary>
+    /// <remarks>
+    /// Spawned entities are created in a disk this size around the spawner.
+    /// </remarks>
     [DataField]
     public float Offset = 0.2f;
 
@@ -28,4 +34,10 @@ public sealed partial class EntityTableSpawnerComponent : Component
     /// </summary>
     [DataField]
     public bool DeleteSpawnerAfterSpawn = true;
+
+    /// <summary>
+    /// Marker, if produced entities should be spawned stacked if they could be.
+    /// </summary>
+    [DataField]
+    public bool AutoStack = false;
 }

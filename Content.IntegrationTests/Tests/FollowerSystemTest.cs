@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+using Content.IntegrationTests.Fixtures;
 using Content.Server.GameTicking;
 using Content.Shared.Follower;
 using Robust.Shared.GameObjects;
@@ -9,7 +10,7 @@ using Robust.Shared.Map;
 namespace Content.IntegrationTests.Tests;
 
 [TestFixture, TestOf(typeof(FollowerSystem))]
-public sealed class FollowerSystemTest
+public sealed class FollowerSystemTest : GameTest
 {
     /// <summary>
     ///     This test ensures that deleting a map while an entity follows another doesn't throw any exceptions.
@@ -17,11 +18,10 @@ public sealed class FollowerSystemTest
     [Test]
     public async Task FollowerMapDeleteTest()
     {
-        await using var pair = await PoolManager.GetServerClient();
+        var pair = Pair;
         var server = pair.Server;
 
         var entMan = server.ResolveDependency<IEntityManager>();
-        var mapMan = server.System<SharedMapSystem>();
         var sysMan = server.ResolveDependency<IEntitySystemManager>();
         var logMan = server.ResolveDependency<ILogManager>();
         var mapSys = server.System<SharedMapSystem>();
@@ -35,17 +35,16 @@ public sealed class FollowerSystemTest
             mapSys.CreateMap(out var map);
 
             // Spawn an observer to be followed.
-            var followed = entMan.SpawnEntity(GameTicker.ObserverPrototypeName, new MapCoordinates(0, 0, map));
+            var followed = entMan.SpawnEntity(ServerGameTicker.ObserverPrototypeName, new MapCoordinates(0, 0, map));
             logger.Info($"Spawned followed observer: {entMan.ToPrettyString(followed)}");
 
             // Spawn an observer to follow another observer.
-            var follower = entMan.SpawnEntity(GameTicker.ObserverPrototypeName, new MapCoordinates(0, 0, map));
+            var follower = entMan.SpawnEntity(ServerGameTicker.ObserverPrototypeName, new MapCoordinates(0, 0, map));
             logger.Info($"Spawned follower observer: {entMan.ToPrettyString(follower)}");
 
             followerSystem.StartFollowingEntity(follower, followed);
 
             entMan.DeleteEntity(mapSys.GetMap(map));
         });
-        await pair.CleanReturnAsync();
     }
 }

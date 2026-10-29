@@ -17,13 +17,13 @@ public sealed partial class BuyerJobCondition : ListingCondition
     /// <summary>
     /// A whitelist of jobs prototypes that can purchase this listing. Only one needs to be found.
     /// </summary>
-    [DataField("whitelist")]
+    [DataField]
     public HashSet<ProtoId<JobPrototype>>? Whitelist;
 
     /// <summary>
     /// A blacklist of job prototypes that can purchase this listing. Only one needs to be found.
     /// </summary>
-    [DataField("blacklist")]
+    [DataField]
     public HashSet<ProtoId<JobPrototype>>? Blacklist;
 
     public override bool Condition(ListingConditionArgs args)

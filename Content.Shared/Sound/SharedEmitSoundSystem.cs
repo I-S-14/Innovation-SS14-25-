@@ -30,7 +30,7 @@ namespace Content.Shared.Sound;
 /// Will play a sound on various events if the affected entity has a component derived from BaseEmitSoundComponent
 /// </summary>
 [UsedImplicitly]
-public abstract class SharedEmitSoundSystem : EntitySystem
+public abstract partial class SharedEmitSoundSystem : EntitySystem
 {
     [Dependency] protected readonly IGameTiming Timing = default!;
     [Dependency] private readonly INetManager _netMan = default!;
@@ -42,6 +42,15 @@ public abstract class SharedEmitSoundSystem : EntitySystem
     [Dependency] private readonly EntityWhitelistSystem _whitelistSystem = default!;
     [Dependency] private readonly TurfSystem _turf = default!;
     [Dependency] private readonly PredictedHandsSystem _predictedHands = default!; // Goob
+    [Dependency] protected IGameTiming Timing = default!;
+    [Dependency] private INetManager _netMan = default!;
+    [Dependency] protected IRobustRandom Random = default!;
+    [Dependency] private SharedAmbientSoundSystem _ambient = default!;
+    [Dependency] private SharedAudioSystem _audioSystem = default!;
+    [Dependency] protected SharedPopupSystem Popup = default!;
+    [Dependency] private SharedMapSystem _map = default!;
+    [Dependency] private EntityWhitelistSystem _whitelistSystem = default!;
+    [Dependency] private TurfSystem _turf = default!;
 
     public override void Initialize()
     {
@@ -196,7 +205,9 @@ public abstract class SharedEmitSoundSystem : EntitySystem
 
         if (_netMan.IsServer && sound != null)
         {
-            _audioSystem.PlayPvs(_audioSystem.ResolveSound(sound), uid, AudioParams.Default.WithVolume(volume));
+            var audioParams = component.Sound?.Params ?? AudioParams.Default;
+            audioParams = audioParams.AddVolume(volume);
+            _audioSystem.PlayPvs(_audioSystem.ResolveSound(sound), uid, audioParams);
         }
     }
 

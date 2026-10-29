@@ -12,10 +12,9 @@ namespace Content.Shared.NukeOps;
 [RegisterComponent, NetworkedComponent]
 public sealed partial class NukeOperativeComponent : Component
 {
-
     /// <summary>
-    ///
+    /// The icon representing the nuclear operative's faction. Visible to other nuclear operatives.
     /// </summary>
-    [DataField("syndStatusIcon")]
-    public ProtoId<FactionIconPrototype> SyndStatusIcon = "SyndicateFaction";
+    [DataField]
+    public ProtoId<StatusIconPrototype> SyndStatusIcon = "SyndicateFaction";
 }

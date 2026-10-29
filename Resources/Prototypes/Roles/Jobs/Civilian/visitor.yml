@@ -5,12 +5,12 @@
   name: job-name-visitor
   description: job-description-visitor
   playTimeTracker: JobVisitor
-  canBeAntag: false
   icon: JobIconVisitor
   setPreference: false
   overrideConsoleVisibility: true
   skills: # CorvaxGoob-Skills
   - ShuttleControl
+  guides: [ Civilian ] # Doesn't need a unique guidebook page because Civilian is a catch-all for zero-responsibility jobs
   access:
   - Maintenance
   extendedAccess:

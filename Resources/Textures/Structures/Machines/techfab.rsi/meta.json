@@ -1,7 +1,7 @@
 {
   "version": 1,
   "license": "CC-BY-SA-3.0",
-  "copyright": "made by EmoGarbage, ammo state made by AjexRose and modified by Emo garbage, ERT by UmbiMax",
+  "copyright": "made by EmoGarbage, ammo state made by AjexRose and modified by Emo garbage, unlit-building by DinnerCalzone (github)",
   "size": {
     "x": 32,
     "y": 32
@@ -28,17 +28,30 @@
     {
       "name": "cargo"
     },
-    {
+	{
       "name": "ammo"
-    },
-    {
-      "name": "ert"
     },
     {
       "name": "panel"
     },
     {
       "name": "unlit"
+    },
+    {
+      "name": "unlit-building",
+      "delays": [
+        [
+          0.15,
+          0.15,
+          0.15,
+          0.15,
+          0.15,
+          0.15,
+          0.15,
+          0.15,
+          0.15
+        ]
+      ]
     },
     {
       "name": "inserting",

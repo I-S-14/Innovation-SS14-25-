@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Shared.Chat.Prototypes;
-using Content.Shared.Humanoid;
+using Content.Shared.Speech.EntitySystems;
 using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
@@ -11,45 +11,51 @@ namespace Content.Shared.Speech.Components;
 /// <summary>
 ///     Component required for entities to be able to do vocal emotions.
 /// </summary>
-[RegisterComponent, NetworkedComponent]
-[AutoGenerateComponentState]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
+[Access(typeof(VocalSystem))]
 public sealed partial class VocalComponent : Component
 {
+    //TODO: Wilhelm scream logic needs to be more generic
     /// <summary>
-    ///     Emote sounds prototype id for each sex (not gender).
-    ///     Entities without <see cref="HumanoidComponent"/> considered to be <see cref="Sex.Unsexed"/>.
+    /// Emote ID for screaming (for whilhelm scream)
     /// </summary>
     [DataField]
     [AutoNetworkedField]
-    public Dictionary<Sex, ProtoId<EmoteSoundsPrototype>>? Sounds;
-
-    [DataField("screamId")]
-    [AutoNetworkedField]
     public ProtoId<EmotePrototype> ScreamId = "Scream";
 
-    [DataField("wilhelm")]
+    /// <summary>
+    /// Sound specifier for Wilhelm scream
+    /// </summary>
+    [DataField]
     [AutoNetworkedField]
     public SoundSpecifier Wilhelm = new SoundPathSpecifier("/Audio/Voice/Human/wilhelm_scream.ogg");
 
-    [DataField("wilhelmProbability")]
+    /// <summary>
+    /// Odds that screaming will be a Wilhelm scream
+    /// </summary>
+    [DataField]
     [AutoNetworkedField]
     public float WilhelmProbability = 0.0002f;
 
-    [DataField("screamAction")]
+    /// <summary>
+    /// Default Emote Action to grant
+    /// </summary>
+    [DataField]
     [AutoNetworkedField]
-    public EntProtoId? ScreamAction = "ActionScream";
+    public EntProtoId? EmoteAction = "ActionScream";
 
-    [DataField("screamActionEntity")]
+    [DataField]
     [AutoNetworkedField]
-    public EntityUid? ScreamActionEntity;
+    public EntityUid? EmoteActionEntity;
 
     /// <summary>
-    ///     Currently loaded emote sounds prototype, based on entity sex.
+    ///     Currently loaded emote sounds prototype, based on entity sex on humanoids.
     ///     Null if no valid prototype for entity sex was found.
+    ///     Generally everything should have this set. This provides the sounds for Urists as well.
     /// </summary>
-    [ViewVariables]
+    [DataField]
     [AutoNetworkedField]
-    public ProtoId<EmoteSoundsPrototype>? EmoteSounds = null;
+    public ProtoId<EmoteSoundsPrototype>? EmoteSounds;
 }
 
 /// <summary>

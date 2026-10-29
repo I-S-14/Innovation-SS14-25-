@@ -109,6 +109,12 @@
   id: WeaponPistolViper
   description: A sleek machine pistol designed by the Waffle Corporation. Boasting a selector switch that toggles between semi-auto and rock & roll, the Viper punches high above its weight class given its bulk and concealability. Feeds from .35 Auto pistol magazines. # Goobstation
   components:
+  - type: Gun
+    minAngle: 2
+    maxAngle: 25
+    angleIncrease: 2
+    angleDecay: 20
+    selectedMode: FullAuto # Override of BaseWeaponPistol to default to full-auto
   - type: Sprite
     sprite: _Goobstation/Objects/Weapons/Guns/Pistols/viper.rsi #GoobStation Resprite
   - type: ItemSlots
@@ -144,11 +150,11 @@
   description: A cyborg-mounted weapon system based on the Viper platform. Creates ammunition on the fly from an internal fabricator, which slowly self-charges. # Goobstation
   components:
   - type: Gun
-    fireRate: 5
+    fireRate: 6
     selectedMode: SemiAuto
     availableModes:
-      - SemiAuto
-      - FullAuto
+    - SemiAuto
+    - FullAuto
     soundGunshot:
       path: /Audio/Weapons/Guns/Gunshots/pistol.ogg
   - type: Sprite
@@ -169,7 +175,7 @@
     proto: CartridgePistol
     cycleable: false # No synthesizing ammo for your syndicate masters.
   - type: BallisticAmmoSelfRefiller
-    autoRefillRate: 4s
+    autoRefillRate: 2s
     affectedByEmp: true
   - type: AmmoCounter
 
@@ -191,6 +197,10 @@
   - type: ChamberMagazineAmmoProvider
     boltClosed: null
   - type: Gun
+    minAngle: 2
+    maxAngle: 8
+    angleIncrease: 1
+    angleDecay: 14
     fireRate: 4
     soundGunshot:
       path: /Audio/Weapons/Guns/Gunshots/silenced.ogg
@@ -242,6 +252,10 @@
   - type: Item
     storedOffset: 0,-2
   - type: Gun
+    minAngle: 2
+    maxAngle: 17
+    angleIncrease: 2
+    angleDecay: 14
     fireRate: 5
     availableModes:
     - SemiAuto
@@ -291,7 +305,8 @@
           - GunUpgradeFlashlight
   # mk58 upgrade end
   - type: StealTarget
-    stealGroup: OfficerHandgun
+    stealGroup:
+    - OfficerHandgun
 
 - type: entity
   name: N1984

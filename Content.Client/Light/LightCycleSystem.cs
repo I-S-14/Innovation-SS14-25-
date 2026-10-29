@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-using Content.Client.GameTicking.Managers;
-using Content.Shared;
+using Content.Shared.GameTicking;
 using Content.Shared.Light.Components;
 using Content.Shared.Light.EntitySystems;
 using Robust.Shared.Map.Components;
@@ -10,11 +9,11 @@ using Robust.Shared.Timing;
 namespace Content.Client.Light;
 
 /// <inheritdoc/>
-public sealed class LightCycleSystem : SharedLightCycleSystem
+public sealed partial class LightCycleSystem : SharedLightCycleSystem
 {
-    [Dependency] private readonly ClientGameTicker _ticker = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly MetaDataSystem _metadata = default!;
+    [Dependency] private GameTicker _ticker = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private MetaDataSystem _metadata = default!;
 
     public override void Update(float frameTime)
     {

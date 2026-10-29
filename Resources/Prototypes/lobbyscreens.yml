@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-
 - type: lobbyBackground
   id: cqcm
   background: /Textures/LobbyScreens/cqcm.webp
@@ -378,3 +377,9 @@
   background: /Textures/LobbyScreens/etzilshungry.webp
   name: Etzil's Hungry
   artist: IdiotVibes
+
+- type: lobbyBackground
+  id: InvisibleWall
+  background: /Textures/LobbyScreens/invisiblewall.webp
+  title: lobby-state-background-invisiblewall-title
+  artist: lobby-state-background-invisiblewall-artist

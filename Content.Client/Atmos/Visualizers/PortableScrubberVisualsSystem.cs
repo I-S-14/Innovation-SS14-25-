@@ -9,7 +9,7 @@ namespace Content.Client.Atmos.Visualizers;
 /// <summary>
 /// Controls client-side visuals for portable scrubbers.
 /// </summary>
-public sealed class PortableScrubberSystem : VisualizerSystem<PortableScrubberVisualsComponent>
+public sealed partial class PortableScrubberSystem : VisualizerSystem<PortableScrubberVisualsComponent>
 {
     [Dependency] private readonly SpriteSystem _sprite = default!;
 
@@ -18,8 +18,8 @@ public sealed class PortableScrubberSystem : VisualizerSystem<PortableScrubberVi
         if (args.Sprite == null)
             return;
 
-        if (AppearanceSystem.TryGetData<bool>(uid, PortableScrubberVisuals.IsFull, out var isFull, args.Component)
-            && AppearanceSystem.TryGetData<bool>(uid, PortableScrubberVisuals.IsRunning, out var isRunning, args.Component))
+        if (args.TryGetData<bool>(PortableScrubberVisuals.IsFull, out var isFull)
+            && args.TryGetData<bool>(PortableScrubberVisuals.IsRunning, out var isRunning))
         {
             var runningState = isRunning ? component.RunningState : component.IdleState;
             _sprite.LayerSetRsiState((uid, args.Sprite), PortableScrubberVisualLayers.IsRunning, runningState);
@@ -28,7 +28,7 @@ public sealed class PortableScrubberSystem : VisualizerSystem<PortableScrubberVi
             _sprite.LayerSetRsiState((uid, args.Sprite), PowerDeviceVisualLayers.Powered, fullState);
         }
 
-        if (AppearanceSystem.TryGetData<bool>(uid, PortableScrubberVisuals.IsDraining, out var isDraining, args.Component))
+        if (args.TryGetData<bool>(PortableScrubberVisuals.IsDraining, out var isDraining))
         {
             _sprite.LayerSetVisible((uid, args.Sprite), PortableScrubberVisualLayers.IsDraining, isDraining);
         }

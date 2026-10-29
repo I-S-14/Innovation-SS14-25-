@@ -6,24 +6,23 @@ using Robust.Client.UserInterface.Controls;
 using Robust.Client.UserInterface.CustomControls;
 using Robust.Client.UserInterface.XAML;
 
-namespace Content.Client.Administration.UI.Tabs.AdminTab
+namespace Content.Client.Administration.UI.Tabs.AdminTab;
+
+[GenerateTypedNameReferences]
+public sealed partial class AdminShuttleWindow : DefaultWindow
 {
-    [GenerateTypedNameReferences]
-    public sealed partial class AdminShuttleWindow : DefaultWindow
+    public AdminShuttleWindow()
     {
-        public AdminShuttleWindow()
-        {
-            RobustXamlLoader.Load(this);
-            IoCManager.InjectDependencies(this);
+        RobustXamlLoader.Load(this);
+        IoCManager.InjectDependencies(this);
 
-            _callShuttleTime.OnTextChanged += CallShuttleTimeOnOnTextChanged;
-        }
+        _callShuttleTime.OnTextChanged += CallShuttleTimeOnOnTextChanged;
+    }
 
-        private void CallShuttleTimeOnOnTextChanged(LineEdit.LineEditEventArgs obj)
-        {
-            var loc = IoCManager.Resolve<ILocalizationManager>();
-            _callShuttleButton.Disabled = !TimeSpan.TryParseExact(obj.Text, ContentLocalizationManager.TimeSpanMinutesFormats, loc.DefaultCulture, out _);
-            _callShuttleButton.Command = $"callshuttle {obj.Text}";
-        }
+    private void CallShuttleTimeOnOnTextChanged(LineEdit.LineEditEventArgs obj)
+    {
+        var loc = IoCManager.Resolve<ILocalizationManager>();
+        _callShuttleButton.Disabled = !TimeSpan.TryParseExact(obj.Text, ContentLocalizationManager.TimeSpanMinutesFormats, loc.DefaultCulture, out _);
+        _callShuttleButton.Command = $"callshuttle {obj.Text}";
     }
 }

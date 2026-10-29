@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 - type: entity
+  parent: [ SeatBase, StructureHealthFurniture ]
   name: comfortable bench
   id: BenchComfy
-  parent: SeatBase
   description: A bench with an extremely comfortable backrest.
   components:
   - type: Transform
@@ -19,6 +19,17 @@
     bodyType: Static
   - type: StaticPrice
     price: 35
+  - type: Damageable
+    damageModifierSet: SteelMod
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 40
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
 
 - type: entity
   id: BenchColorfulComfy

@@ -1,5 +1,6 @@
 # Items in this table are generally useless. They don't help in most situations and aren't interesting to serious people.
 # If you're wondering if an entity should go in this table, ask your inner child / local clown.
+
 - type: entityTable # size 2x4 or 3x3  # price 100
   id: AllToysTable
   table: !type:GroupSelector
@@ -311,6 +312,7 @@
     - id: NukeDiskFake
     - id: DiceBag
     - id: SpectralLocator
+    - id: Magic9Ball
     - id: BarberScissors
     - id: SprayFlowerPin
     - id: ClothingShoesSkates

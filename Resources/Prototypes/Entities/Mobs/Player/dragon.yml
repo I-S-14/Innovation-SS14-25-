@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 - type: entity
-  parent: [ SimpleSpaceMobBase, FlyingMobBase ]
+  parent: [ SimpleSpaceMobBase, FlyingMobBase, BaseSlicingRefinableButchering, MobNightVision, BaseMobIrradiated ]
   id: BaseMobDragon
   suffix: ""
   name: space dragon
@@ -80,6 +80,7 @@
         BaseUnshaded: alive-unshaded
       Critical:
         Base: crit
+        BaseUnshaded: crit-unshaded
       Dead:
         Base: dead
         BaseUnshaded: dead-unshaded
@@ -107,6 +108,13 @@
       0: Alive
       450: Critical
       500: Dead
+  - type: Destructible
+    thresholds:
+    - trigger: !type:DamageTypeTrigger
+        damageType: Blunt
+        damage: 600
+      behaviors:
+      - !type:GibBehavior
   - type: SlowOnDamage
     speedModifierThresholds:
       250: 0.7
@@ -118,9 +126,7 @@
   - type: StatusEffects # Overwriting basesimplemob to remove flash, getting flashed as dragon just feelsbad
     allowed:
     - Electrocution
-    - TemporaryBlindness
     - Pacified
-    - RadiationProtection
     - Adrenaline
   - type: Temperature
   - type: TemperatureDamage
@@ -129,11 +135,9 @@
     solutionOnBody: false
     updateInterval: 0.25
     metabolizerTypes: [ Dragon ]
-    groups:
-    - id: Medicine
-    - id: Poison
-  - type: Butcherable
-    spawned:
+    stages: [ Digestion, Bloodstream ]
+  - type: ToolRefinable
+    refineResult:
     - id: FoodMeatDragon
       amount: 2
   - type: InteractionPopup
@@ -168,6 +172,7 @@
       - Item
       tags:
       - Wall
+  - type: AntiRottingContainer
   - type: Tag
     tags:
     - CannotSuicide
@@ -195,6 +200,11 @@
   - type: CombatPower # Goobstation
     factor: 4 # times more dangerous than a crew-member
   - type: Fauna # Lavaland Change
+  - type: Grammar
+    attributes:
+      proper: true
+  - type: NameIdentifier
+    group: null  # Strips the numeric identifier from the dragon's name, since they already have randomly-generated names anyway
   - type: Prying
     pryPowered: true
     force: true
@@ -208,6 +218,10 @@
     understands:
     - TauCetiBasic
     - Carptongue
+  - type: InnateWaypointer
+    waypointerProtoIds:
+    - NTStationWaypointer
+    - DragonRiftWaypointer
 
 - type: entity
   parent: BaseMobDragon
@@ -226,29 +240,12 @@
   #- type: ActionGun # Goobstation - remove fireball because it's tied to lungs now
   #  action: ActionDragonsBreath
   #  gunProto: DragonsBreathGun
+  - type: ActionGrant
+    actions:
+    - ActionDragonsBreath
   - type: GuideHelp
     guides:
     - MinorAntagonists
-
-- type: entity
-  categories: [ HideSpawnMenu ]
-  id: DragonsBreathGun
-  name: dragon's lung
-  description: For dragon's breathing.
-  components:
-  - type: RechargeBasicEntityAmmo
-    rechargeCooldown: 5
-    rechargeSound:
-      path: /Audio/Animals/space_dragon_roar.ogg
-  - type: BasicEntityAmmoProvider
-    proto: ProjectileDragonsBreath
-    capacity: 1
-    count: 1
-  - type: Gun
-    soundGunshot:
-      path: /Audio/Animals/space_dragon_roar.ogg
-    soundEmpty: null
-    projectileSpeed: 5
 
 - type: entity
   parent: BaseMobDragon
@@ -268,14 +265,13 @@
       0: Alive
       200: Dead
   # less meat spawned since it's a lot easier to kill
-  - type: Butcherable
-    spawned:
+  - type: ToolRefinable
+    refineResult:
     - id: FoodMeatDragon
-      amount: 1
   - type: MeleeWeapon
     damage:
-      groups:
-        Brute: 12
+      types:
+        Piercing: 12
 
 - type: entity
   parent: BaseAction
@@ -284,11 +280,12 @@
   description: Summons a carp rift that will periodically spawns carps.
   components:
   - type: Action
-    icon:
-      sprite: Interface/Actions/carp_rift.rsi
-      state: icon
     useDelay: 1
     priority: 3
+  - type: Sprite
+    sprite: Interface/Actions/carp_rift.rsi
+    layers:
+    - state: icon
   - type: InstantAction
     event: !type:DragonSpawnRiftActionEvent
 
@@ -299,10 +296,16 @@
   description: Attempt to break a structure with your jaws or swallow a creature.
   components:
   - type: Action
-    icon: { sprite : Interface/Actions/devour.rsi, state: icon }
-    iconOn: { sprite : Interface/Actions/devour.rsi, state: icon-on }
     itemIconStyle: BigAction
     priority: 1
+  - type: Sprite
+    sprite: Interface/Actions/devour.rsi
+    layers:
+    - state: icon
+      map: ["enum.ActionVisuals.Icon"]
+    - state: icon-on
+      map: ["enum.ActionVisuals.IconToggled"]
+      visible: false
   - type: TargetAction
   - type: EntityTargetAction
     canTargetSelf: false
@@ -322,15 +325,24 @@
   description: Spew out flames at anyone foolish enough to attack you!
   components:
   - type: Action
+    useDelay: 5
     # TODO: actual sprite and iconOn
-    icon: { sprite : Objects/Weapons/Guns/Projectiles/magic.rsi, state: fireball }
     itemIconStyle: BigAction
     priority: 2
+    sound: !type:SoundPathSpecifier
+      path: /Audio/Animals/space_dragon_breath.ogg
+  - type: Sprite
+    sprite: Objects/Weapons/Guns/Projectiles/magic.rsi
+    layers:
+    - state: fireball
   - type: TargetAction
     checkCanAccess: false
     range: 0
   - type: WorldTargetAction
-    event: !type:ActionGunShootEvent
+    event: !type:ProjectileSpellEvent
+      prototype: ProjectileDragonsBreath
+      projectileSpeed: 5
+      rearVelocityCompensation: 1.0 # slow projectile, speed it up if shooting backwards
 
 # Goobstation start: dragon rework
 - type: entity
@@ -362,4 +374,16 @@
     priority: 5
   - type: InstantAction
     event: !type:DragonRoarActionEvent
-# Goobstation end
+
+- type: entity
+  parent: Smoke
+  id: BloodSmoke
+  name: smoke
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Smoke
+    spreadAmount: 3
+    duration: 2
+  - type: Sprite
+    sprite: Effects/chemsmoke.rsi
+    state: chemsmoke_white

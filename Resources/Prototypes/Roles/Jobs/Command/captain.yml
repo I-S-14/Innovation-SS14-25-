@@ -33,20 +33,18 @@
     # - !type:SaturationRequirement # MisandryBox - no neon hair on captain
     #   hairColorSaturation: 0.30
   #goobcoins: 50 #Goob content Corvax-Goob-coins
+  startingGear: CaptainGear
+  icon: "JobIconCaptain"
+  joinNotifyCrew: true
+  supervisors: job-supervisors-centcom
+  skills: # CorvaxGoob-Skills
+  - ShuttleControl
+  - Shooting
   guides: # goobstation
   - Command
   # - Succession Hidden by CorvaxGoob
   # - StandardProcedures SOP Hidden by CorvaxGoob
   # - Captain SOP Hidden by CorvaxGoob
-  weight: 20
-  startingGear: CaptainGear
-  icon: "JobIconCaptain"
-  joinNotifyCrew: true
-  supervisors: job-supervisors-centcom
-  canBeAntag: false
-  skills: # CorvaxGoob-Skills
-  - ShuttleControl
-  - Shooting
   accessGroups:
   - AllAccess
   special:

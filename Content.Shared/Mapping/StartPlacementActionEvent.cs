@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 using Content.Shared.Actions;
-﻿using Content.Shared.Maps;
+using Content.Shared.Maps;
 using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Mapping;

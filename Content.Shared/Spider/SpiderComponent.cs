@@ -10,12 +10,10 @@ namespace Content.Shared.Spider;
 [Access(typeof(SharedSpiderSystem))]
 public sealed partial class SpiderComponent : Component
 {
-    [ViewVariables(VVAccess.ReadWrite)]
-    [DataField("webPrototype")]
+    [DataField]
     public EntProtoId WebPrototype = "SpiderWeb";
 
-    [ViewVariables(VVAccess.ReadWrite)]
-    [DataField("webAction")]
+    [DataField]
     public EntProtoId WebAction = "ActionSpiderWeb";
 
     [DataField] public EntityUid? Action;

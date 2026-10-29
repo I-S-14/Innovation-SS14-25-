@@ -50,6 +50,16 @@ namespace Content.Server.Administration.Systems
         [Dependency] private readonly PlayerRateLimitManager _rateLimit = default!;
         [Dependency] private readonly IServerPreferencesManager _preferencesManager = default!;
         [Dependency] private readonly ITaskManager _taskManager = default!;
+        [Dependency] private IPlayerManager _playerManager = default!;
+        [Dependency] private IAdminManager _adminManager = default!;
+        [Dependency] private IConfigurationManager _config = default!;
+        [Dependency] private IGameTiming _timing = default!;
+        [Dependency] private IPlayerLocator _playerLocator = default!;
+        [Dependency] private ServerGameTicker _gameTicker = default!;
+        [Dependency] private SharedMindSystem _minds = default!;
+        [Dependency] private IAfkManager _afkManager = default!;
+        [Dependency] private IServerDbManager _dbManager = default!;
+        [Dependency] private PlayerRateLimitManager _rateLimit = default!;
 
         [GeneratedRegex(@"^https://(?:(?:canary|ptb)\.)?discord\.com/api/webhooks/(\d+)/((?!.*/).*)$")]
         private static partial Regex DiscordRegex();
@@ -100,7 +110,8 @@ namespace Content.Server.Administration.Systems
             Subs.CVar(_config, CCVars.DiscordAHelpAvatar, OnAvatarChanged, true);
             Subs.CVar(_config, CVars.GameHostName, OnServerNameChanged, true);
             Subs.CVar(_config, CCVars.AdminAhelpOverrideClientName, OnOverrideChanged, true);
-            _sawmill = IoCManager.Resolve<ILogManager>().GetSawmill("AHELP");
+            Subs.CVar(_config, CCVars.AhelpQuickInfoStartWordSize, v => _startWordMinSize = v, true);
+            _sawmill = LogManager.GetSawmill("AHELP");
 
             var defaultParams = new AHelpMessageParams(
                 string.Empty,
@@ -743,27 +754,15 @@ namespace Content.Server.Administration.Systems
             bwoinkText = $"{(bwoinkParams.Message.AdminOnly ? Loc.GetString("bwoink-message-admin-only") : !bwoinkParams.Message.PlaySound ? Loc.GetString("bwoink-message-silent") : "")} {bwoinkText}: {escapedText}";
 
             // If it's not an admin / admin chooses to keep the sound and message is not an admin only message, then play it.
-            var playSound = (bwoinkParams.SenderAdmin == null || bwoinkParams.Message.PlaySound) && !bwoinkParams.Message.AdminOnly;
-            var msg = new BwoinkTextMessage(bwoinkParams.Message.UserId, bwoinkParams.SenderId, bwoinkText, playSound: playSound, adminOnly: bwoinkParams.Message.AdminOnly);
-
-            LogBwoink(msg);
+            var playSound = (!senderAHelpAdmin || message.PlaySound) && !message.AdminOnly;
 
             var admins = GetTargetAdmins();
+            var adminMsg = await FormatFullMessageForRecipient(forAdmin: true, senderAdmin, senderSession, message);
 
             // Notify all admins
             if (!bwoinkParams.UserOnly)
             {
-                foreach (var channel in admins)
-                {
-                    RaiseNetworkEvent(msg, channel);
-                }
-            }
-
-            string adminPrefixWebhook = "";
-
-            if (_config.GetCVar(CCVars.AhelpAdminPrefixWebhook) && bwoinkParams.SenderAdmin is not null && bwoinkParams.SenderAdmin.Title is not null)
-            {
-                adminPrefixWebhook = $"[bold]\\[{bwoinkParams.SenderAdmin.Title}\\][/bold] ";
+                RaiseNetworkEvent(adminMsg, channel);
             }
 
             // Notify player
@@ -771,41 +770,16 @@ namespace Content.Server.Administration.Systems
             {
                 if (!admins.Contains(session.Channel))
                 {
-                    // If _overrideClientName is set, we generate a new message with the override name. The admins name will still be the original name for the webhooks.
-                    if (_overrideClientName != string.Empty)
-                    {
-                        string overrideMsgText;
-                        // Doing the same thing as above, but with the override name. Theres probably a better way to do this.
-                        if (bwoinkParams.SenderAdmin is not null &&
-                            bwoinkParams.SenderAdmin.Flags ==
-                            AdminFlags.Adminhelp) // Mentor. Not full admin. That's why it's colored differently.
-                            overrideMsgText = $"[color=purple]{adminPrefixWebhook}{_overrideClientName}[/color]";
-                        else if (bwoinkParams.SenderAdmin is not null && bwoinkParams.SenderAdmin.HasFlag(AdminFlags.Adminhelp))
-                            overrideMsgText = $"[color=red]{adminPrefixWebhook}{_overrideClientName}[/color]";
-                        else
-                            overrideMsgText = $"{bwoinkParams.SenderName}"; // Not an admin, name is not overridden.
-
-                        if (bwoinkParams.FromWebhook)
-                            overrideMsgText = $"{_config.GetCVar(GoobCVars.DiscordReplyPrefix)}{overrideMsgText}";
-
-                        overrideMsgText = $"{(bwoinkParams.Message.PlaySound ? "" : "(S) ")}{overrideMsgText}: {escapedText}";
-
-                        RaiseNetworkEvent(new BwoinkTextMessage(bwoinkParams.Message.UserId,
-                                bwoinkParams.SenderId,
-                                overrideMsgText,
-                                playSound: playSound),
-                            session.Channel);
-                    }
-                    else
-                        RaiseNetworkEvent(msg, session.Channel);
+                    var playerMsg = await FormatFullMessageForRecipient(forAdmin: false, senderAdmin, senderSession, message);
+                    RaiseNetworkEvent(playerMsg, session.Channel);
                 }
             }
 
             var sendsWebhook = _webhookUrl != string.Empty;
             if (sendsWebhook && bwoinkParams.SendWebhook)
             {
-                if (!_messageQueues.ContainsKey(msg.UserId))
-                    _messageQueues[msg.UserId] = new Queue<DiscordRelayedData>();
+                if (!_messageQueues.ContainsKey(message.UserId))
+                    _messageQueues[message.UserId] = new Queue<DiscordRelayedData>();
 
                 var str = bwoinkParams.Message.Text;
                 var unameLength = bwoinkParams.SenderName.Length;
@@ -827,7 +801,7 @@ namespace Content.Server.Administration.Systems
                     adminOnly: bwoinkParams.Message.AdminOnly,
                     noReceivers: nonAfkAdmins.Count == 0
                 );
-                _messageQueues[msg.UserId].Enqueue(GenerateAHelpMessage(messageParams));
+                _messageQueues[message.UserId].Enqueue(GenerateAHelpMessage(messageParams));
             }
 
             if (admins.Count != 0 || sendsWebhook)

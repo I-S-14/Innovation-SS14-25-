@@ -20,12 +20,16 @@ using DebugMessage = Content.Shared.Atmos.EntitySystems.SharedAtmosDebugOverlayS
 namespace Content.Client.Atmos.Overlays;
 
 
-public sealed class AtmosDebugOverlay : Overlay
+public sealed partial class AtmosDebugOverlay : Overlay
 {
     [Dependency] private readonly IEntityManager _entManager = default!;
     [Dependency] private readonly IInputManager _input = default!;
     [Dependency] private readonly IUserInterfaceManager _ui = default!;
     [Dependency] private readonly IResourceCache _cache = default!;
+    [Dependency] private IEntityManager _entManager = default!;
+    [Dependency] private IInputManager _input = default!;
+    [Dependency] private IUserInterfaceManager _ui = default!;
+    [Dependency] private IResourceCache _cache = default!;
     private readonly SharedTransformSystem _transform;
     private readonly AtmosDebugOverlaySystem _system;
     private readonly SharedMapSystem _map;
@@ -67,8 +71,6 @@ public sealed class AtmosDebugOverlay : Overlay
             handle.SetTransform(_transform.GetWorldMatrix(grid));
             DrawData(msg, handle);
         }
-
-        handle.SetTransform(Matrix3x2.Identity);
     }
 
     private void DrawData(DebugMessage msg,
@@ -245,19 +247,19 @@ public sealed class AtmosDebugOverlay : Overlay
             ? "No Air"
             : data.Moles.Sum().ToString(CultureInfo.InvariantCulture);
 
-        handle.DrawString(_font, pos, $"Moles: {moles}");
+        handle.DrawString(_font, pos, $"Moles: {moles}", 1, Color.White, TextOutline.Default);
         pos += offset;
-        handle.DrawString(_font, pos, $"Temp: {data.Temperature}");
+        handle.DrawString(_font, pos, $"Temp: {data.Temperature}", 1, Color.White, TextOutline.Default);
         pos += offset;
         handle.DrawString(_font, pos, $"Excited: {data.InExcitedGroup?.ToString() ?? "None"}");
         pos += offset;
-        handle.DrawString(_font, pos, $"Space: {data.IsSpace}");
+        handle.DrawString(_font, pos, $"Space: {data.IsSpace}", 1, Color.White, TextOutline.Default);
         pos += offset;
-        handle.DrawString(_font, pos, $"Map: {data.MapAtmosphere}");
+        handle.DrawString(_font, pos, $"Map: {data.MapAtmosphere}", 1, Color.White, TextOutline.Default);
         pos += offset;
-        handle.DrawString(_font, pos, $"NoGrid: {data.NoGrid}");
+        handle.DrawString(_font, pos, $"NoGrid: {data.NoGrid}", 1, Color.White, TextOutline.Default);
         pos += offset;
-        handle.DrawString(_font, pos, $"Immutable: {data.Immutable}");
+        handle.DrawString(_font, pos, $"Immutable: {data.Immutable}", 1, Color.White, TextOutline.Default);
     }
 
     private void GetGrids(MapId mapId, Box2Rotated box)

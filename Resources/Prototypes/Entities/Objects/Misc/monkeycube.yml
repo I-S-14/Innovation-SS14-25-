@@ -4,7 +4,7 @@
   parent: BoxCardboard
   name: monkey cube box
   id: MonkeyCubeBox
-  description: Drymate brand monkey cubes. Just add water!
+  description: Drymate® brand monkey cubes. Just add water!
   components:
   - type: EntityTableContainerFill
     containers:
@@ -28,6 +28,9 @@
       path: /Audio/Effects/unwrap.ogg
   - type: Sprite
     sprite: Objects/Misc/monkeycube.rsi
+  - type: Tag
+    tags:
+    - WrappedCube
 
 - type: entity
   parent: BaseWrappedCube
@@ -43,6 +46,7 @@
   - type: Tag
     tags:
     - MonkeyCube
+    - WrappedCube
 
 - type: entity
   parent: MonkeyCubeBox
@@ -94,7 +98,7 @@
   name: monkey cube box
   suffix: Syndicate
   id: SyndicateSpongeBox
-  description: Drymate brand monkey cubes. Just add water!
+  description: Drymate® brand monkey cubes. Just add water!
   components:
   - type: EntityTableContainerFill
     containers:

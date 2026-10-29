@@ -10,26 +10,17 @@ namespace Content.Client.Fluids;
 
 public sealed partial class PuddleSystem : SharedPuddleSystem // Goob
 {
-    [Dependency] private readonly SpriteSystem _sprite = default!;
+    [Dependency] private IconSmoothSystem _smooth = default!;
+    [Dependency] private SpriteSystem _sprite = default!;
 
-    public override void Initialize()
-    {
-        base.Initialize();
-
-        SubscribeLocalEvent<PuddleComponent, AppearanceChangeEvent>(OnPuddleAppearance);
-    }
-
+    [SubscribeLocalEvent]
     private void OnPuddleAppearance(EntityUid uid, PuddleComponent component, ref AppearanceChangeEvent args)
     {
         if (args.Sprite == null)
             return;
 
-        var volume = 1f;
-
-        if (args.AppearanceData.TryGetValue(PuddleVisuals.CurrentVolume, out var volumeObj))
-        {
-            volume = (float)volumeObj;
-        }
+        if (!args.TryGetData<float>(PuddleVisuals.CurrentVolume, out var volume))
+            volume = 1.0f;
 
         UpdatePuddleSprite((uid, args.Sprite), volume, args.AppearanceData); // Goob
     }

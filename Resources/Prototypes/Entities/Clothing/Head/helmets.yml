@@ -51,15 +51,21 @@
   #  - HeadTop
   #  - HeadSide
 
-#Basic Helmet (Security Helmet)
+#Security Helmet
 - type: entity
-  parent: [ClothingHeadHelmetArmoredBase, BaseSecurityContraband, ClothingHeadHelmetBaseFoldable] # Goob - ClothingHeadHelmetBaseFoldable
+  parent: [ ClothingHeadHelmetArmoredBase, BaseFoldable, BaseSecurityContraband, ClothingHeadHelmetBaseFoldable ]
   id: ClothingHeadHelmetBasic
-  name: helmet
-  description: Standard security gear. Protects the head from impacts.
+  name: security helmet
+  description: Standard security gear. Protects the head from impacts, and comes with a visor which can be lowered to protect the eyes.
   components:
   - type: Sprite
     sprite: Clothing/Head/Helmets/security.rsi
+    layers:
+    - state: icon
+      map: [ "unfoldedLayer" ]
+    - state: icon-visor
+      map: [ "foldedLayer" ]
+      visible: false
   - type: Clothing
     sprite: Clothing/Head/Helmets/security.rsi
   - type: Tag
@@ -69,6 +75,13 @@
   #- type: HideLayerClothing #Goobstation
   #  layers:
   #    Hair: HEAD
+  - type: Foldable
+    canFoldInsideContainer: true
+    unfoldVerbText: fold-raise-visor-verb
+    foldVerbText: fold-lower-visor-verb
+  - type: FoldableClothing
+    foldedEquippedPrefix: visor
+    foldedHeldPrefix: visor
 
 #Mercenary Helmet
 - type: entity
@@ -146,13 +159,19 @@
 
 #Light Riot Helmet
 - type: entity
-  parent: [ClothingHeadHelmetBase, BaseSecurityContraband, ClothingHeadHelmetBaseFoldable] # Goob - ClothingHeadHelmetBaseFoldable
+  parent: [ ClothingHeadHelmetBase, BaseFoldable, BaseSecurityContraband, ClothingHeadHelmetBaseFoldable ]
   id: ClothingHeadHelmetRiot
   name: light riot helmet
-  description: It's a helmet specifically designed to protect against close range attacks.
+  description: It's a helmet specifically designed to protect against close range attacks, it has a foldable visor.
   components:
   - type: Sprite
     sprite: Clothing/Head/Helmets/light_riot.rsi
+    layers:
+    - state: icon
+      map: [ "unfoldedLayer" ]
+    - state: visor-icon
+      map: [ "foldedLayer" ]
+      visible: false
   - type: Clothing
     sprite: Clothing/Head/Helmets/light_riot.rsi
   - type: IngestionBlocker
@@ -168,6 +187,17 @@
   #- type: HideLayerClothing  #Goobstation
   #  layers:
   #    Hair: HEAD
+  - type: Foldable
+    canFoldInsideContainer: true
+    unfoldVerbText: fold-lower-visor-verb
+    foldVerbText: fold-raise-visor-verb
+  - type: FoldableClothing
+    foldedEquippedPrefix: visor
+    foldedHeldPrefix: visor
+  - type: Tag
+    tags:
+    - WhitelistChameleon
+    - SecurityHelmet
 
 #Bombsuit Helmet
 - type: entity
@@ -339,24 +369,33 @@
 
 #Fire Helmet
 - type: entity
-  parent: ClothingHeadLightBase
+  parent: [ClothingHeadLightBase, TemperatureProtection]
   id: ClothingHeadHelmetFire
   name: fire helmet
   description: An atmos tech's best friend. Provides some heat resistance and looks cool.
   components:
   - type: Sprite
     sprite: Clothing/Head/Helmets/firehelmet.rsi
+  - type: ToggleableVisuals
+    clothingVisuals:
+      head:
+      - state: equipped-helmet-light
+        shader: unshaded
   - type: Clothing
-    sprite: Clothing/Head/Helmets/firehelmet.rsi
+    clothingVisuals:
+      head:
+      - state: equipped-helmet
     quickEquip: true
   - type: IngestionBlocker
-  - type: TemperatureProtection
-    heatingCoefficient: 0.5
-    coolingCoefficient: 0.8
   - type: FireProtection
     reduction: 0.15 # not fully sealed so less protection
   - type: ZombificationResistance # Goobstation - Zombies
     zombificationResistanceCoefficient: 0.9
+  - type: ItemSlots
+    slots:
+      cell_slot:
+        name: power-cell-slot-component-slot-name-default
+        startingItem: PowerCellSmall
   - type: IdentityBlocker
   - type: Tag
     tags:
@@ -380,23 +419,34 @@
         Slash: 0.95
         Heat: 0.85
         Cold: 0.85
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left
+      right:
+      - state: inhand-right
 
 #Atmos Fire Helmet
 - type: entity
-  parent: [ClothingHeadLightBase, BaseEngineeringContraband]
+  parent: [ClothingHeadLightBase, TemperatureProtection, BaseEngineeringContraband]
   id: ClothingHeadHelmetAtmosFire
   name: atmos fire helmet
   description: An atmos fire helmet, able to keep the user cool in any situation.
   components:
   - type: Sprite
     sprite: Clothing/Head/Helmets/atmos_firehelmet.rsi
+  - type: ToggleableVisuals
+    clothingVisuals:
+      head:
+      - state: equipped-helmet-light
+        shader: unshaded
   - type: Clothing
     sprite: Clothing/Head/Helmets/atmos_firehelmet.rsi
     quickEquip: true
+    clothingVisuals:
+      head:
+      - state: equipped-helmet
   - type: IngestionBlocker
-  - type: TemperatureProtection
-    heatingCoefficient: 0.3
-    coolingCoefficient: 0.8
   - type: FireProtection
     reduction: 0.2
   - type: ZombificationResistance # Goobstation - Zombies
@@ -409,7 +459,6 @@
     tags:
     - WhitelistChameleon
     - FireHelmet
-    - CorgiWearable
   - type: HideLayerClothing # Goobstation Start
     layers:
       Hair: HEAD
@@ -430,6 +479,12 @@
         Heat: 0.8
         Cold: 0.8
   - type: EyeProtection # goob
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left
+      right:
+      - state: inhand-right
 
 #Chitinous Helmet
 - type: entity
@@ -466,7 +521,7 @@
 #ERT HELMETS
 #ERT Leader Helmet
 - type: entity
-  parent: [ BaseCentcommContraband, ClothingHeadHelmetArmoredBase, ClothingHeadHelmetBaseFoldable] # Goob - ClothingHeadHelmetBaseFoldable
+  parent: [ BaseTaskForceContraband, ClothingHeadHelmetArmoredBase, BaseCentcommContraband, ClothingHeadHelmetBaseFoldable ]
   id: ClothingHeadHelmetERTLeader
   name: ERT leader helmet
   description: An in-atmosphere helmet worn by the leader of a Nanotrasen Emergency Response Team. Has blue highlights.
@@ -604,7 +659,7 @@
 
 #Justice Helmet
 - type: entity
-  parent: [ClothingHeadHelmetArmoredBase, BaseSecurityContraband] # Goob edit
+  parent: [ ClothingHeadHelmetArmoredBase, BaseSecurityContraband ]
   id: ClothingHeadHelmetJustice
   name: justice helm
   description: Advanced security gear. Protects the station from ne'er-do-wells.
@@ -621,6 +676,7 @@
   - type: Clothing
     sprite: Clothing/Head/Helmets/justice.rsi
     equippedPrefix: off
+  - type: ItemToggleExaminableStatus
   - type: ItemToggle
     predictable: false # issues between ToggleCellDraw and ItemToggleActiveSound
     onUse: false
@@ -675,6 +731,10 @@
   - type: HideLayerClothing
     layers:
       Hair: HEAD
+  - type: Tag
+    tags:
+    - WhitelistChameleon
+    - SecurityHelmet
 
 - type: entity
   parent: ClothingHeadHelmetJustice

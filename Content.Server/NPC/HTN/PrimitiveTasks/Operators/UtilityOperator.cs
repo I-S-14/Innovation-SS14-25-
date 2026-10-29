@@ -15,36 +15,65 @@ namespace Content.Server.NPC.HTN.PrimitiveTasks.Operators;
 /// </summary>
 public sealed partial class UtilityOperator : HTNOperator
 {
-    [Dependency] private readonly IEntityManager _entManager = default!;
+    [Dependency] private NPCUtilitySystem _npcUtilitySystem = default!;
 
-    [DataField("key")] public string Key = "Target";
+    [DataField]
+    public string Key = "Target";
+
+    [DataField]
+    public ReturnTypeResult ReturnType = ReturnTypeResult.Highest;
 
     /// <summary>
     /// The EntityCoordinates of the specified target.
     /// </summary>
-    [DataField("keyCoordinates")]
+    [DataField]
     public string KeyCoordinates = "TargetCoordinates";
 
     [DataField("proto", required: true)]
-    public ProtoId<UtilityQueryPrototype> Prototype = string.Empty;
+    public ProtoId<UtilityQueryPrototype> Prototype;
 
     public override async Task<(bool Valid, Dictionary<string, object>? Effects)> Plan(NPCBlackboard blackboard,
         CancellationToken cancelToken)
     {
-        var result = _entManager.System<NPCUtilitySystem>().GetEntities(blackboard, Prototype);
-        var target = result.GetHighest();
+        var result = _npcUtilitySystem.GetEntities(blackboard, Prototype);
+        Dictionary<string, object> effects;
 
-        if (!target.IsValid())
+        switch (ReturnType)
         {
-            return (false, new Dictionary<string, object>());
+            case ReturnTypeResult.Highest:
+                var target = result.GetHighest();
+
+                if (!target.IsValid())
+                {
+                    return (false, new Dictionary<string, object>());
+                }
+
+                effects = new Dictionary<string, object>()
+                {
+                    {Key, target},
+                    {KeyCoordinates, new EntityCoordinates(target, Vector2.Zero)},
+                };
+
+                return (true, effects);
+
+            case ReturnTypeResult.EnumerableDescending:
+                var targetList = result.GetEnumerable();
+
+                effects = new Dictionary<string, object>()
+                {
+                    {"TargetList", targetList},
+                };
+
+                return (true, effects);
+
+            default:
+                throw new NotImplementedException();
         }
+    }
 
-        var effects = new Dictionary<string, object>()
-        {
-            {Key, target},
-            {KeyCoordinates, new EntityCoordinates(target, Vector2.Zero)}
-        };
-
-        return (true, effects);
+    public enum ReturnTypeResult
+    {
+        Highest,
+        EnumerableDescending
     }
 }

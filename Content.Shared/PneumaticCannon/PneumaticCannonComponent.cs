@@ -17,27 +17,25 @@ public sealed partial class PneumaticCannonComponent : Component
     [ViewVariables(VVAccess.ReadWrite)]
     public PneumaticCannonPower Power = PneumaticCannonPower.Medium;
 
-    [DataField("toolModifyPower")]
+    [DataField]
     public ProtoId<ToolQualityPrototype> ToolModifyPower = "Anchoring";
 
     /// <summary>
     ///     How long to stun for if they shoot the pneumatic cannon at high power.
     /// </summary>
-    [DataField("highPowerStunTime")]
-    [ViewVariables(VVAccess.ReadWrite)]
+    [DataField]
     public float HighPowerStunTime = 3.0f;
 
     /// <summary>
     ///     Amount of moles to consume for each shot at any power.
     /// </summary>
-    [DataField("gasUsage")]
-    [ViewVariables(VVAccess.ReadWrite)]
+    [DataField]
     public float GasUsage = 0.142f;
 
     /// <summary>
     ///     Base projectile speed at default power.
     /// </summary>
-    [DataField("baseProjectileSpeed")]
+    [DataField]
     public float BaseProjectileSpeed = 20f;
 
     /// <summary>
@@ -49,7 +47,7 @@ public sealed partial class PneumaticCannonComponent : Component
     /// <summary>
     /// If true, will throw ammo rather than shoot it.
     /// </summary>
-    [DataField("throwItems"), ViewVariables(VVAccess.ReadWrite)]
+    [DataField]
     public bool ThrowItems = true;
 }
 

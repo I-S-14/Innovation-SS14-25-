@@ -2,7 +2,6 @@
 
 using Content.Server.Administration.Logs;
 using Content.Server.Body.Systems;
-using Content.Shared.EntityEffects.Effects;
 using Content.Server.Spreader;
 using Content.Shared.Body.Components;
 using Content.Shared.Chemistry;
@@ -19,13 +18,13 @@ using Robust.Shared.Physics;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Events;
 using Robust.Shared.Physics.Systems;
-using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
 using System.Linq;
 using Content.Server.Nutrition.Components;
 using Content.Shared.Inventory;
 using Content.Shared.Nutrition.Components;
+using Content.Shared.Body.Systems;
 using Content.Shared.EntityEffects.Effects.Solution;
 using TimedDespawnComponent = Robust.Shared.Spawners.TimedDespawnComponent;
 
@@ -34,7 +33,7 @@ namespace Content.Server.Fluids.EntitySystems;
 /// <summary>
 /// Handles non-atmos solution entities similar to puddles.
 /// </summary>
-public sealed class SmokeSystem : EntitySystem
+public sealed partial class SmokeSystem : EntitySystem
 {
     // If I could do it all again this could probably use a lot more of puddles.
     [Dependency] private readonly IAdminLogManager _logger = default!;
@@ -50,17 +49,25 @@ public sealed class SmokeSystem : EntitySystem
     [Dependency] private readonly SharedPhysicsSystem _physics = default!;
     [Dependency] private readonly SharedSolutionContainerSystem _solutionContainerSystem = default!;
     [Dependency] private readonly InventorySystem _inventory = default!; // Goobstation
+    [Dependency] private IAdminLogManager _logger = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private SharedMapSystem _map = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private AppearanceSystem _appearance = default!;
+    [Dependency] private BloodstreamSystem _blood = default!;
+    [Dependency] private InternalsSystem _internals = default!;
+    [Dependency] private ReactiveSystem _reactive = default!;
+    [Dependency] private SharedBroadphaseSystem _broadphase = default!;
+    [Dependency] private SharedPhysicsSystem _physics = default!;
+    [Dependency] private SharedSolutionContainerSystem _solutionContainerSystem = default!;
 
-    private EntityQuery<SmokeComponent> _smokeQuery;
-    private EntityQuery<SmokeAffectedComponent> _smokeAffectedQuery;
+    [Dependency] private EntityQuery<SmokeComponent> _smokeQuery = default!;
+    [Dependency] private EntityQuery<SmokeAffectedComponent> _smokeAffectedQuery = default!;
 
     /// <inheritdoc/>
     public override void Initialize()
     {
         base.Initialize();
-
-        _smokeQuery = GetEntityQuery<SmokeComponent>();
-        _smokeAffectedQuery = GetEntityQuery<SmokeAffectedComponent>();
 
         SubscribeLocalEvent<SmokeComponent, StartCollideEvent>(OnStartCollide);
         SubscribeLocalEvent<SmokeComponent, EndCollideEvent>(OnEndCollide);
@@ -171,12 +178,10 @@ public sealed class SmokeSystem : EntitySystem
 
         // We have no more neighbours to spread to. So instead we will randomly distribute our volume to neighbouring smoke tiles.
 
-        var smokeQuery = GetEntityQuery<SmokeComponent>();
-
         _random.Shuffle(args.Neighbors);
         foreach (var neighbor in args.Neighbors)
         {
-            if (!smokeQuery.TryGetComponent(neighbor, out var smoke))
+            if (!_smokeQuery.TryGetComponent(neighbor, out var smoke))
                 continue;
 
             smoke.SpreadAmount++;
@@ -210,7 +215,7 @@ public sealed class SmokeSystem : EntitySystem
 
     private void OnReactionAttempt(Entity<SmokeComponent> entity, ref SolutionRelayEvent<ReactionAttemptEvent> args)
     {
-        if (args.Name == SmokeComponent.SolutionName)
+        if (args.Solution.Comp.Id == SmokeComponent.SolutionName)
             OnReactionAttempt(entity, ref args.Event);
     }
 
@@ -325,7 +330,7 @@ public sealed class SmokeSystem : EntitySystem
             if (reagentQuantity.Quantity == FixedPoint2.Zero)
                 continue;
 
-            var reagent = _prototype.Index<ReagentPrototype>(reagentQuantity.Reagent.Prototype);
+            var reagent = ProtoMan.Index<ReagentPrototype>(reagentQuantity.Reagent.Prototype);
             reagent.ReactionTile(tile, reagentQuantity.Quantity, EntityManager, reagentQuantity.Reagent.Data);
         }
     }
@@ -356,7 +361,7 @@ public sealed class SmokeSystem : EntitySystem
             !_solutionContainerSystem.ResolveSolution(smoke.Owner, SmokeComponent.SolutionName, ref smoke.Comp1.Solution, out var solution))
             return;
 
-        var color = solution.GetColor(_prototype);
+        var color = solution.GetColor(ProtoMan);
         _appearance.SetData(smoke.Owner, SmokeVisuals.Color, color, smoke.Comp2);
     }
 }

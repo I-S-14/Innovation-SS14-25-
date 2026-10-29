@@ -47,6 +47,16 @@
 - type: latheRecipe
   abstract: true
   parent: BaseSteelTileRecipe
+  id: BaseIndustrialTileRecipe
+  categories:
+  - Tiles
+  - Industrial
+  materials:
+    Steel: 50
+
+- type: latheRecipe
+  abstract: true
+  parent: BaseSteelTileRecipe
   id: BaseCircuitTileRecipe
   categories:
   - Tiles
@@ -93,6 +103,46 @@
   materials:
     Steel: 25
     Glass: 25
+
+- type: latheRecipe
+  abstract: true
+  parent: BaseTileRecipe
+  id: BaseShuttleTileRecipe
+  categories:
+  - Tiles
+  - Shuttle
+  completetime: 1
+  materials:
+    Plasteel: 25
+
+- type: latheRecipe
+  abstract: true
+  parent: BaseTileRecipe
+  id: BasePlasticTileRecipe
+  categories:
+  - Tiles
+  - Plastic
+  materials:
+    Plastic: 25
+
+- type: latheRecipe
+  abstract: true
+  parent: BaseTileRecipe
+  id: BaseCarpetTileRecipe
+  categories:
+  - Tiles
+  - Carpets
+  materials:
+    Cloth: 25
+
+- type: latheRecipe
+  abstract: true
+  parent: BaseTileRecipe
+  id: BasePreciousTileRecipe
+  applyMaterialDiscount: false
+  categories:
+  - Tiles
+  - Precious
 
 ## Recipes
 
@@ -163,6 +213,16 @@
   result: FloorTileItemSteelPavementVertical
   iconPath: /Textures/Tiles/steel_pavement_vertical.png # CorvaxGoob
 
+- type: latheRecipe
+  parent: BaseSteelTileRecipe
+  id: FloorTileItemSteelVerticalSlatsBordered
+  result: FloorTileItemSteelVerticalSlatsBordered
+
+- type: latheRecipe
+  parent: BaseSteelTileRecipe
+  id: FloorTileItemSteelHorizontalSlatsBordered
+  result: FloorTileItemSteelHorizontalSlatsBordered
+
 # Dark tiles
 - type: latheRecipe
   parent: BaseDarkTileRecipe
@@ -224,6 +284,16 @@
   result: FloorTileItemDarkSquiggly
   iconPath: /Textures/Tiles/dark_squiggly.png # CorvaxGoob
 
+- type: latheRecipe
+  parent: BaseDarkTileRecipe
+  id: FloorTileItemDarkVerticalSlatsBordered
+  result: FloorTileItemDarkVerticalSlatsBordered
+
+- type: latheRecipe
+  parent: BaseDarkTileRecipe
+  id: FloorTileItemDarkHorizontalSlatsBordered
+  result: FloorTileItemDarkHorizontalSlatsBordered
+
 # White steel tiles
 - type: latheRecipe
   parent: BaseWhiteTileRecipe
@@ -279,6 +349,16 @@
   result: FloorTileItemWhitePavementVertical
   iconPath: /Textures/Tiles/white_pavement_vertical.png # CorvaxGoob
 
+- type: latheRecipe
+  parent: BaseWhiteTileRecipe
+  id: FloorTileItemWhiteVerticalSlatsBordered
+  result: FloorTileItemWhiteVerticalSlatsBordered
+
+- type: latheRecipe
+  parent: BaseWhiteTileRecipe
+  id: FloorTileItemWhiteHorizontalSlatsBordered
+  result: FloorTileItemWhiteHorizontalSlatsBordered
+
 # Maints
 - type: latheRecipe
   parent: BaseMaintTileRecipe
@@ -294,25 +374,38 @@
 
 - type: latheRecipe
   parent: BaseMaintTileRecipe
-  id: FloorTileItemTechmaintDark
-  result: FloorTileItemTechmaintDark
-  iconPath: /Textures/Tiles/tech_maint_dark.png # CorvaxGoob
-
-- type: latheRecipe
-  parent: BaseMaintTileRecipe
   id: FloorTileItemSteelMaint
   result: FloorTileItemSteelMaint
   iconPath: /Textures/Tiles/steel_maint.png # CorvaxGoob
 
+- type: latheRecipe
+  parent: BaseMaintTileRecipe
+  id: FloorTileItemTechmaintDark
+  result: FloorTileItemTechmaintDark
+  iconPath: /Textures/Tiles/tech_maint_dark.png # CorvaxGoob
+
+# Industrial
+- type: latheRecipe
+  parent: BaseIndustrialTileRecipe
+  id: FloorTileItemMetalDiamond
+  result: FloorTileItemMetalDiamond
+
+- type: latheRecipe
+  parent: BaseIndustrialTileRecipe
+  id: FloorTileItemFreezer
+  result: FloorTileItemFreezer
+
 # Circuit
 - type: latheRecipe
   parent: BaseCircuitTileRecipe
+  tileRipResistance: 225 # Goob
   id: FloorGreenCircuit
   result: FloorTileItemGCircuit
   iconPath: /Textures/Tiles/green_circuit.png # CorvaxGoob
 
 - type: latheRecipe
   parent: BaseCircuitTileRecipe
+  tileRipResistance: 225 # Goob
   id: FloorBlueCircuit
   result: FloorTileItemBCircuit
   iconPath: /Textures/Tiles/blue_circuit.png # CorvaxGoob
@@ -533,3 +626,28 @@
   id: FloorTileItemDarkMarble
   result: FloorTileItemDarkMarble
   iconPath: /Textures/Tiles/dark_marble.png # CorvaxGoob
+
+- type: latheRecipe
+  parent: BasePlasticTileRecipe
+  id: FloorTileItemBoxing
+  result: FloorTileItemBoxing
+
+- type: latheRecipe
+  parent: BasePlasticTileRecipe
+  id: FloorTileItemGym
+  result: FloorTileItemGym
+
+- type: latheRecipe
+  parent: BasePlasticTileRecipe
+  id: FloorTileItemPlastic
+  result: FloorTileItemPlastic
+
+- type: latheRecipe
+  parent: BasePlasticTileRecipe
+  id: FloorTileItemDarkPlastic
+  result: FloorTileItemDarkPlastic
+
+- type: latheRecipe
+  parent: BasePlasticTileRecipe
+  id: FloorTileItemWhitePlastic
+  result: FloorTileItemWhitePlastic

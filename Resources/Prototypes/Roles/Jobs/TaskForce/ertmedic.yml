@@ -1,0 +1,120 @@
+- type: job
+  id: ERTMedical
+  name: job-name-ertmedic
+  description: job-description-ertmedic
+  playTimeTracker: JobERTMedical
+  setPreference: false
+  startingGear: ERTMedicalGearEVA
+  icon: "JobIconERTMedic"
+  supervisors: job-supervisors-centcom
+  accessGroups:
+  - AllAccess
+  access:
+  - CentralCommand
+  special:
+  - !type:AddImplantSpecial
+    implants: [ MindShieldImplant, DeathRattleImplantCentcomm ]
+
+
+
+
+- type: startingGear
+  parent: ERTMedicalGearEVA
+  id: ERTMedicalGear
+  equipment:
+    shoes: ClothingShoesBootsMagEmergencyResponseTeam # Goobstation
+    head: ClothingHeadHelmetERTMedic
+    outerClothing: ClothingOuterArmourDurathread # Goobstation
+    pocket2: FlashlightSeclite
+
+
+
+- type: startingGear
+  id: ERTMedicalGearEVA
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitERTMedic
+    back: ClothingBackpackERTMedical
+    shoes: ClothingShoesBootsMagEmergencyResponseTeam # Goobstation
+    mask: ClothingMaskGasERT
+    neck: ExecutiveIDCard # Goobstation - Executive Access!
+    eyes: ClothingEyesGlassesMedSec # Goobstation
+    gloves: ClothingHandsGlovesNitrile
+    outerClothing: ClothingOuterHardsuitERTMedical
+    id: ERTMedicPDA
+    ears: ClothingHeadsetAltCentCom
+    belt: ClothingBeltSecurityWebbingFilledMedical # Fancier
+    pocket1: WeaponPulsePistol # Goobstation Literally described as "Favored sidearm of NT ERT operatives".
+  storage:
+    back:
+    # Goobstation Start
+    #- Hypospray
+    #- BeakerSmallBruiz
+    #- BeakerSmallLace
+    #- JugPunctTranex
+    #- JugPyraDerma
+    #- JugDexPlusSaline # End of first line
+    #- JugTrico
+    #- BeakerSmallArith
+    #- BeakerSmallDiph
+    #- BeakerSmallSigy
+    #- ClothingEyesGlassesChemical
+    #- ChemistryBottleOmnizine
+
+    # Wizden^ vGoob
+
+    - CentCommHypo
+    - MedkitAdvancedFilled
+    - CrowbarRed
+    - JugOxandrolone
+    - JugSalicylicAcid
+    - ParamedHypo
+    - CartridgeAtropine
+    - CartridgeAtropine
+    - MedicalBeamGunBattery
+    #belt: # Goobstation custom belt
+    #- DefibrillatorCompact
+    #- MedkitCombatFilled
+    #- CrowbarRed
+    #- WeaponPistolMk58
+    #- MagazinePistol
+    #- EmergencyMedipen
+
+
+- type: startingGear
+  parent: ERTMedicalGearEVA
+  id: ERTMedicalGearArmed
+  equipment:
+    suitstorage: WeaponRifleLecter
+    pocket2: WeaponDisabler
+  storage:
+    back:
+    - Hypospray
+    - JugPunctTranex
+    - JugPyraDerma
+    - JugDexPlusSaline
+    - JugTrico # End of first line
+    - BeakerSmallArith
+    - DefibrillatorCompact
+    - MedkitCombatFilled
+    - ClothingEyesGlassesChemical
+    - ChemistryBottleOmnizine
+    #belt: # Goobstation
+    #- Truncheon
+    #- Zipties
+    #- CrowbarRed
+    #- MagazineRifle
+    #- MagazineRifle
+    #- MagazineRifleIncendiary
+    #- MagazineRifleUranium # End of first line
+    #- Zipties
+
+
+
+
+- type: chameleonOutfit
+  id: ERTMedicalChameleonOutfit
+  job: ERTMedical
+  hasMindShield: true
+  equipment:
+    head: ClothingHeadHelmetHardsuitERTMedical
+    neck: ClothingNeckStethoscope

@@ -14,7 +14,7 @@
     maxOnTileWhitelist:
       tags: [ Carpet ]
   metabolisms:
-    Poison:
+    Bloodstream:
       effects:
       - !type:PopupMessage
         type: Local
@@ -38,9 +38,10 @@
   color: "#808080"
   puddleSpriteSet: Powder # Goob
   metabolisms:
-    Food:
+    Digestion:
       effects:
-      - !type:SatiateHunger
+      - !type:Satiate
+        satiationType: Hunger
         conditions:
         - !type:MetabolizerTypeCondition
           type: [ Moth ]
@@ -157,6 +158,7 @@
         - !type:TagCondition
           inverted: true
           tag: Bee
+
 # Goobstation yowie changes end
 
 - type: reagent
@@ -168,9 +170,9 @@
   color: "#86530E"
 
 - type: reagent
-  id: Saxoite
-  name: reagent-name-saxoite
-  desc: reagent-desc-saxoite
+  id: Brass
+  name: reagent-name-brass
+  desc: reagent-desc-brass
   physicalDesc: reagent-physical-desc-ground-brass
   flavor: sax
   color: "#B8A603"
@@ -213,7 +215,7 @@
         emote: Scream
         probability: 0.7
   metabolisms:
-    Poison:
+    Bloodstream:
       metabolismRate : 3.00
       effects:
       - !type:HealthChange
@@ -268,7 +270,7 @@
       effects:
       - !type:Extinguish # cold
   metabolisms:
-    Poison:
+    Bloodstream:
       metabolismRate : 0.45
       effects:
       - !type:HealthChange
@@ -334,7 +336,7 @@
   slipData:
     requiredSlipSpeed: 3.5 #clown juice gotta slip
   metabolisms:
-    Medicine:
+    Bloodstream:
       effects:
       - !type:Emote
         emote: Laugh
@@ -355,12 +357,12 @@
   flavor: weh
   color: "#59b23a"
   metabolisms:
-    Poison:
+    Bloodstream:
       metabolismRate: 0.25
       effects:
       - !type:Emote
         emote: Weh
-        showInChat: true
+        showInChat: false
         showInGuidebook: true
         force: true
         probability: 0.5
@@ -390,12 +392,12 @@
   flavor: hew
   color: "#a64dc5"
   metabolisms:
-    Poison:
+    Bloodstream:
       metabolismRate: 0.25
       effects:
       - !type:Emote
         emote: Hew
-        showInChat: true
+        showInChat: false
         showInGuidebook: true
         force: true
         probability: 0.5
@@ -417,40 +419,6 @@
           min: 50
 
 - type: reagent
-  id: CorgiJuice
-  name: reagent-name-corgiessence
-  group: Toxins
-  desc: reagent-desc-corgiessence
-  physicalDesc: reagent-physical-desc-fluffy
-  flavor: dogfood
-  color: "#ed9715"
-  metabolisms:
-    Poison:
-      metabolismRate: 0.2
-      effects:
-      - !type:HealthChange
-        conditions:
-        - !type:ReagentCondition
-          reagent: CorgiJuice
-          min: 15
-        damage:
-          types:
-            Cellular: 0.5
-      - !type:Polymorph
-        prototype: SmartCorgiMorph
-        conditions:
-        - !type:ReagentCondition
-          reagent: CorgiJuice
-          min: 50
-      - !type:AdjustReagent
-        reagent: CorgiJuice
-        amount: -20
-        conditions:
-        - !type:ReagentCondition
-          reagent: CorgiJuice
-          min: 50
-
-- type: reagent
   id: Felinase
   name: reagent-name-catessence
   group: Toxins
@@ -459,7 +427,7 @@
   flavor: cannedtuna
   color: "#d8bed8"
   metabolisms:
-    Poison:
+    Bloodstream:
       metabolismRate: 0.2
       effects:
       - !type:HealthChange
@@ -491,7 +459,6 @@
           reagent: Felinase
           min: 10
         emote: Cough
-        showInChat: true
         showInGuidebook: true
         force: true
         probability: 0.05
@@ -500,6 +467,10 @@
         visualType: Small
         messages: [ "capsaicin-effect-light-burn" ]
         probability: 0.05
+      - !type:ModifyStatusEffect
+        effectProto: StatusEffectNightVision
+        time: 2
+        type: Add
 
 - type: reagent
   id: Caninase
@@ -510,7 +481,7 @@
   flavor: dogfood
   color: "#b87333"
   metabolisms:
-    Poison:
+    Bloodstream:
       metabolismRate: 0.2
       effects:
       - !type:HealthChange
@@ -542,7 +513,6 @@
           reagent: Caninase
           min: 10
         emote: Cough
-        showInChat: true
         showInGuidebook: true
         force: true
         probability: 0.05

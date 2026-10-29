@@ -14,12 +14,10 @@ public sealed partial class TechnologyDatabaseComponent : Component
     /// <summary>
     /// A main discipline that locks out other discipline technology past a certain tier.
     /// </summary>
-    [AutoNetworkedField]
-    [DataField("mainDiscipline")]
+    [DataField, AutoNetworkedField]
     public ProtoId<TechDisciplinePrototype>? MainDiscipline;
 
-    [AutoNetworkedField]
-    [DataField("currentTechnologyCards")]
+    [DataField, AutoNetworkedField]
     public List<string> CurrentTechnologyCards = new();
 
     /// <summary>

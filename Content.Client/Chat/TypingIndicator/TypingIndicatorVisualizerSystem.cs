@@ -2,16 +2,16 @@
 
 using Content.Shared.Chat.TypingIndicator;
 using Robust.Client.GameObjects;
-using Robust.Shared.Prototypes;
 using Content.Shared.Inventory;
 
 namespace Content.Client.Chat.TypingIndicator;
 
-public sealed class TypingIndicatorVisualizerSystem : VisualizerSystem<TypingIndicatorComponent>
+public sealed partial class TypingIndicatorVisualizerSystem : VisualizerSystem<TypingIndicatorComponent>
 {
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
     [Dependency] private readonly InventorySystem _inventory = default!;
     [Dependency] private readonly SpriteSystem _sprite = default!;
+    [Dependency] private InventorySystem _inventory = default!;
 
     protected override void OnAppearanceChange(EntityUid uid, TypingIndicatorComponent component, ref AppearanceChangeEvent args)
     {
@@ -30,7 +30,7 @@ public sealed class TypingIndicatorVisualizerSystem : VisualizerSystem<TypingInd
         if (overrideIndicator != null)
             currentTypingIndicator = overrideIndicator.Value;
 
-        if (!_prototypeManager.Resolve(currentTypingIndicator, out var proto))
+        if (!ProtoMan.Resolve(currentTypingIndicator, out var proto))
         {
             Log.Error($"Unknown typing indicator id: {component.TypingIndicatorPrototype}");
             return;
@@ -44,8 +44,8 @@ public sealed class TypingIndicatorVisualizerSystem : VisualizerSystem<TypingInd
         args.Sprite.LayerSetShader(layer, proto.Shader);
         _sprite.LayerSetOffset((uid, args.Sprite), layer, proto.Offset);
 
-        AppearanceSystem.TryGetData<TypingIndicatorState>(uid, TypingIndicatorVisuals.State, out var state);
-        _sprite.LayerSetVisible((uid, args.Sprite), layer, state != TypingIndicatorState.None);
+        args.TryGetData<TypingIndicatorState>(TypingIndicatorVisuals.State, out var state);
+        SpriteSystem.LayerSetVisible((uid, args.Sprite), layer, state != TypingIndicatorState.None);
         switch (state)
         {
             case TypingIndicatorState.Idle:

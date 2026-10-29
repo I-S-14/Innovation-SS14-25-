@@ -32,10 +32,6 @@
     state: burnt-icon
   - type: Smokable
     state: Burnt
-  - type: SolutionContainerManager
-    solutions:
-      smokable:
-        maxVol: 20
   - type: Tag
     tags:
       - Cigarette #CorvaxGoob
@@ -73,10 +69,6 @@
     state: burnt-icon
   - type: Smokable
     state: Burnt
-  - type: SolutionContainerManager
-    solutions:
-      smokable:
-        maxVol: 20
   - type: Tag #Goob
     tags:
     - Cigar

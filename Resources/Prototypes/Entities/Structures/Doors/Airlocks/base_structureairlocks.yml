@@ -1,10 +1,13 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 - type: entity
-  id: Airlock
+  abstract: true
   parent: BaseStructure
+  id: BaseAirlockIndestructible
   name: airlock
   description: It opens, it closes, and maybe crushes you.
+  placement:
+    mode: SnapgridCenter
   components:
   - type: Anchorable
     flags:
@@ -18,24 +21,28 @@
           "/Audio/Weapons/smash.ogg"
   - type: InteractionOutline
   - type: Sprite
-    sprite: Structures/Doors/Airlocks/Standard/basic.rsi
-    snapCardinals: true
+    sprite: Structures/Doors/Airlocks/Standard/airlock-base.rsi
     layers:
     - state: closed
       map: ["enum.DoorVisualLayers.Base"]
     - state: closed_unlit
       shader: unshaded
+      sprite: Structures/Doors/Airlocks/Effects/airlock-effects.rsi
       map: ["enum.DoorVisualLayers.BaseUnlit"]
-      visible: false
+      visible: true
     - state: welded
+      sprite: Structures/Doors/Airlocks/Effects/airlock-effects.rsi
       map: ["enum.WeldableLayers.BaseWelded"]
     - state: bolted_unlit
       shader: unshaded
+      sprite: Structures/Doors/Airlocks/Effects/airlock-effects.rsi
       map: ["enum.DoorVisualLayers.BaseBolted"]
     - state: emergency_unlit
+      sprite: Structures/Doors/Airlocks/Effects/airlock-effects.rsi
       map: ["enum.DoorVisualLayers.BaseEmergencyAccess"]
       shader: unshaded
     - state: panel_open
+      sprite: Structures/Doors/Airlocks/Effects/airlock-effects.rsi
       map: ["enum.WiresVisualLayers.MaintenancePanel"]
     - state: electrified_ai
       sprite: Interface/Misc/ai_hud.rsi
@@ -48,9 +55,12 @@
       visible: false
       map: ["enum.ElectrifiedLayers.Sparks"]
     - state: sparks
+      sprite: Structures/Doors/Airlocks/Effects/airlock-effects.rsi
       map: ["enum.DoorVisualLayers.BaseEmagging"]
       shader: unshaded
       visible: false
+  - type: IconSmooth
+    key: doors
   - type: AnimationPlayer
   - type: Physics
   - type: Fixtures
@@ -63,13 +73,13 @@
         mask:
         - FullTileMask
         layer:
-        - AirlockLayer
-  - type: LayerChangeOnWeld
-    unWeldedLayer: AirlockLayer
-    weldedLayer: WallLayer
+        - WallLayer # Unlike airlocks, this blocks LowImpassable (mice, rat king etc)
   - type: ContainerFill
     containers:
       board: [ DoorElectronics ]
+  - type: ContainerContainer
+    containers:
+      board: !type:Container
   - type: AccessReader
     containerAccessProvider: board
   - type: Door
@@ -82,17 +92,20 @@
       path: /Audio/Machines/airlock_close.ogg
     denySound:
       path: /Audio/Machines/airlock_deny.ogg
-  - type: ContainerContainer
-    containers:
-      board: !type:Container
   - type: Weldable
     fuel: 5
     time: 3
   - type: Airlock
-    openUnlitVisible: true # CorvaxGoob-Resprite-Airlocks
+    openUnlitVisible: true
   - type: NavMapDoor
   - type: DoorBolt
   - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.ElectrifiedVisuals.ShowSparks:
+        enum.ElectrifiedLayers.Sparks:
+          True: { visible: True }
+          False: { visible: False }
   - type: WiresVisuals
   - type: ElectrocutionHUDVisuals
   - type: ApcPowerReceiver
@@ -101,31 +114,12 @@
   - type: Electrified
     enabled: false
     usesApcPower: true
+    onActivateInWorld: true
   - type: WiresPanel
   - type: WiresPanelSecurity
   - type: Wires
     boardName: wires-board-name-airlock
     layoutId: Airlock
-  - type: DoorSignalControl
-  - type: DeviceNetwork
-    deviceNetId: Wireless
-    receiveFrequencyId: BasicDevice
-  - type: WirelessNetworkConnection
-    range: 200
-  - type: DeviceLinkSink
-    ports:
-      - Open
-      - Close
-      - Toggle
-      - AutoClose
-      - DoorBolt
-  - type: DeviceLinkSource
-    ports:
-      - DoorStatus
-    lastSignals:
-      DoorStatus: false
-  - type: SoundOnOverload
-  - type: SpawnOnOverload
   - type: UserInterface
     interfaces:
       enum.AiUi.Key:
@@ -138,8 +132,75 @@
     resistance: 3
   - type: Occluder
   - type: Damageable
-    damageContainer: StructuralInorganic
-    damageModifierSet: StrongMetallic
+    damageModifierSet: SteelStaticMod
+  - type: Construction
+    graph: Airlock
+    node: airlock
+    containers:
+    - board
+  - type: PlacementReplacement
+    key: walls
+  - type: LightningTarget
+    priority: 1
+  - type: Tag
+    tags:
+    - Airlock
+    # This tag is used to navigate the Airlock construction graph. It's needed because the construction graph is shared between Airlock, AirlockGlass, and HighSecDoor
+    - DoorRemoteWhitelist
+    # This tag is used by door remotes to allow or not a door remote to normally be able to interact with a door
+  - type: BlockWeather
+  - type: GuideHelp
+    guides:
+    - Airlocks
+    - WirePanels
+  - type: StaticPrice
+    price: 150
+  - type: StructureAligner
+  - type: StructureAlignerPylon
+
+- type: entity
+  parent: [ BaseAirlockIndestructible, StructureHealthDoor ]
+  id: Airlock
+  description: It opens, it closes, and maybe crushes you.
+  components:
+  - type: LayerChangeOnWeld
+    unWeldedLayer: AirlockLayer
+    weldedLayer: WallLayer
+  - type: Airlock
+    openUnlitVisible: true # CorvaxGoob-Resprite-Airlocks
+  - type: Fixtures
+    fixtures:
+      fix1:
+        layer:
+        - AirlockLayer
+  - type: DoorSignalControl
+  - type: DeviceNetwork
+    deviceNetId: Wireless
+    receiveFrequencyId: BasicDevice
+  - type: WirelessNetwork
+    range: 200
+  - type: DeviceLinkSink
+    ports:
+    - Open
+    - Close
+    - Toggle
+    - AutoClose
+    - DoorBolt
+  - type: DeviceLinkSource
+    ports:
+    - DoorStatus
+    - DoorBoltStatus
+    lastSignals:
+      DoorStatus: false
+      DoorBoltStatus: false
+  - type: EntityEffectOnDeviceOverload
+    effects:
+    - !type:SpawnEntity
+      entity: EffectSparks
+      predicted: false
+    - !type:PlaySound
+      sound: /Audio/Items/Defib/defib_zap.ogg
+      predicted: false
   - type: RCDDeconstructable
     cost: 6
     delay: 8
@@ -173,28 +234,12 @@
       - !type:DoActsBehavior
         acts: ["Destruction"]
     # Goobend
-  - type: Construction
-    graph: Airlock
-    node: airlock
-    containers:
-    - board
-  - type: PlacementReplacement
-    key: walls
   - type: IconSmooth # CorvaxGoob-Resprites
     key: walls
     mode: NoSprite
   - type: Paintable
     group: AirlockStandard
-  - type: StaticPrice
-    price: 150
-  - type: LightningTarget
-    priority: 1
-  - type: Tag
-    tags:
-      - Airlock
-      # This tag is used to nagivate the Airlock construction graph. It's needed because the construction graph is shared between Airlock, AirlockGlass, and HighSecDoor
   - type: PryUnpowered
-  - type: BlockWeather
   - type: GuideHelp
     guides:
     - Airlocks
@@ -208,20 +253,18 @@
     - KnockOn
   - type: WeldingSparksAnimation # Goobstation
     startingOffset: 0, 0.5
-  placement:
-    mode: SnapgridCenter
 
 - type: entity
-  id: AirlockRCDResistant
-  parent: Airlock
   abstract: true
+  parent: Airlock
+  id: AirlockRCDResistant
   components:
   - type: RCDDeconstructable
     deconstructable: false
 
 - type: entity
-  id: AirlockGlass
   parent: Airlock
+  id: AirlockGlass
   name: glass airlock
   components:
   - type: MeleeSound
@@ -233,8 +276,7 @@
   - type: Occluder
     enabled: false
   - type: Sprite
-    sprite: Structures/Doors/Airlocks/Glass/glass.rsi
-  - type: AnimationPlayer
+    sprite: Structures/Doors/Airlocks/Glass/airlock-base.rsi
   - type: Fixtures
     fixtures:
       fix1:
@@ -252,13 +294,15 @@
   - type: Construction
     graph: Airlock
     node: glassAirlock
-  - type: RadiationBlocker # CorvaxGoob
-    resistance: 2
   - type: Paintable
     group: AirlockGlass
   #- type: RadiationBlocker
   #  resistance: 2
+  - type: RadiationBlocker # CorvaxGoob
+    resistance: 2
   - type: Tag
     tags:
       - GlassAirlock
       # This tag is used to nagivate the Airlock construction graph. It's needed because the construction graph is shared between Airlock, AirlockGlass, and HighSecDoor
+      - DoorRemoteWhitelist
+      # This tag is used by door remotes to allow or not a door remote to normally be able to interact with a door

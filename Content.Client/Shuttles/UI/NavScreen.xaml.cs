@@ -18,6 +18,7 @@ public sealed partial class NavScreen : BoxContainer
 {
     [Dependency] private readonly IEntityManager _entManager = default!;
     [Dependency] private readonly IPrototypeManager _protoMan = default!; // Frontier
+    [Dependency] private IEntityManager _entManager = default!;
     private SharedTransformSystem _xformSystem;
 
     private EntityUid? _consoleEntity; // Entity of controlling console
@@ -87,6 +88,18 @@ public sealed partial class NavScreen : BoxContainer
     {
         NavRadar.ShowDocks ^= true;
         args.Button.Pressed = NavRadar.ShowDocks;
+    }
+
+    private void OnCargoDockTogglePressed(BaseButton.ButtonEventArgs args)
+    {
+        NavRadar.ShowCargoDocks ^= true;
+        args.Button.Pressed = NavRadar.ShowCargoDocks;
+    }
+
+    private void OnArrivalDockTogglePressed(BaseButton.ButtonEventArgs args)
+    {
+        NavRadar.ShowArrivalDocks ^= true;
+        args.Button.Pressed = NavRadar.ShowArrivalDocks;
     }
 
     public void UpdateState(NavInterfaceState scc)

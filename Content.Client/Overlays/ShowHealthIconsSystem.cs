@@ -6,7 +6,6 @@ using Content.Shared.Mobs.Components;
 using Content.Shared.Overlays;
 using Content.Shared.StatusIcon;
 using Content.Shared.StatusIcon.Components;
-using Robust.Shared.Prototypes;
 using Content.Shared.Damage.Components;
 
 namespace Content.Client.Overlays;
@@ -16,8 +15,6 @@ namespace Content.Client.Overlays;
 /// </summary>
 public sealed partial class ShowHealthIconsSystem : EquipmentHudSystem<ShowHealthIconsComponent> // Goob - made partial
 {
-    [Dependency] private readonly IPrototypeManager _prototypeMan = default!;
-
     [ViewVariables]
     public HashSet<string> DamageContainers = new();
 
@@ -27,7 +24,7 @@ public sealed partial class ShowHealthIconsSystem : EquipmentHudSystem<ShowHealt
     {
         base.Initialize();
 
-        SubscribeLocalEvent<DamageableComponent, GetStatusIconsEvent>(OnGetStatusIconsEvent);
+        SubscribeLocalEvent<InjurableComponent, GetStatusIconsEvent>(OnGetStatusIconsEvent);
         SubscribeLocalEvent<ShowHealthIconsComponent, AfterAutoHandleStateEvent>(OnHandleState);
     }
 
@@ -57,7 +54,7 @@ public sealed partial class ShowHealthIconsSystem : EquipmentHudSystem<ShowHealt
         RefreshOverlay();
     }
 
-    private void OnGetStatusIconsEvent(Entity<DamageableComponent> entity, ref GetStatusIconsEvent args)
+    private void OnGetStatusIconsEvent(Entity<InjurableComponent> entity, ref GetStatusIconsEvent args)
     {
         if (!IsActive)
             return;
@@ -67,27 +64,27 @@ public sealed partial class ShowHealthIconsSystem : EquipmentHudSystem<ShowHealt
         args.StatusIcons.AddRange(healthIcons);
     }
 
-    private IReadOnlyList<HealthIconPrototype> DecideHealthIcons(Entity<DamageableComponent> entity)
+    private IReadOnlyList<StatusIconPrototype> DecideHealthIcons(Entity<InjurableComponent> entity)
     {
-        var damageableComponent = entity.Comp;
+        var injurableComp = entity.Comp;
 
-        if (damageableComponent.DamageContainerID == null ||
-            !DamageContainers.Contains(damageableComponent.DamageContainerID))
+        if (injurableComp.DamageContainer == null ||
+            !DamageContainers.Contains(injurableComp.DamageContainer))
         {
-            return Array.Empty<HealthIconPrototype>();
+            return Array.Empty<StatusIconPrototype>();
         }
 
-        var result = new List<HealthIconPrototype>();
+        var result = new List<StatusIconPrototype>();
 
         // Here you could check health status, diseases, mind status, etc. and pick a good icon, or multiple depending on whatever.
-        if (damageableComponent?.DamageContainerID == "Biological")
+        if (injurableComp?.DamageContainer == "Biological")
         {
             if (TryComp<MobStateComponent>(entity, out var state))
             {
                 // Since there is no MobState for a rotting mob, we have to deal with this case first.
-                if (HasComp<RottingComponent>(entity) && _prototypeMan.Resolve(damageableComponent.RottingIcon, out var rottingIcon))
+                if (HasComp<RottingComponent>(entity) && ProtoMan.Resolve(injurableComp.RottingIcon, out var rottingIcon))
                     result.Add(rottingIcon);
-                else if (damageableComponent.HealthIcons.TryGetValue(state.CurrentState, out var value) && _prototypeMan.Resolve(value, out var icon))
+                else if (injurableComp.HealthIcons.TryGetValue(state.CurrentState, out var value) && ProtoMan.Resolve(value, out var icon))
                     result.Add(icon);
             }
         }

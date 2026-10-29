@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-using Content.Client.GameTicking.Managers;
+using Content.Client.GameTicking;
 using Content.Shared.GameTicking;
 using Content.Shared.Input;
 using JetBrains.Annotations;
@@ -13,11 +13,12 @@ using Robust.Shared.Player;
 namespace Content.Client.RoundEnd;
 
 [UsedImplicitly]
-public sealed class RoundEndSummaryUIController : UIController,
+public sealed partial class RoundEndSummaryUIController : UIController,
     IOnSystemLoaded<ClientGameTicker>
 {
     [Dependency] private readonly IInputManager _input = default!;
     [Dependency] private readonly IFileDialogManager _fileDialogManager = default!; // CorvaxGoob-PhotoCamera
+    [Dependency] private IInputManager _input = default!;
 
     private RoundEndSummaryWindow? _window;
 

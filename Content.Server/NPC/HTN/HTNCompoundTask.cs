@@ -13,6 +13,6 @@ namespace Content.Server.NPC.HTN;
 /// </remarks>
 public sealed partial class HTNCompoundTask : HTNTask, IHTNCompound
 {
-    [DataField("task", required: true)]
+    [DataField(required: true)]
     public ProtoId<HTNCompoundPrototype> Task = string.Empty;
 }

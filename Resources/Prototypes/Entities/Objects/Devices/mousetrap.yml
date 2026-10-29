@@ -19,6 +19,9 @@
         types:
         - Mousetrap
     - type: Mousetrap
+    - type: ItemToggleExaminableStatus
+      onText: item-toggle-examined-active
+      offText: item-toggle-examined-not-active
     - type: ItemToggle
       soundActivate: "/Audio/Items/Handcuffs/cuff_end.ogg"
       soundDeactivate: "/Audio/Items/snap.ogg"
@@ -27,6 +30,7 @@
     - type: UseDelay
     - type: ItemToggleOnTrigger
       canActivate: false
+      consciousAction: false # mice trigger it unknowingly
       showPopup: false # only show the popup when arming/disarming the trap in your hand
     - type: TriggerOnStepTrigger
     - type: PreventableStepTrigger
@@ -64,7 +68,6 @@
           density: 30
           mask:
             - ItemMask
-    - type: Rotatable
     - type: PhysicalComposition #Goobstation - Recycle update
       materialComposition:
         Steel: 12

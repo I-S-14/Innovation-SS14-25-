@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+using Content.IntegrationTests.Fixtures;
 using Content.Shared.Hands.Components;
 using Content.Shared.Movement.Pulling.Components;
-using Content.Shared.Prototypes;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Prototypes;
 
@@ -11,7 +11,7 @@ namespace Content.IntegrationTests.Tests.Puller;
 #nullable enable
 
 [TestFixture]
-public sealed class PullerTest
+public sealed class PullerTest : GameTest
 {
     /// <summary>
     /// Checks that needsHands on PullerComponent is not set on mobs that don't even have hands.
@@ -19,7 +19,7 @@ public sealed class PullerTest
     [Test]
     public async Task PullerSanityTest()
     {
-        await using var pair = await PoolManager.GetServerClient();
+        var pair = Pair;
         var server = pair.Server;
 
         var compFactory = server.ResolveDependency<IComponentFactory>();
@@ -31,17 +31,15 @@ public sealed class PullerTest
             {
                 foreach (var proto in protoManager.EnumeratePrototypes<EntityPrototype>())
                 {
-                    if (!proto.TryGetComponent(out PullerComponent? puller, compFactory))
+                    if (!proto.TryComp(out PullerComponent? puller, compFactory))
                         continue;
 
                     if (!puller.NeedsHands)
                         continue;
 
-                    Assert.That(proto.HasComponent<HandsComponent>(compFactory), $"Found puller {proto} with NeedsHand pulling but has no hands?");
+                    Assert.That(proto.HasComp<HandsComponent>(compFactory), $"Found puller {proto} with NeedsHand pulling but has no hands?");
                 }
             });
         });
-
-        await pair.CleanReturnAsync();
     }
 }

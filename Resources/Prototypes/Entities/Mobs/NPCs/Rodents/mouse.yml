@@ -1,0 +1,402 @@
+- type: entity
+  parent: [ SimpleMobBase, BaseMobAnimal, SolutionVermin, BaseSlicingRefinableButchering, MobNightVision ]
+  id: MobMouse
+  name: mouse
+  description: Squeak!
+  components:
+  - type: VentCrawler # goobstation - Ventcrawl
+    enterDelay: 0.5
+  - type: Sprite
+    drawdepth: SmallMobs
+    sprite: Mobs/Animals/Rodents/mouse.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base", "movement" ]
+      state: mouse-0
+    - map: [ "enum.HumanoidVisualLayers.Eyelids" ]
+  - type: SpriteMovement
+    movementLayers:
+      movement:
+        state: mouse-moving-0
+    noMovementLayers:
+      movement:
+        state: mouse-0
+  - type: EyeBlinking
+    eyelidsSprite: /Textures/Mobs/Animals/Rodents/mouse.rsi
+    eyelidsColor: "#c9c9c9"
+  - type: Physics
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.2
+        density: 10 # Goob eedit
+        mask:
+        - SmallMobMask
+        layer:
+        - SmallMobLayer
+  - type: Item
+    size: Tiny
+    heldPrefix: 0
+  - type: Clothing
+    quickEquip: false
+    sprite: Mobs/Animals/Rodents/mouse.rsi
+    equippedPrefix: 0
+    slots:
+    - HEAD
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2.5
+    baseSprintSpeed: 5
+  - type: MobState
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      10: Critical
+      20: Dead
+  - type: MobStateActions
+    actions:
+      Critical:
+      - ActionCritSuccumb
+      - ActionCritFakeDeath
+      - ActionCritLastWords
+  - type: Deathgasp
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: mouse-0
+      Critical:
+        Base: dead-0
+      Dead:
+        Base: splat-0
+  - type: FireVisuals
+    sprite: Mobs/Effects/onfire.rsi
+    normalState: Mouse_burning
+  - type: Destructible # Shitmed Change
+    thresholds:
+    - trigger:
+        !type:DamageTypeTrigger
+        damageType: Blunt
+        damage: 100
+      behaviors:
+      - !type:GibBehavior
+        gibContents: Skip
+        recursive: false
+  - type: ActionGrant
+    actions:
+    - ActionMouseCall
+    - ActionMouseSwarm
+  - type: MouseSwarm
+  - type: LimbGnawer
+  - type: MobCallSource
+    whitelist:
+      tags:
+      - Mouse
+  - type: MobCallable
+  - type: Strippable
+  - type: UserInterface
+    interfaces:
+      enum.StrippingUiKey.Key:
+        type: StrippableBoundUserInterface
+  - type: InventorySlots
+  - type: Inventory
+    speciesId: mouse
+    templateId: mouse
+    displacements:
+      head:
+        sizeMaps:
+          32:
+            sprite: _Goobstation/Mobs/Animals/mouse/displacement.rsi
+            state: head
+  # </Goobstation>
+  - type: Bloodstream
+    bloodReferenceSolution:
+      reagents:
+      - ReagentId: Blood
+        Quantity: 50
+    smokeImmune: true # Goobstation - prevent server lagging mouse farms
+  - type: Respirator
+    damage:
+      types:
+        Asphyxiation: 0.25
+    damageRecovery:
+      types:
+        Asphyxiation: -0.25
+  - type: Barotrauma
+    damage:
+      types:
+        Blunt: 0.1
+  # TODO: Remove CombatMode when Prototype Composition is added
+  - type: CombatMode
+  - type: MeleeWeapon
+    altDisarm: false # Sorry mouse shove lovers.
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Slash: 1 # Goobstation - LET THE HORDES ROAM!!
+  - type: Tag
+    tags:
+    - Trash
+    - VimPilot
+    - ChefPilot
+    - Mouse
+    - Meat
+    - IgnorGrab # CorvaxGoob
+  - type: NameIdentifier
+    group: AdjectivePrefix
+  - type: Speech
+    speechSounds: Squeak
+    speechVerb: SmallMob
+    allowedEmotes: [ 'Squeak' ]
+  - type: Vocal
+    emoteSounds: Mouse
+    wilhelmProbability: 0.001
+  - type: Edible
+  - type: FlavorProfile
+    flavors:
+    - meaty
+  - type: Hunger
+    startingHunger: 15 # Goobstation change
+    thresholds:
+      Overfed: 35
+      Okay: 25
+      Peckish: 15
+      Starving: 10
+      Dead: 0
+    baseDecayRate: 0.04 #Goob change
+  - type: Satiation
+    satiations:
+      Hunger:
+        prototype: MouseHunger
+      Thirst:
+        prototype: MouseThirst
+  - type: Extractable
+    grindableSolutionName: food
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        reagents:
+        - ReagentId: UncookedAnimalProteins
+          Quantity: 3
+        - ReagentId: MouseBites
+          Quantity: 3
+      melee:
+        maxVol: 5
+  - type: LanguageKnowledge # Einstein Engines - Language
+    speaks:
+    - Mouse
+    understands:
+    - Mouse
+    - TauCetiBasic
+  - type: ToolRefinable
+    refineResult:
+    - id: FoodMeatRat
+      amount: 1
+  - type: CanEscapeInventory
+  - type: FaxableObject
+    insertingState: inserting_mouse
+  - type: FoodSequenceElement
+    entries:
+      Taco: RatTaco
+      Burger: RatBurger
+      Skewer: RatSkewer
+  # <Goobstation>
+  - type: NightVision
+    color: "#808080"
+    activateSound: null
+    deactivateSound: null
+  - type: SolutionRegeneration
+    solution: melee
+    generated:
+      reagents:
+      - ReagentId: MouseBites
+        Quantity: 1
+  - type: MeleeChemicalInjector
+    transferAmount: 1
+    solution: melee
+  - type: GibThisGuy
+    ocNames:
+    - Gallagin
+  - type: DodgeWideswing
+    staminaRatio: 1 # mice are small so can probably evade without much stamina drain
+  - type: Stamina
+    baseCritThreshold: 20
+    animationThreshold: 10 # Goob edit
+  - type: Crawler
+  - type: NPCRetaliation
+    attackMemoryLength: 5 # stop caring fast if you don't keep hitting
+  - type: GroupRetaliation
+    range: 5 # slightly lower for mice
+  - type: CollectiveMind
+    defaultChannel: Mousemind
+    channels:
+    - Mousemind
+  - type: FaxSlip
+    slipChance: 0.3
+  # does not infect you unless the mouse has any diseases, which it doesn't by default
+  - type: DiseaseOnHit
+    spreadParams:
+      chance: 0.05 # 1984 lower chance for normal mice so creating the turboplague horde is not as strong
+      power: 1
+      spreadType: Blood
+  - type: DiseaseCarrier
+    effectImmune: true
+  - type: ShowDiseaseIcons # they sense it
+  - type: BadFood
+  - type: NonSpreaderZombie
+  - type: MobPrice
+    price: 50
+  - type: NpcFactionMember
+    factions:
+    - Mouse
+  - type: HTN
+    constantlyReplan: false
+    rootTask:
+      task: MouseCompound
+  - type: GhostRole
+    makeSentient: true
+    allowSpeech: true
+    allowMovement: true
+    name: ghost-role-information-mouse-name
+    description: ghost-role-information-mouse-description
+    rules: ghost-role-information-sentientanimal-rules # Goobstation Sentient Animal PR
+    mindRoles:
+    - MindRoleGhostRoleSentientAnimal # Goobstation Sentient Animal PR
+  - type: GhostTakeoverAvailable
+
+
+
+
+
+- type: entity
+  parent: MobMouse
+  id: MobMouseDead
+  name: mouse
+  suffix: Dead
+  description: Squeak!
+  save: false
+  components:
+  - type: Damageable
+    damage:
+      types:
+        Bloodloss: 6
+        Asphyxiation: 4
+        Slash: 7
+        Blunt: 3
+
+
+
+
+- type: entity
+  parent: MobMouse
+  id: MobMouse1
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base", "movement" ]
+      state: mouse-1
+    - map: [ "enum.HumanoidVisualLayers.Eyelids" ]
+  - type: SpriteMovement
+    movementLayers:
+      movement:
+        state: mouse-moving-1
+    noMovementLayers:
+      movement:
+        state: mouse-1
+  - type: EyeBlinking
+    eyelidsColor: "#b57f4c"
+  - type: Item
+    heldPrefix: 1
+  - type: MouseSwarm # Goobstation
+    state: mouse-1
+  - type: Clothing
+    equippedPrefix: 1
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: mouse-1
+      Critical:
+        Base: dead-1
+      Dead:
+        Base: splat-1
+
+
+
+- type: entity
+  parent: MobMouse
+  id: MobMouse2
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base", "movement" ]
+      state: mouse-2
+    - map: [ "enum.HumanoidVisualLayers.Eyelids" ]
+  - type: SpriteMovement
+    movementLayers:
+      movement:
+        state: mouse-moving-2
+    noMovementLayers:
+      movement:
+        state: mouse-2
+  - type: EyeBlinking
+    eyelidsColor: "#6b6b6b"
+  - type: Item
+    heldPrefix: 2
+  - type: MouseSwarm # Goobstation
+    state: mouse-2
+  - type: Clothing
+    equippedPrefix: 2
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: mouse-2
+      Critical:
+        Base: dead-2
+      Dead:
+        Base: splat-2
+
+
+- type: entity
+  parent: MobMouse
+  id: MobMouseCancer
+  name: cancer mouse
+  description: Toxic. Squeak!
+  components:
+  - type: Sprite
+    color: LightGreen
+  - type: PointLight
+    color: LightGreen
+    radius: 5
+    energy: 5
+    netsync: false
+  - type: Damageable
+    damageModifierSet: Zombie
+  - type: Bloodstream
+    bloodReferenceSolution:
+      reagents:
+      - ReagentId: UnstableMutagen
+        Quantity: 50
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: UncookedAnimalProteins
+        Quantity: 5
+      - ReagentId: Uranium
+        Quantity: 10
+  - type: ToolRefinable
+    refineResult:
+    - id: FoodMeatRat
+      amount: 1
+    - id: SheetUranium1
+      amount: 1
+  - type: GhostRole
+    name: ghost-role-information-cancer-mouse-name
+    description: ghost-role-information-cancer-mouse-description
+    rules: ghost-role-information-freeagent-rules
+    mindRoles:
+    - MindRoleGhostRoleFreeAgent
+  - type: RadiationSource
+    intensity: 0.5
+    #slope: 0.3 # Goobstation custom rad system

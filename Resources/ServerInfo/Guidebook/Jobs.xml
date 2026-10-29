@@ -5,45 +5,26 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 <Document>
 # Должности
 
-SS14 имеет большое количество должностей, которые разделены по 7 основным отделам:
+Nanotrasen space stations have a large number of jobs, divided into seven main departments:
 
-## Сервисный отдел
-[color=#9fed58]Сервис[/color] — это разнообразный отдел, который включает главу персонала и других сотрудников, чья задача — обслуживать станцию.
+[bullet/][color=#1b67a5]Command[/color] consists of the station's Captain and the heads of every other department. They are collectively responsible for keeping the station and its departments running efficiently.
 
-Основная функция этого отдела — развлекать, убирать и обслуживать остальной экипаж, за исключением пассажиров, у которых нет конкретной работы, кроме как потеряться в технических тоннелях.
+[bullet/][color=#b18644]Cargo[/color] is responsible for the station's logistics, acquiring resources for the station via purchase or salvage and distributing those resources to other departments.
 
-## Отдел снабжения
-[color=#b18644]Карго[/color] состоит из грузчиков, утилизаторов и квартирмейстера. Этот отдел отвечает за распределение ресурсов и торговлю, способен покупать и продавать товары на галактическом рынке.
+[bullet/][color=#f39f27]Engineering[/color] is responsible for keeping the station powered, intact, and habitable, largely focusing on repairs and maintenance.
 
-В основном это означает, что они ищут материалы по станции и среди обломков, чтобы продать их или перераспределить, а также закупают материалы, запрошенные другими отделами.
+[bullet/][color=#5b97bc]Medical[/color] is responsible for the retrieval and treatment of injured and sick crew.
 
-## Медицинский отдел
-[color=#5b97bc]Медицинский[/color] отдел состоит из интернов, химиков, врачей и главного врача. Этот отдел отвечает за заботу о здоровье экипажа, лечение и/или клонирование раненых и погибших, лечение болезней и предотвращение ужасных смертей в шкафу где-нибудь на станции.
+[bullet/][color=#c96dbf]Science[/color] is responsible for researching various otherworldly phenomena, and using that research to produce powerful new devices for the station.
 
-Медицинский отдел — один из самых хорошо оснащённых, с возможностью находить раненых членов экипажа с помощью монитора, практически бесконечным запасом химикатов (если химия в порядке), а также способностью быстро диагностировать и вакцинироваться от заразных болезней.
+[bullet/][color=#cb0000]Security[/color] is responsible for enforcing Space Law, and dealing with troublemakers and threats to the station.
 
-## Научный отдел
-[color=#c96dbf]Научный[/color] отдел состоит из научных ассистентов, учёных и научного руководителя. Этот отдел отвечает за исследование технологий и артефактов, улучшение машин и создание новых полезных устройств.
+[bullet/][color=#9fed58]Service[/color] is a diverse department that's collectively responsible for providing the crew with sustenance, sanitation, entertainment, and many other basic needs.
 
-Учёные должны искать новые артефакты для изучения, а также помогать отделам в улучшении их оборудования.
+Aside from these seven main departments, there are also [color=#7f7f7f]Civilian[/color] members of the station who have no explicit responsibilities.
 
-## Инженерный отдел
-[color=#f39f27]Инженерный[/color] отдел состоит из технических ассистентов, инженеров, атмосферных техников и главного инженера. Этот отдел отвечает за обеспечение станции энергией, поддержание её структуры и работоспособности системы подачи воздуха.
+# Getting Your Job Changed
+The [color=cyan]Head of Personnel[/color] is generally in charge of changing ID accesses and handing out encryption keys. Head over to their office and let them know what job you'd like to work instead.
 
-Инженерный отдел хорошо оснащён для работы в открытом космосе, поэтому его сотрудники всегда должны пытаться восстановить непригодные для жизни части станции.
-
-## Отдел Службы безопасности
-[color=#cb0000]Служба безопасности[/color] состоит из кадетов, детектива, офицеров службы безопасности, смотрителя и главы службы безопасности. Этот отдел отвечает за борьбу с нарушителями порядка и негуманоидными угрозами, такими как гигантские крысы и карпы.
-
-В результате этого, а также необходимости соблюдать тонкую грань, служба безопасности иногда оказывается перегружена разгневанным экипажем (не убивайте клоуна), и её сотрудникам важно стараться вести себя наилучшим образом.
-
-## Командование
-[color=#1b67a5]Командование[/color] состоит из начальников всех отделов. Оно отвечает за эффективное управление станцией и её отделами.
-
-Члены командования должны быть достаточно компетентны в своих отделах и стараться делегировать обязанности и направлять работу.
-
-# Смена работы
-[color=#9fed58]Глава персонала[/color] — это человек, ответственный за изменение доступа на ID карте и выдачу ключей шифрования. Подойдите к его офису и сообщите, на какую работу вы хотели бы перейти.
-
-Часто он попросят вас принести бумагу с [color=#a4885c]печатью[/color] начальника отдела. Не переживайте, просто найдите его и передайте бумагу.
+Often, they'll want you to go get a paper stamped by another member of Command. Don't sweat it, just find them and hand them the paper.
 </Document>

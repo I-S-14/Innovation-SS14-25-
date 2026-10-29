@@ -1,3 +1,4 @@
+using System.Numerics;
 using Content.Shared.Maps;
 using Content.Shared.Movement.Pulling.Components;
 using Content.Shared.Movement.Pulling.Systems;
@@ -12,7 +13,7 @@ using Robust.Shared.Containers; // Goobstation
 
 namespace Content.Shared.Trigger.Systems;
 
-public sealed class ScramOnTriggerSystem : XOnTriggerSystem<ScramOnTriggerComponent>
+public sealed partial class ScramOnTriggerSystem : XOnTriggerSystem<ScramOnTriggerComponent>
 {
     [Dependency] private readonly PullingSystem _pulling = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
@@ -21,6 +22,12 @@ public sealed class ScramOnTriggerSystem : XOnTriggerSystem<ScramOnTriggerCompon
     [Dependency] private readonly INetManager _net = default!;
     [Dependency] private readonly TurfSystem _turfSystem = default!;
     [Dependency] private readonly SharedContainerSystem _container = default!; // Goobstation
+    [Dependency] private PullingSystem _pulling = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private INetManager _net = default!;
+    [Dependency] private TurfSystem _turfSystem = default!;
 
     protected override void OnTrigger(Entity<ScramOnTriggerComponent> ent, EntityUid target, ref TriggerEvent args)
     {
@@ -52,7 +59,7 @@ public sealed class ScramOnTriggerSystem : XOnTriggerSystem<ScramOnTriggerCompon
     /// null if no tile is found within a certain number of tries.
     /// </summary>
     /// <remarks> Trends towards the outer radius. Compensates for small grids. </remarks>
-    private EntityCoordinates? SelectRandomTileInRange(EntityUid uid, float radius, int tries = 40, PhysicsComponent? physicsComponent = null)
+    private EntityCoordinates? SelectRandomTileInRange(EntityUid uid, Vector2 radius, int tries = 40, PhysicsComponent? physicsComponent = null)
     {
         if (!Resolve(uid, ref physicsComponent)) // Goobstation - Moved the resolve to top
             return null;
@@ -83,7 +90,7 @@ public sealed class ScramOnTriggerSystem : XOnTriggerSystem<ScramOnTriggerCompon
             // i = A percentage based on the current try count, which results in each
             // subsequent try landing closer and closer towards the entity.
             // Beneficial for smaller maps, especially when the radius is large.
-            var distance = radius * MathF.Sqrt(_random.NextFloat()) * (1 - (float)i / tries);
+            var distance = (radius.Y - radius.X) * MathF.Sqrt(_random.NextFloat()) * (1 - (float)i / tries) + radius.X;
 
             // We then offset the user coords from a random angle * distance
             var tempTargetCoords = userCoords.Offset(_random.NextAngle().ToVec() * distance);

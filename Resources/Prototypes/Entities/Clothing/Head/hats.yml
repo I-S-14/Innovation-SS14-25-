@@ -44,8 +44,8 @@
     sprite: Clothing/Head/Hats/beret_french.rsi
   - type: Clothing
     sprite: Clothing/Head/Hats/beret_french.rsi
-  - type: AddAccentClothing
-    accent: FrenchAccent
+  - type: FrenchAccent
+    relayAccent: true
   - type: Tag
     tags:
     - PetWearable
@@ -264,6 +264,7 @@
     tags:
     - PetWearable
     - CorgiWearable
+    - WhitelistChameleon
 
 - type: entity
   parent: ClothingHeadHatBeret
@@ -279,6 +280,7 @@
     tags:
     - PetWearable
     - CorgiWearable
+    - WhitelistChameleon
 
 - type: entity
   parent: [ClothingHeadHatArmored, BaseSecurityContraband] # Goob edit
@@ -358,6 +360,7 @@
     tags:
     - PetWearable
     - CorgiWearable
+    - WhitelistChameleon
 
 - type: entity
   parent: [ ClothingHeadHatArmored, ClothingHeadHatBeretRND, BaseCommandContraband ] #goob
@@ -438,6 +441,7 @@
     tags:
     - PetWearable
     - CorgiWearable
+    - WhitelistChameleon
 
 - type: entity
   parent: ClothingHeadBase
@@ -509,7 +513,7 @@
         Heat: 0.8
 
 - type: entity
-  parent: [ ClothingHeadHatArmored, ClothingHeadBase, BaseSecurityContraband ] # Goob edit
+  parent: [ ClothingHeadHatFedoraBrown, ClothingHeadHatArmored, ClothingHeadBase, BaseSecurityContraband ]
   id: ClothingHeadHatFedoraGrey
   name: grey fedora
   description: A grey fedora.
@@ -533,10 +537,17 @@
         Slash: 0.8
         Piercing: 0.8
         Heat: 0.8
-  - type: Tag
-    tags:
-    - PetWearable
-    - CorgiWearable
+
+- type: entity
+  parent: ClothingHeadHatFedoraBrown
+  id: ClothingHeadHatFedoraPress
+  name: press fedora
+  description: It has a little note stuck in the band saying "PRESS". Practically an all-access pass!
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Hats/presshat.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Hats/presshat.rsi
 
 - type: entity
   parent: ClothingHeadBase
@@ -669,6 +680,9 @@
     tags:
     - PetWearable
     - CorgiWearable
+  - type: ReplacementAccent
+    accent: pirate
+    relayAccent: true
 
 - type: entity
   parent: ClothingHeadBase
@@ -716,7 +730,6 @@
   components:
   - type: Clothing
     sprite: Clothing/Head/Hats/santahat.rsi
-  - type: Appearance
   - type: HideLayerClothing
     layers:
       Hair: HEAD
@@ -753,8 +766,8 @@
     sprite: Clothing/Head/Hats/sombrero.rsi
   - type: Clothing
     sprite: Clothing/Head/Hats/sombrero.rsi
-  - type: AddAccentClothing
-    accent: SpanishAccent
+  - type: SpanishAccent
+    relayAccent: true
   - type: Tag
     tags:
     - PetWearable
@@ -843,9 +856,8 @@
   components:
   - type: Clothing
     sprite: Clothing/Head/Hats/ushanka.rsi
-  - type: Appearance
-  - type: AddAccentClothing
-    accent: RussianAccent
+  - type: RussianAccent
+    relayAccent: true
   - type: Foldable
     canFoldInsideContainer: true
   - type: FoldableClothing
@@ -937,7 +949,8 @@
   - type: Clothing
     sprite: Clothing/Head/Hats/warden.rsi
   - type: StealTarget
-    stealGroup: ClothingHeadHatWarden
+    stealGroup:
+    - ClothingHeadHatWarden
   - type: Armor # Goob
     coverage:
     - Head
@@ -957,6 +970,7 @@
     tags:
     - PetWearable
     - CorgiWearable
+    - WhitelistChameleon
 
 - type: entity
   parent: ClothingHeadBase
@@ -971,29 +985,12 @@
   - type: Tag
     tags:
     - PetWearable
-    - CorgiWearable
     - WhitelistChameleon
     - ClothMade
     - Recyclable
   - type: HideLayerClothing
     slots:
     - Hair
-
-- type: entity
-  parent: ClothingHeadBase
-  id: ClothingHeadHatWizardFake
-  name: fake wizard hat
-  description: It has "WIZZARD" written across it in garish sequins. Comes with a cool beard.
-  components:
-  - type: Sprite
-    sprite: Clothing/Head/Hats/wizard_fake.rsi
-  - type: Clothing
-    sprite: Clothing/Head/Hats/wizard_fake.rsi
-  - type: HideLayerClothing
-    layers:
-      Hair: HEAD
-      HeadTop : HEAD
-      HeadSide : HEAD
 
 - type: entity
   abstract: true
@@ -1028,6 +1025,89 @@
     - MouseWearable # Goobstation
     - WhitelistChameleon
     - CorgiWearable
+
+- type: entity
+  parent: ClothingHeadHatWizardBase
+  id: ClothingHeadHatWizardAbyss
+  name: abyss wizard hat
+  description: A strange looking red-trimmed hat that most certainly belongs to a powerful magic-user.
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Hats/wizard_abyss.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Hats/wizard_abyss.rsi
+  - type: Tag
+    tags:
+    - PetWearable
+    - ClothMade
+    - WhitelistChameleon
+
+- type: entity
+  parent: ClothingHeadHatWizardBase
+  id: ClothingHeadHatWizardBlue
+  name: blue wizard hat
+  description: A strange-looking blue hat that most certainly belongs to a powerful magic-user.
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Hats/wizard_blue.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Hats/wizard_blue.rsi
+  - type: Tag
+    tags:
+    - PetWearable
+    - CorgiWearable
+    - ClothMade
+    - Recyclable
+    - HamsterWearable
+    - WhitelistChameleon
+
+- type: entity
+  parent: ClothingHeadBase
+  id: ClothingHeadHatWizardFake
+  name: fake wizard hat
+  description: It has "WIZZARD" written across it in garish sequins. Comes with a cool beard.
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Hats/wizard_fake.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Hats/wizard_fake.rsi
+  - type: HideLayerClothing
+    layers:
+      Hair: HEAD
+      HeadTop : HEAD
+      HeadSide : HEAD
+
+- type: entity
+  parent: ClothingHeadHatWizardBase
+  id: ClothingHeadHatWizardRed
+  name: red wizard hat
+  description: A strange-looking red hat that most certainly belongs to a powerful magic-user.
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Hats/wizard_red.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Hats/wizard_red.rsi
+  - type: Tag
+    tags:
+    - PetWearable
+    - ClothMade
+    - WhitelistChameleon
+
+- type: entity
+  parent: ClothingHeadHatWizardBase
+  id: ClothingHeadHatWizardViolet
+  name: violet wizard hat
+  description: A strange-looking violet hat that most certainly belongs to a powerful magic-user.
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Hats/wizard_violet.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Hats/wizard_violet.rsi
+  - type: Tag
+    tags:
+    - PetWearable
+    - ClothMade
+    - WhitelistChameleon
 
 - type: entity
   parent: ClothingHeadBase
@@ -1261,6 +1341,9 @@
     sprite: Clothing/Head/Hats/piratetricord.rsi
   - type: Clothing
     sprite: Clothing/Head/Hats/piratetricord.rsi
+  - type: ReplacementAccent
+    accent: pirate
+    relayAccent: true
 
 - type: entity
   parent: ClothingHeadBase
@@ -1296,7 +1379,6 @@
       coefficients:
         Caustic: 0.9
         Radiation: 0.9
-
 
 - type: entity
   parent: [ClothingHeadBase] # CorvaxGoob-Contraband : deleted contra label
@@ -1459,7 +1541,6 @@
         Piercing: 0.7
         Heat: 0.8
 
-
 - type: entity
   parent: ClothingHeadBase
   id: ClothingHeadHatGladiator
@@ -1583,9 +1664,9 @@
       sprite: Clothing/Head/Hats/cowboyhatbrown.rsi
     - type: Clothing
       sprite: Clothing/Head/Hats/cowboyhatbrown.rsi
-    - type: AddAccentClothing
-      accent: ReplacementAccent
-      replacement: cowboy
+    - type: ReplacementAccent
+      accent: cowboy
+      relayAccent: true
     - type: Tag
       tags:
       - PetWearable
@@ -1708,6 +1789,7 @@
         Heat: 1
   - type: Damageable
     damageModifierSet: Wood
+  - type: Injurable
   - type: Appearance
   - type: FireVisuals
     sprite: Effects/fire.rsi
@@ -1720,9 +1802,9 @@
       behaviors:
       - !type:SpawnEntitiesBehavior
         spawn:
-            Ash:
-              min: 1
-              max: 1
+          Ash:
+            min: 1
+            max: 1
       - !type:DoActsBehavior
         acts: [ "Destruction" ]
 
@@ -1740,6 +1822,7 @@
     tags:
     - PetWearable
     - CorgiWearable
+    - WhitelistChameleon
 
 - type: entity
   parent: ClothingHeadBase
@@ -1792,3 +1875,30 @@
     tags:
     - PetWearable
     - CorgiWearable
+
+- type: entity
+  parent: ClothingHeadBase
+  id: ClothingHeadHatMitreClown
+  name: honkmother mitre
+  description: It's hard for parishoners to see a banana peel on the floor when they're looking up at your glorious chapeau.
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Hats/mitre_clown.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Hats/mitre_clown.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: ClothingHeadHatTramDriver
+  name: tram driver hat
+  description: It smells like confidence.
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Hats/tramdriver.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Hats/tramdriver.rsi
+  - type: Tag
+    tags:
+    - ClothMade
+    - Recyclable
+    - WhitelistChameleon

@@ -7,7 +7,7 @@ using Content.Shared.Radiation.Systems;
 
 namespace Content.Client.Radiation.Systems;
 
-public sealed class GeigerSystem : SharedGeigerSystem
+public sealed partial class GeigerSystem : SharedGeigerSystem
 {
     public override void Initialize()
     {

@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+using Content.Shared.DeviceNetwork;
 using Content.Shared.Radio;
 using Content.Shared.Robotics.Systems;
 using Robust.Shared.GameStates;
@@ -16,10 +17,16 @@ namespace Content.Shared.Robotics.Components;
 public sealed partial class RoboticsConsoleComponent : Component
 {
     /// <summary>
-    /// Address and data of each cyborg.
+    /// EntityUid and data of each cyborg.
     /// </summary>
     [DataField]
-    public Dictionary<string, CyborgControlData> Cyborgs = new();
+    public Dictionary<EntityUid, CyborgControlData> Cyborgs = new();
+
+    /// <summary>
+    /// Address and Uid of each cyborg.
+    /// </summary>
+    [DataField]
+    public Dictionary<DeviceAddress, EntityUid> CyborgsAddresses = new();
 
     /// <summary>
     /// After not responding for this length of time borgs are removed from the console.

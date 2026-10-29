@@ -5,11 +5,300 @@
 # See WallRock variants for the remappings.
 
 # Asteroid rock
+
 - type: entity
-  id: AsteroidRock
+  abstract: true
   parent: BaseWall
+  id: BaseAsteroidRock
+  components:
+  - type: Transform
+    noRot: true
+  - type: IconSmooth
+    key: stone
+    states:
+    - !type:CornerSpriteSmoothing
+      mask: [ stone, doors ]
+      base: stone
+      index: 0
+  - type: Icon
+    state: full
+  - type: Sprite
+    drawdepth: Walls
+  - type: MiningScannerViewable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.5,-0.5,0.5,0.5"
+        mask:
+        - FullTileMask
+        layer:
+        - WallLayer
+        density: 2000
+
+- type: entity
+  abstract: true
+  parent: StructureHealthBarrierWeak
+  id: BaseAsteroidDestructible
+  components:
+  - type: Damageable
+    damageModifierSet: RockMod
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 30
+      behaviors:
+      - &SoundStoneBreak !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/break_stone.ogg
+          params:
+            volume: -6
+
+#region BaseVein
+
+- type: entity
+  abstract: true
+  parent: BaseStructureHealth
+  id: BaseRockGibtonite
+  suffix: Gibtonite
+  components:
+  - type: Sprite
+    layers:
+    - state: gibtonite_inactive
+      sprite: Structures/Walls/stone-ore.rsi
+      visible: false
+      map: [ "enum.MiningScannerVisualLayers.Overlay", "gib" ]
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.Trigger.TriggerVisuals.VisualState:
+        "gib":
+          Primed:
+            state: gibtonite_active
+            shader: unshaded
+            visible: true
+          Unprimed:
+            state: gibtonite_inactive
+            visible: false
+  - type: TimerTrigger
+    examinable: false
+    beepInterval: 0.4
+    beepSound:
+      collection: GlassCrack
+  - type: RandomTimerTrigger
+    min: 8
+    max: 10
+  - type: ExplodeOnTrigger
+    keysIn:
+    - timer
+  - type: ExplosionEffect # Goob
+  - type: Explosive
+    explosionType: DemolitionCharge
+    totalIntensity: 450
+    intensitySlope: 2.5
+    maxIntensity: 10
+    canCreateVacuum: false
+  - type: Damageable
+    damageModifierSet: RockMod
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 3
+      behaviors:
+      - !type:TimerStartBehavior
+      - !type:PlaySoundBehavior
+        sound:
+          collection: GlassBreak
+    - trigger:
+        !type:DamageTrigger
+        damage: 500 # you have to really smack it for it to manually detonate. re-examine once defusal exists
+      behaviors:
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+      - !type:TriggerBehavior
+        keyOut: timer # explode immediately
+
+- type: entity
+  abstract: true
+  id: BaseVeinCoal
+  suffix: Coal
+  description: An ore vein rich with coal.
+  components:
+  - type: OreVein
+    oreChance: 1.0
+    currentOre: OreCoal
+  - type: Sprite
+    layers:
+    - state: rock_coal
+      sprite: Structures/Walls/stone-ore.rsi
+      map: [ "enum.MiningScannerVisualLayers.Overlay" ]
+
+- type: entity
+  abstract: true
+  id: BaseVeinGold
+  suffix: Gold
+  description: An ore vein rich with gold.
+  components:
+  - type: OreVein
+    oreChance: 1.0
+    currentOre: OreGold
+  - type: Sprite
+    layers:
+    - state: rock_gold
+      sprite: Structures/Walls/stone-ore.rsi
+      map: [ "enum.MiningScannerVisualLayers.Overlay" ]
+
+- type: entity
+  abstract: true
+  id: BaseVeinDiamond
+  suffix: Diamond
+  description: An ore vein rich with diamonds.
+  components:
+  - type: OreVein
+    oreChance: 1.0
+    currentOre: OreDiamond
+  - type: Sprite
+    layers:
+    - state: rock_diamond
+      sprite: Structures/Walls/stone-ore.rsi
+      map: [ "enum.MiningScannerVisualLayers.Overlay" ]
+
+- type: entity
+  abstract: true
+  id: BaseVeinPlasma
+  suffix: Plasma
+  description: An ore vein rich with plasma.
+  components:
+  - type: OreVein
+    oreChance: 1.0
+    currentOre: OrePlasma
+  - type: Sprite
+    layers:
+    - state: rock_phoron
+      sprite: Structures/Walls/stone-ore.rsi
+      map: [ "enum.MiningScannerVisualLayers.Overlay" ]
+
+- type: entity
+  abstract: true
+  id: BaseVeinQuartz
+  suffix: Quartz
+  description: An ore vein rich with quartz.
+  components:
+  - type: OreVein
+    oreChance: 1.0
+    currentOre: OreSpaceQuartz
+  - type: Sprite
+    layers:
+    - state: rock_quartz
+      sprite: Structures/Walls/stone-ore.rsi
+      map: [ "enum.MiningScannerVisualLayers.Overlay" ]
+
+- type: entity
+  abstract: true
+  id: BaseVeinSilver
+  suffix: Silver
+  description: An ore vein rich with silver.
+  components:
+  - type: OreVein
+    oreChance: 1.0
+    currentOre: OreSilver
+  - type: Sprite
+    layers:
+    - state: rock_silver
+      sprite: Structures/Walls/stone-ore.rsi
+      map: [ "enum.MiningScannerVisualLayers.Overlay" ]
+
+- type: entity
+  abstract: true
+  id: BaseVeinSteel
+  suffix: Steel
+  description: An ore vein rich with iron.
+  components:
+  - type: OreVein
+    oreChance: 1.0
+    currentOre: OreSteel
+  - type: Sprite
+    layers:
+    - state: rock_tin
+      sprite: Structures/Walls/stone-ore.rsi
+      map: [ "enum.MiningScannerVisualLayers.Overlay" ]
+
+- type: entity
+  abstract: true
+  id: BaseVeinUranium
+  suffix: Uranium
+  description: An ore vein rich with uranium.
+  components:
+  - type: OreVein
+    oreChance: 1.0
+    currentOre: OreUranium
+  - type: Sprite
+    layers:
+    - state: rock_uranium
+      sprite: Structures/Walls/stone-ore.rsi
+      map: [ "enum.MiningScannerVisualLayers.Overlay" ]
+
+- type: entity
+  abstract: true
+  id: BaseVeinSalt
+  suffix: Salt
+  description: An ore vein rich with salt.
+  components:
+  - type: OreVein
+    oreChance: 1.0
+    currentOre: OreSalt
+  - type: Sprite
+    layers:
+    - state: rock_salt
+      sprite: Structures/Walls/stone-ore.rsi
+      map: [ "enum.MiningScannerVisualLayers.Overlay" ]
+
+- type: entity
+  abstract: true
+  id: BaseVeinArtifactFragment
+  suffix: Artifact Fragment
+  description: A vein rich with strange artifacts.
+  components:
+  - type: OreVein
+    oreChance: 1.0
+    currentOre: OreArtifactFragment
+  - type: Sprite
+    layers:
+    - state: rock_artifact_fragment
+      sprite: Structures/Walls/stone-ore.rsi
+      map: [ "enum.MiningScannerVisualLayers.Overlay" ]
+
+- type: entity
+  abstract: true
+  id: BaseVeinRandom
+  suffix: 33% Random Ores
+  description: A vein rich with strange artifacts.
+  components:
+  - type: OreVein
+    oreChance: 0.33
+    oreRarityPrototypeId: RandomOreDistributionStandard
+
+#endregion
+#region Asteroid Rock
+
+# Visuals separated from the base rock to fix destruction conflicts with gibtonite
+- type: entity
+  abstract: true
+  id: BaseAsteroidRockVisuals
   name: asteroid rock
   description: A rocky asteroid.
+  components:
+  - type: Icon
+    sprite: Structures/Walls/stone.rsi
+    state: full
+  - type: Sprite
+    sprite: Structures/Walls/stone.rsi
+
+- type: entity
+  parent: [ BaseAsteroidRockVisuals, BaseAsteroidRock, BaseAsteroidDestructible ]
   components:
   - type: Transform
     noRot: true
@@ -63,66 +352,10 @@
   - type: Gatherable # Lavaland Change
     toolWhitelist:
       tags: []
+  id: AsteroidRock
 
 - type: entity
-  abstract: true
-  id: BaseRockGibtonite
-  suffix: Gibtonite
-  components:
-  - type: Appearance
-  - type: GenericVisualizer
-    visuals:
-      enum.Trigger.TriggerVisuals.VisualState:
-        "gib":
-          Primed:
-            state: gibtonite_active
-            shader: unshaded
-            visible: true
-          Unprimed:
-            state: gibtonite_inactive
-            visible: false
-  - type: TimerTrigger
-    examinable: false
-    beepInterval: 0.4
-    beepSound:
-      collection: GlassCrack
-  - type: RandomTimerTrigger
-    min: 8
-    max: 10
-  - type: ExplodeOnTrigger
-    keysIn:
-    - timer
-  - type: ExplosionEffect # Goob
-  - type: Explosive
-    explosionType: DemolitionCharge
-    totalIntensity: 450
-    intensitySlope: 2.5
-    maxIntensity: 10
-    canCreateVacuum: false
-  - type: Destructible
-    thresholds:
-    - trigger:
-        !type:DamageTrigger
-        damage: 3
-      behaviors:
-      - !type:TimerStartBehavior
-      - !type:PlaySoundBehavior
-        sound:
-          collection: GlassBreak
-    - trigger:
-        !type:DamageTrigger
-        damage: 500 # you have to really smack it for it to manually detonate. re-examine once defusal exists
-      behaviors:
-      - !type:DoActsBehavior
-        acts: ["Destruction"]
-      - !type:TriggerBehavior
-        keyOut: timer # explode immediately
-
-# Ore veins
-- type: entity
-  id: AsteroidRockCoal
-  parent: AsteroidRock
-  suffix: Coal
+  parent: [ BaseVeinCoal, AsteroidRock ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -141,19 +374,18 @@
         - state: rock_coal
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: AsteroidRockCoal
 
 - type: entity
-  id: AsteroidRockCoalCrab
   parent: AsteroidRockCoal
+  id: AsteroidRockCoalCrab
   suffix: Coal Crab
   components:
   - type: OreVein
     currentOre: OreCoalCrab
 
 - type: entity
-  id: AsteroidRockGold
-  parent: AsteroidRock
-  suffix: Gold
+  parent: [ BaseVeinGold, AsteroidRock ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -172,19 +404,18 @@
         - state: rock_gold
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: AsteroidRockGold
 
 - type: entity
-  id: AsteroidRockGoldCrab
   parent: AsteroidRockGold
+  id: AsteroidRockGoldCrab
   suffix: Gold Crab
   components:
   - type: OreVein
     currentOre: OreGoldCrab
 
 - type: entity
-  id: AsteroidRockDiamond
-  parent: AsteroidRock
-  suffix: Diamond
+  parent: [ BaseVeinDiamond, AsteroidRock ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -203,11 +434,10 @@
         - state: rock_diamond
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: AsteroidRockDiamond
 
 - type: entity
-  id: AsteroidRockPlasma
-  parent: AsteroidRock
-  suffix: Plasma
+  parent: [ BaseVeinPlasma, AsteroidRock ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -226,11 +456,10 @@
         - state: rock_phoron
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: AsteroidRockPlasma
 
 - type: entity
-  id: AsteroidRockQuartz
-  parent: AsteroidRock
-  suffix: Quartz
+  parent: [ BaseVeinQuartz, AsteroidRock ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -249,10 +478,11 @@
         - state: rock_quartz
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: AsteroidRockQuartz
 
 - type: entity
-  id: AsteroidRockQuartzCrab
   parent: AsteroidRockQuartz
+  id: AsteroidRockQuartzCrab
   suffix: Quartz Crab
   components:
     - type: OreVein
@@ -274,9 +504,7 @@
           visible: false # Lavaland Change
 
 - type: entity
-  id: AsteroidRockSilver
-  parent: AsteroidRock
-  suffix: Silver
+  parent: [ BaseVeinSilver, AsteroidRock ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -295,10 +523,11 @@
         - state: rock_silver
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: AsteroidRockSilver
 
 - type: entity
-  id: AsteroidRockSilverCrab
   parent: AsteroidRockSilver
+  id: AsteroidRockSilverCrab
   suffix: Silver Crab
   components:
   - type: OreVein
@@ -306,9 +535,7 @@
 
 # Yes I know it drops steel but we may get smelting at some point
 - type: entity
-  id: AsteroidRockTin
-  parent: AsteroidRock
-  suffix: Iron
+  parent: [ BaseVeinSteel, AsteroidRock ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -327,19 +554,18 @@
         - state: rock_tin
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: AsteroidRockTin
 
 - type: entity
-  id: AsteroidRockTinCrab
   parent: AsteroidRockTin
+  id: AsteroidRockTinCrab
   suffix: Iron Crab
   components:
   - type: OreVein
     currentOre: OreIronCrab
 
 - type: entity
-  id: AsteroidRockUranium
-  parent: AsteroidRock
-  suffix: Uranium
+  parent: [ BaseVeinUranium, AsteroidRock ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -358,10 +584,11 @@
         - state: rock_uranium
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: AsteroidRockUranium
 
 - type: entity
-  id: AsteroidRockUraniumCrab
   parent: AsteroidRockUranium
+  id: AsteroidRockUraniumCrab
   suffix: Uranium Crab
   components:
   - type: OreVein
@@ -391,17 +618,7 @@
           visible: false # Lavaland Change
 
 - type: entity
-  id: AsteroidRockBananiumCrab
-  parent: AsteroidRockBananium
-  suffix: Bananium Crab
-  components:
-  - type: OreVein
-    currentOre: OreBananiumCrab
-
-- type: entity
-  id: AsteroidRockSalt
-  parent: AsteroidRock
-  suffix: Salt
+  parent: [ BaseVeinSalt, AsteroidRock ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -420,12 +637,10 @@
         - state: rock_salt
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: AsteroidRockSalt
 
 - type: entity
-  id: AsteroidRockArtifactFragment
-  parent: AsteroidRock
-  description: A rock wall. What's that sticking out of it?
-  suffix: Artifact Fragment
+  parent: [ BaseVeinArtifactFragment, AsteroidRock ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -444,111 +659,41 @@
         - state: rock_artifact_fragment
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: AsteroidRockArtifactFragment
 
 - type: entity
-  parent: [ BaseRockGibtonite, AsteroidRock ]
+  parent: [ BaseRockGibtonite, BaseAsteroidRockVisuals, BaseAsteroidRock ]
   id: AsteroidRockGibtonite
-  components:
-  - type: Sprite
-    layers:
-    - state: rock_asteroid
-    - map: [ "enum.EdgeLayer.South" ]
-      state: rock_asteroid_south
-    - map: [ "enum.EdgeLayer.East" ]
-      state: rock_asteroid_east
-    - map: [ "enum.EdgeLayer.North" ]
-      state: rock_asteroid_north
-    - map: [ "enum.EdgeLayer.West" ]
-      state: rock_asteroid_west
-    - state: gibtonite_inactive
-      visible: false
-      map: [ "enum.MiningScannerVisualLayers.Overlay", "gib" ]
 
 - type: entity
+  parent: [ BaseVeinRandom, AsteroidRock ]
   id: AsteroidRockMining
-  parent: AsteroidRock
-  name: asteroid rock
-  suffix: higher ore yield .33
-  description: An asteroid.
-  components:
-  - type: OreVein
-    oreChance: 0.33
-    oreRarityPrototypeId: RandomOreDistributionStandard
+
+#endregion
+#region Iron Rock
 
 - type: entity
-  id: IronRock
-  parent: AsteroidRock
+  abstract: true
+  id: BaseIronRockVisuals
   name: ironrock
-  suffix: Low Ore Yield
   description: A rocky asteroid.
   components:
-  - type: IconSmooth
-    key: walls
-    mode: NoSprite
   - type: Icon
-    sprite: Structures/Walls/rock.rsi
-    state: ironrock
-  - type: SmoothEdge
+    sprite: Structures/Walls/stone-ironrock.rsi
+    state: full
   - type: Sprite
-    sprite: Structures/Walls/rock.rsi
-    layers:
-    - state: ironrock
-    - map: [ "enum.EdgeLayer.South" ]
-      state: ironrock_south
-    - map: [ "enum.EdgeLayer.East" ]
-      state: ironrock_east
-    - map: [ "enum.EdgeLayer.North" ]
-      state: ironrock_north
-    - map: [ "enum.EdgeLayer.West" ]
-      state: ironrock_west
+    sprite: Structures/Walls/stone-ironrock.rsi
 
 - type: entity
+  parent: [ BaseIronRockVisuals, BaseAsteroidRock, BaseAsteroidDestructible ]
+  id: IronRock
+
+- type: entity
+  parent: [ BaseVeinRandom, IronRock ]
   id: IronRockMining
-  parent: IronRock
-  name: ironrock
-  suffix: higher ore yield
-  description: An asteroid.
-  components:
-  - type: OreVein
-    oreChance: 0.33
-    oreRarityPrototypeId: RandomOreDistributionStandard
 
 - type: entity
-  id: IronSandstone
-  parent: AsteroidRock
-  name: ironsandstone
-  suffix: no ore yield
-  components:
-  - type: Icon
-    state: ironsandstone
-  - type: Sprite
-    sprite: Structures/Walls/rock.rsi
-    layers:
-    - state: ironsandstone
-    - map: [ "enum.EdgeLayer.South" ]
-      state: ironsandstone_south
-    - map: [ "enum.EdgeLayer.East" ]
-      state: ironsandstone_east
-    - map: [ "enum.EdgeLayer.North" ]
-      state: ironsandstone_north
-    - map: [ "enum.EdgeLayer.West" ]
-      state: ironsandstone_west
-
-- type: entity
-  id: IronSandstoneMining
-  parent: IronSandstone
-  name: ironsandstone
-  suffix: higher ore yield
-  components:
-  - type: OreVein
-    oreChance: 0.33
-    oreRarityPrototypeId: RandomOreDistributionStandard
-
-# Ore veins
-- type: entity
-  id: IronRockCoal
-  parent: IronRock
-  suffix: Coal
+  parent: [ BaseVeinCoal, IronRock ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -567,11 +712,10 @@
         - state: rock_coal
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: IronRockCoal
 
 - type: entity
-  id: IronRockGold
-  parent: IronRock
-  suffix: Gold
+  parent: [ BaseVeinGold, IronRock ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -590,11 +734,10 @@
         - state: rock_gold
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: IronRockGold
 
 - type: entity
-  id: IronRockPlasma
-  parent: IronRock
-  suffix: Plasma
+  parent: [ BaseVeinPlasma, IronRock ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -613,11 +756,10 @@
         - state: rock_phoron
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: IronRockPlasma
 
 - type: entity
-  id: IronRockQuartz
-  parent: IronRock
-  suffix: Quartz
+  parent: [ BaseVeinQuartz, IronRock ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -636,11 +778,10 @@
         - state: rock_quartz
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: IronRockQuartz
 
 - type: entity
-  id: IronRockSilver
-  parent: IronRock
-  suffix: Silver
+  parent: [ BaseVeinSilver, IronRock ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -659,11 +800,10 @@
         - state: rock_silver
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: IronRockSilver
 
 - type: entity
-  id: IronRockIron
-  parent: IronRock
-  suffix: Iron
+  parent: [ BaseVeinSteel, IronRock ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -682,11 +822,10 @@
         - state: rock_tin
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: IronRockIron
 
 - type: entity
-  id: IronRockUranium
-  parent: IronRock
-  suffix: Uranium
+  parent: [ BaseVeinUranium, IronRock ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -705,6 +844,7 @@
         - state: rock_uranium
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: IronRockUranium
 
 - type: entity
   id: IronRockBananium
@@ -730,9 +870,7 @@
           visible: false # Lavaland Change
 
 - type: entity
-  id: IronRockSalt
-  parent: IronRock
-  suffix: Salt
+  parent: [ BaseVeinSalt, IronRock ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -751,12 +889,10 @@
         - state: rock_salt
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: IronRockSalt
 
 - type: entity
-  id: IronRockArtifactFragment
-  parent: IronRock
-  description: A rock wall. What's that sticking out of it?
-  suffix: Artifact Fragment
+  parent: [ BaseVeinArtifactFragment, IronRock ]
   components:
   - type: OreVein
     oreChance: 1.0
@@ -775,30 +911,14 @@
     - state: rock_artifact_fragment
       map: [ "enum.MiningScannerVisualLayers.Overlay" ]
       visible: false # Lavaland Change
+  id: IronRockArtifactFragment
 
 - type: entity
-  parent: [ BaseRockGibtonite, IronRock ]
+  parent: [ BaseRockGibtonite, BaseIronRockVisuals, BaseAsteroidRock ]
   id: IronRockGibtonite
-  components:
-  - type: Sprite
-    layers:
-    - state: ironrock
-    - map: [ "enum.EdgeLayer.South" ]
-      state: ironrock_south
-    - map: [ "enum.EdgeLayer.East" ]
-      state: ironrock_east
-    - map: [ "enum.EdgeLayer.North" ]
-      state: ironrock_north
-    - map: [ "enum.EdgeLayer.West" ]
-      state: ironrock_west
-    - state: gibtonite_inactive
-      visible: false
-      map: [ "enum.MiningScannerVisualLayers.Overlay", "gib" ]
 
 - type: entity
-  id: IronRockDiamond
-  parent: IronRock
-  suffix: Diamond
+  parent: [ BaseVeinDiamond, IronRock ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -817,71 +937,63 @@
         - state: rock_diamond
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: IronRockDiamond
+
+#endregion
+#region Wall Rock
 
 # Rocks and ore veins
 - type: entity
+  parent: [ BaseWall, StructureHealthWallWeak ]
   id: WallRock
-  parent: BaseWall
   name: rock
   suffix: planetmap
   components:
-    - type: Transform
-      noRot: true
-    - type: SoundOnGather
-    - type: Gatherable
-      toolWhitelist:
-        tags: [] # Lavaland Change
-        #- Pickaxe
-    - type: Damageable
-      damageContainer: StructuralInorganic
-      damageModifierSet: Rock # Lavaland Change
-    - type: Destructible
-      thresholds:
-      # Lavaland Change start
-      - trigger:
-          !type:DamageTrigger
-          damage: 120
-        behaviors:
-        - !type:DoActsBehavior
-          acts: ["Destruction"]
-      # Lavaland Change end
-    - type: IconSmooth
-      key: walls
-      mode: NoSprite
-    - type: Icon
-      sprite: Structures/Walls/rock.rsi
-      state: rock
-    - type: MiningScannerViewable
-    - type: SmoothEdge
-    - type: Sprite
-      sprite: Structures/Walls/rock.rsi
-      layers:
-        - state: rock
-        - map: [ "enum.EdgeLayer.South" ]
-          state: rock_south
-        - map: [ "enum.EdgeLayer.East" ]
-          state: rock_east
-        - map: [ "enum.EdgeLayer.North" ]
-          state: rock_north
-        - map: [ "enum.EdgeLayer.West" ]
-          state: rock_west
+  - type: Transform
+    noRot: true
+  - type: SoundOnGather
+  - type: Gatherable
+    toolWhitelist:
+      tags: [] # Lavaland Change
+      #- Pickaxe
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: Rock # Lavaland Change
+  - type: Destructible
+    thresholds:
+    # Lavaland Change start
+    - trigger:
+        !type:DamageTrigger
+        damage: 120
+      behaviors:
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+    # Lavaland Change end
+  - type: IconSmooth
+    key: stone
+    states:
+    - !type:CornerSpriteSmoothing
+      mask: [ stone, doors ]
+      base: stone
+      index: 0
+  - type: Icon
+    sprite: Structures/Walls/stone-dirt.rsi
+    state: full
+  - type: MiningScannerViewable
+  - type: Sprite
+    sprite: Structures/Walls/stone-dirt.rsi
 
 # Ore veins
 - type: entity
+  parent: [ BaseVeinCoal, WallRock ]
   id: WallRockCoal
-  parent: WallRock
-  suffix: Coal
   components:
   - type: EntityRemap
     mask:
       AsteroidRock: AsteroidRockCoal
-      WallRockBasalt: WallRockBasaltCoal
       WallRockChromite: WallRockChromiteCoal
       WallRockSand: WallRockSandCoal
       WallRockSnow: WallRockSnowCoal
-  - type: OreVein
-    oreChance: 1.0
-    currentOre: OreCoal
   - type: Sprite
     layers:
       - state: rock
@@ -898,20 +1010,15 @@
         visible: false # Lavaland Change
 
 - type: entity
+  parent: [ BaseVeinGold, WallRock ]
   id: WallRockGold
-  parent: WallRock
-  suffix: Gold
   components:
   - type: EntityRemap
     mask:
       AsteroidRock: AsteroidRockGold
-      WallRockBasalt: WallRockBasaltGold
       WallRockChromite: WallRockChromiteGold
       WallRockSand: WallRockSandGold
       WallRockSnow: WallRockSnowGold
-  - type: OreVein
-    oreChance: 1.0
-    currentOre: OreGold
   - type: Sprite
     layers:
       - state: rock
@@ -928,43 +1035,40 @@
         visible: false # Lavaland Change
 
 - type: entity
+  parent: [ BaseVeinDiamond, WallRock ]
   id: WallRockDiamond
-  parent: WallRock
-  suffix: Diamond
   components:
-    - type: OreVein
-      oreChance: 1.0
-      currentOre: OreDiamond
-    - type: Sprite
-      layers:
-        - state: rock
-        - map: [ "enum.EdgeLayer.South" ]
-          state: rock_south
-        - map: [ "enum.EdgeLayer.East" ]
-          state: rock_east
-        - map: [ "enum.EdgeLayer.North" ]
-          state: rock_north
-        - map: [ "enum.EdgeLayer.West" ]
-          state: rock_west
-        - state: rock_diamond
-          map: [ "enum.MiningScannerVisualLayers.Overlay" ]
-          visible: false # Lavaland Change
+  - type: Sprite
+    layers:
+      - state: rock
+      - map: [ "enum.EdgeLayer.South" ]
+        state: rock_south
+      - map: [ "enum.EdgeLayer.East" ]
+        state: rock_east
+      - map: [ "enum.EdgeLayer.North" ]
+        state: rock_north
+      - map: [ "enum.EdgeLayer.West" ]
+        state: rock_west
+      - state: rock_diamond
+        map: [ "enum.MiningScannerVisualLayers.Overlay" ]
+        visible: false # Lavaland Change
+  - type: EntityRemap
+    mask:
+      AsteroidRock: AsteroidRockDiamond
+      WallRockChromite: WallRockChromiteDiamond
+      WallRockSand: WallRockSandDiamond
+      WallRockSnow: WallRockSnowDiamond
 
 - type: entity
+  parent: [ BaseVeinPlasma, WallRock ]
   id: WallRockPlasma
-  parent: WallRock
-  suffix: Plasma
   components:
   - type: EntityRemap
     mask:
       AsteroidRock: AsteroidRockPlasma
-      WallRockBasalt: WallRockBasaltPlasma
       WallRockChromite: WallRockChromitePlasma
       WallRockSand: WallRockSandPlasma
       WallRockSnow: WallRockSnowPlasma
-  - type: OreVein
-    oreChance: 1.0
-    currentOre: OrePlasma
   - type: Sprite
     layers:
       - state: rock
@@ -981,20 +1085,15 @@
         visible: false # Lavaland Change
 
 - type: entity
+  parent: [ BaseVeinQuartz, WallRock ]
   id: WallRockQuartz
-  parent: WallRock
-  suffix: Quartz
   components:
   - type: EntityRemap
     mask:
       AsteroidRock: AsteroidRockQuartz
-      WallRockBasalt: WallRockBasaltQuartz
       WallRockChromite: WallRockChromiteQuartz
       WallRockSand: WallRockSandQuartz
       WallRockSnow: WallRockSnowQuartz
-  - type: OreVein
-    oreChance: 1.0
-    currentOre: OreSpaceQuartz
   - type: Sprite
     layers:
       - state: rock
@@ -1011,20 +1110,15 @@
         visible: false # Lavaland Change
 
 - type: entity
+  parent: [ BaseVeinSilver, WallRock ]
   id: WallRockSilver
-  parent: WallRock
-  suffix: Silver
   components:
   - type: EntityRemap
     mask:
       AsteroidRock: AsteroidRockSilver
-      WallRockBasalt: WallRockBasaltSilver
       WallRockChromite: WallRockChromiteSilver
       WallRockSand: WallRockSandSilver
       WallRockSnow: WallRockSnowSilver
-  - type: OreVein
-    oreChance: 1.0
-    currentOre: OreSilver
   - type: Sprite
     layers:
       - state: rock
@@ -1040,52 +1134,41 @@
         map: [ "enum.MiningScannerVisualLayers.Overlay" ]
         visible: false # Lavaland Change
 
-# Yes I know it drops steel but we may get smelting at some point
 - type: entity
+  parent: [ BaseVeinSteel, WallRock ]
   id: WallRockTin
-  parent: WallRock
-  suffix: Iron
   components:
-    - type: EntityRemap
-      mask:
-        AsteroidRock: AsteroidRockTin
-        WallRockBasalt: WallRockBasaltTin
-        WallRockChromite: WallRockChromiteTin
-        WallRockSand: WallRockSandTin
-        WallRockSnow: WallRockSnowTin
-    - type: OreVein
-      oreChance: 1.0
-      currentOre: OreSteel
-    - type: Sprite
-      layers:
-        - state: rock
-        - map: [ "enum.EdgeLayer.South" ]
-          state: rock_south
-        - map: [ "enum.EdgeLayer.East" ]
-          state: rock_east
-        - map: [ "enum.EdgeLayer.North" ]
-          state: rock_north
-        - map: [ "enum.EdgeLayer.West" ]
-          state: rock_west
-        - state: rock_tin
-          map: [ "enum.MiningScannerVisualLayers.Overlay" ]
-          visible: false # Lavaland Change
+  - type: EntityRemap
+    mask:
+      AsteroidRock: AsteroidRockTin
+      WallRockChromite: WallRockChromiteTin
+      WallRockSand: WallRockSandTin
+      WallRockSnow: WallRockSnowTin
+  - type: Sprite
+    layers:
+      - state: rock
+      - map: [ "enum.EdgeLayer.South" ]
+        state: rock_south
+      - map: [ "enum.EdgeLayer.East" ]
+        state: rock_east
+      - map: [ "enum.EdgeLayer.North" ]
+        state: rock_north
+      - map: [ "enum.EdgeLayer.West" ]
+        state: rock_west
+      - state: rock_tin
+        map: [ "enum.MiningScannerVisualLayers.Overlay" ]
+        visible: false # Lavaland Change
 
 - type: entity
+  parent: [ BaseVeinUranium, WallRock ]
   id: WallRockUranium
-  parent: WallRock
-  suffix: Uranium
   components:
   - type: EntityRemap
     mask:
       AsteroidRock: AsteroidRockUranium
-      WallRockBasalt: WallRockBasaltUranium
       WallRockChromite: WallRockChromiteUranium
       WallRockSand: WallRockSandUranium
       WallRockSnow: WallRockSnowUranium
-  - type: OreVein
-    oreChance: 1.0
-    currentOre: OreUranium
   - type: Sprite
     layers:
       - state: rock
@@ -1100,7 +1183,6 @@
       - state: rock_uranium
         map: [ "enum.MiningScannerVisualLayers.Overlay" ]
         visible: false # Lavaland Change
-
 
 - type: entity
   id: WallRockBananium
@@ -1133,21 +1215,15 @@
         visible: false # Lavaland Change
 
 - type: entity
+  parent: [ BaseVeinArtifactFragment, WallRock ]
   id: WallRockArtifactFragment
-  parent: WallRock
-  #description: A rock wall. What's that sticking out of it? # Lavaland Change
-  suffix: Artifact Fragment
   components:
   - type: EntityRemap
     mask:
       AsteroidRock: AsteroidRockArtifactFragment
-      WallRockBasalt: WallRockBasaltArtifactFragment
       WallRockChromite: WallRockChromiteArtifactFragment
       WallRockSand: WallRockSandArtifactFragment
       WallRockSnow: WallRockSnowArtifactFragment
-  - type: OreVein
-    oreChance: 1.0
-    currentOre: OreArtifactFragment
   - type: Sprite
     layers:
       - state: rock
@@ -1164,20 +1240,15 @@
         visible: false # Lavaland Change
 
 - type: entity
+  parent: [ BaseVeinSalt, WallRock ]
   id: WallRockSalt
-  parent: WallRock
-  suffix: Salt
   components:
   - type: EntityRemap
     mask:
       AsteroidRock: AsteroidRockSalt
-      WallRockBasalt: WallRockBasaltSalt
       WallRockChromite: WallRockChromiteSalt
       WallRockSand: WallRockSandSalt
       WallRockSnow: WallRockSnowSalt
-  - type: OreVein
-    oreChance: 1.0
-    currentOre: OreSalt
   - type: Sprite
     layers:
       - state: rock
@@ -1192,28 +1263,6 @@
       - state: rock_salt
         map: [ "enum.MiningScannerVisualLayers.Overlay" ]
         visible: false # Lavaland Change
-
-# Basalt variants
-- type: entity
-  id: WallRockBasalt
-  name: basalt
-  parent: WallRock
-  components:
-  - type: Icon
-    sprite: Structures/Walls/rock.rsi
-    state: rock_wall
-  - type: Sprite
-    sprite: Structures/Walls/rock.rsi
-    layers:
-    - state: rock_wall
-    - map: [ "enum.EdgeLayer.South" ]
-      state: rock_wall_south
-    - map: [ "enum.EdgeLayer.East" ]
-      state: rock_wall_east
-    - map: [ "enum.EdgeLayer.North" ]
-      state: rock_wall_north
-    - map: [ "enum.EdgeLayer.West" ]
-      state: rock_wall_west
 
 - type: entity
   id: WallRockBasaltCoal
@@ -1399,7 +1448,6 @@
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
 
-
 - type: entity
   id: WallRockBasaltBananium
   parent: WallRockBasalt
@@ -1470,32 +1518,22 @@
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
 
-# Snow variants
-- type: entity
-  id: WallRockSnow
-  name: snowdrift
-  parent: WallRock
-  components:
-  - type: Icon
-    sprite: Structures/Walls/rock.rsi
-    state: rock_snow
-  - type: Sprite
-    sprite: Structures/Walls/rock.rsi
-    layers:
-    - state: rock_snow
-    - map: [ "enum.EdgeLayer.South" ]
-      state: rock_snow_south
-    - map: [ "enum.EdgeLayer.East" ]
-      state: rock_snow_east
-    - map: [ "enum.EdgeLayer.North" ]
-      state: rock_snow_north
-    - map: [ "enum.EdgeLayer.West" ]
-      state: rock_snow_west
+#endregion
+#region Wall Rock (Snow)
 
 - type: entity
-  id: WallRockSnowCoal
-  parent: WallRockSnow
-  suffix: Coal
+  parent: WallRock
+  id: WallRockSnow
+  name: snowdrift
+  components:
+  - type: Icon
+    sprite: Structures/Walls/stone-snow.rsi
+    state: full
+  - type: Sprite
+    sprite: Structures/Walls/stone-snow.rsi
+
+- type: entity
+  parent: [ BaseVeinCoal, WallRockSnow ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -1514,11 +1552,10 @@
         - state: rock_coal
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: WallRockSnowCoal
 
 - type: entity
-  id: WallRockSnowGold
-  parent: WallRockSnow
-  suffix: Gold
+  parent: [ BaseVeinGold, WallRockSnow ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -1537,11 +1574,10 @@
         - state: rock_gold
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: WallRockSnowGold
 
 - type: entity
-  id: WallRockSnowDiamond
-  parent: WallRockSnow
-  suffix: Diamond
+  parent: [ BaseVeinDiamond, WallRockSnow ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -1560,11 +1596,10 @@
         - state: rock_diamond
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: WallRockSnowDiamond
 
 - type: entity
-  id: WallRockSnowPlasma
-  parent: WallRockSnow
-  suffix: Plasma
+  parent: [ BaseVeinPlasma, WallRockSnow ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -1583,11 +1618,10 @@
         - state: rock_phoron
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: WallRockSnowPlasma
 
 - type: entity
-  id: WallRockSnowQuartz
-  parent: WallRockSnow
-  suffix: Quartz
+  parent: [ BaseVeinQuartz, WallRockSnow ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -1606,11 +1640,10 @@
         - state: rock_quartz
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: WallRockSnowQuartz
 
 - type: entity
-  id: WallRockSnowSilver
-  parent: WallRockSnow
-  suffix: Silver
+  parent: [ BaseVeinSilver, WallRockSnow ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -1629,11 +1662,10 @@
         - state: rock_silver
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: WallRockSnowSilver
 
 - type: entity
-  id: WallRockSnowTin
-  parent: WallRockSnow
-  suffix: Iron
+  parent: [ BaseVeinSteel, WallRockSnow ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -1652,11 +1684,10 @@
         - state: rock_tin
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: WallRockSnowTin
 
 - type: entity
-  id: WallRockSnowUranium
-  parent: WallRockSnow
-  suffix: Uranium
+  parent: [ BaseVeinUranium, WallRockSnow ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -1675,7 +1706,7 @@
         - state: rock_uranium
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
-
+  id: WallRockSnowUranium
 
 - type: entity
   id: WallRockSnowBananium
@@ -1701,10 +1732,7 @@
           visible: false # Lavaland Change
 
 - type: entity
-  id: WallRockSnowArtifactFragment
-  parent: WallRockSnow
-  description: A rock wall. What's that sticking out of it?
-  suffix: Artifact Fragment
+  parent: [ BaseVeinArtifactFragment, WallRockSnow ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -1723,11 +1751,10 @@
         - state: rock_artifact_fragment
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: WallRockSnowArtifactFragment
 
 - type: entity
-  id: WallRockSnowSalt
-  parent: WallRockSnow
-  suffix: Salt
+  parent: [ BaseVeinSalt, WallRockSnow ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -1746,33 +1773,24 @@
         - state: rock_salt
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: WallRockSnowSalt
 
-# Sand variants
+#endregion
+#region Wall Rock (Sand)
+
 - type: entity
+  parent: WallRock
   id: WallRockSand
   name: sandstone
-  parent: WallRock
   components:
   - type: Icon
-    sprite: Structures/Walls/rock.rsi
-    state: rock_sand
+    sprite: Structures/Walls/stone-sand.rsi
+    state: full
   - type: Sprite
-    sprite: Structures/Walls/rock.rsi
-    layers:
-    - state: rock_sand
-    - map: [ "enum.EdgeLayer.South" ]
-      state: rock_sand_south
-    - map: [ "enum.EdgeLayer.East" ]
-      state: rock_sand_east
-    - map: [ "enum.EdgeLayer.North" ]
-      state: rock_sand_north
-    - map: [ "enum.EdgeLayer.West" ]
-      state: rock_sand_west
+    sprite: Structures/Walls/stone-sand.rsi
 
 - type: entity
-  id: WallRockSandCoal
-  parent: WallRockSand
-  suffix: Coal
+  parent: [ BaseVeinCoal, WallRockSand ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -1791,11 +1809,10 @@
         - state: rock_coal
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: WallRockSandCoal
 
 - type: entity
-  id: WallRockSandGold
-  parent: WallRockSand
-  suffix: Gold
+  parent: [ BaseVeinGold, WallRockSand ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -1814,11 +1831,10 @@
         - state: rock_gold
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: WallRockSandGold
 
 - type: entity
-  id: WallRockSandDiamond
-  parent: WallRockSand
-  suffix: Diamond
+  parent: [ BaseVeinDiamond, WallRockSand ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -1837,11 +1853,10 @@
         - state: rock_diamond
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: WallRockSandDiamond
 
 - type: entity
-  id: WallRockSandPlasma
-  parent: WallRockSand
-  suffix: Plasma
+  parent: [ BaseVeinPlasma, WallRockSand ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -1860,11 +1875,10 @@
         - state: rock_phoron
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: WallRockSandPlasma
 
 - type: entity
-  id: WallRockSandQuartz
-  parent: WallRockSand
-  suffix: Quartz
+  parent: [ BaseVeinQuartz, WallRockSand ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -1883,11 +1897,10 @@
         - state: rock_quartz
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: WallRockSandQuartz
 
 - type: entity
-  id: WallRockSandSilver
-  parent: WallRockSand
-  suffix: Silver
+  parent: [ BaseVeinSilver, WallRockSand ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -1906,11 +1919,10 @@
         - state: rock_silver
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: WallRockSandSilver
 
 - type: entity
-  id: WallRockSandTin
-  parent: WallRockSand
-  suffix: Iron
+  parent: [ BaseVeinSteel, WallRockSand ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -1929,11 +1941,10 @@
         - state: rock_tin
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: WallRockSandTin
 
 - type: entity
-  id: WallRockSandUranium
-  parent: WallRockSand
-  suffix: Uranium
+  parent: [ BaseVeinUranium, WallRockSand ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -1952,6 +1963,7 @@
         - state: rock_uranium
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: WallRockSandUranium
 
 - type: entity
   id: WallRockSandBananium
@@ -1977,10 +1989,7 @@
           visible: false # Lavaland Change
 
 - type: entity
-  id: WallRockSandArtifactFragment
-  parent: WallRockSand
-  description: A rock wall. What's that sticking out of it?
-  suffix: Artifact Fragment
+  parent: [ BaseVeinArtifactFragment, WallRockSand ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -1999,11 +2008,10 @@
         - state: rock_artifact_fragment
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: WallRockSandArtifactFragment
 
 - type: entity
-  id: WallRockSandSalt
-  parent: WallRockSand
-  suffix: Salt
+  parent: [ BaseVeinSalt, WallRockSand ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -2022,33 +2030,24 @@
         - state: rock_salt
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: WallRockSandSalt
 
-# Chromite variants
+#endregion
+#region Wall Rock (Chromite)
+
 - type: entity
   id: WallRockChromite
   name: chromite
   parent: WallRock
   components:
   - type: Icon
-    sprite: Structures/Walls/rock.rsi
-    state: rock_chromite
+    sprite: Structures/Walls/stone-chromite.rsi
+    state: full
   - type: Sprite
-    sprite: Structures/Walls/rock.rsi
-    layers:
-    - state: rock_chromite
-    - map: [ "enum.EdgeLayer.South" ]
-      state: rock_chromite_south
-    - map: [ "enum.EdgeLayer.East" ]
-      state: rock_chromite_east
-    - map: [ "enum.EdgeLayer.North" ]
-      state: rock_chromite_north
-    - map: [ "enum.EdgeLayer.West" ]
-      state: rock_chromite_west
+    sprite: Structures/Walls/stone-chromite.rsi
 
 - type: entity
-  id: WallRockChromiteCoal
-  parent: WallRockChromite
-  suffix: Coal
+  parent: [ BaseVeinCoal, WallRockChromite ]
   components:
   - type: OreVein
     oreChance: 1.0
@@ -2067,11 +2066,10 @@
     - state: rock_coal
       map: [ "enum.MiningScannerVisualLayers.Overlay" ]
       visible: false # Lavaland Change
+  id: WallRockChromiteCoal
 
 - type: entity
-  id: WallRockChromiteGold
-  parent: WallRockChromite
-  suffix: Gold
+  parent: [ BaseVeinGold, WallRockChromite ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -2090,11 +2088,10 @@
         - state: rock_gold
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: WallRockChromiteGold
 
 - type: entity
-  id: WallRockChromiteDiamond
-  parent: WallRockChromite
-  suffix: Diamond
+  parent: [ BaseVeinDiamond, WallRockChromite ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -2113,11 +2110,10 @@
         - state: rock_diamond
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: WallRockChromiteDiamond
 
 - type: entity
-  id: WallRockChromitePlasma
-  parent: WallRockChromite
-  suffix: Plasma
+  parent: [ BaseVeinPlasma, WallRockChromite ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -2136,11 +2132,10 @@
         - state: rock_phoron
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: WallRockChromitePlasma
 
 - type: entity
-  id: WallRockChromiteQuartz
-  parent: WallRockChromite
-  suffix: Quartz
+  parent: [ BaseVeinQuartz, WallRockChromite ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -2159,11 +2154,10 @@
         - state: rock_quartz
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: WallRockChromiteQuartz
 
 - type: entity
-  id: WallRockChromiteSilver
-  parent: WallRockChromite
-  suffix: Silver
+  parent: [ BaseVeinSilver, WallRockChromite ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -2182,11 +2176,10 @@
         - state: rock_silver
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: WallRockChromiteSilver
 
 - type: entity
-  id: WallRockChromiteTin
-  parent: WallRockChromite
-  suffix: Iron
+  parent: [ BaseVeinSteel, WallRockChromite ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -2205,11 +2198,10 @@
         - state: rock_tin
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: WallRockChromiteTin
 
 - type: entity
-  id: WallRockChromiteUranium
-  parent: WallRockChromite
-  suffix: Uranium
+  parent: [ BaseVeinUranium, WallRockChromite ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -2228,7 +2220,7 @@
         - state: rock_uranium
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
-
+  id: WallRockChromiteUranium
 
 - type: entity
   id: WallRockChromiteBananium
@@ -2254,10 +2246,7 @@
           visible: false # Lavaland Change
 
 - type: entity
-  id: WallRockChromiteArtifactFragment
-  parent: WallRockChromite
-  description: A rock wall. What's that sticking out of it?
-  suffix: Artifact Fragment
+  parent: [ BaseVeinArtifactFragment, WallRockChromite ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -2276,11 +2265,10 @@
         - state: rock_artifact_fragment
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
+  id: WallRockChromiteArtifactFragment
 
 - type: entity
-  id: WallRockChromiteSalt
-  parent: WallRockChromite
-  suffix: Salt
+  parent: [ BaseVeinSalt, WallRockChromite ]
   components:
     - type: OreVein
       oreChance: 1.0
@@ -2299,28 +2287,7 @@
         - state: rock_salt
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
-
-# Andesite variants
-- type: entity
-  id: WallRockAndesite
-  name: andesite
-  parent: WallRock
-  components:
-  - type: Icon
-    sprite: Structures/Walls/rock.rsi
-    state: rock_andesite
-  - type: Sprite
-    sprite: Structures/Walls/rock.rsi
-    layers:
-    - state: rock_andesite
-    - map: [ "enum.EdgeLayer.South" ]
-      state: rock_andesite_south
-    - map: [ "enum.EdgeLayer.East" ]
-      state: rock_andesite_east
-    - map: [ "enum.EdgeLayer.North" ]
-      state: rock_andesite_north
-    - map: [ "enum.EdgeLayer.West" ]
-      state: rock_andesite_west
+  id: WallRockChromiteSalt
 
 - type: entity
   id: WallRockAndesiteCoal
@@ -2505,7 +2472,6 @@
         - state: rock_uranium
           map: [ "enum.MiningScannerVisualLayers.Overlay" ]
           visible: false # Lavaland Change
-
 
 - type: entity
   id: WallRockAndesiteBananium

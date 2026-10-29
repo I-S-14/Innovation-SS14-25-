@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: MIT
-
-using Content.Server.Atmos.EntitySystems;
 using Content.Server.Body.Systems;
+using Content.Shared.Atmos;
+using Content.Shared.Disposal.Unit;
 
 namespace Content.Server.Disposal.Unit;
 
-public sealed class BeingDisposedSystem : EntitySystem
+/// <inheritdoc/>
+public sealed partial class BeingDisposedSystem : SharedBeingDisposedSystem
 {
     public override void Initialize()
     {
@@ -16,9 +17,9 @@ public sealed class BeingDisposedSystem : EntitySystem
         SubscribeLocalEvent<BeingDisposedComponent, AtmosExposedGetAirEvent>(OnGetAir);
     }
 
-    private void OnGetAir(EntityUid uid, BeingDisposedComponent component, ref AtmosExposedGetAirEvent args)
+    private void OnGetAir(Entity<BeingDisposedComponent> ent, ref AtmosExposedGetAirEvent args)
     {
-        if (TryComp<DisposalHolderComponent>(component.Holder, out var holder))
+        if (TryComp<DisposalHolderComponent>(ent.Comp.Holder, out var holder))
         {
             args.Gas = holder.Air;
             args.Handled = true;
@@ -27,7 +28,7 @@ public sealed class BeingDisposedSystem : EntitySystem
 
     private void OnInhaleLocation(EntityUid uid, BeingDisposedComponent component, ref InhaleLocationEvent args) // Goob - by-ref
     {
-        if (TryComp<DisposalHolderComponent>(component.Holder, out var holder))
+        if (TryComp<DisposalHolderComponent>(ent.Comp.Holder, out var holder))
         {
             args.Gas = holder.Air;
         }
@@ -35,7 +36,7 @@ public sealed class BeingDisposedSystem : EntitySystem
 
     private void OnExhaleLocation(EntityUid uid, BeingDisposedComponent component, ref ExhaleLocationEvent args) // Goob - by-ref
     {
-        if (TryComp<DisposalHolderComponent>(component.Holder, out var holder))
+        if (TryComp<DisposalHolderComponent>(ent.Comp.Holder, out var holder))
         {
             args.Gas = holder.Air;
         }

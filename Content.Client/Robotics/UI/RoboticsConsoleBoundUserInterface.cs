@@ -30,11 +30,11 @@ public sealed class RoboticsConsoleBoundUserInterface : BoundUserInterface
 
         _window.OnDisablePressed += address =>
         {
-            SendMessage(new RoboticsConsoleDisableMessage(address));
+            SendMessage(new RoboticsConsoleDisableMessage(address.AddressId));
         };
         _window.OnDestroyPressed += address =>
         {
-            SendMessage(new RoboticsConsoleDestroyMessage(address));
+            SendMessage(new RoboticsConsoleDestroyMessage(address.AddressId));
         };
     }
 

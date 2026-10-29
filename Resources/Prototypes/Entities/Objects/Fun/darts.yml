@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 - type: entity
-  parent: BaseItem
+  parent: [BaseItem, SolutionDart]
   id: Dart
   name: dart
   description: Light throwing dart for playing darts. Don't get in the eye!
@@ -47,10 +47,6 @@
   - type: Item
     size: Tiny
     sprite: Objects/Fun/Darts/dart_red.rsi
-  - type: SolutionContainerManager
-    solutions:
-      melee:
-        maxVol: 2
   - type: MeleeChemicalInjector
     solution: melee
   - type: RefillableSolution
@@ -64,15 +60,10 @@
   - type: SolutionTransfer
     maxTransferAmount: 2
   - type: Damageable
+  - type: Injurable
     damageContainer: Inorganic
   - type: Destructible
     thresholds:
-    - trigger:
-        !type:DamageTrigger
-        damage: 50 #excess damage avoids cost of spawning entities.
-      behaviors:
-      - !type:DoActsBehavior
-        acts: [ "Destruction" ]
     - trigger:
         !type:DamageTrigger
         damage: 20
@@ -93,6 +84,16 @@
     damage:
       types:
         Blunt: 20
+
+- type: entity
+  parent: Solution
+  id: SolutionDart
+  categories: [ HideSpawnMenu ] # Not abstract so weapons with multiple solutions can exist
+  components:
+  - type: Solution
+    id: melee
+    solution:
+      maxVol: 2
 
 - type: entity
   parent: Dart
@@ -126,16 +127,15 @@
   id: HypoDart
   suffix: HypoDart
   components:
-  - type: SolutionContainerManager
-    solutions:
-      melee:
-        maxVol: 7
+  - type: Solution
+    solution:
+      maxVol: 10
   - type: SolutionInjectOnEmbed
-    transferAmount: 7
+    transferAmount: 10
     blockSlots: NONE
     solution: melee
   - type: SolutionTransfer
-    maxTransferAmount: 7
+    maxTransferAmount: 10
 
 - type: entity
   name: dartboard
@@ -161,6 +161,7 @@
   - type: InteractionOutline
   - type: Physics
   - type: Damageable
+  - type: Injurable
   - type: DamageRandomPopup
     popups:
       - darts-popup-bullseye
@@ -177,12 +178,6 @@
       - darts-popup-miss
   - type: Destructible
     thresholds:
-    - trigger:
-        !type:DamageTrigger
-        damage: 500
-      behaviors:
-        - !type:DoActsBehavior
-          acts: [ "Destruction" ]
     - trigger:
         !type:DamageTrigger
         damage: 300

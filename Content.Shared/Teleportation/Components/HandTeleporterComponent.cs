@@ -12,14 +12,14 @@ namespace Content.Shared.Teleportation.Components;
 ///     Creates portals. If two are created, both are linked together--otherwise the first teleports randomly.
 ///     Using it with both portals active deactivates both.
 /// </summary>
-[RegisterComponent, NetworkedComponent]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 public sealed partial class HandTeleporterComponent : Component
 {
-    [ViewVariables, DataField("firstPortal")]
-    public EntityUid? FirstPortal = null;
+    [DataField, AutoNetworkedField]
+    public EntityUid? FirstPortal;
 
-    [ViewVariables, DataField("secondPortal")]
-    public EntityUid? SecondPortal = null;
+    [DataField, AutoNetworkedField]
+    public EntityUid? SecondPortal;
 
     /// <summary>
     ///     Should the portals be able to be placed across grids?
@@ -33,29 +33,28 @@ public sealed partial class HandTeleporterComponent : Component
     [DataField]
     public bool AllowPortalsOnDifferentMaps;
 
-    [DataField("firstPortalPrototype")]
+    [DataField]
     public EntProtoId FirstPortalPrototype = "PortalRed";
 
-    [DataField("secondPortalPrototype")]
+    [DataField]
     public EntProtoId SecondPortalPrototype = "PortalBlue";
 
-    [DataField("newPortalSound")] public SoundSpecifier NewPortalSound =
+    [DataField]
+    public SoundSpecifier NewPortalSound =
         new SoundPathSpecifier("/Audio/Machines/high_tech_confirm.ogg")
         {
-            Params = AudioParams.Default.WithVolume(-2f)
+            Params = AudioParams.Default.AddVolume(-2f)
         };
 
-    [DataField("clearPortalsSound")]
+    [DataField]
     public SoundSpecifier ClearPortalsSound = new SoundPathSpecifier("/Audio/Machines/button.ogg");
 
     /// <summary>
     ///     Delay for creating the portals in seconds.
     /// </summary>
-    [DataField("portalCreationDelay")]
+    [DataField]
     public float PortalCreationDelay = 1.0f;
 }
 
 [Serializable, NetSerializable]
-public sealed partial class TeleporterDoAfterEvent : SimpleDoAfterEvent
-{
-}
+public sealed partial class TeleporterDoAfterEvent : SimpleDoAfterEvent;

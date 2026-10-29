@@ -1,24 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # These define Meteor Walls separate from Asteroid walls so they have different properties
-- type: entity
-  id: MeteorRock
-  parent: AsteroidRock
-  name: meteorite rock
-  description: What remains of a meteorite.
-  components:
-  - type: Destructible
-    thresholds:
-    - trigger:
-        !type:DamageTrigger
-        damage: 12 #This change makes meteorite walls easier to destroy for cleanup
-      behaviors:
-      - !type:DoActsBehavior
-        acts: ["Destruction"]
-      - !type:PlaySoundBehavior
-        sound:
-          path: /Audio/Effects/break_stone.ogg
-          params:
-            volume: -6
 
 # Ore veins
 - type: entity
@@ -146,6 +127,7 @@
         - map: [ "enum.EdgeLayer.West" ]
           state: rock_asteroid_west
         - state: rock_silver
+
 # Tin name is a holdover from the asteroid.yml prototype.
 - type: entity
   id: MeteorRockTin

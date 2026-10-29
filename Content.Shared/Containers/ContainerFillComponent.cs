@@ -1,7 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-
-using Content.Shared.Storage;
-using Content.Shared.Storage.Components;
 using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Containers;
@@ -17,13 +14,13 @@ namespace Content.Shared.Containers;
 [RegisterComponent]
 public sealed partial class ContainerFillComponent : Component
 {
-    [DataField("containers")]
+    [DataField(required: true)]
     public Dictionary<string, List<EntProtoId>> Containers = new();
 
     /// <summary>
     ///     If true, entities spawned via the construction system will not have entities spawned into containers managed
     ///     by the construction system.
     /// </summary>
-    [DataField("ignoreConstructionSpawn")]
+    [DataField]
     public bool IgnoreConstructionSpawn = true;
 }

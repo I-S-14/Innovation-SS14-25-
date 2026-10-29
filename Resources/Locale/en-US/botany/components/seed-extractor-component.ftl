@@ -6,8 +6,5 @@
 # SPDX-FileCopyrightText: 2025 Aiden <28298836+Aidenkrz@users.noreply.github.com>
 #
 # SPDX-License-Identifier: MIT
-
-## Entity
-
 seed-extractor-component-interact-message = You extract some seeds from the { THE($name) }.
 seed-extractor-component-no-seeds = { CAPITALIZE(THE($name)) } has no seeds!

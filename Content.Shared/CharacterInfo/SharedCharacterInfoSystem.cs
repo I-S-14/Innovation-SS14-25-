@@ -32,5 +32,6 @@ public sealed class CharacterInfoEvent : EntityEventArgs
         JobProto = jobProto; // CorvaxGoob
         Objectives = objectives;
         Briefing = briefing;
+        Job = job;
     }
 }

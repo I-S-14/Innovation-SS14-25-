@@ -8,7 +8,7 @@ using Robust.Client.GameObjects;
 namespace Content.Client.Storage.Systems;
 
 /// <inheritdoc cref="StorageContainerVisualsComponent"/>
-public sealed class StorageContainerVisualsSystem : VisualizerSystem<StorageContainerVisualsComponent>
+public sealed partial class StorageContainerVisualsSystem : VisualizerSystem<StorageContainerVisualsComponent>
 {
     [Dependency] private readonly SpriteSystem _sprite = default!;
 
@@ -17,10 +17,10 @@ public sealed class StorageContainerVisualsSystem : VisualizerSystem<StorageCont
         if (args.Sprite == null)
             return;
 
-        if (!AppearanceSystem.TryGetData<int>(uid, StorageVisuals.StorageUsed, out var used, args.Component))
+        if (!args.TryGetData<int>(StorageVisuals.StorageUsed, out var used))
             return;
 
-        if (!AppearanceSystem.TryGetData<int>(uid, StorageVisuals.Capacity, out var capacity, args.Component))
+        if (!args.TryGetData<int>(StorageVisuals.Capacity, out var capacity))
             return;
 
         var fraction = used / (float)capacity;

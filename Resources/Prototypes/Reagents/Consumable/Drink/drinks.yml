@@ -41,13 +41,9 @@
   color: "#664300"
   recognizable: true
   metabolisms:
-    Drink:
-      effects:
-      - !type:SatiateThirst
-        factor: 2
-      - !type:AdjustReagent
-        reagent: Theobromine
-        amount: 0.05
+    Digestion:
+      metabolites:
+        Theobromine: 0.1
 
 - type: reagent
   id: Cream
@@ -59,9 +55,10 @@
   color: "#DFD7AF"
   puddleColor: "#DFD7AFCC" # Goob
   metabolisms:
-    Drink:
+    Digestion:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 1
 
 - type: reagent
@@ -75,9 +72,10 @@
   puddleSpriteSet: Shiny # Goob
   puddleColor: "#f4eadbCC" # Goob
   metabolisms:
-    Drink:
+    Digestion:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 4 # Coconut water is 94% water
 
 - type: reagent
@@ -90,9 +88,10 @@
   color: "#FFEABF"
   puddleColor: "#FFEABFCC" # Goob
   metabolisms:
-    Drink:
+    Digestion:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
 
 - type: reagent
@@ -110,9 +109,10 @@
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
   metabolisms:
-    Drink:
+    Digestion:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:ModifyStatusEffect
         effectProto: StatusEffectDrowsiness
@@ -167,13 +167,13 @@
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
   metabolisms:
-    Drink:
+    Digestion:
+      metabolites:
+        Theobromine: 0.1
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
-      - !type:AdjustReagent
-        reagent: Theobromine
-        amount: 0.05
       - !type:ModifyStatusEffect
         effectProto: StatusEffectDrowsiness
         time: 2
@@ -209,13 +209,9 @@
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
   metabolisms:
-    Drink:
-      effects:
-      - !type:SatiateThirst
-        factor: 2
-      - !type:AdjustReagent
-        reagent: Theobromine
-        amount: 0.05
+    Digestion:
+      metabolites:
+        Theobromine: 0.1
 
 - type: reagent
   id: JuiceBerryPoison
@@ -257,9 +253,10 @@
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
   metabolisms:
-    Drink:
+    Digestion:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
 
 - type: reagent
@@ -300,6 +297,12 @@
   desc: reagent-desc-milk-goat
 
 - type: reagent
+  id: MilkSheep
+  parent: Milk
+  name: reagent-name-milk-sheep
+  desc: reagent-desc-milk-sheep
+
+- type: reagent
   id: MilkOat
   name: reagent-name-milk-oat
   #group: Drinks - Goob: Drinks guidebook split
@@ -309,9 +312,10 @@
   color: "#DEDACD"
   recognizable: true
   metabolisms:
-    Drink:
+    Digestion:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 4
 
 - type: reagent
@@ -332,9 +336,10 @@
   flavor: terrible
   color: "#faffba"
   metabolisms:
-    Drink:
+    Digestion:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: -2
 
 - type: reagent
@@ -345,9 +350,10 @@
   #group: Drinks - Goob: Drinks guidebook split
   physicalDesc: reagent-physical-desc-nothing
   metabolisms:
-    Drink:
+    Digestion:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
         # TODO heal mimes
 
@@ -414,9 +420,10 @@
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
   metabolisms:
-    Drink:
+    Digestion:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:ModifyStatusEffect
         effectProto: StatusEffectDrowsiness
@@ -433,13 +440,9 @@
   color: "#8a5a3a"
   recognizable: true
   metabolisms:
-    Drink:
-      effects:
-      - !type:SatiateThirst
-        factor: 2
-      - !type:AdjustReagent
-        reagent: Theobromine
-        amount: 0.05
+    Digestion:
+      metabolites:
+        Theobromine: 0.1
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/teaglass.rsi
     state: icon_empty
@@ -465,9 +468,9 @@
   metamorphicChangeColor: false
 
 - type: reagent
+  parent: BaseDrink
   id: Water
   name: reagent-name-water
-  parent: BaseDrink
   desc: reagent-desc-water
   evaporationSpeed: 0.3
   absorbent: true
@@ -589,9 +592,10 @@
   color: "#664300"
   puddleSpriteSet: Shiny # Goob
   metabolisms:
-    Food:
+    Digestion:
       effects:
-      - !type:SatiateHunger
+      - !type:Satiate
+        satiationType: Hunger
         factor: 1
 
 - type: reagent
@@ -604,9 +608,10 @@
   color: "#664300"
   puddleSpriteSet: Shiny # Goob
   metabolisms:
-    Food:
+    Digestion:
       effects:
-      - !type:SatiateHunger
+      - !type:Satiate
+        satiationType: Hunger
         factor: 4
 
 - type: reagent
@@ -625,13 +630,13 @@
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
   metabolisms:
-    Drink:
+    Digestion:
+      metabolites:
+        Theobromine: 0.1
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 4
-      - !type:AdjustReagent
-        reagent: Theobromine
-        amount: 0.05
 
 - type: reagent
   id: Pilk
@@ -642,9 +647,10 @@
   flavor: pilk
   color: "#e7c69f"
   metabolisms:
-    Drink:
+    Digestion:
       effects:
-        - !type:SatiateThirst
+        - !type:Satiate
+          satiationType: Thirst
           factor: 1
   fizziness: 0.3
 
@@ -698,9 +704,10 @@
   flavor: mopwata
   color: "#59502b"
   metabolisms:
-    Drink:
+    Digestion:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 0.6
 
 - type: reagent

@@ -7,7 +7,6 @@ using Content.Server.Cargo.Systems;
 using Content.Server.Weapons.Ranged.Components;
 using Content.Shared.Cargo;
 using Content.Shared.Damage;
-using Content.Shared.Damage.Systems;
 using Content.Shared.Projectiles;
 using Content.Shared.Weapons.Melee;
 using Content.Shared.Weapons.Ranged;
@@ -40,6 +39,8 @@ public sealed partial class GunSystem : SharedGunSystem
     [Dependency] private readonly SharedStaminaSystem _stamina = default!;
     [Dependency] private readonly SharedContainerSystem _container = default!;
     [Dependency] private readonly PowerCellSystem _powerCell = default!;
+    [Dependency] private PricingSystem _pricing = default!;
+    [Dependency] private SharedMapSystem _map = default!;
 
     // Goobstation
     [Dependency] private readonly FlammableSystem _flammable = default!;
@@ -55,7 +56,7 @@ public sealed partial class GunSystem : SharedGunSystem
         if (string.IsNullOrEmpty(ent.Comp.Proto) || ent.Comp.UnspawnedCount == 0)
             return;
 
-        if (!ProtoManager.TryIndex<EntityPrototype>(ent.Comp.Proto, out var proto))
+        if (!ProtoMan.TryIndex<EntityPrototype>(ent.Comp.Proto, out var proto))
         {
             Log.Error($"Unable to find fill prototype for price on {ent.Comp.Proto} on {ToPrettyString(ent)}");
             return;
@@ -67,8 +68,6 @@ public sealed partial class GunSystem : SharedGunSystem
     }
 
     // Trauma - moved Shoot, targeting, ShootOrThrow, LinearSpread and GetRecoilAngle to SharedGunSystem.Trauma.cs
-
-    protected override void Popup(string message, EntityUid? uid, EntityUid? user) { }
 
     protected override void CreateEffect(EntityUid gunUid, MuzzleFlashEvent message, EntityUid? user = null)
     {

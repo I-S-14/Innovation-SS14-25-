@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # For mantles
+
 - type: loadoutEffectGroup
   id: MasterQM
   effects:
@@ -25,36 +26,35 @@
   equipment:
     jumpsuit: ClothingUniformJumpsuitQM
 
-
 - type: loadout
   id: QuartermasterJumpskirt
   equipment:
     jumpsuit: ClothingUniformJumpskirtQM
-
 
 - type: loadout
   id: QuartermasterTurtleneck
   equipment:
     jumpsuit: ClothingUniformJumpsuitQMTurtleneck
 
-
 - type: loadout
   id: QuartermasterTurtleneckSkirt
   equipment:
     jumpsuit: ClothingUniformJumpskirtQMTurtleneck
-
 
 - type: loadout
   id: QuartermasterFormalSuit
   equipment:
     jumpsuit: ClothingUniformJumpsuitQMFormal
 
-
 - type: loadout # goob
   id: QuartermasterMJ
   equipment:
     jumpsuit: ClothingUniformJumpsuitMilitaryQM
 
+- type: loadout
+  id: QuartermasterFormalDress
+  equipment:
+    jumpsuit: ClothingUniformJumpskirtQMFormalDress
 
 # Head
 - type: loadout
@@ -62,12 +62,10 @@
   equipment:
     head: ClothingHeadHatQMsoft
 
-
 - type: loadout
   id: QuartermasterBeret
   equipment:
     head: ClothingHeadHatBeretQM
-
 
 # Neck
 - type: loadout
@@ -95,6 +93,7 @@
   effects:
   - !type:GroupLoadoutEffect
     proto: GrandMasterQM
+
 # OuterClothing
 - type: loadout
   id: QuartermasterWintercoat

@@ -7,15 +7,19 @@ using JetBrains.Annotations;
 using Content.Shared.Throwing;
 using Robust.Shared.Physics.Events;
 using Content.Shared.Whitelist; // DeltaV
+using Content.Shared.Whitelist;
 
 namespace Content.Server.Stunnable.Systems;
 
 [UsedImplicitly]
-internal sealed class StunOnCollideSystem : EntitySystem
+internal sealed partial class StunOnCollideSystem : EntitySystem
 {
     [Dependency] private readonly StunSystem _stunSystem = default!;
     [Dependency] private readonly MovementModStatusSystem _movementMod = default!;
     [Dependency] private readonly EntityWhitelistSystem _whitelist = default!; // DeltaV
+    [Dependency] private StunSystem _stunSystem = default!;
+    [Dependency] private MovementModStatusSystem _movementMod = default!;
+    [Dependency] private EntityWhitelistSystem _entityWhitelist = default!;
 
     public override void Initialize()
     {

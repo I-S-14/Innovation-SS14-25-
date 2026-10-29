@@ -1,0 +1,108 @@
+- type: job
+  id: ERTLeader
+  name: job-name-ertleader
+  description: job-description-ertleader
+  playTimeTracker: JobERTLeader
+  setPreference: false
+  startingGear: ERTLeaderGearEVA
+  icon: "JobIconERTLeader"
+  supervisors: job-supervisors-centcom
+  accessGroups:
+  - AllAccess
+  access:
+  - CentralCommand
+  special:
+  - !type:AddImplantSpecial
+    implants: [ MindShieldImplant, DeathRattleImplantCentcomm ]
+
+
+
+
+- type: startingGear
+  parent: ERTLeaderGearEVA
+  id: ERTLeaderGear
+  equipment:
+    shoes: ClothingShoesBootsMagEmergencyResponseTeam # Goobstation
+    head: ClothingHeadHelmetERTLeader
+    outerClothing: ClothingOuterArmourDurathread # Goobstation
+    pocket2: FlashlightSeclite
+
+
+
+- type: startingGear
+  id: ERTLeaderGearEVA
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitERTLeader
+    back: ClothingBackpackERTLeader
+    shoes: ClothingShoesBootsMagEmergencyResponseTeam # Goobstation
+    mask: ClothingMaskGasERT
+    eyes: ClothingEyesHudMedSec
+    neck: ExecutiveIDCard # Goobstation - Executive Access!
+    gloves: ClothingHandsGlovesCombat
+    outerClothing: ClothingOuterHardsuitERTLeader
+    id: ERTLeaderPDA
+    ears: ClothingHeadsetAltCentCom
+    belt: ClothingBeltMilitaryWebbingFilledERT # Goobstation
+    pocket1: WeaponPulsePistol # Literally described as "Favored sidearm of NT ERT operatives". Is never used anywhere else.
+    pocket2: CombatKnife
+    suitstorage: WeaponDisablerSMG
+  storage:
+    back:
+    - Binoculars
+    - HoloprojectorField
+    - PhoneInstrument
+    - PinpointerNuclear
+    - PowerCellHigh
+    - PowerCellHigh
+    - MedkitCombatFilled # End of first line
+    - MedkitCombatFilled
+    - TelescopicShield
+    #belt: # Goobstation prefilled
+    #- Stunbaton
+    #- Handcuffs
+    #- Handcuffs
+    #- CrowbarRed
+    #- WeaponPistolN1984
+    #- MagazineMagnum
+    #- EmergencyMedipen
+
+
+- type: startingGear
+  parent: ERTLeaderGearEVA
+  id: ERTLeaderGearArmed
+  equipment:
+    pocket2: WeaponDisabler
+    suitstorage: WeaponRifleLecter
+    # WeaponRifleLecterXL8  # Goobstation resprite and replace the above
+  storage:
+    back:
+    #- HoloprojectorField # Goobstation
+    #- PhoneInstrument
+    - PinpointerNuclear
+    - MagazineRifle
+    - MagazineRifle
+    - MagazineRifleIncendiary
+    - MagazineRifleUranium
+    - MedkitCombatFilled # End of first line
+    - GrenadeShrapnel
+    - EmpGrenade
+    - ERTSecurityUndeterminedWeapon # Goobstation?
+    #belt: # Goobstation
+    #- Truncheon
+    #- Handcuffs
+    #- Handcuffs
+    #- CrowbarRed
+    #- WeaponPistolN1984
+    #- MagazineMagnum
+    #- EmergencyMedipen
+
+
+
+
+- type: chameleonOutfit
+  id: ERTLeaderChameleonOutfit
+  job: ERTLeader
+  hasMindShield: true
+  equipment:
+    head: ClothingHeadHelmetHardsuitERTLeader
+    neck: ClothingNeckBronzeheart

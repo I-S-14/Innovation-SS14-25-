@@ -10,6 +10,7 @@
 
 # all objectives should inherit this at some point
 # then have its icon etc fields set in the final objective prototypes
+
 - type: entity
   abstract: true
   id: BaseObjective
@@ -53,6 +54,27 @@
       components:
       - SocialObjective
   - type: KillPersonCondition
+
+- type: entity
+  abstract: true
+  parent: BaseKillObjective
+  id: BaseKillRandomObjective
+  components:
+  - type: PickRandomPerson
+    conditions:
+    - !type:AntagonistTagCondition # Only roll on-station targets.
+      tags:
+      - OnStation
+    - !type:AntagonistTagCondition # Don't roll unkillable targets.
+      inverted: true
+      tags:
+      - Unkillable
+    # Can't have multiple objectives to kill the same person.
+    - !type:ObjectiveTargetCondition
+      inverted: true
+      whitelist:
+        components:
+        - KillPersonCondition
 
 # requires that the player interact socially with someone
 # disables kill objectives and is disabled by kill objectives
@@ -112,3 +134,12 @@
   id: BaseCodeObjective
   components:
   - type: CodeCondition
+
+# requires the player to perform some action a certain number of times
+- type: entity
+  abstract: true
+  parent: BaseObjective
+  id: BaseCounterObjective
+  components:
+  - type: CounterCondition
+  - type: NumberObjective # min and max to be set in the inheritor

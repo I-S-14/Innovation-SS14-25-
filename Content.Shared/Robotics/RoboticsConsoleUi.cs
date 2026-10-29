@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-﻿using Robust.Shared.Serialization;
+using Robust.Shared.Serialization;
 using Robust.Shared.Prototypes;
+using Content.Shared.DeviceNetwork;
 using Robust.Shared.Serialization;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
 using Robust.Shared.Utility;
@@ -20,7 +21,7 @@ public sealed class RoboticsConsoleState : BoundUserInterfaceState
     /// <summary>
     /// Map of device network addresses to cyborg data.
     /// </summary>
-    public Dictionary<string, CyborgControlData> Cyborgs;
+    public Dictionary<LocDeviceAddress, CyborgControlData> Cyborgs;
 
     /// <summary>
     /// If the UI will have the buttons to disable and destroy.
@@ -51,9 +52,9 @@ public sealed class RoboticsConsoleChangeLawsMessage(string address) : BoundUser
 [Serializable, NetSerializable]
 public sealed class RoboticsConsoleDisableMessage : BoundUserInterfaceMessage
 {
-    public readonly string Address;
+    public readonly DeviceAddress Address;
 
-    public RoboticsConsoleDisableMessage(string address)
+    public RoboticsConsoleDisableMessage(DeviceAddress address)
     {
         Address = address;
     }
@@ -65,9 +66,9 @@ public sealed class RoboticsConsoleDisableMessage : BoundUserInterfaceMessage
 [Serializable, NetSerializable]
 public sealed class RoboticsConsoleDestroyMessage : BoundUserInterfaceMessage
 {
-    public readonly string Address;
+    public readonly DeviceAddress Address;
 
-    public RoboticsConsoleDestroyMessage(string address)
+    public RoboticsConsoleDestroyMessage(DeviceAddress address)
     {
         Address = address;
     }
@@ -161,10 +162,10 @@ public partial record struct CyborgControlData
     }
 }
 
-public static class RoboticsConsoleConstants
-{
-    // broadcast by cyborgs on Robotics Console frequency
-    public const string NET_CYBORG_DATA = "cyborg-data";
+/// <summary>
+/// Disables a borg when received.
+/// </summary>
+public partial record struct RoboticsCyborgDisablePayload : INetworkPayload;
 
     // sent by robotics console to cyborgs on Cyborg Control frequency
     public const string NET_CHANGE_LAWS_COMMAND = "cyborg-change-laws"; // Corvax-Goob-MutableLaws

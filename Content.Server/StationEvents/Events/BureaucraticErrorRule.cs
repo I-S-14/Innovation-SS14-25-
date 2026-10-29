@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Linq;
-using Content.Server.Station.Components;
 using Content.Server.Station.Systems;
 using Content.Server.StationEvents.Components;
 using Content.Shared.GameTicking.Components;
+using Content.Shared.Station.Components;
 using JetBrains.Annotations;
 using Robust.Shared.Random;
 
@@ -16,23 +16,28 @@ using Content.Shared.Database;
 
 namespace Content.Server.StationEvents.Events;
 
+/// <summary>
+/// Handler for events that alter job slots for a station.
+/// </summary>
+/// <seealso cref="BureaucraticErrorRuleComponent"/>
 [UsedImplicitly]
-public sealed class BureaucraticErrorRule : StationEventSystem<BureaucraticErrorRuleComponent>
+public sealed partial class BureaucraticErrorRule : StationEventSystem<BureaucraticErrorRuleComponent>
 {
     [Dependency] private readonly StationJobsSystem _stationJobs = default!;
     [Dependency] private readonly IAdminLogManager _adminLog = default!; // Goob
     [Dependency] private readonly IChatManager _chat = default!; // Goob
+    [Dependency] private ServerStationJobsSystem _stationJobs = default!;
 
-    protected override void Started(EntityUid uid, BureaucraticErrorRuleComponent component, GameRuleComponent gameRule, GameRuleStartedEvent args)
+    protected override void Started(Entity<BureaucraticErrorRuleComponent, GameRuleComponent> ent, ref GameRuleStartedEvent args)
     {
-        base.Started(uid, component, gameRule, args);
+        base.Started(ent, ref args);
 
-        if (!TryGetRandomStation(out var chosenStation, HasComp<StationJobsComponent>))
+        if (!Station.TryGetRandomStation<StationEventEligibleComponent>(out var chosenStation, HasComp<StationJobsComponent>))
             return;
 
         var jobList = _stationJobs.GetJobs(chosenStation.Value).Keys.ToList();
 
-        foreach(var job in component.IgnoredJobs)
+        foreach (var job in ent.Comp1.IgnoredJobs)
             jobList.Remove(job);
 
         if (jobList.Count == 0)
@@ -84,15 +89,7 @@ public sealed class BureaucraticErrorRule : StationEventSystem<BureaucraticError
                 if (_stationJobs.IsJobUnlimited(chosenStation.Value, chosenJob))
                     continue;
 
-                // Use very conservative adjustments (-1 to +1) and ensure we don't go below 1 slot
-                if (_stationJobs.TryGetJobSlot(chosenStation.Value, chosenJob, out var currentSlots) && currentSlots.HasValue && currentSlots > 0)
-                {
-                    var adjustment = RobustRandom.Next(-1, 2); // -1, 0, or +1
-                    var newSlots = Math.Max(1, currentSlots.Value + adjustment);
-                    _stationJobs.TrySetJobSlot(chosenStation.Value, chosenJob, newSlots);
-                    _chat.SendAdminAlert($"Bureaucratic Error: Changed {chosenJob} slots from {currentSlots} to {newSlots}");
-                    _adminLog.Add(LogType.AdminMessage, LogImpact.Low, $"Bureaucratic Error: Changed {chosenJob} slots from {currentSlots} to {newSlots}");
-                }
+                _stationJobs.TryAdjustJobSlot(chosenStation.Value, chosenJob, ent.Comp1.JobSlotAdjustment.Next(RobustRandom), clamp: true);
             }
         }
         #endregion

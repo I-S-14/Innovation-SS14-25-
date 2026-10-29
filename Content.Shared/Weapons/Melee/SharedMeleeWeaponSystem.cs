@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Numerics;
@@ -23,6 +24,8 @@ using Content.Shared._Lavaland.Weapons;
 using Content.Shared._Shitcode.Heretic.Components;
 using Content.Shared._Shitmed.Targeting;
 using Content.Shared.Coordinates;
+using Content.Shared.EntityEffects;
+using Content.Shared.FixedPoint;
 using Content.Shared.Hands;
 using Content.Shared.Hands.Components;
 using Content.Shared.Hands.EntitySystems;
@@ -31,6 +34,7 @@ using Content.Shared.Interaction;
 using Content.Shared.Inventory;
 using Content.Shared.Inventory.VirtualItem;
 using Content.Shared.Item;
+using Content.Shared.Item.ItemToggle;
 using Content.Shared.Item.ItemToggle.Components;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Physics;
@@ -85,6 +89,28 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem // Goob - p
     [Dependency] private   readonly SharedStaminaSystem _stamina = default!;
     [Dependency] private   readonly DamageExamineSystem _damageExamine = default!;
     [Dependency] private   readonly TagSystem _tag = default!;
+    [Dependency] protected IGameTiming Timing = default!;
+    [Dependency] private INetManager _netMan = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] protected ISharedAdminLogManager AdminLogger = default!;
+    [Dependency] protected ActionBlockerSystem Blocker = default!;
+    [Dependency] protected DamageableSystem Damageable = default!;
+    [Dependency] private SharedHandsSystem _hands = default!;
+    [Dependency] private InventorySystem _inventory = default!;
+    [Dependency] private MeleeSoundSystem _meleeSound = default!;
+    [Dependency] protected MobStateSystem MobState = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] protected SharedCombatModeSystem CombatMode = default!;
+    [Dependency] protected SharedMapSystem Maps = default!;
+    [Dependency] protected SharedInteractionSystem Interaction = default!;
+    [Dependency] private SharedPhysicsSystem _physics = default!;
+    [Dependency] protected SharedPopupSystem PopupSystem = default!;
+    [Dependency] protected SharedTransformSystem TransformSystem = default!;
+    [Dependency] private SharedStaminaSystem _stamina = default!;
+    [Dependency] private DamageExamineSystem _damageExamine = default!;
+    [Dependency] private SharedEntityEffectsSystem _effects = default!;
+    [Dependency] private ItemToggleSystem _toggle = default!;
+    [Dependency] private EntityQuery<DamageableComponent> _damageQuery = default!;
 
     //Goob - Shove
     private float _shoveRange;
@@ -132,7 +158,6 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem // Goob - p
         SubscribeLocalEvent<BonusMeleeDamageComponent, GetMeleeDamageEvent>(OnGetBonusMeleeDamage);
         SubscribeLocalEvent<BonusMeleeDamageComponent, GetHeavyDamageModifierEvent>(OnGetBonusHeavyDamageModifier);
         SubscribeLocalEvent<BonusMeleeAttackRateComponent, GetMeleeAttackRateEvent>(OnGetBonusMeleeAttackRate);
-
         SubscribeLocalEvent<ItemToggleMeleeWeaponComponent, ItemToggledEvent>(OnItemToggle);
 
         SubscribeAllEvent<HeavyAttackEvent>(OnHeavyAttack);
@@ -153,6 +178,15 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem // Goob - p
         if (component.NextAttack > Timing.CurTime)
             Log.Warning($"Initializing a map that contains an entity that is on cooldown. Entity: {ToPrettyString(uid)}");
 #endif
+    }
+
+    [SubscribeLocalEvent]
+    private void EntityEffectMeleeHit(Entity<EntityEffectMeleeComponent> ent, ref MeleeHitEvent args)
+    {
+        foreach (var entity in args.HitEntities)
+        {
+            _effects.ApplyEffects(entity, ent.Comp.Effects, 1f, args.User);
+        }
     }
 
     private void OnMeleeShotAttempted(EntityUid uid, MeleeWeaponComponent comp, ref ShotAttemptedEvent args)
@@ -183,6 +217,15 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem // Goob - p
 
         var damageSpec = GetDamage(uid, args.User, component);
 
+        float? stamina = null;
+        if (TryComp<StaminaDamageOnHitComponent>(uid, out var comp))
+        {
+            var attempt = new StaminaDamageOnHitAttemptEvent();
+            RaiseLocalEvent(uid, ref attempt);
+            if (!attempt.Cancelled)
+                stamina = comp.Damage;
+        }
+
         if (damageSpec.Empty)
             return;
 
@@ -209,6 +252,7 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem // Goob - p
             return;
 
         component.NextAttack = minimum;
+        ResetUndamagedSwingsCount((uid, component));
         DirtyField(uid, component, nameof(MeleeWeaponComponent.NextAttack));
     }
 
@@ -567,7 +611,7 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem // Goob - p
         {
             if (ev.Message != null)
             {
-                PopupSystem.PopupClient(ev.Message, weaponUid, user);
+                PopupSystem.PopupEntity(ev.Message, weaponUid, user);
             }
 
             return false;
@@ -679,9 +723,9 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem // Goob - p
         if (hitEvent.Handled)
             return;
 
-        var targets = new List<EntityUid>(1)
+        var targets = new HashSet<EntityUid>(1)
         {
-            target.Value
+            target.Value,
         };
 
         DoLungeAnimation(user, weapon, component.Angle, TransformSystem.ToMapCoordinates(target.Value.ToCoordinates()), rangeEv.Range, component.Animation, component.AnimationRotation, component.FlipAnimation); // Goobstation - Edit
@@ -741,16 +785,16 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem // Goob - p
 
         }
 
-        _meleeSound.PlayHitSound(target.Value, user, GetHighestDamageSound(modifiedDamage, _protoManager), hitEvent.HitSoundOverride, component);
+        _meleeSound.PlayHitSound(target.Value, user, GetHighestDamageSound(modifiedDamage, ProtoMan), hitEvent.HitSoundOverride, component);
 
-        if (damageResult.GetTotal() > FixedPoint2.Zero)
+        if (!TerminatingOrDeleted(target.Value))
         {
             DoDamageEffect(targets, user, targetXform);
             DoMeleeScreenshake(user, targets); // Goob
         }
     }
 
-    protected abstract void DoDamageEffect(List<EntityUid> targets, EntityUid? user,  TransformComponent targetXform);
+    protected abstract void DoDamageEffect(HashSet<EntityUid> targets, EntityUid? user,  TransformComponent targetXform);
 
     private bool DoHeavyAttack(EntityUid user, HeavyAttackEvent ev, EntityUid meleeUid, MeleeWeaponComponent component, ICommonSession? session)
     {
@@ -769,7 +813,7 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem // Goob - p
 
         var damage = GetDamage(meleeUid, user, component);
         var resistanceBypass = GetResistanceBypass(meleeUid, user, component);
-        var entities = GetEntityList(ev.Entities);
+        var entities = GetEntitySet(ev.Entities);
 
         if (entities.Count == 0)
         {
@@ -797,7 +841,7 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem // Goob - p
         // Naughty input
         if (entities.Count > MaxTargets)
         {
-            entities.RemoveRange(MaxTargets, entities.Count - MaxTargets);
+            entities = entities.Take(MaxTargets).ToHashSet();
         }
 
         // Validate client
@@ -832,10 +876,11 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem // Goob - p
         var targets = new List<EntityUid>();
         var damageQuery = GetEntityQuery<DamageableComponent>();
 
+        var targets = new HashSet<EntityUid>();
         foreach (var entity in entities)
         {
             if (entity == user ||
-                !damageQuery.HasComponent(entity))
+                !_damageQuery.HasComponent(entity))
                 continue;
 
             if (IsHeavyAttackTargetBlocked(entity, user, meleeUid)) // Goob
@@ -877,16 +922,15 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem // Goob - p
         var appliedDamage = new DamageSpecifier();
         var random = new System.Random((int) Timing.CurTick.Value); // Goobstation
 
-        for (var i = targets.Count - 1; i >= 0; i--)
+        foreach (var entity in targets)
         {
-            var entity = targets[i];
             // We raise an attack attempt here as well,
             // primarily because this was an untargeted wideswing: if a subscriber to that event cared about
             // the potential target (such as for pacifism), they need to be made aware of the target here.
             // In that case, just continue.
             if (!Blocker.CanAttack(user, entity, (weapon, component)))
             {
-                targets.RemoveAt(i);
+                filteredTargets.Add(entity);
                 continue;
             }
 
@@ -946,19 +990,32 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem // Goob - p
                         $"{ToPrettyString(user):actor} melee attacked (heavy) {ToPrettyString(entity):subject} using {ToPrettyString(meleeUid):tool} and dealt {damageResult.GetTotal():damage} damage");
                 }
             }
+
+            if (TerminatingOrDeleted(entity))
+                filteredTargets.Add(entity);
         }
+
+        targets.ExceptWith(filteredTargets);
 
         if (entities.Count != 0)
         {
             var target = entities.First();
-            _meleeSound.PlayHitSound(target, user, GetHighestDamageSound(appliedDamage, _protoManager), hitEvent.HitSoundOverride, component);
+            _meleeSound.PlayHitSound(target, user, GetHighestDamageSound(appliedDamage, ProtoMan), hitEvent.HitSoundOverride, component);
         }
 
         DoMeleeScreenshake(user, targets); // Goob
 
         if (appliedDamage.GetTotal() > FixedPoint2.Zero)
         {
-            DoDamageEffect(targets, user, Transform(targets[0]));
+            if (appliedDamage.GetTotal() > FixedPoint2.Zero)
+            {
+                DoDamageEffect(targets, user, Transform(targets.First()));
+                ResetUndamagedSwingsCount((meleeUid, component));
+            }
+            else
+            {
+                UndamagedAttack((meleeUid, component), targets.First(), user);
+            }
         }
 
         // goob edit - stunmeta
@@ -1132,7 +1189,11 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem // Goob - p
             if (!TryComp<StatusEffectsComponent>(target, out var status) ||
                 !status.AllowedEffects.Contains("KnockedDown"))
             {
-                return true;
+                // Notify disarmable
+                if (HasComp<MobStateComponent>(target.Value))
+                    PopupSystem.PopupEntity(Loc.GetString("disarm-action-disarmable", ("targetName", target.Value)), target.Value, target.Value);
+
+                return false;
             }
         }
 
@@ -1317,4 +1378,18 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem // Goob - p
             }
         }
     }
+
+    /// <summary>
+    /// Updates <see cref="MeleeWeaponComponent.UndamagedSwings"/> and triggers a message if it meets <see cref="MeleeWeaponComponent.UndamagedAlertThreshold"/>.
+    /// </summary>
+    /// <param name="ent">The weapon entity tracking swings.</param>
+    /// <param name="target">The target entity that was hit without damage.</param>
+    /// <param name="user">The user swinging the weapon.</param>
+    protected virtual void UndamagedAttack(Entity<MeleeWeaponComponent> ent, EntityUid target, EntityUid user) { }
+
+    /// <summary>
+    /// Resets the <see cref="MeleeWeaponComponent.UndamagedSwings"/>; necessary to not trigger undamaged attacks messages too often.
+    /// </summary>
+    /// <param name="ent">The weapon entity tracking swings.</param>
+    protected virtual void ResetUndamagedSwingsCount(Entity<MeleeWeaponComponent> ent) { }
 }

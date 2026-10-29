@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 using Content.Shared.Damage;
+using Content.Shared.Damage.Components;
 using Content.Shared.Damage.Events;
 using Content.Shared.Damage.Systems;
 using Content.Shared.Examine;
@@ -11,7 +12,7 @@ namespace Content.Shared.Weapons.Ranged.Systems;
 
 public abstract partial class SharedGunSystem
 {
-    [Dependency] private readonly DamageExamineSystem _damageExamine = default!;
+    [Dependency] private DamageExamineSystem _damageExamine = default!;
 
     // needed for server system
     protected virtual void InitializeCartridge()
@@ -30,7 +31,11 @@ public abstract partial class SharedGunSystem
 
     private void OnCartridgeDamageExamine(Entity<CartridgeAmmoComponent> ent, ref DamageExamineEvent args)
     {
-        var damageSpec = GetProjectileDamage(ent.Comp.Prototype);
+        if (!ProtoMan.TryIndex(ent.Comp.Prototype, out var entityProto))
+            return;
+
+        var damageSpec = GetProjectileDamage(entityProto);
+        var stamina = GetProjectileStamina(entityProto);
 
         if (damageSpec == null)
             return;
@@ -46,12 +51,9 @@ public abstract partial class SharedGunSystem
         // Goobstation END
     }
 
-    private DamageSpecifier? GetProjectileDamage(EntProtoId proto)
+    private DamageSpecifier? GetProjectileDamage(EntityPrototype proto)
     {
-        if (!ProtoManager.TryIndex(proto, out var entityProto))
-            return null;
-
-        if (!entityProto.TryGetComponent<ProjectileComponent>(out var projectile, Factory))
+        if (!proto.TryComp<ProjectileComponent>(out var projectile, Factory))
             return null;
 
         if (!projectile.Damage.Empty)

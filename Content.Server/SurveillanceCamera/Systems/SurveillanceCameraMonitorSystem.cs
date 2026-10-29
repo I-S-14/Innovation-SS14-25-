@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Server.DeviceNetwork.Systems;
+using System.Linq;
 using Content.Shared.DeviceNetwork;
 using Content.Shared.DeviceNetwork.Events;
+using Content.Shared.DeviceNetwork.Systems;
 using Content.Shared.Power;
 using Content.Shared.SurveillanceCamera;
-using Robust.Server.GameObjects;
-using Robust.Shared.Player;
+using Robust.Shared.Prototypes;
 
 // Goobstation
 using Content.Goobstation.Common.SurveillanceCamera;
@@ -17,11 +18,12 @@ using System.Runtime.InteropServices;
 
 namespace Content.Server.SurveillanceCamera;
 
-public sealed class SurveillanceCameraMonitorSystem : EntitySystem
+public sealed partial class SurveillanceCameraMonitorSystem : EntitySystem
 {
-    [Dependency] private readonly SurveillanceCameraSystem _surveillanceCameras = default!;
-    [Dependency] private readonly UserInterfaceSystem _userInterface = default!;
-    [Dependency] private readonly DeviceNetworkSystem _deviceNetworkSystem = default!;
+    [Dependency] private SurveillanceCameraSystem _surveillanceCameras = default!;
+    [Dependency] private SharedUserInterfaceSystem _userInterface = default!;
+    [Dependency] private DeviceNetworkSystem _deviceNetworkSystem = default!;
+    [Dependency] private DeviceNetworkRouterSystem _deviceNetworkRouter = default!;
 
     // Goobstation
     [Dependency] private readonly PvsOverrideSystem _pvsOverrideSystem = default!;
@@ -42,6 +44,7 @@ public sealed class SurveillanceCameraMonitorSystem : EntitySystem
             subs.Event<SurveillanceCameraDisconnectMessage>(OnDisconnectMessage);
             subs.Event<SurveillanceCameraMonitorSwitchMessage>(OnSwitchMessage);
             subs.Event<BoundUIClosedEvent>(OnBoundUiClose);
+            subs.Event<BoundUIOpenedEvent>(OnBoundUiOpen);
         });
     }
 
@@ -53,10 +56,6 @@ public sealed class SurveillanceCameraMonitorSystem : EntitySystem
         var query = EntityQueryEnumerator<ActiveSurveillanceCameraMonitorComponent, SurveillanceCameraMonitorComponent>();
         while (query.MoveNext(out var uid, out _, out var monitor))
         {
-            /*if (Paused(uid))
-            {
-                continue;
-            } Goobstation remove */
             monitor.LastHeartbeatSent += frameTime;
             SendHeartbeat(uid, monitor.ActiveCameraAddress, monitor); // Goobstation
             monitor.LastHeartbeat += frameTime;
@@ -160,20 +159,31 @@ public sealed class SurveillanceCameraMonitorSystem : EntitySystem
     /// Router - [ monitor freq ] -> Monitor
 
     #region Event Handling
-    /*private void OnComponentStartup(EntityUid uid, SurveillanceCameraMonitorComponent component, ComponentStartup args)
+
+    [SubscribeLocalEvent]
+    private void OnComponentStartup(EntityUid uid, SurveillanceCameraMonitorComponent component, ComponentStartup args)
     {
         RefreshSubnets(uid, component);
     } Goobstation remove */
 
-    private void OnPacketReceived(EntityUid uid, SurveillanceCameraMonitorComponent component,
-        DeviceNetworkPacketEvent args)
+    [SubscribeLocalEvent]
+    private void OnCameraConnect(Entity<SurveillanceCameraMonitorComponent> ent, ref DeviceNetworkPacketEvent<SurveillanceCameraConnectPayload> args)
     {
-        if (string.IsNullOrEmpty(args.SenderAddress))
+        var payload = args.Data;
+        if (ent.Comp.NextCameraAddress == payload.SenderAddress)
         {
-            return;
+            if (payload.SenderAddress != null)
+                ent.Comp.ActiveCameraAddress = payload.SenderAddress.Value;
+            TrySwitchCameraByUid(ent, payload.Sender, ent.Comp);
         }
 
-        if (args.Data.TryGetValue(DeviceNetworkConstants.Command, out string? command))
+        ent.Comp.NextCameraAddress = null;
+    }
+
+    [SubscribeLocalEvent]
+    private void OnCameraHeartbeat(Entity<SurveillanceCameraMonitorComponent> ent, ref DeviceNetworkPacketEvent<SurveillanceCameraHeartbeatPayload> args)
+    {
+        if (args.Data.SenderAddress == ent.Comp.ActiveCameraAddress)
         {
             switch (command)
             {
@@ -237,6 +247,29 @@ public sealed class SurveillanceCameraMonitorSystem : EntitySystem
         }
     }
 
+    [SubscribeLocalEvent]
+    private void OnCameraData(Entity<SurveillanceCameraMonitorComponent> ent, ref DeviceNetworkPacketEvent<SurveillanceCameraDataPayload> args)
+    {
+        var payload = args.Data;
+        var subnetData = payload.Subnet;
+
+        if (ent.Comp.ActiveSubnet != subnetData)
+        {
+            DisconnectFromSubnet(ent, subnetData);
+        }
+
+        if (payload.SenderAddress != null)
+            ent.Comp.KnownCameras.TryAdd(payload.SenderAddress.Value, payload.Name);
+        UpdateUserInterface(ent, ent.Comp);
+    }
+
+    [SubscribeLocalEvent]
+    private void OnSubnetData(Entity<SurveillanceCameraMonitorComponent> ent, ref DeviceNetworkPacketEvent<SurveillanceCameraSubnetDataPayload> args)
+    {
+        ent.Comp.KnownSubnets.TryAdd(args.Data.TransmitFrequency, args.SenderAddress);
+        UpdateUserInterface(ent, ent.Comp);
+    }
+
     private void OnDisconnectMessage(EntityUid uid, SurveillanceCameraMonitorComponent component,
         SurveillanceCameraDisconnectMessage message)
     {
@@ -276,6 +309,7 @@ public sealed class SurveillanceCameraMonitorSystem : EntitySystem
         TrySwitchCameraByAddress(uid, message.Address, component);
     }
 
+    [SubscribeLocalEvent]
     private void OnPowerChanged(EntityUid uid, SurveillanceCameraMonitorComponent component, ref PowerChangedEvent args)
     {
         if (!args.Powered)
@@ -289,22 +323,22 @@ public sealed class SurveillanceCameraMonitorSystem : EntitySystem
         }
     }
 
+    [SubscribeLocalEvent]
     private void OnShutdown(EntityUid uid, SurveillanceCameraMonitorComponent component, ComponentShutdown args)
     {
         RemoveActiveCamera(uid, component);
     }
 
-
-    private void OnToggleInterface(EntityUid uid, SurveillanceCameraMonitorComponent component,
-        AfterActivatableUIOpenEvent args)
-    {
-        AfterOpenUserInterface(uid, args.User, component);
-    }
-
     // This is to ensure that there's no delay in ensuring that a camera is deactivated.
+    [SubscribeLocalEvent]
     private void OnSurveillanceCameraDeactivate(EntityUid uid, SurveillanceCameraMonitorComponent monitor, SurveillanceCameraDeactivateEvent args)
     {
         DisconnectCamera(uid, false, monitor);
+    }
+
+    private void OnBoundUiOpen(EntityUid uid, SurveillanceCameraMonitorComponent component, BoundUIOpenedEvent args)
+    {
+        AddViewer(uid, args.Actor, component);
     }
 
     private void OnBoundUiClose(EntityUid uid, SurveillanceCameraMonitorComponent component, BoundUIClosedEvent args)
@@ -349,7 +383,7 @@ public sealed class SurveillanceCameraMonitorSystem : EntitySystem
         }
 
         monitor.ActiveCamera = null;
-        monitor.ActiveCameraAddress = string.Empty;
+        monitor.ActiveCameraAddress = DeviceAddress.Invalid;
         RemComp<ActiveSurveillanceCameraMonitorComponent>(uid);
         UpdateUserInterface(uid, monitor);
     }
@@ -400,28 +434,38 @@ public sealed class SurveillanceCameraMonitorSystem : EntitySystem
     // Goobstation start
     private void PingCameraNetwork(EntityUid uid, SurveillanceCameraMonitorComponent? monitor = null)
     {
-        if (!Resolve(uid, ref monitor))
-        {
+        if (!Resolve(uid, ref monitor)
+            || monitor.ActiveSubnet == null
+            || !monitor.KnownSubnets.TryGetValue(monitor.ActiveSubnet.Value, out var subnetData))
             return;
-        }
 
-        var payload = new NetworkPayload()
-        {
-            { DeviceNetworkConstants.Command, SurveillanceCameraSystem.CameraPingMessage }
-        };
-        _deviceNetworkSystem.QueuePacket(uid, null, payload);
+        var payload = new SurveillanceCameraPingPayload { Subnet = monitor.ActiveSubnet };
+        _deviceNetworkRouter.SendPacketRouted(uid, ref payload, null, null, ProtoMan.Index(monitor.ActiveSubnet.Value).Frequency);
     }
     // Goobstation end
 
     // Goobstation start
     private void RequestKnownSubnetsInfo(EntityUid uid, SurveillanceCameraMonitorComponent? monitor = null)
     {
-        if (!Resolve(uid, ref monitor))
+        if (!Resolve(uid, ref monitor)
+            || !monitor.KnownSubnets.ContainsKey(subnet))
         {
             return;
         }
 
-        foreach (var subnetAddress in monitor.KnownSubnets.Values)
+        if (monitor.ActiveSubnet is { } previousSubnet)
+            DisconnectFromSubnet(uid, previousSubnet);
+        DisconnectCamera(uid, true, monitor);
+        monitor.ActiveSubnet = subnet;
+        monitor.KnownCameras.Clear();
+        UpdateUserInterface(uid, monitor);
+
+        ConnectToSubnet(uid, subnet);
+    }
+
+    private void PingSubnets(EntityUid uid, SurveillanceCameraMonitorComponent? monitor = null)
+    {
+        if (!Resolve(uid, ref monitor))
         {
             var payload = new NetworkPayload()
             {
@@ -429,23 +473,36 @@ public sealed class SurveillanceCameraMonitorSystem : EntitySystem
             };
             _deviceNetworkSystem.QueuePacket(uid, subnetAddress, payload);
         }
-    }
-    // Goobstation end
 
-    private void DisconnectFromSubnet(EntityUid uid, string subnet, SurveillanceCameraMonitorComponent? monitor = null)
+        var payload = new SurveillanceCameraPingSubnetPayload();
+        _deviceNetworkSystem.SendPacket(uid, null, ref payload);
+    }
+
+    private void ConnectToSubnet(EntityUid uid, ProtoId<DeviceFrequencyPrototype> subnet, SurveillanceCameraMonitorComponent? monitor = null)
     {
         if (!Resolve(uid, ref monitor)
-            || string.IsNullOrEmpty(subnet)
             || !monitor.KnownSubnets.TryGetValue(subnet, out var address))
         {
             return;
         }
 
-        var payload = new NetworkPayload()
+        var payload = new SurveillanceCameraSubnetConnectPayload();
+        _deviceNetworkSystem.SendPacket(uid, address, ref payload);
+
+        PingSubnets(uid);
+    }
+    // Goobstation end
+
+    private void DisconnectFromSubnet(EntityUid uid, ProtoId<DeviceFrequencyPrototype> subnet, SurveillanceCameraMonitorComponent? monitor = null)
+    {
+        if (!Resolve(uid, ref monitor)
+            || !monitor.KnownSubnets.TryGetValue(subnet, out var address))
         {
-            {DeviceNetworkConstants.Command, SurveillanceCameraSystem.CameraSubnetDisconnectMessage},
-        };
-        _deviceNetworkSystem.QueuePacket(uid, address, payload);
+            return;
+        }
+
+        var payload = new SurveillanceCameraSubnetDisconnectPayload();
+        _deviceNetworkSystem.SendPacket(uid, address, ref payload);
     }
 
     // Adds a viewer to the camera and the monitor.
@@ -529,11 +586,14 @@ public sealed class SurveillanceCameraMonitorSystem : EntitySystem
 
         monitor.ActiveCamera = camera;
 
+        // Reset the heartbeat timers for the new device.
+        monitor.LastHeartbeat = 0;
+        monitor.LastHeartbeatSent = 0;
+
         UpdateUserInterface(uid, monitor);
     }
 
-    private void TrySwitchCameraByAddress(EntityUid uid, string address,
-        SurveillanceCameraMonitorComponent? monitor = null)
+    private void TrySwitchCameraByAddress(EntityUid uid, DeviceAddress address, ProtoId<DeviceFrequencyPrototype>? cameraSubnet = null, SurveillanceCameraMonitorComponent? monitor = null)
     {
         if (!Resolve(uid, ref monitor)) // Goobstation - removed extra checks since no more active subnet
         {
@@ -585,19 +645,6 @@ public sealed class SurveillanceCameraMonitorSystem : EntitySystem
         _surveillanceCameras.RemoveActiveViewers(monitor.ActiveCamera.Value, monitor.Viewers, uid);
 
         UpdateUserInterface(uid, monitor);
-    }
-
-    // This is public primarily because it might be useful to have the ability to
-    // have this component added to any entity, and have them open the BUI (somehow).
-    public void AfterOpenUserInterface(EntityUid uid, EntityUid player, SurveillanceCameraMonitorComponent? monitor = null, ActorComponent? actor = null)
-    {
-        if (!Resolve(uid, ref monitor)
-            || !Resolve(player, ref actor))
-        {
-            return;
-        }
-
-        AddViewer(uid, player);
     }
 
     private void UpdateUserInterface(EntityUid uid, SurveillanceCameraMonitorComponent? monitor = null, EntityUid? player = null)

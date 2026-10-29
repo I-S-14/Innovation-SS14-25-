@@ -21,10 +21,11 @@ namespace Content.Shared.Armor;
 /// <summary>
 ///     This handles logic relating to <see cref="ArmorComponent" />
 /// </summary>
-public abstract class SharedArmorSystem : EntitySystem
+public abstract partial class SharedArmorSystem : EntitySystem
 {
     [Dependency] private readonly ExamineSystemShared _examine = default!;
     [Dependency] private readonly SharedBodySystem _body = default!;
+    [Dependency] private ExamineSystemShared _examine = default!;
 
     /// <inheritdoc />
     public override void Initialize()
@@ -136,7 +137,7 @@ public abstract class SharedArmorSystem : EntitySystem
             // </Trauma>
         }
 
-        if (!component.ArmourModifiersHidden)
+        foreach (var flatArmor in armorModifiers.FlatReductions)
         {
             foreach (var coefficientArmor in armorModifiers.Coefficients)
             {
@@ -148,16 +149,11 @@ public abstract class SharedArmorSystem : EntitySystem
                 ));
             }
 
-            foreach (var flatArmor in armorModifiers.FlatReduction)
-            {
-                msg.PushNewline();
-
-                var armorType = Loc.GetString("armor-damage-type-" + flatArmor.Key.Id.ToLower());
-                msg.AddMarkupOrThrow(Loc.GetString("armor-reduction-value",
-                    ("type", armorType),
-                    ("value", flatArmor.Value)
-                ));
-            }
+            var armorType = Loc.GetString("armor-damage-type-" + flatArmor.Key.Id.ToLower());
+            msg.AddMarkupOrThrow(Loc.GetString("armor-reduction-value",
+                ("type", armorType),
+                ("value", flatArmor.Value)
+            ));
         }
 
         return msg;

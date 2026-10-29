@@ -26,7 +26,7 @@ public sealed partial class AutoEmotePrototype : IPrototype
     /// <summary>
     /// Probability of performing the emote each interval.
     /// </summary>
-    [DataField("chance")]
+    [DataField]
     public float Chance = 1;
 
     /// <summary>

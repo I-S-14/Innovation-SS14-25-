@@ -15,17 +15,16 @@ public sealed partial class HandheldLightComponent : Component
     [DataField]
     public bool Activated;
 
-    [ViewVariables(VVAccess.ReadWrite)]
-    [DataField("wattage")]
+    [DataField]
     public float Wattage { get; set; } = .8f;
 
-    [DataField("turnOnSound")]
+    [DataField]
     public SoundSpecifier TurnOnSound = new SoundPathSpecifier("/Audio/Items/flashlight_on.ogg");
 
-    [DataField("turnOnFailSound")]
+    [DataField]
     public SoundSpecifier TurnOnFailSound = new SoundPathSpecifier("/Audio/Machines/button.ogg");
 
-    [DataField("turnOffSound")]
+    [DataField]
     public SoundSpecifier TurnOffSound = new SoundPathSpecifier("/Audio/Items/flashlight_off.ogg");
 
     /// <summary>
@@ -35,20 +34,20 @@ public sealed partial class HandheldLightComponent : Component
     ///     Flashlights should probably be using explicit unshaded sprite, in-hand and clothing layers, this is
     ///     mostly here for backwards compatibility.
     /// </remarks>
-    [DataField("addPrefix")]
+    [DataField]
     public bool AddPrefix = false;
 
-    [DataField("toggleAction")]
+    [DataField]
     public EntProtoId ToggleAction = "ActionToggleLight";
 
     /// <summary>
     /// Whether or not the light can be toggled via standard interactions
     /// (alt verbs, using in hand, etc)
     /// </summary>
-    [DataField("toggleOnInteract")]
+    [DataField]
     public bool ToggleOnInteract = true;
 
-    [DataField("toggleActionEntity")]
+    [DataField]
     public EntityUid? ToggleActionEntity;
 
     [DataField]
@@ -59,13 +58,13 @@ public sealed partial class HandheldLightComponent : Component
     /// <summary>
     /// Specify the ID of the light behaviour to use when the state of the light is Dying
     /// </summary>
-    [DataField("blinkingBehaviourId")]
+    [DataField]
     public string BlinkingBehaviourId { get; set; } = string.Empty;
 
     /// <summary>
     /// Specify the ID of the light behaviour to use when the state of the light is LowPower
     /// </summary>
-    [DataField("radiatingBehaviourId")]
+    [DataField]
     public string RadiatingBehaviourId { get; set; } = string.Empty;
 
     [Serializable, NetSerializable]

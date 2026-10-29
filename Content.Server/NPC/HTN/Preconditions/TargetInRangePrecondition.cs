@@ -37,9 +37,6 @@ public sealed partial class TargetInRangePrecondition : HTNPrecondition
         || (_entManager.TryGetComponent<StealthComponent>(target, out var stealth) && _stealth.GetVisibility(target, stealth) <= stealth.ExamineThreshold))
             return false;
 
-
-
-        var transformSystem = _entManager.System<SharedTransformSystem>;
-        return _transformSystem.InRange(coordinates, targetXform.Coordinates, blackboard.GetValueOrDefault<float>(RangeKey, _entManager));
+        return _transformSystem.InRange(coordinates, targetXform.Coordinates, blackboard.GetValueOrDefault<float>(RangeKey, _entManager)) ^ Invert;
     }
 }

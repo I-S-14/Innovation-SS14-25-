@@ -112,7 +112,7 @@
     state: "practice"
 
 - type: entity
-  parent: [ BaseShellShotgun, BaseSecurityContraband ]
+  parent: [ SolutionAmmo, SolutionToolVeryTiny, BaseShellShotgun, BaseSecurityContraband ]
   id: ShellTranquilizer
   name: shell (12 Gauge tranquilizer) # Goobstation
   components:
@@ -134,6 +134,11 @@
     # CorvaxGoob start
         - ReagentId: Haloperidol
           Quantity: 5
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: ChloralHydrate
+        Quantity: 7.5
   - type: SolutionTransfer
     maxTransferAmount: 5
     # CorvaxGoob end

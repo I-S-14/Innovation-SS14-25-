@@ -6,10 +6,10 @@ using Content.Shared.Power;
 
 namespace Content.Server.AlertLevel;
 
-public sealed class AlertLevelDisplaySystem : EntitySystem
+public sealed partial class AlertLevelDisplaySystem : EntitySystem
 {
-    [Dependency] private readonly StationSystem _stationSystem = default!;
-    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
+    [Dependency] private ServerStationSystem _stationSystem = default!;
+    [Dependency] private SharedAppearanceSystem _appearance = default!;
 
     public override void Initialize()
     {
@@ -18,7 +18,7 @@ public sealed class AlertLevelDisplaySystem : EntitySystem
         SubscribeLocalEvent<AlertLevelDisplayComponent, PowerChangedEvent>(OnPowerChanged);
     }
 
-    private void OnAlertChanged(AlertLevelChangedEvent args)
+    private void OnAlertChanged(ref AlertLevelChangedEvent args)
     {
         var query = EntityQueryEnumerator<AlertLevelDisplayComponent, AppearanceComponent>();
         while (query.MoveNext(out var uid, out _, out var appearance))
@@ -34,7 +34,7 @@ public sealed class AlertLevelDisplaySystem : EntitySystem
             var stationUid = _stationSystem.GetOwningStation(uid);
             if (stationUid != null && TryComp(stationUid, out AlertLevelComponent? alert))
             {
-                _appearance.SetData(uid, AlertLevelDisplay.CurrentLevel, alert.CurrentLevel, appearance);
+                _appearance.SetData(uid, AlertLevelDisplay.CurrentLevel, alert.CurrentAlertLevel, appearance);
             }
         }
     }

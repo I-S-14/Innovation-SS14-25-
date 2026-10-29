@@ -27,13 +27,13 @@ SPDX-License-Identifier: AGPL-3.0-or-later
   Монитор атмосферной сети отображает местоположение всех [textlink="трубопроводных сетей" link="PipeNetworks"] на карте станции, а также любых устройств, связанных с трубами.
   Обратите внимание, что для отображения сети на карте не обязательно наличие присоединённого датчика газовой трубы.
 
-  Устройства отображаются на карте в цвете, соответствующем цвету на станции, что помогает определить отдельные [textlink="трубопроводные сети" link="PipeNetworks"] и устройства, подключённые к ним.
+  These devices are colored on the map based on their color on the station, which can help identify separate [textlink="pipe networks" link="PipeNetworks"], and the devices that are connected to them.
 
-  Устройства, связанные с трубами, сгруппированы на легенде карты по их функциям:
-  - [bold]Открытие сети[/bold] — устройство, соединяющее трубопроводную сеть с атмосферой станции. Примеры: [textlink="Вентиляции" link="AirVents"], [textlink="Пассивные вентиляции" link="PassiveVent"], [textlink="Инжекторы" link="AirInjector"].
-  - [bold]Скруббер[/bold] — просто [textlink="Скруббер" link="AirScrubber"].
-  - [bold]Регулятор потока[/bold] — устройство, контролирующее поток газа в трубопроводной сети. Примеры: [textlink="Газовые насосы" link="Pumps"], [textlink="Клапаны" link="Valves"], [textlink="Газовые смесители/фильтры" link="MixingAndFiltering"]. Стрелка на устройстве указывает направление потока газа. Это также часто определяет, где сеть разделяется или разветвляется.
-  - [bold]Терморегулятор[/bold] — любое устройство, которое изменяет температуру газа в трубопроводной сети. Примеры: [textlink="Термомашины" link="Thermomachines"], [textlink="Радиаторы" link="Radiators"], а также медицинские криокапсулы.
+  Pipe based devices are grouped together on the map's legend based on their function:
+  - A [bold]Network Opening[/bold] is a device that connects a pipe network to the station's atmosphere. Think [textlink="Air Vents" link="AirVents"], [textlink="Passive Vents" link="PassiveVent"], and [textlink="Air Injectors" link="AirInjector"].
+  - An [bold]Air Scrubber[/bold] is just an [textlink="Air Scrubber" link="AirScrubber"].
+  - A [bold]Flow Regulator[/bold] is a device that controls the flow of gas through a pipe network. Think [textlink="Gas Pumps" link="Pumps"], [textlink="Gas Valves" link="Valves"], and [textlink="Gas Mixers/Filters" link="MixingAndFiltering"]. The arrow on the device indicates the direction of gas flow. This also often determines where a pipe network is separated or split.
+  - A [bold]Thermoregulator[/bold] is any device that does something to the temperature of the gas in a pipe network. Think [textlink="Thermomachines" link="Thermomachines"], [textlink="Radiators" link="Radiators"], and even Medical Cryopods.
 
   ## Датчики газовой трубы
   Мониторы атмосферной сети собирают данные о [textlink="трубопроводных сетях" link="PipeNetworks"] при помощи датчиков газовой трубы.
@@ -44,8 +44,8 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
   По умолчанию на станции должны быть датчики газовой трубы на всех крупных [textlink="трубопроводных сетях" link="PipeNetworks"]. Примеры включают сети Дистру и Вейст.
 
-  Если вы хотите контролировать новую сеть, можно построить датчик газовой трубы, и он автоматически будет виден на Мониторе атмосферной сети.
-  Убедитесь, что датчик установлен на трубопроводной сети, которую вы хотите мониторить.
-  [textlink="Трубопроводные сети" link="PipeNetworks"] легко разделить при помощи простого газового насоса или клапана, что может привести к тому, что датчик будет показывать данные совершенно другой сети.
+  If you wish to monitor a new network, you can construct a gas pipe sensor and it will automatically be visible on the Atmospheric Network Monitor.
+  Make sure you construct the sensor on the pipe network you want to monitor.
+  [textlink="Pipe networks" link="PipeNetworks"] can easily be separated by a simple Gas Pump or Valve, which can cause the sensor to report data on a completely different network.
 
 </Document>

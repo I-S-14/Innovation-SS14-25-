@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Threading.Tasks;
-using Content.Shared.Maps;
 using Content.Shared.NPC;
 using Content.Shared.Procedural;
 using Content.Shared.Procedural.DungeonGenerators;
@@ -15,7 +14,7 @@ public sealed partial class DungeonJob
     /// <summary>
     /// <see cref="ExteriorDunGen"/>
     /// </summary>
-    private async Task<List<Dungeon>> GenerateExteriorDungen(Vector2i position, ExteriorDunGen dungen, HashSet<Vector2i> reservedTiles, Random random)
+    private async Task<List<Dungeon>> GenerateExteriorDungen(Vector2i position, ExteriorDunGen dungen, HashSet<Vector2i> reservedTiles, IRobustRandom random)
     {
         DebugTools.Assert(_grid.ChunkCount > 0);
 
@@ -51,7 +50,9 @@ public sealed partial class DungeonJob
 
         var config = _prototype.Index(dungen.Proto);
         var nextSeed = random.Next();
-        var dungeons = await GetDungeons(dungeonSpawn.Value, config, config.Layers, reservedTiles, nextSeed, new Random(nextSeed));
+        var newRandom = new RobustRandom();
+        newRandom.SetSeed(nextSeed);
+        var dungeons = await GetDungeons(dungeonSpawn.Value, config, config.Layers, reservedTiles, nextSeed, newRandom);
 
         return dungeons;
     }

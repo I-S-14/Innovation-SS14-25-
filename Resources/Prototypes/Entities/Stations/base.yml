@@ -50,12 +50,6 @@
     - type: StationArrivals
 
 - type: entity
-  id: BaseStationGateway
-  abstract: true
-  components:
-    - type: GatewayGenerator
-
-- type: entity
   id: BaseStationShuttles
   abstract: true
   components:
@@ -179,14 +173,6 @@
   abstract: true
   components:
     - type: StationEmergencyShuttle
-
-- type: entity
-  id: BaseStationAlertLevels
-  abstract: true
-  components:
-    - type: AlertLevel
-      alertLevelPrototype: stationAlerts
-    - type: AmberAlert # Goobstation - gates the amber alert level
 
 - type: entity
   id: BaseStationExpeditions

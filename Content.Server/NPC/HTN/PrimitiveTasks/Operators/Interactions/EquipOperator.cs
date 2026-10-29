@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: MIT
 
-using Content.Server.Hands.Systems;
+using Content.Shared.Hands.EntitySystems;
 
 namespace Content.Server.NPC.HTN.PrimitiveTasks.Operators.Interactions;
 
 public sealed partial class EquipOperator : HTNOperator
 {
-    [Dependency] private readonly IEntityManager _entManager = default!;
+    [Dependency] private IEntityManager _entManager = default!;
+    [Dependency] private SharedHandsSystem _handsSystem = default!;
 
     [DataField("target")]
     public string Target = "Target";
@@ -19,10 +20,9 @@ public sealed partial class EquipOperator : HTNOperator
         }
 
         var owner = blackboard.GetValue<EntityUid>(NPCBlackboard.Owner);
-        var handsSystem = _entManager.System<HandsSystem>();
 
         // TODO: As elsewhere need some generic interaction cooldown system
-        if (handsSystem.TryPickup(owner, target))
+        if (_handsSystem.TryPickup(owner, target))
         {
             return HTNOperatorStatus.Finished;
         }

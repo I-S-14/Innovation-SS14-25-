@@ -84,17 +84,15 @@ public abstract partial class SharedHandsSystem : EntitySystem
 
     private void SwapHandsPressed(ICommonSession? session)
     {
-        SwapHands(session, false);
+        if (session?.AttachedEntity is not { } player)
+            return;
+
+        SwapHands(player, true, false);
     }
 
     private void SwapHandsReversePressed(ICommonSession? session)
     {
-        SwapHands(session, true);
-    }
-
-    private void SwapHands(ICommonSession? session, bool reverse)
-    {
-        if (!TryComp(session?.AttachedEntity, out HandsComponent? component))
+        if (session?.AttachedEntity is not { } player)
             return;
 
         if (!_actionBlocker.CanInteract(session.AttachedEntity.Value, null))

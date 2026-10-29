@@ -22,6 +22,7 @@ using Robust.Shared.Configuration;
 using Robust.Shared.ContentPack;
 using Robust.Shared.Network;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Serialization.Manager;
 using LogLevel = Robust.Shared.Log.LogLevel;
 using MSLogLevel = Microsoft.Extensions.Logging.LogLevel;
 
@@ -33,15 +34,19 @@ namespace Content.Server.Database
 
         void Shutdown();
 
+        Task<bool> HasPendingModelChanges();
+
         #region Preferences
-        Task<PlayerPreferences> InitPrefsAsync(
+        Task<Preference> InitPrefsAsync(
             NetUserId userId,
-            ICharacterProfile defaultProfile,
+            HumanoidCharacterProfile defaultProfile,
             CancellationToken cancel);
 
         Task SaveSelectedCharacterIndexAsync(NetUserId userId, int index);
 
-        Task SaveCharacterSlotAsync(NetUserId userId, ICharacterProfile? profile, int slot);
+        Task MakeCharacterSlotLegacyAsync(NetUserId userId, int slot);
+
+        Task SaveCharacterSlotAsync(NetUserId userId, HumanoidCharacterProfile? profile, int slot);
 
         Task SaveAdminOOCColorAsync(NetUserId userId, Color color);
 
@@ -49,7 +54,7 @@ namespace Content.Server.Database
 
         // Single method for two operations for transaction.
         Task DeleteSlotAndSetSelectedIndex(NetUserId userId, int deleteSlot, int newSlot);
-        Task<PlayerPreferences?> GetPlayerPreferencesAsync(NetUserId userId, CancellationToken cancel);
+        Task<Preference?> GetPlayerPreferencesAsync(NetUserId userId, CancellationToken cancel);
         #endregion
 
         #region User Ids
@@ -345,6 +350,46 @@ namespace Content.Server.Database
         Task SendNotification(DatabaseNotification notification);
 
         #endregion
+
+        #region Custom vote log
+
+        /// <summary>
+        /// Log a new custom vote to the database.
+        /// </summary>
+        /// <param name="title">The player-facing title for the custom vote.</param>
+        /// <param name="roundId">The round ID this vote was initiated.</param>
+        /// <param name="initiator">The user ID of the admin that initiated the vote.</param>
+        /// <param name="options">The player-facing contents of each vote option.</param>
+        /// <remarks>
+        /// The created vote is initially in the <see cref="CustomVoteState.Active"/> state.
+        /// </remarks>
+        /// <returns>
+        /// The ID of the database entry,
+        /// for subsequent calls to <see cref="CustomVoteLogFinish"/> or <see cref="CustomVoteLogCancel"/>.
+        /// </returns>
+        Task<int> CustomVoteLogAdd(string title, int roundId, NetUserId? initiator, ImmutableArray<string> options);
+
+        /// <summary>
+        /// Mark a logged custom vote as finished.
+        /// </summary>
+        /// <param name="voteId">
+        /// The database ID of the custom vote, as returned by <see cref="CustomVoteLogAdd"/>.
+        /// </param>
+        /// <param name="voteCounts">
+        /// The counts each option received. The indexes are matched to the options given in
+        /// <see cref="CustomVoteLogAdd"/>.
+        /// </param>
+        Task CustomVoteLogFinish(int voteId, ImmutableArray<int> voteCounts);
+
+        /// <summary>
+        /// Mark a logged custom vote as canceled.
+        /// </summary>
+        /// <param name="voteId">
+        /// The database ID of the custom vote, as returned by <see cref="CustomVoteLogAdd"/>.
+        /// </param>
+        Task CustomVoteLogCancel(int voteId);
+
+        #endregion
     }
 
     /// <summary>
@@ -386,9 +431,10 @@ namespace Content.Server.Database
             "db_executing_ops",
             "Amount of active database operations. Note that some operations may be waiting for a database connection.");
 
-        [Dependency] private readonly IConfigurationManager _cfg = default!;
-        [Dependency] private readonly IResourceManager _res = default!;
-        [Dependency] private readonly ILogManager _logMgr = default!;
+        [Dependency] private IConfigurationManager _cfg = default!;
+        [Dependency] private IResourceManager _res = default!;
+        [Dependency] private ILogManager _logMgr = default!;
+        [Dependency] private ISerializationManager _serialization = default!;
 
         private ServerDbBase _db = default!;
         private LoggingProvider _msLogProvider = default!;
@@ -396,6 +442,7 @@ namespace Content.Server.Database
         private ISawmill _sawmill = default!;
 
         private bool _synchronous;
+        private bool _snapshot;
         // When running in integration tests, we'll use a single in-memory SQLite database connection.
         // This is that connection, close it when we shut down.
         private SqliteConnection? _sqliteInMemoryConnection;
@@ -412,6 +459,7 @@ namespace Content.Server.Database
             _sawmill = _logMgr.GetSawmill("db.manager");
 
             _synchronous = _cfg.GetCVar(CCVars.DatabaseSynchronous);
+            _snapshot = _cfg.GetCVar(CCVars.DatabaseSnapshot);
 
             var engine = _cfg.GetCVar(CCVars.DatabaseEngine).ToLower();
             var opsLog = _logMgr.GetSawmill("db.op");
@@ -420,11 +468,11 @@ namespace Content.Server.Database
             {
                 case "sqlite":
                     SetupSqlite(out var contextFunc, out var inMemory);
-                    _db = new ServerDbSqlite(contextFunc, inMemory, _cfg, _synchronous, opsLog);
+                    _db = new ServerDbSqlite(contextFunc, inMemory, _cfg, _synchronous, opsLog, _serialization, _snapshot);
                     break;
                 case "postgres":
                     var (pgOptions, conString) = CreatePostgresOptions();
-                    _db = new ServerDbPostgres(pgOptions, conString, _cfg, opsLog, notifyLog);
+                    _db = new ServerDbPostgres(pgOptions, conString, _cfg, opsLog, notifyLog, _serialization);
                     break;
                 default:
                     throw new InvalidDataException($"Unknown database engine {engine}.");
@@ -441,9 +489,9 @@ namespace Content.Server.Database
             _db.Shutdown();
         }
 
-        public Task<PlayerPreferences> InitPrefsAsync(
+        public Task<Preference> InitPrefsAsync(
             NetUserId userId,
-            ICharacterProfile defaultProfile,
+            HumanoidCharacterProfile defaultProfile,
             CancellationToken cancel)
         {
             DbWriteOpsMetric.Inc();
@@ -456,7 +504,13 @@ namespace Content.Server.Database
             return RunDbCommand(() => _db.SaveSelectedCharacterIndexAsync(userId, index));
         }
 
-        public Task SaveCharacterSlotAsync(NetUserId userId, ICharacterProfile? profile, int slot)
+        public Task MakeCharacterSlotLegacyAsync(NetUserId userId, int slot)
+        {
+            DbWriteOpsMetric.Inc();
+            return RunDbCommand(() => _db.MakeCharacterSlotLegacyAsync(userId, slot));
+        }
+
+        public Task SaveCharacterSlotAsync(NetUserId userId, HumanoidCharacterProfile? profile, int slot)
         {
             DbWriteOpsMetric.Inc();
             return RunDbCommand(() => _db.SaveCharacterSlotAsync(userId, profile, slot));
@@ -480,7 +534,7 @@ namespace Content.Server.Database
             return RunDbCommand(() => _db.SaveConstructionFavoritesAsync(userId, constructionFavorites));
         }
 
-        public Task<PlayerPreferences?> GetPlayerPreferencesAsync(NetUserId userId, CancellationToken cancel)
+        public Task<Preference?> GetPlayerPreferencesAsync(NetUserId userId, CancellationToken cancel)
         {
             DbReadOpsMetric.Inc();
             return RunDbCommand(() => _db.GetPlayerPreferencesAsync(userId, cancel));
@@ -1095,6 +1149,28 @@ namespace Content.Server.Database
             return RunDbCommand(() => _db.SendNotification(notification));
         }
 
+        public Task<int> CustomVoteLogAdd(
+            string title,
+            int roundId,
+            NetUserId? initiator,
+            ImmutableArray<string> options)
+        {
+            DbWriteOpsMetric.Inc();
+            return RunDbCommand(() => _db.CustomVoteLogAdd(title, roundId, initiator, options));
+        }
+
+        public Task CustomVoteLogFinish(int voteId, ImmutableArray<int> voteCounts)
+        {
+            DbWriteOpsMetric.Inc();
+            return RunDbCommand(() => _db.CustomVoteLogFinish(voteId, voteCounts));
+        }
+
+        public Task CustomVoteLogCancel(int voteId)
+        {
+            DbWriteOpsMetric.Inc();
+            return RunDbCommand(() => _db.CustomVoteLogCancel(voteId));
+        }
+
         private async void HandleDatabaseNotification(DatabaseNotification notification)
         {
             lock (_notificationHandlers)
@@ -1104,6 +1180,11 @@ namespace Content.Server.Database
                     handler(notification);
                 }
             }
+        }
+
+        public Task<bool> HasPendingModelChanges()
+        {
+            return RunDbCommand(() => _db.HasPendingModelChanges());
         }
 
         // Wrapper functions to run DB commands from the thread pool.

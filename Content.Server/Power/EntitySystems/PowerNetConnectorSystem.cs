@@ -5,7 +5,7 @@ using Content.Server.Power.NodeGroups;
 
 namespace Content.Server.Power.EntitySystems;
 
-public sealed class PowerNetConnectorSystem : EntitySystem
+public sealed partial class PowerNetConnectorSystem : EntitySystem
 {
     public override void Initialize()
     {

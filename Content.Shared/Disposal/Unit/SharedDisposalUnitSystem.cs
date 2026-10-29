@@ -11,17 +11,16 @@ using Content.Shared.Destructible;
 using Content.Shared.DeviceLinking; // Goobstation
 using Content.Shared.Disposal;
 using Content.Shared.Disposal.Components;
-using Content.Shared.Disposal.Unit.Events;
+using Content.Shared.Disposal.Holder;
+using Content.Shared.Disposal.Tube;
 using Content.Shared.DoAfter;
 using Content.Shared.DragDrop;
 using Content.Shared.Emag.Systems;
-using Content.Shared.Hands.Components;
+using Content.Shared.Explosion;
 using Content.Shared.Hands.EntitySystems;
-using Content.Shared.IdentityManagement;
 using Content.Shared.Interaction;
 using Content.Shared.Inventory.VirtualItem;
 using Content.Shared.Item;
-using Content.Shared.Mobs.Components;
 using Content.Shared.Movement.Events;
 using Content.Shared.Popups;
 using Content.Shared.Power;
@@ -33,19 +32,21 @@ using Content.Shared.Whitelist;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Containers;
 using Robust.Shared.Map.Components;
-using Robust.Shared.Physics.Components;
+using Robust.Shared.Network;
 using Robust.Shared.Physics.Events;
 using Robust.Shared.Physics.Systems;
-using Robust.Shared.Serialization;
 using Robust.Shared.Timing;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes; // Goobstation
 using Robust.Shared.Utility;
+using System.Linq;
 
 namespace Content.Shared.Disposal.Unit;
 
-[Serializable, NetSerializable]
-public sealed partial class DisposalDoAfterEvent : SimpleDoAfterEvent
+/// <summary>
+/// This system handles all operations relating to disposal units.
+/// </summary>
+public abstract partial class SharedDisposalUnitSystem : EntitySystem
 {
 }
 
@@ -81,62 +82,56 @@ public abstract class SharedDisposalUnitSystem : EntitySystem
     {
         base.Initialize();
 
-        SubscribeLocalEvent<DisposalUnitComponent, PreventCollideEvent>(OnPreventCollide);
-        SubscribeLocalEvent<DisposalUnitComponent, CanDropTargetEvent>(OnCanDragDropOn);
-        SubscribeLocalEvent<DisposalUnitComponent, GetVerbsEvent<InteractionVerb>>(AddInsertVerb);
-        SubscribeLocalEvent<DisposalUnitComponent, GetVerbsEvent<AlternativeVerb>>(AddDisposalAltVerbs);
-        SubscribeLocalEvent<DisposalUnitComponent, GetVerbsEvent<Verb>>(AddClimbInsideVerb);
-
-        SubscribeLocalEvent<DisposalUnitComponent, DisposalDoAfterEvent>(OnDoAfter);
-
-        SubscribeLocalEvent<DisposalUnitComponent, BeforeThrowInsertEvent>(OnThrowInsert);
-
-        SubscribeLocalEvent<DisposalUnitComponent, DisposalUnitComponent.UiButtonPressedMessage>(OnUiButtonPressed);
-
-        SubscribeLocalEvent<DisposalUnitComponent, GotEmaggedEvent>(OnEmagged);
-        SubscribeLocalEvent<DisposalUnitComponent, AnchorStateChangedEvent>(OnAnchorChanged);
+        SubscribeLocalEvent<DisposalUnitComponent, ComponentInit>(OnComponentInit);
+        SubscribeLocalEvent<DisposalUnitComponent, BeforeExplodeEvent>(OnExploded);
         SubscribeLocalEvent<DisposalUnitComponent, PowerChangedEvent>(OnPowerChange);
-        SubscribeLocalEvent<DisposalUnitComponent, ComponentInit>(OnDisposalInit);
+        SubscribeLocalEvent<DisposalUnitComponent, AnchorStateChangedEvent>(OnAnchorChanged);
+        SubscribeLocalEvent<DisposalUnitComponent, PreventCollideEvent>(OnPreventCollide);
+        SubscribeLocalEvent<DisposalUnitComponent, GotEmaggedEvent>(OnEmagged);
 
+        // See SharedDisposalUnitSystem.Interactions
+        SubscribeLocalEvent<DisposalUnitComponent, GetVerbsEvent<InteractionVerb>>(AddInteractionVerb);
+        SubscribeLocalEvent<DisposalUnitComponent, GetVerbsEvent<AlternativeVerb>>(AddAltVerbs);
+        SubscribeLocalEvent<DisposalUnitComponent, GetVerbsEvent<Verb>>(AddEnterOrExitVerb);
+        SubscribeLocalEvent<DisposalUnitComponent, DisposalDoAfterEvent>(OnDoAfter);
+        SubscribeLocalEvent<DisposalUnitComponent, BeforeThrowInsertEvent>(OnThrowInsert);
+        SubscribeLocalEvent<DisposalUnitComponent, ContainerIsInsertingAttemptEvent>(OnInsertAttempt);
         SubscribeLocalEvent<DisposalUnitComponent, ActivateInWorldEvent>(OnActivate);
         SubscribeLocalEvent<DisposalUnitComponent, AfterInteractUsingEvent>(OnAfterInteractUsing);
-        SubscribeLocalEvent<DisposalUnitComponent, DragDropTargetEvent>(OnDragDropOn);
         SubscribeLocalEvent<DisposalUnitComponent, ContainerRelayMovementEntityEvent>(OnMovement);
-
+        SubscribeLocalEvent<DisposalUnitComponent, CanDropTargetEvent>(OnCanDragDropOn);
+        SubscribeLocalEvent<DisposalUnitComponent, DragDropTargetEvent>(OnDragDropOn);
         SubscribeLocalEvent<DisposalUnitComponent, GetDumpableVerbEvent>(OnGetDumpableVerb);
         SubscribeLocalEvent<DisposalUnitComponent, DumpEvent>(OnDump);
+
+        // See SharedDisposalUnitSystem.Visuals
+        SubscribeLocalEvent<DisposalUnitComponent, DisposalUnitUiButtonPressedMessage>(OnUiButtonPressed);
     }
 
-    private void AddDisposalAltVerbs(Entity<DisposalUnitComponent> ent, ref GetVerbsEvent<AlternativeVerb> args)
+    #region: Event handling
+
+    protected virtual void OnComponentInit(Entity<DisposalUnitComponent> ent, ref ComponentInit args)
     {
-        if (!args.CanAccess || !args.CanInteract)
+        ent.Comp.Container = _container.EnsureContainer<Container>(ent, nameof(DisposalUnitComponent));
+    }
+
+    private void OnExploded(Entity<DisposalUnitComponent> ent, ref BeforeExplodeEvent args)
+    {
+        args.Contents.AddRange(GetContainedEntities(ent));
+    }
+
+    private void OnPowerChange(Entity<DisposalUnitComponent> ent, ref PowerChangedEvent args)
+    {
+        RecalculateFlushTime(ent, true);
+        UpdateVisualState(ent);
+    }
+
+    private void OnAnchorChanged(Entity<DisposalUnitComponent> ent, ref AnchorStateChangedEvent args)
+    {
+        if (args.Anchored)
             return;
 
-        var uid = ent.Owner;
-        var component = ent.Comp;
-
-        // Behavior for if the disposals bin has items in it
-        if (component.Container.ContainedEntities.Count > 0)
-        {
-            // Verbs to flush the unit
-            AlternativeVerb flushVerb = new()
-            {
-                Act = () => ManualEngage(uid, component),
-                Text = Loc.GetString("disposal-flush-verb-get-data-text"),
-                Icon = new SpriteSpecifier.Texture(new("/Textures/Interface/VerbIcons/delete_transparent.svg.192dpi.png")),
-                Priority = 1,
-            };
-            args.Verbs.Add(flushVerb);
-
-            // Verb to eject the contents
-            AlternativeVerb ejectVerb = new()
-            {
-                Act = () => TryEjectContents(uid, component),
-                Category = VerbCategory.Eject,
-                Text = Loc.GetString("disposal-eject-verb-get-data-text")
-            };
-            args.Verbs.Add(ejectVerb);
-        }
+        EjectContents(ent);
     }
 
     private void AddInsertVerb(EntityUid uid, DisposalUnitComponent component, GetVerbsEvent<InteractionVerb> args)
@@ -436,12 +431,9 @@ public abstract class SharedDisposalUnitSystem : EntitySystem
         }
     }
 
-    protected void OnCanDragDropOn(EntityUid uid, DisposalUnitComponent component, ref CanDropTargetEvent args)
+    protected void OnEmagged(Entity<DisposalUnitComponent> ent, ref GotEmaggedEvent args)
     {
-        if (args.Handled)
-            return;
-
-        args.CanDrop = CanInsert(uid, component, args.Dragged);
+        ent.Comp.DisablePressure = true;
         args.Handled = true;
     }
 
@@ -827,5 +819,375 @@ public abstract class SharedDisposalUnitSystem : EntitySystem
         {
             DoInsertDisposalUnit(ent, entity, args.User, playSound: false); // Goob - fix trashbag sound spam
         }
+    }
+
+    #endregion
+
+    /// <summary>
+    /// Checks whether a disposal unit can flush.
+    /// </summary>
+    /// <param name="ent">The disposal unit.</param>
+    /// <returns>True if the disposal unit can flush.</returns>
+    public bool CanFlush(Entity<DisposalUnitComponent> ent)
+    {
+        return GetState(ent) == DisposalsPressureState.Ready
+               && _power.IsPowered(ent.Owner)
+               && Transform(ent).Anchored;
+    }
+
+    /// <summary>
+    /// Gets the current pressure state of a disposals unit.
+    /// </summary>
+    /// <param name="ent">The disposal unit.</param>
+    /// <returns>The disposal unit's pressure state.</returns>
+    public DisposalsPressureState GetState(Entity<DisposalUnitComponent> ent)
+    {
+        var nextPressure = ent.Comp.NextPressurized - _timing.CurTime;
+        var pressurizeTime = 1f / ent.Comp.PressurePerSecond;
+        var pressurizeDuration = pressurizeTime - ent.Comp.FlushDelay.TotalSeconds;
+
+        if (nextPressure.TotalSeconds > pressurizeDuration)
+            return DisposalsPressureState.Flushed;
+
+        if (nextPressure > TimeSpan.Zero)
+            return DisposalsPressureState.Pressurizing;
+
+        return DisposalsPressureState.Ready;
+    }
+
+    /// <summary>
+    /// Handles the actual insertion of an entity into a disposal unit.
+    /// </summary>
+    /// <param name="ent">The disposal unit.</param>
+    /// <param name="inserted">The entity inserted.</param>
+    /// <param name="user">The one who inserted the entity.</param>
+    /// <param name="doInsert">Do the insertion now.</param>
+    protected void Insert(Entity<DisposalUnitComponent> ent, EntityUid inserted, EntityUid? user = null)
+    {
+        if (ent.Comp.Container != null)
+        {
+            // Note: the entity may have been inserted via SharedHandsSystem already
+            _container.Insert(inserted, ent.Comp.Container);
+        }
+
+        if (!GetContainedEntities(ent).Contains(inserted))
+            return;
+
+        if (_timing.CurTime >= ent.Comp.NextAllowedInsertSound)
+        {
+            _audio.PlayPredicted(ent.Comp.InsertSound, ent, user: user);
+            ent.Comp.NextAllowedInsertSound = _timing.CurTime + ent.Comp.InsertSoundDelay;
+        }
+
+        if (user != inserted && user != null)
+        {
+            _adminLog.Add(LogType.Action, LogImpact.Medium, $"{ToPrettyString(user.Value):player} inserted {ToPrettyString(inserted)} into {ToPrettyString(ent)}");
+        }
+
+        AutomaticEngage(ent);
+
+        _joints.RecursiveClearJoints(inserted);
+
+        _ui.CloseUi(ent.Owner, DisposalUnitUiKey.Key, inserted);
+
+        UpdateVisualState(ent);
+    }
+
+    public override void Update(float frameTime)
+    {
+        base.Update(frameTime);
+
+        var query = EntityQueryEnumerator<DisposalUnitComponent, MetaDataComponent>();
+        while (query.MoveNext(out var uid, out var unit, out var metadata))
+        {
+            UpdateDisposalUnit((uid, unit), metadata);
+        }
+    }
+
+    private void UpdateDisposalUnit(Entity<DisposalUnitComponent> ent, MetaDataComponent metadata)
+    {
+        var state = GetState(ent);
+
+        // Check if we need a state update
+        if (ent.Comp.NextPressurized > _timing.CurTime)
+        {
+            UpdateState(ent, state);
+            return;
+        }
+
+        // Check if we need to flush
+        if (ent.Comp.NextFlush != null &&
+            ent.Comp.NextFlush.Value < _timing.CurTime)
+        {
+            TryFlush(ent);
+        }
+
+        UpdateState(ent, state);
+    }
+
+    private void UpdateState(Entity<DisposalUnitComponent> ent, DisposalsPressureState state)
+    {
+        if (ent.Comp.State == state)
+            return;
+
+        ent.Comp.State = state;
+
+        switch (state)
+        {
+            case DisposalsPressureState.Ready:
+                ent.Comp.NextPressurized = TimeSpan.Zero;
+                _powerState.SetWorkingState(ent.Owner, false);
+                break;
+            case DisposalsPressureState.Pressurizing:
+                _powerState.SetWorkingState(ent.Owner, true);
+                break;
+        }
+
+        RecalculateFlushTime(ent, true);
+        UpdateVisualState(ent);
+    }
+
+    /// <summary>
+    /// Try to flush a disposal unit.
+    /// </summary>
+    /// <param name="ent">The disposal unit.</param>
+    /// <returns>True if the flush was successful.</returns>
+    public bool TryFlush(Entity<DisposalUnitComponent> ent)
+    {
+        if (!CanFlush(ent))
+            return false;
+
+        var beforeFlushArgs = new BeforeDisposalFlushEvent();
+        RaiseLocalEvent(ent, beforeFlushArgs);
+
+        if (beforeFlushArgs.Cancelled)
+        {
+            SetEngage(ent, false);
+            return false;
+        }
+
+        var xform = Transform(ent);
+
+        if (!TryComp(xform.GridUid, out MapGridComponent? grid))
+            return false;
+
+        // Try to find an entry into disposals
+        Entity<DisposalTubeComponent>? tube = null;
+
+        foreach (var tubeUid in _map.GetLocal(xform.GridUid.Value, grid, xform.Coordinates))
+        {
+            if (HasComp<DisposalEntryComponent>(tubeUid) &&
+                TryComp<DisposalTubeComponent>(tubeUid, out var tubeComp))
+            {
+                tube = new Entity<DisposalTubeComponent>(tubeUid, tubeComp);
+                break;
+            }
+        }
+
+        if (tube == null)
+        {
+            SetEngage(ent, false);
+            return false;
+        }
+
+        // Try to transfer entities from the unit into disposals.
+        TryTransfer(ent, tube.Value, beforeFlushArgs.Tags);
+
+        ent.Comp.NextPressurized = _timing.CurTime;
+
+        if (!ent.Comp.DisablePressure)
+        {
+            ent.Comp.NextPressurized += TimeSpan.FromSeconds(1f / ent.Comp.PressurePerSecond);
+        }
+
+        SetEngage(ent, false);
+        return true;
+    }
+
+    /// <summary>
+    /// Tries to transfer all entities in a disposal unit to the disposals system.
+    /// </summary>
+    /// <param name="ent">The disposal unit.</param>
+    /// <param name="tube">The tube leading into disposals.</param>
+    /// <returns>True if the transfer was successful.</returns>
+    public bool TryTransfer(Entity<DisposalUnitComponent> ent, Entity<DisposalTubeComponent> tube, IEnumerable<string>? tags = null)
+    {
+        if (_net.IsClient && !_timing.IsFirstTimePredicted)
+            return false;
+
+        if (GetContainedEntityCount(ent) == 0)
+            return false;
+
+        var xform = Transform(ent);
+        var holderUid = Spawn(ent.Comp.HolderPrototypeId, _xform.GetMapCoordinates(ent, xform: xform));
+        var holder = new Entity<DisposalHolderComponent>(holderUid, Comp<DisposalHolderComponent>(holderUid));
+
+        if (holder.Comp.Container == null)
+            return false;
+
+        foreach (var entity in GetContainedEntities(ent))
+        {
+            _container.Insert(entity, holder.Comp.Container);
+            _disposalHolder.AttachEntity((holderUid, holder), entity);
+        }
+
+        if (tags != null)
+        {
+            foreach (var tag in tags)
+            {
+                _disposalHolder.AddTag(holder, tag);
+            }
+
+            Dirty(holder);
+        }
+
+        // Take in the local atmos and pass it to the spawned disposals holder.
+        IntakeAir(ent, xform);
+        _disposalHolder.TransferAtmos(holder, ent);
+
+        return _disposalHolder.TryEnterTube(holder, (tube, tube.Comp));
+    }
+
+    /// <summary>
+    /// Remove all entities currently in a disposal unit.
+    /// </summary>
+    /// <param name="ent">The disposal unit.</param>
+    public void EjectContents(Entity<DisposalUnitComponent> ent)
+    {
+        foreach (var toRemove in GetContainedEntities(ent))
+        {
+            Remove(ent, toRemove);
+        }
+
+        UpdateVisualState(ent);
+    }
+
+    /// <summary>
+    /// Remove an entity from a disposal unit.
+    /// </summary>
+    /// <param name="ent">The disposal unit.</param>
+    /// <param name="toRemove">The entity to remove.</param>
+    public void Remove(Entity<DisposalUnitComponent> ent, EntityUid toRemove)
+    {
+        if (_timing.ApplyingState)
+            return;
+
+        if (!Terminating(toRemove) &&
+            ent.Comp.Container != null &&
+            _container.Remove(toRemove, ent.Comp.Container))
+        {
+            _climb.Climb(toRemove, toRemove, ent, silent: true);
+        }
+
+        RecalculateFlushTime(ent);
+        UpdateVisualState(ent);
+    }
+
+    /// <summary>
+    /// Recalculates when a disposal will flush next
+    /// </summary>
+    /// <param name="ent">The disposal unit.</param>
+    /// <param name="reset">Reset any in-progress flushes.</param>
+    public void RecalculateFlushTime(Entity<DisposalUnitComponent> ent, bool reset = false)
+    {
+        TimeSpan? nextFlush = null;
+
+        // Reset next flush?
+        if (reset)
+        {
+            ent.Comp.NextFlush = null;
+        }
+
+        // If engaged/automatically engaged, figure out the next flush time
+        if (ent.Comp.Engaged || GetContainedEntityCount(ent) > 0)
+        {
+            var newFlush = ent.Comp.Engaged
+                ? _timing.CurTime + ent.Comp.ManualFlushTime
+                : _timing.CurTime + ent.Comp.AutomaticEngageTime;
+
+            if (GetState(ent) != DisposalsPressureState.Ready)
+            {
+                newFlush += ent.Comp.NextPressurized;
+            }
+
+            nextFlush = (ent.Comp.NextFlush ?? TimeSpan.MaxValue);
+
+            // Check if there is a flush in progress that will occur
+            // sooner than what was calculated
+            nextFlush = TimeSpan.FromSeconds(Math.Min(nextFlush.Value.TotalSeconds, newFlush.TotalSeconds));
+        }
+
+        ent.Comp.NextFlush = nextFlush;
+        Dirty(ent);
+
+        UpdateUI(ent);
+    }
+
+    /// <summary>
+    /// Sets a disposal unit to move towards flushing itself.
+    /// </summary>
+    /// <param name="ent">The disposal unit.</param>
+    /// <param name="metadata">The disposal unit's metadata.</param>
+    public void SetEngage(Entity<DisposalUnitComponent> ent, bool engaged)
+    {
+        ent.Comp.Engaged = engaged;
+
+        RecalculateFlushTime(ent);
+        UpdateVisualState(ent);
+    }
+
+    /// <summary>
+    /// Primes a disposal unit to automatically flush sometime in the future.
+    /// </summary>
+    /// <param name="ent">The disposal unit.</param>
+    /// <param name="metadata">The disposal unit's metadata.</param>
+    public void AutomaticEngage(Entity<DisposalUnitComponent> ent)
+    {
+        if (!ent.Comp.AutomaticEngage)
+            return;
+
+        RecalculateFlushTime(ent);
+    }
+
+    /// <summary>
+    /// Toggles a disposal unit between 'engaged' and 'disengaged'.
+    /// </summary>
+    /// <param name="ent">The disposal unit.</param>
+    public void ToggleEngage(Entity<DisposalUnitComponent> ent)
+    {
+        SetEngage(ent, !ent.Comp.Engaged);
+    }
+
+    /// <summary>
+    /// All entities contained in a disposal unit.
+    /// </summary>
+    /// <param name="ent">The disposal unit.</param>
+    /// <returns>A copy of the disposal unit's ContainedEntities list.</returns>
+    public IReadOnlyList<EntityUid> GetContainedEntities(Entity<DisposalUnitComponent> ent)
+    {
+        if (ent.Comp.Container == null)
+            return new List<EntityUid>();
+
+        return ent.Comp.Container.ContainedEntities.ToList();
+    }
+
+    /// <summary>
+    /// The number of entities contained in a disposal unit.
+    /// </summary>
+    /// <param name="ent">The disposal unit.</param>
+    /// <returns>The entity count.</returns>
+    public int GetContainedEntityCount(Entity<DisposalUnitComponent> ent)
+    {
+        return GetContainedEntities(ent).Count;
+    }
+
+    /// <summary>
+    /// Takes the atmos surrounding the disposal unit into itself.
+    /// </summary>
+    /// <param name="ent">The disposal unit.</param>
+    /// <param name="xform">The disposal unit's transform.</param>
+    protected virtual void IntakeAir(Entity<DisposalUnitComponent> ent, TransformComponent xform)
+    {
+        // Handled by the server
     }
 }

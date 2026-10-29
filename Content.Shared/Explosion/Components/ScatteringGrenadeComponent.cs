@@ -17,6 +17,9 @@ public sealed partial class ScatteringGrenadeComponent : Component
 {
     public Container Container = default!;
 
+    /// <summary>
+    /// Whitelist what can be inserted into the cluster.
+    /// </summary>
     [DataField]
     public EntityWhitelist? Whitelist;
 

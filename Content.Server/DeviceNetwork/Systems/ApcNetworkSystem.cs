@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 
 using Content.Server.DeviceNetwork.Components;
-using Content.Server.NodeContainer;
 using Content.Server.NodeContainer.EntitySystems;
 using JetBrains.Annotations;
 using Content.Server.Power.EntitySystems;
@@ -12,9 +11,9 @@ using Content.Shared.NodeContainer;
 namespace Content.Server.DeviceNetwork.Systems
 {
     [UsedImplicitly]
-    public sealed class ApcNetworkSystem : EntitySystem
+    public sealed partial class ApcNetworkSystem : EntitySystem
     {
-        [Dependency] private readonly NodeContainerSystem _nodeContainer = default!;
+        [Dependency] private NodeContainerSystem _nodeContainer = default!;
 
         public override void Initialize()
         {
@@ -29,13 +28,14 @@ namespace Content.Server.DeviceNetwork.Systems
         /// <summary>
         /// Checks if both devices are connected to the same apc
         /// </summary>
-        private void OnBeforePacketSent(EntityUid uid, ApcNetworkComponent receiver, BeforePacketSentEvent args)
+        private void OnBeforePacketSent(Entity<ApcNetworkComponent> ent, ref BeforePacketSentEvent args)
         {
-            if (!TryComp(args.Sender, out ApcNetworkComponent? sender)) return;
+            if (!TryComp(args.Sender, out ApcNetworkComponent? sender))
+                return;
 
-            if (sender.ConnectedNode?.NodeGroup == null || !sender.ConnectedNode.NodeGroup.Equals(receiver.ConnectedNode?.NodeGroup))
+            if (sender.ConnectedNode?.NodeGroup == null || !sender.ConnectedNode.NodeGroup.Equals(ent.Comp.ConnectedNode?.NodeGroup))
             {
-                args.Cancel();
+                args.Cancelled = true;
             }
         }
 

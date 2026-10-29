@@ -80,3 +80,10 @@
     - Telecrystal
     balance:
       Telecrystal: 0
+
+- type: entity
+  parent: StorePresetUplink
+  id: StorePresetRemoteUplink
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: RingerAccessUplink

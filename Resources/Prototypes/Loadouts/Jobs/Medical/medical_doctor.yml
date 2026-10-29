@@ -1,34 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # Senior Time
-- type: loadoutEffectGroup
-  id: SeniorPhysician
-  effects:
-  - !type:JobRequirementLoadoutEffect
-    requirement:
-      !type:RoleTimeRequirement
-      role: JobChemist
-      time: 6h
-  - !type:JobRequirementLoadoutEffect
-    requirement:
-      !type:RoleTimeRequirement
-      role: JobMedicalDoctor
-      time: 6h
-  - !type:JobRequirementLoadoutEffect
-    requirement:
-      !type:DepartmentTimeRequirement
-      department: Medical
-      time: 60h
-
-# Other Timers
-
-- type: loadoutEffectGroup
-  id: MedicalHeadMirrorTimer
-  effects:
-  - !type:JobRequirementLoadoutEffect
-    requirement:
-      !type:RoleTimeRequirement
-      role: JobMedicalDoctor
-      time: 30h
 
 # Head
 
@@ -45,7 +16,7 @@
   id: MedicalHeadMirror
   effects:
   - !type:GroupLoadoutEffect
-    proto: MedicalHeadMirrorTimer
+    proto: MedicalJourneymanTimer
   equipment:
     head: ClothingHeadMirror
 
@@ -54,30 +25,25 @@
   equipment:
     head: ClothingHeadHatBeretMedic
 
-
 - type: loadout
   id: BlueSurgeryCap
   equipment:
     head: ClothingHeadHatSurgcapBlue
-
 
 - type: loadout
   id: GreenSurgeryCap
   equipment:
     head: ClothingHeadHatSurgcapGreen
 
-
 - type: loadout
   id: PurpleSurgeryCap
   equipment:
     head: ClothingHeadHatSurgcapPurple
 
-
 - type: loadout
   id: NurseHat
   equipment:
     head: ClothingHeadNurseHat
-
 
 # Jumpsuit
 - type: loadout
@@ -85,12 +51,10 @@
   equipment:
     jumpsuit: ClothingUniformJumpsuitMedicalDoctor
 
-
 - type: loadout
   id: MedicalDoctorJumpskirt
   equipment:
     jumpsuit: ClothingUniformJumpskirtMedicalDoctor
-
 
 # IS14 Edit - Senior loadout'ы закомментированы, доступны только через Senior loadout groups
 #- type: loadout
@@ -114,24 +78,20 @@
   equipment:
     jumpsuit: UniformScrubsColorBlue
 
-
 - type: loadout
   id: MedicalGreenScrubs
   equipment:
     jumpsuit: UniformScrubsColorGreen
-
 
 - type: loadout
   id: MedicalPurpleScrubs
   equipment:
     jumpsuit: UniformScrubsColorPurple
 
-
 - type: loadout # goob
   id: MedicMJ
   equipment:
     jumpsuit: ClothingUniformJumpsuitMilitaryMedicalDoctor
-
 
 # Back
 - type: loadout
@@ -191,20 +151,8 @@
   equipment:
     gloves: ClothingHandsGlovesNitrile
 
-
 #Masks
 - type: loadout
   id: SterileMask
   equipment:
     mask: ClothingMaskSterile
-
-#Eyewear
-- type: loadout
-  id: MedicalHud
-  equipment:
-    eyes: ClothingEyesHudMedical
-
-- type: loadout
-  id: MedicalEyePatchHud
-  equipment:
-    eyes: ClothingEyesEyepatchHudMedical

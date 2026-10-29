@@ -23,7 +23,6 @@
       inverted: true
       species:
       - Abductor
-  weight: 10
   startingGear: ChiefEngineerGear
   icon: "JobIconChiefEngineer"
   supervisors: job-supervisors-captain

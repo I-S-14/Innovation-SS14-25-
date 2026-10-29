@@ -35,6 +35,9 @@
         Slash: 0.9
         Piercing: 0.9
         Heat: 0.8
+  - type: ImageOverlay
+    pathToOverlayImage: "/Textures/Clothing/Head/Welding/weldingTexture.png"
+    additionalColorOverlay: "#000000A0"
 
 - type: entity
   parent: [ WeldingMaskBase, BaseFlippableWeldingMask ] # Goob

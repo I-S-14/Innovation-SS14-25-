@@ -16,7 +16,7 @@ using Robust.Client.UserInterface.Controllers;
 
 namespace Content.Client.UserInterface.Systems.MenuBar;
 
-public sealed class GameTopMenuBarUIController : UIController
+public sealed partial class GameTopMenuBarUIController : UIController
 {
     [Dependency] private readonly EscapeUIController _escape = default!;
     [Dependency] private readonly AdminUIController _admin = default!;
@@ -28,6 +28,15 @@ public sealed class GameTopMenuBarUIController : UIController
     [Dependency] private readonly GuidebookUIController _guidebook = default!;
     [Dependency] private readonly EmotesUIController _emotes = default!;
     [Dependency] private readonly LanguageMenuUIController _language = default!; // Goob
+    [Dependency] private EscapeUIController _escape = default!;
+    [Dependency] private AdminUIController _admin = default!;
+    [Dependency] private CharacterUIController _character = default!;
+    [Dependency] private CraftingUIController _crafting = default!;
+    [Dependency] private AHelpUIController _ahelp = default!;
+    [Dependency] private ActionUIController _action = default!;
+    [Dependency] private SandboxUIController _sandbox = default!;
+    [Dependency] private GuidebookUIController _guidebook = default!;
+    [Dependency] private EmotesUIController _emotes = default!;
 
     private GameTopMenuBar? GameTopMenuBar => UIManager.GetActiveUIWidgetOrNull<GameTopMenuBar>();
 

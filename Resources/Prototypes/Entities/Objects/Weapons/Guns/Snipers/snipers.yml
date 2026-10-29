@@ -115,11 +115,12 @@
       gun_chamber: !type:ContainerSlot
   - type: StaticPrice
     price: 500
+
 # Goobstation - End
 
 - type: entity
   name: Kardashev-Mosin
-  parent: [BaseWeaponSniper, BaseGunWieldable, BaseMajorContraband]
+  parent: [BaseWeaponSniper, BaseGunWieldable, SolutionDart, BaseMajorContraband]
   id: WeaponSniperMosin
   description: A true relic, the Kardashev-Mosin has served in nearly every armed conflict since its creation 670 years ago. The bolt-action design of the rifle remains virtually identical to its original design, whether used for hunting, sniping, or endless trench warfare. Loads 10 rounds of .30 Rifle.
   components:
@@ -154,10 +155,6 @@
   - type: MeleeRequiresWield
   - type: AltFireMelee
     attackType: Heavy
-  - type: SolutionContainerManager
-    solutions:
-      melee:
-        maxVol: 2
   - type: MeleeChemicalInjector
     solution: melee
   - type: RefillableSolution
@@ -166,8 +163,9 @@
     solution: melee
   - type: SolutionTransfer
     maxTransferAmount: 2
-  - type: Sharp
-    butcherDelayModifier: 2 #It's a bayonet
+  - type: Tool
+    qualities: [ Slicing ]
+    speedModifier: 0.5 #It's a bayonet
   - type: GunRequiresWield
   - type: StaticPrice
     price: 500
@@ -206,6 +204,9 @@
   #    - CartridgeAntiMateriel
   #  capacity: 5
   #  proto: CartridgeAntiMateriel
+  - type: CustomSpriteAmmoCounter
+    loadedAmmoSprite: Interface/ItemStatus/Sniper_Cartriges/not_spent.png
+    spentAmmoSprite: Interface/ItemStatus/Sniper_Cartriges/spent.png
   - type: SpeedModifiedOnWield
     walkModifier: 0.8 # goob edit V
     sprintModifier: 0.8 # goob edit ^
@@ -222,7 +223,9 @@
   id: Musket
   description: This should've been in a museum long before you were born. Loads one round of .60 Anti-Materiel.
   components:
-  - type: Sharp
+  - type: Tool
+    qualities:
+    - Slicing
   - type: Item
     size: Large
   - type: Sprite

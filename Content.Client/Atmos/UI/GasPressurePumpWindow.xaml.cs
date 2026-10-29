@@ -13,9 +13,7 @@ namespace Content.Client.Atmos.UI
     [GenerateTypedNameReferences]
     public sealed partial class GasPressurePumpWindow : FancyWindow
     {
-        public bool PumpStatus = true;
-
-        public event Action? ToggleStatusButtonPressed;
+        public event Action<bool>? ToggleStatusButtonPressed;
         public event Action<float>? PumpOutputPressureChanged;
 
         public float MaxPressure
@@ -35,8 +33,7 @@ namespace Content.Client.Atmos.UI
         {
             RobustXamlLoader.Load(this);
 
-            ToggleStatusButton.OnPressed += _ => SetPumpStatus(!PumpStatus);
-            ToggleStatusButton.OnPressed += _ => ToggleStatusButtonPressed?.Invoke();
+            ToggleStatusButton.OnToggled += _ => ToggleStatusButtonPressed?.Invoke(ToggleStatusButton.Pressed);
 
             PumpPressureOutputInput.OnValueChanged += _ => SetOutputPressureButton.Disabled = false;
 
@@ -61,15 +58,7 @@ namespace Content.Client.Atmos.UI
 
         public void SetPumpStatus(bool enabled)
         {
-            PumpStatus = enabled;
-            if (enabled)
-            {
-                ToggleStatusButton.Text = Loc.GetString("comp-gas-pump-ui-status-enabled");
-            }
-            else
-            {
-                ToggleStatusButton.Text = Loc.GetString("comp-gas-pump-ui-status-disabled");
-            }
+            ToggleStatusButton.Pressed = enabled;
         }
     }
 }

@@ -37,10 +37,7 @@ using Content.Shared.Chat;
 
 namespace Content.Server.Medical;
 
-/// <summary>
-/// This handles interactions and logic relating to <see cref="DefibrillatorComponent"/>
-/// </summary>
-public sealed class DefibrillatorSystem : EntitySystem
+public sealed partial class DefibrillatorSystem : SharedDefibrillatorSystem
 {
     [Dependency] private readonly ChatSystem _chatManager = default!;
     [Dependency] private readonly DamageableSystem _damageable = default!;
@@ -59,6 +56,9 @@ public sealed class DefibrillatorSystem : EntitySystem
     [Dependency] private readonly UseDelaySystem _useDelay = default!;
     [Dependency] private readonly SharedInteractionSystem _interactionSystem = default!;
     [Dependency] private readonly ConsciousnessSystem _consciousness = default!; // Shitmed Change
+    [Dependency] private EuiManager _eui = default!;
+    [Dependency] private ISharedPlayerManager _player = default!;
+    [Dependency] private SharedMindSystem _mind = default!;
 
     /// <inheritdoc/>
     public override void Initialize()

@@ -10,7 +10,7 @@ using Robust.Shared.Timing;
 
 namespace Content.Client.Weapons.Misc;
 
-public sealed class TetherGunSystem : SharedTetherGunSystem
+public sealed partial class TetherGunSystem : SharedTetherGunSystem
 {
     [Dependency] private readonly IEyeManager _eyeManager = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
@@ -19,6 +19,13 @@ public sealed class TetherGunSystem : SharedTetherGunSystem
     [Dependency] private readonly IPlayerManager _player = default!;
     [Dependency] private readonly MapSystem _mapSystem = default!;
     [Dependency] private readonly SpriteSystem _sprite = default!;
+    [Dependency] private IEyeManager _eyeManager = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private IInputManager _input = default!;
+    [Dependency] private IOverlayManager _overlay = default!;
+    [Dependency] private IPlayerManager _player = default!;
+    [Dependency] private MapSystem _mapSystem = default!;
+    [Dependency] private SpriteSystem _sprite = default!;
 
     public override void Initialize()
     {

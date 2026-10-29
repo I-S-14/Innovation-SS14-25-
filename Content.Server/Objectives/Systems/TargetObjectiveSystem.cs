@@ -15,11 +15,13 @@ namespace Content.Server.Objectives.Systems;
 /// <summary>
 /// Provides API for other components and handles setting the title.
 /// </summary>
-public sealed class TargetObjectiveSystem : EntitySystem
+public sealed partial class TargetObjectiveSystem : EntitySystem
 {
     [Dependency] private readonly MetaDataSystem _metaData = default!;
     [Dependency] private readonly SharedJobSystem _job = default!;
     [Dependency] private readonly MindSystem _mind = default!; // Goobstation
+    [Dependency] private MetaDataSystem _metaData = default!;
+    [Dependency] private SharedJobSystem _job = default!;
 
     public override void Initialize()
     {
@@ -121,7 +123,16 @@ public sealed class TargetObjectiveSystem : EntitySystem
         // Goob edit end
 
         var jobName = _job.MindTryGetJobName(target);
-        return Loc.GetString(title, ("targetName", targetName), ("job", jobName));
+
+        var deptName = Loc.GetString("department-Unknown");
+        if (_job.MindTryGetJobId(target, out var jobId))
+        {
+            if (jobId.HasValue && _job.TryGetDepartment(jobId.Value, out var deptProto))
+            {
+                deptName = Loc.GetString(deptProto.Name);
+            }
+        }
+        return Loc.GetString(title, ("targetName", targetName), ("job", jobName), ("department", deptName));
     }
 
 }

@@ -3,7 +3,7 @@
 # Base
 
 - type: entity
-  parent: FoodBase
+  parent: [SolutionTiny, FoodBaseTrash]
   id: FoodSnackBase
   abstract: true
   components:
@@ -21,10 +21,16 @@
           Quantity: 5 # Goobstation - snacks are worse than cooked food
         - ReagentId: JunkFood # Goobstation - snacks are worse than cooked food
           Quantity: 5
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 10
   - type: Item
     sprite: Objects/Consumable/Food/snacks.rsi
     heldPrefix: packet
     size: Tiny
+
 # Snacks
 
 # "Snacks" means food in a packet. Down the line this stuff can have multiple
@@ -155,6 +161,15 @@
           Quantity: 1
         - ReagentId: JunkFood # Goobstation - snacks are worse than cooked food
           Quantity: 5
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 5
+      - ReagentId: Theobromine
+        Quantity: 3
+      - ReagentId: CocoaPowder
+        Quantity: 2
 
 - type: entity
   parent: FoodSnackBase
@@ -213,7 +228,8 @@
   - type: Tag
     tags:
     - Fruit # Seed of a fruit, you can yell at me
-    - Pistachios # Added tag due to CrateFoodGetMore interaction with BountyFruit.
+    - Pistachios # Added tag due to CrateServiceGetMore interaction with BountyFruit.
+    - FoodSnack
 
 - type: entity
   name: popcorn
@@ -224,7 +240,7 @@
   - type: FlavorProfile
     flavors:
       - corn
-      - salt
+      - salty
       - butter
   - type: Sprite
     state: popcorn
@@ -253,6 +269,7 @@
   - type: Tag
     tags:
     - Fruit
+    - FoodSnack
 
 - type: entity
   parent: FoodSnackBase
@@ -290,6 +307,7 @@
     - FoodPacketSusTrash
   - type: Tag
     tags:
+    - FoodSnack
     - Meat
 
 - type: entity
@@ -330,6 +348,13 @@
           Quantity: 5
         - ReagentId: JunkFood # Goobstation - snacks are worse than cooked food
           Quantity: 15
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: DryRamen
+        Quantity: 20
+      - ReagentId: Soysauce
+        Quantity: 5
   - type: Sprite
     state: ramen
   - type: Edible
@@ -356,6 +381,13 @@
           Quantity: 5
         - ReagentId: JunkFood # Goobstation - snacks are worse than cooked food
           Quantity: 15
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: DryRamen
+        Quantity: 20
+      - ReagentId: CapsaicinOil
+        Quantity: 5
 
 - type: entity
   parent: FoodSnackBase
@@ -384,6 +416,13 @@
           Quantity: 2
         - ReagentId: JunkFood # Goobstation - snacks are worse than cooked food
           Quantity: 5
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 10
+      - ReagentId: Soysauce
+        Quantity: 2
   - type: Edible
     trash:
     - FoodPacketChowMeinTrash
@@ -417,6 +456,15 @@
           Quantity: 2
         - ReagentId: JunkFood # Goobstation - snacks are worse than cooked food
           Quantity: 5
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 10
+      - ReagentId: CapsaicinOil
+        Quantity: 2
+      - ReagentId: Soysauce
+        Quantity: 2
   - type: Edible
     trash:
     - FoodPacketDanDanTrash
@@ -432,13 +480,12 @@
       - fortunecookie
   - type: Sprite
     state: cookie_fortune
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 1
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 1
+  - type: Solution
+    solution:
+      maxVol: 2.5
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 1
   - type: Item
     sprite: Objects/Consumable/Food/snacks.rsi
     heldPrefix: cookie_fortune
@@ -523,7 +570,7 @@
       path: /Audio/Effects/unwrap.ogg
 
 - type: entity
-  parent: FoodSnackBase
+  parent: [SolutionVeryTiny, FoodSnackBase]
   id: FoodSnackMREBrownieOpen
   name: brownie
   suffix: MRE
@@ -548,6 +595,13 @@
           Quantity: 3
         - ReagentId: JunkFood # Goobstation - snacks are worse than cooked food
           Quantity: 5
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 5
+      - ReagentId: Theobromine
+        Quantity: 1
 
 - type: entity
   parent: FoodSnackBase
@@ -577,6 +631,11 @@
           Quantity: 15
         - ReagentId: JunkFood # Goobstation - snacks are worse than cooked food
           Quantity: 1
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Sugar
+        Quantity: 15
   - type: FlavorProfile
     flavors:
     - sweet
@@ -592,7 +651,7 @@
 
 - type: entity
   categories: [ HideSpawnMenu ]
-  parent: BaseItem
+  parent: [SolutionFood, SolutionVeryTiny, BaseItem]
   id: FoodPacketTrash
   description: This is rubbish.
   abstract: true
@@ -621,6 +680,12 @@
           Quantity: 5
         - ReagentId: Microplastics #Goob
           Quantity: 2
+  - type: Solution
+    solution:
+      maxVol: 7.5
+      reagents:
+      - ReagentId: ToxinTrash
+        Quantity: 7.5
   - type: Edible
     requiresSpecialDigestion: true
 
@@ -883,13 +948,11 @@
   components:
   - type: Edible
     requiresSpecialDigestion: true
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 25
-        reagents:
-        - ReagentId: Fiber
-          Quantity: 20
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Fiber
+        Quantity: 10
   - type: Tag
     tags:
     - ClothMade

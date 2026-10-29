@@ -14,10 +14,10 @@ namespace Content.Shared.Repairable;
 
 public sealed partial class RepairableSystem : EntitySystem
 {
-    [Dependency] private readonly SharedToolSystem _toolSystem = default!;
-    [Dependency] private readonly DamageableSystem _damageableSystem = default!;
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] private readonly ISharedAdminLogManager _adminLogger = default!;
+    [Dependency] private SharedToolSystem _toolSystem = default!;
+    [Dependency] private DamageableSystem _damageableSystem = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private ISharedAdminLogManager _adminLogger = default!;
 
     public override void Initialize()
     {
@@ -30,7 +30,11 @@ public sealed partial class RepairableSystem : EntitySystem
         if (args.Cancelled)
             return;
 
-        if (!TryComp(ent.Owner, out DamageableComponent? damageable) || damageable.TotalDamage == 0)
+        if (!TryComp(ent.Owner, out DamageableComponent? damageable))
+            return;
+
+        var totalDamage = _damageableSystem.GetTotalDamage((ent.Owner, damageable));
+        if (totalDamage == 0)
             return;
 
         var ipcSaysMoreRepairies = false; // Goob
@@ -51,7 +55,7 @@ public sealed partial class RepairableSystem : EntitySystem
         if (!args.Repeat)
         {
             var str = Loc.GetString("comp-repairable-repair", ("target", ent.Owner), ("tool", args.Used!));
-            _popup.PopupClient(str, ent.Owner, args.User);
+            _popup.PopupEntity(str, ent.Owner, args.User);
 
             var ev = new RepairedEvent(ent, args.User);
             RaiseLocalEvent(ent.Owner, ref ev);
@@ -101,7 +105,7 @@ public sealed partial class RepairableSystem : EntitySystem
             return;
 
         // Only try repair the target if it is damaged
-        if (!TryComp<DamageableComponent>(ent.Owner, out var damageable) || damageable.TotalDamage == 0)
+        if (_damageableSystem.GetTotalDamage(ent.Owner) == 0)
             return;
 
         // <Goob> - check if IPC can be healed

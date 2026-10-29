@@ -16,10 +16,10 @@ namespace Content.Server.NPC.HTN.PrimitiveTasks.Operators;
 /// </summary>
 public sealed partial class MoveToOperator : HTNOperator, IHtnConditionalShutdown
 {
-    [Dependency] private readonly IEntityManager _entManager = default!;
-    private NPCSteeringSystem _steering = default!;
-    private PathfindingSystem _pathfind = default!;
-    private SharedTransformSystem _transform = default!;
+    [Dependency] private IEntityManager _entManager = default!;
+    [Dependency] private NPCSteeringSystem _steering = default!;
+    [Dependency] private PathfindingSystem _pathfind = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
 
     /// <summary>
     /// When to shut the task down.
@@ -80,14 +80,6 @@ public sealed partial class MoveToOperator : HTNOperator, IHtnConditionalShutdow
 
     private const string MovementCancelToken = "MovementCancelToken";
 
-    public override void Initialize(IEntitySystemManager sysManager)
-    {
-        base.Initialize(sysManager);
-        _pathfind = sysManager.GetEntitySystem<PathfindingSystem>();
-        _steering = sysManager.GetEntitySystem<NPCSteeringSystem>();
-        _transform = sysManager.GetEntitySystem<SharedTransformSystem>();
-    }
-
     public override async Task<(bool Valid, Dictionary<string, object>? Effects)> Plan(NPCBlackboard blackboard,
         CancellationToken cancelToken)
     {
@@ -99,7 +91,7 @@ public sealed partial class MoveToOperator : HTNOperator, IHtnConditionalShutdow
         var owner = blackboard.GetValue<EntityUid>(NPCBlackboard.Owner);
 
         if (!_entManager.TryGetComponent<TransformComponent>(owner, out var xform) ||
-            !_entManager.TryGetComponent<PhysicsComponent>(owner, out var body))
+            !_entManager.HasComponent<PhysicsComponent>(owner))
             return (false, null);
 
         // Goobstation - check if we or target are offgrid or on different grids

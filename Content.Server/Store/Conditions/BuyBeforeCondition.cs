@@ -52,9 +52,9 @@ public sealed partial class BuyBeforeCondition : ListingCondition
 
         foreach (var requiredListing in Whitelist)
         {
-            foreach (var listing in allListings)
+            foreach (var requiredListing in Whitelist)
             {
-                if (listing.ID == requiredListing.Id)
+                foreach (var listing in allListings)
                 {
                     purchasesFound = listing.PurchaseAmount > 0;
 
@@ -70,8 +70,9 @@ public sealed partial class BuyBeforeCondition : ListingCondition
                     break;
                 }
             }
+            return purchasesFound;
         }
 
-        return purchasesFound;
+        return true;
     }
 }

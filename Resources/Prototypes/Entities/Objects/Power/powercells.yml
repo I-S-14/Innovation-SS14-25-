@@ -17,10 +17,9 @@
     intensitySlope: 1.5
   - type: Sprite
     sprite: Objects/Power/power_cells.rsi
-  - type: SolutionContainerManager
+  - type: SolutionManager
     solutions:
-      battery:
-        maxVol: 5
+    - SolutionRiggable
   - type: InjectableSolution
     solution: battery
   - type: DrawableSolution
@@ -28,8 +27,8 @@
   - type: Extractable
     juiceSolution:
       reagents:
-        - ReagentId: Zinc
-          Quantity: 5
+      - ReagentId: Zinc
+        Quantity: 5
   - type: Tag
     tags:
       - PowerCell
@@ -48,6 +47,16 @@
     stealGroup: Battery
   - type: BatteryDrinkerSource # Goobstation - Energycrit
     maxAmount: 360
+
+- type: entity
+  parent: Solution
+  id: SolutionRiggable
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Solution
+    id: battery
+    solution:
+      maxVol: 5
 
 - type: entity
   name: potato battery
@@ -146,6 +155,11 @@
   - type: BatterySelfRecharger
     autoRechargeRate: 36 # 10 seconds to recharge
     autoRechargePauseTime: 30
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Uranium
+        Quantity: 5
 
 - type: entity
   name: medium-capacity power cell
@@ -175,6 +189,11 @@
       Gold: 2
     chemicalComposition:
       Zinc: 10
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Lithium
+        Quantity: 5
 
 - type: entity
   id: PowerCellMediumPrinted
@@ -221,6 +240,11 @@
       Gold: 5
     chemicalComposition:
       Zinc: 15
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Lithium
+        Quantity: 5
 
 - type: entity
   id: PowerCellHighPrinted
@@ -259,6 +283,11 @@
   - type: BatteryAmmoProvider # goob edit - battery hitscan buff
     proto: HeavyRedLaser
     fireCost: 225 # 8 shots
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Lithium
+        Quantity: 5
 
 - type: entity
   id: PowerCellHyperPrinted
@@ -309,6 +338,11 @@
       Gold: 12
     chemicalComposition:
       Zinc: 20
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Uranium
+        Quantity: 5
 
 - type: entity
   parent: PowerCellMicroreactor
@@ -347,6 +381,11 @@
     - type: BatteryAmmoProvider # goob edit - svalinn buff fix
       proto: RedLaser
       fireCost: 75 # 16 shots
+    - type: Extractable
+      juiceSolution:
+        reagents:
+        - ReagentId: Uranium
+          Quantity: 5
 
 # Power cage (big heavy power cell for big devices)
 
@@ -357,16 +396,21 @@
   components:
   - type: Item
     size: Ginormous
+    shape:
+    - 0,0,3,5
   - type: MultiHandedItem
-  - type: SolutionContainerManager
+  - type: SolutionManager
     solutions:
-      battery:
-        maxVol: 15
+    - SolutionRiggableLarge
+  - type: Riggable
+    reagent:
+      ReagentId: Plasma
+      Quantity: 15
   - type: Extractable
     juiceSolution:
       reagents:
-        - ReagentId: Zinc
-          Quantity: 15
+      - ReagentId: Zinc
+        Quantity: 15
   - type: Tag
     tags:
       - PowerCage
@@ -374,6 +418,16 @@
     walkModifier: 0.8
     sprintModifier: 0.8
   - type: HeldSpeedModifier
+
+- type: entity
+  parent: SolutionRiggable
+  id: SolutionRiggableLarge
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Solution
+    id: battery
+    solution:
+      maxVol: 15
 
 - type: entity
   id: PowerCageSmall
@@ -410,6 +464,11 @@
   - type: Battery
     maxCharge: 2700
     startingCharge: 2700
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Lithium
+        Quantity: 10
 
 - type: entity
   id: PowerCageHigh
@@ -428,6 +487,11 @@
   - type: Battery
     maxCharge: 6200
     startingCharge: 6200
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: Lithium
+        Quantity: 15
 
 - type: entity
   id: PowerCageSmallEmpty

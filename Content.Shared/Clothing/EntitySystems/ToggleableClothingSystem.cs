@@ -51,7 +51,7 @@ using System.Linq;
 namespace Content.Shared.Clothing.EntitySystems;
 
 // GOOBSTATION - MODSUITS - THIS SYSTEM FULLY CHANGED
-public sealed class ToggleableClothingSystem : EntitySystem
+public sealed partial class ToggleableClothingSystem : EntitySystem
 {
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly INetManager _netMan = default!;
@@ -66,6 +66,15 @@ public sealed class ToggleableClothingSystem : EntitySystem
     [Dependency] private readonly SharedBodySystem _body = default!;
     [Dependency] private readonly IPrototypeManager _prototypes = default!;
     [Dependency] private readonly ClothingSystem _clothing = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private INetManager _netMan = default!;
+    [Dependency] private SharedContainerSystem _containerSystem = default!;
+    [Dependency] private SharedActionsSystem _actionsSystem = default!;
+    [Dependency] private ActionContainerSystem _actionContainer = default!;
+    [Dependency] private InventorySystem _inventorySystem = default!;
+    [Dependency] private SharedPopupSystem _popupSystem = default!;
+    [Dependency] private SharedDoAfterSystem _doAfter = default!;
+    [Dependency] private SharedStrippableSystem _strippable = default!;
 
     public override void Initialize()
     {
@@ -106,11 +115,7 @@ public sealed class ToggleableClothingSystem : EntitySystem
         if (!args.CanAccess || !args.CanInteract || args.Hands == null || comp.ClothingUids.Count == 0 || comp.Container == null)
             return;
 
-        var text = comp.VerbText ?? (comp.ActionEntity == null ? null : Name(comp.ActionEntity.Value));
-        if (text == null)
-            return;
-
-        if (!_inventorySystem.InSlotWithFlags(toggleable.Owner, comp.RequiredFlags))
+        if (!_inventorySystem.InSlotWithFlags(uid, component.RequiredFlags))
             return;
 
         var wearer = Transform(toggleable).ParentUid;
@@ -122,7 +127,7 @@ public sealed class ToggleableClothingSystem : EntitySystem
         var verb = new EquipmentVerb()
         {
             Icon = new SpriteSpecifier.Texture(new("/Textures/Interface/VerbIcons/outfit.svg.192dpi.png")),
-            Text = Loc.GetString(text),
+            Text = Loc.GetString(component.VerbText),
         };
 
         if (user == wearer)
@@ -531,8 +536,9 @@ public sealed class ToggleableClothingSystem : EntitySystem
 
         if (!container!.Contains(attachedUid))
         {
-            UnequipClothing(user, toggleable, attachedUid, slot!);
-            ForceSuitStorage(user, suitStorageItem);
+            _popupSystem.PopupEntity(Loc.GetString("toggleable-clothing-remove-first", ("entity", existing)),
+                user,
+                user);
         }
         else
         {
@@ -708,7 +714,19 @@ public sealed class ToggleableClothingSystem : EntitySystem
         // Add prototype from ClothingPrototype and Slot field to ClothingPrototypes dictionary
         if (comp.ClothingPrototype != null && !string.IsNullOrEmpty(comp.Slot) && !comp.ClothingPrototypes.ContainsKey(comp.Slot))
         {
-            comp.ClothingPrototypes.Add(comp.Slot, comp.ClothingPrototype.Value);
+            DebugTools.Assert(Exists(component.ClothingUid), "Toggleable clothing is missing expected entity.");
+            DebugTools.Assert(TryComp(component.ClothingUid, out AttachedClothingComponent? comp), "Toggleable clothing is missing an attached component");
+            DebugTools.Assert(comp.AttachedUid == uid, "Toggleable clothing uid mismatch");
+        }
+        else
+        {
+            var xform = Transform(uid);
+            component.ClothingUid = Spawn(component.ClothingPrototype, xform.Coordinates);
+            var attachedClothing = EnsureComp<AttachedClothingComponent>(component.ClothingUid.Value);
+            attachedClothing.AttachedUid = uid;
+            Dirty(component.ClothingUid.Value, attachedClothing);
+            _containerSystem.Insert(component.ClothingUid.Value, component.Container, containerXform: xform);
+            Dirty(uid, component);
         }
 
         var xform = Transform(toggleable.Owner);

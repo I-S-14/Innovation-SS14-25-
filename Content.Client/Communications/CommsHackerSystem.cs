@@ -7,6 +7,4 @@ namespace Content.Client.Communications;
 /// <summary>
 /// Does nothing special, only exists to provide a client implementation.
 /// </summary>
-public sealed class CommsHackerSystem : SharedCommsHackerSystem
-{
-}
+public sealed partial class CommsHackerSystem : SharedCommsHackerSystem;

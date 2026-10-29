@@ -3,7 +3,7 @@
 
 - type: entity
   abstract: true
-  parent: FoodInjectableBase
+  parent: [SolutionSmall, FoodInjectableBase]
   id: FoodBowlBase
   components:
   - type: Item
@@ -14,13 +14,11 @@
     trash:
     - FoodBowlBig
     utensil: Spoon
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 20
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 20
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 30
   - type: Sprite
     sprite: Objects/Consumable/Food/bowl.rsi
   - type: DamageOnLand
@@ -41,6 +39,7 @@
       types:
         Blunt: 0
   - type: Damageable
+  - type: Injurable
     damageContainer: Inorganic
   - type: Tag
     tags:
@@ -88,15 +87,15 @@
     - state: bowl
     - state: alpha-filling
       color: green
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 20
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 10
-        - ReagentId: Vitamin
-          Quantity: 5
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 30
+      - ReagentId: Vitamin
+        Quantity: 15
+      - ReagentId: Water
+        Quantity: 15
 
 # Salad
 
@@ -113,17 +112,15 @@
     layers:
     - state: bowl
     - state: aesir
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 25
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 8
-        - ReagentId: Vitamin
-          Quantity: 6
-        - ReagentId: Omnizine
-          Quantity: 8
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 30
+      - ReagentId: Vitamin
+        Quantity: 15
+      - ReagentId: Omnizine
+        Quantity: 8
   - type: Tag
     tags:
     - Soup
@@ -152,6 +149,17 @@
           Quantity: 8
         - ReagentId: Vitamin
           Quantity: 2
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 19
+      - ReagentId: Vitamin
+        Quantity: 11
+      - ReagentId: Bicaridine
+        Quantity: 15
+      - ReagentId: Kelotane
+        Quantity: 15
   - type: Tag
     tags:
     - Fruit
@@ -184,6 +192,19 @@
           Quantity: 2
         - ReagentId: DoctorsDelight
           Quantity: 5
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 26
+      - ReagentId: Vitamin
+        Quantity: 9
+      - ReagentId: Bicaridine
+        Quantity: 10
+      - ReagentId: Kelotane
+        Quantity: 10
+      - ReagentId: Protein
+        Quantity: 5
   - type: Tag
     tags:
     - Meat
@@ -216,6 +237,17 @@
           Quantity: 2
         - ReagentId: Allicin
           Quantity: 3
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 20
+      - ReagentId: Vitamin
+        Quantity: 20
+      - ReagentId: Allicin
+        Quantity: 10
+      - ReagentId: Water
+        Quantity: 10
 
 - type: entity
   name: caesar salad
@@ -242,6 +274,17 @@
           Quantity: 8
         - ReagentId: Vitamin
           Quantity: 6
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 31
+      - ReagentId: Vitamin
+        Quantity: 6
+      - ReagentId: Water
+        Quantity: 5
+      - ReagentId: Allicin
+        Quantity: 1
 
 - type: entity
   name: kimchi salad
@@ -269,6 +312,21 @@
           Quantity: 2
         - ReagentId: Allicin
           Quantity: 2
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 16
+      - ReagentId: Vitamin
+        Quantity: 21
+      - ReagentId: Water
+        Quantity: 10
+      - ReagentId: JuiceCarrot
+        Quantity: 5
+      - ReagentId: Oculine
+        Quantity: 3
+      - ReagentId: Allicin
+        Quantity: 4
 
 - type: entity
   name: fruit salad
@@ -292,6 +350,23 @@
           Quantity: 2
         - ReagentId: Vitamin
           Quantity: 4
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 16
+      - ReagentId: Vitamin
+        Quantity: 16
+      - ReagentId: JuiceOrange
+        Quantity: 5
+      - ReagentId: JuiceApple
+        Quantity: 5
+      - ReagentId: JuiceGrape
+        Quantity: 5
+      - ReagentId: Sugar
+        Quantity: 1
+      - ReagentId: JuiceWatermelon
+        Quantity: 12
   - type: Tag
     tags:
     - Fruit
@@ -320,6 +395,23 @@
           Quantity: 7
         - ReagentId: Vitamin
           Quantity: 17
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 19
+      - ReagentId: Vitamin
+        Quantity: 13
+      - ReagentId: JuiceBanana
+        Quantity: 5
+      - ReagentId: JuiceApple
+        Quantity: 5
+      - ReagentId: JuiceGrape
+        Quantity: 5
+      - ReagentId: Sugar
+        Quantity: 1
+      - ReagentId: JuiceWatermelon
+        Quantity: 12
   - type: Tag
     tags:
     - Fruit
@@ -339,15 +431,19 @@
     layers:
     - state: bowl
     - state: citrusdelight
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 38
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 18
-        - ReagentId: Vitamin
-          Quantity: 15
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 15
+      - ReagentId: Vitamin
+        Quantity: 15
+      - ReagentId: JuiceOrange
+        Quantity: 5
+      - ReagentId: JuiceLemon
+        Quantity: 5
+      - ReagentId: JuiceLime
+        Quantity: 5
   - type: Tag
     tags:
     - Fruit
@@ -367,17 +463,15 @@
     layers:
     - state: bowl
     - state: eden
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 25
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 8
-        - ReagentId: Vitamin
-          Quantity: 5
-        - ReagentId: Omnizine
-          Quantity: 5
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 25
+      - ReagentId: Vitamin
+        Quantity: 15
+      - ReagentId: Omnizine
+        Quantity: 5
 
 # Rice
 
@@ -418,6 +512,19 @@
           Quantity: 4
         - ReagentId: Vitamin
           Quantity: 4
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 30
+      - ReagentId: EggCooked
+        Quantity: 6
+      - ReagentId: JuiceCarrot
+        Quantity: 5
+      - ReagentId: Vitamin
+        Quantity: 7
+      - ReagentId: Oculine
+        Quantity: 3
   - type: Tag
     tags:
     - Meat
@@ -437,19 +544,17 @@
     layers:
     - state: bowl
     - state: rice-pork
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 40.5
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 18
-        - ReagentId: Vitamin
-          Quantity: 7
-        - ReagentId: Dexalin ##This is probably a reference to something but I don't get it
-          Quantity: 6.5
-        - ReagentId: Epinephrine
-          Quantity: 2
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 42
+      - ReagentId: Protein
+        Quantity: 6
+      - ReagentId: Dexalin #This is probably a reference to something but I don't get it. Same.
+        Quantity: 6.5
+      - ReagentId: Epinephrine
+        Quantity: 2
   - type: Tag
     tags:
     - Meat
@@ -469,19 +574,19 @@
     layers:
     - state: bowl
     - state: rice-pudding
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 25
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 9
-        - ReagentId: Vitamin
-          Quantity: 3
-        - ReagentId: Milk ##This is probably a reference to something but I don't get it
-          Quantity: 5
-        - ReagentId: Sugar
-          Quantity: 5
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 20
+      - ReagentId: Protein
+        Quantity: 5
+      - ReagentId: Vitamin
+        Quantity: 5
+      - ReagentId: Milk
+        Quantity: 5
+      - ReagentId: Sugar
+        Quantity: 5
 
 - type: entity
   name: black-eyed gumbo
@@ -510,6 +615,17 @@
           Quantity: 3
         - ReagentId: CapsaicinOil
           Quantity: 2
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 40
+      - ReagentId: Protein
+        Quantity: 4
+      - ReagentId: Vitamin
+        Quantity: 3
+      - ReagentId: CapsaicinOil
+        Quantity: 10
   - type: Tag
     tags:
     - Meat
@@ -531,17 +647,6 @@
     layers:
     - state: bowl
     - state: oatmeal
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 20
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 7
-        - ReagentId: Vitamin
-          Quantity: 2
-        - ReagentId: Milk
-          Quantity: 10
 
 - type: entity
   name: space liberty duff
@@ -552,7 +657,7 @@
   - type: FlavorProfile
     flavors:
       - jelly
-      - mushrooms
+      - mushroom
   - type: Sprite
     layers:
     - state: bowl
@@ -580,15 +685,18 @@
     inertia: 4
     drag: 0.1
     maxOffset: 2
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 15
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 6
-        - ReagentId: Amatoxin
-          Quantity: 6
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Amatoxin
+        Quantity: 30
+      - ReagentId: Nutriment
+        Quantity: 15
+      - ReagentId: Vodka
+        Quantity: 5
+  - type: Tag
+    tags:
+    - FinishedMeal
 
 # Soup
 
@@ -616,6 +724,21 @@
           Quantity: 8
         - ReagentId: Water
           Quantity: 10
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 20
+      - ReagentId: Protein
+        Quantity: 5
+      - ReagentId: JuiceCarrot
+        Quantity: 5
+      - ReagentId: Vitamin
+        Quantity: 12
+      - ReagentId: Oculine
+        Quantity: 3
+      - ReagentId: Water
+        Quantity: 10
   - type: Tag
     tags:
     - Meat
@@ -671,6 +794,13 @@
           Quantity: 10
         - ReagentId: Blood
           Quantity: 5
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Blood
+        Quantity: 20
+      - ReagentId: Vitamin
+        Quantity: 10
   - type: Tag
     tags:
     - Fruit
@@ -701,6 +831,15 @@
           Quantity: 10
         - ReagentId: Vitamin
           Quantity: 7
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 20
+      - ReagentId: Protein
+        Quantity: 10
+      - ReagentId: Soysauce
+        Quantity: 10
 
 - type: entity
   name: clown's tears
@@ -726,6 +865,21 @@
           Quantity: 9
         - ReagentId: Water
           Quantity: 10
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 12
+      - ReagentId: Vitamin
+        Quantity: 4
+      - ReagentId: JuiceBanana
+        Quantity: 5
+      - ReagentId: Honk
+        Quantity: 4
+      - ReagentId: Silicon
+        Quantity: 5
+      - ReagentId: Razorium
+        Quantity: 1 # silly
 
 - type: entity
   name: vegetable soup
@@ -754,6 +908,17 @@
           Quantity: 10
         - ReagentId: Oculine
           Quantity: 1
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 25
+      - ReagentId: Vitamin
+        Quantity: 17
+      - ReagentId: JuiceCarrot
+        Quantity: 5
+      - ReagentId: Oculine
+        Quantity: 3
 
 - type: entity
   name: nettle soup
@@ -783,6 +948,19 @@
           Quantity: 5
         - ReagentId: Histamine
           Quantity: 0.5
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 12
+      - ReagentId: Vitamin
+        Quantity: 5
+      - ReagentId: Omnizine
+        Quantity: 3
+      - ReagentId: SpaceDrugs
+        Quantity: 10
+      - ReagentId: Histamine
+        Quantity: 3
 
 - type: entity
   name: mystery soup
@@ -824,10 +1002,25 @@
             Quantity: 4
           - ReagentId: Allicin
             Quantity: 3
+  - type: Solution
+    solution:
+      reagents:
+        - ReagentId: Nutriment
+          Quantity: 14
+        - ReagentId: CapsaicinOil
+          Quantity: 10
+        - ReagentId: Vitamin
+          Quantity: 7
+        - ReagentId: Protein
+          Quantity: 2
+        - ReagentId: Allicin
+          Quantity: 1
+        - ReagentId: Water
+          Quantity: 4
   - type: Tag
     tags:
     - ChiliBowl
-
+    - FinishedMeal
 
 - type: entity
   name: cold chili
@@ -852,13 +1045,29 @@
             Quantity: 8
           - ReagentId: Vitamin
             Quantity: 4
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 14
+      - ReagentId: FrostOil
+        Quantity: 10
+      - ReagentId: Vitamin
+        Quantity: 7
+      - ReagentId: Protein
+        Quantity: 2
+      - ReagentId: Allicin
+        Quantity: 1
+      - ReagentId: Water
+        Quantity: 4
   - type: Tag
     tags:
     - ChiliBowl
+    - FinishedMeal
 
 - type: entity
   name: chili con carnival
-  parent: FoodBowlBase
+  parent: FoodSoupChiliHot
   id: FoodSoupChiliClown
   description: A delicious stew of meat, chilies, and salty, salty clown tears.
   components:
@@ -888,6 +1097,7 @@
   - type: Tag
     tags:
     - ChiliBowl
+    - FinishedMeal
 
 - type: entity
   name: monkey's delight
@@ -916,6 +1126,21 @@
             Quantity: 1
           - ReagentId: Blackpepper
             Quantity: 1
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 25
+      - ReagentId: Protein
+        Quantity: 10
+      - ReagentId: Vitamin
+        Quantity: 2
+      - ReagentId: JuiceBanana
+        Quantity: 5
+      - ReagentId: TableSalt
+        Quantity: 1
+      - ReagentId: Blackpepper
+        Quantity: 1
   - type: Tag
     tags:
     - Meat
@@ -945,6 +1170,15 @@
             Quantity: 5
           - ReagentId: Water
             Quantity: 10
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 14
+      - ReagentId: Vitamin
+        Quantity: 6
+      - ReagentId: Water
+        Quantity: 10
   - type: Tag
     tags:
     - Fruit
@@ -973,6 +1207,17 @@
             Quantity: 5
           - ReagentId: Vitamin
             Quantity: 3
+  - type: Solution
+    solution:
+      reagents:
+        - ReagentId: Nutriment
+          Quantity: 20 # Eyes are yummy
+        - ReagentId: Vitamin
+          Quantity: 12
+        - ReagentId: JuiceCarrot
+          Quantity: 5
+        - ReagentId: Oculine
+          Quantity: 8
   - type: Tag
     tags:
     - Meat
@@ -1037,6 +1282,15 @@
             Quantity: 5
           - ReagentId: Milk
             Quantity: 5
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 24
+      - ReagentId: Vitamin
+        Quantity: 16
+      - ReagentId: Milk
+        Quantity: 5
 
 - type: entity
   name: beet soup
@@ -1059,6 +1313,7 @@
             Quantity: 7
           - ReagentId: Water
             Quantity: 10
+
 # Tastes like borsch, bortsch, borstch, borsh, borshch, borscht.
 
 - type: entity
@@ -1080,6 +1335,7 @@
             Quantity: 4
           - ReagentId: Vitamin
             Quantity: 6
+
 # Tastes like beet.
 
 - type: entity
@@ -1108,6 +1364,19 @@
             Quantity: 5
           - ReagentId: Vitamin
             Quantity: 2
+  - type: Solution
+    solution:
+      reagents: # This loses a lot of reagents because it takes so many ingredients, if you're refactoring cooking, redo these numbers.
+        - ReagentId: Nutriment
+          Quantity: 30
+        - ReagentId: Protein
+          Quantity: 6
+        - ReagentId: Vitamin
+          Quantity: 15
+        - ReagentId: JuiceCarrot
+          Quantity: 5
+        - ReagentId: Oculine
+          Quantity: 3
   - type: Tag
     tags:
     - Meat
@@ -1136,6 +1405,7 @@
             Quantity: 4
           - ReagentId: Vitamin
             Quantity: 5
+
 # Tastes like sweet potato.
 
 - type: entity
@@ -1162,6 +1432,15 @@
             Quantity: 5
           - ReagentId: Allicin
             Quantity: 5
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 20
+      - ReagentId: Vitamin
+        Quantity: 5
+      - ReagentId: Allicin
+        Quantity: 5
 
 - type: entity
   name: bisque
@@ -1189,6 +1468,18 @@
             Quantity: 6
           - ReagentId: Water
             Quantity: 5
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 29
+      - ReagentId: Vitamin
+        Quantity: 11
+      - ReagentId: Protein
+        Quantity: 10
+      - ReagentId: Water
+        Quantity: 5
+
 # Tastes like crab.
 
 - type: entity
@@ -1204,7 +1495,7 @@
     storedOffset: 0,2
   - type: FlavorProfile
     flavors:
-      - mushrooms
+      - mushroom
       - electrons
   - type: Sprite
     layers:
@@ -1219,6 +1510,13 @@
             Quantity: 3
           - ReagentId: Licoxide
             Quantity: 6
+  - type: Solution
+    solution:
+      reagents:
+        - ReagentId: Nutriment
+          Quantity: 25
+        - ReagentId: Licoxide
+          Quantity: 10
 
 - type: entity
   name: bungo curry
@@ -1244,10 +1542,20 @@
             Quantity: 5
           - ReagentId: CapsaicinOil
             Quantity: 5
+  - type: Solution
+    solution:
+      reagents:
+        - ReagentId: Nutriment
+          Quantity: 20
+        - ReagentId: Vitamin
+          Quantity: 3
+        - ReagentId: CapsaicinOil
+          Quantity: 10
   - type: Tag
     tags:
     - Fruit
     - Soup
+
 # Tastes like bungo, hot curry.
 
 - type: entity
@@ -1275,6 +1583,19 @@
             Quantity: 6
           - ReagentId: Allicin
             Quantity: 3
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 27
+      - ReagentId: Protein
+        Quantity: 10
+      - ReagentId: Butter
+        Quantity: 5
+      - ReagentId: Vitamin
+        Quantity: 5
+      - ReagentId: Allicin
+        Quantity: 5
   - type: Tag
     tags:
     - Meat

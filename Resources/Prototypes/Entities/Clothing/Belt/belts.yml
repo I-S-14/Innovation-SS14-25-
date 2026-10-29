@@ -15,6 +15,10 @@
     sprite: Clothing/Belt/sheath.rsi
   - type: Item
     size: Ginormous
+    shape:
+    - 0,0,1,2
+    storedOffset: 0,-2
+    storedRotation: 45
   - type: ItemSlots
     slots:
       item:
@@ -23,6 +27,7 @@
         ejectVerbText: sheath-eject-verb
         insertSound: /Audio/Items/sheath.ogg
         ejectSound: /Audio/Items/unsheath.ogg
+        ejectOnBreak: true
         whitelist:
           tags:
           - CaptainSabre
@@ -38,7 +43,7 @@
   parent: ClothingBeltStorageBase
   id: ClothingBeltQuiver
   name: quiver
-  description: Can hold up to 15 arrows, and fits snug around your waist.
+  description: Can hold up to 16 arrows, and fits snug around your waist.
   components:
   - type: Sprite
     sprite: Clothing/Belt/quiver.rsi
@@ -55,6 +60,10 @@
       tags:
       - Arrow
       - Plunger
+  - type: Item
+    size: Ginormous
+    shape:
+    - 0,0,5,2
   - type: Appearance
   - type: StorageContainerVisuals
     maxFillLevels: 3
@@ -139,6 +148,10 @@
           tags:
           - Sidearm
   # Goobstation end
+  - type: Item
+    size: Ginormous
+    shape:
+    - 0,0,4,1
 
 - type: entity
   parent: [ClothingBeltHolster, BaseSyndicateContraband] # Goob - inherit from regular holster
@@ -168,6 +181,10 @@
         whitelist:
           components:
           - Gun
+  - type: Item
+    size: Ginormous
+    shape:
+    - 0,0,4,2
   - type: StaticPrice
     price: 500
 
@@ -255,7 +272,6 @@
         - Fulton # CorvaxGoob
     # CorvaxGoob-WorkBelts-Techfab-end
 
-
 - type: entity
   parent: [ClothingBeltStorageBase, ContentsExplosionResistanceBase, BaseSyndicateContraband]
   id: ClothingBeltMilitaryWebbing
@@ -289,7 +305,7 @@
   # Goobstation End
 
 - type: entity
-  parent: [ BaseCentcommContraband, ClothingBeltMilitaryWebbing ] # Goobstation
+  parent: [ BaseTaskForceContraband, ClothingBeltMilitaryWebbing, BaseCentcommContraband ]
   id: ClothingBeltMilitaryWebbingERT
   name: ERT chest rig
   description: A set of tactical webbing worn by Emergency Response Team operatives.

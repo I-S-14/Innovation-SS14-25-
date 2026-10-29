@@ -31,7 +31,6 @@ chat-radio-message-wrap-bold = [radiochannel="{$channelId}"]{$channel} [bold]{$n
 
 # Goob - radiochannel tags so players can customize channel colors
 examine-headset-default-channel = Use {$prefix} for the default channel ([radiochannel="{$channelId}"]{$channel}[/radiochannel]).
-
 chat-radio-common = Common
 chat-radio-centcom = CentComm
 chat-radio-command = Command
@@ -43,7 +42,6 @@ chat-radio-service = Service
 chat-radio-supply = Supply
 chat-radio-syndicate = Syndicate
 chat-radio-freelance = Freelance
-
 # not headset but whatever
 chat-radio-handheld = Handheld
 chat-radio-binary = Binary

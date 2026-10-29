@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Server.Atmos.Components;
-using Content.Server.Atmos.Piping.Components;
 using Content.Shared.Atmos;
 using Content.Shared.Atmos.Components;
+using Content.Shared.Atmos.EntitySystems;
+using Content.Shared.Atmos.Piping.Components;
 using Content.Shared.Maps;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
@@ -15,7 +16,7 @@ namespace Content.Server.Atmos.EntitySystems
 {
     public sealed partial class AtmosphereSystem
     {
-        [Dependency] private readonly IGameTiming _gameTiming = default!;
+        [Dependency] private IGameTiming _gameTiming = default!;
 
         private readonly Stopwatch _simulationStopwatch = new();
 
@@ -262,11 +263,7 @@ namespace Content.Server.Atmos.EntitySystems
                 if (tile.Air == null)
                     return;
 
-                tile.Air = null;
-                tile.AirArchived = null;
-                tile.ArchivedCycle = 0;
-                tile.LastShare = 0f;
-                tile.Hotspot = new Hotspot();
+                ShuntTileVolume(tile);
                 NotifyDeviceTileChanged((ent.Owner, ent.Comp1, ent.Comp3), tile.GridIndices);
                 return;
             }
@@ -396,14 +393,9 @@ namespace Content.Server.Atmos.EntitySystems
             // Note: This is still processed even if space wind is turned off since this handles playing the sounds.
 
             var number = 0;
-            var bodies = GetEntityQuery<PhysicsComponent>();
-            var xforms = GetEntityQuery<TransformComponent>();
-            var metas = GetEntityQuery<MetaDataComponent>();
-            var pressureQuery = GetEntityQuery<MovedByPressureComponent>();
-
             while (atmosphere.CurrentRunTiles.TryDequeue(out var tile))
             {
-                HighPressureMovements(ent, tile, bodies, xforms, pressureQuery, metas);
+                HighPressureMovements(ent, tile);
                 tile.PressureDifference = 0f;
                 tile.LastPressureDirection = tile.PressureDirection;
                 tile.PressureDirection = AtmosDirection.Invalid;
@@ -487,16 +479,16 @@ namespace Content.Server.Atmos.EntitySystems
             {
                 atmosphere.DeltaPressureCursor = 0;
                 atmosphere.DeltaPressureDamageResults.Clear();
+                _deltaPressureInvalidEntityQueue.Clear();
             }
-
-            var remaining = count - atmosphere.DeltaPressureCursor;
-            var batchSize = Math.Max(50, DeltaPressureParallelProcessPerIteration);
-            var toProcess = Math.Min(batchSize, remaining);
 
             var timeCheck1 = 0;
             while (atmosphere.DeltaPressureCursor < count)
             {
-                var job = new DeltaPressureParallelJob(this,
+                var remaining = count - atmosphere.DeltaPressureCursor;
+                var toProcess = Math.Min(DeltaPressureParallelProcessPerIteration, remaining);
+
+                var job = new DeltaPressureParallelBulkJob(this,
                     atmosphere,
                     atmosphere.DeltaPressureCursor,
                     DeltaPressureParallelBatchSize);
@@ -528,6 +520,13 @@ namespace Content.Server.Atmos.EntitySystems
                 {
                     return false;
                 }
+            }
+
+            // Ents may have been invalidated (missing AirtightComp) during parallel processing.
+            // Since we can't touch the ent list during parallel processing, we queue them up here to be removed.
+            while (_deltaPressureInvalidEntityQueue.TryDequeue(out var invalidEnt))
+            {
+                TryRemoveDeltaPressureEntity(ent.AsNullable(), invalidEnt);
             }
 
             return true;
@@ -845,20 +844,5 @@ namespace Content.Server.Atmos.EntitySystems
         /// Method is finished with the GridAtmosphere.
         /// </summary>
         Finished,
-    }
-
-    public enum AtmosphereProcessingState : byte
-    {
-        Revalidate,
-        TileEqualize,
-        ActiveTiles,
-        ExcitedGroups,
-        HighPressureDelta,
-        DeltaPressure,
-        Hotspots,
-        Superconductivity,
-        PipeNet,
-        AtmosDevices,
-        NumStates
     }
 }

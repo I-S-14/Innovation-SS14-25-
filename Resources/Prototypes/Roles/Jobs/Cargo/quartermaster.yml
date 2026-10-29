@@ -23,7 +23,6 @@
       inverted: true
       species:
       - Abductor
-  weight: 10
   startingGear: QuartermasterGear
   icon: "JobIconQuarterMaster"
   supervisors: job-supervisors-captain

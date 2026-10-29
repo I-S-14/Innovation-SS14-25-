@@ -132,20 +132,19 @@
   id: XenoArtifactEffectsHandheldOnlyTable
   table: !type:GroupSelector
     children:
-    #- id: XenoArtifactBecomeRandomInstrument
-    #  weight 10.0 # removed until we have value-based system
+    #- id: XenoArtifactBecomeRandomInstrument # removed until we have value-based system
+    #  weight: 1
     #- id: XenoArtifactGun
-    #  weight 4.0 #it conflicts with default interaction - it should activate artifact nodes
+    #  weight: 0.4 #it conflicts with default interaction - it should activate artifact nodes
     - id: XenoArtifactOmnitool
-      weight: 10.0
+      weight: 1
     - id: XenoArtifactDrill
-      weight: 10.0
+      weight: 1
 
 - type: entity
   id: BaseXenoArtifactEffect
   name: effect
   description: Unknown
-  categories: [ HideSpawnMenu ]
   abstract: true
   components:
   - type: XenoArtifactNode
@@ -153,11 +152,10 @@
     group: XenoArtifactNode
 
 - type: entity
-  id: BaseOneTimeXenoArtifactEffect
   parent: BaseXenoArtifactEffect
+  id: BaseOneTimeXenoArtifactEffect
   name: one-time-effect
   description: Unknown
-  categories: [ HideSpawnMenu ]
   abstract: true
   components:
   - type: XenoArtifactNode
@@ -169,9 +167,30 @@
     group: XenoArtifactNode
 
 - type: entity
-  id: XenoArtifactEffectUniversalIntercom
+  id: XenoArtifactBecomeLamp
+  parent: BaseOneTimeXenoArtifactEffect
+  description: Emits strange light
+  components:
+  - type: XAEApplyComponents
+    components:
+    - type: PointLight
+    - type: RandomPointLight
+
+- type: entity
+  id: XenoArtifactBecomeRainbowLamp
+  parent: BaseOneTimeXenoArtifactEffect
+  description: Emits shifting light
+  components:
+  - type: XAEApplyComponents
+    components:
+    - type: PointLight
+      radius: 3
+    - type: RgbLightController
+
+- type: entity
   parent: BaseOneTimeXenoArtifactEffect
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
+  id: XenoArtifactEffectUniversalIntercom
   description: Obtains ability of long-distance communication device
   components:
   - type: XAEApplyComponents
@@ -199,9 +218,9 @@
       - Supply
 
 - type: entity
-  id: XenoArtifactBecomeRandomInstrument
   parent: BaseOneTimeXenoArtifactEffect
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
+  id: XenoArtifactBecomeRandomInstrument
   description: Obtains ability of musical instrument
   components:
   - type: XAEApplyComponents
@@ -213,9 +232,9 @@
       key: enum.InstrumentUiKey.Key
 
 - type: entity
-  id: XenoArtifactStorage
   parent: BaseOneTimeXenoArtifactEffect
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
+  id: XenoArtifactStorage
   description: Obtains ability of hidden storage
   components:
   - type: XAEApplyComponents
@@ -228,17 +247,17 @@
       - 0,0,10,5
 
 - type: entity
+  parent: BaseOneTimeXenoArtifactEffect
   id: XenoArtifactPhasing
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseOneTimeXenoArtifactEffect
   description: Becomes phased
   components:
   - type: XAERemoveCollision
 
 - type: entity
-  id: XenoArtifactWandering
   parent: BaseOneTimeXenoArtifactEffect
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
+  id: XenoArtifactWandering
   description: Starts to move sporadically
   components:
   - type: XAEApplyComponents
@@ -250,17 +269,17 @@
       maxStepCooldown: 3
 
 - type: entity
+  parent: BaseOneTimeXenoArtifactEffect
   id: XenoArtifactSolutionStorage
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseOneTimeXenoArtifactEffect
   description: Obtains ability of container for chemical solutions
   components:
   - type: XAEApplyComponents
     components:
-    - type: SolutionContainerManager
-      solutions:
-        beaker:
-          maxVol: 150
+    - type: Solution
+      id: beaker
+      solution:
+        maxVol: 120
     - type: FitsInDispenser
       solution: beaker
     - type: RefillableSolution
@@ -282,9 +301,9 @@
       utensil: None
 
 - type: entity
+  parent: BaseOneTimeXenoArtifactEffect
   id: XenoArtifactSpeedUp
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseOneTimeXenoArtifactEffect
   description: Improves holder movement speed
   components:
   - type: XAEApplyComponents
@@ -294,9 +313,9 @@
       sprintModifier: 1.3
 
 - type: entity
+  parent: BaseOneTimeXenoArtifactEffect
   id: XenoArtifactDrill
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseOneTimeXenoArtifactEffect
   description: Obtains ability of drill
   components:
   - type: XAEApplyComponents
@@ -308,12 +327,14 @@
           Blunt: 4
       soundHit:
         path: /Audio/Weapons/bladeslice.ogg
-    - type: Sharp
+    - type: Tool
+      qualities:
+      - Slicing
 
 - type: entity
+  parent: BaseOneTimeXenoArtifactEffect # todo - increment power, but only once per node
   id: XenoArtifactGenerateEnergy
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseOneTimeXenoArtifactEffect # todo - increment power, but only once per node
   description: Produces power
   components:
   - type: XAEApplyComponents
@@ -328,9 +349,9 @@
           nodeGroupID: HVPower
 
 - type: entity
+  parent: BaseOneTimeXenoArtifactEffect
   id: XenoArtifactGun
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseOneTimeXenoArtifactEffect
   description: Obtains ability of firearm
   components:
   - type: XAEApplyComponents
@@ -360,9 +381,9 @@
         path: /Audio/Weapons/Guns/Gunshots/revolver.ogg
 
 - type: entity
+  parent: BaseOneTimeXenoArtifactEffect
   id: XenoArtifactGhost
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseOneTimeXenoArtifactEffect
   description: Becomes sentient
   components:
   - type: XAEApplyComponents
@@ -381,9 +402,9 @@
     - type: GhostTakeoverAvailable
 
 - type: entity
+  parent: BaseOneTimeXenoArtifactEffect
   id: XenoArtifactOmnitool
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseOneTimeXenoArtifactEffect
   description: Obtains ability of omnitool
   components:
   - type: XAEApplyComponents
@@ -429,9 +450,9 @@
           path: /Audio/Items/change_drill.ogg
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactEffectBadFeeling
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Broadcasts sublime message
   components:
   - type: XAETelepathic
@@ -460,9 +481,9 @@
     - badfeeling-artifact-drastic-6
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactEffectGoodFeeling
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Broadcasts sublime message
   components:
   - type: XAETelepathic
@@ -490,9 +511,9 @@
     - goodfeeling-artifact-drastic-6
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactEffectJunkSpawn
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Create recyclable junk
   components:
   - type: XAEApplyComponents
@@ -502,8 +523,7 @@
     - type: EntityTableSpawner
       deleteSpawnerAfterSpawn: false
       table: !type:GroupSelector
-        rolls: !type:RangeNumberSelector
-          range: 1, 4
+        rolls: 1, 4
         children:
         - !type:NestedSelector
           tableId: GenericTrashItems
@@ -513,17 +533,17 @@
           weight: 1
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactEffectLightFlicker
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Minor electromagnetic interference
   components:
   - type: XAELightFlicker
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactPotassiumWave
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Produces potassium
   components:
   - type: XAEApplyComponents
@@ -532,12 +552,10 @@
     components:
     - type: EntityTableSpawner
       deleteSpawnerAfterSpawn: false
-      table: !type:AllSelector
-        children:
-        - id: FoodBanana
-          rolls: !type:ConstantNumberSelector
-            value: 6
-          prob: 0.5
+      table:
+        id: FoodBanana
+        amount: !type:BinomialNumberSelector
+          trials: 6
   - type: XAECreatePuddle
     chemAmount:
       min: 1
@@ -549,9 +567,9 @@
     - Potassium
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactFloraSpawn
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Produces flora
   components:
   - type: XAEApplyComponents
@@ -560,14 +578,13 @@
     components:
     - type: EntityTableSpawner
       deleteSpawnerAfterSpawn: false
-      table: !type:AllSelector
-        children:
-        - id: RandomFloraTree
+      table: !type:NestedSelector
+        tableId: FloraTreeTable
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactChemicalPuddle
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Produces puddle of chemical mixture # todo: make description say what exact chemical is produced, maybe add mixes into possible chemicals
   components:
   - type: XAECreatePuddle
@@ -602,35 +619,35 @@
     - Sulfur
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactThrowThingsAround
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Minor implosion
   components:
   - type: XAEThrowThingsAround
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactColdWave
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Cools down surrounding gas
   components:
   - type: XAETemperature
     targetTemp: 50
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactHeatWave
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Heats up surrounding gas greatly
   components:
   - type: XAETemperature
     targetTemp: 500
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactFoamMild
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Produces chemical foam # todo: separate in 1 for each chemical for description? actually sounds like a very good idea
   components:
   - type: XAEFoam
@@ -649,9 +666,9 @@
     - JuiceThatMakesYouWeh
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactRandomInstrumentSpawn
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Creates musical instrument
   components:
   - type: XenoArtifactNode
@@ -665,14 +682,13 @@
     components:
     - type: EntityTableSpawner
       deleteSpawnerAfterSpawn: false
-      table: !type:AllSelector
-        children:
-        - id: RandomInstruments
+      table: !type:NestedSelector
+        tableId: RandomInstrumentTable
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactMonkeySpawn
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Creates primate
   components:
   - type: XenoArtifactNode
@@ -689,14 +705,14 @@
       table: !type:GroupSelector
         children:
         - id: MobMonkey
-          weight: 95.0
+          weight: 95
         - id: MobGorilla
-          weight: 5.0
+          weight: 5
 
 - type: entity
+  parent: BaseOneTimeXenoArtifactEffect
   id: XenoArtifactRadioactive
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseOneTimeXenoArtifactEffect
   description: Becomes mildly radioactive
   components:
   - type: XAEApplyComponents
@@ -707,9 +723,9 @@
       intensity: 1
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactChargeBattery
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Charges up batteries
   components:
   - type: XAEChargeBattery
@@ -718,18 +734,18 @@
     - charge-artifact-popup
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactKnock
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Mild electromagnetic interference
   components:
   - type: XAEKnock
   - type: XAELightFlicker
 
 - type: entity
+  parent: BaseOneTimeXenoArtifactEffect
   id: XenoArtifactMagnet
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseOneTimeXenoArtifactEffect
   description: Create small gravity well
   components:
   - type: XAEApplyComponents
@@ -742,9 +758,9 @@
       baseTangentialAcceleration: 3
 
 - type: entity
+  parent: BaseOneTimeXenoArtifactEffect
   id: XenoArtifactMagnetNegative
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseOneTimeXenoArtifactEffect
   description: Create small gravity well
   components:
   - type: XAEApplyComponents
@@ -757,15 +773,14 @@
       baseTangentialAcceleration: -3
 
 - type: entity
+  parent: BaseOneTimeXenoArtifactEffect
   id: XenoArtifactStealth
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseOneTimeXenoArtifactEffect
   description: Create light interference
   components:
   - type: XAEApplyComponents
     components:
     - type: Stealth
-      hadOutline: true
     - type: StealthOnMove
       passiveVisibilityRate: -0.10
       movementVisibilityRate: 0.10
@@ -802,9 +817,9 @@
           prob: 0.3
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactRareMaterialSpawnSilver
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Create rare materials
   components:
   - type: XenoArtifactNode
@@ -818,17 +833,17 @@
     components:
     - type: EntityTableSpawner
       deleteSpawnerAfterSpawn: false
-      table: !type:AllSelector
-        children:
-        - id: SilverOre1
-          rolls: !type:ConstantNumberSelector
-            value: 6
-          prob: 0.3
+      autoStack: true
+      table:
+        id: SilverOre1
+        rolls: !type:ConstantNumberSelector
+          value: 6
+        prob: 0.7
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactRareMaterialSpawnPlasma
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Create plasma
   components:
   - type: XenoArtifactNode
@@ -842,17 +857,17 @@
     components:
     - type: EntityTableSpawner
       deleteSpawnerAfterSpawn: false
-      table: !type:AllSelector
-        children:
-        - id: PlasmaOre1
-          rolls: !type:ConstantNumberSelector
-            value: 6
-          prob: 0.3
+      autoStack: true
+      table:
+        id: PlasmaOre1
+        rolls: !type:ConstantNumberSelector
+          value: 6
+        prob: 0.3
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactRareMaterialSpawnGold
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Create gold
   components:
   - type: XenoArtifactNode
@@ -866,17 +881,17 @@
     components:
     - type: EntityTableSpawner
       deleteSpawnerAfterSpawn: false
-      table: !type:AllSelector
-        children:
-        - id: GoldOre1
-          rolls: !type:ConstantNumberSelector
-            value: 6
-          prob: 0.3
+      autoStack: true
+      table:
+        id: GoldOre1
+        rolls: !type:ConstantNumberSelector
+          value: 6
+        prob: 0.3
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactRareMaterialSpawnUranium
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Create uranium
   components:
   - type: XenoArtifactNode
@@ -890,17 +905,17 @@
     components:
     - type: EntityTableSpawner
       deleteSpawnerAfterSpawn: false
-      table: !type:AllSelector
-        children:
-        - id: UraniumOre1
-          rolls: !type:ConstantNumberSelector
-            value: 3
-          prob: 0.3
+      autoStack: true
+      table:
+        id: UraniumOre1
+        amount: !type:BinomialNumberSelector
+          trials: 3
+          chance: 0.3
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactAngryCarpSpawn
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Create hostile fish
   components:
   - type: XenoArtifactNode
@@ -926,9 +941,9 @@
           weight: 0.25
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactFaunaSpawn
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Create friendly fauna
   components:
   - type: XenoArtifactNode
@@ -950,32 +965,25 @@
         - id: MobKangaroo
         - id: MobFox
         - id: MobPenguin
-          amount: !type:RangeNumberSelector
-            range: 1, 2
+          amount: 1, 2
         - id: MobMothroach
-          amount: !type:RangeNumberSelector
-            range: 1, 2
+          amount: 1, 2
         - id: MobCorgiPuppy
-          amount: !type:RangeNumberSelector
-            range: 1, 2
+          amount: 1, 2
         - id: MobCatKitten
-          amount: !type:RangeNumberSelector
-            range: 1, 2
+          amount: 1, 2
         - id: MobCat
-          amount: !type:RangeNumberSelector
-            range: 1, 2
+          amount: 1, 2
         - id: MobBee
-          amount: !type:RangeNumberSelector
-            range: 2, 5
+          amount: 2, 5
         - id: MobGoat
-          amount: !type:RangeNumberSelector
-            range: 1, 3
+          amount: 1, 3
         - id: MobMonkeySyndicateAgent #so lucky
           prob: 0.03
 
 - type: entity
-  id: XenoArtifactHostileFaunaSpawn
   parent: BaseXenoArtifactEffect
+  id: XenoArtifactHostileFaunaSpawn
   description: Create hostile fauna
   components:
   - type: AlmanacBladeArtifactSpawner # Goobstation
@@ -1002,9 +1010,9 @@
         - id: MobKangarooSpace
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactCashSpawn
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Create money
   components:
   - type: XenoArtifactNode
@@ -1019,8 +1027,7 @@
     - type: EntityTableSpawner
       deleteSpawnerAfterSpawn: false
       table: !type:GroupSelector
-        rolls: !type:RangeNumberSelector
-          range: 2, 4
+        rolls: 2, 4
         children:
         - id: SpaceCash10
           weight: 0.75
@@ -1032,9 +1039,9 @@
           weight: 0.1
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactShatterWindows
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Break windows
   components:
   - type: XenoArtifactNode
@@ -1052,9 +1059,9 @@
         Structural: 200
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactFoamGood
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Creates wave of helpful foam
   components:
   - type: XenoArtifactNode
@@ -1074,9 +1081,9 @@
     - Omnizine
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactFoamDangerous
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Creates wave of harmful foam
   components:
   - type: XAEFoam
@@ -1097,9 +1104,9 @@
     - Amatoxin
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactPuddleRare
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Creates puddle of helpful chemicals
   components:
   - type: XAECreatePuddle
@@ -1128,9 +1135,9 @@
     - Siderlac
 
 - type: entity
+  parent: BaseOneTimeXenoArtifactEffect
   id: XenoArtifactAnomalySpawn
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseOneTimeXenoArtifactEffect
   description: Creates anomaly
   components:
   - type: XAEApplyComponents
@@ -1144,9 +1151,9 @@
         - id: RandomAnomalySpawner
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactIgnite
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Pyrokinesis
   components:
   - type: XAEIgnite
@@ -1156,17 +1163,17 @@
       max: 6
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactTeleport
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Teleportation
   components:
   - type: XAERandomTeleportInvoker
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactEmp
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Dangerous electromagnetic interference
   components:
   - type: XenoArtifactNode
@@ -1177,35 +1184,35 @@
   - type: XAEEmpInArea
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactPolyMonkey
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Temporarily reshape flesh to fur
   components:
   - type: XAEPolymorph
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactPolyLizard
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Temporarily reshape flesh to scale
   components:
   - type: XAEPolymorph
     polymorphPrototypeName: ArtifactLizard
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactPolyLuminous
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Temporarily reshape flesh to light
   components:
   - type: XAEPolymorph
     polymorphPrototypeName: ArtifactLuminous
 
 - type: entity
+  parent: BaseOneTimeXenoArtifactEffect
   id: XenoArtifactRadioactiveStrong
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseOneTimeXenoArtifactEffect
   description: Becomes highly radioactive
   components:
   - type: XAEApplyComponents
@@ -1216,9 +1223,9 @@
       intensity: 2
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactMaterialSpawnGlass
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Create glass
   components:
   - type: XAEApplyComponents
@@ -1226,15 +1233,15 @@
     refreshOnReactivate: true
     components:
     - type: EntityTableSpawner
+      autoStack: true
       deleteSpawnerAfterSpawn: false
-      table: !type:GroupSelector
-        children:
-        - id: SheetGlass
+      table:
+        id: SheetGlass
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactMaterialSpawnSteel
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Create steel
   components:
   - type: XAEApplyComponents
@@ -1242,15 +1249,15 @@
     refreshOnReactivate: true
     components:
     - type: EntityTableSpawner
+      autoStack: true
       deleteSpawnerAfterSpawn: false
-      table: !type:GroupSelector
-        children:
-        - id: SheetSteel
+      table:
+        id: SheetSteel
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactMaterialSpawnPlastic
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Create plastic
   components:
   - type: XAEApplyComponents
@@ -1258,23 +1265,23 @@
     refreshOnReactivate: true
     components:
     - type: EntityTableSpawner
+      autoStack: true
       deleteSpawnerAfterSpawn: false
-      table: !type:GroupSelector
-        children:
-        - id: SheetPlastic
+      table:
+        id: SheetPlastic
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactPortal
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Create short-living bluespace portal
   components:
   - type: XAEPortal
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactArtifactSpawn
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Create artifact
   components:
   - type: XenoArtifactNode
@@ -1288,14 +1295,13 @@
     components:
     - type: EntityTableSpawner
       deleteSpawnerAfterSpawn: false
-      table: !type:AllSelector
-        children:
-        - id: RandomArtifactSpawner
+      table: !type:NestedSelector
+        tableId: RandomArtifactTable
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactShuffle
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Switch places of sentient beings #not ALL beings, but oh well...
   components:
   - type: XAEShuffle
@@ -1305,10 +1311,10 @@
     - shuffle-artifact-popup
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactHealAll
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
-  description: Miraclous healing
+  description: Miraculous healing
   components:
   - type: XAEDamageInArea
     damageChance: 1
@@ -1317,14 +1323,18 @@
       components:
       - MobState
     damage:
-      groups:
-        Brute: -300
-        Burn: -300
+      types:
+        Blunt: -100
+        Piercing: -100
+        Slash: -100
+        Heat: -100
+        Cold: -100
+        Shock: -100
 
 - type: entity
+  parent: BaseOneTimeXenoArtifactEffect
   id: XenoArtifactTesla
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseOneTimeXenoArtifactEffect
   description: Mass destruction
   components:
   - type: XAEApplyComponents
@@ -1333,14 +1343,13 @@
     components:
     - type: EntityTableSpawner
       deleteSpawnerAfterSpawn: false
-      table: !type:AllSelector
-        children:
-        - id: Singularity
+      table:
+        id: TeslaEnergyBall
 
 - type: entity
+  parent: BaseOneTimeXenoArtifactEffect
   id: XenoArtifactSingularity
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseOneTimeXenoArtifactEffect
   description: Imminent doom
   components:
   - type: XAEApplyComponents
@@ -1349,14 +1358,13 @@
     components:
     - type: EntityTableSpawner
       deleteSpawnerAfterSpawn: false
-      table: !type:AllSelector
-        children:
-        - id: TeslaEnergyBall
+      table:
+        id: Singularity
 
 - type: entity
+  parent: BaseOneTimeXenoArtifactEffect
   id: XenoArtifactExplosionScary
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseOneTimeXenoArtifactEffect
   description: Small scale high-speed nuclear reaction
   components:
   - type: XAETriggerExplosives
@@ -1371,9 +1379,9 @@
     repeatable: true
 
 - type: entity
+  parent: BaseOneTimeXenoArtifactEffect
   id: XenoArtifactBoom
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseOneTimeXenoArtifactEffect
   description: Explosion
   components:
   - type: XAETriggerExplosives
@@ -1387,9 +1395,9 @@
     repeatable: true
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactEffectCreationGasPlasma
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Expels plasma
   components:
   - type: XAECreateGas
@@ -1397,9 +1405,9 @@
       Plasma: 300
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactEffectCreationGasTritium
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Expels tritium
   components:
   - type: XAECreateGas
@@ -1407,9 +1415,9 @@
       Tritium: 300
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactEffectCreationGasAmmonia
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Expels ammonia
   components:
   - type: XAECreateGas
@@ -1417,9 +1425,9 @@
       Ammonia: 300
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactEffectCreationGasFrezon
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Expels frezon
   components:
   - type: XAECreateGas
@@ -1427,9 +1435,9 @@
       Frezon: 300
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactEffectCreationGasNitrousOxide
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Expels nitrous oxide
   components:
   - type: XAECreateGas
@@ -1437,9 +1445,9 @@
       NitrousOxide: 300
 
 - type: entity
+  parent: BaseXenoArtifactEffect
   id: XenoArtifactEffectCreationGasCarbonDioxide
   categories: [ HideSpawnMenu ] #goob - clean up spawn menu
-  parent: BaseXenoArtifactEffect
   description: Expels carbon dioxide
   components:
   - type: XAECreateGas

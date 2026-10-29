@@ -20,7 +20,4 @@ using Content.Shared.Strip;
 
 namespace Content.Server.Strip;
 
-public sealed class StrippableSystem : SharedStrippableSystem
-{
-
-}
+public sealed partial class StrippableSystem : SharedStrippableSystem;

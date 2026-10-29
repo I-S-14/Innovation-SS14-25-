@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # No idea why it's in sci but we ball.
 # Why is this one file?
+
 - type: job
   id: StationAi
   name: job-name-station-ai
@@ -10,7 +11,6 @@
   - !type:RoleTimeRequirement
     role: JobBorg
     time: 5h
-  weight: 10
   canBeAntag: false
   #goobcoins: 40 #Goob content Corvax-Goob-coins
   skills: # CorvaxGoob-Skills
@@ -35,5 +35,6 @@
   - All
   icon: JobIconBorg
   supervisors: job-supervisors-rd
+  guides: [ Cyborgs ]
   jobEntity: PlayerBorgBattery
   applyTraits: true

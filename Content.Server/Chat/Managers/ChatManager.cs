@@ -54,7 +54,7 @@ internal sealed partial class ChatManager : IChatManager
     [Dependency] private readonly ILogManager _logManager = default!;
     //[Dependency] private readonly LinkAccountManager _linkAccount = default!; // RMC - Patreon // CorvaxGoob-Coins
 
-    private ISawmill _sawmill = default!;
+private ISawmill? _sawmill = default!;
 
     /// <summary>
     /// The maximum length a player-sent message can be sent
@@ -77,6 +77,8 @@ internal sealed partial class ChatManager : IChatManager
 
         _sawmill = _logManager.GetSawmill("SERVER");
 
+        _chatSystem = _entityManager.System<SharedChatSystem>();
+
         RegisterRateLimits();
     }
 
@@ -96,10 +98,10 @@ internal sealed partial class ChatManager : IChatManager
         DispatchServerAnnouncement(Loc.GetString(val ? "chat-manager-admin-ooc-chat-enabled-message" : "chat-manager-admin-ooc-chat-disabled-message"));
     }
 
-        public void DeleteMessagesBy(NetUserId uid)
-        {
-            if (!_players.TryGetValue(uid, out var user))
-                return;
+    public void DeleteMessagesBy(NetUserId uid)
+    {
+        if (!_players.TryGetValue(uid, out var user))
+            return;
 
         var msg = new MsgDeleteChatMessagesBy { Key = user.Key, Entities = user.Entities };
         _netManager.ServerSendToAll(msg);
@@ -120,13 +122,21 @@ internal sealed partial class ChatManager : IChatManager
 
     #region Server Announcements
 
-    public void DispatchServerAnnouncement(string message, Color? colorOverride = null)
+    public void DispatchServerAnnouncement(string message, Color? colorOverride = null, ICommonSession? sender = null)
     {
         var wrappedMessage = Loc.GetString("chat-manager-server-wrap-message", ("message", FormattedMessage.EscapeText(message)));
         ChatMessageToAll(ChatChannel.Server, message, wrappedMessage, EntityUid.Invalid, hideChat: false, recordReplay: true, colorOverride: colorOverride);
-        _sawmill.Info(message);
 
-        _adminLogger.Add(LogType.Chat, LogImpact.Low, $"Server announcement: {message}");
+        // _sawmill might have not been initialized when DispatchServerAnnouncement is called
+        // during server setup when some cvars are changed
+        _sawmill?.Info(message);
+
+        if (sender is null) //just so that log search works...
+            _adminLogger.Add(LogType.Chat, LogImpact.Low,
+                $"Server announcement from SYSTEM: {message}");
+        else
+            _adminLogger.Add(LogType.Chat, LogImpact.Low,
+                $"Server announcement from {sender:Player}: {message}");
     }
 
     public void DispatchServerMessage(ICommonSession player, string message, bool suppressLog = false)
@@ -329,10 +339,11 @@ internal sealed partial class ChatManager : IChatManager
             return;
         }
 
+        var playerName = _chatSystem.ChatNameLinks && player.AttachedEntity is {} attachedEntity ? $"[textlink=\"{FormattedMessage.EscapeStringParameter(player.Name)}\" entity=\"{_entityManager.GetNetEntity(attachedEntity)}\" color=\"{ChatChannel.AdminChat.TextColor().ToHex()}\"]" : FormattedMessage.EscapeText(player.Name);
         var clients = _adminManager.ActiveAdmins.Select(p => p.Channel);
         var wrappedMessage = Loc.GetString("chat-manager-send-admin-chat-wrap-message",
                                         ("adminChannelName", Loc.GetString("chat-manager-admin-channel-name")),
-                                        ("playerName", player.Name), ("message", FormattedMessage.EscapeText(message)));
+                                        ("playerName", playerName), ("message", FormattedMessage.EscapeText(message)));
 
         foreach (var client in clients)
         {

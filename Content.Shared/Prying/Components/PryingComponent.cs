@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+using Content.Shared.Alert;
 using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
+using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Prying.Components;
 
@@ -20,6 +22,7 @@ public sealed partial class PryingComponent : Component
     /// </summary>
     [DataField]
     public bool Force;
+
     /// <summary>
     /// Modifier on the prying time.
     /// Lower values result in more time.

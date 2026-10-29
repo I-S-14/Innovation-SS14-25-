@@ -1,14 +1,10 @@
 // SPDX-License-Identifier: MIT
-
-using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
 
 namespace Content.Shared.Sandbox
 {
-    public abstract class SharedSandboxSystem : EntitySystem
+    public abstract partial class SharedSandboxSystem : EntitySystem
     {
-        [Dependency] protected readonly IPrototypeManager PrototypeManager = default!;
-
         [Serializable, NetSerializable]
         protected sealed class MsgSandboxStatus : EntityEventArgs
         {
@@ -26,5 +22,8 @@ namespace Content.Shared.Sandbox
 
         [Serializable, NetSerializable]
         protected sealed class MsgSandboxSuicide : EntityEventArgs {}
+
+        [Serializable, NetSerializable]
+        protected sealed class MsgSandboxThermalVision : EntityEventArgs {}
     }
 }

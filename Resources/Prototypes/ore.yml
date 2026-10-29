@@ -3,6 +3,7 @@
 # Split it into 2 components, 1 for "spawn XYZ on destruction" and 1 for "randomly select one of these for spawn on destruction"
 
 # High yields
+
 - type: ore
   id: OreSteel
   oreEntity: SteelOre1Unprocessed # Lavaland Change
@@ -86,10 +87,6 @@
   oreEntity: MobSpawnCrabGold
 
 - type: ore
-  id: OreBananiumCrab
-  oreEntity: MobSpawnCrabBananium
-
-- type: ore
   id: OreUraniumCrab
   oreEntity: MobSpawnCrabUranium
 
@@ -124,6 +121,5 @@
     OreIronCrab: 5
     OreUraniumCrab: 2
     OreSilverCrab: 3
-    OreBananiumCrab: 1
     OreCoalCrab: 5
     OreGoldCrab: 2

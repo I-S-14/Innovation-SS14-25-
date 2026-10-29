@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Numerics;
+using Content.IntegrationTests.Fixtures;
 using Content.Shared.Interaction;
 using Robust.Server.GameObjects;
 using Robust.Shared.Containers;
@@ -12,7 +13,7 @@ namespace Content.IntegrationTests.Tests.Interaction
 {
     [TestFixture]
     [TestOf(typeof(SharedInteractionSystem))]
-    public sealed class InRangeUnobstructed
+    public sealed class InRangeUnobstructed : GameTest
     {
         private const string HumanId = "MobHuman";
 
@@ -29,11 +30,10 @@ namespace Content.IntegrationTests.Tests.Interaction
         [Test]
         public async Task EntityEntityTest()
         {
-            await using var pair = await PoolManager.GetServerClient();
+            var pair = Pair;
             var server = pair.Server;
 
             var sEntities = server.ResolveDependency<IEntityManager>();
-            var mapManager = server.System<SharedMapSystem>();
             var conSystem = sEntities.EntitySysManager.GetEntitySystem<SharedContainerSystem>();
             var tSystem = sEntities.EntitySysManager.GetEntitySystem<TransformSystem>();
 
@@ -111,8 +111,6 @@ namespace Content.IntegrationTests.Tests.Interaction
                     Assert.That(interactionSys.InRangeUnobstructed(mapCoordinates, origin, InteractionRangeDivided15Times3));
                 });
             });
-
-            await pair.CleanReturnAsync();
         }
     }
 }

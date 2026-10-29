@@ -6,7 +6,7 @@ using Content.Shared.Movement.Events;
 
 namespace Content.Shared.Clothing.EntitySystems;
 
-public sealed class SpeedModifierContactCapClothingSystem : EntitySystem
+public sealed partial class SpeedModifierContactCapClothingSystem : EntitySystem
 {
     public override void Initialize()
     {

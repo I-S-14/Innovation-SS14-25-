@@ -19,7 +19,6 @@
     - BaseStationRecords
     - BaseStationNtrTasks
     - BaseStationArrivals
-    - BaseStationGateway
     - BaseStationShuttles
     - BaseStationCentcomm
     - BaseStationEvacuation

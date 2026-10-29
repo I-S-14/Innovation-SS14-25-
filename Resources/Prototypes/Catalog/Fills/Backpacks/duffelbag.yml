@@ -53,13 +53,9 @@
       storagebase: !type:AllSelector
         children:
         - id: JugBicaridine
-        - id: JugPuncturase
-        - id: JugDermaline
-        - id: JugDylovene
-        - id: JugHyronalin
-        - id: JugSaline
-        - id: JugDexalinPlus
-        - id: JugTranexamicAcid
+        - id: JugPunctTranex
+        - id: JugPyraDerma
+        - id: JugDexPlusSaline
 
 - type: entity
   parent: ClothingBackpackDuffelSyndicateBundle
@@ -75,6 +71,7 @@
         - id: MagazineShotgun
           amount: 3
         - id: MagazineShotgunSlug
+
 #       - id: ThermalImagingGoggles
 
 - type: entity
@@ -90,6 +87,7 @@
         - id: WeaponSubMachineGunC20r
         - id: MagazinePistolSubMachineGun
           amount: 2
+
 #       - id: SMGSuppressor
 
 - type: entity
@@ -136,7 +134,7 @@
 - type: entity
   parent: ClothingBackpackDuffelSyndicateBundle
   id: ClothingBackpackDuffelSyndicateFilledGrenadeLauncher
-  name: China-Lake bundle
+  name: China Lake bundle
   description: "An old China-Lake grenade launcher bundled with 13 rounds of various destruction capability."
   components:
   - type: EntityTableContainerFill
@@ -149,26 +147,6 @@
         - id: GrenadeFrag
           amount: 4
         - id: GrenadeSlug # Goobstation, you only get two of these, and cannot make more.
-          amount: 2
-
-- type: entity
-  parent: ClothingBackpackDuffelSyndicateBundle
-  id: ClothingBackpackDuffelSyndicateFilledCarbine
-  name: M-90gl bundle
-  description: "A versatile battle rifle with an attached grenade launcher, bundled with 3 magazines and 6 grenades of various capabilities."
-  components:
-  - type: EntityTableContainerFill
-    containers:
-      storagebase: !type:AllSelector
-        children:
-        - id: WeaponRifleM90GrenadeLauncher
-        - id: MagazineRifle
-          amount: 2
-        - id: GrenadeBlast
-          amount: 2
-        - id: GrenadeFlash
-          amount: 2
-        - id: GrenadeFrag
           amount: 2
 
 - type: entity
@@ -195,7 +173,6 @@
         - id: MagazineHighCaliber # Goobstation - Burner Heavy Assault Rifle
           amount: 1
         - id: MagazineHighCaliberExplosive # Goobstation - Burner Heavy Assault Rifle
-
 
 - type: entity
   parent: ClothingBackpackDuffelClown
@@ -272,7 +249,6 @@
         - id: RemoteSignaller # goobstation
         - id: NetworkConfigurator # goobstation
 
-
 - type: entity
   parent: ClothingBackpackChameleon
   id: ClothingBackpackChameleonFill
@@ -283,6 +259,27 @@
       storagebase: !type:AllSelector
         children:
         - id: ChameleonPDA
+        - id: ClothingUniformJumpsuitChameleon
+        - id: ClothingOuterChameleon
+        - id: ClothingNeckChameleon
+        - id: ClothingMaskGasChameleon
+        - id: ClothingHeadHatChameleon
+        - id: ClothingHandsChameleon
+        - id: ClothingEyesChameleon
+        - id: ClothingHeadsetChameleon
+        - id: ClothingShoesChameleon
+        - id: ChameleonControllerImplanter
+
+- type: entity
+  parent: ClothingBackpackChameleon
+  id: ClothingBackpackChameleonFillAgent
+  suffix: Fill, Chameleon, Syndie
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      storagebase: !type:AllSelector
+        children:
+        - id: ChameleonAgentPDA
         - id: ClothingUniformJumpsuitChameleon
         - id: ClothingOuterChameleon
         - id: ClothingNeckChameleon
@@ -311,7 +308,6 @@
         - id: DoubleEmergencyOxygenTankFilled
         - id: DoubleEmergencyNitrogenTankFilled
         - id: DoubleEmergencyPlasmaTankFilled # EE Plasmeme Change
-
 
 - type: entity
   parent: ClothingBackpackDuffelSyndicateBundle
@@ -362,7 +358,6 @@
     - id: DoubleEmergencyNitrogenTankFilled
     - id: DoubleEmergencyPlasmaTankFilled # EE Plasmeme Change
 
-
 - type: entity
   parent: ClothingBackpackDuffelSyndicateBundle
   id: ClothingBackpackDuffelZombieBundle
@@ -376,9 +371,8 @@
         - id: SyringeRomerol
         - id: WeaponRevolverPython
         - id: MagazineBoxMagnumIncendiary
-        - id: PillAmbuzolPlus
-        - id: PillAmbuzol
-          amount: 3
+        - id: PillCanisterAmbuzol
+          amount: 5
 
 - type: entity
   parent: ClothingBackpackDuffelSyndicateMedicalBundle
@@ -473,14 +467,13 @@
         - id: WeaponSubMachineGunC20r
         - id: MagazinePistolSubMachineGun
           amount: 3
-        - id: MagazinePistol
+        - id: EnergySword
         - id: SyndicateJawsOfLife
         - id: C4
           amount: 2
         - id: MedkitCombatFilled
         - id: EmpImplanter
-        - id: ClothingShoesBootsMagSyndie
-        - id: AgentIDCard
+        - id: ClothingShoesChameleonNoSlips
 
 - type: entity
   parent: ClothingBackpackDuffelSyndicateBundle
@@ -495,3 +488,85 @@
         - id: WeaponShotgunHushpup
         - id: BoxLethalshot
         - id: TreasureCoinIron
+
+- type: entity
+  parent: ClothingBackpackDuffel
+  id: ClothingBackpackDuffelVirtualSinger
+  name: virtual singer outfit bag
+  description: Contains the famous virtual singer's outfit. Have a great performance!
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      storagebase: !type:AllSelector
+        children:
+        - id: ClothingUniformJumpskirtVirtualSinger
+        - id: ClothingShoesBootsVirtualSinger
+        - id: ClothingHeadVirtualSingerWig
+        - id: FoodMealMemoryleek
+          amount: 2
+
+- type: entity
+  parent: ClothingBackpackDuffel
+  id: ClothingBackpackDuffelVirtualChimera
+  name: chimera singer outfit bag
+  description: Contains the famous chimera singer's outfit. Have a great performance!
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      storagebase: !type:AllSelector
+        children:
+        - id: ClothingUniformJumpskirtVirtualChimera
+        - id: ClothingShoesBootsVirtualChimera
+        - id: ClothingHeadVirtualChimeraWig
+        - id: FoodBreadBaguette
+          amount: 2
+
+- type: entity
+  parent: ClothingBackpackDuffel
+  id: ClothingBackpackDuffelVirtualFan
+  name: singer's fan outfit bag
+  description: Contains the singer's fan outfit. Have a great performance!
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      storagebase: !type:AllSelector
+        children:
+        - id: ClothingUniformJumpskirtVirtualFan
+        - id: ClothingShoesBootsVirtualFan
+        - id: ClothingHeadVirtualFanWig
+        - id: Multitool
+
+- type: entity
+  parent: ClothingBackpackDuffel
+  id: ClothingBackpackDuffelVirtualForeigner
+  name: foreign singer outfit bag
+  description: Contains the famous foreign singer's outfit. Have a great performance!
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      storagebase: !type:AllSelector
+        children:
+        - id: ClothingUniformJumpskirtVirtualForeigner
+        - id: ClothingHeadVirtualForeignerWig
+        - id: ClothingShoesBootsVirtualForeigner
+        - id: PlushieCarp
+          amount: 2
+
+- type: entity
+  parent: ClothingBackpackDuffel
+  id: ClothingBackpackDuffelVirtualIce
+  name: ice singer outfit bag
+  description: Contains the ice singer's outfit. Have a great performance!
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      storagebase: !type:AllSelector
+        children:
+        - id: ClothingOuterCoatVirtualIce
+        - id: ClothingUniformJumpsuitVirtualIce
+        - id: ClothingShoesBootsVirtualIce
+        - id: ClothingHeadVirtualIceWig
+        - id: ClothingNeckScarfVirtualIce
+        - id: ClothingHandsGlovesFingerless
+        - id: FoodFrozenPopsicleJumbo
+          amount: 2

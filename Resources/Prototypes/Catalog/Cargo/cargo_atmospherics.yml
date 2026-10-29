@@ -100,13 +100,3 @@
   cost: 2000 # Goobstation # for reference, bagel's 3x1 roundstart plasma chamber contains ~16kmol for free, this is $2k for 1870mol, so $16k to nearly refill a 3x1 (some are 3x3) chamber
   category: cargoproduct-category-name-atmospherics
   group: market
-
-#- type: cargoProduct
-#  id: AtmosphericsTritium
-#  icon:
-#    sprite: Structures/Storage/canister.rsi
-#    state: green
-#  product: TritiumCanister
-#  cost: 15500
-#  category: cargoproduct-category-name-atmospherics
-#  group: market

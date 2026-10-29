@@ -17,7 +17,7 @@ public abstract partial class SharedChatSystem
     private void CacheEmotes()
     {
         var dict = new Dictionary<string, EmotePrototype>();
-        var emotes = _prototypeManager.EnumeratePrototypes<EmotePrototype>();
+        var emotes = ProtoMan.EnumeratePrototypes<EmotePrototype>();
         foreach (var emote in emotes)
         {
             foreach (var word in emote.ChatTriggers)
@@ -61,7 +61,7 @@ public abstract partial class SharedChatSystem
         bool forceEmote = false
     )
     {
-        if (!_prototypeManager.Resolve<EmotePrototype>(emoteId, out var proto))
+        if (!ProtoMan.Resolve<EmotePrototype>(emoteId, out var proto))
             return false;
 
         return TryEmoteWithChat(source,
@@ -131,7 +131,7 @@ public abstract partial class SharedChatSystem
         bool ignoreActionBlocker = false,
         bool voluntary = false) // Goob - emotespam
     {
-        if (!_prototypeManager.Resolve<EmotePrototype>(emoteId, out var proto))
+        if (!ProtoMan.Resolve<EmotePrototype>(emoteId, out var proto))
             return false;
 
         return TryEmoteWithoutChat(uid, proto, ignoreActionBlocker, voluntary); // Goob - emotespam
@@ -293,7 +293,7 @@ public abstract partial class SharedChatSystem
             return false;
         }
 
-        var ev = new EmoteEvent(proto, voluntary);
+        var ev = new EmoteEvent(GetNetEntity(uid), proto);
         RaiseLocalEvent(uid, ref ev);
 
         return true;

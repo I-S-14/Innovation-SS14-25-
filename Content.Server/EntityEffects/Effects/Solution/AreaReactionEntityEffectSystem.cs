@@ -1,4 +1,4 @@
-﻿using Content.Server.Fluids.EntitySystems;
+using Content.Server.Fluids.EntitySystems;
 using Content.Server.Spreader;
 using Content.Shared.Chemistry.Components;
 using Content.Shared.Coordinates.Helpers;
@@ -24,6 +24,12 @@ public sealed partial class AreaReactionEntityEffectsSystem : EntityEffectSystem
     [Dependency] private readonly SmokeSystem _smoke = default!;
     [Dependency] private readonly SpreaderSystem _spreader = default!;
     [Dependency] private readonly TurfSystem _turf = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private SharedMapSystem _map = default!;
+    [Dependency] private SharedTransformSystem _xform = default!;
+    [Dependency] private SmokeSystem _smoke = default!;
+    [Dependency] private SpreaderSystem _spreader = default!;
+    [Dependency] private TurfSystem _turf = default!;
 
     // TODO: A sane way to make Smoke without a solution.
     protected override void Effect(Entity<SolutionComponent> entity, ref EntityEffectEvent<AreaReactionEffect> args)

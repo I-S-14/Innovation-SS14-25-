@@ -11,6 +11,7 @@ namespace Content.Server.StationEvents.Components;
 
 /// <summary>
 ///     Defines basic data for a station event
+///     // TODO: Cut this component into pieces, much of it already exists in GameRuleComponent, and we don't need activation conditions in the same component as Announcements
 /// </summary>
 [RegisterComponent, AutoGenerateComponentPause]
 public sealed partial class StationEventComponent : Component
@@ -111,7 +112,7 @@ public sealed partial class StationEventComponent : Component
     public TimeSpan? EndTime;
 
     /// <summary>
-    /// If false, the event won't trigger during ongoing evacuation.
+    /// If false, the event won't trigger after the evacuation shuttle is called and cannot be recalled anymore.
     /// </summary>
     [DataField]
     public bool OccursDuringRoundEnd = true;

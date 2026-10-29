@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 - type: entity
-  parent: ClothingOuterStorageBase
+  parent: [ TemperatureProtection, ClothingOuterJacketBase ]
   id: ClothingOuterWinterCoat
   name: winter coat
   description: A heavy jacket made from 'synthetic' animal furs.
@@ -10,11 +10,6 @@
     sprite: _CorvaxGoob/Clothing/OuterClothing/WinterCoats/coat.rsi # CorvaxGoob-Resprite
   - type: Clothing
     sprite: _CorvaxGoob/Clothing/OuterClothing/WinterCoats/coat.rsi # CorvaxGoob-Resprite
-  - type: TemperatureProtection
-    heatingCoefficient: 1.1
-    coolingCoefficient: 0.1
-  - type: Item
-    size: Normal
   - type: Armor
     coverage:
     - Chest
@@ -28,15 +23,6 @@
     priceMultiplier: 0
   - type: ZombificationResistance
     zombificationResistanceCoefficient: 0.55
-  - type: Edible
-    requiresSpecialDigestion: true
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 30
-        reagents:
-        - ReagentId: Fiber
-          Quantity: 30
   - type: Tag
     tags:
     - ClothMade
@@ -382,7 +368,6 @@
     clothingPrototypes:
       head: ClothingHeadHatHoodWinterHOP
 
-
 - type: entity
   parent: [ClothingOuterArmorHoS, ClothingOuterWinterCoatToggleable, BaseSecurityCommandContraband]
   id: ClothingOuterWinterHoS
@@ -411,6 +396,11 @@
         Piercing: 0.6
         Heat: 0.6
         Caustic: 0.65
+  - type: ContainerContainer
+    containers:
+      toggleable-clothing: !type:ContainerSlot { }
+      storagebase: !type:Container
+        ents: [ ]
 
 - type: entity
   parent: [ClothingOuterWinterCoatToggleable, BaseSecurityCommandContraband]
@@ -626,7 +616,6 @@
     clothingPrototypes:
       head: ClothingHeadHatHoodWinterQM
 
-
 - type: entity
   parent: [ClothingOuterWinterCoatToggleable, BaseCommandContraband]
   id: ClothingOuterWinterRD
@@ -681,7 +670,6 @@
   - type: ToggleableClothing # Goobstation - Modsuits change
     clothingPrototypes:
       head: ClothingHeadHatHoodWinterRobo
-
 
 - type: entity
   parent: ClothingOuterWinterCoatToggleable
@@ -798,6 +786,12 @@
         Piercing: 0.7
         Heat: 0.6
         Caustic: 0.85
+  - type: ContainerContainer
+    containers:
+      toggleable-clothing: !type:ContainerSlot { }
+      storagebase: !type:Container
+        ents: [ ]
+
 ################################################################
 
 - type: entity
@@ -828,8 +822,8 @@
 - type: entity
   parent: [ClothingOuterWinterCoatToggleable] # CorvaxGoob-Contraband : deleted contra label
   id: ClothingOuterWinterSyndieCap
-  name: syndicate's winter coat
-  description: "The syndicate's winter coat is made of durable fabric, with gilded patterns, and coarse wool."
+  name: syndicate formal winter coat
+  description: "A fancy winter coat made of durable fabric, coarse wool, and a touch of gilding worn by high ranking Syndicate operatives."
   components:
   - type: Sprite
     sprite: _CorvaxGoob/Clothing/OuterClothing/WinterCoats/coat.rsi # CorvaxGoob-Resprite
@@ -854,8 +848,8 @@
 - type: entity
   parent: [ BaseSyndicateContraband, ClothingOuterWinterWarden ]
   id: ClothingOuterWinterSyndieCapArmored
-  name: syndicate's armored winter coat
-  description: "The syndicate's armored winter coat is made of durable fabric, with gilded patterns, and coarse wool."
+  name: syndicate armored winter coat
+  description: "A sturdy reinforced winter coat made of durable fabric, coarse wool, and a touch of gilding worn by high ranking Syndicate operatives."
   components:
   - type: Sprite
     sprite: _CorvaxGoob/Clothing/OuterClothing/WinterCoats/syndicate/coatsyndiecaparmored.rsi # CorvaxGoob-Resprite
@@ -864,13 +858,14 @@
   - type: ToggleableClothing # Goobstation - Modsuits change
     clothingPrototypes:
       head: ClothingHeadHatHoodWinterSyndie
+
 ##############################################################
 
 - type: entity
   parent: [ClothingOuterWinterCoatToggleable] # CorvaxGoob-Contraband : deleted contra label
   id: ClothingOuterWinterSyndie
-  name: syndicate's winter coat
-  description: Insulated winter coat, looks like a merch from "Syndieland".
+  name: syndicate winter coat
+  description: Insulated winter coat, looks like a piece of merch from "Syndieland".
   components:
   - type: Sprite
     sprite: _CorvaxGoob/Clothing/OuterClothing/WinterCoats/coat.rsi # CorvaxGoob-Resprite
@@ -903,7 +898,7 @@
     sprite: _CorvaxGoob/Clothing/OuterClothing/WinterCoats/coatnomi.rsi # CorvaxGoob-Resprite
 
 - type: entity
-  parent: ClothingOuterWinterCoatToggleable
+  parent: [ClothingOuterWinterCoatToggleable, BaseSlicingRefinable]
   id: ClothingOuterWinterWeb
   name: web winter coat
   description: Feels like the inside of a cocoon, not that this would make you less afraid of being in one.
@@ -926,8 +921,8 @@
   - type: Construction
     graph: WebObjects
     node: coat
-  - type: Butcherable
-    spawned:
+  - type: ToolRefinable
+    refineResult:
     - id: MaterialWebSilk1
       amount: 5
   - type: FlavorProfile
@@ -935,13 +930,11 @@
     - cobwebs
     ignoreReagents:
     - Fiber
-  - type: SolutionContainerManager
-    solutions: # 15 (3 (fiber count of web) * 5 (to craft)) + 5 (magical crafting bonus)
-      food:
-        maxVol: 20
-        reagents:
-        - ReagentId: Fiber
-          Quantity: 20
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Fiber
+        Quantity: 50 # 50 (10 (fiber count of web) * 5 (to craft))
   - type: ToggleableClothing # Goobstation - Modsuits change
     clothingPrototypes:
       head: ClothingHeadHatHoodWinterWeb

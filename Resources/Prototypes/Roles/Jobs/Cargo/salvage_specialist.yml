@@ -13,19 +13,20 @@
   icon: "JobIconShaftMiner"
   startingGear: SalvageSpecialistGear
   #goobcoins: 20 #Goob content Corvax-Goob-coins
-  guides: # goobstation
-  - Salvage
-  - Cargo
   supervisors: job-supervisors-qm
   skills: # CorvaxGoob-Skills
   - ShuttleControl
   - Shooting
   - Butchering
+  guides: # goobstation
+  - Salvage
+  - Cargo
   access:
   - Cargo
   - Salvage
   - Maintenance
   - External
+
 - type: startingGear
   id: SalvageSpecialistGear
   equipment:
@@ -35,6 +36,7 @@
   storage: # DeltaV: Add mining voucher
     back:
     - MiningVoucher
+
 - type: chameleonOutfit
   id: SalvageSpecialistChameleonOutfit
   job: SalvageSpecialist

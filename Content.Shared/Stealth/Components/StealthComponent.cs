@@ -5,6 +5,7 @@ using Robust.Shared.Serialization;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
 
 namespace Content.Shared.Stealth.Components;
+
 /// <summary>
 /// Add this component to an entity that you want to be cloaked.
 /// It overlays a shader on the entity to give them an invisibility cloaked effect.
@@ -26,7 +27,7 @@ public sealed partial class StealthComponent : Component
     /// <summary>
     /// The creature will continue invisible at death.
     /// </summary>
-    [DataField("enabledOnDeath")]
+    [DataField]
     public bool EnabledOnDeath = true;
 
     /// <summary>
@@ -38,13 +39,13 @@ public sealed partial class StealthComponent : Component
     /// <summary>
     /// Whether or not the entity previously had an interaction outline prior to cloaking.
     /// </summary>
-    [DataField("hadOutline")]
+    [DataField]
     public bool HadOutline;
 
     /// <summary>
     /// Minimum visibility before the entity becomes unexaminable (and thus no longer appears on context menus).
     /// </summary>
-    [DataField("examineThreshold")]
+    [DataField]
     public float ExamineThreshold = 0.5f;
 
     /// <summary>
@@ -53,11 +54,10 @@ public sealed partial class StealthComponent : Component
     /// get the actual current visibility, use <see cref="SharedStealthSystem.GetVisibility(EntityUid, StealthComponent?)"/>
     /// If you don't have anything else updating the stealth, this will just stay at a constant value, which can be useful.
     /// </summary>
-    [DataField("lastVisibility")]
+    [DataField]
     [Access(typeof(SharedStealthSystem), Other = AccessPermissions.None)]
     [AutoNetworkedField] // Goobstation
     public float LastVisibility = 1;
-
 
     /// <summary>
     /// Time at which <see cref="LastVisibility"/> was set. Null implies the entity is currently paused and not
@@ -83,9 +83,15 @@ public sealed partial class StealthComponent : Component
     public float MaxVisibility = 1.5f;
 
     /// <summary>
-    ///     Localization string for how you'd like to describe this effect.
+    /// The frequency of the shimmer effect. 0 disables the shimmering, leaving only a static distortion.
     /// </summary>
-    [DataField("examinedDesc")]
+    [DataField]
+    public float ShimmerFrequency = 1f;
+
+    /// <summary>
+    /// Localization string for how you'd like to describe this effect.
+    /// </summary>
+    [DataField]
     public string ExaminedDesc = "stealth-visual-effect";
 
     // Goobstation - Start

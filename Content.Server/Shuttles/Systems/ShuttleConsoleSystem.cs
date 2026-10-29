@@ -119,15 +119,18 @@ public sealed partial class ShuttleConsoleSystem : SharedShuttleConsoleSystem
     /// </summary>
     public void RefreshShuttleConsoles(EntityUid gridUid)
     {
-        var exclusions = new List<ShuttleExclusionObject>();
-        GetExclusions(ref exclusions);
-        _consoles.Clear();
-        _lookup.GetChildEntities(gridUid, _consoles);
+        var query = AllEntityQuery<ShuttleConsoleComponent, TransformComponent>();
         DockingInterfaceState? dockState = null;
 
-        foreach (var entity in _consoles)
+        while (query.MoveNext(out var uid, out _, out var xform))
         {
-            UpdateState(entity, ref dockState);
+            if (xform.ParentUid == gridUid
+                || TryComp<DroneConsoleComponent>(uid, out var drone)
+                && drone.Entity is { } puppetConsoleUid
+                && Transform(puppetConsoleUid).ParentUid == gridUid)
+            {
+                UpdateState(uid, ref dockState);
+            }
         }
 
         _dockingConsole.UpdateConsolesUsing(gridUid); // Lavaland Change: FTL
@@ -138,8 +141,6 @@ public sealed partial class ShuttleConsoleSystem : SharedShuttleConsoleSystem
     /// </summary>
     public void RefreshShuttleConsoles()
     {
-        var exclusions = new List<ShuttleExclusionObject>();
-        GetExclusions(ref exclusions);
         var query = AllEntityQuery<ShuttleConsoleComponent>();
         DockingInterfaceState? dockState = null;
 
@@ -245,11 +246,12 @@ public sealed partial class ShuttleConsoleSystem : SharedShuttleConsoleSystem
                 Angle = xform.LocalRotation,
                 Entity = GetNetEntity(uid),
                 GridDockedWith =
-                    _xformQuery.TryGetComponent(comp.DockedWith, out var otherDockXform) ?
+                    TryComp(comp.DockedWith, out TransformComponent? otherDockXform) ?
                     GetNetEntity(otherDockXform.GridUid) :
                     null,
                 Color = comp.RadarColor,
-                HighlightedColor = comp.HighlightedRadarColor
+                HighlightedColor = comp.HighlightedRadarColor,
+                Category = comp.DockLegendCategory
             };
 
             gridDocks.Add(state);
@@ -355,7 +357,7 @@ public sealed partial class ShuttleConsoleSystem : SharedShuttleConsoleSystem
 
         pilotComponent.Console = uid;
         ActionBlockerSystem.UpdateCanMove(entity);
-        pilotComponent.Position = Comp<TransformComponent>(entity).Coordinates;
+        pilotComponent.Position = Transform(entity).Coordinates;
         Dirty(entity, pilotComponent);
     }
 
@@ -391,10 +393,9 @@ public sealed partial class ShuttleConsoleSystem : SharedShuttleConsoleSystem
 
     public void ClearPilots(ShuttleConsoleComponent component)
     {
-        var query = GetEntityQuery<PilotComponent>();
         while (component.SubscribedPilots.TryGetValue(0, out var pilot))
         {
-            if (query.TryGetComponent(pilot, out var pilotComponent))
+            if (_pilotQuery.TryGetComponent(pilot, out var pilotComponent))
                 RemovePilot(pilot, pilotComponent);
         }
     }

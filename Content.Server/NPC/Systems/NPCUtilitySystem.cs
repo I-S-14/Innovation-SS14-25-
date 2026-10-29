@@ -1,3 +1,4 @@
+using System.Linq;
 using Content.Server.Fluids.EntitySystems;
 using Content.Server.Hands.Systems;
 using Content.Server.NPC.Queries;
@@ -5,18 +6,25 @@ using Content.Server.NPC.Queries.Considerations;
 using Content.Server.NPC.Queries.Curves;
 using Content.Server.NPC.Queries.Queries;
 using Content.Server.Nutrition.Components;
+using Content.Shared.Atmos.Components;
 using Content.Shared.Chemistry.EntitySystems;
+using Content.Shared.Damage.Components;
+using Content.Shared.Damage.Systems;
 using Content.Shared.Examine;
 using Content.Shared.Fluids.Components;
 using Content.Shared.Inventory;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components; // Goobstation
+using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.NPC.Systems;
 using Content.Shared.Nutrition.Components;
 using Content.Shared.Nutrition.EntitySystems;
+using Content.Shared.Stealth;
+using Content.Shared.Stealth.Components;
 using Content.Shared.Storage.Components;
 using Content.Shared.Stunnable;
+using Content.Shared.Temperature.Components;
 using Content.Shared.Tools.Systems;
 using Content.Shared.Turrets;
 using Content.Shared.Weapons.Melee;
@@ -54,7 +62,7 @@ namespace Content.Server.NPC.Systems;
 /// <summary>
 /// Handles utility queries for NPCs.
 /// </summary>
-public sealed class NPCUtilitySystem : EntitySystem
+public sealed partial class NPCUtilitySystem : EntitySystem
 {
     [Dependency] private readonly IPrototypeManager _proto = default!;
     [Dependency] private readonly ContainerSystem _container = default!;
@@ -88,13 +96,6 @@ public sealed class NPCUtilitySystem : EntitySystem
     private HashSet<Entity<IComponent>> _entitySet = new();
     private List<EntityPrototype.ComponentRegistryEntry> _compTypes = new();
 
-    public override void Initialize()
-    {
-        base.Initialize();
-        _puddleQuery = GetEntityQuery<PuddleComponent>();
-        _xformQuery = GetEntityQuery<TransformComponent>();
-    }
-
     /// <summary>
     /// Runs the UtilityQueryPrototype and returns the best-matching entities.
     /// </summary>
@@ -106,7 +107,7 @@ public sealed class NPCUtilitySystem : EntitySystem
     {
         // TODO: PickHostilesop or whatever needs to juse be UtilityQueryOperator
 
-        var weh = _proto.Index<UtilityQueryPrototype>(proto);
+        var weh = ProtoMan.Index<UtilityQueryPrototype>(proto);
         var ents = _entPool.Get();
 
         foreach (var query in weh.Query)
@@ -177,7 +178,7 @@ public sealed class NPCUtilitySystem : EntitySystem
             case InverseBoolCurve:
                 return conScore.Equals(0f) ? 1f : 0f;
             case PresetCurve presetCurve:
-                return GetScore(_proto.Index<UtilityCurvePresetPrototype>(presetCurve.Preset).Curve, conScore);
+                return GetScore(ProtoMan.Index<UtilityCurvePresetPrototype>(presetCurve.Preset).Curve, conScore);
             case QuadraticCurve quadraticCurve:
                 return Math.Clamp(
                     quadraticCurve.Slope * MathF.Pow(conScore - quadraticCurve.XOffset, quadraticCurve.Exponent) +
@@ -194,7 +195,7 @@ public sealed class NPCUtilitySystem : EntitySystem
         var owner = blackboard.GetValue<EntityUid>(NPCBlackboard.Owner);
         switch (consideration)
         {
-            case FoodValueCon:
+            case FoodValueCon foodValueConsideration:
             {
                 // do we have a mouth available? Is the food item opened?
                 if (!_ingestion.CanConsume(owner, targetUid))
@@ -203,7 +204,8 @@ public sealed class NPCUtilitySystem : EntitySystem
                 var avoidBadFood = !HasComp<IgnoreBadFoodComponent>(owner);
 
                 // only eat when hungry or if it will eat anything
-                if (TryComp<HungerComponent>(owner, out var hunger) && hunger.CurrentThreshold > HungerThreshold.Okay &&
+                if (TryComp<SatiationComponent>(owner, out var satiation) &&
+                    _satiation.IsValueInRange((owner, satiation), SatiationSystem.Hunger, above: foodValueConsideration.HungerThreshold) &&
                     avoidBadFood)
                     return 0f;
 
@@ -221,15 +223,15 @@ public sealed class NPCUtilitySystem : EntitySystem
 
                 return 1f;
             }
-            case DrinkValueCon:
+            case DrinkValueCon drinkValueConsideration:
             {
                 // can't drink closed drinks and can't drink with a mask on...
                 if (!_ingestion.CanConsume(owner, targetUid))
                     return 0f;
 
                 // only drink when thirsty
-                if (TryComp<ThirstComponent>(owner, out var thirst) &&
-                    thirst.CurrentThirstThreshold > ThirstThreshold.Okay)
+                if (TryComp<SatiationComponent>(owner, out var satiation) &&
+                    _satiation.IsValueInRange((owner, satiation), SatiationSystem.Thirst, above: drinkValueConsideration.ThirstThreshold))
                     return 0f;
 
                 // no janicow don't drink the blood puddle
@@ -357,7 +359,7 @@ public sealed class NPCUtilitySystem : EntitySystem
             }
             case TargetHealthCon con:
             {
-                if (!TryComp(targetUid, out DamageableComponent? damage))
+                if (!TryComp(targetUid, out DamageableComponent? damage) || !TryComp(targetUid, out MobThresholdsComponent? threshold))
                     return 0f;
                 // Goobstation
                 if (!TryComp(targetUid, out MobThresholdsComponent? thresholds))
@@ -445,8 +447,8 @@ public sealed class NPCUtilitySystem : EntitySystem
                 if (!TryComp<TemperatureComponent>(targetUid, out var temperature))
                     return 0f;
 
-                return temperature.CurrentTemperature <= con.MinTemp ? 1f : 0f;
-            }
+                    return temperature.Temperature <= con.MinTemp ? 1f : 0f;
+                }
             default:
                 throw new NotImplementedException();
         }
@@ -480,7 +482,7 @@ public sealed class NPCUtilitySystem : EntitySystem
                 if (compQuery.Components.Count == 0)
                     return;
 
-                var mapPos = _transform.GetMapCoordinates(owner, xform: _xformQuery.GetComponent(owner));
+                var mapPos = _transform.GetMapCoordinates(owner, xform: Transform(owner));
                 _compTypes.Clear();
                 var i = -1;
                 EntityPrototype.ComponentRegistryEntry compZero = default!;
@@ -559,7 +561,7 @@ public sealed class NPCUtilitySystem : EntitySystem
     private void RecursiveAdd(EntityUid uid, HashSet<EntityUid> entities)
     {
         // TODO: Probably need a recursive struct enumerator on engine.
-        var xform = _xformQuery.GetComponent(uid);
+        var xform = Transform(uid);
         var enumerator = xform.ChildEnumerator;
         entities.Add(uid);
 
@@ -757,6 +759,14 @@ public readonly record struct UtilityResult(Dictionary<EntityUid, float> Entitie
             return EntityUid.Invalid;
 
         return Entities.MinBy(x => x.Value).Key;
+    }
+
+    /// <summary>
+    /// Returns a GetEnumerable sorted in descending score.
+    /// </summary>
+    public IEnumerable<KeyValuePair<EntityUid, float>> GetEnumerable()
+    {
+        return Entities.OrderByDescending(x => x.Value);
     }
 }
 

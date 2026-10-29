@@ -10,10 +10,11 @@ namespace Content.Shared.Item;
 /// <summary>
 /// This handles <see cref="HeldSpeedModifierComponent"/>
 /// </summary>
-public sealed class HeldSpeedModifierSystem : EntitySystem
+public sealed partial class HeldSpeedModifierSystem : EntitySystem
 {
     [Dependency] private readonly MovementSpeedModifierSystem _movementSpeedModifier = default!;
     [Dependency] private readonly SharedContainerSystem _container = default!; // Goobstation
+    [Dependency] private MovementSpeedModifierSystem _movementSpeedModifier = default!;
 
     /// <inheritdoc/>
     public override void Initialize()
@@ -29,12 +30,12 @@ public sealed class HeldSpeedModifierSystem : EntitySystem
 
     private void OnGotEquippedHand(Entity<HeldSpeedModifierComponent> ent, ref GotEquippedHandEvent args)
     {
-        _movementSpeedModifier.RefreshMovementSpeedModifiers(args.User);
+        _movementSpeedModifier.RefreshMovementModifiers(args.User);
     }
 
     private void OnGotUnequippedHand(Entity<HeldSpeedModifierComponent> ent, ref GotUnequippedHandEvent args)
     {
-        _movementSpeedModifier.RefreshMovementSpeedModifiers(args.User);
+        _movementSpeedModifier.RefreshMovementModifiers(args.User);
     }
 
     public (float,float) GetHeldMovementSpeedModifiers(EntityUid uid, HeldSpeedModifierComponent component)
@@ -48,6 +49,19 @@ public sealed class HeldSpeedModifierSystem : EntitySystem
         }
 
         return (walkMod, sprintMod);
+    }
+
+    /// <summary>
+    /// Changes movement speed modifier.
+    /// </summary>
+    public void ChangeModifiers(Entity<HeldSpeedModifierComponent?> ent, float walkMod, float sprintMod)
+    {
+        if (!Resolve(ent, ref ent.Comp))
+            return;
+
+        ent.Comp.SprintModifier = sprintMod;
+        ent.Comp.WalkModifier = walkMod;
+        Dirty(ent);
     }
 
     private void OnRefreshMovementSpeedModifiers(EntityUid uid, HeldSpeedModifierComponent component, HeldRelayedEvent<RefreshMovementSpeedModifiersEvent> args)

@@ -18,14 +18,16 @@ public static class ClientPackaging
     /// Be advised this can be called from server packaging during a HybridACZ build.
     /// Be also advised this goes against god and nature
     /// </summary>
-    public static async Task PackageClient(bool skipBuild, string configuration, IPackageLogger logger, string path = ".")
+    public static async Task PackageClient(bool skipBuild, bool logBuild, string configuration, IPackageLogger logger)
     {
         logger.Info("Building client...");
         // CorvaxGoob-Secret-Start
         var startInfo = new ProcessStartInfo
         {
-            FileName = "dotnet",
-            ArgumentList =
+            var startInfo = new ProcessStartInfo
+            {
+                FileName = "dotnet",
+                ArgumentList =
                 {
                     "build",
                     Path.Combine("Content.Goobstation.Client", "Content.Goobstation.Client.csproj"), // Goob
@@ -36,25 +38,15 @@ public static class ClientPackaging
                     "/p:FullRelease=true",
                     "/m"
                 }
-        };
+            };
 
-        if (UseSecrets)
-        {
-            await ProcessHelpers.RunCheck(new ProcessStartInfo
+            if (logBuild)
             {
-                FileName = "dotnet",
-                ArgumentList =
-                    {
-                        "build",
-                        Path.Combine("Secrets","Content.Corvax.Client", "Content.Corvax.Client.csproj"),
-                        "-c", "Release",
-                        "--nologo",
-                        "/v:m",
-                        "/t:Rebuild",
-                        "/p:FullRelease=true",
-                        "/m"
-                    }
-            });
+                startInfo.ArgumentList.Add($"/bl:{Path.Combine("release", "client.binlog")}");
+                startInfo.ArgumentList.Add("/p:ReportAnalyzer=true");
+            }
+
+            await ProcessHelpers.RunCheck(startInfo);
         }
 
         await ProcessHelpers.RunCheck(startInfo);

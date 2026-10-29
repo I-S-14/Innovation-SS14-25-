@@ -25,6 +25,9 @@ public sealed partial class GuideTechnologyEmbed : BoxContainer, IDocumentTag, I
 {
     [Dependency] private readonly IEntitySystemManager _systemManager = default!;
     [Dependency] private readonly IPrototypeManager _prototype = default!;
+    [Dependency] private IEntitySystemManager _systemManager = default!;
+    [Dependency] private ILogManager _logManager = default!;
+    [Dependency] private IPrototypeManager _prototype = default!;
 
     private readonly ResearchSystem _research;
     private readonly SpriteSystem _sprite;

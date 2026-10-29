@@ -4,6 +4,7 @@ using Content.Server.Chat.Systems;
 using Content.Shared.Chat; // Einstein Engines - Languages
 using Content.Server.GameTicking;
 using Content.Server.GameTicking.Rules.Components;
+using Content.Shared.GameTicking.Rules.Components;
 using Content.Shared.Magic;
 using Content.Shared.Magic.Events;
 using Content.Shared.Tag;
@@ -14,34 +15,15 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Server.Magic;
 
-public sealed class MagicSystem : SharedMagicSystem
+public sealed partial class MagicSystem : SharedMagicSystem
 {
-    [Dependency] private readonly ChatSystem _chat = default!;
-    [Dependency] private readonly GameTicker _gameTicker = default!;
-    [Dependency] private readonly TagSystem _tag = default!;
-    [Dependency] private readonly SharedMindSystem _mind = default!;
+    [Dependency] private ChatSystem _chat = default!;
+    [Dependency] private ServerGameTicker _gameTicker = default!;
+    [Dependency] private TagSystem _tag = default!;
+    [Dependency] private SharedMindSystem _mind = default!;
 
-    public override void Initialize()
-    {
-        base.Initialize();
-
-    }
-
-    protected override void OnRandomGlobalSpawnSpell(RandomGlobalSpawnSpellEvent ev)
-    {
-        base.OnRandomGlobalSpawnSpell(ev);
-
-        if (!ev.MakeSurvivorAntagonist)
-            return;
-
-        if (_mind.TryGetMind(ev.Performer, out var mind, out _) && !_tag.HasTag(mind, "InvalidForSurvivorAntag"))
-            _tag.AddTag(mind, "InvalidForSurvivorAntag");
-
-        EntProtoId survivorRule = "Survivor";
-
-        if (!_gameTicker.IsGameRuleActive<SurvivorRuleComponent>())
-            _gameTicker.StartGameRule(survivorRule);
-    }
+    private static readonly ProtoId<TagPrototype> InvalidForSurvivorAntagTag = "InvalidForSurvivorAntag";
+    private static readonly EntProtoId SurvivorGameRule = "Survivor";
 
     public override void OnVoidApplause(VoidApplauseSpellEvent ev)
     {
@@ -54,5 +36,19 @@ public sealed class MagicSystem : SharedMagicSystem
 
         Spawn(ev.Effect, perfXForm.Coordinates);
         Spawn(ev.Effect, targetXForm.Coordinates);
+    }
+
+    protected override void OnRandomGlobalSpawnSpell(RandomGlobalSpawnSpellEvent ev)
+    {
+        base.OnRandomGlobalSpawnSpell(ev);
+
+        if (!ev.MakeSurvivorAntagonist)
+            return;
+
+        if (_mind.TryGetMind(ev.Performer, out var mind, out _) && !_tag.HasTag(mind, InvalidForSurvivorAntagTag))
+            _tag.AddTag(mind, InvalidForSurvivorAntagTag);
+
+        if (!_gameTicker.IsGameRuleActive<SurvivorRuleComponent>())
+            _gameTicker.StartGameRule(SurvivorGameRule);
     }
 }

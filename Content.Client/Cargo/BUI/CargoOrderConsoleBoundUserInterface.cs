@@ -15,7 +15,7 @@ using static Robust.Client.UserInterface.Controls.BaseButton;
 
 namespace Content.Client.Cargo.BUI
 {
-    public sealed class CargoOrderConsoleBoundUserInterface : BoundUserInterface
+    public sealed partial class CargoOrderConsoleBoundUserInterface(EntityUid owner, Enum uiKey) : BoundUserInterface(owner, uiKey)
     {
         [Dependency] private readonly IPrototypeManager _protoManager = default!; // CorvaxGoob-CargoFeatures
         private readonly SharedCargoSystem _cargoSystem;
@@ -47,11 +47,6 @@ namespace Content.Client.Cargo.BUI
         [ViewVariables]
         private CargoProductPrototype? _product;
 
-        public CargoOrderConsoleBoundUserInterface(EntityUid owner, Enum uiKey) : base(owner, uiKey)
-        {
-            _cargoSystem = EntMan.System<SharedCargoSystem>();
-        }
-
         protected override void Open()
         {
             base.Open();
@@ -67,15 +62,13 @@ namespace Content.Client.Cargo.BUI
             /*string orderRequester;
 
             if (EntMan.EntityExists(localPlayer))
-                orderRequester = Identity.Name(localPlayer.Value, EntMan);
-            else
-                orderRequester = string.Empty;*/
+                orderRequester = _identity.GetIdentityShortInfo(localPlayer.Value, Owner) ?? orderRequester;
 
             _orderMenu = new CargoConsoleOrderMenu();
 
             _menu.OnClose += Close;
 
-            _menu.OnItemSelected += (args) =>
+            _menu.OnItemSelected += (row) =>
             {
                 if (args.Button.Parent?.Parent is not CargoProductRow row) // Goobstation
                     return;
@@ -111,6 +104,7 @@ namespace Content.Client.Cargo.BUI
                 // CorvaxGoob-CargoFeatures-End
 
                 _orderMenu.OpenCentered();
+                _orderMenu.SetPositionLast();
             };
             _menu.OnOrderApproved += ApproveOrder;
             _menu.OnOrderCanceled += RemoveOrder;
@@ -182,6 +176,11 @@ namespace Content.Client.Cargo.BUI
                 return;
 
             _menu.ProductCatalogue = cState.Products;
+            _menu.ShuttleCapacityLabel.Text = Loc.GetString(
+                "cargo-console-menu-order-capacity-number",
+                ("count", OrderCount),
+                ("capacity", OrderCapacity)
+            );
 
             _menu?.UpdateStation(station);
             Populate(cState.Orders);
@@ -221,15 +220,15 @@ namespace Content.Client.Cargo.BUI
             return true;
         }
 
-        private void RemoveOrder(ButtonEventArgs args)
+        private void RemoveOrder(CargoOrderData? order)
         {
             if (args.Button.Parent?.Parent?.Parent is not CargoOrderRow row || row.Order == null) // Goobstation
                 return;
 
-            SendMessage(new CargoConsoleRemoveOrderMessage(row.Order.OrderId));
+            SendMessage(new CargoConsoleRemoveOrderMessage(order.OrderId));
         }
 
-        private void ApproveOrder(ButtonEventArgs args)
+        private void ApproveOrder(CargoOrderData? order)
         {
             if (args.Button.Parent?.Parent?.Parent is not CargoOrderRow row || row.Order == null) // Goobstation
                 return;
@@ -237,7 +236,7 @@ namespace Content.Client.Cargo.BUI
             if (OrderCount >= OrderCapacity)
                 return;
 
-            SendMessage(new CargoConsoleApproveOrderMessage(row.Order.OrderId));
+            SendMessage(new CargoConsoleApproveOrderMessage(order.OrderId));
         }
     }
 }

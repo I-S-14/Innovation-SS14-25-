@@ -94,7 +94,7 @@ public abstract partial class SharedGunSystem
     /// <summary>
     /// Opens then closes the bolt, or just closes it if currently open.
     /// </summary>
-    private void UseChambered(EntityUid uid, ChamberMagazineAmmoProviderComponent component, EntityUid? user = null)
+    public void UseChambered(EntityUid uid, ChamberMagazineAmmoProviderComponent component, EntityUid? user = null)
     {
         if (component.BoltClosed == false)
         {
@@ -155,11 +155,11 @@ public abstract partial class SharedGunSystem
             CycleCartridge(uid, component, user, appearance);
 
             if (user != null)
-                PopupSystem.PopupClient(Loc.GetString("gun-chamber-bolt-closed"), uid, user.Value);
+                PopupSystem.PopupEntity(Loc.GetString("gun-chamber-bolt-closed"), uid, user.Value);
 
             if (slots != null)
             {
-                _slots.SetLock(uid, ChamberSlot, true, slots);
+                _slots.SetLock((uid, slots), ChamberSlot, true);
             }
 
             Audio.PlayPredicted(component.BoltClosedSound, uid, user);
@@ -176,11 +176,11 @@ public abstract partial class SharedGunSystem
             }
 
             if (user != null)
-                PopupSystem.PopupClient(Loc.GetString("gun-chamber-bolt-opened"), uid, user.Value);
+                PopupSystem.PopupEntity(Loc.GetString("gun-chamber-bolt-opened"), uid, user.Value);
 
             if (slots != null)
             {
-                _slots.SetLock(uid, ChamberSlot, false, slots);
+                _slots.SetLock((uid, slots), ChamberSlot, false);
             }
 
             Audio.PlayPredicted(component.BoltOpenedSound, uid, user);

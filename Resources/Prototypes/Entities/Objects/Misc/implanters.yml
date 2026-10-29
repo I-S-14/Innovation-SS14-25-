@@ -94,6 +94,9 @@
     materialComposition:
       Steel: 125
       Glass: 125
+  - type: Tag
+    tags:
+    - SmeltingImmune
 
 - type: entity
   id: Implanter
@@ -166,7 +169,8 @@
           True: {state: broken}
           False: {state: implanter1}
   - type: Tag
-    tags: []
+    tags:
+    - SmeltingImmune
 
 #Fun implanters
 
@@ -272,7 +276,7 @@
 
 - type: entity
   id: VoiceMaskImplanter
-  name: voice mask implanter
+  name: identity mask implanter
   parent: BaseImplantOnlyImplanterSyndi
   components:
   - type: Implanter

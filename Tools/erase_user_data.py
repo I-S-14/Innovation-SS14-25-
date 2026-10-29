@@ -1,10 +1,3 @@
-# SPDX-FileCopyrightText: 2023 Chief-Engineer <119664036+Chief-Engineer@users.noreply.github.com>
-# SPDX-FileCopyrightText: 2023 Pieter-Jan Briers <pieterjan.briers+git@gmail.com>
-# SPDX-FileCopyrightText: 2023 Riggle <27156122+RigglePrime@users.noreply.github.com>
-# SPDX-FileCopyrightText: 2025 Aiden <28298836+Aidenkrz@users.noreply.github.com>
-#
-# SPDX-License-Identifier: MIT
-
 #!/usr/bin/env python3
 
 # Script for erasing all data about a user from the database.
@@ -19,7 +12,7 @@ import os
 import psycopg2
 from uuid import UUID
 
-LATEST_DB_MIGRATION = "20260120200503_BanRefactor"
+LATEST_DB_MIGRATION = "20260126003838_CustomVoteLog"
 
 def main():
     parser = argparse.ArgumentParser()

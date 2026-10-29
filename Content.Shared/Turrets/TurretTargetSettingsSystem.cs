@@ -16,6 +16,7 @@ public sealed partial class TurretTargetSettingsSystem : EntitySystem
     [Dependency] private readonly AccessReaderSystem _accessReader = default!;
     [Dependency] private readonly ItemToggleSystem _toggle = default!; // goob edit dont target disabled borgs
     
+    [Dependency] private AccessReaderSystem _accessReader = default!;
     private ProtoId<AccessLevelPrototype> _accessLevelBorg = "Borg";
     private ProtoId<AccessLevelPrototype> _accessLevelBasicSilicon = "BasicSilicon";
 

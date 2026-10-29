@@ -17,13 +17,13 @@ public sealed partial class BuyerSpeciesCondition : ListingCondition
     /// <summary>
     /// A whitelist of species that can purchase this listing.
     /// </summary>
-    [DataField("whitelist")]
+    [DataField]
     public HashSet<ProtoId<SpeciesPrototype>>? Whitelist;
 
     /// <summary>
     /// A blacklist of species that cannot purchase this listing.
     /// </summary>
-    [DataField("blacklist")]
+    [DataField]
     public HashSet<ProtoId<SpeciesPrototype>>? Blacklist;
 
     public override bool Condition(ListingConditionArgs args)
@@ -33,18 +33,18 @@ public sealed partial class BuyerSpeciesCondition : ListingCondition
         if (!ent.TryGetComponent<MindComponent>(args.Buyer, out var mind))
             return true; // needed to obtain body entityuid to check for humanoid appearance
 
-        if (!ent.TryGetComponent<HumanoidAppearanceComponent>(mind.OwnedEntity, out var appearance))
+        if (!ent.TryGetComponent<HumanoidProfileComponent>(mind.OwnedEntity, out var humanoid))
             return true; // inanimate or non-humanoid entities should be handled elsewhere, main example being surplus crates
 
         if (Blacklist != null)
         {
-            if (Blacklist.Contains(appearance.Species))
+            if (Blacklist.Contains(humanoid.Species))
                 return false;
         }
 
         if (Whitelist != null)
         {
-            if (!Whitelist.Contains(appearance.Species))
+            if (!Whitelist.Contains(humanoid.Species))
                 return false;
         }
 

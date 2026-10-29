@@ -42,15 +42,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
                         <Control MinWidth="8"/>
 
-                        <Button Name="OffButton"
-                            ToggleMode="False"
-                            Text="{Loc 'particle-accelerator-control-menu-off-button'}"
-                            StyleClasses="OpenRight"/>
-
-                        <Button Name="OnButton"
-                            ToggleMode="False"
-                            Text="{Loc 'particle-accelerator-control-menu-on-button'}"
-                            StyleClasses="OpenLeft"/>
+                        <controls:SwitchButton Name="PowerSwitch" />
                     </BoxContainer>
 
                     <!-- Strenght -->
@@ -97,7 +89,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                 </BoxContainer>
             </BoxContainer>
 
-            <PanelContainer StyleClasses="LowDivider" Margin="0 -8" HorizontalAlignment="Right"/>
+            <controls:Separator StyleClasses="LowDivider" Margin="0 -8" HorizontalAlignment="Right" Orientation="Vertical" MinHeight="2"/>
 
             <!-- PA Visual part -->
             <BoxContainer Orientation="Vertical"

@@ -2,6 +2,7 @@
 
 using Content.Goobstation.Maths.FixedPoint;
 using Robust.Shared.Serialization;
+using Robust.Shared.Prototypes;
 using System.Linq;
 using Robust.Shared.Prototypes;
 
@@ -22,7 +23,7 @@ public partial struct ReagentId : IEquatable<ReagentId>
     /// <summary>
     /// Any additional data that is unique to this reagent type. E.g., for blood this could be DNA data.
     /// </summary>
-    [DataField("data")]
+    [DataField]
     public List<ReagentData>? Data { get; private set; } = new();
 
     public ReagentId(string prototype, List<ReagentData>? data)

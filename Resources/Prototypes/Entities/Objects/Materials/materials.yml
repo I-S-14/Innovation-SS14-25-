@@ -1,38 +1,11 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 - type: entity
-  abstract: true
-  parent: BaseItem
-  id: MaterialBase
-  description: A raw material.
-  components:
-  - type: Sprite
-    sprite: Objects/Materials/materials.rsi
-  - type: Item
-    sprite: Objects/Materials/materials.rsi
-    size: Normal
-  - type: Tag
-    tags:
-      - RawMaterial
-      - DroneUsable # Goobstation
-  - type: Damageable
-    damageContainer: Inorganic
-  - type: Destructible
-    thresholds:
-    - trigger:
-        !type:DamageTrigger
-        damage: 100
-      behaviors:
-      - !type:DoActsBehavior
-        acts: [ "Destruction" ]
-
-- type: entity
   parent: MaterialBase
   id: MaterialCardboard
   name: cardboard
   suffix: Full
   components:
-  - type: Material
   - type: PhysicalComposition
     materialComposition:
       Cardboard: 100
@@ -53,15 +26,11 @@
     layers:
     - state: cardboard_3
       map: ["base"]
-  - type: Appearance
-  - type: Extractable
-    grindableSolutionName: cardboard
-  - type: SolutionContainerManager
-    solutions:
-      cardboard:
-        reagents:
-        - ReagentId: Cellulose
-          Quantity: 6
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Cellulose
+        Quantity: 10
   - type: Item
     heldPrefix: cardboard
   - type: FloorTile
@@ -93,7 +62,7 @@
     count: 1
 
 - type: entity
-  parent: MaterialBase
+  parent: [MaterialBase, FoodBase]
   id: MaterialCloth
   name: cloth
   suffix: Full
@@ -132,11 +101,6 @@
   - type: PhysicalComposition
     materialComposition:
       Cloth: 100
-  - type: Extractable
-    juiceSolution:
-      reagents:
-      - ReagentId: Fiber
-        Quantity: 3
   - type: Sprite
     state: cloth_3
     layers:
@@ -145,16 +109,15 @@
   - type: Appearance
   - type: Edible
     requiresSpecialDigestion: true
+    solution: composite
   - type: FlavorProfile
     flavors:
     - fiber
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 5
-        reagents:
-        - ReagentId: Fiber
-          Quantity: 5
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Fiber
+        Quantity: 10
   - type: Tag
     tags:
       - ClothMade
@@ -189,7 +152,7 @@
     count: 1
 
 - type: entity
-  parent: MaterialBase
+  parent: [MaterialBase, FoodBase]
   id: MaterialDurathread
   name: durathread
   suffix: Full
@@ -206,7 +169,6 @@
     interfaces:
       enum.StackCustomSplitUiKey.Key:
         type: StackCustomSplitBoundUserInterface
-  - type: Material
   - type: PhysicalComposition
     materialComposition:
       Durathread: 100
@@ -215,19 +177,22 @@
     layers:
     - state: durathread_3
       map: ["base"]
-  - type: Appearance
   - type: Construction
     graph: Durathread
     node: MaterialDurathread
   - type: Edible
     requiresSpecialDigestion: true
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 5
-        reagents:
-        - ReagentId: Fiber
-          Quantity: 5
+    solution: composite
+  - type: Solution
+    solution:
+      maxVol: 20
+      reagents:
+      - ReagentId: Fiber
+        Quantity: 10
+      - ReagentId: Oil
+        Quantity: 5
+      - ReagentId: Phosphorus
+        Quantity: 5
   - type: Tag
     tags:
       - ClothMade
@@ -253,7 +218,6 @@
   name: wood
   suffix: Full
   components:
-  - type: Material
   - type: PhysicalComposition
     materialComposition:
       Wood: 100
@@ -274,7 +238,6 @@
     layers:
     - state: wood
       map: ["base"]
-  - type: Appearance
   - type: Item
     heldPrefix: wood
   - type: Tag
@@ -284,14 +247,11 @@
     - ConstructionMaterial
     - DroneUsable # Goobstation
     - FuelForFire # Add for future. Because wood its a fuel.
-  - type: Extractable
-    grindableSolutionName: wood
-  - type: SolutionContainerManager
-    solutions:
-      wood:
-        reagents:
-        - ReagentId: Cellulose
-          Quantity: 10
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Cellulose
+        Quantity: 10
 
 - type: entity
   parent: MaterialWoodPlank
@@ -331,7 +291,6 @@
         - ReagentId: Nutriment
           Quantity: 10
   # Goob end
-  - type: Material
   - type: PhysicalComposition
     materialComposition:
       Biomass: 1
@@ -349,7 +308,7 @@
     color: "#8A9A5B"
   - type: GuideHelp
     guides:
-    - Cloning
+    - Cloning # Should remove this, we don't have cloning and don't want cloning
 
 - type: entity
   parent: MaterialBiomass
@@ -430,7 +389,6 @@
     layers:
     - state: diamond
       map: ["base"]
-  - type: Appearance
   - type: Item
     heldPrefix: diamond
   - type: Extractable
@@ -444,13 +402,12 @@
     - nothing
   - type: BadFood
   # Goob end
-  - type: SolutionContainerManager
-    solutions:
-      diamond:
-        reagents:
-        - ReagentId: Carbon
-          Quantity: 20
-  - type: Material
+  - type: Solution
+    solution:
+      maxVol: 30
+      reagents:
+      - ReagentId: Carbon
+        Quantity: 30
   - type: PhysicalComposition
     materialComposition:
       Diamond: 100
@@ -472,7 +429,7 @@
     count: 1
 
 - type: entity
-  parent: MaterialBase
+  parent: [SolutionCompositeSmallStackable, MaterialBase, FoodBase]
   id: MaterialCotton
   name: cotton
   suffix: Full
@@ -497,34 +454,26 @@
   - type: Appearance
   - type: Edible
     requiresSpecialDigestion: true
+    solution: composite
   - type: FlavorProfile
     flavors:
     - fiber
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 5
-        reagents:
-        - ReagentId: Fiber
-          Quantity: 5
-  - type: Extractable
-    juiceSolution:
+  - type: Solution
+    solution:
       reagents:
       - ReagentId: Fiber
-        Quantity: 3
+        Quantity: 2.5
   - type: Tag
     tags:
       - ClothMade
       - RawMaterial
       - DroneUsable # Goobstation
       - Boll
-  - type: Material
   - type: PhysicalComposition
     materialComposition:
       Cotton: 100
   - type: Item
     heldPrefix: cotton
-
 
 - type: entity
   parent: MaterialCotton
@@ -537,7 +486,7 @@
     count: 1
 
 - type: entity
-  parent: MaterialBase
+  parent: [SolutionCompositeSmallStackable, MaterialBase, FoodBase]
   id: MaterialPyrotton
   name: pyrotton
   suffix: Full
@@ -559,25 +508,19 @@
     layers:
     - state: pyrotton_3
       map: ["base"]
-  - type: Appearance
+  - type: IgnitionSource
+    ignited: true
+    temperature: 400
   - type: Edible
     requiresSpecialDigestion: true
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 10
-        reagents:
-        - ReagentId: Fiber
-          Quantity: 5
-        - ReagentId: Phlogiston
-          Quantity: 5
-  - type: Extractable
-    juiceSolution:
+    solution: composite
+  - type: Solution
+    solution:
       reagents:
       - ReagentId: Fiber
-        Quantity: 3
+        Quantity: 2.5
       - ReagentId: Phlogiston
-        Quantity: 3
+        Quantity: 2.5
   - type: Tag
     tags:
       - ClothMade
@@ -596,20 +539,20 @@
     count: 1
 
 - type: entity
-  parent: MaterialBase
+  parent: [ MaterialBase, FoodBase ]
   id: MaterialBananium
   name: bananium
   suffix: Full
   components:
-  - type: Material
   - type: PhysicalComposition
     materialComposition:
       Bananium: 150
   - type: Sprite
-    state: bananium_1
+    sprite: Objects/Materials/bananium.rsi
+    state: bananium-3
     layers:
-    - state: bananium_1
-      map: ["base"]
+    - state: bananium-3
+      map: [ "base" ]
   - type: Stack
     stackType: Bananium
     count: 10
@@ -624,22 +567,21 @@
         type: StackCustomSplitBoundUserInterface
   - type: FlavorProfile
     flavors:
-      - banana
+    - banana
   - type: Edible
+    solution: composite
     trash:
     - TrashBananiumPeel
   - type: BadFood
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 11
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 4
-        - ReagentId: Vitamin
-          Quantity: 2
-        - ReagentId: Honk
-          Quantity: 5
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 4
+      - ReagentId: Vitamin
+        Quantity: 2
+      - ReagentId: Honk
+        Quantity: 4
   - type: Extractable
     juiceSolution:
       reagents:
@@ -647,9 +589,9 @@
         Quantity: 5
       - ReagentId: Honk
         Quantity: 5
-  - type: Appearance
   - type: Item
     heldPrefix: bananium
+    sprite: Objects/Materials/bananium.rsi
   - type: RadiationSource # Goobstation - ITS BACK
     intensity: 0.1
 
@@ -659,17 +601,18 @@
   suffix: Single
   components:
   - type: Sprite
-    state: bananium
+    state: bananium-1
   - type: Stack
     count: 1
 
 - type: entity
-  parent: MaterialBase
+  parent: [SolutionCompositeNormalStackable, MaterialBase, FoodBase]
   id: MaterialWebSilk
   name: silk
   description: A webby material.
   suffix: Full
   components:
+  - type: Material
   - type: PhysicalComposition
     materialComposition:
       WebSilk: 100
@@ -690,18 +633,11 @@
       - cobwebs
     ignoreReagents:
       - Fiber
-  - type: Extractable
-    juiceSolution:
+  - type: Solution
+    solution:
       reagents:
       - ReagentId: Fiber
-        Quantity: 3
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 3
-        reagents:
-        - ReagentId: Fiber
-          Quantity: 3
+        Quantity: 10
   - type: Tag
     tags:
       - ClothMade
@@ -818,7 +754,7 @@
     count: 1
 
 - type: entity
-  parent: MaterialBase
+  parent: [MaterialBase, FoodBase]
   id: MaterialBones
   name: bones
   suffix: Full
@@ -840,16 +776,16 @@
     layers:
     - state: cotton_3
       map: ["base"]
-  - type: Appearance
   - type: Edible
+    solution: composite
   - type: BadFood
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 5
-        reagents:
-        - ReagentId: Vitamin
-          Quantity: 3
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Vitamin
+        Quantity: 3
+      - ReagentId: Carbon
+        Quantity: 7
   - type: Item
     heldPrefix: bones
 

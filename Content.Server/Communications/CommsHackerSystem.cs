@@ -1,29 +1,29 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Server.Chat.Systems;
-using Content.Server.GameTicking;
 using Content.Server.Ninja.Systems;
 using Content.Server.Power.EntitySystems; // goobstation - check power 
 using Content.Shared.Communications;
 using Content.Shared.DoAfter;
+using Content.Shared.GameTicking;
 using Content.Shared.Interaction;
 using Content.Shared.Random;
 using Content.Shared.Random.Helpers;
-using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 
 namespace Content.Server.Communications;
 
-public sealed class CommsHackerSystem : SharedCommsHackerSystem
+public sealed partial class CommsHackerSystem : SharedCommsHackerSystem
 {
-    [Dependency] private readonly ChatSystem _chat = default!;
-    [Dependency] private readonly GameTicker _gameTicker = default!;
-    [Dependency] private readonly IPrototypeManager _proto = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
+    [Dependency] private ChatSystem _chat = default!;
+    [Dependency] private GameTicker _gameTicker = default!;
+    [Dependency] private IRobustRandom _random = default!;
     // TODO: remove when generic check event is used
     [Dependency] private readonly NinjaGlovesSystem _gloves = default!;
     [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
     [Dependency] private readonly PowerReceiverSystem _powerReceiverSystem = default!; // Goobstation check power
+    [Dependency] private NinjaGlovesSystem _gloves = default!;
+    [Dependency] private SharedDoAfterSystem _doAfter = default!;
     public override void Initialize()
     {
         base.Initialize();
@@ -66,9 +66,9 @@ public sealed class CommsHackerSystem : SharedCommsHackerSystem
         if (args.Cancelled || args.Handled || args.Target == null || !_powerReceiverSystem.IsPowered(args.Target.Value)) // Goobsstation - is powered
             return;
 
-        var threats = _proto.Index<WeightedRandomPrototype>(comp.Threats);
+        var threats = ProtoMan.Index<WeightedRandomPrototype>(comp.Threats);
         var threat = threats.Pick(_random);
-        CallInThreat(_proto.Index<NinjaHackingThreatPrototype>(threat));
+        CallInThreat(ProtoMan.Index<NinjaHackingThreatPrototype>(threat));
 
         // prevent calling in multiple threats
         RemComp<CommsHackerComponent>(uid);

@@ -3,19 +3,18 @@
 using Content.Server.Chat.Systems;
 using Content.Server.Power.EntitySystems; // Goobstation - Check power
 using Content.Server.Station.Systems;
-using Content.Server.StationRecords.Systems;
 using Content.Shared.CriminalRecords;
 using Content.Shared.CriminalRecords.Components;
 using Content.Shared.CriminalRecords.Systems;
 using Content.Shared.Random.Helpers;
 using Content.Shared.Security;
 using Content.Shared.StationRecords;
-using Robust.Shared.Prototypes;
+using Content.Shared.StationRecords.Systems;
 using Robust.Shared.Random;
 
 namespace Content.Server.CriminalRecords.Systems;
 
-public sealed class CriminalRecordsHackerSystem : SharedCriminalRecordsHackerSystem
+public sealed partial class CriminalRecordsHackerSystem : SharedCriminalRecordsHackerSystem
 {
     [Dependency] private readonly ChatSystem _chat = default!;
     [Dependency] private readonly CriminalRecordsSystem _criminalRecords = default!;
@@ -24,6 +23,11 @@ public sealed class CriminalRecordsHackerSystem : SharedCriminalRecordsHackerSys
     [Dependency] private readonly StationSystem _station = default!;
     [Dependency] private readonly StationRecordsSystem _records = default!;
     [Dependency] private readonly PowerReceiverSystem _powerReceiverSystem = default!; // Goobstation - check power
+    [Dependency] private ChatSystem _chat = default!;
+    [Dependency] private CriminalRecordsSystem _criminalRecords = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private ServerStationSystem _station = default!;
+    [Dependency] private StationRecordsSystem _records = default!;
     public override void Initialize()
     {
         base.Initialize();
@@ -39,7 +43,7 @@ public sealed class CriminalRecordsHackerSystem : SharedCriminalRecordsHackerSys
         if (_station.GetOwningStation(ent) is not {} station)
             return;
 
-        var reasons = _proto.Index(ent.Comp.Reasons);
+        var reasons = ProtoMan.Index(ent.Comp.Reasons);
         foreach (var (key, record) in _records.GetRecordsOfType<CriminalRecord>(station))
         {
             var reason = _random.Pick(reasons);

@@ -6,9 +6,10 @@ using System.Numerics;
 using Content.Client.Administration.Systems;
 using Content.Client.Stylesheets;
 using Content.Goobstation.Common.CCVar;
+using Content.Client.Stylesheets.Fonts;
 using Content.Shared.Administration;
 using Content.Shared.CCVar;
-using Content.Shared.Ghost;
+using Content.Shared.Ghost.Components;
 using Content.Shared.Mind;
 using Content.Shared.Roles;
 using Robust.Client.Graphics;
@@ -72,8 +73,9 @@ internal sealed class AdminNameOverlay : Overlay
         _prototypeManager = prototypeManager;
         ZIndex = 200;
         // Setting these to a specific ttf would break the antag symbols
-        _font = resourceCache.NotoStack();
-        _fontBold = resourceCache.NotoStack(variation: "Bold");
+        var fontStack = new NotoFontFamilyStack(resourceCache);
+        _font = fontStack.GetFont(10);
+        _fontBold = fontStack.GetFont(10, FontKind.Bold);
 
         config.OnValueChanged(CCVars.AdminOverlayAntagFormat, (show) => { _overlayFormat = UpdateOverlayFormat(show); }, true);
         config.OnValueChanged(CCVars.AdminOverlaySymbolStyle, (show) => { _overlaySymbolStyle = UpdateOverlaySymbolStyle(show); }, true);
@@ -204,6 +206,9 @@ internal sealed class AdminNameOverlay : Overlay
                 }
             }
 
+            var outline = TextOutline.Default with { Color = TextOutline.Default.Color.WithAlpha(alpha) };
+
+            // Character name
             var color = Color.Aquamarine;
 
             // Character name
@@ -228,7 +233,7 @@ internal sealed class AdminNameOverlay : Overlay
             {
                 color = Color.Orange;
                 color.A = alpha;
-                args.ScreenHandle.DrawString(_font, screenCoordinates + currentOffset, playerInfo.PlaytimeString, uiScale, playerInfo.Connected ? color : colorDisconnected);
+                args.ScreenHandle.DrawString(_font, screenCoordinates + currentOffset, playerInfo.PlaytimeString, uiScale, playerInfo.Connected ? color : colorDisconnected, outline);
                 currentOffset += lineoffset;
             }
 
@@ -237,7 +242,7 @@ internal sealed class AdminNameOverlay : Overlay
             {
                 color = Color.GreenYellow;
                 color.A = alpha;
-                args.ScreenHandle.DrawString(_font, screenCoordinates + currentOffset, playerInfo.StartingJob, uiScale, playerInfo.Connected ? color : colorDisconnected);
+                args.ScreenHandle.DrawString(_font, screenCoordinates + currentOffset, playerInfo.StartingJob, uiScale, playerInfo.Connected ? color : colorDisconnected, outline);
                 currentOffset += lineoffset;
             }
 
@@ -293,7 +298,7 @@ internal sealed class AdminNameOverlay : Overlay
             var label = !string.IsNullOrEmpty(symbol)
                 ? Loc.GetString("player-tab-character-name-antag-symbol", ("symbol", symbol), ("name", text))
                 : text;
-            args.ScreenHandle.DrawString(_fontBold, screenCoordinates + currentOffset, label, uiScale, color);
+            args.ScreenHandle.DrawString(_fontBold, screenCoordinates + currentOffset, label, uiScale, color, outline);
             currentOffset += lineoffset;
 
             //Save the coordinates and size of the text block, for stack merge check

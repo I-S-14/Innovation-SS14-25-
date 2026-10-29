@@ -39,6 +39,15 @@ public sealed partial class DoAfterOverlay : Overlay // Goob
     private const float StartX = 2;
     private const float EndX = 22f;
 
+    // Time after which the doafter will lerp to max alpha.
+    private static readonly TimeSpan MaxAlphaTime = TimeSpan.FromSeconds(0.3f);
+
+    // After finishing, how long it takes to fade out to 0 alpha
+    private static readonly TimeSpan FadeoutAlphaTime = TimeSpan.FromSeconds(0.2f);
+
+    // Time after which the doafter will lerp to its final y offset.
+    private static readonly TimeSpan MaxYPosTime = TimeSpan.FromSeconds(0.5f);
+
     public override OverlaySpace Space => OverlaySpace.WorldSpaceBelowFOV;
 
     public DoAfterOverlay(IEntityManager entManager, IPrototypeManager protoManager, IGameTiming timing, IPlayerManager player)
@@ -117,7 +126,7 @@ public sealed partial class DoAfterOverlay : Overlay // Goob
             foreach (var doAfter in comp.DoAfters.Values)
             {
                 // Hide some DoAfters from other players for stealthy actions (ie: thieving gloves)
-                var alpha = 1f;
+                var maxAlpha = 1f;
                 if (doAfter.Args.Hidden || isInContainer)
                 {
                     // Goobstation - Show doAfter progress bar to another entity
@@ -126,7 +135,7 @@ public sealed partial class DoAfterOverlay : Overlay // Goob
                         continue;
 
                     // Hints to the local player that this do-after is not visible to other players.
-                    alpha = 0.5f;
+                    maxAlpha = 0.5f;
                 }
 
                 alpha = GetDoAfterAlpha(time - doAfter.StartTime, doAfter.Args.Delay, alpha); // Goob
@@ -149,7 +158,7 @@ public sealed partial class DoAfterOverlay : Overlay // Goob
                 // if we're cancelled then flick red / off.
                 if (doAfter.CancelledTime != null)
                 {
-                    var elapsed = doAfter.CancelledTime.Value - doAfter.StartTime;
+                    elapsed = doAfter.CancelledTime.Value - doAfter.StartTime;
                     elapsedRatio = (float)Math.Min(1, elapsed.TotalSeconds / doAfter.Args.Delay.TotalSeconds);
                     var cancelElapsed = (time - doAfter.CancelledTime.Value).TotalSeconds;
                     var flash = Math.Floor(cancelElapsed / FlashTime) % 2 == 0;
@@ -157,7 +166,6 @@ public sealed partial class DoAfterOverlay : Overlay // Goob
                 }
                 else
                 {
-                    var elapsed = time - doAfter.StartTime;
                     elapsedRatio = (float)Math.Min(1, elapsed.TotalSeconds / doAfter.Args.Delay.TotalSeconds);
                     color = GetProgressColor(elapsedRatio, alpha);
                 }
@@ -169,9 +177,6 @@ public sealed partial class DoAfterOverlay : Overlay // Goob
                 offset += _barTexture.Height / scale;
             }
         }
-
-        handle.UseShader(null);
-        handle.SetTransform(Matrix3x2.Identity);
     }
 
     public Color GetProgressColor(float progress, float alpha = 1f)

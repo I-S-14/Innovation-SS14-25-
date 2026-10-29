@@ -1,6 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-
-using Content.Server.GameTicking;
 using Content.Server.Shuttles.Systems;
 using Content.Shared.Cuffs.Components;
 using Content.Shared.GameTicking.Components;
@@ -16,7 +14,7 @@ using System.Text;
 using Content.Goobstation.Common.CCVar;
 using Content.Server.Objectives.Commands;
 using Content.Shared.CCVar;
-using Content.Shared.Prototypes;
+using Content.Shared.GameTicking;
 using Content.Shared.Roles.Jobs;
 using Robust.Server.Player;
 using Robust.Shared.Configuration;
@@ -32,7 +30,7 @@ namespace Content.Server.Objectives;
 
 // heavily edited by goobstation contributor gang
 // if you wanna upstream something think twice
-public sealed class ObjectivesSystem : SharedObjectivesSystem
+public sealed partial class ObjectivesSystem : SharedObjectivesSystem
 {
     [Dependency] private readonly GameTicker _gameTicker = default!;
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
@@ -44,6 +42,11 @@ public sealed class ObjectivesSystem : SharedObjectivesSystem
     [Dependency] private readonly IConfigurationManager _cfg = default!;
     [Dependency] private readonly ISharedAdminLogManager _adminLog = default!;
     [Dependency] private readonly SharedRoleSystem _roles = default!;
+    [Dependency] private IConfigurationManager _cfg = default!;
+    [Dependency] private IPlayerManager _player = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private EmergencyShuttleSystem _emergencyShuttle = default!;
+    [Dependency] private SharedJobSystem _job = default!;
 
     private IEnumerable<string>? _objectives;
 
@@ -54,34 +57,29 @@ public sealed class ObjectivesSystem : SharedObjectivesSystem
     {
         base.Initialize();
 
-        SubscribeLocalEvent<RoundEndTextAppendEvent>(OnRoundEndText);
-
         Subs.CVar(_cfg, CCVars.GameShowGreentext, value => _showGreentext = value, true);
 
-        _prototypeManager.PrototypesReloaded += CreateCompletions;
-        Subs.CVar(_cfg, GoobCVars.GoobcoinServerMultiplier, value => _goobcoinsServerMultiplier = value, true);
+        ProtoMan.PrototypesReloaded += CreateCompletions;
     }
 
     public override void Shutdown()
     {
         base.Shutdown();
 
-        _prototypeManager.PrototypesReloaded -= CreateCompletions;
+        ProtoMan.PrototypesReloaded -= CreateCompletions;
     }
 
     /// <summary>
     /// Adds objective text for each game rule's players on round end.
     /// </summary>
-    private void OnRoundEndText(RoundEndTextAppendEvent ev)
+    [SubscribeLocalEvent]
+    private void OnRoundEndText(ref RoundEndTextAppendEvent ev)
     {
         // go through each gamerule getting data for the roundend summary.
-        var summaries = new Dictionary<string, Dictionary<string, Dictionary<string, List<(EntityUid, string)>>>>();
-        var query = EntityQueryEnumerator<GameRuleComponent>();
-        while (query.MoveNext(out var uid, out var gameRule))
+        var summaries = new Dictionary<string, Dictionary<string, List<(EntityUid, string)>>>();
+        var query = EntityQueryEnumerator<ActiveGameRuleComponent, GameRuleComponent>();
+        while (query.MoveNext(out var uid, out _, out var comp))
         {
-            if (!_gameTicker.IsGameRuleAdded(uid, gameRule))
-                continue;
-
             var info = new ObjectivesTextGetInfoEvent(new List<(EntityUid, string)>(), string.Empty);
             RaiseLocalEvent(uid, ref info);
             if (info.Minds.Count == 0)
@@ -109,7 +107,7 @@ public sealed class ObjectivesSystem : SharedObjectivesSystem
             }
             else
             {
-                summary[prepend.Text] = info.Minds;
+                summary[prepend.Text] = info.Minds.ToList();
             }
         }
 
@@ -150,6 +148,10 @@ public sealed class ObjectivesSystem : SharedObjectivesSystem
         }
     }
 
+    /// <summary>
+    /// Generates a summary for a list of antag minds based on their agent.
+    /// Contains the objective issuer, objectives and completion rate.
+    /// </summary>
     private void AddSummary(StringBuilder result, string agent, List<(EntityUid, string)> minds)
     {
         var agentSummaries = new List<(string summary, float successRate, int completedObjectives)>();
@@ -201,7 +203,13 @@ public sealed class ObjectivesSystem : SharedObjectivesSystem
                 //TO DO:
                 //check for the right group here. Getting the target issuer is easy: objectiveGroup.Key
                 //It should be compared to the type of the group's issuer.
-                agentSummary.AppendLine(objectiveGroup.Key);
+                if (!ProtoMan.TryIndex(objectiveGroup.Key, out var issuer))
+                {
+                    Log.Error($"Found incorrect objective issuer {issuer} when generating round end text.");
+                    continue;
+                }
+
+                agentSummary.AppendLine(issuer.LocalizedName);
 
                 foreach (var objective in objectiveGroup)
                 {
@@ -305,7 +313,7 @@ public sealed class ObjectivesSystem : SharedObjectivesSystem
 
     public EntityUid? GetRandomObjective(EntityUid mindId, MindComponent mind, ProtoId<WeightedRandomPrototype> objectiveGroupProto, float maxDifficulty)
     {
-        if (!_prototypeManager.TryIndex(objectiveGroupProto, out var groupsProto))
+        if (!ProtoMan.TryIndex(objectiveGroupProto, out var groupsProto))
         {
             Log.Error($"Tried to get a random objective, but can't index WeightedRandomPrototype {objectiveGroupProto}");
             return null;
@@ -316,7 +324,7 @@ public sealed class ObjectivesSystem : SharedObjectivesSystem
 
         while (_random.TryPickAndTake(groups, out var groupName))
         {
-            if (!_prototypeManager.TryIndex<WeightedRandomPrototype>(groupName, out var group))
+            if (!ProtoMan.TryIndex<WeightedRandomPrototype>(groupName, out var group))
             {
                 Log.Error($"Couldn't index objective group prototype {groupName}");
                 return null;
@@ -325,7 +333,7 @@ public sealed class ObjectivesSystem : SharedObjectivesSystem
             var objectives = group.Weights.ShallowClone();
             while (_random.TryPickAndTake(objectives, out var objectiveProto))
             {
-                if (!_prototypeManager.Index(objectiveProto).TryGetComponent<ObjectiveComponent>(out var objectiveComp, EntityManager.ComponentFactory))
+                if (!ProtoMan.Index(objectiveProto).TryComp<ObjectiveComponent>(out var objectiveComp, EntityManager.ComponentFactory))
                     continue;
 
                 if (objectiveComp.Difficulty <= maxDifficulty && TryCreateObjective((mindId, mind), objectiveProto, out var objective))
@@ -339,7 +347,7 @@ public sealed class ObjectivesSystem : SharedObjectivesSystem
     /// <summary>
     /// Returns whether a target is considered 'in custody' (cuffed on the shuttle).
     /// </summary>
-    private bool IsInCustody(EntityUid mindId, MindComponent? mind = null)
+    public bool IsInCustody(EntityUid mindId, MindComponent? mind = null)
     {
         if (!Resolve(mindId, ref mind))
             return false;
@@ -399,8 +407,8 @@ public sealed class ObjectivesSystem : SharedObjectivesSystem
 
     private void CreateCompletions()
     {
-        _objectives = _prototypeManager.EnumeratePrototypes<EntityPrototype>()
-            .Where(p => p.HasComponent<ObjectiveComponent>())
+        _objectives = ProtoMan.EnumeratePrototypes<EntityPrototype>()
+            .Where(p => p.HasComp<ObjectiveComponent>(EntityManager.ComponentFactory))
             .Select(p => p.ID)
             .Order();
     }

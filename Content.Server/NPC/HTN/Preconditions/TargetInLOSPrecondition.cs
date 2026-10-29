@@ -2,6 +2,7 @@
 
 using Content.Server.Interaction;
 using Content.Server.Stealth;
+using Content.Shared.Interaction;
 using Content.Shared.Physics;
 using Content.Shared.Stealth.Components;
 

@@ -147,6 +147,7 @@
 
 #CREW HARDSUITS
 #Atmospherics Hardsuit
+
 - type: entity
   parent: [ClothingOuterHardsuitBase, BaseEngineeringContraband]
   id: ClothingOuterHardsuitAtmos
@@ -160,9 +161,6 @@
   - type: PressureProtection
     highPressureMultiplier: 0.02
     lowPressureMultiplier: 1000
-  - type: TemperatureProtection
-    heatingCoefficient: 0.001
-    coolingCoefficient: 0.001
   - type: FireProtection
     reduction: 0.8
   - type: ExplosionResistance
@@ -184,7 +182,6 @@
       head: ClothingHeadHelmetHardsuitAtmos
   - type: Tag
     tags:
-    - CorgiWearable
     - Hardsuit
     - WhitelistChameleon
 
@@ -223,7 +220,6 @@
       head: ClothingHeadHelmetHardsuitEngineering
   - type: Tag
     tags:
-    - CorgiWearable
     - Hardsuit
     - WhitelistChameleon
 
@@ -266,7 +262,6 @@
     - Hardsuit
     - WhitelistChameleon
     - HardsuitSpatio
-    - CorgiWearable
 
 #Salvage Hardsuit
 - type: entity
@@ -307,7 +302,6 @@
     knockdownTimeDelta: -2.5
   - type: Tag
     tags:
-    - CorgiWearable
     - Hardsuit
     - WhitelistChameleon
 
@@ -326,7 +320,7 @@
     highPressureMultiplier: 0.5
     lowPressureMultiplier: 1000
   - type: ExplosionResistance
-    damageCoefficient: 0.3
+    damageCoefficient: 0.5
   - type: Armor
     modifiers:
       coefficients:
@@ -353,7 +347,6 @@
     knockdownTimeDelta: -2.5
   - type: Tag
     tags:
-    - CorgiWearable
     - Hardsuit
     - WhitelistChameleon
 
@@ -390,9 +383,6 @@
         Radiation: 0.01
   - type: ExplosionResistance
     damageCoefficient: 0.2
-  - type: TemperatureProtection
-    heatingCoefficient: 0.001
-    coolingCoefficient: 0.001
   - type: ToggleableClothing # Goobstation - Modsuits change
     clothingPrototypes:
       head: ClothingHeadHelmetHardsuitMaxim
@@ -417,7 +407,7 @@
     highPressureMultiplier: 0.5
     lowPressureMultiplier: 1000
   - type: ExplosionResistance
-    damageCoefficient: 0.4
+    damageCoefficient: 0.5
   - type: Armor
     traumaDeductions:
       Dismemberment: 0.3
@@ -446,7 +436,6 @@
     knockdownTimeDelta: -3
   - type: Tag
     tags:
-    - CorgiWearable
     - Hardsuit
     - WhitelistChameleon
 
@@ -502,7 +491,7 @@
     highPressureMultiplier: 0.5
     lowPressureMultiplier: 1000
   - type: ExplosionResistance
-    damageCoefficient: 0.4
+    damageCoefficient: 0.5
   - type: Armor
     traumaDeductions:
       Dismemberment: 0.3
@@ -575,12 +564,14 @@
     knockdownTimeDelta: -2
   - type: Tag
     tags:
-    - CorgiWearable
     - Hardsuit
     - WhitelistChameleon
+  - type: StealTarget
+    stealGroup:
+    - HeadHardsuit
 
 - type: entity
-  parent: [ClothingOuterHardsuitBase, BaseCommandContraband]
+  parent: [ TemperatureProtectionGreat, ClothingOuterHardsuitBase, BaseCommandContraband]
   id: ClothingOuterHardsuitEngineeringWhite
   name: chief engineer's hardsuit # Goob edit
   description: A special hardsuit that protects against hazardous, low pressure environments, made for the chief engineer of the station. # Goob edit
@@ -624,9 +615,11 @@
     - type: ContainmentFieldIgnore
   - type: Tag
     tags:
-    - CorgiWearable
     - Hardsuit
     - WhitelistChameleon
+  - type: StealTarget
+    stealGroup:
+    - HeadHardsuit
 
 #Chief Medical Officer's Hardsuit
 - type: entity
@@ -661,9 +654,11 @@
       head: ClothingHeadHelmetHardsuitMedical
   - type: Tag
     tags:
-    - CorgiWearable
     - Hardsuit
     - WhitelistChameleon
+  - type: StealTarget
+    stealGroup:
+    - HeadHardsuit
 
 #Research Director's Hardsuit
 - type: entity
@@ -703,7 +698,6 @@
     tags:
     - WhitelistChameleon
     - HighRiskItem
-    - CorgiWearable
     - Hardsuit
   - type: ToggleableClothing # Goobstation - Modsuits change
     clothingPrototypes:
@@ -711,7 +705,9 @@
   - type: StaticPrice
     price: 750
   - type: StealTarget
-    stealGroup: ClothingOuterHardsuitRd
+    stealGroup:
+    - ClothingOuterHardsuitRd
+    - HeadHardsuit
   - type: ModifyDelayedKnockdown # Goobstation
     delayDelta: 2
     knockdownTimeDelta: -2
@@ -720,6 +716,7 @@
 # CorvaxGoob-start:
   - type: CargoSellBlacklist
   - type: SupermatterImmune
+
 # CorvaxGoob-end.
 
 #Head of Security's Hardsuit, heavily edited by goob
@@ -765,6 +762,9 @@
     knockdownTimeDelta: -2.5
   - type: StaminaResistance # Goobstation
     damageCoefficient: 0.5
+  - type: StealTarget
+    stealGroup:
+    - HeadHardsuit
 
 #Luxury Mining Hardsuit
 - type: entity
@@ -816,6 +816,8 @@
     sprite: Clothing/OuterClothing/Hardsuits/syndicate.rsi
   - type: Item
     size: Huge
+    shape:
+    - 0,0,3,3
   - type: Clothing
     sprite: Clothing/OuterClothing/Hardsuits/syndicate.rsi
   - type: PressureProtection
@@ -852,7 +854,6 @@
     - MonkeyWearable
     - Hardsuit
     - WhitelistChameleon
-    - CorgiWearable
     - ScurretWearable
   - type: ModifyDelayedKnockdown # Goobstation
     delayDelta: 3
@@ -886,7 +887,7 @@
 
 #Syndicate Elite Hardsuit
 - type: entity
-  parent: [ClothingOuterHardsuitBase, BaseSyndicateContraband]
+  parent: [ TemperatureProtectionGreat, ClothingOuterHardsuitBase, BaseSyndicateContraband ]
   id: ClothingOuterHardsuitSyndieElite
   name: syndicate elite hardsuit # Goob edit
   description: An elite version of the blood-red hardsuit, with improved mobility and fireproofing. Property of Gorlex Marauders. # Goob edit
@@ -898,11 +899,8 @@
   - type: PressureProtection
     highPressureMultiplier: 0.02
     lowPressureMultiplier: 1000
-  - type: TemperatureProtection
-    heatingCoefficient: 0.001
-    coolingCoefficient: 0.001
   - type: ExplosionResistance
-    damageCoefficient: 0.2
+    damageCoefficient: 0.3
   - type: FireProtection
     reduction: 0.8
   - type: StaminaResistance # do not add these to other equipment or mobs, we don't want to microbalance these everywhere
@@ -924,18 +922,19 @@
         Caustic: 0.4
   - type: Item
     size: Huge
+    shape:
+    - 0,0,3,3
   - type: ClothingSpeedModifier
     walkModifier: 1 # goob edit
     sprintModifier: 1 # goob edit
   - type: HeldSpeedModifier
-  - type: Tag
-    tags:
-    - CorgiWearable
-    - Hardsuit
-    - WhitelistChameleon
   - type: ToggleableClothing # Goobstation - Modsuits change
     clothingPrototypes:
       head: ClothingHeadHelmetHardsuitSyndieElite
+  - type: Tag
+    tags:
+    - Hardsuit
+    - WhitelistChameleon
 
 - type: entity
   parent: [ClothingOuterHardsuitBase, BaseSyndicateContraband]
@@ -981,7 +980,6 @@
     knockdownTimeDelta: -3
   - type: Tag
     tags:
-    - CorgiWearable
     - Hardsuit
     - WhitelistChameleon
 
@@ -999,6 +997,7 @@
   - type: PressureProtection
     highPressureMultiplier: 0.2
     lowPressureMultiplier: 1000
+  # - type: StaminaResistance # Should not have stamina resistance, this is purely so people know it was not forgotten.
   - type: ExplosionResistance
     damageCoefficient: 0.3
   - type: StaminaResistance # Goobstation uncommented
@@ -1031,7 +1030,6 @@
   - type: Tag
     tags:
     - MonkeyWearable
-    - CorgiWearable
     - Hardsuit
     - WhitelistChameleon
 
@@ -1131,6 +1129,8 @@
     sprite: Clothing/OuterClothing/Hardsuits/pirateeva.rsi
   - type: Item
     size: Huge
+    shape:
+    - 0,0,3,3
   - type: Clothing
     sprite: Clothing/OuterClothing/Hardsuits/pirateeva.rsi
   - type: ExplosionResistance
@@ -1169,6 +1169,8 @@
     sprite: Clothing/OuterClothing/Hardsuits/piratecaptain.rsi
   - type: Item
     size: Huge
+    shape:
+    - 0,0,3,3
   - type: Clothing
     sprite: Clothing/OuterClothing/Hardsuits/piratecaptain.rsi
   - type: PressureProtection
@@ -1202,7 +1204,7 @@
 #CENTCOMM / ERT HARDSUITS
 #ERT Leader Hardsuit
 - type: entity
-  parent: [ BaseCentcommContraband, ClothingOuterHardsuitSyndieCommander ]
+  parent: [ BaseTaskForceContraband, ClothingOuterHardsuitSyndieCommander ]
   id: ClothingOuterHardsuitERTLeader
   name: ERT leader's hardsuit # Goob edit
   description: A protective hardsuit worn by the leader of an emergency response team. # Goob edit
@@ -1211,13 +1213,20 @@
     sprite: Clothing/OuterClothing/Hardsuits/ERTSuits/ertleader.rsi
   - type: Clothing
     sprite: Clothing/OuterClothing/Hardsuits/ERTSuits/ertleader.rsi
+  - type: Item
+    size: Huge
+    shape:
+    - 0,0,3,3
   - type: ToggleableClothing # Goobstation - Modsuits change
     clothingPrototypes:
       head: ClothingHeadHelmetHardsuitERTLeader
+  - type: StealTarget
+    stealGroup:
+    - HeadHardsuit
 
 #ERT Chaplain Hardsuit
 - type: entity
-  parent: [ BaseCentcommContraband, ClothingOuterHardsuitSyndie ]
+  parent: [ BaseTaskForceContraband, ClothingOuterHardsuitSyndie ]
   id: ClothingOuterHardsuitERTChaplain
   name: ERT chaplain's hardsuit # Goob edit
   description: A protective hardsuit worn by the chaplains of an Emergency Response Team. # Goob edit
@@ -1226,13 +1235,20 @@
     sprite: Clothing/OuterClothing/Hardsuits/ERTSuits/ertchaplain.rsi #if you change this, please update the humanoid.yml with a better markers sprite.
   - type: Clothing
     sprite: Clothing/OuterClothing/Hardsuits/ERTSuits/ertchaplain.rsi
+  - type: Item
+    size: Huge
+    shape:
+    - 0,0,3,3
   - type: ToggleableClothing # Goobstation - Modsuits change
     clothingPrototypes:
       head: ClothingHeadHelmetHardsuitERTChaplain
+  - type: StealTarget
+    stealGroup:
+    - HeadHardsuit
 
 #ERT Engineer Hardsuit
 - type: entity
-  parent: [ BaseCentcommContraband, ClothingOuterHardsuitSyndieElite ]
+  parent: [ BaseTaskForceContraband, ClothingOuterHardsuitSyndieElite ]
   id: ClothingOuterHardsuitERTEngineer
   name: ERT engineer's hardsuit # Goob edit
   description: A protective hardsuit worn by the engineers of an emergency response team. # Goob edit
@@ -1241,15 +1257,22 @@
     sprite: Clothing/OuterClothing/Hardsuits/ERTSuits/ertengineer.rsi
   - type: Clothing
     sprite: Clothing/OuterClothing/Hardsuits/ERTSuits/ertengineer.rsi
+  - type: Item
+    size: Huge
+    shape:
+    - 0,0,3,3
   - type: ToggleableClothing # Goobstation - Modsuits change
     clothingPrototypes:
       head: ClothingHeadHelmetHardsuitERTEngineer
   - type: FireProtection
     reduction: 0.8
+  - type: StealTarget
+    stealGroup:
+    - HeadHardsuit
 
 #ERT Medic Hardsuit
 - type: entity
-  parent: [ BaseCentcommContraband, ClothingOuterHardsuitSyndieMedic ]
+  parent: [ BaseTaskForceContraband, ClothingOuterHardsuitSyndieMedic ]
   id: ClothingOuterHardsuitERTMedical
   name: ERT medic's hardsuit # Goob edit
   description: A protective hardsuit worn by the medics of an emergency response team. # Goob edit
@@ -1258,13 +1281,20 @@
     sprite: Clothing/OuterClothing/Hardsuits/ERTSuits/ertmedical.rsi
   - type: Clothing
     sprite: Clothing/OuterClothing/Hardsuits/ERTSuits/ertmedical.rsi
+  - type: Item
+    size: Huge
+    shape:
+    - 0,0,3,3
   - type: ToggleableClothing # Goobstation - Modsuits change
     clothingPrototypes:
       head: ClothingHeadHelmetHardsuitERTMedical
+  - type: StealTarget
+    stealGroup:
+    - HeadHardsuit
 
 #ERT Security Hardsuit
 - type: entity
-  parent: [ BaseCentcommContraband, ClothingOuterHardsuitSyndie ]
+  parent: [ BaseTaskForceContraband, ClothingOuterHardsuitSyndie ]
   id: ClothingOuterHardsuitERTSecurity
   name: ERT security's hardsuit # Goob edit
   description: A protective hardsuit worn by the security officers of an emergency response team. # Goob edit
@@ -1273,6 +1303,10 @@
     sprite: Clothing/OuterClothing/Hardsuits/ERTSuits/ertsecurity.rsi
   - type: Clothing
     sprite: Clothing/OuterClothing/Hardsuits/ERTSuits/ertsecurity.rsi
+  - type: Item
+    size: Huge
+    shape:
+    - 0,0,3,3
   - type: ToggleableClothing # Goobstation - Modsuits change
     clothingPrototypes:
       head: ClothingHeadHelmetHardsuitERTSecurity
@@ -1280,10 +1314,13 @@
     tags:
     - Hardsuit
     - WhitelistChameleon
+  - type: StealTarget
+    stealGroup:
+    - HeadHardsuit
 
 #ERT Janitor Hardsuit
 - type: entity
-  parent: [ BaseCentcommContraband, ClothingOuterHardsuitSyndieElite ]
+  parent: [ BaseTaskForceContraband, ClothingOuterHardsuitSyndieElite ]
   id: ClothingOuterHardsuitERTJanitor
   name: ERT janitor's hardsuit # Goob edit
   description: A protective hardsuit worn by the janitors of an emergency response team. # Goob edit
@@ -1292,13 +1329,20 @@
     sprite: Clothing/OuterClothing/Hardsuits/ERTSuits/ertjanitor.rsi
   - type: Clothing
     sprite: Clothing/OuterClothing/Hardsuits/ERTSuits/ertjanitor.rsi
+  - type: Item
+    size: Huge
+    shape:
+    - 0,0,3,3
   - type: ToggleableClothing # Goobstation - Modsuits change
     clothingPrototypes:
       head: ClothingHeadHelmetHardsuitERTJanitor
+  - type: StealTarget
+    stealGroup:
+    - HeadHardsuit
 
 #Deathsquad
 - type: entity # Goobstation - Start
-  parent: [ BaseCentcommContraband, ClothingOuterHardsuitBase ]
+  parent: [ BaseDeathSquadContraband, ClothingOuterHardsuitBase ]
   id: ClothingOuterHardsuitDeathsquad # Todo - This should be a modsuit when those are done.
   name: PI-52 "Lucifer" hardsuit # Goob edit
   description: A famous hardsuit used by Central Command's death-squadrons, often shown in movies by Nanotrasen intended to increase recruitment. # Goob edit
@@ -1307,12 +1351,14 @@
     sprite: Clothing/OuterClothing/Hardsuits/deathsquad.rsi
   - type: Clothing
     sprite: Clothing/OuterClothing/Hardsuits/deathsquad.rsi
+  - type: Item
+    shape:
+    - 0,0,7,7
   - type: PressureProtection
     highPressureMultiplier: 0.02
     lowPressureMultiplier: 1000
   - type: TemperatureProtection
-    heatingCoefficient: 0.001
-    coolingCoefficient: 0.001
+    coefficient: 0.001
   - type: ExplosionResistance
     damageCoefficient: 0.1
   - type: FireProtection
@@ -1353,10 +1399,13 @@
     cancel: true
   - type: Tag
     tags: [] # ignore "WhitelistChameleon" tag
+  - type: StealTarget
+    stealGroup:
+    - HeadHardsuit
 
 #CBURN Hardsuit
 - type: entity
-  parent: [ BaseCentcommContraband, ClothingOuterHardsuitBase ]
+  parent: [ BaseCBURNContraband, ClothingOuterHardsuitBase ]
   id: ClothingOuterHardsuitCBURN
   name: CBURN exosuit
   description: A lightweight yet strong exosuit used for special cleanup operations.
@@ -1368,9 +1417,6 @@
   - type: PressureProtection
     highPressureMultiplier: 0.02
     lowPressureMultiplier: 1000
-  - type: TemperatureProtection
-    heatingCoefficient: 0.001
-    coolingCoefficient: 0.001
   - type: ExplosionResistance
     damageCoefficient: 0.7
   - type: Armor

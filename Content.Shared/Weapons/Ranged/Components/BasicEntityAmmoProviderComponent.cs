@@ -24,16 +24,12 @@ public sealed partial class BasicEntityAmmoProviderComponent : AmmoProviderCompo
     /// <summary>
     ///     Max capacity.
     /// </summary>
-    [ViewVariables(VVAccess.ReadWrite)]
-    [DataField("capacity")]
-    [AutoNetworkedField]
+    [DataField, AutoNetworkedField]
     public int? Capacity = null;
 
     /// <summary>
     ///     Actual ammo left. Initialized to capacity unless they are non-null and differ.
     /// </summary>
-    [ViewVariables(VVAccess.ReadWrite)]
-    [DataField("count")]
-    [AutoNetworkedField]
+    [DataField, AutoNetworkedField]
     public int? Count = null;
 }

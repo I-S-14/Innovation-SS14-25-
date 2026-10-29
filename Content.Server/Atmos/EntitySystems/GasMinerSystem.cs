@@ -1,20 +1,20 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Diagnostics.CodeAnalysis;
-using Content.Server.Atmos.Piping.Components;
 using Content.Shared.Atmos;
 using Content.Shared.Atmos.Components;
 using Content.Shared.Atmos.EntitySystems;
+using Content.Shared.Atmos.Piping.Components;
 using JetBrains.Annotations;
 using Robust.Server.GameObjects;
 
 namespace Content.Server.Atmos.EntitySystems;
 
 [UsedImplicitly]
-public sealed class GasMinerSystem : SharedGasMinerSystem
+public sealed partial class GasMinerSystem : SharedGasMinerSystem
 {
-    [Dependency] private readonly AtmosphereSystem _atmosphereSystem = default!;
-    [Dependency] private readonly TransformSystem _transformSystem = default!;
+    [Dependency] private AtmosphereSystem _atmosphereSystem = default!;
+    [Dependency] private TransformSystem _transformSystem = default!;
 
     public override void Initialize()
     {
@@ -29,7 +29,7 @@ public sealed class GasMinerSystem : SharedGasMinerSystem
         var oldState = miner.MinerState;
         float toSpawn;
 
-        if (!GetValidEnvironment(ent, out var environment) || !Transform(ent).Anchored)
+        if (!GetValidEnvironment(ent, out var environment))
         {
             miner.MinerState = GasMinerState.Disabled;
         }

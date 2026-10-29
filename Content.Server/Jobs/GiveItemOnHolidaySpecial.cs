@@ -12,17 +12,14 @@ namespace Content.Server.Jobs
     [DataDefinition]
     public sealed partial class GiveItemOnHolidaySpecial : JobSpecial
     {
-        [DataField("holiday")]
-        public ProtoId<HolidayPrototype> Holiday { get; private set; } = string.Empty;
+        [DataField(required: true)]
+        public ProtoId<HolidayPrototype> Holiday;
 
-        [DataField("prototype")]
-        public EntProtoId Prototype { get; private set; } = string.Empty;
+        [DataField(required: true)]
+        public EntProtoId Prototype;
 
         public override void AfterEquip(EntityUid mob)
         {
-            if (string.IsNullOrEmpty(Holiday) || string.IsNullOrEmpty(Prototype))
-                return;
-
             var sysMan = IoCManager.Resolve<IEntitySystemManager>();
 
             if (!sysMan.GetEntitySystem<HolidaySystem>().IsCurrentlyHoliday(Holiday))

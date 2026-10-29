@@ -69,6 +69,7 @@ namespace Content.IntegrationTests.Tests.Destructible
   name: {DestructibleEntityId}
   components:
   - type: Damageable
+  - type: Injurable
   - type: Destructible
     thresholds:
     - trigger:
@@ -96,6 +97,7 @@ namespace Content.IntegrationTests.Tests.Destructible
   name: {DestructibleDestructionEntityId}
   components:
   - type: Damageable
+  - type: Injurable
   - type: Destructible
     thresholds:
     - trigger:
@@ -118,6 +120,7 @@ namespace Content.IntegrationTests.Tests.Destructible
   name: {DestructibleDamageTypeEntityId}
   components:
   - type: Damageable
+  - type: Injurable
   - type: Destructible
     thresholds:
     - trigger:
@@ -135,6 +138,7 @@ namespace Content.IntegrationTests.Tests.Destructible
   name: {DestructibleDamageGroupEntityId}
   components:
   - type: Damageable
+  - type: Injurable
   - type: Destructible
     thresholds:
     - trigger:

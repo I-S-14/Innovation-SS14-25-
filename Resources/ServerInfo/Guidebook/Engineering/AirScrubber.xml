@@ -41,7 +41,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     <GuideEntityEmbed Entity="FloorTileItemSteel" Caption=""/>
   </Box>
 
-  Это фактически увеличивает общую скорость работы, так как скруббер теперь обрабатывают 5 плиток одновременно.
+  This effectively multiplies its total speed, as air scrubbers will now perform their scrubbing work on 5 tiles at once.
 
   Скрубберы, [textlink="связанные" link="Networking"] с [textlink="воздушной сигнализацией" link="AirAlarms"] в автоматическом режиме, автоматически включают Широкую сеть в режиме [textlink="воздушной сигнализации" link="AirAlarms"] "Фильтрация (широкая)", когда в атмосфере обнаруживается высокая концентрация нежелательных газов.
 

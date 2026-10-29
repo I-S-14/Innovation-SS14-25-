@@ -1,12 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <WarningsAsErrors>RA0032;nullable</WarningsAsErrors>
+    <WarningsAsErrors>RA0032;nullable;CS8785</WarningsAsErrors>
     <NoWarn>RA0049,RA0051</NoWarn> <!-- Goob -->
   </PropertyGroup>
   <Import Project="../MSBuild/Content.props" />
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" PrivateAssets="All" />
+    <PackageReference Include="System.Numerics.Tensors" />
     <PackageReference Include="YamlDotNet" />
   </ItemGroup>
 

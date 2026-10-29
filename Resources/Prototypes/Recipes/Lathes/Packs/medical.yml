@@ -94,6 +94,7 @@
   - MedkitBrute
   - MedkitAdvanced
   - MedkitRadiation
+
 #  - MedkitCombat #goob - Move combat kit to research
 
 - type: latheRecipePack

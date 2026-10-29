@@ -19,7 +19,7 @@ using Content.Shared.Damage.Systems;
 
 namespace Content.Server.Resist;
 
-public sealed class EscapeInventorySystem : EntitySystem
+public sealed partial class EscapeInventorySystem : EntitySystem
 {
     [Dependency] private readonly SharedDoAfterSystem _doAfterSystem = default!;
     [Dependency] private readonly PopupSystem _popupSystem = default!;

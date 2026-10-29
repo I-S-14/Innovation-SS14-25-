@@ -7,10 +7,10 @@ using Content.Client._Shitcode.Wizard.Systems;
 using Content.Goobstation.Common.Actions;
 using Content.Shared.Actions;
 using Content.Shared.Actions.Components;
-using Content.Shared.Charges.Systems;
 using Content.Shared.Mapping;
 using Content.Shared.Maps;
 using JetBrains.Annotations;
+using Robust.Client.GameObjects;
 using Robust.Client.Player;
 using Robust.Shared.ContentPack;
 using Robust.Shared.GameStates;
@@ -28,7 +28,7 @@ using YamlDotNet.RepresentationModel;
 namespace Content.Client.Actions
 {
     [UsedImplicitly]
-    public sealed class ActionsSystem : SharedActionsSystem
+    public sealed partial class ActionsSystem : SharedActionsSystem
     {
         public delegate void OnActionReplaced(EntityUid actionId);
 
@@ -39,6 +39,11 @@ namespace Content.Client.Actions
         [Dependency] private readonly MetaDataSystem _metaData = default!;
         [Dependency] private readonly ISerializationManager _serialization = default!;
         [Dependency] private readonly ActionTargetMarkSystem _mark = default!;
+        [Dependency] private IPlayerManager _playerManager = default!;
+        [Dependency] private IResourceManager _resources = default!;
+        [Dependency] private MetaDataSystem _metaData = default!;
+        [Dependency] private ISerializationManager _serialization = default!;
+        [Dependency] private SpriteSystem _sprite = default!;
 
         public event Action<EntityUid>? OnActionAdded;
         public event Action<EntityUid>? OnActionRemoved;
@@ -207,7 +212,7 @@ namespace Content.Client.Actions
             ActionsLoaded?.Invoke(uid); // Goobstation
         }
 
-        private void OnPlayerDetached(EntityUid uid, ActionsComponent component, LocalPlayerDetachedEvent? args = null)
+        private void OnPlayerDetached(EntityUid uid, ActionsComponent component, LocalPlayerDetachedEvent args)
         {
             ActionsSaved?.Invoke(uid); // Goobstation
             UnlinkAllActions();
@@ -297,12 +302,12 @@ namespace Content.Client.Actions
                 else if (map.TryGet<ValueDataNode>("entity", out var entityNode))
                 {
                     var id = new EntProtoId(entityNode.Value);
-                    var proto = _proto.Index(id);
+                    var proto = ProtoMan.Index(id);
                     actionId = Spawn(MappingEntityAction);
                     SetIcon(actionId, new SpriteSpecifier.EntityPrototype(id));
                     SetEvent(actionId, new StartPlacementActionEvent()
                     {
-                        PlacementOption = "SnapgridCenter",
+                        PlacementOption = proto.PlacementMode,
                         EntityType = id
                     });
                     _metaData.SetEntityName(actionId, proto.Name);
@@ -310,7 +315,7 @@ namespace Content.Client.Actions
                 else if (map.TryGet<ValueDataNode>("tileId", out var tileNode))
                 {
                     var id = new ProtoId<ContentTileDefinition>(tileNode.Value);
-                    var proto = _proto.Index(id);
+                    var proto = ProtoMan.Index(id);
                     actionId = Spawn(MappingEntityAction);
                     if (proto.Sprite is {} sprite)
                         SetIcon(actionId, new SpriteSpecifier.Texture(sprite));

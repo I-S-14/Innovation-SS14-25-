@@ -17,7 +17,7 @@ namespace Content.Client.Lobby
     ///     connection.
     ///     Stores preferences on the server through <see cref="SelectCharacter" /> and <see cref="UpdateCharacter" />.
     /// </summary>
-    public sealed class ClientPreferencesManager : IClientPreferencesManager
+    public sealed partial class ClientPreferencesManager : IClientPreferencesManager
     {
         [Dependency] private readonly IClientNetManager _netManager = default!;
         [Dependency] private readonly IBaseClient _baseClient = default!;
@@ -49,7 +49,7 @@ namespace Content.Client.Lobby
             }
         }
 
-        public void SelectCharacter(ICharacterProfile profile)
+        public void SelectCharacter(HumanoidCharacterProfile profile)
         {
             SelectCharacter(Preferences.IndexOfCharacter(profile));
         }
@@ -64,7 +64,7 @@ namespace Content.Client.Lobby
             _netManager.ClientSendMessage(msg);
         }
 
-        public void UpdateCharacter(ICharacterProfile profile, int slot)
+        public void UpdateCharacter(HumanoidCharacterProfile profile, int slot)
         {
             var collection = IoCManager.Instance!;
             // CorvaxGoob-Sponsors-Start
@@ -81,9 +81,9 @@ namespace Content.Client.Lobby
             _netManager.ClientSendMessage(msg);
         }
 
-        public void CreateCharacter(ICharacterProfile profile)
+        public void CreateCharacter(HumanoidCharacterProfile profile)
         {
-            var characters = new Dictionary<int, ICharacterProfile>(Preferences.Characters);
+            var characters = new Dictionary<int, HumanoidCharacterProfile>(Preferences.Characters);
             var lowest = Enumerable.Range(0, Settings.MaxCharacterSlots)
                 .Except(characters.Keys)
                 .FirstOrNull();
@@ -100,7 +100,7 @@ namespace Content.Client.Lobby
             UpdateCharacter(profile, l);
         }
 
-        public void DeleteCharacter(ICharacterProfile profile)
+        public void DeleteCharacter(HumanoidCharacterProfile profile)
         {
             DeleteCharacter(Preferences.IndexOfCharacter(profile));
         }

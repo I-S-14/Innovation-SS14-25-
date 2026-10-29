@@ -13,6 +13,9 @@ public sealed partial class StationBiomeSystem : EntitySystem
     [Dependency] private readonly SharedMapSystem _mapSystem = default!;
     [Dependency] private readonly IPrototypeManager _proto = default!;
     [Dependency] private readonly StationSystem _station = default!;
+    [Dependency] private BiomeSystem _biome = default!;
+    [Dependency] private ServerStationSystem _station = default!;
+    [Dependency] private SharedMapSystem _map = default!;
 
     public override void Initialize()
     {
@@ -29,6 +32,6 @@ public sealed partial class StationBiomeSystem : EntitySystem
         var mapId = Transform(station.Value).MapID;
         var mapUid = _mapSystem.GetMapOrInvalid(mapId);
 
-        _biome.EnsurePlanet(mapUid, _proto.Index(map.Comp.Biome), map.Comp.Seed, mapLight: map.Comp.MapLightColor);
+        _biome.EnsurePlanet(mapUid, ProtoMan.Index(map.Comp.Biome), map.Comp.Seed, mapLight: map.Comp.MapLightColor);
     }
 }

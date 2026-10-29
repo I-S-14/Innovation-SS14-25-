@@ -1,18 +1,31 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 - type: entity
+  parent: [ BaseHandheldComputer, BaseGrandTheftContraband, BaseMedicalContraband ]
+  id: HandheldCrewMonitor
   name: handheld crew monitor
 #  categories: [ DoNotMap ] # Goobstation
-  parent: [ BaseHandheldComputer, BaseMedicalContraband ] # Goobstation
-  # CMO-only bud, don't add more. # Goobstation - no lmao
-  id: HandheldCrewMonitor
   description: A hand-held crew monitor displaying the status of suit sensors.
   components:
   - type: Item
     heldPrefix: scanner
   - type: Sprite
     sprite: Objects/Specific/Medical/handheldcrewmonitor.rsi
-    state: scanner
+    layers:
+    - state: base
+    - state: screen
+      shader: unshaded
+      visible: false
+      map: [ "enum.PowerDeviceVisualLayers.Powered" ]
+  - type: Appearance
+  - type: BatteryVisuals
+  - type: GenericVisualizer
+    visuals:
+      enum.BatteryVisuals.State:
+        enum.PowerDeviceVisualLayers.Powered:
+          Full: { visible: true }
+          Neither: { visible: true }
+          Empty: { visible: false }
   - type: ActivatableUI
     key: enum.CrewMonitoringUIKey.Key
   - type: UserInterface
@@ -23,9 +36,11 @@
   - type: DeviceNetwork
     deviceNetId: Wireless
     receiveFrequencyId: CrewMonitor
-  - type: WirelessNetworkConnection
+    prefix: device-address-prefix-crew-monitor
+  - type: WirelessNetwork
     range: 500
   - type: StationLimitedNetwork
+  - type: StationTracker
   - type: StaticPrice
     price: 500
   - type: Tag

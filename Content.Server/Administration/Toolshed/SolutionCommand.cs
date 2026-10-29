@@ -6,8 +6,6 @@ using Content.Shared.Chemistry.Reagent;
 using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.Chemistry.EntitySystems;
 using Robust.Shared.Toolshed;
-using Robust.Shared.Toolshed.Syntax;
-using Robust.Shared.Toolshed.TypeParsers;
 using System.Linq;
 using Robust.Shared.Prototypes;
 

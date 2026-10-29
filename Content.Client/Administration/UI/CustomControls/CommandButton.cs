@@ -43,7 +43,7 @@ namespace Content.Client.Administration.UI.CustomControls
         {
             if (args.Count != 2 || !args.TryGetValue("Text", out var text) || !args.TryGetValue("Command", out var command))
             {
-                Logger.Error($"Invalid arguments passed to {nameof(CommandButton)}");
+                Log.Error($"Invalid arguments passed to {nameof(CommandButton)}");
                 control = null;
                 return false;
             }

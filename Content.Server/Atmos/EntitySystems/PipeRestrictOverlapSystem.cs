@@ -18,15 +18,18 @@ namespace Content.Server.Atmos.EntitySystems;
 /// <summary>
 /// This handles restricting pipe-based entities from overlapping outlets/inlets with other entities.
 /// </summary>
-public sealed class PipeRestrictOverlapSystem : EntitySystem
+public sealed partial class PipeRestrictOverlapSystem : EntitySystem
 {
     [Dependency] private readonly IConfigurationManager _cfg = default!;
     [Dependency] private readonly MapSystem _map = default!;
     [Dependency] private readonly PopupSystem _popup = default!;
     [Dependency] private readonly TransformSystem _xform = default!;
+    [Dependency] private MapSystem _map = default!;
+    [Dependency] private PopupSystem _popup = default!;
+    [Dependency] private TransformSystem _xform = default!;
+    [Dependency] private EntityQuery<NodeContainerComponent> _nodeContainerQuery = default!;
 
     private readonly List<EntityUid> _anchoredEntities = new();
-    private EntityQuery<NodeContainerComponent> _nodeContainerQuery;
 
     public bool StrictPipeStacking = false;
 
@@ -35,8 +38,6 @@ public sealed class PipeRestrictOverlapSystem : EntitySystem
     {
         SubscribeLocalEvent<PipeRestrictOverlapComponent, AnchorStateChangedEvent>(OnAnchorStateChanged);
         SubscribeLocalEvent<PipeRestrictOverlapComponent, AnchorAttemptEvent>(OnAnchorAttempt);
-
-        _nodeContainerQuery = GetEntityQuery<NodeContainerComponent>();
     }
 
     private void OnAnchorStateChanged(Entity<PipeRestrictOverlapComponent> ent, ref AnchorStateChangedEvent args)

@@ -27,3 +27,34 @@
       Glass: 75
   - type: StaticPrice
     price: 85
+
+- type: entity
+  name: t-ray scanner
+  parent: BaseItem
+  id: TRayScanner
+  description: A high-tech scanning device that uses Terahertz Radiation to detect subfloor infrastructure.
+  components:
+  - type: Sprite
+    sprite: Objects/Tools/t-ray.rsi
+    layers:
+    - state: tray-off
+      map: ["base"]
+  - type: TRayScanner
+  - type: ItemToggle
+  - type: Item
+    sprite: Objects/Tools/t-ray.rsi
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.ToggleableVisuals.Enabled:
+        base:
+          True: { state: tray-on }
+          False: { state: tray-off }
+  - type: PhysicalComposition
+    materialComposition:
+      Steel: 400
+      Glass: 150
+  - type: StaticPrice
+    price: 85
+  - type: UseDelay
+    delay: 1

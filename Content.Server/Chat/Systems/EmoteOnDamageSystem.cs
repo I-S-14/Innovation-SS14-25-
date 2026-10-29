@@ -1,7 +1,4 @@
 using Content.Shared.Damage.Systems;
-
-namespace Content.Server.Chat.Systems;
-
 using Content.Shared.Chat;
 using Content.Shared.Chat.Prototypes;
 using Content.Shared.Damage;
@@ -16,7 +13,9 @@ using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 using System.Collections.Generic;
 
-public sealed class EmoteOnDamageSystem : EntitySystem
+namespace Content.Server.Chat.Systems;
+
+public sealed partial class EmoteOnDamageSystem : EntitySystem
 {
     [Dependency] private readonly IGameTiming _gameTiming = default!;
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
@@ -24,6 +23,9 @@ public sealed class EmoteOnDamageSystem : EntitySystem
     [Dependency] private readonly ChatSystem _chatSystem = default!;
     [Dependency] private readonly MobThresholdSystem _mobThreshold = default!;
     [Dependency] private readonly StatusEffectsSystem _statusEffects = default!;
+    [Dependency] private IGameTiming _gameTiming = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private ChatSystem _chatSystem = default!;
 
     public override void Initialize()
     {
@@ -108,7 +110,7 @@ public sealed class EmoteOnDamageSystem : EntitySystem
             return false;
 
         DebugTools.Assert(emoteOnDamage.LifeStage <= ComponentLifeStage.Running);
-        DebugTools.Assert(_prototypeManager.HasIndex<EmotePrototype>(emotePrototypeId), "Prototype not found. Did you make a typo?");
+        DebugTools.Assert(ProtoMan.HasIndex<EmotePrototype>(emotePrototypeId), "Prototype not found. Did you make a typo?");
 
         // CorvaxGoob-AutoEmote-Start
         if (!emoteOnDamage.EmotesThreshold.TryGetValue(threshold, out var emotes))
@@ -126,7 +128,7 @@ public sealed class EmoteOnDamageSystem : EntitySystem
         if (!Resolve(uid, ref emoteOnDamage, logMissing: false))
             return false;
 
-        DebugTools.Assert(_prototypeManager.HasIndex<EmotePrototype>(emotePrototypeId), "Prototype not found. Did you make a typo?");
+        DebugTools.Assert(ProtoMan.HasIndex<EmotePrototype>(emotePrototypeId), "Prototype not found. Did you make a typo?");
 
         if (!emoteOnDamage.EmotesThreshold.TryGetValue(threshold, out var emotes))// CorvaxGoob-AutoEmote
             return false;

@@ -6,6 +6,11 @@
   antagonist: true
   setPreference: true
   objective: roles-antag-initial-infected-objective
+  guides: [ Zombies ]
+  tags:
+  - OnStation
+  - Roundstart
+  - Midround # Breakout event
   requirements:
   - !type:OverallPlaytimeRequirement
     time: 1h
@@ -15,7 +20,30 @@
     - IPC
     - Plasmaman
     - Abductor # CorvaxGoob-Species
-  guides: [ Zombies ]
+
+- type: antagSpecifier
+  parent: RestrictedAntag
+  id: InitialInfected
+  prefRoles: [ InitialInfected ]
+  blacklist:
+    components:
+    - ZombieImmune
+    - AntagImmune
+  briefing:
+    text: zombie-patientzero-role-greeting
+    color: Plum
+    sound: "/Audio/Ambience/Antag/zombie_start.ogg"
+  components:
+  - type: PendingZombie #less time to prepare than normal
+    minInitialInfectedGrace: 300
+    maxInitialInfectedGrace: 450
+  - type: ZombifyOnDeath
+  - type: IncurableZombie
+  - type: InitialInfected
+  mindRoles:
+  - MindRoleInitialInfected
+
+# TODO: Make it so creating new zombies uses antag prototypes! This saves a *lot* of boilerplate for conversion antags.
 
 - type: antag
   id: Zombie
@@ -30,3 +58,6 @@
     - IPC
     - Plasmaman
   guides: [ Zombies ]
+  tags:
+  - OnStation
+  - Converted

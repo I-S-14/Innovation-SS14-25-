@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using Content.Server.Shuttles.Components;
 using Content.Server.Shuttles.Systems;
 using Content.Shared.Movement.Components;
+using Content.Shared.Movement.Events;
 using Content.Shared.Movement.Systems;
 using Content.Shared.Shuttles.Components;
 using Content.Shared.Shuttles.Systems;
@@ -18,7 +19,7 @@ using Content.Server._CorvaxGoob.Skills;
 
 namespace Content.Server.Physics.Controllers;
 
-public sealed class MoverController : SharedMoverController
+public sealed partial class MoverController : SharedMoverController
 {
     private static readonly Gauge ActiveMoverGauge = Metrics.CreateGauge(
         "physics_active_mover_count",
@@ -26,12 +27,12 @@ public sealed class MoverController : SharedMoverController
 
     [Dependency] private readonly ThrusterSystem _thruster = default!;
     [Dependency] private readonly SkillsSystem _skills = default!; // CorvaxGoob-Skills
+    [Dependency] private ThrusterSystem _thruster = default!;
+    [Dependency] private EntityQuery<ActiveInputMoverComponent> _activeQuery = default!;
+    [Dependency] private EntityQuery<DroneConsoleComponent> _droneQuery = default!;
+    [Dependency] private EntityQuery<ShuttleComponent> _shuttleQuery = default!;
 
     private Dictionary<EntityUid, (ShuttleComponent, List<(EntityUid, PilotComponent, InputMoverComponent, TransformComponent)>)> _shuttlePilots = new();
-
-    private EntityQuery<ActiveInputMoverComponent> _activeQuery;
-    private EntityQuery<DroneConsoleComponent> _droneQuery;
-    private EntityQuery<ShuttleComponent> _shuttleQuery;
 
     // Not needed for persistence; just used to save an alloc
     private readonly HashSet<EntityUid> _seenMovers = [];
@@ -55,10 +56,6 @@ public sealed class MoverController : SharedMoverController
         SubscribeLocalEvent<RelayInputMoverComponent, PlayerDetachedEvent>(OnRelayPlayerDetached);
         SubscribeLocalEvent<InputMoverComponent, PlayerAttachedEvent>(OnPlayerAttached);
         SubscribeLocalEvent<InputMoverComponent, PlayerDetachedEvent>(OnPlayerDetached);
-
-        _activeQuery = GetEntityQuery<ActiveInputMoverComponent>();
-        _droneQuery = GetEntityQuery<DroneConsoleComponent>();
-        _shuttleQuery = GetEntityQuery<ShuttleComponent>();
     }
 
     private void OnEntityPaused(Entity<ActiveInputMoverComponent> ent, ref EntityPausedEvent args)
@@ -572,12 +569,12 @@ public sealed class MoverController : SharedMoverController
                     if (!torque.Equals(0f))
                     {
                         PhysicsSystem.ApplyTorque(shuttleUid, torque, body: body);
-                        _thruster.SetAngularThrust(shuttle, true);
+                        _thruster.SetAngularThrustVisualState(shuttle, true);
                     }
                 }
                 else
                 {
-                    _thruster.SetAngularThrust(shuttle, false);
+                    _thruster.SetAngularThrustVisualState(shuttle, false);
                 }
             }
 
@@ -672,7 +669,7 @@ public sealed class MoverController : SharedMoverController
                 PhysicsSystem.SetSleepingAllowed(shuttleUid, body, true);
 
                 if (brakeInput <= 0f)
-                    _thruster.SetAngularThrust(shuttle, false);
+                    _thruster.SetAngularThrustVisualState(shuttle, false);
             }
             else
             {
@@ -690,7 +687,7 @@ public sealed class MoverController : SharedMoverController
                 if (!torque.Equals(0f))
                 {
                     PhysicsSystem.ApplyTorque(shuttleUid, torque, body: body);
-                    _thruster.SetAngularThrust(shuttle, true);
+                    _thruster.SetAngularThrustVisualState(shuttle, true);
                 }
             }
         }

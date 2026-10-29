@@ -20,6 +20,8 @@ namespace Content.Client.Guidebook.Controls;
 public sealed partial class GuideTechDisciplineEmbed : BoxContainer, IDocumentTag
 {
     [Dependency] private readonly IPrototypeManager _prototype = default!;
+    [Dependency] private ILogManager _logManager = default!;
+    [Dependency] private IPrototypeManager _prototype = default!;
 
     public GuideTechDisciplineEmbed()
     {

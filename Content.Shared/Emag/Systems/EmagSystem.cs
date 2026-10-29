@@ -22,7 +22,7 @@ namespace Content.Shared.Emag.Systems;
 /// 3. Have some check for if this actually needs to be emagged or is already emagged (to stop charge waste)
 /// 4. Past the check, add all the effects you desire and HANDLE THE EVENT ARGUMENT so a charge is spent
 /// 5. Optionally, set Repeatable on the event to true if you don't want the emagged component to be added
-public sealed class EmagSystem : EntitySystem
+public sealed partial class EmagSystem : EntitySystem
 {
     [Dependency] private readonly ISharedAdminLogManager _adminLogger = default!;
     [Dependency] private readonly SharedChargesSystem _sharedCharges = default!;
@@ -31,6 +31,11 @@ public sealed class EmagSystem : EntitySystem
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly EntityWhitelistSystem _whitelist = default!; // DeltaV - Add a whitelist/blacklist to the Emag
     [Dependency] private readonly SparksSystem _sparks = default!; // goob edit - sparks everywhere
+    [Dependency] private ISharedAdminLogManager _adminLogger = default!;
+    [Dependency] private SharedChargesSystem _sharedCharges = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private TagSystem _tag = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
 
     public override void Initialize()
     {
@@ -70,7 +75,7 @@ public sealed class EmagSystem : EntitySystem
         Entity<LimitedChargesComponent?> chargesEnt = ent.Owner;
         if (_sharedCharges.IsEmpty(chargesEnt))
         {
-            _popup.PopupClient(Loc.GetString("emag-no-charges"), user, user);
+            _popup.PopupEntity(Loc.GetString("emag-no-charges"), user, user);
             return false;
         }
 

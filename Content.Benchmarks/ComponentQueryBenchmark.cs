@@ -2,6 +2,7 @@
 
 #nullable enable
 using System;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using BenchmarkDotNet.Attributes;
@@ -262,7 +263,7 @@ public struct QueryBenchEvent
     public int HashCode;
 }
 
-public sealed class QueryBenchSystem : EntitySystem
+public sealed partial class QueryBenchSystem : EntitySystem
 {
     public override void Initialize()
     {

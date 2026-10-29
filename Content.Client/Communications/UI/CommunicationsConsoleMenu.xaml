@@ -1,29 +1,21 @@
-<!--
-SPDX-License-Identifier: AGPL-3.0-or-later
--->
-
-<controls:FancyWindow xmlns="https://spacestation14.io"
+<comms:CommunicationsConsoleMenu xmlns="https://spacestation14.io"
+    xmlns:comms="clr-namespace:Content.Client.Communications.UI"
+    xmlns:widgets="clr-namespace:Content.Client.Communications.UI.Widgets"
     xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
-    Title="{Loc 'comms-console-menu-title'}"
-    MinSize="400 300">
+    MinSize="450 642" SetSize="450 642"
+    Title="{Loc 'comms-console-menu-title'}">
+    <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True" Margin="12">
+        <PanelContainer StyleClasses="PanelDark" VerticalExpand="True">
+            <widgets:MessagingControls Name="MessagingControls" VerticalExpand="True" />
+        </PanelContainer>
 
-    <!-- Main Container -->
-    <BoxContainer Orientation="Vertical"
-        HorizontalExpand="False"
-        VerticalExpand="True"
-        Margin="6 6 6 5">
+        <controls:HSpacer Spacing="12" />
 
-        <TextEdit Name="MessageInput"
-            VerticalExpand="True"
-            HorizontalExpand="True"
-            VerticalAlignment="Stretch"
-            HorizontalAlignment="Stretch"
-            MinHeight="100"/>
+        <PanelContainer StyleClasses="BackgroundPanelDark">
+            <widgets:AlertLevelControls Name="AlertLevelControls" Margin="0 12 0 12" />
+        </PanelContainer>
 
-        <!-- ButtonsPart -->
-        <BoxContainer Orientation="Vertical"
-            VerticalAlignment="Bottom"
-            SeparationOverride="4">
+        <controls:HSpacer Spacing="12" />
 
             <!-- AnnouncePart -->
             <BoxContainer Orientation="Vertical"
@@ -70,4 +62,4 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             </BoxContainer>
         </BoxContainer>
     </BoxContainer>
-</controls:FancyWindow>
+</comms:CommunicationsConsoleMenu>

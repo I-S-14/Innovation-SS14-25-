@@ -23,12 +23,6 @@ namespace Content.Server.Silicons.Borgs;
 /// <inheritdoc/>
 public sealed partial class BorgSystem
 {
-    [Dependency] private readonly SiliconLawSystem _law = default!;
-    private void InitializeTransponder()
-    {
-        SubscribeLocalEvent<BorgTransponderComponent, DeviceNetworkPacketEvent>(OnPacketReceived);
-    }
-
     public void UpdateTransponder(float frameTime)
     {
         var now = _timing.CurTime;
@@ -62,12 +56,11 @@ public sealed partial class BorgSystem
                 HasComp<AiRemoteControllerComponent>(uid),
                 chassis.IsLawChangable); // Corvax-Next-AiRemoteControl
 
-            var payload = new NetworkPayload()
+            var payload = new RoboticsCyborgDataPayload
             {
-                [DeviceNetworkConstants.Command] = DeviceNetworkConstants.CmdUpdatedState,
-                [RoboticsConsoleConstants.NET_CYBORG_DATA] = data
+                Data = data,
             };
-            _deviceNetwork.QueuePacket(uid, null, payload, device: device);
+            _deviceNetwork.SendPacket((uid, device), null, ref payload);
 
             comp.NextBroadcast = now + comp.BroadcastDelay;
         }
@@ -120,11 +113,11 @@ public sealed partial class BorgSystem
         _container.Remove(brain, ent.Comp2.BrainContainer);
     }
 
-    private void OnPacketReceived(Entity<BorgTransponderComponent> ent, ref DeviceNetworkPacketEvent args)
+    [SubscribeLocalEvent]
+    private void OnDisable(Entity<BorgTransponderComponent> ent, ref DeviceNetworkPacketEvent<RoboticsCyborgDisablePayload> args)
     {
-        var payload = args.Data;
-        if (!payload.TryGetValue(DeviceNetworkConstants.Command, out string? command))
-            return;
+        Disable(ent);
+    }
 
         // Corvax-Goob-MutableLaws-Start
         if (command == RoboticsConsoleConstants.NET_CHANGE_LAWS_COMMAND)
@@ -238,7 +231,7 @@ public sealed partial class BorgSystem
             return 1;
         }
 
-        return 1 - ((FixedPoint2)(damageable.TotalDamage / threshold)).Float();
+        return 1 - ((FixedPoint2)(_damageable.GetTotalDamage((uid, damageable)) / threshold)).Float();
     }
 
     /// <summary>

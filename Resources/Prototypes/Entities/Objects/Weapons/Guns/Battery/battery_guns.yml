@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 - type: entity
-  id: BaseWeaponBattery
-  parent: [BaseItem, BaseButtStroke] #CorvaxGoob: add ButtStroke parent
   abstract: true
+  parent: BaseItem
+  id: BaseWeaponBatteryNoAmmoCounter
   components:
   - type: Sprite
   - type: Item
@@ -14,9 +14,7 @@
     slots:
     - Back
     - suitStorage
-  - type: AmmoCounter
   - type: Gun
-    fireOnDropChance: 0.15 # CorvaxGoob-FireOnDrop
     fireRate: 2
     selectedMode: SemiAuto
     availableModes:
@@ -28,6 +26,21 @@
     startingCharge: 1000
   - type: StaticPrice
     price: 500
+
+- type: entity
+  abstract: true
+  parent: [ BaseWeaponBatteryNoAmmoCounter, BaseItem, BaseButtStroke ]
+  id: BaseWeaponBattery
+  components:
+  - type: AmmoCounter
+  - type: Gun
+    fireOnDropChance: 0.15 # CorvaxGoob-FireOnDrop
+    fireRate: 2
+    selectedMode: SemiAuto
+    availableModes:
+    - SemiAuto
+    soundGunshot:
+      path: /Audio/Weapons/Guns/Gunshots/laser.ogg
   - type: Cautery # Shitmed
     speed: 0.9
   - type: SurgeryTool # Shitmed
@@ -151,9 +164,9 @@
       collection: MetalThud # Goobstation ^
 
 - type: entity
-  id: BaseWeaponBatterySmall
-  parent: BaseWeaponBattery
   abstract: true
+  parent: BaseWeaponBatteryNoAmmoCounter
+  id: BaseWeaponBatterySmallNoAmmoCounter
   components:
   - type: Item
     size: Small
@@ -169,6 +182,12 @@
     slots:
     - Belt
     - suitStorage
+
+- type: entity
+  abstract: true
+  parent: BaseWeaponBatterySmallNoAmmoCounter
+  id: BaseWeaponBatterySmall
+  components:
   - type: MeleeWeapon # Goobstation V
     damage:
       types:
@@ -177,6 +196,7 @@
     wideAnimationRotation: 90 # -90 if it takes bayonets (hits with muzzle) 90 if not (hits with butt)
     soundHit:
       collection: MetalThud # Goobstation ^
+  - type: AmmoCounter
 
 - type: entity
   id: BaseWeaponPowerCellSmall
@@ -298,21 +318,66 @@
     - LaserWeapon
 
 - type: entity
+  abstract: true
+  parent: BaseMinorContraband
+  id: WeaponMakeshiftLaserConstructionBase
+  components:
+  - type: Construction
+    graph: MakeshiftLaserGraph
+    containers:
+    - cell_slot
+  - type: Sprite
+    sprite: Objects/Weapons/Guns/Battery/makeshift.rsi
+  - type: Item
+    size: Small
+    shape:
+    - 0,0,1,0
+    - 0,1,0,1
+    storedOffset: 0,-4
+
+- type: entity
+  parent: [WeaponMakeshiftLaserConstructionBase, BaseWeaponPowerCell]
+  id: WeaponMakeshiftLaserNoCell
+  categories: [ HideSpawnMenu ]
   name: makeshift laser pistol
-  parent: [BaseWeaponBatterySmall, BaseMinorContraband]
-  id: WeaponMakeshiftLaser
+  suffix: No Cell
   description: Better pray it won't burn your hands off.
   components:
   - type: Sprite
-    sprite: Objects/Weapons/Guns/Battery/makeshift.rsi
     layers:
     - state: base
       map: ["enum.GunVisualLayers.Base"]
     - state: mag-unshaded-4
       map: ["enum.GunVisualLayers.MagUnshaded"]
       shader: unshaded
-  - type: Item
-    storedOffset: 0,-4
+  - type: MagazineVisuals
+    magState: mag
+    steps: 5
+    zeroVisible: false
+  - type: Appearance
+  - type: Clothing
+    sprite: Objects/Weapons/Guns/Battery/makeshift.rsi
+    quickEquip: false
+    slots:
+    - Belt
+    - suitStorage
+  - type: BatteryAmmoProvider
+    proto: RedLaserMakeshift
+    fireCost: 62.5
+  - type: PowerCellSlot
+    fitsInCharger: false
+  - type: Tag
+    tags:
+    - Sidearm
+    - LaserWeapon
+  - type: Construction
+    node: mslaser
+
+- type: entity # for salv loot & co
+  parent: WeaponMakeshiftLaserNoCell
+  id: WeaponMakeshiftLaser
+  suffix: Medium Cell
+  components:
   - type: RestrictGunshotsByUserTag # Goobstation
     doesntContain:
     - Oni
@@ -320,11 +385,6 @@
     - oni-cannot-shoot-guns-1
     - oni-cannot-shoot-guns-2
     - oni-cannot-shoot-guns-3
-  - type: MagazineVisuals
-    magState: mag
-    steps: 5
-    zeroVisible: false
-  - type: Appearance
   - type: Clothing
     sprite: Objects/Weapons/Guns/Battery/makeshift.rsi
   # CorvaxGoob-MakeshiftLaser-Construction-start
@@ -338,10 +398,26 @@
     graph: MakeshiftLaserGraph
     node: laser
   # CorvaxGoob-MakeshiftLaser-Construction-end
-  - type: Tag
-    tags:
-    - Sidearm
-    - LaserWeapon
+  - type: ItemSlots
+    slots:
+      cell_slot:
+        startingItem: PowerCellMedium
+        locked: true
+        whitelist:
+          tags:
+          - PowerCell
+
+- type: entity
+  parent: [BaseItem, WeaponMakeshiftLaserConstructionBase]
+  id: WeaponMakeshiftLaserFrame
+  name: makeshift laser pistol frame
+  description: Only needs a bit more screwing and a doctorate in practical bluespace technology.
+  components:
+  - type: Sprite
+    state: frame
+  - type: Construction
+    node: mslaserframe
+    defaultTarget: mslaser
 
 - type: entity
   name: tesla gun
@@ -406,7 +482,7 @@
 
 - type: entity
   name: pulse pistol
-  parent: [BaseWeaponBatterySmall, BaseCentcommContraband]
+  parent: [BaseWeaponBatterySmall, BaseDeathSquadContraband]
   id: WeaponPulsePistol
   description: A state-of-the-art laser pistol that fires a rapidly pulsing beam. It's favored as a sidearm for the Emergency Response corps due to its self-recharging design. # Goobstation
   components:
@@ -448,12 +524,16 @@
 
 - type: entity
   name: pulse carbine
-  parent: [BaseWeaponBattery, BaseGunWieldable, BaseCentcommContraband]
+  parent: [BaseWeaponBattery, BaseGunWieldable, BaseDeathSquadContraband]
   id: WeaponPulseCarbine
   description: A state-of-the-art laser carbine that fires a rapidly pulsing beam. Cheaper than its advanced counterpart, though lacks the ability to self-recharge. # Goobstation
   components:
 #  - type: Item #Goob
 #    size: Large
+  - type: Item
+    size: Huge
+    shape:
+    - 0,0,4,1
   - type: Sprite
     sprite: Objects/Weapons/Guns/Battery/pulse_carbine.rsi
     layers:
@@ -501,14 +581,10 @@
   - type: Tag
     tags:
     - Rifle
-  - type: Item
-    size: Huge
-    shape:
-    - 0,0,4,1
 
 - type: entity
   name: pulse rifle
-  parent: [BaseWeaponBattery, BaseGunWieldable, BaseCentcommContraband]
+  parent: [BaseWeaponBattery, BaseGunWieldable, BaseDeathSquadContraband]
   id: WeaponPulseRifle
   description: A weapon almost as infamous as its users. # Goobstation - Sometimes less is more.
   components:
@@ -606,6 +682,8 @@
   components:
     - type: Item
       size: Ginormous
+      shape:
+      - 0,0,7,3
     - type: MultiHandedItem
     - type: ClothingSpeedModifier
       walkModifier: 0.6
@@ -713,16 +791,18 @@
     #projectileSpeed: 35 # Goobstation - nuh uh
     soundGunshot:
       path: /Audio/Weapons/Guns/Gunshots/taser2.ogg
+  - type: Battery
+    maxCharge: 800
+    startingCharge: 800 # Charges in a 20W recharger at 40 seconds
   - type: BatteryAmmoProvider
     proto: BulletDisablerPractice
-    fireCost: 62.5
+    fireCost: 25 # 32 shots, 2 stamcrits, +3 miss buffer per stamcrit (256 stam damage total)
   - type: Tag
     tags:
     - Taser
     - Sidearm
   - type: PacifismAllowedGun
   - type: GunExecutionBlacklist # Goobstation
-
 
 - type: entity
   name: disabler
@@ -746,7 +826,6 @@
       - Belt
   - type: BatteryAmmoProvider
     proto: BulletDisabler
-    fireCost: 62.5
   - type: GuideHelp
     guides:
     - Security
@@ -791,8 +870,8 @@
     soundGunshot:
       path: /Audio/Weapons/Guns/Gunshots/taser2.ogg
   - type: BatteryAmmoProvider
-    proto: BulletDisablerSmg
-    fireCost: 25
+    proto: BulletDisablerSmgSlowing
+    fireCost: 15.6 # 64 shots, 2 stamcrits, +7 miss buffer per stamcrit (256 stam damage total)
   - type: MagazineVisuals
     magState: mag
     steps: 5
@@ -845,7 +924,7 @@
 
 - type: entity
   name: elite taser
-  parent: [ BaseCentcommContraband, WeaponTaser ]
+  parent: [ BaseTaskForceContraband, WeaponTaser ]
   id: WeaponTaserSuper
   suffix: ADMEME
   description: A low-capacity, energy-based stun gun used by elite security teams to disable even the toughest of targets.
@@ -898,7 +977,8 @@
   - type: StaticPrice
     price: 750
   - type: StealTarget
-    stealGroup: WeaponAntiqueLaser
+    stealGroup:
+    - WeaponAntiqueLaser
   - type: SentienceTarget # I hope this is only the captain's gun
     flavorKind: station-event-random-sentience-flavor-inanimate
     weight: 0.0002 # 5,000 times less likely than 1 regular animal
@@ -906,6 +986,7 @@
 # CorvaxGoob-start:
   - type: CargoSellBlacklist
   - type: SupermatterImmune
+
 # CorvaxGoob-end.
 
 - type: entity
@@ -1013,12 +1094,10 @@
     - ScienceTool
     - CHIMP
 
-
 - type: entity
-  name: experimental C.H.I.M.P. handcannon
   parent: [WeaponPistolCHIMP, BaseSyndicateContraband]
   id: WeaponPistolCHIMPUpgraded
-  description: This C.H.I.M.P. seems to have a greater punch than usual...
+  suffix: Syndicate
   components:
   - type: BatteryWeaponFireModes
     fireModes:
@@ -1127,6 +1206,7 @@
 # CorvaxGoob-start:
   - type: CargoSellBlacklist
   - type: SupermatterImmune
+
 # CorvaxGoob-end.
 
 - type: entity
@@ -1178,6 +1258,7 @@
 # CorvaxGoob-start:
   - type: CargoSellBlacklist
   - type: SupermatterImmune
+
 # CorvaxGoob-end.
 
 - type: entity
@@ -1235,17 +1316,37 @@
           Heating: { state: mode-heating }
 
 - type: entity
-  parent: [WeaponAdvancedLaser, BaseXenoborgContraband]
+  parent: [BaseXenoborgContraband, WeaponAdvancedLaser]
   id: WeaponLaserGunXenoborg
   name: xenoborg laser gun
+  components:
+  - type: BatteryAmmoProvider
+    proto: XenoborgLaser
+  - type: Sprite
+    sprite: Objects/Weapons/Guns/Battery/xenoborg_laser_gun.rsi
+    layers:
+    - state: base
+      map: [ "enum.GunVisualLayers.Base" ]
+    - state: mag-unshaded-4
+      map: [ "enum.GunVisualLayers.MagUnshaded" ]
 
 - type: entity
-  parent: [WeaponLaserCannon, BaseXenoborgContraband]
+  parent: [BaseXenoborgContraband, WeaponLaserCannon]
   id: WeaponLaserCannonXenoborg
   name: xenoborg laser cannon
   components:
+  - type: BatteryAmmoProvider
+    proto: XenoborgHeavyLaser
+    fireCost: 100
+  - type: Sprite
+    sprite: Objects/Weapons/Guns/Battery/xenoborg_laser_cannon.rsi
+    layers:
+    - state: base
+      map: [ "enum.GunVisualLayers.Base" ]
+    - state: mag-unshaded-4
+      map: [ "enum.GunVisualLayers.MagUnshaded" ]
   - type: BatterySelfRecharger
-    autoRechargeRate: 30
+    autoRechargeRate: 50
   # "remove" wield bonus and penalty so borgs can use it
   - type: GunWieldBonus
     minAngle: 0
@@ -1254,3 +1355,62 @@
     fireRate: 2
     minAngle: 1
     maxAngle: 2
+
+- type: entity
+  parent: [BaseXenoborgContraband, WeaponAdvancedLaser]
+  id: WeaponBurstFireLaserXenoborg
+  name: xenoborg burst fire laser
+  description: An alien weapon, channelling a burst-fire laser through a prism, causing targets to burst into fire.
+  components:
+  - type: Sprite
+    sprite: Objects/Weapons/Guns/Battery/xenoborg_burstfire.rsi
+    layers:
+    - state: base
+      map: [ "enum.GunVisualLayers.Base" ]
+    - state: mag-unshaded-4
+      map: [ "enum.GunVisualLayers.MagUnshaded" ]
+      shader: unshaded
+  - type: BatterySelfRecharger
+    autoRechargeRate: 60
+  - type: Gun
+    soundGunshot:
+      path: /Audio/Weapons/Guns/Gunshots/xenofirebeam.ogg
+    selectedMode: Burst
+    availableModes:
+    - Burst
+    minAngle: 2
+    maxAngle: 30
+    angleIncrease: 3
+    angleDecay: 15
+    cameraRecoilScalar: .25
+  - type: BatteryAmmoProvider
+    proto: XenoborgFireLaser
+    fireCost: 100
+
+- type: entity
+  parent: [BaseWeaponBatteryNoAmmoCounter, BaseXenoborgContraband]
+  id: WeaponRangeFinderXenoborg
+  name: xenoborg range finder
+  components:
+  - type: Sprite
+    sprite: Objects/Weapons/Guns/Battery/xenoborg_range_finder.rsi
+    layers:
+    - state: icon
+      map: [ "enum.GunVisualLayers.Base" ]
+  - type: Battery
+    maxCharge: 1
+    startingCharge: 1
+    showItemStatus: false
+  - type: BatteryAmmoProvider
+    proto: RangeLaser
+    fireCost: 0 # you are shooting a laser pointer, it's unlimited
+  - type: EyeCursorOffset
+    maxOffset: 3
+    pvsIncrease: 0.3
+  - type: CursorOffsetInHand
+  - type: TargetFinder
+  - type: DeviceLinkSource
+    ports:
+    - TargetSource
+  - type: AutoLinkTransmitter
+    channel: XenoborgGuidedMissileLauncher

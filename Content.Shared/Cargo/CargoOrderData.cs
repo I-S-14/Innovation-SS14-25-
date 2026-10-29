@@ -10,28 +10,16 @@ namespace Content.Shared.Cargo
     public sealed partial class CargoOrderData
     {
         /// <summary>
-        /// Price when the order was added.
-        /// </summary>
-        [DataField]
-        public int Price;
-
-        /// <summary>
         /// A unique (arbitrary) ID which identifies this order.
         /// </summary>
         [DataField]
         public int OrderId { get; private set; }
 
         /// <summary>
-        /// Prototype Id for the item to be created
+        /// The ID of the cargo product ordered.
         /// </summary>
         [DataField]
-        public string ProductId { get; private set; }
-
-        /// <summary>
-        /// Prototype Name
-        /// </summary>
-        [DataField]
-        public string ProductName { get; private set; }
+        public ProtoId<CargoProductPrototype> Product;
 
         /// <summary>
         ///     GoobStation - The cooldown in seconds before this product can be bought again.
@@ -47,11 +35,14 @@ namespace Content.Shared.Cargo
         public int OrderQuantity;
 
         /// <summary>
-        /// How many instances of this order that we've already dispatched
+        /// How many instances of this order that we've already dispatched.
         /// </summary>
         [DataField]
         public int NumDispatched = 0;
 
+        /// <summary>
+        /// A string representation of the requestor's name.
+        /// </summary>
         [DataField]
         public string Requester { get; private set; }
         // public String RequesterRank; // TODO Figure out how to get Character ID card data
@@ -72,7 +63,7 @@ namespace Content.Shared.Cargo
         public string? Approver;
 
         /// <summary>
-        /// Which account to deduct funds from when ordering
+        /// Which account to deduct funds from when ordering.
         /// </summary>
         [DataField]
         public ProtoId<CargoAccountPrototype> Account;
@@ -82,9 +73,7 @@ namespace Content.Shared.Cargo
         public CargoOrderData(int orderId, string productId, string productName, int price, int amount, string requester, string? deliveryDestination, string? note, ProtoId<CargoAccountPrototype> account, int cooldown, bool securedDelivery = false)
         {
             OrderId = orderId;
-            ProductId = productId;
-            ProductName = productName;
-            Price = price;
+            Product = product;
             OrderQuantity = amount;
             Requester = requester;
             // CorvaxGoob-CargoFeatures-Start
@@ -97,11 +86,21 @@ namespace Content.Shared.Cargo
             Cooldown = cooldown;
         }
 
+        /// <summary>
+        /// Sets the approver for this order.
+        /// </summary>
+        /// <param name="approver">Nullable string representation of the approver's name.</param>
         public void SetApproverData(string? approver)
         {
             Approver = approver;
         }
 
+        /// <summary>
+        /// Sets the approver for this order by concatenating the name and job title.
+        /// If both are null, will be an empty string.
+        /// </summary>
+        /// <param name="fullName">Nullable string representation of the approver's full name.</param>
+        /// <param name="jobTitle">Nullable string representation of the approver's job title.</param>
         public void SetApproverData(string? fullName, string? jobTitle)
         {
             var sb = new StringBuilder();

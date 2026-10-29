@@ -25,31 +25,31 @@ public sealed partial class PinpointerComponent : Component
     [DataField]
     public EntityWhitelist? Blacklist;
 
-    [DataField("mediumDistance"), ViewVariables(VVAccess.ReadWrite)]
+    [DataField]
     public float MediumDistance = 16f;
 
-    [DataField("closeDistance"), ViewVariables(VVAccess.ReadWrite)]
+    [DataField]
     public float CloseDistance = 8f;
 
-    [DataField("reachedDistance"), ViewVariables(VVAccess.ReadWrite)]
+    [DataField]
     public float ReachedDistance = 1f;
 
     /// <summary>
     ///     Pinpointer arrow precision in radians.
     /// </summary>
-    [DataField("precision"), ViewVariables(VVAccess.ReadWrite)]
+    [DataField]
     public double Precision = 0.09;
 
     /// <summary>
     ///     Name to display of the target being tracked.
     /// </summary>
-    [DataField("targetName"), ViewVariables(VVAccess.ReadWrite)]
+    [DataField]
     public string? TargetName;
 
     /// <summary>
     ///     Whether or not the target name should be updated when the target is updated.
     /// </summary>
-    [DataField("updateTargetName"), ViewVariables(VVAccess.ReadWrite)]
+    [DataField]
     public bool UpdateTargetName;
 
     /// <summary>
@@ -64,7 +64,7 @@ public sealed partial class PinpointerComponent : Component
     /// <summary>
     ///     Whether or not the target can be reassigned.
     /// </summary>
-    [DataField("canRetarget"), ViewVariables(VVAccess.ReadWrite)]
+    [DataField]
     public bool CanRetarget;
 
     /// <summary>

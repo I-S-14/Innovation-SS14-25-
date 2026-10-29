@@ -25,7 +25,6 @@ using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
 using Robust.Client.Input;
 using Robust.Client.Player;
-using Robust.Client.State;
 using Robust.Shared.Animations;
 using Robust.Shared.Audio;
 using Robust.Shared.Configuration;
@@ -58,6 +57,20 @@ public sealed partial class GunSystem : SharedGunSystem
     [Dependency] private readonly SpriteTreeSystem _spriteTree = default!;
     [Dependency] private readonly ClickableSystem _clickable = default!;
     [Dependency] private readonly MobStateSystem _mobState = default!;
+    [Dependency] private IEyeManager _eyeManager = default!;
+    [Dependency] private IInputManager _inputManager = default!;
+    [Dependency] private InputSystem _inputSystem = default!;
+    [Dependency] private IOverlayManager _overlayManager = default!;
+    [Dependency] private IPlayerManager _player = default!;
+    [Dependency] private IConfigurationManager _cfg = default!;
+    [Dependency] private AnimationPlayerSystem _animPlayer = default!;
+    [Dependency] private ClickableSystem _clickable = default!;
+    [Dependency] private MobStateSystem _mobState = default!;
+    [Dependency] private SharedCameraRecoilSystem _recoil = default!;
+    [Dependency] private SharedMapSystem _maps = default!;
+    [Dependency] private SharedTransformSystem _xform = default!;
+    [Dependency] private SpriteSystem _sprite = default!;
+    [Dependency] private SpriteTreeSystem _spriteTree = default!;
 
     public static readonly EntProtoId HitscanProto = "HitscanEffect";
     private GunTargetEntityComparer _comparer = default!;
@@ -245,14 +258,6 @@ public sealed partial class GunSystem : SharedGunSystem
             return;
 
         _recoil.KickCamera(user.Value, recoil.Normalized() * 0.13f * recoilScalar); // Goob
-    }
-
-    protected override void Popup(string message, EntityUid? uid, EntityUid? user)
-    {
-        if (uid == null || user == null || !Timing.IsFirstTimePredicted)
-            return;
-
-        PopupSystem.PopupEntity(message, uid.Value, user.Value);
     }
 
     protected override void CreateEffect(EntityUid gunUid, MuzzleFlashEvent message, EntityUid? tracked = null)

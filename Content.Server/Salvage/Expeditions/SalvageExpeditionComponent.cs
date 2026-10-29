@@ -31,7 +31,7 @@ public sealed partial class SalvageExpeditionComponent : SharedSalvageExpedition
     /// <summary>
     /// Station whose mission this is.
     /// </summary>
-    [DataField("station")]
+    [DataField]
     public EntityUid Station;
 
     [ViewVariables] public bool Completed = false;
@@ -48,7 +48,7 @@ public sealed partial class SalvageExpeditionComponent : SharedSalvageExpedition
     [ViewVariables(VVAccess.ReadWrite), DataField]
     public SoundSpecifier Sound = new SoundCollectionSpecifier("ExpeditionEnd")
     {
-        Params = AudioParams.Default.WithVolume(-5),
+        Params = AudioParams.Default.AddVolume(-5),
     };
 
     /// <summary>

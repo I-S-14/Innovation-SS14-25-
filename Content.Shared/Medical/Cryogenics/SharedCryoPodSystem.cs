@@ -2,11 +2,11 @@
 
 using Content.Shared.Administration.Logs;
 using Content.Shared.Bed.Sleep;
+using Content.Shared.Body;
 using Content.Shared.Body.Components;
 using Content.Shared.Body.Systems;
 using Content.Shared.Chemistry;
 using Content.Shared.Chemistry.Components;
-using Content.Shared.Chemistry.Components.SolutionManager;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Climbing.Systems;
 using Content.Shared.Containers.ItemSlots;
@@ -58,6 +58,10 @@ public abstract partial class SharedCryoPodSystem : EntitySystem
     private EntityQuery<FitsInDispenserComponent> _dispenserQuery;
     private EntityQuery<SolutionContainerManagerComponent> _solutionContainerQuery;
 
+    [Dependency] private EntityQuery<BloodstreamComponent> _bloodstreamQuery = default!;
+    [Dependency] private EntityQuery<ItemSlotsComponent> _itemSlotsQuery = default!;
+    [Dependency] private EntityQuery<FitsInDispenserComponent> _dispenserQuery = default!;
+
     public override void Initialize()
     {
         base.Initialize();
@@ -73,11 +77,6 @@ public abstract partial class SharedCryoPodSystem : EntitySystem
         SubscribeLocalEvent<CryoPodComponent, InteractUsingEvent>(OnInteractUsing);
         SubscribeLocalEvent<CryoPodComponent, PowerChangedEvent>(OnPowerChanged);
         SubscribeLocalEvent<CryoPodComponent, ActivatableUIOpenAttemptEvent>(OnActivateUIAttempt);
-
-        _bloodstreamQuery = GetEntityQuery<BloodstreamComponent>();
-        _itemSlotsQuery = GetEntityQuery<ItemSlotsComponent>();
-        _dispenserQuery = GetEntityQuery<FitsInDispenserComponent>();
-        _solutionContainerQuery = GetEntityQuery<SolutionContainerManagerComponent>();
 
         InitializeInsideCryoPod();
     }
@@ -100,21 +99,24 @@ public abstract partial class SharedCryoPodSystem : EntitySystem
             if (!_itemSlotsQuery.TryComp(uid, out var itemSlotsComponent))
                 continue;
 
-            var container = _itemSlots.GetItemOrNull(uid, cryoPod.SolutionContainerName, itemSlotsComponent);
-            var patient = cryoPod.BodyContainer.ContainedEntity;
-            if (container != null
-                && container.Value.Valid
-                && patient != null
-                && _dispenserQuery.TryComp(container, out var fitsInDispenserComponent)
-                && _solutionContainerQuery.TryComp(container, out var solutionContainerManagerComponent)
-                && _solutionContainer.TryGetFitsInDispenser((container.Value, fitsInDispenserComponent, solutionContainerManagerComponent),
-                    out var containerSolution, out _)
-                && _bloodstreamQuery.TryComp(patient, out var bloodstream))
-            {
-                var solutionToInject = _solutionContainer.SplitSolution(containerSolution.Value, cryoPod.BeakerTransferAmount);
-                _bloodstream.TryAddToBloodstream((patient.Value, bloodstream), solutionToInject);
-                _reactive.DoEntityReaction(patient.Value, solutionToInject, ReactionMethod.Injection);
-            }
+        if (patient == null
+            || !_solutionContainer.TryGetSolution(
+                    entity.Owner,
+                    CryoPodComponent.InjectionBufferSolutionName,
+                    out var injectingSolution,
+                    out _)
+            || !_bloodstreamQuery.TryComp(patient, out var bloodstream))
+        {
+            return;
+        }
+
+        var solutionToInject =
+            _solutionContainer.SplitSolution(injectingSolution.Value, entity.Comp.BeakerTransferAmount);
+
+        if (solutionToInject.Volume > 0)
+        {
+            _bloodstream.TryAddToBloodstream((patient.Value, bloodstream), solutionToInject);
+            _reactive.DoEntityReaction(patient.Value, solutionToInject, ReactionMethod.Injection);
         }
     }
 
@@ -280,7 +282,7 @@ public abstract partial class SharedCryoPodSystem : EntitySystem
 
         if (cryoPodComponent.Locked)
         {
-            _popup.PopupClient(Loc.GetString("cryo-pod-locked"), uid, userId);
+            _popup.PopupEntity(Loc.GetString("cryo-pod-locked"), uid, userId);
             return;
         }
 
@@ -318,6 +320,109 @@ public abstract partial class SharedCryoPodSystem : EntitySystem
         return contained;
     }
 
+    public void TryEjectBeaker(Entity<CryoPodComponent> cryoPod, EntityUid? user)
+    {
+        if (_itemSlots.TryEject(cryoPod.Owner, cryoPod.Comp.SolutionContainerName, user, out var beaker)
+            && user != null)
+        {
+            // Eject the beaker to the user's hands if possible.
+            _hands.PickupOrDrop(user.Value, beaker.Value);
+        }
+    }
+
+    /// <summary>
+    /// Transfers reagents from the cryopod beaker into the injection buffer.
+    /// </summary>
+    /// <param name="cryoPod">The cryopod entity</param>
+    /// <param name="transferAmount">
+    /// The amount of reagents that will be transferred.
+    /// If less reagents are available, however much is available will be transferred.
+    /// </param>
+    public void TryInject(Entity<CryoPodComponent> cryoPod, FixedPoint2 transferAmount)
+    {
+        var patient = cryoPod.Comp.BodyContainer.ContainedEntity;
+        if (patient == null)
+            return; // Refuse to inject if there is no patient.
+
+        var beaker = _itemSlots.GetItemOrNull(cryoPod.Owner, cryoPod.Comp.SolutionContainerName);
+
+        if (beaker == null
+            || !beaker.Value.Valid
+            || !_dispenserQuery.TryComp(beaker, out var fitsInDispenserComponent)
+            || !_solutionContainer.TryGetFitsInDispenser(
+                    (beaker.Value, fitsInDispenserComponent),
+                    out var beakerSolution,
+                    out _)
+            || !_solutionContainer.TryGetSolution(
+                    cryoPod.Owner,
+                    CryoPodComponent.InjectionBufferSolutionName,
+                    out var injectionSolutionComp,
+                    out var injectionSolution))
+        {
+            return;
+        }
+
+        if (injectionSolution.AvailableVolume == 0)
+            return;
+
+        var amountToTransfer = FixedPoint2.Min(transferAmount, injectionSolution.AvailableVolume);
+        var solution = _solutionContainer.SplitSolution(beakerSolution.Value, amountToTransfer);
+        _solutionContainer.TryAddSolution(injectionSolutionComp.Value, solution);
+    }
+
+    public void ClearInjectionBuffer(Entity<CryoPodComponent> cryoPod)
+    {
+        if (_solutionContainer.TryGetSolution(
+                    cryoPod.Owner,
+                    CryoPodComponent.InjectionBufferSolutionName,
+                    out var injectingSolution,
+                    out _))
+        {
+            _solutionContainer.RemoveAllSolution(injectingSolution.Value);
+        }
+    }
+
+    protected (FixedPoint2? capacity, List<ReagentQuantity>? reagents) GetBeakerInfo(Entity<CryoPodComponent> entity)
+    {
+        if (!_itemSlotsQuery.TryComp(entity, out var itemSlotsComponent))
+            return (null, null);
+
+        var beaker = _itemSlots.GetItemOrNull(
+            (entity.Owner, itemSlotsComponent),
+            entity.Comp.SolutionContainerName
+        );
+
+        if (beaker == null
+            || !beaker.Value.Valid
+            || !_dispenserQuery.TryComp(beaker, out var fitsInDispenserComponent)
+            || !_solutionContainer.TryGetFitsInDispenser(
+                    (beaker.Value, fitsInDispenserComponent),
+                    out var containerSolution,
+                    out _))
+            return (null, null);
+
+        var capacity = containerSolution.Value.Comp.Solution.MaxVolume;
+        var reagents = containerSolution.Value.Comp.Solution.Contents
+            .Select(reagent => new ReagentQuantity(reagent.Reagent, reagent.Quantity))
+            .ToList();
+
+        return (capacity, reagents);
+    }
+
+    protected List<ReagentQuantity>? GetInjectingReagents(Entity<CryoPodComponent> entity)
+    {
+        if (!_solutionContainer.TryGetSolution(
+                    entity.Owner,
+                    CryoPodComponent.InjectionBufferSolutionName,
+                    out var injectingSolution,
+                    out _))
+            return null;
+
+        return injectingSolution.Value.Comp.Solution.Contents
+            .Select(reagent => new ReagentQuantity(reagent.Reagent, reagent.Quantity))
+            .ToList();
+    }
+
     protected void AddAlternativeVerbs(EntityUid uid, CryoPodComponent cryoPodComponent, GetVerbsEvent<AlternativeVerb> args)
     {
         if (!args.CanAccess || !args.CanInteract)
@@ -336,11 +441,8 @@ public abstract partial class SharedCryoPodSystem : EntitySystem
         }
     }
 
-    protected void OnEmagged(EntityUid uid, CryoPodComponent? cryoPodComponent, ref GotEmaggedEvent args)
+    protected void OnEmagged(EntityUid uid, CryoPodComponent cryoPodComponent, ref GotEmaggedEvent args)
     {
-        if (!Resolve(uid, ref cryoPodComponent))
-            return;
-
         if (!_emag.CompareFlag(args.Type, EmagType.Interaction))
             return;
 

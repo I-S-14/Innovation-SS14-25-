@@ -21,7 +21,7 @@ using Robust.Shared.Utility;
 
 namespace Content.Shared.Entry
 {
-    public sealed class EntryPoint : GameShared
+    public sealed partial class EntryPoint : GameShared
     {
         [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
         [Dependency] private readonly ITileDefinitionManager _tileDefinitionManager = default!;
@@ -29,8 +29,10 @@ namespace Content.Shared.Entry
         [Dependency] private readonly IReflectionManager _refMan = default!; // Goobstation - Module Throws
         [Dependency] private readonly ISandboxHelper _sandbox = default!; // Goobstation - Module Throws
         [Dependency] private readonly INetManager _net = default!; // Goobstation - Module Throws
+        [Dependency] private IPrototypeManager _prototypeManager = default!;
+        [Dependency] private IResourceManager _resMan = default!;
 #if DEBUG
-        [Dependency] private readonly IConfigurationManager _configurationManager = default!;
+        [Dependency] private IConfigurationManager _configurationManager = default!;
 #endif
 
         private readonly ResPath _ignoreFileDirectory = new("/IgnoredPrototypes/");
@@ -42,11 +44,6 @@ namespace Content.Shared.Entry
             VerifyModules(); // Goobstation - Module Throws
         }
 
-        public override void Shutdown()
-        {
-            _prototypeManager.PrototypesReloaded -= PrototypeReload;
-        }
-
         public override void Init()
         {
             IgnorePrototypes();
@@ -56,7 +53,6 @@ namespace Content.Shared.Entry
         {
             base.PostInit();
 
-            InitTileDefinitions();
             Dependencies.Resolve<MarkingManager>().Initialize();
 
 #if DEBUG
@@ -64,54 +60,6 @@ namespace Content.Shared.Entry
             _configurationManager.OverrideDefault(CVars.NetFakeLoss, 0.005f);
             _configurationManager.OverrideDefault(CVars.NetFakeDuplicates, 0.005f);
 #endif
-        }
-
-        private void InitTileDefinitions()
-        {
-            _prototypeManager.PrototypesReloaded += PrototypeReload;
-
-            // Register space first because I'm a hard coding hack.
-            var spaceDef = _prototypeManager.Index<ContentTileDefinition>(ContentTileDefinition.SpaceID);
-
-            _tileDefinitionManager.Register(spaceDef);
-
-            var prototypeList = new List<ContentTileDefinition>();
-            foreach (var tileDef in _prototypeManager.EnumeratePrototypes<ContentTileDefinition>())
-            {
-                if (tileDef.ID == ContentTileDefinition.SpaceID)
-                {
-                    continue;
-                }
-
-                prototypeList.Add(tileDef);
-            }
-
-            // Sort ordinal to ensure it's consistent client and server.
-            // So that tile IDs match up.
-            prototypeList.Sort((a, b) => string.Compare(a.ID, b.ID, StringComparison.Ordinal));
-
-            foreach (var tileDef in prototypeList)
-            {
-                _tileDefinitionManager.Register(tileDef);
-            }
-
-            _tileDefinitionManager.Initialize();
-        }
-
-        private void PrototypeReload(PrototypesReloadedEventArgs obj)
-        {
-            /* I am leaving this here commented out to re-iterate
-             - our game is shitcode
-             - tiledefmanager no likey proto reloads and you must re-assign the tile ids.
-            if (!obj.WasModified<ContentTileDefinition>())
-                return;
-                */
-
-            // Need to re-allocate tiledefs due to how prototype reloads work
-            foreach (var def in _prototypeManager.EnumeratePrototypes<ContentTileDefinition>())
-            {
-                def.AssignTileId(_tileDefinitionManager[def.ID].TileId);
-            }
         }
 
         private void IgnorePrototypes()

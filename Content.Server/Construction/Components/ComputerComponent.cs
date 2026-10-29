@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 
+using Content.Shared.Construction.Components;
 using Robust.Shared.Prototypes;
 
 namespace Content.Server.Construction.Components
@@ -8,6 +9,6 @@ namespace Content.Server.Construction.Components
     public sealed partial class ComputerComponent : Component
     {
         [DataField("board")]
-        public EntProtoId? BoardPrototype;
+        public EntProtoId<ComputerBoardComponent>? BoardPrototype;
     }
 }

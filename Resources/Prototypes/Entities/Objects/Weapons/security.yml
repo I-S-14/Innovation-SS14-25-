@@ -4,11 +4,8 @@
   name: stun baton
   parent: [BaseItem, BaseSecurityContraband]
   id: Stunbaton
-  description: A stun baton for incapacitating people with. Actively harming with this is considered bad tone.
+  description: A stun baton for incapacitating people with. Has advanced wrist strap technology to prevent cadets accidentally dropping it.
   components:
-  - type: Tag # goob edit
-    tags:
-    - Stunbaton
   - type: Sprite
     sprite: Objects/Weapons/Melee/stunbaton.rsi
     layers:
@@ -17,8 +14,11 @@
   - type: Stunbaton
     energyPerUse: 50
     lightAttackEnergyMultiplier: 2 # Goob edit
+  - type: ItemToggleExaminableStatus
+  - type: ItemToggleRequiresCharge
+    requiredCharge: 50
   - type: ItemToggle
-    predictable: false
+    onActivate: false
     soundActivate:
       collection: sparks
       params:
@@ -46,6 +46,10 @@
     bluntStaminaDamageFactor: 2.0
     angle: 0
     animation: WeaponArcThrust
+  - type: MeleeBatteryHitsLeft
+  - type: StaminaDamageOnHitRequiresToggle
+  - type: StaminaDamageOnHitRequiresCharge
+    requiredCharge: 40
   - type: StaminaDamageOnHit # goob edited
     damage: 15
     overtime: 40
@@ -85,10 +89,9 @@
   - type: StaticPrice
     price: 80
   - type: Riggable
-  - type: SolutionContainerManager
+  - type: SolutionManager
     solutions:
-      battery:
-        maxVol: 5
+    - SolutionRiggable
   - type: InjectableSolution
     solution: battery
   - type: DrawableSolution
@@ -108,6 +111,10 @@
   - type: MartialArtBlocked # Goobstation - Martial Arts
     form: CorporateJudo # Goobstation - Martial Arts
     staminaDmgBlock: True # Goob
+  - type: Tag # goob edit
+    tags:
+    - Stunbaton
+  - type: PreventForcedThrow
 
 - type: entity
   name: truncheon
@@ -128,7 +135,10 @@
       collection: MetalThud
     bluntStaminaDamageFactor: 1.5
   - type: Item
-    size: Normal
+    size: Large
+    shape:
+    - 0,0,1,2
+    storedRotation: -45
   - type: Tag
     tags:
     - Truncheon
@@ -175,6 +185,7 @@
         visible: false
         shader: unshaded
     - type: Flash
+    - type: RevolutionaryConverter
     - type: LimitedCharges
       maxCharges: 5
     - type: MeleeWeapon
@@ -220,7 +231,7 @@
 
 - type: entity
   name: portable flasher
-  parent: [BaseMachine, BaseSecurityContraband]
+  parent: [BaseMachine, BaseSecurityContraband, BaseMachineDestructible]
   id: PortableFlasher
   description: An ultrabright flashbulb with a proximity trigger, useful for making an area security-only.
   components:
@@ -264,3 +275,11 @@
       guides:
       - Security
       - Antagonists
+    - type: Destructible
+      thresholds:
+      - trigger: !type:DamageTrigger
+          damage: 175
+        behaviors:
+        - !type:PlaySoundBehavior
+          sound:
+            collection: MetalGlassBreak

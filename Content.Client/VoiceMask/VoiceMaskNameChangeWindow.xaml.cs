@@ -29,7 +29,6 @@ public sealed partial class VoiceMaskNameChangeWindow : FancyWindow
     private List<TTSVoicePrototype> _voices = new(); // CorvaxGoob-TTS
 
     private string? _verb;
-
     public VoiceMaskNameChangeWindow()
     {
         RobustXamlLoader.Load(this);
@@ -120,7 +119,7 @@ public sealed partial class VoiceMaskNameChangeWindow : FancyWindow
         _verb = verb;
         ToggleButton.Pressed = active;
         ToggleAccentButton.Pressed = accentHide;
-
+        Title = Loc.GetString(titleText);
         for (int id = 0; id < SpeechVerbSelector.ItemCount; id++)
         {
             if (string.Equals(verb, SpeechVerbSelector.GetItemMetadata(id)))

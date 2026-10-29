@@ -7,7 +7,7 @@
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-shared-solution-container-component-on-examine-main-text = It contains {INDEFINITE($desc)} [color={$color}]{$desc}[/color] { $chemCount ->
+shared-solution-container-component-on-examine-main-text = It contains {INDEFINITE($desc)} [color={$color}]{$colorName} {$desc}[/color] { $chemCount ->
     [1] chemical.
    *[other] mixture of chemicals.
     }
