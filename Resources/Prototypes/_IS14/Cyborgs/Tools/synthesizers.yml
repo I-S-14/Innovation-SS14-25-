@@ -121,14 +121,6 @@
   - type: CyborgStackSynthesizer
     chargePerUnit: 2
 
-- type: entity
-  parent: [IS14BaseCyborgStackSynthesizer, IS14BaseCyborgTool, Gauze]
-  id: IS14CyborgToolGauze
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: CyborgStackSynthesizer
-    regenDelay: 5
-
 # tg's borghypo: synthesizes the chosen medicine.
 - type: entity
   parent: [IS14BaseCyborgTool, BorgHypo]
@@ -174,51 +166,6 @@
     - ChloralHydrate
     - Nocturine
 
-# tg's borgshaker: pours any basic drink.
-- type: entity
-  parent: [IS14BaseCyborgTool, DrinkShaker]
-  id: IS14CyborgToolShaker
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: Sprite
-    sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
-    layers:
-    - state: bottles-shaker
-  - type: UserInterface
-    interfaces:
-      enum.TransferAmountUiKey.Key:
-        type: TransferAmountBoundUserInterface
-      enum.CyborgReagentUiKey.Key:
-        type: CyborgReagentBoundUserInterface
-  - type: CyborgReagentSynthesizer
-    solution: drink
-    regenAmount: 5
-    chargePerUnit: 0.5
-    reagents:
-    - Beer
-    - Vodka
-    - Rum
-    - Wine
-    - Whiskey
-    - Gin
-    - Tequila
-    - Vermouth
-    - Cognac
-    - Cola
-    - SodaWater
-    - TonicWater
-    - Water
-    - Ice
-    - Coffee
-    - Tea
-    - Milk
-    - Cream
-    - JuiceOrange
-    - JuiceLime
-    emagReagents:
-    - Blood
-    - CarpoToxin
-
 # Dispensers: print items where the cyborg clicks, use in hand to switch.
 - type: entity
   parent: [IS14BaseCyborgTool, BaseItem]
@@ -242,6 +189,7 @@
     - FoodBakedCookie
     - FoodBakedCookieSugar
 
+# Not in the service kit for now, kept for later.
 - type: entity
   parent: [IS14BaseCyborgTool, BaseItem]
   id: IS14CyborgToolRSF
@@ -348,7 +296,7 @@
     emagReagents:
     - Honk
 
-# A pouring container that fills itself, the base of the enzyme bottle and the condiment synthesiser.
+# A pouring container that fills itself, the base of the condiment synthesiser.
 - type: entity
   parent: [IS14BaseCyborgTool, BaseItem]
   id: IS14BaseCyborgCondimentSynth
@@ -376,21 +324,6 @@
     interfaces:
       enum.CyborgReagentUiKey.Key:
         type: CyborgReagentBoundUserInterface
-
-# tg's enzyme bottle in the service kit, refills itself.
-- type: entity
-  parent: IS14BaseCyborgCondimentSynth
-  id: IS14CyborgToolEnzyme
-  name: universal enzyme
-  description: A built-in bottle of universal enzyme that refills itself.
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: CyborgReagentSynthesizer
-    solution: food
-    regenAmount: 2
-    chargePerUnit: 0.5
-    reagents:
-    - Enzyme
 
 # Given by the condiment synthesiser board, tg's EXPANDED_SERVICE_REAGENTS plus SS14's sauces.
 - type: entity

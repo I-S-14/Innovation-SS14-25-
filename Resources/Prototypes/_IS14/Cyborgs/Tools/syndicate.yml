@@ -75,11 +75,12 @@
     solution: hypospray
     regenAmount: 2
     reagents:
-    - Omnizine
-    - Bicaridine
-    - Kelotane
-    - Dexalin
+    - Dermaline
+    - DexalinPlus
+    - Saline
     - Ephedrine
+    - TranexamicAcid
+    - Bicaridine
 
 # Tools of the uplink's syndicate boards, the old weapon and martyr modules on the new system.
 - type: entity

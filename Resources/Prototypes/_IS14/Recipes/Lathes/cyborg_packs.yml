@@ -6,7 +6,6 @@
   recipes:
   - IS14CyborgUpgradeReclassification
   - IS14CyborgUpgradeBotanyTools
-  - IS14CyborgUpgradeKitchenTools
   - IS14CyborgUpgradeRename
   - IS14CyborgUpgradeClown
   - IS14CyborgUpgradeBeakerApparatus

@@ -5,24 +5,132 @@
   id: IS14CyborgToolTrashBag
   categories: [ HideSpawnMenu ]
 
+# tg's cleaner box with its vacuum wand: the wand is a mop whose tank is the auto-wash tank.
+# Switching it on starts the auto-wash, the HUD slot shows the box.
 - type: entity
-  parent: [IS14BaseCyborgTool, MopItem]
-  id: IS14CyborgToolMop
-  categories: [ HideSpawnMenu ]
-
-- type: entity
-  parent: [IS14BaseCyborgTool, BorgBucket]
-  id: IS14CyborgToolBucket
+  parent: [IS14BaseCyborgTool, BaseItem]
+  id: IS14CyborgToolVacuumWand
+  name: vacuum wand
+  description: The wand of a cyborg's built-in cleaner box. Mops like a mop, and switched on washes every tile the cyborg drives over.
   categories: [ HideSpawnMenu ]
   components:
-  # Comes full: this is the auto-wash tank, water out, mess in.
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
+    layers:
+    - state: vacuum-wand
+      map: [ "enum.ToggleableVisuals.Layer" ]
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.ToggleableVisuals.Enabled:
+        enum.ToggleableVisuals.Layer:
+          True: { state: vacuum-wand_on }
+          False: { state: vacuum-wand }
+  - type: Item
+    size: Normal
+  - type: ItemToggle
+    predictable: true
+  - type: CyborgAutoWashTool
+  # Alt+Z empties the tank onto the floor.
+  - type: CyborgTankDump
+    solution: absorbed
+  - type: CyborgHudIcon
+    sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
+    state: cleanerbox
+    activeOverlay: cleanerbox_on
+    inactiveOverlay: cleanerbox_locked
+    stowedOverlay: cleanerbox_wand
+  - type: Absorbent
+    useAbsorberSolution: true
+  # Comes full: water out, mess in.
   - type: SolutionContainerManager
     solutions:
-      drink:
+      absorbed:
         maxVol: 500
         reagents:
         - ReagentId: Water
           Quantity: 500
+  - type: DrainableSolution
+    solution: absorbed
+  - type: ExaminableSolution
+    solution: absorbed
+  - type: UseDelay
+    delay: 0.25
+  - type: MeleeWeapon
+    damage:
+      types:
+        Blunt: 8
+    soundHit:
+      collection: MetalThud
+  - type: Tag
+    tags:
+    - Mop
+    - MopBasic
+  - type: FloorCleaner
+    radius: 2
+
+# Given by the advanced mop board: refills itself with water and purges the mess, like the advanced mop.
+- type: entity
+  parent: IS14CyborgToolVacuumWand
+  id: IS14CyborgToolVacuumWandAdvanced
+  name: advanced vacuum wand
+  description: A cleaner box wand with a water synthesizer that slowly replaces the mess in its tank with water.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: SolutionRegeneration
+    solution: absorbed
+    generated:
+      reagents:
+      - ReagentId: Water
+        Quantity: 5
+  - type: SolutionPurge
+    solution: absorbed
+    preserve:
+    - Water
+    quantity: 10
+  - type: Tag
+    tags:
+    - Mop
+    - MopAdv
+  - type: FloorCleaner
+    radius: 3
+    cleanDelay: 6
+
+# A crowbar and a screwdriver in one arm, switched with a press like the engineering omni-toolset.
+- type: entity
+  parent: [IS14BaseCyborgTool, Crowbar]
+  id: IS14CyborgToolJanitorToolkit
+  name: cyborg janitorial toolset
+  description: A crowbar and a screwdriver built into a cyborg's arm. Switch between them with a press.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
+    layers:
+    - state: toolkit_engiborg_crowbar
+  - type: Tag
+    tags:
+    - Crowbar
+    - Screwdriver
+  - type: MultipleTool
+    statusShowBehavior: true
+    entries:
+    - behavior: Prying
+      sprite:
+        sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
+        state: toolkit_engiborg_crowbar
+      useSound:
+        path: /Audio/Items/crowbar.ogg
+      changeSound:
+        path: /Audio/Items/change_drill.ogg
+    - behavior: Screwing
+      sprite:
+        sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
+        state: toolkit_engiborg_screwdriver
+      useSound:
+        collection: Screwdriver
+      changeSound:
+        path: /Audio/Items/change_drill.ogg
 
 - type: entity
   parent: [IS14BaseCyborgTool, LightReplacer]

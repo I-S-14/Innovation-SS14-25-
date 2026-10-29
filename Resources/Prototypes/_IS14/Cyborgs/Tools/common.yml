@@ -27,48 +27,6 @@
   categories: [ HideSpawnMenu ]
 
 - type: entity
-  parent: [IS14BaseCyborgTool, Crowbar]
-  id: IS14CyborgToolCrowbar
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: Sprite
-    sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
-    layers:
-    - state: toolkit_engiborg_crowbar
-
-# Own item: the upstream screwdriver randomizes a layer this sprite doesn't have.
-- type: entity
-  parent: [IS14BaseCyborgTool, BaseItem]
-  id: IS14CyborgToolScrewdriver
-  name: cyborg screwdriver
-  description: A screwdriver built into a cyborg's arm.
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: Sprite
-    sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
-    layers:
-    - state: toolkit_engiborg_screwdriver
-  - type: Item
-    size: Small
-    storedRotation: -90
-  - type: Tag
-    tags:
-    - Screwdriver
-  - type: Tool
-    qualities:
-    - Screwing
-    useSound:
-      collection: Screwdriver
-  - type: MeleeWeapon
-    wideAnimationRotation: -90
-    attackRate: 1
-    damage:
-      types:
-        Piercing: 6
-    soundHit:
-      path: "/Audio/Weapons/bladeslice.ogg"
-
-- type: entity
   parent: [IS14BaseCyborgTool, LargeBeaker]
   id: IS14CyborgToolBeaker
   categories: [ HideSpawnMenu ]

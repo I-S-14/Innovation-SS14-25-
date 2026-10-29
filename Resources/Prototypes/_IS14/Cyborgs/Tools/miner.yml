@@ -39,11 +39,6 @@
     layers:
     - state: mining-shovel
 
-- type: entity
-  parent: [IS14BaseCyborgTool, WelderMini]
-  id: IS14CyborgToolWelderMini
-  categories: [ HideSpawnMenu ]
-
 # Fires bolts that break any rock or ore vein in one hit, like tg's mineral turfs.
 - type: entity
   parent: [IS14BaseCyborgTool, WeaponProtoKineticAccelerator]

@@ -18,63 +18,13 @@
   categories: [ HideSpawnMenu ]
 
 - type: entity
-  parent: [IS14BaseCyborgTool, JawsOfLife]
-  id: IS14CyborgToolXenoJawsOfLife
-  categories: [ HideSpawnMenu ]
-
-- type: entity
-  parent: [IS14BaseCyborgTool, PowerDrill]
-  id: IS14CyborgToolXenoPowerDrill
-  categories: [ HideSpawnMenu ]
-
-- type: entity
-  parent: [IS14BaseCyborgTool, WelderExperimental]
-  id: IS14CyborgToolXenoWelderExperimental
-  categories: [ HideSpawnMenu ]
-
-- type: entity
   parent: [IS14BaseCyborgTool, Multitool]
   id: IS14CyborgToolXenoMultitool
   categories: [ HideSpawnMenu ]
 
 - type: entity
-  parent: [IS14BaseCyborgTool, RemoteSignallerAdvanced]
-  id: IS14CyborgToolXenoRemoteSignallerAdvanced
-  categories: [ HideSpawnMenu ]
-
-- type: entity
-  parent: [IS14BaseCyborgTool, GeigerCounter]
-  id: IS14CyborgToolXenoGeigerCounter
-  categories: [ HideSpawnMenu ]
-
-- type: entity
-  parent: [IS14BaseCyborgTool, RCDRecharging]
-  id: IS14CyborgToolXenoRCDRecharging
-  categories: [ HideSpawnMenu ]
-
-- type: entity
-  parent: [IS14BaseCyborgTool, RPDRecharging]
-  id: IS14CyborgToolXenoRPDRecharging
-  categories: [ HideSpawnMenu ]
-
-- type: entity
-  parent: [IS14BaseCyborgTool, GasAnalyzer]
-  id: IS14CyborgToolXenoGasAnalyzer
-  categories: [ HideSpawnMenu ]
-
-- type: entity
-  parent: [IS14BaseCyborgTool, HolofanProjector]
-  id: IS14CyborgToolXenoHolofanProjector
-  categories: [ HideSpawnMenu ]
-
-- type: entity
   parent: [IS14BaseCyborgTool, Wirecutter]
   id: IS14CyborgToolXenoWirecutter
-  categories: [ HideSpawnMenu ]
-
-- type: entity
-  parent: [IS14BaseCyborgTool, trayScanner]
-  id: IS14CyborgToolXenoTrayScanner
   categories: [ HideSpawnMenu ]
 
 - type: entity

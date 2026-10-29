@@ -55,6 +55,10 @@
   pickupWhitelist:
     components:
     - FloorTile # floor tiles and carpets
+    - Flatpack
+    - MachineBoard
+    - ComputerBoard
+    - StockPart # manipulators, matter bins and the rest
   addComponents:
   - type: MovementIgnoreGravity
   # tg's meson toggle; SS14 mesons only protect eyes, night vision is the closest to seeing the walls.
@@ -83,27 +87,37 @@
   - IS14CyborgToolFlash
   - IS14CyborgToolHealthAnalyzer
   - IS14CyborgToolHypo
-  - IS14CyborgToolBeaker
   - IS14CyborgToolDropper
-  - IS14CyborgToolSyringe
   - IS14CyborgToolMedicalOmnitool
   - IS14CyborgToolMedicalOmnitool
   - IS14CyborgToolBoneGel
-  - IS14CyborgToolGauze
   - IS14CyborgToolExtinguisher
   - IS14CyborgToolLollipop
   - IS14CyborgToolChemBag
   - IS14CyborgToolHugModule
-  - IS14CyborgToolMedkit
-  # Treatment and body bags are carried, picked up into a free slot or kept in the medkit.
+  # Treatment, body bags and chemistry are carried, picked up into a free slot or kept in the chem bag.
   pickupWhitelist:
     tags:
+    - GlassBeaker
+    - PillCanister
+    - Syringe
     - Ointment
     - Brutepack
     - Bloodpack
     - Gauze
     - Tourniquet
     - BodyBag
+    # Severed limbs and organs, held to carry them or attach them back.
+    components:
+    - BodyPart
+    - Organ
+  # Shitmed surgery, like the upstream medical borg: without SurgeryTarget the surgery window shows no steps.
+  addComponents:
+  - type: Sanitized
+  - type: SurgeryTarget
+  - type: SurgeryIgnoreClothing
+  - type: SurgerySpeedModifier
+    speedModifier: 1.5
 
 - type: cyborgModel
   id: IS14CyborgModelJanitor
@@ -125,21 +139,22 @@
   - Service
   basicTools:
   - IS14CyborgToolFlash
-  - IS14CyborgToolScrewdriver
-  - IS14CyborgToolCrowbar
+  - IS14CyborgToolJanitorToolkit
+  - IS14CyborgToolVacuumWand
   - IS14CyborgToolSoap
   - IS14CyborgToolTrashBag
   - IS14CyborgToolExtinguisher
-  - IS14CyborgToolMop
-  - IS14CyborgToolBucket
   - IS14CyborgToolLightReplacer
   - IS14CyborgToolHoloprojector
   - IS14CyborgToolSprayBottle
   - IS14CyborgToolWireBrush
   - IS14CyborgToolPlunger
-  - IS14CyborgToolFloorTile
   emagTools:
   - IS14CyborgToolLubeSpray
+  # Fixes floors like the engineering model, from the tiles it finds.
+  pickupWhitelist:
+    components:
+    - FloorTile # floor tiles and carpets
   addComponents:
   - type: CyborgAutoWash
 
@@ -166,8 +181,8 @@
   - IS14CyborgToolOreBag
   - IS14CyborgToolMiningDrill
   - IS14CyborgToolShovel
-  - IS14CyborgToolCrowbar
-  - IS14CyborgToolWelderMini
+  - IS14CyborgToolOmnitool
+  - IS14CyborgToolWelder
   - IS14CyborgToolExtinguisher
   - IS14CyborgToolKineticAccelerator
   - IS14CyborgToolGPS
@@ -200,25 +215,34 @@
   - Service
   basicTools:
   - IS14CyborgToolFlash
-  - IS14CyborgToolShaker
-  - IS14CyborgToolBarSpoon
-  - IS14CyborgToolRSF
-  - IS14CyborgToolBeaker
+  - IS14CyborgToolGardenToolkit
   - IS14CyborgToolDropper
   - IS14CyborgToolPen
   - IS14CyborgToolCrayon
   - IS14CyborgToolSprayPainter
   - IS14CyborgToolExtinguisher
   - IS14CyborgToolHandLabeler
-  - IS14CyborgToolGuitar
-  - IS14CyborgToolSynthesizer
   - IS14CyborgToolLighter
   - IS14CyborgToolLollipop
   - IS14CyborgToolBooksBag
   - IS14CyborgToolStampApproved
   - IS14CyborgToolStampDenied
-  - IS14CyborgToolEnzyme
-  - IS14CyborgToolRag
+  # Serves with real dishes: cups, glasses, beakers, shakers and bottles, plates, cutlery and rags.
+  pickupWhitelist:
+    components:
+    - FitsInDispenser
+  pickupPrototypes:
+  - FoodPlate
+  - FoodPlatePlastic
+  - FoodPlateSmallPlastic
+  - FoodPlateTin
+  - FoodPlateMuffinTin
+  - Spoon
+  - SpoonPlastic
+  - BarSpoon
+  - Fork
+  - ForkPlastic
+  - RagItem
 
 - type: cyborgModel
   id: IS14CyborgModelPeacekeeper
@@ -246,6 +270,8 @@
   hudIcon: brobot
   name: cyborg-model-clown
   description: cyborg-model-clown-desc
+  # Only from the clown model board.
+  selectable: false
   order: 70
   skins:
   - IS14CyborgSkinClownDefault
@@ -344,11 +370,33 @@
   - IS14CyborgToolMedicalOmnitool
   - IS14CyborgToolMedicalOmnitool
   - IS14CyborgToolBoneGel
-  - IS14CyborgToolGauze
   - IS14CyborgToolEnergySword
   - IS14CyborgToolSyndicateJaws
   - IS14CyborgToolExtinguisher
   - IS14CyborgToolPinpointer
+  # Same pickup list as the medical model.
+  pickupWhitelist:
+    tags:
+    - GlassBeaker
+    - PillCanister
+    - Syringe
+    - Ointment
+    - Brutepack
+    - Bloodpack
+    - Gauze
+    - Tourniquet
+    - BodyBag
+    # Severed limbs and organs, held to carry them or attach them back.
+    components:
+    - BodyPart
+    - Organ
+  # Shitmed surgery, like the upstream medical borg: without SurgeryTarget the surgery window shows no steps.
+  addComponents:
+  - type: Sanitized
+  - type: SurgeryTarget
+  - type: SurgeryIgnoreClothing
+  - type: SurgerySpeedModifier
+    speedModifier: 1.5
 
 - type: cyborgModel
   id: IS14CyborgModelSyndicateSaboteur
@@ -368,49 +416,75 @@
   - IS14CyborgToolGasAnalyzer
   - IS14CyborgToolOmnitool
   - IS14CyborgToolOmnitool
-  - IS14CyborgToolSheetSteel
-  - IS14CyborgToolSheetGlass
-  - IS14CyborgToolRods
-  - IS14CyborgToolCableApc
+  - IS14CyborgToolConstructionBag
   - IS14CyborgToolPinpointer
   - IS14CyborgToolChameleonProjector
   - IS14CyborgToolEmag
   - IS14CyborgToolAccessBreaker
+  # Like the engineering model: materials are carried, not synthesized.
+  pickupStacks:
+  - Steel
+  - MetalRod
+  - Plasteel
+  - Glass
+  - Plasma
+  - Uranium
+  - Gold
+  - Silver
+  - Plastic
+  - Cable
+  - CableMV
+  - CableHV
+  pickupWhitelist:
+    components:
+    - FloorTile # floor tiles and carpets
+    - Flatpack
+    - MachineBoard
+    - ComputerBoard
+    - StockPart # manipulators, matter bins and the rest
 
-# Derelict cyborgs from the space events: a worn generic kit, picked skin decides the look.
+# Derelict cyborgs from the space events: a station kit on a worn chassis, the look comes with it.
 - type: cyborgModel
-  id: IS14CyborgModelDerelict
-  hudIcon: standard
-  name: cyborg-model-derelict
+  parent: IS14CyborgModelEngineering
+  id: IS14CyborgModelDerelictEngineering
+  name: cyborg-model-derelict-engineering
   selectable: false
   order: 300
   skins:
-  - IS14CyborgSkinDerelict
   - IS14CyborgSkinDerelictEngineering
-  - IS14CyborgSkinDerelictMedical
-  - IS14CyborgSkinDerelictJanitor
-  - IS14CyborgSkinDerelictMiner
-  basicTools:
-  - IS14CyborgToolFlash
-  - IS14CyborgToolOmnitool
-  - IS14CyborgToolWelder
-  - IS14CyborgToolExtinguisher
-  - IS14CyborgToolGPS
-  - IS14CyborgToolHealthAnalyzer
 
 - type: cyborgModel
+  parent: IS14CyborgModelMedical
+  id: IS14CyborgModelDerelictMedical
+  name: cyborg-model-derelict-medical
+  selectable: false
+  order: 301
+  skins:
+  - IS14CyborgSkinDerelictMedical
+
+- type: cyborgModel
+  parent: IS14CyborgModelJanitor
+  id: IS14CyborgModelDerelictJanitor
+  name: cyborg-model-derelict-janitor
+  selectable: false
+  order: 302
+  skins:
+  - IS14CyborgSkinDerelictJanitor
+
+- type: cyborgModel
+  parent: IS14CyborgModelMiner
+  id: IS14CyborgModelDerelictMiner
+  name: cyborg-model-derelict-miner
+  selectable: false
+  order: 303
+  skins:
+  - IS14CyborgSkinDerelictMiner
+
+- type: cyborgModel
+  parent: IS14CyborgModelSyndicateAssault
   id: IS14CyborgModelDerelictSyndicate
-  hudIcon: malf
   name: cyborg-model-derelict-syndicate
   selectable: false
   order: 310
   skins:
   - IS14CyborgSkinDerelictSyndicate
-  basicTools:
-  - IS14CyborgToolFlash
-  - IS14CyborgToolEnergySword
-  - IS14CyborgToolSyndicateJaws
-  - IS14CyborgToolOmnitool
-  - IS14CyborgToolWelder
-  - IS14CyborgToolExtinguisher
-  - IS14CyborgToolPinpointer

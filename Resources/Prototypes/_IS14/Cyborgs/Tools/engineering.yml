@@ -45,13 +45,26 @@
     - indwelder_cyborg75
     - indwelder_cyborg100
 
-# Own item: the upstream wirecutters randomize a layer this sprite doesn't have.
 # Holds the engineering cyborg's materials now that it carries them instead of synthesizing.
 - type: entity
   parent: [IS14BaseCyborgTool, ConstructionBag]
   id: IS14CyborgToolConstructionBag
   categories: [ HideSpawnMenu ]
   components:
+  # Flatpacks fit too: they are large, so is the bag's item limit.
+  - type: Storage
+    maxItemSize: Large
+    whitelist:
+      tags:
+      - Sheet
+      - CableCoil
+      - RawMaterial
+      - PartBase
+      - SalvageScrap
+      - Ingot
+      components:
+      - FloorTile
+      - Flatpack
   # Click opens the bag, alt click switches the magnet.
   - type: ItemToggle
     onUse: false

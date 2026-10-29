@@ -13,27 +13,33 @@
 - type: entity
   parent: [IS14BaseCyborgTool, ChemBag]
   id: IS14CyborgToolChemBag
+  name: internal medicine storage
+  description: A built-in storage for chemistry, treatment and body bags.
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
     sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
     layers:
     - state: chemical-bag
-
-# Storage for the medical cyborg's treatment and body bags, a 4x4 first aid kit.
-- type: entity
-  parent: [IS14BaseCyborgTool, Medkit]
-  id: IS14CyborgToolMedkit
-  name: cyborg medkit
-  description: A first aid kit built into a cyborg's chassis, for ointments, bandages and body bags.
-  categories: [ HideSpawnMenu ]
-  components:
+  # Also holds the treatment and body bags the medical cyborg picks up.
   - type: Storage
-    maxItemSize: Small
+    maxItemSize: Normal
     grid:
-    - 0,0,3,3
+    - 0,0,4,3
+    quickInsert: true
+    areaInsert: true
     whitelist:
+      components:
+      - FitsInDispenser
+      - Pill
       tags:
+      - Document
+      - PillCanister
+      - Bottle
+      - Syringe
+      - Dropper
+      - ChemDispensable
+      - MedicalPatch
       - Ointment
       - Brutepack
       - Bloodpack

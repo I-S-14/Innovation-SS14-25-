@@ -53,37 +53,47 @@
   selectable: false
   skins:
   - IS14CyborgSkinXenoborgEngi
+  # The engineering cyborg's kit, plus the xenoborg's own modules.
   basicTools:
+  - IS14CyborgToolFlash
+  - IS14CyborgToolRCD
+  - IS14CyborgToolRPD
+  - IS14CyborgToolWelder
+  - IS14CyborgToolOmnitool
+  - IS14CyborgToolOmnitool
+  - IS14CyborgToolTrayScanner
+  - IS14CyborgToolGasAnalyzer
+  - IS14CyborgToolSignaller
+  - IS14CyborgToolSprayPainter
+  - IS14CyborgToolConstructionBag
   # XenoborgModuleBasic
   - IS14CyborgToolXenoXenoborgMaterialBag
   - IS14CyborgToolXenoPinpointerMothership
   - IS14CyborgToolXenoHandheldGPSBasic
-  # BorgModuleAdvancedTool
-  - IS14CyborgToolXenoJawsOfLife
-  - IS14CyborgToolXenoPowerDrill
-  - IS14CyborgToolXenoWelderExperimental
-  - IS14CyborgToolXenoMultitool
-  - IS14CyborgToolXenoRemoteSignallerAdvanced
-  - IS14CyborgToolXenoGeigerCounter
-  # BorgModuleConstruction
-  - IS14CyborgToolSheetSteel
-  - IS14CyborgToolSheetGlass
-  - IS14CyborgToolRods
-  - IS14CyborgToolFloorTile
-  # BorgModuleRCD
-  - IS14CyborgToolXenoRCDRecharging
-  - IS14CyborgToolXenoRPDRecharging
-  - IS14CyborgToolXenoGasAnalyzer
-  - IS14CyborgToolXenoHolofanProjector
-  # BorgModuleCable
-  - IS14CyborgToolCableApc
-  - IS14CyborgToolCableMV
-  - IS14CyborgToolCableHV
-  - IS14CyborgToolXenoWirecutter
-  - IS14CyborgToolXenoTrayScanner
-  # XenoborgModuleAccessBreaker and XenoborgModuleFireExtinguisher
+  # XenoborgModuleAccessBreaker and XenoborgModuleFireExtinguisher, the latter in place of the plain one.
   - IS14CyborgToolXenoAccessBreaker
   - IS14CyborgToolXenoSelfRechargingFireExtinguisher
+  # Like the engineering model: materials are carried, not synthesized.
+  pickupStacks:
+  - Steel
+  - MetalRod
+  - Plasteel
+  - Glass
+  - Plasma
+  - Uranium
+  - Gold
+  - Silver
+  - Plastic
+  - Cable
+  - CableMV
+  - CableHV
+  pickupWhitelist:
+    components:
+    - FloorTile # floor tiles and carpets
+    - Flatpack
+    - MachineBoard
+    - ComputerBoard
+    - StockPart # manipulators, matter bins and the rest
 
 - type: cyborgModel
   id: IS14CyborgModelXenoborgHeavy

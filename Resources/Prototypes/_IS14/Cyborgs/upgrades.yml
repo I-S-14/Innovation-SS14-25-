@@ -116,7 +116,7 @@
   parent: IS14BaseCyborgUpgrade
   id: IS14CyborgUpgradeAdvancedMop
   name: janitor cyborg advanced mop
-  description: An advanced mop replacing the janitor cyborg's mop.
+  description: A self-refilling vacuum wand replacing the janitor cyborg's wand.
   components:
   - type: Sprite
     layers:
@@ -125,9 +125,9 @@
     models:
     - IS14CyborgModelJanitor
     tools:
-    - AdvMopItem
+    - IS14CyborgToolVacuumWandAdvanced
     replaces:
-    - IS14CyborgToolMop
+    - IS14CyborgToolVacuumWand
 
 - type: entity
   parent: IS14BaseCyborgUpgrade
@@ -183,8 +183,8 @@
 - type: entity
   parent: IS14BaseCyborgUpgrade
   id: IS14CyborgUpgradeBotanyTools
-  name: service cyborg botany tools
-  description: Gardening tools for service cyborgs.
+  name: service cyborg plant bag
+  description: A plant bag for service cyborgs. The gardening tools are built into every service cyborg.
   components:
   - type: Sprite
     layers:
@@ -193,26 +193,7 @@
     models:
     - IS14CyborgModelService
     tools:
-    - IS14CyborgToolCultivator
-    - IS14CyborgToolSpade
-    - IS14CyborgToolSecateur
     - PlantBag
-
-- type: entity
-  parent: IS14BaseCyborgUpgrade
-  id: IS14CyborgUpgradeKitchenTools
-  name: service cyborg kitchen toolset
-  description: Kitchen tools for service cyborgs.
-  components:
-  - type: Sprite
-    layers:
-    - state: module_service
-  - type: CyborgUpgrade
-    models:
-    - IS14CyborgModelService
-    tools:
-    - IS14CyborgToolKnife
-    - IS14CyborgToolRollingPin
 
 - type: entity
   parent: IS14BaseCyborgUpgrade
@@ -303,14 +284,12 @@
     - IS14CyborgModelMedical
     tools:
     - IS14CyborgToolSyringeBluespace
-    replaces:
-    - IS14CyborgToolSyringe
 
 - type: entity
   parent: IS14BaseCyborgUpgrade
   id: IS14CyborgUpgradeBeakerApparatus
   name: beaker storage apparatus
-  description: A second beaker for medical cyborgs.
+  description: A built-in large beaker for medical cyborgs.
   components:
   - type: Sprite
     layers:

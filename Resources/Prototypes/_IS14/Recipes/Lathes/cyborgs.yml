@@ -19,11 +19,6 @@
 
 - type: latheRecipe
   parent: BaseBorgModuleRecipe
-  id: IS14CyborgUpgradeKitchenTools
-  result: IS14CyborgUpgradeKitchenTools
-
-- type: latheRecipe
-  parent: BaseBorgModuleRecipe
   id: IS14CyborgUpgradeAdvancedMop
   result: IS14CyborgUpgradeAdvancedMop
 

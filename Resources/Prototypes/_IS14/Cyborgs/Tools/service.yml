@@ -1,9 +1,117 @@
 # Licensed under IS14's EULA, see EULA.txt for more information.
 
+# tg's service garden and kitchen tools in one arm. Botany and cooking tell tools apart by tags and
+# components, so each mode brings its own.
 - type: entity
-  parent: [IS14BaseCyborgTool, BarSpoon]
-  id: IS14CyborgToolBarSpoon
+  parent: [IS14BaseCyborgTool, BaseItem]
+  id: IS14CyborgToolGardenToolkit
+  name: cyborg gardening toolset
+  description: Secateurs, a hatchet, a cultivator, a spade, a rolling pin and a knife, all built into a cyborg's arm. Switch tools with a press.
   categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
+    layers:
+    - state: sili_secateur
+  - type: Item
+    size: Small
+  - type: CyborgMultiTool
+    modes:
+    - name: cyborg-multitool-mode-secateur
+      state: sili_secateur
+      components:
+      - type: Tag
+        tags:
+        - PlantSampleTaker
+        - HydroponicsToolClippers
+      - type: Tool
+        qualities:
+        - Cutting
+        useSound:
+          path: /Audio/Items/wirecutter.ogg
+        speedModifier: 0.25
+      - type: MeleeWeapon
+        wideAnimationRotation: 90
+        damage:
+          types:
+            Slash: 7
+    - name: cyborg-multitool-mode-hatchet
+      state: sili_hatchet
+      components:
+      - type: Tag
+        tags:
+        - BotanyHatchet
+      - type: Sharp
+      - type: MeleeWeapon
+        wideAnimationRotation: 135
+        swingLeft: true
+        damage:
+          types:
+            Slash: 8
+            Piercing: 2
+    - name: cyborg-multitool-mode-cultivator
+      state: sili_cultivator
+      components:
+      - type: Tag
+        tags:
+        - Hoe
+        - BotanyHoe
+      - type: MeleeWeapon
+        wideAnimationRotation: 135
+        swingLeft: true
+        damage:
+          types:
+            Slash: 6
+    - name: cyborg-multitool-mode-spade
+      state: sili_shovel
+      components:
+      - type: Tag
+        tags:
+        - BotanyShovel
+      - type: Shovel
+        speedModifier: 0.75
+      - type: MeleeWeapon
+        wideAnimationRotation: 45
+        damage:
+          types:
+            Blunt: 8
+            Piercing: 2
+        soundHit:
+          collection: MetalThud
+    - name: cyborg-multitool-mode-rolling-pin
+      state: sili_rolling_pin
+      components:
+      - type: Tag
+        tags:
+        - RollingPin
+      - type: Tool
+        qualities:
+        - Rolling
+      - type: MeleeWeapon
+        wideAnimationRotation: -135
+        damage:
+          types:
+            Blunt: 7
+        soundHit:
+          collection: MetalThud
+    - name: cyborg-multitool-mode-knife
+      state: sili_knife
+      components:
+      - type: Tag
+        tags:
+        - Knife
+        - KitchenKnife
+      - type: Sharp
+      - type: Utensil
+        types:
+        - Knife
+      - type: MeleeWeapon
+        wideAnimationRotation: -135
+        damage:
+          types:
+            Slash: 10
+        soundHit:
+          path: /Audio/Weapons/bladeslice.ogg
 
 - type: entity
   parent: [IS14BaseCyborgTool, Pen]
@@ -24,26 +132,6 @@
     sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
     layers:
     - state: bureaucracy-labeler0
-
-- type: entity
-  parent: [IS14BaseCyborgTool, ElectricGuitarInstrument]
-  id: IS14CyborgToolGuitar
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: Sprite
-    sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
-    layers:
-    - state: musician-guitar
-
-- type: entity
-  parent: [IS14BaseCyborgTool, SynthesizerInstrument]
-  id: IS14CyborgToolSynthesizer
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: Sprite
-    sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
-    layers:
-    - state: musician-synth
 
 - type: entity
   parent: [IS14BaseCyborgTool, Lighter]
@@ -73,11 +161,6 @@
 - type: entity
   parent: [IS14BaseCyborgTool, SprayPainterBorg]
   id: IS14CyborgToolSprayPainter
-  categories: [ HideSpawnMenu ]
-
-- type: entity
-  parent: [IS14BaseCyborgTool, RagItem]
-  id: IS14CyborgToolRag
   categories: [ HideSpawnMenu ]
 
 # Given by the glass storage apparatus board.
