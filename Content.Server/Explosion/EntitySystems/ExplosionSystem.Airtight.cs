@@ -12,6 +12,7 @@ using Robust.Shared.Map.Components;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
 using System.Linq;
+using static Content.Server.Explosion.Components.ExplosionAirtightGridComponent;
 
 namespace Content.Server.Explosion.EntitySystems;
 

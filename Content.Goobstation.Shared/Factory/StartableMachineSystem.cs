@@ -8,7 +8,7 @@ namespace Content.Goobstation.Shared.Factory;
 
 public sealed partial class StartableMachineSystem : EntitySystem
 {
-    [Dependency] private SharedDeviceLinkSystem _device = default!;
+    [Dependency] private DeviceLinkSystem _device = default!;
     [Dependency] private SharedPowerReceiverSystem _power = default!;
 
     private EntityQuery<StartableMachineComponent> _query;

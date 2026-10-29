@@ -16,7 +16,7 @@ public sealed partial class CosmicCultLeadComponent : Component
     /// The status icon corresponding to the lead cultist.
     /// </summary>
     [DataField]
-    public ProtoId<FactionIconPrototype> StatusIcon = "CosmicCultLeadIcon";
+    public ProtoId<StatusIconPrototype> StatusIcon = "CosmicCultLeadIcon";
 
     /// <summary>
     /// How long the stun will last after the user is converted.

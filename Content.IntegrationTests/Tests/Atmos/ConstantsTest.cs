@@ -5,6 +5,7 @@ using Content.IntegrationTests.Fixtures.Attributes;
 using Content.Shared.Atmos;
 using Content.Shared.Atmos.Prototypes;
 using Robust.Shared.Prototypes;
+using Content.Server.Atmos.EntitySystems;
 
 namespace Content.IntegrationTests.Tests.Atmos;
 

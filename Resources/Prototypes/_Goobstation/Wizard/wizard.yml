@@ -90,7 +90,7 @@
     - SimpleHostile
     - Xeno
 
-- type: factionIcon
+- type: statusIcon
   id: WizardFaction
   isShaded: false
   priority: 11
@@ -105,7 +105,7 @@
     sprite: /Textures/_Goobstation/Wizard/StatusIcons/10x10.rsi
     state: wizard
 
-- type: factionIcon
+- type: statusIcon
   id: ApprenticeFaction
   isShaded: false
   priority: 11

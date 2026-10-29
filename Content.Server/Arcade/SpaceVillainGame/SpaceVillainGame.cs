@@ -4,6 +4,7 @@ using Robust.Server.GameObjects;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Random;
+using static Content.Shared.Arcade.SharedSpaceVillainArcadeComponent;
 
 namespace Content.Server.Arcade.SpaceVillain;
 

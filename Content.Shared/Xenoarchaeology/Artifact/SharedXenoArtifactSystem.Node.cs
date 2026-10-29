@@ -5,7 +5,6 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
 using System.Linq;
 using Content.Shared.EntityTable.EntitySelectors;
-using Content.Shared.Xenoarchaeology.Artifact.Prototypes;
 
 namespace Content.Shared.Xenoarchaeology.Artifact;
 

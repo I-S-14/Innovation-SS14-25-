@@ -2,6 +2,7 @@
 
 using Content.Shared.Paper;
 using Robust.Client.GameObjects;
+using static Content.Shared.Paper.PaperComponent;
 
 
 namespace Content.Client.Paper;

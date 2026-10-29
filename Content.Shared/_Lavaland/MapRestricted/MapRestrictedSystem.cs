@@ -1,3 +1,4 @@
+using Content.Shared._Lavaland.ItemUpgrades.Events;
 using Content.Shared._Lavaland.MapRestricted.Components;
 using Content.Shared.Emag.Components;
 using Content.Shared.Emag.Systems;

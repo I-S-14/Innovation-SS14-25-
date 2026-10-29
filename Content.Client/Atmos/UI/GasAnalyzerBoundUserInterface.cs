@@ -2,6 +2,7 @@
 using Robust.Client.UserInterface;
 using Content.Shared.Atmos.Components;
 using Robust.Client.GameObjects;
+using static Content.Shared.Atmos.Components.GasAnalyzerComponent;
 
 namespace Content.Client.Atmos.UI;
 

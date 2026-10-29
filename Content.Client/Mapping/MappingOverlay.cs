@@ -7,6 +7,7 @@ using Robust.Shared.Enums;
 using Robust.Shared.Prototypes;
 using Robust.Client.Input;
 using Robust.Client.UserInterface;
+using static Content.Client.Mapping.MappingState;
 
 namespace Content.Client.Mapping;
 

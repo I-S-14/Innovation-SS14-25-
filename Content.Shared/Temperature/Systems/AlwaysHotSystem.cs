@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Shared.Temperature.Components;
-using Content.Shared.Temperature;
 
 namespace Content.Shared.Temperature.Systems;
 
-public sealed partial class AlwaysHotSystem : EntitySystem
+public sealed class AlwaysHotSystem : EntitySystem
 {
     public override void Initialize()
     {

@@ -31,7 +31,6 @@ using Content.Shared.Movement.Systems;
 using Content.Shared.Random.Helpers;
 using Content.Shared.Clothing.Components;
 using Content.Shared.Eye.Blinding.Components;
-using Content.Shared.StatusEffect;
 using Content.Shared.Timing;
 using Robust.Shared.Random;
 
@@ -162,7 +161,8 @@ public abstract partial class SharedFlashSystem : EntitySystem
     [SubscribeLocalEvent]
     private void OnExamine(Entity<FlashImmunityComponent> ent, ref ExaminedEvent args)
     {
-        if (ent.Comp.ShowInExamine)
+        if (ent.Comp.ShowInExamine
+            || HasComp<MobStateComponent>(args.Examined)) // Goobstation - dont add exmained value to mobs whit flash protection
             args.PushMarkup(Loc.GetString("flash-protection"));
     }
 
@@ -171,7 +171,8 @@ public abstract partial class SharedFlashSystem : EntitySystem
         if (TryComp<MaskComponent>(ent, out var mask) && mask.IsToggled)
             return;
 
-        if (ent.Comp.Enabled)
+        if (ent.Comp.Enabled
+            && !args.IgnoreProtection) //DeltaV: allow flashing to ignore flash protection
             args.Cancelled = true;
     }
 
@@ -320,53 +321,5 @@ public abstract partial class SharedFlashSystem : EntitySystem
         }
 
         _audio.PlayPredicted(sound, source, user, AudioParams.Default.WithVolume(1f).WithMaxDistance(3f));
-    }
-
-    // Handle the flash visuals
-    // TODO: Replace this with something like sprite flick once that exists to get rid of the update loop.
-    public override void Update(float frameTime)
-    {
-        base.Update(frameTime);
-
-        var curTime = _timing.CurTime;
-        var query = EntityQueryEnumerator<ActiveFlashComponent>();
-        while (query.MoveNext(out var uid, out var active))
-        {
-            // reset the visuals and remove the component
-            if (active.ActiveUntil < curTime)
-            {
-                _appearance.SetData(uid, FlashVisuals.Flashing, false);
-                RemCompDeferred<ActiveFlashComponent>(uid);
-            }
-        }
-    }
-
-    private void OnPermanentBlindnessFlashAttempt(Entity<PermanentBlindnessComponent> ent, ref FlashAttemptEvent args)
-    {
-        // check for total blindness
-        if (ent.Comp.Blindness == 0)
-            args.Cancelled = true;
-    }
-
-    private void OnTemporaryBlindnessFlashAttempt(Entity<TemporaryBlindnessComponent> ent, ref FlashAttemptEvent args)
-    {
-        args.Cancelled = true;
-    }
-
-    private void OnFlashImmunityFlashAttempt(Entity<FlashImmunityComponent> ent, ref FlashAttemptEvent args)
-    {
-        if (TryComp<MaskComponent>(ent, out var mask) && mask.IsToggled)
-            return;
-
-        if (ent.Comp.Enabled
-            && !args.IgnoreProtection) //DeltaV: allow flashing to ignore flash protection
-            args.Cancelled = true;
-    }
-
-    private void OnExamine(Entity<FlashImmunityComponent> ent, ref ExaminedEvent args)
-    {
-        if (ent.Comp.ShowInExamine
-            || HasComp<MobStateComponent>(args.Examined)) // Goobstation - dont add exmained value to mobs whit flash protection
-            args.PushMarkup(Loc.GetString("flash-protection"));
     }
 }

@@ -2,6 +2,7 @@ using Content.Client.Resources;
 using Content.Client.Stylesheets;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
+using static Content.Client.Stylesheets.StylesheetHelpers;
 
 namespace Content.Client.Lobby.UI;
 

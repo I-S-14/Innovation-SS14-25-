@@ -22,6 +22,7 @@ using Robust.Shared.Network;
 using Robust.Shared.Physics.Events;
 using Robust.Shared.Player;
 using Robust.Shared.Timing;
+using Content.Shared.Ghost.Components;
 
 namespace Content.Shared._Goobstation.Wizard.Traps;
 

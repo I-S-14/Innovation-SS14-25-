@@ -12,6 +12,7 @@ using Robust.Shared.Serialization;
 using Robust.Shared.Utility;
 using Robust.Shared.Collections;
 using Robust.Shared.Network;
+using Content.Corvax.Interfaces.Shared;
 
 namespace Content.Shared.Preferences.Loadouts;
 

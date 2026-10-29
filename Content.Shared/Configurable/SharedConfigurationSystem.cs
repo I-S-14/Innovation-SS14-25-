@@ -1,3 +1,4 @@
+using static Content.Shared.Configurable.ConfigurationComponent;
 using Content.Shared.Interaction;
 using Content.Shared.Tools.Systems;
 using Robust.Shared.Containers;

@@ -1,4 +1,4 @@
-using Content.Shared._White.StatusIcon;
+using Content.Shared.StatusIcon;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 
@@ -9,7 +9,7 @@ namespace Content.Shared._White.Xenomorphs.Infection;
 public sealed partial class XenomorphInfectedComponent : Component
 {
     [AutoNetworkedField, ViewVariables]
-    public Dictionary<int, ProtoId<InfectionIconPrototype>> InfectedIcons = new();
+    public Dictionary<int, ProtoId<StatusIconPrototype>> InfectedIcons = new();
 
     [ViewVariables]
     public EntityUid Infection;

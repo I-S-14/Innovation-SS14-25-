@@ -33,11 +33,11 @@ public sealed partial class BlobObserverSystem : SharedBlobObserverSystem
         SubscribeNetworkEvent<RoundRestartCleanupEvent>(RoundRestartCleanup);
     }
 
-    private static readonly ProtoId<FactionIconPrototype> BlobFaction = "BlobFaction";
+    private static readonly ProtoId<StatusIconPrototype> BlobFaction = "BlobFaction";
 
     private void OnShowBlobIcon<T>(Entity<T> ent, ref GetStatusIconsEvent args) where T : Component
     {
-        args.StatusIcons.Add(_prototype.Index<FactionIconPrototype>(BlobFaction));
+        args.StatusIcons.Add(_prototype.Index<StatusIconPrototype>(BlobFaction));
     }
 
     private void OnPlayerAttached(EntityUid uid, BlobObserverComponent component, LocalPlayerAttachedEvent args)

@@ -1,6 +1,6 @@
 # Xenomorph
 
-- type: infectionIcon
+- type: statusIcon
   id: XenomorphInfectionIconStageZero
   priority: 0
   locationPreference: Right
@@ -13,7 +13,7 @@
     sprite: /Textures/_White/Interface/Misc/infection_icons.rsi
     state: xenomorph_0
 
-- type: infectionIcon
+- type: statusIcon
   id: XenomorphInfectionIconStageOne
   priority: 0
   locationPreference: Right
@@ -26,7 +26,7 @@
     sprite: /Textures/_White/Interface/Misc/infection_icons.rsi
     state: xenomorph_1
 
-- type: infectionIcon
+- type: statusIcon
   id: XenomorphInfectionIconStageTwo
   priority: 0
   locationPreference: Right
@@ -39,7 +39,7 @@
     sprite: /Textures/_White/Interface/Misc/infection_icons.rsi
     state: xenomorph_2
 
-- type: infectionIcon
+- type: statusIcon
   id: XenomorphInfectionIconStageThree
   priority: 0
   locationPreference: Right
@@ -52,7 +52,7 @@
     sprite: /Textures/_White/Interface/Misc/infection_icons.rsi
     state: xenomorph_3
 
-- type: infectionIcon
+- type: statusIcon
   id: XenomorphInfectionIconStageFour
   priority: 0
   locationPreference: Right
@@ -65,7 +65,7 @@
     sprite: /Textures/_White/Interface/Misc/infection_icons.rsi
     state: xenomorph_4
 
-- type: infectionIcon
+- type: statusIcon
   id: XenomorphInfectionIconStageFive
   priority: 0
   locationPreference: Right
@@ -78,7 +78,7 @@
     sprite: /Textures/_White/Interface/Misc/infection_icons.rsi
     state: xenomorph_5
 
-- type: infectionIcon
+- type: statusIcon
   id: XenomorphInfectionIconStageSix
   priority: 0
   locationPreference: Right

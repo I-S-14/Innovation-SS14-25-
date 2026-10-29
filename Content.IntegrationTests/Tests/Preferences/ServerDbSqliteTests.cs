@@ -19,6 +19,11 @@ using Robust.Shared.Network;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization.Manager;
 using Robust.UnitTesting;
+using System.Linq;
+using Content.Shared.GameTicking;
+using Content.Shared.Preferences.Loadouts;
+using Content.Shared.Preferences.Loadouts.Effects;
+using Robust.Shared.Enums;
 
 namespace Content.IntegrationTests.Tests.Preferences
 {

@@ -33,10 +33,6 @@ using Content.Shared.Hands.Components;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Inventory.VirtualItem;
 using Robust.Shared.Configuration;
-using Content.Shared.Vehicle;
-using Content.Shared.Vehicle.Systems;
-using Content.Shared.Vehicle.Components;
-using Content.Shared.Verbs;
 
 namespace Content.Shared.Mech.EntitySystems;
 

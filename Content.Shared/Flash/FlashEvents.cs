@@ -43,3 +43,9 @@ public sealed class AreaFlashEvent(float range, float distance, EntityUid target
 
     public EntityUid Target = target;
 }
+
+/// <summary>
+/// Raised once on the flash entity when it was used, regardless of the flashed status being applied or not.
+/// </summary>
+[ByRefEvent]
+public record struct AfterFlashActivatedEvent(EntityUid? Target, EntityUid? User);

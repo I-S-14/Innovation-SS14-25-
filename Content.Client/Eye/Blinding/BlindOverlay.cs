@@ -5,22 +5,18 @@ using Robust.Client.Player;
 using Robust.Shared.Enums;
 using Robust.Shared.Prototypes;
 using Content.Shared.Eye.Blinding.Components;
-using Content.Client.Movement.Systems;
-using Content.Shared.Eye.Blinding;
-using Content.Shared.Movement.Components;
-using Content.Shared.Movement.Systems;
 
 namespace Content.Client.Eye.Blinding
 {
-    public sealed partial class BlindOverlay : Overlay
+    public sealed class BlindOverlay : Overlay
     {
         private static readonly ProtoId<ShaderPrototype> GreyscaleShader = "GreyscaleFullscreen";
         private static readonly ProtoId<ShaderPrototype> CircleShader = "CircleMask";
 
-        [Dependency] private IPrototypeManager _prototypeManager = default!;
-        [Dependency] private IPlayerManager _playerManager = default!;
-        [Dependency] private IEntityManager _entityManager = default!;
-        [Dependency] private ILightManager _lightManager = default!;
+        [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
+        [Dependency] private readonly IPlayerManager _playerManager = default!;
+        [Dependency] private readonly IEntityManager _entityManager = default!;
+        [Dependency] private readonly ILightManager _lightManager = default!;
 
         public override bool RequestScreenTexture => true;
         public override OverlaySpace Space => OverlaySpace.WorldSpace;
@@ -98,6 +94,7 @@ namespace Content.Client.Eye.Blinding
             worldHandle.DrawRect(viewport, Color.White);
             worldHandle.UseShader(_circleMaskShader);
             worldHandle.DrawRect(viewport, Color.White);
+            worldHandle.UseShader(null);
         }
     }
 }

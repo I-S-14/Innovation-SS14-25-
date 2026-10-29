@@ -6,7 +6,6 @@ using Robust.Client.UserInterface.CustomControls;
 using Robust.Client.UserInterface.XAML;
 using Robust.Shared.Timing;
 using Content.Shared.Forensics;
-using Content.Shared.Forensics.Components;
 
 namespace Content.Client.Forensics
 {

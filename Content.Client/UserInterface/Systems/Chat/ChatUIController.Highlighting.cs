@@ -10,6 +10,7 @@ using Content.Client.CharacterInfo;
 using Content.Client.Gameplay;
 using Robust.Shared.Utility;
 using Content.Client._CorvaxGoob.Chat;
+using static Content.Client.CharacterInfo.CharacterInfoSystem;
 
 namespace Content.Client.UserInterface.Systems.Chat;
 

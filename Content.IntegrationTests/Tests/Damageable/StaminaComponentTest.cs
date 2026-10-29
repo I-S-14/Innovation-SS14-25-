@@ -2,7 +2,7 @@ using System.Linq;
 using Content.IntegrationTests.Fixtures;
 using Content.IntegrationTests.Utility;
 using Content.Shared.Damage.Components;
-using Content.Shared.FixedPoint;
+using Content.Goobstation.Maths.FixedPoint;
 
 namespace Content.IntegrationTests.Tests.Damageable;
 

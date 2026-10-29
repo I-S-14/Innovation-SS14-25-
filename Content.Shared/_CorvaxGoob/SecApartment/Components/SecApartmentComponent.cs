@@ -1,5 +1,6 @@
 using Robust.Shared.GameStates;
 using Robust.Shared.Serialization;
+using Content.Shared.Medical.SuitSensors;
 
 namespace Content.Shared._CorvaxGoob.SecApartment;
 

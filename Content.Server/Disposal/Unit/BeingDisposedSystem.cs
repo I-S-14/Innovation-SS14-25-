@@ -1,8 +1,6 @@
-// SPDX-License-Identifier: MIT
 using Content.Server.Body.Systems;
 using Content.Shared.Atmos;
 using Content.Shared.Disposal.Unit;
-using Content.Server.Atmos.EntitySystems;
 
 namespace Content.Server.Disposal.Unit;
 
@@ -27,7 +25,7 @@ public sealed partial class BeingDisposedSystem : SharedBeingDisposedSystem
         }
     }
 
-    private void OnInhaleLocation(EntityUid uid, BeingDisposedComponent component, ref InhaleLocationEvent args) // Goob - by-ref
+    private void OnInhaleLocation(Entity<BeingDisposedComponent> ent, ref InhaleLocationEvent args)
     {
         if (TryComp<DisposalHolderComponent>(ent.Comp.Holder, out var holder))
         {
@@ -35,7 +33,7 @@ public sealed partial class BeingDisposedSystem : SharedBeingDisposedSystem
         }
     }
 
-    private void OnExhaleLocation(EntityUid uid, BeingDisposedComponent component, ref ExhaleLocationEvent args) // Goob - by-ref
+    private void OnExhaleLocation(Entity<BeingDisposedComponent> ent, ref ExhaleLocationEvent args)
     {
         if (TryComp<DisposalHolderComponent>(ent.Comp.Holder, out var holder))
         {

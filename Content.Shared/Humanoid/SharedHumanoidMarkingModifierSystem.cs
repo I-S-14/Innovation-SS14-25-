@@ -2,9 +2,6 @@
 
 using Content.Shared.Humanoid.Markings;
 using Robust.Shared.Serialization;
-using Content.Shared.Body;
-using Content.Shared.Humanoid.Prototypes;
-using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Humanoid;
 

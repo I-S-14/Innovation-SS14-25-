@@ -1,5 +1,6 @@
 using Content.Client.Stylesheets;
 using Robust.Client.UserInterface;
+using static Content.Client.Stylesheets.StylesheetHelpers;
 
 namespace Content.Client.Botany.UI;
 

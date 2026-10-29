@@ -9,6 +9,7 @@ using Content.Shared.Roles;
 using Robust.Shared.Prototypes;
 using Content.Shared.CCVar;
 using Robust.Shared.Configuration;
+using static Content.Shared.Access.Components.IdCardConsoleComponent;
 
 namespace Content.Client.Access.UI
 {

@@ -45,7 +45,7 @@ public sealed partial class GangIconsSystem : EntitySystem
         args.StatusIcons.Add(MakeIcon(ent.Comp.StatusIcon, ent.Comp.GangColor.Value, hideOnStealth: false));
     }
 
-    private StatusIconData MakeIcon(ProtoId<FactionIconPrototype> protoId, Color color, bool hideOnStealth = true)
+    private StatusIconData MakeIcon(ProtoId<StatusIconPrototype> protoId, Color color, bool hideOnStealth = true)
     {
         var proto = _prototype.Index(protoId);
         return new StatusIconData

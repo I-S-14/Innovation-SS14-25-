@@ -7,8 +7,6 @@ using Content.Shared.Preferences;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization.Manager;
-using Content.Shared.Body;
-using Content.Shared.Humanoid;
 
 namespace Content.Server.Humanoid.Systems;
 

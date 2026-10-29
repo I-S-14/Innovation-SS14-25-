@@ -1,4 +1,4 @@
-- type: factionIcon
+- type: statusIcon
   id: GangHead
   priority: 11
   showTo:
@@ -9,7 +9,7 @@
     sprite: /Textures/_Goobstation/Gangs/gang_markers.rsi
     state: gang_head
 
-- type: factionIcon
+- type: statusIcon
   id: GangMember
   priority: 11
   showTo:
@@ -20,7 +20,7 @@
     sprite: /Textures/_Goobstation/Gangs/gang_markers.rsi
     state: gang_member
 
-- type: factionIcon
+- type: statusIcon
   id: GangLocker
   priority: 11
   showTo:

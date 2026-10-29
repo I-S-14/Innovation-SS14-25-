@@ -19,6 +19,7 @@ using Content.Shared.Mind.Components;
 using Content.Shared.Roles;
 using Content.Shared.Random.Helpers;
 using Robust.Shared.Random;
+using static Content.Shared.Paper.PaperComponent;
 // Starlight-end
 
 namespace Content.Shared.Paper;

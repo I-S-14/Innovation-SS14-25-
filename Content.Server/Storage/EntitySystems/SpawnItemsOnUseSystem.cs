@@ -10,6 +10,7 @@ using Content.Shared.Interaction.Events;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Map;
 using Robust.Shared.Random;
+using static Content.Shared.Storage.EntitySpawnCollection;
 
 namespace Content.Server.Storage.EntitySystems
 {

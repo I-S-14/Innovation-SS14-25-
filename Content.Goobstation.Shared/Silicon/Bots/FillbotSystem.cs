@@ -9,7 +9,7 @@ namespace Content.Goobstation.Shared.Silicon.Bots;
 public sealed partial class FillbotSystem : EntitySystem
 {
     [Dependency] private IEntityManager _entityManager = default!;
-    [Dependency] private SharedDeviceLinkSystem _deviceLink = default!;
+    [Dependency] private DeviceLinkSystem _deviceLink = default!;
 
     [Dependency] private SharedHandsSystem _sharedHandsSystem = default!;
 

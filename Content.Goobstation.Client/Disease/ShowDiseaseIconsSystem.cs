@@ -64,7 +64,7 @@ public sealed partial class ShowDiseaseIconsSystem : EquipmentHudSystem<ShowDise
             args.StatusIcons.Add(diseaseIcon);
     }
 
-    private DiseaseIconPrototype? DecideDiseaseIcon(Entity<DiseaseCarrierComponent> entity)
+    private StatusIconPrototype? DecideDiseaseIcon(Entity<DiseaseCarrierComponent> entity)
     {
         var carrier = entity.Comp;
         var total = 0f;

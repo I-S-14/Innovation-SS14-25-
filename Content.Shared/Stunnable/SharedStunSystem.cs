@@ -29,7 +29,6 @@ using Content.Shared.Speech.EntitySystems;
 using Content.Goobstation.Common.Stunnable;
 using Content.Shared.Bed.Sleep;
 using Content.Shared.Interaction;
-using Content.Shared.StatusEffect;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 

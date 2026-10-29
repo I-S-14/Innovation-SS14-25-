@@ -13,6 +13,12 @@ using Content.Shared.Storage;
 using Content.Shared.Tools.Components;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Prototypes;
+using System.Numerics;
+using Content.Server.Nutrition.Components;
+using Content.Server.Nutrition.EntitySystems;
+using Content.Shared.Prototypes;
+using Content.Shared.Whitelist;
+using Robust.Shared.Map;
 
 namespace Content.IntegrationTests.Tests;
 

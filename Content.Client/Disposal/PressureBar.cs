@@ -1,11 +1,7 @@
-// SPDX-License-Identifier: MIT
-
 using System.Numerics;
 using Robust.Client.Graphics;
 using Robust.Client.UserInterface.Controls;
 using Robust.Shared.Timing;
-using Content.Shared.Disposal;
-using Content.Shared.Disposal.Unit;
 
 namespace Content.Client.Disposal;
 

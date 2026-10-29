@@ -63,6 +63,8 @@ using Robust.Shared.Spawners;
 using Robust.Shared.Timing;
 using Content.Shared.Damage.Systems;
 using Content.Shared.Gibbing;
+using Content.Shared.Gibbing.Systems;
+using Content.Shared.Ghost.Components;
 
 namespace Content.Shared.Magic;
 

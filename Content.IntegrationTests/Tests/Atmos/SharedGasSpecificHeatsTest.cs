@@ -3,6 +3,10 @@ using Content.Shared.Atmos;
 using Content.Shared.Atmos.EntitySystems;
 using Content.Shared.CCVar;
 using Robust.Shared.Configuration;
+using Content.Client.Atmos.EntitySystems;
+using Content.IntegrationTests.Pair;
+using Robust.Shared.GameObjects;
+using Robust.UnitTesting;
 
 namespace Content.IntegrationTests.Tests.Atmos;
 

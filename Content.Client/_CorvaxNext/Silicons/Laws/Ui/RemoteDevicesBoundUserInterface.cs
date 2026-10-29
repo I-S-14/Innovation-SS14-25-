@@ -2,6 +2,7 @@
 
 using Content.Shared._CorvaxNext.Silicons.Borgs.Components;
 using Robust.Client.UserInterface;
+using static Content.Shared._CorvaxNext.Silicons.Borgs.Components.AiRemoteControllerComponent;
 
 namespace Content.Client._CorvaxNext.Silicons.Laws.Ui;
 

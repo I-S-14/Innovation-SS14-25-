@@ -41,6 +41,7 @@ using Content.Server.Disposal.Tube;
 using Content.Server.Station.Systems;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
+using static Content.Shared.Configurable.ConfigurationComponent;
 
 namespace Content.Server.Administration.Systems
 {

@@ -8,6 +8,7 @@ using Content.Shared.CCVar;
 using Content.Shared.Eui;
 using Robust.Shared.Configuration;
 using Robust.Shared.Timing;
+using static Content.Shared.Administration.Notes.AdminMessageEuiMsg;
 
 namespace Content.Server.Administration.Notes;
 

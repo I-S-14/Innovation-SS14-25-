@@ -8,6 +8,7 @@ using Robust.Shared.Prototypes;
 using Content.IntegrationTests.Utility;
 using Content.Shared.Guidebook;
 using Robust.Shared.Localization;
+using System.Linq;
 
 namespace Content.IntegrationTests.Tests.Guidebook;
 

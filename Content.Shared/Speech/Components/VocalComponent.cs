@@ -13,7 +13,7 @@ namespace Content.Shared.Speech.Components;
 ///     Component required for entities to be able to do vocal emotions.
 /// </summary>
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
-[Access(typeof(VocalSystem))]
+// IS14-change: VocalSystem stays server-side (Goob emotes), Shared cannot name it in Access
 public sealed partial class VocalComponent : Component
 {
     //TODO: Wilhelm scream logic needs to be more generic

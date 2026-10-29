@@ -23,6 +23,7 @@ using Robust.Shared.Audio.Systems;
 using Robust.Shared.Prototypes;
 using Content.Shared.Chemistry.EntitySystems.Hypospray;
 using Content.Shared._DV.Chemistry.Components;
+using Content.Shared.Timing.Systems;
 
 namespace Content.Shared.Chemistry.EntitySystems;
 

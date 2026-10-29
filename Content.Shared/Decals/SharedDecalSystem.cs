@@ -1,18 +1,13 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
-using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using Robust.Shared.GameStates;
 using Robust.Shared.Map;
 using Robust.Shared.Serialization;
-using Robust.Shared.Prototypes;
+using static Content.Shared.Decals.DecalGridComponent;
 
 namespace Content.Shared.Decals
 {
     public abstract partial class SharedDecalSystem : EntitySystem
     {
-        [Dependency] protected readonly IPrototypeManager PrototypeManager = default!;
-        [Dependency] protected readonly SharedMapSystem MapSystem = default!;
         [Dependency] protected ChunkEntitySystem ChunkEntities = default!;
         [Dependency] protected EntityQuery<DecalChunkComponent> DecalChunkQuery = default!;
 
@@ -127,43 +122,6 @@ namespace Content.Shared.Decals
 
             // Allocation pops from the end, so keep the lowest free id there for stable decal ids.
             component.FreeDecalIds.Sort((x, y) => y.CompareTo(x));
-        }
-
-        protected virtual void OnDecalRemoved(EntityUid gridId, uint decalId, DecalGridComponent component, Vector2i indices, DecalChunk chunk)
-        {
-            // used by client-side overlay code
-        }
-
-        public virtual HashSet<(uint Index, Decal Decal)> GetDecalsInRange(EntityUid gridId, Vector2 position, float distance = 0.75f, Func<Decal, bool>? validDelegate = null)
-        {
-            // NOOP on client atm.
-//            return new HashSet<(uint Index, Decal Decal)>(); // Commented by CorvaxGoob
-// CorvaxGoob-changes-start:
-            var decalIds = new HashSet<(uint, Decal)>();
-            var chunkCollection = ChunkCollection(gridId);
-            var chunkIndices = GetChunkIndices(position);
-            if (chunkCollection == null || !chunkCollection.TryGetValue(chunkIndices, out var chunk))
-                return decalIds;
-
-            foreach (var (uid, decal) in chunk.Decals)
-            {
-                if ((position - decal.Coordinates - new Vector2(0.5f, 0.5f)).Length() > distance)
-                    continue;
-
-                if (validDelegate == null || validDelegate(decal))
-                {
-                    decalIds.Add((uid, decal));
-                }
-            }
-
-            return decalIds;
-// CorvaxGoob-changes-end.
-        }
-
-        public virtual bool RemoveDecal(EntityUid gridId, uint decalId, DecalGridComponent? component = null)
-        {
-            // NOOP on client atm.
-            return true;
         }
     }
 

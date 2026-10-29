@@ -21,6 +21,7 @@ using Robust.Shared.Map;
 using Robust.Shared.Utility;
 using static Robust.Client.UserInterface.Controls.BoxContainer;
 using Direction = Robust.Shared.Maths.Direction;
+using static Content.Shared.Interaction.SharedInteractionSystem;
 
 namespace Content.Client.Examine
 {

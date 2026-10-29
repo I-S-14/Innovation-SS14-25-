@@ -6,6 +6,9 @@ using Content.Server.Atmos.Piping.EntitySystems;
 using Content.Shared.Atmos.Components;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Prototypes;
+using Content.Server.Atmos.Components;
+using Content.Server.Atmos.EntitySystems;
+using Content.Server.Atmos.Piping.Components;
 
 namespace Content.IntegrationTests.Tests.Atmos;
 

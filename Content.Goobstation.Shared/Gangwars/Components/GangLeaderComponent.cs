@@ -12,7 +12,7 @@ namespace Content.Goobstation.Shared.Gangwars.Components;
 public sealed partial class GangLeaderComponent : Component
 {
     [DataField]
-    public ProtoId<FactionIconPrototype> StatusIcon = "GangHead";
+    public ProtoId<StatusIconPrototype> StatusIcon = "GangHead";
 
     [DataField]
     public EntProtoId SummonLockerAction = "ActionGangLeaderSummonLocker";

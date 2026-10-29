@@ -1,10 +1,7 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
 using Content.Server.Administration;
 using Content.Shared.Administration;
 using Content.Shared.Disposal.Tube;
 using Robust.Shared.Console;
-using Content.Server.Disposal.Tube;
 
 namespace Content.Server.Disposal
 {

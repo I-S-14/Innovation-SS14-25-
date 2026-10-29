@@ -7,6 +7,7 @@ using Robust.Shared.Map;
 using Robust.Shared.Maths;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
+using Robust.Shared.Console;
 
 namespace Content.IntegrationTests.Tests.Atmos;
 

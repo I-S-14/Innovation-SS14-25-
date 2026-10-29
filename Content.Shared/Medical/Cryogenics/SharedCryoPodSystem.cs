@@ -29,11 +29,6 @@ using Content.Shared.Verbs;
 using Robust.Shared.Containers;
 using Robust.Shared.Serialization;
 using Robust.Shared.Timing;
-using System.Linq;
-using Content.Shared.Body;
-using Content.Shared.Chemistry.Reagent;
-using Content.Goobstation.Maths.FixedPoint;
-using Content.Shared.Hands.EntitySystems;
 
 namespace Content.Shared.Medical.Cryogenics;
 

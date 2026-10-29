@@ -5,6 +5,7 @@ using Content.Shared.Hands.Components;
 using Content.Shared.Movement.Pulling.Components;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Prototypes;
+using Content.Shared.Prototypes;
 
 namespace Content.IntegrationTests.Tests.Puller;
 

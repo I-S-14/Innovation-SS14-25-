@@ -18,7 +18,6 @@ using Robust.Shared.Containers;
 using Robust.Shared.Map;
 using Robust.Shared.Physics;
 using Robust.Shared.Physics.Components;
-using Content.Shared.Vehicle.Systems;
 
 namespace Content.Server.Mech.Equipment.EntitySystems;
 

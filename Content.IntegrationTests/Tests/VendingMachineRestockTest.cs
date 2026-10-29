@@ -17,6 +17,8 @@ using Content.Shared.VendingMachines.Components;
 using Content.Shared.Wires;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Prototypes;
+using Content.Shared.Prototypes;
+using Robust.Shared.Map;
 
 namespace Content.IntegrationTests.Tests
 {

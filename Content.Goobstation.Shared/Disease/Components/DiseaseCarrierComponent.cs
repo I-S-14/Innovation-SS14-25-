@@ -35,17 +35,17 @@ public sealed partial class DiseaseCarrierComponent : Component
     /// Icon to show on HUDs if total disease severity is low.
     /// </summary>
     [DataField, AutoNetworkedField]
-    public ProtoId<DiseaseIconPrototype> LowIcon = "DiseaseIconLow";
+    public ProtoId<StatusIconPrototype> LowIcon = "DiseaseIconLow";
 
     /// <summary>
     /// Icon to show on HUDs if total disease severity is medium.
     /// </summary>
     [DataField, AutoNetworkedField]
-    public ProtoId<DiseaseIconPrototype> MediumIcon = "DiseaseIconMedium";
+    public ProtoId<StatusIconPrototype> MediumIcon = "DiseaseIconMedium";
 
     /// <summary>
     /// Icon to show on HUDs if total disease severity is high.
     /// </summary>
     [DataField, AutoNetworkedField]
-    public ProtoId<DiseaseIconPrototype> HighIcon = "DiseaseIconHigh";
+    public ProtoId<StatusIconPrototype> HighIcon = "DiseaseIconHigh";
 }

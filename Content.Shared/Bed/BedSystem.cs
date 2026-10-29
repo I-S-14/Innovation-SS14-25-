@@ -2,33 +2,32 @@ using Content.Shared.Actions;
 using Content.Shared.Bed.Components;
 using Content.Shared.Bed.Sleep;
 using Content.Shared.Body.Events;
+using Content.Shared.Body.Systems;
 using Content.Shared.Buckle.Components;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Systems;
 using Content.Shared.Emag.Systems;
-using Content.Shared.Metabolism;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Power;
 using Content.Shared.Power.EntitySystems;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
-using Content.Shared.Body.Systems;
 
 namespace Content.Shared.Bed;
 
-public sealed partial class BedSystem : EntitySystem
+public sealed class BedSystem : EntitySystem
 {
-    [Dependency] private ActionContainerSystem _actConts = default!;
-    [Dependency] private DamageableSystem _damageableSystem = default!;
-    [Dependency] private EmagSystem _emag = default!;
-    [Dependency] private IGameTiming _timing = default!;
-    [Dependency] private MetabolizerSystem _metabolizer = default!;
-    [Dependency] private MobStateSystem _mobStateSystem = default!;
-    [Dependency] private SharedActionsSystem _actionsSystem = default!;
-    [Dependency] private SharedPowerReceiverSystem _powerReceiver = default!;
-    [Dependency] private SleepingSystem _sleepingSystem = default!;
+    [Dependency] private readonly ActionContainerSystem _actConts = default!;
+    [Dependency] private readonly DamageableSystem _damageableSystem = default!;
+    [Dependency] private readonly EmagSystem _emag = default!;
+    [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private readonly MobStateSystem _mobStateSystem = default!;
+    [Dependency] private readonly SharedActionsSystem _actionsSystem = default!;
+    [Dependency] private readonly SharedMetabolizerSystem _metabolizer = default!;
+    [Dependency] private readonly SharedPowerReceiverSystem _powerReceiver = default!;
+    [Dependency] private readonly SleepingSystem _sleepingSystem = default!;
 
-    [Dependency] private EntityQuery<SleepingComponent> _sleepingQuery = default!;
+    private EntityQuery<SleepingComponent> _sleepingQuery;
 
     public override void Initialize()
     {
@@ -43,6 +42,8 @@ public sealed partial class BedSystem : EntitySystem
         SubscribeLocalEvent<StasisBedComponent, GotEmaggedEvent>(OnStasisEmagged);
         SubscribeLocalEvent<StasisBedComponent, PowerChangedEvent>(OnPowerChanged);
         SubscribeLocalEvent<StasisBedBuckledComponent, GetMetabolicMultiplierEvent>(OnStasisGetMetabolicMultiplier);
+
+        _sleepingQuery = GetEntityQuery<SleepingComponent>();
     }
 
     private void OnHealMapInit(Entity<HealOnBuckleComponent> ent, ref MapInitEvent args)

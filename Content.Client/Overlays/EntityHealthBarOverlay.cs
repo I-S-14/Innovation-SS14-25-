@@ -73,7 +73,7 @@ public sealed class EntityHealthBarOverlay : Overlay
         var rotationMatrix = Matrix3Helpers.CreateRotation(-rotation);
         _prototype.Resolve(StatusIcon, out var statusIcon);
 
-        var query = _entManager.AllEntityQueryEnumerator<MobThresholdsComponent, MobStateComponent, DamageableComponent, InjurableComponent>();
+        var query = _entManager.AllEntityQueryEnumerator<MobThresholdsComponent, MobStateComponent, DamageableComponent, DamageableComponent>();
         while (query.MoveNext(out var uid,
             out var mobThresholdsComponent,
             out var mobStateComponent,
@@ -88,7 +88,7 @@ public sealed class EntityHealthBarOverlay : Overlay
                 xform.MapID != args.MapId)
                 continue;
 
-            if (injurableComponent.DamageContainer == null || !DamageContainers.Contains(injurableComponent.DamageContainer))
+            if (injurableComponent.DamageContainerID == null || !DamageContainers.Contains(injurableComponent.DamageContainerID))
                 continue;
 
             if (!spriteQuery.TryGetComponent(uid, out var sprite))

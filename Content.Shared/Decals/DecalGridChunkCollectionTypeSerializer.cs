@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
 using System.Globalization;
 using System.Numerics;
 using Robust.Shared.GameStates;
@@ -12,9 +10,9 @@ using Robust.Shared.Serialization.Markdown.Validation;
 using Robust.Shared.Serialization.Markdown.Value;
 using Robust.Shared.Serialization.TypeSerializers.Interfaces;
 using Robust.Shared.Utility;
-using System.Linq;
 
 #pragma warning disable CS0618 // Obsolete: enabling compatibility features.
+using static Content.Shared.Decals.DecalGridComponent;
 #pragma warning restore CS0618
 
 namespace Content.Shared.Decals

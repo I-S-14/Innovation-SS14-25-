@@ -435,6 +435,10 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
 
         var changedEv = new SolutionChangedEvent(solution);
         RaiseLocalEvent(owner, ref changedEv);
+        //IS14-change start: Goob/Corvax systems still listen for the pre-refactor relay event
+        var legacyEv = new SolutionContainerChangedEvent(solution.Comp.Solution, solution.Comp.Id);
+        RaiseLocalEvent(owner, ref legacyEv);
+        //IS14-change end
         Dirty(solution);
 
         if (Timing.ApplyingState)
@@ -1414,3 +1418,11 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
         return dissolvedReagentAmount;
     }
 }
+
+//IS14-change start: pre-refactor event kept for Goob/Corvax consumers; raised next to SolutionChangedEvent.
+/// <summary>
+/// This event alerts system that the solution was changed
+/// </summary>
+[ByRefEvent]
+public record struct SolutionContainerChangedEvent(Solution Solution, string SolutionId);
+//IS14-change end

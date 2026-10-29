@@ -1,7 +1,5 @@
 // SPDX-License-Identifier: MIT
 
-using Content.Shared.Damage.Prototypes;
-using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
 
 namespace Content.Shared.Damage
@@ -12,23 +10,22 @@ namespace Content.Shared.Damage
         Disabled,
         DamageSpecifierDelta,
         DamageUpdateGroups,
-        ForceUpdate,
-        Displacement,
+        ForceUpdate
     }
 
     [Serializable, NetSerializable]
     public sealed class DamageVisualizerGroupData : ICloneable
     {
-        public List<ProtoId<DamageGroupPrototype>> GroupList;
+        public List<string> GroupList;
 
-        public DamageVisualizerGroupData(List<ProtoId<DamageGroupPrototype>> groupList)
+        public DamageVisualizerGroupData(List<string> groupList)
         {
             GroupList = groupList;
         }
 
         public object Clone()
         {
-            return new DamageVisualizerGroupData(new List<ProtoId<DamageGroupPrototype>>(GroupList));
+            return new DamageVisualizerGroupData(new List<string>(GroupList));
         }
     }
 }

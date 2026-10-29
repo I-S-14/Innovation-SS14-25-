@@ -37,6 +37,7 @@ using Robust.Shared.Utility;
 using static Robust.Client.UserInterface.Control;
 using Content.Client.Stylesheets;
 using Content.Shared.Cuffs.Components;
+using static Content.Client.Inventory.ClientInventorySystem;
 
 namespace Content.Client.Inventory
 {

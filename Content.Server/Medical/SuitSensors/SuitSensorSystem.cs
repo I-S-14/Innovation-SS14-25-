@@ -1,8 +1,3 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
-using System.Numerics;
-using Content.Server.Access.Systems;
-using Content.Server.DeviceNetwork.Systems;
 using Content.Shared.DeviceNetwork.Systems;
 using Content.Server.Medical.CrewMonitoring;
 using Content.Shared.DeviceNetwork.Components;

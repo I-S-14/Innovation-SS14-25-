@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+using Content.Shared._Lavaland.Weapons.Marker;
 using Content.Shared._Lavaland.Mobs;
 using Content.Shared.Damage.Systems;
 using Content.Shared.Examine;

@@ -2,7 +2,7 @@ using Content.IntegrationTests.Fixtures.Attributes;
 using Content.IntegrationTests.Tests.Interaction;
 using Content.Shared.Damage.Components;
 using Content.Shared.Damage.Systems;
-using Content.Shared.FixedPoint;
+using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.Item.ItemToggle.Components;
 using Content.Shared.Power.EntitySystems;
 using Robust.Shared.GameObjects;

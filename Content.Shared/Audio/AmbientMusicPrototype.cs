@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-using Content.Shared.Random.Rules;
 using Content.Shared.EntityConditions;
 using Robust.Shared.Audio;
 using Robust.Shared.Prototypes;

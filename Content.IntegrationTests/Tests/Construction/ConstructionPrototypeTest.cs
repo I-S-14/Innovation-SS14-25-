@@ -7,6 +7,9 @@ using Content.Server.Construction.Components;
 using Content.Shared.Construction.Prototypes;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Prototypes;
+using System.Numerics;
+using Robust.Shared.Map;
+using Robust.Shared.Maths;
 
 namespace Content.IntegrationTests.Tests.Construction
 {

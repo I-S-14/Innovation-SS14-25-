@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using Robust.Shared.IoC;
 using Robust.Shared.Localization;
 using Robust.Shared.Maths;
+using static Content.Shared.Administration.PermissionsEuiMsg;
 
 namespace Content.Client.Administration.UI
 {

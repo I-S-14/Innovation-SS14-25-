@@ -9,19 +9,17 @@ using Content.Shared.Inventory;
 using Content.Shared.Popups;
 using Content.Shared.Weapons.Melee.Events;
 using Robust.Shared.Audio.Systems;
-using Robust.Shared.Network;
-using Robust.Shared.Timing;
 
 namespace Content.Shared.Damage.Systems;
 
-public sealed partial class DamageOnAttackedSystem : EntitySystem
+public sealed class DamageOnAttackedSystem : EntitySystem
 {
-    [Dependency] private ISharedAdminLogManager _adminLogger = default!;
-    [Dependency] private DamageableSystem _damageableSystem = default!;
-    [Dependency] private SharedAudioSystem _audioSystem = default!;
-    [Dependency] private SharedPopupSystem _popupSystem = default!;
-    [Dependency] private InventorySystem _inventorySystem = default!;
-    [Dependency] private SharedHandsSystem _handsSystem = default!;
+    [Dependency] private readonly ISharedAdminLogManager _adminLogger = default!;
+    [Dependency] private readonly DamageableSystem _damageableSystem = default!;
+    [Dependency] private readonly SharedAudioSystem _audioSystem = default!;
+    [Dependency] private readonly SharedPopupSystem _popupSystem = default!;
+    [Dependency] private readonly InventorySystem _inventorySystem = default!;
+    [Dependency] private readonly SharedHandsSystem _handsSystem = default!;
 
     public override void Initialize()
     {
@@ -83,7 +81,7 @@ public sealed partial class DamageOnAttackedSystem : EntitySystem
             _audioSystem.PlayPredicted(entity.Comp.InteractSound, entity, args.User);
 
             if (entity.Comp.PopupText != null)
-                _popupSystem.PopupEntity(Loc.GetString(entity.Comp.PopupText), args.User, args.User);
+                _popupSystem.PopupClient(Loc.GetString(entity.Comp.PopupText), args.User, args.User);
 
         }
     }

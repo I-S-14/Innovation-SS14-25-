@@ -45,6 +45,8 @@ using static Robust.Client.UserInterface.Controls.MultiselectOptionButton<
 using static Robust.Client.UserInterface.Controls.TextureRect;
 using static Robust.Shared.Input.Binding.PointerInputCmdHandler;
 using Content.Shared.Damage.Components;
+using static Content.Client.Actions.ActionsSystem;
+using static Content.Client.UserInterface.Systems.Actions.Windows.ActionsWindow;
 
 namespace Content.Client.UserInterface.Systems.Actions;
 

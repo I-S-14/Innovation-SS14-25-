@@ -1,4 +1,4 @@
-- type: factionIcon
+- type: statusIcon
   id: CosmicCultIcon
   isShaded: false
   priority: 11
@@ -12,7 +12,7 @@
     sprite: /Textures/_DV/CosmicCult/Icons/antag_icons.rsi
     state: CosmicCult
 
-- type: factionIcon
+- type: statusIcon
   id: CosmicCultLeadIcon
   isShaded: false
   priority: 11

@@ -6,7 +6,7 @@ namespace Content.Shared.Gravity;
 
 public abstract partial class SharedGravitySystem
 {
-    [Dependency] private SharedGameTicker _ticker = default!;
+    [Dependency] private GameTicker _ticker = default!;
     [Dependency] private ESScreenshakeSystem _shake = default!;
 
     private static readonly TimeSpan RoundStartShakeGrace = TimeSpan.FromSeconds(30);

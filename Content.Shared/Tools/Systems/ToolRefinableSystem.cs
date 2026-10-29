@@ -24,6 +24,7 @@ using Robust.Shared.Random;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 using Robust.Shared.Network;
+using Content.Shared.Gibbing.Systems;
 
 namespace Content.Shared.Tools.Systems;
 

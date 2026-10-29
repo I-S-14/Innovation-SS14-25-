@@ -34,6 +34,7 @@ using Content.Shared.Tools.Components;
 using Robust.Shared.Prototypes;
 using Content.Shared.Gibbing;
 using Content.Shared.Movement.Events;
+using Content.Shared.Gibbing.Systems;
 
 namespace Content.Shared.Kitchen;
 

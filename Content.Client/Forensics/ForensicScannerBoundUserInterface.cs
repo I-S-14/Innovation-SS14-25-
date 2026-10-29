@@ -3,8 +3,6 @@
 using Robust.Shared.Timing;
 using Content.Shared.Forensics;
 using Robust.Client.UserInterface;
-using Content.Shared.Forensics.Components;
-using JetBrains.Annotations;
 
 namespace Content.Client.Forensics
 {

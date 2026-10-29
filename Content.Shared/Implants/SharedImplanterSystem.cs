@@ -22,7 +22,7 @@ using Robust.Shared.Utility;
 
 namespace Content.Shared.Implants;
 
-public abstract class SharedImplanterSystem : EntitySystem
+public abstract partial class SharedImplanterSystem : EntitySystem
 {
     [Dependency] private readonly SharedContainerSystem _container = default!;
     [Dependency] private readonly ItemSlotsSystem _itemSlots = default!;

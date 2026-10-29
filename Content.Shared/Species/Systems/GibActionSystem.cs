@@ -9,6 +9,7 @@ using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Popups;
 using Robust.Shared.Prototypes;
+using Content.Shared.Gibbing.Systems;
 
 
 namespace Content.Shared.Species;

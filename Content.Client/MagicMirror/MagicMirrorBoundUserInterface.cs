@@ -3,7 +3,6 @@
 using Content.Shared.Humanoid.Markings;
 using Content.Shared.MagicMirror;
 using Robust.Client.UserInterface;
-using Content.Client.Humanoid;
 
 namespace Content.Client.MagicMirror;
 

@@ -6,7 +6,7 @@ using Content.Shared.Damage.Systems;
 
 namespace Content.Server.Damage.Systems;
 
-public sealed partial class GodmodeSystem : SharedGodmodeSystem
+public sealed class GodmodeSystem : SharedGodmodeSystem
 {
     public override void EnableGodmode(EntityUid uid, GodmodeComponent? godmode = null)
     {

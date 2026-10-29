@@ -209,3 +209,17 @@ public record struct GetEdibleTypeEvent
         Type = proto;
     }
 }
+
+//IS14-change start: kept for our (Goob) IngestionSystem/slicing
+/// <summary>
+/// Raised on food just before it is fully sliced and deleted.
+/// Cancel this if you want to do something special before a food is deleted.
+/// </summary>
+public sealed class BeforeFullySlicedEvent : CancellableEntityEventArgs
+{
+    /// <summary>
+    /// The person slicing the food.
+    /// </summary>
+    public EntityUid User;
+}
+//IS14-change end

@@ -9,6 +9,9 @@ using Content.Shared.Hands.Components;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Standing;
 using Robust.Shared.GameObjects;
+using Content.Server.Body.Systems;
+using Content.Shared.Body.Components;
+using Content.Shared.Body.Part;
 
 namespace Content.IntegrationTests.Tests.Buckle
 {

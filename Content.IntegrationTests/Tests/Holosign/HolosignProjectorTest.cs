@@ -1,6 +1,5 @@
 #nullable enable
 using Content.IntegrationTests.Tests.Movement;
-using Content.Shared.Holosign;
 using Content.Shared.PowerCell;
 using Robust.Shared.Maths;
 using Robust.Shared.Prototypes;

@@ -1,3 +1,4 @@
+using static Content.Client.Inventory.ClientInventorySystem;
 // SPDX-License-Identifier: MIT
 
 

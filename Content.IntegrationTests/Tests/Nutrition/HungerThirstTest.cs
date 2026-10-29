@@ -3,6 +3,7 @@ using Content.Shared.Nutrition.Components;
 using Content.Shared.Nutrition.EntitySystems;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Prototypes;
+using Content.Shared.Chemistry.Components;
 
 namespace Content.IntegrationTests.Tests.Nutrition;
 

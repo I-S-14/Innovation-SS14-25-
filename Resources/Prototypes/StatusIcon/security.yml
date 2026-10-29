@@ -15,21 +15,21 @@
     sprite: /Textures/Interface/Misc/security_icons.rsi
     state: hud_perma
 
-- type: securityIcon
+- type: statusIcon
   parent: SecurityIcon
   id: SecurityIconSearch
   icon:
     sprite: /Textures/Interface/Misc/security_icons.rsi
     state: hud_search
 
-- type: securityIcon
+- type: statusIcon
   parent: SecurityIcon
   id: SecurityIconDangerous
   icon:
     sprite: /Textures/Interface/Misc/security_icons.rsi
     state: hud_dangerous
 
-- type: securityIcon
+- type: statusIcon
   parent: SecurityIcon
   id: SecurityIconDischarged
   icon:

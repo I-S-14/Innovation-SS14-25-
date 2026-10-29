@@ -10,6 +10,7 @@ using Content.Shared.Eui;
 using Robust.Server.Player;
 using Robust.Shared.Network;
 using DbAdminRank = Content.Server.Database.AdminRank;
+using static Content.Shared.Administration.PermissionsEuiMsg;
 
 
 namespace Content.Server.Administration.UI

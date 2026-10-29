@@ -14,7 +14,7 @@ namespace Content.Goobstation.Shared.Gangwars.Components;
 public sealed partial class GangMemberComponent : Component
 {
     [DataField]
-    public ProtoId<FactionIconPrototype> StatusIcon = "GangMember";
+    public ProtoId<StatusIconPrototype> StatusIcon = "GangMember";
 
     [DataField, AutoNetworkedField]
     public Color? Gang;

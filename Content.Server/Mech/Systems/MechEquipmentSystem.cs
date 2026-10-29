@@ -6,7 +6,6 @@ using Content.Shared.Interaction;
 using Content.Shared.Mech.Components;
 using Content.Shared.Mech.Equipment.Components;
 using Content.Shared.Whitelist;
-using Content.Shared.Vehicle.Systems;
 
 namespace Content.Server.Mech.Systems;
 

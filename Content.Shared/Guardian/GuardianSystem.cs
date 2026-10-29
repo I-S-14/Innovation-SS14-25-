@@ -17,6 +17,7 @@ using Robust.Shared.Containers;
 using Robust.Shared.Player;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
+using Content.Shared.Gibbing.Systems;
 
 namespace Content.Shared.Guardian;
 

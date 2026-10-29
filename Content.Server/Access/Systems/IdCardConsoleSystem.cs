@@ -27,6 +27,7 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Content.Server.StationRecords.Systems;
 using Content.Shared.Damage;
+using static Content.Shared.Access.Components.IdCardConsoleComponent;
 
 namespace Content.Server.Access.Systems;
 

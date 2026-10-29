@@ -23,20 +23,20 @@ public sealed partial class PassiveDamageComponent : Component
     /// <summary>
     /// Damage / Healing per interval dealt to the entity every interval
     /// </summary>
-    [DataField, AutoNetworkedField]
+    [DataField, ViewVariables(VVAccess.ReadWrite), AutoNetworkedField]
     public DamageSpecifier Damage = new();
 
     /// <summary>
     /// Delay between damage events in seconds
     /// </summary>
-    [DataField, AutoNetworkedField]
-    public TimeSpan Interval = TimeSpan.FromSeconds(1);
+    [DataField, ViewVariables(VVAccess.ReadWrite), AutoNetworkedField]
+    public float Interval = 1f;
 
     /// <summary>
-    /// The next time the damage should occur at.
+    /// The maximum HP the damage will be given to. If 0, disabled.
     /// </summary>
-    [DataField(customTypeSerializer: typeof(TimeOffsetSerializer)), AutoNetworkedField, AutoPausedField]
-    public TimeSpan NextDamage;
+    [DataField, ViewVariables(VVAccess.ReadWrite), AutoNetworkedField]
+    public FixedPoint2 DamageCap = 0;
 
     [DataField("nextDamage", customTypeSerializer: typeof(TimeOffsetSerializer)), ViewVariables(VVAccess.ReadWrite), AutoNetworkedField]
     public TimeSpan NextDamage = TimeSpan.Zero;

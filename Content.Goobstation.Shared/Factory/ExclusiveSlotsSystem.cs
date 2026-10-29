@@ -12,7 +12,7 @@ namespace Content.Goobstation.Shared.Factory;
 public sealed partial class ExclusiveSlotsSystem : EntitySystem
 {
     [Dependency] private AutomationSystem _automation = default!;
-    [Dependency] private SharedDeviceLinkSystem _device = default!;
+    [Dependency] private DeviceLinkSystem _device = default!;
 
     private EntityQuery<ExclusiveInputSlotComponent> _inputQuery;
     private EntityQuery<ExclusiveOutputSlotComponent> _outputQuery;

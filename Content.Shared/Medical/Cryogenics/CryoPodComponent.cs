@@ -7,9 +7,6 @@ using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
-using Content.Shared.Atmos.Components;
-using Content.Shared.Chemistry.Reagent;
-using Content.Shared.MedicalScanner;
 
 namespace Content.Shared.Medical.Cryogenics;
 

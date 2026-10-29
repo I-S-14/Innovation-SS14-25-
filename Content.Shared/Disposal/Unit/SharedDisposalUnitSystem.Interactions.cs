@@ -13,6 +13,7 @@ using Content.Shared.Verbs;
 using Robust.Shared.Containers;
 using Robust.Shared.Utility;
 using System.Linq;
+using Content.Shared.Body.Components;
 
 namespace Content.Shared.Disposal.Unit;
 

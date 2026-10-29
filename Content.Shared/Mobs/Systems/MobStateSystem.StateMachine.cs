@@ -145,3 +145,14 @@ public partial class MobStateSystem
 
     #endregion
 }
+
+/// <summary>
+/// Event that gets triggered when we want to update the mobstate. This allows for systems to override MobState changes
+/// </summary>
+/// <param name="Target">The Entity whose MobState is changing</param>
+/// <param name="Component">The MobState Component owned by the Target</param>
+/// <param name="State">The new MobState we want to set</param>
+/// <param name="Origin">Entity that caused the state update (if applicable)</param>
+[ByRefEvent]
+public record struct UpdateMobStateEvent(EntityUid Target, MobStateComponent Component, MobState State,
+    EntityUid? Origin = null);

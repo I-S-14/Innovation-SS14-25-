@@ -3,44 +3,56 @@
 using Content.Shared.Emag.Components;
 using Robust.Shared.Prototypes;
 using System.Linq;
+using Content.Shared.Access.Components;
+using Content.Shared.Access.Systems;
+using Content.Shared.Advertise.Components;
+using Content.Shared.Advertise.Systems;
 using Content.Shared.Destructible;
 using Content.Shared.DoAfter;
 using Content.Shared.Emag.Components;
 using Content.Shared.Emag.Systems;
+using Content.Shared.Emp;
+using Content.Shared.Interaction;
 using Content.Shared.Popups;
 using Content.Shared.Power.EntitySystems;
 using Content.Shared.UserInterface;
-using Content.Shared.VendingMachines.Components;
-using Content.Shared.VendingMachines.Events;
+using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
-using Content.Shared.Access.Components;
-using Content.Shared.Access.Systems;
-using Content.Shared.Advertise.Components;
-using Content.Shared.Advertise.Systems;
-using Content.Shared.Emp;
-using Content.Shared.Interaction;
-using Robust.Shared.Audio;
 
 namespace Content.Shared.VendingMachines;
 
 public abstract partial class SharedVendingMachineSystem : EntitySystem
 {
-    [Dependency] protected IGameTiming Timing = default!;
-    [Dependency] protected SharedAudioSystem Audio = default!;
-    [Dependency] private SharedDoAfterSystem _doAfter = default!;
-    [Dependency] private SharedPowerReceiverSystem _receiver = default!;
-    [Dependency] protected SharedPopupSystem Popup = default!;
-    [Dependency] protected SharedUserInterfaceSystem UISystem = default!;
-    [Dependency] protected IRobustRandom Randomizer = default!;
-    [Dependency] private EmagSystem _emag = default!;
+    [Dependency] protected readonly IGameTiming Timing = default!;
+    [Dependency] protected readonly IPrototypeManager PrototypeManager = default!;
+    [Dependency] private   readonly AccessReaderSystem _accessReader = default!;
+    [Dependency] private   readonly SharedAppearanceSystem _appearanceSystem = default!;
+    [Dependency] protected readonly SharedAudioSystem Audio = default!;
+    [Dependency] private   readonly SharedDoAfterSystem _doAfter = default!;
+    [Dependency] protected readonly SharedPointLightSystem Light = default!;
+    [Dependency] private   readonly SharedPowerReceiverSystem _receiver = default!;
+    [Dependency] protected readonly SharedPopupSystem Popup = default!;
+    [Dependency] private   readonly SharedSpeakOnUIClosedSystem _speakOn = default!;
+    [Dependency] protected readonly SharedUserInterfaceSystem UISystem = default!;
+    [Dependency] protected readonly IRobustRandom Randomizer = default!;
+    [Dependency] private readonly EmagSystem _emag = default!;
 
     public override void Initialize()
     {
         base.Initialize();
+        SubscribeLocalEvent<VendingMachineComponent, ComponentGetState>(OnVendingGetState);
+        SubscribeLocalEvent<VendingMachineComponent, MapInitEvent>(OnMapInit);
+        SubscribeLocalEvent<VendingMachineComponent, GotEmaggedEvent>(OnEmagged);
+        SubscribeLocalEvent<VendingMachineComponent, EmpPulseEvent>(OnEmpPulse);
+        SubscribeLocalEvent<VendingMachineComponent, RestockDoAfterEvent>(OnRestockDoAfter);
+        SubscribeLocalEvent<VendingMachineComponent, ActivatableUIOpenAttemptEvent>(OnActivatableUIOpenAttempt);
+        SubscribeLocalEvent<VendingMachineComponent, BreakageEventArgs>(OnBreak);
+
+        SubscribeLocalEvent<VendingMachineRestockComponent, AfterInteractEvent>(OnAfterInteract);
 
         Subs.BuiEvents<VendingMachineComponent>(VendingMachineUiKey.Key, subs =>
         {
@@ -48,56 +60,96 @@ public abstract partial class SharedVendingMachineSystem : EntitySystem
         });
     }
 
-    [SubscribeLocalEvent]
-    private void OnOpenVendingUIAction(Entity<VendingMachineComponent> entity, ref OpenVendingUIActionEvent args)
-    {
-        UISystem.TryToggleUi(entity.Owner, VendingMachineUiKey.Key,args.Performer);
-        args.Handled = true;
-    }
-
-    [SubscribeLocalEvent]
     private void OnVendingGetState(Entity<VendingMachineComponent> entity, ref ComponentGetState args)
     {
         var component = entity.Comp;
-        var state = new VendingMachineComponentState
+
+        var inventory = new Dictionary<string, VendingMachineInventoryEntry>();
+        var emaggedInventory = new Dictionary<string, VendingMachineInventoryEntry>();
+        var contrabandInventory = new Dictionary<string, VendingMachineInventoryEntry>();
+
+        foreach (var weh in component.Inventory)
         {
+            inventory[weh.Key] = new(weh.Value);
+        }
+
+        foreach (var weh in component.EmaggedInventory)
+        {
+            emaggedInventory[weh.Key] = new(weh.Value);
+        }
+
+        foreach (var weh in component.ContrabandInventory)
+        {
+            contrabandInventory[weh.Key] = new(weh.Value);
+        }
+
+        args.State = new VendingMachineComponentState()
+        {
+            Inventory = inventory,
+            EmaggedInventory = emaggedInventory,
+            ContrabandInventory = contrabandInventory,
             Contraband = component.Contraband,
+            EjectEnd = component.EjectEnd,
+            DenyEnd = component.DenyEnd,
+            DispenseOnHitEnd = component.DispenseOnHitEnd,
             Broken = component.Broken,
         };
-
-        CopyInventory(component.Inventory, state.Inventory);
-        CopyInventory(component.EmaggedInventory, state.EmaggedInventory);
-        CopyInventory(component.ContrabandInventory, state.ContrabandInventory);
-
-        args.State = state;
-    }
-
-    protected static void CopyInventory(
-        Dictionary<string, VendingMachineInventoryEntry> source,
-        Dictionary<string, VendingMachineInventoryEntry> target)
-    {
-        target.Clear();
-
-        foreach (var entry in source)
-        {
-            target.Add(entry.Key, new(entry.Value));
-        }
     }
 
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
 
-        var query = EntityQueryEnumerator<VendingMachineComponent, VendingMachineEjectComponent>();
+        var query = EntityQueryEnumerator<VendingMachineComponent>();
         var curTime = Timing.CurTime;
 
-        while (query.MoveNext(out var uid, out var comp, out var eject))
+        while (query.MoveNext(out var uid, out var comp))
         {
-            UpdateEjectState((uid, comp, eject), curTime);
+            if (comp.Ejecting)
+            {
+                if (curTime > comp.EjectEnd)
+                {
+                    comp.EjectEnd = null;
+                    Dirty(uid, comp);
+
+                    EjectItem(uid, comp);
+                    UpdateUI((uid, comp));
+                }
+            }
+
+            if (comp.Denying)
+            {
+                if (curTime > comp.DenyEnd)
+                {
+                    comp.DenyEnd = null;
+                    Dirty(uid, comp);
+
+                    TryUpdateVisualState((uid, comp));
+                }
+            }
+
+            if (comp.DispenseOnHitCoolingDown)
+            {
+                if (curTime > comp.DispenseOnHitEnd)
+                {
+                    comp.DispenseOnHitEnd = null;
+                    Dirty(uid, comp);
+                }
+            }
         }
     }
 
-    [SubscribeLocalEvent]
+    private void OnInventoryEjectMessage(Entity<VendingMachineComponent> entity, ref VendingMachineEjectMessage args)
+    {
+        if (!_receiver.IsPowered(entity.Owner) || Deleted(entity))
+            return;
+
+        if (args.Actor is not { Valid: true } actor)
+            return;
+
+        AuthorizedVend(entity.Owner, actor, args.Type, args.ID, entity.Comp);
+    }
+
     protected virtual void OnMapInit(EntityUid uid, VendingMachineComponent component, MapInitEvent args)
     {
         RestockInventoryFromPrototype(uid, component, component.InitialStockQuality);
@@ -309,41 +361,6 @@ public abstract partial class SharedVendingMachineSystem : EntitySystem
         args.Handled = component.EmaggedInventory.Count > 0;
     }
 
-    [SubscribeLocalEvent]
-    private void OnActivatableUIOpenAttempt(EntityUid uid, VendingMachineComponent component, ActivatableUIOpenAttemptEvent args)
-    {
-        if (component.Broken)
-            args.Cancel();
-    }
-
-    [SubscribeLocalEvent]
-    private void OnBreak(EntityUid uid, VendingMachineComponent vendComponent, BreakageEventArgs eventArgs)
-    {
-        vendComponent.Broken = true;
-        Dirty(uid, vendComponent);
-
-        UISystem.CloseUi(uid, VendingMachineUiKey.Key);
-    }
-
-    protected virtual void UpdateUI(Entity<VendingMachineComponent?> entity) { }
-
-    public void RestockInventoryFromPrototype(EntityUid uid,
-        VendingMachineComponent? component = null, float restockQuality = 1f)
-    {
-        if (!Resolve(uid, ref component))
-        {
-            return;
-        }
-
-        if (!ProtoMan.TryIndex(component.PackPrototypeId, out VendingMachineInventoryPrototype? packPrototype))
-            return;
-
-        AddInventoryFromPrototype(uid, packPrototype.StartingInventory, InventoryType.Regular, component, restockQuality);
-        AddInventoryFromPrototype(uid, packPrototype.EmaggedInventory, InventoryType.Emagged, component, restockQuality);
-        AddInventoryFromPrototype(uid, packPrototype.ContrabandInventory, InventoryType.Contraband, component, restockQuality);
-        Dirty(uid, component);
-    }
-
     /// <summary>
     /// Returns all of the vending machine's inventory. Only includes emagged and contraband inventories if
     /// <see cref="EmaggedComponent"/> with the EmagType.Interaction flag exists and <see cref="VendingMachineComponent.Contraband"/> is true
@@ -403,27 +420,43 @@ public abstract partial class SharedVendingMachineSystem : EntitySystem
 
         foreach (var (id, amount) in entries)
         {
-            if (!ProtoMan.HasIndex<EntityPrototype>(id)) continue;
-            var restock = amount;
-            var chanceOfMissingStock = 1 - restockQuality;
-
-            var result = Randomizer.NextFloat(0, 1);
-            if (result < chanceOfMissingStock)
+            if (PrototypeManager.HasIndex<EntityPrototype>(id))
             {
-                restock = (uint) Math.Floor(amount * result / chanceOfMissingStock);
-            }
+                var restock = amount;
+                var chanceOfMissingStock = 1 - restockQuality;
 
-            if (inventory.TryGetValue(id, out var entry))
-                // Prevent a machine's stock from going over three times
-                // the prototype's normal amount. This is an arbitrary
-                // number and meant to be a convenience for someone
-                // restocking a machine who doesn't want to force vend out
-                // all the items just to restock one empty slot without
-                // losing the rest of the restock.
-                entry.Amount = Math.Min(entry.Amount + amount, 3 * restock);
-            else
-                inventory.Add(id, new VendingMachineInventoryEntry(type, id, restock));
+                var result = Randomizer.NextFloat(0, 1);
+                if (result < chanceOfMissingStock)
+                {
+                    restock = (uint) Math.Floor(amount * result / chanceOfMissingStock);
+                }
+
+                if (inventory.TryGetValue(id, out var entry))
+                    // Prevent a machine's stock from going over three times
+                    // the prototype's normal amount. This is an arbitrary
+                    // number and meant to be a convenience for someone
+                    // restocking a machine who doesn't want to force vend out
+                    // all the items just to restock one empty slot without
+                    // losing the rest of the restock.
+                    entry.Amount = Math.Min(entry.Amount + amount, 3 * restock);
+                else
+                    inventory.Add(id, new VendingMachineInventoryEntry(type, id, restock));
+            }
         }
     }
 
+    private void OnActivatableUIOpenAttempt(EntityUid uid, VendingMachineComponent component, ActivatableUIOpenAttemptEvent args)
+    {
+        if (component.Broken)
+            args.Cancel();
+    }
+
+    private void OnBreak(EntityUid uid, VendingMachineComponent vendComponent, BreakageEventArgs eventArgs)
+    {
+        vendComponent.Broken = true;
+        Dirty(uid, vendComponent);
+        TryUpdateVisualState((uid, vendComponent));
+
+        UISystem.CloseUi(uid, VendingMachineUiKey.Key);
+    }
 }

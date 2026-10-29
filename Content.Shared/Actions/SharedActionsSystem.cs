@@ -32,6 +32,7 @@ namespace Content.Shared.Actions;
 using Content.Shared._Shitmed.Antags.Abductor;
 using Content.Shared.Silicons.StationAi;
 using Content.Shared.Popups;
+using Content.Shared.Ghost.Components;
 
 public abstract partial class SharedActionsSystem : EntitySystem
 {

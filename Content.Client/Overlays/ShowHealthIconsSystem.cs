@@ -25,7 +25,7 @@ public sealed partial class ShowHealthIconsSystem : EquipmentHudSystem<ShowHealt
     {
         base.Initialize();
 
-        SubscribeLocalEvent<InjurableComponent, GetStatusIconsEvent>(OnGetStatusIconsEvent);
+        SubscribeLocalEvent<DamageableComponent, GetStatusIconsEvent>(OnGetStatusIconsEvent);
         SubscribeLocalEvent<ShowHealthIconsComponent, AfterAutoHandleStateEvent>(OnHandleState);
     }
 
@@ -55,7 +55,7 @@ public sealed partial class ShowHealthIconsSystem : EquipmentHudSystem<ShowHealt
         RefreshOverlay();
     }
 
-    private void OnGetStatusIconsEvent(Entity<InjurableComponent> entity, ref GetStatusIconsEvent args)
+    private void OnGetStatusIconsEvent(Entity<DamageableComponent> entity, ref GetStatusIconsEvent args)
     {
         if (!IsActive)
             return;
@@ -65,12 +65,12 @@ public sealed partial class ShowHealthIconsSystem : EquipmentHudSystem<ShowHealt
         args.StatusIcons.AddRange(healthIcons);
     }
 
-    private IReadOnlyList<StatusIconPrototype> DecideHealthIcons(Entity<InjurableComponent> entity)
+    private IReadOnlyList<StatusIconPrototype> DecideHealthIcons(Entity<DamageableComponent> entity)
     {
         var injurableComp = entity.Comp;
 
-        if (injurableComp.DamageContainer == null ||
-            !DamageContainers.Contains(injurableComp.DamageContainer))
+        if (injurableComp.DamageContainerID == null ||
+            !DamageContainers.Contains(injurableComp.DamageContainerID))
         {
             return Array.Empty<StatusIconPrototype>();
         }
@@ -78,7 +78,7 @@ public sealed partial class ShowHealthIconsSystem : EquipmentHudSystem<ShowHealt
         var result = new List<StatusIconPrototype>();
 
         // Here you could check health status, diseases, mind status, etc. and pick a good icon, or multiple depending on whatever.
-        if (injurableComp?.DamageContainer == "Biological")
+        if (injurableComp?.DamageContainerID == "Biological")
         {
             if (TryComp<MobStateComponent>(entity, out var state))
             {

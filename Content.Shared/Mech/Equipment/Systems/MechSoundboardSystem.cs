@@ -4,10 +4,8 @@ using System.Linq;
 using Content.Shared.Mech.Equipment.Components;
 using Content.Shared.Timing;
 using Robust.Shared.Audio.Systems;
-using Content.Shared.Timing.Components;
 using Content.Shared.Timing.Systems;
-using Robust.Shared.Audio;
-using Robust.Shared.Prototypes;
+using Content.Shared.Timing.Components;
 
 namespace Content.Shared.Mech.Equipment.Systems;
 

@@ -5,6 +5,7 @@ using Content.IntegrationTests.Fixtures;
 using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Whitelist;
 using Robust.Shared.Prototypes;
+using Robust.Shared.GameObjects;
 
 namespace Content.IntegrationTests.Tests.Utility
 {

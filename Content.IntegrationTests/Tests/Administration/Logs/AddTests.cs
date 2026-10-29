@@ -11,6 +11,7 @@ using Content.Server.GameTicking;
 using Content.Shared.Administration.Logs;
 using Content.Shared.Database;
 using Robust.Server.Player;
+using Robust.Shared.GameObjects;
 
 namespace Content.IntegrationTests.Tests.Administration.Logs;
 

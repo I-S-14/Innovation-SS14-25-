@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
 using Content.Shared.Stealth.Components;
 using Content.Shared.Whitelist;
 using Robust.Shared.Prototypes;
@@ -98,6 +96,7 @@ public partial class StatusIconData : IComparable<StatusIconData>
     public Color Color = Color.White;
     // Goobstation end
 
+    /// <inheritdoc/>
     public int CompareTo(StatusIconData? other)
     {
         return Priority.CompareTo(other?.Priority ?? int.MaxValue);
@@ -165,117 +164,6 @@ public sealed partial class JobIconPrototype : StatusIconData, IPrototype, IInhe
 /// <summary>
 /// The location of the status icon.
 /// </summary>
-[Prototype]
-public sealed partial class HealthIconPrototype : StatusIconPrototype, IInheritingPrototype
-{
-    /// <inheritdoc />
-    [ParentDataField(typeof(AbstractPrototypeIdArraySerializer<HealthIconPrototype>))]
-    public string[]? Parents { get; private set; }
-
-    /// <inheritdoc />
-    [NeverPushInheritance]
-    [AbstractDataField]
-    public bool Abstract { get; private set; }
-}
-
-/// <summary>
-/// StatusIcons for the beer goggles and fried onion goggles
-/// </summary>
-[Prototype]
-public sealed partial class SatiationIconPrototype : StatusIconPrototype, IInheritingPrototype
-{
-    /// <inheritdoc />
-    [ParentDataField(typeof(AbstractPrototypeIdArraySerializer<SatiationIconPrototype>))]
-    public string[]? Parents { get; private set; }
-
-    /// <inheritdoc />
-    [NeverPushInheritance]
-    [AbstractDataField]
-    public bool Abstract { get; private set; }
-}
-
-/// <summary>
-/// StatusIcons for showing the wanted status on the sec HUD
-/// </summary>
-[Prototype]
-public sealed partial class SecurityIconPrototype : StatusIconPrototype, IInheritingPrototype
-{
-    /// <inheritdoc />
-    [ParentDataField(typeof(AbstractPrototypeIdArraySerializer<SecurityIconPrototype>))]
-    public string[]? Parents { get; private set; }
-
-    /// <inheritdoc />
-    [NeverPushInheritance]
-    [AbstractDataField]
-    public bool Abstract { get; private set; }
-}
-
-/// <summary>
-/// StatusIcons for faction membership
-/// </summary>
-[Prototype]
-public sealed partial class FactionIconPrototype : StatusIconPrototype, IInheritingPrototype
-{
-    /// <inheritdoc />
-    [ParentDataField(typeof(AbstractPrototypeIdArraySerializer<FactionIconPrototype>))]
-    public string[]? Parents { get; private set; }
-
-    /// <inheritdoc />
-    [NeverPushInheritance]
-    [AbstractDataField]
-    public bool Abstract { get; private set; }
-}
-
-/// <summary>
-/// StatusIcons for debugging purposes
-/// </summary>
-[Prototype]
-public sealed partial class DebugIconPrototype : StatusIconPrototype, IInheritingPrototype
-{
-    /// <inheritdoc />
-    [ParentDataField(typeof(AbstractPrototypeIdArraySerializer<DebugIconPrototype>))]
-    public string[]? Parents { get; private set; }
-
-    /// <inheritdoc />
-    [NeverPushInheritance]
-    [AbstractDataField]
-    public bool Abstract { get; private set; }
-}
-
-/// <summary>
-/// StatusIcons for the SSD indicator
-/// </summary>
-[Prototype]
-public sealed partial class SsdIconPrototype : StatusIconPrototype, IInheritingPrototype
-{
-    /// <inheritdoc />
-    [ParentDataField(typeof(AbstractPrototypeIdArraySerializer<SsdIconPrototype>))]
-    public string[]? Parents { get; private set; }
-
-    /// <inheritdoc />
-    [NeverPushInheritance]
-    [AbstractDataField]
-    public bool Abstract { get; private set; }
-}
-
-/*
-//Goobstation
-/// <summary>
-/// StatusIcons for diseases.
-/// </summary>
-[Prototype]
-public sealed partial class DiseaseIconPrototype : StatusIconPrototype, IInheritingPrototype
-{
-    /// <inheritdoc />
-    [ParentDataField(typeof(AbstractPrototypeIdArraySerializer<SsdIconPrototype>))]
-    public string[]? Parents { get; private set; }
-
-    /// <inheritdoc />
-    [NeverPushInheritance]
-    [AbstractDataField]
-    public bool Abstract { get; private set; }
-}*/
-
 [Serializable, NetSerializable]
 public enum StatusIconLocationPreference : byte
 {

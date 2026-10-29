@@ -5,7 +5,7 @@ using Content.Shared.Damage;
 using Content.Shared.Damage.Components;
 using Content.Shared.Damage.Prototypes;
 using Content.Shared.Damage.Systems;
-using Content.Shared.FixedPoint;
+using Content.Goobstation.Maths.FixedPoint;
 
 namespace Content.IntegrationTests.Tests.Damageable;
 
@@ -17,7 +17,7 @@ namespace Content.IntegrationTests.Tests.Damageable;
 /// that there at least one way of handling damage attached to entity.
 /// </summary>
 [TestFixture]
-[TestOf(typeof(InjurableComponent))]
+[TestOf(typeof(DamageableComponent))]
 [TestOf(typeof(DamageableComponent))]
 [TestOf(typeof(DamageableSystem))]
 public sealed class DamageAllPrototypesTest : GameTest

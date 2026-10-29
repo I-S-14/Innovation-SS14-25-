@@ -11,6 +11,7 @@ using Content.Shared.Storage.Components;
 using Content.Shared.Storage.EntitySystems;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Prototypes;
+using Content.Shared.Prototypes;
 
 namespace Content.IntegrationTests.Tests.Storage;
 

@@ -29,7 +29,7 @@ public sealed partial class RoboticArmSystem : EntitySystem
     [Dependency] private SharedMapSystem _mapSystem = default!;
     [Dependency] private ItemSlotsSystem _slots = default!;
     [Dependency] private SharedAppearanceSystem _appearance = default!;
-    [Dependency] private SharedDeviceLinkSystem _device = default!;
+    [Dependency] private DeviceLinkSystem _device = default!;
     [Dependency] private SharedPowerReceiverSystem _power = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private TurfSystem _turf = default!;

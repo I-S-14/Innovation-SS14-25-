@@ -10,6 +10,7 @@ using Content.IntegrationTests.Fixtures;
 using Content.IntegrationTests.Fixtures.Attributes;
 using Content.IntegrationTests.Utility;
 using Content.Shared.Chemistry.EntitySystems;
+using Robust.Shared.Prototypes;
 
 namespace Content.IntegrationTests.Tests.Chemistry;
 
@@ -44,32 +45,34 @@ public sealed class TryAllReactionsTest : GameTest
         {
             foreach (var reaction in Reactions)
             {
-                var reactionPrototype = SProtoMan.Index<ReactionPrototype>(reaction);
-
-                EntityUid beaker = default;
-                Solution solution = null;
+                beaker = entityManager.SpawnEntity("TestSolutionContainer", coordinates);
+                Assert.That(solutionContainerSystem
+                    .TryGetSolution(beaker, "beaker", out solutionEnt, out solution));
+                solutionEnt.Value.Comp.Solution.CanReact = false;
+                foreach (var (id, reactant) in reactionPrototype.Reactants)
+                {
+#pragma warning disable NUnit2045
+                    Assert.That(solutionContainerSystem
+                        .TryAddReagent(solutionEnt.Value, id, reactant.Amount, out var quantity, reactionPrototype.MinimumTemperature));
+                    Assert.That(reactant.Amount, Is.EqualTo(quantity));
+#pragma warning restore NUnit2045
+                }
+                // Goobstation - this part of the test disallows many interesting temperature dependent chemical reactions
+                /*
+                //Get all possible reactions with the current reagents
+                var possibleReactions = prototypeManager.EnumeratePrototypes<ReactionPrototype>()
+                    .Where(x => x.Reactants.All(id => solution.Contents.Any(s => s.Reagent.Prototype == id.Key)))
+                    .ToList();
 
                 try
                 {
                     await Pair.Server.WaitAssertion(() =>
                     {
-#pragma warning disable NUnit2045
-                        Assert.That(solutionContainerSystem
-                            .TryAddReagent(solutionEnt.Value, id, reactant.Amount, out var quantity, reactionPrototype.MinimumTemperature));
-                        Assert.That(reactant.Amount, Is.EqualTo(quantity));
-#pragma warning restore NUnit2045
-                    }
-                    // Goobstation - this part of the test disallows many interesting temperature dependent chemical reactions
-                    /*
-                    //Get all possible reactions with the current reagents
-                    var possibleReactions = prototypeManager.EnumeratePrototypes<ReactionPrototype>()
-                        .Where(x => x.Reactants.All(id => solution.Contents.Any(s => s.Reagent.Prototype == id.Key)))
-                        .ToList();
-
-                    //Check if the reaction is the first to occur when heated
-                    foreach (var possibleReaction in possibleReactions.OrderBy(r => r.MinimumTemperature))
-                    {
-                        if (possibleReaction.Priority >= reactionPrototype.Priority && possibleReaction.MinimumTemperature < reactionPrototype.MinimumTemperature && possibleReaction.MixingCategories == reactionPrototype.MixingCategories)
+                        beaker = SEntMan.SpawnEntity("TestSolutionContainer", coordinates);
+                        Assert.That(_solutionContainerSystem
+                            .TryGetSolution(beaker, "beaker", out var solutionEnt, out solution));
+                        _solutionContainerSystem.SetCanReact(solutionEnt!.Value, false);
+                        foreach (var (id, reactant) in reactionPrototype.Reactants)
                         {
                             Assert.That(_solutionContainerSystem
                                 .TryAddReagent(solutionEnt.Value,

@@ -24,7 +24,7 @@ public sealed partial class ToggleableClothingComponent : Component
     ///     Action used to toggle the clothing on or off.
     /// </summary>
     [DataField, AutoNetworkedField]
-    public EntProtoId? Action;
+    public EntProtoId Action = "ActionToggleSuitPiece";
 
     [DataField, AutoNetworkedField]
     public EntityUid? ActionEntity;
@@ -33,8 +33,8 @@ public sealed partial class ToggleableClothingComponent : Component
     /// <summary>
     ///     Default clothing entity prototype to spawn into the clothing container.
     /// </summary>
-    [DataField(required: true), AutoNetworkedField]
-    public EntProtoId ClothingPrototype;
+    [DataField, AutoNetworkedField]
+    public EntProtoId? ClothingPrototype;
 
     /// <summary>
     ///     The inventory slot that the clothing is equipped to.
@@ -86,5 +86,34 @@ public sealed partial class ToggleableClothingComponent : Component
     ///     Text shown in the toggle-clothing verb. Defaults to using the name of the <see cref="ActionEntity"/> action.
     /// </summary>
     [DataField, AutoNetworkedField]
-    public LocId VerbText = "toggle-clothing-verb-default";
+    public string? VerbText;
+
+    /// <summary>
+    ///     If true it will block unequip of this entity until all attached clothing are removed
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public bool BlockUnequipWhenAttached = false;
+
+    /// <summary>
+    ///     If true all attached will replace already equipped clothing on equip attempt
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public bool ReplaceCurrentClothing = false;
+}
+
+[Serializable, NetSerializable]
+public enum ToggleClothingUiKey : byte
+{
+    Key
+}
+
+[Serializable, NetSerializable]
+public sealed class ToggleableClothingUiMessage : BoundUserInterfaceMessage
+{
+    public NetEntity AttachedClothingUid;
+
+    public ToggleableClothingUiMessage(NetEntity attachedClothingUid)
+    {
+        AttachedClothingUid = attachedClothingUid;
+    }
 }

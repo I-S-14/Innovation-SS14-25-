@@ -2,7 +2,6 @@
 
 using Content.Shared.Standing;
 using Robust.Shared.Containers;
-using Content.Shared.Temperature;
 
 namespace Content.Shared.Medical.Cryogenics;
 

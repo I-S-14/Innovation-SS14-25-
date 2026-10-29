@@ -22,6 +22,7 @@ using Robust.Shared.Player;
 using Robust.Shared.Threading;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
+using static Content.Shared.Decals.DecalGridComponent;
 
 namespace Content.Server.Decals;
 

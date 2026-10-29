@@ -6,14 +6,12 @@ using Content.Shared.Examine;
 using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.Inventory;
 using Content.Shared.Movement.Systems;
-using Content.Shared.StatusEffectNew;
 
 namespace Content.Shared.Damage.Systems;
 
-public sealed partial class SlowOnDamageSystem : EntitySystem
+public sealed class SlowOnDamageSystem : EntitySystem
 {
-    [Dependency] private MovementSpeedModifierSystem _movementSpeedModifierSystem = default!;
-    [Dependency] private DamageableSystem _damage = default!;
+    [Dependency] private readonly MovementSpeedModifierSystem _movementSpeedModifierSystem = default!;
 
     public override void Initialize()
     {
@@ -27,9 +25,9 @@ public sealed partial class SlowOnDamageSystem : EntitySystem
         SubscribeLocalEvent<ClothingSlowOnDamageModifierComponent, ClothingGotEquippedEvent>(OnGotEquipped);
         SubscribeLocalEvent<ClothingSlowOnDamageModifierComponent, ClothingGotUnequippedEvent>(OnGotUnequipped);
 
-        SubscribeLocalEvent<IgnoreSlowOnDamageComponent, StatusEffectAppliedEvent>(OnIgnoreApplied);
-        SubscribeLocalEvent<IgnoreSlowOnDamageComponent, StatusEffectRemovedEvent>(OnIgnoreRemoved);
-        SubscribeLocalEvent<IgnoreSlowOnDamageComponent, StatusEffectRelayedEvent<ModifySlowOnDamageSpeedEvent>>(OnIgnoreModifySpeed);
+        SubscribeLocalEvent<IgnoreSlowOnDamageComponent, ComponentStartup>(OnIgnoreStartup);
+        SubscribeLocalEvent<IgnoreSlowOnDamageComponent, ComponentShutdown>(OnIgnoreShutdown);
+        SubscribeLocalEvent<IgnoreSlowOnDamageComponent, ModifySlowOnDamageSpeedEvent>(OnIgnoreModifySpeed);
     }
 
     private void OnRefreshMovespeed(EntityUid uid, SlowOnDamageComponent component, RefreshMovementSpeedModifiersEvent args)
@@ -37,14 +35,12 @@ public sealed partial class SlowOnDamageSystem : EntitySystem
         if (!TryComp<DamageableComponent>(uid, out var damage))
             return;
 
-        var totalDamage = _damage.GetTotalDamage((uid, damage));
-
-        if (totalDamage == FixedPoint2.Zero)
+        if (damage.TotalDamage == FixedPoint2.Zero)
             return;
 
         // Get closest threshold
         FixedPoint2 closest = FixedPoint2.Zero;
-        var total = totalDamage;
+        var total = damage.TotalDamage;
         foreach (var thres in component.SpeedModifierThresholds)
         {
             if (total >= thres.Key && thres.Key > closest)
@@ -95,19 +91,19 @@ public sealed partial class SlowOnDamageSystem : EntitySystem
         _movementSpeedModifierSystem.RefreshMovementSpeedModifiers(args.Wearer);
     }
 
-    private void OnIgnoreApplied(Entity<IgnoreSlowOnDamageComponent> ent, ref StatusEffectAppliedEvent args)
+    private void OnIgnoreStartup(Entity<IgnoreSlowOnDamageComponent> ent, ref ComponentStartup args)
     {
-        _movementSpeedModifierSystem.RefreshMovementSpeedModifiers(args.Target);
+        _movementSpeedModifierSystem.RefreshMovementSpeedModifiers(ent);
     }
 
-    private void OnIgnoreRemoved(Entity<IgnoreSlowOnDamageComponent> ent, ref StatusEffectRemovedEvent args)
+    private void OnIgnoreShutdown(Entity<IgnoreSlowOnDamageComponent> ent, ref ComponentShutdown args)
     {
-        _movementSpeedModifierSystem.RefreshMovementSpeedModifiers(args.Target);
+        _movementSpeedModifierSystem.RefreshMovementSpeedModifiers(ent);
     }
 
-    private void OnIgnoreModifySpeed(Entity<IgnoreSlowOnDamageComponent> ent, ref StatusEffectRelayedEvent<ModifySlowOnDamageSpeedEvent> args)
+    private void OnIgnoreModifySpeed(Entity<IgnoreSlowOnDamageComponent> ent, ref ModifySlowOnDamageSpeedEvent args)
     {
-        args.Args = args.Args with { Speed = 1f };
+        args.Speed = 1f;
     }
 }
 

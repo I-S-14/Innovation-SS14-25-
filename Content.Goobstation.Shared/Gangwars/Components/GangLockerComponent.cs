@@ -11,7 +11,7 @@ namespace Content.Goobstation.Shared.Gangwars.Components;
 public sealed partial class GangLockerComponent : Component
 {
     [DataField]
-    public ProtoId<FactionIconPrototype> StatusIcon = "GangLocker";
+    public ProtoId<StatusIconPrototype> StatusIcon = "GangLocker";
 
     [DataField, AutoNetworkedField]
     public EntityUid? OwnerLeader;

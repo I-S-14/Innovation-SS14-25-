@@ -29,6 +29,8 @@ using Robust.Shared.Map.Components;
 using Robust.Shared.Map.Events;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
+using Content.Server.Spawners.Components;
+using Content.Server.Station.Components;
 namespace Content.IntegrationTests.Tests
 {
     [TestFixture]

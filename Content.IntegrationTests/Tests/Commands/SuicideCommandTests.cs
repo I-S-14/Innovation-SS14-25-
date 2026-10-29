@@ -9,7 +9,7 @@ using Content.Shared.Damage.Systems;
 using Content.Shared.Execution;
 using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.Ghost;
-using Content.Shared.FixedPoint;
+using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.Ghost.Components;
 using Content.Shared.Hands.Components;
 using Content.Shared.Hands.EntitySystems;

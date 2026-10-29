@@ -15,6 +15,7 @@ using Microsoft.Extensions.ObjectPool;
 using Robust.Shared.Configuration;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
+using static Content.Shared.Administration.Logs.AdminLogsEuiMsg;
 
 namespace Content.Server.Administration.Logs;
 

@@ -4,18 +4,16 @@ using Content.Server.Damage.Components;
 using Content.Server.Popups;
 using Content.Shared.Damage.Systems;
 using Robust.Shared.Random;
-using Content.Shared.Damage;
-using Robust.Shared.Player;
 
 namespace Content.Server.Damage.Systems;
 
 /// <summary>
 /// Outputs a random pop-up from the strings list when an object receives damage
 /// </summary>
-public sealed partial class DamageRandomPopupSystem : EntitySystem
+public sealed class DamageRandomPopupSystem : EntitySystem
 {
-    [Dependency] private PopupSystem _popupSystem = default!;
-    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private readonly PopupSystem _popupSystem = default!;
+    [Dependency] private readonly IRobustRandom _random = default!;
 
     public override void Initialize()
     {

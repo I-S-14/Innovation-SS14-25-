@@ -12,6 +12,7 @@ using Robust.Shared.Map.Components;
 using Robust.Shared.Network;
 using Robust.Shared.Utility;
 using Robust.Shared.Prototypes;
+using Content.Shared.Timing.Components;
 
 namespace Content.Shared.Tools.Systems;
 

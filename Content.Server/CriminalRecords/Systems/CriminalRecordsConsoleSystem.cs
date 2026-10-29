@@ -49,7 +49,7 @@ public sealed partial class CriminalRecordsConsoleSystem : SharedCriminalRecords
     [Dependency] private IdentitySystem _identity = default!;
 
     // CorvaxGoob-SecurityFeatures-Start
-    [Dependency] private readonly SharedGameTicker _gameTicker = default!;
+    [Dependency] private readonly GameTicker _gameTicker = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly IdCardSystem _idCard = default!;
     [Dependency] private readonly AudioSystem _audio = default!;

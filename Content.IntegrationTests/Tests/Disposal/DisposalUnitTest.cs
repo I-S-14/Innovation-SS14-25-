@@ -11,6 +11,7 @@ using Content.Shared.Disposal.Tube;
 using Content.Shared.Disposal.Unit;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Reflection;
+using Content.Server.Disposal.Unit;
 
 namespace Content.IntegrationTests.Tests.Disposal
 {

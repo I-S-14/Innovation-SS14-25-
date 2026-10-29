@@ -20,6 +20,7 @@ using Robust.Shared.Network;
 using Robust.Shared.Player;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
+using Content.Goobstation.Shared.Bible;
 
 namespace Content.Shared.Bible;
 

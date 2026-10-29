@@ -2,6 +2,7 @@ using Content.Shared.Body.Systems;
 using Content.Shared.Inventory;
 using Content.Shared.Trigger.Components.Effects;
 using Content.Shared.Gibbing;
+using Content.Shared.Gibbing.Systems;
 
 namespace Content.Shared.Trigger.Systems;
 

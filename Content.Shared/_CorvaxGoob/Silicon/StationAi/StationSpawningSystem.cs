@@ -9,15 +9,13 @@ using Content.Shared.Silicons.Laws.Components;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 
-namespace Content.Server.Station.Systems;
+namespace Content.Shared.Station.Systems;
 
 public sealed partial class StationSpawningSystem
 {
     private const string StationAiRoleLoadoutId = "JobStationAi";
     private static readonly ProtoId<LoadoutGroupPrototype> StationAiLawsetGroup = "StationAiLaws";
     private static readonly ProtoId<SiliconLawsetPrototype> DefaultStationAiLawset = "NTDefault";
-
-    [Dependency] private IRobustRandom _random = default!;
 
     /// <summary>
     /// Assigns the initial station AI lawset, defaulting to NTDefault if loadout resolution fails.
@@ -51,14 +49,14 @@ public sealed partial class StationSpawningSystem
             return false;
 
         var selected = selectedLawsets[0];
-        if (!_prototypeManager.TryIndex(selected.Prototype, out LoadoutPrototype? loadout))
+        if (!ProtoMan.TryIndex(selected.Prototype, out LoadoutPrototype? loadout))
             return false;
 
         var lawset = loadout.SiliconLawset;
 
         if (loadout.RandomSiliconLawset is { } randomLawsetId)
         {
-            if (!_prototypeManager.TryIndex(randomLawsetId, out WeightedRandomPrototype? randomLawsets))
+            if (!ProtoMan.TryIndex(randomLawsetId, out WeightedRandomPrototype? randomLawsets))
                 return false;
 
             if (randomLawsets.Weights.Count == 0 || randomLawsets.Weights.Values.Any(weight => weight <= 0f))
@@ -67,7 +65,7 @@ public sealed partial class StationSpawningSystem
             lawset = randomLawsets.Pick(_random);
         }
 
-        if (lawset is not { } resolvedLawsetId || !_prototypeManager.HasIndex(resolvedLawsetId))
+        if (lawset is not { } resolvedLawsetId || !ProtoMan.HasIndex(resolvedLawsetId))
             return false;
 
         lawsetId = resolvedLawsetId;

@@ -8,5 +8,5 @@ namespace Content.Goobstation.Shared.CustomFactionIcons;
 public sealed partial class CustomFactionIconsComponent : Component
 {
     [DataField, AutoNetworkedField]
-    public List<ProtoId<FactionIconPrototype>> FactionIcons = [];
+    public List<ProtoId<StatusIconPrototype>> FactionIcons = [];
 }

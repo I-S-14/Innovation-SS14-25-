@@ -6,8 +6,6 @@ using Content.Shared.Disposal.Components;
 using Content.Shared.Disposal.Unit;
 using Content.Shared.Interaction;
 using Robust.Shared.Player;
-using Content.Shared.DeviceNetwork;
-using Content.Shared.Power.EntitySystems;
 
 namespace Content.Shared.Disposal.Mailing;
 

@@ -2,6 +2,9 @@
 
 using Content.IntegrationTests.Fixtures.Attributes;
 using Content.Shared.Atmos;
+using Content.Server.Atmos;
+using Content.Server.Atmos.EntitySystems;
+using Robust.Shared.GameObjects;
 
 namespace Content.IntegrationTests.Tests.Atmos;
 

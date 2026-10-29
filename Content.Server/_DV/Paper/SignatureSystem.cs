@@ -13,6 +13,7 @@ using Content.Shared.Tag;
 using Content.Shared.Verbs;
 using Robust.Server.Audio;
 using Robust.Shared.Player;
+using static Content.Shared.Paper.PaperComponent;
 
 namespace Content.Server._DV.Paper;
 

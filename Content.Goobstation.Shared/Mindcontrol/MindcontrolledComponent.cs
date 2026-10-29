@@ -18,5 +18,5 @@ public sealed partial class MindcontrolledComponent : Component
     public bool BriefingSent = false;
 
     [DataField, ViewVariables(VVAccess.ReadOnly)]
-    public ProtoId<FactionIconPrototype> MindcontrolIcon { get; set; } = "MindcontrolledFaction";
+    public ProtoId<StatusIconPrototype> MindcontrolIcon { get; set; } = "MindcontrolledFaction";
 }

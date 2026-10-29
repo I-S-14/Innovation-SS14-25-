@@ -14,6 +14,7 @@ using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Network;
 using Robust.Shared.Player;
+using Content.Shared.Ghost;
 
 namespace Content.IntegrationTests.Tests.Minds;
 

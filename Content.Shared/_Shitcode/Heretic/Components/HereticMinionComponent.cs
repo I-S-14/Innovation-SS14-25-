@@ -11,8 +11,8 @@ public sealed partial class HereticMinionComponent : Component
     public EntityUid? BoundHeretic;
 
     [DataField, ViewVariables(VVAccess.ReadOnly)]
-    public ProtoId<FactionIconPrototype> MasterIcon { get; set; } = "GhoulHereticMaster";
+    public ProtoId<StatusIconPrototype> MasterIcon { get; set; } = "GhoulHereticMaster";
 
     [DataField, ViewVariables(VVAccess.ReadOnly)]
-    public ProtoId<FactionIconPrototype> GhoulIcon { get; set; } = "GhoulFaction";
+    public ProtoId<StatusIconPrototype> GhoulIcon { get; set; } = "GhoulFaction";
 }

@@ -32,6 +32,8 @@ using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
+using Content.IntegrationTests.Pair;
+using Robust.UnitTesting;
 
 namespace Content.IntegrationTests.Tests.Interaction;
 

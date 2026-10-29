@@ -7,6 +7,7 @@ using Content.Shared.Chemistry.Components;
 using Robust.Client.GameObjects;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Prototypes;
+using Content.Shared.Prototypes;
 
 namespace Content.IntegrationTests.Tests;
 

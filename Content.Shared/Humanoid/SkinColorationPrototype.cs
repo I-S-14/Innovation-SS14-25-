@@ -2,8 +2,6 @@ using System.Numerics;
 using JetBrains.Annotations;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 
 namespace Content.Shared.Humanoid;
 

@@ -7,6 +7,8 @@ using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Content.Shared.DeviceNetwork.Components;
 using Content.Shared.DeviceNetwork.Systems;
+using Content.Server.DeviceNetwork.Components;
+using Content.Server.DeviceNetwork.Systems;
 
 namespace Content.IntegrationTests.Tests.DeviceNetwork
 {

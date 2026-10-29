@@ -9,6 +9,7 @@ using Content.Shared.Popups;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Configuration;
 using Robust.Shared.Player;
+using static Content.Shared.Paper.PaperComponent;
 
 namespace Content.Shared._IS14.Paper;
 

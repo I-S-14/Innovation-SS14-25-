@@ -1,14 +1,12 @@
 using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared._Shitmed.Targeting;
 using Content.Shared.CCVar;
-using Content.Shared.Cloning.Events;
 using Content.Shared.Damage.Components;
 using Content.Shared.Damage.Prototypes;
 using Content.Shared.Inventory;
 using Content.Shared.Radiation.Events;
 using Content.Shared.Rejuvenate;
 using Robust.Shared.GameStates;
-using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Damage.Systems;
 
@@ -16,15 +14,14 @@ public sealed partial class DamageableSystem
 {
     public override void Initialize()
     {
-        RebuildContainerCache();
-
-        SubscribeLocalEvent<PrototypesReloadedEventArgs>(OnPrototypesReloaded);
         SubscribeLocalEvent<DamageableComponent, ComponentInit>(DamageableInit);
-        SubscribeLocalEvent<DamageableComponent, OnIrradiatedEvent>(OnIrradiated);
-        SubscribeLocalEvent<DamageableComponent, RejuvenateEvent>(OnRejuvenate);
         SubscribeLocalEvent<DamageableComponent, ComponentHandleState>(DamageableHandleState);
         SubscribeLocalEvent<DamageableComponent, ComponentGetState>(DamageableGetState);
-        SubscribeLocalEvent<InjurableComponent, DamageDealtEvent>(OnDamageDealt);
+        SubscribeLocalEvent<DamageableComponent, OnIrradiatedEvent>(OnIrradiated);
+        SubscribeLocalEvent<DamageableComponent, RejuvenateEvent>(OnRejuvenate);
+
+        _appearanceQuery = GetEntityQuery<AppearanceComponent>();
+        _damageableQuery = GetEntityQuery<DamageableComponent>();
 
         // Damage modifier CVars are updated and stored here to be queried in other systems.
         // Note that certain modifiers requires reloading the guidebook.
@@ -125,45 +122,42 @@ public sealed partial class DamageableSystem
         WoundmedInitialize(); // Woundmed
     }
 
-    private void OnPrototypesReloaded(PrototypesReloadedEventArgs ev)
-    {
-        if (!ev.WasModified<DamageContainerPrototype>() && !ev.WasModified<DamageGroupPrototype>())
-            return;
-
-        RebuildContainerCache();
-    }
-
-    private void RebuildContainerCache()
-    {
-        _supportedTypesByContainer.Clear();
-
-        foreach (var proto in ProtoMan.EnumeratePrototypes<DamageContainerPrototype>())
-        {
-            var set = new HashSet<ProtoId<DamageTypePrototype>>();
-            _supportedTypesByContainer[proto.ID] = set;
-
-            foreach (var type in proto.SupportedTypes)
-            {
-                set.Add(type);
-            }
-
-            foreach (var groupId in proto.SupportedGroups)
-            {
-                var group = ProtoMan.Index(groupId);
-                foreach (var type in group.DamageTypes)
-                {
-                    set.Add(type);
-                }
-            }
-        }
-    }
-
     /// <summary>
     ///     Initialize a damageable component
     /// </summary>
     private void DamageableInit(Entity<DamageableComponent> ent, ref ComponentInit _)
     {
-        ent.Comp.Damage.GetDamagePerGroup(ProtoMan, ent.Comp.DamagePerGroup);
+        if (
+            ent.Comp.DamageContainerID is null ||
+            !_prototypeManager.Resolve(ent.Comp.DamageContainerID, out var damageContainerPrototype)
+        )
+        {
+            // No DamageContainerPrototype was given. So we will allow the container to support all damage types
+            foreach (var type in _prototypeManager.EnumeratePrototypes<DamageTypePrototype>())
+            {
+                ent.Comp.Damage.DamageDict.TryAdd(type.ID, FixedPoint2.Zero);
+            }
+        }
+        else
+        {
+            // Initialize damage dictionary, using the types and groups from the damage
+            // container prototype
+            foreach (var type in damageContainerPrototype.SupportedTypes)
+            {
+                ent.Comp.Damage.DamageDict.TryAdd(type, FixedPoint2.Zero);
+            }
+
+            foreach (var groupId in damageContainerPrototype.SupportedGroups)
+            {
+                var group = _prototypeManager.Index(groupId);
+                foreach (var type in group.DamageTypes)
+                {
+                    ent.Comp.Damage.DamageDict.TryAdd(type, FixedPoint2.Zero);
+                }
+            }
+        }
+
+        ent.Comp.Damage.GetDamagePerGroup(_prototypeManager, ent.Comp.DamagePerGroup);
         ent.Comp.TotalDamage = ent.Comp.Damage.GetTotal();
     }
 
@@ -189,25 +183,17 @@ public sealed partial class DamageableSystem
         _mobThreshold.SetAllowRevives(ent, false);
     }
 
-    private void DamageableGetState(Entity<DamageableComponent> ent, ref ComponentGetState args)
-    {
-        args.State = new DamageableComponentState(
-            _netMan.IsServer ? ent.Comp.Damage : ent.Comp.Damage.Clone(),
-            ent.Comp.DamageModifierSetId,
-            ent.Comp.Displacement
-        );
-    }
-
     private void DamageableHandleState(Entity<DamageableComponent> ent, ref ComponentHandleState args)
     {
         if (args.Current is not DamageableComponentState state)
             return;
 
+        ent.Comp.DamageContainerID = state.DamageContainerId;
         ent.Comp.DamageModifierSetId = state.ModifierSetId;
-        ent.Comp.Displacement = state.Displacement;
+        ent.Comp.HealthBarThreshold = state.HealthBarThreshold;
 
         // Has the damage actually changed?
-        var newDamage = state.Damage.Clone();
+        DamageSpecifier newDamage = new() { DamageDict = new Dictionary<string, FixedPoint2>(state.DamageDict) };
         var delta = newDamage - ent.Comp.Damage;
         delta.TrimZeros();
 
@@ -217,34 +203,6 @@ public sealed partial class DamageableSystem
         ent.Comp.Damage = newDamage;
 
         OnEntityDamageChanged(ent, delta);
-    }
-
-    private void OnDamageDealt(Entity<InjurableComponent> ent, ref DamageDealtEvent args)
-    {
-        if (!_damageableQuery.TryGetComponent(ent, out var damageable))
-            return;
-
-        var damageDone = new DamageSpecifier();
-
-        damageDone.DamageDict.EnsureCapacity(args.Damage.DamageDict.Count);
-
-        var dict = damageable.Damage.DamageDict;
-        foreach (var (type, value) in args.Damage.DamageDict)
-        {
-            if (!SupportsType(ent.Comp.DamageContainer, type))
-                continue;
-
-            var oldValue = dict.GetValueOrDefault(type);
-            var newValue = FixedPoint2.Max(FixedPoint2.Zero, oldValue + value);
-            if (newValue == oldValue)
-                continue;
-
-            dict[type] = newValue;
-            damageDone.DamageDict[type] = newValue - oldValue;
-        }
-
-        if (!damageDone.Empty)
-            OnEntityDamageChanged((ent, damageable), damageDone, args.InterruptsDoAfters, args.Origin);
     }
 }
 
@@ -355,3 +313,11 @@ public sealed partial class DamageChangedEvent : EntityEventArgs // Goob - made 
         InterruptsDoAfters = interruptsDoAfters && DamageIncreased;
     }
 }
+
+//IS14-change start: wizden's event, raised by OnEntityDamageChanged with the applied delta.
+/// <summary>
+/// Event raised when an entity with <see cref="DamageableComponent" /> has taken some amount of damage.
+/// </summary>
+[ByRefEvent]
+public readonly record struct DamageDealtEvent(DamageSpecifier Damage, EntityUid? Origin, bool InterruptsDoAfters);
+//IS14-change end

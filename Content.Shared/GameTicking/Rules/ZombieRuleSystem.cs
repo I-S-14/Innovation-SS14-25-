@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
 ﻿using System.Globalization;
 using System.Linq;
 using Content.Shared.Antag;
@@ -14,23 +12,12 @@ using Content.Shared.Roles;
 using Content.Shared.Roles.Components;
 using Content.Shared.Station.Systems;
 using Content.Shared.Zombies;
-using Robust.Shared.Audio;
-using Robust.Shared.Audio.Systems; // goobstation
 using Robust.Shared.Player;
-using System.Globalization;
 
 namespace Content.Shared.GameTicking.Rules;
 
 public abstract partial class ZombieRuleSystem : GameRuleSystem<ZombieRuleComponent>
 {
-    [Dependency] private readonly ChatSystem _chat = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly PopupSystem _popup = default!;
-    [Dependency] private readonly RoundEndSystem _roundEnd = default!;
-    [Dependency] private readonly StationSystem _station = default!;
-    [Dependency] private readonly GameTicker _gameTicker = default!; // Einstein Engines - Zombie Improvements Take 2
-    [Dependency] private readonly ZombieSystem _zombie = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!; // Goobstation
     [Dependency] private ISharedPlayerManager _player = default!;
     [Dependency] private AntagSelectionSystem _antag = default!;
     [Dependency] private MobStateSystem _mobState = default!;
@@ -88,7 +75,7 @@ public abstract partial class ZombieRuleSystem : GameRuleSystem<ZombieRuleCompon
                 ("username", data.UserName)));
         }
 
-        var healthy = GetHealthyHumans(true); // Einstein Engines - Zombie Improvements Take 2
+        var healthy = GetHealthyHumans();
         // Gets a bunch of the living players and displays them if they're under a threshold.
         // InitialInfected is used for the threshold because it scales with the player count well.
         if (healthy.Count <= 0 || healthy.Count > 2 * antags.Count)
@@ -112,70 +99,6 @@ public abstract partial class ZombieRuleSystem : GameRuleSystem<ZombieRuleCompon
         args.AddLine("");
     }
 
-    /// <summary>
-    ///     The big kahoona function for checking if the round is gonna end
-    /// </summary>
-    private void CheckRoundEnd(ZombieRuleComponent zombieRuleComponent)
-    {
-        var healthy = GetHealthyHumans();
-        if (healthy.Count == 1) // Only one human left. spooky
-            _popup.PopupEntity(Loc.GetString("zombie-alone"), healthy[0], healthy[0]);
-
-        // goob edit
-        if (GetInfectedFraction(false) > zombieRuleComponent.ZombieShuttleCallPercentage / 5f && !zombieRuleComponent.StartAnnounced)
-        {
-            zombieRuleComponent.StartAnnounced = true;
-
-            foreach (var station in _station.GetStations())
-            {
-                _chat.DispatchStationAnnouncement(station,
-                    Loc.GetString("zombie-start-announcement"),
-                    colorOverride: Color.Pink);
-            }
-
-            _audio.PlayGlobal("/Audio/Announcements/outbreak7.ogg", Filter.Broadcast(), true, AudioParams.Default.WithVolume(-2f));
-        }
-
-        if (GetInfectedFraction(false) > zombieRuleComponent.ZombieShuttleCallPercentage && !_roundEnd.IsRoundEndRequested())
-        {
-            foreach (var station in _station.GetStations())
-            {
-                _chat.DispatchStationAnnouncement(station, Loc.GetString("zombie-shuttle-call"), colorOverride: Color.Crimson);
-            }
-
-            //_audio.PlayGlobal("/Audio/_Goobstation/Announcements/violet.ogg", Filter.Broadcast(), true, AudioParams.Default.WithVolume(-2f)); // Goobstation
-
-            _roundEnd.RequestRoundEnd(null, false);
-        }
-
-        // we include dead for this count because we don't want to end the round
-        // when everyone gets on the shuttle.
-        if (GetInfectedFraction() >= 1) // Oops, all zombies
-            _roundEnd.EndRound();
-    }
-
-    protected override void Started(EntityUid uid, ZombieRuleComponent component, GameRuleComponent gameRule, GameRuleStartedEvent args)
-    {
-        base.Started(uid, component, gameRule, args);
-
-        component.NextRoundEndCheck = _timing.CurTime + component.EndCheckDelay;
-    }
-
-    protected override void ActiveTick(EntityUid uid, ZombieRuleComponent component, GameRuleComponent gameRule, float frameTime)
-    {
-        base.ActiveTick(uid, component, gameRule, frameTime);
-        if (!component.NextRoundEndCheck.HasValue || component.NextRoundEndCheck > _timing.CurTime)
-            return;
-        CheckRoundEnd(component);
-        component.NextRoundEndCheck = _timing.CurTime + component.EndCheckDelay;
-    }
-
-    private void OnZombifySelf(EntityUid uid, IncurableZombieComponent component, ZombifySelfActionEvent args)
-    {
-        _zombie.ZombifyEntity(uid);
-        if (component.Action != null)
-            Del(component.Action.Value);
-    }
 
     /// <summary>
     /// Get the fraction of players that are infected, between 0 and 1
@@ -183,7 +106,7 @@ public abstract partial class ZombieRuleSystem : GameRuleSystem<ZombieRuleCompon
     /// <param name="includeOffStation">Include healthy players that are not on the station grid</param>
     /// <param name="includeDead">Should dead zombies be included in the count</param>
     /// <returns></returns>
-    private float GetInfectedFraction(bool includeOffStation = false, bool includeDead = true)  // Einstein Engines - Zombie Improvements Take 2
+    protected float GetInfectedFraction(bool includeOffStation = true, bool includeDead = false)
     {
         var players = GetHealthyHumans(includeOffStation);
         var zombieCount = 0;
@@ -203,32 +126,30 @@ public abstract partial class ZombieRuleSystem : GameRuleSystem<ZombieRuleCompon
     /// Flying off via a shuttle disqualifies you.
     /// </summary>
     /// <returns></returns>
-    private List<EntityUid> GetHealthyHumans(bool includeOffStation = false)  // Einstein Engines - Zombie Improvements Take 2
+    protected List<EntityUid> GetHealthyHumans(bool includeOffStation = true)
     {
         var healthy = new List<EntityUid>();
 
         var stationGrids = new HashSet<EntityUid>();
         if (!includeOffStation)
         {
-            foreach (var station in _gameTicker.GetSpawnableStations())  // Einstein Engines - Zombie Improvements Take 2
+            foreach (var station in Station.GetStationsSet())
             {
                 if (Station.GetLargestGrid(station) is { } grid)
                     stationGrids.Add(grid);
             }
         }
 
-        var players = AllEntityQuery<HumanoidAppearanceComponent, ActorComponent, MobStateComponent, TransformComponent>();
-        var zombers = GetEntityQuery<ZombieComponent>();
-        var zombieImmune = GetEntityQuery<ZombieImmuneComponent>(); // Goobstation
+        var players = AllEntityQuery<HumanoidProfileComponent, ActorComponent, MobStateComponent, TransformComponent>();
         while (players.MoveNext(out var uid, out _, out _, out var mob, out var xform))
         {
-            // Einstein Engines - Zombie Improvements Take 2
-            if (!_mobState.IsAlive(uid, mob)
-                || HasComp<PendingZombieComponent>(uid) // Do not include infected players in the "Healthy players" list.
-                || HasComp<ZombifyOnDeathComponent>(uid)
-                || zombieImmune.HasComponent(uid) // Goobstation
-                || zombers.HasComponent(uid)
-                || !includeOffStation && !stationGrids.Contains(xform.GridUid ?? EntityUid.Invalid))
+            if (!_mobState.IsAlive(uid, mob))
+                continue;
+
+            if (_zombieQuery.HasComponent(uid))
+                continue;
+
+            if (!includeOffStation && !stationGrids.Contains(xform.GridUid ?? EntityUid.Invalid))
                 continue;
 
             healthy.Add(uid);

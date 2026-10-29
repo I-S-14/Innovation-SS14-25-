@@ -11,6 +11,7 @@ using Robust.Shared.GameStates;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Utility;
+using static Content.Shared.Decals.DecalGridComponent;
 
 namespace Content.Client.Decals
 {

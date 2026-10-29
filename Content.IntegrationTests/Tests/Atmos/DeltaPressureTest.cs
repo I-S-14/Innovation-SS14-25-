@@ -6,6 +6,8 @@ using Content.Shared.Atmos.Components;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Utility;
+using Content.Server.Atmos;
+using Content.Server.Atmos.Components;
 
 namespace Content.IntegrationTests.Tests.Atmos;
 

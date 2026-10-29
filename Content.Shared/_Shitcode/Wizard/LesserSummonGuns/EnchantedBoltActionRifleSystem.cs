@@ -13,6 +13,8 @@ using Content.Shared.Wieldable.Components;
 using Robust.Shared.Network;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
+using Content.Shared.Timing.Systems;
+using Content.Shared.Timing.Components;
 
 namespace Content.Shared._Goobstation.Wizard.LesserSummonGuns;
 

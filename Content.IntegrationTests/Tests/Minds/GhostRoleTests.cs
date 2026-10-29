@@ -11,6 +11,7 @@ using Content.Shared.Players;
 using Robust.Shared.Console;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Prototypes;
+using Content.Shared.Ghost;
 
 namespace Content.IntegrationTests.Tests.Minds;
 

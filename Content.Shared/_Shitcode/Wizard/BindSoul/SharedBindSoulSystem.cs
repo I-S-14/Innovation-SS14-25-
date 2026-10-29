@@ -25,6 +25,7 @@ using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Systems;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Spawners;
+using Content.Shared.Ghost.Components;
 
 namespace Content.Shared._Goobstation.Wizard.BindSoul;
 

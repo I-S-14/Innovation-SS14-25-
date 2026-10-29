@@ -9,6 +9,7 @@ using Content.Shared.Research.Prototypes;
 using Content.Shared.Whitelist;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Prototypes;
+using Content.Shared.Prototypes;
 
 namespace Content.IntegrationTests.Tests.Lathe;
 

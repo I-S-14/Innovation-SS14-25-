@@ -18,7 +18,7 @@ public abstract partial class SharedDamageOverlaySystem : EntitySystem
     [Dependency] private DamageableSystem _damageable = default!;
     [Dependency] private StatusEffectsSystem _statusEffects = default!;
 
-    [Dependency] private EntityQuery<InjurableComponent> _injurableQuery = default!;
+    [Dependency] private EntityQuery<DamageableComponent> _injurableQuery = default!;
     [Dependency] private EntityQuery<DamageableComponent> _damageableQuery = default!;
     [Dependency] private EntityQuery<MobStateComponent> _mobStateQuery = default!;
     [Dependency] private EntityQuery<MobThresholdsComponent> _thresholdsQuery = default!;
@@ -62,7 +62,7 @@ public abstract partial class SharedDamageOverlaySystem : EntitySystem
         MobStateComponent? mobState = null,
         DamageableComponent? damageable = null,
         MobThresholdsComponent? thresholds = null,
-        InjurableComponent? injurable = null)
+        DamageableComponent? injurable = null)
     {
         if (mobState == null && !_mobStateQuery.TryComp(entity, out mobState) ||
             thresholds == null && !_thresholdsQuery.TryComp(entity, out thresholds) ||

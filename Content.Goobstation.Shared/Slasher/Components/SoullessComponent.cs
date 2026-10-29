@@ -11,5 +11,5 @@ namespace Content.Goobstation.Shared.Slasher.Components;
 public sealed partial class SoullessComponent : Component
 {
     [DataField]
-    public ProtoId<FactionIconPrototype> FactionIcon = "SoullessFaction";
+    public ProtoId<StatusIconPrototype> FactionIcon = "SoullessFaction";
 }

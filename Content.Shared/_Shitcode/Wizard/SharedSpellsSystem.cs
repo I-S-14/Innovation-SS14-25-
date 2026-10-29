@@ -89,6 +89,7 @@ using Content.Shared.Charges.Components;
 using Content.Shared.Charges.Systems;
 using Content.Shared.Damage.Systems;
 using Content.Shared.Damage.Components;
+using Content.Shared.Ghost.Components;
 
 namespace Content.Shared._Goobstation.Wizard;
 
@@ -121,7 +122,7 @@ public abstract class SharedSpellsSystem : EntitySystem
     [Dependency] private   readonly StatusEffectsSystem _statusEffects = default!;
     [Dependency] private   readonly InventorySystem _inventory = default!;
     [Dependency] private   readonly SharedJitteringSystem _jitter = default!;
-    [Dependency] private   readonly SharedStutteringSystem _stutter = default!;
+    [Dependency] private   readonly StutteringSystem _stutter = default!;
     [Dependency] private   readonly SharedMagicSystem _magic = default!;
     [Dependency] private   readonly SharedPopupSystem _popup = default!;
     [Dependency] private   readonly SharedGunSystem _gunSystem = default!;

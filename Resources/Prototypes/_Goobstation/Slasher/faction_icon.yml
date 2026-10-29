@@ -1,4 +1,4 @@
-- type: factionIcon
+- type: statusIcon
   id: SoullessFaction
   isShaded: false
   priority: 11

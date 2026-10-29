@@ -5,7 +5,9 @@ using Robust.Shared.GameStates;
 namespace Content.Shared.Eye.Blinding.Components;
 
 /// <summary>
-/// Prevents the target from seeing while active.
+/// Component used for the blind status effect.
 /// </summary>
 [NetworkedComponent, RegisterComponent]
-public sealed partial class BlindnessStatusEffectComponent : Component;
+public sealed partial class TemporaryBlindnessComponent : Component
+{
+}

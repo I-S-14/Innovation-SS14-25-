@@ -25,6 +25,8 @@ using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
 using System.Linq;
+using Content.Goobstation.Maths.FixedPoint;
+using Content.Server.Database;
 
 namespace Content.IntegrationTests.Tests.Minds;
 

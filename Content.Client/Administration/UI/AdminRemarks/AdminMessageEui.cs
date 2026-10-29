@@ -5,6 +5,7 @@ using Content.Shared.Administration.Notes;
 using Content.Shared.Eui;
 using JetBrains.Annotations;
 using Robust.Client.UserInterface.Controls;
+using static Content.Shared.Administration.Notes.AdminMessageEuiMsg;
 
 namespace Content.Client.Administration.UI.AdminRemarks;
 

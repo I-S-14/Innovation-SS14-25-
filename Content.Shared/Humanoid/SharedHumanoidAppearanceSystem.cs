@@ -25,6 +25,7 @@ using Robust.Shared.Serialization.Markdown;
 using Robust.Shared.Utility;
 using YamlDotNet.RepresentationModel;
 using Content.Shared._CorvaxGoob.TTS;
+using Content.Corvax.Interfaces.Shared;
 using Robust.Shared.Enums;
 
 namespace Content.Shared.Humanoid;

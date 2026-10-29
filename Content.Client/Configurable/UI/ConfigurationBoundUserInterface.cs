@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using Content.Shared.Configurable;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
+using static Content.Shared.Configurable.ConfigurationComponent;
 
 namespace Content.Client.Configurable.UI
 {

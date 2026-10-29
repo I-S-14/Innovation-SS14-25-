@@ -5,7 +5,6 @@ using Content.Shared.Mech;
 using Content.Shared.Mech.Components;
 using JetBrains.Annotations;
 using Robust.Client.UserInterface;
-using Robust.Client.GameObjects;
 
 namespace Content.Client.Mech.Ui;
 

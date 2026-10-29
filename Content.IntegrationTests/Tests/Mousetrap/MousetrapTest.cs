@@ -11,6 +11,7 @@ using Content.Shared.Mobs.Components;
 using Content.Shared.Mousetrap;
 using Robust.Shared.Maths;
 using Robust.Shared.Prototypes;
+using Content.Shared.Damage.Components;
 
 namespace Content.IntegrationTests.Tests.Mousetrap;
 

@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
 using Content.Shared.DeviceNetwork;
 using Robust.Shared.GameStates;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
@@ -15,13 +13,12 @@ namespace Content.Shared.Medical.SuitSensors;
 [AutoGenerateComponentState, AutoGenerateComponentPause]
 public sealed partial class SuitSensorComponent : Component
 {
-    // GoobStation - Start
     /// <summary>
-    ///     Is this suit sensor for commands, BSO use only
+    /// Goob station: only command crew monitors show this sensor.
     /// </summary>
     [DataField]
-    public bool CommandTracker = false;
-    // GoobStation - End
+    public bool CommandTracker;
+
     /// <summary>
     /// Choose a random sensor mode when item is spawned.
     /// </summary>

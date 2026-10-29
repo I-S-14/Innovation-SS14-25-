@@ -3,7 +3,6 @@
 using Content.Shared.DoAfter;
 using Content.Shared.Inventory;
 using Robust.Shared.Serialization;
-using Content.Shared.Forensics.Components;
 
 namespace Content.Shared.Forensics;
 

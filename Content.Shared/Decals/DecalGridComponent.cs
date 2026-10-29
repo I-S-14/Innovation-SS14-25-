@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
 using Robust.Shared.GameStates;
 using Robust.Shared.Serialization;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Generic;
@@ -7,6 +5,7 @@ using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 
 #pragma warning disable CS0618 // This IS the obsolete component, this warning is redundant.
+using static Content.Shared.Decals.DecalGridComponent;
 #pragma warning restore CS0618
 
 namespace Content.Shared.Decals

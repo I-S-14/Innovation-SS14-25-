@@ -16,6 +16,10 @@ using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
+using static Content.Shared.InteractionVerbs.InteractionPopupPrototype.Prefix;
+using static Content.Shared.InteractionVerbs.InteractionVerbPrototype.ContestType;
+using static Content.Shared.InteractionVerbs.InteractionVerbPrototype.EffectTargetSpecifier;
+using Content.Shared.Ghost.Components;
 
 namespace Content.Shared.InteractionVerbs;
 

@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
-using Content.Shared.Maths;
 
-using Content.Shared.Atmos;
+using Content.Shared.Maths;
 
 namespace Content.Shared.Temperature
 {
@@ -9,7 +8,7 @@ namespace Content.Shared.Temperature
     {
         public static float CelsiusToKelvin(float celsius)
         {
-            return celsius + Atmospherics.T0C;
+            return celsius + PhysicalConstants.ZERO_CELCIUS;
         }
 
         public static float CelsiusToFahrenheit(float celsius)
@@ -19,7 +18,7 @@ namespace Content.Shared.Temperature
 
         public static float KelvinToCelsius(float kelvin)
         {
-            return kelvin - Atmospherics.T0C;
+            return kelvin - PhysicalConstants.ZERO_CELCIUS;
         }
 
         public static float KelvinToFahrenheit(float kelvin)

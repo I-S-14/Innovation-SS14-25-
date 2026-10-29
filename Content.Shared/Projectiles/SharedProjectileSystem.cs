@@ -319,3 +319,9 @@ public record struct ProjectileHitEvent(DamageSpecifier Damage, EntityUid Target
 /// </summary>
 [ByRefEvent]
 public record struct AfterProjectileHitEvent(DamageSpecifier Damage, DamageSpecifier? ModifiedDamage, EntityUid Target, EntityUid? Shooter = null);
+
+/// <summary>
+/// Raised before a projectile hits an entity
+/// </summary>
+[ByRefEvent]
+public record struct BeforeProjectileHitEvent(DamageSpecifier Damage, EntityUid Target, EntityUid? Shooter = null);

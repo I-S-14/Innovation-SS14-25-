@@ -1,14 +1,11 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
-
-using Robust.Shared.Prototypes;
 using Content.Shared.DeviceNetwork.Systems;
 using Robust.Shared.GameStates;
+using Robust.Shared.Prototypes;
 
 namespace Content.Shared.DeviceNetwork.Components;
 
-[RegisterComponent]
-//Goobstation - sync device lists / modules had to nuke explicit access
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState(fieldDeltas: true)]
+[Access(typeof(DeviceNetworkSystem), typeof(DeviceNet))]
 public sealed partial class DeviceNetworkComponent : Component
 {
     /// <summary>
@@ -96,14 +93,8 @@ public sealed partial class DeviceNetworkComponent : Component
     public bool SavableAddress = true;
 
     /// <summary>
-    ///     A list of device-lists that this device is on.
-    /// </summary>
-    [DataField]
-    // had to nuke explicit access for goob modules
-    public HashSet<EntityUid> DeviceLists = new();
-
-    /// <summary>
-    ///     A list of configurators that this device is on.
+    /// If true, the address was customized and should be preserved across networks. If false, a randomly
+    /// generated address will be created whenever this device connects to a network.
     /// </summary>
     [DataField, AutoNetworkedField]
     public bool CustomAddress;

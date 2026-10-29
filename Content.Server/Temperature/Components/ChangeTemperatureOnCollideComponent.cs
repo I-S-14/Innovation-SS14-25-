@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Server.Temperature.Systems;
-using Content.Server.Temperature.Components;
-using Content.Shared.Temperature;
 
 namespace Content.Server.Temperature.Components;
 

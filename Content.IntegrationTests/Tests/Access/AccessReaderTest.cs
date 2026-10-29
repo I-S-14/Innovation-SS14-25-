@@ -9,6 +9,7 @@ using Content.Shared.Access.Components;
 using Content.Shared.Access.Systems;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Map;
 
 namespace Content.IntegrationTests.Tests.Access
 {

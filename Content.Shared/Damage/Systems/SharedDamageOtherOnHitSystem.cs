@@ -6,8 +6,8 @@ namespace Content.Shared.Damage.Systems;
 
 public abstract partial class SharedDamageOtherOnHitSystem : EntitySystem // Trauma - made partial
 {
-    [Dependency] private DamageableSystem _damageable = default!;
-    [Dependency] private DamageExamineSystem _damageExamine = default!;
+    [Dependency] private readonly DamageableSystem _damageable = default!;
+    [Dependency] private readonly DamageExamineSystem _damageExamine = default!;
 
     public override void Initialize()
     {
@@ -20,17 +20,7 @@ public abstract partial class SharedDamageOtherOnHitSystem : EntitySystem // Tra
 
     private void OnDamageExamine(Entity<DamageOtherOnHitComponent> ent, ref DamageExamineEvent args)
     {
-        float? stamina = null;
-
-        if (TryComp<StaminaDamageOnCollideComponent>(ent, out var comp))
-        {
-            var attempt = new StaminaDamageOnHitAttemptEvent();
-            RaiseLocalEvent(ent.Owner, ref attempt);
-            if (!attempt.Cancelled)
-                stamina = comp.Damage;
-        }
-
-        _damageExamine.AddDamageExamine(args.Message, _damageable.ApplyUniversalAllModifiers(ent.Comp.Damage * _damageable.UniversalThrownDamageModifier), Loc.GetString("damage-throw"), stamina);
+        _damageExamine.AddDamageExamine(args.Message, _damageable.ApplyUniversalAllModifiers(ent.Comp.Damage * _damageable.UniversalThrownDamageModifier), Loc.GetString("damage-throw"));
     }
 
     /// <summary>
