@@ -134,7 +134,7 @@ public sealed class ModsuitModuleOverlaySystem : EntitySystem
                 // Ask the item what it would look like worn in the slot the part occupies.
                 // A hat in the cradle is a hat on a head, so the answer is the state the
                 // hat would have used anyway, species handling and all.
-                var ev = new GetEquipmentVisualsEvent(args.Equipee, args.Slot);
+                var ev = new GetEquipmentVisualsEvent(args.EquipTarget, args.Slot);
                 RaiseLocalEvent(held, ev);
 
                 foreach (var (_, layer) in ev.Layers)

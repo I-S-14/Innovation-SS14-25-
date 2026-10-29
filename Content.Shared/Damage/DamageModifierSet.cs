@@ -28,5 +28,9 @@ namespace Content.Shared.Damage
         public Dictionary<ProtoId<DamageTypePrototype>, float> FlatReduction = new();
 
 
+
+    // IS14-merge: restored member lost in the upstream merge
+        [DataField]
+        public Dictionary<ProtoId<DamageTypePrototype>, float> FlatReductions = new();
     }
 }

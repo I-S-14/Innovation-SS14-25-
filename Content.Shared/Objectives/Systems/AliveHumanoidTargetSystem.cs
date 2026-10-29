@@ -15,7 +15,7 @@ public sealed partial class AliveHumanoidTargetSystem : MindTargetSystem<MindCom
         if (entity.Comp.CurrentEntity is not { } humanoid)
             return false;
 
-        return _mobState.IsAlive(humanoid) && HasComp<HumanoidProfileComponent>(humanoid);
+        return _mobState.IsAlive(humanoid) && HasComp<HumanoidAppearanceComponent>(humanoid);
     }
 }
 

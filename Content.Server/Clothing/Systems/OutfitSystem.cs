@@ -154,7 +154,7 @@ public sealed partial class OutfitSystem : EntitySystem
                 break;
 
             // Don't require a player, so this works on Urists
-            profile ??= TryComp<HumanoidProfileComponent>(target, out var comp)
+            profile ??= TryComp<HumanoidAppearanceComponent>(target, out var comp)
                 ? HumanoidCharacterProfile.DefaultWithSpecies(comp.Species, comp.Sex)
                 : new HumanoidCharacterProfile();
             // Try to get the user's existing loadout for the role

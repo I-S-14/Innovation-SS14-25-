@@ -534,7 +534,7 @@ public partial class SharedBodySystem
                 && !GetBodyChildrenOfType(args.EquipTarget, bodyPart.Value).Any())
             {
                 _popup.PopupClient(Loc.GetString("equip-part-missing-error",
-                    ("target", args.EquipTarget), ("part", bodyPartString)), args.Equipee, args.Equipee);
+                    ("target", args.EquipTarget), ("part", bodyPartString)), args.EquipTarget, args.EquipTarget);
                 args.Cancel();
             }
         }

@@ -116,4 +116,11 @@ public sealed partial class CCVars
     // Goobstation - end
     #endregion
 
+
+    // IS14-merge: restored member lost in the upstream merge
+    /// <summary>
+    /// If true will allow TextLinkTags to make interactable chat labels in place of sender names.
+    /// </summary>
+    public static readonly CVarDef<bool> ChatNameLinks =
+        CVarDef.Create("chat.chat_name_links", true, CVar.REPLICATED | CVar.SERVER, "Toggles Chat Name Link functionality.");
 }

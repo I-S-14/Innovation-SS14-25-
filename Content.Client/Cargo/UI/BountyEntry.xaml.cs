@@ -8,14 +8,13 @@ using Robust.Client.UserInterface.Controls;
 using Robust.Client.UserInterface.XAML;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
-using Content.Shared.Random;
 
 namespace Content.Client.Cargo.UI;
 
 [GenerateTypedNameReferences]
 public sealed partial class BountyEntry : BoxContainer
 {
-    [Dependency] private IPrototypeManager _prototype = default!;
+    [Dependency] private readonly IPrototypeManager _prototype = default!;
 
     public Action? OnLabelButtonPressed;
     public Action? OnSkipButtonPressed;

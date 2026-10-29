@@ -36,7 +36,6 @@ public sealed partial class AnchorableSystem : EntitySystem
     [Dependency] private SharedAppearanceSystem _appearance = default!;
 
     [Dependency] private EntityQuery<PhysicsComponent> _physicsQuery = default!;
-    [Dependency] private readonly SharedMapSystem _mapSystem = default!;
 
     public readonly ProtoId<TagPrototype> Unstackable = "Unstackable";
 
@@ -146,7 +145,7 @@ public sealed partial class AnchorableSystem : EntitySystem
         _transformSystem.Unanchor(uid, xform);
         RaiseLocalEvent(uid, new UserUnanchoredEvent(user, used)); // Goob
 
-        _popup.PopupEntity(Loc.GetString("anchorable-unanchored"), uid, args.User);
+        _popup.PopupEntity(Loc.GetString("anchorable-unanchored"), uid, user);
 
         _adminLogger.Add(
             LogType.Unanchor,
@@ -170,7 +169,7 @@ public sealed partial class AnchorableSystem : EntitySystem
         if (TryComp<PhysicsComponent>(uid, out var anchorBody) &&
             !TileFree(xform.Coordinates, anchorBody))
         {
-            _popup.PopupEntity(Loc.GetString("anchorable-occupied"), uid, args.User);
+            _popup.PopupEntity(Loc.GetString("anchorable-occupied"), uid, user);
             return;
         }
 
@@ -189,7 +188,7 @@ public sealed partial class AnchorableSystem : EntitySystem
 
             if (AnyUnstackable(uid, coordinates))
             {
-                _popup.PopupEntity(Loc.GetString("construction-step-condition-no-unstackable-in-tile"), uid, args.User);
+                _popup.PopupEntity(Loc.GetString("construction-step-condition-no-unstackable-in-tile"), uid, user);
                 return;
             }
 
@@ -207,7 +206,7 @@ public sealed partial class AnchorableSystem : EntitySystem
 
         RaiseLocalEvent(uid, new UserAnchoredEvent(user, used)); // Goob
 
-        _popup.PopupEntity(Loc.GetString("anchorable-anchored"), uid, args.User);
+        _popup.PopupEntity(Loc.GetString("anchorable-anchored"), uid, user);
 
         _adminLogger.Add(
             LogType.Anchor,
@@ -362,7 +361,7 @@ public sealed partial class AnchorableSystem : EntitySystem
         if (!TryComp<MapGridComponent>(gridUid, out var grid))
             return false;
 
-        var tileIndices = _mapSystem.TileIndicesFor(gridUid.Value, grid, coordinates);
+        var tileIndices = _map.TileIndicesFor(gridUid.Value, grid, coordinates);
         return TileFree(grid, tileIndices, anchorBody.CollisionLayer, anchorBody.CollisionMask);
     }
 
@@ -370,7 +369,7 @@ public sealed partial class AnchorableSystem : EntitySystem
     /// Returns true if no hard anchored entities match the collision layer or mask specified.
     /// </summary>
     /// <param name="grid"></param>
-    public bool TileFree(MapGridComponent grid, Vector2i gridIndices, int collisionLayer = 0, int collisionMask = 0)
+    public bool TileFree(Entity<MapGridComponent> grid, Vector2i gridIndices, int collisionLayer = 0, int collisionMask = 0)
     {
         var enumerator = _map.GetAnchoredEntities(grid, grid.Comp, gridIndices);
 
@@ -391,6 +390,12 @@ public sealed partial class AnchorableSystem : EntitySystem
         }
 
         return true;
+    }
+
+    [Obsolete("Use the Entity<MapGridComponent> version")]
+    public bool TileFree(MapGridComponent grid, Vector2i gridIndices, int collisionLayer = 0, int collisionMask = 0)
+    {
+        return TileFree((grid.Owner, grid), gridIndices, collisionLayer, collisionMask);
     }
 
     /// <summary>

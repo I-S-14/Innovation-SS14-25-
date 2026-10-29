@@ -96,7 +96,7 @@ public sealed partial class ClientClothingSystem : ClothingSystem
     [SubscribeLocalEvent]
     private void OnGetVisuals(Entity<ClothingComponent> ent, ref GetEquipmentVisualsEvent args)
     {
-        if (!InventoryQuery.TryComp(args.Equipee, out var inventory))
+        if (!InventoryQuery.TryComp(args.EquipTarget, out var inventory))
             return;
 
         List<PrototypeLayerData>? layers = null;
@@ -341,7 +341,7 @@ public sealed partial class ClientClothingSystem : ClothingSystem
         // Select displacement maps
         var displacementData = inventory.Displacements.GetValueOrDefault(slot); //Default unsexed map
 
-        var equipeeSex = CompOrNull<HumanoidProfileComponent>(equipee)?.Sex;
+        var equipeeSex = CompOrNull<HumanoidAppearanceComponent>(equipee)?.Sex;
         if (equipeeSex != null)
         {
             switch (equipeeSex)

@@ -58,4 +58,15 @@ public sealed partial class RadioChannelPrototype : IPrototype
     /// </summary>
     [DataField]
     public bool LongRange;
+
+    // IS14-merge: restored from Goob/IS14 version
+    [DataField]
+    public EntityWhitelist? ReceiveWhitelist = null;
+
+    // IS14-merge: restored from Goob/IS14 version
+    /// <summary>
+    /// Whitelist for entities that can send or receive this radio channel messages
+    /// </summary>
+    [DataField]
+    public EntityWhitelist? SendWhitelist = null;
 }

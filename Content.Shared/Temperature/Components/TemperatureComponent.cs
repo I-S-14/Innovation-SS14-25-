@@ -28,4 +28,8 @@ public sealed partial class TemperatureComponent : Component
     /// </summary>
     [DataField, ViewVariables(VVAccess.ReadWrite)]
     public float AtmosTemperatureTransferEfficiency = 0.1f;
+
+    // IS14-merge: restored member lost in the upstream merge
+    [DataField]
+    public float Temperature { get; set; } = Atmospherics.T20C;
 }

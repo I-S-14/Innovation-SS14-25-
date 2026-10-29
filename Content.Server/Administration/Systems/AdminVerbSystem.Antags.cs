@@ -30,7 +30,7 @@ public sealed partial class AdminVerbSystem
     [Dependency] private ZombieSystem _zombie = default!;
 
     [Dependency] private EntityQuery<ActorComponent> _actorQuery;
-    [Dependency] private EntityQuery<HumanoidProfileComponent> _humanoidQuery;
+    [Dependency] private EntityQuery<HumanoidAppearanceComponent> _humanoidQuery;
     [Dependency] private EntityQuery<MindContainerComponent> _mindContainerQuery;
 
     private static readonly EntProtoId TraitorRule = "Traitor";

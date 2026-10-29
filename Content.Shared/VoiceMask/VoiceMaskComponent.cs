@@ -86,5 +86,12 @@ public sealed partial class VoiceMaskComponent : Component
     [DataField]
     public string? JobName; // GabyStation -> Radio icons
     #endregion
+
+    // IS14-merge: restored member lost in the upstream merge
+    /// <summary>
+    ///     If user's equipped agent id name is getting changed.
+    /// </summary>
+    [DataField]
+    public bool ChangeIDName = false;
 }
 

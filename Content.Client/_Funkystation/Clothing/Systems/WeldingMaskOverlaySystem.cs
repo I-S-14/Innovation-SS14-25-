@@ -45,13 +45,13 @@ public sealed partial class WeldingMaskOverlaySystem : EntitySystem
     private void OnEquip(Entity<WeldingMaskOverlayComponent> ent, ref GotEquippedEvent args)
     {
 
-        if (args.Equipee == _player.LocalSession?.AttachedEntity && (args.Slot == "head" || args.Slot == "mask"))
+        if (args.EquipTarget == _player.LocalSession?.AttachedEntity && (args.Slot == "head" || args.Slot == "mask"))
             RefreshOverlay();
     }
 
     private void OnUnequip(Entity<WeldingMaskOverlayComponent> ent, ref GotUnequippedEvent args)
     {
-        if (args.Equipee == _player.LocalSession?.AttachedEntity && (args.Slot == "head" || args.Slot == "mask"))
+        if (args.EquipTarget == _player.LocalSession?.AttachedEntity && (args.Slot == "head" || args.Slot == "mask"))
             RefreshOverlay(ignoreEnt: ent.Owner);
     }
 

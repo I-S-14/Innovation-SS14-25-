@@ -60,4 +60,18 @@ public sealed partial class GasTankComponent : GasMaxPressureHolderComponent
     /// </summary>
     [DataField(customTypeSerializer: typeof(TimeOffsetSerializer)), AutoNetworkedField, AutoPausedField]
     public TimeSpan NextDirtyTime;
+
+    // IS14-merge: restored from Goob/IS14 version
+    /// <summary>
+    ///     Valve to release gas from tank
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public bool IsValveOpen;
+
+    // IS14-merge: restored from Goob/IS14 version
+    /// <summary>
+    ///     Distributed pressure.
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public float OutputPressure = DefaultOutputPressure;
 }

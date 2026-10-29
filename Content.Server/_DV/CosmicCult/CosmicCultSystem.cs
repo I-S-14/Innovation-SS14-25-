@@ -226,14 +226,14 @@ public sealed partial class CosmicCultSystem
     #region Equipment Pickup
     private void OnGotCosmicItemEquipped(Entity<CosmicEquipmentComponent> ent, ref GotEquippedEvent args)
     {
-        if (!EntityIsCultist(args.Equipee))
-            _statusEffects.TryAddStatusEffect<CosmicEntropyNonCultistComponent>(args.Equipee, EntropicDegenNonCultist, TimeSpan.FromDays(1), true); // TimeSpan.MaxValue causes a crash here, so we use FromDays(1) instead.
+        if (!EntityIsCultist(args.EquipTarget))
+            _statusEffects.TryAddStatusEffect<CosmicEntropyNonCultistComponent>(args.EquipTarget, EntropicDegenNonCultist, TimeSpan.FromDays(1), true); // TimeSpan.MaxValue causes a crash here, so we use FromDays(1) instead.
     }
 
     private void OnGotCosmicItemUnequipped(Entity<CosmicEquipmentComponent> ent, ref GotUnequippedEvent args)
     {
-        if (!EntityIsCultist(args.Equipee))
-            _statusEffects.TryRemoveStatusEffect(args.Equipee, EntropicDegenNonCultist);
+        if (!EntityIsCultist(args.EquipTarget))
+            _statusEffects.TryRemoveStatusEffect(args.EquipTarget, EntropicDegenNonCultist);
     }
     private void OnGotHeld(Entity<CosmicEquipmentComponent> ent, ref GotEquippedHandEvent args)
     {
@@ -252,21 +252,21 @@ public sealed partial class CosmicCultSystem
 
     private void OnGotSpeechOverrideEquipped(Entity<SpeechOverrideComponent> ent, ref GotEquippedEvent args)
     {
-        if (ent.Comp.OverrideIDs is not { } overrides || !TryComp<VocalComponent>(args.Equipee, out var vocalComp))
+        if (ent.Comp.OverrideIDs is not { } overrides || !TryComp<VocalComponent>(args.EquipTarget, out var vocalComp))
             return;
         ent.Comp.StoredIDs = vocalComp.Sounds;
         vocalComp.Sounds = overrides;
         var ev = new SoundsChangedEvent();
-        RaiseLocalEvent(args.Equipee, ref ev);
+        RaiseLocalEvent(args.EquipTarget, ref ev);
     }
 
     private void OnGotSpeechOverrideUnequipped(Entity<SpeechOverrideComponent> ent, ref GotUnequippedEvent args)
     {
-        if (ent.Comp.StoredIDs is not { } stored || !TryComp<VocalComponent>(args.Equipee, out var vocalComp)) return;
+        if (ent.Comp.StoredIDs is not { } stored || !TryComp<VocalComponent>(args.EquipTarget, out var vocalComp)) return;
         ent.Comp.StoredIDs = null;
         vocalComp.Sounds = stored;
         var ev = new SoundsChangedEvent();
-        RaiseLocalEvent(args.Equipee, ref ev);
+        RaiseLocalEvent(args.EquipTarget, ref ev);
     }
     #endregion
 

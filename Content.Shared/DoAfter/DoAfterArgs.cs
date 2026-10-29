@@ -320,6 +320,22 @@ public sealed partial class DoAfterArgs
 
         Event = other.Event.Clone();
     }
+
+    // IS14-merge: restored from Goob/IS14 version
+    /// <summary>
+    /// Goobstation
+    /// If not null, progress bar will use this color.
+    /// </summary>
+    [DataField]
+    public Color? ColorOverride;
+
+    // IS14-merge: restored from Goob/IS14 version
+    /// <summary>
+    /// Goobstation
+    /// Whether the delay multiplier event should be raised
+    /// </summary>
+    [DataField]
+    public bool MultiplyDelay = true;
 }
 
 /// <summary>

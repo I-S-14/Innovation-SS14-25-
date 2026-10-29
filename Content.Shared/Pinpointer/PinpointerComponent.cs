@@ -105,6 +105,10 @@ public sealed partial class PinpointerComponent : Component
 
     [ViewVariables]
     public bool HasTarget => DistanceToTarget != Distance.Unknown;
+
+    // IS14-merge: restored member lost in the upstream merge
+    [ViewVariables]
+    public EntityUid? Target = null;
 }
 
 [Serializable, NetSerializable]

@@ -637,4 +637,31 @@ public sealed partial class DamageableSystem
 
         Dirty(ent);
     }
+
+    // IS14-merge: restored member lost in the upstream merge
+    /// <summary>
+    /// Returns a <see cref="DamageSpecifier"/> with all positive damage of the entity from the group specified
+    /// </summary>
+    /// <param name="ent">entity with damage</param>
+    /// <param name="group">group of damage to get values from</param>
+    /// <returns></returns>
+    public DamageSpecifier GetPositiveDamage(Entity<DamageableComponent> ent, ProtoId<DamageGroupPrototype> group)
+    {
+        // No damage if no group exists...
+        if (!ProtoMan.Resolve(group, out var groupProto))
+            return new DamageSpecifier();
+
+        var damage = new DamageSpecifier();
+        damage.DamageDict.EnsureCapacity(groupProto.DamageTypes.Count);
+
+        foreach (var damageId in groupProto.DamageTypes)
+        {
+            if (!ent.Comp.Damage.DamageDict.TryGetValue(damageId, out var value))
+                continue;
+            if (value > FixedPoint2.Zero)
+                damage.DamageDict.Add(damageId, value);
+        }
+
+        return damage;
+    }
 }

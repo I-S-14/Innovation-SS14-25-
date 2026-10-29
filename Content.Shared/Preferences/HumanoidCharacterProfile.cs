@@ -915,5 +915,8 @@ namespace Content.Shared.Preferences
         {
             return new HumanoidCharacterProfile(this);
         }
+
+    // IS14-merge: restored member lost in the upstream merge
+        public static readonly ProtoId<SpeciesPrototype> DefaultSpecies = "Human";
     }
 }

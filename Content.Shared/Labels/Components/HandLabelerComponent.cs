@@ -34,6 +34,13 @@ public sealed partial class HandLabelerComponent : Component
     {
         Params = AudioParams.Default.WithVolume(10f)
     };
+
+    // IS14-merge: restored member lost in the upstream merge
+    /// <summary>
+    /// Blacklist for entities that cannot be labeled.
+    /// </summary>
+    [DataField]
+    public EntityWhitelist? Blacklist;
 }
 
 [Serializable, NetSerializable]

@@ -190,7 +190,7 @@ public sealed partial class LoadoutSystem : EntitySystem
 
     public HumanoidCharacterProfile GetProfile(EntityUid? uid)
     {
-        return TryComp<HumanoidProfileComponent>(uid, out var profile)
+        return TryComp<HumanoidAppearanceComponent>(uid, out var profile)
             ? HumanoidCharacterProfile.DefaultWithSpecies(profile.Species, profile.Sex)
             : HumanoidCharacterProfile.Random();
     }

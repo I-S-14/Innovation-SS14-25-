@@ -78,4 +78,12 @@ public sealed partial record GeneralStationRecord : StationRecord
     /// </summary>
     [DataField]
     public AppearanceConverterVisualTransformProfile? Visual;
+
+    // IS14-merge: restored member lost in the upstream merge
+    /// <summary>
+    ///     Gender identity tied to this station record.
+    /// </summary>
+    /// <remarks>Sex should be placed in a medical record, not a general record.</remarks>
+    [DataField]
+    public Gender Gender = Gender.Epicene;
 }

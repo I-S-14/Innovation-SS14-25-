@@ -3,6 +3,7 @@ using Content.Shared.Database;
 using Content.Shared.Popups;
 using Content.Shared.Verbs;
 using Robust.Shared.Player;
+using Content.Goobstation.Common.Religion;
 
 namespace Content.Shared.Prayer;
 

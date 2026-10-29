@@ -179,7 +179,7 @@ public sealed partial class SharedModsuitSystem : EntitySystem
         if ((args.SlotFlags & ent.Comp.RequiredSlot) == SlotFlags.NONE)
             return;
 
-        SetWearer(ent, args.Equipee);
+        SetWearer(ent, args.EquipTarget);
     }
 
     private void OnUnequipped(Entity<ModsuitControlComponent> ent, ref GotUnequippedEvent args)
@@ -203,7 +203,7 @@ public sealed partial class SharedModsuitSystem : EntitySystem
             return;
 
         args.Cancel();
-        _popup.PopupClient(Loc.GetString("modsuit-parts-still-deployed"), ent, args.Unequipee);
+        _popup.PopupClient(Loc.GetString("modsuit-parts-still-deployed"), ent, args.UnEquipTarget);
     }
 
     /// <summary>

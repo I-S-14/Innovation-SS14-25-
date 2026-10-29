@@ -20,6 +20,9 @@ public record struct SolutionRelayEvent<TEvent>(TEvent Event, Entity<SolutionCom
 {
     public readonly Entity<SolutionComponent> Solution = Solution;
     public TEvent Event = Event;
+
+    // IS14-merge: restored from Goob/IS14 version
+    public readonly string Name = Name;
 }
 
 /// <summary>

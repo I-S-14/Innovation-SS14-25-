@@ -1119,7 +1119,7 @@ public abstract partial class SharedActionsSystem : EntitySystem
 
         GrantActions((ent, ent), ev.Actions, args.Equipment);
 
-        LoadActions(args.Equipee); // Goobstation
+        LoadActions(args.EquipTarget); // Goobstation
     }
 
     private void OnHandEquipped(Entity<ActionsComponent> ent, ref DidEquipHandEvent args)
@@ -1146,7 +1146,7 @@ public abstract partial class SharedActionsSystem : EntitySystem
         // Goobstation start
         if (!TerminatingOrDeleted(args.Equipment))
         {
-            var ev = new GetItemActionsEvent(_actionContainer, args.Equipee, args.Equipment, isEquipping: false); // Lavaland Change - added false for isEquipping
+            var ev = new GetItemActionsEvent(_actionContainer, args.EquipTarget, args.Equipment, isEquipping: false); // Lavaland Change - added false for isEquipping
             RaiseLocalEvent(args.Equipment, ev);
 
             if (ev.Actions.Count > 0)
@@ -1306,4 +1306,14 @@ public abstract partial class SharedActionsSystem : EntitySystem
         return false;
     }
     // Goobstation edit end
+
+    // IS14-merge: restored from Goob/IS14 version
+    public void SetIconOn(Entity<ActionComponent?> ent, SpriteSpecifier? iconOn)
+    {
+        if (!_actionQuery.Resolve(ent, ref ent.Comp) || ent.Comp.IconOn == iconOn)
+            return;
+
+        ent.Comp.IconOn = iconOn;
+        DirtyField(ent, ent.Comp, nameof(ActionComponent.IconOn));
+    }
 }

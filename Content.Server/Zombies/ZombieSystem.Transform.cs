@@ -327,7 +327,7 @@ public sealed partial class ZombieSystem
         }
 
         //We have specific stuff for humanoid zombies because they matter more
-        if (HasComp<HumanoidProfileComponent>(target))
+        if (HasComp<HumanoidAppearanceComponent>(target))
         {
             //This is done here because non-humanoids shouldn't get baller damage
             melee.Damage = zombiecomp.DamageOnBite;

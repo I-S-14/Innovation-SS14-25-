@@ -89,6 +89,9 @@ namespace Content.Shared.Movement.Components
 
         [ViewVariables(VVAccess.ReadWrite)]
         public bool CanMove = true;
+
+    // IS14-merge: restored from Goob/IS14 version
+        public bool DefaultSprinting = true;
     }
 
     [Serializable, NetSerializable]

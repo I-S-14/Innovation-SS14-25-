@@ -162,6 +162,23 @@ public sealed partial class ActionComponent : Component
     /// </summary>
     [DataField] 
     public bool Predicted = true;
+
+    // IS14-merge: restored from Goob/IS14 version
+    /// <summary>
+    ///     For toggle actions only, icon to show when toggled on. If omitted, the action will simply be highlighted
+    ///     when turned on.
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public SpriteSpecifier? IconOn;
+
+    // IS14-merge: restored member lost in the upstream merge
+    /// <summary>
+    ///     If true, this will cause the the action event to always be raised directed at the action itself instead of the action's container/provider.
+    ///     Takes priority over RaiseOnUser.
+    /// </summary>
+    [DataField]
+    [Obsolete("This datafield will be reworked in an upcoming action refactor")]
+    public bool RaiseOnAction;
 }
 
 [DataRecord, Serializable, NetSerializable]

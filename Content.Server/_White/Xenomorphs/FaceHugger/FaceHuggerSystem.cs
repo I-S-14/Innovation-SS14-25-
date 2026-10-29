@@ -94,21 +94,21 @@ public sealed class FaceHuggerSystem : EntitySystem
     {
         if (args.Slot != component.Slot
             || _mobState.IsDead(uid)
-            || _entityWhitelist.IsWhitelistPass(component.Blacklist, args.Equipee))
+            || _entityWhitelist.IsWhitelistPass(component.Blacklist, args.EquipTarget))
             return;
-        _popup.PopupEntity(Loc.GetString("xenomorphs-face-hugger-equip", ("equipment", uid)), uid, args.Equipee);
+        _popup.PopupEntity(Loc.GetString("xenomorphs-face-hugger-equip", ("equipment", uid)), uid, args.EquipTarget);
         _popup.PopupEntity(
             Loc.GetString("xenomorphs-face-hugger-equip-other",
                 ("equipment", uid),
-                ("target", Identity.Entity(args.Equipee, EntityManager))),
+                ("target", Identity.Entity(args.EquipTarget, EntityManager))),
             uid,
-            Filter.PvsExcept(args.Equipee),
+            Filter.PvsExcept(args.EquipTarget),
             true);
 
-        _stun.TryKnockdown(args.Equipee, component.KnockdownTime, true);
+        _stun.TryKnockdown(args.EquipTarget, component.KnockdownTime, true);
 
         if (component.InfectionPrototype.HasValue)
-            EnsureComp<XenomorphPreventSuicideComponent>(args.Equipee); //Prevent suicide for infected
+            EnsureComp<XenomorphPreventSuicideComponent>(args.EquipTarget); //Prevent suicide for infected
 
         if (!component.InfectionPrototype.HasValue)
             return;
@@ -120,14 +120,14 @@ public sealed class FaceHuggerSystem : EntitySystem
         FaceHuggerComponent component,
         BeingUnequippedAttemptEvent args)
     {
-        if (component.Slot != args.Slot || args.Unequipee != args.UnEquipTarget ||
-            !component.InfectionPrototype.HasValue || _mobState.IsDead(uid) || HasComp<FacehuggerImmuneComponent>(args.Unequipee)) // Omu, add check for FacehuggerImmune
+        if (component.Slot != args.Slot || args.UnEquipTarget != args.UnEquipTarget ||
+            !component.InfectionPrototype.HasValue || _mobState.IsDead(uid) || HasComp<FacehuggerImmuneComponent>(args.UnEquipTarget)) // Omu, add check for FacehuggerImmune
             return;
 
         _popup.PopupEntity(
             Loc.GetString("xenomorphs-face-hugger-unequip", ("equipment", Identity.Entity(uid, EntityManager))),
             uid,
-            args.Unequipee);
+            args.UnEquipTarget);
         args.Cancel();
     }
 

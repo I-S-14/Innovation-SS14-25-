@@ -34,7 +34,7 @@ public sealed partial class ItemSlotsSystem
             return;
 
         if (args.TryEject && slot.HasItem)
-            TryEjectToHands(uid, slot, args.User, true, false);
+            TryEjectToHands(uid, slot, args.User, true); // IS14-merge: wizden TryEjectToHands has no doAfter flag
         else if (args.TryInsert && !slot.HasItem && args.Used != null)
             TryInsertWithConditions(uid, component, args.User, args.Used.Value, false);
     }
@@ -75,7 +75,7 @@ public sealed partial class ItemSlotsSystem
             if (!slot.InsertOnInteract)
                 continue;
 
-            if (CanInsert(uid, toInsert, user, slot, slot.Swap))
+            if (CanInsert(uid, slot, toInsert, user, slot.Swap))
             {
                 slots.Add(slot);
                 break; //Goobstation: If an item has multiple ItemSlots, stick with the highest priority and stop looking.

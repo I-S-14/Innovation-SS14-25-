@@ -19,7 +19,7 @@ public abstract class SharedChameleonStampSystem : EntitySystem
 
         foreach (var proto in prototypes)
         {
-            if (proto.Abstract || proto.HideSpawnMenu || !proto.HasComponent<StampComponent>())
+            if (proto.Abstract || proto.HideSpawnMenu || !proto.HasComp<StampComponent>())
                 continue;
 
             _stampsPresets.Add(proto);

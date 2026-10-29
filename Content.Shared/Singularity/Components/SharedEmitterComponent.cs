@@ -7,7 +7,7 @@ using Robust.Shared.Serialization;
 
 namespace Content.Shared.Singularity.Components;
 
-[RegisterComponent, NetworkedComponent]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 public sealed partial class EmitterComponent : Component
 {
 
@@ -19,4 +19,11 @@ public sealed partial class EmitterComponent : Component
     /// </summary>
     [DataField]
     public Dictionary<ProtoId<SinkPortPrototype>, EntProtoId> SetTypePorts = new();
+
+    // IS14-merge: restored from Goob/IS14 version
+    /// <summary>
+    /// The entity that is spawned when the emitter fires.
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public EntProtoId BoltType = "EmitterBolt";
 }

@@ -65,4 +65,11 @@ public sealed partial class LightReplacerComponent : Component
     /// </summary>
     [DataField]
     public EntProtoId LightBulbProto = "LedLightTube";
+
+    // IS14-merge: restored member lost in the upstream merge
+    /// <summary>
+    /// This string defines what kind of bulb will be inserted into light fixtures.
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public EntProtoId ActiveLightBulb = "LightBulb";
 }

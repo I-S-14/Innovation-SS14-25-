@@ -48,6 +48,13 @@ public sealed partial class PryingComponent : Component
     /// </summary>
     [DataField]
     public bool InstaPry = true;
+
+    // IS14-merge: restored member lost in the upstream merge
+    /// <summary>
+    /// What alert to show to an entity with this component.
+    /// </summary>
+    [DataField]
+    public ProtoId<AlertPrototype>? PryingAlertProtoId = "Prying";
 }
 
 /// <summary>

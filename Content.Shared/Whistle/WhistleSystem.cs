@@ -51,7 +51,7 @@ public sealed partial class WhistleSystem : EntitySystem
         StealthComponent? stealth = null;
 
         foreach (var iterator in
-            _entityLookup.GetEntitiesInRange<HumanoidProfileComponent>(_transform.GetMapCoordinates(uid), component.Distance))
+            _entityLookup.GetEntitiesInRange<HumanoidAppearanceComponent>(_transform.GetMapCoordinates(uid), component.Distance))
         {
             // Avoid avoid pinging dead or unconcious entities
             if (!_mobState.IsAlive(iterator))

@@ -12,7 +12,6 @@ namespace Content.Shared.Construction
     {
         [Dependency] private SharedMapSystem _map = default!;
         [Dependency] protected SharedTransformSystem TransformSystem = default!;
-    [Dependency] private readonly SharedMapSystem _mapSystem = default!;
 
         /// <summary>
         ///     Get predicate for construction obstruction checks.
@@ -25,7 +24,7 @@ namespace Content.Shared.Construction
             if (!_map.TryFindGridAt(coords, out var gridUid, out var grid))
                 return null;
 
-            var ignored = _mapSystem.GetAnchoredEntities(grid.Owner, grid, coords).ToHashSet();
+            var ignored = _map.GetAnchoredEntities(grid.Owner, grid, coords).ToHashSet();
             return e => ignored.Contains(e);
         }
 

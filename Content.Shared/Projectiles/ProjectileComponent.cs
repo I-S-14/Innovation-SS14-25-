@@ -132,4 +132,11 @@ public sealed partial class ProjectileComponent : Component
     [DataField]
     public Vector2 TargetCoordinates;
     // Goobstation end
+
+    // IS14-merge: restored from Goob/IS14 version
+    /// <summary>
+    ///     The projectile spawns inside the shooter most of the time, this prevents entities from shooting themselves.
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public bool IgnoreShooter = true;
 }
