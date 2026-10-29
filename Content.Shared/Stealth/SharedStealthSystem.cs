@@ -5,8 +5,8 @@ using Content.Shared.Mobs;
 using Content.Shared.Stealth.Components;
 using Robust.Shared.Physics.Components; // Goobstation
 using Robust.Shared.Timing;
-using Content.Shared.Mobs.Systems;
 using Robust.Shared.GameStates;
+using Content.Shared.Mobs.Systems;
 
 namespace Content.Shared.Stealth;
 

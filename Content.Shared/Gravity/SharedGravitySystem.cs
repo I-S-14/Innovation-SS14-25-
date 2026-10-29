@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
 using Content.Shared.Alert;
 using Content.Shared.Inventory;
 using Content.Shared.Throwing;
@@ -11,8 +9,6 @@ using Robust.Shared.Physics.Events;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
 using Robust.Shared.Timing;
-using Content.Shared._EinsteinEngines.Flight;
-using Content.Shared.Movement.Components; // Goobstation
 
 namespace Content.Shared.Gravity;
 
@@ -83,14 +79,6 @@ public abstract partial class SharedGravitySystem : EntitySystem
 
         if (entity.Comp2.BodyType is BodyType.Static or BodyType.Kinematic)
             return (false, false);
-
-        // Goob start
-        if (TryComp<FlightComponent>(entity, out var flying) && flying.On) // Goobstation
-                return true;
-
-        if (TryComp<MovementIgnoreGravityComponent>(entity, out var ignoreGravityComponent))
-                return ignoreGravityComponent.Weightless;
-        // Goob end
 
         // Check if something other than the grid or map is overriding our gravity
         var ev = new IsWeightlessEvent();

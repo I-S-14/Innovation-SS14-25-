@@ -348,15 +348,6 @@ namespace Content.Shared.Movement.Systems
                 return;
             }
 
-            if (!MoverQuery.TryGetComponent(entity, out var moverComp))
-                return;
-
-            // Shitmed Change Start
-            var moverEntity = new Entity<InputMoverComponent>(entity, moverComp);
-            var moveEvent = new MoveInputEvent(moverEntity, moverComp.HeldMoveButtons, dir, state);
-            RaiseLocalEvent(entity, ref moveEvent);
-            // Shitmed Change End
-
             // For stuff like "Moving out of locker" or the likes
             // We'll relay a movement input to the parent.
             if (_container.IsEntityInContainer(entity) &&

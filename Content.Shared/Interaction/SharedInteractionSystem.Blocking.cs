@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
 using Content.Shared.Hands;
 using Content.Shared.Interaction.Components;
 using Content.Shared.Interaction.Events;
@@ -39,14 +37,7 @@ public partial class SharedInteractionSystem
         if (_relayInputMoverQuery.HasComp(ent))
             return;
 
-        // Goob start - fix BlockMovementComponent
-        // GOOB TODO: upstream this fix
-        // https://github.com/space-wizards/space-station-14/issues/45956
-        if (component.LifeStage == ComponentLifeStage.Removing || component.Deleted)
-            return;
-        // Goob end
-
-        args.Cancel(); // no more scurrying around
+        args.Cancel();
     }
 
     [SubscribeLocalEvent]

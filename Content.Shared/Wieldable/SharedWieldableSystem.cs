@@ -1,7 +1,3 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
-using System.Linq;
-using Content.Goobstation.Common.Weapons.NoWieldNeeded;
 using Content.Shared.Examine;
 using Content.Shared.Hands;
 using Content.Shared.Hands.Components;
@@ -29,6 +25,8 @@ using Robust.Shared.Audio.Systems;
 using Robust.Shared.Collections;
 using Robust.Shared.Timing;
 using Content.Shared.Item.ItemToggle;
+using System.Linq;
+using Content.Goobstation.Common.Weapons.NoWieldNeeded;
 using Content.Shared.Timing;
 
 namespace Content.Shared.Wieldable;
@@ -256,7 +254,10 @@ public abstract partial class SharedWieldableSystem : EntitySystem
         args.Cancelled = true;
     }
 
-    public bool CanWield(EntityUid uid, WieldableComponent component, EntityUid user, bool quiet = false, bool checkHolding = true) // Goob edit
+    /// <summary>
+    ///     Returns true if the given player can currently wield the given wieldable item.
+    /// </summary>
+    public bool CanWield(Entity<WieldableComponent?> wieldable, EntityUid user, bool quiet = false)
     {
         if (!Resolve(wieldable, ref wieldable.Comp, false))
             return false;
@@ -296,7 +297,7 @@ public abstract partial class SharedWieldableSystem : EntitySystem
     ///     Attempts to wield an item, starting a UseDelay after.
     /// </summary>
     /// <returns>True if the attempt wasn't blocked.</returns>
-    public bool TryWield(EntityUid used, WieldableComponent component, EntityUid user, bool showMessage = true) // Goob edit
+    public bool TryWield(Entity<WieldableComponent?> wieldable, EntityUid user)
     {
         if (!Resolve(wieldable, ref wieldable.Comp, false))
             return false;
@@ -350,15 +351,12 @@ public abstract partial class SharedWieldableSystem : EntitySystem
             return false;
         }
 
-        var selfMessage = Loc.GetString("wieldable-component-successful-wield", ("item", used));
-        var othersMessage = Loc.GetString("wieldable-component-successful-wield-other", ("user", Identity.Entity(user, EntityManager)), ("item", used));
-        if (showMessage) // Goob edit
-            _popup.PopupPredicted(selfMessage, othersMessage, user, user);
+        var selfMessage = Loc.GetString("wieldable-component-successful-wield", ("item", wieldable.Owner));
+        var othersMessage = Loc.GetString("wieldable-component-successful-wield-other", ("user", Identity.Entity(user, EntityManager)), ("item", wieldable.Owner));
+        _popup.PopupEntity(selfMessage, othersMessage, user, user);
 
-        _appearance.SetData(used, WieldableVisuals.Wielded, true); // Goobstation
-
-        var targEv = new ItemWieldedEvent(user);
-        RaiseLocalEvent(used, ref targEv);
+        var ev = new ItemWieldedEvent(user);
+        RaiseLocalEvent(wieldable.Owner, ref ev);
 
         return true;
     }

@@ -1,11 +1,8 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
 using Content.Shared.Blocking.Components;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Systems;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Containers;
-using Content.Shared.Damage.Components;
 
 namespace Content.Shared.Blocking;
 
@@ -44,14 +41,7 @@ public sealed partial class BlockingSystem
         if (args.Damage.GetTotal() <= 0)
             return;
 
-        // A shield should only block damage it can itself absorb. To determine that we need the Damageable component on it.
-        if (!TryComp<DamageableComponent>(item, out var dmgComp))
-            return;
-
-        if (!_toggle.IsActivated(item)) // Goobstation
-            return;
-
-        var blockFraction = blocking.IsBlocking ? blocking.ActiveBlockFraction : blocking.PassiveBlockFraction;
+        var blockFraction = blocking.IsRaised ? blocking.ActiveBlockFraction : blocking.PassiveBlockFraction;
         blockFraction = Math.Clamp(blockFraction, 0, 1);
 
         // This is how much damage the shield is attempting to block
@@ -72,19 +62,7 @@ public sealed partial class BlockingSystem
     [SubscribeLocalEvent]
     private void OnEntityTerminating(Entity<BlockingUserComponent> entity, ref EntityTerminatingEvent args)
     {
-        var modifier = component.IsBlocking ? component.ActiveBlockDamageModifier : component.PassiveBlockDamageModifer;
-        if (modifier == null)
-        {
-            return;
-        }
-
-        args.Damage = DamageSpecifier.ApplyModifierSet(args.Damage,
-            DamageSpecifier.PenetrateArmor(modifier, args.Damage.ArmorPenetration)); // Goob edit
-    }
-
-    private void OnEntityTerminating(EntityUid uid, BlockingUserComponent component, ref EntityTerminatingEvent args)
-    {
-        if (!TryComp<BlockingComponent>(component.BlockingItem, out var blockingComponent))
+        if (!_blockQuery.TryComp(entity.Comp.BlockingItem, out var blockComponent))
             return;
 
         StopBlocking((entity.Comp.BlockingItem.Value, blockComponent), entity);

@@ -23,8 +23,8 @@ namespace Content.Shared.Armor;
 /// </summary>
 public abstract partial class SharedArmorSystem : EntitySystem
 {
-    [Dependency] private readonly SharedBodySystem _body = default!;
     [Dependency] private ExamineSystemShared _examine = default!;
+    [Dependency] private readonly SharedBodySystem _body = default!;
 
     /// <inheritdoc />
     public override void Initialize()
@@ -131,22 +131,17 @@ public abstract partial class SharedArmorSystem : EntitySystem
             foreach (var part in coveredParts)
                 coverageText.Add(Loc.GetString("armor-coverage-type-" + part.ToString().ToLower()));
 
-            msg.PushNewline();
-            msg.AddMarkupOrThrow(Loc.GetString("armor-coverage-value", ("type", ContentLocalizationManager.FormatList(coverageText))));
-            // </Trauma>
+            // TODO: probably make these prototype fields or have a test that they all exist
+            var armorType = Loc.GetString("armor-damage-type-" + coefficientArmor.Key.Id.ToLower());
+            msg.AddMarkupOrThrow(Loc.GetString("armor-coefficient-value",
+                ("type", armorType),
+                ("value", MathF.Round((1f - coefficientArmor.Value) * 100, 1))
+            ));
         }
 
         foreach (var flatArmor in armorModifiers.FlatReductions)
         {
-            foreach (var coefficientArmor in armorModifiers.Coefficients)
-            {
-                msg.PushNewline();
-                var armorType = Loc.GetString("armor-damage-type-" + coefficientArmor.Key.Id.ToLower());
-                msg.AddMarkupOrThrow(Loc.GetString("armor-coefficient-value",
-                    ("type", armorType),
-                    ("value", MathF.Round((1f - coefficientArmor.Value) * 100, 1))
-                ));
-            }
+            msg.PushNewline();
 
             var armorType = Loc.GetString("armor-damage-type-" + flatArmor.Key.Id.ToLower());
             msg.AddMarkupOrThrow(Loc.GetString("armor-reduction-value",

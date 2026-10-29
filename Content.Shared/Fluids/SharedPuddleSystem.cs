@@ -52,6 +52,7 @@ public abstract partial class SharedPuddleSystem : EntitySystem
     [Dependency] private EntityQuery<ReactiveComponent> _reactiveQuery = default!;
     [Dependency] private EntityQuery<EvaporationComponent> _evaporationQuery = default!;
     [Dependency] private EntityQuery<PuddleComponent> _puddleQuery = default!;
+    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
 
     private ProtoId<ReagentPrototype>[] _standoutReagents = [];
 
@@ -230,7 +231,8 @@ public abstract partial class SharedPuddleSystem : EntitySystem
             // Kinda EH
             // Could potentially do alpha per-solution but future problem.
 
-            color = solution.GetPuddleColorWithout(_prototypeManager, _standoutReagents); // Goob
+            color = solution.GetColorWithout(ProtoMan, _standoutReagents);
+            color = color.WithAlpha(0.7f);
 
             foreach (var standout in _standoutReagents)
             {
@@ -241,7 +243,7 @@ public abstract partial class SharedPuddleSystem : EntitySystem
                 var interpolateValue = quantity.Float() / solution.Volume.Float();
                 var standoutReagent = _prototypeManager.Index<ReagentPrototype>(standout); // Goob
                 color = Color.InterpolateBetween(color,
-                    standoutReagent.PuddleColor ?? standoutReagent.SubstanceColor, // Goob
+                    ProtoMan.Index<ReagentPrototype>(standout).SubstanceColor,
                     interpolateValue);
             }
 

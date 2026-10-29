@@ -20,6 +20,7 @@ public sealed partial class OwOAccentSystem : RelayAccentSystem<OwOAccentCompone
         new Dictionary<string, string>
         {
             { "you", "wu" },
+            { "ты", "ти" }, // CorvaxGoob-Localization
         }.ToFrozenDictionary();
 
     public override string Accentuate(string message, Entity<OwOAccentComponent>? ent = null)

@@ -16,6 +16,7 @@ public sealed partial class ExplodeOnTriggerSystem : XOnTriggerSystem<ExplodeOnT
 
 public sealed partial class ExplosionOnTriggerSystem : XOnTriggerSystem<ExplosionOnTriggerComponent>
 {
+    [Dependency] private SharedExplosionSystem _explosion = default!;
 
     protected override void OnTrigger(Entity<ExplosionOnTriggerComponent> ent, EntityUid target, ref TriggerEvent args)
     {

@@ -20,11 +20,11 @@ using Content.Shared.Toggleable;
 using Content.Shared.Verbs;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Systems;
-using Robust.Shared.Player;
 using Robust.Shared.Timing;
 using Robust.Shared.Toolshed.Syntax;
 using Robust.Shared.Utility;
 using Robust.Shared.Physics;
+using Robust.Shared.Player;
 
 namespace Content.Shared.Blocking;
 
@@ -179,12 +179,9 @@ public sealed partial class BlockingSystem : EntitySystem
         if (playerTileRef != null)
         {
             var intersecting = _lookup.GetLocalEntitiesIntersecting(playerTileRef.Value, 0f);
-            var mobQuery = GetEntityQuery<MobStateComponent>();
-            var physicsQuery = GetEntityQuery<PhysicsComponent>(); // Omu - Fix non-collidable entities such as pais or posibrains preventing blocking.
             foreach (var uid in intersecting)
             {
-                // if (uid != user && mobQuery.HasComponent(uid) && Transform(uid).ParentUid == xform.ParentUid) // CorvaxGoob-Fixes
-                if (uid != user && mobQuery.HasComponent(uid) && physicsQuery.TryGetComponent(uid, out var physicsComp) && physicsComp.CanCollide) // Omu - Fix non-collidable entities such as pais or posibrains preventing blocking.
+                if (uid != user && _mobQuery.HasComponent(uid))
                 {
                     TooCloseError(user);
                     return false;
@@ -351,10 +348,8 @@ public sealed partial class BlockingSystem : EntitySystem
         if (!args.CanInteract || !args.CanAccess)
             return;
 
-        var fraction = component.IsBlocking ? component.ActiveBlockFraction : component.PassiveBlockFraction;
-        if (!_toggle.IsActivated(uid)) // Goobstation
-            fraction = 0f;
-        var modifier = component.IsBlocking ? component.ActiveBlockDamageModifier : component.PassiveBlockDamageModifer;
+        var fraction = entity.Comp.IsRaised ? entity.Comp.ActiveBlockFraction : entity.Comp.PassiveBlockFraction;
+        var modifier = GetBlockingModifier(entity);
 
         var msg = new FormattedMessage();
         msg.AddMarkupOrThrow(Loc.GetString("blocking-fraction", ("value", MathF.Round(fraction * 100, 1))));

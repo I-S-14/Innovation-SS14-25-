@@ -11,7 +11,6 @@ using Content.Shared.Storage.EntitySystems;
 using Content.Shared.Verbs;
 using JetBrains.Annotations;
 using Robust.Shared.GameStates;
-using Robust.Shared.Map; // Goobstation
 using Robust.Shared.Map;
 using Robust.Shared.Physics.Systems;
 using Robust.Shared.Prototypes;
@@ -25,12 +24,6 @@ namespace Content.Shared.Stacks;
 [UsedImplicitly]
 public abstract partial class SharedStackSystem : EntitySystem
 {
-    [Dependency] private readonly IPrototypeManager _prototype = default!;
-    [Dependency] protected readonly SharedAppearanceSystem Appearance = default!;
-    [Dependency] protected readonly SharedHandsSystem Hands = default!;
-    [Dependency] protected readonly SharedTransformSystem Xform = default!;
-    [Dependency] protected readonly SharedPopupSystem Popup = default!;
-    [Dependency] private readonly SharedUserInterfaceSystem _ui = default!; // Goobstation - Custom stack splitting dialog
     [Dependency] private IViewVariablesManager _vvm = default!;
     [Dependency] private SharedAppearanceSystem _appearance = default!;
     [Dependency] private SharedHandsSystem _hands = default!;
@@ -38,7 +31,9 @@ public abstract partial class SharedStackSystem : EntitySystem
     [Dependency] private SharedPhysicsSystem _physics = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private SharedStorageSystem _storage = default!;
+
     [Dependency] private EntityQuery<StackComponent> _stackQuery;
+    [Dependency] protected readonly SharedHandsSystem Hands = default!;
 
     // TODO: These should be in the prototype.
     public static readonly int[] DefaultSplitAmounts = { 1, 5, 10, 20, 30, 50 };
@@ -105,9 +100,11 @@ public abstract partial class SharedStackSystem : EntitySystem
                 break;
         }
 
-        var localRotation = Transform(args.Used).LocalRotation;
-        _storage.PlayPickupAnimation(args.Used, popupPos, userCoords, localRotation, args.User);
-        args.InteractionParticle = false; // Goob
+        if (ent.Comp.AnimatePickup)
+        {
+            var localRotation = Transform(args.Used).LocalRotation;
+            _storage.PlayPickupAnimation(args.Used, popupPos, userCoords, localRotation, args.User);
+        }
     }
 
     [SubscribeLocalEvent]
@@ -121,15 +118,7 @@ public abstract partial class SharedStackSystem : EntitySystem
         _appearance.SetData(ent.Owner, StackVisuals.Hide, false, appearance);
     }
 
-    /// <summary>
-    /// Goobstation - virtual method to allow calling from shared.
-    /// Does nothing on the client.
-    /// </summary>
-    public virtual EntityUid? Split(EntityUid uid, int amount, EntityCoordinates spawnPosition, StackComponent? stack = null)
-    {
-        return null;
-    }
-
+    [SubscribeLocalEvent]
     private void OnStackGetState(Entity<StackComponent> ent, ref ComponentGetState args)
     {
         args.State = new StackComponentState(ent.Comp.Count, ent.Comp.MaxCountOverride, ent.Comp.Unlimited);
@@ -227,18 +216,16 @@ public abstract partial class SharedStackSystem : EntitySystem
 
             args.Verbs.Add(verb);
         }
-        // Goobstation - Custom stack splitting dialog
-        AlternativeVerb custom = new()
+
+        var half = (ent.Comp.Count + 1) / 2;
+        AlternativeVerb halve = new()
         {
-            Text = Loc.GetString("comp-stack-split-custom"),
+            Text = Loc.GetString("comp-stack-split-halve"),
             Category = VerbCategory.Split,
-            Act = () =>
-            {
-                _ui.OpenUi(user, StackCustomSplitUiKey.Key, user);
-            },
-            Priority = priority - 1
+            Act = () => UserSplit(ent, user, half),
+            Priority = ent.Comp.HalfOnAltInteract ? 1 : priority - 1,
         };
-        args.Verbs.Add(custom);
+        args.Verbs.Add(halve);
     }
 
     #endregion
@@ -256,7 +243,7 @@ public abstract partial class SharedStackSystem : EntitySystem
     ///     This empty virtual method allows for UserSplit() to be called on the server from the client.
     ///     When prediction is improved, those two methods should be moved to shared, in order to predict the splitting itself (not just the verbs)
     /// </remarks>
-    public virtual void UserSplit(Entity<StackComponent> stack, Entity<TransformComponent?> user, int amount) // Goob public
+    public void UserSplit(Entity<StackComponent> stack, EntityUid user, int amount)
     {
         if (amount <= 0)
         {

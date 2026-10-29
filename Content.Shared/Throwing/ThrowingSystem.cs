@@ -36,9 +36,6 @@ public sealed partial class ThrowingSystem : EntitySystem
     private float _frictionModifier;
     private float _airDamping;
 
-    // <Trauma>
-    [Dependency] private readonly INetManager _net = default!;
-    // </Trauma>
     [Dependency] private IGameTiming _gameTiming = default!;
     [Dependency] private SharedPhysicsSystem _physics = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
@@ -50,6 +47,7 @@ public sealed partial class ThrowingSystem : EntitySystem
     [Dependency] private EntityQuery<AnchorableComponent> _anchorableQuery = default!;
     [Dependency] private EntityQuery<PhysicsComponent> _physicsQuery = default!;
     [Dependency] private EntityQuery<ProjectileComponent> _projectileQuery = default!;
+    [Dependency] private readonly INetManager _net = default!;
 
     public override void Initialize()
     {
@@ -81,8 +79,7 @@ public sealed partial class ThrowingSystem : EntitySystem
         if (mapPos.MapId != thrownPos.MapId)
             return false;
 
-        TryThrow(uid, mapPos.Position - thrownPos.Position, baseThrowSpeed, user, pushbackRatio, friction, compensateFriction: compensateFriction, recoil: recoil, animated: animated, playSound: playSound, doSpin: doSpin, unanchor: unanchor, throwInAir: throwInAir, // WWDP throwInAir
-            predicted: predicted); // Trauma
+        return TryThrow(uid, mapPos.Position - thrownPos.Position, baseThrowSpeed, user, pushbackRatio, friction, compensateFriction: compensateFriction, recoil: recoil, animated: animated, playSound: playSound, doSpin: doSpin, unanchor: unanchor);
     }
 
     /// <summary>
@@ -155,8 +152,8 @@ public sealed partial class ThrowingSystem : EntitySystem
         bool throwInAir = true, // WWDP throwInAir
         bool predicted = true) // Trauma
     {
-        if (!float.IsFinite(baseThrowSpeed) || baseThrowSpeed <= 0 || !float.IsFinite(direction.X) || !float.IsFinite(direction.Y) || direction == Vector2.Zero || friction < 0) // Goob
-            return;
+        if (baseThrowSpeed <= 0 || direction == Vector2Helpers.Infinity || direction == Vector2Helpers.NaN || direction == Vector2.Zero || friction < 0)
+            return false;
 
         // Unanchor the entity if applicable
         if (unanchor == ThrowingUnanchorStrength.All ||

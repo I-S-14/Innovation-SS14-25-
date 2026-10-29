@@ -1,6 +1,3 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
-using Content.Shared.Clothing.EntitySystems;
 using Content.Shared.ActionBlocker;
 using Content.Shared.Examine;
 using Content.Shared.IdentityManagement;
@@ -36,26 +33,7 @@ public sealed partial class ItemToggleSystem : EntitySystem
     [Dependency] private ActionBlockerSystem _actionBlocker = default!;
     [Dependency] private IGameTiming _gameTiming = default!;
 
-    private EntityQuery<ItemToggleComponent> _query;
-
-    public override void Initialize()
-    {
-        base.Initialize();
-
-        _query = GetEntityQuery<ItemToggleComponent>();
-
-        SubscribeLocalEvent<ItemToggleComponent, ComponentStartup>(OnStartup);
-        SubscribeLocalEvent<ItemToggleComponent, MapInitEvent>(OnMapInit);
-        SubscribeLocalEvent<ItemToggleComponent, ItemUnwieldedEvent>(TurnOffOnUnwielded);
-        SubscribeLocalEvent<ItemToggleComponent, ItemWieldedEvent>(TurnOnOnWielded);
-        SubscribeLocalEvent<ItemToggleComponent, UseInHandEvent>(OnUseInHand, before: [typeof(ClothingSystem)]); // Goobstation - order changes, batons used before equipped
-        SubscribeLocalEvent<ItemToggleComponent, GetVerbsEvent<ActivationVerb>>(OnActivateVerb);
-        SubscribeLocalEvent<ItemToggleComponent, ActivateInWorldEvent>(OnActivate);
-
-        SubscribeLocalEvent<ItemToggleHotComponent, IsHotEvent>(OnIsHotEvent);
-
-        SubscribeLocalEvent<ItemToggleActiveSoundComponent, ItemToggledEvent>(UpdateActiveSound);
-    }
+    [Dependency] private EntityQuery<ItemToggleComponent> _itemToggleQuery = default!;
 
     [SubscribeLocalEvent]
     private void OnStartup(Entity<ItemToggleComponent> ent, ref ComponentStartup args)
@@ -344,9 +322,6 @@ public sealed partial class ItemToggleSystem : EntitySystem
     [SubscribeLocalEvent]
     private void TurnOffOnUnwielded(Entity<ItemToggleComponent> ent, ref ItemUnwieldedEvent args)
     {
-        if (!ent.Comp.WieldToggle) // Goobstation
-            return;
-
         TryDeactivate((ent, ent.Comp), args.User);
     }
 
@@ -356,11 +331,7 @@ public sealed partial class ItemToggleSystem : EntitySystem
     [SubscribeLocalEvent]
     private void TurnOnOnWielded(Entity<ItemToggleComponent> ent, ref ItemWieldedEvent args)
     {
-        if (!ent.Comp.WieldToggle) // Goobstation
-            return;
-
-        // FIXME: for some reason both client and server play sound
-        TryActivate((ent, ent.Comp));
+        TryActivate((ent, ent.Comp), args.User);
     }
 
     public bool IsActivated(Entity<ItemToggleComponent?> ent)

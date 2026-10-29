@@ -10,6 +10,7 @@ using Content.Shared.Interaction.Events;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Popups;
+using Content.Shared.Suicide;
 using Content.Shared.Verbs;
 using Content.Shared.Weapons.Melee;
 using Content.Shared.Weapons.Melee.Events;
@@ -19,7 +20,6 @@ using Content.Shared.Body.Systems; // Goobstation decapitation
 using Content.Shared._Shitmed.Medical.Surgery.Wounds.Systems; // Goobstation decapitation
 using Content.Shared.Chat;
 using Robust.Shared.Player;
-using Content.Shared.Suicide;
 namespace Content.Shared.Execution;
 
 /// <summary>
@@ -27,8 +27,6 @@ namespace Content.Shared.Execution;
 /// </summary>
 public sealed partial class SharedExecutionSystem : EntitySystem
 {
-    [Dependency] private readonly WoundSystem _wounds = default!; // Goobstation decapitation
-    [Dependency] private readonly SharedBodySystem _body = default!; // Goobstation decapitation
     [Dependency] private ActionBlockerSystem _actionBlocker = default!;
     [Dependency] private SharedAudioSystem _audio = default!;
     [Dependency] private SharedDoAfterSystem _doAfter = default!;
@@ -38,6 +36,8 @@ public sealed partial class SharedExecutionSystem : EntitySystem
     [Dependency] private SharedCombatModeSystem _combat = default!;
     [Dependency] private SharedExecutionSystem _execution = default!;
     [Dependency] private SharedMeleeWeaponSystem _melee = default!;
+    [Dependency] private readonly WoundSystem _wounds = default!; // Goobstation decapitation
+    [Dependency] private readonly SharedBodySystem _body = default!; // Goobstation decapitation
 
     /// <inheritdoc/>
     public override void Initialize()
@@ -157,29 +157,7 @@ public sealed partial class SharedExecutionSystem : EntitySystem
         args.Handled = true;
     }
 
-    public void ShowExecutionInternalPopup(string locString, EntityUid attacker, EntityUid victim, EntityUid weapon, bool predict = true) // Made public by goobstation
-    {
-        if (predict)
-        {
-            _popup.PopupClient(
-               Loc.GetString(locString, ("attacker", Identity.Entity(attacker, EntityManager)), ("victim", Identity.Entity(victim, EntityManager)), ("weapon", weapon)),
-               attacker,
-               attacker,
-               PopupType.MediumCaution
-               );
-        }
-        else
-        {
-            _popup.PopupEntity(
-               Loc.GetString(locString, ("attacker", Identity.Entity(attacker, EntityManager)), ("victim", Identity.Entity(victim, EntityManager)), ("weapon", weapon)),
-               attacker,
-               attacker,
-               PopupType.MediumCaution
-               );
-        }
-    }
-
-    public void ShowExecutionExternalPopup(string locString, EntityUid attacker, EntityUid victim, EntityUid weapon) // Made public by goobstation
+    private void ShowExecutionPopup(string targetMessage, string otherMessage, EntityUid attacker, EntityUid victim, EntityUid weapon)
     {
         _popup.PopupEntity(
             Loc.GetString(targetMessage, ("attacker", Identity.Entity(attacker, EntityManager)), ("victim", Identity.Entity(victim, EntityManager)), ("weapon", weapon)),

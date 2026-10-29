@@ -10,7 +10,6 @@ using Content.Shared.Inventory;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Tag;
 using Content.Shared.Throwing;
-using Content.Shared.Weapons.Ranged.Components;
 using Content.Shared.Whitelist;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Map;
@@ -23,6 +22,7 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
+using Content.Shared.Weapons.Ranged.Components;
 
 namespace Content.Shared.Projectiles;
 
@@ -234,23 +234,8 @@ public abstract partial class SharedProjectileSystem : EntitySystem
 
     private void PreventCollision(EntityUid uid, ProjectileComponent component, ref PreventCollideEvent args)
     {
-        // Goobstation - Crawling fix
-        if (TryComp<RequireProjectileTargetComponent>(args.OtherEntity, out var requireTarget) && requireTarget.IgnoreThrow && requireTarget.Active)
-            return;
-
-        if (component.IgnoredEntities.Contains(GetNetEntity(args.OtherEntity))) // CorvaxGoob - NetEntity
-        {
-            args.Cancelled = true;
-            return;
-        }
-
-        if ((component.Shooter == args.OtherEntity || component.Weapon == args.OtherEntity) &&
-            component.Weapon != null && _tag.HasTag(component.Weapon.Value, GunCanAimShooterTag) &&
-            TryComp(uid, out TargetedProjectileComponent? targeted) && targeted.Target == args.OtherEntity)
-            return;
-        // /Goobstation
-
-        if (component.IgnoreShooter && (args.OtherEntity == component.Shooter || args.OtherEntity == component.Weapon))
+        if (_timing.CurTime < component.WhenToStopIgnoringShooter
+            && (args.OtherEntity == component.Shooter || args.OtherEntity == component.Weapon))
         {
             args.Cancelled = true;
         }
@@ -312,13 +297,6 @@ public record struct ProjectileShotEvent;
 /// </summary>
 [ByRefEvent]
 public record struct ProjectileHitEvent(DamageSpecifier Damage, EntityUid Target, EntityUid? Shooter = null);
-
-// CorvaxGoob
-/// <summary>
-/// Вызывается после попадания и просчёта урона
-/// </summary>
-[ByRefEvent]
-public record struct AfterProjectileHitEvent(DamageSpecifier Damage, DamageSpecifier? ModifiedDamage, EntityUid Target, EntityUid? Shooter = null);
 
 /// <summary>
 /// Raised before a projectile hits an entity

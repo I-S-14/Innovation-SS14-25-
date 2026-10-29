@@ -11,7 +11,6 @@ using Content.Shared.Construction.EntitySystems;
 using Content.Shared.Database;
 using Content.Shared.Emag.Systems;
 using Content.Shared.Examine;
-using Content.Shared.Lock;
 using Content.Shared.Interaction;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Nutrition.EntitySystems;
@@ -24,6 +23,7 @@ using Robust.Shared.Physics.Events;
 using Robust.Shared.Timing;
 using Content.Shared.Body.Components;
 using Content.Shared.Emag.Components;
+using Content.Shared.Lock;
 
 namespace Content.Shared.Materials;
 
@@ -33,8 +33,6 @@ namespace Content.Shared.Materials;
 /// </summary>
 public abstract partial class SharedMaterialReclaimerSystem : EntitySystem
 {
-    [Dependency] private readonly EntityWhitelistSystem _whitelistSystem = default!;
-    [Dependency] private readonly LockSystem _lockSystem = default!; // Goobstation - Recycle Update
     [Dependency] private EmagSystem _emag = default!;
     [Dependency] private EntityWhitelistSystem _whitelist = default!;
     [Dependency] private ISharedAdminLogManager _adminLog = default!;
@@ -44,6 +42,7 @@ public abstract partial class SharedMaterialReclaimerSystem : EntitySystem
     [Dependency] protected IGameTiming Timing = default!;
     [Dependency] protected SharedAmbientSoundSystem AmbientSound = default!;
     [Dependency] protected SharedContainerSystem Container = default!;
+
     [Dependency] private EntityQuery<MaterialReclaimerComponent> _materialReclaimerQuery;
     [Dependency] private EntityQuery<SolutionTransferComponent> _solutionTransferQuery;
 
@@ -132,15 +131,7 @@ public abstract partial class SharedMaterialReclaimerSystem : EntitySystem
         if (!CanStart(uid, component))
             return false;
 
-        // Goobstation - Recycle update - Check to prevent recycling closed lockers
-        if (HasComp<RecyclableOnUnlockComponent>(item) && _lockSystem.IsLocked(item))
-            return false;
-
-        // Goobstation
-        if (HasComp<MaterialReclaimerImmuneComponent>(item))
-            return false;
-
-        if (HasComp<MobStateComponent>(item) && !CanGib(uid, item, component)) // whitelist? We be gibbing, boy!
+        if (HasComp<MobStateComponent>(item) && !CanDamageAndGib(uid, item, component)) // whitelist? We be gibbing, boy!
             return false;
 
         if (_whitelist.IsWhitelistFail(component.Whitelist, item) ||

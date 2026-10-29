@@ -1,4 +1,3 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
 using System.Numerics;
 using Content.Shared._Shitmed.Weapons.Ranged.Events; // Shitmed Change
 using Content.Shared.ActionBlocker;
@@ -48,8 +47,6 @@ namespace Content.Shared.Weapons.Ranged.Systems;
 
 public abstract partial class SharedGunSystem : EntitySystem
 {
-    [Dependency] protected readonly SharedMapSystem MapSystem = default!;
-    [Dependency] protected readonly IPrototypeManager ProtoManager = default!;
     [Dependency] private ActionBlockerSystem _actionBlockerSystem = default!;
     [Dependency] private EntityWhitelistSystem _whitelistSystem = default!;
     [Dependency] private INetManager _netManager = default!;
@@ -530,24 +527,6 @@ public abstract partial class SharedGunSystem : EntitySystem
         Physics.UpdateIsPredicted(uid, physics); // Trauma - predict this shit
 
         TransformSystem.SetWorldRotation(uid, direction.ToWorldAngle() + projectile.Angle);
-        if (targetCoordinates.HasValue) // Goobstation
-            projectile.TargetCoordinates = targetCoordinates.Value; // Goobstation
-
-        // <Trauma>
-        if (user is {} userUid)
-        {
-            // so you can't shoot yourself if you are moving fast enough to catch up with it
-            // Goob - unless you are aiming at yourself on purpose, IgnoredEntities is checked before GunCanAimShooter
-            if (!TryComp<TargetedProjectileComponent>(uid, out var targeted) || targeted.Target != userUid)
-            {
-                projectile.IgnoredEntities.Add(GetNetEntity(userUid)); // CorvaxGoob - NetEntity
-                Dirty(uid, projectile);
-            }
-
-            var ev = new PlayerShotProjectileEvent(uid, userUid);
-            RaiseLocalEvent(ref ev);
-        }
-        // </Trauma>
 
         var ev = new ProjectileShotEvent();
         RaiseLocalEvent(uid, ref ev);
@@ -595,9 +574,8 @@ public abstract partial class SharedGunSystem : EntitySystem
         var coordinates = xform.Coordinates;
         coordinates = coordinates.Offset(offsetPos);
 
-        TransformSystem.SetLocalRotation(entity, rand.NextAngle(), xform);
-        // </Trauma>
-        TransformSystem.SetCoordinates(entity, xform, coordinates);
+        TransformSystem.SetCoordinates(entity, xform, coordinates, rotation: Random.NextAngle());
+        TransformSystem.AttachToGridOrMap(entity, xform);
 
         // decides direction the casing ejects and only when not cycling
         if (angle != null)
@@ -608,7 +586,9 @@ public abstract partial class SharedGunSystem : EntitySystem
         }
         if (playSound && TryComp<CartridgeAmmoComponent>(entity, out var cartridge))
         {
-            Audio.PlayPredicted(cartridge.EjectSound, entity, user, AudioParams.Default.WithVariation(SharedContentAudioSystem.DefaultVariation).WithVolume(-1f)); // Trauma - predicted
+            var audioParams = cartridge.EjectSound?.Params ?? AudioParams.Default;
+            audioParams = audioParams.AddVolume(-1f).WithVariation(SharedContentAudioSystem.DefaultVariation);
+            Audio.PlayPvs(cartridge.EjectSound, entity, audioParams);
         }
     }
 

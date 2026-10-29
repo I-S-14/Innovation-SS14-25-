@@ -28,13 +28,13 @@ using Robust.Shared.Audio.Systems;
 using Robust.Shared.Containers;
 using Robust.Shared.Serialization;
 using Robust.Shared.Timing;
-using Content.Goobstation.Shared.MartialArts.Components;
 using Content.Shared.Tools.Systems;
 using Content.Shared.Tools.Components;
 using Robust.Shared.Prototypes;
+using Content.Shared.Gibbing.Systems;
 using Content.Shared.Gibbing;
 using Content.Shared.Movement.Events;
-using Content.Shared.Gibbing.Systems;
+using Content.Goobstation.Shared.MartialArts.Components;
 
 namespace Content.Shared.Kitchen;
 
@@ -43,7 +43,6 @@ namespace Content.Shared.Kitchen;
 /// </summary>
 public sealed partial class SharedKitchenSpikeSystem : EntitySystem
 {
-    [Dependency] private readonly SharedBodySystem _bodySystem = default!;
     [Dependency] private IGameTiming _gameTiming = default!;
     [Dependency] private ISharedAdminLogManager _logger = default!;
     [Dependency] private DamageableSystem _damageableSystem = default!;
@@ -58,6 +57,7 @@ public sealed partial class SharedKitchenSpikeSystem : EntitySystem
     [Dependency] private SharedInteractionSystem _interaction = default!;
     [Dependency] private SharedPopupSystem _popupSystem = default!;
     [Dependency] private SharedToolSystem _toolSystem = default!;
+    [Dependency] private readonly SharedBodySystem _bodySystem = default!;
 
     public override void Initialize()
     {

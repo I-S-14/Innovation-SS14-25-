@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: MIT
-
 using Content.Shared.Objectives;
 using Content.Shared.Roles;
 using Robust.Shared.Prototypes;
@@ -22,14 +20,13 @@ public sealed class RequestCharacterInfoEvent : EntityEventArgs
 public sealed class CharacterInfoEvent : EntityEventArgs
 {
     public readonly NetEntity NetEntity;
-    public readonly ProtoId<JobPrototype>? JobProto; // CorvaxGoob
+    public readonly ProtoId<JobPrototype>? Job;
     public readonly Dictionary<string, List<ObjectiveInfo>> Objectives;
     public readonly string? Briefing;
 
-    public CharacterInfoEvent(NetEntity netEntity, ProtoId<JobPrototype>? jobProto, Dictionary<string, List<ObjectiveInfo>> objectives, string? briefing) // CorvaxGoob
+    public CharacterInfoEvent(NetEntity netEntity, Dictionary<string, List<ObjectiveInfo>> objectives, string? briefing, ProtoId<JobPrototype>? job)
     {
         NetEntity = netEntity;
-        JobProto = jobProto; // CorvaxGoob
         Objectives = objectives;
         Briefing = briefing;
         Job = job;

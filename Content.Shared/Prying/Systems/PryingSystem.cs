@@ -24,12 +24,12 @@ namespace Content.Shared.Prying.Systems;
 /// </summary>
 public sealed partial class PryingSystem : EntitySystem
 {
-    [Dependency] private readonly UseDelaySystem _delay = default!; // Goobstation
     [Dependency] private ISharedAdminLogManager _adminLog = default!;
     [Dependency] private SharedDoAfterSystem _doAfterSystem = default!;
     [Dependency] private SharedAudioSystem _audioSystem = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private AlertsSystem _alerts = default!;
+    [Dependency] private readonly UseDelaySystem _delay = default!; // Goobstation
 
     public override void Initialize()
     {

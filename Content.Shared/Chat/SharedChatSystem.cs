@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Collections.Frozen;
-using Content.Shared._Starlight.CollectiveMind; // Goobstation - Starlight collective mind port
 using System.Linq;
 using System.Text.RegularExpressions;
 using Content.Shared._EinsteinEngines.Language;
@@ -23,6 +22,7 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Serialization; // Einstein Engines - Language
 using Robust.Shared.Utility;
+using Content.Shared._Starlight.CollectiveMind;
 
 namespace Content.Shared.Chat;
 
@@ -57,9 +57,6 @@ public abstract partial class SharedChatSystem : EntitySystem
     public static readonly string DefaultChannelPrefix = $"{RadioChannelPrefix}{DefaultChannelKey}";
     public static readonly ProtoId<SpeechVerbPrototype> DefaultSpeechVerb = "Default";
 
-    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly SharedLanguageSystem _language = default!; // Einstein Engines - Language
     [Dependency] protected IConfigurationManager Config = default!;
     [Dependency] private INetManager _net = default!;
     [Dependency] protected IRobustRandom Random = default!;
@@ -68,6 +65,7 @@ public abstract partial class SharedChatSystem : EntitySystem
     [Dependency] private EntityWhitelistSystem _whitelist = default!;
     [Dependency] private SharedAudioSystem _audio = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
 
     /// <summary>
     /// Cache of the keycodes for faster lookup.
@@ -87,7 +85,8 @@ public abstract partial class SharedChatSystem : EntitySystem
         SubscribeAllEvent<ChatLinkClickedRequestEvent>(OnChatMessageLinkClicked);
         CacheRadios();
         CacheEmotes();
-        CacheCollectiveMinds(); // Goobstation - Starlight collective mind port
+
+        Subs.CVar(Config, CCVars.ChatNameLinks, v => ChatNameLinks = v, true);
     }
 
     protected virtual void OnPrototypeReload(PrototypesReloadedEventArgs obj)

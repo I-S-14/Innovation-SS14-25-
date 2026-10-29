@@ -19,6 +19,10 @@ using Robust.Shared.Containers;
 using Robust.Shared.Map;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
+using Content.Shared.Damage.Components;
+using Content.Shared.DeviceNetwork;
+using Content.Shared.Station;
+using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Medical.SuitSensors;
 
@@ -136,6 +140,9 @@ public abstract partial class SharedSuitSensorSystem : EntitySystem
     {
         args.Affected = true;
         args.Disabled = true;
+
+        if (HasComp<EmpDisabledComponent>(ent)) // Goob
+            return;
 
         ent.Comp.PreviousMode = ent.Comp.Mode;
         SetSensor(ent.AsNullable(), SuitSensorMode.SensorOff, null);
@@ -432,7 +439,7 @@ public abstract partial class SharedSuitSensorSystem : EntitySystem
                 }
 
                 status.Coordinates = GetNetCoordinates(coordinates);
-                status.IsCommandTracker = sensor.CommandTracker; // Goob station
+                status.IsCommandTracker = sensor.CommandTracker; //Goob station
                 break;
         }
 

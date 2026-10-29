@@ -15,13 +15,13 @@ namespace Content.Shared.Trigger.Systems;
 
 public sealed partial class ScramOnTriggerSystem : XOnTriggerSystem<ScramOnTriggerComponent>
 {
-    [Dependency] private readonly SharedContainerSystem _container = default!; // Goobstation
     [Dependency] private PullingSystem _pulling = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private IRobustRandom _random = default!;
     [Dependency] private SharedAudioSystem _audio = default!;
     [Dependency] private INetManager _net = default!;
     [Dependency] private TurfSystem _turfSystem = default!;
+    [Dependency] private readonly SharedContainerSystem _container = default!; // Goobstation
 
     protected override void OnTrigger(Entity<ScramOnTriggerComponent> ent, EntityUid target, ref TriggerEvent args)
     {

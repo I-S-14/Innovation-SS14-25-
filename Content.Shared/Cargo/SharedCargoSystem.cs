@@ -4,17 +4,17 @@ using Content.Shared.Access.Components;
 using Content.Shared.Access.Systems;
 using Content.Shared.Cargo.Components;
 using Content.Shared.Cargo.Prototypes;
-using Content.Shared.Containers; // CorvaxGoob-CargoFeatures
-using Content.Shared.IdentityManagement;
-using Content.Shared.Item;
-using Content.Shared.Prototypes;
-using Content.Shared.Storage.Components;
 using Content.Shared.HijackBeacon;
 using JetBrains.Annotations;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
+using Content.Shared.Containers;
+using Content.Shared.IdentityManagement;
+using Content.Shared.Item;
+using Content.Shared.Prototypes;
+using Content.Shared.Storage.Components;
 
 namespace Content.Shared.Cargo;
 

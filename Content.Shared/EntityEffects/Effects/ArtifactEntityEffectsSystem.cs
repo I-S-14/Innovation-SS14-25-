@@ -31,6 +31,7 @@ public sealed partial class ArtifactDurabilityRestoreEntityEffectsSystem : Entit
 public sealed partial class ArtifactUnlockEntityEffectSystem : EntityEffectSystem<XenoArtifactComponent, ArtifactUnlock>
 {
     [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private SharedXenoArtifactSystem _xenoArtifact = default!;
 
     protected override void Effect(Entity<XenoArtifactComponent> entity, ref EntityEffectEvent<ArtifactUnlock> args)
     {

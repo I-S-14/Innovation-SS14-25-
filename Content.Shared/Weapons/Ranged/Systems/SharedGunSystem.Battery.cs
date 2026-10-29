@@ -110,8 +110,7 @@ public abstract partial class SharedGunSystem
 
     private (EntityUid? Entity, IShootable) GetShootable(BatteryAmmoProviderComponent component, EntityCoordinates coordinates)
     {
-
-        var ent = PredictedSpawnAtPosition(component.Prototype, coordinates); // Trauma - predicted
+        var ent = SpawnAtPosition(component.Prototype, coordinates);
         return (ent, EnsureShootable(ent));
     }
 

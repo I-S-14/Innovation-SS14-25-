@@ -37,18 +37,15 @@ public sealed class SurveillanceCameraMonitorUiState(
     /// </summary>
     public DeviceAddress ActiveAddress = activeAddress;
 
-    // Known cameras, by address and name.
-    public Dictionary<string, (string, (NetEntity, NetCoordinates))> Cameras { get; } // Goobstation
+    /// <summary>
+    /// Currently active subnet.
+    /// </summary>
+    public ProtoId<DeviceFrequencyPrototype>? ActiveSubnet { get; } = activeSubnet;
 
-    public Dictionary<string, (string, (NetEntity, NetCoordinates))> MobileCameras { get; } // Goobstation
-
-    public SurveillanceCameraMonitorUiState(NetEntity? activeCamera, string activeAddress, Dictionary<string, (string, (NetEntity, NetCoordinates))> cameras, Dictionary<string, (string, (NetEntity, NetCoordinates))> mobileCameras) // Goobstation
-    {
-        ActiveCamera = activeCamera;
-        ActiveAddress = activeAddress;
-        Cameras = cameras;
-        MobileCameras = mobileCameras; // Goobstation
-    }
+    /// <summary>
+    /// Known cameras, by address and name.
+    /// </summary>
+    public Dictionary<DeviceAddress, string> Cameras { get; } = cameras;
 }
 
 [Serializable, NetSerializable]

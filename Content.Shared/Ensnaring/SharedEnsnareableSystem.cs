@@ -1,7 +1,3 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
-using Content.Goobstation.Common.DoAfter;
-using Content.Shared._Goobstation.Wizard.Mutate;
 using System.Linq;
 using Content.Shared.Alert;
 using Content.Shared.Damage.Components;
@@ -20,6 +16,8 @@ using Robust.Shared.Audio.Systems;
 using Robust.Shared.Containers;
 using Robust.Shared.Network;
 using Robust.Shared.Serialization;
+using Content.Goobstation.Common.DoAfter;
+using Content.Shared._Goobstation.Wizard.Mutate;
 using Content.Shared.CombatMode.Pacification;
 
 namespace Content.Shared.Ensnaring;
@@ -31,8 +29,6 @@ public sealed partial class EnsnareableDoAfterEvent : SimpleDoAfterEvent
 
 public abstract partial class SharedEnsnareableSystem : EntitySystem
 {
-    [Dependency] private   readonly INetManager _net = default!; // Goobstation
-    [Dependency] private   readonly SharedHulkSystem _hulk = default!; // Goobstation
     [Dependency] private AlertsSystem _alerts = default!;
     [Dependency] private MovementSpeedModifierSystem _speedModifier = default!;
     [Dependency] protected SharedAppearanceSystem Appearance = default!;
@@ -96,19 +92,6 @@ public abstract partial class SharedEnsnareableSystem : EntitySystem
 
         Dirty(uid, component);
         ensnaring.Ensnared = null;
-
-        // Goobstation start
-        if (ensnaring.DestroyOnRemove)
-        {
-            if (_net.IsServer)
-                QueueDel(args.Args.Used.Value);
-        }
-        else
-            _hands.PickupOrDrop(args.Args.User, args.Args.Used.Value);
-
-        if (args.User == args.Target && TryComp(args.User, out HulkComponent? hulk))
-            _hulk.Roar((args.User, hulk));
-        // Goobstation end
 
         if (args.User == args.Target)
             Popup.PopupEntity(Loc.GetString("ensnare-component-try-free-complete", ("ensnare", args.Args.Used)), uid, args.User, PopupType.Medium);
@@ -331,10 +314,10 @@ public abstract partial class SharedEnsnareableSystem : EntitySystem
 
         var target = entity.Comp.Ensnared.Value;
 
-        Container.TryRemoveFromContainer(ensnare, force: true); // Goobstation - fix on ensnare entity remove
-        ensnareable.IsEnsnared = ensnareable.Container.ContainedEntities.Count > 0;
-        Dirty(component.Ensnared.Value, ensnareable);
-        component.Ensnared = null;
+        Container.Remove(entity.Owner, ensnareable.Container, force: true);
+
+        Dirty(entity.Comp.Ensnared.Value, ensnareable);
+        entity.Comp.Ensnared = null;
 
         UpdateAlert(target, ensnareable);
         var ev = new EnsnareRemoveEvent(entity.Comp.WalkSpeed, entity.Comp.SprintSpeed);

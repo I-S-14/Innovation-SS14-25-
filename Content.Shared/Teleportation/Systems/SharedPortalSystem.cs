@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Linq;
-using Content.Goobstation.Common.BlockTeleport;
-using Content.Shared.Ghost;
 using Content.Shared.Movement.Pulling.Components;
 using Content.Shared.Movement.Pulling.Systems;
 using Content.Shared.Popups;
@@ -21,6 +19,8 @@ using Robust.Shared.Player;
 using Robust.Shared.Random;
 using Robust.Shared.Utility;
 using Robust.Shared.Prototypes;
+using Content.Goobstation.Common.BlockTeleport;
+using Content.Shared.Ghost;
 
 namespace Content.Shared.Teleportation.Systems;
 
@@ -245,22 +245,6 @@ public abstract partial class SharedPortalSystem : EntitySystem
 
         var arrivalSound = CompOrNull<PortalComponent>(targetEntity)?.ArrivalSound ?? ent.Comp.ArrivalSound;
         var departureSound = ent.Comp.DepartureSound;
-
-        // Goobstation start
-        var ev = new TeleportAttemptEvent(false);
-        RaiseLocalEvent(subject, ref ev);
-        if (ev.Cancelled)
-            return;
-        // Goobstation end
-
-
-        // Some special cased stuff: projectiles should stop ignoring shooter when they enter a portal, to avoid
-        // stacking 500 bullets in between 2 portals and instakilling people--you'll just hit yourself instead
-        // (as expected)
-        if (TryComp<ProjectileComponent>(subject, out var projectile))
-        {
-            projectile.IgnoreShooter = false;
-        }
 
         LogTeleport(ent, subject, Transform(subject).Coordinates, target);
 

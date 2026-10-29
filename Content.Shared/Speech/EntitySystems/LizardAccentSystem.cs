@@ -1,8 +1,5 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
 using System.Text.RegularExpressions;
-using Robust.Shared.Random;
-using Content.Shared.Speech;
+using Robust.Shared.Random; // CorvaxGoob-Localization
 using Content.Shared.Speech.Components;
 
 namespace Content.Shared.Speech.EntitySystems;
@@ -15,9 +12,9 @@ public sealed partial class LizardAccentSystem : RelayAccentSystem<LizardAccentC
     private static readonly Regex RegexLowerEndX = new(@"\bx([\-|r|R]|\b)");
     private static readonly Regex RegexUpperEndX = new(@"\bX([\-|r|R]|\b)");
 
-    [Dependency] private readonly IRobustRandom _random = default!; // CorvaxGoob-Localization
+    [Dependency] private IRobustRandom _random = default!; // CorvaxGoob-Localization
 
-    public override void Initialize()
+    public override string Accentuate(string message, Entity<LizardAccentComponent>? ent = null)
     {
         // hissss
         message = RegexLowerS.Replace(message, "sss");
@@ -81,6 +78,6 @@ public sealed partial class LizardAccentSystem : RelayAccentSystem<LizardAccentC
         );
         // CorvaxGoob-Localization-End
 
-        args.Message = message;
+        return message;
     }
 }

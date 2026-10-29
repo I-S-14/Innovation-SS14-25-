@@ -1,19 +1,18 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+using static Content.Shared.Interaction.SharedInteractionSystem;
 using System.Linq;
 using Content.Shared.Construction.Components;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
-using static Content.Shared.Interaction.SharedInteractionSystem;
 
 namespace Content.Shared.Construction
 {
     public abstract partial class SharedConstructionSystem : EntitySystem
     {
-        [Dependency] private readonly SharedMapSystem _mapSystem = default!;
-        [Dependency] protected readonly IPrototypeManager PrototypeManager = default!;
         [Dependency] private SharedMapSystem _map = default!;
         [Dependency] protected SharedTransformSystem TransformSystem = default!;
+    [Dependency] private readonly SharedMapSystem _mapSystem = default!;
 
         /// <summary>
         ///     Get predicate for construction obstruction checks.

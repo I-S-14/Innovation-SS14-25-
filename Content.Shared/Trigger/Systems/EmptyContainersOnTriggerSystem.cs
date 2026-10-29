@@ -46,6 +46,7 @@ public sealed partial class EmptyContainersOnTriggerSystem : XOnTriggerSystem<Em
 /// </summary>
 public sealed partial class CleanContainersOnTriggerSystem : XOnTriggerSystem<CleanContainersOnTriggerComponent>
 {
+    [Dependency] private SharedContainerSystem _container = default!;
 
     protected override void OnTrigger(Entity<CleanContainersOnTriggerComponent> ent, EntityUid target, ref TriggerEvent args)
     {

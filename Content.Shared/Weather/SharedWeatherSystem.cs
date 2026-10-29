@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
 using System.Diagnostics.CodeAnalysis;
 using Content.Shared.Light.Components;
 using Content.Shared.Light.EntitySystems;
@@ -11,7 +9,6 @@ using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
-using Robust.Shared.Serialization;
 
 namespace Content.Shared.Weather;
 
@@ -30,19 +27,7 @@ public abstract partial class SharedWeatherSystem : EntitySystem
     public static readonly TimeSpan StartupTime = TimeSpan.FromSeconds(15);
     public static readonly TimeSpan ShutdownTime = TimeSpan.FromSeconds(15);
 
-    private void OnWeatherUnpaused(EntityUid uid, WeatherComponent component, ref EntityUnpausedEvent args)
-    {
-        foreach (var weather in component.Weather.Values)
-        {
-            weather.StartTime += args.PausedTime;
-
-            if (weather.EndTime != null)
-                weather.EndTime = weather.EndTime.Value + args.PausedTime;
-        }
-        component.NextUpdate += args.PausedTime; // DeltaV
-    }
-
-    public bool CanWeatherAffect(EntityUid uid, MapGridComponent grid, TileRef tileRef, RoofComponent? roofComp = null)
+    public bool CanWeatherAffect(Entity<MapGridComponent?, RoofComponent?> ent, TileRef tileRef)
     {
         if (tileRef.Tile.IsEmpty)
             return true;
@@ -84,75 +69,7 @@ public abstract partial class SharedWeatherSystem : EntitySystem
         else if (elapsed < StartupTime)
             return (float)(elapsed / StartupTime);
         else
-        {
-            alpha = 1f;
-        }
-
-        return alpha;
-    }
-
-
-    public override void Update(float frameTime)
-    {
-        base.Update(frameTime);
-
-        if (!Timing.IsFirstTimePredicted)
-            return;
-
-        var curTime = Timing.CurTime;
-
-        var query = EntityQueryEnumerator<WeatherComponent>();
-        while (query.MoveNext(out var uid, out var comp))
-        {
-            if (comp.Weather.Count == 0)
-                continue;
-
-            foreach (var (proto, weather) in comp.Weather)
-            {
-                var endTime = weather.EndTime;
-
-                // Ended
-                if (endTime != null && endTime < curTime)
-                {
-                    EndWeather(uid, comp, proto);
-                    continue;
-                }
-
-                var remainingTime = endTime - curTime;
-
-                // Admin messed up or the likes.
-                if (!ProtoMan.TryIndex<WeatherPrototype>(proto, out var weatherProto))
-                {
-                    Log.Error($"Unable to find weather prototype for {comp.Weather}, ending!");
-                    EndWeather(uid, comp, proto);
-                    continue;
-                }
-
-                // Shutting down
-                if (endTime != null && remainingTime < WeatherComponent.ShutdownTime)
-                {
-                    SetState(uid, WeatherState.Ending, comp, weather, weatherProto);
-                }
-                // Starting up
-                else
-                {
-                    var startTime = weather.StartTime;
-                    var elapsed = Timing.CurTime - startTime;
-
-                    if (elapsed < WeatherComponent.StartupTime)
-                    {
-                        SetState(uid, WeatherState.Starting, comp, weather, weatherProto);
-                    }
-                    // Begin DeltaV: Set state to Running when it finishes the starting time
-                    else
-                        SetState(uid, WeatherState.Running, comp, weather, weatherProto);
-                    // End DeltaV
-                }
-
-                // Run whatever code we need.
-                Run(uid, weather, weatherProto, frameTime);
-            }
-        }
+            return 1f;
     }
 
     /// <summary>

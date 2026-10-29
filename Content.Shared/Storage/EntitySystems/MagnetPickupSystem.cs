@@ -1,6 +1,3 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
-using Content.Shared.Examine;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Inventory;
 using Content.Shared.Item;
@@ -10,6 +7,7 @@ using Content.Shared.Storage.Components;
 using Content.Shared.Whitelist;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Timing;
+using Content.Shared.Examine;
 
 namespace Content.Shared.Storage.EntitySystems;
 
@@ -18,8 +16,6 @@ namespace Content.Shared.Storage.EntitySystems;
 /// </summary>
 public sealed partial class MagnetPickupSystem : EntitySystem
 {
-    [Dependency] private readonly ItemToggleSystem _itemToggle = default!;
-    [Dependency] private readonly SharedItemSystem _item = default!; // White Dream
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private EntityLookupSystem _lookup = default!;
     [Dependency] private InventorySystem _inventory = default!;
@@ -29,6 +25,8 @@ public sealed partial class MagnetPickupSystem : EntitySystem
     [Dependency] private SharedHandsSystem _hands = default!;
 
     [Dependency] private EntityQuery<PhysicsComponent> _physicsQuery = default!;
+    [Dependency] private readonly ItemToggleSystem _itemToggle = default!;
+    [Dependency] private readonly SharedItemSystem _item = default!; // White Dream
 
     private static readonly TimeSpan ScanDelay = TimeSpan.FromSeconds(1);
 
@@ -41,9 +39,6 @@ public sealed partial class MagnetPickupSystem : EntitySystem
     public override void Initialize()
     {
         base.Initialize();
-        _physicsQuery = GetEntityQuery<PhysicsComponent>();
-        SubscribeLocalEvent<MagnetPickupComponent, ItemToggledEvent>(OnItemToggled); // White Dream
-        SubscribeLocalEvent<MagnetPickupComponent, ExaminedEvent>(OnExamined); // WD EDIT
         SubscribeLocalEvent<MagnetPickupComponent, MapInitEvent>(OnMagnetMapInit);
     }
     //WD EDIT start
@@ -82,15 +77,19 @@ public sealed partial class MagnetPickupSystem : EntitySystem
                 continue;
             // WD EDIT END
 
-             if (comp.NextScan > currentTime)
+            var parentUid = xform.ParentUid;
+
+            if (comp.RequireActiveHand && (!_hands.TryGetActiveItem(parentUid, out var activeItem) || activeItem != uid))
                 continue;
 
-            comp.NextScan += ScanDelay;
-            Dirty(uid, comp);
+            if (comp.SlotFlags != null)
+            {
+                if (!_inventory.TryGetContainingSlot((uid, xform, meta), out var slotDef))
+                    continue;
 
-                        // WD EDIT START. Added ForcePickup.
-            if (!comp.ForcePickup && !_inventory.TryGetContainingSlot((uid, xform, meta), out _))
-                continue;
+                if ((slotDef.SlotFlags & comp.SlotFlags) == 0x0)
+                    continue;
+            }
 
             // No space
             if (!_storage.HasSpace((uid, storage)))

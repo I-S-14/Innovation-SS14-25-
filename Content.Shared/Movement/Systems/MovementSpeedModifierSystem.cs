@@ -140,23 +140,16 @@ namespace Content.Shared.Movement.Systems
             if (_timing.ApplyingState)
                 return;
 
-            // <Goobstation Change>
-            var isImmune = false;
-            if (HasComp<SpeedModifierImmunityComponent>(uid))
-                isImmune = true;
-            // </Goobstation Change>
-
-            var ev = new RefreshMovementSpeedModifiersEvent(isImmune);
-            RaiseLocalEvent(uid, ev);
+            var ev = new RefreshMovementSpeedModifiersEvent();
+            RaiseLocalEvent(ent, ev);
 
             if (MathHelper.CloseTo(ev.WalkSpeedModifier, ent.Comp.WalkSpeedModifier) &&
                 MathHelper.CloseTo(ev.SprintSpeedModifier, ent.Comp.SprintSpeedModifier))
                 return;
 
-
-            move.WalkSpeedModifier = Math.Min(ev.WalkSpeedModifier, _maxSpeed); // Goobstation Change
-            move.SprintSpeedModifier = Math.Min(ev.SprintSpeedModifier, _maxSpeed); // Goobstation Change
-            Dirty(uid, move);
+            ent.Comp.WalkSpeedModifier = ev.WalkSpeedModifier;
+            ent.Comp.SprintSpeedModifier = ev.SprintSpeedModifier;
+            Dirty(ent);
         }
 
         public void ChangeBaseSpeed(EntityUid uid, float baseWalkSpeed, float baseSprintSpeed, float acceleration, MovementSpeedModifierComponent? move = null)

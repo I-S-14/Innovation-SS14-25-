@@ -17,7 +17,6 @@ namespace Content.Shared.Movement.Systems;
 
 public abstract partial class SharedJetpackSystem : EntitySystem
 {
-    [Dependency] private readonly StandingStateSystem _standing = default!; // Goobstation
     [Dependency] private MovementSpeedModifierSystem _movementSpeedModifier = default!;
     [Dependency] protected SharedAppearanceSystem Appearance = default!;
     [Dependency] private SharedContainerSystem Container = default!;
@@ -26,33 +25,7 @@ public abstract partial class SharedJetpackSystem : EntitySystem
     [Dependency] private ActionContainerSystem _actionContainer = default!;
     [Dependency] private SharedParticleEmitterSystem _particleEmitter = default!;
 
-    public override void Initialize()
-    {
-        base.Initialize();
-        SubscribeLocalEvent<JetpackComponent, GetItemActionsEvent>(OnJetpackGetAction);
-        SubscribeLocalEvent<JetpackComponent, DroppedEvent>(OnJetpackDropped);
-        SubscribeLocalEvent<JetpackComponent, ToggleJetpackEvent>(OnJetpackToggle);
-
-        SubscribeLocalEvent<JetpackUserComponent, RefreshWeightlessModifiersEvent>(OnJetpackUserWeightlessMovement);
-        SubscribeLocalEvent<JetpackUserComponent, CanWeightlessMoveEvent>(OnJetpackUserCanWeightless);
-        SubscribeLocalEvent<JetpackUserComponent, EntParentChangedMessage>(OnJetpackUserEntParentChanged);
-        SubscribeLocalEvent<JetpackComponent, EntGotInsertedIntoContainerMessage>(OnJetpackMoved);
-
-        SubscribeLocalEvent<GravityChangedEvent>(OnJetpackUserGravityChanged);
-        SubscribeLocalEvent<JetpackComponent, MapInitEvent>(OnMapInit);
-
-        SubscribeLocalEvent<JetpackUserComponent, DownedEvent>(OnDowned); // Goobstation
-    }
-
-    private void OnDowned(Entity<JetpackUserComponent> ent, ref DownedEvent args) // Goobstation
-    {
-        if (!TryComp<JetpackComponent>(ent.Comp.Jetpack, out var jetpack))
-            return;
-
-        SetEnabled(ent.Comp.Jetpack, jetpack, false, ent);
-
-        _popup.PopupClient(Loc.GetString("jetpack-downed"), ent, ent);
-    }
+    [Dependency] private EntityQuery<JetpackComponent> _jetpackQuery;
 
     [SubscribeLocalEvent]
     private void OnJetpackUserWeightlessMovement(Entity<JetpackUserComponent> ent, ref RefreshWeightlessModifiersEvent args)
@@ -159,14 +132,7 @@ public abstract partial class SharedJetpackSystem : EntitySystem
             return;
         }
 
-        if (_standing.IsDown(args.Performer)) // Goobstation
-        {
-            _popup.PopupClient(Loc.GetString("jetpack-is-down"), uid, args.Performer);
-
-            return;
-        }
-
-        SetEnabled(uid, component, !IsEnabled(uid));
+        SetEnabled(ent.AsNullable(), !IsEnabled(ent.Owner));
     }
 
     private bool CanEnableOnGrid(EntityUid? gridUid)
@@ -222,9 +188,8 @@ public abstract partial class SharedJetpackSystem : EntitySystem
 
         _particleEmitter.SetEnabled(ent.Owner, enabled);
 
-        // Goob edit - jetpack state might have changed by the time "enabled" is any relevant
-        Appearance.SetData(uid, JetpackVisuals.Enabled, HasComp<ActiveJetpackComponent>(uid));
-        Dirty(uid, component);
+        Appearance.SetData(ent.Owner, JetpackVisuals.Enabled, enabled);
+        Dirty(ent.Owner, ent.Comp);
     }
 
     protected virtual bool CanEnable(Entity<JetpackComponent> ent)

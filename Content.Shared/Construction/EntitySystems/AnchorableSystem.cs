@@ -1,4 +1,3 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
 using Content.Shared.Administration.Logs;
 using Content.Shared.Examine;
 using Content.Shared.Construction.Components;
@@ -26,7 +25,6 @@ namespace Content.Shared.Construction.EntitySystems;
 
 public sealed partial class AnchorableSystem : EntitySystem
 {
-    [Dependency] private readonly SharedMapSystem _mapSystem = default!;
     [Dependency] private ISharedAdminLogManager _adminLogger = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private PullingSystem _pulling = default!;
@@ -38,6 +36,7 @@ public sealed partial class AnchorableSystem : EntitySystem
     [Dependency] private SharedAppearanceSystem _appearance = default!;
 
     [Dependency] private EntityQuery<PhysicsComponent> _physicsQuery = default!;
+    [Dependency] private readonly SharedMapSystem _mapSystem = default!;
 
     public readonly ProtoId<TagPrototype> Unstackable = "Unstackable";
 
@@ -147,7 +146,7 @@ public sealed partial class AnchorableSystem : EntitySystem
         _transformSystem.Unanchor(uid, xform);
         RaiseLocalEvent(uid, new UserUnanchoredEvent(user, used)); // Goob
 
-        _popup.PopupClient(Loc.GetString("anchorable-unanchored"), uid, user); // Goob
+        _popup.PopupEntity(Loc.GetString("anchorable-unanchored"), uid, args.User);
 
         _adminLogger.Add(
             LogType.Unanchor,
@@ -171,7 +170,7 @@ public sealed partial class AnchorableSystem : EntitySystem
         if (TryComp<PhysicsComponent>(uid, out var anchorBody) &&
             !TileFree(xform.Coordinates, anchorBody))
         {
-            _popup.PopupClient(Loc.GetString("anchorable-occupied"), uid, user); // Goob
+            _popup.PopupEntity(Loc.GetString("anchorable-occupied"), uid, args.User);
             return;
         }
 
@@ -190,7 +189,7 @@ public sealed partial class AnchorableSystem : EntitySystem
 
             if (AnyUnstackable(uid, coordinates))
             {
-                _popup.PopupClient(Loc.GetString("construction-step-condition-no-unstackable-in-tile"), uid, user); // Goob
+                _popup.PopupEntity(Loc.GetString("construction-step-condition-no-unstackable-in-tile"), uid, args.User);
                 return;
             }
 
@@ -208,7 +207,7 @@ public sealed partial class AnchorableSystem : EntitySystem
 
         RaiseLocalEvent(uid, new UserAnchoredEvent(user, used)); // Goob
 
-        _popup.PopupClient(Loc.GetString("anchorable-anchored"), uid, user); // Goob
+        _popup.PopupEntity(Loc.GetString("anchorable-anchored"), uid, args.User);
 
         _adminLogger.Add(
             LogType.Anchor,

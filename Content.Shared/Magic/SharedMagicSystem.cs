@@ -2,18 +2,6 @@
 
 using System.Linq;
 using System.Numerics;
-using Content.Goobstation.Common.BlockTeleport;
-using Content.Goobstation.Common.Magic;
-using Content.Goobstation.Common.Religion;
-using Content.Shared._Goobstation.Wizard;
-using Content.Shared._Goobstation.Wizard.BindSoul;
-using Content.Shared._Goobstation.Wizard.Chuuni;
-using Content.Shared._Goobstation.Wizard.FadingTimedDespawn;
-using Content.Shared._Shitmed.Damage;
-using Content.Shared._Shitmed.Targeting;
-using Content.Shared.Actions;
-using Content.Shared.Body.Components;
-using Content.Shared.Body.Systems;
 using Content.Shared.ActionBlocker;
 using Content.Shared.Charges.Components;
 using Content.Shared.Charges.Systems;
@@ -27,23 +15,15 @@ using Content.Shared.Gibbing.Events;
 using Content.Shared.Examine;
 using Content.Shared.Hands.Components;
 using Content.Shared.Hands.EntitySystems;
-using Content.Shared.Heretic;
-using Content.Shared.Interaction;
 using Content.Shared.Inventory;
 using Content.Shared.Lock;
 using Content.Shared.Magic.Components;
 using Content.Shared.Magic.Events;
 using Content.Shared.Maps;
 using Content.Shared.Mind;
-using Content.Shared.Mobs.Systems;
-using Content.Shared.NPC.Components;
-using Content.Shared.NPC.Prototypes;
-using Content.Shared.NPC.Systems;
 using Content.Shared.Objectives.Systems;
 using Content.Shared.Physics;
 using Content.Shared.Popups;
-using Content.Shared.Revolutionary.Components;
-using Content.Shared.Speech.Muting;
 using Content.Shared.Storage;
 using Content.Shared.Stunnable;
 using Content.Shared.Tag;
@@ -62,8 +42,28 @@ using Robust.Shared.Serialization.Manager;
 using Robust.Shared.Spawners;
 using Robust.Shared.Timing;
 using Content.Shared.Damage.Systems;
-using Content.Shared.Gibbing;
 using Content.Shared.Gibbing.Systems;
+using Content.Shared.Gibbing;
+using Content.Goobstation.Common.BlockTeleport;
+using Content.Goobstation.Common.Magic;
+using Content.Goobstation.Common.Religion;
+using Content.Shared._Goobstation.Wizard;
+using Content.Shared._Goobstation.Wizard.BindSoul;
+using Content.Shared._Goobstation.Wizard.Chuuni;
+using Content.Shared._Goobstation.Wizard.FadingTimedDespawn;
+using Content.Shared._Shitmed.Damage;
+using Content.Shared._Shitmed.Targeting;
+using Content.Shared.Actions;
+using Content.Shared.Body.Components;
+using Content.Shared.Body.Systems;
+using Content.Shared.Heretic;
+using Content.Shared.Interaction;
+using Content.Shared.Mobs.Systems;
+using Content.Shared.NPC.Components;
+using Content.Shared.NPC.Prototypes;
+using Content.Shared.NPC.Systems;
+using Content.Shared.Revolutionary.Components;
+using Content.Shared.Speech.Muting;
 using Content.Shared.Ghost.Components;
 
 namespace Content.Shared.Magic;
@@ -73,12 +73,6 @@ namespace Content.Shared.Magic;
 /// </summary>
 public abstract partial class SharedMagicSystem : EntitySystem
 {
-    [Dependency] private readonly IGameTiming _timing = default!; // Goobstation
-    [Dependency] private readonly SharedBodySystem _body = default!;
-    [Dependency] private readonly SharedInteractionSystem _interaction = default!;
-    [Dependency] private readonly MobStateSystem _mobState = default!;
-    [Dependency] private readonly DamageableSystem _damageable = default!; // Goobstation
-    [Dependency] private readonly NpcFactionSystem _faction = default!; // Goobstation
     [Dependency] private ISerializationManager _seriMan = default!;
     [Dependency] private SharedMapSystem _mapSystem = default!;
     [Dependency] private IRobustRandom _random = default!;
@@ -102,100 +96,16 @@ public abstract partial class SharedMagicSystem : EntitySystem
     [Dependency] private SharedChargesSystem _charges = default!;
     [Dependency] private ExamineSystemShared _examine = default!;
     [Dependency] private AliveHumanoidTargetSystem _target = default!;
+
     [Dependency] private EntityQuery<PhysicsComponent> _physicsQuery;
+    [Dependency] private readonly IGameTiming _timing = default!; // Goobstation
+    [Dependency] private readonly SharedBodySystem _body = default!;
+    [Dependency] private readonly MobStateSystem _mobState = default!;
+    [Dependency] private readonly NpcFactionSystem _faction = default!; // Goobstation
 
-    public override void Initialize()
-    {
-        base.Initialize();
-        SubscribeLocalEvent<MagicComponent, BeforeCastSpellEvent>(OnBeforeCastSpell);
+    private static readonly ProtoId<TagPrototype> InvalidForGlobalSpawnSpellTag = "InvalidForGlobalSpawnSpell";
 
-        SubscribeLocalEvent<InstantSpawnSpellEvent>(OnInstantSpawn);
-        SubscribeLocalEvent<TeleportSpellEvent>(OnTeleportSpell);
-        SubscribeLocalEvent<WorldSpawnSpellEvent>(OnWorldSpawn);
-        SubscribeLocalEvent<ProjectileSpellEvent>(OnProjectileSpell);
-        SubscribeLocalEvent<ChangeComponentsSpellEvent>(OnChangeComponentsSpell);
-        SubscribeLocalEvent<SmiteSpellEvent>(OnSmiteSpell);
-        SubscribeLocalEvent<KnockSpellEvent>(OnKnockSpell);
-        SubscribeLocalEvent<ChargeSpellEvent>(OnChargeSpell);
-        SubscribeLocalEvent<RandomGlobalSpawnSpellEvent>(OnRandomGlobalSpawnSpell);
-        SubscribeLocalEvent<MindSwapSpellEvent>(OnMindSwapSpell);
-        SubscribeLocalEvent<VoidApplauseSpellEvent>(OnVoidApplause);
-
-
-        // Spell wishlist
-        //  A wishlish of spells that I'd like to implement or planning on implementing in a future PR
-
-        // TODO: InstantDoAfterSpell and WorldDoafterSpell
-        //  Both would be an action that take in an event, that passes an event to trigger once the doafter is done
-        //  This would be three events:
-        //    1 - Event that triggers from the action that starts the doafter
-        //    2 - The doafter event itself, which passes the event with it
-        //    3 - The event to trigger once the do-after finishes
-
-        // TODO: Inanimate objects to life ECS
-        //  AI sentience
-
-        // TODO: Flesh2Stone
-        //   Entity Target spell
-        //   Synergy with Inanimate object to life (detects player and allows player to move around)
-
-        // TODO: Lightning Spell
-        // Should just fire lightning, try to prevent arc back to caster
-
-        // TODO: Magic Missile (homing projectile ecs)
-        //   Instant action, target any player (except self) on screen
-
-        // TODO: Random projectile ECS for magic-carp, wand of magic
-
-        // TODO: Recall Spell
-        //  mark any item in hand to recall
-        //    ItemRecallComponent
-        //    Event adds the component if it doesn't exist and the performer isn't stored in the comp
-        //    2nd firing of the event checks to see if the recall comp has this uid, and if it does it calls it
-        //  if no free hands, summon at feet
-        //  if item deleted, clear stored item
-
-        // TODO: Jaunt (should be its own ECS)
-        // Instant action
-        //   When clicked, disappear/reappear (goes to paused map)
-        //   option to restrict to tiles
-        //   option for requiring entry/exit (blood jaunt)
-        //   speed option
-
-        // TODO: Summon Events
-        //  List of wizard events to add into the event pool that frequently activate
-        //  floor is lava
-        //  change places
-        //  ECS that when triggered, will periodically trigger a random GameRule
-        //  Would need a controller/controller entity?
-
-        // TODO: Summon Guns
-        //  Summon a random gun at peoples feet
-        //    Get every alive player (not in cryo, not a simplemob)
-        //  TODO: After Antag Rework - Rare chance of giving gun collector status to people
-
-        // TODO: Summon Magic
-        //  Summon a random magic wand at peoples feet
-        //    Get every alive player (not in cryo, not a simplemob)
-        //  TODO: After Antag Rework - Rare chance of giving magic collector status to people
-
-        // TODO: Bottle of Blood
-        //  Summons Slaughter Demon
-        //  TODO: Slaughter Demon
-        //    Also see Jaunt
-
-        // TODO: Field Spells
-        //  Should be able to specify a grid of tiles (3x3 for example) that it effects
-        //  Timed despawn - so it doesn't last forever
-        //  Ignore caster - for spells that shouldn't effect the caster (ie if timestop should effect the caster)
-
-        // TODO: Touch toggle spell
-        //  1 - When toggled on, show in hand
-        //  2 - Block hand when toggled on
-        //      - Require free hand
-        //  3 - use spell event when toggled & click
-    }
-
+    [SubscribeLocalEvent]
     private void OnBeforeCastSpell(Entity<MagicComponent> ent, ref BeforeCastSpellEvent args)
     {
         var comp = ent.Comp;
@@ -247,21 +157,14 @@ public abstract partial class SharedMagicSystem : EntitySystem
                 hasReqs = false;
         }
 
-        if (!hasReqs) // Goobstation
-        {
-            _popup.PopupClient(Loc.GetString("spell-requirements-failed-clothes"), args.Performer, args.Performer);
-            args.Cancelled = true;
-            return;
-        }
-
-        if (requiresSpeech && HasComp<MutedComponent>(args.Performer)) // Goob edit
+        if (comp.RequiresSpeech && !_actionBlocker.CanSpeak(args.Performer))
             hasReqs = false;
 
         if (hasReqs)
             return;
 
         args.Cancelled = true;
-        _popup.PopupClient(Loc.GetString("spell-requirements-failed-speech"), args.Performer, args.Performer); // Goob edit
+        _popup.PopupEntity(Loc.GetString("spell-requirements-failed"), args.Performer, args.Performer);
 
         // TODO: Pre-cast do after, either here or in SharedActionsSystem
     }
@@ -422,15 +325,16 @@ public abstract partial class SharedMagicSystem : EntitySystem
     // End World Spawn Spells
     #endregion
     #region Projectile Spells
-    public void OnProjectileSpell(ProjectileSpellEvent ev) // Goob edit - made public
+    [SubscribeLocalEvent]
+    private void OnProjectileSpell(ProjectileSpellEvent ev)
     {
-        if (ev.Handled || !PassesSpellPrerequisites(ev.Action, ev.Performer)) // Goob edit
+        if (ev.Handled || !PassesSpellPrerequisites(ev.Action, ev.Performer))
             return;
 
         ev.Handled = true;
 
-        if (_net.IsClient) // Goobstation
-            return;
+        if (!_net.IsServer)
+            return; // client returns handled for predicted audio
 
         var xform = Transform(ev.Performer);
         var fromCoords = xform.Coordinates;
@@ -451,10 +355,22 @@ public abstract partial class SharedMagicSystem : EntitySystem
         var ent = Spawn(ev.Prototype, fromMap);
         var direction = _transform.ToMapCoordinates(ev.Target).Position -
                          fromMap.Position;
-        _gunSystem.ShootProjectile(ent, direction, userVelocity, ev.Performer, ev.Performer, 25f);
 
-        if (ev.Entity != null) // Goobstation
-            _gunSystem.SetTarget(ent, ev.Entity.Value, out _);
+        // Check for backwards velocity compensation.
+        var compensation = 0.0f;
+        if (ev.RearVelocityCompensation > 0.0f
+            && !MathHelper.CloseToPercent(userLocalVelocity.LengthSquared(), 0.0f)
+            && !MathHelper.CloseToPercent(direction.LengthSquared(), 0.0f))
+        {
+            var dotProduct = Vector2.Dot(direction, userLocalVelocity);
+            if (dotProduct < 0.0f)
+            {
+                // Get rearward component of user's local velocity, multiply it by our coefficient.
+                compensation += ev.RearVelocityCompensation * -dotProduct / direction.Length();
+            }
+        }
+
+        _gunSystem.ShootProjectile(ent, direction, userVelocity, ev.Performer, ev.Performer, ev.ProjectileSpeed + compensation);
     }
     // End Projectile Spells
     #endregion
@@ -479,33 +395,8 @@ public abstract partial class SharedMagicSystem : EntitySystem
     }
     // End Change Component Spells
     #endregion
-    #region Teleport Spells
-    // TODO: Rename to teleport clicked spell?
-    /// <summary>
-    /// Teleports the user to the clicked location
-    /// </summary>
-    /// <param name="args"></param>
-    private void OnTeleportSpell(TeleportSpellEvent args)
-    {
-        if (args.Handled || !PassesSpellPrerequisites(args.Action, args.Performer))
-            return;
-
-        // Goobstation start
-        var ev = new TeleportAttemptEvent();
-        RaiseLocalEvent(args.Performer, ref ev);
-        if (ev.Cancelled)
-            return;
-        // Goobstation end
-
-        var transform = Transform(args.Performer);
-        if (transform.MapID != _transform.GetMapId(args.Target) || !_interaction.InRangeUnobstructed(args.Performer, args.Target, range: 1000F, collisionMask: CollisionGroup.Opaque, popup: true))
-            return;
-
-        _transform.SetCoordinates(args.Performer, args.Target);
-        _transform.AttachToGridOrMap(args.Performer, transform);
-        args.Handled = true;
-    }
-
+    #region Position Swap Spells
+    [SubscribeLocalEvent]
     public virtual void OnVoidApplause(VoidApplauseSpellEvent ev)
     {
         if (ev.Handled || !PassesSpellPrerequisites(ev.Action, ev.Performer))

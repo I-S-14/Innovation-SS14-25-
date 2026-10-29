@@ -1,16 +1,3 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
-using Content.Shared.Chemistry.Components;
-using Content.Shared.Chemistry.Components.SolutionManager;
-using Content.Shared.Chemistry.Reaction;
-using Content.Shared.Chemistry.Reagent;
-using Content.Shared.Examine;
-using Content.Goobstation.Maths.FixedPoint;
-using Content.Shared.Verbs;
-using JetBrains.Annotations;
-using Robust.Shared.Containers;
-using Robust.Shared.Prototypes;
-using Robust.Shared.Utility;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -21,8 +8,6 @@ using Content.Shared.Chemistry.Reaction;
 using Content.Shared.Chemistry.Reagent;
 using Content.Shared.Containers;
 using Content.Shared.Examine;
-using Content.Shared.Containers;
-using Content.Shared.Hands.Components;
 using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Localizations;
@@ -36,10 +21,6 @@ using Robust.Shared.Network;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
-using System.Numerics;
-using System.Text;
-using Content.Shared.Nutrition.Components;
-using Robust.Shared.Map;
 using Dependency = Robust.Shared.IoC.DependencyAttribute;
 
 namespace Content.Shared.Chemistry.EntitySystems;
@@ -171,7 +152,9 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
     {
         if (entity is not null)
         {
-            return TryGetSolution(container, name, out var debugEnt) && debugEnt.Value.Owner == entity.Value.Owner;
+            DebugTools.Assert(TryGetSolution(container, name, out var debugEnt)
+                              && debugEnt.Value.Owner == entity.Value.Owner);
+            return true;
         }
 
         return TryGetSolution(container, name, out entity);
@@ -469,21 +452,30 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
         return splitSol;
     }
 
+    // Goobstation start
     /// <summary>
     /// Splits a solution removing a specified amount of each reagent, if available.
     /// </summary>
-    /// <param name="soln">The container to split the solution from.</param>
-    /// <param name="quantity">The amount of each reagent to split.</param>
-    /// <returns></returns>
     public Solution SplitSolutionReagentsEvenly(Entity<SolutionComponent> soln, FixedPoint2 quantity)
     {
-        var (uid, comp) = soln;
-        var solution = comp.Solution;
-
-        var splitSol = solution.SplitSolutionReagentsEvenly(quantity);
+        var splitSol = soln.Comp.Solution.SplitSolutionReagentsEvenly(quantity);
         UpdateChemicals(soln);
         return splitSol;
     }
+
+    public IEnumerable<string> EnumerateSolutionContainers(Entity<SolutionContainerManagerComponent?> ent,
+        bool addPrefix = true)
+    {
+        if (!Resolve(ent, ref ent.Comp, false))
+            yield break;
+
+        var prefix = addPrefix ? "solution@" : string.Empty;
+        foreach (var container in ent.Comp.Containers)
+        {
+            yield return prefix + container;
+        }
+    }
+    // Goobstation end
 
     public Solution SplitStackSolution(Entity<SolutionComponent> soln, FixedPoint2 quantity, int stackCount)
     {
@@ -1236,101 +1228,11 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
         string name,
         Container container)
     {
-        existed = true;
-        solutionEntity = null;
-
-        var (uid, container) = entity;
-
-        var solutionSlot = ContainerSystem.EnsureContainer<ContainerSlot>(uid, $"solution@{name}", out existed);
-        if (!Resolve(uid, ref container, logMissing: false))
-        {
-            existed = false;
-            container = AddComp<SolutionContainerManagerComponent>(uid);
-            container.Containers.Add(name);
-            if (NetManager.IsClient)
-                return false;
-        }
-        else if (!existed)
-        {
-            container.Containers.Add(name);
-            Dirty(uid, container);
-        }
-
-        var needsInit = false;
-        SolutionComponent solutionComp;
-        if (solutionSlot.ContainedEntity is not { } solutionId)
-        {
-            if (NetManager.IsClient)
-                return false;
-            prototype ??= new() { MaxVolume = maxVol };
-            prototype.Name = name;
-            (solutionId, solutionComp, _) = SpawnSolutionUninitialized(solutionSlot, name, maxVol, prototype);
-            existed = false;
-            needsInit = true;
-            Dirty(uid, container);
-        }
-        else
-        {
-            solutionComp = Comp<SolutionComponent>(solutionId);
-            DebugTools.Assert(TryComp(solutionId, out ContainedSolutionComponent? relation) && relation.Container == uid && relation.ContainerName == name);
-            DebugTools.Assert(solutionComp.Solution.Name == name);
-
-            var solution = solutionComp.Solution;
-            solution.MaxVolume = FixedPoint2.Max(solution.MaxVolume, maxVol);
-
-            // Depending on MapInitEvent order some systems can ensure solution empty solutions and conflict with the prototype solutions.
-            // We want the reagents from the prototype to exist even if something else already created the solution.
-            if (prototype is { Volume.Value: > 0 })
-                solution.AddSolution(prototype, PrototypeManager);
-
-            Dirty(solutionId, solutionComp);
-        }
-
-        if (needsInit)
-            EntityManager.InitializeAndStartEntity(solutionId, Transform(solutionId).MapID);
-        solutionEntity = (solutionId, solutionComp);
-        return true;
-    }
-
-    // Goobstation start
-    public IEnumerable<string> EnumerateSolutionContainers(Entity<SolutionContainerManagerComponent?> ent,
-        bool addPrefix = true)
-    {
-        if (!Resolve(ent, ref ent.Comp, false))
-            yield break;
-
-        var prefix = addPrefix ? "solution@" : string.Empty;
-        foreach (var container in ent.Comp.Containers)
-        {
-            yield return prefix + container;
-        }
-    }
-    // Goobstation end
-
-    public Solution EnsureSolutionPrototype(Entity<SolutionContainerManagerComponent?> entity, string name, FixedPoint2 maxVol, Solution? prototype, out bool existed) // Goob edit
-    {
-        existed = true;
-
-        var (uid, container) = entity;
-        if (!Resolve(uid, ref container, logMissing: false))
-        {
-            container = AddComp<SolutionContainerManagerComponent>(uid);
-            existed = false;
-        }
-
-        if (container.Solutions is null)
-            container.Solutions = new(SolutionContainerManagerComponent.DefaultCapacity);
-
-        if (!container.Solutions.TryGetValue(name, out var solution))
-        {
-            solution = prototype ?? new() { Name = name, MaxVolume = maxVol };
-            container.Solutions.Add(name, solution);
-            existed = false;
-        }
-        else
-            solution.MaxVolume = FixedPoint2.Max(solution.MaxVolume, maxVol);
-
-        Dirty(uid, container);
+        var solution = SpawnSolutionUninitialized(DefaultSolution);
+        solution.Comp.Id = name;
+        ContainerSystem.Insert(solution.Owner, container, force: true);
+        EntityManager.InitializeAndStartEntity(solution);
+        FlagPredicted(solution.Owner);
         return solution;
     }
 

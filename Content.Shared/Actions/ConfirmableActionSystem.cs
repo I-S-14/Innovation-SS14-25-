@@ -12,11 +12,11 @@ namespace Content.Shared.Actions;
 /// </summary>
 public sealed partial class ConfirmableActionSystem : EntitySystem
 {
-    [Dependency] private readonly SharedActionsSystem _actions = default!; // Goobstation
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
 
     [Dependency] private EntityQuery<ActionComponent> _actionQuery = default!;
+    [Dependency] private readonly SharedActionsSystem _actions = default!; // Goobstation
 
     /// <inheritdoc/>
     public override void Update(float frameTime)
@@ -80,12 +80,7 @@ public sealed partial class ConfirmableActionSystem : EntitySystem
         comp.NextUnprime = comp.NextConfirm + comp.PrimeTime;
         Dirty(uid, comp);
 
-        // Goobstation - Confirmable action with changed icon - Start
-        if (!string.IsNullOrEmpty(comp.Popup))
-            _popup.PopupClient(Loc.GetString(comp.Popup), user, user, comp.PopupFontType);
-
-        _actions.SetToggled(ent.Owner, true);
-        // Goobstation - Confirmable action with changed icon - End
+        _popup.PopupEntity(Loc.GetString(comp.Popup), user, user, PopupType.LargeCaution);
     }
 
     public void Unprime(Entity<ConfirmableActionComponent> ent) // Goob edit

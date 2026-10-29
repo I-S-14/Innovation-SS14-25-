@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
 using Content.Shared.Eui;
 using Robust.Shared.Network;
 using Robust.Shared.Serialization;
@@ -20,7 +18,7 @@ public sealed class PlayerPanelEuiState(
     bool frozen,
     bool canAhelp,
     float trustScore,
-    TimeSpan? accountAge) // goob edit
+    DateTime? accountCreationDate)
     : EuiStateBase
 {
     public readonly NetUserId Guid = guid;

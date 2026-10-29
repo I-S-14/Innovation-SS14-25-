@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
 using System.Linq;
 using Content.Shared.Charges.Components;
 using Content.Shared.Charges.Systems;
@@ -24,15 +22,11 @@ using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
-using System.Linq;
-using Content.Goobstation.Common.Flash;
-using Content.Shared.Mobs.Components; // Goobstation
-using Content.Shared.Movement.Systems;
-using Content.Shared.Random.Helpers;
-using Content.Shared.Clothing.Components;
 using Content.Shared.Eye.Blinding.Components;
 using Content.Shared.Timing;
 using Robust.Shared.Random;
+using Content.Goobstation.Common.Flash;
+using Content.Shared.Mobs.Components;
 
 namespace Content.Shared.Flash;
 
@@ -161,8 +155,7 @@ public abstract partial class SharedFlashSystem : EntitySystem
     [SubscribeLocalEvent]
     private void OnExamine(Entity<FlashImmunityComponent> ent, ref ExaminedEvent args)
     {
-        if (ent.Comp.ShowInExamine
-            || HasComp<MobStateComponent>(args.Examined)) // Goobstation - dont add exmained value to mobs whit flash protection
+        if (ent.Comp.ShowInExamine)
             args.PushMarkup(Loc.GetString("flash-protection"));
     }
 
@@ -171,8 +164,7 @@ public abstract partial class SharedFlashSystem : EntitySystem
         if (TryComp<MaskComponent>(ent, out var mask) && mask.IsToggled)
             return;
 
-        if (ent.Comp.Enabled
-            && !args.IgnoreProtection) //DeltaV: allow flashing to ignore flash protection
+        if (ent.Comp.Enabled)
             args.Cancelled = true;
     }
 
@@ -259,8 +251,7 @@ public abstract partial class SharedFlashSystem : EntitySystem
         // Goobstation end
 
         // don't paralyze, slowdown or convert to rev if the target is immune to flashes
-        if (!_statusEffectsSystem.TryAddStatusEffect<FlashedComponent>(target, FlashedKey, flashDuration, true)
-            && !ignoreProtection) //DeltaV: allow flashing to ignore flash protection
+        if (!_statusEffectsSystem.TryAddStatusEffectDuration(target, FlashedKey, flashDuration))
             return;
 
         if (stunDuration != null)

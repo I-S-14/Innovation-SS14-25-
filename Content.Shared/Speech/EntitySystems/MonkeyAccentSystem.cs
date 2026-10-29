@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: MIT
-
 using System.Text;
 using Content.Shared.Random.Helpers;
 using Content.Shared.Speech.Components;
@@ -32,23 +30,23 @@ public sealed partial class MonkeyAccentSystem : RelayAccentSystem<MonkeyAccentC
                 {
                     foreach (var __ in word)
                     {
-                        accentedMessage.Append('У');  // CorvaxGoob-Localization
+                        accentedMessage.Append('У'); // CorvaxGoob-Localization
                     }
 
-                    if (_random.NextDouble() >= 0.3)
-                        accentedMessage.Append('К');  // CorvaxGoob-Localization
+                    if (random.NextDouble() >= 0.3)
+                        accentedMessage.Append('К'); // CorvaxGoob-Localization
                 }
                 else
-                    accentedMessage.Append('У');  // CorvaxGoob-Localization
+                    accentedMessage.Append('У'); // CorvaxGoob-Localization
             }
             else
             {
                 foreach (var __ in word)
                 {
-                    if (_random.NextDouble() >= 0.8)
-                        accentedMessage.Append('Г');  // CorvaxGoob-Localization
+                    if (random.NextDouble() >= 0.8)
+                        accentedMessage.Append('Г'); // CorvaxGoob-Localization
                     else
-                        accentedMessage.Append('А');  // CorvaxGoob-Localization
+                        accentedMessage.Append('А'); // CorvaxGoob-Localization
                 }
 
             }

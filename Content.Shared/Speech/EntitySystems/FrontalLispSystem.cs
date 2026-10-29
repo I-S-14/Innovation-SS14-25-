@@ -1,6 +1,8 @@
 using System.Text.RegularExpressions;
 using Content.Shared.Speech.Components;
 
+using Robust.Shared.Random; // CorvaxGoob-Localization
+
 namespace Content.Shared.Speech.EntitySystems;
 
 public sealed partial class FrontalLispSystem : RelayAccentSystem<FrontalLispComponent>
@@ -12,6 +14,8 @@ public sealed partial class FrontalLispSystem : RelayAccentSystem<FrontalLispCom
     private static readonly Regex RegexLowerEcks = new("[e]+[x]+[c]*|[x]+");
     // @formatter:on
 
+    [Dependency] private IRobustRandom _random = default!; // CorvaxGoob-Localization
+
     public override string Accentuate(string message, Entity<FrontalLispComponent>? ent = null)
     {
         // handles ts, sc(i|e|y), c(i|e|y), ps, st(io(u|n)), ch(i|e), z, s
@@ -20,6 +24,24 @@ public sealed partial class FrontalLispSystem : RelayAccentSystem<FrontalLispCom
         // handles ex(c), x
         message = RegexUpperEcks.Replace(message, "EKTH");
         message = RegexLowerEcks.Replace(message, "ekth");
+        // Corvax-Localization Start
+        // с - ш
+        message = Regex.Replace(message, @"с", _random.Prob(0.90f) ? "ш" : "с");
+        message = Regex.Replace(message, @"С", _random.Prob(0.90f) ? "Ш" : "С");
+        // ч - ш
+        message = Regex.Replace(message, @"ч", _random.Prob(0.90f) ? "ш" : "ч");
+        message = Regex.Replace(message, @"Ч", _random.Prob(0.90f) ? "Ш" : "Ч");
+        // ц - ч
+        message = Regex.Replace(message, @"ц", _random.Prob(0.90f) ? "ч" : "ц");
+        message = Regex.Replace(message, @"Ц", _random.Prob(0.90f) ? "Ч" : "Ц");
+        // т - ч
+        message = Regex.Replace(message, @"\B[т](?![АЕЁИОУЫЭЮЯаеёиоуыэюя])", _random.Prob(0.90f) ? "ч" : "т");
+        message = Regex.Replace(message, @"\B[Т](?![АЕЁИОУЫЭЮЯаеёиоуыэюя])", _random.Prob(0.90f) ? "Ч" : "Т");
+        // з - ж
+        message = Regex.Replace(message, @"з", _random.Prob(0.90f) ? "ж" : "з");
+        message = Regex.Replace(message, @"З", _random.Prob(0.90f) ? "Ж" : "З");
+        // Corvax-Localization End
+
         return message;
     }
 }

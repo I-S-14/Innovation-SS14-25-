@@ -53,27 +53,7 @@ public sealed partial class StatusEffectsSystem : EntitySystem
             if (effect.AppliedTo is null)
                 continue;
 
-            PredictedQueueDel(ent);
-        }
-    }
-
-    private void OnPrototypesReloaded(PrototypesReloadedEventArgs args)
-    {
-        if (!args.WasModified<EntityPrototype>())
-            return;
-
-        ReloadStatusEffectsCache();
-    }
-
-    private void ReloadStatusEffectsCache()
-    {
-        // Goobstation
-        var prototypes = new HashSet<string>();
-
-        foreach (var ent in _proto.EnumeratePrototypes<EntityPrototype>())
-        {
-            if (ent.TryGetComponent<StatusEffectComponent>(out _, _factory))
-                prototypes.Add(ent.ID);
+            QueueDel(ent);
         }
 
         StatusEffectPrototypes = prototypes;

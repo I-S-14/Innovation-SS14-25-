@@ -207,12 +207,12 @@ public abstract partial class SharedShuttleSystem : EntitySystem
         // This is the already adjusted position
         var targetPosition = mapCoordinates.Position;
 
-        // Frontier edit start
-        // FTL on the same map won't work without a bluespace drive on board.
-        if (mapCoordinates.MapId == shuttleXform.MapID
-            && !ftl.Data.FTLToSameMap)
+        //Check for invalid entities.
+        if (!coordinates.IsValid(EntityManager) || !double.IsFinite(angle.Theta))
+        {
+            Log.Error($"Found invalid FTL destination with coordinates {coordinates} and angle {angle} for shuttle {shuttleUid}");
             return false;
-        // Frontier edit end
+        }
 
         // Check range even if it's cross-map.
         if ((targetPosition - ourPos).Length() > GetFTLRange(shuttleUid, ftl)) // Frontier edit - FTL range

@@ -94,23 +94,6 @@ public abstract partial class SharedDoorSystem
     /// <param name="predicted">If predicted</param>
     public void SetBoltsDown(Entity<DoorBoltComponent> ent, bool value, EntityUid? user = null, bool predicted = false)
     {
-        TrySetBoltDown(ent, value, user, predicted);
-    }
-
-    public bool TrySetBoltDown(
-        Entity<DoorBoltComponent> ent,
-        bool value,
-        EntityUid? user = null,
-        bool predicted = false,
-        bool requirePower = true // Goobstation - Manual bolt interact with unpowered door
-    )
-    {
-        // Goobstation - Power check
-        if (!_powerReceiver.IsPowered(ent.Owner) && requirePower)
-            return false;
-        if (ent.Comp.BoltsDown == value)
-            return false;
-
         ent.Comp.BoltsDown = value;
         Dirty(ent, ent.Comp);
         UpdateBoltLightStatus(ent);
@@ -138,10 +121,12 @@ public abstract partial class SharedDoorSystem
         Entity<DoorBoltComponent> ent,
         bool value,
         EntityUid? user = null,
-        bool predicted = false
+        bool predicted = false,
+        bool requirePower = true // Goobstation - Manual bolt interact with unpowered door
     )
     {
-        if (!_powerReceiver.IsPowered(ent.Owner))
+        // Goobstation - Power check
+        if (!_powerReceiver.IsPowered(ent.Owner) && requirePower)
             return false;
         if (ent.Comp.BoltsDown == value)
             return false;

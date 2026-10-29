@@ -56,18 +56,10 @@ public sealed partial class DoAfterArgs
     public bool Hidden;
 
     /// <summary>
-    /// Goobstation
-    /// Whether the delay multiplier event should be raised
+    ///     String that will be added to the examine window of the entity.
     /// </summary>
     [DataField]
-    public bool MultiplyDelay = true;
-
-    /// <summary>
-    /// Goobstation
-    /// If not null, progress bar will use this color.
-    /// </summary>
-    [DataField]
-    public Color? ColorOverride;
+    public string? ExamineText;
 
     #region Event options
     /// <summary>

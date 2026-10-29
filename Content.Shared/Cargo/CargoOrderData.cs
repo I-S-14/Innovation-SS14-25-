@@ -47,18 +47,27 @@ namespace Content.Shared.Cargo
         public string Requester { get; private set; }
         // public String RequesterRank; // TODO Figure out how to get Character ID card data
         // public int RequesterId;
-        public  bool Approved;
 
-        // CorvaxGoob-CargoFeatures-Start
+        /// <summary>
+        /// A player-provided string of the reason for the order.
+        /// </summary>
         [DataField]
-        public string? DeliveryDestination { get; private set; }
+        public string Reason { get; private set; }
 
+        /// <summary>
+        /// If the order has been approved.
+        /// </summary>
+        public bool Approved;
+
+        /// <summary>
+        /// The console that approved the order.
+        /// </summary>
         [DataField]
-        public string? Note { get; private set; }
+        public NetEntity? ApprovingConsole { get; set; }
 
-        public bool SecuredDelivery;
-        // CorvaxGoob-CargoFeatures-End
-
+        /// <summary>
+        /// A string representation of the approver's name, unless the ordering console was emagged.
+        /// </summary>
         [DataField]
         public string? Approver;
 
@@ -68,9 +77,10 @@ namespace Content.Shared.Cargo
         [DataField]
         public ProtoId<CargoAccountPrototype> Account;
 
-        // GoobStation - (cooldown parameter) cooldown on Cargo Orders (specifically gamba)
-        // CorvaxGoob-CargoFeatures : Добавлен параметр доставки, заметки и защиты груза.
-        public CargoOrderData(int orderId, string productId, string productName, int price, int amount, string requester, string? deliveryDestination, string? note, ProtoId<CargoAccountPrototype> account, int cooldown, bool securedDelivery = false)
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        public CargoOrderData(int orderId, ProtoId<CargoProductPrototype> product, int amount, string requester, string reason, ProtoId<CargoAccountPrototype> account)
         {
             OrderId = orderId;
             Product = product;

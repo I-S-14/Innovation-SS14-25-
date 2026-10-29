@@ -18,12 +18,13 @@ namespace Content.Shared.Item;
 
 public abstract partial class SharedItemSystem : EntitySystem
 {
+    [Dependency] private SharedHandsSystem _handsSystem = default!;
+    [Dependency] protected SharedContainerSystem Container = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!; // Goobstation
     [Dependency] private readonly SharedStorageSystem _storage = default!; // Goobstation
     [Dependency] private readonly InventorySystem _inventory = default!; // Goobstation
-    [Dependency] private readonly IPrototypeManager _prototype = default!;
-    [Dependency] private   readonly SharedHandsSystem _handsSystem = default!;
-    [Dependency] protected readonly SharedContainerSystem Container = default!;
+
+    private readonly List<ItemSizePrototype> _sortedSizes = [];
 
     public override void Initialize()
     {

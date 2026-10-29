@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
 using Content.Shared.Chat.Prototypes;
 using Content.Shared.Inventory;
 using Robust.Shared.Network;
@@ -23,8 +21,6 @@ public sealed class BeforeEmoteEvent(EntityUid source, EmotePrototype emote)
     /// </summary>
     public EntityUid? Blocker = null;
 
-    public string? CancelMessage; // Goob
-
     public SlotFlags TargetSlots => SlotFlags.WITHOUT_POCKET;
 }
 
@@ -33,7 +29,7 @@ public sealed class BeforeEmoteEvent(EntityUid source, EmotePrototype emote)
 /// Use it to play sound, change sprite or something else.
 /// </summary>
 [ByRefEvent]
-public record struct EmoteEvent(EmotePrototype Emote, bool Voluntary) // Goob - emotespam
+public record struct EmoteEvent(NetEntity Source, EmotePrototype Emote)
 {
     /// <summary>
     /// The entity that performed the emote.
@@ -49,8 +45,6 @@ public record struct EmoteEvent(EmotePrototype Emote, bool Voluntary) // Goob - 
     /// If this message has already been "handled" by a previous system.
     /// </summary>
     public bool Handled;
-
-    public bool Voluntary = Voluntary; // Goob - emotespam
 }
 
 /// <summary>

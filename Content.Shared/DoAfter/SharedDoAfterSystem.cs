@@ -24,12 +24,12 @@ namespace Content.Shared.DoAfter;
 
 public abstract partial class SharedDoAfterSystem : EntitySystem
 {
-    [Dependency] private readonly ESForcedFacingSystem _forcedFacing = default!; // Goob
     [Dependency] protected IGameTiming GameTiming = default!;
     [Dependency] private ActionBlockerSystem _actionBlocker = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private SharedMoverController _mover = default!;
     [Dependency] private TagSystem _tag = default!;
+    [Dependency] private readonly ESForcedFacingSystem _forcedFacing = default!; // Goob
 
     /// <summary>
     ///     We'll use an excess time so stuff like finishing effects can show.
