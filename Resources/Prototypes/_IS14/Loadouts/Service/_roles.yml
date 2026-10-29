@@ -107,6 +107,7 @@
 
 - type: roleLoadout
   id: JobChaplain
+  canCustomizeName: true # Goob
   groups:
   - Inventory
   - GroupTankHarness

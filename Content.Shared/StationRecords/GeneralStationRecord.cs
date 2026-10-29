@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 
+using Content.Shared._CorvaxGoob.AppearanceConverter;
 using Content.Shared.Humanoid;
 using Robust.Shared.Serialization;
 
@@ -8,8 +9,9 @@ namespace Content.Shared.StationRecords;
 /// <summary>
 ///     General station record. Indicates the crewmember's name and job.
 /// </summary>
+[DataDefinition]
 [Serializable, NetSerializable]
-public sealed record GeneralStationRecord
+public sealed partial record GeneralStationRecord
 {
     /// <summary>
     ///     Name tied to this station record.
@@ -71,4 +73,10 @@ public sealed record GeneralStationRecord
     /// </summary>
     [DataField]
     public string? DNA;
+
+    /// <summary>
+    ///     Полное описание раундстарт внешности
+    /// </summary>
+    [DataField]
+    public AppearanceConverterVisualTransformProfile? Visual;
 }

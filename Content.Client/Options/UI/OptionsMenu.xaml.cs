@@ -25,7 +25,8 @@ namespace Content.Client.Options.UI
             Tabs.SetTabTitle(4, Loc.GetString("ui-options-tab-accessibility"));
             Tabs.SetTabTitle(5, Loc.GetString("ui-options-tab-admin"));
             Tabs.SetTabTitle(6, Loc.GetString("ui-options-tab-network"));
-            Tabs.SetTabTitle(7, Loc.GetString("ui-options-tab-is14")); //IS14-change
+            Tabs.SetTabTitle(7, Loc.GetString("ui-options-tab-customization")); // Goob
+            Tabs.SetTabTitle(8, Loc.GetString("ui-options-tab-is14")); //IS14-change
 
             UpdateTabs();
         }
@@ -40,6 +41,7 @@ namespace Content.Client.Options.UI
             AccessibilityTab.Control.ReloadValues();
             AudioTab.Control.ReloadValues();
             AdminOptionsTab.Control.ReloadValues();
+            CustomizationTab.Control.ReloadValues(); // Goob
             IS14Tab.Control.ReloadValues(); //IS14-change
         }
     }

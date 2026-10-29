@@ -7,6 +7,8 @@
   name: personal ai device
   description: Your electronic pal who's fun to be with!
   components:
+  - type: VoiceChatEffect # Goobstation - Voice chat
+    effect: Robot
   - type: Instrument
     allowPercussion: false
     handheld: false
@@ -54,18 +56,13 @@
     stopSearchVerbPopup: pai-system-stopped-searching
   - type: Examiner
   - type: IntrinsicRadioReceiver
-  #- type: IntrinsicRadioTransmitter
-  #  channels:
-  #  - Binary # Goobstation - replaced with collective mind
-  - type: ActiveRadio
-    channels:
-    # - Binary # Goobstation - replaced with collective mind
-    - Common
-  # Goobstation
-  - type: CollectiveMind
-    defaultChannel: Binary
+  - type: IntrinsicRadioTransmitter
     channels:
     - Binary
+  - type: ActiveRadio
+    channels:
+    - Binary
+    - Common
   - type: IntellicardableMind # Goobstation - intellicard on more AIs
   - type: DoAfter
   - type: Actions
@@ -131,6 +128,7 @@
     - Tradeband
     - Schechi
     - NewKinPidgin
+    - Hydraspeak # CorvaxGoob
     understands:
     - TauCetiBasic # Add individual languages so they can understand without understanding animals.
     - Canilunzt
@@ -152,6 +150,7 @@
     - Sign # Should know it but not speak it, for obvious reasons.
     - Schechi
     - NewKinPidgin
+    - Hydraspeak # CorvaxGoob
   # Einstein Engines - Language end
   - type: Vocal
     sounds:

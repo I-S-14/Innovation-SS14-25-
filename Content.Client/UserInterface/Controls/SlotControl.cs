@@ -11,7 +11,6 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Client.UserInterface.Controls
 {
-    [Virtual]
     public abstract partial class SlotControl : Control, IEntityControl
     {
         public static int DefaultButtonSize = 64;

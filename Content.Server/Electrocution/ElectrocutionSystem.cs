@@ -13,6 +13,7 @@ using Content.Server.Power.NodeGroups;
 using Content.Server.Weapons.Melee;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
+using Content.Shared.Damage.Systems;
 using Content.Shared.Database;
 using Content.Shared.Electrocution;
 using Content.Shared.IdentityManagement;
@@ -89,6 +90,7 @@ public sealed class ElectrocutionSystem : SharedElectrocutionSystem
 
         SubscribeLocalEvent<ElectrifiedComponent, StartCollideEvent>(OnElectrifiedStartCollide);
         SubscribeLocalEvent<ElectrifiedComponent, AttackedEvent>(OnElectrifiedAttacked);
+        SubscribeLocalEvent<ElectrifiedComponent, ActivateInWorldEvent>(OnElectrifiedActivate); // CorvaxGoob-Fixes
         SubscribeLocalEvent<ElectrifiedComponent, InteractHandEvent>(OnElectrifiedHandInteract);
         SubscribeLocalEvent<ElectrifiedComponent, InteractUsingEvent>(OnElectrifiedInteractUsing);
         SubscribeLocalEvent<RandomInsulationComponent, MapInitEvent>(OnRandomInsulationMapInit);
@@ -193,6 +195,12 @@ public sealed class ElectrocutionSystem : SharedElectrocutionSystem
     }
 
     private void OnElectrifiedHandInteract(EntityUid uid, ElectrifiedComponent electrified, InteractHandEvent args)
+    {
+        if (electrified.OnHandInteract)
+            TryDoElectrifiedAct(uid, args.User, 1, electrified);
+    }
+
+    private void OnElectrifiedActivate(EntityUid uid, ElectrifiedComponent electrified, ActivateInWorldEvent args) // CorvaxGoob-Fixes
     {
         if (electrified.OnHandInteract)
             TryDoElectrifiedAct(uid, args.User, 1, electrified);
@@ -452,13 +460,10 @@ public sealed class ElectrocutionSystem : SharedElectrocutionSystem
 
         if (shockDamage is { } dmg)
         {
-            var actual = _damageable.TryChangeDamage(uid,
-                new DamageSpecifier(_prototypeManager.Index(DamageType), dmg), origin: sourceUid);
-
-            if (actual != null)
+            if (_damageable.TryChangeDamage(uid, new DamageSpecifier(_prototypeManager.Index(DamageType), dmg), out var damage, origin: sourceUid))
             {
                 _adminLogger.Add(LogType.Electrocution,
-                    $"{ToPrettyString(uid):entity} received {actual.GetTotal():damage} powered electrocution damage{(sourceUid != null ? " from " + ToPrettyString(sourceUid.Value) : ""):source}");
+                    $"{ToPrettyString(uid):entity} received {damage:damage} powered electrocution damage{(sourceUid != null ? " from " + ToPrettyString(sourceUid.Value) : ""):source}");
             }
         }
 

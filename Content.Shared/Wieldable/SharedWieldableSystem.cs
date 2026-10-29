@@ -91,6 +91,9 @@ public abstract class SharedWieldableSystem : EntitySystem
 
     private void OnShootAttempt(EntityUid uid, GunRequiresWieldComponent component, ref ShotAttemptedEvent args)
     {
+        if (args.User == uid) // CorvaxGoob-FireOnDrop
+            return;
+
         if (TryComp<WieldableComponent>(uid, out var wieldable) &&
             !wieldable.Wielded &&
             !HasComp<NoWieldNeededComponent>(args.User) // Goobstation - Yowies
@@ -424,6 +427,10 @@ public abstract class SharedWieldableSystem : EntitySystem
 
     private void OnItemLeaveHand(EntityUid uid, WieldableComponent component, GotUnequippedHandEvent args)
     {
+        // Goob edit: container removal from server state / PVS detach isn't a real unequip, server handles it.
+        if (_timing.ApplyingState)
+            return;
+
         if (uid == args.Unequipped)
             TryUnwield(uid, component, args.User, force: true);
     }

@@ -35,6 +35,7 @@
       - !type:DoActsBehavior
         acts: ["Destruction"]
   - type: WiresPanel
+  - type: ESForcedFacingUi # Goob
   - type: ActivatableUI
     key: enum.LatheUiKey.Key
   - type: ActivatableUIRequiresPower
@@ -340,6 +341,7 @@
     - BluespaceTechnologyBoards # BluespaceHarvester
     - BluespaceHarvesterBoards # BluespaceHarvester
     - Cloning # Cloning
+    - ReactorCircuitboards # Nuclear Reactor
   - type: MaterialStorage
     whitelist: *StandardMaterialWhitelist
   - type: OreSiloClient
@@ -404,6 +406,7 @@
     #IS14-change end
     - PowerCages
     - BorgModulesGoob
+    - SecBorgParts # Goob
     - BasicCybernetics
     - MedicalCybernetics
     - AdvancedCybernetics
@@ -422,6 +425,20 @@
   - type: GuideHelp
     guides:
     - Robotics
+  # CorvaxGoob-start
+  - type: BlueprintReceiver
+    whitelist:
+      tags:
+      - BlueprintExosuitFabricator
+  - type: ContainerContainer
+    containers:
+      machine_board: !type:Container
+      machine_parts: !type:Container
+      blueprint: !type:Container
+  - type: EmptyOnMachineDeconstruct
+    containers:
+    - blueprint
+  # CorvaxGoob-end
 
 - type: entity
   id: Biofabricator
@@ -542,6 +559,20 @@
   - type: OreSiloClient
   - type: LatheAnnouncing
     channels: [Security]
+  # CorvaxGoob-start
+  - type: BlueprintReceiver
+    whitelist:
+      tags:
+      - BlueprintSecurityTechFab
+  - type: ContainerContainer
+    containers:
+      machine_board: !type:Container
+      machine_parts: !type:Container
+      blueprint: !type:Container
+  - type: EmptyOnMachineDeconstruct
+    containers:
+    - blueprint
+  # CorvaxGoob-end
 
 - type: entity
   id: AmmoTechFab
@@ -630,6 +661,7 @@
     - MedicalMiscRestricted
     - MedicalVehiclesAdvanced
     - MedicalBoards
+    - MedicalBoardsGoob
     - Janitor
     - Genetics
     - MedicalCloning
@@ -653,6 +685,20 @@
   - type: OreSiloClient
   - type: LatheAnnouncing
     channels: [Medical]
+  # CorvaxGoob-start
+  - type: BlueprintReceiver
+    whitelist:
+      tags:
+      - BlueprintMedicalTechFab
+  - type: ContainerContainer
+    containers:
+      machine_board: !type:Container
+      machine_parts: !type:Container
+      blueprint: !type:Container
+  - type: EmptyOnMachineDeconstruct
+    containers:
+    - blueprint
+  # CorvaxGoob-end
 
 - type: entity
   parent: [BaseLatheLube]
@@ -800,6 +846,7 @@
     - type: MiningPointsLathe # DeltaV
     - type: MaterialStorageMagnetPickup # Frontier
     - type: OreSiloClient
+    - type: AlmanacOreCounter # Goobstation
 
 - type: entity
   parent: OreProcessor
@@ -885,6 +932,8 @@
     - FloorConcreteTilesStatic
     - CircuitFloorsStatic
     - FloorMarbleTilesStatic
+    - FloorOther # CorvaxGoob
+    - FloorShuttle # CorvaxGoob
     dynamicPacks:
     - FauxTiles
   - type: MaterialStorage

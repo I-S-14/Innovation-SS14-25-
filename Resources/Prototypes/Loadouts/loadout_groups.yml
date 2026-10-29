@@ -14,6 +14,7 @@
   - PersonalAI # Goobstation
   - GoldenPersonalAI # Goobstation
   - CrewCassette # Goobstation
+  - HandheldStationMap # CorvaxGoob-loadouts
   - ThreeCandles
   - Lighter
   - FlippoLighter # CorvaxGoob-loadouts
@@ -1584,6 +1585,7 @@
   loadouts:
   - ChiefMedicalOfficerLabCoat
   - ChiefMedicalOfficerWintercoat
+  - ChiefMedicalOfficerLabCoatWinter # Funky Station
 
 - type: loadoutGroup
   id: ChiefMedicalOfficerNeck

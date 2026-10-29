@@ -57,13 +57,14 @@
       - !type:EjectVendorItems
   - type: Repairable
     doAfterDelay: 8
+  - type: ESForcedFacingUi # Goob
   - type: ActivatableUI
     key: enum.VendingMachineUiKey.Key
   - type: ActivatableUIRequiresPower
   - type: UserInterface
     interfaces:
       enum.VendingMachineUiKey.Key:
-        type: VendingMachineBoundUserInterface
+        type: VendingMachineKeypadBoundUserInterface # Goob
       enum.WiresUiKey.Key:
         type: WiresBoundUserInterface
   - type: WiresPanel
@@ -87,18 +88,13 @@
     messageSet: SpookySpeakerMessagesGeneric
     speakChance: 0.2
   - type: IntrinsicRadioReceiver
-  #- type: IntrinsicRadioTransmitter
-  #  channels:
-  #  - Binary # Goobstation - replaced with collective mind
-  - type: ActiveRadio
-    channels:
-    # - Binary # Goobstation - replaced with collective mind
-    - Common
-  # Goobstation
-  - type: CollectiveMind
-    defaultChannel: Binary
+  - type: IntrinsicRadioTransmitter
     channels:
     - Binary
+  - type: ActiveRadio
+    channels:
+    - Binary
+    - Common
   - type: IntellicardableMind # Goobstation - intellicard on more AIs
   - type: DoAfter
   - type: Electrified
@@ -109,7 +105,7 @@
     castShadows: false
     radius: 2
     energy: 1.5
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: LitOnPowered
   - type: ApcPowerReceiver
@@ -170,13 +166,14 @@
           collection: MetalGlassBreak
   - type: Repairable
     doAfterDelay: 8
+  - type: ESForcedFacingUi # Goob
   - type: ActivatableUI
     key: enum.VendingMachineUiKey.Key
   - type: ActivatableUIRequiresPower
   - type: UserInterface
     interfaces:
       enum.VendingMachineUiKey.Key:
-        type: VendingMachineBoundUserInterface
+        type: VendingMachineKeypadBoundUserInterface # Goob
       enum.WiresUiKey.Key:
         type: WiresBoundUserInterface
   - type: WiresPanel
@@ -352,7 +349,7 @@
     radius: 1
     energy: 2.0
     color: "#ffb0b0"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: AccessReader
     access: [["HeadOfPersonnel"]]
@@ -374,6 +371,7 @@
     brokenState: broken
     normalState: normal-unshaded
     ejectState: eject-unshaded
+  - type: AntiRottingContainer # CorvaxGoob - Vending Return
   - type: DatasetVocalizer
     dataset: ChefvendAds
   - type: SpeakOnUIClosed
@@ -394,7 +392,7 @@
     radius: 1.5
     energy: 3.0
     color: "#4b93ad"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
 
 - type: entity
@@ -463,7 +461,7 @@
     radius: 1.8
     energy: 3.0
     color: "#3db83b"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: Tag
     tags:
@@ -499,7 +497,7 @@
     radius: 1.8
     energy: 3.0
     color: "#3db83b"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: Tag
     tags:
@@ -546,7 +544,7 @@
     radius: 1.5
     energy: 2.0
     color: "#ad7c4b"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: Transform
     noRot: false
@@ -590,7 +588,7 @@
     radius: 1.5
     energy: 3.0
     color: "#3c5eb5"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: Transform
     noRot: false
@@ -617,7 +615,7 @@
     radius: 1.5
     energy: 3.0
     color: "#423438"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
 
 - type: entity
@@ -640,7 +638,7 @@
     radius: 1.5
     energy: 3.0
     color: "#A50824"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
 
 - type: entity
@@ -667,7 +665,7 @@
     radius: 1.5
     energy: 3.0
     color: "#44964A"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
 
 - type: entity
@@ -696,7 +694,7 @@
     radius: 1.5
     energy: 3.0
     color: "#CBC6BE"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: Transform
     noRot: false
@@ -728,7 +726,7 @@
     radius: 1.5
     energy: 3.0
     color: "#D3A44D"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: Transform
     noRot: true
@@ -766,7 +764,7 @@
     radius: 1.5
     energy: 3.0
     color: "#66538F"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
 
 - type: entity
@@ -804,7 +802,7 @@
     radius: 1.5
     energy: 3.0
     color: "#6927C5"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
 
 - type: entity
@@ -842,7 +840,7 @@
     radius: 1.5
     energy: 3.0
     color: "#D82929"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
 
 - type: entity
@@ -915,7 +913,7 @@
     radius: 1.5
     energy: 3.0
     color: "#4b93ad"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: Transform
     noRot: false
@@ -955,7 +953,7 @@
     radius: 1.5
     energy: 3.0
     color: "#9a18d6"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: Transform
     noRot: false
@@ -995,7 +993,7 @@
     radius: 1.5
     energy: 3.0
     color: "#6148c7"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
 
 - type: entity
@@ -1028,7 +1026,7 @@
     radius: 1.5
     energy: 3.0
     color: "#b89e2a"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: Transform
     noRot: false
@@ -1072,7 +1070,7 @@
     radius: 1.5
     energy: 3.0
     color: "#9dc5c9"
-    mask: /Textures/Effects/LightMasks/cone.png # Goobstation
+    lightMask: ConeSingle # Goobstation
     autoRot: true # Goobstation
   - type: GuideHelp
     guides:
@@ -1137,7 +1135,7 @@
     radius: 1.5
     energy: 3.0
     color: "#326e3f"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
 
 - type: entity
@@ -1174,7 +1172,7 @@
     radius: 1
     energy: 2.0
     color: "#78645c"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: GuideHelp
     guides:
@@ -1219,7 +1217,7 @@
     radius: 1.5
     energy: 3.0
     color: "#326e3f"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
 
 - type: entity
@@ -1265,7 +1263,7 @@
     radius: 1.5
     energy: 3.0
     color: "#c73434"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: Transform
     noRot: false
@@ -1302,7 +1300,7 @@
     radius: 1.5
     energy: 3.0
     color: "#737785"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
 
 - type: entity
@@ -1324,7 +1322,7 @@
     radius: 1.5
     energy: 3.0
     color: "#3c5eb5"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
 
 - type: entity
@@ -1346,7 +1344,7 @@
     radius: 1.5
     energy: 3.0
     color: "#CE3401"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
 
 - type: entity
@@ -1368,7 +1366,7 @@
     radius: 1.5
     energy: 3.0
     color: "#5F6A1C"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
 
 - type: entity
@@ -1390,7 +1388,7 @@
     radius: 1.5
     energy: 3.0
     color: "#207E79"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
 
 - type: entity
@@ -1429,7 +1427,7 @@
     radius: 1.5
     energy: 3.0
     color: "#389690"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: Transform
     noRot: false
@@ -1474,7 +1472,7 @@
     radius: 1.5
     energy: 3.0
     color: "#c73434"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: Transform
     noRot: false
@@ -1517,7 +1515,7 @@
     radius: 1.5
     energy: 3.0
     color: "#9dc5c9"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: Transform
     noRot: false
@@ -1559,7 +1557,7 @@
     radius: 1.5
     energy: 3.0
     color: "#B0ADA9"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: Transform
     noRot: false
@@ -1598,7 +1596,7 @@
     radius: 1.5
     energy: 3.0
     color: "#d4ab33"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: Transform
     noRot: false
@@ -1641,7 +1639,7 @@
     radius: 1.5
     energy: 3.0
     color: "#326e3f"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: Transform
     noRot: false
@@ -1683,7 +1681,7 @@
     radius: 1.5
     energy: 3.0
     color: "#ffe599"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: Transform
     noRot: false
@@ -1717,7 +1715,7 @@
     radius: 1.5
     energy: 3.0
     color: "#b89f25"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: ShopVendor # DeltaV
     pack: SalvageVendorInventory
@@ -1781,7 +1779,7 @@
     radius: 1.5
     energy: 3.0
     color: "#d4ab33"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
 
 # job clothing
@@ -1933,7 +1931,7 @@
     radius: 1.5
     energy: 3.0
     color: "#CCCCCC" #The holy C
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
 
 - type: entity
@@ -2203,7 +2201,7 @@
     radius: 1.5
     energy: 3.0
     color: "#6927C5"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
 
 - type: entity
@@ -2375,7 +2373,7 @@
     radius: 1.5
     energy: 3.0
     color: "#48CF48"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: AccessReader
     access: [["CentralCommand"]]
@@ -2411,7 +2409,7 @@
     radius: 1.5
     energy: 3.0
     color: "#3c5eb5"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: DatasetVocalizer
     dataset: HappyHonkAds

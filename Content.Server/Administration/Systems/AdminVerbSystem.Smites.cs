@@ -7,7 +7,6 @@ using Content.Server.Administration.Components;
 using System.Numerics;
 using System.Threading;
 using Content.Server.Atmos.EntitySystems;
-using Content.Server.Body.Components;
 using Content.Server.Body.Systems;
 using Content.Server.Clothing.Systems;
 using Content.Server.Electrocution;
@@ -35,8 +34,6 @@ using Content.Shared.Body.Part;
 using Content.Shared.Clothing.Components;
 using Content.Shared.Clumsy;
 using Content.Shared.Cluwne;
-using Content.Shared.Damage.Components;
-using Content.Shared.Damage;
 using Content.Shared.Damage.Systems;
 using Content.Shared.Database;
 using Content.Shared.Electrocution;
@@ -69,6 +66,7 @@ using Robust.Shared.Spawners;
 using Robust.Shared.Utility;
 using System.Numerics;
 using System.Threading;
+using Content.Shared.Damage.Components;
 using Timer = Robust.Shared.Timing.Timer;
 using Content.Server.Speech.EntitySystems;
 using Content.Shared.Polymorph;
@@ -1026,6 +1024,19 @@ public sealed partial class AdminVerbSystem
         };
         args.Verbs.Add(crawler);
 
+        // CorvaxGoob Start
+        var fuelRodifyName = Loc.GetString("admin-smite-become-fuelrod-name").ToLowerInvariant();
+        Verb fuelRodify = new()
+        {
+            Text = fuelRodifyName,
+            Category = VerbCategory.Smite,
+            Icon = new SpriteSpecifier.Rsi(new("/Textures/_CorvaxGoob/Structures/Power/Generation/FissionGenerator/reactor_parts.rsi"), "default_rod"),
+            Act = () => _polymorphSystem.PolymorphEntity(args.Target, "AdminFuelRodSmite"),
+            Impact = LogImpact.Extreme,
+            Message = string.Join(": ", fuelRodifyName, Loc.GetString("admin-smite-become-fuelrod-description"))
+        };
+        args.Verbs.Add(fuelRodify);
+        // CorvaxGoob - End
         var siliconName = Loc.GetString("admin-smite-silicon-laws-bound-name").ToLowerInvariant();
         Verb silicon = new()
         {

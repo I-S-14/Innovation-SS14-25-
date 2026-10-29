@@ -231,8 +231,19 @@ public abstract partial class SharedVendingMachineSystem : EntitySystem
             return;
         }
 
+        // Synchronize returned-item stock before the availability check.
+        var cleanedReturnedInventory = CleanupReturnedInventoryBeforeVend(uid, vendComponent, itemId); // CorvaxGoob - Vending Return
+
         if (entry.Amount <= 0)
         {
+            // CorvaxGoob Edit Start - Vending Return
+            if (cleanedReturnedInventory)
+            {
+                Dirty(uid, vendComponent);
+                UpdateUI((uid, vendComponent));
+            }
+            // CorvaxGoob End
+
             Popup.PopupClient(Loc.GetString("vending-machine-component-try-eject-out-of-stock"), uid);
             Deny((uid, vendComponent));
             return;
@@ -382,7 +393,7 @@ public abstract partial class SharedVendingMachineSystem : EntitySystem
         return GetAllInventory(uid, component).Where(_ => _.Amount > 0).ToList();
     }
 
-    private void AddInventoryFromPrototype(EntityUid uid, Dictionary<string, uint>? entries,
+    private void AddInventoryFromPrototype(EntityUid uid, Dictionary<EntProtoId, uint>? entries,
         InventoryType type,
         VendingMachineComponent? component = null, float restockQuality = 1.0f)
     {

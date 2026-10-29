@@ -2,16 +2,18 @@
 
 using Content.Goobstation.Common.Pirates;
 using Content.Server.Access.Systems;
+using Content.Goobstation.Common.AlmanacBlade; // Goobstation
 using Content.Server.Cargo.Components;
-using Content.Server.Station.Components;
 using Content.Server.Storage.EntitySystems;
 using Content.Shared.Cargo;
 using Content.Shared.Cargo.BUI;
 using Content.Shared.Cargo.Components;
 using Content.Shared.Cargo.Events;
 using Content.Shared.Cargo.Prototypes;
+using Content.Shared.Containers; // CorvaxGoob-CargoFeatures
 using Content.Shared.Database;
 using Content.Shared.Emag.Systems;
+using Content.Shared.EntityTable; // CorvaxGoob-CargoFeatures
 using Content.Shared.IdentityManagement;
 using Content.Shared.Interaction;
 using Content.Shared.Item;
@@ -21,8 +23,8 @@ using Content.Shared.Prototypes;
 using Content.Shared.Station.Components;
 using Content.Shared.Storage;
 using Content.Shared.Storage.Components;
+using Content.Shared.Storage.EntitySystems; // CorvaxGoob-CargoFeatures
 using JetBrains.Annotations;
-using Microsoft.CodeAnalysis;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
@@ -41,6 +43,7 @@ namespace Content.Server.Cargo.Systems
         // CorvaxGoob-CargoFeatures-Start
         [Dependency] private readonly IdCardSystem _idCard = default!;
         [Dependency] private readonly EntityStorageSystem _entityStorage = default!;
+        [Dependency] private readonly EntityTableSystem _entityTable = default!;
         // CorvaxGoob-CargoFeatures-End
 
         [Dependency] private readonly StorageSystem _storage = default!;
@@ -726,7 +729,7 @@ namespace Content.Server.Cargo.Systems
         /// Fulfills the specified cargo order and spawns paper attached to it.
         /// </summary>
         /// CorvaxGoob-CargoFeatures : Новые аргументы функции для работы с оптовыми заказами
-        private bool FulfillOrder(CargoOrderData order, ProtoId<CargoAccountPrototype> account, EntityCoordinates spawn, string? paperProto, out EntityUid? nextCrate, out List<string>? excessItemsOut, EntityUid? previousCrate = null, List<string>? excessItemsIn = null)
+        private bool FulfillOrder(CargoOrderData order, ProtoId<CargoAccountPrototype> account, EntityCoordinates spawn, string? paperProto, out EntityUid? nextCrate, out List<string>? excessItemsOut, EntityUid? previousCrate = null, List<string>? excessItemsIn = null, bool addOrderContents = true)
         {
             // Create the item itself
             EntityUid? item = null;
@@ -741,11 +744,14 @@ namespace Content.Server.Cargo.Systems
                 return false;
 
             var productProto = _protoMan.Index<EntityPrototype>(order.ProductId);
+            var orderContents = addOrderContents
+                ? GetBulkOrderContents(productProto)
+                : new List<string>();
 
             if (previousCrate is not null) // Если указан ящик который будет заполняться
                 item = previousCrate;
             else if (order.SecuredDelivery && accountProto.SecureCratePrototype is not null // Если поставлена галочка на защиту заказа
-                && (productProto.TryGetComponent<ItemComponent>(out var itemComponent) || productProto.HasComponent<EntityStorageComponent>())) // и может ли этот заказ быть помещен в ящик?
+                && (productProto.TryGetComponent<ItemComponent>(out var itemComponent, Factory) || productProto.HasComponent<EntityStorageComponent>())) // и может ли этот заказ быть помещен в ящик?
             {
                 item = Spawn(accountProto.SecureCratePrototype, spawn);
 
@@ -757,34 +763,32 @@ namespace Content.Server.Cargo.Systems
                 item = EntityManager.CreateEntityUninitialized(productProto.ID, spawn);
 
                 // Очистить автозаполнение при спавне для пополнения содержимого саморучно в коде снизу
-                RemComp<StorageFillComponent>(item.Value);
+                if (orderContents is not null)
+                {
+                    RemComp<StorageFillComponent>(item.Value);
+                    RemComp<EntityTableContainerFillComponent>(item.Value);
+                }
 
                 EntityManager.InitializeAndStartEntity(item.Value);
             }
 
             // Если предмет заказа имеет в себе заполняемость и является хранилищем
-            if (productProto.TryGetComponent<StorageFillComponent>(out var storageFill)
+            if (orderContents is not null
                 && TryComp<EntityStorageComponent>(item, out var crateEntityStorage))
             {
                 nextCrate = item;
 
                 // Избыток предметов при заполнении
                 var entitiesExcess = new List<string>();
-                bool doExcessFill = false;
 
                 if (excessItemsIn is not null) // Если предметы из избытка были переданы в функцию — помещаем их первыми
                     foreach (var excessItem in excessItemsIn)
-                        _storage.Insert(item.Value, Spawn(excessItem), out var stacked);
+                        _entityStorage.Insert(Spawn(excessItem), item.Value);
 
-                // Проходимся по всему содержимому StorageFill и помещаем в ящик, если цикл не был закончен и при этом места уже нету
-                // То весь избыток отправляется в список который передаётся на выход из функции для следующего круга
-                var spawns = EntitySpawnCollection.GetSpawns(storageFill.Contents, _random);
-                foreach (var contentItem in spawns)
+                // Всё, что не поместилось, передаётся для заполнения следующего ящика.
+                foreach (var contentItem in orderContents)
                 {
-                    if (crateEntityStorage.Contents.Count >= crateEntityStorage.Capacity && spawns.Count <= crateEntityStorage.Capacity)
-                        doExcessFill = true;
-
-                    if (doExcessFill)
+                    if (crateEntityStorage.Contents.Count >= crateEntityStorage.Capacity && orderContents.Count <= crateEntityStorage.Capacity)
                     {
                         entitiesExcess.Add(contentItem);
                         continue;
@@ -794,7 +798,22 @@ namespace Content.Server.Cargo.Systems
                 }
 
                 if (entitiesExcess.Count != 0)
+                {
+                    // Последний заказ тоже может переполнить предыдущий ящик, поэтому остаток можно сразу отправить в новый ящик
+                    if (order.NumDispatched + 1 >= order.OrderQuantity && previousCrate is not null)
+                    {
+                        return FulfillOrder(order,
+                            account,
+                            spawn,
+                            paperProto,
+                            out nextCrate,
+                            out excessItemsOut,
+                            excessItemsIn: entitiesExcess,
+                            addOrderContents: false);
+                    }
+
                     excessItemsOut = entitiesExcess;
+                }
             }
 
 
@@ -854,6 +873,35 @@ namespace Content.Server.Cargo.Systems
             return FulfillOrder(order, account, spawn, paperProto, out _, out _);
         }
 
+
+        // CorvaxGoob-CargoFeatures : Получение содержимого товара для объединения оптовых заказов
+        private List<string>? GetBulkOrderContents(EntityPrototype productProto)
+        {
+            if (productProto.TryGetComponent<StorageFillComponent>(out var storageFill, Factory)) // удалить блок с удалением компонента
+            {
+                return EntitySpawnCollection.GetSpawns(storageFill.Contents, _random);
+            }
+
+            if (!productProto.TryGetComponent<EntityTableContainerFillComponent>(out var containerFill, Factory))
+            {
+                return null;
+            }
+
+            var containers = containerFill.Containers;
+
+            if (containers.Count != 1
+                || !containers.TryGetValue(
+                    SharedEntityStorageSystem.ContainerName,
+                    out var entityTable))
+            {
+                return null;
+            }
+
+            return _entityTable.GetSpawns(entityTable)
+                .Select(prototype => prototype.Id)
+                .ToList();
+        }
+
         public List<ProtoId<CargoProductPrototype>> GetAvailableProducts(Entity<CargoOrderConsoleComponent> ent)
         {
             if (_station.GetOwningStation(ent) is not { } station ||
@@ -866,10 +914,15 @@ namespace Content.Server.Cargo.Systems
 
             // Note that a market must be both on the station and on the console to be available.
             var markets = ent.Comp.AllowedGroups.Intersect(db.Markets).ToList();
+            var hiddenEv = new GetHiddenCargoProductsEvent(new HashSet<string>()); // Goobstation
+            RaiseLocalEvent(ref hiddenEv); // Goobstation
             foreach (var product in _protoMan.EnumeratePrototypes<CargoProductPrototype>())
             {
                 if (!markets.Contains(product.Group))
                     continue;
+
+                if (hiddenEv.Hidden.Contains(product.ID)) // Goobstation
+                    continue; // Goobstation
 
                 products.Add(product.ID);
             }

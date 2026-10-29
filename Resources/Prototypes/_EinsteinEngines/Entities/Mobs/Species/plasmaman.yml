@@ -1,9 +1,13 @@
 - type: entity
-  parent: BaseMobSpeciesOrganic
+  parent: [ BaseMobSpeciesNonPerishable ]
   id: BaseMobPlasmaman
   name: Urist McPlasma
   abstract: true
   components:
+  - type: Barotrauma # Goob
+    protectionSlots:
+    - head
+    - jumpsuit
   - type: ZombieImmune
   - type: Icon
     sprite: _EinsteinEngines/Mobs/Species/Plasmaman/parts.rsi
@@ -62,7 +66,6 @@
       sprite: "Effects/creampie.rsi"
       state: "creampie_human"
       visible: false
-  - type: Carriable
   - type: Body
     prototype: Plasmaman
     requiredLegs: 2
@@ -176,7 +179,7 @@
     thresholds:
       243: 0.8
   #- type: Fart  CorvaxGoob
-  # gasToFart: Plasma CorvaxGoob
+  # gas: Plasma CorvaxGoob
 
 - type: entity
   parent: BaseSpeciesDummy

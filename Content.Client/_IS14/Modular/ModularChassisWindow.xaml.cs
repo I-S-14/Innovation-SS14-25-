@@ -670,7 +670,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
     {
         if (!_protos.TryIndex<GasPrototype>(gas.ToString(), out var proto)
             || string.IsNullOrEmpty(proto.Color)
-            || Color.TryFromHex("#" + proto.Color) is not { } color)
+            || !Color.TryFromHex("#" + proto.Color, out var color))
         {
             return IS14Palette.Text;
         }

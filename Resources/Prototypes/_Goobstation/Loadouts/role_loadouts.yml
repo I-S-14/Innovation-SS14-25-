@@ -14,6 +14,7 @@
   - NanotrasenRepresentativeGloves
   - Glasses
   - Trinkets
+  - NanotrasenRepresentativeJobTrinkets
   - Animals
   - GroupSpeciesBreathTool
   - Survival
@@ -57,6 +58,7 @@
   - NanotrasenTrainerGloves
   - NanotrasenTrainerBelt
   - Trinkets
+  - NanotrasenTrainerJobTrinkets
   - Animals
   - GroupSpeciesBreathTool
   - Survival
@@ -112,6 +114,7 @@
   - SecurityNeck
   - SurvivalSecurity
   - Trinkets
+  - BrigmedicJobTrinkets
   - Animals
   - GroupSpeciesBreathToolSecurity
   # Goobstation - EE Plasmeme Change.
@@ -180,6 +183,7 @@
    - VirologistOuterClothing
    - MedicalShoes
    - VirologistPDA
+   - VirologistJobTrinkets
    - SurvivalMedical
    - Trinkets
    - GroupSpeciesBreathToolMedical

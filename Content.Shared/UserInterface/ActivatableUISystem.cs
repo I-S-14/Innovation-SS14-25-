@@ -77,7 +77,7 @@ public sealed partial class ActivatableUISystem : EntitySystem
 
         args.Verbs.Add(new ActivationVerb
         {
-            Act = () => InteractUI(args.User, uid, component),
+            Act = () => InteractUI(args.User, (uid, component)), // Goob
             Priority = component.VerbPriority, //IS14-change
             Text = Loc.GetString(component.VerbText),
             // TODO VERB ICON find a better icon
@@ -92,7 +92,7 @@ public sealed partial class ActivatableUISystem : EntitySystem
 
         args.Verbs.Add(new Verb
         {
-            Act = () => InteractUI(args.User, uid, component),
+            Act = () => InteractUI(args.User, (uid, component)), // Goob
             Text = Loc.GetString(component.VerbText),
             // TODO VERB ICON find a better icon
             Icon = new SpriteSpecifier.Texture(new ResPath("/Textures/Interface/VerbIcons/settings.svg.192dpi.png")),
@@ -106,7 +106,7 @@ public sealed partial class ActivatableUISystem : EntitySystem
 
         args.Verbs.Add(new AlternativeVerb
         {
-            Act = () => InteractUI(args.User, uid, component),
+            Act = () => InteractUI(args.User, (uid, component)), // Goob
             Priority = component.VerbPriority, //IS14-change
             Text = Loc.GetString(component.VerbText),
             // TODO VERB ICON find a better icon
@@ -168,7 +168,7 @@ public sealed partial class ActivatableUISystem : EntitySystem
         if (component.RequiredItems != null)
             return;
 
-        args.Handled = InteractUI(args.User, uid, component);
+        args.Handled = InteractUI(args.User, uid, component, ref args.InteractionParticle); // Goob
     }
 
     private void OnInteractUsing(EntityUid uid, ActivatableUIComponent component, InteractUsingEvent args)
@@ -185,7 +185,7 @@ public sealed partial class ActivatableUISystem : EntitySystem
         if (_whitelistSystem.IsWhitelistFail(component.RequiredItems, args.Used))
             return;
 
-        args.Handled = InteractUI(args.User, uid, component);
+        args.Handled = InteractUI(args.User, uid, component, ref args.InteractionParticle); // Goob
     }
 
     private void OnUIClose(EntityUid uid, ActivatableUIComponent component, BoundUIClosedEvent args)
@@ -201,13 +201,14 @@ public sealed partial class ActivatableUISystem : EntitySystem
         SetCurrentSingleUser(uid, null, component);
     }
 
-    private bool InteractUI(EntityUid user, EntityUid uiEntity, ActivatableUIComponent aui)
+    private bool InteractUI(EntityUid user, EntityUid uiEntity, ActivatableUIComponent aui, ref bool interactionParticle) // Goob
     {
         if (aui.Key == null || !_uiSystem.HasUi(uiEntity, aui.Key))
             return false;
 
         if (_uiSystem.IsUiOpen(uiEntity, aui.Key, user))
         {
+            interactionParticle = false; // Goob
             _uiSystem.CloseUi(uiEntity, aui.Key, user);
             return true;
         }
@@ -277,6 +278,7 @@ public sealed partial class ActivatableUISystem : EntitySystem
         //Let the component know a user opened it so it can do whatever it needs to do
         var aae = new AfterActivatableUIOpenEvent(user);
         RaiseLocalEvent(uiEntity, aae);
+        interactionParticle = aae.InteractionParticle; // Goob
 
         return true;
     }

@@ -51,7 +51,5 @@ cmd-replay-spectate-help = replay_spectate [optional entity]
 cmd-replay-spectate-desc = Attaches or detaches the local player to a given entity uid.
 cmd-replay-spectate-hint = Optional EntityUid
 
-cmd-replay-toggleui-desc = Toggles the replay control UI.
-
 cmd-replay-toggle-screenshot-mode-desc = Toggles replay screenshot mode, hiding the chat and showing the replay control widget.
 cmd-replay-toggle-screenshot-mode-help = replay_toggle_screenshot_mode

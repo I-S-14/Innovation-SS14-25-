@@ -171,6 +171,16 @@ namespace Content.Server.GameTicking
             if (DummyTicker)
                 return;
 
+            // CorvaxGoob-GoLobby-start
+            if (_ghostGoLobby.IsCharacterUsed(character))
+            {
+                _chatManager.DispatchServerMessage(player, Loc.GetString("ghost-go-lobby-used"));
+                return;
+            }
+
+            var originalCharacter = character;
+            // CorvaxGoob-GoLobby-end
+
             if (station == EntityUid.Invalid)
             {
                 var stations = GetSpawnableStations();
@@ -224,6 +234,7 @@ namespace Content.Server.GameTicking
             // Do nothing, something else has handled spawning this player for us!
             if (bev.Handled)
             {
+                _ghostGoLobby.MarkCharacterUsed(originalCharacter); // CorvaxGoob-GoLobby
                 PlayerJoinGame(player, silent);
                 return;
             }
@@ -257,6 +268,8 @@ namespace Content.Server.GameTicking
                     Loc.GetString("game-ticker-player-no-jobs-available-when-joining"));
                 return;
             }
+
+            _ghostGoLobby.MarkCharacterUsed(originalCharacter); // CorvaxGoob-GoLobby
 
             DoSpawn(player, character, station, jobId, silent, out var mob, out var jobPrototype, out var jobName);
 
@@ -486,7 +499,7 @@ namespace Content.Server.GameTicking
                 var spawn = _robustRandom.Pick(_possiblePositions);
                 var toMap = _transform.ToMapCoordinates(spawn);
 
-                if (_mapManager.TryFindGridAt(toMap, out var gridUid, out _))
+                if (_map.TryFindGridAt(toMap, out var gridUid, out _))
                 {
                     var gridXform = Transform(gridUid);
 
@@ -496,17 +509,17 @@ namespace Content.Server.GameTicking
                 return spawn;
             }
 
-            if (_mapManager.MapExists(DefaultMap))
+            if (_map.MapExists(DefaultMap))
             {
-                var mapUid = _mapManager.GetMapEntityId(DefaultMap);
+                var mapUid = _map.GetMapOrInvalid(DefaultMap);
                 if (!TerminatingOrDeleted(mapUid))
                     return new EntityCoordinates(mapUid, Vector2.Zero);
             }
 
             // Just pick a point at this point I guess.
-            foreach (var map in _mapManager.GetAllMapIds())
+            foreach (var map in _map.GetAllMapIds())
             {
-                var mapUid = _mapManager.GetMapEntityId(map);
+                var mapUid = _map.GetMapOrInvalid(map);
 
                 if (!metaQuery.TryGetComponent(mapUid, out var meta)
                     || meta.EntityPaused

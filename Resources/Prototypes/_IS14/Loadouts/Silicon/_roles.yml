@@ -9,3 +9,5 @@
   id: JobStationAi
   nameDataset: NamesAI
   canCustomizeName: true
+  groups:
+  - StationAiLaws # Goob: law set picked in the loadout

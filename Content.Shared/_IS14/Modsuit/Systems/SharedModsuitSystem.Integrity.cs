@@ -4,6 +4,7 @@ using Content.Shared._IS14.Modsuit.Components;
 using Content.Shared._IS14.Modular;
 using Content.Shared._Shitmed.Targeting;
 using Content.Shared.Damage;
+using Content.Shared.Damage.Systems;
 using Content.Shared.Inventory;
 using Robust.Shared.Utility;
 

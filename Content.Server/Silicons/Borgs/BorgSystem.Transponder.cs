@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-using Content.Shared.Containers.ItemSlots;
 using Content.Shared.DeviceNetwork;
-using Content.Shared.Damage;
 using Content.Goobstation.Maths.FixedPoint;
+using Content.Shared.Damage.Components;
 using Content.Shared.Mobs;
 using Content.Shared.Movement.Components;
 using Content.Shared.Popups;
@@ -60,7 +59,8 @@ public sealed partial class BorgSystem
                 chassis.ModuleCount,
                 hasBrain,
                 canDisable,
-                HasComp<AiRemoteControllerComponent>(uid)); // Corvax-Next-AiRemoteControl
+                HasComp<AiRemoteControllerComponent>(uid),
+                chassis.IsLawChangable); // Corvax-Next-AiRemoteControl
 
             var payload = new NetworkPayload()
             {
@@ -87,7 +87,8 @@ public sealed partial class BorgSystem
                 0,
                 hasBrain,
                 false, // Corvax-Next-AiRemoteControl
-                false);
+                false,
+                false); // Corvax-Goob-MutableLaws
 
             var payload = new NetworkPayload()
             {

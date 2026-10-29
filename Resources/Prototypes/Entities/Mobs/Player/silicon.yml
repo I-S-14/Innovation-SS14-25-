@@ -8,7 +8,7 @@
   - type: IntrinsicRadioReceiver
   - type: IntrinsicRadioTransmitter
     channels:
-    # - Binary # Goobstation - replaced with collective mind
+    - Binary
     - Common
     - Command
     - Engineering
@@ -19,7 +19,7 @@
     - Supply
   - type: ActiveRadio
     channels:
-    # - Binary # Goobstation - replaced with collective mind
+    - Binary
     - Common
     - Command
     - Engineering
@@ -28,11 +28,6 @@
     - Security
     - Service
     - Supply
-  # Goobstation
-  - type: CollectiveMind
-    defaultChannel: Binary
-    channels:
-    - Binary
   - type: IgnoreUIRange
   - type: StationAiHeld
   - type: StationAiOverlay
@@ -79,6 +74,7 @@
     transmitFrequencyId: ShuttleTimer
   - type: RadarConsole
     followEntity: false
+  - type: VoiceBroadcastConsole # Goobstation
   - type: CommunicationsConsole
     canShuttle: false
     title: comms-console-announcement-title-station-ai
@@ -102,19 +98,13 @@
   categories: [ HideSpawnMenu ]
   components:
   - type: IntrinsicRadioReceiver
-  #- type: IntrinsicRadioTransmitter
-  #  channels:
-  #  - Binary # Goobstation - replaced with collective mind
-  - type: ActiveRadio
-    channels:
-    # - Binary # Goobstation - replaced with collective mind
-    - Common
-  # Goobstation
-  - type: CollectiveMind
-    defaultChannel: Binary
+  - type: IntrinsicRadioTransmitter
     channels:
     - Binary
-    canUseInCrit: true # Goobstation
+  - type: ActiveRadio
+    channels:
+    - Binary
+    - Common
   - type: ActionGrant
     actions:
     - ActionAIViewLaws
@@ -474,6 +464,7 @@
     - HideContextMenu
     - StationAi
     - NoConsoleSound
+    - CanPilot # CorvaxGoob-AiShuttle
   - type: StartingMindRole
     mindRole: "MindRoleSiliconBrain"
     silent: true
@@ -515,6 +506,7 @@
     - Tradeband
     - Schechi
     - NewKinPidgin
+    - Hydraspeak # CorvaxGoob
     understands:
     - TauCetiBasic
     - Canilunzt
@@ -536,6 +528,7 @@
     - Sign
     - Schechi
     - NewKinPidgin
+    - Hydraspeak # CorvaxGoob
   - type: TTS # CorvaxGoob-TTS
     voice: Glados
   # CorvaxGoob-Revert : DB conflicts
@@ -632,6 +625,9 @@
       borg_brain:
         - PositronicBrain
       borg_module:
+        # <Trauma>
+        - BorgModuleStickyGrenadeLauncher
+        # </Trauma>
         - BorgModuleL6C
         - BorgModuleDoubleEsword
         - BorgModuleOperative
@@ -666,8 +662,14 @@
       borg_brain:
         - PositronicBrain
       borg_module:
+        # <Trauma>
+        - BorgModuleRCD
+        - BorgModuleSyndicateChameleonProjector
+        - BorgModuleSyndicateJammer
+        - BorgModuleSyndicateDoorControl
+        # </Trauma>
         - BorgModuleSyndicateWeapon
-        - BorgModuleTool
+        - BorgModuleAdvancedTool # Trauma - was BorgModuleTool
         - BorgModuleOperative
   - type: ItemSlots
     slots:

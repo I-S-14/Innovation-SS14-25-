@@ -10,6 +10,7 @@
     tags:
     - Cartridge
     - CartridgeSmart
+    - IgnorGrab # CorvaxGoob
   - type: CartridgeAmmo
     deleteOnSpawn: true
     proto: BulletSmart
@@ -21,4 +22,4 @@
   - type: Appearance
   - type: SpentAmmoVisuals
   - type: StaticPrice
-    price: 20
+    price: 2 # CorvaxGoob: 20 > 2

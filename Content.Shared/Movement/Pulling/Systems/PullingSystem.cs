@@ -2,6 +2,7 @@
 
 using Content.Goobstation.Common.Grab;
 using Content.Shared._Shitcode.Heretic.Components;
+using Content.Shared._ST.Interaction; // Goob
 using Content.Shared.ActionBlocker;
 using Content.Shared.Administration.Logs;
 using Content.Shared.Alert;
@@ -30,6 +31,7 @@ using Content.Shared.Movement.Systems;
 using Content.Shared.Popups;
 using Content.Shared.Pulling.Events;
 using Content.Shared.Standing;
+using Content.Shared.Tag; // CorvaxGoob-IgnorGrab
 using Content.Shared.Verbs;
 using Content.Shared.Weapons.Melee;
 using Content.Shared.Weapons.Melee.Events;
@@ -40,6 +42,7 @@ using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Events;
 using Robust.Shared.Physics.Systems;
 using Robust.Shared.Player;
+using Robust.Shared.Prototypes; // CorvaxGoob-IgnorGrab
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 
@@ -64,6 +67,9 @@ public sealed class PullingSystem : EntitySystem
     [Dependency] private readonly SharedVirtualItemSystem _virtualSystem = default!;
     [Dependency] private readonly SharedCombatModeSystem _combatMode = default!;
     [Dependency] private readonly MobStateSystem _mobState = default!; // CorvaxGoob
+    [Dependency] private readonly TagSystem _tags = default!; // CorvaxGoob-IgnorGrab
+
+    private static readonly ProtoId<TagPrototype> IgnorGrab = "IgnorGrab"; // CorvaxGoob-IgnorGrab-start
 
     public override void Initialize()
     {
@@ -439,6 +445,16 @@ public sealed class PullingSystem : EntitySystem
             return false;
         }
 
+        // CorvaxGoob-IgnorGrab-start
+        if (pullerComp.NeedsHands
+            && _tags.HasTag(pullableUid, IgnorGrab)
+            && _combatMode.IsInCombatMode(puller)
+            && _handsSystem.ActiveHandIsEmpty(puller))
+        {
+            return false;
+        }
+        // CorvaxGoob-IgnorGrab-end
+
         if (pullerComp.NeedsHands
             && !_handsSystem.TryGetEmptyHand(puller, out _)
             && pullerComp.Pulling == null)
@@ -595,7 +611,7 @@ public sealed class PullingSystem : EntitySystem
 
         // Pulling confirmed
 
-        _interaction.DoContactInteraction(pullableUid, pullerUid);
+        _interaction.DoContactInteraction(pullerUid, pullableUid, null, true, interactionParticleType: StellarInteractionParticleType.Pull); // Goob
 
         // Use net entity so it's consistent across client and server.
         pullableComp.PullJointId = $"pull-joint-{GetNetEntity(pullableUid)}";

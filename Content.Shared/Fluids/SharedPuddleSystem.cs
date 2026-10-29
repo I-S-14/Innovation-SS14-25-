@@ -134,11 +134,6 @@ public abstract partial class SharedPuddleSystem : EntitySystem
 
     private void OnGetFootstepSound(Entity<PuddleComponent> entity, ref GetFootstepSoundEvent args)
     {
-        // Corvax-Next-Footprints
-        if (!entity.Comp.AffectsSound)
-            return;
-        // Corvax-Next-Footprints
-
         if (!_solutionContainerSystem.ResolveSolution(entity.Owner, entity.Comp.SolutionName, ref entity.Comp.Solution,
                 out var solution))
             return;
@@ -196,6 +191,7 @@ public abstract partial class SharedPuddleSystem : EntitySystem
         if (!Resolve(ent, ref puddle, ref appearance))
             return;
 
+        var spriteSet = DefaultPuddleSpriteSet; // Goob
         var volume = FixedPoint2.Zero;
         var color = Color.White;
 
@@ -210,8 +206,7 @@ public abstract partial class SharedPuddleSystem : EntitySystem
             // Kinda EH
             // Could potentially do alpha per-solution but future problem.
 
-            color = solution.GetColorWithout(_prototypeManager, _standoutReagents);
-            color = color.WithAlpha(0.7f);
+            color = solution.GetPuddleColorWithout(_prototypeManager, _standoutReagents); // Goob
 
             foreach (var standout in _standoutReagents)
             {
@@ -220,14 +215,18 @@ public abstract partial class SharedPuddleSystem : EntitySystem
                     continue;
 
                 var interpolateValue = quantity.Float() / solution.Volume.Float();
+                var standoutReagent = _prototypeManager.Index<ReagentPrototype>(standout); // Goob
                 color = Color.InterpolateBetween(color,
-                    _prototypeManager.Index<ReagentPrototype>(standout).SubstanceColor,
+                    standoutReagent.PuddleColor ?? standoutReagent.SubstanceColor, // Goob
                     interpolateValue);
             }
+
+            spriteSet = GetPuddleSpriteSet(solution); // Goob
         }
 
         _appearance.SetData(ent, PuddleVisuals.CurrentVolume, volume.Float(), appearance);
         _appearance.SetData(ent, PuddleVisuals.SolutionColor, color, appearance);
+        _appearance.SetData(ent, PuddleVisuals.SpriteSet, (string) spriteSet, appearance); // Goob
     }
 
     private void UpdateSlip(Entity<PuddleComponent> entity, Solution solution)

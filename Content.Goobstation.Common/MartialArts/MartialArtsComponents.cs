@@ -10,6 +10,9 @@ public sealed partial class MartialArtBlockedComponent : Component
 {
     [DataField]
     public MartialArtsForms Form;
+
+    [DataField]
+    public bool StaminaDmgBlock = false;
 }
 public abstract partial class GrabStagesOverrideComponent : Component
 {
@@ -48,4 +51,5 @@ public enum MartialArtsForms
     KungFuDragon,
     Ninjutsu,
     HellRip,
+    Mimejutsu, // CorvaxGoob - Mimejutsu
 }

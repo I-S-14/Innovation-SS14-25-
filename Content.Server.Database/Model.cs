@@ -14,7 +14,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Content.Server.Database
 {
-    public abstract class ServerDbContext : DbContext
+    public abstract partial class ServerDbContext : DbContext // Goob
     {
         protected ServerDbContext(DbContextOptions options) : base(options)
         {
@@ -298,6 +298,7 @@ namespace Content.Server.Database
                 .HasDefaultValue(HwidType.Legacy);
 
             ModelBan.OnModelCreating(modelBuilder);
+            // GoobOnModelCreating(modelBuilder); // Goob // CorvaxGoob - achievements removed
 
             // Corvax-Goob нам такое не надо
             /*
@@ -442,10 +443,10 @@ namespace Content.Server.Database
         public string FlavorText { get; set; } = null!;
         public int Age { get; set; }
         public string Sex { get; set; } = null!;
+        public string? Voice { get; set; } = null!; // CorvaxGoob-TTS
         public string Gender { get; set; } = null!;
         public string Species { get; set; } = null!;
-        public string? Voice { get; set; } = null!; // Corvax-TTS
-        public string TTSVoice { get; set; } = null!; // CorvaxGoob-TTS
+        [Column("ttsvoice")] public string TTSVoice { get; set; } = null!; // CorvaxGoob-TTS
         [Column(TypeName = "jsonb")] public JsonDocument? OrganMarkings { get; set; } = null!;
         [Column(TypeName = "jsonb")] public JsonDocument? Markings { get; set; } = null!;
         public string HairName { get; set; } = null!;
