@@ -134,15 +134,6 @@
 
 # Derelict chassis from upstream chassis.rsi, worn down versions of the station skins.
 - type: cyborgSkin
-  id: IS14CyborgSkinDerelict
-  name: cyborg-skin-derelict
-  sprite: Mobs/Silicon/chassis.rsi
-  bodyState: derelict
-  eyesState: derelict_e
-  noMindEyesState: derelict_e_r
-  lightState: derelict_l
-
-- type: cyborgSkin
   id: IS14CyborgSkinDerelictEngineering
   name: cyborg-skin-derelict-engineering
   sprite: Mobs/Silicon/chassis.rsi

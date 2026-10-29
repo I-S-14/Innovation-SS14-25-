@@ -15,8 +15,13 @@
   - type: CyborgAiLink
     autoLink: false
     lawSync: false
+  # Drifts in with a random station specialization instead of a model menu.
   - type: Cyborg
-    model: IS14CyborgModelDerelict
+    randomModels:
+    - IS14CyborgModelDerelictEngineering
+    - IS14CyborgModelDerelictMedical
+    - IS14CyborgModelDerelictJanitor
+    - IS14CyborgModelDerelictMiner
   - type: NpcFactionMember
     factions:
     - NanoTrasen
@@ -62,6 +67,51 @@
     reregister: false
     job: Borg
   - type: GhostTakeoverAvailable
+
+# Derelicts of one specialization, for the events that name it.
+- type: entity
+  parent: IS14CyborgDerelict
+  id: IS14CyborgDerelictEngineering
+  name: derelict engineering cyborg
+  components:
+  - type: Icon
+    sprite: Mobs/Silicon/chassis.rsi
+    state: engineer_derelict
+  - type: Cyborg
+    model: IS14CyborgModelDerelictEngineering
+
+- type: entity
+  parent: IS14CyborgDerelict
+  id: IS14CyborgDerelictMedical
+  name: derelict medical cyborg
+  components:
+  - type: Icon
+    sprite: Mobs/Silicon/chassis.rsi
+    state: medical_derelict
+  - type: Cyborg
+    model: IS14CyborgModelDerelictMedical
+
+- type: entity
+  parent: IS14CyborgDerelict
+  id: IS14CyborgDerelictJanitor
+  name: derelict janitor cyborg
+  components:
+  - type: Icon
+    sprite: Mobs/Silicon/chassis.rsi
+    state: janitor_derelict
+  - type: Cyborg
+    model: IS14CyborgModelDerelictJanitor
+
+- type: entity
+  parent: IS14CyborgDerelict
+  id: IS14CyborgDerelictMiner
+  name: derelict mining cyborg
+  components:
+  - type: Icon
+    sprite: Mobs/Silicon/chassis.rsi
+    state: miner_derelict
+  - type: Cyborg
+    model: IS14CyborgModelDerelictMiner
 
 - type: entity
   parent: IS14BaseCyborgSyndicate
