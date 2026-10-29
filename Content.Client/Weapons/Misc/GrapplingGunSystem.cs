@@ -9,6 +9,7 @@ using Robust.Client.Player;
 using Robust.Shared.Input;
 using Robust.Shared.Physics;
 using Robust.Shared.Physics.Dynamics.Joints;
+using System.Net;
 
 namespace Content.Client.Weapons.Misc;
 

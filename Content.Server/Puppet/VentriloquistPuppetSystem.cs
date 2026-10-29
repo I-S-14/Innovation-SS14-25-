@@ -10,6 +10,7 @@ using Content.Shared.Interaction.Events;
 using Content.Shared.Puppet;
 using Content.Shared.StatusEffectNew;
 using Robust.Shared.Prototypes;
+using Content.Shared.Speech.Muting;
 
 namespace Content.Server.Puppet;
 
@@ -97,3 +98,4 @@ public sealed partial class VentriloquistPuppetSystem : SharedVentriloquistPuppe
         RemComp<GhostTakeoverAvailableComponent>(ent);
     }
 }
+

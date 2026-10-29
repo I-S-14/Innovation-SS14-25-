@@ -24,6 +24,7 @@ using Content.Shared.Throwing;
 using Content.Shared.Tools.Systems;
 using System.Linq;
 using Content.Shared.Popups;
+using Content.Shared.Damage;
 
 namespace Content.Shared.Mobs.Systems;
 

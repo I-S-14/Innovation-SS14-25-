@@ -1,7 +1,3 @@
-// SPDX-License-Identifier: MIT
-
-// SPDX-License-Identifier: MIT
-
 using Content.Shared.Disposal.Mailing;
 using Robust.Shared.GameStates;
 using Robust.Shared.Serialization;

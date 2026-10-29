@@ -2,6 +2,9 @@
 using Content.Shared.Pointing;
 using Content.Shared.Pointing.Components;
 using Robust.Client.GameObjects;
+using Content.Shared.Verbs;
+using Robust.Shared.GameStates;
+using Robust.Shared.Utility;
 
 namespace Content.Client.Pointing;
 

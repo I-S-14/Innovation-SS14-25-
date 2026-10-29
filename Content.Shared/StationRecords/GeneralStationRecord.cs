@@ -3,6 +3,7 @@
 using Content.Shared._CorvaxGoob.AppearanceConverter;
 using Content.Shared.Humanoid;
 using Robust.Shared.Serialization;
+using Robust.Shared.Enums;
 
 namespace Content.Shared.StationRecords;
 

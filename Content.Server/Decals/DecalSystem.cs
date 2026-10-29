@@ -17,6 +17,11 @@ using Robust.Shared.GameStates;
 using Robust.Shared.Map.Events;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
+using Content.Shared.Chunking;
+using Robust.Shared.Player;
+using Robust.Shared.Threading;
+using Robust.Shared.Timing;
+using Robust.Shared.Utility;
 
 namespace Content.Server.Decals;
 
@@ -205,126 +210,7 @@ public sealed partial class DecalSystem : SharedDecalSystem
             else
             {
                 _adminLogger.Add(LogType.CrayonDraw, LogImpact.Low,
-                    $"{eventArgs.SenderSession.Name} drew a {ev.Decal.Color} {ev.Decal.Id} at {ev.Coordinates}");
-            }
-        }
-
-        private void OnDecalRemovalRequest(RequestDecalRemovalEvent ev, EntitySessionEventArgs eventArgs)
-        {
-            if (eventArgs.SenderSession is not { } session)
-                return;
-
-            // bad
-            if (!_adminManager.HasAdminFlag(session, AdminFlags.Spawn))
-                return;
-
-            var coordinates = GetCoordinates(ev.Coordinates);
-
-            if (!coordinates.IsValid(EntityManager))
-                return;
-
-            var gridId = _transform.GetGrid(coordinates);
-
-            if (gridId == null)
-                return;
-
-            // remove all decals on the same tile
-            foreach (var (decalId, decal) in GetDecalsInRange(gridId.Value, ev.Coordinates.Position))
-            {
-                if (eventArgs.SenderSession.AttachedEntity != null)
-                {
-                    _adminLogger.Add(LogType.CrayonDraw, LogImpact.Low,
-                        $"{ToPrettyString(eventArgs.SenderSession.AttachedEntity.Value):actor} removed a {decal.Color} {decal.Id} at {ev.Coordinates}");
-                }
-                else
-                {
-                    _adminLogger.Add(LogType.CrayonDraw, LogImpact.Low,
-                        $"{eventArgs.SenderSession.Name} removed a {decal.Color} {decal.Id} at {ev.Coordinates}");
-                }
-
-                RemoveDecal(gridId.Value, decalId);
-            }
-        }
-
-        protected override void DirtyChunk(EntityUid uid, Vector2i chunkIndices, DecalChunk chunk)
-        {
-            var id = GetNetEntity(uid);
-            chunk.LastModified = _timing.CurTick;
-            if(!_dirtyChunks.ContainsKey(id))
-                _dirtyChunks[id] = new HashSet<Vector2i>();
-            _dirtyChunks[id].Add(chunkIndices);
-        }
-
-        public bool TryAddDecal(string id, EntityCoordinates coordinates, out uint decalId, Color? color = null, Angle? rotation = null, int zIndex = 0, bool cleanable = false)
-        {
-            rotation ??= Angle.Zero;
-            var decal = new Decal(coordinates.Position, id, color, rotation.Value, zIndex, cleanable);
-
-            return TryAddDecal(decal, coordinates, out decalId);
-        }
-
-        public bool TryAddDecal(Decal decal, EntityCoordinates coordinates, out uint decalId)
-        {
-            decalId = 0;
-
-            if (!PrototypeManager.HasIndex<DecalPrototype>(decal.Id))
-                return false;
-
-            var gridId = _transform.GetGrid(coordinates);
-            if (!TryComp(gridId, out MapGridComponent? grid))
-                return false;
-
-            if (_turf.IsSpace(_mapSystem.GetTileRef(gridId.Value, grid, coordinates)))
-                return false;
-
-            if (!TryComp(gridId, out DecalGridComponent? comp))
-                return false;
-
-            decalId = comp.ChunkCollection.NextDecalId++;
-            var chunkIndices = GetChunkIndices(decal.Coordinates);
-            var chunk = comp.ChunkCollection.ChunkCollection.GetOrNew(chunkIndices);
-            chunk.Decals[decalId] = decal;
-            comp.DecalIndex[decalId] = chunkIndices;
-            DirtyChunk(gridId.Value, chunkIndices, chunk);
-
-            // CorvaxGoob-Start-Footprint-Refactoring
-            var addedEv = new DecalAddedEvent(gridId.Value, decalId, decal);
-            RaiseLocalEvent(gridId.Value, ref addedEv);
-            // CorvaxGoob-End-Footprint-Refactoring
-
-            return true;
-        }
-
-        public override bool RemoveDecal(EntityUid gridId, uint decalId, DecalGridComponent? component = null)
-            => RemoveDecalInternal(gridId, decalId, out _, component);
-
-        // CorvaxGoob-Start-Footprint-Refactoring
-        protected override void OnDecalRemoved(EntityUid gridId, uint decalId, DecalGridComponent component, Vector2i indices, DecalChunk chunk)
-        {
-            base.OnDecalRemoved(gridId, decalId, component, indices, chunk);
-
-            var ev = new DecalRemovedEvent(gridId, decalId, indices);
-            RaiseLocalEvent(gridId, ref ev);
-        }
-        // CorvaxGoob-End-Footprint-Refactoring
-
-        public override HashSet<(uint Index, Decal Decal)> GetDecalsInRange(EntityUid gridId, Vector2 position, float distance = 0.75f, Func<Decal, bool>? validDelegate = null)
-        {
-            var decalIds = new HashSet<(uint, Decal)>();
-            var chunkCollection = ChunkCollection(gridId);
-            var chunkIndices = GetChunkIndices(position);
-            if (chunkCollection == null || !chunkCollection.TryGetValue(chunkIndices, out var chunk))
-                return decalIds;
-
-            foreach (var (uid, decal) in chunk.Decals)
-            {
-                if ((position - decal.Coordinates - new Vector2(0.5f, 0.5f)).Length() > distance)
-                    continue;
-
-                if (validDelegate == null || validDelegate(decal))
-                {
-                    decalIds.Add((uid, decal));
-                }
+                    $"{eventArgs.SenderSession.Name} removed a {decal.Color} {decal.Id} at {ev.Coordinates}");
             }
 
             RemoveDecal(gridId.Value, decalId);
@@ -357,13 +243,46 @@ public sealed partial class DecalSystem : SharedDecalSystem
         if (!TryAllocateDecalId(chunk, out var chunkDecalId))
             return false;
 
-        AddDecalWithId(chunk, chunkDecalId, decal);
-        decalId = new DecalIndex(chunk.Comp1.Chunk, chunkDecalId);
+        decalId = comp.ChunkCollection.NextDecalId++;
+        var chunkIndices = GetChunkIndices(decal.Coordinates);
+        var chunk = comp.ChunkCollection.ChunkCollection.GetOrNew(chunkIndices);
+        chunk.Decals[decalId] = decal;
+        comp.DecalIndex[decalId] = chunkIndices;
+        DirtyChunk(gridId.Value, chunkIndices, chunk);
+
+        // CorvaxGoob-Start-Footprint-Refactoring
+        var addedEv = new DecalAddedEvent(gridId.Value, decalId, decal);
+        RaiseLocalEvent(gridId.Value, ref addedEv);
+        // CorvaxGoob-End-Footprint-Refactoring
+
         return true;
     }
 
-    public override bool RemoveDecal(EntityUid gridId, DecalIndex decal)
-        => RemoveDecalInternal(gridId, decal, out _);
+    public override bool RemoveDecal(EntityUid gridId, uint decalId, DecalGridComponent? component = null)
+        => RemoveDecalInternal(gridId, decalId, out _, component);
+
+    // CorvaxGoob-Start-Footprint-Refactoring
+    protected override void OnDecalRemoved(EntityUid gridId, uint decalId, DecalGridComponent component, Vector2i indices, DecalChunk chunk)
+    {
+        base.OnDecalRemoved(gridId, decalId, component, indices, chunk);
+
+        var ev = new DecalRemovedEvent(gridId, decalId, indices);
+        RaiseLocalEvent(gridId, ref ev);
+    }
+    // CorvaxGoob-End-Footprint-Refactoring
+
+    public override HashSet<(uint Index, Decal Decal)> GetDecalsInRange(EntityUid gridId, Vector2 position, float distance = 0.75f, Func<Decal, bool>? validDelegate = null)
+    {
+        var decalIds = new HashSet<(uint, Decal)>();
+        var chunkCollection = ChunkCollection(gridId);
+        var chunkIndices = GetChunkIndices(position);
+        if (chunkCollection == null || !chunkCollection.TryGetValue(chunkIndices, out var chunk))
+            return decalIds;
+
+        foreach (var (uid, decal) in chunk.Decals)
+        {
+            if ((position - decal.Coordinates - new Vector2(0.5f, 0.5f)).Length() > distance)
+                continue;
 
     public bool RemoveDecal(EntityUid gridId, Vector2i chunkIndices, ushort decalId)
         => RemoveDecalInternal(gridId, chunkIndices, decalId, out _);

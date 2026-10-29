@@ -18,15 +18,6 @@ namespace Content.Client.UserInterface.Systems.MenuBar;
 
 public sealed partial class GameTopMenuBarUIController : UIController
 {
-    [Dependency] private readonly EscapeUIController _escape = default!;
-    [Dependency] private readonly AdminUIController _admin = default!;
-    [Dependency] private readonly CharacterUIController _character = default!;
-    [Dependency] private readonly CraftingUIController _crafting = default!;
-    [Dependency] private readonly AHelpUIController _ahelp = default!;
-    [Dependency] private readonly ActionUIController _action = default!;
-    [Dependency] private readonly SandboxUIController _sandbox = default!;
-    [Dependency] private readonly GuidebookUIController _guidebook = default!;
-    [Dependency] private readonly EmotesUIController _emotes = default!;
     [Dependency] private readonly LanguageMenuUIController _language = default!; // Goob
     [Dependency] private EscapeUIController _escape = default!;
     [Dependency] private AdminUIController _admin = default!;

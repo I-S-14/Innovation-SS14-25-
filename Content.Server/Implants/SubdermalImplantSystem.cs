@@ -5,6 +5,8 @@ using Content.Shared.Popups;
 using Content.Shared.Implants.Components;
 using Content.Shared.Polymorph;
 using Content.Shared.Store.Components;
+using Content.Server.Store.Components;
+using Content.Server.Store.Systems;
 
 namespace Content.Server.Implants;
 public sealed class SubdermalImplantSystem : SharedSubdermalImplantSystem

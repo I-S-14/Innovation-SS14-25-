@@ -2,6 +2,7 @@
 
 using Content.Shared.DoAfter;
 using Robust.Shared.Serialization;
+using Content.Shared.Cuffs.Components;
 
 namespace Content.Shared.Buckle;
 

@@ -1,47 +1,28 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
-using Content.Goobstation.Common.Administration.Notifications; // Goobstation - Admin Notifications
-using Content.Goobstation.Common.Religion;
-using Content.Server.Administration;
-using Content.Server.Administration.Logs;
-using Content.Server.Chat.Managers;
-using Content.Server.Popups;
+using Content.Shared.Bible.Components;
 using Content.Shared.Database;
 using Content.Shared.Popups;
-using Content.Shared.Chat;
-using Content.Shared.Prayer;
 using Content.Shared.Verbs;
 using Robust.Shared.Player;
-using Content.Server.Administration.Managers; // Goobstation - Admin Notifications
-using Robust.Server.Audio; // Goobstation - Admin Notifications
 
-namespace Content.Server.Prayer;
+namespace Content.Shared.Prayer;
+
 /// <summary>
-/// System to handle subtle messages and praying
+/// System to handle subtle messages and praying.
 /// </summary>
 /// <remarks>
-/// Rain is a professional developer and this did not take 2 PRs to fix subtle messages
+/// Rain is a professional developer and this did not take 2 PRs to fix subtle messages.
 /// </remarks>
-public sealed class PrayerSystem : EntitySystem
+public abstract partial class PrayerSystem : EntitySystem
 {
-    [Dependency] private readonly IAdminLogManager _adminLogger = default!;
-    [Dependency] private readonly PopupSystem _popupSystem = default!;
-    [Dependency] private readonly IChatManager _chatManager = default!;
-    [Dependency] private readonly QuickDialogSystem _quickDialog = default!;
-    [Dependency] private readonly AudioSystem _audio = default!; // Goobstation - Admin Notifications
-    [Dependency] private readonly IAdminManager _admin = default!; // Goobstation - Admin Notifications
+    [Dependency] private SharedPopupSystem _popup = default!;
 
-    public override void Initialize()
+    [SubscribeLocalEvent]
+    private void AddPrayVerb(Entity<PrayableComponent> ent, ref GetVerbsEvent<ActivationVerb> args)
     {
-        base.Initialize();
+        var user = args.User;
 
-        SubscribeLocalEvent<PrayableComponent, GetVerbsEvent<ActivationVerb>>(AddPrayVerb);
-    }
-
-    private void AddPrayVerb(EntityUid uid, PrayableComponent comp, GetVerbsEvent<ActivationVerb> args)
-    {
-        // if it doesn't have an actor and we can't reach it then don't add the verb
-        if (!TryComp(args.User, out ActorComponent? actor))
+        // if the user doesn't have an actor then don't add the verb
+        if (!TryComp<ActorComponent>(user, out var actor))
             return;
 
         // this is to prevent ghosts from using it
@@ -50,72 +31,37 @@ public sealed class PrayerSystem : EntitySystem
 
         var prayerVerb = new ActivationVerb
         {
-            Text = Loc.GetString(comp.Verb),
-            Icon = comp.VerbImage,
+            Text = Loc.GetString(ent.Comp.Verb),
+            Icon = ent.Comp.VerbImage,
             Act = () =>
             {
-                if (comp.BibleUserOnly && !TryComp<BibleUserComponent>(args.User, out var bibleUser))
+                if (ent.Comp.BibleUserOnly && !HasComp<BibleUserComponent>(user))
                 {
-                    _popupSystem.PopupEntity(Loc.GetString("prayer-popup-notify-pray-locked"), uid, actor.PlayerSession, PopupType.Large);
+                    _popup.PopupEntity(Loc.GetString("prayer-popup-notify-pray-locked"),
+                        ent.Owner,
+                        actor.PlayerSession,
+                        PopupType.Large);
                     return;
                 }
 
-                _quickDialog.OpenDialog(actor.PlayerSession, Loc.GetString(comp.Verb), Loc.GetString("prayer-popup-notify-pray-ui-message"), (string message) =>
-                {
-                    // Make sure the player's entity and the Prayable entity+component still exist
-                    if (actor?.PlayerSession != null && HasComp<PrayableComponent>(uid))
-                        Pray(actor.PlayerSession, comp, message);
-                });
+                OpenPrayerDialog(ent, user, actor.PlayerSession);
             },
             Impact = LogImpact.Low,
-
         };
-        prayerVerb.Impact = LogImpact.Low;
         args.Verbs.Add(prayerVerb);
     }
 
     /// <summary>
-    /// Subtly messages a player by giving them a popup and a chat message.
+    /// Sends a message to the admin channel with a message and username.
     /// </summary>
-    /// <param name="target">The IPlayerSession that you want to send the message to</param>
-    /// <param name="source">The IPlayerSession that sent the message</param>
-    /// <param name="messageString">The main message sent to the player via the chatbox</param>
-    /// <param name="popupMessage">The popup to notify the player, also prepended to the messageString</param>
-    public void SendSubtleMessage(ICommonSession target, ICommonSession? source, string messageString, string popupMessage)
-    {
-        if (target.AttachedEntity == null)
-            return;
-
-        var message = popupMessage == "" ? "" : popupMessage + (messageString == "" ? "" : $" \"{messageString}\"");
-
-        _popupSystem.PopupEntity(popupMessage, target.AttachedEntity.Value, target, PopupType.Large);
-        _chatManager.ChatMessageToOne(ChatChannel.Local, messageString, message, EntityUid.Invalid, false, target.Channel);
-        _adminLogger.Add(LogType.AdminMessage, LogImpact.Low, $"{ToPrettyString(target.AttachedEntity.Value):player} received subtle message from {source?.Name ?? "unknown source"}: {message}");
-    }
-
-    /// <summary>
-    /// Sends a message to the admin channel with a message and username
-    /// </summary>
-    /// <param name="sender">The IPlayerSession who sent the original message</param>
-    /// <param name="comp">Prayable component used to make the prayer</param>
-    /// <param name="message">Message to be sent to the admin chat</param>
+    /// <param name="ent">Prayable entity used to make the prayer.</param>
+    /// <param name="sender">The IPlayerSession who sent the original message.</param>
+    /// <param name="message">Message to be sent to the admin chat.</param>
     /// <remarks>
     /// You may be wondering, "Why the admin chat, specifically? Nobody even reads it!"
     /// Exactly.
-    ///  </remarks>
-    public void Pray(ICommonSession sender, PrayableComponent comp, string message)
-    {
-        if (sender.AttachedEntity == null)
-            return;
+    /// </remarks>
+    public virtual void Pray(Entity<PrayableComponent> ent, ICommonSession sender, string message) { }
 
-        _popupSystem.PopupEntity(Loc.GetString(comp.SentMessage), sender.AttachedEntity.Value, sender, PopupType.Medium);
-
-        _chatManager.SendAdminAnnouncement($"{Loc.GetString(comp.NotificationPrefix)} <{sender.Name}>: {message}");
-        _adminLogger.Add(LogType.AdminMessage, LogImpact.Low, $"{ToPrettyString(sender.AttachedEntity.Value):player} sent prayer ({Loc.GetString(comp.NotificationPrefix)}): {message}");
-
-        // Goobstation - Admin Notifications
-        if (comp.NotificationSound != null) // estas goida
-            foreach (var admin in _admin.ActiveAdmins)
-                RaiseNetworkEvent(new AdminNotificationEvent(comp.NotificationSound), admin);
-    }
+    protected virtual void OpenPrayerDialog(Entity<PrayableComponent> ent, EntityUid user, ICommonSession session) { }
 }

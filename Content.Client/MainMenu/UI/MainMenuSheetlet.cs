@@ -3,7 +3,6 @@ using Content.Client.Stylesheets.Fonts;
 using Content.Client.Stylesheets.Stylesheets;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
-using static Content.Client.Stylesheets.StylesheetHelpers;
 
 namespace Content.Client.MainMenu.UI;
 

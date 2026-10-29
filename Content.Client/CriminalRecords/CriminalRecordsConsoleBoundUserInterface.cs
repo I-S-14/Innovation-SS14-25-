@@ -7,6 +7,7 @@ using Content.Shared.StationRecords;
 using Robust.Client.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
+using Content.Shared.Security;
 
 namespace Content.Client.CriminalRecords;
 

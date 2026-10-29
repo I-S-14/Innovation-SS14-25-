@@ -8,6 +8,7 @@ using Robust.Shared.Map;
 using Content.Shared.Physics;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Physics.Components;
+using Content.Shared.Ghost;
 
 namespace Content.Shared.Anomaly.Effects;
 

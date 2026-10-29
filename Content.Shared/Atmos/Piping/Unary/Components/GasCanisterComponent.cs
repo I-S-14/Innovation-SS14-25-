@@ -2,6 +2,8 @@ using Content.Shared.Atmos.Components;
 using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Guidebook;
 using Robust.Shared.GameStates;
+using Content.Shared.Atmos.Piping.Binary.Components;
+using Robust.Shared.Audio;
 
 namespace Content.Shared.Atmos.Piping.Unary.Components;
 

@@ -11,6 +11,7 @@ using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.Popups;
 using Content.Shared.Power.Generator;
 using Robust.Server.GameObjects;
+using System.Linq;
 
 namespace Content.Server.Power.Generator;
 

@@ -23,6 +23,10 @@ using Content.Shared._Shitmed.Damage;
 using Content.Shared._Shitmed.Targeting;
 using Content.Shared.Damage.Systems;
 using Robust.Shared.Utility;
+using Content.Shared.Damage.Components;
+using Content.Shared.Projectiles;
+using Content.Shared.Tag;
+using Robust.Shared.Physics.Components;
 
 namespace Content.Server.Explosion.EntitySystems;
 

@@ -3,6 +3,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Content.Shared.Item;
 using Content.Shared.Tag;
+using Robust.Shared.Utility;
 
 namespace Content.Shared.Whitelist;
 

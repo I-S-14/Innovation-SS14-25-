@@ -10,7 +10,6 @@ using Content.Shared.Mech;
 using Content.Shared.Mech.Components;
 using Content.Shared.Mech.Equipment.Components;
 using Content.Shared.Mobs.Components;
-using Content.Shared.Vehicle.Systems;
 using Content.Shared.Wall;
 using Content.Shared.Whitelist; // goobstation - added blacklist
 using Robust.Server.GameObjects;
@@ -19,13 +18,14 @@ using Robust.Shared.Containers;
 using Robust.Shared.Map;
 using Robust.Shared.Physics;
 using Robust.Shared.Physics.Components;
+using Content.Shared.Vehicle.Systems;
 
 namespace Content.Server.Mech.Equipment.EntitySystems;
 
 /// <summary>
 /// Handles <see cref="MechGrabberComponent"/> and all related UI logic
 /// </summary>
-public sealed partial class MechGrabberSystem : EntitySystem
+public sealed class MechGrabberSystem : EntitySystem
 {
     [Dependency] private readonly SharedContainerSystem _container = default!;
     [Dependency] private readonly MechSystem _mech = default!;
@@ -34,13 +34,6 @@ public sealed partial class MechGrabberSystem : EntitySystem
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly TransformSystem _transform = default!;
     [Dependency] private readonly EntityWhitelistSystem _whitelist = default!; // Goobstation - added blacklist
-    [Dependency] private SharedContainerSystem _container = default!;
-    [Dependency] private MechSystem _mech = default!;
-    [Dependency] private SharedDoAfterSystem _doAfter = default!;
-    [Dependency] private InteractionSystem _interaction = default!;
-    [Dependency] private SharedAudioSystem _audio = default!;
-    [Dependency] private TransformSystem _transform = default!;
-    [Dependency] private VehicleSystem _vehicle = default!;
 
     /// <inheritdoc/>
     public override void Initialize()
@@ -159,10 +152,7 @@ public sealed partial class MechGrabberSystem : EntitySystem
         if (component.ItemContainer.ContainedEntities.Count >= component.MaxContents)
             return;
 
-        if (_vehicle.GetOperatorOrNull(args.User) == target)
-            return;
-
-        if (!TryComp<MechComponent>(args.User, out var mech))
+        if (!TryComp<MechComponent>(args.User, out var mech) || mech.PilotSlot.ContainedEntity == target)
             return;
 
         if (mech.Energy + component.GrabEnergyDelta < 0)

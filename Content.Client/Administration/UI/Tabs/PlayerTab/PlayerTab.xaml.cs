@@ -12,7 +12,6 @@ using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.XAML;
 using Robust.Shared.Configuration;
 using Robust.Shared.Prototypes;
-using static Content.Client.Administration.UI.Tabs.PlayerTab.PlayerTabHeader;
 using static Robust.Client.UserInterface.Controls.BaseButton;
 
 namespace Content.Client.Administration.UI.Tabs.PlayerTab;

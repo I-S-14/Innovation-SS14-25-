@@ -1,55 +1,134 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
-using Content.Shared._Goobstation.Heretic.Components;
 using Content.Shared.DeviceNetwork.Components;
 using Content.Shared.DeviceNetwork.Events;
-using Content.Shared.DeviceNetwork.Systems;
-using Robust.Server.GameObjects;
+using JetBrains.Annotations;
 
-namespace Content.Server.DeviceNetwork.Systems;
+namespace Content.Shared.DeviceNetwork.Systems;
 
 /// <inheritdoc/>
-public sealed class DeviceNetworkJammerSystem : SharedDeviceNetworkJammerSystem
+public sealed partial class DeviceNetworkJammerSystem : EntitySystem
 {
-    [Dependency] private readonly TransformSystem _transform = default!;
-    [Dependency] private readonly SharedDeviceNetworkJammerSystem _jammer = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
 
-    public override void Initialize()
-    {
-        base.Initialize();
-
-        SubscribeLocalEvent<TransformComponent, BeforePacketSentEvent>(BeforePacketSent);
-    }
-
+    // TODO consider other ways to suppress the packets in the next PR
+    // Maybe EntityLookup on a loop + temporarily disconnecting the targeted devices from their network will work faster?
+    [SubscribeLocalEvent]
     private void BeforePacketSent(Entity<TransformComponent> xform, ref BeforePacketSentEvent ev)
     {
         if (ev.Cancelled)
             return;
 
-        if (HasComp<MansusGraspAffectedComponent>(ev.SenderTransform.ParentUid)) // Goobstation
-        {
-            ev.Cancel();
-            return;
-        }
-
         var query = EntityQueryEnumerator<DeviceNetworkJammerComponent, TransformComponent>();
 
         while (query.MoveNext(out var uid, out var jammerComp, out var jammerXform))
         {
-            if (!_jammer.GetJammableNetworks((uid, jammerComp)).Contains(ev.NetworkId))
+            if (!GetJammableNetworks((uid, jammerComp)).Contains(ev.NetId))
                 continue;
 
-            if (jammerComp.FrequenciesExcluded != null &&
-                jammerComp.FrequenciesExcluded.Contains(ev.Frequency))
+            if (jammerComp.FrequenciesExcluded.Contains(ev.Frequency))
                 continue;
 
             if (_transform.InRange(jammerXform.Coordinates, ev.SenderTransform.Coordinates, jammerComp.Range)
                 || _transform.InRange(jammerXform.Coordinates, xform.Comp.Coordinates, jammerComp.Range))
             {
-                ev.Cancel();
+                ev.Cancelled = true;
                 return;
             }
         }
     }
 
+    /// <summary>
+    /// Sets the range of the jamming effect.
+    /// </summary>
+    [PublicAPI]
+    public void SetRange(Entity<DeviceNetworkJammerComponent> ent, float value)
+    {
+        ent.Comp.Range = value;
+        DirtyField(ent.AsNullable(), nameof(DeviceNetworkJammerComponent.Range));
+    }
+
+    /// <inheritdoc cref="SetRange"/>
+    [PublicAPI]
+    public bool TrySetRange(Entity<DeviceNetworkJammerComponent?> ent, float value)
+    {
+        if (!Resolve(ent, ref ent.Comp, logMissing: false))
+            return false;
+
+        SetRange((ent, ent.Comp), value);
+        return true;
+    }
+
+    /// <summary>
+    /// Returns the set of networks that this entity can jam.
+    /// </summary>
+    [PublicAPI]
+    public IReadOnlySet<int> GetJammableNetworks(Entity<DeviceNetworkJammerComponent> ent)
+    {
+        return ent.Comp.JammableNetworks;
+    }
+
+    /// <summary>
+    /// Enables this entity to jam packets on the specified network.
+    /// </summary>
+    [PublicAPI]
+    public void AddJammableNetwork(Entity<DeviceNetworkJammerComponent> ent, int networkId)
+    {
+        if (ent.Comp.JammableNetworks.Add(networkId))
+            DirtyField(ent.AsNullable(), nameof(DeviceNetworkJammerComponent.JammableNetworks));
+    }
+
+    /// <summary>
+    /// Stops this entity from jamming packets on the specified network.
+    /// </summary>
+    [PublicAPI]
+    public void RemoveJammableNetwork(Entity<DeviceNetworkJammerComponent> ent, int networkId)
+    {
+        if (ent.Comp.JammableNetworks.Remove(networkId))
+            DirtyField(ent.AsNullable(), nameof(DeviceNetworkJammerComponent.JammableNetworks));
+    }
+
+    /// <summary>
+    /// Stops this entity from jamming packets on any networks.
+    /// </summary>
+    [PublicAPI]
+    public void ClearJammableNetworks(Entity<DeviceNetworkJammerComponent> ent)
+    {
+        if (ent.Comp.JammableNetworks.Count == 0)
+            return;
+
+        ent.Comp.JammableNetworks.Clear();
+        DirtyField(ent.AsNullable(), nameof(DeviceNetworkJammerComponent.JammableNetworks));
+    }
+
+    /// <summary>
+    /// Enables this entity to stop packets with the specified frequency from being jammmed.
+    /// </summary>
+    [PublicAPI]
+    public void AddExcludedFrequency(Entity<DeviceNetworkJammerComponent> ent, DeviceFrequency frequency)
+    {
+        if (ent.Comp.FrequenciesExcluded.Add(frequency))
+            DirtyField(ent.AsNullable(), nameof(DeviceNetworkJammerComponent.FrequenciesExcluded));
+    }
+
+    /// <summary>
+    /// Stops this entity to stop packets with the specified frequency from being jammmed.
+    /// </summary>
+    [PublicAPI]
+    public void RemoveExcludedFrequency(Entity<DeviceNetworkJammerComponent> ent, DeviceFrequency frequency)
+    {
+        if (ent.Comp.FrequenciesExcluded.Remove(frequency))
+            DirtyField(ent.AsNullable(), nameof(DeviceNetworkJammerComponent.FrequenciesExcluded));
+    }
+
+    /// <summary>
+    /// Stops this entity to stop packets with any frequency from being jammmed.
+    /// </summary>
+    [PublicAPI]
+    public void ClearExcludedFrequency(Entity<DeviceNetworkJammerComponent> ent)
+    {
+        if (ent.Comp.FrequenciesExcluded.Count == 0)
+            return;
+
+        ent.Comp.FrequenciesExcluded.Clear();
+        DirtyField(ent.AsNullable(), nameof(DeviceNetworkJammerComponent.FrequenciesExcluded));
+    }
 }

@@ -3,7 +3,7 @@
 using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.Store;
 using Robust.Shared.Prototypes;
-using Content.Shared.FixedPoint;
+using Content.Goobstation.Maths.FixedPoint;
 
 namespace Content.Shared.Store.Components;
 

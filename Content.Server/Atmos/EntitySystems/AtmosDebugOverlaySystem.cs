@@ -20,10 +20,6 @@ namespace Content.Server.Atmos.EntitySystems
     [UsedImplicitly]
     public sealed partial class AtmosDebugOverlaySystem : SharedAtmosDebugOverlaySystem
     {
-        [Dependency] private readonly IPlayerManager _playerManager = default!;
-        [Dependency] private readonly IConfigurationManager _configManager = default!;
-        [Dependency] private readonly SharedTransformSystem _transform = default!;
-        [Dependency] private readonly MapSystem _mapSystem = default!;
         [Dependency] private IPlayerManager _playerManager = default!;
         [Dependency] private IConfigurationManager _configManager = default!;
         [Dependency] private SharedTransformSystem _transform = default!;

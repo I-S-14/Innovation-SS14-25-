@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 using Robust.Shared.Serialization;
+using Content.Shared.Chemistry.Reagent;
 
 namespace Content.Shared.Kitchen;
 

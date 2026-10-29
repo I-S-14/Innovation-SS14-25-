@@ -1,13 +1,11 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-using Content.Shared.Body;
 using Content.Shared.Chat.Prototypes;
 using Content.Shared.Chemistry.Components;
+using Content.Shared.Chemistry.Reagent;
 using Content.Shared.Damage;
 using Content.Goobstation.Maths.FixedPoint;
-using Content.Shared.FixedPoint;
 using Content.Shared.Humanoid;
-using Content.Shared.Humanoid.Markings;
 using Content.Shared.Roles;
 using Content.Shared.StatusIcon;
 using Content.Shared._EinsteinEngines.Language;
@@ -35,15 +33,15 @@ public sealed partial class ZombieComponent : Component
     /// <summary>
     /// The baseline infection chance you have if you have no protective gear
     /// </summary>
-    [DataField]
-    public float BaseZombieInfectionChance = 0.75f;
+    [ViewVariables(VVAccess.ReadWrite)]
+    public float BaseZombieInfectionChance = 0.9f; ///Goobchange
 
     /// <summary>
     /// The minimum infection chance possible. This is simply to prevent
     /// being overly protected by bundling up.
     /// </summary>
-    [DataField]
-    public float MinZombieInfectionChance = 0.05f;
+    [ViewVariables(VVAccess.ReadWrite)]
+    public float MinZombieInfectionChance = 0.01f;
 
     /// <summary>
     /// How effective each resistance type on a piece of armor is. Using a damage specifier for this seems illegal.
@@ -58,20 +56,26 @@ public sealed partial class ZombieComponent : Component
         }
     };
 
-    [DataField]
-    public float ZombieMovementSpeedDebuff = 0.70f;
+    [ViewVariables(VVAccess.ReadWrite)]
+    public float ZombieMovementSpeedDebuff = 0.95f; ///Goobchange
 
     /// <summary>
     /// The skin color of the zombie
     /// </summary>
-    [DataField]
+    [DataField("skinColor")]
     public Color SkinColor = new(0.45f, 0.51f, 0.29f);
 
     /// <summary>
     /// The eye color of the zombie
     /// </summary>
-    [DataField]
+    [DataField("eyeColor")]
     public Color EyeColor = new(0.96f, 0.13f, 0.24f);
+
+    /// <summary>
+    /// The base layer to apply to any 'external' humanoid layers upon zombification.
+    /// </summary>
+    [DataField("baseLayerExternal")]
+    public string BaseLayerExternal = "MobHumanoidMarkingMatchSkin";
 
     /// <summary>
     /// The attack arc of the zombie
@@ -82,28 +86,40 @@ public sealed partial class ZombieComponent : Component
     /// <summary>
     /// The role prototype of the zombie antag role
     /// </summary>
-    [DataField]
+    [DataField("zombieRoleId")]
     public ProtoId<AntagPrototype> ZombieRoleId = "Zombie";
 
-    [DataField]
-    public Dictionary<ProtoId<OrganCategoryPrototype>, OrganProfileData> BeforeZombifiedProfiles;
+    /// <summary>
+    /// The CustomBaseLayers of the humanoid to restore in case of cloning
+    /// </summary>
+    [DataField("beforeZombifiedCustomBaseLayers")]
+    public Dictionary<HumanoidVisualLayers, CustomBaseLayerInfo> BeforeZombifiedCustomBaseLayers = new ();
 
-    [DataField]
-    public Dictionary<ProtoId<OrganCategoryPrototype>, Dictionary<HumanoidVisualLayers, List<Marking>>> BeforeZombifiedMarkings;
+    /// <summary>
+    /// The skin color of the humanoid to restore in case of cloning
+    /// </summary>
+    [DataField("beforeZombifiedSkinColor")]
+    public Color BeforeZombifiedSkinColor;
+
+    /// <summary>
+    /// The eye color of the humanoid to restore in case of cloning
+    /// </summary>
+    [DataField("beforeZombifiedEyeColor")]
+    public Color BeforeZombifiedEyeColor;
 
     [DataField("emoteId")]
     public ProtoId<EmoteSoundsPrototype>? EmoteSoundsId = "Zombie";
 
-    [DataField(customTypeSerializer:typeof(TimeOffsetSerializer))]
+    [DataField("nextTick", customTypeSerializer:typeof(TimeOffsetSerializer))]
     public TimeSpan NextTick;
 
     [DataField("zombieStatusIcon")]
-    public ProtoId<StatusIconPrototype> StatusIcon { get; set; } = "ZombieFaction";
+    public ProtoId<FactionIconPrototype> StatusIcon { get; set; } = "ZombieFaction";
 
     /// <summary>
     /// Healing each second
     /// </summary>
-    [DataField]
+    [DataField("passiveHealing")]
     public DamageSpecifier PassiveHealing = new()
     {
         DamageDict = new () ///Changed to be higher for goob // CorvaxGoob edit
@@ -125,7 +141,7 @@ public sealed partial class ZombieComponent : Component
     /// <summary>
     /// Healing given when a zombie bites a living being.
     /// </summary>
-    [DataField]
+    [DataField("healingOnBite")]
     public DamageSpecifier HealingOnBite = new()
     {
         DamageDict = new() ///Changed to be higher for goob
@@ -155,7 +171,7 @@ public sealed partial class ZombieComponent : Component
     /// <summary>
     ///     Path to antagonist alert sound.
     /// </summary>
-    [DataField]
+    [DataField("greetSoundNotification")]
     public SoundSpecifier GreetSoundNotification = new SoundPathSpecifier("/Audio/Ambience/Antag/zombie_start.ogg");
 
     /// <summary>
@@ -165,21 +181,15 @@ public sealed partial class ZombieComponent : Component
     public SoundSpecifier BiteSound = new SoundPathSpecifier("/Audio/Effects/bite.ogg");
 
     /// <summary>
-    /// The blood refresh of the humanoid to restore in case of cloning.
-    /// </summary>
-    [DataField]
-    public FixedPoint2 BeforeZombifiedBloodRefresh = new();
-
-    /// <summary>
     /// The blood reagents of the humanoid to restore in case of cloning
     /// </summary>
-    [DataField]
+    [DataField("beforeZombifiedBloodReagents")]
     public Solution BeforeZombifiedBloodReagents = new();
 
     /// <summary>
     /// The blood reagents to give the zombie. In case you want zombies that bleed milk, or something.
     /// </summary>
-    [DataField]
+    [DataField("newBloodReagents")]
     public Solution NewBloodReagents = new([new("ZombieBlood", 1)]);
 
     [DataField]

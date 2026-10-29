@@ -1,211 +1,182 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
-using System.Linq;
-using Content.Server._CorvaxGoob.Announcer;
-using Content.Server.Chat.Systems;
-using Content.Server.Station.Systems;
+using System.Diagnostics.CodeAnalysis;
+using Content.Shared.Chat;
 using Content.Shared.CCVar;
-using Robust.Shared.Audio;
+using Content.Shared.Station.Systems;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Configuration;
+using Robust.Shared.Network;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Timing;
 
-namespace Content.Server.AlertLevel;
+namespace Content.Shared.AlertLevel;
 
-public sealed class AlertLevelSystem : EntitySystem
+public sealed partial class AlertLevelSystem : EntitySystem
 {
-    [Dependency] private readonly IConfigurationManager _cfg = default!;
-    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
-    [Dependency] private readonly ChatSystem _chatSystem = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
-    [Dependency] private readonly StationSystem _stationSystem = default!;
-    [Dependency] private readonly AnnouncerSystem _announcer = default!;
+    [Dependency] private IConfigurationManager _cfg = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private INetManager _net = default!;
+    [Dependency] private IPrototypeManager _prototype = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private SharedChatSystem _chat = default!;
+    [Dependency] private StationSystem _station = default!;
 
-    // Until stations are a prototype, this is how it's going to have to be.
-    public const string DefaultAlertLevelSet = "stationAlerts";
-
-    public override void Initialize()
-    {
-        SubscribeLocalEvent<StationInitializedEvent>(OnStationInitialize);
-        SubscribeLocalEvent<PrototypesReloadedEventArgs>(OnPrototypeReload);
-    }
+    // Absolute worst case fallbacks.
+    private static string _fallbackAlertName = "generic-unknown-title";
+    private static string _fallbackAlertAnnouncement = "alert-level-unknown-announcement";
+    private static string _fallbackAlertInstructions = "alert-level-unknown-instructions";
 
     public override void Update(float time)
     {
         var query = EntityQueryEnumerator<AlertLevelComponent>();
+        var curTime = _timing.CurTime;
 
-        while (query.MoveNext(out var station, out var alert))
+        while (query.MoveNext(out var station, out var alertComp))
         {
-            if (alert.CurrentDelay <= 0)
+            if (alertComp.DelayedUntil <= curTime)
             {
-                if (alert.ActiveDelay)
-                {
-                    RaiseLocalEvent(new AlertLevelDelayFinishedEvent());
-                    alert.ActiveDelay = false;
-                }
-                continue;
-            }
-
-            alert.CurrentDelay -= time;
-        }
-    }
-
-    private void OnStationInitialize(StationInitializedEvent args)
-    {
-        if (!TryComp<AlertLevelComponent>(args.Station, out var alertLevelComponent))
-            return;
-
-        if (!_prototypeManager.TryIndex(alertLevelComponent.AlertLevelPrototype, out AlertLevelPrototype? alerts))
-        {
-            return;
-        }
-
-        alertLevelComponent.AlertLevels = alerts;
-
-        var defaultLevel = alertLevelComponent.AlertLevels.DefaultLevel;
-        if (string.IsNullOrEmpty(defaultLevel))
-        {
-            defaultLevel = alertLevelComponent.AlertLevels.Levels.Keys.First();
-        }
-
-        SetLevel(args.Station, defaultLevel, false, false, true);
-    }
-
-    private void OnPrototypeReload(PrototypesReloadedEventArgs args)
-    {
-        if (!args.ByType.TryGetValue(typeof(AlertLevelPrototype), out var alertPrototypes)
-            || !alertPrototypes.Modified.TryGetValue(DefaultAlertLevelSet, out var alertObject)
-            || alertObject is not AlertLevelPrototype alerts)
-        {
-            return;
-        }
-
-        var query = EntityQueryEnumerator<AlertLevelComponent>();
-        while (query.MoveNext(out var uid, out var comp))
-        {
-            comp.AlertLevels = alerts;
-
-            if (!comp.AlertLevels.Levels.ContainsKey(comp.CurrentLevel))
-            {
-                var defaultLevel = comp.AlertLevels.DefaultLevel;
-                if (string.IsNullOrEmpty(defaultLevel))
-                {
-                    defaultLevel = comp.AlertLevels.Levels.Keys.First();
-                }
-
-                SetLevel(uid, defaultLevel, true, true, true);
+                // Raise an event so that UIs can refresh.
+                var ev = new AlertLevelDelayFinishedEvent();
+                RaiseLocalEvent(ref ev);
+                alertComp.DelayedUntil = null;
+                Dirty(station, alertComp);
             }
         }
-
-        RaiseLocalEvent(new AlertLevelPrototypeReloadedEvent());
-    }
-
-    public string GetLevel(EntityUid station, AlertLevelComponent? alert = null)
-    {
-        if (!Resolve(station, ref alert))
-        {
-            return string.Empty;
-        }
-
-        return alert.CurrentLevel;
-    }
-
-    public float GetAlertLevelDelay(EntityUid station, AlertLevelComponent? alert = null)
-    {
-        if (!Resolve(station, ref alert))
-        {
-            return float.NaN;
-        }
-
-        return alert.CurrentDelay;
     }
 
     /// <summary>
-    /// Get the default alert level for a station entity.
-    /// Returns an empty string if the station has no alert levels defined.
+    /// Can the alert level currently be changed from the communications console?
+    /// This considers both the cooldown and if the current mode prevents changing it, for example when the nuke is armed.
     /// </summary>
-    /// <param name="station">The station entity.</param>
-    public string GetDefaultLevel(Entity<AlertLevelComponent?> station)
+    public bool CanChangeAlertLevel(Entity<AlertLevelComponent?> station)
     {
-        if (!Resolve(station.Owner, ref station.Comp) || station.Comp.AlertLevels == null)
-        {
-            return string.Empty;
-        }
-        return station.Comp.AlertLevels.DefaultLevel;
+        if (!Resolve(station, ref station.Comp))
+            return false;
+
+        return station.Comp.DelayedUntil == null && !station.Comp.IsLevelLocked;
     }
 
     /// <summary>
-    /// Set the alert level based on the station's entity ID.
+    /// Gets a list of alert levels that are available on this station and can be selected from the communications console.
+    /// </summary>
+    public List<ProtoId<AlertLevelPrototype>> GetSelectableAlertLevels(Entity<AlertLevelComponent?> station)
+    {
+        List<ProtoId<AlertLevelPrototype>> list = new();
+        if (!Resolve(station, ref station.Comp))
+            return list;
+
+        foreach (var levelId in station.Comp.AvailableAlertLevels)
+        {
+            if (!_prototype.Resolve(levelId, out var level))
+                continue;
+
+            if (level.Selectable)
+                list.Add(levelId);
+        }
+
+        return list;
+    }
+
+    /// <summary>
+    /// Gets the current alert level for this station entity.
+    /// </summary>
+    public bool TryGetLevel(Entity<AlertLevelComponent?> station, [NotNullWhen(true)] out ProtoId<AlertLevelPrototype>? level)
+    {
+        level = null;
+        if (!Resolve(station, ref station.Comp, false))
+            return false;
+
+        level = station.Comp.CurrentAlertLevel;
+        return true;
+    }
+
+    /// <summary>
+    /// Gets the default alert level for this station entity.
+    /// </summary>
+    public bool TryGetDefaultLevel(Entity<AlertLevelComponent?> station, [NotNullWhen(true)] out ProtoId<AlertLevelPrototype>? level)
+    {
+        level = null;
+        if (!Resolve(station, ref station.Comp, false))
+            return false;
+
+        level = station.Comp.DefaultAlertLevel;
+        return true;
+    }
+
+    /// <summary>
+    /// Gets the remaining cooldown for changing the alert level from the communications console.
+    /// </summary>
+    public TimeSpan GetAlertLevelDelay(Entity<AlertLevelComponent?> station)
+    {
+        if (!Resolve(station, ref station.Comp, false))
+            return TimeSpan.Zero;
+
+        if (station.Comp.DelayedUntil == null)
+            return TimeSpan.Zero;
+
+        return station.Comp.DelayedUntil.Value - _timing.CurTime;
+    }
+
+    /// <summary>
+    /// Set the alert level based on the station's entity uid.
     /// </summary>
     /// <param name="station">Station entity UID.</param>
     /// <param name="level">Level to change the station's alert level to.</param>
-    /// <param name="playSound">Play the alert level's sound.</param>
-    /// <param name="announce">Say the alert level's announcement.</param>
-    /// <param name="force">Force the alert change. This applies if the alert level is not selectable or not.</param>
-    /// <param name="locked">Will it be possible to change level by crew.</param>
-    public void SetLevel(EntityUid station, string level, bool playSound, bool announce, bool force = false,
-        bool locked = false, MetaDataComponent? dataComponent = null, AlertLevelComponent? component = null)
+    /// <param name="playSound">Play the alert level's sound?</param>
+    /// <param name="announce">Announce the alert level change in chat?</param>
+    /// <param name="force">Force the alert change. This applies if the alert level is not selectable.</param>
+    /// <param name="locked">Override to decide if the crew will be able to change from this alert level via the console. Will use the value given in the prototype if null.</param>
+    public void SetLevel(
+        Entity<AlertLevelComponent?> station,
+        ProtoId<AlertLevelPrototype> level,
+        bool playSound = true,
+        bool announce = true,
+        bool force = false,
+        bool? locked = null)
     {
-        if (!Resolve(station, ref component, ref dataComponent)
-            || component.AlertLevels == null
-            || !component.AlertLevels.Levels.TryGetValue(level, out var detail)
-            || component.CurrentLevel == level)
-        {
+        if (!Resolve(station, ref station.Comp))
             return;
-        }
+
+        if (station.Comp.CurrentAlertLevel == level)
+            return;
+
+        if (!_prototype.Resolve(level, out var prototype))
+            return;
 
         if (!force)
         {
-            if (!detail.Selectable
-                && !detail.EmagSelectable // Goobstation
-                || component.CurrentDelay > 0
-                || component.IsLevelLocked)
-            {
+            if (!CanChangeAlertLevel(station) || !prototype.Selectable)
                 return;
-            }
 
-            component.CurrentDelay = _cfg.GetCVar(CCVars.GameAlertLevelChangeDelay);
-            component.ActiveDelay = true;
+            station.Comp.DelayedUntil = _timing.CurTime + TimeSpan.FromSeconds(_cfg.GetCVar(CCVars.GameAlertLevelChangeDelay));
         }
 
-        component.CurrentLevel = level;
-        component.IsLevelLocked = locked;
+        station.Comp.CurrentAlertLevel = level;
+        station.Comp.IsLevelLocked = prototype.DisableSelection;
+        if (locked != null) // optional override
+            station.Comp.IsLevelLocked = locked.Value;
+        Dirty(station);
 
-        var stationName = dataComponent.EntityName;
-
-        var name = level.ToLower();
-
-        if (Loc.TryGetString($"alert-level-{level}", out var locName))
-        {
-            name = locName.ToLower();
-        }
-
-        // Announcement text. Is passed into announcementFull.
-        var announcement = detail.Announcement;
-
-        if (Loc.TryGetString(detail.Announcement, out var locAnnouncement))
-        {
-            announcement = locAnnouncement;
-        }
+        var stationName = MetaData(station.Owner).EntityName;
 
         // The full announcement to be spat out into chat.
-        var announcementFull = Loc.GetString("alert-level-announcement", ("name", name), ("announcement", announcement));
+        var announcementFull = Loc.GetString("alert-level-announcement",
+            ("name", prototype.LocalizedName),
+            ("announcement", AlertLevelAnnouncement(prototype)));
+
+        var ev = new AlertLevelChangedEvent(station, level);
+        RaiseLocalEvent(ref ev);
+
+        if (_net.IsClient)
+            return;
 
         var playDefault = false;
         if (playSound)
         {
-            // CorvaxGoob-CustomAnnouncers-Start
-            var audio = detail.Sound;
-
-            if (_announcer.TryGetAnnouncerToday(out var announcerPrototype) && detail.AnnouncersAudio.ContainsKey(announcerPrototype.ID))
-                audio = detail.AnnouncersAudio[announcerPrototype.ID];
-
-            if (audio is not null)
+            if (prototype.Sound != null)
             {
-                var filter = _stationSystem.GetInOwningStation(station);
-
-                _chatSystem.SendGlobalSound(audio, filter);
-            } // CorvaxGoob-CustomAnnouncers-End
+                var filter = _station.GetInOwningStation(station);
+                _audio.PlayGlobal(prototype.Sound, filter, true);
+            }
             else
             {
                 playDefault = true;
@@ -214,28 +185,141 @@ public sealed class AlertLevelSystem : EntitySystem
 
         if (announce)
         {
-            _chatSystem.DispatchStationAnnouncement(station, announcementFull, playDefaultSound: playDefault,
-                colorOverride: detail.Color, sender: stationName);
+            _chat.DispatchStationAnnouncement(
+                station,
+                announcementFull,
+                playDefaultSound: playDefault,
+                colorOverride: prototype.Color,
+                sender: stationName);
         }
 
-        RaiseLocalEvent(new AlertLevelChangedEvent(station, level));
     }
-}
 
-public sealed class AlertLevelDelayFinishedEvent : EntityEventArgs
-{}
-
-public sealed class AlertLevelPrototypeReloadedEvent : EntityEventArgs
-{}
-
-public sealed class AlertLevelChangedEvent : EntityEventArgs
-{
-    public EntityUid Station { get; }
-    public string AlertLevel { get; }
-
-    public AlertLevelChangedEvent(EntityUid station, string alertLevel)
+    /// <summary>
+    /// Returns the name, announcement, and description of this station's alert level.
+    /// </summary>
+    public (string Name, string Announcement, string Instructions) AlertLevelData(Entity<AlertLevelComponent?> station)
     {
-        Station = station;
-        AlertLevel = alertLevel;
+        if (!TryGetDefaultLevel(station, out var level))
+        {
+            return (Loc.GetString(_fallbackAlertName),
+                Loc.GetString(_fallbackAlertAnnouncement),
+                Loc.GetString(_fallbackAlertInstructions));
+        }
+
+        return AlertLevelData(level);
+    }
+
+    /// <summary>
+    /// Returns the name, announcement, and description of the given alert level.
+    /// </summary>
+    public (string Name, string Announcement, string Instructions) AlertLevelData(ProtoId<AlertLevelPrototype>? level)
+    {
+        if (!ProtoMan.Resolve(level, out var proto))
+        {
+            return (Loc.GetString(_fallbackAlertName),
+                Loc.GetString(_fallbackAlertAnnouncement),
+                Loc.GetString(_fallbackAlertInstructions));
+        }
+
+        return AlertLevelData(proto);
+    }
+
+    /// <summary>
+    /// Returns the name, announcement, and description of the given alert level.
+    /// </summary>
+    public (string Name, string Announcement, string Instructions) AlertLevelData(AlertLevelPrototype level)
+    {
+        return (level.LocalizedName, AlertLevelAnnouncement(level), AlertLevelInstructions(level));
+    }
+
+    /// <summary>
+    /// Returns the name of this station's current alert level.
+    /// </summary>
+    /// <returns>Returns the name of the current Alert Level.</returns>
+    public string AlertLevelName(Entity<AlertLevelComponent?> station)
+    {
+        return !TryGetDefaultLevel(station, out var level)
+            ? Loc.GetString(_fallbackAlertName)
+            : AlertLevelName(level);
+    }
+
+    /// <summary>
+    /// Returns the name of the given alert level.
+    /// </summary>
+    /// <returns>Returns the name of the given Alert Level.</returns>
+    public string AlertLevelName(ProtoId<AlertLevelPrototype>? level)
+    {
+        return !ProtoMan.Resolve(level, out var proto)
+            ? Loc.GetString(_fallbackAlertName)
+            : proto.LocalizedName;
+    }
+
+    /// <summary>
+    /// Gets the announcement message for the stations' current alert level.
+    /// </summary>
+    /// <returns>Returns the description of the current Alert Level.</returns>
+    public string AlertLevelAnnouncement(Entity<AlertLevelComponent?> station)
+    {
+        return !TryGetDefaultLevel(station, out var level)
+            ? Loc.GetString(_fallbackAlertAnnouncement)
+            : AlertLevelAnnouncement(level);
+    }
+
+    /// <see cref="AlertLevelAnnouncement(AlertLevelPrototype)"/>
+    public string AlertLevelAnnouncement(ProtoId<AlertLevelPrototype>? level)
+    {
+        return !ProtoMan.Resolve(level, out var proto)
+            ? Loc.GetString(_fallbackAlertAnnouncement)
+            : AlertLevelAnnouncement(proto);
+    }
+
+    /// <summary>
+    /// Gets the announcement message for the given alert level.
+    /// </summary>
+    /// <returns>Returns the announcement for the given Alert Level.</returns>
+    public string AlertLevelAnnouncement(AlertLevelPrototype level)
+    {
+        return Loc.GetString(level.Announcement ?? _fallbackAlertAnnouncement);
+    }
+
+    /// <summary>
+    /// Gets the instructions for the station's current alert level.
+    /// </summary>
+    /// <returns>Returns the instructions for the current alert level.</returns>
+    public string AlertLevelInstructions(Entity<AlertLevelComponent?> station)
+    {
+        return !TryGetDefaultLevel(station, out var level)
+            ? Loc.GetString(_fallbackAlertInstructions)
+            : AlertLevelInstructions(level);
+    }
+
+    /// <see cref="AlertLevelInstructions(AlertLevelPrototype)"/>
+    public string AlertLevelInstructions(ProtoId<AlertLevelPrototype>? level)
+    {
+        return !ProtoMan.Resolve(level, out var proto)
+            ? Loc.GetString(_fallbackAlertInstructions)
+            : AlertLevelInstructions(proto);
+    }
+
+    /// <summary>
+    /// Gets the instructions for the given alert level.
+    /// </summary>
+    /// <returns>Returns the instructions for the given Alert Level.</returns>
+    public string AlertLevelInstructions(AlertLevelPrototype level)
+    {
+        return Loc.GetString(level.Instructions ?? _fallbackAlertInstructions);
     }
 }
+
+/// <summary>
+/// Broadcast event that is raised when the alert level selection delay for a station is over and it can be switched again.
+/// </summary>
+[ByRefEvent]
+public record struct AlertLevelDelayFinishedEvent;
+
+/// <summary>
+/// Broadcast event that is raised when the a station changes its alert level.
+/// </summary>
+[ByRefEvent]
+public record struct AlertLevelChangedEvent(EntityUid Station, ProtoId<AlertLevelPrototype> AlertLevel);

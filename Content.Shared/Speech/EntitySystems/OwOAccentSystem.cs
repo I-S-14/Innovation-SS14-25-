@@ -1,53 +1,42 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
-using Content.Server.Speech.Components;
-using Content.Shared.Speech;
-using Content.Shared.StatusEffectNew;
+using System.Collections.Frozen;
+using Content.Shared.Random.Helpers;
+using Content.Shared.Speech.Components;
 using Robust.Shared.Random;
+using Robust.Shared.Timing;
 
-namespace Content.Server.Speech.EntitySystems
+namespace Content.Shared.Speech.EntitySystems;
+
+public sealed partial class OwOAccentSystem : RelayAccentSystem<OwOAccentComponent>
 {
-    public sealed class OwOAccentSystem : EntitySystem
-    {
-        [Dependency] private readonly IRobustRandom _random = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private IRobustRandom _random = default!;
 
-        private static readonly IReadOnlyList<string> Faces = new List<string>{
-            " (•`ω´•)", " ;;w;;", " owo", " UwU", " >w<", " ^w^"
-        }.AsReadOnly();
+    private static readonly IReadOnlyList<string> Faces =
+    [
+        " (•`ω´•)", " ;;w;;", " owo", " UwU", " >w<", " ^w^",
+    ];
 
-        private static readonly IReadOnlyDictionary<string, string> SpecialWords = new Dictionary<string, string>()
+    private static readonly FrozenDictionary<string, string> SpecialWords =
+        new Dictionary<string, string>
         {
             { "you", "wu" },
-            { "ты", "ти" }, // CorvaxGoob-Localization
-        };
+        }.ToFrozenDictionary();
 
-        public override void Initialize()
+    public override string Accentuate(string message, Entity<OwOAccentComponent>? ent = null)
+    {
+        var random = ent.HasValue
+            ? SharedRandomExtensions.PredictedRandom(_timing, GetNetEntity(ent.Value))
+            : _random;
+
+        foreach (var (word, repl) in SpecialWords)
         {
-            SubscribeLocalEvent<OwOAccentComponent, AccentGetEvent>(OnAccent);
-            SubscribeLocalEvent<OwOAccentComponent, StatusEffectRelayedEvent<AccentGetEvent>>(OnAccentRelayed);
+            message = message.Replace(word, repl);
         }
 
-        public string Accentuate(string message)
-        {
-            foreach (var (word, repl) in SpecialWords)
-            {
-                message = message.Replace(word, repl);
-            }
-
-            return message.Replace("!", _random.Pick(Faces))
-                .Replace("r", "w").Replace("R", "W")
-                .Replace("l", "w").Replace("L", "W");
-        }
-
-        private void OnAccent(Entity<OwOAccentComponent> entity, ref AccentGetEvent args)
-        {
-            args.Message = Accentuate(args.Message);
-        }
-
-        private void OnAccentRelayed(Entity<OwOAccentComponent> entity, ref StatusEffectRelayedEvent<AccentGetEvent> args)
-        {
-            args.Args.Message = Accentuate(args.Args.Message);
-        }
-
+        return message.Replace("!", random.Pick(Faces))
+            .Replace("r", "w")
+            .Replace("R", "W")
+            .Replace("l", "w")
+            .Replace("L", "W");
     }
 }

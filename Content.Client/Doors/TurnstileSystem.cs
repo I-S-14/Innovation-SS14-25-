@@ -2,6 +2,10 @@ using Content.Shared.Doors.Components;
 using Content.Shared.Doors.Systems;
 using Robust.Client.Animations;
 using Robust.Client.GameObjects;
+using Content.Shared.Examine;
+using Robust.Client.Graphics;
+using Robust.Shared.Map;
+using Robust.Shared.Prototypes;
 
 namespace Content.Client.Doors;
 

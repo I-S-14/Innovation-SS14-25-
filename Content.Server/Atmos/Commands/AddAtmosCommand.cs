@@ -6,6 +6,7 @@ using Content.Shared.Administration;
 using Content.Shared.Atmos.Components;
 using Robust.Shared.Console;
 using Robust.Shared.Map.Components;
+using Content.Server.Atmos.Components;
 
 namespace Content.Server.Atmos.Commands
 {

@@ -2,6 +2,7 @@
 
 using Content.Shared.Database;
 using Robust.Client.UserInterface.Controls;
+using Content.Shared.Administration.Logs;
 
 namespace Content.Client.Administration.UI.CustomControls;
 

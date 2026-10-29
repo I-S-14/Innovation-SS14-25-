@@ -24,6 +24,7 @@ using Robust.Shared.Random;
 using Robust.Shared.Utility;
 using System.Linq;
 using System.Numerics;
+using Content.Shared.Random.Helpers;
 
 namespace Content.Client.CriminalRecords;
 

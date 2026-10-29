@@ -3,6 +3,8 @@
 using Content.Shared.Mindshield;
 using Content.Shared.Overlays;
 using Content.Shared.StatusIcon.Components;
+using Content.Shared.Mindshield.Components;
+using Robust.Shared.Prototypes;
 
 namespace Content.Client.Overlays;
 

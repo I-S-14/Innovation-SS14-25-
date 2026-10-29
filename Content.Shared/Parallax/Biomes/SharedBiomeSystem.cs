@@ -9,6 +9,7 @@ using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Noise;
 using Robust.Shared.Serialization.Manager;
+using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Parallax.Biomes;
 

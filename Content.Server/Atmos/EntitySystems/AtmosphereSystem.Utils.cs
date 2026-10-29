@@ -6,6 +6,7 @@ using Content.Shared.Atmos.Components;
 using Content.Shared.Atmos.EntitySystems;
 using Content.Shared.Atmos.Piping.Components;
 using Robust.Shared.Map.Components;
+using Content.Server.Atmos.Components;
 
 namespace Content.Server.Atmos.EntitySystems;
 

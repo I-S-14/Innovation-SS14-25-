@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: MIT
-
 ﻿using Content.Shared.DeviceNetwork.Systems.Devices;
 using Robust.Shared.GameStates;
 

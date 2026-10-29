@@ -6,6 +6,7 @@ using Content.Shared.Mindshield;
 using Content.Shared.Mobs;
 using Content.Shared.Store;
 using Content.Shared.VoiceMask;
+using Content.Shared.Interaction;
 
 namespace Content.Shared.Implants;
 

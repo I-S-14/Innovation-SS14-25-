@@ -16,7 +16,6 @@ namespace Content.Client.Atmos.EntitySystems;
 public sealed partial class FireVisualizerSystem : VisualizerSystem<FireVisualsComponent>
 {
     [Dependency] private readonly SpriteSystem _sprite = default!;
-    [Dependency] private readonly PointLightSystem _lights = default!;
     [Dependency] private PointLightSystem _lights = default!;
     [Dependency] private DisplacementMapSystem _displacement = default!;
 

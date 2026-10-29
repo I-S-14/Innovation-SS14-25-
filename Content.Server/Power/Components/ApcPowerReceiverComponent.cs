@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 using Content.Server.Power.Pow3r;
 using Content.Shared.Power.Components;
+using Content.Server.Power.NodeGroups;
 
 namespace Content.Server.Power.Components;
 

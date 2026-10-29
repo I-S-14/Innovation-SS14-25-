@@ -4,6 +4,7 @@ using Content.Client.Cargo.UI;
 using Content.Shared.Cargo.BUI;
 using Content.Shared.Cargo.Events;
 using Robust.Client.UserInterface;
+using Robust.Client.GameObjects;
 
 namespace Content.Client.Cargo.BUI;
 

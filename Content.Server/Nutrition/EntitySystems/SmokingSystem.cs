@@ -11,7 +11,7 @@ using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Clothing.Components;
 using Content.Shared.Clothing.EntitySystems;
 using Content.Goobstation.Maths.FixedPoint;
-using Content.Shared.FixedPoint;
+using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.Forensics.Systems;
 using Content.Shared.Inventory;
 using Content.Shared.Inventory.Events;
@@ -21,6 +21,7 @@ using Content.Shared.Smoking;
 using Content.Shared.Temperature;
 using Robust.Server.GameObjects;
 using Robust.Shared.Containers;
+using Content.Server.Forensics;
 
 namespace Content.Server.Nutrition.EntitySystems
 {

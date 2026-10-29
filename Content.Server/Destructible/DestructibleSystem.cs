@@ -23,6 +23,9 @@ using JetBrains.Annotations;
 using Robust.Shared.Containers;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
+using Content.Shared.Gibbing;
+using Content.Shared.Damage;
+using Robust.Server.Audio;
 
 namespace Content.Server.Destructible;
 

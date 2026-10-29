@@ -11,6 +11,7 @@ using Content.Shared.Movement.Components;
 using Robust.Shared.Input.Binding;
 using Robust.Shared.Player;
 using Robust.Shared.Serialization;
+using Content.Shared.Ghost;
 
 namespace Content.Shared.Movement.Systems;
 
@@ -19,7 +20,6 @@ namespace Content.Shared.Movement.Systems;
 /// </summary>
 public abstract partial class SharedContentEyeSystem : EntitySystem
 {
-    [Dependency] private readonly ISharedAdminManager _admin = default!;
     [Dependency] private readonly SharedScryingOrbSystem _scrying = default!;
     [Dependency] private ISharedAdminManager _admin = default!;
 

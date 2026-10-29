@@ -4,6 +4,7 @@ using Content.Shared._EinsteinEngines.Language; // Goob Station - Revolutionary 
 using Robust.Shared.GameStates;
 using Content.Shared.StatusIcon;
 using Robust.Shared.Prototypes;
+using Content.Shared.Antag;
 
 namespace Content.Shared.Revolutionary.Components;
 

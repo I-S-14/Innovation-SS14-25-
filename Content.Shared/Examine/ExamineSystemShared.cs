@@ -12,7 +12,7 @@ using Robust.Shared.Containers;
 using Robust.Shared.Map;
 using Robust.Shared.Physics;
 using Robust.Shared.Utility;
-using static Content.Shared.Interaction.SharedInteractionSystem;
+using Content.Shared.Ghost;
 
 namespace Content.Shared.Examine
 {

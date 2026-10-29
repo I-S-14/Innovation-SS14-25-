@@ -11,6 +11,7 @@ using Content.Shared.NodeContainer.NodeGroups;
 using Robust.Server.GameObjects;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Random;
+using Content.Server.NodeContainer.Nodes;
 
 namespace Content.Server.Ame;
 

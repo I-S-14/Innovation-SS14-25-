@@ -1,7 +1,6 @@
 using Content.Shared.Interaction;
 using Content.Shared.Tools.Systems;
 using Robust.Shared.Containers;
-using static Content.Shared.Configurable.ConfigurationComponent;
 
 namespace Content.Shared.Configurable;
 

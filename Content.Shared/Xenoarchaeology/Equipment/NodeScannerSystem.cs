@@ -5,6 +5,7 @@ using Content.Shared.Xenoarchaeology.Artifact;
 using Content.Shared.Xenoarchaeology.Artifact.Components;
 using Content.Shared.Xenoarchaeology.Equipment.Components;
 using Robust.Shared.Timing;
+using Content.Shared.Timing;
 
 namespace Content.Shared.Xenoarchaeology.Equipment;
 

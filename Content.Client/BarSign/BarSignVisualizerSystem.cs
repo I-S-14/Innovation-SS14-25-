@@ -1,6 +1,7 @@
 using Content.Shared.BarSign;
 using Content.Shared.Power;
 using Robust.Client.GameObjects;
+using Robust.Shared.Prototypes;
 
 namespace Content.Client.BarSign;
 

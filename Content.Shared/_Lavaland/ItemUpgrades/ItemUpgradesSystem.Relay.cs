@@ -1,7 +1,6 @@
-﻿using Content.Goobstation.Common.Weapons;
+using Content.Goobstation.Common.Weapons;
 using Content.Shared._Goobstation.Weapons.Ranged;
 using Content.Shared._Lavaland.ItemUpgrades.Components;
-using Content.Shared._Lavaland.ItemUpgrades.Events;
 using Content.Shared._Lavaland.Weapons;
 using Content.Shared._Lavaland.Weapons.Ranged.Events;
 using Content.Shared.Actions;

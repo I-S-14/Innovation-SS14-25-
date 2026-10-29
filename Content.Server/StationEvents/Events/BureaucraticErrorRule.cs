@@ -12,6 +12,7 @@ using Robust.Shared.Random;
 using Content.Server.Administration.Logs;
 using Content.Server.Chat.Managers;
 using Content.Shared.Database;
+using Content.Server.Station.Components;
 
 
 namespace Content.Server.StationEvents.Events;
@@ -23,7 +24,6 @@ namespace Content.Server.StationEvents.Events;
 [UsedImplicitly]
 public sealed partial class BureaucraticErrorRule : StationEventSystem<BureaucraticErrorRuleComponent>
 {
-    [Dependency] private readonly StationJobsSystem _stationJobs = default!;
     [Dependency] private readonly IAdminLogManager _adminLog = default!; // Goob
     [Dependency] private readonly IChatManager _chat = default!; // Goob
     [Dependency] private ServerStationJobsSystem _stationJobs = default!;

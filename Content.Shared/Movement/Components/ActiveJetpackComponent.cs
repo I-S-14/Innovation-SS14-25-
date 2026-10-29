@@ -2,6 +2,7 @@
 
 using Content.Shared.Movement.Systems;
 using Robust.Shared.GameStates;
+using Robust.Shared.Map;
 
 namespace Content.Shared.Movement.Components;
 

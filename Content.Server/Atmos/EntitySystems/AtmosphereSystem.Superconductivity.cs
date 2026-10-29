@@ -2,6 +2,7 @@
 using Content.Shared.Atmos;
 using Content.Shared.Atmos.Components;
 using Robust.Shared.Map.Components;
+using Content.Server.Atmos.Components;
 
 namespace Content.Server.Atmos.EntitySystems
 {

@@ -10,7 +10,6 @@ using JetBrains.Annotations;
 using Robust.Client.Graphics;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
-using static Content.Shared.Administration.Logs.AdminLogsEuiMsg;
 
 namespace Content.Client.Administration.UI.Logs;
 

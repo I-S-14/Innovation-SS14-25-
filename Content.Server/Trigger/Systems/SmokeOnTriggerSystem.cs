@@ -15,11 +15,6 @@ namespace Content.Server.Trigger.Systems;
 /// </summary>
 public sealed partial class SmokeOnTriggerSystem : EntitySystem
 {
-    [Dependency] private readonly MapSystem _map = default!;
-    [Dependency] private readonly SmokeSystem _smoke = default!;
-    [Dependency] private readonly TransformSystem _transform = default!;
-    [Dependency] private readonly SpreaderSystem _spreader = default!;
-    [Dependency] private readonly TurfSystem _turf = default!;
     [Dependency] private MapSystem _map = default!;
     [Dependency] private SmokeSystem _smoke = default!;
     [Dependency] private TransformSystem _transform = default!;

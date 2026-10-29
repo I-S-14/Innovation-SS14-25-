@@ -16,6 +16,7 @@ using Robust.Shared.Utility;
 
 // <Goob>
 using Content.Shared._DV.Salvage.Systems;
+using Robust.Client.UserInterface.CustomControls;
 // </Goob>
 
 namespace Content.Client.Lathe.UI;

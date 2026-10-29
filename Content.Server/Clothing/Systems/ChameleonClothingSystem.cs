@@ -8,6 +8,7 @@ using Content.Shared.Emp;
 using Content.Shared.IdentityManagement;
 using Content.Shared.IdentityManagement.Components;
 using Robust.Shared.Prototypes;
+using Content.Shared.Prototypes;
 
 namespace Content.Server.Clothing.Systems;
 

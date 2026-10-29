@@ -5,6 +5,7 @@ using Content.Server.Shuttles.Systems;
 using Content.Shared.Cuffs;
 using Content.Shared.Mind;
 using Content.Shared.Objectives.Components;
+using Content.Shared.Cuffs.Components;
 
 namespace Content.Server.Objectives.Systems;
 

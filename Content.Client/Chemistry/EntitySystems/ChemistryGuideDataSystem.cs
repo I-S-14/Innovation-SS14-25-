@@ -10,6 +10,9 @@ using Content.Shared.Chemistry.Reaction;
 using Content.Shared.Chemistry.Reagent;
 using Content.Shared.Kitchen.Components;
 using Robust.Shared.Prototypes;
+using Content.Shared.Body.Part;
+using Content.Shared.Chemistry.Components.SolutionManager;
+using Content.Shared.Prototypes;
 
 namespace Content.Client.Chemistry.EntitySystems;
 

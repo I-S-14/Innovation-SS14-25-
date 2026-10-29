@@ -11,8 +11,6 @@ namespace Content.Shared.CriminalRecords.Systems;
 
 public abstract partial class SharedCriminalRecordsHackerSystem : EntitySystem
 {
-    [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
-    [Dependency] private readonly SharedNinjaGlovesSystem _gloves = default!;
     [Dependency] private readonly SharedPowerReceiverSystem _powerReceiverSystem = default!; // Goobstation check power
     [Dependency] private SharedDoAfterSystem _doAfter = default!;
     [Dependency] private SharedNinjaGlovesSystem _gloves = default!;

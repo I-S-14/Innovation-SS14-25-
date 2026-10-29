@@ -9,6 +9,7 @@ using Content.Shared.Temperature.Components;
 using Robust.Server.Containers;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Timing;
+using Content.Shared.Gibbing;
 
 namespace Content.Server.Atmos.Rotting;
 

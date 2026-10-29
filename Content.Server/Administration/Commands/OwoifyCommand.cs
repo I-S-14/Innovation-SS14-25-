@@ -2,6 +2,7 @@
 using Content.Shared.Administration;
 using Content.Shared.Speech.EntitySystems;
 using Robust.Shared.Console;
+using Content.Server.Speech.EntitySystems;
 
 namespace Content.Server.Administration.Commands;
 

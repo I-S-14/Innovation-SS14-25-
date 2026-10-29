@@ -12,6 +12,8 @@ using Content.Shared.Popups;
 using Content.Shared.Timing.Components;
 using Content.Shared.Timing.Systems;
 using Robust.Shared.Audio.Systems;
+using Content.Shared.Emp;
+using Content.Shared.Timing;
 
 namespace Content.Shared.Ninja.Systems;
 

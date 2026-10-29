@@ -5,6 +5,7 @@ using Content.Shared.Interaction.Events;
 using Content.Shared.Timing.Systems;
 using Content.Shared.Xenoarchaeology.Artifact.Components;
 using Robust.Shared.Map;
+using Content.Shared.Timing;
 
 namespace Content.Shared.Xenoarchaeology.Artifact;
 

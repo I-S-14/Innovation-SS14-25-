@@ -11,6 +11,7 @@ using System.Numerics;
 using Content.Shared.RepulseAttract.Events;
 using Content.Shared.Timing.Systems;
 using Content.Shared.Weapons.Melee;
+using Content.Shared.Timing;
 
 namespace Content.Shared.RepulseAttract;
 

@@ -7,6 +7,7 @@ using Content.Shared.Database;
 using Content.Shared.Mind;
 using Content.Shared.Roles;
 using Robust.Shared.Network;
+using Robust.Shared.Prototypes;
 
 namespace Content.Server.Roles;
 

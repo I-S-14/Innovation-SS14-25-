@@ -6,6 +6,7 @@ using Content.Shared.Tag;
 using JetBrains.Annotations;
 using Robust.Client.UserInterface;
 using Robust.Shared.Prototypes;
+using Content.Shared.Prototypes;
 
 namespace Content.Client.Clothing.UI;
 

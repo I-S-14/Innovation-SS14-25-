@@ -4,6 +4,7 @@ using System.Text;
 using Content.Server.Database;
 using Content.Shared.Administration;
 using Robust.Shared.Console;
+using System.Linq;
 
 namespace Content.Server.Administration.Commands;
 
@@ -65,8 +66,6 @@ public sealed partial class BanExemptionUpdateCommand : LocalizedCommands
 [AdminCommand(AdminFlags.Ban)]
 public sealed partial class BanExemptionGetCommand : LocalizedCommands
 {
-    [Dependency] private IServerDbManager _dbManager = default!;
-    [Dependency] private IPlayerLocator _playerLocator = default!;
 
     public override string Command => "ban_exemption_get";
 

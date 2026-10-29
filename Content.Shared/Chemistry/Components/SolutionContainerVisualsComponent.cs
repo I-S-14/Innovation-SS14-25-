@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Robust.Shared.Utility;
+using Content.Shared.Hands.Components;
 
 namespace Content.Shared.Chemistry.Components
 {

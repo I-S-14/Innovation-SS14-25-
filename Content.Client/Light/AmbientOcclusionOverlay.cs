@@ -13,6 +13,7 @@ using Robust.Shared.Map.Components;
 using Robust.Shared.Physics;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
+using Content.Shared.Maps;
 
 namespace Content.Client.Light;
 

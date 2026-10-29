@@ -17,6 +17,7 @@ using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using Content.Client.Stylesheets;
 
 namespace Content.Client.Atmos.Consoles;
 

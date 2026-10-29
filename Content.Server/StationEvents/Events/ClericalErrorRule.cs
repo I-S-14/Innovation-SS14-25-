@@ -7,6 +7,8 @@ using Content.Shared.StationRecords.Components;
 using Content.Shared.StationRecords.Systems;
 using Robust.Shared.Random;
 using Content.Shared.Station.Components;
+using Content.Server.StationRecords;
+using Content.Server.StationRecords.Systems;
 
 namespace Content.Server.StationEvents.Events;
 

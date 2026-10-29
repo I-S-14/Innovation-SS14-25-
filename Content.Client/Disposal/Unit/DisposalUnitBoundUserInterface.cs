@@ -4,6 +4,7 @@ using Content.Shared.Access.Systems;
 using Content.Shared.Disposal.Components;
 using JetBrains.Annotations;
 using Robust.Client.UserInterface;
+using Content.Client.Disposal.Mailing;
 
 namespace Content.Client.Disposal.Unit
 {

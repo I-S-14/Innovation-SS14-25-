@@ -4,6 +4,7 @@ using System.Numerics;
 using Content.Shared.Salvage.Fulton;
 using Robust.Shared.Map;
 using Robust.Shared.Random;
+using Robust.Shared.Containers;
 
 namespace Content.Server.Salvage;
 

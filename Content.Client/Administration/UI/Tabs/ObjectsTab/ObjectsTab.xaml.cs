@@ -9,6 +9,7 @@ using Robust.Client.Graphics;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.XAML;
 using Robust.Shared.Map.Components;
+using Content.Client.Station;
 
 namespace Content.Client.Administration.UI.Tabs.ObjectsTab;
 

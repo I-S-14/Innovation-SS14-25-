@@ -4,6 +4,7 @@ using Content.Shared.Hands; // Goobstation
 using Content.Shared.Inventory.Events;
 using Content.Shared.Overlays;
 using Robust.Client.Graphics;
+using Robust.Shared.Prototypes;
 
 namespace Content.Client.Overlays;
 

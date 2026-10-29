@@ -7,6 +7,7 @@ using Content.Client.UserInterface;
 using Content.Shared.Administration;
 using Content.Shared.IdentityManagement;
 using Robust.Client.Player;
+using Robust.Client.GameObjects;
 
 namespace Content.Client.ContextMenu.UI
 {

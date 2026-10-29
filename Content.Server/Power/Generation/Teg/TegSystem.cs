@@ -1,7 +1,3 @@
-// SPDX-License-Identifier: MIT
-
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
 using Content.Server.Atmos.EntitySystems;
 using Content.Server.Audio;
 using Content.Shared.DeviceNetwork.Systems;
@@ -181,8 +177,12 @@ public sealed partial class TegSystem : EntitySystem
 
         // Turn energy (at atmos tick rate) into wattage.
         var power = electricalEnergy / args.dt;
+
         // Add ramp factor. This magics slight power into existence, but allows us to ramp up.
-        supplier.MaxSupply = power * component.RampFactor;
+        // Also apply an exponential moving average to smooth out fluttering, as it was causing
+        // seizures.
+        supplier.MaxSupply = component.PowerSmoothingFactor * (power * component.RampFactor) +
+                             (1 - component.PowerSmoothingFactor) * supplier.MaxSupply;
 
         var circAComp = Comp<TegCirculatorComponent>(circA);
         var circBComp = Comp<TegCirculatorComponent>(circB);

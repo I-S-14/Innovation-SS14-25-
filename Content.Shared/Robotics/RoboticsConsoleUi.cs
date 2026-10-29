@@ -1,11 +1,8 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
-using Robust.Shared.Serialization;
-using Robust.Shared.Prototypes;
 using Content.Shared.DeviceNetwork;
 using Robust.Shared.Serialization;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
 using Robust.Shared.Utility;
+using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Robotics;
 
@@ -30,19 +27,19 @@ public sealed class RoboticsConsoleState : BoundUserInterfaceState
 
     public bool HasCircuitBoard; // Corvax-Goob-MutableLaws
 
-    public RoboticsConsoleState(Dictionary<string, CyborgControlData> cyborgs, bool allowBorgControl, bool hasCircuitBoard)// Corvax-Goob-MutableLaws
+    public RoboticsConsoleState(Dictionary<LocDeviceAddress, CyborgControlData> cyborgs, bool allowBorgControl, bool hasCircuitBoard = false) // Corvax-Goob-MutableLaws
     {
-        HasCircuitBoard = hasCircuitBoard; // Corvax-Goob-MutableLaws
         Cyborgs = cyborgs;
         AllowBorgControl = allowBorgControl;
+        HasCircuitBoard = hasCircuitBoard; // Corvax-Goob-MutableLaws
     }
 }
 
 // Corvax-Goob-MutableLaws-Start
 [Serializable, NetSerializable]
-public sealed class RoboticsConsoleChangeLawsMessage(string address) : BoundUserInterfaceMessage
+public sealed class RoboticsConsoleChangeLawsMessage(DeviceAddress address) : BoundUserInterfaceMessage
 {
-    public readonly string Address = address;
+    public readonly DeviceAddress Address = address;
 }
 // Corvax-Goob-MutableLaws-End
 
@@ -147,8 +144,10 @@ public partial record struct CyborgControlData
     [DataField]
     public bool IsLawChangable;
 
-    public CyborgControlData(SpriteSpecifier? chassisSprite, string chassisName, string name, float charge, float hpPercent, int moduleCount, bool hasBrain, bool canDisable, bool isAiControllable, bool isLawChangable) // Corvax-Next-AiRemoteControl && CorvaxGoob-MutableLaws
+    public CyborgControlData(SpriteSpecifier? chassisSprite, string chassisName, string name, float charge, float hpPercent, int moduleCount, bool hasBrain, bool canDisable, bool isAiControllable = false, bool isLawChangable = false) // Corvax-Next-AiRemoteControl && CorvaxGoob-MutableLaws
     {
+        IsAiControllable = isAiControllable; // Corvax-Next-AiRemoteControl
+        IsLawChangable = isLawChangable; // CorvaxGoob-MutableLaws
         ChassisSprite = chassisSprite;
         ChassisName = chassisName;
         Name = name;
@@ -157,8 +156,6 @@ public partial record struct CyborgControlData
         ModuleCount = moduleCount;
         HasBrain = hasBrain;
         CanDisable = canDisable;
-        IsAiControllable = isAiControllable; // Corvax-Next-AiRemoteControl
-        IsLawChangable = isLawChangable; // CorvaxGoob-MutableLaws
     }
 }
 
@@ -167,10 +164,22 @@ public partial record struct CyborgControlData
 /// </summary>
 public partial record struct RoboticsCyborgDisablePayload : INetworkPayload;
 
-    // sent by robotics console to cyborgs on Cyborg Control frequency
-    public const string NET_CHANGE_LAWS_COMMAND = "cyborg-change-laws"; // Corvax-Goob-MutableLaws
-    public const string NET_DISABLE_COMMAND = "cyborg-disable";
-    public const string NET_DESTROY_COMMAND = "cyborg-destroy";
+/// <summary>
+/// Destroys a borg when received.
+/// </summary>
+public partial record struct RoboticsCyborgDestroyPayload : INetworkPayload;
 
-    public const string NET_CIRCUIT_BOARD = "cyborg-circuit-board"; // Corvax-Goob-MutableLaws
+/// <summary>
+/// Corvax-Goob-MutableLaws: tells a borg to take the law set of the console's circuit board.
+/// Replaces the old "cyborg-change-laws" string command.
+/// </summary>
+public partial record struct RoboticsCyborgChangeLawsPayload : INetworkPayload;
+
+/// <summary>
+/// A wrapper for <see cref="CyborgControlData"/>
+/// </summary>
+public partial record struct RoboticsCyborgDataPayload : INetworkPayload
+{
+    [DataField]
+    public CyborgControlData Data;
 }

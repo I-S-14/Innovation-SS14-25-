@@ -5,6 +5,10 @@ using Robust.Client.Player;
 using Robust.Shared.Enums;
 using Robust.Shared.Prototypes;
 using Content.Shared.Eye.Blinding.Components;
+using Content.Client.Movement.Systems;
+using Content.Shared.Eye.Blinding;
+using Content.Shared.Movement.Components;
+using Content.Shared.Movement.Systems;
 
 namespace Content.Client.Eye.Blinding
 {

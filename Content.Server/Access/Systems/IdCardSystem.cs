@@ -14,6 +14,8 @@ using Content.Shared.Kitchen.Components;
 using Content.Shared.Kitchen.EntitySystems;
 using Content.Shared.Popups;
 using Robust.Shared.Random;
+using Robust.Shared.Prototypes;
+using Content.Server.Kitchen.EntitySystems;
 
 namespace Content.Server.Access.Systems;
 

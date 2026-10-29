@@ -1,88 +1,109 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
+using Content.Shared.Access.Components;
+using Content.Shared.Inventory;
+using Content.Shared.Roles.Jobs;
 using Content.Shared.StatusIcon;
+using Content.Shared.VoiceMask;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
 
-namespace Content.Shared.Access.Systems
+namespace Content.Shared.Access.Systems;
+
+/// <summary>
+/// Handles the UI of the agent ID, as well as automatically updating from voice masks, implants, etc.
+/// </summary>
+public abstract partial class SharedAgentIdCardSystem : EntitySystem
 {
-    public abstract class SharedAgentIdCardSystem : EntitySystem
+    [Dependency] private SharedIdCardSystem _card = default!;
+    [Dependency] private SharedJobSystem _job = default!;
+    [Dependency] private SharedJobStatusSystem _jobStatus = default!;
+
+    [SubscribeLocalEvent]
+    private void OnVoiceMaskNameChanged(Entity<AgentIDCardComponent> ent,
+        ref InventoryRelayedEvent<VoiceMaskNameUpdatedEvent> args)
     {
-        // Just for friending for now
+        if (!TryComp<IdCardComponent>(ent, out var idCard))
+            return;
+
+        if (!args.Args.VoiceMask.Comp.ChangeIDName)
+            return;
+
+        _card.TryChangeFullName(ent, args.Args.NewName, idCard);
+    }
+
+    [SubscribeLocalEvent]
+    private void OnNameChanged(Entity<AgentIDCardComponent> ent, ref AgentIDCardNameChangedMessage args)
+    {
+        if (!_card.TryChangeFullName(ent, args.Name))
+            return;
+
+        UpdateUi(ent);
+    }
+
+    [SubscribeLocalEvent]
+    private void OnJobChanged(Entity<AgentIDCardComponent> ent, ref AgentIDCardJobChangedMessage args)
+    {
+        if (!_card.TryChangeJobTitle(ent, args.Job))
+            return;
+
+        UpdateUi(ent);
+    }
+
+    [SubscribeLocalEvent]
+    private void OnJobIconChanged(Entity<AgentIDCardComponent> ent, ref AgentIDCardJobIconChangedMessage args)
+    {
+        if (!ProtoMan.Resolve(args.JobIconId, out var jobIcon) ||
+            !_card.TryChangeJobIcon(ent, jobIcon))
+            return;
+
+        if (_job.TryGetJobFromIcon(jobIcon.ID, out var job))
+            _card.TryChangeJobDepartment(ent, job);
+
+        _jobStatus.UpdateIdHolderStatus(ent);
+        UpdateUi(ent);
     }
 
     /// <summary>
-    /// Key representing which <see cref="PlayerBoundUserInterface"/> is currently open.
-    /// Useful when there are multiple UI for an object. Here it's future-proofing only.
+    /// Update the agent id UI with new component info.
     /// </summary>
-    [Serializable, NetSerializable]
-    public enum AgentIDCardUiKey : byte
+    public virtual void UpdateUi(EntityUid entity)
     {
-        Key,
+        // Overridden on client
     }
+}
 
-    /// <summary>
-    /// Represents an <see cref="AgentIDCardComponent"/> state that can be sent to the client
-    /// </summary>
-    [Serializable, NetSerializable]
-    public sealed class AgentIDCardBoundUserInterfaceState : BoundUserInterfaceState
-    {
-        public string CurrentName { get; }
-        public string CurrentJob { get; }
-        public string CurrentJobIconId { get; }
-        public uint? CurrentNumber { get; } // DeltaV
+/// <summary>
+/// Key representing which bound user interface is currently open.
+/// Useful when there are multiple UI for an object. Here it's future-proofing only.
+/// </summary>
+[Serializable, NetSerializable]
+public enum AgentIDCardUiKey : byte
+{
+    Key,
+}
 
-        public AgentIDCardBoundUserInterfaceState(string currentName, string currentJob, string currentJobIconId, uint? currentNumber = null) // DeltaV - Added currentNumber
-        {
-            CurrentName = currentName;
-            CurrentJob = currentJob;
-            CurrentJobIconId = currentJobIconId;
-            CurrentNumber = currentNumber; // DeltaV
-        }
-    }
+/// <summary>
+/// Sent from the agent ID UI to change the card name.
+/// </summary>
+[Serializable, NetSerializable]
+public sealed class AgentIDCardNameChangedMessage(string name) : BoundUserInterfaceMessage
+{
+    public string Name { get; } = name;
+}
 
-    // DeltaV - Add number change message
-    [Serializable, NetSerializable]
-    public sealed class AgentIDCardNumberChangedMessage : BoundUserInterfaceMessage
-    {
-        public uint Number { get; }
+/// <summary>
+/// Sent from the agent ID UI to change the job title.
+/// </summary>
+[Serializable, NetSerializable]
+public sealed class AgentIDCardJobChangedMessage(string job) : BoundUserInterfaceMessage
+{
+    public string Job { get; } = job;
+}
 
-        public AgentIDCardNumberChangedMessage(uint number)
-        {
-            Number = number;
-        }
-    }
-
-    [Serializable, NetSerializable]
-    public sealed class AgentIDCardNameChangedMessage : BoundUserInterfaceMessage
-    {
-        public string Name { get; }
-
-        public AgentIDCardNameChangedMessage(string name)
-        {
-            Name = name;
-        }
-    }
-
-    [Serializable, NetSerializable]
-    public sealed class AgentIDCardJobChangedMessage : BoundUserInterfaceMessage
-    {
-        public string Job { get; }
-
-        public AgentIDCardJobChangedMessage(string job)
-        {
-            Job = job;
-        }
-    }
-
-    [Serializable, NetSerializable]
-    public sealed class AgentIDCardJobIconChangedMessage : BoundUserInterfaceMessage
-    {
-        public ProtoId<JobIconPrototype> JobIconId { get; }
-
-        public AgentIDCardJobIconChangedMessage(ProtoId<JobIconPrototype> jobIconId)
-        {
-            JobIconId = jobIconId;
-        }
-    }
+/// <summary>
+/// Sent from the agent ID UI to change the job icon.
+/// </summary>
+[Serializable, NetSerializable]
+public sealed class AgentIDCardJobIconChangedMessage(ProtoId<JobIconPrototype> icon) : BoundUserInterfaceMessage
+{
+    public ProtoId<JobIconPrototype> JobIconId { get; } = icon;
 }

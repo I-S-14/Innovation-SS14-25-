@@ -10,6 +10,7 @@ public sealed partial class CryoPodAirComponent : Component
     /// <summary>
     /// Local air buffer that will be mixed with the pipenet, if one exists, per tick.
     /// </summary>
-    [DataField]
-    public GasMixture Air { get; set; } = new (2000f);
+    [ViewVariables(VVAccess.ReadWrite)]
+    [DataField("gasMixture")]
+    public GasMixture Air { get; set; } = new GasMixture(1000f);
 }

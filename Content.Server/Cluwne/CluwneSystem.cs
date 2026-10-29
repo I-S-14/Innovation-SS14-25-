@@ -23,6 +23,8 @@ using Content.Shared.StatusEffectNew;
 using Content.Shared.Stunnable;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Random;
+using Content.Server.Speech.EntitySystems;
+using Robust.Shared.Prototypes;
 
 namespace Content.Server.Cluwne;
 

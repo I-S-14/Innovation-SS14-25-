@@ -8,6 +8,7 @@ using Content.Shared.Inventory;
 using Content.Shared.Item.ItemToggle;
 using Content.Shared.Item.ItemToggle.Components;
 using Robust.Shared.Containers;
+using Content.Shared.Item;
 
 namespace Content.Shared.Clothing;
 

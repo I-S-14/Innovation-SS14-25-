@@ -12,8 +12,6 @@ namespace Content.Client.CrewManifest.UI;
 
 public sealed partial class CrewManifestListing : BoxContainer
 {
-    [Dependency] private readonly IEntitySystemManager _entitySystem = default!;
-    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
     [Dependency] private readonly IClipboardManager _clipboard = default!;
     [Dependency] private IEntitySystemManager _entitySystem = default!;
     [Dependency] private IPrototypeManager _prototypeManager = default!;

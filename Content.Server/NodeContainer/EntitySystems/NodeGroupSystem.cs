@@ -13,6 +13,7 @@ using Robust.Shared.Enums;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Player;
 using Robust.Shared.Utility;
+using Content.Server.NodeContainer.Nodes;
 
 namespace Content.Server.NodeContainer.EntitySystems
 {

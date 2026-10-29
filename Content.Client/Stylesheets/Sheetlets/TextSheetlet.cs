@@ -1,7 +1,6 @@
 using Content.Client.Resources;
 using Content.Client.Stylesheets.Fonts;
 using Robust.Client.UserInterface;
-using static Content.Client.Stylesheets.StylesheetHelpers;
 
 namespace Content.Client.Stylesheets.Sheetlets;
 

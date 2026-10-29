@@ -11,6 +11,7 @@ using Robust.Client.Graphics;
 using Robust.Client.UserInterface.XAML;
 using Robust.Client.UserInterface.Controls;
 using Robust.Shared.Timing;
+using Content.Client.GameTicking.Managers;
 
 namespace Content.Client.PDA
 {

@@ -1,3 +1,4 @@
+using Content.Shared.DeviceNetwork.Components;
 namespace Content.Shared.DeviceNetwork.Events;
 
 /// <summary>

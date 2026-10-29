@@ -2,6 +2,7 @@
 
 using Content.Shared.Inventory;
 using Robust.Shared.GameStates;
+using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Actions;
 

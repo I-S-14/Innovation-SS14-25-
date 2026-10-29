@@ -5,6 +5,7 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
 using Content.Client.UserInterface.ControlExtensions;
 using Content.Client.UserInterface.RichText;
+using Content.Client.Guidebook.RichText;
 
 namespace Content.Client.Guidebook.Controls;
 

@@ -7,6 +7,9 @@ using Robust.Shared.Prototypes;
 using Content.Client.Access.UI;
 using Content.Shared.Access;
 using Content.Shared.Doors.Electronics;
+using Robust.Client.UserInterface.Controls;
+using Robust.Client.UserInterface.CustomControls;
+using Content.Client.Doors.Electronics;
 using FancyWindow = Content.Client.UserInterface.Controls.FancyWindow;
 
 namespace Content.Client.Doors.Electronics;

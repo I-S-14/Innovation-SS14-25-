@@ -21,6 +21,10 @@ using Robust.Shared.Random;
 using System.Numerics;
 using Content.Shared.Damage.Components;
 using Content.Shared.Shuttles.Components;
+using Content.Shared.Clothing;
+using Content.Shared.Item.ItemToggle.Components;
+using Content.Shared.Projectiles;
+using Content.Shared.Slippery;
 
 namespace Content.Server.Shuttles.Systems;
 

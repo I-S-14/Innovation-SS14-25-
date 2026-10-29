@@ -25,6 +25,10 @@ using Content.Shared.Station.Components;
 using Timer = Robust.Shared.Timing.Timer;
 using Content.Server._CorvaxGoob.Announcer;
 using Robust.Shared.Audio;
+using Content.Server.AlertLevel;
+using Content.Server.Screens.Components;
+using Content.Shared.DeviceNetwork;
+using Robust.Shared.Prototypes;
 
 namespace Content.Server.RoundEnd
 {
@@ -34,17 +38,7 @@ namespace Content.Server.RoundEnd
     /// </summary>
     public sealed partial class RoundEndSystem : EntitySystem // Goob - partial
     {
-        [Dependency] private readonly IAdminLogManager _adminLogger = default!;
-        [Dependency] private readonly IConfigurationManager _cfg = default!;
-        [Dependency] private readonly IChatManager _chatManager = default!;
-        [Dependency] private readonly IGameTiming _gameTiming = default!;
         [Dependency] private readonly IPrototypeManager _protoManager = default!;
-        [Dependency] private readonly ChatSystem _chatSystem = default!;
-        [Dependency] private readonly GameTicker _gameTicker = default!;
-        [Dependency] private readonly DeviceNetworkSystem _deviceNetworkSystem = default!;
-        [Dependency] private readonly EmergencyShuttleSystem _shuttle = default!;
-        [Dependency] private readonly SharedAudioSystem _audio = default!;
-        [Dependency] private readonly StationSystem _stationSystem = default!;
         [Dependency] private readonly AnnouncerSystem _announcer = default!;
         [Dependency] private IAdminLogManager _adminLogger = default!;
         [Dependency] private IConfigurationManager _cfg = default!;

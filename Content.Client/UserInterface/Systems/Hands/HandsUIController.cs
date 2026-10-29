@@ -18,6 +18,8 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 using Content.Shared._NF.Interaction.Components;
+using Content.Shared.Timing;
+using JetBrains.Annotations;
 
 namespace Content.Client.UserInterface.Systems.Hands;
 

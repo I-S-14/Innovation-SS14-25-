@@ -7,6 +7,7 @@ using Content.Shared.Weapons.Melee.Events;
 using Robust.Shared.Physics.Components;
 using System.Numerics;
 using Content.Shared.Timing.Systems;
+using Content.Shared.Timing;
 
 namespace Content.Shared.Weapons.Melee;
 

@@ -22,6 +22,7 @@ using Content.Shared.Popups;
 using Content.Shared.Strip.Components;
 using Content.Shared.Verbs;
 using Robust.Shared.Utility;
+using Content.Shared.Cuffs.Components;
 
 namespace Content.Shared.Strip;
 

@@ -5,6 +5,7 @@ using Content.Shared.Construction.Components;
 using Content.Shared.Examine;
 using Content.Shared.Lathe;
 using Content.Shared.Materials;
+using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Construction
 {

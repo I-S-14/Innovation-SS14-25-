@@ -4,6 +4,8 @@ using Content.Shared.Clothing.Components;
 using Content.Shared.Clothing.EntitySystems;
 using Robust.Client.GameObjects;
 using Robust.Shared.Prototypes;
+using System.Linq;
+using Content.Shared.Inventory;
 
 namespace Content.Client.Clothing.Systems;
 

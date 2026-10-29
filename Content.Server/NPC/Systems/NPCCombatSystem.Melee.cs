@@ -6,6 +6,7 @@ using Content.Shared.CombatMode;
 using Content.Shared.NPC;
 using Robust.Shared.Map;
 using Robust.Shared.Random;
+using Robust.Shared.Physics.Components;
 
 namespace Content.Server.NPC.Systems;
 

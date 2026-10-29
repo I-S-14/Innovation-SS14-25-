@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-using Content.Server.RoundEnd;
 using Content.Shared.NPC.Prototypes;
 using Content.Shared.RoundEnd;
 using Robust.Shared.Audio;

@@ -23,7 +23,7 @@ using Content.Shared.Weapons.Melee.Events;
 using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.Hands;
 using Content.Shared.Temperature.Components;
-using Content.Shared.FixedPoint;
+using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.Timing.Systems;
 using JetBrains.Annotations;
 using Robust.Server.Audio;
@@ -38,6 +38,7 @@ using Robust.Shared.Timing;
 using Content.Server._Goobstation.Wizard.Systems;
 using Content.Shared.Body.Systems;
 using Microsoft.Extensions.Configuration;
+using Content.Shared.Timing;
 
 namespace Content.Server.Atmos.EntitySystems
 {

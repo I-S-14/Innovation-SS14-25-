@@ -8,6 +8,7 @@ using Robust.Client.UserInterface.RichText;
 using Robust.Shared.Configuration;
 using Robust.Shared.GameStates;
 using Robust.Shared.Utility;
+using Robust.Shared.Prototypes;
 
 namespace Content.Client.MapText;
 

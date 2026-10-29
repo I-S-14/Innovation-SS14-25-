@@ -5,6 +5,7 @@ using Robust.Server.Player;
 using Robust.Shared.Configuration;
 using Robust.Shared.Map;
 using Robust.Shared.Player;
+using Robust.Server.GameObjects;
 
 namespace Content.Server.Popups;
 

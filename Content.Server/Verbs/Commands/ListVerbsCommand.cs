@@ -4,6 +4,7 @@ using Content.Server.Administration;
 using Content.Shared.Administration;
 using Content.Shared.Verbs;
 using Robust.Shared.Console;
+using Content.Server.Database;
 
 namespace Content.Server.Verbs.Commands
 {

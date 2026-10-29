@@ -3,6 +3,7 @@
 using Content.Shared.Tag;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
+using Content.Shared.StatusIcon;
 
 namespace Content.Shared.Mindshield.Components;
 

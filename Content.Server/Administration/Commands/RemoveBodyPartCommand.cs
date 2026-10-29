@@ -2,6 +2,7 @@
 
 using Content.Shared.Administration;
 using Robust.Shared.Console;
+using Content.Server.Body.Systems;
 
 namespace Content.Server.Administration.Commands
 {

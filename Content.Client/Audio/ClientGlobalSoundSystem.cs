@@ -6,6 +6,7 @@ using Content.Shared.GameTicking;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Configuration;
 using Robust.Shared.Player;
+using Robust.Shared.Audio;
 
 namespace Content.Client.Audio;
 

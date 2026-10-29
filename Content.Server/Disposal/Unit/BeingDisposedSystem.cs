@@ -2,6 +2,7 @@
 using Content.Server.Body.Systems;
 using Content.Shared.Atmos;
 using Content.Shared.Disposal.Unit;
+using Content.Server.Atmos.EntitySystems;
 
 namespace Content.Server.Disposal.Unit;
 

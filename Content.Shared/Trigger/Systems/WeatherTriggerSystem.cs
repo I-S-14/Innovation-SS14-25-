@@ -1,6 +1,7 @@
 using Content.Shared.Trigger.Components.Effects;
 using Content.Shared.Weather;
 using Robust.Shared.Timing;
+using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Trigger.Systems;
 

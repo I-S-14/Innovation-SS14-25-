@@ -24,6 +24,7 @@ using Content.Goobstation.Shared.Mind.Components;
 using Content.Goobstation.Shared.MisandryBox.Thunderdome;
 
 using Content.Shared.GameTicking;
+using Content.Shared.Ghost;
 
 namespace Content.Server.Mind;
 

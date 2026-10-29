@@ -10,6 +10,7 @@ using Content.Shared.PDA.Ringer;
 using Content.Shared.Store;
 using Robust.Shared.Random;
 using Robust.Shared.Utility;
+using Content.Shared.Store.Components;
 
 namespace Content.Server.PDA.Ringer;
 

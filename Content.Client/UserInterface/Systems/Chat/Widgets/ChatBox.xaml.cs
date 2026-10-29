@@ -29,8 +29,6 @@ public partial class ChatBox : UIWidget, IEntityLinkClickHandler
     [Dependency] private readonly IConfigurationManager _cfg = default!;
     [Dependency] private readonly ILocalizationManager _loc = default!;
     // </Trauma>
-    [Dependency] private readonly IEntityManager _entManager = default!;
-    [Dependency] private readonly ILogManager _log = default!;
     [Dependency] private IEntityManager _entManager = default!;
     [Dependency] private ILogManager _log = default!;
 

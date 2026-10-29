@@ -9,6 +9,7 @@ using Content.Shared.Damage;
 using Content.Shared.Damage.Systems; // CorvaxGoob
 // CorvaxGoob-end
 using Content.Shared.Speech.Components;
+using Content.Server.Speech.Components;
 
 namespace Content.Server.EntityEffects.Effects;
 

@@ -1,29 +1,29 @@
-using System.Linq;
-using Content.Server.Administration.Logs;
-using Content.Server.GameTicking.Events;
+using Content.Shared.Administration.Logs;
 using Content.Shared.Database;
+using Content.Shared.GameTicking.Events;
+using Content.Shared.Mind;
+using Content.Shared.Mind.Components;
+using JetBrains.Annotations;
 using Robust.Shared.Map;
+using Robust.Shared.Network;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
+using static System.Linq.Enumerable;
 
-namespace Content.Server.Codewords;
+namespace Content.Shared.Codewords;
 
 /// <summary>
-/// Gamerule that provides codewords for other gamerules that rely on them.
+/// System that generates and handles the assignment of codewords.
 /// </summary>
-public sealed class CodewordSystem : EntitySystem
+public sealed partial class CodewordSystem : EntitySystem
 {
-    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
-    [Dependency] private readonly IAdminLogManager _adminLogger = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
+    [Dependency] private ISharedAdminLogManager _adminLogger = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private SharedMindSystem _mind = default!;
 
-    public override void Initialize()
-    {
-        base.Initialize();
+    [Dependency] private EntityQuery<RoleCodewordComponent> _codewordQuery;
 
-        SubscribeLocalEvent<RoundStartingEvent>(OnRoundStart);
-    }
-
+    [SubscribeLocalEvent]
     private void OnRoundStart(RoundStartingEvent ev)
     {
         var manager = Spawn();
@@ -53,7 +53,7 @@ public sealed class CodewordSystem : EntitySystem
 
     private string[] GenerateForFaction(ProtoId<CodewordFactionPrototype> faction, ref CodewordManagerComponent manager)
     {
-        var factionProto = _prototypeManager.Index<CodewordFactionPrototype>(faction.Id);
+        var factionProto = ProtoMan.Index<CodewordFactionPrototype>(faction.Id);
 
         var codewords = GenerateCodewords(factionProto.Generator);
         var codewordsContainer = Spawn(prototype: null, MapCoordinates.Nullspace);
@@ -68,25 +68,100 @@ public sealed class CodewordSystem : EntitySystem
     /// <summary>
     /// Generates codewords as specified by the <see cref="CodewordGeneratorPrototype"/> codeword generator.
     /// </summary>
-    // goob edit
-    // instead of gathering all words into a giant list
-    // it randomly picks a dataset and then a random word from it
-    // this creates more variety in cases that one set has 1000 words and the other has 50.
     public string[] GenerateCodewords(ProtoId<CodewordGeneratorPrototype> generatorId)
     {
-        var generator = _prototypeManager.Index(generatorId);
+        var generator = ProtoMan.Index(generatorId);
 
-        var codewordPool = new Dictionary<string, List<string>>();
-        foreach (var dataset in generator.Words.Select(datasetPrototype => _prototypeManager.Index(datasetPrototype)))
-            codewordPool.Add(dataset.ID, dataset.Values.ToList());
-
-        var codewords = new List<string>();
-        for (var i = 0; i < generator.Amount; i++)
+        var codewordPool = new List<string>();
+        foreach (var dataset in generator.Words
+                     .Select(datasetPrototype => ProtoMan.Index(datasetPrototype)))
         {
-            var set = _random.Pick(codewordPool.Keys);
-            codewords.Add(Loc.GetString(_random.PickAndTake(codewordPool[set])));
+            codewordPool.AddRange(dataset.Values);
         }
-        return codewords.ToArray();
+
+        var finalCodewordCount = Math.Min(generator.Amount, codewordPool.Count);
+        var codewords = new string[finalCodewordCount];
+        for (var i = 0; i < finalCodewordCount; i++)
+        {
+            codewords[i] = Loc.GetString(_random.PickAndTake(codewordPool));
+        }
+        return codewords;
     }
-    // goob edit end
+
+    /// <summary>
+    /// Returns all codewords a specific player knows
+    /// </summary>
+    /// <param name="player">Player account</param>
+    /// <returns>All codewords known by this entity.</returns>
+    [PublicAPI]
+    public List<CodewordsData> GetPlayerCodewords(NetUserId? player)
+    {
+        return player != null && _mind.TryGetMind(player.Value, out var mind)
+            ? GetMindCodewords(mind.Value.AsNullable())
+            : new List<CodewordsData>();
+    }
+
+    /// <summary>
+    /// Returns all codewords stored in a mind.
+    /// </summary>
+    /// <param name="entity">Entity</param>
+    /// <returns>All codewords known by this entity.</returns>
+    [PublicAPI]
+    public List<CodewordsData> GetEntityCodewords(Entity<MindContainerComponent?> entity)
+    {
+        return _mind.TryGetMind(entity, out var uid, out var mind)
+            ? GetMindCodewords((uid, mind))
+            : new List<CodewordsData>();
+    }
+
+    /// <summary>
+    /// Returns all codewords stored in a mind.
+    /// </summary>
+    /// <param name="mind">Mind entity</param>
+    /// <returns>All codewords known by this mind.</returns>
+    [PublicAPI]
+    public List<CodewordsData> GetMindCodewords(Entity<MindComponent?> mind)
+    {
+        var data = new List<CodewordsData>();
+        if (!Resolve(mind, ref mind.Comp))
+            return data;
+
+        foreach (var role in mind.Comp.MindRoleContainer.ContainedEntities)
+        {
+            if (GetRoleCodewords(role) is not { } codewords)
+                continue;
+
+            data.Add(codewords);
+        }
+
+        return data;
+    }
+
+    /// <summary>
+    /// Returns codewords associated with this role
+    /// </summary>
+    /// <param name="role">Role entity</param>
+    /// <returns>Codewords for this role, if they exist.</returns>
+    [PublicAPI]
+    public CodewordsData? GetRoleCodewords(Entity<RoleCodewordComponent?> role)
+    {
+        if (!_codewordQuery.Resolve(role, ref role.Comp, false))
+            return null;
+
+        return role.Comp.RoleCodewords;
+    }
+
+    /// <summary>
+    /// Sets the codewords for a given mindrole entity.
+    /// </summary>
+    /// <param name="ent">Mindrole entity.</param>
+    /// <param name="codewords">Codewords</param>
+    /// <param name="color">Color the codewords show as</param>
+    [PublicAPI]
+    public void SetRoleCodewords(Entity<RoleCodewordComponent> ent, List<string> codewords, Color color)
+    {
+        var data = new CodewordsData(color, codewords);
+        ent.Comp.RoleCodewords = data;
+        Dirty(ent);
+    }
 }

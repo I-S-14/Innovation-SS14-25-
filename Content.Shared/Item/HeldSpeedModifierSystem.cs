@@ -12,7 +12,6 @@ namespace Content.Shared.Item;
 /// </summary>
 public sealed partial class HeldSpeedModifierSystem : EntitySystem
 {
-    [Dependency] private readonly MovementSpeedModifierSystem _movementSpeedModifier = default!;
     [Dependency] private readonly SharedContainerSystem _container = default!; // Goobstation
     [Dependency] private MovementSpeedModifierSystem _movementSpeedModifier = default!;
 

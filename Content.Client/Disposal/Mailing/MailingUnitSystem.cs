@@ -1,5 +1,6 @@
 using Content.Shared.Disposal.Components;
 using Content.Shared.Disposal.Mailing;
+using Content.Shared.Disposal;
 
 namespace Content.Client.Disposal.Mailing;
 

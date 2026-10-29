@@ -4,7 +4,6 @@ using Content.Client.Eui;
 using Content.Shared.Administration.Notes;
 using Content.Shared.Eui;
 using JetBrains.Annotations;
-using static Content.Shared.Administration.Notes.AdminNoteEuiMsg;
 
 namespace Content.Client.Administration.UI.Notes;
 

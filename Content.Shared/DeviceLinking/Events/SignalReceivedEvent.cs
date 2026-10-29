@@ -2,6 +2,7 @@
 
 using Content.Shared.DeviceLinking.Payloads;
 using Robust.Shared.Prototypes;
+using Content.Shared.DeviceNetwork;
 
 namespace Content.Shared.DeviceLinking.Events;
 

@@ -8,6 +8,7 @@ using Content.Shared.GameTicking.Rules.Components;
 using Content.Shared.Station.Components;
 using Content.Shared.Storage;
 using Robust.Shared.Random;
+using Content.Server.GameTicking.Rules.Components;
 
 namespace Content.Server.GameTicking.Rules;
 

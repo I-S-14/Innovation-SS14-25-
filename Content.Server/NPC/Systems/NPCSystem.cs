@@ -13,6 +13,7 @@ using Prometheus;
 using Robust.Server.GameObjects;
 using Robust.Shared.Configuration;
 using Robust.Shared.Player;
+using Content.Shared.Mind;
 
 namespace Content.Server.NPC.Systems
 {

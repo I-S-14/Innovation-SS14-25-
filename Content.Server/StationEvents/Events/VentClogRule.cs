@@ -11,6 +11,7 @@ using Content.Shared.GameTicking.Components;
 using JetBrains.Annotations;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
+using Content.Shared.Station.Components;
 
 namespace Content.Server.StationEvents.Events;
 

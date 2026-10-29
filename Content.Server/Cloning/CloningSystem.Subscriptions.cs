@@ -13,7 +13,7 @@ using Content.Shared.Forensics.Components;
 using Content.Shared.Clothing.EntitySystems;
 using Content.Shared.Damage.Components;
 using Content.Shared.Damage.Systems;
-using Content.Shared.FixedPoint;
+using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.Forensics.Systems;
 using Content.Shared.Inventory;
 using Content.Shared.Labels.Components;
@@ -47,10 +47,6 @@ namespace Content.Server.Cloning;
 /// </remarks>
 public sealed partial class CloningSystem
 {
-    [Dependency] private readonly SharedStackSystem _stack = default!;
-    [Dependency] private readonly LabelSystem _label = default!;
-    [Dependency] private readonly ForensicsSystem _forensics = default!;
-    [Dependency] private readonly PaperSystem _paper = default!;
     [Dependency] private SharedStackSystem _stack = default!;
     [Dependency] private LabelSystem _label = default!;
     [Dependency] private PaperSystem _paper = default!;

@@ -14,6 +14,8 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
 using System.Numerics;
 using static Robust.Client.Placement.PlacementManager;
+using Content.Shared.Atmos.EntitySystems;
+using Robust.Client.Utility;
 
 namespace Content.Client.Atmos;
 
@@ -25,9 +27,6 @@ namespace Content.Client.Atmos;
 /// </remarks>
 public sealed partial class AlignAtmosPipeLayers : SnapgridCenter
 {
-    [Dependency] private readonly IEntityManager _entityManager = default!;
-    [Dependency] private readonly IPrototypeManager _protoManager = default!;
-    [Dependency] private readonly IEyeManager _eyeManager = default!;
     [Dependency] private IEntityManager _entityManager = default!;
     [Dependency] private IPrototypeManager _protoManager = default!;
     [Dependency] private IEyeManager _eyeManager = default!;

@@ -3,6 +3,7 @@
 using System.Runtime.InteropServices;
 using Robust.Shared.Network;
 using Robust.Shared.Serialization;
+using System.Linq;
 
 namespace Content.Shared.Chat.V2.Repository;
 

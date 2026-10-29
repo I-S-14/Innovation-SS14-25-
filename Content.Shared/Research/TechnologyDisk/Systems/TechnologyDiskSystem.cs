@@ -14,6 +14,7 @@ using Content.Shared.Research.TechnologyDisk.Components;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Serialization;
+using Robust.Shared.Network;
 
 namespace Content.Shared.Research.TechnologyDisk.Systems;
 

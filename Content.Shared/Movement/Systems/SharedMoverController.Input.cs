@@ -18,6 +18,7 @@ using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 using Robust.Shared.Maths; // Shitmed Change
 using Content.Goobstation.Common.Movement; // Goob edit
+using Robust.Shared.Map.Components;
 
 namespace Content.Shared.Movement.Systems
 {

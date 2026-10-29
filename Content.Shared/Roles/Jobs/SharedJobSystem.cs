@@ -7,6 +7,8 @@ using Content.Shared.Roles.Components;
 using Content.Shared.StatusIcon;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
+using Content.Shared.Players;
+using Robust.Shared.Player;
 
 namespace Content.Shared.Roles.Jobs;
 

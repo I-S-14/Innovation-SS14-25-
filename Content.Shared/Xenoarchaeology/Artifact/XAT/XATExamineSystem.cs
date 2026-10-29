@@ -2,6 +2,7 @@ using Content.Shared.Examine;
 using Content.Shared.Ghost.Components;
 using Content.Shared.Xenoarchaeology.Artifact.Components;
 using Content.Shared.Xenoarchaeology.Artifact.XAT.Components;
+using Content.Shared.Ghost;
 
 namespace Content.Shared.Xenoarchaeology.Artifact.XAT;
 

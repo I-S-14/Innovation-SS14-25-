@@ -23,13 +23,6 @@ namespace Content.Server.NukeOps;
 /// </summary>
 public sealed partial class WarDeclaratorSystem : EntitySystem
 {
-    [Dependency] private readonly IAdminLogManager _adminLogger = default!;
-    [Dependency] private readonly IConfigurationManager _cfg = default!;
-    [Dependency] private readonly IGameTiming _gameTiming = default!;
-    [Dependency] private readonly UserInterfaceSystem _userInterfaceSystem = default!;
-    [Dependency] private readonly ChatSystem _chat = default!;
-    [Dependency] private readonly PopupSystem _popupSystem = default!;
-    [Dependency] private readonly AccessReaderSystem _accessReaderSystem = default!;
     [Dependency] private readonly SharedSpecialAnimationSystem _specialAnimation = default!; // Goob edit
     [Dependency] private IAdminLogManager _adminLogger = default!;
     [Dependency] private IConfigurationManager _cfg = default!;

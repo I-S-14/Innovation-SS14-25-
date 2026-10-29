@@ -1,5 +1,5 @@
-﻿using Content.Shared.Examine;
-using Content.Shared.FixedPoint;
+using Content.Shared.Examine;
+using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.Interaction;
 using Content.Shared.Store.Components;
 using Content.Shared.Whitelist;

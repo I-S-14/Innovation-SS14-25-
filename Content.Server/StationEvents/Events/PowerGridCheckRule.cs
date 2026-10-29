@@ -9,6 +9,7 @@ using Content.Shared.Station.Components;
 using JetBrains.Annotations;
 using Robust.Shared.Player;
 using Robust.Shared.Utility;
+using Robust.Shared.Audio;
 using Timer = Robust.Shared.Timing.Timer;
 
 namespace Content.Server.StationEvents.Events;

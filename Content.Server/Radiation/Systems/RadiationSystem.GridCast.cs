@@ -9,6 +9,7 @@ using Content.Shared.Singularity.Components; // Goobstation - Radiation Overhaul
 using Robust.Shared.Collections;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Timing;
+using Robust.Shared.Utility;
 
 namespace Content.Server.Radiation.Systems;
 

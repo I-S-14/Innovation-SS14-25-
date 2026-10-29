@@ -3,6 +3,8 @@ using Content.Server.Traitor.Components;
 using Content.Shared.Antag;
 using Content.Shared.Mind.Components;
 using Robust.Shared.Player;
+using Content.Server.Antag;
+using Robust.Shared.Prototypes;
 
 namespace Content.Server.Traitor.Systems;
 

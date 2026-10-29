@@ -13,10 +13,6 @@ namespace Content.Client.Buckle;
 
 internal sealed partial class BuckleSystem : SharedBuckleSystem
 {
-    [Dependency] private readonly RotationVisualizerSystem _rotationVisualizerSystem = default!;
-    [Dependency] private readonly IEyeManager _eye = default!;
-    [Dependency] private readonly TransformSystem _xformSystem = default!;
-    [Dependency] private readonly SpriteSystem _sprite = default!;
     [Dependency] private RotationVisualizerSystem _rotationVisualizerSystem = default!;
     [Dependency] private IEyeManager _eye = default!;
     [Dependency] private SharedTransformSystem _xformSystem = default!;

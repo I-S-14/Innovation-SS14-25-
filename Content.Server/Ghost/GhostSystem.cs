@@ -21,7 +21,6 @@ using Content.Shared.Follower;
 using Content.Shared.Follower.Components;
 using Content.Shared.GameTicking;
 using Content.Shared.Ghost.Components;
-using Content.Shared.Ghost.Systems;
 using Content.Shared.GhostTypes;
 using Content.Shared.Mind;
 using Content.Shared.Mind.Components;
@@ -54,6 +53,9 @@ using Content.Shared._Shitmed.Targeting;
 using Content.Shared._EinsteinEngines.Silicon.Components;
 using Content.Shared.Warps;
 using Robust.Shared.Utility;
+using Content.Shared.Examine;
+using Content.Shared.Ghost;
+using Robust.Shared.Timing;
 
 namespace Content.Server.Ghost
 {

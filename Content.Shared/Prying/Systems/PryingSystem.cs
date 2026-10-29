@@ -22,10 +22,6 @@ namespace Content.Shared.Prying.Systems;
 /// </summary>
 public sealed partial class PryingSystem : EntitySystem
 {
-    [Dependency] private readonly ISharedAdminLogManager _adminLog = default!;
-    [Dependency] private readonly SharedDoAfterSystem _doAfterSystem = default!;
-    [Dependency] private readonly SharedAudioSystem _audioSystem = default!;
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly UseDelaySystem _delay = default!; // Goobstation
     [Dependency] private ISharedAdminLogManager _adminLog = default!;
     [Dependency] private SharedDoAfterSystem _doAfterSystem = default!;

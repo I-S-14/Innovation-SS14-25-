@@ -7,6 +7,7 @@ using Content.Shared.Atmos.EntitySystems;
 using Content.Shared.Atmos.Piping.Components;
 using JetBrains.Annotations;
 using Robust.Server.GameObjects;
+using Content.Server.Atmos.Piping.Components;
 
 namespace Content.Server.Atmos.EntitySystems;
 

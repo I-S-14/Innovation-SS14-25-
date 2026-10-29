@@ -17,6 +17,13 @@ using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
+using Content.Shared.Access.Components;
+using Content.Shared.Access.Systems;
+using Content.Shared.Advertise.Components;
+using Content.Shared.Advertise.Systems;
+using Content.Shared.Emp;
+using Content.Shared.Interaction;
+using Robust.Shared.Audio;
 
 namespace Content.Shared.VendingMachines;
 

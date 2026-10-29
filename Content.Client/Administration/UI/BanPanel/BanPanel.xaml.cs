@@ -21,6 +21,7 @@ using Robust.Shared.Configuration;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
+using Content.Client.Administration.UI.CustomControls;
 
 namespace Content.Client.Administration.UI.BanPanel;
 

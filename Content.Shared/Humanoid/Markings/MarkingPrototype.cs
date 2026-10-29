@@ -2,6 +2,8 @@
 
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
+using System.Linq;
+using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.Array;
 
 namespace Content.Shared.Humanoid.Markings
 {

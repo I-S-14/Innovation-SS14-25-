@@ -7,25 +7,15 @@ using Robust.Shared.GameStates;
 
 namespace Content.Shared.DeviceNetwork.Components;
 
-[RegisterComponent, NetworkedComponent, AutoGenerateComponentState(fieldDeltas: true)]
-[Access(typeof(DeviceNetworkSystem), typeof(DeviceNet))]
+[RegisterComponent]
+//Goobstation - sync device lists / modules had to nuke explicit access
 public sealed partial class DeviceNetworkComponent : Component
 {
-    [RegisterComponent]
-    //Goobstation - sync device lists / modules had to nuke explicit access
-    public sealed partial class DeviceNetworkComponent : Component
-    {
-        public enum DeviceNetIdDefaults
-        {
-            Private,
-            Wired,
-            Wireless,
-            Apc,
-            AtmosDevices,
-            Reserved = 100,
-            // Ids outside this enum may exist
-            // This exists to let yml use nice names instead of numbers
-        }
+    /// <summary>
+    /// Default device network ID to connect to.
+    /// </summary>
+    [DataField("deviceNetId")]
+    public DeviceNetIdDefaults NetIdEnum { get; set; }
 
     /// <summary>
     /// The numeric identifier of the device network this device uses.
@@ -105,24 +95,16 @@ public sealed partial class DeviceNetworkComponent : Component
     [DataField, AutoNetworkedField]
     public bool SavableAddress = true;
 
-        /// <summary>
-        ///     Whether this device's address can be saved to device-lists
-        /// </summary>
-        [ViewVariables(VVAccess.ReadWrite)]
-        [DataField("savableAddress")]
-        public bool SavableAddress = true;
+    /// <summary>
+    ///     A list of device-lists that this device is on.
+    /// </summary>
+    [DataField]
+    // had to nuke explicit access for goob modules
+    public HashSet<EntityUid> DeviceLists = new();
 
-        /// <summary>
-        ///     A list of device-lists that this device is on.
-        /// </summary>
-        [DataField]
-        // had to nuke explicit access for goob modules
-        public HashSet<EntityUid> DeviceLists = new();
-
-        /// <summary>
-        ///     A list of configurators that this device is on.
-        /// </summary>
-        [DataField]
-        public HashSet<EntityUid> Configurators = new();
-    }
+    /// <summary>
+    ///     A list of configurators that this device is on.
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public bool CustomAddress;
 }

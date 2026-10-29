@@ -10,6 +10,8 @@ using Content.Shared.Interaction;
 using Content.Shared.Random;
 using Content.Shared.Random.Helpers;
 using Robust.Shared.Random;
+using Content.Server.GameTicking;
+using Robust.Shared.Prototypes;
 
 namespace Content.Server.Communications;
 
@@ -19,8 +21,6 @@ public sealed partial class CommsHackerSystem : SharedCommsHackerSystem
     [Dependency] private GameTicker _gameTicker = default!;
     [Dependency] private IRobustRandom _random = default!;
     // TODO: remove when generic check event is used
-    [Dependency] private readonly NinjaGlovesSystem _gloves = default!;
-    [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
     [Dependency] private readonly PowerReceiverSystem _powerReceiverSystem = default!; // Goobstation check power
     [Dependency] private NinjaGlovesSystem _gloves = default!;
     [Dependency] private SharedDoAfterSystem _doAfter = default!;

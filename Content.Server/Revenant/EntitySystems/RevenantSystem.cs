@@ -10,7 +10,7 @@ using Content.Shared.DoAfter;
 using Content.Shared.Examine;
 using Content.Shared.Eye;
 using Content.Goobstation.Maths.FixedPoint;
-using Content.Shared.FixedPoint;
+using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.GameTicking;
 using Content.Shared.Interaction;
 using Content.Shared.Maps;
@@ -25,6 +25,7 @@ using Content.Shared.Stunnable;
 using Content.Shared.Tag;
 using Robust.Server.GameObjects;
 using Robust.Shared.Random;
+using Content.Server.Actions;
 
 namespace Content.Server.Revenant.EntitySystems;
 

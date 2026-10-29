@@ -6,6 +6,7 @@ using Content.Server.Database;
 using Content.Shared.Administration.Logs;
 using Content.Shared.GameTicking;
 using Robust.Shared.Player;
+using Content.Server.GameTicking;
 
 namespace Content.Server.Administration.Logs;
 

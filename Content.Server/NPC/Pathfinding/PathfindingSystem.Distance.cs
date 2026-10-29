@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Numerics;
+using Content.Shared.NPC;
 
 namespace Content.Server.NPC.Pathfinding;
 

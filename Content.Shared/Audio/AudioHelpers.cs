@@ -2,6 +2,7 @@
 
 using Robust.Shared.Audio;
 using Robust.Shared.Random;
+using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Audio
 {

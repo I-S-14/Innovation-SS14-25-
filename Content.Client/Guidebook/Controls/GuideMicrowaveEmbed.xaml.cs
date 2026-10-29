@@ -13,6 +13,7 @@ using Robust.Client.UserInterface.XAML;
 using Robust.Client.UserInterface;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
+using Content.Shared.Chemistry.Reagent;
 
 namespace Content.Client.Guidebook.Controls;
 

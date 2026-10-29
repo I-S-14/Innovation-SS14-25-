@@ -6,6 +6,7 @@ using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.Maps;
 using JetBrains.Annotations;
 using Robust.Shared.Map;
+using Content.Server.Maps;
 
 namespace Content.Server.Chemistry.TileReactions;
 

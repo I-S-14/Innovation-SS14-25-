@@ -6,6 +6,9 @@ using Robust.Shared.Configuration;
 using Robust.Shared.Network;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
+using System;
+using Robust.Shared.IoC;
+using Robust.Shared.Log;
 
 namespace Content.Client.Launcher
 {

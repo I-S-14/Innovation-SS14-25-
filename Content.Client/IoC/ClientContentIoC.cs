@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 /* CorvaxGoob-Coins-start
-using Content.Client._durkcode.ServerCurrency;
 using Content.Client._RMC14.LinkAccount;
 CorvaxGoob-Coins-end */
 using Content.Client.Administration.Managers;

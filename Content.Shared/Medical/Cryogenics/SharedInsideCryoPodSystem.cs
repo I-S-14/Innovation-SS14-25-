@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 
 using Content.Shared.Standing;
-using Content.Shared.Temperature;
 using Robust.Shared.Containers;
+using Content.Shared.Temperature;
 
 namespace Content.Shared.Medical.Cryogenics;
 
@@ -10,25 +10,23 @@ public abstract partial class SharedCryoPodSystem
 {
     public virtual void InitializeInsideCryoPod()
     {
-        SubscribeLocalEvent<InsideCryoPodComponent, EntGotRemovedFromContainerMessage>(OnEntGotRemovedFromContainer);
         SubscribeLocalEvent<InsideCryoPodComponent, DownAttemptEvent>(HandleDown);
-        SubscribeLocalEvent<InsideCryoPodComponent, BeforeHeatExchangeEvent>(OnBeforeHeatExchange);
-    }
-
-    private void OnEntGotRemovedFromContainer(Entity<InsideCryoPodComponent> entity, ref EntGotRemovedFromContainerMessage args)
-    {
-        RemCompDeferred<InsideCryoPodComponent>(entity);
+        SubscribeLocalEvent<InsideCryoPodComponent, EntGotRemovedFromContainerMessage>(OnEntGotRemovedFromContainer);
     }
 
     // Must stand in the cryo pod
-    private void HandleDown(Entity<InsideCryoPodComponent> entity, ref DownAttemptEvent args)
+    private void HandleDown(EntityUid uid, InsideCryoPodComponent component, DownAttemptEvent args)
     {
-        if (entity.Comp.LifeStage < ComponentLifeStage.Stopping)
-            args.Cancel();
+        args.Cancel();
     }
 
-    private void OnBeforeHeatExchange(Entity<InsideCryoPodComponent> entity, ref BeforeHeatExchangeEvent args)
+    private void OnEntGotRemovedFromContainer(EntityUid uid, InsideCryoPodComponent component, EntGotRemovedFromContainerMessage args)
     {
-        args.HeatTransferModifier *= entity.Comp.ConductanceMod;
+        if (Terminating(uid))
+        {
+            return;
+        }
+
+        RemComp<InsideCryoPodComponent>(uid);
     }
 }

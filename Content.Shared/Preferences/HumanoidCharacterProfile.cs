@@ -49,14 +49,11 @@
 // SPDX-FileCopyrightText: 2025 pheenty <fedorlukin2006@gmail.com>
 //
 
-using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Content.Shared.CCVar;
 using Content.Shared._CorvaxGoob.TTS;
 using Content.Shared.Dataset;
-using Content.Shared.Chat.Prototypes;
-using Content.Shared.EntityEffects.Effects;
 using Content.Shared.GameTicking;
 using Content.Shared.Humanoid;
 using Content.Shared.Humanoid.Prototypes;
@@ -64,7 +61,6 @@ using Content.Shared.Preferences.Loadouts;
 using Content.Shared.Random.Helpers;
 using Content.Shared.Roles;
 using Content.Goobstation.Common.Barks; // Goob Station - Barks
-using Content.Shared.Speech.Components;
 using Content.Shared.Traits;
 using Robust.Shared.Collections;
 using Robust.Shared.Configuration;
@@ -72,10 +68,14 @@ using Robust.Shared.Enums;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
-using Robust.Shared.Serialization.Manager;
-using Robust.Shared.Serialization.Markdown;
 using Robust.Shared.Serialization;
 using Robust.Shared.Utility;
+using System.IO;
+using Content.Shared.Chat.Prototypes;
+using Content.Shared.EntityEffects.Effects;
+using Content.Shared.Speech.Components;
+using Robust.Shared.Serialization.Manager;
+using Robust.Shared.Serialization.Markdown;
 using Robust.Shared;
 using YamlDotNet.RepresentationModel;
 
@@ -86,7 +86,7 @@ namespace Content.Shared.Preferences
     /// </summary>
     [DataDefinition]
     [Serializable, NetSerializable]
-    public sealed partial class HumanoidCharacterProfile
+    public sealed partial class HumanoidCharacterProfile : ICharacterProfile
     {
         private static readonly Regex RestrictedNameRegex = new("[^А-Яа-яёЁ0-9' -]"); // CorvaxGoob-Localization
         private static readonly Regex ICNameCaseRegex = new(@"^(?<word>\w)|\b(?<word>\w)(?=\w*$)");
@@ -98,7 +98,7 @@ namespace Content.Shared.Preferences
         private Dictionary<ProtoId<JobPrototype>, JobPriority> _jobPriorities = new()
         {
             {
-                GameTicker.FallbackOverflowJob, JobPriority.High
+                SharedGameTicker.FallbackOverflowJob, JobPriority.High
             }
         };
 
@@ -135,7 +135,7 @@ namespace Content.Shared.Preferences
         /// Associated <see cref="SpeciesPrototype"/> for this profile.
         /// </summary>
         [DataField]
-        public ProtoId<SpeciesPrototype> Species { get; set; } = DefaultSpecies;
+        public ProtoId<SpeciesPrototype> Species { get; set; } = SharedHumanoidAppearanceSystem.DefaultSpecies;
 
         // CorvaxGoob-TTS-Start
         [DataField]
@@ -153,10 +153,12 @@ namespace Content.Shared.Preferences
         public Sex Sex { get; private set; } = Sex.Male;
 
         [DataField]
-        public ProtoId<EmoteSoundsPrototype> Voice { get; set; } = DefaultVoice;
-
-        [DataField]
         public Gender Gender { get; private set; } = Gender.Male;
+
+        /// <summary>
+        /// <see cref="Appearance"/>
+        /// </summary>
+        public ICharacterAppearance CharacterAppearance => Appearance;
 
         /// <summary>
         /// Stores markings, eye colors, etc for the profile.
@@ -198,7 +200,6 @@ namespace Content.Shared.Preferences
             string ttsVoice, // CorvaxGoob-TTS
             int age,
             Sex sex,
-            ProtoId<EmoteSoundsPrototype> voice,
             Gender gender,
             HumanoidCharacterAppearance appearance,
             SpawnPriorityPreference spawnPriority,
@@ -215,7 +216,6 @@ namespace Content.Shared.Preferences
             TTSVoice = ttsVoice; // CorvaxGoob-TTS
             Age = age;
             Sex = sex;
-            Voice = voice;
             Gender = gender;
             Appearance = appearance;
             SpawnPriority = spawnPriority;
@@ -249,7 +249,6 @@ namespace Content.Shared.Preferences
                 other.TTSVoice, // CorvaxGoob-TTS
                 other.Age,
                 other.Sex,
-                other.Voice,
                 other.Gender,
                 other.Appearance.Clone(),
                 other.SpawnPriority,
@@ -264,7 +263,7 @@ namespace Content.Shared.Preferences
 
         /// <summary>
         ///     Get the default humanoid character profile, using internal constant values.
-        ///     Defaults to <see cref="DefaultSpecies"/> for the species.
+        ///     Defaults to <see cref="SharedHumanoidAppearanceSystem.DefaultSpecies"/> for the species.
         /// </summary>
         /// <returns></returns>
         public HumanoidCharacterProfile()
@@ -274,60 +273,38 @@ namespace Content.Shared.Preferences
         /// <summary>
         ///     Return a default character profile, based on species.
         /// </summary>
-        /// <param name="species">The species to use in this default profile. The default species is <see cref="DefaultSpecies"/>.</param>
-        /// <param name="sex">Self explanatory.</param>
+        /// <param name="species">The species to use in this default profile. The default species is <see cref="SharedHumanoidAppearanceSystem.DefaultSpecies"/>.</param>
         /// <returns>Humanoid character profile with default settings.</returns>
-        public static HumanoidCharacterProfile DefaultWithSpecies(ProtoId<SpeciesPrototype>? species = null, Sex? sex = null)
+        public static HumanoidCharacterProfile DefaultWithSpecies(string? species = null)
         {
-            species ??= HumanoidCharacterProfile.DefaultSpecies;
-            sex ??= Sex.Male;
+            species ??= SharedHumanoidAppearanceSystem.DefaultSpecies;
 
             return new()
             {
-                Species = species.Value,
-                Sex = sex.Value,
-                Appearance = HumanoidCharacterAppearance.DefaultWithSpecies(species.Value, sex.Value),
+                Species = species,
+                Appearance = HumanoidCharacterAppearance.DefaultWithSpecies(species),
             };
         }
 
-        /// <summary>
-        /// An enum defining randomizable values in character editor.
-        /// </summary>
-        [Flags]
-        public enum RandomizeCfg
+        // TODO: This should eventually not be a visual change only.
+        public static HumanoidCharacterProfile Random(HashSet<string>? ignoredSpecies = null)
         {
-            // profile
-            None = 0,
-            Name = 1 << 0,
-            Species = 1 << 1,
-            Age = 1 << 2,
-            Sex = 1 << 3,
-            Gender = 1 << 4,
-            // appearance
-            Eyes = 1 << 5,
-            Skin = 1 << 6,
-            Markings = 1 << 7,
+            var prototypeManager = IoCManager.Resolve<IPrototypeManager>();
+            var random = IoCManager.Resolve<IRobustRandom>();
+
+            var species = random.Pick(prototypeManager
+                .EnumeratePrototypes<SpeciesPrototype>()
+                .Where(x => ignoredSpecies == null ? x.RoundStart : x.RoundStart && !ignoredSpecies.Contains(x.ID))
+                .ToArray()
+            ).ID;
+
+            return RandomWithSpecies(species);
         }
 
-        /// <summary>
-        /// A randomize config that covers all possible values (including appearance).
-        /// </summary>
-        public const RandomizeCfg RandomizeConfigAll =
-            RandomizeCfg.Name
-            | RandomizeCfg.Species
-            | RandomizeCfg.Age
-            | RandomizeCfg.Sex
-            | RandomizeCfg.Gender
-            | RandomizeCfg.Eyes
-            | RandomizeCfg.Skin
-            | RandomizeCfg.Markings;
-
-        /// <summary>
-        /// Picks a random species from roundstart species.
-        /// <param name="ignoredSpecies">Species to exclude from randomizer.</param>
-        /// </summary>
-        public static SpeciesPrototype RandomSpecies(HashSet<string>? ignoredSpecies = null)
+        public static HumanoidCharacterProfile RandomWithSpecies(string? species = null)
         {
+            species ??= SharedHumanoidAppearanceSystem.DefaultSpecies;
+
             var prototypeManager = IoCManager.Resolve<IPrototypeManager>();
             var random = IoCManager.Resolve<IRobustRandom>();
 
@@ -369,18 +346,11 @@ namespace Content.Shared.Preferences
                     gender = Gender.Female;
                     break;
             }
-            return gender;
-        }
 
-        /// <summary>
-        /// Generates a randomized character profile.
-        /// </summary>
-        /// <returns>A new character profile with values randomized</returns>
-        public static HumanoidCharacterProfile Random(HashSet<string>? ignoredSpecies = null)
-        {
-            var config = RandomizeConfigAll;
-            var baseProfile = new HumanoidCharacterProfile();
-            if (ignoredSpecies != null)
+            var name = GetName(species, gender);
+
+
+            return new HumanoidCharacterProfile()
             {
                 Name = name,
                 Sex = sex,
@@ -411,11 +381,6 @@ namespace Content.Shared.Preferences
         public HumanoidCharacterProfile WithSex(Sex sex)
         {
             return new(this) { Sex = sex };
-        }
-
-        public HumanoidCharacterProfile WithVoice(ProtoId<EmoteSoundsPrototype> voice)
-        {
-            return new(this) { Voice = voice };
         }
 
         public HumanoidCharacterProfile WithGender(Gender gender)
@@ -474,31 +439,6 @@ namespace Content.Shared.Preferences
             return new(this)
             {
                 _jobPriorities = dictionary
-            };
-        }
-
-        /// <summary>
-        /// Return a HumanoidCharacterProfile with only the job priorities listed in the NewCharacterJobs cvar
-        /// </summary>
-        public HumanoidCharacterProfile WithJobFromCvar(IConfigurationManager cfg)
-        {
-            // This path should run only rarely, so the cvar does not need to be locally stored
-            var jobs = new HashSet<string>(cfg.GetCVar(CCVars.NewCharacterJobs).Split(","));
-            var priority = JobPriority.High;
-            Dictionary<ProtoId<JobPrototype>, JobPriority> priorities = new();
-
-            foreach (var job in jobs)
-            {
-                // Remove whitespaces in case the input contained any
-                priorities.Add(job.Trim(), priority);
-
-                // There can be only one High priority
-                priority = JobPriority.Medium;
-            }
-
-            return new(this)
-            {
-                _jobPriorities = priorities,
             };
         }
 
@@ -629,8 +569,9 @@ namespace Content.Shared.Preferences
                 ("age", Age)
             );
 
-        public bool MemberwiseEquals(HumanoidCharacterProfile other)
+        public bool MemberwiseEquals(ICharacterProfile maybeOther)
         {
+            if (maybeOther is not HumanoidCharacterProfile other) return false;
             if (Name != other.Name) return false;
             if (Age != other.Age) return false;
             if (Sex != other.Sex) return false;
@@ -647,7 +588,7 @@ namespace Content.Shared.Preferences
             if (!_traitPreferences.SequenceEqual(other._traitPreferences)) return false;
             if (!Loadouts.SequenceEqual(other.Loadouts)) return false;
             if (FlavorText != other.FlavorText) return false;
-            return Appearance.Equals(other.Appearance);
+            return Appearance.MemberwiseEquals(other.Appearance);
         }
 
         public void EnsureValid(ICommonSession session, IDependencyCollection collection, string[] sponsorPrototypes)
@@ -657,7 +598,7 @@ namespace Content.Shared.Preferences
 
             if (!prototypeManager.TryIndex(Species, out var speciesPrototype) || speciesPrototype.RoundStart == false)
             {
-                Species = HumanoidCharacterProfile.DefaultSpecies;
+                Species = SharedHumanoidAppearanceSystem.DefaultSpecies;
                 speciesPrototype = prototypeManager.Index(Species);
             }
 
@@ -676,10 +617,6 @@ namespace Content.Shared.Preferences
                 Sex.Unsexed => Sex.Unsexed,
                 _ => Sex.Male // Invalid enum values.
             };
-
-            var voice = Voice;
-            if (!speciesPrototype.Voices.Contains(voice))
-                voice = speciesPrototype.DefaultSoundsBySex[(int)sex];
 
             // ensure the species can be that sex and their age fits the founds
             if (!speciesPrototype.Sexes.Contains(sex))
@@ -794,7 +731,6 @@ namespace Content.Shared.Preferences
             // Height = height; // Goobstation: port EE height/width sliders // CorvaxGoob-Clearing
             // Width = width; // Goobstation: port EE height/width sliders // CorvaxGoob-Clearing
             Sex = sex;
-            Voice = voice;
             Gender = gender;
             Appearance = appearance;
             SpawnPriority = spawnPriority;
@@ -978,52 +914,6 @@ namespace Content.Shared.Preferences
         public HumanoidCharacterProfile Clone()
         {
             return new HumanoidCharacterProfile(this);
-        }
-
-        public DataNode ToDataNode(ISerializationManager? serialization = null, IConfigurationManager? configuration = null)
-        {
-            IoCManager.Resolve(ref serialization);
-            IoCManager.Resolve(ref configuration);
-
-            var export = new HumanoidProfileExportV2()
-            {
-                ForkId = configuration.GetCVar(CVars.BuildForkId),
-                Profile = this,
-            };
-
-            var dataNode = serialization.WriteValue(export, alwaysWrite: true, notNullableOverride: true);
-            return dataNode;
-        }
-
-        public static HumanoidCharacterProfile FromStream(Stream stream, ICommonSession session, ISerializationManager? serialization = null, IConfigurationManager? configuration = null)
-        {
-            IoCManager.Resolve(ref serialization);
-            IoCManager.Resolve(ref configuration);
-
-            using var reader = new StreamReader(stream, EncodingHelpers.UTF8);
-            var yamlStream = new YamlStream();
-            yamlStream.Load(reader);
-
-            var root = yamlStream.Documents[0].RootNode;
-            HumanoidCharacterProfile profile;
-            if (root["version"].Equals(new YamlScalarNode("1")))
-            {
-                var export = serialization.Read<HumanoidProfileExportV1>(root.ToDataNode(), notNullableOverride: true);
-                profile = export.ToV2().Profile;
-            }
-            else if (root["version"].Equals(new YamlScalarNode("2")))
-            {
-                var export = serialization.Read<HumanoidProfileExportV2>(root.ToDataNode(), notNullableOverride: true);
-                profile = export.Profile;
-            }
-            else
-            {
-                throw new InvalidOperationException($"Unknown version {root["version"]}");
-            }
-
-            var collection = IoCManager.Instance;
-            profile.EnsureValid(session, collection!);
-            return profile;
         }
     }
 }

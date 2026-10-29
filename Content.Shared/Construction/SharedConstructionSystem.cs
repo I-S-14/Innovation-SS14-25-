@@ -3,7 +3,7 @@
 using System.Linq;
 using Content.Shared.Construction.Components;
 using Robust.Shared.Map;
-using static Content.Shared.Interaction.SharedInteractionSystem;
+using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Construction
 {
@@ -11,7 +11,6 @@ namespace Content.Shared.Construction
     {
         [Dependency] private readonly SharedMapSystem _mapSystem = default!;
         [Dependency] protected readonly IPrototypeManager PrototypeManager = default!;
-        [Dependency] protected readonly SharedTransformSystem TransformSystem = default!;
         [Dependency] private SharedMapSystem _map = default!;
         [Dependency] protected SharedTransformSystem TransformSystem = default!;
 

@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+using Content.Server.Objectives.Systems;
 namespace Content.Server.Objectives.Components;
 
 /// <summary>

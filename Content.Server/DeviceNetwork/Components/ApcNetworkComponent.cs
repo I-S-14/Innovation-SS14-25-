@@ -2,6 +2,7 @@
 
 using Content.Server.DeviceNetwork.Systems;
 using Content.Shared.NodeContainer;
+using Content.Server.NodeContainer.Nodes;
 
 namespace Content.Server.DeviceNetwork.Components
 {

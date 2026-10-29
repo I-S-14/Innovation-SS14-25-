@@ -26,6 +26,7 @@ using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 using System.Linq;
 using Content.Shared.Power.EntitySystems;
+using Content.Shared.Verbs;
 
 namespace Content.Server.Holopad;
 

@@ -10,12 +10,23 @@ using Robust.Shared.Enums;
 using Robust.Shared.Player;
 using Robust.Shared.Utility;
 using Content.Server.Chat.Managers;
+using Content.Server.Hands.Systems;
+using Content.Server.Popups;
+using Content.Shared.CCVar;
+using Content.Shared.Hands.Components;
+using Content.Shared.Item;
+using Content.Shared.Verbs;
+using Robust.Shared.Configuration;
 
 namespace Content.Server.Tabletop;
 
 [UsedImplicitly]
 public sealed partial class TabletopSystem : SharedTabletopSystem
 {
+    [Dependency] private readonly HandsSystem _hands = default!;
+    [Dependency] private readonly PopupSystem _popupSystem = default!;
+    [Dependency] private readonly IChatManager _chat = default!;
+    [Dependency] private readonly INetConfigurationManager _cfg = default!;
     [Dependency] private EyeSystem _eye = default!;
     [Dependency] private SharedMapSystem _map = default!;
     [Dependency] private ViewSubscriberSystem _viewSubscriberSystem = default!;

@@ -1,5 +1,6 @@
 using Content.Shared.Disposal.Unit;
 using Robust.Shared.GameStates;
+using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Disposal.Tube;
 

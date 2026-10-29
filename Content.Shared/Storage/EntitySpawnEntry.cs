@@ -1,7 +1,3 @@
-// SPDX-License-Identifier: MIT
-
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
 using System.Linq;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;

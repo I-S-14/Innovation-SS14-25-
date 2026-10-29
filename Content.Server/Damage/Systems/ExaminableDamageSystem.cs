@@ -7,6 +7,7 @@ using Content.Shared.Damage.Components;
 using Content.Shared.Damage.Systems;
 using Content.Shared.Examine;
 using Content.Shared.Rounding;
+using Robust.Shared.Prototypes;
 
 namespace Content.Server.Damage.Systems;
 

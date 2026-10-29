@@ -3,6 +3,7 @@
 using System.Numerics;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
+using Content.Shared.Random.Helpers;
 
 namespace Content.Shared.Random;
 

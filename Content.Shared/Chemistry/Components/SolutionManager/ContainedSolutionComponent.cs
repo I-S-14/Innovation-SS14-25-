@@ -2,6 +2,7 @@
 
 using Content.Shared.Chemistry.EntitySystems;
 using Robust.Shared.GameStates;
+using Robust.Shared.Serialization;
 
 namespace Content.Shared.Chemistry.Components.SolutionManager;
 

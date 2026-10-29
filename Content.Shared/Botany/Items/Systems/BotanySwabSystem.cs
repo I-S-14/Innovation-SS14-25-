@@ -1,53 +1,50 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
-using Content.Server.Botany.Components;
-using Content.Server.Popups;
+using Content.Shared.Botany.Components;
+using Content.Shared.Botany.Events;
+using Content.Shared.Botany.Items.Components;
+using Content.Shared.Botany.Systems;
 using Content.Shared.DoAfter;
 using Content.Shared.Examine;
 using Content.Shared.Interaction;
+using Content.Shared.Popups;
 using Content.Shared.Swab;
 
-namespace Content.Server.Botany.Systems;
+namespace Content.Shared.Botany.Items.Systems;
 
-public sealed class BotanySwabSystem : EntitySystem
+public sealed partial class BotanySwabSystem : EntitySystem
 {
-    [Dependency] private readonly SharedDoAfterSystem _doAfterSystem = default!;
-    [Dependency] private readonly PopupSystem _popupSystem = default!;
-    [Dependency] private readonly MutationSystem _mutationSystem = default!;
+    [Dependency] private BotanySystem _botany = default!;
+    [Dependency] private PlantMutationSystem _mutation = default!;
+    [Dependency] private SharedDoAfterSystem _doAfter = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
 
-    public override void Initialize()
-    {
-        base.Initialize();
-        SubscribeLocalEvent<BotanySwabComponent, ExaminedEvent>(OnExamined);
-        SubscribeLocalEvent<BotanySwabComponent, AfterInteractEvent>(OnAfterInteract);
-        SubscribeLocalEvent<BotanySwabComponent, BotanySwabDoAfterEvent>(OnDoAfter);
-    }
+    [Dependency] private EntityQuery<PlantComponent> _plantQuery;
 
     /// <summary>
     /// This handles swab examination text
     /// so you can tell if they are used or not.
     /// </summary>
-    private void OnExamined(EntityUid uid, BotanySwabComponent swab, ExaminedEvent args)
+    [SubscribeLocalEvent]
+    private void OnExamined(Entity<BotanySwabComponent> ent, ref ExaminedEvent args)
     {
-        if (args.IsInDetailsRange)
-        {
-            if (swab.SeedData != null)
-                args.PushMarkup(Loc.GetString("swab-used"));
-            // Goobstation
-            // else
-            //    args.PushMarkup(Loc.GetString("swab-unused"));
-        }
+        if (!args.IsInDetailsRange)
+            return;
+
+        if (ent.Comp.PlantData != null)
+            args.PushMarkup(Loc.GetString("swab-used"));
+        else
+            args.PushMarkup(Loc.GetString("swab-unused"));
     }
 
     /// <summary>
     /// Handles swabbing a plant.
     /// </summary>
-    private void OnAfterInteract(EntityUid uid, BotanySwabComponent swab, AfterInteractEvent args)
+    [SubscribeLocalEvent]
+    private void OnAfterInteract(Entity<BotanySwabComponent> ent, ref AfterInteractEvent args)
     {
-        if (args.Target == null || !args.CanReach || !HasComp<PlantHolderComponent>(args.Target))
+        if (args.Target == null || !args.CanReach || !_plantQuery.HasComp(args.Target))
             return;
 
-        _doAfterSystem.TryStartDoAfter(new DoAfterArgs(EntityManager, args.User, swab.SwabDelay, new BotanySwabDoAfterEvent(), uid, target: args.Target, used: uid)
+        _doAfter.TryStartDoAfter(new DoAfterArgs(EntityManager, args.User, ent.Comp.SwabDelay, new BotanySwabDoAfterEvent(), ent.Owner, target: args.Target, used: ent.Owner)
         {
             Broadcast = true,
             BreakOnMove = true,
@@ -58,27 +55,41 @@ public sealed class BotanySwabSystem : EntitySystem
     /// <summary>
     /// Save seed data or cross-pollenate.
     /// </summary>
-    private void OnDoAfter(EntityUid uid, BotanySwabComponent swab, DoAfterEvent args)
+    [SubscribeLocalEvent]
+    private void OnDoAfter(Entity<BotanySwabComponent> ent, ref BotanySwabDoAfterEvent args)
     {
-        if (args.Cancelled || args.Handled || !TryComp<PlantHolderComponent>(args.Args.Target, out var plant))
+        if (args.Cancelled || args.Handled || !_plantQuery.HasComp(args.Args.Target))
             return;
 
-        if (swab.SeedData == null)
+        var targetPlant = args.Args.Target.Value;
+
+        if (ent.Comp.PlantData == null)
         {
-            // Pick up pollen
-            swab.SeedData = plant.Seed;
-            _popupSystem.PopupEntity(Loc.GetString("botany-swab-from"), args.Args.Target.Value, args.Args.User);
+            // Pick up pollen snapshot.
+            ent.Comp.PlantProtoId = MetaData(targetPlant).EntityPrototype?.ID;
+            ent.Comp.PlantData = _botany.ClonePlantSnapshotData(targetPlant, parent: ent.Owner);
+
+            _popup.PopupEntity(Loc.GetString("botany-swab-from"), targetPlant, args.Args.User);
         }
         else
         {
-            var old = plant.Seed;
-            if (old == null)
-                return;
-            plant.Seed = _mutationSystem.Cross(swab.SeedData, old); // Cross-pollenate
-            swab.SeedData = old; // Transfer old plant pollen to swab
-            _popupSystem.PopupEntity(Loc.GetString("botany-swab-to"), args.Args.Target.Value, args.Args.User);
+            var pollenData = ent.Comp.PlantData.Value;
+            _mutation.CrossMutations(pollenData, ent.Comp.PlantProtoId, targetPlant);
+
+            // Notify growth systems to apply their per-component cross logic.
+            var crossEv = new PlantCrossPollinateEvent(pollenData, ent.Comp.PlantProtoId);
+            RaiseLocalEvent(targetPlant, ref crossEv);
+
+            // Swap: store old target pollen on the swab, apply cross to the target using swab pollen.
+            var oldPollenData = ent.Comp.PlantData;
+            ent.Comp.PlantProtoId = MetaData(targetPlant).EntityPrototype?.ID;
+            ent.Comp.PlantData = _botany.ClonePlantSnapshotData(targetPlant, parent: ent.Owner);
+            _botany.DeletePlantSnapshot(oldPollenData);
+
+            _popup.PopupEntity(Loc.GetString("botany-swab-to"), targetPlant, args.Args.User);
         }
 
+        Dirty(ent);
         args.Handled = true;
     }
 }

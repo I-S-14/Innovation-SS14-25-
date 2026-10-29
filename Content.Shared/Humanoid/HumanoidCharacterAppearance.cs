@@ -7,6 +7,8 @@ using Content.Shared.Humanoid.Prototypes;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Serialization;
+using Content.Shared.Body;
+using Robust.Shared.Utility;
 
 namespace Content.Shared.Humanoid;
 

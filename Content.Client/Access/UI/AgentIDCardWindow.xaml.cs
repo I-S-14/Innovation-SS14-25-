@@ -13,6 +13,8 @@ using Robust.Client.UserInterface.XAML;
 using Robust.Shared.Configuration;
 using Robust.Shared.Prototypes;
 using System.Numerics;
+using Robust.Client.UserInterface.CustomControls;
+using System.Linq;
 
 namespace Content.Client.Access.UI;
 
@@ -24,8 +26,14 @@ public sealed partial class AgentIDCardWindow : FancyWindow
     [Dependency] private IPrototypeManager _prototypeManager = default!;
     private readonly SpriteSystem _spriteSystem;
 
+    private const int JobIconColumnCount = 10;
+
+    private const int MaxNumberLength = 4; // DeltaV - Same as NewChatPopup
+
     public event Action<string>? OnNameChanged;
     public event Action<string>? OnJobChanged;
+
+    public event Action<uint>? OnNumberChanged; // DeltaV - Add event for number changes
 
     public event Action<ProtoId<JobIconPrototype>>? OnJobIconChanged;
 
@@ -38,17 +46,45 @@ public sealed partial class AgentIDCardWindow : FancyWindow
         NameLineEdit.OnTextEntered += e => CommitName(e.Text);
         NameLineEdit.OnFocusExit += e => CommitName(e.Text);
 
-        private const int MaxNumberLength = 4; // DeltaV - Same as NewChatPopup
+        JobLineEdit.OnTextEntered += e => CommitJob(e.Text);
+        JobLineEdit.OnFocusExit += e => CommitJob(e.Text);
 
-        public event Action<string>? OnNameChanged;
-        public event Action<string>? OnJobChanged;
+        NameLineEdit.IsValid = s => s.Length <= _cfgManager.GetCVar(CCVars.MaxNameLength);
+        JobLineEdit.IsValid = s => s.Length <= _cfgManager.GetCVar(CCVars.MaxIdJobLength);
 
-        public event Action<uint>? OnNumberChanged; // DeltaV - Add event for number changes
+        JobLineEdit.OnTextEntered += e => OnJobChanged?.Invoke(e.Text);
+        JobLineEdit.OnFocusExit += e => OnJobChanged?.Invoke(e.Text);
 
-        public event Action<ProtoId<JobIconPrototype>>? OnJobIconChanged;
+        // DeltaV - Add handlers for number changes
+        NumberLineEdit.OnTextEntered += OnNumberEntered;
+        NumberLineEdit.OnFocusExit += OnNumberEntered;
 
-        AgentTabs.SetTabTitle(0, Loc.GetString("agent-id-ui-tab-settings"));
-        AgentTabs.SetTabTitle(1, Loc.GetString("agent-id-ui-tab-job-icons"));
+        // DeltaV - Filter to only allow digits
+        NumberLineEdit.OnTextChanged += args =>
+        {
+            if (args.Text.Length > MaxNumberLength)
+            {
+                NumberLineEdit.Text = args.Text[..MaxNumberLength];
+            }
+
+            // Filter to digits only
+            var newText = string.Concat(args.Text.Where(char.IsDigit));
+            if (newText != args.Text)
+                NumberLineEdit.Text = newText;
+        };
+    }
+
+    // DeltaV - Add number validation and event
+    private void OnNumberEntered(LineEdit.LineEditEventArgs args)
+    {
+        if (uint.TryParse(args.Text, out var number) && number > 0)
+            OnNumberChanged?.Invoke(number);
+    }
+
+    // DeltaV - Add setter for current number
+    public void SetCurrentNumber(uint? number)
+    {
+        NumberLineEdit.Text = number?.ToString("D4") ?? "";
     }
 
     /// <summary>
@@ -73,40 +109,7 @@ public sealed partial class AgentIDCardWindow : FancyWindow
             var groupButton = CreateGroupButton(groupProto, jobGroupButtonGroup);
             groupButton.OnPressed += _ => SetJobIcons(groupProto.Icons);
 
-            JobLineEdit.OnTextEntered += e => OnJobChanged?.Invoke(e.Text);
-            JobLineEdit.OnFocusExit += e => OnJobChanged?.Invoke(e.Text);
-
-            // DeltaV - Add handlers for number changes
-            NumberLineEdit.OnTextEntered += OnNumberEntered;
-            NumberLineEdit.OnFocusExit += OnNumberEntered;
-
-            // DeltaV - Filter to only allow digits
-            NumberLineEdit.OnTextChanged += args =>
-            {
-                if (args.Text.Length > MaxNumberLength)
-                {
-                    NumberLineEdit.Text = args.Text[..MaxNumberLength];
-                }
-
-                // Filter to digits only
-                var newText = string.Concat(args.Text.Where(char.IsDigit));
-                if (newText != args.Text)
-                    NumberLineEdit.Text = newText;
-            };
-        }
-
-        // DeltaV - Add number validation and event
-        private void OnNumberEntered(LineEdit.LineEditEventArgs args)
-        {
-            if (uint.TryParse(args.Text, out var number) && number > 0)
-                OnNumberChanged?.Invoke(number);
-        }
-
-        // DeltaV - Add setter for current number
-        public void SetCurrentNumber(uint? number)
-        {
-            NumberLineEdit.Text = number?.ToString("D4") ?? "";
-        }
+            JobGroupGrid.AddChild(groupButton);
 
             firstGroupButton ??= groupButton;
             firstGroupIcons ??= groupProto.Icons;

@@ -14,8 +14,6 @@ namespace Content.Server.Stunnable.Systems;
 [UsedImplicitly]
 internal sealed partial class StunOnCollideSystem : EntitySystem
 {
-    [Dependency] private readonly StunSystem _stunSystem = default!;
-    [Dependency] private readonly MovementModStatusSystem _movementMod = default!;
     [Dependency] private readonly EntityWhitelistSystem _whitelist = default!; // DeltaV
     [Dependency] private StunSystem _stunSystem = default!;
     [Dependency] private MovementModStatusSystem _movementMod = default!;

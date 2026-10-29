@@ -3,6 +3,7 @@
 using Content.Server.Defusable.Systems;
 using Content.Shared.Explosion.Components;
 using Robust.Shared.Audio;
+using Content.Server.Explosion.Components;
 
 namespace Content.Server.Defusable.Components;
 

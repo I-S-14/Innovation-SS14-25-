@@ -13,6 +13,7 @@ using Content.Shared.Weapons.Melee.Events;
 using Content.Shared.Xenoarchaeology.Artifact.Components;
 using Content.Shared.Xenoarchaeology.Artifact.XAT.Components;
 using Robust.Shared.Physics.Events;
+using Content.Shared.Damage;
 
 namespace Content.Shared.Xenoarchaeology.Artifact;
 

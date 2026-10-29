@@ -3,6 +3,8 @@ using Content.Shared.EntityTable.EntitySelectors;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Utility;
+using System.Diagnostics.CodeAnalysis;
+using JetBrains.Annotations;
 
 namespace Content.Shared.EntityTable;
 

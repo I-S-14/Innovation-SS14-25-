@@ -15,6 +15,8 @@ using Robust.Shared.Graphics;
 using Robust.Shared.Map; // Goobstation
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility; // Goobstation
+using System.Linq;
+using Robust.Client.UserInterface.CustomControls;
 
 namespace Content.Client.SurveillanceCamera.UI;
 
@@ -23,8 +25,6 @@ public sealed partial class SurveillanceCameraMonitorWindow : FancyWindow // Goo
 {
     private static readonly ProtoId<ShaderPrototype> CameraStaticShader = "CameraStatic";
 
-    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
-    [Dependency] private readonly IResourceCache _resourceCache = default!;
     [Dependency] private IEntityManager _entManager = default!; // Goobstation
     [Dependency] private IPrototypeManager _prototypeManager = default!;
     [Dependency] private IResourceCache _resourceCache = default!;

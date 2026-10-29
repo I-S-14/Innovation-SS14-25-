@@ -12,6 +12,7 @@ using Content.Shared.Timing.Components;
 using Content.Shared.Timing.Systems;
 using Content.Shared.Whitelist;
 using Robust.Shared.Audio.Systems;
+using Content.Shared.Timing;
 
 namespace Content.Server.Ninja.Systems;
 

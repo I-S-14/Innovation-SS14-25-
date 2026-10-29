@@ -1,6 +1,6 @@
 using Content.Shared.Botany.Components;
 using Content.Shared.Botany.Events;
-using Content.Shared.FixedPoint;
+using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.Random;
 using Content.Shared.Random.Helpers;
 using JetBrains.Annotations;

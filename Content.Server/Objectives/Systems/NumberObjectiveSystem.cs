@@ -3,6 +3,7 @@
 using Content.Server.Objectives.Components;
 using Content.Shared.Objectives.Components;
 using Robust.Shared.Random;
+using Robust.Shared.GameObjects;
 
 namespace Content.Server.Objectives.Systems;
 

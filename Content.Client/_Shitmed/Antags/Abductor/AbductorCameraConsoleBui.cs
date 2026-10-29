@@ -3,7 +3,6 @@
 using Content.Shared._Shitmed.Antags.Abductor;
 using Content.Client._Shitmed.Choice.UI;
 using JetBrains.Annotations;
-using static Content.Shared.Pinpointer.SharedNavMapSystem;
 
 namespace Content.Client._Shitmed.Antags.Abductor;
 

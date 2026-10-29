@@ -4,6 +4,7 @@ using Content.Server.Medical.Components;
 using Content.Shared.Bed.Sleep;
 using Content.Shared.Atmos;
 using Content.Shared.Medical.Cryogenics;
+using Content.Server.Atmos.EntitySystems;
 
 namespace Content.Server.Medical
 {

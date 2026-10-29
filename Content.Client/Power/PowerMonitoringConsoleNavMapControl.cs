@@ -6,7 +6,7 @@ using Robust.Client.Graphics;
 using Robust.Shared.Collections;
 using Robust.Shared.Map.Components;
 using System.Numerics;
-using static Content.Shared.Power.SharedPowerMonitoringConsoleSystem;
+using Content.Shared.Pinpointer;
 
 namespace Content.Client.Power;
 

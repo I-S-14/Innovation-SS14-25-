@@ -1,4 +1,3 @@
-using Content.Shared.Medical.SuitSensor;
 using Content.Shared.SecApartment;
 using Robust.Shared.Serialization;
 

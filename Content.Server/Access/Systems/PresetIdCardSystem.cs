@@ -7,6 +7,8 @@ using Content.Shared.Roles;
 using Robust.Shared.Prototypes;
 using Content.Shared.GameTicking;
 using Content.Shared.Station.Components;
+using Content.Server.GameTicking;
+using Content.Server.Station.Components;
 
 namespace Content.Server.Access.Systems;
 

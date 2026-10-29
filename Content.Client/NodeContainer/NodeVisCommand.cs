@@ -27,7 +27,6 @@ namespace Content.Client.NodeContainer
 
     public sealed partial class NodeVisFilterCommand : LocalizedEntityCommands
     {
-        [Dependency] private NodeGroupSystem _nodeSystem = default!;
 
         public override string Command => "nodevisfilter";
 

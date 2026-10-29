@@ -37,8 +37,6 @@ using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 using Robust.Shared.Configuration; // Goobstation
 using Content.Goobstation.Common.CCVar; // Goobstation
-using static Content.Client.Actions.ActionsSystem;
-using static Content.Client.UserInterface.Systems.Actions.Windows.ActionsWindow;
 using static Robust.Client.UserInterface.Control;
 using static Robust.Client.UserInterface.Controls.BaseButton;
 using static Robust.Client.UserInterface.Controls.LineEdit;
@@ -52,10 +50,6 @@ namespace Content.Client.UserInterface.Systems.Actions;
 
 public sealed partial class ActionUIController : UIController, IOnStateChanged<GameplayState>, IOnSystemChanged<ActionsSystem>
 {
-    [Dependency] private readonly IOverlayManager _overlays = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly IPlayerManager _playerManager = default!;
-    [Dependency] private readonly IInputManager _input = default!;
     [Dependency] private readonly IEyeManager _eye = default!; // Goobstation
     [Dependency] private readonly IConfigurationManager _cfg = default!; // Goobstation
     [Dependency] private IOverlayManager _overlays = default!;

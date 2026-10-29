@@ -24,11 +24,6 @@ namespace Content.Shared.Emag.Systems;
 /// 5. Optionally, set Repeatable on the event to true if you don't want the emagged component to be added
 public sealed partial class EmagSystem : EntitySystem
 {
-    [Dependency] private readonly ISharedAdminLogManager _adminLogger = default!;
-    [Dependency] private readonly SharedChargesSystem _sharedCharges = default!;
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] private readonly TagSystem _tag = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly EntityWhitelistSystem _whitelist = default!; // DeltaV - Add a whitelist/blacklist to the Emag
     [Dependency] private readonly SparksSystem _sparks = default!; // goob edit - sparks everywhere
     [Dependency] private ISharedAdminLogManager _adminLogger = default!;

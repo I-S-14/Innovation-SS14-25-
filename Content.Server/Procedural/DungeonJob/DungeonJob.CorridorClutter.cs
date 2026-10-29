@@ -5,6 +5,7 @@ using Content.Shared.Procedural;
 using Content.Shared.Procedural.PostGeneration;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Random;
+using Content.Shared.Storage;
 
 namespace Content.Server.Procedural.DungeonJob;
 

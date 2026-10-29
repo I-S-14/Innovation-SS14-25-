@@ -2,6 +2,7 @@
 
 using Content.Shared.Explosion.Components;
 using JetBrains.Annotations;
+using Content.Server.Explosion.Components;
 
 namespace Content.Server.Destructible.Thresholds.Behaviors
 {

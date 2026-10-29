@@ -6,6 +6,8 @@ using Robust.Client.Graphics;
 using Robust.Client.Input;
 using Robust.Client.Player;
 using Robust.Shared.Enums;
+using Content.Shared.Weapons.Melee;
+using Robust.Shared.Map;
 
 namespace Content.Client.Weapons.Melee;
 

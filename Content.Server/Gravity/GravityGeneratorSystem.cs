@@ -2,6 +2,7 @@
 using Content.Server.Power.EntitySystems;
 using Content.Shared.Gravity;
 using Content.Shared.Power.Components;
+using Content.Server.Power.Components;
 
 namespace Content.Server.Gravity;
 

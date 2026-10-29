@@ -14,6 +14,8 @@ using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Systems;
 using Robust.Shared.Random;
 using System.Numerics;
+using Robust.Server.Audio;
+using Robust.Shared.Player;
 
 namespace Content.Server.StationEvents.Events;
 
@@ -23,10 +25,8 @@ namespace Content.Server.StationEvents.Events;
 /// <seealso cref="MeteorSwarmComponent"/>
 public sealed partial class MeteorSwarmSystem : GameRuleSystem<MeteorSwarmComponent>
 {
-    [Dependency] private readonly SharedPhysicsSystem _physics = default!;
     [Dependency] private readonly AudioSystem _audio = default!;
     [Dependency] private readonly ChatSystem _chat = default!;
-    [Dependency] private readonly StationSystem _station = default!;
     [Dependency] private readonly AnnouncerSystem _announcer = default!;
     [Dependency] private SharedPhysicsSystem _physics = default!;
     [Dependency] private ServerStationSystem _station = default!;

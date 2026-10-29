@@ -15,6 +15,7 @@ using Robust.Shared.Audio.Systems;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 using System.Linq;
+using Robust.Shared.Prototypes;
 
 namespace Content.Shared.SprayPainter;
 

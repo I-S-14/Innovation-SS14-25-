@@ -52,15 +52,15 @@
     maxContents: 4
     grabDelay: 3
     grabEnergyDelta: -20
-  - type: Tag # Goobstation
-    tags:
-    - IndustrialMech
-    - SmallMech
   - type: UIFragment
     ui: !type:MechGrabberUi
   - type: ContainerContainer
     containers:
       item-container: !type:Container
+  - type: Tag # Goobstation
+    tags:
+    - IndustrialMech
+    - SmallMech
 
 - type: entity
   id: MechEquipmentHorn

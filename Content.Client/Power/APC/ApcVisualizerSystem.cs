@@ -10,7 +10,6 @@ namespace Content.Client.Power.APC;
 /// </summary>
 public sealed partial class ApcVisualizerSystem : VisualizerSystem<ApcVisualsComponent>
 {
-    [Dependency] private readonly SharedPointLightSystem _lights = default!;
     [Dependency] private readonly SpriteSystem _sprite = default!;
     [Dependency] private SharedPointLightSystem _lights = default!;
 

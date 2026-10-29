@@ -12,6 +12,7 @@ using Robust.Client.UserInterface.XAML;
 // using Robust.Client.Utility; // Commented by CorvaxGoob
 using Robust.Shared.Prototypes;
 using static Robust.Client.UserInterface.Controls.BaseButton;
+using Robust.Client.Utility;
 
 namespace Content.Client.Decals.UI;
 

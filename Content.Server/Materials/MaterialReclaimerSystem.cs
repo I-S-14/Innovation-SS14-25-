@@ -27,6 +27,10 @@ using Robust.Shared.Player;
 using Robust.Shared.Utility;
 using System.Linq;
 using Content.Shared.Humanoid;
+using Content.Shared.Chemistry.Components.SolutionManager;
+using Content.Shared.Interaction;
+using Content.Shared.Nutrition.EntitySystems;
+using Robust.Shared.Prototypes;
 
 namespace Content.Server.Materials;
 

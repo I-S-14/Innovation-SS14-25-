@@ -3,6 +3,7 @@ using Content.Shared.Store;
 using JetBrains.Annotations;
 using Robust.Client.UserInterface;
 using Robust.Shared.Prototypes;
+using Content.Shared.Store.Components;
 
 namespace Content.Client.Store.Ui;
 

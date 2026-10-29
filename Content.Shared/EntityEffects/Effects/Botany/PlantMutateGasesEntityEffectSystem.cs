@@ -55,8 +55,6 @@ public sealed partial class PlantMutateExudeGases : EntityEffectBase<PlantMutate
 /// <inheritdoc cref="EntityEffectSystem{T,TEffect}"/>
 public sealed partial class PlantMutateConsumeGasesEntityEffectSystem : EntityEffectSystem<PlantComponent, PlantMutateConsumeGases>
 {
-    [Dependency] private IGameTiming _timing = default!;
-    [Dependency] private SharedPlantConsumeExudeGasSystem _plantConsumeExudeGas = default!;
 
     protected override void Effect(Entity<PlantComponent> entity, ref EntityEffectEvent<PlantMutateConsumeGases> args)
     {

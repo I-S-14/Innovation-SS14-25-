@@ -7,6 +7,7 @@ using Content.Shared.Speech;
 using Content.Shared.Speech.EntitySystems;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Timing;
+using Content.Server.Speech;
 
 namespace Content.Server.SurveillanceCamera;
 

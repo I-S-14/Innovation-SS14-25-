@@ -7,6 +7,7 @@ using Content.Shared.Atmos.Reactions;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Utility;
+using Content.Server.Atmos.Reactions;
 
 namespace Content.Server.Atmos.EntitySystems;
 

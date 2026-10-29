@@ -9,6 +9,10 @@ using Robust.Shared.Noise;
 using Robust.Shared.Random;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
+using System;
+using System.Collections.Generic;
+using Robust.Shared.Log;
+using Robust.Shared.Maths;
 using Color = Robust.Shared.Maths.Color;
 
 namespace Content.Client.Parallax

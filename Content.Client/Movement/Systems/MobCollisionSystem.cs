@@ -3,6 +3,8 @@ using Content.Shared.CCVar;
 using Content.Shared.Movement.Systems;
 using Robust.Client.Player;
 using Robust.Shared.Timing;
+using Content.Shared.Movement.Components;
+using Robust.Shared.Physics.Components;
 
 namespace Content.Client.Movement.Systems;
 

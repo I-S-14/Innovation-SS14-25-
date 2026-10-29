@@ -17,7 +17,8 @@ using Content.Shared.DeviceLinking.Systems;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
 using Robust.Server.Containers;
-using static Content.Shared.MedicalScanner.SharedMedicalScannerComponent; // Hmm...
+using Content.Server.DeviceLinking.Systems;
+using Content.Shared.Body.Components;
 
 namespace Content.Server.Medical
 {

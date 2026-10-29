@@ -1,79 +1,34 @@
-// SPDX-License-Identifier: MIT
-
 using System.Text;
-using Content.Server.Speech.Components;
-using Content.Shared.Drunk;
-using Content.Shared.Speech;
-using Content.Shared.Speech.EntitySystems;
+using Content.Shared.Random.Helpers;
+using Content.Shared.Speech.Components;
 using Content.Shared.StatusEffectNew;
+using Content.Shared.StatusEffectNew.Components;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
+using Robust.Shared.Prototypes;
 
-namespace Content.Server.Speech.EntitySystems;
+namespace Content.Shared.Speech.EntitySystems;
 
-public sealed class SlurredSystem : SharedSlurredSystem
+public sealed partial class SlurredSystem : RelayAccentSystem<SlurredAccentComponent>
 {
-    [Dependency] private readonly StatusEffectsSystem _status = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
+    public static readonly EntProtoId Stutter = "StatusEffectSlurred";
 
-    /// <summary>
-    /// Divisor applied to total seconds used to get the odds of slurred speech occuring.
-    /// </summary>
-    private const float SlurredModifier = 1100f;
+    [Dependency] private StatusEffectsSystem _status = default!;
+    [Dependency] private IGameTiming _timing = default!;
 
-    /// <summary>
-    /// Minimum amount of time on the slurred accent for it to start taking effect.
-    /// </summary>
-    private const float SlurredThreshold = 80f;
-
-    public override void Initialize()
+    public override string Accentuate(string message, Entity<SlurredAccentComponent>? ent = null)
     {
-        SubscribeLocalEvent<SlurredAccentComponent, AccentGetEvent>(OnAccent);
+        if (ent == null)
+            return message;
 
-        SubscribeLocalEvent<SlurredAccentComponent, StatusEffectRelayedEvent<AccentGetEvent>>(OnAccentRelayed);
-    }
-
-    /// <summary>
-    ///     Slur chance scales with the time remaining on any status effect with the SlurredAccentComponent.
-    ///     Typically, this is equivalent to "drunkenness" on the DrunkStatusEffect
-    /// </summary>
-    private float GetProbabilityScale(EntityUid uid)
-    {
-        if (!_status.TryGetMaxTime<SlurredAccentComponent>(uid, out var time))
-            return 0;
-
-        // This is a magic number. Why this value? No clue it was made 3 years before I refactored this.
-        var magic = time.Item2 == null ? SlurredModifier : (float) (time.Item2 - _timing.CurTime).Value.TotalSeconds - SlurredThreshold;
-
-        return Math.Clamp(magic / SlurredModifier, 0f, 1f);
-    }
-
-    private void OnAccent(Entity<SlurredAccentComponent> entity, ref AccentGetEvent args)
-    {
-        GetAccent(entity, ref args);
-    }
-
-    private void OnAccentRelayed(Entity<SlurredAccentComponent> entity, ref StatusEffectRelayedEvent<AccentGetEvent> args)
-    {
-        var ev = args.Args;
-        GetAccent(args.Args.Entity, ref ev);
-    }
-
-    private void GetAccent(EntityUid uid, ref AccentGetEvent args)
-    {
-        var scale = GetProbabilityScale(uid);
-        args.Message = Accentuate(args.Message, scale);
-    }
-
-    private string Accentuate(string message, float scale)
-    {
+        var scale = GetProbabilityScale(ent.Value);
+        var random = SharedRandomExtensions.PredictedRandom(_timing, GetNetEntity(ent.Value));
         var sb = new StringBuilder();
 
         // This is pretty much ported from TG.
         foreach (var character in message)
         {
-            if (_random.Prob(scale / 3f))
+            if (random.Prob(scale / 3f))
             {
                 var lower = char.ToLowerInvariant(character);
                 var newString = lower switch
@@ -83,19 +38,13 @@ public sealed class SlurredSystem : SharedSlurredSystem
                     'a' => "ah",
                     'u' => "oo",
                     'c' => "k",
-                    // CorvaxGoob-Localization Start
-                    'о' => "а",
-                    'к' => "кх",
-                    'щ' => "шч",
-                    'ц' => "тс",
-                    // CorvaxGoob-Localization End
                     _ => $"{character}",
                 };
 
                 sb.Append(newString);
             }
 
-            if (_random.Prob(scale / 20f))
+            if (random.Prob(scale / 20f))
             {
                 if (character == ' ')
                 {
@@ -108,13 +57,13 @@ public sealed class SlurredSystem : SharedSlurredSystem
                 }
             }
 
-            if (!_random.Prob(scale * 3/20))
+            if (!random.Prob(scale * 3 / 20))
             {
                 sb.Append(character);
                 continue;
             }
 
-            var next = _random.Next(1, 3) switch
+            var next = random.Next(1, 3) switch
             {
                 1 => "'",
                 2 => $"{character}{character}",
@@ -125,5 +74,25 @@ public sealed class SlurredSystem : SharedSlurredSystem
         }
 
         return sb.ToString();
+    }
+
+    /// <summary>
+    /// Slur chance scales with the time remaining on any status effect with the SlurredAccentComponent.
+    /// Typically, this is equivalent to "drunkenness" on the DrunkStatusEffect
+    /// </summary>
+    private float GetProbabilityScale(Entity<SlurredAccentComponent> ent)
+    {
+        if (!TryComp<StatusEffectComponent>(ent, out var component) || component.AppliedTo == null)
+            return 1f;
+
+        if (!_status.TryGetMaxTime<SlurredAccentComponent>(component.AppliedTo.Value, out var time))
+            return 1f;
+
+        // This is a magic number. Why this value? No clue it was made 3 years before I refactored this.
+        var magic = time.Item2 == null
+            ? ent.Comp.SlurredModifier
+            : (float)(time.Item2 - _timing.CurTime).Value.TotalSeconds - ent.Comp.SlurredThreshold;
+
+        return Math.Clamp(magic / ent.Comp.SlurredModifier, 0f, 1f);
     }
 }

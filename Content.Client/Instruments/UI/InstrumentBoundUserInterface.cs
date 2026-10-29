@@ -9,6 +9,8 @@ using Robust.Client.UserInterface;
 using Robust.Shared.Audio.Midi;
 using Robust.Shared.Containers;
 using Robust.Shared.Utility;
+using Content.Shared.Interaction;
+using Robust.Client.Player;
 
 namespace Content.Client.Instruments.UI;
 

@@ -38,6 +38,7 @@ using Robust.Shared.Utility;
 using Content.Server._CorvaxGoob.TTS;
 using Content.Server.Corvax.GuideGenerator;
 using System.IO;
+using Content.Shared.Kitchen;
 
 namespace Content.Server.Entry
 {

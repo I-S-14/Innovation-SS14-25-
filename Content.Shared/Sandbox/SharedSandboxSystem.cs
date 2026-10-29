@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 using Robust.Shared.Serialization;
+using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Sandbox
 {

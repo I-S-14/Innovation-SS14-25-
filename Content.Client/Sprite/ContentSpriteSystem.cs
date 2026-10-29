@@ -145,7 +145,6 @@ public sealed partial class ContentSpriteSystem : EntitySystem
     {
         [Dependency] private IEntityManager _entManager = default!;
         [Dependency] private ILogManager _logMan = default!;
-        [Dependency] private IResourceManager _resManager = default!;
 
         internal Queue<(
             IRenderTexture Texture,

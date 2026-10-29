@@ -12,6 +12,8 @@ using Content.Shared.Stunnable;
 using Robust.Shared.Player;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
+using Content.Shared.Damage;
+using Robust.Shared.Prototypes;
 
 namespace Content.Server.Damage.ForceSay;
 

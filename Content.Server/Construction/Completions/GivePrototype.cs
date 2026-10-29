@@ -7,6 +7,7 @@ using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Stacks;
 using JetBrains.Annotations;
 using Robust.Shared.Prototypes;
+using Content.Shared.Prototypes;
 
 namespace Content.Server.Construction.Completions;
 

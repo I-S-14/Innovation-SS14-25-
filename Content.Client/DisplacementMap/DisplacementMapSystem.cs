@@ -5,6 +5,7 @@ using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization.Manager;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Content.Client.DisplacementMap;
 

@@ -15,10 +15,8 @@ namespace Content.Shared.Species;
 
 public sealed partial class GibActionSystem : EntitySystem
 {
-    [Dependency] private readonly SharedActionsSystem _actionsSystem = default!;
     [Dependency] private readonly SharedBodySystem _bodySystem = default!;
     [Dependency] private readonly IPrototypeManager _protoManager = default!;
-    [Dependency] private readonly SharedPopupSystem _popupSystem = default!;
     [Dependency] private SharedActionsSystem _actionsSystem = default!;
     [Dependency] private GibbingSystem _gibbing = default!;
     [Dependency] private SharedPopupSystem _popupSystem = default!;

@@ -6,6 +6,7 @@ using Content.Shared.Mind;
 using Content.Shared.Mind.Components;
 using Content.Shared.Tag;
 using Robust.Shared.Random;
+using Content.Shared.Gibbing;
 
 namespace Content.Server.Mind;
 

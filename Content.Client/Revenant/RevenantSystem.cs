@@ -3,6 +3,8 @@ using Content.Shared.Alert.Components;
 using Content.Shared.Revenant;
 using Content.Shared.Revenant.Components;
 using Robust.Client.GameObjects;
+using Content.Client.Alerts;
+using Content.Shared.Alert;
 
 namespace Content.Client.Revenant;
 

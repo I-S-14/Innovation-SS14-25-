@@ -20,50 +20,52 @@ using Content.Shared.Clothing.Components;
 using Content.Shared.Implants;
 using Content.Shared.Inventory;
 using Content.Shared.PDA;
+using Content.Shared.Lock;
 
 namespace Content.Server.Access.Systems;
 
 /// <inheritdoc />
 public sealed partial class AgentIdCardSystem : SharedAgentIdCardSystem
 {
-    [Dependency] private SharedIdCardSystem _card = default!;
-    [Dependency] private ChameleonClothingSystem _chameleon = default!;
-    [Dependency] private ChameleonControllerSystem _chamController = default!;
+    [Dependency] private readonly PopupSystem _popupSystem = default!;
+    [Dependency] private readonly IdCardSystem _cardSystem = default!;
+    [Dependency] private readonly UserInterfaceSystem _uiSystem = default!;
+    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
+    [Dependency] private readonly ChameleonClothingSystem _chameleon = default!;
+    [Dependency] private readonly ChameleonControllerSystem _chamController = default!;
+    [Dependency] private readonly LockSystem _lock = default!;
+    [Dependency] private readonly SharedNanoChatSystem _nanoChat = default!; // DeltaV
+
+    public override void Initialize()
+    {
+        base.Initialize();
+        SubscribeLocalEvent<AgentIDCardComponent, AfterInteractEvent>(OnAfterInteract);
+        // BUI
+        SubscribeLocalEvent<AgentIDCardComponent, AfterActivatableUIOpenEvent>(AfterUIOpen);
+        SubscribeLocalEvent<AgentIDCardComponent, AgentIDCardNameChangedMessage>(OnNameChanged);
+        SubscribeLocalEvent<AgentIDCardComponent, AgentIDCardJobChangedMessage>(OnJobChanged);
+        SubscribeLocalEvent<AgentIDCardComponent, AgentIDCardJobIconChangedMessage>(OnJobIconChanged);
+        SubscribeLocalEvent<AgentIDCardComponent, InventoryRelayedEvent<ChameleonControllerOutfitSelectedEvent>>(OnChameleonControllerOutfitChangedItem);
+        SubscribeLocalEvent<AgentIDCardComponent, AgentIDCardNumberChangedMessage>(OnNumberChanged); // DeltaV
+    }
+
+    // DeltaV - Add number change handler
+    private void OnNumberChanged(Entity<AgentIDCardComponent> ent, ref AgentIDCardNumberChangedMessage args)
+    {
+        if (!TryComp<NanoChatCardComponent>(ent, out var comp))
+            return;
+
+        _nanoChat.SetNumber((ent, comp), args.Number);
+        Dirty(ent, comp);
+    }
 
     [SubscribeLocalEvent]
     private void OnChameleonControllerOutfitChangedItem(Entity<AgentIDCardComponent> ent, ref InventoryRelayedEvent<ChameleonControllerOutfitSelectedEvent> args)
     {
-        [Dependency] private readonly PopupSystem _popupSystem = default!;
-        [Dependency] private readonly IdCardSystem _cardSystem = default!;
-        [Dependency] private readonly UserInterfaceSystem _uiSystem = default!;
-        [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
-        [Dependency] private readonly ChameleonClothingSystem _chameleon = default!;
-        [Dependency] private readonly ChameleonControllerSystem _chamController = default!;
-        [Dependency] private readonly LockSystem _lock = default!;
-        [Dependency] private readonly SharedNanoChatSystem _nanoChat = default!; // DeltaV
+        if (!TryComp<IdCardComponent>(ent, out var idCardComp))
+            return;
 
-        public override void Initialize()
-        {
-            base.Initialize();
-            SubscribeLocalEvent<AgentIDCardComponent, AfterInteractEvent>(OnAfterInteract);
-            // BUI
-            SubscribeLocalEvent<AgentIDCardComponent, AfterActivatableUIOpenEvent>(AfterUIOpen);
-            SubscribeLocalEvent<AgentIDCardComponent, AgentIDCardNameChangedMessage>(OnNameChanged);
-            SubscribeLocalEvent<AgentIDCardComponent, AgentIDCardJobChangedMessage>(OnJobChanged);
-            SubscribeLocalEvent<AgentIDCardComponent, AgentIDCardJobIconChangedMessage>(OnJobIconChanged);
-            SubscribeLocalEvent<AgentIDCardComponent, InventoryRelayedEvent<ChameleonControllerOutfitSelectedEvent>>(OnChameleonControllerOutfitChangedItem);
-            SubscribeLocalEvent<AgentIDCardComponent, AgentIDCardNumberChangedMessage>(OnNumberChanged); // DeltaV
-        }
-
-        // DeltaV - Add number change handler
-        private void OnNumberChanged(Entity<AgentIDCardComponent> ent, ref AgentIDCardNumberChangedMessage args)
-        {
-            if (!TryComp<NanoChatCardComponent>(ent, out var comp))
-                return;
-
-            _nanoChat.SetNumber((ent, comp), args.Number);
-            Dirty(ent, comp);
-        }
+        ProtoMan.Resolve(args.Args.ChameleonOutfit.Job, out var jobProto);
 
         var jobIcon = args.Args.ChameleonOutfit.Icon ?? jobProto?.Icon;
         var jobName = args.Args.ChameleonOutfit.Name ?? jobProto?.Name ?? "";
@@ -90,132 +92,123 @@ public sealed partial class AgentIdCardSystem : SharedAgentIdCardSystem
         if (idSlotGear == null)
             return;
 
-        var proto = ProtoMan.Index(idSlotGear);
-        if (!proto.TryComp<PdaComponent>(out var comp, EntityManager.ComponentFactory))
+        var proto = _prototypeManager.Index(idSlotGear);
+        if (!proto.TryGetComponent<PdaComponent>(out var comp, EntityManager.ComponentFactory))
             return;
 
-            var idSlotGear = _chamController.GetGearForSlot(args, "id");
-            if (idSlotGear == null)
-                return;
+        _chameleon.SetSelectedPrototype(ent, comp.IdCard);
+    }
 
-            var proto = _prototypeManager.Index(idSlotGear);
-            if (!proto.TryGetComponent<PdaComponent>(out var comp, EntityManager.ComponentFactory))
-                return;
+    private void OnAfterInteract(EntityUid uid, AgentIDCardComponent component, AfterInteractEvent args)
+    {
+        if (args.Target == null || !args.CanReach || _lock.IsLocked(uid) ||
+            !TryComp<AccessComponent>(args.Target, out var targetAccess) || !HasComp<IdCardComponent>(args.Target))
+            return;
 
-            _chameleon.SetSelectedPrototype(ent, comp.IdCard);
-        }
+        if (!TryComp<AccessComponent>(uid, out var access) || !HasComp<IdCardComponent>(uid))
+            return;
 
-        private void OnAfterInteract(EntityUid uid, AgentIDCardComponent component, AfterInteractEvent args)
+        var beforeLength = access.Tags.Count;
+        access.Tags.UnionWith(targetAccess.Tags);
+        var addedLength = access.Tags.Count - beforeLength;
+
+        // DeltaV - Copy NanoChat data if available
+        if (TryComp<NanoChatCardComponent>(args.Target, out var targetNanoChat) &&
+            TryComp<NanoChatCardComponent>(uid, out var agentNanoChat))
         {
-            if (args.Target == null || !args.CanReach || _lock.IsLocked(uid) ||
-                !TryComp<AccessComponent>(args.Target, out var targetAccess) || !HasComp<IdCardComponent>(args.Target))
-                return;
+            // First clear existing data
+            _nanoChat.Clear((uid, agentNanoChat));
 
-            if (!TryComp<AccessComponent>(uid, out var access) || !HasComp<IdCardComponent>(uid))
-                return;
+            // Copy the number
+            if (_nanoChat.GetNumber((args.Target.Value, targetNanoChat)) is { } number)
+                _nanoChat.SetNumber((uid, agentNanoChat), number);
 
-            var beforeLength = access.Tags.Count;
-            access.Tags.UnionWith(targetAccess.Tags);
-            var addedLength = access.Tags.Count - beforeLength;
-
-            // DeltaV - Copy NanoChat data if available
-            if (TryComp<NanoChatCardComponent>(args.Target, out var targetNanoChat) &&
-                TryComp<NanoChatCardComponent>(uid, out var agentNanoChat))
+            // Copy all recipients and their messages
+            foreach (var (recipientNumber, recipient) in _nanoChat.GetRecipients((args.Target.Value, targetNanoChat)))
             {
-                // First clear existing data
-                _nanoChat.Clear((uid, agentNanoChat));
+                _nanoChat.SetRecipient((uid, agentNanoChat), recipientNumber, recipient);
 
-                // Copy the number
-                if (_nanoChat.GetNumber((args.Target.Value, targetNanoChat)) is { } number)
-                    _nanoChat.SetNumber((uid, agentNanoChat), number);
+                if (_nanoChat.GetMessagesForRecipient((args.Target.Value, targetNanoChat), recipientNumber) is not
+                    { } messages)
+                    continue;
 
-                // Copy all recipients and their messages
-                foreach (var (recipientNumber, recipient) in _nanoChat.GetRecipients((args.Target.Value, targetNanoChat)))
+                foreach (var message in messages)
                 {
-                    _nanoChat.SetRecipient((uid, agentNanoChat), recipientNumber, recipient);
-
-                    if (_nanoChat.GetMessagesForRecipient((args.Target.Value, targetNanoChat), recipientNumber) is not
-                        { } messages)
-                        continue;
-
-                    foreach (var message in messages)
-                    {
-                        _nanoChat.AddMessage((uid, agentNanoChat), recipientNumber, message);
-                    }
+                    _nanoChat.AddMessage((uid, agentNanoChat), recipientNumber, message);
                 }
             }
-            // End DeltaV
-
-            _popupSystem.PopupEntity(Loc.GetString("agent-id-new", ("number", addedLength), ("card", args.Target)), args.Target.Value, args.User);
-            if (addedLength > 0)
-                Dirty(uid, access);
         }
+        // End DeltaV
 
-        private void AfterUIOpen(EntityUid uid, AgentIDCardComponent component, AfterActivatableUIOpenEvent args)
+        _popupSystem.PopupEntity(Loc.GetString("agent-id-new", ("number", addedLength), ("card", args.Target)), args.Target.Value, args.User);
+        if (addedLength > 0)
+            Dirty(uid, access);
+    }
+
+    private void AfterUIOpen(EntityUid uid, AgentIDCardComponent component, AfterActivatableUIOpenEvent args)
+    {
+        if (!_uiSystem.HasUi(uid, AgentIDCardUiKey.Key))
+            return;
+
+        if (!TryComp<IdCardComponent>(uid, out var idCard))
+            return;
+
+        // DeltaV - Get current number if it exists
+        uint? currentNumber = null;
+        if (TryComp<NanoChatCardComponent>(uid, out var comp))
+            currentNumber = comp.Number;
+
+        var state = new AgentIDCardBoundUserInterfaceState(
+            idCard.FullName ?? "",
+            idCard.LocalizedJobTitle ?? "",
+            idCard.JobIcon,
+            currentNumber); // DeltaV - Pass current number
+
+        _uiSystem.SetUiState(uid, AgentIDCardUiKey.Key, state);
+    }
+
+    private void OnJobChanged(EntityUid uid, AgentIDCardComponent comp, AgentIDCardJobChangedMessage args)
+    {
+        if (!TryComp<IdCardComponent>(uid, out var idCard))
+            return;
+
+        _cardSystem.TryChangeJobTitle(uid, args.Job, idCard);
+    }
+
+    private void OnNameChanged(EntityUid uid, AgentIDCardComponent comp, AgentIDCardNameChangedMessage args)
+    {
+        if (!TryComp<IdCardComponent>(uid, out var idCard))
+            return;
+
+        _cardSystem.TryChangeFullName(uid, args.Name, idCard);
+    }
+
+    private void OnJobIconChanged(EntityUid uid, AgentIDCardComponent comp, AgentIDCardJobIconChangedMessage args)
+    {
+        if (!TryComp<IdCardComponent>(uid, out var idCard))
+            return;
+
+        if (!_prototypeManager.Resolve(args.JobIconId, out var jobIcon))
+            return;
+
+        _cardSystem.TryChangeJobIcon(uid, jobIcon, idCard);
+
+        if (TryFindJobProtoFromIcon(jobIcon, out var job))
+            _cardSystem.TryChangeJobDepartment(uid, job, idCard);
+    }
+
+    private bool TryFindJobProtoFromIcon(JobIconPrototype jobIcon, [NotNullWhen(true)] out JobPrototype? job)
+    {
+        foreach (var jobPrototype in _prototypeManager.EnumeratePrototypes<JobPrototype>())
         {
-            if (!_uiSystem.HasUi(uid, AgentIDCardUiKey.Key))
-                return;
-
-            if (!TryComp<IdCardComponent>(uid, out var idCard))
-                return;
-
-            // DeltaV - Get current number if it exists
-            uint? currentNumber = null;
-            if (TryComp<NanoChatCardComponent>(uid, out var comp))
-                currentNumber = comp.Number;
-
-            var state = new AgentIDCardBoundUserInterfaceState(
-                idCard.FullName ?? "",
-                idCard.LocalizedJobTitle ?? "",
-                idCard.JobIcon,
-                currentNumber); // DeltaV - Pass current number
-
-            _uiSystem.SetUiState(uid, AgentIDCardUiKey.Key, state);
-        }
-
-        private void OnJobChanged(EntityUid uid, AgentIDCardComponent comp, AgentIDCardJobChangedMessage args)
-        {
-            if (!TryComp<IdCardComponent>(uid, out var idCard))
-                return;
-
-            _cardSystem.TryChangeJobTitle(uid, args.Job, idCard);
-        }
-
-        private void OnNameChanged(EntityUid uid, AgentIDCardComponent comp, AgentIDCardNameChangedMessage args)
-        {
-            if (!TryComp<IdCardComponent>(uid, out var idCard))
-                return;
-
-            _cardSystem.TryChangeFullName(uid, args.Name, idCard);
-        }
-
-        private void OnJobIconChanged(EntityUid uid, AgentIDCardComponent comp, AgentIDCardJobIconChangedMessage args)
-        {
-            if (!TryComp<IdCardComponent>(uid, out var idCard))
-                return;
-
-            if (!_prototypeManager.Resolve(args.JobIconId, out var jobIcon))
-                return;
-
-            _cardSystem.TryChangeJobIcon(uid, jobIcon, idCard);
-
-            if (TryFindJobProtoFromIcon(jobIcon, out var job))
-                _cardSystem.TryChangeJobDepartment(uid, job, idCard);
-        }
-
-        private bool TryFindJobProtoFromIcon(JobIconPrototype jobIcon, [NotNullWhen(true)] out JobPrototype? job)
-        {
-            foreach (var jobPrototype in _prototypeManager.EnumeratePrototypes<JobPrototype>())
+            if (jobPrototype.Icon == jobIcon.ID)
             {
-                if (jobPrototype.Icon == jobIcon.ID)
-                {
-                    job = jobPrototype;
-                    return true;
-                }
+                job = jobPrototype;
+                return true;
             }
-
-            job = null;
-            return false;
         }
+
+        job = null;
+        return false;
     }
 }

@@ -1,151 +1,163 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
-using System.Diagnostics;
-using System.Linq;
+using Content.Shared.DeviceConfigurator.Components;
+using Content.Shared.DeviceLinking;
+using Content.Shared.DeviceNetwork;
 using Content.Shared.DeviceNetwork.Components;
 using Content.Shared.DeviceNetwork.Events;
-using Content.Shared.DeviceNetwork.Systems;
 using JetBrains.Annotations;
 using Robust.Shared.Map.Events;
 using Robust.Shared.Utility;
 
-namespace Content.Server.DeviceNetwork.Systems;
+namespace Content.Shared.DeviceConfigurator.Systems;
 
-[UsedImplicitly]
-public sealed class DeviceListSystem : SharedDeviceListSystem
+public sealed partial class DeviceListSystem : EntitySystem
 {
-    [Dependency] private readonly NetworkConfiguratorSystem _configurator = default!;
+    [Dependency] private NetworkConfiguratorSystem _configurator = default!;
 
-    public override void Initialize()
+    [Dependency] private EntityQuery<LinkedDeviceNetworkComponent> _linkedDeviceQuery;
+    [Dependency] private EntityQuery<DeviceNetworkComponent> _deviceNetworkQuery;
+    [Dependency] private EntityQuery<DeviceListComponent> _deviceListQuery;
+
+    private readonly List<EntityUid> _toRemove = new();
+
+    private readonly List<OptionDeviceAddress> _deviceCache = new();
+
+    private readonly HashSet<EntityUid> _newCache = new();
+    private readonly HashSet<EntityUid> _oldCache = new();
+
+    [SubscribeLocalEvent]
+    private void OnShutdown(Entity<DeviceListComponent> ent, ref ComponentShutdown args)
     {
-        base.Initialize();
-        SubscribeLocalEvent<DeviceListComponent, ComponentShutdown>(OnShutdown);
-        SubscribeLocalEvent<DeviceListComponent, BeforeBroadcastAttemptEvent>(OnBeforeBroadcast);
-        SubscribeLocalEvent<DeviceListComponent, BeforePacketSentEvent>(OnBeforePacketSent);
-        SubscribeLocalEvent<BeforeSerializationEvent>(OnMapSave);
+        foreach (var conf in ent.Comp.Configurators)
+        {
+            _configurator.OnDeviceListShutdown(conf, ent);
+        }
+
+        foreach (var device in ent.Comp.Devices)
+        {
+            if (!_linkedDeviceQuery.TryComp(device, out var comp))
+                continue;
+
+            comp.DeviceLists.Remove(ent);
+            DirtyField(device, comp, nameof(LinkedDeviceNetworkComponent.DeviceLists));
+        }
+
+        ent.Comp.Devices.Clear();
     }
 
-    // Goobstation - Fix desync of configurator lists
-    [Conditional("DEBUG")]
-    public void VerifyDeviceList(EntityUid? uid, DeviceListComponent? listComp = null)
+    public IEnumerable<EntityUid> GetAllDevices(Entity<DeviceListComponent?> ent)
     {
-        if (uid is not {} listUid)
-        {
-            Log.Error("VerifyDeviceList was passed a null uid");
-            return;
-        }
-
-
-        if (listComp == null)
-        {
-            if (Deleted(uid)) return;
-            if (!Resolve(listUid, ref listComp))
-            {
-                Log.Error("Failed to resolve DeviceListComponent for verification");
-                return;
-            }
-        }
-
-        var config_query = GetEntityQuery<NetworkConfiguratorComponent>();
-        foreach (var conf_enty in listComp.Configurators)
-        {
-            if (Deleted(conf_enty)) continue;
-            if (!config_query.TryGetComponent(conf_enty, out var conf_comp))
-            {
-                Log.Error("Failed to find NetworkConfiguratorComponent in DeviceListComponent Configurators");
-                continue;
-            }
-            DebugTools.Assert(conf_comp.ActiveDeviceList == listUid);
-        }
-
-        var device_query = GetEntityQuery<DeviceNetworkComponent>();
-        foreach (var dev_enty in listComp.Devices)
-        {
-            if (Deleted(dev_enty)) continue;
-            if (!device_query.TryGetComponent(dev_enty, out var dev_comp))
-            {
-                Log.Error("Failed to find DeviceNetworkComponent in DeviceListComponent Devices");
-                continue;
-            }
-            DebugTools.Assert(dev_comp.DeviceLists.Contains(listUid));
-        }
-    }
-
-    private void OnShutdown(EntityUid uid, DeviceListComponent component, ComponentShutdown args)
-    {
-        foreach (var conf in component.Configurators)
-        {
-            _configurator.OnDeviceListShutdown(conf, (uid, component));
-        }
-
-        var query = GetEntityQuery<DeviceNetworkComponent>();
-        foreach (var device in component.Devices)
-        {
-            if (query.TryGetComponent(device, out var comp))
-                comp.DeviceLists.Remove(uid);
-        }
-        component.Devices.Clear();
-
-        VerifyDeviceList(uid, component); // Goobstation - Fix desync of configurator lists
+        return !_deviceListQuery.Resolve(ent.Owner, ref ent.Comp) ? [] : ent.Comp.Devices;
     }
 
     /// <summary>
-    /// Gets the given device list as a dictionary
+    /// Gets the given device list as a dictionary.
     /// </summary>
     /// <remarks>
     /// If any entity in the device list is pre-map init, it will show the entity UID of the device instead.
+    /// Doesn't work correctly for pre-init entities!
     /// </remarks>
-    public Dictionary<string, EntityUid> GetDeviceList(EntityUid uid, DeviceListComponent? deviceList = null)
+    [PublicAPI]
+    [Obsolete($"Use {nameof(List<>)} of {nameof(OptionDeviceAddress)} method overload instead")]
+    public Dictionary<LocDeviceAddress, (EntityUid, string)> GetDeviceList(Entity<DeviceListComponent?> ent)
     {
-        if (!Resolve(uid, ref deviceList))
-            return new Dictionary<string, EntityUid>();
+        // The refactor apparently broke this method entirely...
+        // So I'll just throw a debug assert when it is used in a wrong way.
+        // Please forgive me for my sins against downstreams.
+        DebugTools.Assert(MetaData(ent.Owner).EntityLifeStage < EntityLifeStage.MapInitialized,
+            "GetDeviceList method dictionary variation no longer works correctly for non map-init entities." +
+            "Please update your code to use a newer method");
 
-        var devices = new Dictionary<string, EntityUid>(deviceList.Devices.Count);
+        if (!_deviceListQuery.Resolve(ent.Owner, ref ent.Comp))
+            return new Dictionary<LocDeviceAddress, (EntityUid, string)>();
 
-        foreach (var deviceUid in deviceList.Devices)
+        var devices = new Dictionary<LocDeviceAddress, (EntityUid, string)>(ent.Comp.Devices.Count);
+
+        foreach (var deviceUid in ent.Comp.Devices)
         {
-            if (!TryComp(deviceUid, out DeviceNetworkComponent? deviceNet))
+            if (!_deviceNetworkQuery.TryComp(deviceUid, out var deviceNet))
                 continue;
 
             var address = MetaData(deviceUid).EntityLifeStage == EntityLifeStage.MapInitialized
-                ? deviceNet.Address
+                ? DeviceLocalizationHelpers.GetAddressFromId(deviceNet)
                 : $"UID: {deviceUid.ToString()}";
 
-            devices.Add(address, deviceUid);
-
+            devices.Add(new LocDeviceAddress(deviceNet.Address, deviceNet.Prefix), (deviceUid, address));
         }
 
         return devices;
     }
 
     /// <summary>
+    /// Gets the given device list.
+    /// <para>
+    /// If any entity in the device list is pre-map init, the <see cref="OptionDeviceAddress"/>
+    /// will hold only <see cref="EntityUid"/> of the device list entities.
+    /// </para>
+    /// </summary>
+    /// <remarks>
+    /// Remember to clear the provided <paramref name="list"/>
+    /// manually before calling this method if you decide to reuse the same list.
+    /// </remarks>
+    /// <param name="ent">Entity to get the device list from.</param>
+    /// <param name="list">A clean list of option device addresses, cached for better performance.</param>
+    [PublicAPI]
+    public void GetDeviceList(Entity<DeviceListComponent?> ent, List<OptionDeviceAddress> list)
+    {
+        if (!_deviceListQuery.Resolve(ent.Owner, ref ent.Comp))
+            return;
+
+        foreach (var deviceUid in ent.Comp.Devices)
+        {
+            if (!_deviceNetworkQuery.TryComp(deviceUid, out var deviceNet))
+                continue;
+
+            var option = MetaData(deviceUid).EntityLifeStage == EntityLifeStage.MapInitialized
+                ? new OptionDeviceAddress(new LocDeviceAddress(deviceNet.Address, deviceNet.Prefix), deviceUid)
+                : new OptionDeviceAddress(deviceUid);
+
+            list.Add(option);
+        }
+    }
+
+    /// <summary>
     /// Checks if the given address is present in a device list
     /// </summary>
-    /// <param name="uid">The entity uid that has the device list that should be checked for the address</param>
+    /// <param name="ent">The entity that has the device list that should be checked for the address</param>
     /// <param name="address">The address to check for</param>
-    /// <param name="deviceList">The device list component</param>
     /// <returns>True if the address is present. False if not</returns>
-    public bool ExistsInDeviceList(EntityUid uid, string address, DeviceListComponent? deviceList = null)
+    [PublicAPI]
+    public bool ExistsInDeviceList(Entity<DeviceListComponent?> ent, DeviceAddress address)
     {
-        var addresses = GetDeviceList(uid).Keys;
-        return addresses.Contains(address);
+        _deviceCache.Clear();
+        GetDeviceList(ent, _deviceCache);
+        foreach (var device in _deviceCache)
+        {
+            if (!device.TryGetAddress(out var deviceAddress)
+                || deviceAddress.Value.AddressId != address)
+                continue;
+
+            return true;
+        }
+
+        return false;
     }
 
     /// <summary>
     /// Filters the broadcasts recipient list against the device list as either an allow or deny list depending on the components IsAllowList field
     /// </summary>
-    private void OnBeforeBroadcast(EntityUid uid, DeviceListComponent component, BeforeBroadcastAttemptEvent args)
+    [SubscribeLocalEvent]
+    private void OnBeforeBroadcast(Entity<DeviceListComponent> ent, ref BeforeBroadcastAttemptEvent args)
     {
+        var component = ent.Comp;
         //Don't filter anything if the device list is empty
         if (component.Devices.Count == 0)
         {
             if (component.IsAllowList)
-                args.Cancel();
+                args.Cancelled = true;
             return;
         }
 
-        HashSet<DeviceNetworkComponent> filteredRecipients = new(args.Recipients.Count);
-
+        var filteredRecipients = new HashSet<Device>(args.Recipients.Count);
         foreach (var recipient in args.Recipients)
         {
             if (component.Devices.Contains(recipient.Owner) == component.IsAllowList)
@@ -158,28 +170,26 @@ public sealed class DeviceListSystem : SharedDeviceListSystem
     /// <summary>
     /// Filters incoming packets if that is enabled <see cref="OnBeforeBroadcast"/>
     /// </summary>
-    private void OnBeforePacketSent(EntityUid uid, DeviceListComponent component, BeforePacketSentEvent args)
+    [SubscribeLocalEvent]
+    private void OnBeforePacketSent(Entity<DeviceListComponent> ent, ref BeforePacketSentEvent args)
     {
-        if (component.HandleIncomingPackets && component.Devices.Contains(args.Sender) != component.IsAllowList)
-            args.Cancel();
+        if (ent.Comp.HandleIncomingPackets && ent.Comp.Devices.Contains(args.Sender) != ent.Comp.IsAllowList)
+            args.Cancelled = true;
     }
 
-    public void OnDeviceShutdown(Entity<DeviceListComponent?> list, Entity<DeviceNetworkComponent> device)
+    public void OnDeviceShutdown(Entity<DeviceListComponent?> list, Entity<LinkedDeviceNetworkComponent> device)
     {
         device.Comp.DeviceLists.Remove(list.Owner);
-        if (!Resolve(list.Owner, ref list.Comp))
+        if (!_deviceListQuery.Resolve(list.Owner, ref list.Comp))
             return;
 
         list.Comp.Devices.Remove(device);
         Dirty(list);
-
-        VerifyDeviceList(list.Owner, list.Comp); // Goobstation - Fix desync of configurator lists
     }
 
+    [SubscribeLocalEvent]
     private void OnMapSave(BeforeSerializationEvent ev)
     {
-        List<EntityUid> toRemove = new();
-        var query = GetEntityQuery<TransformComponent>();
         var enumerator = AllEntityQuery<DeviceListComponent, TransformComponent>();
         while (enumerator.MoveNext(out var uid, out var device, out var xform))
         {
@@ -188,13 +198,15 @@ public sealed class DeviceListSystem : SharedDeviceListSystem
 
             foreach (var ent in device.Devices)
             {
-                if (!query.TryGetComponent(ent, out var linkedXform))
+                if (TerminatingOrDeleted(ent))
                 {
                     // Entity was deleted.
                     // TODO remove these on deletion instead of on-save.
-                    toRemove.Add(ent);
+                    _toRemove.Add(ent);
                     continue;
                 }
+
+                var linkedXform = Transform(ent);
 
                 // This is assuming that **all** of the map is getting saved.
                 // Which is not necessarily true.
@@ -202,7 +214,7 @@ public sealed class DeviceListSystem : SharedDeviceListSystem
                 if (ev.MapIds.Contains(linkedXform.MapID))
                     continue;
 
-                toRemove.Add(ent);
+                _toRemove.Add(ent);
                 // TODO full game saves.
                 // when full saves are supported, this should instead add data to the BeforeSaveEvent informing the
                 // saving system that this map (or null-space entity) also needs to be included in the save.
@@ -210,68 +222,80 @@ public sealed class DeviceListSystem : SharedDeviceListSystem
                     $"Saving a device list ({ToPrettyString(uid)}) that has a reference to an entity on another map ({ToPrettyString(ent)}). Removing entity from list.");
             }
 
-            if (toRemove.Count == 0)
+            if (_toRemove.Count == 0)
                 continue;
 
-            var old = device.Devices.ToList();
-            device.Devices.ExceptWith(toRemove);
-            RaiseLocalEvent(uid, new DeviceListUpdateEvent(old, device.Devices.ToList()));
-            Dirty(uid, device);
-            toRemove.Clear();
+            _oldCache.Clear();
+            _oldCache.UnionWith(device.Devices);
+            device.Devices.ExceptWith(_toRemove);
+            _toRemove.Clear();
+
+            var listEv = new DeviceListUpdateEvent(_oldCache, device.Devices);
+            RaiseLocalEvent(uid, ref listEv);
+            DirtyField(uid, device, nameof(DeviceListComponent.Devices));
         }
     }
 
     /// <summary>
-    ///     Updates the device list stored on this entity.
+    /// Updates the device list stored on this entity.
     /// </summary>
-    /// <param name="uid">The entity to update.</param>
+    /// <param name="ent">The entity to update.</param>
     /// <param name="devices">The devices to store.</param>
     /// <param name="merge">Whether to merge or replace the devices stored.</param>
-    /// <param name="deviceList">Device list component</param>
-    public DeviceListUpdateResult UpdateDeviceList(EntityUid uid, IEnumerable<EntityUid> devices, bool merge = false, DeviceListComponent? deviceList = null)
+    public DeviceListUpdateResult UpdateDeviceList(Entity<DeviceListComponent?> ent, ReadOnlySpan<EntityUid> devices, bool merge = false)
     {
-        if (!Resolve(uid, ref deviceList))
+        if (!_deviceListQuery.Resolve(ent.Owner, ref ent.Comp))
             return DeviceListUpdateResult.NoComponent;
 
-        var list = devices.ToList();
-        var newDevices = new HashSet<EntityUid>(list);
+        _newCache.Clear();
+        _oldCache.Clear();
+
+        foreach (var device in devices)
+        {
+            _newCache.Add(device);
+        }
 
         if (merge)
-            newDevices.UnionWith(deviceList.Devices);
+            _newCache.UnionWith(ent.Comp.Devices);
 
-        if (newDevices.Count > deviceList.DeviceLimit)
+        if (_newCache.Count > ent.Comp.DeviceLimit)
         {
             return DeviceListUpdateResult.TooManyDevices;
         }
 
-        var query = GetEntityQuery<DeviceNetworkComponent>();
-        var oldDevices = deviceList.Devices.ToList();
-        foreach (var device in oldDevices)
+        _oldCache.Clear();
+        _oldCache.UnionWith(ent.Comp.Devices);
+
+        foreach (var device in _oldCache)
         {
-            if (newDevices.Contains(device))
+            if (_newCache.Contains(device))
                 continue;
 
-            deviceList.Devices.Remove(device);
-            if (query.TryGetComponent(device, out var comp))
-                comp.DeviceLists.Remove(uid);
+            ent.Comp.Devices.Remove(device);
+
+            if (!_linkedDeviceQuery.TryComp(device, out var comp))
+                continue;
+
+            comp.DeviceLists.Remove(ent);
+            DirtyField(device, comp, nameof(LinkedDeviceNetworkComponent.DeviceLists));
         }
 
-        foreach (var device in newDevices)
+        foreach (var device in _newCache)
         {
-            if (!query.TryGetComponent(device, out var comp))
+            if (!_linkedDeviceQuery.TryComp(device, out var comp))
                 continue;
 
-            if (!deviceList.Devices.Add(device))
+            if (!ent.Comp.Devices.Add(device))
                 continue;
 
-            comp.DeviceLists.Add(uid);
+            comp.DeviceLists.Add(ent);
+            DirtyField(device, comp, nameof(LinkedDeviceNetworkComponent.DeviceLists));
         }
 
-        RaiseLocalEvent(uid, new DeviceListUpdateEvent(oldDevices, list));
+        var ev = new DeviceListUpdateEvent(_oldCache, ent.Comp.Devices);
+        RaiseLocalEvent(ent, ref ev);
 
-        Dirty(uid, deviceList);
-
-        VerifyDeviceList(uid, deviceList); // Goobstation - Fix desync of configurator lists
+        DirtyField(ent, nameof(DeviceListComponent.Devices));
 
         return DeviceListUpdateResult.UpdateOk;
     }

@@ -10,6 +10,7 @@ using Robust.Client.UserInterface.XAML;
 using Robust.Shared.Prototypes;
 using System.Linq;
 using System.Numerics;
+using Content.Client.Stylesheets;
 
 namespace Content.Client.SprayPainter.UI;
 

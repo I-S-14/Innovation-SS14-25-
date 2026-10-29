@@ -8,7 +8,7 @@ using Content.Shared.Eui;
 using System.Linq;
 using System.Threading.Tasks;
 using Robust.Shared.Network;
-using static Content.Shared.Administration.Notes.AdminNoteEuiMsg;
+using Content.Server.Database;
 
 namespace Content.Server.Administration.Notes;
 

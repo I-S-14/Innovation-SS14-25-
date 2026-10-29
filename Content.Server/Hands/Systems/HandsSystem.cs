@@ -77,7 +77,8 @@ namespace Content.Server.Hands.Systems
                 hands.HandDisplacement,
                 hands.LeftHandDisplacement,
                 hands.RightHandDisplacement,
-                hands.CanBeStripped);
+                hands.CanBeStripped,
+                hands.NextThrowTime); // Trauma
         }
 
 

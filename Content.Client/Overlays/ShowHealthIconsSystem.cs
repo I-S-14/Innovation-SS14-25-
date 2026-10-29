@@ -7,6 +7,7 @@ using Content.Shared.Overlays;
 using Content.Shared.StatusIcon;
 using Content.Shared.StatusIcon.Components;
 using Content.Shared.Damage.Components;
+using Robust.Shared.Prototypes;
 
 namespace Content.Client.Overlays;
 

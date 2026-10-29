@@ -4,6 +4,7 @@ using Content.Shared.Alert;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
+using Content.Shared.Movement.Pulling.Systems;
 
 namespace Content.Shared.Movement.Pulling.Components;
 

@@ -32,6 +32,8 @@ using Content.Goobstation.Shared.MartialArts.Components;
 using Content.Shared.Tools.Systems;
 using Content.Shared.Tools.Components;
 using Robust.Shared.Prototypes;
+using Content.Shared.Gibbing;
+using Content.Shared.Movement.Events;
 
 namespace Content.Shared.Kitchen;
 
@@ -40,19 +42,7 @@ namespace Content.Shared.Kitchen;
 /// </summary>
 public sealed partial class SharedKitchenSpikeSystem : EntitySystem
 {
-    [Dependency] private readonly IGameTiming _gameTiming = default!;
-    [Dependency] private readonly ISharedAdminLogManager _logger = default!;
-    [Dependency] private readonly DamageableSystem _damageableSystem = default!;
-    [Dependency] private readonly ExamineSystemShared _examineSystem = default!;
-    [Dependency] private readonly MetaDataSystem _metaDataSystem = default!;
-    [Dependency] private readonly MobStateSystem _mobStateSystem = default!;
-    [Dependency] private readonly SharedAppearanceSystem _appearanceSystem = default!;
-    [Dependency] private readonly SharedAudioSystem _audioSystem = default!;
     [Dependency] private readonly SharedBodySystem _bodySystem = default!;
-    [Dependency] private readonly SharedContainerSystem _containerSystem = default!;
-    [Dependency] private readonly SharedDoAfterSystem _doAfterSystem = default!;
-    [Dependency] private readonly SharedInteractionSystem _interaction = default!;
-    [Dependency] private readonly SharedPopupSystem _popupSystem = default!;
     [Dependency] private IGameTiming _gameTiming = default!;
     [Dependency] private ISharedAdminLogManager _logger = default!;
     [Dependency] private DamageableSystem _damageableSystem = default!;

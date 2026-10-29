@@ -14,6 +14,7 @@ using Robust.Client.UserInterface.CustomControls;
 using Robust.Client.UserInterface.XAML;
 using Robust.Shared.Graphics.RSI;
 using Robust.Shared.Prototypes;
+using Content.Client.Actions;
 
 namespace Content.Client.Store.Ui;
 

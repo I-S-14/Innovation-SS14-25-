@@ -25,7 +25,6 @@ public sealed partial class MoverController : SharedMoverController
         "physics_active_mover_count",
         "Amount of ActiveInputMovers being processed by MoverController");
 
-    [Dependency] private readonly ThrusterSystem _thruster = default!;
     [Dependency] private readonly SkillsSystem _skills = default!; // CorvaxGoob-Skills
     [Dependency] private ThrusterSystem _thruster = default!;
     [Dependency] private EntityQuery<ActiveInputMoverComponent> _activeQuery = default!;

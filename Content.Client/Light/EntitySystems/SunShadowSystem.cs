@@ -7,6 +7,7 @@ using Content.Shared.Light.Components;
 using Content.Shared.Light.EntitySystems;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
+using Content.Client.GameTicking.Managers;
 
 namespace Content.Client.Light.EntitySystems;
 

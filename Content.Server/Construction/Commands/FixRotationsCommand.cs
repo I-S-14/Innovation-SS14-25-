@@ -8,6 +8,7 @@ using Content.Shared.Tag;
 using Robust.Shared.Console;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Prototypes;
+using Content.Server.Power.Components;
 
 namespace Content.Server.Construction.Commands;
 

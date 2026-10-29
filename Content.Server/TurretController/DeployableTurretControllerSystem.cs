@@ -13,6 +13,7 @@ using Content.Shared.DeviceConfigurator;
 using Content.Shared.DeviceConfigurator.Systems;
 using Content.Shared.DeviceLinking;
 using Content.Shared.DeviceNetwork;
+using Content.Server.DeviceNetwork.Systems;
 
 namespace Content.Server.TurretController;
 

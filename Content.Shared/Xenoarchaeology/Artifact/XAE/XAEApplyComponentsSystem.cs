@@ -1,4 +1,5 @@
 using Content.Shared.Xenoarchaeology.Artifact.XAE.Components;
+using Robust.Shared.Timing;
 
 namespace Content.Shared.Xenoarchaeology.Artifact.XAE;
 

@@ -16,7 +16,6 @@ namespace Content.Client.Shuttles.UI;
 [GenerateTypedNameReferences]
 public sealed partial class NavScreen : BoxContainer
 {
-    [Dependency] private readonly IEntityManager _entManager = default!;
     [Dependency] private readonly IPrototypeManager _protoMan = default!; // Frontier
     [Dependency] private IEntityManager _entManager = default!;
     private SharedTransformSystem _xformSystem;

@@ -3,6 +3,7 @@
 using Content.Server.Objectives.Components;
 using Content.Shared.Objectives.Components;
 using Content.Shared.Roles.Jobs;
+using Content.Server.Revolutionary.Components;
 
 namespace Content.Server.Objectives.Systems;
 

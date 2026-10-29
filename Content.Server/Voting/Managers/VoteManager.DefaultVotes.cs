@@ -20,6 +20,8 @@ using Robust.Shared.Configuration;
 using Robust.Shared.Enums;
 using Robust.Shared.Player;
 using Robust.Shared.Random;
+using System.Net;
+using System.Net.Sockets;
 
 namespace Content.Server.Voting.Managers
 {

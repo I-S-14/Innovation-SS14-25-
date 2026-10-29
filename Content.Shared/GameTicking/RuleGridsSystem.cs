@@ -1,7 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-using Content.Server.Antag;
-using Content.Server.Spawners.Components;
 using Content.Shared.Antag;
 using Content.Shared.GameTicking.Rules;
 using Content.Shared.Spawners.Components;

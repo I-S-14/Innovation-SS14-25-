@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-using Content.Server.Speech.Prototypes;
 using Robust.Shared.Prototypes;
 
 namespace Content.Server.Speech.Components;

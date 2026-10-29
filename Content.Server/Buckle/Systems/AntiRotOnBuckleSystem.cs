@@ -3,6 +3,7 @@
 using Content.Shared.Atmos.Rotting;
 using Content.Shared.Buckle.Components;
 using Content.Shared.Power;
+using Content.Server.Power.Components;
 
 namespace Content.Server.Buckle.Systems;
 

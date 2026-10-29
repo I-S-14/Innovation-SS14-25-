@@ -70,8 +70,6 @@ namespace Content.Server.Voting
     [AdminCommand(AdminFlags.Round)]
     public sealed partial class CreateCustomCommand : LocalizedEntityCommands
     {
-        [Dependency] private IVoteManager _voteManager = default!;
-        [Dependency] private IAdminLogManager _adminLogger = default!;
         [Dependency] private IChatManager _chatManager = default!;
         [Dependency] private VoteWebhooks _voteWebhooks = default!;
         [Dependency] private IConfigurationManager _cfg = default!;
@@ -165,7 +163,6 @@ namespace Content.Server.Voting
     [AnyCommand]
     public sealed partial class VoteCommand : LocalizedEntityCommands
     {
-        [Dependency] private IVoteManager _voteManager = default!;
 
         public override string Command => "vote";
 
@@ -223,7 +220,6 @@ namespace Content.Server.Voting
     [AnyCommand]
     public sealed partial class ListVotesCommand : LocalizedEntityCommands
     {
-        [Dependency] private IVoteManager _voteManager = default!;
 
         public override string Command => "listvotes";
 
@@ -239,8 +235,6 @@ namespace Content.Server.Voting
     [AdminCommand(AdminFlags.Round)]
     public sealed partial class CancelVoteCommand : LocalizedEntityCommands
     {
-        [Dependency] private IAdminLogManager _adminLogger = default!;
-        [Dependency] private IVoteManager _voteManager = default!;
 
         public override string Command => "cancelvote";
 

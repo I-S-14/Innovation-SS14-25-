@@ -11,6 +11,7 @@ using Robust.Shared.Containers;
 using Robust.Shared.Network;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
+using Content.Shared.Ghost;
 
 namespace Content.Shared.Actions;
 

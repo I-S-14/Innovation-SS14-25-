@@ -15,7 +15,6 @@ using Robust.Client.Audio;
 using Robust.Shared.Configuration;
 using Robust.Shared.Map;
 using Robust.Shared.Timing;
-using static Content.Client.Tips.TippyUI;
 
 namespace Content.Client.Tips;
 

@@ -77,7 +77,6 @@ namespace Content.Server.Administration.Commands
     [AdminCommand(AdminFlags.Round | AdminFlags.Spawn)]
     public sealed partial class ListGameMaps : LocalizedCommands
     {
-        [Dependency] private IPrototypeManager _prototypeManager = default!;
 
         public override string Command => "listgamemaps";
 

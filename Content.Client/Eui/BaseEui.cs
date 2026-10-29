@@ -2,6 +2,7 @@
 
 using Content.Shared.Eui;
 using Robust.Shared.Network;
+using Robust.Shared.IoC;
 
 namespace Content.Client.Eui
 {

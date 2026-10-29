@@ -15,20 +15,14 @@ using Content.Shared.Stunnable;
 using Content.Shared._Shitmed.Targeting; // Shitmed Change
 using Content.Shared.Hands.Components;
 using Content.Shared.Hands.EntitySystems; // Shitmed Change
+using Robust.Shared.Network;
+using Content.Shared.Random;
+using Content.Shared.Effects;
 
 namespace Content.Shared.Damage.Systems;
 
 public sealed partial class DamageOnInteractSystem : EntitySystem
 {
-    [Dependency] private readonly ISharedAdminLogManager _adminLogger = default!;
-    [Dependency] private readonly DamageableSystem _damageableSystem = default!;
-    [Dependency] private readonly SharedAudioSystem _audioSystem = default!;
-    [Dependency] private readonly SharedPopupSystem _popupSystem = default!;
-    [Dependency] private readonly InventorySystem _inventorySystem = default!;
-    [Dependency] private readonly ThrowingSystem _throwingSystem = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly IGameTiming _gameTiming = default!;
-    [Dependency] private readonly SharedStunSystem _stun = default!;
     [Dependency] private readonly SharedHandsSystem _hands = default!;
     [Dependency] private ISharedAdminLogManager _adminLogger = default!;
     [Dependency] private DamageableSystem _damageableSystem = default!;

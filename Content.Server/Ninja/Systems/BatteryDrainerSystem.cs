@@ -19,10 +19,6 @@ namespace Content.Server.Ninja.Systems;
 /// </summary>
 public sealed partial class BatteryDrainerSystem : SharedBatteryDrainerSystem
 {
-    [Dependency] private readonly SharedBatterySystem _battery = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
-    [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly SparksSystem _sparks = default!; // goob edit - sparks everywhere
     [Dependency] private SharedBatterySystem _battery = default!;
     [Dependency] private SharedAudioSystem _audio = default!;

@@ -1,95 +1,33 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
-using Content.Shared._CorvaxGoob.Skills;
-using Content.Shared.Antag;
-using Content.Shared.Destructible.Thresholds;
 using Content.Shared.Preferences.Loadouts;
 using Content.Shared.Roles;
 using Content.Shared.Whitelist;
 using Robust.Shared.Audio;
-using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.Array;
 
-namespace Content.Server.Antag.Components;
+namespace Content.Shared.Antag;
 
-// goob edit - no more specified access.
-// will it turn out to be a bad decision? probably yes
-// do i care? :trollface:
-[RegisterComponent, /*Access(typeof(AntagSelectionSystem), typeof(AdminVerbSystem))*/]
-public sealed partial class AntagSelectionComponent : Component
-{
-    /// <summary>
-    /// Has the primary assignment of antagonists finished yet?
-    /// </summary>
-    [DataField]
-    public bool AssignmentComplete;
-
-    /// <summary>
-    /// Has the antagonists been preselected but yet to be fully assigned?
-    /// </summary>
-    [DataField]
-    public bool PreSelectionsComplete;
-
-    /// <summary>
-    /// The definitions for the antagonists
-    /// </summary>
-    [DataField]
-    public List<AntagSelectionDefinition> Definitions = new();
-
-    /// <summary>
-    /// The minds and original names of the players assigned to be antagonists.
-    /// </summary>
-    [DataField]
-    public List<(EntityUid, string)> AssignedMinds = new();
-
-    /// <summary>
-    /// When the antag selection will occur.
-    /// </summary>
-    [DataField]
-    public AntagSelectionTime SelectionTime = AntagSelectionTime.PostPlayerSpawn;
-
-    /// <summary>
-    /// Cached sessions of antag definitions and selected players. Players in this dict are not guaranteed to have been assigned the role yet.
-    /// </summary>
-    [DataField]
-    public Dictionary<AntagSelectionDefinition, HashSet<ICommonSession>>PreSelectedSessions = new();
-
-    /// <summary>
-    /// Cached sessions of players who are chosen. Used so we don't have to rebuild the pool multiple times in a tick.
-    /// Is not serialized.
-    /// </summary>
-    public HashSet<ICommonSession> AssignedSessions = new();
-
-    /// <summary>
-    /// Locale id for the name of the antag.
-    /// If this is set then the antag is listed in the round-end summary.
-    /// </summary>
-    [DataField]
-    public LocId? AgentName;
-
-    /// <summary>
-    /// If the player is pre-selected but fails to spawn in (e.g. due to only having antag-immune jobs selected),
-    /// should they be removed from the pre-selection list?
-    /// </summary>
-    [DataField]
-    public bool RemoveUponFailedSpawn = true;
-
-    /// <summary>
-    /// Goobstation.
-    /// Whether the round end text should show original entity name or mind character name.
-    /// </summary>
-    [DataField]
-    public bool UseCharacterNames;
-}
-
+/// <summary>
+/// A more specific version of <see cref="AntagPrototype"/> which includes additional information that can vary between antags of the same type.
+/// </summary>
+/// <remarks>
+/// Some of this should be moved to <see cref="AntagSelectionComponent"/> at a later date.
+/// Specifically MinMax, PlayerRatio and LateJoin logic.
+/// This would allow for greater control over spawning that a static prototype doesn't offer.
+/// </remarks>
+[Prototype]
 [DataDefinition]
-public partial struct AntagSelectionDefinition()
+public sealed partial class AntagSpecifierPrototype : IPrototype, IInheritingPrototype
 {
-    /// <summary>
-    /// A list of jobs which cannnot roll this antag. | GOOBSTATION
-    /// </summary>
-    [DataField("jobBlacklist")]
-    public List<ProtoId<JobPrototype>>? JobBlacklist;
+    [ParentDataField(typeof(AbstractPrototypeIdArraySerializer<AntagSpecifierPrototype>))]
+    public string[]? Parents { get; private set; }
+
+    [NeverPushInheritance]
+    [AbstractDataField]
+    public bool Abstract { get; private set; }
+
+    [ViewVariables, IdDataField]
+    public string ID { get; private set; } = default!;
 
     /// <summary>
     /// A list of antagonist roles that are used for selecting which players will be antagonists.
@@ -98,46 +36,10 @@ public partial struct AntagSelectionDefinition()
     public List<ProtoId<AntagPrototype>> PrefRoles = new();
 
     /// <summary>
-    /// Fallback for <see cref="PrefRoles"/>. Useful if you need multiple role preferences for a team antagonist.
-    /// </summary>
-    [DataField]
-    public List<ProtoId<AntagPrototype>> FallbackRoles = new();
-
-    /// <summary>
     /// Should we allow people who already have an antagonist role?
     /// </summary>
     [DataField]
     public AntagAcceptability MultiAntagSetting = AntagAcceptability.None;
-
-    /// <summary>
-    /// The minimum number of this antag.
-    /// </summary>
-    [DataField]
-    public int Min = 1;
-
-    /// <summary>
-    /// The maximum number of this antag.
-    /// </summary>
-    [DataField]
-    public int Max = 1;
-
-    /// <summary>
-    /// A range used to randomly select <see cref="Min"/>
-    /// </summary>
-    [DataField]
-    public MinMax? MinRange;
-
-    /// <summary>
-    /// A range used to randomly select <see cref="Max"/>
-    /// </summary>
-    [DataField]
-    public MinMax? MaxRange;
-
-    /// <summary>
-    /// a player to antag ratio: used to determine the amount of antags that will be present.
-    /// </summary>
-    [DataField]
-    public int PlayerRatio = 10;
 
     /// <summary>
     /// Whether or not players should be picked to inhabit this antag or not.
@@ -147,36 +49,45 @@ public partial struct AntagSelectionDefinition()
     public bool PickPlayer = true;
 
     /// <summary>
-    /// If true, players that latejoin into a round have a chance of being converted into antagonists.
+    /// A list of whitelisted jobs for this antagonist.
+    /// Useful for antags that should only roll on a specific job, such as Malf AI.
     /// </summary>
     [DataField]
-    public bool LateJoinAdditional = false;
+    [AlwaysPushInheritance]
+    public HashSet<ProtoId<JobPrototype>>? JobWhitelist;
 
-    //todo: find out how to do this with minimal boilerplate: filler department, maybe?
-    //public HashSet<ProtoId<JobPrototype>> JobBlacklist = new()
+    /// <summary>
+    /// A list of blacklisted jobs for this antagonist.
+    /// </summary>
+    [DataField]
+    [AlwaysPushInheritance]
+    public HashSet<ProtoId<JobPrototype>>? JobBlacklist;
 
     /// <remarks>
     /// Mostly just here for legacy compatibility and reducing boilerplate
     /// </remarks>
     [DataField]
-    public bool AllowNonHumans = false;
+    public bool AllowNonHumans;
 
     /// <summary>
     /// A whitelist for selecting which players can become this antag.
     /// </summary>
     [DataField]
+    [AlwaysPushInheritance]
     public EntityWhitelist? Whitelist;
 
     /// <summary>
     /// A blacklist for selecting which players can become this antag.
     /// </summary>
     [DataField]
+    [AlwaysPushInheritance]
     public EntityWhitelist? Blacklist;
 
     /// <summary>
     /// Components added to the player.
     /// </summary>
     [DataField]
+    [AlwaysPushInheritance]
     public ComponentRegistry Components = new();
 
     /// <summary>
@@ -184,12 +95,14 @@ public partial struct AntagSelectionDefinition()
     /// Do NOT use this to add role-type components. Add those as MindRoles instead
     /// </summary>
     [DataField]
+    [AlwaysPushInheritance]
     public ComponentRegistry MindComponents = new();
 
     /// <summary>
     /// List of Mind Role Prototypes to be added to the player's mind.
     /// </summary>
     [DataField]
+    [AlwaysPushInheritance]
     public List<EntProtoId>? MindRoles;
 
     /// <summary>
@@ -219,37 +132,26 @@ public partial struct AntagSelectionDefinition()
     /// </remarks>
     [DataField]
     public EntProtoId? SpawnerPrototype;
+}
 
-    // goob edit - actual pacifism implant
-    [DataField]
-    public List<JobSpecial> Special = new();
-
+/// <summary>
+/// Used by AntagSelectionSystem to indicate which types of antag roles are allowed to choose the same entity
+/// For example, Thief HeadRev
+/// </summary>
+public enum AntagAcceptability
+{
     /// <summary>
-    /// Goobstation
-    /// Does this antag role roll before job
+    /// Dont choose anyone who already has an antag role
     /// </summary>
-    [DataField]
-    public bool RollBeforeJob = true;
-
+    None,
     /// <summary>
-    /// Goobstation
-    /// Unequip all gear before making antag
+    /// Dont choose anyone who has an exclusive antag role
     /// </summary>
-    [DataField]
-    public bool UnequipOldGear;
-
+    NotExclusive,
     /// <summary>
-    /// Goobstation
-    /// If not null, how much chaos should secret+ consider us to have per-antag.
+    /// Choose anyone
     /// </summary>
-    [DataField]
-    public float? ChaosScore = null;
-
-    /// <summary>
-    /// Skills that will be given on make antag.
-    /// </summary>
-    [DataField]
-    public HashSet<Skills> Skills = [];
+    All,
 }
 
 /// <summary>
@@ -276,3 +178,4 @@ public partial struct BriefingData
     [DataField]
     public SoundSpecifier? Sound;
 }
+

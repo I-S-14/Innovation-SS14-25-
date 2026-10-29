@@ -11,6 +11,9 @@ using Robust.Shared.Utility;
 using System.Linq;
 using Content.Shared.Interaction.Events;
 using JetBrains.Annotations;
+using System;
+using Content.Shared.Wieldable;
+using Content.Shared.Wieldable.Components;
 
 namespace Content.Shared.Weapons.Ranged.Systems;
 

@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 /* CorvaxGoob-Coins-start
-using Content.Client._durkcode.ServerCurrency; CorvaxGoob-Coins
 using Content.Client._RMC14.LinkAccount;
 CorvaxGoob-Coins-end */
 using Content.Client.Audio;
@@ -22,6 +21,7 @@ using Robust.Client.UserInterface.Controls;
 using Robust.Shared.Configuration;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
+using Content.Client.GameTicking.Managers;
 
 namespace Content.Client.Lobby
 {

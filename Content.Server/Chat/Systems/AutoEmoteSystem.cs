@@ -6,6 +6,7 @@ using Content.Shared.Chat.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
+using Robust.Shared.Prototypes;
 
 namespace Content.Server.Chat.Systems;
 

@@ -18,6 +18,7 @@ using Robust.Client.UserInterface;
 using Robust.Shared.Configuration;
 using Robust.Shared.Enums;
 using Robust.Shared.Prototypes;
+using Content.Shared.Ghost;
 
 namespace Content.Client.Administration;
 

@@ -1,4 +1,5 @@
 using Content.Shared.NameModifier.EntitySystems;
+using Robust.Shared.Prototypes;
 
 namespace Content.Shared.NameIdentifier;
 

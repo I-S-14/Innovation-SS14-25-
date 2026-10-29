@@ -4,6 +4,7 @@ using Content.Shared.ActionBlocker;
 using Content.Shared.Movement.Events;
 using Content.Shared.Shuttles.Components;
 using Robust.Shared.Serialization;
+using Content.Shared.Shuttles.BUIStates;
 
 namespace Content.Shared.Shuttles.Systems
 {

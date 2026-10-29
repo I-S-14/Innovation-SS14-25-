@@ -12,6 +12,7 @@ using Content.Shared.Light.Components;
 using Content.Shared.Radio;
 using Content.Shared.Radio.Components;
 using Robust.Shared.Random;
+using Content.Server.Light.Components;
 
 namespace Content.Server.StationEvents.Events;
 

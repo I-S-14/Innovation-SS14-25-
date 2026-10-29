@@ -12,6 +12,7 @@ using JetBrains.Annotations;
 using Robust.Shared.Containers;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
+using Robust.Shared.Collections;
 
 namespace Content.Shared.Item;
 

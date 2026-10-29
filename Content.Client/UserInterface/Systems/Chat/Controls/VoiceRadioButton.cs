@@ -124,8 +124,6 @@ public sealed class VoiceRadioButton : Button
 
 public sealed class VoiceRadioPopup : Popup
 {
-    [Dependency] private readonly IPrototypeManager _prototype = default!;
-    [Dependency] private readonly IConfigurationManager _cfg = default!;
 
     private const float LabelWidth = 48f;
     private const int BulkThreshold = 3;

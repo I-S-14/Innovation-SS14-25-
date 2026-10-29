@@ -77,8 +77,6 @@ public sealed class DatabasePlaytimeGetTrackerCommand : IConsoleCommand
 [AdminCommand(AdminFlags.Playtime)]
 public sealed class DatabasePlaytimeAddTrackerTimeCommand : IConsoleCommand
 {
-    [Dependency] private readonly IServerDbManager _db = default!;
-    [Dependency] private readonly IPrototypeManager _prototype = default!;
     public string Command => "databaseplaytime_addtracker";
     public string Description => Loc.GetString("cmd-database-playtime_addrole-desc");
     public string Help => Loc.GetString("cmd-database-playtime_addrole-help", ("command", Command));

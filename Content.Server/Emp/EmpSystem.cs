@@ -2,6 +2,7 @@ using Content.Server.Power.EntitySystems;
 using Content.Server.SurveillanceCamera;
 using Content.Shared.Emp;
 using Content.Shared.Radio;
+using Content.Server.Radio;
 
 namespace Content.Server.Emp;
 

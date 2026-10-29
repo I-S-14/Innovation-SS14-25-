@@ -4,6 +4,7 @@ using Content.Shared.Nutrition.EntitySystems;
 using Content.Shared.Nutrition.Prototypes;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
+using Content.Shared.Nutrition.Components;
 
 namespace Content.Shared.Sericulture;
 

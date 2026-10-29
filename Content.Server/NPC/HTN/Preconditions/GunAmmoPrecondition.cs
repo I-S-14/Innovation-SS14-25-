@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 using Content.Shared.Weapons.Ranged.Events;
 using Content.Shared.Weapons.Ranged.Systems;
+using Content.Server.Weapons.Ranged.Systems;
 
 namespace Content.Server.NPC.HTN.Preconditions;
 

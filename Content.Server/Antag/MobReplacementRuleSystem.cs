@@ -7,6 +7,7 @@ using Content.Shared.GameTicking.Rules;
 using Content.Shared.VendingMachines.Components;
 using Robust.Shared.Map;
 using Robust.Shared.Random;
+using Content.Shared.VendingMachines;
 
 namespace Content.Server.Antag;
 

@@ -8,6 +8,7 @@ using Content.Shared.DeviceNetwork.Events;
 using Content.Shared.Power.Components;
 using Content.Shared.Power.EntitySystems;
 using Content.Shared.SensorMonitoring;
+using Content.Shared.DeviceNetwork;
 
 namespace Content.Server.SensorMonitoring;
 

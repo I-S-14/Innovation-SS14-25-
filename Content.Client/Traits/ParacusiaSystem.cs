@@ -7,6 +7,7 @@ using Robust.Client.Player;
 using Robust.Shared.Player;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Timing;
+using Robust.Shared.Audio;
 
 namespace Content.Client.Traits;
 

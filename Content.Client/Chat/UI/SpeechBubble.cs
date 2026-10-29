@@ -10,6 +10,8 @@ using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
+using Content.Shared.Speech;
+using Robust.Shared.Configuration;
 
 namespace Content.Client.Chat.UI
 {

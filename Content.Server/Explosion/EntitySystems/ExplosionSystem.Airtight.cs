@@ -11,7 +11,7 @@ using Content.Goobstation.Maths.FixedPoint;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
-using static Content.Server.Explosion.Components.ExplosionAirtightGridComponent;
+using System.Linq;
 
 namespace Content.Server.Explosion.EntitySystems;
 

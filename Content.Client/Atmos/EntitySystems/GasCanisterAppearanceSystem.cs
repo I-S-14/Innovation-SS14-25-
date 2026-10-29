@@ -1,6 +1,7 @@
 using Content.Shared.Atmos.Piping.Unary.Components;
 using Content.Shared.SprayPainter.Prototypes;
 using Robust.Client.GameObjects;
+using Robust.Shared.Prototypes;
 
 namespace Content.Client.Atmos.EntitySystems;
 

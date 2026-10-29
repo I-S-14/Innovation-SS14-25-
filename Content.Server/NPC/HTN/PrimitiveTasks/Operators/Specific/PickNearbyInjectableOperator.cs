@@ -7,6 +7,10 @@ using Content.Shared.Interaction;
 using Content.Shared.Silicons.Bots;
 using Content.Shared.Stealth.Components; // Goobstation
 using Content.Shared.Emag.Components;
+using Content.Shared.NPC.Components;
+using Content.Shared.Chemistry.Components.SolutionManager;
+using Content.Shared.Damage.Components;
+using Content.Shared.Mobs.Components;
 
 namespace Content.Server.NPC.HTN.PrimitiveTasks.Operators.Specific;
 

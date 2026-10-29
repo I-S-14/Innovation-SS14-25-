@@ -7,6 +7,7 @@ using Content.Shared.Chat; // Einstein Engines - Languages
 using Content.Shared.Chat;
 using Content.Shared.UserInterface;
 using Robust.Shared.Random;
+using Robust.Shared.Prototypes;
 
 namespace Content.Server.Advertise.EntitySystems;
 

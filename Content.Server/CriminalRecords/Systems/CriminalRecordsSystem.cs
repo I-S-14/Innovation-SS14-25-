@@ -12,6 +12,9 @@ using Content.Shared.CartridgeLoader;
 using Content.Shared.CartridgeLoader.Cartridges;
 using Content.Shared.StationRecords.Events;
 using Content.Shared.StationRecords.Systems;
+using Content.Server.CartridgeLoader;
+using Content.Server.CartridgeLoader.Cartridges;
+using Content.Server.StationRecords.Systems;
 
 namespace Content.Server.CriminalRecords.Systems;
 

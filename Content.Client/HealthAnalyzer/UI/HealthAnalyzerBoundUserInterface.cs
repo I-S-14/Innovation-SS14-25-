@@ -3,34 +3,24 @@
 using Content.Shared.MedicalScanner;
 using Content.Shared._Shitmed.Targeting; // Shitmed Change
 using Content.Shared._Shitmed.Medical.HealthAnalyzer; // Shitmed Change
-using Content.Shared.Medical.HealthAnalyzer;
 using JetBrains.Annotations;
 using Robust.Client.UserInterface;
 
-namespace Content.Client.HealthAnalyzer.UI;
-
-[UsedImplicitly]
-public sealed partial class HealthAnalyzerBoundUserInterface(EntityUid owner, Enum uiKey) : BoundUserInterface(owner, uiKey)
+namespace Content.Client.HealthAnalyzer.UI
 {
-    [ViewVariables]
-    private HealthAnalyzerWindow? _window;
-
-    protected override void Open()
+    [UsedImplicitly]
+    public sealed class HealthAnalyzerBoundUserInterface : BoundUserInterface
     {
-        base.Open();
+        [ViewVariables]
+        private HealthAnalyzerWindow? _window;
 
-        _window = this.CreateWindow<HealthAnalyzerWindow>();
-        _window.Title = EntMan.GetComponent<MetaDataComponent>(Owner).EntityName;
-    }
+        public HealthAnalyzerBoundUserInterface(EntityUid owner, Enum uiKey) : base(owner, uiKey)
+        {
+        }
 
-    /// <summary>
-    /// This will update the UI to reflect the newest health changes of the scanned entity.
-    /// This gets called in the <see cref="HealthAnalyzerSystem"/> by SetUIState().
-    /// </summary>
-    protected override void UpdateState(BoundUserInterfaceState state)
-    {
-        if (_window == null || state is not HealthAnalyzerUiState cast)
-            return;
+        protected override void Open()
+        {
+            base.Open();
 
             _window = this.CreateWindow<HealthAnalyzerWindow>();
             _window.OnBodyPartSelected += SendBodyPartMessage; // Shitmed Change

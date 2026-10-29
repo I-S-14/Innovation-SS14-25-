@@ -2,6 +2,7 @@
 
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.CustomControls;
+using Robust.Client.GameObjects;
 
 namespace Content.Client.Computer
 {

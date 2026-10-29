@@ -3,6 +3,7 @@
 using Content.Shared.Alert;
 using Content.Shared.Movement.Pulling.Systems; // Goobstation
 using Robust.Shared.GameStates;
+using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Movement.Pulling.Components;
 

@@ -4,6 +4,7 @@ using Content.Server.Solar.Components;
 using Content.Shared.Solar;
 using JetBrains.Annotations;
 using Robust.Server.GameObjects;
+using Content.Server.UserInterface;
 
 namespace Content.Server.Solar.EntitySystems
 {

@@ -6,6 +6,7 @@ using Content.Shared.Procedural;
 using Content.Shared.Procedural.DungeonGenerators;
 using Robust.Shared.Random;
 using Robust.Shared.Utility;
+using Content.Shared.Maps;
 
 namespace Content.Server.Procedural.DungeonJob;
 

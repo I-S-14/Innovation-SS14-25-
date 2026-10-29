@@ -8,7 +8,6 @@ using Content.Shared.Database;
 using Content.Shared.Interaction.Events;
 using Content.Shared.Kitchen.Components;
 using Content.Shared.Kitchen.EntitySystems;
-using Content.Shared.Suicide;
 using Robust.Shared.Player;
 using Robust.Shared.Random;
 

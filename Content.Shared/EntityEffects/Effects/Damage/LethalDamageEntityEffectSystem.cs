@@ -1,7 +1,7 @@
 using Content.Shared.Damage.Components;
 using Content.Shared.Damage.Prototypes;
-using Content.Shared.Suicide;
 using Robust.Shared.Prototypes;
+using Content.Shared.Suicide;
 
 namespace Content.Shared.EntityEffects.Effects.Damage;
 

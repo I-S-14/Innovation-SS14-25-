@@ -4,6 +4,8 @@ using System.Diagnostics.CodeAnalysis;
 using Content.Shared.DoAfter;
 using Robust.Client.Graphics;
 using Robust.Client.Player;
+using Content.Shared.Hands.Components;
+using Robust.Shared.Prototypes;
 
 namespace Content.Client.DoAfter;
 

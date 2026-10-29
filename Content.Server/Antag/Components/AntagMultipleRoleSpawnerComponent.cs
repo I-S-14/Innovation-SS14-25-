@@ -1,5 +1,6 @@
 using Content.Shared.Antag;
 using Robust.Shared.Prototypes;
+using Content.Shared.Roles;
 
 namespace Content.Server.Antag.Components;
 

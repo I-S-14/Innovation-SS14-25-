@@ -7,6 +7,7 @@ using Robust.Client.Utility;
 using Robust.Shared.Graphics.RSI;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
+using Robust.Shared.Graphics;
 
 namespace Content.Client.Clickable
 {

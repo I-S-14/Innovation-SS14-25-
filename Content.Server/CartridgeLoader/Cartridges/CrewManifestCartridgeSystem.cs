@@ -8,6 +8,7 @@ using Content.Shared.CCVar;
 using Content.Shared.CrewManifest;
 using Robust.Shared.Configuration;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Containers;
 
 namespace Content.Server.CartridgeLoader.Cartridges;
 

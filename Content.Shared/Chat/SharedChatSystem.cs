@@ -58,12 +58,7 @@ public abstract partial class SharedChatSystem : EntitySystem
     public static readonly ProtoId<SpeechVerbPrototype> DefaultSpeechVerb = "Default";
 
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] private readonly EntityWhitelistSystem _whitelist = default!;
-    [Dependency] private readonly ActionBlockerSystem _actionBlocker = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly INetManager _net = default!;
     [Dependency] private readonly SharedLanguageSystem _language = default!; // Einstein Engines - Language
     [Dependency] protected IConfigurationManager Config = default!;
     [Dependency] private INetManager _net = default!;

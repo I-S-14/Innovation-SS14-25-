@@ -10,6 +10,9 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 using Content.Shared.UserInterface;
 using Robust.Shared.Utility;
+using Content.Shared.Interaction;
+using Content.Shared.Popups;
+using Content.Shared.Stacks;
 
 namespace Content.Server.Store.Systems;
 

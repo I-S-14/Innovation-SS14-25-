@@ -41,6 +41,8 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Replays;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
+using Content.Client.Roles;
+using Content.Client.Stylesheets;
 
 
 namespace Content.Client.UserInterface.Systems.Chat;

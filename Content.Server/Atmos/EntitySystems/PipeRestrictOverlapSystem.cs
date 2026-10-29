@@ -21,9 +21,6 @@ namespace Content.Server.Atmos.EntitySystems;
 public sealed partial class PipeRestrictOverlapSystem : EntitySystem
 {
     [Dependency] private readonly IConfigurationManager _cfg = default!;
-    [Dependency] private readonly MapSystem _map = default!;
-    [Dependency] private readonly PopupSystem _popup = default!;
-    [Dependency] private readonly TransformSystem _xform = default!;
     [Dependency] private MapSystem _map = default!;
     [Dependency] private PopupSystem _popup = default!;
     [Dependency] private TransformSystem _xform = default!;

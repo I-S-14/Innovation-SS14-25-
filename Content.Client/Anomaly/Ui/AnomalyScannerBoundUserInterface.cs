@@ -2,6 +2,7 @@
 
 using Content.Shared.Anomaly;
 using JetBrains.Annotations;
+using Robust.Client.GameObjects;
 
 namespace Content.Client.Anomaly.Ui;
 

@@ -17,10 +17,6 @@ namespace Content.Shared.CombatMode;
 
 public abstract partial class SharedCombatModeSystem : EntitySystem
 {
-    [Dependency] protected readonly IGameTiming Timing = default!;
-    [Dependency] private   readonly SharedActionsSystem _actionsSystem = default!;
-    [Dependency] private   readonly SharedPopupSystem _popup = default!;
-    [Dependency] private   readonly SharedMindSystem  _mind = default!;
     [Dependency] private   readonly ESForcedFacingSystem _forcedFacing = default!; // Goob
     [Dependency] protected IGameTiming Timing = default!;
     [Dependency] private SharedActionsSystem _actionsSystem = default!;

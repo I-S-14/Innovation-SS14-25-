@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-using Content.Shared.Medical.SuitSensor;
 using Content.Shared.DeviceNetwork;
 using Content.Shared.Medical.SuitSensors;
 

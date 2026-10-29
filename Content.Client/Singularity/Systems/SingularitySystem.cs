@@ -3,6 +3,9 @@
 using Content.Shared.Singularity.Components;
 using Content.Shared.Singularity.EntitySystems;
 using Robust.Shared.GameStates;
+using Content.Shared.Singularity;
+using Robust.Client.GameObjects;
+using Robust.Shared.Utility;
 
 namespace Content.Client.Singularity.Systems;
 

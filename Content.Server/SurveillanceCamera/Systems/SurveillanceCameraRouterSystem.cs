@@ -9,6 +9,8 @@ using Content.Shared.SurveillanceCamera;
 using Content.Shared.Verbs;
 using Robust.Server.GameObjects;
 using Content.Shared.DeviceNetwork.Components;
+using Content.Server.DeviceNetwork.Systems;
+using Robust.Shared.Prototypes;
 
 namespace Content.Server.SurveillanceCamera;
 

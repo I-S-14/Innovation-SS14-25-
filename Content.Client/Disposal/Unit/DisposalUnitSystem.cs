@@ -3,6 +3,7 @@ using Content.Shared.Disposal.Unit;
 using Robust.Client.Animations;
 using Robust.Client.GameObjects;
 using Robust.Shared.Audio.Systems;
+using Robust.Client.Graphics;
 
 namespace Content.Client.Disposal.Unit;
 

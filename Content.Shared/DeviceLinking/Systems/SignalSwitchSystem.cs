@@ -1,66 +1,46 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
-using Content.Goobstation.Common.DeviceLinking;
-using Content.Server.DeviceLinking.Components;
+using Content.Shared.DeviceLinking.Components;
 using Content.Shared.Interaction;
 using Content.Shared.Lock;
-using Robust.Server.GameObjects;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
 
-namespace Content.Server.DeviceLinking.Systems;
+namespace Content.Shared.DeviceLinking.Systems;
 
-public sealed class SignalSwitchSystem : EntitySystem
+public sealed partial class SignalSwitchSystem : EntitySystem
 {
-    [Dependency] private readonly DeviceLinkSystem _deviceLink = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
-    [Dependency] private readonly LockSystem _lock = default!;
-    [Dependency] private readonly AppearanceSystem _appearance = default!; // CorvaxGoob-ButtonsVisuals
+    [Dependency] private DeviceLinkSystem _deviceLink = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private LockSystem _lock = default!;
 
-    public override void Initialize()
+    [SubscribeLocalEvent]
+    private void OnInit(Entity<SignalSwitchComponent> ent, ref ComponentInit args)
     {
-        base.Initialize();
-
-        SubscribeLocalEvent<SignalSwitchComponent, ComponentInit>(OnInit);
-        SubscribeLocalEvent<SignalSwitchComponent, ActivateInWorldEvent>(OnActivated);
+        _deviceLink.EnsureSourcePorts(ent.Owner, ent.Comp.OnPort, ent.Comp.OffPort, ent.Comp.StatusPort);
     }
 
-    private void OnInit(EntityUid uid, SignalSwitchComponent comp, ComponentInit args)
-    {
-        _deviceLink.EnsureSourcePorts(uid, comp.OnPort, comp.OffPort, comp.StatusPort);
-
-        UpdateAppearance((uid, comp)); // CorvaxGoob-ButtonsVisuals
-    }
-
-    private void OnActivated(EntityUid uid, SignalSwitchComponent comp, ActivateInWorldEvent args)
+    [SubscribeLocalEvent]
+    private void OnActivated(Entity<SignalSwitchComponent> ent, ref ActivateInWorldEvent args)
     {
         if (args.Handled || !args.Complex)
             return;
 
-        if (_lock.IsLocked(uid))
+        if (_lock.IsLocked(ent.Owner))
             return;
 
-        comp.State = !comp.State;
-        _deviceLink.InvokePort(uid, comp.State ? comp.OnPort : comp.OffPort);
+        ent.Comp.State = !ent.Comp.State;
+        DirtyField(ent.AsNullable(), nameof(SignalSwitchComponent.State));
+        _deviceLink.InvokePort(ent.Owner, ent.Comp.State ? ent.Comp.OnPort : ent.Comp.OffPort);
 
         // only send status if it's a toggle switch and not a button
-        if (comp.OnPort != comp.OffPort)
+        if (ent.Comp.OnPort != ent.Comp.OffPort)
         {
-            _deviceLink.SendSignal(uid, comp.StatusPort, comp.State);
+            _deviceLink.SendSignal(ent.Owner, ent.Comp.StatusPort, ent.Comp.State);
         }
 
-        _audio.PlayPvs(comp.ClickSound, uid, AudioParams.Default.WithVariation(0.125f).WithVolume(8f));
-
-        UpdateAppearance((uid, comp)); // CorvaxGoob-ButtonsVisuals
+        var audioParams = ent.Comp.ClickSound?.Params ?? AudioParams.Default;
+        audioParams = audioParams.WithVariation(0.125f).AddVolume(8f);
+        _audio.PlayPredicted(ent.Comp.ClickSound, ent.Owner, args.User, audioParams);
 
         args.Handled = true;
     }
-
-    // CorvaxGoob-ButtonsVisuals-Start
-    private void UpdateAppearance(Entity<SignalSwitchComponent> entity)
-    {
-        if (TryComp(entity, out AppearanceComponent? appearance))
-            _appearance.SetData(entity, SignalSwitchVisuals.State, entity.Comp.State ? SignalSwitchState.On : SignalSwitchState.Off, appearance);
-    }
-    // CorvaxGoob-ButtonsVisuals-End
 }

@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 
 using System.Linq;
-using Content.Corvax.Interfaces.Shared;
 using Content.Shared._CorvaxGoob;
 using Content.Shared.Humanoid;
 using Content.Shared.Humanoid.Markings;

@@ -11,6 +11,8 @@ using Content.Shared.Atmos.Visuals;
 using Content.Shared.Power;
 using Content.Shared.UserInterface;
 using Robust.Server.GameObjects;
+using Content.Server.Atmos.Piping.Components;
+using Content.Server.Atmos.Piping.Unary.Components;
 
 namespace Content.Server.Atmos.Portable;
 

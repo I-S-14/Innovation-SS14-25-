@@ -1,22 +1,18 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
-using System.Diagnostics.CodeAnalysis;
-using Content.Server._CorvaxGoob.AppearanceConverter;
-using Content.Server.Access.Systems;
-using Content.Shared._CorvaxGoob.AppearanceConverter;
 using Content.Shared.Access.Components;
+using Content.Shared.Access.Systems;
 using Content.Shared.Forensics.Components;
 using Content.Shared.GameTicking;
-using Content.Shared.Humanoid;
 using Content.Shared.Inventory;
 using Content.Shared.PDA;
 using Content.Shared.Preferences;
 using Content.Shared.Roles;
-using Content.Shared.StationRecords;
-using Robust.Shared.Prototypes;
-using Robust.Shared.Random;
+using Content.Shared.Station.Components;
+using Content.Shared.StationRecords.Components;
+using Content.Shared.StationRecords.Events;
+using Robust.Shared.Enums;
+using Robust.Shared.Timing;
 
-namespace Content.Server.StationRecords.Systems;
+namespace Content.Shared.StationRecords.Systems;
 
 /// <summary>
 ///     Station records.
@@ -37,72 +33,83 @@ namespace Content.Server.StationRecords.Systems;
 ///     depend on this general record being created. This is subject
 ///     to change.
 /// </summary>
-public sealed partial class StationRecordsSystem : SharedStationRecordsSystem
+public sealed partial class StationRecordsSystem : EntitySystem
 {
-    [Dependency] private readonly InventorySystem _inventory = default!;
-    [Dependency] private readonly StationRecordKeyStorageSystem _keyStorage = default!;
-    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
-    [Dependency] private readonly IdCardSystem _idCard = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly AppearanceConverterSystem _appearanceConverter = default!; // CorvaxGoob-SecurityFeatures
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private InventorySystem _inventory = default!;
+    [Dependency] private StationRecordKeyStorageSystem _keyStorage = default!;
+    [Dependency] private SharedIdCardSystem _idCard = default!;
 
-    public override void Initialize()
-    {
-        base.Initialize();
+    [Dependency] private EntityQuery<IdCardComponent> _idCardQuery = default!;
+    [Dependency] private EntityQuery<PdaComponent> _pdaQuery = default!;
+    [Dependency] private EntityQuery<StationRecordsComponent> _recordsQuery = default!;
+    [Dependency] private EntityQuery<StationRecordKeyStorageComponent> _keyStorageQuery = default!;
+    [Dependency] private EntityQuery<FingerprintComponent> _fingerprintQuery = default!;
+    [Dependency] private EntityQuery<DnaComponent> _dnaQuery = default!;
 
-        SubscribeLocalEvent<PlayerSpawnCompleteEvent>(OnPlayerSpawn);
-        SubscribeLocalEvent<EntityRenamedEvent>(OnRename);
-    }
-
+    [SubscribeLocalEvent]
     private void OnPlayerSpawn(PlayerSpawnCompleteEvent args)
     {
-        if (!TryComp<StationRecordsComponent>(args.Station, out var stationRecords))
+        if (!_recordsQuery.TryComp(args.Station, out var stationRecords))
             return;
 
-        CreateGeneralRecord(args.Station, args.Mob, args.Profile, args.JobId, stationRecords);
+        CreateGeneralRecord((args.Station, stationRecords), args.Mob, args.Profile, args.JobId);
     }
 
+    [SubscribeLocalEvent]
     private void OnRename(ref EntityRenamedEvent ev)
     {
         // When a player gets renamed their card gets changed to match.
         // Unfortunately this means that an event is called for it as well, and since TryFindIdCard will succeed if the
         // given entity is a card and the card itself is the key the record will be mistakenly renamed to the card's name
         // if we don't return early.
-        if (HasComp<IdCardComponent>(ev.Uid))
+        // We also do not include the PDA itself being renamed, as that triggers the same event (e.g. for chameleon PDAs).
+        if (_idCardQuery.HasComp(ev.Uid)
+            || _pdaQuery.HasComp(ev.Uid))
             return;
 
-        if (_idCard.TryFindIdCard(ev.Uid, out var idCard))
-        {
-            if (TryComp(idCard, out StationRecordKeyStorageComponent? keyStorage)
-                && keyStorage.Key is {} key)
-            {
-                if (TryGetRecord<GeneralStationRecord>(key, out var generalRecord))
-                {
-                    generalRecord.Name = ev.NewName;
-                }
+        if (!_idCard.TryFindIdCard(ev.Uid, out var idCard))
+            return;
 
-                Synchronize(key);
-            }
-        }
+        if (!_keyStorageQuery.TryComp(idCard, out var keyStorage)
+            || keyStorage.Key is not { } key)
+            return;
+
+        if (TryGetRecord<GeneralStationRecord>(key, out var generalRecord))
+            generalRecord.Name = ev.NewName;
+
+        Synchronize(key);
     }
 
-    private void CreateGeneralRecord(EntityUid station, EntityUid player, HumanoidCharacterProfile profile,
-        string? jobId, StationRecordsComponent records)
+    private void CreateGeneralRecord(
+        Entity<StationRecordsComponent> station,
+        EntityUid player,
+        HumanoidCharacterProfile profile,
+        string? jobId)
     {
         // TODO make PlayerSpawnCompleteEvent.JobId a ProtoId
         if (string.IsNullOrEmpty(jobId)
-            || !_prototypeManager.HasIndex<JobPrototype>(jobId))
+            || !ProtoMan.HasIndex<JobPrototype>(jobId))
             return;
 
         if (!_inventory.TryGetSlotEntity(player, "id", out var idUid))
             return;
 
-        TryComp<FingerprintComponent>(player, out var fingerprintComponent);
-        TryComp<DnaComponent>(player, out var dnaComponent);
+        _fingerprintQuery.TryComp(player, out var fingerprintComponent);
+        _dnaQuery.TryComp(player, out var dnaComponent);
 
-        CreateGeneralRecord(station, idUid.Value, profile.Name, profile.Age, profile.Species, profile.Sex, jobId, fingerprintComponent?.Fingerprint, dnaComponent?.DNA, profile, records, player); // CorvaxGoob-Locale
+        CreateGeneralRecord(
+            station,
+            idUid.Value,
+            profile.Name,
+            profile.Age,
+            profile.Species,
+            profile.Gender,
+            jobId,
+            fingerprintComponent?.Fingerprint,
+            dnaComponent?.DNA,
+            profile);
     }
-
 
     /// <summary>
     ///     Create a general record to store in a station's record set.
@@ -130,53 +137,51 @@ public sealed partial class StationRecordsSystem : SharedStationRecordsSystem
     ///     about the player character.
     ///     Optional - other systems should anticipate this.
     /// </param>
-    /// <param name="records">Station records component.</param>
     public void CreateGeneralRecord(
-        EntityUid station,
+        Entity<StationRecordsComponent> station,
         EntityUid? idUid,
         string name,
         int age,
         string species,
-        Sex sex, // CorvaxGoob-Locale
+        Gender gender,
         string jobId,
         string? mobFingerprint,
         string? dna,
-        HumanoidCharacterProfile profile,
-        StationRecordsComponent records,
-        EntityUid? playerUid = null) // CorvaxGoob-SecurityFeatures : добавлены аргументы для генерации профиля внешности
+        HumanoidCharacterProfile profile)
     {
-        if (!_prototypeManager.TryIndex<JobPrototype>(jobId, out var jobPrototype))
+        if (!ProtoMan.TryIndex<JobPrototype>(jobId, out var jobPrototype))
             throw new ArgumentException($"Invalid job prototype ID: {jobId}");
 
         // when adding a record that already exists use the old one
         // this happens when respawning as the same character
-        if (GetRecordByName(station, name, records) is {} id)
+        if (GetRecordByName(station.AsNullable(), name) is {} id)
         {
             SetIdKey(idUid, new StationRecordKey(id, station));
             return;
         }
 
-        // CorvaxGoob-SecurityFeatures-Start
-        TransformProfile? transformProfile = playerUid is not null ? _appearanceConverter.GenerateTransformProfile(playerUid.Value) : null;
-        AppearanceConverterVisualTransformProfile? visualProfile = transformProfile is not null ? AppearanceConverterSystem.SplitDetailAndVisualProfile(transformProfile.Value).Visual : null;
-        // CorvaxGoob-SecurityFeatures-End
+        var jobWeights = TryComp<StationDataComponent>(station, out var stationData)
+            ? stationData.JobWeights
+            : null;
+        var displayPriority = JobUIComparer.TryCreate(ProtoMan, jobWeights, out var comparer)
+            ? comparer.GetWeight(jobPrototype) ?? 0
+            : 0;
 
-        var record = new GeneralStationRecord() // CorvaxGoob-SecurityFeatures : добавлены аргументы для генерации профиля внешности
+        var record = new GeneralStationRecord
         {
             Name = name,
             Age = age,
             JobTitle = jobPrototype.LocalizedName,
             JobIcon = jobPrototype.Icon,
             JobPrototype = jobId,
-            Species = species, // CorvaxGoob-Locale
-            Sex = sex, // CorvaxGoob-Locale
-            DisplayPriority = jobPrototype.RealDisplayWeight,
+            Species = species,
+            Gender = gender,
+            DisplayPriority = displayPriority,
             Fingerprint = mobFingerprint,
-            DNA = dna,
-            Visual = visualProfile
+            DNA = dna
         };
 
-        var key = AddRecordEntry(station, record);
+        var key = AddRecordEntry(station.AsNullable(), record);
         if (!key.IsValid())
         {
             Log.Warning($"Failed to add general record entry for {name}");
@@ -185,275 +190,48 @@ public sealed partial class StationRecordsSystem : SharedStationRecordsSystem
 
         SetIdKey(idUid, key);
 
-        RaiseLocalEvent(new AfterGeneralRecordCreatedEvent(key, record, profile));
+        var ev = new GeneralRecordCreatedEvent(key, record, profile);
+        RaiseLocalEvent(ref ev);
+
+        Dirty(station);
     }
 
-    /// <summary>
-    /// Set the station records key for an id/pda.
-    /// </summary>
-    public void SetIdKey(EntityUid? uid, StationRecordKey key)
+    public StationRecordKey? Convert((NetEntity, uint)? input)
     {
-        if (uid is not {} idUid)
-            return;
+        return input == null ? null : Convert(input.Value);
+    }
 
-        var keyStorageEntity = idUid;
-        if (TryComp<PdaComponent>(idUid, out var pda) && pda.ContainedId is {} id)
+    public (NetEntity, uint)? Convert(StationRecordKey? input)
+    {
+        return input == null ? null : Convert(input.Value);
+    }
+
+    public StationRecordKey Convert((NetEntity, uint) input)
+    {
+        return new StationRecordKey(input.Item2, GetEntity(input.Item1));
+    }
+    public (NetEntity, uint) Convert(StationRecordKey input)
+    {
+        return (GetNetEntity(input.OriginStation), input.Id);
+    }
+
+    public List<(NetEntity, uint)> Convert(ICollection<StationRecordKey> input)
+    {
+        var result = new List<(NetEntity, uint)>(input.Count);
+        foreach (var entry in input)
         {
-            keyStorageEntity = id;
+            result.Add(Convert(entry));
         }
-
-        _keyStorage.AssignKey(keyStorageEntity, key);
+        return result;
     }
 
-    /// <summary>
-    ///     Removes a record from this station.
-    /// </summary>
-    /// <param name="key">The station and key to remove.</param>
-    /// <param name="records">Station records component.</param>
-    /// <returns>True if the record was removed, false otherwise.</returns>
-    public bool RemoveRecord(StationRecordKey key, StationRecordsComponent? records = null)
+    public List<StationRecordKey> Convert(ICollection<(NetEntity, uint)> input)
     {
-        if (!Resolve(key.OriginStation, ref records))
-            return false;
-
-        if (records.Records.RemoveAllRecords(key.Id))
+        var result = new List<StationRecordKey>(input.Count);
+        foreach (var entry in input)
         {
-            RaiseLocalEvent(new RecordRemovedEvent(key));
-            return true;
+            result.Add(Convert(entry));
         }
-
-        return false;
-    }
-
-    /// <summary>
-    /// Gets a random record from the station's record entries.
-    /// </summary>
-    /// <param name="ent">The EntityId of the station from which you want to get the record.</param>
-    /// <param name="entry">The resulting entry.</param>
-    /// <typeparam name="T">Type to get from the record set.</typeparam>
-    /// <returns>True if a record was obtained. False otherwise.</returns>
-    public bool TryGetRandomRecord<T>(Entity<StationRecordsComponent?> ent, [NotNullWhen(true)] out T? entry)
-    {
-        entry = default;
-
-        if (!Resolve(ent.Owner, ref ent.Comp))
-            return false;
-
-        if (ent.Comp.Records.Keys.Count == 0)
-            return false;
-
-        var key = _random.Pick(ent.Comp.Records.Keys);
-
-        return ent.Comp.Records.TryGetRecordEntry(key, out entry);
-    }
-
-    /// <summary>
-    /// Get the name for a record, or an empty string if it has no record.
-    /// </summary>
-    public string RecordName(StationRecordKey key)
-    {
-        if (!TryGetRecord<GeneralStationRecord>(key, out var record))
-           return string.Empty;
-
-        return record.Name;
-    }
-
-    /// <summary>
-    ///     Adds a new record entry to a station's record set.
-    /// </summary>
-    /// <param name="station">The station to add the record to.</param>
-    /// <param name="record">The record to add.</param>
-    /// <param name="records">Station records component.</param>
-    /// <typeparam name="T">The type of record to add.</typeparam>
-    public StationRecordKey AddRecordEntry<T>(EntityUid station, T record, StationRecordsComponent? records = null)
-    {
-        if (!Resolve(station, ref records))
-            return StationRecordKey.Invalid;
-
-        var id = records.Records.AddRecordEntry(record);
-        if (id == null)
-            return StationRecordKey.Invalid;
-
-        return new StationRecordKey(id.Value, station);
-    }
-
-    /// <summary>
-    /// Adds a record to an existing entry.
-    /// </summary>
-    /// <param name="key">The station and id of the existing entry.</param>
-    /// <param name="record">The record to add.</param>
-    /// <param name="records">Station records component.</param>
-    /// <typeparam name="T">The type of record to add.</typeparam>
-    public void AddRecordEntry<T>(StationRecordKey key, T record,
-        StationRecordsComponent? records = null)
-    {
-        if (!Resolve(key.OriginStation, ref records))
-            return;
-
-        records.Records.AddRecordEntry(key.Id, record);
-    }
-
-    /// <summary>
-    ///     Synchronizes a station's records with any systems that need it.
-    /// </summary>
-    /// <param name="station">The station to synchronize any recently accessed records with..</param>
-    /// <param name="records">Station records component.</param>
-    public void Synchronize(EntityUid station, StationRecordsComponent? records = null)
-    {
-        if (!Resolve(station, ref records))
-            return;
-
-        foreach (var key in records.Records.GetRecentlyAccessed())
-        {
-            RaiseLocalEvent(new RecordModifiedEvent(new StationRecordKey(key, station)));
-        }
-
-        records.Records.ClearRecentlyAccessed();
-    }
-
-    /// <summary>
-    /// Synchronizes a single record's entries for a station.
-    /// </summary>
-    /// <param name="key">The station and id of the record</param>
-    /// <param name="records">Station records component.</param>
-    public void Synchronize(StationRecordKey key, StationRecordsComponent? records = null)
-    {
-        if (!Resolve(key.OriginStation, ref records))
-            return;
-
-        RaiseLocalEvent(new RecordModifiedEvent(key));
-
-        records.Records.RemoveFromRecentlyAccessed(key.Id);
-    }
-
-    #region Console system helpers
-
-    /// <summary>
-    /// Checks if a record should be skipped given a filter.
-    /// Takes general record since even if you are using this for e.g. criminal records,
-    /// you don't want to duplicate basic info like name and dna.
-    /// Station records lets you do this nicely with multiple types having their own data.
-    /// </summary>
-    public bool IsSkipped(StationRecordsFilter? filter, GeneralStationRecord someRecord)
-    {
-        // if nothing is being filtered, show everything
-        if (filter == null)
-            return false;
-        if (filter.Value.Length == 0)
-            return false;
-
-        if (filter.Type == StationRecordFilterType.Prints && someRecord.Fingerprint == null) // Goobstation - IPC
-            return true;
-        if (filter.Type == StationRecordFilterType.DNA && someRecord.DNA == null) // Goobstation - IPC
-            return true;
-
-        var filterLowerCaseValue = filter.Value.ToLower();
-
-        return filter.Type switch
-        {
-            StationRecordFilterType.Name =>
-                !someRecord.Name.ToLower().Contains(filterLowerCaseValue),
-            StationRecordFilterType.Job =>
-                !someRecord.JobTitle.ToLower().Contains(filterLowerCaseValue),
-            StationRecordFilterType.Species =>
-                !someRecord.Species.ToLower().Contains(filterLowerCaseValue),
-            StationRecordFilterType.Prints => someRecord.Fingerprint != null
-                && IsFilterWithSomeCodeValue(someRecord.Fingerprint, filterLowerCaseValue),
-            StationRecordFilterType.DNA => someRecord.DNA != null
-                && IsFilterWithSomeCodeValue(someRecord.DNA, filterLowerCaseValue),
-            _ => throw new IndexOutOfRangeException(nameof(filter.Type)),
-        };
-    }
-
-    /* Goobstation - Criminal Records Wildcard
-    // Refer to StationRecordsSystem.Goob.cs for implementation
-    private bool IsFilterWithSomeCodeValue(string value, string filter)
-    {
-        return !value.ToLower().StartsWith(filter);
-    }
-    */
-
-    /// <summary>
-    /// Build a record listing of id to name for a station and filter.
-    /// </summary>
-    public Dictionary<uint, string> BuildListing(Entity<StationRecordsComponent> station, StationRecordsFilter? filter)
-    {
-        var listing = new Dictionary<uint, string>();
-
-        var records = GetRecordsOfType<GeneralStationRecord>(station, station.Comp);
-        foreach (var pair in records)
-        {
-            if (IsSkipped(filter, pair.Item2))
-                continue;
-
-            listing.Add(pair.Item1, pair.Item2.Name);
-        }
-
-        return listing;
-    }
-
-    #endregion
-}
-
-/// <summary>
-/// Base event for station record events
-/// </summary>
-public abstract class StationRecordEvent : EntityEventArgs
-{
-    public readonly StationRecordKey Key;
-    public EntityUid Station => Key.OriginStation;
-
-    protected StationRecordEvent(StationRecordKey key)
-    {
-        Key = key;
-    }
-}
-
-/// <summary>
-///     Event raised after the player's general profile is created.
-///     Systems that modify records on a station would have more use
-///     listening to this event, as it contains the character's record key.
-///     Also stores the general record reference, to save some time.
-/// </summary>
-public sealed class AfterGeneralRecordCreatedEvent : StationRecordEvent
-{
-    public readonly GeneralStationRecord Record;
-    /// <summary>
-    /// Profile for the related player. This is so that other systems can get further information
-    ///     about the player character.
-    ///     Optional - other systems should anticipate this.
-    /// </summary>
-    public readonly HumanoidCharacterProfile Profile;
-
-    public AfterGeneralRecordCreatedEvent(StationRecordKey key, GeneralStationRecord record,
-        HumanoidCharacterProfile profile) : base(key)
-    {
-        Record = record;
-        Profile = profile;
-    }
-}
-
-/// <summary>
-///     Event raised after a record is removed. Only the key is given
-///     when the record is removed, so that any relevant systems/components
-///     that store record keys can then remove the key from their internal
-///     fields.
-/// </summary>
-public sealed class RecordRemovedEvent : StationRecordEvent
-{
-    public RecordRemovedEvent(StationRecordKey key) : base(key)
-    {
-    }
-}
-
-/// <summary>
-///     Event raised after a record is modified. This is to
-///     inform other systems that records stored in this key
-///     may have changed.
-/// </summary>
-public sealed class RecordModifiedEvent : StationRecordEvent
-{
-    public RecordModifiedEvent(StationRecordKey key) : base(key)
-    {
+        return result;
     }
 }

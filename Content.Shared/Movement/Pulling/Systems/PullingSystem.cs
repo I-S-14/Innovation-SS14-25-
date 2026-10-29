@@ -45,6 +45,7 @@ using Robust.Shared.Player;
 using Robust.Shared.Prototypes; // CorvaxGoob-IgnorGrab
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
+using Content.Shared.Item;
 
 namespace Content.Shared.Movement.Pulling.Systems;
 

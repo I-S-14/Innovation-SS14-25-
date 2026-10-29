@@ -3,6 +3,9 @@ using Content.Shared.Light.EntitySystems;
 using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
+using Content.Shared.Light.Components;
+using Content.Shared.Storage;
+using Robust.Shared.Containers;
 
 namespace Content.Shared.Light.Components;
 

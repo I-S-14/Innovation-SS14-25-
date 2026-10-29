@@ -21,6 +21,7 @@ using Robust.Shared.Audio.Systems;
 using Robust.Shared.GameStates;
 using Robust.Shared.Random; // Goobstation - Buff carp rift
 using Robust.Shared.Utility;
+using Content.Server.Pinpointer;
 
 namespace Content.Server.Dragon;
 
@@ -29,13 +30,7 @@ namespace Content.Server.Dragon;
 /// </summary>
 public sealed partial class DragonRiftSystem : EntitySystem
 {
-    [Dependency] private readonly ChatSystem _chat = default!;
-    [Dependency] private readonly DragonSystem _dragon = default!;
     [Dependency] private readonly IRobustRandom _random = default!; // Goobstation - Buff carp rift
-    [Dependency] private readonly ISerializationManager _serManager = default!;
-    [Dependency] private readonly NavMapSystem _navMap = default!;
-    [Dependency] private readonly NPCSystem _npc = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private ChatSystem _chat = default!;
     [Dependency] private DragonSystem _dragon = default!;
     [Dependency] private ISerializationManager _serManager = default!;

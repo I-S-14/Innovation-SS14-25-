@@ -12,6 +12,7 @@ using Robust.Shared.Timing;
 using Robust.Shared.Network;
 using Content.Shared.Fluids;
 using Content.Shared.Popups;
+using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Nutrition.EntitySystems;
 

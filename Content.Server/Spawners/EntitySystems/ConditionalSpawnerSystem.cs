@@ -11,6 +11,7 @@ using Robust.Shared.Collections;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
+using System.Numerics;
 
 namespace Content.Server.Spawners.EntitySystems;
 
@@ -59,136 +60,7 @@ public sealed partial class ConditionalSpawnerSystem : EntitySystem
         var query = EntityQueryEnumerator<ConditionalSpawnerComponent>();
         while (query.MoveNext(out var uid, out var spawner))
         {
-            base.Initialize();
-
-            SubscribeLocalEvent<GameRuleStartedEvent>(OnRuleStarted);
-            SubscribeLocalEvent<ConditionalSpawnerComponent, MapInitEvent>(OnCondSpawnMapInit);
-            SubscribeLocalEvent<RandomSpawnerComponent, MapInitEvent>(OnRandSpawnMapInit);
-            SubscribeLocalEvent<EntityTableSpawnerComponent, MapInitEvent>(OnEntityTableSpawnMapInit);
-        }
-
-        private void OnCondSpawnMapInit(EntityUid uid, ConditionalSpawnerComponent component, MapInitEvent args)
-        {
-            TrySpawn(uid, component);
-        }
-
-        private void OnRandSpawnMapInit(EntityUid uid, RandomSpawnerComponent component, MapInitEvent args)
-        {
-            Spawn(uid, component);
-            if (component.DeleteSpawnerAfterSpawn)
-                QueueDel(uid);
-        }
-
-        private void OnEntityTableSpawnMapInit(Entity<EntityTableSpawnerComponent> ent, ref MapInitEvent args)
-        {
-            Spawn(ent);
-            if (ent.Comp.DeleteSpawnerAfterSpawn && !TerminatingOrDeleted(ent) && Exists(ent))
-                QueueDel(ent);
-        }
-
-        private void OnRuleStarted(ref GameRuleStartedEvent args)
-        {
-            var query = EntityQueryEnumerator<ConditionalSpawnerComponent>();
-            while (query.MoveNext(out var uid, out var spawner))
-            {
-                RuleStarted(uid, spawner, args);
-            }
-        }
-
-        public void RuleStarted(EntityUid uid, ConditionalSpawnerComponent component, GameRuleStartedEvent obj)
-        {
-            if (component.GameRules.Contains(obj.RuleId))
-                Spawn(uid, component);
-        }
-
-        private void TrySpawn(EntityUid uid, ConditionalSpawnerComponent component)
-        {
-            if (component.GameRules.Count == 0)
-            {
-                Spawn(uid, component);
-                return;
-            }
-
-            foreach (var rule in component.GameRules)
-            {
-                if (!_ticker.IsGameRuleActive(rule))
-                    continue;
-                Spawn(uid, component);
-                return;
-            }
-        }
-
-        private void Spawn(EntityUid uid, ConditionalSpawnerComponent component)
-        {
-            if (component.Chance != 1.0f && !_robustRandom.Prob(component.Chance))
-                return;
-
-            if (component.Prototypes.Count == 0)
-            {
-                Log.Warning($"Prototype list in ConditionalSpawnComponent is empty! Entity: {ToPrettyString(uid)}");
-                return;
-            }
-
-            if (!Deleted(uid))
-            {
-                //CorvaxGoob-Rotational Spawners-Start
-                var ent = Spawn(_robustRandom.Pick(component.Prototypes), Transform(uid).Coordinates);
-                EntityManager.System<SharedTransformSystem>().SetWorldRotation(ent, Transform(uid).LocalRotation);
-                //CorvaxGoob-Rotational Spawners-End
-            }
-        }
-
-        private void Spawn(EntityUid uid, RandomSpawnerComponent component)
-        {
-            if (component.RarePrototypes.Count > 0 && (component.RareChance == 1.0f || _robustRandom.Prob(component.RareChance)))
-            {
-                //CorvaxGoob-Rotational Spawners-Start
-                var ent = Spawn(_robustRandom.Pick(component.RarePrototypes), Transform(uid).Coordinates);
-                EntityManager.System<SharedTransformSystem>().SetWorldRotation(ent, Transform(uid).LocalRotation);
-                //CorvaxGoob-Rotational Spawners-End
-                return;
-            }
-
-            if (component.Chance != 1.0f && !_robustRandom.Prob(component.Chance))
-                return;
-
-            if (component.Prototypes.Count == 0)
-            {
-                Log.Warning($"Prototype list in RandomSpawnerComponent is empty! Entity: {ToPrettyString(uid)}");
-                return;
-            }
-
-            if (Deleted(uid))
-                return;
-
-            var offset = component.Offset;
-            var xOffset = _robustRandom.NextFloat(-offset, offset);
-            var yOffset = _robustRandom.NextFloat(-offset, offset);
-
-            var coordinates = Transform(uid).Coordinates.Offset(new Vector2(xOffset, yOffset));
-
-            Spawn(_robustRandom.Pick(component.Prototypes), coordinates);
-        }
-
-        private void Spawn(Entity<EntityTableSpawnerComponent> ent)
-        {
-            if (TerminatingOrDeleted(ent) || !Exists(ent))
-                return;
-
-            var coords = Transform(ent).Coordinates;
-
-            var spawns = _entityTable.GetSpawns(ent.Comp.Table);
-            foreach (var proto in spawns)
-            {
-                var xOffset = _robustRandom.NextFloat(-ent.Comp.Offset, ent.Comp.Offset);
-                var yOffset = _robustRandom.NextFloat(-ent.Comp.Offset, ent.Comp.Offset);
-                var trueCoords = coords.Offset(new Vector2(xOffset, yOffset));
-
-                //CorvaxGoob-Rotational Spawners-Start
-                var target = SpawnAtPosition(proto, trueCoords);
-                EntityManager.System<SharedTransformSystem>().SetWorldRotation(target, Transform(ent.Owner).LocalRotation);
-                //CorvaxGoob-Rotational Spawners-End
-            }
+            RuleStarted(uid, spawner, args);
         }
     }
 
@@ -229,20 +101,23 @@ public sealed partial class ConditionalSpawnerSystem : EntitySystem
             return;
         }
 
-        if (Deleted(uid))
-            return;
-
-        var xform = Transform(uid);
-        var coords = _xform.GetMapCoordinates(uid, xform);
-        var rotation = _xform.GetWorldRotation(xform);
-
-        var toSpawn = _robustRandom.Pick(component.Prototypes);
-        Spawn(toSpawn, coords, rotation: rotation);
+        if (!Deleted(uid))
+        {
+            //CorvaxGoob-Rotational Spawners-Start
+            var ent = Spawn(_robustRandom.Pick(component.Prototypes), Transform(uid).Coordinates);
+            EntityManager.System<SharedTransformSystem>().SetWorldRotation(ent, Transform(uid).LocalRotation);
+            //CorvaxGoob-Rotational Spawners-End
+        }
     }
 
     private void Spawn(EntityUid uid, RandomSpawnerComponent component)
     {
-        if (Deleted(uid))
+        if (component.RarePrototypes.Count > 0 && (component.RareChance == 1.0f || _robustRandom.Prob(component.RareChance)))
+        {
+            //CorvaxGoob-Rotational Spawners-Start
+            var ent = Spawn(_robustRandom.Pick(component.RarePrototypes), Transform(uid).Coordinates);
+            EntityManager.System<SharedTransformSystem>().SetWorldRotation(ent, Transform(uid).LocalRotation);
+            //CorvaxGoob-Rotational Spawners-End
             return;
 
         if (GetPrototype((uid, component)) is not { } proto)
@@ -341,10 +216,10 @@ public sealed partial class ConditionalSpawnerSystem : EntitySystem
             return spawner.Comp.RarePrototypes;
         }
 
-        if (spawner.Comp.Prototypes.Count == 0)
-        {
-            Log.Warning($"Prototype list in RandomSpawnerComponent is empty! Entity: {ToPrettyString(spawner)}");
-            return null;
+            //CorvaxGoob-Rotational Spawners-Start
+            var target = SpawnAtPosition(proto, trueCoords);
+            EntityManager.System<SharedTransformSystem>().SetWorldRotation(target, Transform(ent.Owner).LocalRotation);
+            //CorvaxGoob-Rotational Spawners-End
         }
 
         // ReSharper disable once CompareOfFloatsByEqualityOperator

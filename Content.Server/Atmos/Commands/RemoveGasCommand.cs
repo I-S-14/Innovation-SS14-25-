@@ -4,6 +4,7 @@ using Content.Server.Administration;
 using Content.Server.Atmos.EntitySystems;
 using Content.Shared.Administration;
 using Robust.Shared.Console;
+using Robust.Shared.Map;
 
 namespace Content.Server.Atmos.Commands
 {

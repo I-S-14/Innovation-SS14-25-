@@ -17,6 +17,9 @@ using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Containers;
 using Robust.Shared.Timing;
+using Content.Server.Administration.Managers;
+using Content.Server.Chat.Managers;
+using Robust.Shared.Player;
 
 namespace Content.Server.Ame.EntitySystems;
 

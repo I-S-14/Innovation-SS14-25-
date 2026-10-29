@@ -60,6 +60,10 @@ using Content.Shared.Mech.Components;
 using Content.Server.Mech.Systems;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Goobstation.Maths.FixedPoint;
+using Content.Server.Ghost.Roles.Components;
+using Content.Server.Humanoid;
+using Content.Server.Speech.Components;
+using Content.Shared.Hands.Components;
 
 
 namespace Content.Server.Zombies;

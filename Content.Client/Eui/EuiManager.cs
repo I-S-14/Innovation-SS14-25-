@@ -3,6 +3,12 @@
 using Content.Shared.Eui;
 using Robust.Shared.Network;
 using Robust.Shared.Reflection;
+using System;
+using System.Collections.Generic;
+using Robust.Client.GameStates;
+using Robust.Client.State;
+using Robust.Shared.IoC;
+using Robust.Shared.Utility;
 
 namespace Content.Client.Eui
 {

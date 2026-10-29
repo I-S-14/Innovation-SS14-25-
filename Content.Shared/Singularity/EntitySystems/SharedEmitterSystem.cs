@@ -6,6 +6,8 @@ using Content.Shared.Popups;
 using Content.Shared.Singularity.Components;
 using Content.Shared.Verbs;
 using Content.Shared.Weapons.Ranged.Components;
+using Content.Shared.Examine;
+using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Singularity.EntitySystems;
 

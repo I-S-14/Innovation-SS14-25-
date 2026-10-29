@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: MIT
+using Content.Shared.Maths;
 
 using Content.Shared.Atmos;
 

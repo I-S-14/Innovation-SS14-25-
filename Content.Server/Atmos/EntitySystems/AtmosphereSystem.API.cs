@@ -11,6 +11,8 @@ using Content.Shared.Atmos.Reactions;
 using JetBrains.Annotations;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Utility;
+using Content.Server.Atmos.Components;
+using Content.Server.Atmos.Piping.Components;
 
 namespace Content.Server.Atmos.EntitySystems;
 

@@ -4,6 +4,7 @@ using Content.Shared.Access;
 using Content.Shared.Doors.Electronics;
 using Robust.Client.UserInterface;
 using Robust.Shared.Prototypes;
+using Robust.Client.GameObjects;
 
 namespace Content.Client.Doors.Electronics;
 

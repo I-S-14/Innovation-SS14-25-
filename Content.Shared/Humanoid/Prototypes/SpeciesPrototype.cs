@@ -3,6 +3,8 @@
 using Content.Shared.Dataset;
 using Content.Shared.Humanoid.Markings;
 using Robust.Shared.Prototypes;
+using Content.Shared.Body;
+using Content.Shared.Chat.Prototypes;
 
 namespace Content.Shared.Humanoid.Prototypes;
 

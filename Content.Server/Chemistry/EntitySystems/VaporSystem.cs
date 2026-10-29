@@ -18,6 +18,9 @@ using Robust.Shared.Spawners;
 using System.Numerics;
 using Content.Goobstation.Shared.Chemistry;
 using Content.Shared.Vapor;
+using Content.Shared.Chemistry.Components.SolutionManager;
+using Robust.Shared.Physics.Systems;
+using Robust.Shared.Prototypes;
 
 namespace Content.Server.Chemistry.EntitySystems
 {

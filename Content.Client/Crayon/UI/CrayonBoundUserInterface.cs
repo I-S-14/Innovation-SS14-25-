@@ -5,6 +5,7 @@ using Content.Shared.Crayon;
 using Content.Shared.Decals;
 using Robust.Client.UserInterface;
 using Robust.Shared.Prototypes;
+using Robust.Client.GameObjects;
 
 namespace Content.Client.Crayon.UI
 {

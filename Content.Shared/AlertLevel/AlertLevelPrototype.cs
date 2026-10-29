@@ -1,53 +1,36 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
-using Content.Server._CorvaxGoob.Announcer;
 using Robust.Shared.Audio;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.Array;
 
-namespace Content.Server.AlertLevel;
-
-[Prototype("alertLevels")]
-public sealed partial class AlertLevelPrototype : IPrototype
-{
-    [IdDataField] public string ID { get; private set; } = default!;
-
-    /// <summary>
-    /// Dictionary of alert levels. Keyed by string - the string key is the most important
-    /// part here. Visualizers will use this in order to dictate what alert level to show on
-    /// client side sprites, and localization uses each key to dictate the alert level name.
-    /// </summary>
-    [DataField("levels")] public Dictionary<string, AlertLevelDetail> Levels = new();
-
-    /// <summary>
-    /// Default level that the station is on upon initialization.
-    /// If this isn't in the dictionary, this will default to whatever .First() gives.
-    /// </summary>
-    [DataField("defaultLevel")] public string DefaultLevel { get; private set; } = default!;
-}
+namespace Content.Shared.AlertLevel;
 
 /// <summary>
-/// Alert level detail. Does not contain an ID, that is handled by
-/// the Levels field in AlertLevelPrototype.
+/// Prototype for a single alert level a station can be set to.
 /// </summary>
-[DataDefinition]
-public sealed partial class AlertLevelDetail
+[Prototype]
+public sealed partial class AlertLevelPrototype : IPrototype, IInheritingPrototype
 {
-    /// <summary>
-    /// What is announced upon this alert level change. Can be a localized string.
-    /// </summary>
-    [DataField("announcement")] public string Announcement { get; private set; } = string.Empty;
+    [IdDataField]
+    public string ID { get; private set; } = default!;
 
-    // CorvaxGoob-custom-alert-instructions-in-pda-start
-    /// <summary>
-    /// Instruction of alert level in pda
-    /// </summary>
-    [DataField("instruction")] public string AlertLevelInstruction { get; private set; } = string.Empty;
-    // CorvaxGoob-custom-alert-instructions-in-pda-end
+    [ParentDataField(typeof(AbstractPrototypeIdArraySerializer<AlertLevelPrototype>))]
+    public string[]? Parents { get; private set; }
+
+    [NeverPushInheritance]
+    [AbstractDataField]
+    public bool Abstract { get; private set; }
+
+    [DataField(required: true)]
+    private LocId Name { get; set; }
+
+    [ViewVariables(VVAccess.ReadOnly)]
+    public string LocalizedName => Loc.GetString(Name);
 
     /// <summary>
     /// Whether this alert level is selectable from a communications console.
     /// </summary>
-    [DataField("selectable")] public bool Selectable { get; private set; } = true;
+    [DataField]
+    public bool Selectable = true;
 
     /// <summary>
     /// If this alert level disables user selection while it is active. Beware -
@@ -55,44 +38,48 @@ public sealed partial class AlertLevelDetail
     /// This should only apply to entities or gamemodes that auto-select an alert level,
     /// such as a nuclear bomb being set to active.
     /// </summary>
-    [DataField("disableSelection")] public bool DisableSelection { get; private set; }
+    [DataField]
+    public bool DisableSelection;
 
     /// <summary>
-    /// The sound that this alert level will play in-game once selected.
-    /// </summary>
-    [DataField("sound")] public SoundSpecifier? Sound { get; private set; }
-
-    // CorvaxGoob-CustomAnnouncers
-    /// <summary>
-    /// Dictionary of custom announcers and their sounds.
+    /// The text that is announced when this alert level is selected.
     /// </summary>
     [DataField]
-    public Dictionary<ProtoId<AnnouncerPrototype>, SoundSpecifier> AnnouncersAudio = new();
+    public LocId? Announcement;
+
+    /// <summary>
+    /// The text that is announced when this alert level is selected.
+    /// </summary>
+    [DataField]
+    public LocId? Instructions;
+
+    /// <summary>
+    /// The sound that will played in-game when this alert level is selected.
+    /// </summary>
+    [DataField]
+    public SoundSpecifier? Sound;
 
     /// <summary>
     /// The color that this alert level will show in-game in chat.
     /// </summary>
-    [DataField("color")] public Color Color { get; private set; } = Color.White;
+    [DataField]
+    public Color Color = Color.White;
 
     /// <summary>
     /// The color to turn emergency lights on this station when they are active.
     /// </summary>
-    [DataField("emergencyLightColor")] public Color EmergencyLightColor { get; private set; } = Color.FromHex("#FF4020");
+    [DataField]
+    public Color EmergencyLightColor = Color.FromHex("#FF4020");
 
     /// <summary>
     /// Will this alert level force emergency lights on for the station that's active?
     /// </summary>
-    [DataField("forceEnableEmergencyLights")] public bool ForceEnableEmergencyLights { get; private set; } = false;
+    [DataField]
+    public bool ForceEnableEmergencyLights = false;
 
     /// <summary>
-    /// How long it takes for the shuttle to arrive when called.
+    /// How long it takes for the shuttle to arrive when called while this alert level is active.
     /// </summary>
-    [DataField("shuttleTime")] public TimeSpan ShuttleTime { get; private set; } = TimeSpan.FromMinutes(5);
-
-    /// <summary>
-    /// Goobstation
-    /// Marks this alert level as eligible for announcement console EMAG-ing.
-    /// Exists so checks run in the right order.
-    /// </summary>
-    [DataField] public bool EmagSelectable { get; private set; }
+    [DataField]
+    public TimeSpan ShuttleTime = TimeSpan.FromMinutes(5);
 }

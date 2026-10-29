@@ -11,6 +11,7 @@ using Content.Shared.Humanoid.Prototypes;
 using Content.Shared.Preferences;
 using Robust.Shared.Prototypes;
 using System.Numerics; // Goobstation
+using Content.Server.Humanoid;
 
 namespace Content.Server.GameTicking.Rules;
 
@@ -18,7 +19,6 @@ public sealed partial class AntagLoadProfileRuleSystem : GameRuleSystem<AntagLoa
 {
     [Dependency] private readonly HumanoidAppearanceSystem _humanoid = default!;
     [Dependency] private readonly IPrototypeManager _proto = default!;
-    [Dependency] private readonly IServerPreferencesManager _prefs = default!;
     [Dependency] private readonly SharedHumanoidAppearanceSystem _sharedHumanoid = default!; // Goobstation
     [Dependency] private HumanoidProfileSystem _humanoidProfile = default!;
     [Dependency] private IServerPreferencesManager _prefs = default!;

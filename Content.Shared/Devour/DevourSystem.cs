@@ -16,7 +16,7 @@ using Robust.Shared.Serialization;
 
 namespace Content.Shared.Devour;
 
-public sealed partial class DevourSystem : EntitySystem
+public sealed class DevourSystem : EntitySystem
 {
     [Dependency] private readonly EntityWhitelistSystem _whitelistSystem = default!;
     [Dependency] private readonly SharedActionsSystem _actionsSystem = default!;
@@ -26,13 +26,6 @@ public sealed partial class DevourSystem : EntitySystem
     [Dependency] private readonly SharedDoAfterSystem _doAfterSystem = default!;
     [Dependency] private readonly SharedPopupSystem _popupSystem = default!;
     [Dependency] private readonly SharedSolutionContainerSystem _solution = default!; // Goobstation
-    [Dependency] private EntityWhitelistSystem _whitelistSystem = default!;
-    [Dependency] private SharedActionsSystem _actionsSystem = default!;
-    [Dependency] private SharedAudioSystem _audioSystem = default!;
-    [Dependency] private BloodstreamSystem _bloodstreamSystem = default!;
-    [Dependency] private SharedContainerSystem _containerSystem = default!;
-    [Dependency] private SharedDoAfterSystem _doAfterSystem = default!;
-    [Dependency] private SharedPopupSystem _popupSystem = default!;
 
     public override void Initialize()
     {
@@ -90,14 +83,14 @@ public sealed partial class DevourSystem : EntitySystem
                 case MobState.Invalid:
                 case MobState.Alive:
                 default:
-                    _popupSystem.PopupEntity(Loc.GetString("devour-action-popup-message-fail-target-alive"), ent.Owner, ent.Owner);
+                    _popupSystem.PopupClient(Loc.GetString("devour-action-popup-message-fail-target-alive"), ent.Owner, ent.Owner);
                     break;
             }
 
             return;
         }
 
-        _popupSystem.PopupEntity(Loc.GetString("devour-action-popup-message-structure"), ent.Owner, ent.Owner);
+        _popupSystem.PopupClient(Loc.GetString("devour-action-popup-message-structure"), ent.Owner, ent.Owner);
 
         if (ent.Comp.SoundStructureDevour != null)
             _audioSystem.PlayPredicted(ent.Comp.SoundStructureDevour, ent.Owner, ent.Owner, ent.Comp.SoundStructureDevour.Params);
@@ -143,7 +136,7 @@ public sealed partial class DevourSystem : EntitySystem
         // Delete if the thing isn't in the stomach storage whitelist (or the stomach whitelist is null/empty)
         else if (args.Args.Target != null)
         {
-            QueueDel(args.Args.Target.Value);
+            PredictedQueueDel(args.Args.Target.Value);
         }
 
         _audioSystem.PlayPredicted(ent.Comp.SoundDevour, ent.Owner, ent.Owner);

@@ -8,6 +8,7 @@ using Robust.Shared.Enums;
 using Robust.Shared.GameStates;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Map.Enumerators;
 
 namespace Content.Client.Decals.Overlays
 {

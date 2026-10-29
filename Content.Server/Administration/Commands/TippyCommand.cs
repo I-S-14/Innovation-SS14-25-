@@ -91,7 +91,6 @@ public sealed partial class TippyCommand : LocalizedEntityCommands
 [AdminCommand(AdminFlags.Fun)]
 public sealed partial class TipCommand : LocalizedEntityCommands
 {
-    [Dependency] private SharedTipsSystem _tips = default!;
 
     public override string Command => "tip";
 

@@ -7,7 +7,6 @@ using Robust.Shared.Utility;
 using Content.Shared.Paper;
 using Content.Shared._IS14.Paper; //IS14-change: stamp placement
 using Robust.Client.Player; //IS14-change: signature placement
-using static Content.Shared.Paper.PaperComponent;
 
 namespace Content.Client.Paper.UI;
 

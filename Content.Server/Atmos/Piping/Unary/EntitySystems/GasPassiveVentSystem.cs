@@ -7,6 +7,7 @@ using Content.Server.NodeContainer.Nodes;
 using Content.Shared.Atmos;
 using Content.Shared.Atmos.Components;
 using JetBrains.Annotations;
+using Content.Server.Atmos.Piping.Components;
 
 namespace Content.Server.Atmos.Piping.Unary.EntitySystems
 {

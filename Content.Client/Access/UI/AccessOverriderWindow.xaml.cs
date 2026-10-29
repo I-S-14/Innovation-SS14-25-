@@ -7,7 +7,7 @@ using Robust.Client.UserInterface.Controls;
 using Robust.Client.UserInterface.CustomControls;
 using Robust.Client.UserInterface.XAML;
 using Robust.Shared.Prototypes;
-using static Content.Shared.Access.Components.AccessOverriderComponent;
+using Content.Shared.Access.Systems;
 
 namespace Content.Client.Access.UI
 {

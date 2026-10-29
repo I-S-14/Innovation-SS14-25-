@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Robust.Shared.Random;
+using Robust.Server.GameObjects;
 
 namespace Content.Server.RandomAppearance;
 

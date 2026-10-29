@@ -1,77 +1,94 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
 using Content.Shared.Hands;
-using Content.Shared.Hands.EntitySystems;
 using Content.Shared.IdentityManagement;
-using Content.Shared.Item;
-using Content.Shared.Lube;
+using Content.Shared.Inventory;
 using Content.Shared.NameModifier.EntitySystems;
 using Content.Shared.Popups;
 using Content.Shared.Throwing;
+using Robust.Shared.Network;
 using Robust.Shared.Random;
 
-namespace Content.Server.Lube;
+namespace Content.Shared.Lube;
 
-public sealed class LubedSystem : EntitySystem
+public sealed partial class LubedSystem : EntitySystem
 {
-    [Dependency] private readonly ThrowingSystem _throwing = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly SharedTransformSystem _transform = default!;
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] private readonly NameModifierSystem _nameMod = default!;
+    [Dependency] private INetManager _net = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private NameModifierSystem _nameMod = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private ThrowingSystem _throwing = default!;
 
-    public override void Initialize()
+    [SubscribeLocalEvent]
+    private void OnInit(Entity<LubedComponent> ent, ref ComponentInit args)
     {
-        base.Initialize();
-
-        SubscribeLocalEvent<LubedComponent, ComponentInit>(OnInit);
-        SubscribeLocalEvent<LubedComponent, BeforeGettingEquippedHandEvent>(OnHandPickUp);
-        SubscribeLocalEvent<LubedComponent, RefreshNameModifiersEvent>(OnRefreshNameModifiers);
+        _nameMod.RefreshNameModifiers(ent.Owner);
     }
 
-    private void OnInit(EntityUid uid, LubedComponent component, ComponentInit args)
-    {
-        _nameMod.RefreshNameModifiers(uid);
-    }
-
-    /// <remarks>
-    /// Note to whoever makes this predicted—there is a mispredict here that
-    /// would be nice to keep! If this is in shared, the client will predict
-    /// this and not run the pickup animation in <see cref="SharedHandsSystem"/>
-    /// which would (probably) make this effect look less funny. You will
-    /// probably want to either tweak <see cref="BeforeGettingEquippedHandEvent"/>
-    /// to be able to cancel but still run the animation or something—we do want
-    /// the event to run before the animation for stuff like
-    /// <see cref="MultiHandedItemSystem.OnBeforeEquipped"/>.
-    /// </remarks>
+    [SubscribeLocalEvent]
     private void OnHandPickUp(Entity<LubedComponent> ent, ref BeforeGettingEquippedHandEvent args)
     {
+        PerformLubedEffect(ent, args.User, out var cancelHandPickup);
+        args.Cancelled = cancelHandPickup;
+    }
 
-        if (args.Cancelled)
+    [SubscribeLocalEvent]
+    private void OnRefreshNameModifiers(Entity<LubedComponent> ent, ref RefreshNameModifiersEvent args)
+    {
+        if (ent.Comp.SlipsLeft > 0) // The component is removed deferred, so it might still exist when we refresh.
+            args.AddModifier("lubed-name-prefix");
+    }
+
+    [SubscribeLocalEvent]
+    private void OnGluedEffectAttemptEvent(Entity<LubedImmuneComponent> entity, ref LubedEffectAttemptEvent args)
+    {
+        args.Cancelled = true;
+    }
+
+    [SubscribeLocalEvent]
+    private void OnGluedEffectAttemptEvent(Entity<LubedImmuneComponent> entity, ref InventoryRelayedEvent<LubedEffectAttemptEvent> args)
+    {
+        OnGluedEffectAttemptEvent(entity, ref args.Args);
+    }
+
+    public void PerformLubedEffect(Entity<LubedComponent> ent, EntityUid user, out bool cancelHandPickup)
+    {
+        cancelHandPickup = false;
+
+        var attemptEv = new LubedEffectAttemptEvent();
+        RaiseLocalEvent(user, ref attemptEv);
+        if (attemptEv.Cancelled)
             return;
 
-        if (ent.Comp.SlipsLeft <= 0)
+        // Throwing is not predicted yet, so we don't want to predict setting the coordinates either, or it will look weird.
+        if (_net.IsServer)
         {
-            RemComp<LubedComponent>(ent);
-            _nameMod.RefreshNameModifiers(ent.Owner);
-            return;
+            cancelHandPickup = true;
+            _transform.SetCoordinates(ent, Transform(user).Coordinates);
+            _transform.AttachToGridOrMap(ent);
+            _throwing.TryThrow(ent, _random.NextVector2(), baseThrowSpeed: ent.Comp.SlipStrength, user: user);
+            _popup.PopupEntity(Loc.GetString("lube-slip", ("target", Identity.Entity(ent, EntityManager))), user, user, PopupType.MediumCaution);
         }
 
         ent.Comp.SlipsLeft--;
-        args.Cancelled = true;
-
-        _transform.SetCoordinates(ent, Transform(args.User).Coordinates);
-        _transform.AttachToGridOrMap(ent);
-        _throwing.TryThrow(ent, _random.NextVector2(), ent.Comp.SlipStrength,
-            predicted: false); // Trauma
-        _popup.PopupEntity(Loc.GetString("lube-slip", ("target", Identity.Entity(ent, EntityManager))),
-            args.User,
-            args.User,
-            PopupType.MediumCaution);
+        Dirty(ent);
+        if (ent.Comp.SlipsLeft <= 0)
+        {
+            RemCompDeferred<LubedComponent>(ent);
+            _nameMod.RefreshNameModifiers(ent.Owner);
+        }
     }
+}
 
-    private void OnRefreshNameModifiers(Entity<LubedComponent> entity, ref RefreshNameModifiersEvent args)
-    {
-        args.AddModifier("lubed-name-prefix");
-    }
+/// <summary>
+/// Raised on an entity to determine if it will be affected by a lubed item or not.
+/// </summary>
+[ByRefEvent]
+public record struct LubedEffectAttemptEvent() : IInventoryRelayEvent
+{
+    public SlotFlags TargetSlots { get; } = SlotFlags.GLOVES;
+
+    /// <summary>
+    /// If true, prevents the effect from being applied.
+    /// </summary>
+    public bool Cancelled;
 }

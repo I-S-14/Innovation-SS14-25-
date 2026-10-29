@@ -4,7 +4,7 @@ using Content.Shared.Botany.Events;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.EntityEffects;
 using Content.Shared.Examine;
-using Content.Shared.FixedPoint;
+using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.Interaction;
 using Content.Shared.Random.Helpers;
 using JetBrains.Annotations;

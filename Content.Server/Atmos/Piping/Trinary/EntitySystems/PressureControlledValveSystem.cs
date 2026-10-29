@@ -9,6 +9,7 @@ using Content.Shared.Atmos.Piping;
 using Content.Shared.Atmos.Piping.Components;
 using Content.Shared.Audio;
 using JetBrains.Annotations;
+using Content.Server.Atmos.Piping.Components;
 
 namespace Content.Server.Atmos.Piping.Trinary.EntitySystems;
 

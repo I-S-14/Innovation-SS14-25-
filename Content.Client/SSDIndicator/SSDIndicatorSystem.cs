@@ -7,6 +7,7 @@ using Content.Shared.NPC;
 using Content.Shared.SSDIndicator;
 using Content.Shared.StatusIcon.Components;
 using Robust.Shared.Configuration;
+using Robust.Shared.Prototypes;
 
 namespace Content.Client.SSDIndicator;
 

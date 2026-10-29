@@ -2,6 +2,7 @@
 
 using Content.Shared.Timing.Systems;
 using Content.Shared.Weapons.Ranged.Components;
+using Content.Shared.Timing;
 
 namespace Content.Shared.Weapons.Ranged.Systems;
 

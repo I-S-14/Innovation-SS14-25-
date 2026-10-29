@@ -7,6 +7,7 @@ using Content.Server.StationEvents.Components;
 using Content.Shared.Database;
 using Content.Shared.GameTicking.Components;
 using JetBrains.Annotations;
+using Content.Shared.Station.Components;
 
 namespace Content.Server.StationEvents.Events;
 

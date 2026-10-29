@@ -30,6 +30,10 @@ using Content.Shared.Mobs.Components; // Goobstation
 using Content.Shared.Movement.Systems;
 using Content.Shared.Random.Helpers;
 using Content.Shared.Clothing.Components;
+using Content.Shared.Eye.Blinding.Components;
+using Content.Shared.StatusEffect;
+using Content.Shared.Timing;
+using Robust.Shared.Random;
 
 namespace Content.Shared.Flash;
 

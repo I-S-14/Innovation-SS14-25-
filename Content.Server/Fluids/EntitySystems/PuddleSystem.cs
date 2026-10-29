@@ -22,6 +22,8 @@ using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Player;
 using Robust.Shared.Random;
+using Content.Shared.Chemistry.Components.SolutionManager;
+using Robust.Shared.Prototypes;
 
 namespace Content.Server.Fluids.EntitySystems;
 

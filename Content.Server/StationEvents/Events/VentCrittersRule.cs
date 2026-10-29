@@ -10,6 +10,7 @@ using Content.Shared.Storage;
 using Robust.Shared.Map;
 using Robust.Shared.Player;
 using Robust.Shared.Random;
+using Content.Shared.Station.Components;
 
 namespace Content.Server.StationEvents.Events;
 

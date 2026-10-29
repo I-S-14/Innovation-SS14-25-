@@ -10,6 +10,7 @@ using Content.Shared.Radiation.Systems;
 using Robust.Server.Audio;
 using Robust.Server.Player;
 using Robust.Shared.Player;
+using Robust.Server.GameObjects;
 
 namespace Content.Server.Radiation.Systems;
 

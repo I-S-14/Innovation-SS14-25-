@@ -2,6 +2,7 @@
 
 using Content.Shared.Atmos;
 using JetBrains.Annotations;
+using Content.Server.Atmos;
 
 namespace Content.Server.Destructible.Thresholds.Behaviors;
 

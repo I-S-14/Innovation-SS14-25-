@@ -9,6 +9,7 @@ using Content.Shared.Nutrition.Components;
 using Content.Shared.Nutrition.Prototypes;
 using Content.Shared.Verbs;
 using Robust.Shared.Prototypes;
+using Content.Shared.Chemistry.Components.SolutionManager;
 
 namespace Content.Shared.Nutrition.EntitySystems;
 

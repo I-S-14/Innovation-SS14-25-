@@ -15,6 +15,8 @@ using Content.Shared.UserInterface;
 using Robust.Server.GameStates;
 using Robust.Shared.Map;
 using System.Runtime.InteropServices;
+using Robust.Server.GameObjects;
+using Robust.Shared.Player;
 
 namespace Content.Server.SurveillanceCamera;
 

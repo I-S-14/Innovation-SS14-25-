@@ -47,7 +47,6 @@ internal sealed partial class AtvRangeCommand : LocalizedCommands
 [UsedImplicitly]
 internal sealed partial class AtvModeCommand : LocalizedCommands
 {
-    [Dependency] private IEntitySystemManager _entitySystemManager = default!;
 
     public override string Command => "atvmode";
 
@@ -106,7 +105,6 @@ internal sealed partial class AtvModeCommand : LocalizedCommands
 [UsedImplicitly]
 internal sealed partial class AtvCBMCommand : LocalizedCommands
 {
-    [Dependency] private IEntitySystemManager _entitySystemManager = default!;
 
     public override string Command => "atvcbm";
 

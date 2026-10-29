@@ -1,77 +1,139 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
-using Content.Server.Administration.Logs;
-using Content.Server.Mind;
-using Content.Server.Popups;
-using Content.Server.Revolutionary.Components; // GoobStation
-using Content.Server.Roles;
-using Content.Shared.Database;
+using Content.Shared.Clothing;
 using Content.Shared.Implants;
+using Content.Shared.Inventory;
 using Content.Shared.Mindshield.Components;
-using Content.Shared.Revolutionary; // GoobStation
-using Content.Shared.Revolutionary.Components;
-using Content.Shared.Roles.Components;
-using Robust.Shared.Containers;
+using Content.Shared.StatusIcon;
+using Robust.Shared.Prototypes;
+using Robust.Shared.Timing;
 
-namespace Content.Server.Mindshield;
+namespace Content.Shared.Mindshield;
 
-/// <summary>
-/// System used for adding or removing components with a mindshield implant
-/// as well as checking if the implanted is a Rev or Head Rev.
-/// </summary>
-public sealed class MindShieldSystem : EntitySystem
+public sealed partial class MindShieldSystem : EntitySystem
 {
-    [Dependency] private readonly IAdminLogManager _adminLogManager = default!;
-    [Dependency] private readonly RoleSystem _roleSystem = default!;
-    [Dependency] private readonly MindSystem _mindSystem = default!;
-    [Dependency] private readonly PopupSystem _popupSystem = default!;
-    [Dependency] private readonly SharedRevolutionarySystem _revolutionarySystem = default!; // Goobstation
+    [Dependency] private IGameTiming _timing = default!;
+    /// <summary>
+    /// Status icon displayed in the sec HUD.
+    /// </summary>
+    public static ProtoId<StatusIconPrototype> StatusIcon = "MindShieldIcon";
 
     public override void Initialize()
     {
         base.Initialize();
 
-        SubscribeLocalEvent<MindShieldImplantComponent, ImplantImplantedEvent>(OnImplantImplanted);
-        SubscribeLocalEvent<MindShieldImplantComponent, ImplantRemovedEvent>(OnImplantRemoved);
+        // Mind shield status events
+        SubscribeLocalEvent<MindShieldComponent, ImplantRelayEvent<GetMindShieldStatusEvent>>((e, ref k) => OnStatusQuery(e, ref k.Args));
+        SubscribeLocalEvent<MindShieldComponent, InventoryRelayedEvent<GetMindShieldStatusEvent>>((e, ref k) => OnStatusQuery(e, ref k.Args));
     }
 
-    private void OnImplantImplanted(Entity<MindShieldImplantComponent> ent, ref ImplantImplantedEvent ev)
+    [SubscribeLocalEvent]
+    private void OnMindshieldUnequip(Entity<MindShieldComponent> ent, ref ClothingGotUnequippedEvent args)
     {
-        EnsureComp<MindShieldComponent>(ev.Implanted);
-        MindShieldRemovalCheck(ev.Implanted, ev.Implant);
-
-        // GoobStation
-        if (!TryComp<CommandStaffComponent>(ev.Implanted, out var commandComp))
+        if (_timing.ApplyingState)
             return;
 
-        commandComp.Enabled = true;
+        RefreshMindshieldStatus(args.Wearer);
+    }
+
+    [SubscribeLocalEvent]
+    private void OnMindshieldEquip(Entity<MindShieldComponent> ent, ref ClothingGotEquippedEvent args)
+    {
+        if (_timing.ApplyingState)
+            return;
+
+        RefreshMindshieldStatus(args.Wearer);
+    }
+
+    [SubscribeLocalEvent]
+    private void OnMindshieldRemoved(Entity<MindShieldComponent> ent, ref ComponentRemove args)
+    {
+        RefreshMindshieldStatus(ent.Owner);
+    }
+
+    [SubscribeLocalEvent]
+    private void OnMindshieldImplantRemoved(Entity<MindShieldComponent> ent, ref ImplantRemovedEvent args)
+    {
+        RefreshMindshieldStatus(args.Implanted);
+    }
+
+    [SubscribeLocalEvent]
+    private void OnMindshieldImplanted(Entity<MindShieldComponent> ent, ref ImplantImplantedEvent args)
+    {
+        RefreshMindshieldStatus(args.Implanted);
+    }
+
+    [SubscribeLocalEvent]
+    private void OnMindshieldMapInit(Entity<MindShieldComponent> ent, ref MapInitEvent args)
+    {
+        // todo: make it not refresh on implant & clothing items
+        RefreshMindshieldStatus(ent.Owner);
     }
 
     /// <summary>
-    /// Checks if the implanted person was a Rev or Head Rev and remove role or destroy mindshield respectively.
+    /// This function updates <see cref="MindShieldStatusComponent"/>. It should be called when anything makes a modification of its mindshielded-ness.
     /// </summary>
-    private void MindShieldRemovalCheck(EntityUid implanted, EntityUid implant)
+    public void RefreshMindshieldStatus(EntityUid ent)
     {
-        if (TryComp<HeadRevolutionaryComponent>(implanted, out var headRevComp)) // GoobStation - headRevComp
-        {
-            _popupSystem.PopupEntity(Loc.GetString("head-rev-break-mindshield"), implanted);
-            _revolutionarySystem.ToggleConvertAbility((implanted, headRevComp), false); // GoobStation - turn off headrev ability to convert
-            //QueueDel(implant); - Goobstation - Headrevs should remove implant before turning on ability
-            return;
-        }
+        var ev = new GetMindShieldStatusEvent();
+        RaiseLocalEvent(ent, ref ev);
+        var mindshielded = ev.IsMindshielded;
+        var visible = ev.IsVisible;
 
-        if (_mindSystem.TryGetMind(implanted, out var mindId, out _) &&
-            _roleSystem.MindRemoveRole<RevolutionaryRoleComponent>(mindId))
+        if (!mindshielded && !visible)
         {
-            _adminLogManager.Add(LogType.Mind, LogImpact.Medium, $"{ToPrettyString(implanted)} was deconverted due to being implanted with a Mindshield.");
+            if (HasComp<MindShieldStatusComponent>(ent))
+                RemCompDeferred<MindShieldStatusComponent>(ent);
         }
-        if (HasComp<Goobstation.Shared.Mindcontrol.MindcontrolledComponent>(implanted))   //Goobstation - Mindcontrol Implant
-            RemComp<Goobstation.Shared.Mindcontrol.MindcontrolledComponent>(implanted);
+        else
+        {
+            EnsureComp<MindShieldStatusComponent>(ent, out var c);
+            c.IsMindshielded = mindshielded;
+            c.IsVisible = visible;
+            Dirty(ent, c);
+        }
     }
 
-    private void OnImplantRemoved(Entity<MindShieldImplantComponent> ent, ref ImplantRemovedEvent args)
+    [SubscribeLocalEvent]
+    private void OnStatusQuery(Entity<MindShieldComponent> e, ref GetMindShieldStatusEvent args)
     {
-        RemComp<MindShieldComponent>(args.Implanted);
+        args.IsMindshielded = true;
+        args.IsVisible = true;
+    }
+
+    /// <summary>
+    /// Retrieves mindshielding data of an entity. Works via <see cref="MindShieldStatusComponent"/>, and so requires proper dirtying on the part of mindshield providers.
+    /// </summary>
+    /// <param name="entity">The entity to check the mindshield status of.</param>
+    /// <param name="isMindshielded">If the entity has a functional mind shield</param>
+    /// <param name="isVisible">Wether the entity shows a mindshield icon on the sec HUD</param>
+    /// <remarks>You should never look for a mindshield component and instead use this function.</remarks>
+    public void GetMindshieldStatus(EntityUid entity, out bool isMindshielded, out bool isVisible)
+    {
+        if (TryComp<MindShieldStatusComponent>(entity, out var comp))
+        {
+            isMindshielded = comp.IsMindshielded;
+            isVisible = comp.IsVisible;
+        }
+        else
+        {
+            isMindshielded = isVisible = false;
+        }
     }
 }
 
+/// <summary>
+/// Raised in order to get whether an entity is mindshielded visually, mechanically or both.
+/// </summary>
+[ByRefEvent]
+public sealed class GetMindShieldStatusEvent : EntityEventArgs, IInventoryRelayEvent
+{
+    public SlotFlags TargetSlots => SlotFlags.WITHOUT_POCKET;
+    /// <summary>
+    /// Whether the entity is mindshielded.
+    /// </summary>
+    public bool IsMindshielded;
+
+    /// <summary>
+    /// Whether a mindshield icon is present
+    /// </summary>
+    public bool IsVisible;
+}

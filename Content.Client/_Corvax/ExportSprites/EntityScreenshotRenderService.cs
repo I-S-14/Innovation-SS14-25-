@@ -613,9 +613,6 @@ public sealed class EntityScreenshotRenderService
     {
         private static readonly Color ExportBackgroundColor = new(128, 128, 128, 0);
 
-        [Dependency] private readonly IEntityManager _entityManager = default!;
-        [Dependency] private readonly ILogManager _logManager = default!;
-        [Dependency] private readonly IResourceManager _resourceManager = default!;
 
         internal readonly Queue<(
             IRenderTexture Texture,

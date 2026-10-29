@@ -27,21 +27,13 @@ public sealed class AgentIDCardBoundUserInterface(EntityUid owner, Enum uiKey) :
         _window.OnNameChanged += OnNameChanged;
         _window.OnJobChanged += OnJobChanged;
         _window.OnJobIconChanged += OnJobIconChanged;
+        _window.OnNumberChanged += OnNumberChanged; // DeltaV
+    }
 
-            _window.OnNameChanged += OnNameChanged;
-            _window.OnJobChanged += OnJobChanged;
-            _window.OnJobIconChanged += OnJobIconChanged;
-            _window.OnNumberChanged += OnNumberChanged; // DeltaV
-        }
-
-        // DeltaV - Add number change handler
-        private void OnNumberChanged(uint newNumber)
-        {
-            SendMessage(new AgentIDCardNumberChangedMessage(newNumber));
-        }
-
-        _window.SetAllowedIcons(agent.IconGroups, currentIcon);
-        Update();
+    // DeltaV - Add number change handler
+    private void OnNumberChanged(uint newNumber)
+    {
+        SendMessage(new AgentIDCardNumberChangedMessage(newNumber));
     }
 
     public override void Update()
@@ -54,10 +46,28 @@ public sealed class AgentIDCardBoundUserInterface(EntityUid owner, Enum uiKey) :
         if (!EntMan.TryGetComponent<IdCardComponent>(Owner, out var card))
             return;
 
-            _window.SetCurrentName(cast.CurrentName);
-            _window.SetCurrentJob(cast.CurrentJob);
-            _window.SetAllowedIcons(cast.CurrentJobIconId);
-            _window.SetCurrentNumber(cast.CurrentNumber); // DeltaV
-        }
+        _window.Update(card);
+    }
+
+    private void OnNameChanged(string newName)
+    {
+        SendPredictedMessage(new AgentIDCardNameChangedMessage(newName));
+    }
+
+    private void OnJobChanged(string newJob)
+    {
+        SendPredictedMessage(new AgentIDCardJobChangedMessage(newJob));
+    }
+
+    private void OnJobIconChanged(ProtoId<JobIconPrototype> newJobIconId)
+    {
+        base.UpdateState(state);
+        if (_window == null || state is not AgentIDCardBoundUserInterfaceState cast)
+            return;
+
+        _window.SetCurrentName(cast.CurrentName);
+        _window.SetCurrentJob(cast.CurrentJob);
+        _window.SetAllowedIcons(cast.CurrentJobIconId);
+        _window.SetCurrentNumber(cast.CurrentNumber); // DeltaV
     }
 }

@@ -5,6 +5,8 @@ using Content.Shared.Atmos.Piping.Components;
 using JetBrains.Annotations;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
+using Content.Server.Atmos.Components;
+using Content.Server.Atmos.Piping.Components;
 
 namespace Content.Server.Atmos.Piping.EntitySystems
 {

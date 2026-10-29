@@ -13,6 +13,13 @@ using Robust.Client.UserInterface.Controls;
 using Robust.Client.UserInterface.CustomControls;
 using Robust.Shared.Utility;
 using static Robust.Client.UserInterface.Controls.BoxContainer;
+using System;
+using System.Collections.Generic;
+using Content.Client.Arcade.UI;
+using Robust.Shared.Graphics;
+using Robust.Shared.IoC;
+using Robust.Shared.Localization;
+using Robust.Shared.Maths;
 
 namespace Content.Client.Arcade
 {

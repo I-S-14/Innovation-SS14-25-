@@ -6,6 +6,7 @@ using Content.Shared.Anomaly.Effects;
 using Content.Shared.Anomaly.Effects.Components;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Random;
+using Robust.Shared.Physics.Components;
 
 namespace Content.Server.Anomaly.Effects;
 

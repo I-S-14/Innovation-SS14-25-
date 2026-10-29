@@ -7,7 +7,6 @@ using Content.Server.Popups;
 using Content.Shared.Paper;
 using Content.Shared._IS14.Paper; //IS14-change: signature placement
 using System.Numerics; //IS14-change: signature placement
-using static Content.Shared.Paper.PaperComponent; //IS14-change: PaperUiKey
 using Content.Server.Paper;
 using Content.Shared.Popups;
 using Content.Shared.Tag;

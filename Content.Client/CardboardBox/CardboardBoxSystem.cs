@@ -7,6 +7,7 @@ using Content.Shared.Examine;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Movement.Components;
 using Robust.Client.GameObjects;
+using Content.Shared.Mobs.Components;
 
 namespace Content.Client.CardboardBox;
 

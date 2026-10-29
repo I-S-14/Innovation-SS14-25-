@@ -2,6 +2,7 @@
 
 using Content.Shared.Arcade;
 using Robust.Client.UserInterface;
+using Robust.Client.GameObjects;
 
 namespace Content.Client.Arcade.UI;
 

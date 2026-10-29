@@ -3,6 +3,7 @@
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Random;
+using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Tiles;
 

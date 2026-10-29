@@ -7,6 +7,8 @@ using Robust.Client.Graphics;
 using Robust.Shared.Enums;
 using Robust.Shared.Map;
 using Robust.Shared.Random;
+using Content.Client.NetworkConfigurator.Systems;
+using Content.Shared.DeviceNetwork.Components;
 
 namespace Content.Client.NetworkConfigurator;
 

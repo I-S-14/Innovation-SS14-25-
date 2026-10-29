@@ -7,7 +7,6 @@ using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 
 #pragma warning disable CS0618 // This IS the obsolete component, this warning is redundant.
-using static Content.Shared.Decals.DecalGridComponent;
 #pragma warning restore CS0618
 
 namespace Content.Shared.Decals

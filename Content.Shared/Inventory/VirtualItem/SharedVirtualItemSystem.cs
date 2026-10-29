@@ -29,11 +29,6 @@ namespace Content.Shared.Inventory.VirtualItem;
 /// </remarks>
 public abstract partial class SharedVirtualItemSystem : EntitySystem
 {
-    [Dependency] private readonly SharedContainerSystem _containerSystem = default!;
-    [Dependency] private readonly SharedItemSystem _itemSystem = default!;
-    [Dependency] private readonly InventorySystem _inventorySystem = default!;
-    [Dependency] private readonly SharedHandsSystem _handsSystem = default!;
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly IGameTiming _timing = default!; // Goob edit
     [Dependency] private SharedContainerSystem _containerSystem = default!;
     [Dependency] private SharedItemSystem _itemSystem = default!;

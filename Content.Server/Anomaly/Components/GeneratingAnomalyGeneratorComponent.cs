@@ -2,6 +2,7 @@
 
 using Content.Shared.Anomaly;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
+using Robust.Shared.Audio;
 
 namespace Content.Server.Anomaly.Components;
 

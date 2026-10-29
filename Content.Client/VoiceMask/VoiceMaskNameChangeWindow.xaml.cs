@@ -10,6 +10,7 @@ using Robust.Shared.Configuration;
 using Robust.Shared.Prototypes;
 using System.Linq;
 using Robust.Client.GameObjects;
+using Robust.Client.UserInterface.CustomControls;
 
 namespace Content.Client.VoiceMask;
 

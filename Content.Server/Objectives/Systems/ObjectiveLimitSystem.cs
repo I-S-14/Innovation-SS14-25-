@@ -3,6 +3,7 @@ using Content.Server.Objectives.Components;
 using Content.Shared.GameTicking.Rules.Components;
 using Content.Shared.Mind;
 using Content.Shared.Objectives.Components;
+using Content.Server.GameTicking.Rules.Components;
 
 namespace Content.Server.Objectives.Systems;
 

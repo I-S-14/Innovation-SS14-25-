@@ -2,10 +2,7 @@
 
 using Robust.Shared.Serialization;
 
-namespace Content.Shared.Forensics;
-
-[Serializable, NetSerializable]
-public enum ForensicScannerUiKey : byte
+namespace Content.Shared.Forensics
 {
     [Serializable, NetSerializable]
     public sealed class ForensicScannerBoundUserInterfaceState : BoundUserInterfaceState
@@ -56,9 +53,3 @@ public enum ForensicScannerUiKey : byte
     {
     }
 }
-
-[Serializable, NetSerializable]
-public sealed class ForensicScannerPrintMessage : BoundUserInterfaceMessage;
-
-[Serializable, NetSerializable]
-public sealed class ForensicScannerClearMessage : BoundUserInterfaceMessage;

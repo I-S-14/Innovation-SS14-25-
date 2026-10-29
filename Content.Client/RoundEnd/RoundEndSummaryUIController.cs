@@ -9,6 +9,7 @@ using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controllers;
 using Robust.Shared.Input.Binding;
 using Robust.Shared.Player;
+using Content.Client.GameTicking.Managers;
 
 namespace Content.Client.RoundEnd;
 
@@ -16,7 +17,6 @@ namespace Content.Client.RoundEnd;
 public sealed partial class RoundEndSummaryUIController : UIController,
     IOnSystemLoaded<ClientGameTicker>
 {
-    [Dependency] private readonly IInputManager _input = default!;
     [Dependency] private readonly IFileDialogManager _fileDialogManager = default!; // CorvaxGoob-PhotoCamera
     [Dependency] private IInputManager _input = default!;
 

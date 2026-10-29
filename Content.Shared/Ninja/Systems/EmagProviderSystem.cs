@@ -17,11 +17,6 @@ namespace Content.Shared.Ninja.Systems;
 /// </summary>
 public sealed partial class EmagProviderSystem : EntitySystem
 {
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
-    [Dependency] private readonly EntityWhitelistSystem _whitelist = default!;
-    [Dependency] private readonly ISharedAdminLogManager _adminLogger = default!;
-    [Dependency] private readonly SharedNinjaGlovesSystem _gloves = default!;
-    [Dependency] private readonly TagSystem _tag = default!;
     [Dependency] private readonly SparksSystem _sparks = default!; // goob edit - sparks everywhere
     [Dependency] private SharedAudioSystem _audio = default!;
     [Dependency] private EntityWhitelistSystem _whitelist = default!;

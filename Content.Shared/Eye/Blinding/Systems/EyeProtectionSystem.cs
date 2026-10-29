@@ -6,6 +6,7 @@ using Content.Shared.Eye.Blinding.Components;
 using Content.Shared.Tools.Components;
 using Content.Shared.Item.ItemToggle.Components;
 using Content.Shared.Clothing.Components;
+using Content.Shared.StatusEffect;
 
 namespace Content.Shared.Eye.Blinding.Systems
 {

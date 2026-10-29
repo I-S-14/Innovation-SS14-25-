@@ -7,6 +7,7 @@ using Content.Shared.Species.Components;
 using Content.Shared.Whitelist;
 using Content.Shared.Zombies;
 using Robust.Shared.Prototypes;
+using Content.Shared.Body.Events;
 
 namespace Content.Server.Species.Systems;
 

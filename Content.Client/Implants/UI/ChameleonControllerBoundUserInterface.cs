@@ -4,6 +4,10 @@ using Content.Shared.Timing.Systems;
 using JetBrains.Annotations;
 using Robust.Client.UserInterface;
 using Robust.Shared.Prototypes;
+using Content.Shared.Clothing;
+using Content.Shared.Preferences.Loadouts;
+using Content.Shared.Roles;
+using Content.Shared.Timing;
 
 namespace Content.Client.Implants.UI;
 

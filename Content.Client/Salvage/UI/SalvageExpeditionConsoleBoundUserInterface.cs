@@ -20,9 +20,6 @@ public sealed partial class SalvageExpeditionConsoleBoundUserInterface : BoundUs
     [ViewVariables]
     private OfferingWindow? _window;
 
-    [Dependency] private readonly IConfigurationManager _cfgManager = default!;
-    [Dependency] private readonly IEntityManager _entManager = default!;
-    [Dependency] private readonly IPrototypeManager _protoManager = default!;
     [Dependency] private IConfigurationManager _cfgManager = default!;
     [Dependency] private IEntityManager _entManager = default!;
     [Dependency] private ILogManager _logManager = default!;

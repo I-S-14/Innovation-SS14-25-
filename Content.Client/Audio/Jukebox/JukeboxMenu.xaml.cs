@@ -8,6 +8,8 @@ using Robust.Client.UserInterface.XAML;
 using Robust.Shared.Audio.Components;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
+using Robust.Client.UserInterface;
+using Robust.Shared.Input;
 using FancyWindow = Content.Client.UserInterface.Controls.FancyWindow;
 
 namespace Content.Client.Audio.Jukebox;

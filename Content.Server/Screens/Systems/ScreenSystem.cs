@@ -6,6 +6,8 @@ using Content.Shared.RoundEnd;
 using Content.Shared.Screens;
 using Content.Shared.TextScreen;
 using Robust.Shared.Timing;
+using Content.Server.DeviceNetwork.Components;
+using Content.Server.DeviceNetwork.Systems;
 
 namespace Content.Server.Screens.Systems;
 

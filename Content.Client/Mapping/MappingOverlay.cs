@@ -5,7 +5,8 @@ using Robust.Client.Graphics;
 using Robust.Client.Player;
 using Robust.Shared.Enums;
 using Robust.Shared.Prototypes;
-using static Content.Client.Mapping.MappingState;
+using Robust.Client.Input;
+using Robust.Client.UserInterface;
 
 namespace Content.Client.Mapping;
 

@@ -34,6 +34,15 @@ using Robust.Shared.Utility;
 using System.IO;
 using System.Linq;
 using System.Numerics;
+using Content.Client.Lobby.UI.Loadouts;
+using Content.Client.Lobby.UI.Roles;
+using Content.Shared.Clothing;
+using Content.Shared.Guidebook;
+using Content.Shared.Humanoid.Prototypes;
+using Content.Shared.Preferences.Loadouts;
+using Content.Shared.Roles;
+using Content.Shared.Traits;
+using Robust.Client.Graphics;
 using Direction = Robust.Shared.Maths.Direction;
 
 namespace Content.Client.Lobby.UI

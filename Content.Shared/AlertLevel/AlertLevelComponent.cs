@@ -1,55 +1,48 @@
-// SPDX-License-Identifier: MIT
-
-
+using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
 
-namespace Content.Server.AlertLevel;
+namespace Content.Shared.AlertLevel;
 
 /// <summary>
 /// Alert level component. This is the component given to a station to
 /// signify its alert level state.
 /// </summary>
-[RegisterComponent]
+[RegisterComponent, NetworkedComponent]
+[AutoGenerateComponentState, AutoGenerateComponentPause]
+[Access(typeof(AlertLevelSystem))]
 public sealed partial class AlertLevelComponent : Component
 {
     /// <summary>
-    /// The current set of alert levels on the station.
+    /// The available alert levels for this station.
     /// </summary>
-    [ViewVariables]
-    public AlertLevelPrototype? AlertLevels;
+    [DataField(required: true), AutoNetworkedField]
+    public List<ProtoId<AlertLevelPrototype>> AvailableAlertLevels = new();
 
-    // Once stations are a prototype, this should be used.
-    [DataField("alertLevelPrototype", required: true)]
-    public ProtoId<AlertLevelPrototype> AlertLevelPrototype = default!;
+    /// <summary>
+    /// The default alert level for this station.
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public ProtoId<AlertLevelPrototype> DefaultAlertLevel = "Green";
 
     /// <summary>
     /// The current level on the station.
     /// </summary>
-    [ViewVariables(VVAccess.ReadWrite)] public string CurrentLevel = string.Empty;
+    [DataField, AutoNetworkedField]
+    public ProtoId<AlertLevelPrototype> CurrentAlertLevel = "Green";
 
     /// <summary>
-    /// Is current station level can be changed by crew.
+    /// Is changing the alert level currently locked?
+    /// For example when the nuke is active the level is locked to Delta.
     /// </summary>
-    [ViewVariables(VVAccess.ReadWrite)] public bool IsLevelLocked = false;
-
-    [ViewVariables] public float CurrentDelay = 0;
-    [ViewVariables] public bool ActiveDelay;
+    [DataField, AutoNetworkedField]
+    public bool IsLevelLocked = false;
 
     /// <summary>
-    /// If the level can be selected on the station.
+    /// The time stamp until which changing the alert level is unavailable.
+    /// Used to prevent spamming alerts in chat.
     /// </summary>
-    [ViewVariables]
-    public bool IsSelectable
-    {
-        get
-        {
-            if (AlertLevels == null
-                || !AlertLevels.Levels.TryGetValue(CurrentLevel, out var level))
-            {
-                return false;
-            }
-
-            return (level.Selectable || level.EmagSelectable) && !level.DisableSelection && !IsLevelLocked; // Goobstation - added EmagSelectable
-        }
-    }
+    [DataField(customTypeSerializer: typeof(TimeOffsetSerializer))]
+    [AutoNetworkedField, AutoPausedField]
+    public TimeSpan? DelayedUntil;
 }

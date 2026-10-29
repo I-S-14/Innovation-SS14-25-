@@ -9,10 +9,8 @@ using Robust.Shared.Prototypes;
 namespace Content.Server.Station.Systems;
 public sealed partial class StationBiomeSystem : EntitySystem
 {
-    [Dependency] private readonly BiomeSystem _biome = default!;
     [Dependency] private readonly SharedMapSystem _mapSystem = default!;
     [Dependency] private readonly IPrototypeManager _proto = default!;
-    [Dependency] private readonly StationSystem _station = default!;
     [Dependency] private BiomeSystem _biome = default!;
     [Dependency] private ServerStationSystem _station = default!;
     [Dependency] private SharedMapSystem _map = default!;

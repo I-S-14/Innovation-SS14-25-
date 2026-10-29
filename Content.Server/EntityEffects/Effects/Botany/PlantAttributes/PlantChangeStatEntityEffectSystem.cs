@@ -3,6 +3,7 @@ using Content.Shared.Botany.Systems;
 using Content.Shared.EntityEffects;
 using Content.Shared.EntityEffects.Effects.Botany.PlantAttributes;
 using Robust.Shared.Random;
+using Content.Server.Botany.Components;
 
 namespace Content.Server.EntityEffects.Effects.Botany.PlantAttributes;
 

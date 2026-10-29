@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
 using Content.Shared.DisplacementMap;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Whitelist;
@@ -185,12 +183,19 @@ public sealed class HandsComponentState(
     DisplacementData? handDisplacement,
     DisplacementData? leftHandDisplacement,
     DisplacementData? rightHandDisplacement,
-    bool canBeStripped) : ComponentState
+    bool canBeStripped,
+    TimeSpan nextThrowTime = default) : ComponentState // Trauma: nextThrowTime
 {
-    public readonly Dictionary<string, Hand> Hands;
-    public readonly List<string> SortedHands;
-    public readonly string? ActiveHandId;
-    public readonly TimeSpan NextThrowTime; // Trauma
+    public string? ActiveHandId = activeHandId;
+    public readonly Dictionary<string, Hand> Hands = new(hands);
+    public readonly List<string> SortedHands = new(sortedHands);
+    public readonly bool ShowInHands = showInHands;
+    public readonly DisplacementData? HandDisplacement = handDisplacement == null ? null : new(handDisplacement);
+    public readonly DisplacementData? LeftHandDisplacement = leftHandDisplacement == null ? null : new(leftHandDisplacement);
+    public readonly DisplacementData? RightHandDisplacement = rightHandDisplacement == null ? null : new(rightHandDisplacement);
+    public readonly bool CanBeStripped = canBeStripped;
+    public readonly TimeSpan NextThrowTime = nextThrowTime; // Trauma
+}
 
 /// <summary>
 /// Delta state for the active hand so that we don't have to network
@@ -203,11 +208,25 @@ public sealed class HandsComponentActiveHandDeltaState(string? activeHandId) : I
 
     public void ApplyToFullState(HandsComponentState fullState)
     {
-        // cloning lists because of test networking.
-        Hands = new(handComp.Hands);
-        SortedHands = new(handComp.SortedHands);
-        ActiveHandId = handComp.ActiveHandId;
-        NextThrowTime = handComp.NextThrowTime; // Trauma
+        fullState.ActiveHandId = ActiveHandId;
+    }
+
+    public HandsComponentState CreateNewFullState(HandsComponentState fullState)
+    {
+        var newState = new HandsComponentState(
+            fullState.ActiveHandId,
+            fullState.Hands,
+            fullState.SortedHands,
+            fullState.ShowInHands,
+            fullState.HandDisplacement,
+            fullState.LeftHandDisplacement,
+            fullState.RightHandDisplacement,
+            fullState.CanBeStripped,
+            fullState.NextThrowTime) // Trauma
+        {
+            ActiveHandId = fullState.ActiveHandId,
+        };
+        return newState;
     }
 }
 

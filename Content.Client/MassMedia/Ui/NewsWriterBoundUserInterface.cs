@@ -5,6 +5,7 @@ using Content.Shared.MassMedia.Systems;
 using Content.Shared.MassMedia.Components;
 using Robust.Client.UserInterface;
 using Robust.Shared.Utility;
+using Robust.Shared.Timing;
 
 namespace Content.Client.MassMedia.Ui;
 

@@ -2,6 +2,8 @@ using Content.Server.Atmos.EntitySystems;
 using Content.Shared.Atmos;
 using Content.Shared.Disposal.Components;
 using Content.Shared.Disposal.Unit;
+using Content.Shared.Destructible;
+using Content.Shared.Explosion;
 
 namespace Content.Server.Disposal.Unit;
 

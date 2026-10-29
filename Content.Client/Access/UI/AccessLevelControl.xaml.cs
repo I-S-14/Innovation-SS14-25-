@@ -5,6 +5,9 @@ using Robust.Client.UserInterface.Controls;
 using Robust.Client.UserInterface.XAML;
 using Robust.Shared.Prototypes;
 using Content.Shared.Access;
+using System.Linq;
+using Robust.Client.UserInterface;
+using Content.Shared.Access.Systems;
 
 namespace Content.Client.Access.UI;
 

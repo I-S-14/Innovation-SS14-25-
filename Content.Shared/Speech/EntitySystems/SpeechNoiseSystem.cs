@@ -1,119 +1,73 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
-using Content.Goobstation.Common.Speech;
-using Robust.Shared.Audio;
-using Content.Server.Chat.Systems;
 using Content.Shared.Chat;
-using Content.Shared.Speech;
+using Content.Shared.Random.Helpers;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
-using Robust.Shared.Prototypes;
+using Robust.Shared.Network;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
 
-// Goob Station
- using Content.Goobstation.Common.Barks;
-using Content.Goobstation.Common.CCVar;
-using Robust.Shared.Configuration;
+namespace Content.Shared.Speech.EntitySystems;
 
-
-namespace Content.Server.Speech
+public sealed partial class SpeechSoundSystem : EntitySystem
 {
-    public sealed class SpeechSoundSystem : EntitySystem
+    [Dependency] private IGameTiming _gameTiming = default!;
+    [Dependency] private INetManager _net = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
+
+    [SubscribeLocalEvent]
+    private void OnEntitySpoke(Entity<SpeechComponent> ent, ref EntitySpokeEvent args)
     {
-        [Dependency] private readonly IConfigurationManager _cfg = default!; // Goob
-        [Dependency] private readonly IGameTiming _gameTiming = default!;
-        [Dependency] private readonly IPrototypeManager _protoManager = default!;
-        [Dependency] private readonly IRobustRandom _random = default!;
-        [Dependency] private readonly SharedAudioSystem _audio = default!;
+        if (ent.Comp.SpeechSounds == null)
+            return;
 
-        private bool _barksEnabled; // Goob
+        var currentTime = _gameTiming.CurTime;
+        var cooldown = TimeSpan.FromSeconds(ent.Comp.SoundCooldownTime);
 
-        public override void Initialize()
+        // Ensure more than the cooldown time has passed since last speaking
+        if (currentTime - ent.Comp.LastTimeSoundPlayed < cooldown)
+            return;
+
+        var sound = GetSpeechSound(ent, args.Message);
+        ent.Comp.LastTimeSoundPlayed = currentTime;
+        if (_net.IsServer) // TODO: replace this call with PlayPredicted when chat is predicted.
+            _audio.PlayPvs(sound, ent);
+    }
+
+    /// <summary>
+    /// Gets the speech sound for a message.
+    /// </summary>
+    public SoundSpecifier? GetSpeechSound(Entity<SpeechComponent> ent, string message)
+    {
+        if (ent.Comp.SpeechSounds == null)
+            return null;
+
+        // Play speech sound
+        var prototype = ProtoMan.Index<SpeechSoundsPrototype>(ent.Comp.SpeechSounds);
+
+        // Different sounds for ask/exclaim based on last character
+        var contextSound = message[^1] switch
         {
-            base.Initialize();
+            '?' => prototype.AskSound,
+            '!' => prototype.ExclaimSound,
+            _ => prototype.SaySound
+        };
 
-            SubscribeLocalEvent<SpeechComponent, EntitySpokeEvent>(OnEntitySpoke);
-            Subs.CVar(_cfg, GoobCVars.BarksEnabled, x => _barksEnabled = x, true); // Goob
+        // Use exclaim sound if most characters are uppercase.
+        var uppercaseCount = 0;
+        foreach (var t in message)
+        {
+            if (char.IsUpper(t))
+                uppercaseCount++;
         }
 
-        public SoundSpecifier? GetSpeechSound(Entity<SpeechComponent> ent, string message)
+        if (uppercaseCount > message.Length / 2)
         {
-            // Goobstation start
-            var getSpeechSoundEv = new GetSpeechSoundEvent();
-            RaiseLocalEvent(ent, ref getSpeechSoundEv);
-            SpeechSoundsPrototype? prototype;
-            if (getSpeechSoundEv.Handled)
-            {
-                if (getSpeechSoundEv.SpeechSoundProtoId is not { } protoId ||
-                    !_protoManager.TryIndex(protoId, out prototype))
-                    return null;
-            }
-            else
-            {
-                if (ent.Comp.SpeechSounds == null)
-                    return null;
-
-                prototype = _protoManager.Index<SpeechSoundsPrototype>(ent.Comp.SpeechSounds);
-            }
-            // Goobstation end
-
-            // Play speech sound
-            SoundSpecifier? contextSound;
-
-            // Different sounds for ask/exclaim based on last character
-            contextSound = message[^1] switch
-            {
-                '?' => prototype.AskSound,
-                '!' => prototype.ExclaimSound,
-                _ => prototype.SaySound
-            };
-
-            // Use exclaim sound if most characters are uppercase.
-            int uppercaseCount = 0;
-            for (int i = 0; i < message.Length; i++)
-            {
-                if (char.IsUpper(message[i]))
-                    uppercaseCount++;
-            }
-            if (uppercaseCount > (message.Length / 2))
-            {
-                contextSound = prototype.ExclaimSound;
-            }
-
-            var scale = (float) _random.NextGaussian(1, prototype.Variation);
-            contextSound.Params = ent.Comp.AudioParams.WithPitchScale(scale);
-            return contextSound;
+            contextSound = prototype.ExclaimSound;
         }
 
-        private void OnEntitySpoke(EntityUid uid, SpeechComponent component, EntitySpokeEvent args)
-        {
-            // Goob station - Barks
-            if (component.SpeechSounds == null
-                || !args.Language.SpeechOverride.RequireSpeech)
-                return;
-
-            if (_barksEnabled)
-            {
-                var ev = new GetBarkSourceEntityEvent();
-                RaiseLocalEvent(uid, ref ev);
-                var soundEv = new GetSpeechSoundEvent();
-                RaiseLocalEvent(uid, ref soundEv);
-                if (HasComp<SpeechSynthesisComponent>(ev.Ent ?? uid) && !soundEv.Handled)
-                    return;
-            }
-            // END
-
-            var currentTime = _gameTiming.CurTime;
-            var cooldown = TimeSpan.FromSeconds(component.SoundCooldownTime);
-
-            // Ensure more than the cooldown time has passed since last speaking
-            if (currentTime - component.LastTimeSoundPlayed < cooldown)
-                return;
-
-            var sound = GetSpeechSound((uid, component), args.Message);
-            component.LastTimeSoundPlayed = currentTime;
-            _audio.PlayPvs(sound, uid);
-        }
+        var random = SharedRandomExtensions.PredictedRandom(_gameTiming, GetNetEntity(ent));
+        var scale = (float)random.NextGaussian(1, prototype.Variation);
+        contextSound.Params = ent.Comp.AudioParams.WithPitchScale(scale);
+        return contextSound;
     }
 }

@@ -1,32 +1,21 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
-using Content.Server.Administration.Logs;
 using Content.Server.Administration.Managers;
 using Content.Server.Chat.Managers;
 using Content.Server.Chat.Systems;
 using Content.Server.Database;
 using Content.Server.Ghost;
-using Content.Server._CorvaxGoob.Ghost;
 using Content.Server.Maps;
 using Content.Server.Players.PlayTimeTracking;
 using Content.Server.Preferences.Managers;
 using Content.Server.ServerUpdates;
 using Content.Server.Station.Systems;
-using Content.Shared.CCVar;
 using Content.Shared.Chat;
 using Content.Shared.GameTicking;
-using Content.Shared.Mind;
-using Content.Shared.Roles;
+using Content.Shared.Station.Systems;
 using Robust.Server;
-using Robust.Server.GameObjects;
 using Robust.Server.GameStates;
-using Robust.Shared.Audio.Systems;
 using Robust.Shared.Console;
 using Robust.Shared.EntitySerialization.Systems;
 using Robust.Shared.Map;
-using Robust.Shared.Prototypes;
-using Robust.Shared.Random;
-using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 #if EXCEPTION_TOLERANCE
 using Robust.Shared.Exceptions;
@@ -34,47 +23,34 @@ using Robust.Shared.Exceptions;
 
 namespace Content.Server.GameTicking
 {
-    public sealed partial class GameTicker : SharedGameTicker
+    public sealed partial class ServerGameTicker : GameTicker
     {
-        [Dependency] private readonly IAdminLogManager _adminLogger = default!;
-        [Dependency] private readonly IBanManager _banManager = default!;
-        [Dependency] private readonly IBaseServer _baseServer = default!;
-        [Dependency] private readonly IChatManager _chatManager = default!;
-        [Dependency] private readonly IConsoleHost _consoleHost = default!;
-        [Dependency] private readonly IGameMapManager _gameMapManager = default!;
-        [Dependency] private readonly IGameTiming _gameTiming = default!;
-        [Dependency] private readonly ILogManager _logManager = default!;
-        [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
-        [Dependency] private readonly IRobustRandom _robustRandom = default!;
+        [Dependency] private IBanManager _banManager = default!;
+        [Dependency] private IBaseServer _baseServer = default!;
+        [Dependency] private IChatManager _chatManager = default!;
+        [Dependency] private IConsoleHost _consoleHost = default!;
+        [Dependency] private IGameMapManager _gameMapManager = default!;
+        [Dependency] private ILogManager _logManager = default!;
 #if EXCEPTION_TOLERANCE
-        [Dependency] private readonly IRuntimeLog _runtimeLog = default!;
+        [Dependency] private IRuntimeLog _runtimeLog = default!;
 #endif
-        [Dependency] private readonly IServerPreferencesManager _prefsManager = default!;
-        [Dependency] private readonly IServerDbManager _db = default!;
-        [Dependency] private readonly ChatSystem _chatSystem = default!;
-        [Dependency] private readonly MapLoaderSystem _loader = default!;
-        [Dependency] private readonly SharedMapSystem _map = default!;
-        [Dependency] private readonly GhostSystem _ghost = default!;
-        [Dependency] private readonly GhostGoLobbySystem _ghostGoLobby = default!; // CorvaxGoob-GoLobby
-        [Dependency] private readonly SharedMindSystem _mind = default!;
-        [Dependency] private readonly PlayTimeTrackingSystem _playTimeTrackings = default!;
-        [Dependency] private readonly PvsOverrideSystem _pvsOverride = default!;
-        [Dependency] private readonly ServerUpdateManager _serverUpdates = default!;
-        [Dependency] private readonly SharedAudioSystem _audio = default!;
-        [Dependency] private readonly StationJobsSystem _stationJobs = default!;
-        [Dependency] private readonly StationSpawningSystem _stationSpawning = default!;
-        [Dependency] private readonly SharedTransformSystem _transform = default!;
-        [Dependency] private readonly UserDbDataManager _userDb = default!;
-        [Dependency] private readonly MetaDataSystem _metaData = default!;
-        [Dependency] private readonly SharedRoleSystem _roles = default!;
-        [Dependency] private readonly ServerDbEntryManager _dbEntryManager = default!;
+        [Dependency] private IServerPreferencesManager _prefsManager = default!;
+        [Dependency] private IServerDbManager _db = default!;
+        [Dependency] private ChatSystem _chatSystem = default!;
+        [Dependency] private GhostSystem _ghost = default!;
+        [Dependency] private MapLoaderSystem _loader = default!;
+        [Dependency] private PlayTimeTrackingSystem _playTimeTrackings = default!;
+        [Dependency] private PvsOverrideSystem _pvsOverride = default!;
+        [Dependency] private ServerDbEntryManager _dbEntryManager = default!;
+        [Dependency] private ServerUpdateManager _serverUpdates = default!;
+        [Dependency] private ServerStationJobsSystem _stationJobs = default!;
+        [Dependency] private StationSpawningSystem _stationSpawning = default!;
+        [Dependency] private UserDbDataManager _userDb = default!;
 
         [ViewVariables] private bool _initialized;
         [ViewVariables] private bool _postInitialized;
 
         [ViewVariables] public MapId DefaultMap { get; private set; }
-
-        private ISawmill _sawmill = default!;
 
         private bool _randomizeCharacters;
 
@@ -85,10 +61,8 @@ namespace Content.Server.GameTicking
             DebugTools.Assert(!_initialized);
             DebugTools.Assert(!_postInitialized);
 
-            _sawmill = _logManager.GetSawmill("ticker");
+            // TODO: Move replays to their own bespoke system so we don't need two sawmills, or allow for name overrides for specific logs
             _sawmillReplays = _logManager.GetSawmill("ticker.replays");
-
-            Subs.CVar(_cfg, CCVars.ICRandomCharacters, e => _randomizeCharacters = e, true);
 
             // Initialize the other parts of the game ticker.
             InitializeStatusShell();
@@ -96,7 +70,7 @@ namespace Content.Server.GameTicking
             InitializePlayer();
             InitializeLobbyBackground();
             InitializeGamePreset();
-            DebugTools.Assert(_prototypeManager.Index(FallbackOverflowJob).Name == FallbackOverflowJobName,
+            DebugTools.Assert(ProtoMan.Index(FallbackOverflowJob).Name == FallbackOverflowJobName,
                 "Overflow role does not have the correct name!");
             InitializeGameRules();
             InitializeReplays();
@@ -135,6 +109,11 @@ namespace Content.Server.GameTicking
             base.Update(frameTime);
             UpdateRoundFlow(frameTime);
             UpdateGameRules();
+        }
+
+        public static int GetRoundId(IEntitySystemManager esm)
+        {
+            return esm.GetEntitySystemOrNull<ServerGameTicker>()?.RoundId ?? 0;
         }
     }
 }

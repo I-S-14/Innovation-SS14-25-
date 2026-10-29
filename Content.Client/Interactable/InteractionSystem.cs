@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Shared.Interaction;
+using Content.Shared.Storage;
+using Robust.Shared.Containers;
 
 namespace Content.Client.Interactable
 {

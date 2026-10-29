@@ -10,6 +10,13 @@ using Robust.Client.UserInterface;
 using Robust.Shared.Network;
 using Robust.Shared.Timing;
 using Robust.Shared.Audio.Sources;
+using System;
+using System.Collections.Generic;
+using Robust.Client.GameObjects;
+using Robust.Shared.IoC;
+using Robust.Shared.Player;
+using Robust.Shared.Audio;
+using Robust.Shared.ContentPack;
 
 
 namespace Content.Client.Voting

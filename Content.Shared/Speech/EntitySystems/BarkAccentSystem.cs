@@ -1,62 +1,43 @@
-// SPDX-License-Identifier: MIT
-
-using Content.Shared.StatusEffectNew;
-using Content.Server.Speech.Components;
-using Content.Shared.Speech;
+using System.Collections.Frozen;
+using Content.Shared.Random.Helpers;
+using Content.Shared.Speech.Components;
 using Robust.Shared.Random;
+using Robust.Shared.Timing;
 
-namespace Content.Server.Speech.EntitySystems
+namespace Content.Shared.Speech.EntitySystems;
+
+public sealed partial class BarkAccentSystem : RelayAccentSystem<BarkAccentComponent>
 {
-    public sealed class BarkAccentSystem : EntitySystem
-    {
-        [Dependency] private readonly IRobustRandom _random = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private IRobustRandom _random = default!;
 
-        private static readonly IReadOnlyList<string> Barks = new List<string>{
-            " Гав!", " ГАВ", " вуф-вуф"  // CorvaxGoob-Localization
-        }.AsReadOnly();
+    private static readonly IReadOnlyList<string> Barks =
+    [
+        " Woof!", " WOOF", " wof-wof",
+    ];
 
-        private static readonly IReadOnlyDictionary<string, string> SpecialWords = new Dictionary<string, string>()
+    private static readonly FrozenDictionary<string, string> SpecialWords =
+        new Dictionary<string, string>
         {
             { "ah", "arf" },
             { "Ah", "Arf" },
             { "oh", "oof" },
             { "Oh", "Oof" },
-            //CorvaxGoob-Localization-Start
-            { "га", "гаф" },
-            { "Га", "Гаф" },
-            { "угу", "вуф" },
-            { "Угу", "Вуф" },
-            //CorvaxGoob-Localization-End
-        };
+        }.ToFrozenDictionary();
 
-        public override void Initialize()
+    public override string Accentuate(string message, Entity<BarkAccentComponent>? ent = null)
+    {
+        var random = ent.HasValue
+            ? SharedRandomExtensions.PredictedRandom(_timing, GetNetEntity(ent.Value))
+            : _random;
+
+        foreach (var (word, repl) in SpecialWords)
         {
-            SubscribeLocalEvent<BarkAccentComponent, AccentGetEvent>(OnAccent);
-            SubscribeLocalEvent<BarkAccentComponent, StatusEffectRelayedEvent<AccentGetEvent>>(OnAccentRelayed);
+            message = message.Replace(word, repl);
         }
 
-        public string Accentuate(string message)
-        {
-            foreach (var (word, repl) in SpecialWords)
-            {
-                message = message.Replace(word, repl);
-            }
-
-            return message.Replace("!", _random.Pick(Barks))
-                //CorvaxGoob-Localization-Start
-                .Replace("l", "r").Replace("L", "R")
-                .Replace("л", "р").Replace("Л", "Р");
-                //CorvaxGoob-Localization-End
-        }
-
-        private void OnAccent(Entity<BarkAccentComponent> entity, ref AccentGetEvent args)
-        {
-            args.Message = Accentuate(args.Message);
-        }
-
-        private void OnAccentRelayed(Entity<BarkAccentComponent> entity, ref StatusEffectRelayedEvent<AccentGetEvent> args)
-        {
-            args.Args.Message = Accentuate(args.Args.Message);
-        }
+        return message.Replace("!", random.Pick(Barks))
+            .Replace("l", "r")
+            .Replace("L", "R");
     }
 }

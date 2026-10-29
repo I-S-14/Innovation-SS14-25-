@@ -1,5 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 using Robust.Shared.GameStates;
+using Content.Shared.Revolutionary;
+using Content.Shared.StatusIcon;
+using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Mindshield.Components;
 

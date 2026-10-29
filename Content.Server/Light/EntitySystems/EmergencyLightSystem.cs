@@ -12,6 +12,7 @@ using Content.Shared.Power;
 using Content.Shared.Power.Components;
 using Content.Shared.Station.Components;
 using Robust.Server.GameObjects;
+using Content.Server.AlertLevel;
 using Color = Robust.Shared.Maths.Color;
 
 namespace Content.Server.Light.EntitySystems;

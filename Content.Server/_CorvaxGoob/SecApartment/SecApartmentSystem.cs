@@ -4,7 +4,6 @@ using Content.Server.Medical.CrewMonitoring;
 using Content.Server.Pinpointer;
 using Content.Shared._CorvaxGoob.SecApartment;
 using Content.Shared.CrewManifest;
-using Content.Shared.Medical.SuitSensor;
 using Content.Shared.Roles;
 using Content.Shared.SecApartment;
 using Content.Shared.Station;

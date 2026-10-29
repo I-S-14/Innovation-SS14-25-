@@ -1,5 +1,4 @@
 using Content.Goobstation.Maths.FixedPoint;
-using Content.Server.Codewords;
 using Content.Shared.Codewords;
 using Content.Shared.Dataset;
 using Content.Shared.NPC.Prototypes;
@@ -10,7 +9,7 @@ using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
 
 namespace Content.Shared.GameTicking.Rules.Components;
 
-[RegisterComponent, Access(typeof(TraitorRuleSystem))]
+[RegisterComponent] // IS14-change: Goob traitor rule lives in Content.Server, Shared cannot reference it in Access
 public sealed partial class TraitorRuleComponent : Component
 {
     public readonly List<EntityUid> TraitorMinds = new();

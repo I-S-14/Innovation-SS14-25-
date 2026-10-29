@@ -18,8 +18,6 @@ namespace Content.Server.EUI
     /// </remarks>
     public sealed partial class EuiManager : IPostInjectInit
     {
-        [Dependency] private readonly IPlayerManager _players = default!;
-        [Dependency] private readonly IServerNetManager _net = default!;
         [Dependency] private ILogManager _log = default!;
         [Dependency] private IPlayerManager _players = default!;
         [Dependency] private IServerNetManager _net = default!;

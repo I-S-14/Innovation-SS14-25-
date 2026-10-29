@@ -3,6 +3,7 @@
 using Content.Server.CharacterAppearance.Components;
 using Content.Shared.Humanoid;
 using Content.Shared.Preferences;
+using Content.Shared.Body;
 
 namespace Content.Server.Humanoid.Systems;
 

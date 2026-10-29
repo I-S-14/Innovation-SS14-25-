@@ -7,6 +7,7 @@ using Content.Shared.Chemistry;
 using Content.Shared.Chemistry.Components.SolutionManager;
 using Content.Shared.Placeable;
 using Content.Shared.Power;
+using Content.Server.Power.Components;
 
 namespace Content.Server.Chemistry.EntitySystems;
 

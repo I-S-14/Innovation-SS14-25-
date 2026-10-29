@@ -5,6 +5,7 @@ using Content.Server.Administration.Logs;
 using Content.Shared.Administration;
 using Robust.Server.Player;
 using Robust.Shared.Console;
+using Content.Server.EUI;
 
 namespace Content.Server.Administration.Commands;
 

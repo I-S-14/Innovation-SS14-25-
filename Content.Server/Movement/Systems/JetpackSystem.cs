@@ -5,6 +5,7 @@ using Content.Shared.Movement.Components;
 using Content.Shared.Movement.Systems;
 using Robust.Shared.Collections;
 using Robust.Shared.Timing;
+using Content.Server.Atmos.Components;
 
 namespace Content.Server.Movement.Systems;
 

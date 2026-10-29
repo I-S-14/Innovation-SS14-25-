@@ -1,4 +1,6 @@
 // SPDX-License-Identifier: MIT
+using System.Diagnostics.CodeAnalysis;
+using Robust.Shared.Utility;
 namespace Content.Shared.DeviceNetwork;
 
 /// <summary>

@@ -4,6 +4,7 @@ using System.Linq;
 using Content.Shared.Administration;
 using Content.Shared.Administration.Events;
 using Robust.Shared.Network;
+using Content.Shared.GameTicking;
 
 namespace Content.Client.Administration.Systems
 {

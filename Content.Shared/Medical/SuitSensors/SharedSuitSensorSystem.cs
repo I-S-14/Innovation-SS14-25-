@@ -19,6 +19,10 @@ using Robust.Shared.Containers;
 using Robust.Shared.Map;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
+using Content.Shared.Damage.Components;
+using Content.Shared.DeviceNetwork;
+using Content.Shared.Station;
+using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Medical.SuitSensors;
 

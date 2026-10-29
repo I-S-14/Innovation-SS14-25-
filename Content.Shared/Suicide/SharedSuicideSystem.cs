@@ -16,13 +16,12 @@ using Content.Shared.Body.Components;
 using Content.Shared._Shitmed.Targeting;
 using Content.Shared.Mobs.Systems;
 
-namespace Content.Shared.Chat;
+namespace Content.Shared.Suicide;
 
 public abstract partial class SharedSuicideSystem : EntitySystem
 {
     private static readonly ProtoId<DamageTypePrototype> FallbackDamageType = "Blunt";
 
-    [Dependency] private readonly DamageableSystem _damageableSystem = default!;
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
     [Dependency] private readonly ConsciousnessSystem _consciousness = default!; // Shitmed Change
     [Dependency] private readonly MobThresholdSystem _mobThresholdSystem = default!; // Goobstation

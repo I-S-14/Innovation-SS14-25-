@@ -5,6 +5,7 @@ using Robust.Shared.GameStates;
 using Content.Shared.StatusIcon;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Audio;
+using Content.Shared.Antag;
 
 namespace Content.Shared.Revolutionary.Components;
 

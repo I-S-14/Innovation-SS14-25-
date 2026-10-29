@@ -11,9 +11,15 @@ using Content.Shared.VendingMachines.Components;
 
 namespace Content.Client.VendingMachines;
 
-public sealed class VendingMachineBoundUserInterface(EntityUid owner, Enum uiKey) : BoundUserInterface(owner, uiKey)
+public sealed class VendingMachineBoundUserInterface : BoundUserInterface, IVendingMachineBoundUi // Goob
 {
-    public sealed class VendingMachineBoundUserInterface : BoundUserInterface, IVendingMachineBoundUi // Goob
+    [ViewVariables]
+    private VendingMachineMenu? _menu;
+
+    [ViewVariables]
+    private List<VendingMachineInventoryEntry> _cachedInventory = new();
+
+    protected override void Open()
     {
         base.Open();
 

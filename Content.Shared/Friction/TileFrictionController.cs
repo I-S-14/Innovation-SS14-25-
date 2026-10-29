@@ -18,6 +18,7 @@ using Robust.Shared.Physics.Controllers;
 using Robust.Shared.Physics.Dynamics;
 using Robust.Shared.Physics.Systems;
 using Robust.Shared.Utility;
+using Content.Shared.Interaction.Events;
 
 namespace Content.Shared.Friction
 {

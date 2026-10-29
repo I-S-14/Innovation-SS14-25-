@@ -9,6 +9,9 @@ using Robust.Shared.GameStates;
 using Robust.Shared.Audio;
 using Content.Shared.Whitelist;
 using Content.Shared.Damage;
+using Content.Shared.Tools;
+using Content.Shared.DoAfter;
+using Robust.Shared.Serialization;
 
 namespace Content.Shared.Storage.Components
 {

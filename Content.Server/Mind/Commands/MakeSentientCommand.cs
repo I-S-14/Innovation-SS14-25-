@@ -17,7 +17,6 @@ namespace Content.Server.Mind.Commands;
 [AdminCommand(AdminFlags.Admin)]
 public sealed partial class MakeSentientCommand : LocalizedEntityCommands
 {
-    [Dependency] private readonly MindSystem _mindSystem = default!;
     [Dependency] private readonly IEntityManager _entManager = default!;
     [Dependency] private MindSystem _mindSystem = default!;
 

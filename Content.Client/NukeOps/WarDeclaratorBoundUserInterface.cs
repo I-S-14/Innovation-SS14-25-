@@ -6,6 +6,7 @@ using Content.Shared.NukeOps;
 using JetBrains.Annotations;
 using Robust.Client.UserInterface;
 using Robust.Shared.Configuration;
+using Robust.Shared.Timing;
 
 namespace Content.Client.NukeOps;
 

@@ -13,9 +13,6 @@ namespace Content.Shared.Containers;
 /// </summary>
 public sealed partial class SlotBasedConnectedContainerSystem : EntitySystem
 {
-    [Dependency] private readonly SharedContainerSystem _containers = default!;
-    [Dependency] private readonly EntityWhitelistSystem _whitelistSystem = default!;
-    [Dependency] private readonly InventorySystem _inventory = default!;
     [Dependency] private readonly SharedHandsSystem _hands = default!; // Goob
     [Dependency] private SharedContainerSystem _containers = default!;
     [Dependency] private EntityWhitelistSystem _whitelistSystem = default!;

@@ -4,6 +4,8 @@ using Content.Shared.Actions;
 using Content.Shared.Clothing.Components;
 using Content.Shared.Item.ItemToggle;
 using Content.Shared.Toggleable;
+using Content.Shared.Clothing;
+using Content.Shared.Inventory;
 
 namespace Content.Shared.Clothing.EntitySystems;
 

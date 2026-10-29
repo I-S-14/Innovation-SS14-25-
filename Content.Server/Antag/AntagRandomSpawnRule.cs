@@ -5,6 +5,7 @@ using Content.Server.Station.Systems;
 using Content.Shared.Antag;
 using Content.Shared.GameTicking.Components;
 using Content.Shared.GameTicking.Rules;
+using Content.Server.GameTicking.Rules;
 
 namespace Content.Server.Antag;
 

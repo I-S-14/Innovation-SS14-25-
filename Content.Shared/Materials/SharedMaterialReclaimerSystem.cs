@@ -22,6 +22,8 @@ using Robust.Shared.Containers;
 using Robust.Shared.Map;
 using Robust.Shared.Physics.Events;
 using Robust.Shared.Timing;
+using Content.Shared.Body.Components;
+using Content.Shared.Emag.Components;
 
 namespace Content.Shared.Materials;
 
@@ -31,13 +33,7 @@ namespace Content.Shared.Materials;
 /// </summary>
 public abstract partial class SharedMaterialReclaimerSystem : EntitySystem
 {
-    [Dependency] private readonly ISharedAdminLogManager _adminLog = default!;
-    [Dependency] protected readonly IGameTiming Timing = default!;
-    [Dependency] protected readonly SharedAmbientSoundSystem AmbientSound = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
-    [Dependency] protected readonly SharedContainerSystem Container = default!;
     [Dependency] private readonly EntityWhitelistSystem _whitelistSystem = default!;
-    [Dependency] private readonly EmagSystem _emag = default!;
     [Dependency] private readonly LockSystem _lockSystem = default!; // Goobstation - Recycle Update
     [Dependency] private EmagSystem _emag = default!;
     [Dependency] private EntityWhitelistSystem _whitelist = default!;

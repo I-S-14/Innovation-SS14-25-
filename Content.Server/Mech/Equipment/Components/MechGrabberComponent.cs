@@ -5,6 +5,7 @@ using Content.Shared.DoAfter;
 using Content.Shared.Whitelist;
 using Robust.Shared.Audio;
 using Robust.Shared.Containers;
+using System.Threading;
 
 namespace Content.Server.Mech.Equipment.Components;
 

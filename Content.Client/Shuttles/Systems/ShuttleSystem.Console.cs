@@ -8,6 +8,7 @@ using Robust.Client.ResourceManagement;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Physics.Components;
+using Content.Client.Shuttles.UI;
 
 namespace Content.Client.Shuttles.Systems;
 

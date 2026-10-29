@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Shared.Instruments;
+using Robust.Shared.Player;
 
 namespace Content.Server.Instruments;
 

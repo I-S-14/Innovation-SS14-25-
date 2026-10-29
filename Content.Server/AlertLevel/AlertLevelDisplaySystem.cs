@@ -3,6 +3,7 @@
 using Content.Server.Station.Systems;
 using Content.Shared.AlertLevel;
 using Content.Shared.Power;
+using Content.Server.Power.Components;
 
 namespace Content.Server.AlertLevel;
 

@@ -40,6 +40,11 @@ using Robust.Shared.Player;
 using Robust.Shared.Prototypes; // Goobstation
 using Robust.Shared.Utility;
 using System.Linq;
+using Content.Shared.Hands.Components;
+using Content.Shared.IdentityManagement;
+using Content.Shared.Mobs.Components;
+using Robust.Shared.Physics.Components;
+using Robust.Shared.Serialization;
 
 namespace Content.Shared.Disposal.Unit;
 

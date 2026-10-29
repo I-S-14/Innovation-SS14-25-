@@ -4,6 +4,10 @@ using Content.Shared.Atmos.Components;
 using Content.Shared.Atmos.EntitySystems;
 using JetBrains.Annotations;
 using Robust.Shared.GameStates;
+using Content.Client.Atmos.Overlays;
+using Robust.Client.GameObjects;
+using Robust.Client.Graphics;
+using Robust.Client.ResourceManagement;
 
 namespace Content.Client.Atmos.EntitySystems;
 

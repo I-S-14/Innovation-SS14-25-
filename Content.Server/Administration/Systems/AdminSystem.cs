@@ -35,6 +35,9 @@ using Robust.Shared.Configuration;
 using Robust.Shared.Enums;
 using Robust.Shared.Network;
 using Robust.Shared.Player;
+using Content.Server.StationRecords.Systems;
+using Content.Shared.Roles.Components;
+using Robust.Shared.Prototypes;
 
 namespace Content.Server.Administration.Systems;
 

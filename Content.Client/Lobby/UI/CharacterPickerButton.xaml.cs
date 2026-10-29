@@ -10,6 +10,10 @@ using Robust.Client.UserInterface.XAML;
 using Robust.Shared.Map;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
+using Content.Client.Humanoid;
+using Content.Shared.Clothing;
+using Content.Shared.Preferences.Loadouts;
+using Content.Shared.Roles;
 
 namespace Content.Client.Lobby.UI;
 

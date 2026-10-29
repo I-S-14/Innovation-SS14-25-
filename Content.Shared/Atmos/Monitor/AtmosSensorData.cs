@@ -3,6 +3,7 @@
 using Content.Shared.DeviceNetwork;
 using Content.Shared.DeviceNetwork.Systems;
 using Robust.Shared.Serialization;
+using Content.Shared.Atmos.Monitor.Components;
 
 namespace Content.Shared.Atmos.Monitor;
 

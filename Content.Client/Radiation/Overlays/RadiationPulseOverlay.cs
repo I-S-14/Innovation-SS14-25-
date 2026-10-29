@@ -9,6 +9,7 @@ using Robust.Shared.Graphics;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
+using Robust.Shared.Physics;
 
 namespace Content.Client.Radiation.Overlays
 {

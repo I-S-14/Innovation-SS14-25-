@@ -5,6 +5,7 @@ using Content.Shared.CombatMode;
 using Content.Shared.DoAfter;
 using Content.Shared.Interaction;
 using Content.Shared.Timing.Systems;
+using Content.Shared.Timing;
 
 namespace Content.Server.NPC.HTN.PrimitiveTasks.Operators.Interactions;
 

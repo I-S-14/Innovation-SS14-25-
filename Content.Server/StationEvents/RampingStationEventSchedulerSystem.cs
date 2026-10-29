@@ -5,6 +5,7 @@ using Content.Server.StationEvents.Components;
 using Content.Shared.GameTicking.Components;
 using Content.Shared.GameTicking.Rules;
 using Robust.Shared.Random;
+using Content.Server.GameTicking.Rules;
 
 namespace Content.Server.StationEvents;
 

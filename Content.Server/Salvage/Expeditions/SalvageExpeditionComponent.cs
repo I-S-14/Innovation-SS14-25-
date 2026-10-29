@@ -4,6 +4,8 @@ using System.Numerics;
 using Content.Shared.Salvage.Expeditions;
 using Robust.Shared.Audio;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
+using Content.Shared.Salvage;
+using Robust.Shared.Prototypes;
 
 namespace Content.Server.Salvage.Expeditions;
 

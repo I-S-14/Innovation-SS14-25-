@@ -63,9 +63,6 @@ public sealed partial class AddWhitelistCommand : LocalizedCommands
 [AdminCommand(AdminFlags.Ban)]
 public sealed partial class RemoveWhitelistCommand : LocalizedCommands
 {
-    [Dependency] private IPlayerLocator _locator = default!;
-    [Dependency] private IServerDbManager _dbManager = default!;
-    [Dependency] private WhitelistManager _whitelistManager = default!;
 
     public override string Command => "whitelistremove";
 
@@ -115,7 +112,6 @@ public sealed partial class KickNonWhitelistedCommand : LocalizedCommands
     [Dependency] private IConfigurationManager _configManager = default!;
     [Dependency] private IServerNetManager _netManager = default!;
     [Dependency] private IPlayerManager _playerManager = default!;
-    [Dependency] private IServerDbManager _dbManager = default!;
 
     public override string Command => "kicknonwhitelisted";
 

@@ -12,6 +12,7 @@ using Robust.Shared.Containers;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
+using Content.Shared.Speech.Muting;
 
 namespace Content.Shared.Abilities.Mime;
 

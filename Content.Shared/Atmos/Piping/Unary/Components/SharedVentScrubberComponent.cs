@@ -4,6 +4,7 @@ using Content.Shared.Atmos.Monitor;
 using Content.Shared.DeviceNetwork;
 using Content.Shared.DeviceNetwork.Systems;
 using Robust.Shared.Serialization;
+using Content.Shared.Atmos.Monitor.Components;
 
 namespace Content.Shared.Atmos.Piping.Unary.Components;
 
@@ -30,7 +31,10 @@ public sealed partial class GasVentScrubberData : BaseAtmosDeviceData
         Gas.WaterVapor,
         Gas.Ammonia,
         Gas.NitrousOxide,
-        Gas.Frezon
+        Gas.Frezon,
+        Gas.BZ, // Assmos - /tg/ gases
+        Gas.Healium, // Assmos - /tg/ gases
+        Gas.Nitrium, // Assmos - /tg/ gases
     };
 
     // Presets for 'dumb' air alarm modes

@@ -23,9 +23,7 @@ namespace Content.Shared.Entry
 {
     public sealed partial class EntryPoint : GameShared
     {
-        [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
         [Dependency] private readonly ITileDefinitionManager _tileDefinitionManager = default!;
-        [Dependency] private readonly IResourceManager _resMan = default!;
         [Dependency] private readonly IReflectionManager _refMan = default!; // Goobstation - Module Throws
         [Dependency] private readonly ISandboxHelper _sandbox = default!; // Goobstation - Module Throws
         [Dependency] private readonly INetManager _net = default!; // Goobstation - Module Throws

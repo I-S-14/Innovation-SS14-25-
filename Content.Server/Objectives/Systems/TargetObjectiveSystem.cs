@@ -9,6 +9,7 @@ using Content.Server._Goobstation.Wizard.Components;
 using Content.Server.Mind;
 using Content.Shared.Mind.Components;
 using Robust.Shared.Utility; // Goob
+using Robust.Shared.GameObjects;
 
 namespace Content.Server.Objectives.Systems;
 
@@ -17,8 +18,6 @@ namespace Content.Server.Objectives.Systems;
 /// </summary>
 public sealed partial class TargetObjectiveSystem : EntitySystem
 {
-    [Dependency] private readonly MetaDataSystem _metaData = default!;
-    [Dependency] private readonly SharedJobSystem _job = default!;
     [Dependency] private readonly MindSystem _mind = default!; // Goobstation
     [Dependency] private MetaDataSystem _metaData = default!;
     [Dependency] private SharedJobSystem _job = default!;

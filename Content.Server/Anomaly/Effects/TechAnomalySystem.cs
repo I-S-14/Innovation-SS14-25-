@@ -8,6 +8,8 @@ using Content.Shared.DeviceLinking.Systems;
 using Content.Shared.Emag.Systems;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
+using Content.Server.DeviceLinking.Systems;
+using Content.Shared.DeviceLinking;
 
 namespace Content.Server.Anomaly.Effects;
 

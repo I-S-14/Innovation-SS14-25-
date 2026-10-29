@@ -11,6 +11,9 @@ using FancyWindow = Content.Client.UserInterface.Controls.FancyWindow;
 using Robust.Client.UserInterface;
 using Content.Client.UserInterface.Controls;
 using Robust.Shared.Utility;
+using System.Linq;
+using Content.Shared.IdentityManagement;
+using Robust.Client.Graphics;
 
 namespace Content.Client.VendingMachines.UI;
 

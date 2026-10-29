@@ -2,6 +2,7 @@
 
 using Content.Shared.Whitelist;
 using Robust.Shared.Serialization;
+using System.Collections.ObjectModel;
 
 namespace Content.Shared.Storage.Components
 {

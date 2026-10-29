@@ -2,6 +2,7 @@
 
 using Content.Server.Objectives.Components;
 using Content.Shared.Objectives.Components;
+using Content.Server.Roles;
 
 namespace Content.Server.Objectives.Systems;
 

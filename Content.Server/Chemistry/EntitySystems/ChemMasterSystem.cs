@@ -11,7 +11,7 @@ using Content.Shared.Chemistry.Reagent;
 using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Database;
 using Content.Shared.DragDrop;
-using Content.Shared.FixedPoint;
+using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.Labels.EntitySystems;
 using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.Storage;

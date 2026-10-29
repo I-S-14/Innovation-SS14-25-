@@ -7,6 +7,7 @@ using Content.Shared.Procedural;
 using Content.Shared.Procedural.PostGeneration;
 using Robust.Shared.Random;
 using Robust.Shared.Utility;
+using Content.Shared.Storage;
 
 namespace Content.Server.Procedural.DungeonJob;
 

@@ -4,6 +4,8 @@ using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Nutrition.EntitySystems;
 using Robust.Shared.Containers;
 using System.Diagnostics.CodeAnalysis;
+using Content.Shared.Interaction;
+using Content.Shared.Nutrition.Components;
 
 namespace Content.Shared.Cabinet;
 

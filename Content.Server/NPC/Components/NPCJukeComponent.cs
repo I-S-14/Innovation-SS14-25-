@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
+using Content.Server.NPC.HTN.PrimitiveTasks.Operators.Combat;
 
 namespace Content.Server.NPC.Components;
 

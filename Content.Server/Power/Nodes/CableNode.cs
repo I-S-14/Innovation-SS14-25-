@@ -2,6 +2,8 @@
 using Content.Server.NodeContainer.Nodes;
 using Content.Shared.NodeContainer;
 using Robust.Shared.Map.Components;
+using Content.Server.NodeContainer;
+using Robust.Shared.Map;
 
 namespace Content.Server.Power.Nodes
 {

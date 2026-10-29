@@ -24,7 +24,6 @@ public sealed class GosplanEvaluateCommand : LocalizedEntityCommands
 [AdminCommand(AdminFlags.Admin)]
 public sealed class GosplanStatusCommand : LocalizedEntityCommands
 {
-    [Dependency] private readonly GosplanSystem _gosplan = default!;
 
     public override string Command => "gosplan_status";
     public override string Description => "Prints current plan fulfillment for every station.";

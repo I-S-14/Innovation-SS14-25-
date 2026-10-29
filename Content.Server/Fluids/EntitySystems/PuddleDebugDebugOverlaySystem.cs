@@ -12,10 +12,6 @@ namespace Content.Server.Fluids.EntitySystems;
 
 public sealed partial class PuddleDebugDebugOverlaySystem : SharedPuddleDebugOverlaySystem
 {
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly PuddleSystem _puddle = default!;
-    [Dependency] private readonly SharedTransformSystem _transform = default!;
-    [Dependency] private readonly SharedMapSystem _map = default!;
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private PuddleSystem _puddle = default!;
     [Dependency] private SharedTransformSystem _transform = default!;

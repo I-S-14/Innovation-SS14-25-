@@ -10,7 +10,6 @@ using Content.Shared.Interaction.Events;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Popups;
-using Content.Shared.Suicide;
 using Content.Shared.Verbs;
 using Content.Shared.Weapons.Melee;
 using Content.Shared.Weapons.Melee.Events;
@@ -18,6 +17,9 @@ using Robust.Shared.Audio.Systems;
 using Content.Shared.Body.Part; // Goobstation decapitation
 using Content.Shared.Body.Systems; // Goobstation decapitation
 using Content.Shared._Shitmed.Medical.Surgery.Wounds.Systems; // Goobstation decapitation
+using Content.Shared.Chat;
+using Robust.Shared.Player;
+using Content.Shared.Suicide;
 namespace Content.Shared.Execution;
 
 /// <summary>
@@ -25,15 +27,6 @@ namespace Content.Shared.Execution;
 /// </summary>
 public sealed partial class SharedExecutionSystem : EntitySystem
 {
-    [Dependency] private readonly ActionBlockerSystem _actionBlocker = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
-    [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
-    [Dependency] private readonly MobStateSystem _mobState = default!;
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] private readonly SharedSuicideSystem _suicide = default!;
-    [Dependency] private readonly SharedCombatModeSystem _combat = default!;
-    [Dependency] private readonly SharedExecutionSystem _execution = default!;
-    [Dependency] private readonly SharedMeleeWeaponSystem _melee = default!;
     [Dependency] private readonly WoundSystem _wounds = default!; // Goobstation decapitation
     [Dependency] private readonly SharedBodySystem _body = default!; // Goobstation decapitation
     [Dependency] private ActionBlockerSystem _actionBlocker = default!;

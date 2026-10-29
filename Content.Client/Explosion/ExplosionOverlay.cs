@@ -8,6 +8,7 @@ using Robust.Shared.Enums;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
+using Robust.Shared.Map;
 
 namespace Content.Client.Explosion;
 

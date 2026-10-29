@@ -5,6 +5,7 @@ using Robust.Shared.Configuration;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
+using Content.Shared.Atmos.Prototypes;
 
 namespace Content.Shared.Atmos.EntitySystems;
 

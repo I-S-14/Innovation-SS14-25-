@@ -2,6 +2,7 @@
 
 using Content.Shared.Speech.Components;
 using Robust.Client.UserInterface;
+using Robust.Client.GameObjects;
 
 namespace Content.Client.Weapons.Melee.UI;
 

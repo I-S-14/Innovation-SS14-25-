@@ -17,6 +17,9 @@ using Content.Shared.StationRecords.Systems;
 using Robust.Shared.Configuration;
 using Robust.Shared.Console;
 using Robust.Shared.Player;
+using Content.Server.StationRecords;
+using Content.Server.StationRecords.Systems;
+using Robust.Shared.Prototypes;
 
 namespace Content.Server.CrewManifest;
 

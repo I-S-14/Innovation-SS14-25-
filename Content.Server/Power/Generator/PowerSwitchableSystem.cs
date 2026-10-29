@@ -11,6 +11,7 @@ using Content.Shared.Power.Generator;
 using Content.Shared.Timing.Components;
 using Content.Shared.Timing.Systems;
 using Robust.Shared.Audio.Systems;
+using Content.Shared.Timing;
 
 namespace Content.Server.Power.Generator;
 

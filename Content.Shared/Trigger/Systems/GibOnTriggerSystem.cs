@@ -1,13 +1,13 @@
 using Content.Shared.Body.Systems;
 using Content.Shared.Inventory;
 using Content.Shared.Trigger.Components.Effects;
+using Content.Shared.Gibbing;
 
 namespace Content.Shared.Trigger.Systems;
 
 public sealed partial class GibOnTriggerSystem : XOnTriggerSystem<GibOnTriggerComponent>
 {
     [Dependency] private readonly SharedBodySystem _body = default!;
-    [Dependency] private readonly InventorySystem _inventory = default!;
     [Dependency] private GibbingSystem _gibbing = default!;
     [Dependency] private InventorySystem _inventory = default!;
 

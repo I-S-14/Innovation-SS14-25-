@@ -8,6 +8,8 @@ using Content.Shared.Chemistry.EntitySystems;
 using Robust.Shared.Toolshed;
 using System.Linq;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Toolshed.Syntax;
+using Robust.Shared.Toolshed.TypeParsers;
 
 namespace Content.Server.Administration.Toolshed;
 

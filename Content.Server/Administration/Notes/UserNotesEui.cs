@@ -13,8 +13,6 @@ namespace Content.Server.Administration.Notes;
 
 public sealed partial class UserNotesEui : BaseEui
 {
-    [Dependency] private readonly IAdminNotesManager _notesMan = default!;
-    [Dependency] private readonly IConfigurationManager _cfg = default!;
     [Dependency] private IAdminNotesManager _notesMan = default!;
     [Dependency] private IConfigurationManager _cfg = default!;
     [Dependency] private ILogManager _log = default!;

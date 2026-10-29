@@ -25,6 +25,7 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Reflection;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
+using Content.Server.GameTicking;
 
 namespace Content.Server.Administration.Logs;
 

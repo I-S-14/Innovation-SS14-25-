@@ -3,6 +3,7 @@ using Content.Shared.Materials.OreSilo;
 using Content.Shared.Pinpointer;
 using Robust.Server.GameStates;
 using Robust.Shared.Player;
+using Content.Server.Pinpointer;
 
 namespace Content.Server.Materials;
 

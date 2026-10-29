@@ -65,8 +65,6 @@ public sealed partial class AddBlacklistCommand : LocalizedCommands
 [AdminCommand(AdminFlags.Ban)]
 public sealed partial class RemoveBlacklistCommand : LocalizedCommands
 {
-    [Dependency] private IPlayerLocator _playerLocator = default!;
-    [Dependency] private IServerDbManager _db = default!;
 
     public override string Command => "blacklistremove";
 

@@ -16,6 +16,8 @@ using Content.Shared.Zombies;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
+using Content.Server.Roles;
+using Content.Shared.Mind.Components;
 
 namespace Content.Server.Dragon;
 

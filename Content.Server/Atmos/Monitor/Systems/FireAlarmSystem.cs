@@ -11,6 +11,7 @@ using Content.Shared.DeviceNetwork.Components;
 using Content.Shared.Interaction;
 using Content.Shared.Emag.Systems;
 using Robust.Shared.Configuration;
+using Content.Shared.DeviceNetwork.Systems;
 
 namespace Content.Server.Atmos.Monitor.Systems;
 

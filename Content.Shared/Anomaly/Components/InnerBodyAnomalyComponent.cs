@@ -6,6 +6,7 @@ using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
+using Content.Shared.Body.Prototypes;
 
 namespace Content.Shared.Anomaly.Components;
 

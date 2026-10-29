@@ -11,6 +11,8 @@ using Content.Shared.Station.Systems;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
+using Content.Shared.Body.Systems;
+using Content.Shared.Station;
 
 namespace Content.Shared.Clothing;
 

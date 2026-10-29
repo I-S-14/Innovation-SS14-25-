@@ -14,6 +14,7 @@ using Content.Server.GameTicking;
 using Content.Shared.GameTicking;
 using JetBrains.Annotations;
 using Robust.Shared.EntitySerialization.Systems;
+using Robust.Shared.Map.Components;
 
 namespace Content.Server.GridPreloader;
 

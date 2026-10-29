@@ -16,6 +16,11 @@ using JetBrains.Annotations;
 using Robust.Shared.Physics.Systems;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
+using Robust.Server.GameObjects;
+using Robust.Shared.Audio;
+using Robust.Shared.Audio.Systems;
+using Robust.Shared.Configuration;
+using Content.Shared.CCVar;
 
 namespace Content.Server.Atmos.EntitySystems;
 
@@ -70,73 +75,8 @@ public sealed partial class GasTankSystem : SharedGasTankSystem
         {
             if (entity.Comp.NextDirtyTime <= _timing.CurTime)
             {
-                _atmosphereSystem.Merge(environment, removed);
-            }
-            var strength = removed.TotalMoles * MathF.Sqrt(removed.Temperature);
-            var dir = _random.NextAngle().ToWorldVec();
-            _throwing.TryThrow(gasTank, dir * strength, strength,
-                predicted: false); // Trauma
-            if (gasTank.Comp.OutputPressure >= MinimumSoundValvePressure)
-                _audioSys.PlayPvs(gasTank.Comp.RuptureSound, gasTank);
-        }
-
-        public GasMixture? RemoveAir(Entity<GasTankComponent> gasTank, float amount)
-        {
-            var gas = gasTank.Comp.Air?.Remove(amount);
-            CheckStatus(gasTank);
-            return gas;
-        }
-
-        public GasMixture RemoveAirVolume(Entity<GasTankComponent> gasTank, float volume)
-        {
-            var component = gasTank.Comp;
-            if (component.Air == null)
-                return new GasMixture(volume);
-
-            var molesNeeded = component.OutputPressure * volume / (Atmospherics.R * component.Air.Temperature);
-
-            var air = RemoveAir(gasTank, molesNeeded);
-
-            if (air != null)
-                air.Volume = volume;
-            else
-                return new GasMixture(volume);
-
-            return air;
-        }
-
-        public void AssumeAir(Entity<GasTankComponent> ent, GasMixture giver)
-        {
-            _atmosphereSystem.Merge(ent.Comp.Air, giver);
-            CheckStatus(ent);
-        }
-
-        public void CheckStatus(Entity<GasTankComponent> ent)
-        {
-            var (owner, component) = ent;
-            if (component.Air == null)
-                return;
-
-            var pressure = component.Air.Pressure;
-
-            if (pressure > component.TankFragmentPressure && _maxExplosionRange > 0)
-            {
-                // Give the gas a chance to build up more pressure.
-                for (var i = 0; i < 3; i++)
-                {
-                    _atmosphereSystem.React(component.Air, component);
-                }
-
-                pressure = component.Air.Pressure;
-                var range = MathF.Sqrt((pressure - component.TankFragmentPressure) / component.TankFragmentScale);
-
-                // Let's cap the explosion, yeah?
-                // !1984
-                range = Math.Min(Math.Min(range, GasTankComponent.MaxExplosionRange), _maxExplosionRange);
-
-                _explosions.TriggerExplosive(owner, radius: range);
-
-                return;
+                entity.Comp.NextDirtyTime = _timing.CurTime + GasDirtyInterval;
+                Dirty(entity);
             }
 
             if (UI.IsUiOpen(entity.Owner, SharedGasTankUiKey.Key))
@@ -188,6 +128,14 @@ public sealed partial class GasTankSystem : SharedGasTankSystem
 
         if (environment != null)
             _atmosphereSystem.Merge(environment, removed);
+        }
+        var strength = removed.TotalMoles * MathF.Sqrt(removed.Temperature);
+        var dir = _random.NextAngle().ToWorldVec();
+        _throwing.TryThrow(gasTank, dir * strength, strength,
+            predicted: false); // Trauma
+        if (gasTank.Comp.OutputPressure >= MinimumSoundValvePressure)
+            _audioSys.PlayPvs(gasTank.Comp.RuptureSound, gasTank);
+    }
 
         // If we wouldn't produce a sound, don't throw or play a sound.
         if (removed.Pressure < MinimumSoundValvePressure)

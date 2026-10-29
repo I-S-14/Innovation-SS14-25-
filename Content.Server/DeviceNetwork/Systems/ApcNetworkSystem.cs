@@ -7,6 +7,7 @@ using Content.Server.Power.EntitySystems;
 using Content.Server.Power.Nodes;
 using Content.Shared.DeviceNetwork.Events;
 using Content.Shared.NodeContainer;
+using Content.Server.NodeContainer;
 
 namespace Content.Server.DeviceNetwork.Systems
 {

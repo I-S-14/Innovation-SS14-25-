@@ -6,6 +6,7 @@ using Content.Server.Popups;
 using Content.Shared.Research.Prototypes;
 using Content.Server.Research.Systems;
 using Content.Shared.Research.Components;
+using Robust.Shared.Prototypes;
 
 namespace Content.Server.Research.Disk
 {

@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using JetBrains.Annotations;
+using Robust.Shared.Console;
+using Robust.Shared.Toolshed;
 
 namespace Content.Shared.Administration
 {

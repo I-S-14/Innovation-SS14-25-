@@ -38,18 +38,18 @@ using Content.Shared.Damage;
 
 namespace Content.Shared.Medical.Healing;
 
-public sealed partial class HealingSystem : EntitySystem
+public sealed class HealingSystem : EntitySystem
 {
-    [Dependency] private SharedAudioSystem _audio = default!;
-    [Dependency] private ISharedAdminLogManager _adminLogger = default!;
-    [Dependency] private DamageableSystem _damageable = default!;
-    [Dependency] private BloodstreamSystem _bloodstreamSystem = default!;
-    [Dependency] private SharedDoAfterSystem _doAfter = default!;
-    [Dependency] private SharedStackSystem _stacks = default!;
-    [Dependency] private SharedInteractionSystem _interactionSystem = default!;
-    [Dependency] private MobThresholdSystem _mobThresholdSystem = default!;
-    [Dependency] private SharedPopupSystem _popupSystem = default!;
-    [Dependency] private SharedSolutionContainerSystem _solutionContainerSystem = default!;
+    [Dependency] private readonly SharedAudioSystem _audio = default!;
+    [Dependency] private readonly ISharedAdminLogManager _adminLogger = default!;
+    [Dependency] private readonly DamageableSystem _damageable = default!;
+    [Dependency] private readonly SharedBloodstreamSystem _bloodstreamSystem = default!;
+    [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
+    [Dependency] private readonly SharedStackSystem _stacks = default!;
+    [Dependency] private readonly SharedInteractionSystem _interactionSystem = default!;
+    [Dependency] private readonly MobThresholdSystem _mobThresholdSystem = default!;
+    [Dependency] private readonly SharedPopupSystem _popupSystem = default!;
+    [Dependency] private readonly SharedSolutionContainerSystem _solutionContainerSystem = default!;
 
     // Shitmed Change
     [Dependency] private readonly SharedBodySystem _bodySystem = default!;
@@ -100,12 +100,9 @@ public sealed partial class HealingSystem : EntitySystem
             && HasComp<ConsciousnessComponent>(target))
             return;
 
-        if (!TryComp<InjurableComponent>(target, out var injurable))
-            return;
-
         if (healing.DamageContainers is not null &&
-            injurable.DamageContainer is not null &&
-            !healing.DamageContainers.Contains(injurable.DamageContainer.Value))
+            target.Comp.DamageContainerID is not null &&
+            !healing.DamageContainers.Contains(target.Comp.DamageContainerID.Value))
         {
             return;
         }
@@ -122,7 +119,7 @@ public sealed partial class HealingSystem : EntitySystem
                 var popup = (args.User == target.Owner)
                     ? Loc.GetString("medical-item-stop-bleeding-self")
                     : Loc.GetString("medical-item-stop-bleeding", ("target", Identity.Entity(target.Owner, EntityManager)));
-                _popupSystem.PopupEntity(popup, target, args.User);
+                _popupSystem.PopupClient(popup, target, args.User);
             }
         }
 
@@ -146,7 +143,7 @@ public sealed partial class HealingSystem : EntitySystem
         }
         else
         {
-            QueueDel(args.Used.Value);
+            PredictedQueueDel(args.Used.Value);
         }
 
         if (target.Owner != args.User)
@@ -171,7 +168,7 @@ public sealed partial class HealingSystem : EntitySystem
 
         if (!args.Repeat)
         {
-            _popupSystem.PopupEntity(Loc.GetString("medical-item-finished-using", ("item", args.Used)), target.Owner, args.User);
+            _popupSystem.PopupClient(Loc.GetString("medical-item-finished-using", ("item", args.Used)), target.Owner, args.User);
             return;
         }
 
@@ -182,7 +179,7 @@ public sealed partial class HealingSystem : EntitySystem
 
     private bool HasDamage(Entity<HealingComponent> healing, Entity<DamageableComponent> target)
     {
-        var damageableDict = _damageable.GetAllDamage(target.AsNullable()).DamageDict;
+        var damageableDict = target.Comp.Damage.DamageDict;
         var healingDict = healing.Comp.Damage.DamageDict;
         foreach (var type in healingDict)
         {
@@ -518,12 +515,9 @@ public sealed partial class HealingSystem : EntitySystem
         if (!Resolve(target, ref target.Comp, false))
             return false;
 
-        if (!TryComp<InjurableComponent>(target, out var injurable))
-            return false;
-
         if (healing.Comp.DamageContainers is not null &&
-            injurable.DamageContainer is not null &&
-            !healing.Comp.DamageContainers.Contains(injurable.DamageContainer.Value))
+            target.Comp.DamageContainerID is not null &&
+            !healing.Comp.DamageContainers.Contains(target.Comp.DamageContainerID.Value))
         {
             return false;
         }
@@ -546,7 +540,7 @@ public sealed partial class HealingSystem : EntitySystem
 
         if (!anythingToDo)
         {
-            _popupSystem.PopupEntity(Loc.GetString("medical-item-cant-use", ("item", healing.Owner)), healing, user);
+            _popupSystem.PopupClient(Loc.GetString("medical-item-cant-use", ("item", healing.Owner)), healing, user);
             return false;
         }
         // Shitmed Change End
@@ -599,7 +593,7 @@ public sealed partial class HealingSystem : EntitySystem
         if (!_mobThresholdSystem.TryGetThresholdForState(ent, MobState.Critical, out var amount, ent.Comp2))
             return 1;
 
-        var percentDamage = (float)(_damageable.GetTotalDamage(ent) / amount);
+        var percentDamage = (float)(ent.Comp1.TotalDamage / amount);
         //basically make it scale from 1 to the multiplier.
 
         var output = percentDamage * (mod - 1) + 1;

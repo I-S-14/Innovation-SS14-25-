@@ -4,6 +4,7 @@ using Content.Server.Power.EntitySystems;
 using Content.Shared.Chemistry.Components;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Power;
+using Content.Server.Power.Components;
 
 namespace Content.Server.Chemistry.EntitySystems;
 

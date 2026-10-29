@@ -25,6 +25,9 @@ using Robust.Shared.Configuration;
 using Robust.Shared.Input;
 using Robust.Shared.Map;
 using Robust.Shared.Player;
+using Content.Shared.Hands.Components;
+using Content.Shared.Mobs.Components;
+using Content.Shared.StatusEffect;
 
 namespace Content.Client.Weapons.Melee;
 

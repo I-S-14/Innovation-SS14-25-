@@ -6,6 +6,7 @@ using Content.Shared.Placeable;
 using Content.Shared.Power.EntitySystems;
 using Content.Shared.Xenoarchaeology.Artifact.Components;
 using Content.Shared.Xenoarchaeology.Equipment.Components;
+using Content.Shared.DeviceLinking;
 
 namespace Content.Shared.Xenoarchaeology.Equipment;
 

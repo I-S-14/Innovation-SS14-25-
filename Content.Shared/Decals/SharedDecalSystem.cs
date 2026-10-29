@@ -5,6 +5,7 @@ using System.Numerics;
 using Robust.Shared.GameStates;
 using Robust.Shared.Map;
 using Robust.Shared.Serialization;
+using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Decals
 {
@@ -123,6 +124,10 @@ namespace Content.Shared.Decals
                 if (!component.Decals.ContainsKey(decalId))
                     component.FreeDecalIds.Add(decalId);
             }
+
+            // Allocation pops from the end, so keep the lowest free id there for stable decal ids.
+            component.FreeDecalIds.Sort((x, y) => y.CompareTo(x));
+        }
 
         protected virtual void OnDecalRemoved(EntityUid gridId, uint decalId, DecalGridComponent component, Vector2i indices, DecalChunk chunk)
         {

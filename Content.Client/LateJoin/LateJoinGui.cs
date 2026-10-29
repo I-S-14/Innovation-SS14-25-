@@ -19,6 +19,7 @@ using Robust.Shared.Configuration;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
 using static Robust.Client.UserInterface.Controls.BoxContainer;
+using Content.Client.GameTicking.Managers;
 
 namespace Content.Client.LateJoin
 {

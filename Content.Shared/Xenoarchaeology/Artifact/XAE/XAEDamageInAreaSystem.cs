@@ -4,6 +4,7 @@ using Content.Shared.Whitelist;
 using Content.Shared.Xenoarchaeology.Artifact.XAE.Components;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
+using Content.Shared.Damage;
 
 namespace Content.Shared.Xenoarchaeology.Artifact.XAE;
 

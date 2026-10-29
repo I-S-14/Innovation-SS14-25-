@@ -6,6 +6,9 @@ using Robust.Shared.Physics.Systems;
 using Content.Shared.Singularity.Components;
 using Robust.Shared.Physics;
 using Content.Shared.Ghost.Components;
+using Robust.Shared.Physics.Collision.Shapes;
+using Robust.Shared.Physics.Components;
+using Content.Shared.Ghost;
 
 namespace Content.Shared.Singularity.EntitySystems;
 

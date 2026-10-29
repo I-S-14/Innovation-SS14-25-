@@ -11,6 +11,7 @@ using Content.Shared.Power;
 using Robust.Shared.Physics;
 using Robust.Shared.Physics.Collision.Shapes;
 using Robust.Shared.Physics.Systems;
+using Content.Server.DeviceLinking.Systems;
 
 namespace Content.Server.Physics.Controllers;
 

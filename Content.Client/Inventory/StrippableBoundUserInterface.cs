@@ -34,8 +34,9 @@ using Robust.Shared.Input;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
-using static Content.Client.Inventory.ClientInventorySystem;
 using static Robust.Client.UserInterface.Control;
+using Content.Client.Stylesheets;
+using Content.Shared.Cuffs.Components;
 
 namespace Content.Client.Inventory
 {

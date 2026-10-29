@@ -12,6 +12,7 @@ using Content.Goobstation.Common.Pirates;
 using Content.Goobstation.Common.Research; // R&D Console Rework
 using System.Linq;
 using Robust.Shared.Prototypes; // R&D Console Rework
+using Content.Shared.Emag.Components;
 
 namespace Content.Server.Research.Systems;
 

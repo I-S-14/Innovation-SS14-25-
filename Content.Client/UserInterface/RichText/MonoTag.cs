@@ -4,6 +4,8 @@ using Robust.Client.ResourceManagement;
 using Robust.Client.UserInterface.RichText;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
+using System.Linq;
+using Robust.Shared.IoC;
 
 namespace Content.Client.UserInterface.RichText;
 

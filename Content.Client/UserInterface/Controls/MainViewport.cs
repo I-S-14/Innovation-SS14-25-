@@ -5,6 +5,7 @@ using Content.Client.Viewport;
 using Content.Shared.CCVar;
 using Robust.Client.UserInterface.Controls;
 using Robust.Shared.Configuration;
+using Robust.Client.UserInterface;
 
 namespace Content.Client.UserInterface.Controls
 {

@@ -14,7 +14,7 @@ using System.Linq;
 using System.Numerics;
 using Content.Goobstation.Maths.FixedPoint;
 using Robust.Client.Graphics;
-using Content.Shared.FixedPoint;
+using Content.Goobstation.Maths.FixedPoint;
 using static Robust.Client.UserInterface.Controls.BoxContainer;
 using Robust.Client.GameObjects;
 

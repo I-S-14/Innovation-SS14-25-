@@ -6,6 +6,7 @@ using Content.Shared.NPC.Systems;
 using Content.Shared.Whitelist;
 using Robust.Shared.Map;
 using Robust.Shared.Random;
+using Robust.Shared.Collections;
 using NPCImprintingOnSpawnBehaviourComponent = Content.Server.NPC.Components.NPCImprintingOnSpawnBehaviourComponent;
 
 namespace Content.Server.NPC.Systems;

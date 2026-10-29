@@ -5,6 +5,11 @@ using Content.Server.Defusable.Systems;
 using Content.Server.Wires;
 using Content.Shared.Defusable;
 using Content.Shared.Wires;
+using Content.Server.Doors.Systems;
+using Content.Server.Explosion.EntitySystems;
+using Content.Server.Popups;
+using Content.Shared.Doors;
+using Content.Shared.Doors.Components;
 
 namespace Content.Server.Defusable.WireActions;
 

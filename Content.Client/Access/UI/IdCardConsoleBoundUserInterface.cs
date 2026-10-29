@@ -7,7 +7,8 @@ using Content.Shared.Containers.ItemSlots;
 using Content.Shared.CrewManifest;
 using Content.Shared.Roles;
 using Robust.Shared.Prototypes;
-using static Content.Shared.Access.Components.IdCardConsoleComponent;
+using Content.Shared.CCVar;
+using Robust.Shared.Configuration;
 
 namespace Content.Client.Access.UI
 {

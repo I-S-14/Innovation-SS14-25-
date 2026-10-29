@@ -19,6 +19,7 @@ using Robust.Server.Audio;
 using Robust.Server.GameObjects;
 using System.Linq;
 using System.Numerics;
+using Robust.Shared.Prototypes;
 
 namespace Content.Server.SprayPainter;
 

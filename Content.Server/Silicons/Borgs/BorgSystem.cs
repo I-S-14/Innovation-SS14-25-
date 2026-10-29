@@ -16,6 +16,7 @@ using Robust.Shared.Containers;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
+using Content.Server.DeviceNetwork.Systems;
 
 namespace Content.Server.Silicons.Borgs;
 

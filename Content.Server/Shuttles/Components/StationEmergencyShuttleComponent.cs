@@ -3,6 +3,7 @@
 using Content.Server.Shuttles.Systems;
 using Robust.Shared.Serialization.TypeSerializers.Implementations;
 using Robust.Shared.Utility;
+using Robust.Shared.Audio;
 
 namespace Content.Server.Shuttles.Components;
 

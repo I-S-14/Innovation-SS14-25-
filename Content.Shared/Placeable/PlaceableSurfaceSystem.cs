@@ -7,6 +7,7 @@ using Content.Shared.Random.Helpers;
 using Content.Shared.Storage;
 using Content.Shared.Storage.Components;
 using Robust.Shared.Timing;
+using Robust.Shared.Random;
 
 namespace Content.Shared.Placeable;
 

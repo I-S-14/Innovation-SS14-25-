@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Server.Singularity.EntitySystems;
+using Content.Shared.Singularity.Components;
 
 namespace Content.Server.Singularity.Components;
 

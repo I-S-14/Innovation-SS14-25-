@@ -4,6 +4,8 @@ using Content.Shared.Holiday;
 using Robust.Client.GameObjects;
 using Robust.Client.ResourceManagement;
 using Robust.Shared.Serialization.TypeSerializers.Implementations;
+using Content.Shared.Item;
+using Robust.Client.Graphics;
 
 namespace Content.Client.Holiday;
 

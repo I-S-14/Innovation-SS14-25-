@@ -25,6 +25,8 @@ using Content.Shared.Roles;
 using Content.Server.Roles;
 using Content.Shared.Roles.Components;
 using Content.Goobstation.Shared.ManifestListings; //Goobstation
+using Content.Server.GameTicking;
+using Content.Shared.Prototypes;
 
 namespace Content.Server.Objectives;
 
@@ -34,12 +36,7 @@ public sealed partial class ObjectivesSystem : SharedObjectivesSystem
 {
     [Dependency] private readonly GameTicker _gameTicker = default!;
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
-    [Dependency] private readonly IPlayerManager _player = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly EmergencyShuttleSystem _emergencyShuttle = default!;
-    [Dependency] private readonly SharedJobSystem _job = default!;
     // [Dependency] private readonly ServerCurrencyManager _currencyMan = default!; Deleted by CorvaxGoob
-    [Dependency] private readonly IConfigurationManager _cfg = default!;
     [Dependency] private readonly ISharedAdminLogManager _adminLog = default!;
     [Dependency] private readonly SharedRoleSystem _roles = default!;
     [Dependency] private IConfigurationManager _cfg = default!;

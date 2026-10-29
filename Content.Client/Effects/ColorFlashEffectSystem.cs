@@ -13,10 +13,7 @@ namespace Content.Client.Effects;
 
 public sealed partial class ColorFlashEffectSystem : SharedColorFlashEffectSystem
 {
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly AnimationPlayerSystem _animation = default!;
     [Dependency] private readonly IComponentFactory _factory = default!; // EE Plasmamen Change
-    [Dependency] private readonly SpriteSystem _sprite = default!;
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private AnimationPlayerSystem _animation = default!;
     [Dependency] private SpriteSystem _sprite = default!;

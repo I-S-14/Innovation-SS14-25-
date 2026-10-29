@@ -18,6 +18,7 @@ using Robust.Client.UserInterface.Controls;
 using Robust.Client.UserInterface.XAML;
 using Robust.Shared.ContentPack;
 using Robust.Shared.Prototypes;
+using System.Diagnostics;
 
 namespace Content.Client.Guidebook.Controls;
 

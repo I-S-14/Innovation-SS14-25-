@@ -4,6 +4,8 @@ using Content.Shared.Pinpointer;
 using Content.Shared.Trigger;
 using Content.Shared.Trigger.Components.Effects;
 using Robust.Shared.Utility;
+using Content.Server.Pinpointer;
+using Robust.Shared.Prototypes;
 
 namespace Content.Server.Trigger.Systems;
 

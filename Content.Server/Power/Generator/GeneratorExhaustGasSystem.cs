@@ -3,6 +3,7 @@
 using Content.Server.Atmos.EntitySystems;
 using Content.Shared.Atmos;
 using Content.Shared.Power.Generator;
+using Content.Server.Atmos;
 
 namespace Content.Server.Power.Generator;
 

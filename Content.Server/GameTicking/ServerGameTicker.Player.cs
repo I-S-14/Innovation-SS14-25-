@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Server._CorvaxGoob.Events; // CorvaxGoob-GoLobby
-using Content.Corvax.Interfaces.Server;
 using Content.Shared.Administration;
 using Content.Shared.CCVar;
 using Content.Shared.Database;

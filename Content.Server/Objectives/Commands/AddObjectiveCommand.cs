@@ -8,6 +8,7 @@ using Content.Shared.Objectives.Components;
 using Robust.Server.Player;
 using Robust.Shared.Console;
 using Robust.Shared.Prototypes;
+using Content.Shared.Prototypes;
 
 namespace Content.Server.Objectives.Commands;
 

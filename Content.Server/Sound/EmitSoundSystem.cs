@@ -4,6 +4,7 @@ using Content.Server.Explosion.EntitySystems;
 using Content.Shared.Sound;
 using Content.Shared.Sound.Components;
 using Robust.Shared.Timing;
+using Robust.Shared.Network;
 
 namespace Content.Server.Sound;
 

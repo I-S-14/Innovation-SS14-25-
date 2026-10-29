@@ -10,6 +10,7 @@ using Robust.Shared.Configuration;
 using Robust.Shared.Enums;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
+using Content.Shared.StatusEffect;
 
 namespace Content.Client.Flash;
 

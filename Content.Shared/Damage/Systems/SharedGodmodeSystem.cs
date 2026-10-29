@@ -12,6 +12,8 @@ using Content.Shared.Body.Systems; // Shitmed Change
 using Content.Shared.StatusEffect;
 using Content.Shared.StatusEffectNew;
 using Content.Shared.StatusEffectNew.Components;
+using Content.Shared.Prototypes;
+using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Damage.Systems;
 

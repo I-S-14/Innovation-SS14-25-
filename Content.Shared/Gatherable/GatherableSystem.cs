@@ -1,45 +1,47 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
-using Content.Server.Destructible;
-using Content.Server.Gatherable.Components;
+using Content.Shared.Destructible;
 using Content.Shared.EntityTable;
+using Content.Shared.Gatherable.Components;
 using Content.Shared.Interaction;
+using Content.Shared.Projectiles;
+using Content.Shared.Random.Helpers;
 using Content.Shared.Tag;
 using Content.Shared.Weapons.Melee.Events;
 using Content.Shared.Whitelist;
-using Robust.Server.GameObjects;
 using Robust.Shared.Audio.Systems;
-using Robust.Shared.Random;
+using Robust.Shared.Physics.Events;
+using Robust.Shared.Timing;
 
-namespace Content.Server.Gatherable;
+namespace Content.Shared.Gatherable;
 
+/// <summary>
+/// System for handling collecting items from in-the-world structures,
+/// like gathering mushrooms or some rare herbs.
+/// </summary>
 public sealed partial class GatherableSystem : EntitySystem
 {
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly DestructibleSystem _destructible = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
-    [Dependency] private readonly TagSystem _tagSystem = default!;
-    [Dependency] private readonly TransformSystem _transform = default!;
-    [Dependency] private readonly EntityWhitelistSystem _whitelistSystem = default!;
-    [Dependency] private readonly EntityTableSystem _entityTable = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private SharedDestructibleSystem _destructible = default!;
+    [Dependency] private EntityTableSystem _entityTable = default!;
+    [Dependency] private TagSystem _tagSystem = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private EntityWhitelistSystem _whitelistSystem = default!;
 
-    public override void Initialize()
-    {
-        base.Initialize();
-
-        SubscribeLocalEvent<GatherableComponent, ActivateInWorldEvent>(OnActivate);
-        SubscribeLocalEvent<GatherableComponent, AttackedEvent>(OnAttacked);
-        InitializeProjectile();
-    }
-
+    /// <summary>
+    /// If a gatherable entity is attacked with a tool that passes the tool entity whitelist (or if that whitelist doesn't exist), then it will be gathered.
+    /// </summary>
+    [SubscribeLocalEvent]
     private void OnAttacked(Entity<GatherableComponent> gatherable, ref AttackedEvent args)
     {
         if (_whitelistSystem.IsWhitelistFailOrNull(gatherable.Comp.ToolWhitelist, args.Used))
             return;
 
-        Gather(gatherable, args.User);
+        Gather(gatherable.AsNullable(), args.User);
     }
 
+    /// <summary>
+    /// If a gatherable entity is activated by a user that passes the tool entity whitelist (or if that whitelist doesn't exist), then it will be gathered.
+    /// </summary>
+    [SubscribeLocalEvent]
     private void OnActivate(Entity<GatherableComponent> gatherable, ref ActivateInWorldEvent args)
     {
         if (args.Handled || !args.Complex)
@@ -48,44 +50,65 @@ public sealed partial class GatherableSystem : EntitySystem
         if (_whitelistSystem.IsWhitelistFailOrNull(gatherable.Comp.ToolWhitelist, args.User))
             return;
 
-        Gather(gatherable, args.User);
+        Gather(gatherable.AsNullable(), args.User);
         args.Handled = true;
     }
 
-    public void Gather(EntityUid gatheredUid, EntityUid? gatherer = null, GatherableComponent? component = null)
+    /// <summary>
+    /// If a projectile hits a gatherable entity, it will gather that entity and decrease its own gathering amount.
+    /// If the projectile’s gathering amount is zero or less, it will be deleted.
+    /// </summary>
+    [SubscribeLocalEvent]
+    private void OnProjectileCollide(Entity<GatheringProjectileComponent> gathering, ref StartCollideEvent args)
     {
-        if (!Resolve(gatheredUid, ref component))
+        if (!args.OtherFixture.Hard)
             return;
 
-        if (TryComp<SoundOnGatherComponent>(gatheredUid, out var soundComp))
-        {
-            _audio.PlayPvs(soundComp.Sound, Transform(gatheredUid).Coordinates);
-        }
-
-        var gatheredEv = new Content.Goobstation.Common.Gatherable.GatheredEvent(gatherer); // Goob
-        RaiseLocalEvent(gatheredUid, ref gatheredEv); // Goob
-
-        // Complete the gathering process
-        _destructible.DestroyEntity(gatheredUid);
-
-        // Spawn the loot!
-        if (component.Loot == null)
+        if (args.OurFixtureId != SharedProjectileSystem.ProjectileFixture)
             return;
 
-        var pos = _transform.GetMapCoordinates(gatheredUid);
+        if (gathering.Comp.Amount <= 0)
+            return;
 
-        foreach (var (tag, table) in component.Loot)
+        if (!TryComp<GatherableComponent>(args.OtherEntity, out var gatherable))
+            return;
+
+        Gather((args.OtherEntity, gatherable), gathering);
+        gathering.Comp.Amount--;
+        Dirty(gathering);
+
+        if (gathering.Comp.Amount <= 0)
+            QueueDel(gathering);
+    }
+
+    /// <summary>
+    /// Destroys the gathered entity, plays a sound if it has <see cref="SoundOnGatherComponent"/>, and spawns loot if possible.
+    /// </summary>
+    /// <param name="gathered">The entity that was gathered.</param>
+    /// <param name="gatherer">The entity that gathered it.</param>
+    public void Gather(Entity<GatherableComponent?> gathered, EntityUid? gatherer = null)
+    {
+        if (!Resolve(gathered, ref gathered.Comp))
+            return;
+
+        var pos = Transform(gathered).Coordinates;
+        if (TryComp<SoundOnGatherComponent>(gathered, out var soundComp))
+            _audio.PlayPredicted(soundComp.Sound, pos, gatherer);
+
+        _destructible.DestroyEntity(gathered);
+
+        if (gathered.Comp.Loot is null)
+            return;
+
+        foreach (var (tag, table) in gathered.Comp.Loot)
         {
-            if (tag != "All")
+            if (tag != "All" && gatherer != null && !_tagSystem.HasTag(gatherer.Value, tag))
+                continue;
+
+            var random = SharedRandomExtensions.PredictedRandom(_timing, GetNetEntity(gathered));
+            foreach (var loot in _entityTable.GetSpawns(table, random))
             {
-                if (gatherer != null && !_tagSystem.HasTag(gatherer.Value, tag))
-                    continue;
-            }
-            var spawnLoot = _entityTable.GetSpawns(table);
-            foreach (var loot in spawnLoot)
-            {
-                var spawnPos = pos.Offset(_random.NextVector2(component.GatherOffset));
-                Spawn(loot, spawnPos);
+                PredictedSpawnAtPosition(loot, pos.Offset(random.NextVector2(gathered.Comp.GatherOffset)));
             }
         }
     }

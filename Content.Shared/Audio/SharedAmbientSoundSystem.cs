@@ -2,6 +2,7 @@
 
 using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
+using Content.Shared.Mobs;
 
 namespace Content.Shared.Audio;
 

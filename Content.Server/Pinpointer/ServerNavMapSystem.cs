@@ -18,12 +18,9 @@ namespace Content.Server.Pinpointer;
 /// </summary>
 public sealed partial class ServerNavMapSystem : NavMapSystem
 {
-    [Dependency] private readonly IAdminLogManager _adminLog = default!;
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
     [Dependency] private readonly SharedMapSystem _mapSystem = default!;
     [Dependency] private readonly SharedTransformSystem _transformSystem = default!;
-    [Dependency] private readonly IGameTiming _gameTiming = default!;
-    [Dependency] private readonly TurfSystem _turfSystem = default!;
     [Dependency] private IAdminLogManager _adminLog = default!;
     [Dependency] private IGameTiming _gameTiming = default!;
     [Dependency] private TurfSystem _turfSystem = default!;

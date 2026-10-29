@@ -3,6 +3,7 @@
 using Content.Shared.Ghost.Components;
 using Content.Shared.IdentityManagement.Components;
 using Robust.Shared.Utility; // Goob
+using Content.Shared.Ghost;
 
 namespace Content.Shared.IdentityManagement;
 

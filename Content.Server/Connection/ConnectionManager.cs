@@ -21,8 +21,6 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Player;
 using Robust.Shared.Timing;
 using Content.Goobstation.Common.CCVar;
-using Content.Corvax.Interfaces.Shared;
-using Content.Corvax.Interfaces.Server;
 using Content.Shared._CorvaxGoob.CCCVars; // CorvaxGoob - Queue
 
 /*

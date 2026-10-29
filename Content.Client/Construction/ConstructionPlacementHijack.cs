@@ -4,6 +4,8 @@ using Robust.Client.GameObjects;
 using Robust.Client.Placement;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
+using System.Linq;
+using Robust.Client.ResourceManagement;
 
 namespace Content.Client.Construction;
 

@@ -16,6 +16,7 @@ using Content.Shared.Atmos;
 using Content.Shared.Atmos.Components;
 using Content.Shared.Database;
 using Content.Shared.Power;
+using Content.Server.Atmos.Piping.Components;
 
 namespace Content.Server.Atmos.Portable
 {

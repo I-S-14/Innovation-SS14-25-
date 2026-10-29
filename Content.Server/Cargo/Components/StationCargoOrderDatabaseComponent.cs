@@ -5,6 +5,7 @@ using Content.Shared.Cargo;
 using Content.Shared.Cargo.Prototypes;
 using Content.Shared.Station.Components;
 using Robust.Shared.Prototypes;
+using Content.Shared.Cargo.Components;
 
 namespace Content.Server.Cargo.Components;
 

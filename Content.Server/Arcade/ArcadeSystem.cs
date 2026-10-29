@@ -3,6 +3,9 @@
 using System.Linq;
 using Content.Shared.Arcade;
 using Robust.Shared.Utility;
+using Content.Server.UserInterface;
+using Robust.Server.GameObjects;
+using Robust.Server.Player;
 
 namespace Content.Server.Arcade
 {

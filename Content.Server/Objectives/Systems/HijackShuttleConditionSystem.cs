@@ -10,6 +10,7 @@ using Content.Shared.Mobs.Systems;
 using Content.Shared.Objectives.Components;
 using Content.Shared.Roles;
 using Robust.Shared.Player;
+using Content.Shared.Mobs.Components;
 
 namespace Content.Server.Objectives.Systems;
 

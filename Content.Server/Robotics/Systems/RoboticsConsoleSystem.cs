@@ -15,6 +15,7 @@ using Robust.Shared.Timing;
 using Content.Shared.Containers.ItemSlots;
 using Robust.Shared.Containers;
 using Content.Shared.DeviceNetwork.Events;
+using Content.Server.DeviceNetwork.Systems;
 
 namespace Content.Server.Research.Systems;
 
@@ -24,12 +25,6 @@ namespace Content.Server.Research.Systems;
 /// </summary>
 public sealed partial class RoboticsConsoleSystem : SharedRoboticsConsoleSystem
 {
-    [Dependency] private readonly DeviceNetworkSystem _deviceNetwork = default!;
-    [Dependency] private readonly IAdminLogManager _adminLogger = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly LockSystem _lock = default!;
-    [Dependency] private readonly RadioSystem _radio = default!;
-    [Dependency] private readonly UserInterfaceSystem _ui = default!;
     [Dependency] private readonly ItemSlotsSystem _slots = default!;
     [Dependency] private DeviceNetworkSystem _deviceNetwork = default!;
     [Dependency] private IAdminLogManager _adminLogger = default!;

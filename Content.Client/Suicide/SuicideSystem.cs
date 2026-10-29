@@ -1,4 +1,3 @@
-using Content.Shared.Suicide;
 
 namespace Content.Client.Suicide;
 

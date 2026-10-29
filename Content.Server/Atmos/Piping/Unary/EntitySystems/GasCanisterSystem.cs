@@ -14,6 +14,7 @@ using Content.Shared.Cargo;
 using Content.Shared.Database;
 using Content.Shared.NodeContainer;
 using Content.Shared.Popups;
+using Content.Server.Atmos.Piping.Components;
 using GasCanisterComponent = Content.Shared.Atmos.Piping.Unary.Components.GasCanisterComponent;
 
 namespace Content.Server.Atmos.Piping.Unary.EntitySystems;

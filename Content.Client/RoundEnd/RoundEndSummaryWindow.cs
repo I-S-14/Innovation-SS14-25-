@@ -16,24 +16,78 @@ using static Robust.Client.UserInterface.Controls.BoxContainer;
 
 namespace Content.Client.RoundEnd;
 
-/// <summary>
-/// Window displaying round end information including player manifest.
-/// </summary>
-public sealed partial class RoundEndSummaryWindow : DefaultWindow
+public sealed partial class RoundEndSummaryWindow : DefaultWindow // CorvaxGoob-PhotoCamera : made it partial
 {
-    public sealed partial class RoundEndSummaryWindow : DefaultWindow // CorvaxGoob-PhotoCamera : made it partial
+    private readonly IFileDialogManager _fileDialogManager; // CorvaxGoob-PhotoCamera
+    private readonly IEntityManager _entityManager;
+    public int RoundId;
+    private readonly RoundEndPlayerInfo[] _playersInfo;
+    private GridContainer _playerGrid = null!;
+    private readonly List<SortButton> _sortButtons = [];
+    private string _searchText = string.Empty;
+
+    private enum SortField
     {
-        private readonly IFileDialogManager _fileDialogManager; // CorvaxGoob-PhotoCamera
-        private readonly IEntityManager _entityManager;
-        public int RoundId;
+        ICName,
+        Role,
+        PlayerType,
+        OOCName
+    }
 
-        public RoundEndSummaryWindow(string gm, string roundEnd, TimeSpan roundTimeSpan, int roundId,
-            RoundEndMessageEvent.RoundEndPlayerInfo[] info, IEntityManager entityManager, IFileDialogManager fileDialogManager) // CorvaxGoob-PhotoCamera
+    private SortField _currentSortField = SortField.PlayerType;
+    private bool _sortDescending;
+
+    public RoundEndSummaryWindow(string gm, string roundEnd, TimeSpan roundTimeSpan, int roundId,
+        RoundEndMessageEvent.RoundEndPlayerInfo[] info, IEntityManager entityManager, IFileDialogManager fileDialogManager) // CorvaxGoob-PhotoCamera
+    {
+        _entityManager = entityManager;
+        _fileDialogManager = fileDialogManager; // CorvaxGoob-PhotoCamera
+
+        MinSize = new Vector2(610, 580); // CorvaxGoob-PhotoCamera : size changes
+
+        Title = Loc.GetString("round-end-summary-window-title");
+
+        // The round end window is split into two tabs, one about the round stats
+        // and the other is a list of RoundEndPlayerInfo for each player.
+        // This tab would be a good place for things like: "x many people died.",
+        // "clown slipped the crew x times.", "x shots were fired this round.", etc.
+        // Also, good for serious info.
+
+        RoundId = roundId;
+        var roundEndTabs = new TabContainer();
+        roundEndTabs.AddChild(MakeRoundEndSummaryTab(gm, roundEnd, roundTimeSpan, roundId));
+        roundEndTabs.AddChild(MakePlayerManifestTab(info));
+        roundEndTabs.AddChild(MakeStationReportTab()); //goob
+
+        // CorvaxGoob-PhotoCamera
+        var photoTab = MakePhotoReportTab();
+        if (photoTab is not null)
+            roundEndTabs.AddChild(photoTab);
+
+        ContentsContainer.AddChild(roundEndTabs);
+
+        OpenCenteredRight();
+        MoveToFront();
+    }
+
+    private static BoxContainer MakeRoundEndSummaryTab(string gamemode, string roundEnd, TimeSpan roundDuration, int roundId)
+    {
+        var roundEndSummaryTab = new BoxContainer
         {
-            _entityManager = entityManager;
-            _fileDialogManager = fileDialogManager; // CorvaxGoob-PhotoCamera
+            Orientation = LayoutOrientation.Vertical,
+            Name = Loc.GetString("round-end-summary-window-round-end-summary-tab-title")
+        };
 
-            MinSize = new Vector2(610, 580); // CorvaxGoob-PhotoCamera : size changes
+        var roundEndSummaryContainerScrollbox = new ScrollContainer
+        {
+            VerticalExpand = true,
+            Margin = new Thickness(10),
+            //HScrollEnabled = false, CorvaxGoob-Coins
+        };
+        var roundEndSummaryContainer = new BoxContainer
+        {
+            Orientation = LayoutOrientation.Vertical
+        };
 
         //Gamemode Name
         var gamemodeLabel = new RichTextLabel();
@@ -52,21 +106,12 @@ public sealed partial class RoundEndSummaryWindow : DefaultWindow
                                                ("seconds", roundDuration.Seconds)));
         roundEndSummaryContainer.AddChild(roundTimeLabel);
 
-            RoundId = roundId;
-            var roundEndTabs = new TabContainer();
-            roundEndTabs.AddChild(MakeRoundEndSummaryTab(gm, roundEnd, roundTimeSpan, roundId));
-            roundEndTabs.AddChild(MakePlayerManifestTab(info));
-            roundEndTabs.AddChild(MakeStationReportTab()); //goob
-
-            // CorvaxGoob-PhotoCamera
-            var photoTab = MakePhotoReportTab();
-            if (photoTab is not null)
-                roundEndTabs.AddChild(photoTab);
-
-            ContentsContainer.AddChild(roundEndTabs);
-
-            OpenCenteredRight();
-            MoveToFront();
+        //Round end text
+        if (!string.IsNullOrEmpty(roundEnd))
+        {
+            var roundEndLabel = new RichTextLabel();
+            roundEndLabel.SetMessage(FormattedMessage.FromMarkupOrThrow(roundEnd), tagsAllowed: null); // Goob
+            roundEndSummaryContainer.AddChild(roundEndLabel);
         }
 
         roundEndSummaryContainerScrollbox.AddChild(roundEndSummaryContainer);
@@ -75,7 +120,9 @@ public sealed partial class RoundEndSummaryWindow : DefaultWindow
         return roundEndSummaryTab;
     }
 
-    private BoxContainer MakePlayerManifestTab()
+    #region Goob Station
+    // Everything inside this region is heavily edited for goob.
+    private BoxContainer MakePlayerManifestTab(RoundEndMessageEvent.RoundEndPlayerInfo[] playersInfo)
     {
         var playerManifestTab = new BoxContainer
         {
@@ -83,88 +130,16 @@ public sealed partial class RoundEndSummaryWindow : DefaultWindow
             Name = Loc.GetString("round-end-summary-window-player-manifest-tab-title")
         };
 
-            var roundEndSummaryContainerScrollbox = new ScrollContainer
-            {
-                VerticalExpand = true,
-                Margin = new Thickness(10),
-                //HScrollEnabled = false, CorvaxGoob-Coins
-            };
-            var roundEndSummaryContainer = new BoxContainer
-            {
-                Orientation = LayoutOrientation.Vertical
-            };
-
-        var searchLabel = new Label
-        {
-            Text = "Filter: ",
-            VerticalAlignment = VAlignment.Center,
-            MinSize = new Vector2(40, 1)
-        };
-
+        // CorvaxGoob Start
         var searchBar = new LineEdit
         {
-            PlaceHolder = Loc.GetString("round-end-summary-window-player-manifest-tab-search-placeholder"),
+            PlaceHolder = Loc.GetString("round-end-summary-window-player-manifest-search"),
             HorizontalExpand = true,
-            MinSize = new Vector2(200, 1)
+            Margin = new Thickness(10, 6, 10, 2)
         };
+        // CorvaxGoob End
 
-            //Round end text
-            if (!string.IsNullOrEmpty(roundEnd))
-            {
-                var roundEndLabel = new RichTextLabel();
-                roundEndLabel.SetMessage(FormattedMessage.FromMarkupOrThrow(roundEnd), tagsAllowed: null); // Goob
-                roundEndSummaryContainer.AddChild(roundEndLabel);
-            }
-
-        searchContainer.AddChild(searchLabel);
-        searchContainer.AddChild(searchBar);
-        playerManifestTab.AddChild(searchContainer);
-
-        // Header with sort buttons
-        var headerContainer = new BoxContainer
-        {
-            Orientation = LayoutOrientation.Horizontal,
-            Margin = new Thickness(10, 5, 10, 5)
-        };
-
-        var icNameButton = CreateSortButton("round-end-summary-window-player-manifest-tab-sort-character", SortField.ICName);
-        var roleButton = CreateSortButton("round-end-summary-window-player-manifest-tab-sort-role", SortField.Role);
-        var playerTypeButton = CreateSortButton("round-end-summary-window-player-manifest-tab-sort-player-type", SortField.PlayerType);
-        var oocNameButton = CreateSortButton("round-end-summary-window-player-manifest-tab-sort-player", SortField.OOCName);
-
-        playerTypeButton.SetSortIndicator(true);
-        headerContainer.AddChild(icNameButton);
-
-        // Add small spacer between buttons
-        headerContainer.AddChild(new Control
-        {
-            MinSize = new Vector2(5, 1),
-            HorizontalExpand = false
-        });
-
-        headerContainer.AddChild(roleButton);
-
-        // Add small spacer between buttons
-        headerContainer.AddChild(new Control
-        {
-            MinSize = new Vector2(5, 1),
-            HorizontalExpand = false
-        });
-
-        headerContainer.AddChild(playerTypeButton);
-
-        // Add small spacer between buttons
-        headerContainer.AddChild(new Control
-        {
-            MinSize = new Vector2(5, 1),
-            HorizontalExpand = false
-        });
-
-        headerContainer.AddChild(oocNameButton);
-
-        playerManifestTab.AddChild(headerContainer);
-
-        var scrollContainer = new ScrollContainer
+        var playerInfoContainerScrollbox = new ScrollContainer
         {
             VerticalExpand = true,
             Margin = new Thickness(10, 0, 10, 10),
@@ -207,31 +182,13 @@ public sealed partial class RoundEndSummaryWindow : DefaultWindow
             _sortDescending = false;
         }
 
-        #region Goob Station
-        // Everything inside this region is heavily edited for goob.
-        private BoxContainer MakePlayerManifestTab(RoundEndMessageEvent.RoundEndPlayerInfo[] playersInfo)
+        foreach (var button in _sortButtons)
         {
             button.SetSortIndicator(button.Field == _currentSortField, _sortDescending);
         }
 
-            // CorvaxGoob Start
-            var searchBar = new LineEdit
-            {
-                PlaceHolder = Loc.GetString("round-end-summary-window-player-manifest-search"),
-                HorizontalExpand = true,
-                Margin = new Thickness(10, 6, 10, 2)
-            };
-            // CorvaxGoob End
-
-            var playerInfoContainerScrollbox = new ScrollContainer
-            {
-                VerticalExpand = true,
-                Margin = new Thickness(10)
-            };
-            var playerInfoContainer = new BoxContainer
-            {
-                Orientation = LayoutOrientation.Vertical
-            };
+        RefreshPlayerList();
+    }
 
     /// <summary>
     /// Refreshes the player list grid by clearing it and repopulating with sorted player data
@@ -240,253 +197,12 @@ public sealed partial class RoundEndSummaryWindow : DefaultWindow
     {
         _playerGrid.RemoveAllChildren();
 
-            var playerEntries = new List<(PanelContainer, string)>(); // CorvaxGoob
-
-            //Create labels for each player info.
-            foreach (var playerInfo in sortedPlayersInfo)
-            {
-                var panel = new PanelContainer
-                {
-                    StyleClasses = { StyleNano.StyleClassBackgroundBaseDark },
-                    Margin = new Thickness(0, 0, 0, 6)
-                };
-
-                var hBox = new BoxContainer
-                {
-                    Orientation = LayoutOrientation.Horizontal,
-                    VerticalExpand = true
-                };
-
-                if (playerInfo.PlayerNetEntity != null)
-                {
-                    hBox.AddChild(new SpriteView(playerInfo.PlayerNetEntity.Value, _entityManager)
-                    {
-                        OverrideDirection = Direction.South,
-                        VerticalAlignment = VAlignment.Center,
-                        SetSize = new Vector2(64, 64),
-                        VerticalExpand = true,
-                        Stretch = SpriteView.StretchMode.Fill,
-                        Margin = new Thickness(3, 0, 3, 0)
-                    });
-                }
-
-                var textVBox = new BoxContainer
-                {
-                    Orientation = LayoutOrientation.Vertical,
-                    VerticalExpand = true,
-                    SeparationOverride = 2,
-                };
-
-                var playerTitleBox = new BoxContainer
-                {
-                    Orientation = LayoutOrientation.Horizontal,
-                };
-
-                var playerInfoText = new RichTextLabel
-                {
-                    VerticalAlignment = VAlignment.Center,
-                    VerticalExpand = true,
-                };
-
-                if (playerInfo.PlayerICName != null)
-                {
-                    var playerNameText = new Label
-                    {
-                        VerticalAlignment = VAlignment.Bottom,
-                        StyleClasses = { StyleNano.StyleClassLabelHeading },
-                        Margin = new Thickness(0, 0, 6, 0),
-                        Text = playerInfo.PlayerICName
-                    };
-                    playerTitleBox.AddChild(playerNameText);
-
-                    var role = Loc.GetString(playerInfo.Role);
-                    var playerRoleText = new Label
-                    {
-                        VerticalAlignment = VAlignment.Bottom,
-                        StyleClasses = { StyleNano.StyleClassLabelSubText },
-                        Text = Loc.GetString("round-end-summary-window-player-name",
-                            ("player", playerInfo.PlayerOOCName))
-                    };
-
-                    if (role != "Unknown")
-                        playerRoleText.Text = Loc.GetString("round-end-summary-window-player-name-role",
-                                ("role", role),
-                                ("player", playerInfo.PlayerOOCName));
-
-                    playerTitleBox.AddChild(playerRoleText);
-                }
-
-                textVBox.AddChild(playerTitleBox);
-
-                if (!string.IsNullOrWhiteSpace(playerInfo.LastWords))
-                {
-                    var playerLastWordsText = new RichTextLabel
-                    {
-                        VerticalAlignment = VAlignment.Center,
-                        VerticalExpand = true,
-                    };
-
-                    playerLastWordsText.SetMarkup(Loc.GetString("round-end-summary-window-last-words",
-                        ("lastWords", playerInfo.LastWords)));
-
-                    textVBox.AddChild(playerLastWordsText);
-                }
-
-                var hDeathBox = new BoxContainer
-                {
-                    Orientation = LayoutOrientation.Horizontal,
-                };
-
-                var deathLabel = new RichTextLabel
-                {
-                    VerticalAlignment = VAlignment.Center,
-                    VerticalExpand = true,
-                };
-
-                textVBox.AddChild(deathLabel);
-
-                if (playerInfo.EntMobState == MobState.Dead
-                    && playerInfo.DamagePerGroup.Values.Any(v => v > 0))
-                {
-                    var totalDamage = playerInfo.DamagePerGroup.Values.Sum(static v => (decimal) v);
-                    var severityAdj = totalDamage switch
-                    {
-                        >= 1000 => "catastrophic",
-                        >= 750 => "devastating",
-                        >= 500 => "agonizing",
-                        >= 300 => "painful",
-                        >= 200 => "brutal",
-                        _ => "tragic"
-                    };
-
-                    var highestDamage = playerInfo.DamagePerGroup
-                        .OrderByDescending(kvp => kvp.Value)
-                        .First();
-                    var typeAdj = highestDamage.Key switch
-                    {
-                        "Burn" => "fiery",
-                        "Brute" => "crushing",
-                        "Toxin" => "poisonous",
-                        "Airloss" => "suffocating",
-                        "Genetic" => "twisted",
-                        "Metaphysical" => "otherworldly",
-                        "Electronic" => "shocking",
-                        _ => "mysterious",
-                    };
-
-                    deathLabel.SetMarkup(
-                        Loc.GetString("round-end-summary-window-death",
-                            ("severity", severityAdj),
-                            ("type", typeAdj)));
-
-                    var damageTable = new GridContainer
-                    {
-                        Columns = playerInfo.DamagePerGroup.Count,
-                    };
-
-                    foreach (var damage in playerInfo.DamagePerGroup)
-                    {
-                        if (damage.Value <= 0)
-                            continue;
-
-                        var color = damage.Key switch
-                        {
-                            "Burn" => Color.Orange,
-                            "Brute" => Color.Red,
-                            "Toxin" => Color.Green,
-                            "Airloss" => Color.Blue,
-                            "Genetic" => Color.Cyan,
-                            "Metaphysical" => Color.Purple,
-                            "Electronic" => Color.DarkOrange,
-                            _ => Color.White,
-                        };
-                        var damagePanel = new PanelContainer
-                        {
-                            StyleClasses = { StyleNano.StyleClassBackgroundBaseLight },
-                            Margin = new Thickness(2, 2, 2, 2)
-                        };
-                        var damageBox = new BoxContainer
-                        {
-                            Orientation = LayoutOrientation.Vertical,
-                            Margin = new Thickness(1)
-                        };
-                        var valueLabel = new Label
-                        {
-                            Text = Math.Round((float) damage.Value).ToString(),
-                            FontColorOverride = color,
-                            HorizontalAlignment = HAlignment.Center,
-                            VerticalAlignment = VAlignment.Center,
-                        };
-                        var headerLabel = new Label
-                        {
-                            Text = damage.Key,
-                            FontColorOverride = Color.Gray,
-                            HorizontalAlignment = HAlignment.Center,
-                            VerticalAlignment = VAlignment.Center,
-                        };
-                        damagePanel.AddChild(damageBox);
-                        damageBox.AddChild(valueLabel);
-                        damageBox.AddChild(headerLabel);
-                        damageTable.AddChild(damagePanel);
-                    }
-
-                    textVBox.AddChild(damageTable);
-                }
-                else if (playerInfo.EntMobState == MobState.Invalid)
-                {
-                    deathLabel.SetMarkup(Loc.GetString("round-end-summary-window-death-unknown"));
-                }
-
-                hBox.AddChild(textVBox);
-                panel.AddChild(hBox);
-                playerInfoContainer.AddChild(panel);
-
-                // CorvaxGoob Start
-                var searchText = $"{playerInfo.PlayerICName} {playerInfo.PlayerOOCName} {Loc.GetString(playerInfo.Role)}".ToLower();
-                playerEntries.Add((panel, searchText));
-                // CorvaxGoob End
-            }
-
-            // CorvaxGoob Start
-            searchBar.OnTextChanged += args =>
-            {
-                var query = args.Text.ToLower();
-                foreach (var (panel, searchText) in playerEntries)
-                    panel.Visible = searchText.Contains(query);
-            };
-            // CorvaxGoob End
-
-            playerInfoContainerScrollbox.AddChild(playerInfoContainer);
-            playerManifestTab.AddChild(searchBar); // CorvaxGoob
-            playerManifestTab.AddChild(playerInfoContainerScrollbox);
-
-            return playerManifestTab;
-        }
-        private BoxContainer MakeStationReportTab()
+        var sortedPlayers = GetSortedPlayers();
+        foreach (var playerInfo in sortedPlayers)
         {
-            //gets the stationreport varibible and sets the station report tab text to it if the map doesn't have a tablet will say No station report submitted
-            var stationReportSystem = _entityManager.System<Content.Goobstation.Common.StationReport.StationReportSystem>();
-            string stationReportText = stationReportSystem.StationReportText ?? Loc.GetString("no-station-report-summited");
-            var stationReportTab = new BoxContainer
-            {
-                Orientation = LayoutOrientation.Vertical,
-                Name = Loc.GetString("round-end-summary-window-station-report-tab-title")
-            };
-            var StationReportContainerScrollbox = new ScrollContainer
-            {
-                VerticalExpand = true,
-                Margin = new Thickness(10),
-                HScrollEnabled = false,
-            };
-            var StationReportContainer = new BoxContainer
-            {
-                Orientation = LayoutOrientation.Vertical
-            };
-            var StationReportLabel = new RichTextLabel();
-            var StationReportmessage = new FormattedMessage();
-            StationReportmessage.AddMarkupPermissive(stationReportText);
-            StationReportLabel.SetMessage(StationReportmessage);
-            StationReportContainer.AddChild(StationReportLabel);
+            AddPlayerRow(playerInfo);
+        }
+    }
 
     /// <summary>
     /// Adds a single player row to the grid with all columns (sprite, IC name, role, player type, OOC name)
@@ -653,8 +369,10 @@ public sealed partial class RoundEndSummaryWindow : DefaultWindow
             playerInfo.PlayerOOCName.Contains(_searchText, StringComparison.OrdinalIgnoreCase))
             return true;
 
-        // Search in role
-        if (!string.IsNullOrEmpty(playerInfo.Role))
+        var playerEntries = new List<(PanelContainer, string)>(); // CorvaxGoob
+
+        //Create labels for each player info.
+        foreach (var playerInfo in sortedPlayersInfo)
         {
             if (playerInfo.Role.Contains(_searchText, StringComparison.OrdinalIgnoreCase) ||
                 Loc.GetString(playerInfo.Role).Contains(_searchText, StringComparison.OrdinalIgnoreCase))
@@ -711,21 +429,183 @@ public sealed partial class RoundEndSummaryWindow : DefaultWindow
                 MinSize = new Vector2(15, 1)
             };
 
-            container.AddChild(label);
-            container.AddChild(_sortIndicator);
+            textVBox.AddChild(playerTitleBox);
 
-            AddChild(container);
+            if (!string.IsNullOrWhiteSpace(playerInfo.LastWords))
+            {
+                var playerLastWordsText = new RichTextLabel
+                {
+                    VerticalAlignment = VAlignment.Center,
+                    VerticalExpand = true,
+                };
+
+                playerLastWordsText.SetMarkup(Loc.GetString("round-end-summary-window-last-words",
+                    ("lastWords", playerInfo.LastWords)));
+
+                textVBox.AddChild(playerLastWordsText);
+            }
+
+            var hDeathBox = new BoxContainer
+            {
+                Orientation = LayoutOrientation.Horizontal,
+            };
+
+            var deathLabel = new RichTextLabel
+            {
+                VerticalAlignment = VAlignment.Center,
+                VerticalExpand = true,
+            };
+
+            textVBox.AddChild(deathLabel);
+
+            if (playerInfo.EntMobState == MobState.Dead
+                && playerInfo.DamagePerGroup.Values.Any(v => v > 0))
+            {
+                var totalDamage = playerInfo.DamagePerGroup.Values.Sum(static v => (decimal) v);
+                var severityAdj = totalDamage switch
+                {
+                    >= 1000 => "catastrophic",
+                    >= 750 => "devastating",
+                    >= 500 => "agonizing",
+                    >= 300 => "painful",
+                    >= 200 => "brutal",
+                    _ => "tragic"
+                };
+
+                var highestDamage = playerInfo.DamagePerGroup
+                    .OrderByDescending(kvp => kvp.Value)
+                    .First();
+                var typeAdj = highestDamage.Key switch
+                {
+                    "Burn" => "fiery",
+                    "Brute" => "crushing",
+                    "Toxin" => "poisonous",
+                    "Airloss" => "suffocating",
+                    "Genetic" => "twisted",
+                    "Metaphysical" => "otherworldly",
+                    "Electronic" => "shocking",
+                    _ => "mysterious",
+                };
+
+                deathLabel.SetMarkup(
+                    Loc.GetString("round-end-summary-window-death",
+                        ("severity", severityAdj),
+                        ("type", typeAdj)));
+
+                var damageTable = new GridContainer
+                {
+                    Columns = playerInfo.DamagePerGroup.Count,
+                };
+
+                foreach (var damage in playerInfo.DamagePerGroup)
+                {
+                    if (damage.Value <= 0)
+                        continue;
+
+                    var color = damage.Key switch
+                    {
+                        "Burn" => Color.Orange,
+                        "Brute" => Color.Red,
+                        "Toxin" => Color.Green,
+                        "Airloss" => Color.Blue,
+                        "Genetic" => Color.Cyan,
+                        "Metaphysical" => Color.Purple,
+                        "Electronic" => Color.DarkOrange,
+                        _ => Color.White,
+                    };
+                    var damagePanel = new PanelContainer
+                    {
+                        StyleClasses = { StyleNano.StyleClassBackgroundBaseLight },
+                        Margin = new Thickness(2, 2, 2, 2)
+                    };
+                    var damageBox = new BoxContainer
+                    {
+                        Orientation = LayoutOrientation.Vertical,
+                        Margin = new Thickness(1)
+                    };
+                    var valueLabel = new Label
+                    {
+                        Text = Math.Round((float) damage.Value).ToString(),
+                        FontColorOverride = color,
+                        HorizontalAlignment = HAlignment.Center,
+                        VerticalAlignment = VAlignment.Center,
+                    };
+                    var headerLabel = new Label
+                    {
+                        Text = damage.Key,
+                        FontColorOverride = Color.Gray,
+                        HorizontalAlignment = HAlignment.Center,
+                        VerticalAlignment = VAlignment.Center,
+                    };
+                    damagePanel.AddChild(damageBox);
+                    damageBox.AddChild(valueLabel);
+                    damageBox.AddChild(headerLabel);
+                    damageTable.AddChild(damagePanel);
+                }
+
+                textVBox.AddChild(damageTable);
+            }
+            else if (playerInfo.EntMobState == MobState.Invalid)
+            {
+                deathLabel.SetMarkup(Loc.GetString("round-end-summary-window-death-unknown"));
+            }
+
+            hBox.AddChild(textVBox);
+            panel.AddChild(hBox);
+            playerInfoContainer.AddChild(panel);
+
+            // CorvaxGoob Start
+            var searchText = $"{playerInfo.PlayerICName} {playerInfo.PlayerOOCName} {Loc.GetString(playerInfo.Role)}".ToLower();
+            playerEntries.Add((panel, searchText));
+            // CorvaxGoob End
         }
 
-        public void SetSortIndicator(bool active, bool descending = false)
+        // CorvaxGoob Start
+        searchBar.OnTextChanged += args =>
         {
-            if (!active)
-            {
-                _sortIndicator.Text = "";
-                return;
-            }
+            var query = args.Text.ToLower();
+            foreach (var (panel, searchText) in playerEntries)
+                panel.Visible = searchText.Contains(query);
+        };
+        // CorvaxGoob End
+
+        playerInfoContainerScrollbox.AddChild(playerInfoContainer);
+        playerManifestTab.AddChild(searchBar); // CorvaxGoob
+        playerManifestTab.AddChild(playerInfoContainerScrollbox);
 
             _sortIndicator.Text = descending ? "▼" : "▲";
         }
     }
+    private BoxContainer MakeStationReportTab()
+    {
+        //gets the stationreport varibible and sets the station report tab text to it if the map doesn't have a tablet will say No station report submitted
+        var stationReportSystem = _entityManager.System<Content.Goobstation.Common.StationReport.StationReportSystem>();
+        string stationReportText = stationReportSystem.StationReportText ?? Loc.GetString("no-station-report-summited");
+        var stationReportTab = new BoxContainer
+        {
+            Orientation = LayoutOrientation.Vertical,
+            Name = Loc.GetString("round-end-summary-window-station-report-tab-title")
+        };
+        var StationReportContainerScrollbox = new ScrollContainer
+        {
+            VerticalExpand = true,
+            Margin = new Thickness(10),
+            HScrollEnabled = false,
+        };
+        var StationReportContainer = new BoxContainer
+        {
+            Orientation = LayoutOrientation.Vertical
+        };
+        var StationReportLabel = new RichTextLabel();
+        var StationReportmessage = new FormattedMessage();
+        StationReportmessage.AddMarkupPermissive(stationReportText);
+        StationReportLabel.SetMessage(StationReportmessage);
+        StationReportContainer.AddChild(StationReportLabel);
+
+
+        StationReportContainerScrollbox.AddChild(StationReportContainer);
+        stationReportTab.AddChild(StationReportContainerScrollbox);
+        return stationReportTab;
+    }
+    #endregion
 }

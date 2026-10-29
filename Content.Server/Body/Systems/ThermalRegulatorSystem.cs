@@ -7,6 +7,7 @@ using Content.Shared.Temperature.Components;
 using Content.Shared.Mobs; // Mono
 using Content.Shared.Mobs.Components; // Mono
 using Robust.Shared.Timing;
+using Content.Shared.Mobs.Systems;
 
 namespace Content.Server.Body.Systems;
 

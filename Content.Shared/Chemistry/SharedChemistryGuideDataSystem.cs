@@ -2,6 +2,7 @@
 
 using Content.Shared.Chemistry.Reagent;
 using Robust.Shared.Serialization;
+using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Chemistry;
 

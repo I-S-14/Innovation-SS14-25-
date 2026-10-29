@@ -1,12 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Linq;
-using Content.Server.Antag;
-using Content.Server.Antag.Components;
-using Content.Server.Cloning;
-using Content.Server.GameTicking.Rules.Components;
-using Content.Server.Medical.SuitSensors;
-using Content.Server.Objectives.Components;
 using Content.Shared.Antag;
 using Content.Shared.Cloning;
 using Content.Shared.GameTicking.Components;
@@ -24,10 +18,6 @@ namespace Content.Shared.GameTicking.Rules;
 public sealed partial class ParadoxCloneRuleSystem : GameRuleSystem<ParadoxCloneRuleComponent>
 {
     [Dependency] private readonly SharedTransformSystem _transform = default!;
-    [Dependency] private readonly SharedMindSystem _mind = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly CloningSystem _cloning = default!;
-    [Dependency] private readonly SuitSensorSystem _sensor = default!;
     [Dependency] private readonly EntityWhitelistSystem _whitelist = default!; // Goobstation
     [Dependency] private IRobustRandom _random = default!;
     [Dependency] private SharedCloningSystem _cloning = default!;

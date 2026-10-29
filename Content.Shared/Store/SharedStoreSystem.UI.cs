@@ -1,5 +1,5 @@
 using System.Linq;
-using Content.Shared.FixedPoint;
+using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.PDA.Ringer;
 using Content.Shared.Store.Components;
 using Robust.Shared.Player;

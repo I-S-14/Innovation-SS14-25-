@@ -10,6 +10,8 @@ using Robust.Shared.Collections;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Map.Enumerators;
 using Robust.Shared.Utility;
+using Robust.Shared.Map;
+using Robust.Client.GameObjects.SpriteComponent;
 
 namespace Content.Client.IconSmoothing;
 
@@ -67,10 +69,10 @@ public sealed partial class IconSmoothSystem : EntitySystem
         if (_dirtyEntities.Count == 0)
             return;
 
-        // Right now performance for this isn't a huge issue.
-        // If it ever does become an issue, make this a parallel job.
-        // However, I'm pretty sure the caching behavior is more taxing, although that can't be made parallel without engine changes.
-        while (_dirtyEntities.TryDequeue(out var entity))
+        SetCornerLayers((uid, sprite), component);
+        RaiseLocalEvent(uid, new IconSmoothCornersInitializedEvent()); // Goobstation
+
+        if (component.Shader != null)
         {
             CalculateNewSprite(entity);
         }
@@ -95,9 +97,9 @@ public sealed partial class IconSmoothSystem : EntitySystem
             return;
         }
 
-        var tile = _map.TileIndicesFor(grid, mapGrid, xform.Coordinates);
-        PopulateAdjacentKeys((grid, iconGrid, mapGrid), xform.LocalRotation, tile);
-        ApplyStates((entity, entity.Comp, sprite));
+        component.StateBase = newState;
+        SetCornerLayers((uid, sprite), component);
+        RaiseLocalEvent(uid, new IconSmoothCornersInitializedEvent()); // Goobstation
     }
 
     private void ApplyStates(Entity<IconSmoothComponent, SpriteComponent> entity)
@@ -159,34 +161,41 @@ public sealed partial class IconSmoothSystem : EntitySystem
         {
             foreach (var cache in chunkData.Tiles)
             {
-                component.LastPosition = TryComp<MapGridComponent>(xform.GridUid, out var grid)
-                    ? (xform.GridUid.Value, _mapSystem.TileIndicesFor(xform.GridUid.Value, grid, xform.Coordinates))
-                    : (null, new Vector2i(0, 0));
-
-                DirtyNeighbours(uid, component);
-            }
-
-            if (component.Mode != IconSmoothingMode.Corners || !TryComp(uid, out SpriteComponent? sprite))
-                return;
-
-            SetCornerLayers((uid, sprite), component);
-            RaiseLocalEvent(uid, new IconSmoothCornersInitializedEvent()); // Goobstation
-
-            if (component.Shader != null)
-            {
-                sprite.LayerSetShader(CornerLayers.SE, component.Shader);
-                sprite.LayerSetShader(CornerLayers.NE, component.Shader);
-                sprite.LayerSetShader(CornerLayers.NW, component.Shader);
-                sprite.LayerSetShader(CornerLayers.SW, component.Shader);
+                if (cache is not null)
+                    DecrementRefCount(cache.Value);
             }
         }
 
         entity.Comp.Chunks.Clear();
     }
 
-            component.StateBase = newState;
-            SetCornerLayers((uid, sprite), component);
-            RaiseLocalEvent(uid, new IconSmoothCornersInitializedEvent()); // Goobstation
+    [SubscribeLocalEvent]
+    private void OnAnchorChanged(Entity<IconSmoothComponent> entity, ref AnchorStateChangedEvent args)
+    {
+        if (!entity.Comp.Enabled || Deleted(entity)) // If deleted this will be handled by the shutdown event
+            return;
+
+        UpdateTile((entity, entity.Comp, args.Transform));
+    }
+
+    [SubscribeLocalEvent]
+    private void OnStartup(Entity<IconSmoothComponent> entity, ref ComponentInit args)
+    {
+        StartupLayers(entity);
+    }
+
+    [SubscribeLocalEvent]
+    private void OnShutdown(Entity<IconSmoothComponent> entity, ref ComponentShutdown args)
+    {
+        RemoveTile((entity, entity.Comp, Transform(entity)));
+    }
+
+    private void StartupLayers(Entity<IconSmoothComponent> entity)
+    {
+        if (!_spriteQuery.TryComp(entity, out var sprite))
+        {
+            Log.Error($"Entity {ToPrettyString(entity)} did not have a {nameof(SpriteComponent)}");
+            return;
         }
 
         foreach (var state in entity.Comp.States)

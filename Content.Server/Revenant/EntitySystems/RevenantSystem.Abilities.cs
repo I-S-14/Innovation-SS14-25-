@@ -31,6 +31,8 @@ using Robust.Shared.Physics.Components;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Utility;
+using Content.Shared.Storage.Components;
+using Content.Server.Light.Components;
 
 namespace Content.Server.Revenant.EntitySystems;
 

@@ -3,6 +3,7 @@
 using Content.Shared.Alert;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
+using Content.Shared.Inventory;
 
 namespace Content.Shared.Clothing;
 

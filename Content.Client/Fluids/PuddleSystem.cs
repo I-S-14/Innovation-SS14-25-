@@ -5,6 +5,7 @@ using Content.Shared.Fluids;
 using Content.Shared.Fluids.Components;
 using Robust.Client.GameObjects;
 using Robust.Shared.Map;
+using Content.Client.IconSmoothing;
 
 namespace Content.Client.Fluids;
 

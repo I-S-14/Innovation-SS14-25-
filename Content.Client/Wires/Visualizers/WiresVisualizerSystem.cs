@@ -10,13 +10,15 @@ namespace Content.Client.Wires.Visualizers;
 /// </summary>
 public sealed partial class WiresVisualizerSystem : VisualizerSystem<WiresVisualsComponent>
 {
+    [Dependency] private readonly SpriteSystem _sprite = default!;
+
     /// <inheritdoc/>
     protected override void OnAppearanceChange(EntityUid uid, WiresVisualsComponent component, ref AppearanceChangeEvent args)
     {
         if (args.Sprite == null)
             return;
 
-        var layer = SpriteSystem.LayerMapReserve((uid, args.Sprite), WiresVisualLayers.MaintenancePanel);
+        var layer = _sprite.LayerMapReserve((uid, args.Sprite), WiresVisualLayers.MaintenancePanel);
 
         // Data doesn't exist (e.g. in the spawn menu), act as though the panel's closed
         if (!args.TryGetData<bool>(WiresVisuals.MaintenancePanelState, out var panelOpen))

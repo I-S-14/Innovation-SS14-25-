@@ -3,6 +3,7 @@
 using Content.Shared.Shuttles.Components;
 using Robust.Shared.Physics;
 using Robust.Shared.Physics.Events;
+using Robust.Shared.Physics.Dynamics;
 
 namespace Content.Server.Shuttles.Systems;
 

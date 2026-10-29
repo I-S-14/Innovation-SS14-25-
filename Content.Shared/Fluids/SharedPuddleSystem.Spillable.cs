@@ -18,6 +18,7 @@ using Content.Shared.Verbs;
 using Content.Shared.Weapons.Melee;
 using Content.Shared.Weapons.Melee.Events;
 using Robust.Shared.Player;
+using Content.Shared.Chemistry.Reaction;
 
 namespace Content.Shared.Fluids;
 

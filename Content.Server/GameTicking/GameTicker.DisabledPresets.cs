@@ -1,5 +1,4 @@
 using Content.Goobstation.Common.CCVar;
-using Content.Server.GameTicking.Presets;
 
 namespace Content.Server.GameTicking;
 

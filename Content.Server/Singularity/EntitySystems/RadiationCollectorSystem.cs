@@ -16,6 +16,8 @@ using Content.Shared.Singularity.Components;
 using Content.Shared.Timing.Systems;
 using Robust.Shared.Containers;
 using Robust.Shared.Timing;
+using Content.Server.Atmos.Components;
+using Content.Shared.Timing;
 
 namespace Content.Server.Singularity.EntitySystems;
 

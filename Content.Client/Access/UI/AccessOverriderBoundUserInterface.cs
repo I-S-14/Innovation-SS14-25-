@@ -6,7 +6,6 @@ using Content.Shared.Access.Systems;
 using Content.Shared.Containers.ItemSlots;
 using Robust.Client.UserInterface;
 using Robust.Shared.Prototypes;
-using static Content.Shared.Access.Components.AccessOverriderComponent;
 
 namespace Content.Client.Access.UI
 {

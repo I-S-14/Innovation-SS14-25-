@@ -5,6 +5,7 @@ using Content.Shared.Timing.Components;
 using Content.Shared.Timing.Systems;
 using Content.Shared.Weapons.Melee.Components;
 using Content.Shared.Weapons.Melee.Events;
+using Content.Shared.Timing;
 
 namespace Content.Shared.Weapons.Melee;
 

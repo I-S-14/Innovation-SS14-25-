@@ -2,6 +2,7 @@
 
 using Content.Shared.NodeContainer;
 using Robust.Shared.Map.Components;
+using Robust.Shared.Map;
 
 namespace Content.Server.NodeContainer.Nodes
 {

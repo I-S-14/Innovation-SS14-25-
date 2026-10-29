@@ -9,6 +9,7 @@ using Robust.Shared.Physics.Controllers;
 using Robust.Shared.Player;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
+using System.Numerics;
 
 namespace Content.Server.Physics.Controllers;
 

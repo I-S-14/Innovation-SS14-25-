@@ -16,7 +16,6 @@ public sealed partial class AddTagsOnTriggerSystem : XOnTriggerSystem<AddTagsOnT
 
 public sealed partial class RemoveTagsOnTriggerSystem : XOnTriggerSystem<RemoveTagsOnTriggerComponent>
 {
-    [Dependency] private TagSystem _tag = default!;
 
     protected override void OnTrigger(Entity<RemoveTagsOnTriggerComponent> ent, EntityUid target, ref TriggerEvent args)
     {

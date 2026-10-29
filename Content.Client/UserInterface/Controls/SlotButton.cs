@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
 
-using static Content.Client.Inventory.ClientInventorySystem;
 
 namespace Content.Client.UserInterface.Controls
 {

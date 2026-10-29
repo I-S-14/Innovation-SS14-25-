@@ -11,10 +11,6 @@ namespace Content.Shared.RatKing.Systems;
 
 public sealed partial class RummagerSystem : EntitySystem
 {
-    [Dependency] private readonly EntityTableSystem _entityTable =  default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
-    [Dependency] private readonly INetManager _net = default!;
-    [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
     [Dependency] private readonly IGameTiming _gameTiming = default!; // Goobstation
     [Dependency] private EntityTableSystem _entityTable =  default!;
     [Dependency] private SharedAudioSystem _audio = default!;

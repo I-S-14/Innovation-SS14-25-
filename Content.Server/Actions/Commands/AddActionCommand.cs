@@ -5,6 +5,7 @@ using Content.Shared.Actions.Components;
 using Content.Shared.Administration;
 using Robust.Shared.Console;
 using Robust.Shared.Prototypes;
+using Content.Shared.Prototypes;
 
 namespace Content.Server.Actions.Commands;
 

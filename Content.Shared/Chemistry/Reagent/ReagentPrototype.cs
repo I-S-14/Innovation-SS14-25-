@@ -8,7 +8,6 @@ using Content.Shared.Chemistry.Reaction;
 using Content.Shared.Contraband;
 using Content.Shared.EntityEffects;
 using Content.Shared.Localizations;
-using Content.Shared.Metabolism;
 using Content.Shared.Nutrition;
 using Content.Shared.Roles;
 using Content.Shared.Slippery;
@@ -17,7 +16,6 @@ using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.Array;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Generic;
 using Robust.Shared.Utility;
 
 namespace Content.Shared.Chemistry.Reagent
@@ -178,8 +176,14 @@ namespace Content.Shared.Chemistry.Reagent
         [DataField]
         public bool WorksOnTheDead;
 
-        [DataField, AlwaysPushInheritance]
-        public ReagentMetabolisms? Metabolisms;
+        /// <summary>
+        /// Should this reagent only work on unconscious entities?
+        /// </summary>
+        [DataField]
+        public bool? WorksOnUnconscious;
+
+        [DataField]
+        public FrozenDictionary<ProtoId<MetabolismGroupPrototype>, ReagentEffectsEntry>? Metabolisms;
 
         [DataField]
         public Dictionary<ProtoId<ReactiveGroupPrototype>, ReactiveReagentEffectEntry>? ReactiveEffects;
@@ -252,14 +256,15 @@ namespace Content.Shared.Chemistry.Reagent
     {
         public string ReagentPrototype;
 
-        public Dictionary<ProtoId<MetabolismStagePrototype>, ReagentEffectsGuideEntry>? GuideEntries;
+        // TODO: Kill Metabolism groups!
+        public Dictionary<ProtoId<MetabolismGroupPrototype>, ReagentEffectsGuideEntry>? GuideEntries;
 
         public List<string>? PlantMetabolisms = null;
 
         public ReagentGuideEntry(ReagentPrototype proto, IPrototypeManager prototype, IEntitySystemManager entSys)
         {
             ReagentPrototype = proto.ID;
-            GuideEntries = proto.Metabolisms?.Metabolisms
+            GuideEntries = proto.Metabolisms?
                 .Select(x => (x.Key, x.Value.MakeGuideEntry(prototype, entSys, proto)))
                 .ToDictionary(x => x.Key, x => x.Item2);
             if (proto.PlantMetabolisms.Count > 0)
@@ -270,12 +275,6 @@ namespace Content.Shared.Chemistry.Reagent
         }
     }
 
-    [DataDefinition]
-    public sealed partial class ReagentMetabolisms
-    {
-        [IncludeDataField(customTypeSerializer: typeof(DictionarySerializer<ProtoId<MetabolismStagePrototype>, ReagentEffectsEntry>))]
-        public Dictionary<ProtoId<MetabolismStagePrototype>, ReagentEffectsEntry> Metabolisms;
-    }
 
     [DataDefinition]
     public sealed partial class ReagentEffectsEntry
@@ -284,27 +283,21 @@ namespace Content.Shared.Chemistry.Reagent
         ///     Amount of reagent to metabolize, per metabolism cycle.
         /// </summary>
         [JsonPropertyName("rate")]
-        [DataField]
+        [DataField("metabolismRate")]
         public FixedPoint2 MetabolismRate = FixedPoint2.New(0.5f);
 
         /// <summary>
         ///     A list of effects to apply when these reagents are metabolized.
         /// </summary>
         [JsonPropertyName("effects")]
-        [DataField]
-        public EntityEffect[] Effects = Array.Empty<EntityEffect>();
-
-        /// <summary>
-        ///     Ratio of this reagent to metabolites for transfer to the next solution by a metabolizer
-        /// </summary>
-        [DataField]
-        public Dictionary<ProtoId<ReagentPrototype>, FixedPoint2>? Metabolites;
+        [DataField("effects", required: true)]
+        public EntityEffect[] Effects = default!;
 
         public string EntityEffectFormat => "guidebook-reagent-effect-description";
 
         public ReagentEffectsGuideEntry MakeGuideEntry(IPrototypeManager prototype, IEntitySystemManager entSys, ReagentPrototype proto)
         {
-            return new ReagentEffectsGuideEntry(MetabolismRate, proto.GuidebookReagentEffectsDescription(prototype, entSys, Effects, MetabolismRate).ToArray(), Metabolites);
+            return new ReagentEffectsGuideEntry(MetabolismRate, proto.GuidebookReagentEffectsDescription(prototype, entSys, Effects, MetabolismRate).ToArray());
         }
     }
 
@@ -315,13 +308,10 @@ namespace Content.Shared.Chemistry.Reagent
 
         public string[] EffectDescriptions;
 
-        public Dictionary<ProtoId<ReagentPrototype>, FixedPoint2>? Metabolites;
-
-        public ReagentEffectsGuideEntry(FixedPoint2 metabolismRate, string[] effectDescriptions, Dictionary<ProtoId<ReagentPrototype>, FixedPoint2>? metabolites)
+        public ReagentEffectsGuideEntry(FixedPoint2 metabolismRate, string[] effectDescriptions)
         {
             MetabolismRate = metabolismRate;
             EffectDescriptions = effectDescriptions;
-            Metabolites = metabolites;
         }
     }
 

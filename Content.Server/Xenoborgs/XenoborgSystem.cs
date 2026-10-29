@@ -8,6 +8,11 @@ using Content.Shared.Roles;
 using Content.Shared.Silicons.Borgs.Components;
 using Content.Shared.Xenoborgs.Components;
 using Robust.Shared.Player;
+using Content.Server.Antag;
+using Content.Server.GameTicking.Rules.Components;
+using Content.Shared.Mind;
+using Content.Shared.Roles.Components;
+using Robust.Shared.Audio;
 
 namespace Content.Server.Xenoborgs;
 

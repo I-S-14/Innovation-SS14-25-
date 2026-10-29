@@ -6,6 +6,8 @@ using Content.Shared.StationRecords;
 using Robust.Shared.Prototypes;
 using Content.Shared.Security;
 using Robust.Shared.GameStates;
+using Content.Shared.CriminalRecords.Components;
+using Content.Shared.CriminalRecords;
 
 namespace Content.Shared.CriminalRecords.Components;
 

@@ -11,6 +11,7 @@ using Content.Shared.Atmos.Components;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Goobstation.Maths.FixedPoint;
 using JetBrains.Annotations;
+using Content.Server.Atmos.Piping.Components;
 
 namespace Content.Server.Atmos.Piping.Unary.EntitySystems;
 

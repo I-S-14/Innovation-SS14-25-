@@ -6,7 +6,7 @@ using Content.Shared.Power.EntitySystems;
 using Content.Shared.PowerCell;
 using Content.Shared.Damage.Components;
 using Content.Shared.Speech;
-using Content.Shared.FixedPoint;
+using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.Speech.EntitySystems;
 using Robust.Shared.Random;
 

@@ -2,6 +2,7 @@
 
 using Content.Shared.Cuffs;
 using Content.Shared.Cuffs.Components;
+using Content.Server.Cuffs;
 
 namespace Content.Server.NPC.HTN.Preconditions;
 

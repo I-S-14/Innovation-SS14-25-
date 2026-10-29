@@ -19,6 +19,9 @@ using Content.Server.Atmos.EntitySystems;
 using Content.Shared.DeviceNetwork;
 using Content.Shared.DeviceNetwork.Components;
 using Content.Shared.NodeContainer;
+using Content.Server.Atmos.Components;
+using Content.Server.DeviceNetwork.Components;
+using Content.Server.NodeContainer;
 
 namespace Content.Server.Atmos.Consoles;
 

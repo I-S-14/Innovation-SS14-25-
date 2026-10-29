@@ -4,7 +4,6 @@ using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
 using Robust.Shared.Reflection;
 using Robust.Shared.Sandboxing;
-using static Content.Client.Stylesheets.StylesheetHelpers;
 
 namespace Content.Client.Stylesheets;
 

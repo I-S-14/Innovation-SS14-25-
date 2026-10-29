@@ -6,6 +6,8 @@ using Robust.Client.UserInterface.Controllers;
 using Robust.Client.UserInterface.CustomControls;
 using Robust.Shared.Input;
 using Robust.Shared.Input.Binding;
+using Content.Client.Gameplay;
+using Content.Client.Info;
 
 namespace Content.Client.UserInterface.Systems.Info;
 

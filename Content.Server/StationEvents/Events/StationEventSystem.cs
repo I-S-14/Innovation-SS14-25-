@@ -10,6 +10,9 @@ using Content.Shared.GameTicking.Components;
 using Content.Shared.GameTicking.Rules;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Player;
+using Content.Server.GameTicking;
+using Content.Server.GameTicking.Rules;
+using Robust.Shared.Prototypes;
 
 namespace Content.Server.StationEvents.Events;
 
@@ -18,10 +21,7 @@ namespace Content.Server.StationEvents.Events;
 /// </summary>
 public abstract partial class StationEventSystem<T> : GameRuleSystem<T> where T : IComponent
 {
-    [Dependency] protected readonly IAdminLogManager AdminLogManager = default!;
     [Dependency] protected readonly IPrototypeManager PrototypeManager = default!;
-    [Dependency] protected readonly ChatSystem ChatSystem = default!;
-    [Dependency] protected readonly SharedAudioSystem Audio = default!;
     [Dependency] protected readonly StationSystem StationSystem = default!;
     [Dependency] protected readonly AnnouncerSystem AnnouncerSystem = default!;
     [Dependency] protected IAdminLogManager AdminLogManager = default!;

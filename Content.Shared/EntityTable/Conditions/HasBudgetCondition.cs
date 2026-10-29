@@ -1,6 +1,7 @@
 using Content.Shared.EntityTable.EntitySelectors;
 using Content.Shared.GameTicking.Rules.Components;
 using Robust.Shared.Prototypes;
+using Content.Shared.GameTicking.Rules;
 
 namespace Content.Shared.EntityTable.Conditions;
 

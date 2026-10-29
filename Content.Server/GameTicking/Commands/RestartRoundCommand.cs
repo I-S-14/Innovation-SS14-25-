@@ -31,7 +31,6 @@ public sealed partial class RestartRoundCommand : LocalizedEntityCommands
 [AdminCommand(AdminFlags.Round)]
 public sealed partial class RestartRoundNowCommand : LocalizedEntityCommands
 {
-    [Dependency] private ServerGameTicker _gameTicker = default!;
 
     public override string Command => "restartroundnow";
 

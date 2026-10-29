@@ -17,6 +17,8 @@ using Content.Server.Players.Whitelist;
 using Content.Shared.GameTicking;
 using Content.Shared.Players.PlayTimeTracking;
 using Content.Shared.Ghost.Components;
+using Content.Server.Ghost;
+using Content.Shared.Ghost;
 
 namespace Content.Server.Voting;
 

@@ -2,6 +2,7 @@
 
 using Content.Shared.Chat.V2;
 using Content.Shared.Radio;
+using Content.Shared.Chat.Prototypes;
 
 namespace Content.Server.Chat.V2;
 

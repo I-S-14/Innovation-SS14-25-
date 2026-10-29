@@ -24,15 +24,13 @@ using Robust.Server.GameObjects;
 using Robust.Shared.Containers;
 
 using Content.Shared.Medical.HealthAnalyzer;
+using Content.Server.Atmos.Piping.Components;
 
 namespace Content.Server.Medical;
 
 public sealed partial class CryoPodSystem : SharedCryoPodSystem
 {
-    [Dependency] private readonly AtmosphereSystem _atmosphereSystem = default!;
     [Dependency] private readonly SharedActionsSystem _actionsSystem = default!;
-    [Dependency] private readonly GasCanisterSystem _gasCanisterSystem = default!;
-    [Dependency] private readonly NodeContainerSystem _nodeContainer = default!;
     [Dependency] private readonly SharedUserInterfaceSystem _uiSystem = default!;
     [Dependency] private readonly SharedSolutionContainerSystem _solutionContainerSystem = default!;
     [Dependency] private readonly SleepingSystem _sleepingSystem = default!; // Shitmed change

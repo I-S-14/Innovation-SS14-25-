@@ -3,6 +3,8 @@
 using Robust.Shared.GameStates;
 using Robust.Shared.Serialization;
 using Robust.Shared.Timing;
+using System.Linq;
+using Content.Shared.Atmos;
 
 namespace Content.Shared.Pinpointer;
 

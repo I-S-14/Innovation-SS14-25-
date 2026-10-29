@@ -7,6 +7,7 @@ using Robust.Client.GameObjects;
 using Robust.Shared.Animations;
 using Robust.Shared.Random;
 using Robust.Shared.Serialization;
+using System.Linq;
 
 namespace Content.Client.Light.Components
 {

@@ -22,23 +22,17 @@ using Content.Shared.Inventory; // Assmos - Extinguisher Nozzle
 using Content.Shared.Whitelist; // Assmos - Extinguisher Nozzle
 using Content.Shared.Hands.EntitySystems; // Assmos - Extinguisher Nozzle
 using Content.Goobstation.Shared.OfficeChair; // Goobstation - Vehicle Spray Pushback (Office chairs)
+using Content.Server.Chemistry.Components;
+using Content.Shared.Timing;
+using Content.Shared.Vapor;
+using Robust.Shared.Prototypes;
 
 namespace Content.Server.Fluids.EntitySystems;
 
 public sealed partial class SpraySystem : SharedSpraySystem
 {
     [Dependency] private readonly IPrototypeManager _proto = default!;
-    [Dependency] private readonly GravitySystem _gravity = default!;
-    [Dependency] private readonly PhysicsSystem _physics = default!;
-    [Dependency] private readonly UseDelaySystem _useDelay = default!;
-    [Dependency] private readonly PopupSystem _popupSystem = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
-    [Dependency] private readonly SharedSolutionContainerSystem _solutionContainer = default!;
-    [Dependency] private readonly VaporSystem _vapor = default!;
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
-    [Dependency] private readonly SharedTransformSystem _transform = default!;
-    [Dependency] private readonly IConfigurationManager _cfg = default!;
-    [Dependency] private readonly ContainerSystem _container = default!;
     [Dependency] private readonly InventorySystem _inventory = default!; // Assmos - Extinguisher Nozzle
     [Dependency] private readonly EntityWhitelistSystem _whitelistSystem = default!; // Assmos - Extinguisher Nozzle
     [Dependency] private readonly SharedHandsSystem _handsSystem = default!; // Assmos - Extinguisher Nozzle

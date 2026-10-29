@@ -8,6 +8,8 @@ using Robust.Shared;
 using Robust.Shared.Configuration;
 using Robust.Shared.Enums;
 using Robust.Shared.Prototypes;
+using Content.Shared.MapText;
+using Robust.Client.UserInterface.RichText;
 
 namespace Content.Client.MapText;
 

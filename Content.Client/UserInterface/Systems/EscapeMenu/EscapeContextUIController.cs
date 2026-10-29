@@ -6,6 +6,8 @@ using JetBrains.Annotations;
 using Robust.Client.Input;
 using Robust.Client.UserInterface.Controllers;
 using Robust.Shared.Input.Binding;
+using Robust.Client.UserInterface;
+using Robust.Shared.Input;
 
 namespace Content.Client.UserInterface.Systems.EscapeMenu;
 
