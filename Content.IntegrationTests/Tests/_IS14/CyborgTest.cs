@@ -22,13 +22,16 @@ using Content.Shared.Item.ItemToggle;
 using Content.Shared.PowerCell;
 using Content.Shared.Storage.EntitySystems;
 using Content.Server.Power.Components;
+using Content.Shared._Shitmed.Medical.Surgery;
 using Content.Shared._Shitmed.Medical.Surgery.Tools;
 using Content.Shared.Stacks;
 using Robust.Shared.Map;
+using Robust.Shared.Containers;
 using Robust.Shared.Maths;
 using Content.Shared.Lock;
 using Content.Shared.Wires;
 using Content.Shared.Damage;
+using Content.Shared.Destructible;
 using Content.Shared.Damage.Components;
 using Content.Shared.Damage.Systems;
 using Robust.Shared.GameObjects;
@@ -289,12 +292,8 @@ public sealed class CyborgTest
         EntityUid sheets = default;
         await server.WaitAssertion(() =>
         {
-            // The engineering cyborg carries real sheets now, the saboteur still synthesizes them.
-            var uid = entMan.SpawnEntity("IS14CyborgSyndicateSaboteur", map.GridCoords);
-            var cyborg = entMan.GetComponent<CyborgComponent>(uid);
-
-            sheets = cyborg.ToolContainer.ContainedEntities
-                .Single(e => entMan.GetComponent<MetaDataComponent>(e).EntityPrototype?.ID == "IS14CyborgToolSheetSteel");
+            // Every engineer carries real sheets now, the synthesizers are left for admins and future kits.
+            sheets = entMan.SpawnEntity("IS14CyborgToolSheetSteel", map.GridCoords);
             var stack = entMan.GetComponent<StackComponent>(sheets);
 
             Assert.That(stack.Count, Is.EqualTo(stackSys.GetMaxCount(stack)), "synthesizer should spawn full");
@@ -726,6 +725,126 @@ public sealed class CyborgTest
         await pair.CleanReturnAsync();
     }
 
+    /// <summary>
+    ///     Derelicts drift in with a station kit and a single worn look, so there is nothing to pick.
+    /// </summary>
+    [Test]
+    [TestCase("IS14CyborgDerelict", null)]
+    [TestCase("IS14CyborgDerelictMiner", "IS14CyborgModelMiner")]
+    [TestCase("IS14CyborgDerelictSyndicate", "IS14CyborgModelSyndicateAssault")]
+    public async Task DerelictGetsStationKit(string chassis, string? stationModel)
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+        var entMan = server.ResolveDependency<IEntityManager>();
+        var protoMan = server.ResolveDependency<IPrototypeManager>();
+
+        await server.WaitAssertion(() =>
+        {
+            var uid = entMan.SpawnEntity(chassis, map.GridCoords);
+            var cyborg = entMan.GetComponent<CyborgComponent>(uid);
+            Assert.That(cyborg.Model, Is.Not.Null, "a derelict never waits for a model pick");
+
+            var model = protoMan.Index(cyborg.Model!.Value);
+            Assert.That(model.Selectable, Is.False);
+            Assert.That(model.Skins, Has.Count.EqualTo(1), "one skin means no skin menu either");
+
+            // The kit is the station model's, inherited rather than copied.
+            var station = stationModel != null
+                ? protoMan.Index<CyborgModelPrototype>(stationModel)
+                : protoMan.Index<CyborgModelPrototype>(model.Parents!.Single());
+            Assert.That(model.BasicTools, Is.EquivalentTo(station.BasicTools));
+
+            var tools = cyborg.ToolContainer.ContainedEntities
+                .Select(e => entMan.GetComponent<MetaDataComponent>(e).EntityPrototype!.ID);
+            Assert.That(tools, Is.EquivalentTo(station.BasicTools.Concat(station.EmagTools).Select(t => t.Id)));
+
+            entMan.DeleteEntity(uid);
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>
+    ///     Clicking a water tank with the vacuum wand fills the wand's tank with water and nothing else.
+    /// </summary>
+    [Test]
+    public async Task VacuumWandFillsFromWaterTank()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+        var entMan = server.ResolveDependency<IEntityManager>();
+
+        await server.WaitAssertion(() =>
+        {
+            var cyborgSys = entMan.System<SharedCyborgSystem>();
+            var solutionSys = entMan.System<SharedSolutionContainerSystem>();
+
+            var uid = entMan.SpawnEntity("IS14CyborgNTJanitor", map.GridCoords);
+            var cyborg = entMan.GetComponent<CyborgComponent>(uid);
+            cyborgSys.SetActive((uid, cyborg), true);
+
+            var wand = cyborg.ToolContainer.ContainedEntities.Single(e =>
+                entMan.GetComponent<MetaDataComponent>(e).EntityPrototype?.ID == "IS14CyborgToolVacuumWand");
+            var hands = entMan.System<SharedHandsSystem>();
+            Assert.That(cyborgSys.TryDeployTool((uid, cyborg), (wand, entMan.GetComponent<CyborgToolComponent>(wand))));
+            Assert.That(hands.IsHolding(uid, wand, out var hand));
+            hands.SetActiveHand(uid, hand!);
+
+            // A dirty, half empty tank.
+            Assert.That(solutionSys.TryGetSolution(wand, "absorbed", out var tankSoln, out var tank));
+            solutionSys.RemoveAllSolution(tankSoln!.Value);
+            solutionSys.TryAddSolution(tankSoln.Value, new Solution("Blood", 100));
+
+            var waterTank = entMan.SpawnEntity("WaterTankFull", map.GridCoords);
+            entMan.System<SharedInteractionSystem>().UserInteraction(uid, map.GridCoords, waterTank);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(tank!.GetTotalPrototypeQuantity("Water"), Is.EqualTo(FixedPoint2.New(400)),
+                    "the wand fills up to its free volume");
+                Assert.That(tank.GetTotalPrototypeQuantity("Blood"), Is.EqualTo(FixedPoint2.New(100)),
+                    "the mess stays in the tank");
+            });
+
+            entMan.DeleteEntity(uid);
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>
+    ///     A destroyed cyborg drops what its bags held: the ore bag's ore survives the chassis.
+    /// </summary>
+    [Test]
+    public async Task DestroyedCyborgDropsBagContents()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+        var entMan = server.ResolveDependency<IEntityManager>();
+
+        await server.WaitAssertion(() =>
+        {
+            var uid = entMan.SpawnEntity("IS14CyborgNTMiner", map.GridCoords);
+            var cyborg = entMan.GetComponent<CyborgComponent>(uid);
+            var bag = cyborg.ToolContainer.ContainedEntities.Single(e =>
+                entMan.GetComponent<MetaDataComponent>(e).EntityPrototype?.ID == "IS14CyborgToolOreBag");
+
+            var ore = entMan.SpawnEntity("SteelOre1", map.GridCoords);
+            Assert.That(entMan.System<SharedStorageSystem>().Insert(bag, ore, out _, playSound: false));
+
+            entMan.System<SharedDestructibleSystem>().DestroyEntity(uid);
+
+            Assert.That(entMan.EntityExists(ore), "the ore falls out instead of being deleted with the bag");
+            Assert.That(entMan.System<SharedContainerSystem>().IsEntityInContainer(ore), Is.False);
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
     private static int CountTools(IEntityManager entMan, CyborgComponent cyborg, string proto)
     {
         return cyborg.ToolContainer.ContainedEntities.Count(tool =>
@@ -734,7 +853,7 @@ public sealed class CyborgTest
 
     /// <summary>
     ///     Auto-wash works like the mop: tank water goes into the puddle, the mess goes into the tank,
-    ///     and the puddle stays as water instead of vanishing.
+    ///     and the puddle stays as water instead of vanishing. The vacuum wand switches it on and off.
     /// </summary>
     [Test]
     public async Task AutoWashSwapsPuddleWithTankWater()
@@ -762,13 +881,19 @@ public sealed class CyborgTest
             var uid = entMan.SpawnEntity("IS14CyborgNTJanitor", start);
             var cyborg = entMan.GetComponent<CyborgComponent>(uid);
             var wash = entMan.GetComponent<CyborgAutoWashComponent>(uid);
-            wash.Enabled = true;
+            var cyborgSys = entMan.System<SharedCyborgSystem>();
+            cyborgSys.SetActive((uid, cyborg), true);
 
             var tank = cyborg.ToolContainer.ContainedEntities
-                .Single(e => entMan.GetComponent<MetaDataComponent>(e).EntityPrototype?.ID == "IS14CyborgToolBucket");
-            Assert.That(solutionSys.TryGetSolution(tank, "drink", out _, out var tankSolution));
+                .Single(e => entMan.GetComponent<MetaDataComponent>(e).EntityPrototype?.ID ==
+                    "IS14CyborgToolVacuumWand");
+            Assert.That(solutionSys.TryGetSolution(tank, "absorbed", out _, out var tankSolution));
             Assert.That(tankSolution!.GetTotalPrototypeQuantity("Water"), Is.EqualTo(FixedPoint2.New(500)),
                 "the internal tank comes full");
+
+            Assert.That(cyborgSys.TryDeployTool((uid, cyborg), (tank, entMan.GetComponent<CyborgToolComponent>(tank))));
+            Assert.That(entMan.System<ItemToggleSystem>().TryActivate(tank));
+            Assert.That(wash.Enabled, "switching the wand on starts washing");
 
             xformSys.SetCoordinates(uid, next);
 
@@ -783,6 +908,9 @@ public sealed class CyborgTest
                     "the mess goes into the tank");
                 Assert.That(tankSolution.GetTotalPrototypeQuantity("Water"), Is.EqualTo(FixedPoint2.New(480)));
             });
+
+            cyborgSys.StoreTool((uid, cyborg), tank);
+            Assert.That(wash.Enabled, Is.False, "stowing the wand stops washing");
 
             entMan.DeleteEntity(uid);
         });
@@ -881,20 +1009,51 @@ public sealed class CyborgTest
 
             entMan.DeleteEntity(uid);
 
-            // The medical cyborg carries treatment and body bags instead, in slots or its medkit.
+            // The medical cyborg carries treatment, body bags and chemistry instead, in slots or its chem bag.
             var medical = entMan.SpawnEntity("IS14CyborgNTMedical", map.GridCoords);
             var medCyborg = entMan.GetComponent<CyborgComponent>(medical);
             var gauze = entMan.SpawnEntity("Gauze", map.GridCoords);
             var bodyBag = entMan.SpawnEntity("BodyBagFolded", map.GridCoords);
+            var beaker = entMan.SpawnEntity("Beaker", map.GridCoords);
+            var syringe = entMan.SpawnEntity("Syringe", map.GridCoords);
+            var chemBag = medCyborg.ToolContainer.ContainedEntities.Single(e =>
+                entMan.GetComponent<MetaDataComponent>(e).EntityPrototype?.ID == "IS14CyborgToolChemBag");
+            var storage = entMan.System<SharedStorageSystem>();
             Assert.Multiple(() =>
             {
                 Assert.That(cyborgSys.CanPickUp(medCyborg, gauze), "gauze is on the medical list");
                 Assert.That(cyborgSys.CanPickUp(medCyborg, bodyBag), "body bags are on the medical list");
+                Assert.That(cyborgSys.CanPickUp(medCyborg, beaker), "beakers are on the medical list");
+                Assert.That(cyborgSys.CanPickUp(medCyborg, syringe), "syringes are on the medical list");
                 Assert.That(cyborgSys.CanPickUp(medCyborg, steel), Is.False, "steel is engineering's");
-                Assert.That(medCyborg.ToolContainer.ContainedEntities.Any(e =>
-                    entMan.GetComponent<MetaDataComponent>(e).EntityPrototype?.ID == "IS14CyborgToolMedkit"));
+                Assert.That(storage.CanInsert(chemBag, gauze, out _), "the chem bag holds treatment too");
+                Assert.That(storage.CanInsert(chemBag, syringe, out _));
+
+                // Surgery: the window only lists steps for a surgeon with SurgeryTarget, and severed parts go
+                // into the cyborg's hands.
+                Assert.That(entMan.HasComponent<SurgeryTargetComponent>(medical));
+                Assert.That(entMan.HasComponent<SanitizedComponent>(medical));
+                Assert.That(cyborgSys.CanPickUp(medCyborg, entMan.SpawnEntity("LeftArmHuman", map.GridCoords)));
+                Assert.That(cyborgSys.CanPickUp(medCyborg, entMan.SpawnEntity("OrganHumanHeart", map.GridCoords)));
             });
             entMan.DeleteEntity(medical);
+
+            // The service cyborg serves with real dishes, but kitchen knives stay out of its hands.
+            var service = entMan.SpawnEntity("IS14CyborgNTService", map.GridCoords);
+            var serviceCyborg = entMan.GetComponent<CyborgComponent>(service);
+            Assert.Multiple(() =>
+            {
+                foreach (var dish in new[] { "FoodPlateSmall", "DrinkMug", "DrinkGlass", "DrinkShaker", "Spoon",
+                             "RagItem", "Beaker" })
+                {
+                    Assert.That(cyborgSys.CanPickUp(serviceCyborg, entMan.SpawnEntity(dish, map.GridCoords)),
+                        $"{dish} is on the service list");
+                }
+
+                Assert.That(cyborgSys.CanPickUp(serviceCyborg, entMan.SpawnEntity("KitchenKnife", map.GridCoords)),
+                    Is.False);
+            });
+            entMan.DeleteEntity(service);
         });
 
         await pair.CleanReturnAsync();
