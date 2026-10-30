@@ -1,5 +1,6 @@
 using Content.Shared._Goobstation.Wizard.Guardian;
 using Content.Shared.Polymorph;
+using Content.Shared.Guardian.Components;
 
 namespace Content.Server.Guardian;
 

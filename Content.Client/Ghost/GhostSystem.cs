@@ -11,6 +11,7 @@ using Robust.Client.GameObjects;
 using Robust.Client.Player;
 using Robust.Shared.Player;
 using Content.Shared.Ghost;
+using Content.Shared.Ghost.Systems;
 
 namespace Content.Client.Ghost
 {

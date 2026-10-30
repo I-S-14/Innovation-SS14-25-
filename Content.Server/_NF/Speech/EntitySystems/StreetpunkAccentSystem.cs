@@ -4,6 +4,7 @@ using Content.Server._NF.Speech.Components;
 using Content.Server.Speech.EntitySystems;
 using System.Text.RegularExpressions;
 using Content.Shared.Speech;
+using Content.Shared.Speech.EntitySystems;
 
 namespace Content.Server._NF.Speech.EntitySystems;
 

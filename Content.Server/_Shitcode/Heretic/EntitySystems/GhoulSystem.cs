@@ -55,6 +55,7 @@ using Content.Shared._Shitcode.Roles;
 using Content.Shared.Administration.Systems;
 using Content.Shared.Roles.Components;
 using Content.Shared.Temperature.Components;
+using Content.Shared.Antag;
 
 namespace Content.Server.Heretic.EntitySystems;
 

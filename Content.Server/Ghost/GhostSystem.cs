@@ -56,6 +56,7 @@ using Robust.Shared.Utility;
 using Content.Shared.Examine;
 using Content.Shared.Ghost;
 using Robust.Shared.Timing;
+using Content.Shared.Ghost.Systems;
 
 namespace Content.Server.Ghost
 {

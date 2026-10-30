@@ -27,6 +27,8 @@ using Content.Shared.Whitelist;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Map;
+using Content.Shared.Speech.EntitySystems;
+using Content.Shared.Timing.Systems;
 
 namespace Content.Server.Heretic.EntitySystems;
 

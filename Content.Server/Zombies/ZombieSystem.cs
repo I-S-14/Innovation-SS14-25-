@@ -65,6 +65,7 @@ using Content.Shared.Temperature.Components;
 using Content.Server.Polymorph.Components;
 using Content.Server.Speech.EntitySystems;
 using Content.Shared.Humanoid;
+using Content.Shared.Blocking.Components;
 
 // Goob end
 

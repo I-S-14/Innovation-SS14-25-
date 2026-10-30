@@ -62,6 +62,7 @@ using Content.Shared.Heretic.Prototypes;
 using Content.Shared.Tag;
 using Content.Shared.Temperature.Components;
 using Robust.Server.Containers;
+using Content.Shared.Station.Systems;
 
 namespace Content.Server.Heretic.Abilities;
 

@@ -10,6 +10,7 @@ using Robust.Client.UserInterface.Controls;
 using Robust.Client.UserInterface.XAML;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
+using Content.Client.Administration.UI.BanPanel;
 
 namespace Content.Client.Administration.UI.Notes;
 

@@ -22,6 +22,7 @@ using Robust.Shared.Audio.Systems;
 using Robust.Shared.Audio;
 using Robust.Shared.Timing;
 using Content.Shared.Damage.Systems;
+using Content.Shared.Timing.Systems;
 
 namespace Content.Server._DV.CosmicCult;
 

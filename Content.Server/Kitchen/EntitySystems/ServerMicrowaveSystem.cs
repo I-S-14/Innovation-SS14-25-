@@ -10,6 +10,7 @@ using Content.Shared.Kitchen.Components;
 using Content.Shared.Kitchen.EntitySystems;
 using Robust.Shared.Player;
 using Robust.Shared.Random;
+using Content.Shared.Suicide;
 
 namespace Content.Server.Kitchen.EntitySystems;
 

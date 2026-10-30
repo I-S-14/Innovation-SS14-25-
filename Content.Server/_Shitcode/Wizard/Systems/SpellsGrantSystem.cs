@@ -19,6 +19,7 @@ using Content.Shared.Random;
 using Robust.Server.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
+using Content.Shared.Antag;
 
 namespace Content.Server._Goobstation.Wizard.Systems;
 

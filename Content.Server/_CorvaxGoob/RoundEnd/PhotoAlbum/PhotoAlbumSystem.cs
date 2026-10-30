@@ -9,6 +9,7 @@ using Content.Shared.Verbs;
 using Robust.Server.Audio;
 using Robust.Server.Containers;
 using Robust.Server.Player;
+using Content.Shared.GameTicking;
 
 namespace Content.Server._CorvaxGoob.RoundEnd.PhotoAlbum;
 public sealed class PhotoAlbumSystem : EntitySystem

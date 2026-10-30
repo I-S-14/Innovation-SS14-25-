@@ -7,6 +7,7 @@ using Content.Shared._DV.CosmicCult.Components;
 using Content.Shared.Atmos;
 using Content.Shared.Atmos.Piping.Unary.Components;
 using Robust.Server.GameObjects;
+using Content.Shared.Atmos.Components;
 
 namespace Content.Server._DV.CosmicCult.EntitySystems;
 

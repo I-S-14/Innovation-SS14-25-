@@ -9,6 +9,7 @@ using Content.Shared.Xenoarchaeology.Equipment.Components;
 using Robust.Shared.Collections;
 using Robust.Shared.Random;
 using Content.Server.Body.Systems;
+using Content.Shared.Gibbing.Systems;
 
 namespace Content.Server.Xenoarchaeology.Equipment.Systems;
 

@@ -2,7 +2,6 @@
 
 using Content.Server.Administration.Logs; // Goobstation
 using Content.Server.Atmos.EntitySystems;
-using Content.Server.Chat.Managers; // Goobstation
 using Content.Server.Atmos.Piping.Unary.Components;
 using Content.Server.StationEvents.Components;
 using Content.Shared.GameTicking.Components;
@@ -10,6 +9,7 @@ using Content.Shared.Database; // Goobstation
 using Robust.Shared.Audio;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
+using Content.Server.Chat.Managers;
 
 namespace Content.Server.StationEvents.Events;
 
@@ -19,8 +19,6 @@ namespace Content.Server.StationEvents.Events;
 /// <seealso cref="GasLeakRuleComponent"/>
 public sealed partial class GasLeakRule : StationEventSystem<GasLeakRuleComponent>
 {
-    [Dependency] private readonly IAdminLogManager _adminLogger = default!;
-    [Dependency] private readonly IChatManager _chat = default!;
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private AtmosphereSystem _atmosphere = default!;
 
@@ -47,20 +45,17 @@ public sealed partial class GasLeakRule : StationEventSystem<GasLeakRuleComponen
         gasLeak.TargetCoords = Transform(targetVent).Coordinates;
         gasLeak.TargetGrid = Transform(targetVent).GridUid!.Value;
 
-            component.LeakGas = RobustRandom.Pick(component.LeakableGases);
-            // Was 50-50 on using normal distribution.
-            var totalGas = RobustRandom.Next(component.MinimumGas, component.MaximumGas);
-            component.MolesPerSecond = RobustRandom.Next(component.MinimumMolesPerSecond, component.MaximumMolesPerSecond);
-            // Goobstation start
-            if (gameRule.Delay is { } startAfter)
-            {
-                stationEvent.EndTime = _timing.CurTime +
-                                       TimeSpan.FromSeconds(totalGas / component.MolesPerSecond +
-                                                            startAfter.Next(RobustRandom));
-                _adminLogger.Add(LogType.EventRan, LogImpact.High, $"Gasleak placing {totalGas} moles of {component.LeakGas} at {component.TargetTile} in grid {component.TargetGrid}.");
-                _chat.SendAdminAnnouncement($"Gasleak placing {totalGas} moles of {component.LeakGas} at {component.TargetTile} in grid {component.TargetGrid}.");
-            }
-            // Goobstation end
+        // Essentially we'll pick out a target amount of gas to leak, then a rate to leak it at, then work out the duration from there.
+        gasLeak.LeakGas = RobustRandom.Pick(gasLeak.LeakableGases);
+        // Was 50-50 on using normal distribution.
+        var totalGas = RobustRandom.Next(gasLeak.MinimumGas, gasLeak.MaximumGas);
+        gasLeak.MolesPerSecond = RobustRandom.Next(gasLeak.MinimumMolesPerSecond, gasLeak.MaximumMolesPerSecond);
+
+        if (gameRule.Delay is { } startAfter)
+        {
+            stationEvent.EndTime = _timing.CurTime +
+                                   TimeSpan.FromSeconds(totalGas / gasLeak.MolesPerSecond +
+                                                        startAfter.Next(RobustRandom));
         }
 
         // Look technically if you wanted to guarantee a leak you'd do this in announcement but having the announcement

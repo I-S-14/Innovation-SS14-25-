@@ -14,6 +14,7 @@ using Robust.Server.Audio;
 using Robust.Server.GameObjects;
 using Robust.Server.GameStates;
 using Robust.Shared.Player;
+using Content.Shared.Ghost.Components;
 
 namespace Content.Server._Goobstation.Wizard.Systems;
 

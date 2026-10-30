@@ -9,6 +9,7 @@ using Content.Shared.Ghost.Components;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controllers;
 using Content.Client.Gameplay;
+using Content.Shared.Ghost.Systems;
 
 namespace Content.Client.UserInterface.Systems.Ghost;
 

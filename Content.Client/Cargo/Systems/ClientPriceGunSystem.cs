@@ -3,6 +3,7 @@
 using Content.Shared.Cargo.Components;
 using Content.Shared.Timing;
 using Content.Shared.Cargo.Systems;
+using Content.Shared.Timing.Systems;
 
 namespace Content.Client.Cargo.Systems;
 

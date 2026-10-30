@@ -1,7 +1,3 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
-using Content.Shared.DeviceNetwork;
-using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.Damage.Components;
 using Content.Shared.Mobs;
 using Content.Shared.Movement.Components;
@@ -17,12 +13,15 @@ using Robust.Shared.Player; //Goobstation drone
 using Content.Shared._CorvaxNext.Silicons.Borgs.Components; // Corvax-Next-AiRemoteControl
 using Content.Server.Silicons.Laws;
 using Content.Shared.Silicons.Laws.Components;
+using Content.Goobstation.Maths.FixedPoint;
+using Content.Shared.DeviceNetwork;
 
 namespace Content.Server.Silicons.Borgs;
 
 /// <inheritdoc/>
 public sealed partial class BorgSystem
 {
+    [Dependency] private readonly SiliconLawSystem _law = default!;
     public void UpdateTransponder(float frameTime)
     {
         var now = _timing.CurTime;
@@ -119,17 +118,10 @@ public sealed partial class BorgSystem
         Disable(ent);
     }
 
-        // Corvax-Goob-MutableLaws-Start
-        if (command == RoboticsConsoleConstants.NET_CHANGE_LAWS_COMMAND)
-        {
-            if (payload.TryGetValue(RoboticsConsoleConstants.NET_CIRCUIT_BOARD, out EntityUid circuitBoard))
-                ChangeLaws(ent, circuitBoard);
-        }
-        // Corvax-Goob-MutableLaws-End
-        else if (command == RoboticsConsoleConstants.NET_DISABLE_COMMAND)
-            Disable(ent);
-        else if (command == RoboticsConsoleConstants.NET_DESTROY_COMMAND)
-            Destroy(ent.Owner);
+    [SubscribeLocalEvent]
+    private void OnDestroy(Entity<BorgTransponderComponent> ent, ref DeviceNetworkPacketEvent<RoboticsCyborgDestroyPayload> args)
+    {
+        Destroy(ent.AsNullable());
     }
 
     // Corvax-Goob-MutableLaws-Start

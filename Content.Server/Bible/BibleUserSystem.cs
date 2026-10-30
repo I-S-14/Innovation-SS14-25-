@@ -23,6 +23,8 @@ using Content.Shared.Verbs;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Player;
 using Robust.Shared.Random;
+using Content.Shared.Ghost;
+using Content.Shared.Timing.Systems;
 
 namespace Content.Server.Bible
 {

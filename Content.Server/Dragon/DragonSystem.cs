@@ -18,6 +18,7 @@ using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Content.Server.Roles;
 using Content.Shared.Mind.Components;
+using Content.Shared.Gibbing.Systems;
 
 namespace Content.Server.Dragon;
 

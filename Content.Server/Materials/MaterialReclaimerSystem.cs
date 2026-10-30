@@ -31,6 +31,7 @@ using Content.Shared.Chemistry.Components.SolutionManager;
 using Content.Shared.Interaction;
 using Content.Shared.Nutrition.EntitySystems;
 using Robust.Shared.Prototypes;
+using Content.Shared.Gibbing.Systems;
 
 namespace Content.Server.Materials;
 

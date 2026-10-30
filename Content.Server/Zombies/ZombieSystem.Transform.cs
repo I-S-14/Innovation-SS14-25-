@@ -64,6 +64,7 @@ using Content.Server.Ghost.Roles.Components;
 using Content.Server.Humanoid;
 using Content.Server.Speech.Components;
 using Content.Shared.Hands.Components;
+using Content.Server.Body.Systems;
 
 
 namespace Content.Server.Zombies;

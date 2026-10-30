@@ -20,6 +20,7 @@ using Content.Shared.Gibbing;
 using Content.Server.Body.Systems;
 using Content.Shared.Body.Components;
 using Robust.Shared.Prototypes;
+using Content.Shared.Gibbing.Systems;
 
 namespace Content.Server.Anomaly.Effects;
 

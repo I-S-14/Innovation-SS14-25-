@@ -8,6 +8,7 @@ using Robust.Client.Player;
 using Robust.Shared.Network;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
+using Content.Corvax.Interfaces.Shared;
 
 namespace Content.Client.Lobby
 {

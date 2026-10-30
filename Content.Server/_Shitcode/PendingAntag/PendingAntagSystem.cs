@@ -6,6 +6,8 @@ using Content.Shared.GameTicking;
 using Content.Shared.Roles;
 using Robust.Shared.Network;
 using Robust.Shared.Prototypes;
+using Content.Shared.Antag;
+using Content.Shared.Antag.Components;
 
 namespace Content.Server._Goobstation.PendingAntag;
 

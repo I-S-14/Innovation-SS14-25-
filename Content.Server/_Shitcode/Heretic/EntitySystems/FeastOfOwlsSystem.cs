@@ -9,6 +9,7 @@ using Content.Shared.Popups;
 using Content.Shared.Speech.Components;
 using Content.Shared.StatusEffect;
 using Robust.Shared.Audio.Systems;
+using Content.Shared.Speech.EntitySystems;
 
 namespace Content.Server.Heretic.EntitySystems;
 

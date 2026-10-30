@@ -4,6 +4,7 @@ using Content.Shared.Containers.ItemSlots;
 using Content.Shared.GameTicking;
 using Content.Shared.Paper;
 using Robust.Shared.Timing;
+using Content.Shared.Station.Systems;
 
 namespace Content.Server._CorvaxGoob.Document;
 

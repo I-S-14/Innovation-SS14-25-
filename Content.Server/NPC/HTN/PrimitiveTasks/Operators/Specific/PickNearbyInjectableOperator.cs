@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 using Content.Server.NPC.Pathfinding;
 using Content.Shared.Interaction;
 using Content.Shared.Silicons.Bots;
-using Content.Shared.Stealth.Components; // Goobstation
-using Content.Shared.Emag.Components;
 using Content.Shared.NPC.Components;
 using Content.Shared.Chemistry.Components.SolutionManager;
 using Content.Shared.Damage.Components;
 using Content.Shared.Mobs.Components;
+using Content.Shared.Stealth.Components;
+using Content.Shared.Emag.Components;
 
 namespace Content.Server.NPC.HTN.PrimitiveTasks.Operators.Specific;
 
@@ -45,20 +45,22 @@ public sealed partial class PickNearbyInjectableOperator : HTNOperator
         if (!_entManager.TryGetComponent<MedibotComponent>(owner, out var medibot))
             return (false, null);
 
-        var damageQuery = _entManager.GetEntityQuery<DamageableComponent>();
-        var injectQuery = _entManager.GetEntityQuery<InjectableSolutionComponent>();
-        var recentlyInjected = _entManager.GetEntityQuery<NPCRecentlyInjectedComponent>();
-        var mobState = _entManager.GetEntityQuery<MobStateComponent>();
-        var emaggedQuery = _entManager.GetEntityQuery<EmaggedComponent>();
-        var stealthQuery = _entManager.GetEntityQuery<StealthComponent>(); // Goobstation
+        if (!blackboard.TryGetValue<IEnumerable<KeyValuePair<EntityUid, float>>>("TargetList", out var patients, _entManager))
+            return (false, null);
 
         foreach (var (entity, _) in patients)
         {
-            if (mobState.TryGetComponent(entity, out var state) &&
-                injectQuery.HasComponent(entity) &&
-                damageQuery.TryGetComponent(entity, out var damage) &&
-                !recentlyInjected.HasComponent(entity) &&
-                !(stealthQuery.TryGetComponent(entity, out var stealth) && stealth.Enabled)) // Goobstation - stealth check
+            if (!_medibot.CheckInjectable((owner, medibot), entity, true))
+                continue;
+
+            //Needed to make sure it doesn't sometimes stop right outside it's interaction range
+            var pathRange = SharedInteractionSystem.InteractionRange - 1f;
+            var path = await _pathfinding.GetPath(owner, entity, pathRange, cancelToken);
+
+            if (path.Result == PathResult.NoPath)
+                continue;
+
+            return (true, new Dictionary<string, object>()
             {
                 { TargetKey, entity },
                 { TargetMoveKey, _entManager.GetComponent<TransformComponent>(entity).Coordinates },

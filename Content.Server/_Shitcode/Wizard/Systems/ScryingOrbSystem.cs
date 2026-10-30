@@ -10,6 +10,7 @@ using Content.Shared.Mind;
 using Content.Shared.Verbs;
 using Robust.Server.Player;
 using Robust.Shared.Prototypes;
+using Content.Shared.Ghost.Systems;
 
 namespace Content.Server._Goobstation.Wizard.Systems;
 

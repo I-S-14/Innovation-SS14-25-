@@ -29,6 +29,7 @@ using Robust.Shared.Map;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
+using Content.Shared.Pinpointer;
 
 namespace Content.Server.Heretic.EntitySystems;
 

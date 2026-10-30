@@ -1,4 +1,4 @@
-﻿// SPDX-FileCopyrightText: 2025 jhrushbe <capnmerry@gmail.com>
+// SPDX-FileCopyrightText: 2025 jhrushbe <capnmerry@gmail.com>
 // SPDX-FileCopyrightText: 2025 rottenheadphones <juaelwe@outlook.com>
 // SPDX-FileCopyrightText: 2025 taydeo <td12233a@gmail.com>
 //
@@ -38,6 +38,8 @@ using Content.Server.Audio;
 using Content.Shared.Audio;
 using Robust.Shared.Timing;
 using System.Linq;
+using Content.Shared.Atmos.Components;
+using Content.Shared.DeviceLinking.Systems;
 
 namespace Content.Server._CorvaxGoob.Power.Generation.FissionGenerator;
 

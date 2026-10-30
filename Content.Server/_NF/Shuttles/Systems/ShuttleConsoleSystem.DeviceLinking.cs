@@ -8,6 +8,7 @@ using Content.Shared._NF.Shuttles.Events;
 using Content.Shared.DeviceLinking;
 using Content.Shared.Shuttles.BUIStates;
 using Content.Shared.Shuttles.Components;
+using Content.Shared.DeviceLinking.Systems;
 
 namespace Content.Server.Shuttles.Systems;
 

@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -26,12 +24,12 @@ public sealed partial class EventManagerSystem : EntitySystem
     [Dependency] private EntityTableSystem _entityTable = default!;
     [Dependency] private ServerGameTicker _gameTicker = default!;
     [Dependency] private RoundEndSystem _roundEnd = default!;
+    [Dependency] public readonly GameTicker GameTicker = default!;
 
     public bool EventsEnabled { get; private set; }
     private void SetEnabled(bool value) => EventsEnabled = value;
 
-    public float EventSpeedup = 1f; // Goobstation
-    public int PlayerCountBias = 0; // Goobstation
+    public Dictionary<EntityPrototype, StationEventComponent>? AllEventCache;
 
     public override void Initialize()
     {
@@ -311,29 +309,7 @@ public sealed partial class EventManagerSystem : EntitySystem
         return allEvents;
     }
 
-    private int GetOccurrences(EntityPrototype stationEvent)
-    {
-        return GetOccurrences(stationEvent.ID);
-    }
-
-    private int GetOccurrences(string stationEvent)
-    {
-        return GameTicker.AllPreviousGameRules.Count(p => p.Item2 == stationEvent);
-    }
-
-    public TimeSpan TimeSinceLastEvent(EntityPrototype stationEvent)
-    {
-        foreach (var (time, rule) in GameTicker.AllPreviousGameRules.Reverse())
-        {
-            if (rule == stationEvent.ID)
-                return time;
-        }
-
-        return TimeSpan.Zero;
-    }
-
-    public bool CanRun(EntityPrototype prototype, StationEventComponent stationEvent, int playerCount, TimeSpan currentTime,
-                       float reoccurrenceMult = 1f) // Goobstation
+    private bool CanRun(EntityPrototype prototype, StationEventComponent stationEvent, int playerCount, TimeSpan currentTime)
     {
         // Do the really simple comparisons BEFORE we create an IEnumerable for GameRules :V
         if (playerCount < stationEvent.MinimumPlayers)
@@ -367,10 +343,7 @@ public sealed partial class EventManagerSystem : EntitySystem
         if (stationEvent.MaxOccurrences is { } maxOccurrences && count >= maxOccurrences)
             return false;
 
-        var lastRun = TimeSinceLastEvent(prototype);
-        if (lastRun != TimeSpan.Zero && currentTime.TotalMinutes <
-            stationEvent.ReoccurrenceDelay * reoccurrenceMult / EventSpeedup + lastRun.TotalMinutes) // Goobstation
-        {
+        if (count > 0 && currentTime < TimeSpan.FromMinutes(stationEvent.ReoccurrenceDelay) + lastRun)
             return false;
 
         return !_roundEnd.IsRoundEndRequested() || stationEvent.OccursDuringRoundEnd || _roundEnd.CanCallOrRecall();

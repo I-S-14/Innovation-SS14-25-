@@ -6,6 +6,7 @@ using Content.Shared._DV.Storage.EntitySystems;
 using Content.Shared.Nutrition;
 using Content.Shared.Speech;
 using Content.Shared.Storage;
+using Content.Shared.Speech.EntitySystems;
 
 namespace Content.Server._DV.Storage.EntitySystems;
 

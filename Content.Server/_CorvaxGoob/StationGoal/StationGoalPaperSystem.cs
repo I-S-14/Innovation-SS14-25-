@@ -7,6 +7,7 @@ using Robust.Server.Player;
 using Robust.Shared.Configuration;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
+using Content.Shared.Station.Systems;
 
 namespace Content.Server._CorvaxGoob.StationGoal
 {

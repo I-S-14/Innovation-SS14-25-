@@ -109,19 +109,16 @@ public sealed partial class BeamSystem : SharedBeamSystem
         if (!TryComp<BeamComponent>(ent, out var beam))
             return;
 
-        beamAction?.Invoke(ent); // Goobstation
-        beam.BeamIndex = NextIndex; // Goobstation
-
-        FixturesComponent? manager = null;
-        _fixture.TryCreateFixture(
-            ent,
-            shape,
-            "BeamBody",
-            hard: false,
-            collisionMask: (int)CollisionGroup.ItemMask,
-            collisionLayer: (int)CollisionGroup.MobLayer,
-            manager: manager,
-            body: physics);
+        if (TryComp<PhysicsComponent>(ent, out var physics) && physics.CanCollide)
+        {
+            _fixture.TryCreateFixture(
+                    ent,
+                    shape,
+                    BeamComponent.FixtureID,
+                    hard: false,
+                    collisionMask: (int)CollisionGroup.ItemMask,
+                    collisionLayer: (int)CollisionGroup.MobLayer,
+                    body: physics);
 
             _broadphase.RegenerateContacts((ent, physics));
         }
@@ -172,10 +169,8 @@ public sealed partial class BeamSystem : SharedBeamSystem
     /// <param name="bodyPrototype">The prototype spawned when this beam is created</param>
     /// <param name="bodyState">Optional sprite state for the <see cref="bodyPrototype"/> if a default one is not given</param>
     /// <param name="shader">Optional shader for the <see cref="bodyPrototype"/> if a default one is not given</param>
-    /// <param name="controller"></param>
-    /// <param name="beamAction">Goobstation. Action that is called on each beam entity.</param>
-    /// <param name="accumulateIndex">Goobstation. Whether to accumulate NextIndex.</param>
-    public bool TryCreateBeam(EntityUid user, EntityUid target, string bodyPrototype, string? bodyState = null, string shader = "unshaded", EntityUid? controller = null, Action<EntityUid>? beamAction = null, bool accumulateIndex = true) // Goob edit
+    /// <param name="controller">The virtual beam controller entity to use. If null one will be spawned.</param>
+    public void TryCreateBeam(EntityUid user, EntityUid target, string bodyPrototype, string? bodyState = null, string shader = "unshaded", EntityUid? controller = null)
     {
         if (Deleted(user) || Deleted(target))
             return false; // Goob edit
@@ -184,7 +179,7 @@ public sealed partial class BeamSystem : SharedBeamSystem
         var targetMapPos = _transform.GetMapCoordinates(target);
 
         if (userMapPos.MapId != targetMapPos.MapId)
-            return false; // Goob edit
+            return;
 
         //The distance between the target and the user.
         var calculatedDistance = targetMapPos.Position - userMapPos.Position;
@@ -192,7 +187,7 @@ public sealed partial class BeamSystem : SharedBeamSystem
 
         //Don't divide by zero
         if (calculatedDistance.Length() == 0)
-            return false; // Goob edit
+            return;
 
         //Where the start of the beam will spawn
         var beamStartPos = userMapPos.Offset(calculatedDistance.Normalized());

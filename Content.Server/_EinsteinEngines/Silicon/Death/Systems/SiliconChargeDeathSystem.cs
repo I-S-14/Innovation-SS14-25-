@@ -19,6 +19,7 @@ using Content.Shared.Popups;
 using Content.Shared.Power.Components;
 using Content.Shared.Standing;
 using Content.Shared.Stunnable;
+using Content.Shared.Radio;
 // Goobstation End - Energycrit
 
 namespace Content.Server._EinsteinEngines.Silicon.Death;

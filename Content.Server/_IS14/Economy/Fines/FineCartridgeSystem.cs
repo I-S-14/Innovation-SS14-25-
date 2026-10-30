@@ -10,6 +10,7 @@ using Content.Shared.CartridgeLoader;
 using Content.Shared.StationRecords;
 using Robust.Shared.Configuration;
 using Robust.Shared.Prototypes;
+using Content.Shared.Station.Systems;
 
 namespace Content.Server._IS14.Economy.Fines;
 

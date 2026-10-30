@@ -1,8 +1,3 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
-using Content.Server._Goobstation.Wizard.Components;
-using Content.Server._DV.CosmicCult.Components; // DeltaV
-using Content.Server.Antag;
 using Content.Server.GameTicking;
 using Content.Server.Zombies;
 using Content.Shared.Administration;
@@ -18,6 +13,9 @@ using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
 using Content.Shared.Roles.Components;
+using Content.Server._Goobstation.Wizard.Components;
+using Content.Server._DV.CosmicCult.Components;
+using Content.Server.Antag;
 using Content.Server.GameTicking.Rules.Components;
 
 namespace Content.Server.Administration.Systems;
@@ -30,7 +28,7 @@ public sealed partial class AdminVerbSystem
     [Dependency] private ZombieSystem _zombie = default!;
 
     [Dependency] private EntityQuery<ActorComponent> _actorQuery;
-    [Dependency] private EntityQuery<HumanoidAppearanceComponent> _humanoidQuery;
+    [Dependency] private EntityQuery<HumanoidProfileComponent> _humanoidQuery;
     [Dependency] private EntityQuery<MindContainerComponent> _mindContainerQuery;
 
     private static readonly EntProtoId TraitorRule = "Traitor";
@@ -217,6 +215,7 @@ public sealed partial class AdminVerbSystem
             args.Verbs.Add(paradox);
         }
 
+        /* Goobwizard
         var wizardName = Loc.GetString("admin-verb-text-make-wizard");
         Verb wizard = new()
         {
@@ -248,57 +247,5 @@ public sealed partial class AdminVerbSystem
             Message = string.Join(": ", ninjaName, Loc.GetString("admin-verb-make-space-ninja")),
         };
         args.Verbs.Add(ninja);
-
-        if (HasComp<HumanoidAppearanceComponent>(args.Target)) // only humanoids can be cloned
-            args.Verbs.Add(paradox);
-
-        // goobstation - heretics
-        var hereticName = Loc.GetString("admin-verb-text-make-heretic");
-        Verb heretic = new()
-        {
-            Text = hereticName,
-            Category = VerbCategory.Antag,
-            Icon = new SpriteSpecifier.Rsi(new ResPath("/Textures/_Goobstation/Heretic/Blades/eldritch_blade.rsi"), "icon"),
-            Act = () =>
-            {
-                _antag.ForceMakeAntag<HereticRuleComponent>(targetPlayer, "Heretic");
-            },
-            Impact = LogImpact.High,
-            Message = string.Join(": ", hereticName, Loc.GetString("admin-verb-make-heretic")),
-        };
-        args.Verbs.Add(heretic);
-
-        // Goobstation - Wizard
-        var wizardName = Loc.GetString("admin-verb-text-make-wizard");
-        Verb wizard = new()
-        {
-            Text = wizardName,
-            Category = VerbCategory.Antag,
-            Icon = new SpriteSpecifier.Rsi(new ResPath("/Textures/Clothing/Head/Hats/wizardhat.rsi"), "icon"),
-            Act = () =>
-            {
-                _antag.ForceMakeAntag<WizardRuleComponent>(targetPlayer, "Wizard");
-            },
-            Impact = LogImpact.High,
-            Message = string.Join(": ", wizardName, Loc.GetString("admin-verb-make-wizard")),
-        };
-        args.Verbs.Add(wizard);
-
-        // Begin DeltaV Additions
-        var cosmicCultName = Loc.GetString("admin-verb-text-make-cosmiccultist");
-        Verb cosmiccult = new()
-        {
-            Text = cosmicCultName,
-            Category = VerbCategory.Antag,
-            Icon = new SpriteSpecifier.Rsi(new("/Textures/_DV/CosmicCult/Icons/antag_icons.rsi"), "CosmicCult"),
-            Act = () =>
-            {
-                _antag.ForceMakeAntag<CosmicCultRuleComponent>(targetPlayer, "CosmicCult");
-            },
-            Impact = LogImpact.High,
-            Message = string.Join(": ", cosmicCultName, Loc.GetString("admin-verb-make-cosmiccultist")),
-        };
-        args.Verbs.Add(cosmiccult);
-        // End DeltaV Additions
     }
 }

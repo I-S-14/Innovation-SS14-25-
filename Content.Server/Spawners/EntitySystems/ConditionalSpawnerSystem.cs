@@ -1,10 +1,8 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
 using Content.Server.GameTicking;
 using Content.Server.Spawners.Components;
 using Content.Server.Stack;
 using Content.Shared.EntityTable;
 using Content.Shared.GameTicking.Components;
-using JetBrains.Annotations;
 using Content.Shared.Stacks;
 using Robust.Server.GameObjects;
 using Robust.Shared.Collections;
@@ -12,6 +10,7 @@ using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using System.Numerics;
+using JetBrains.Annotations;
 
 namespace Content.Server.Spawners.EntitySystems;
 
@@ -101,23 +100,20 @@ public sealed partial class ConditionalSpawnerSystem : EntitySystem
             return;
         }
 
-        if (!Deleted(uid))
-        {
-            //CorvaxGoob-Rotational Spawners-Start
-            var ent = Spawn(_robustRandom.Pick(component.Prototypes), Transform(uid).Coordinates);
-            EntityManager.System<SharedTransformSystem>().SetWorldRotation(ent, Transform(uid).LocalRotation);
-            //CorvaxGoob-Rotational Spawners-End
-        }
+        if (Deleted(uid))
+            return;
+
+        var xform = Transform(uid);
+        var coords = _xform.GetMapCoordinates(uid, xform);
+        var rotation = _xform.GetWorldRotation(xform);
+
+        var toSpawn = _robustRandom.Pick(component.Prototypes);
+        Spawn(toSpawn, coords, rotation: rotation);
     }
 
     private void Spawn(EntityUid uid, RandomSpawnerComponent component)
     {
-        if (component.RarePrototypes.Count > 0 && (component.RareChance == 1.0f || _robustRandom.Prob(component.RareChance)))
-        {
-            //CorvaxGoob-Rotational Spawners-Start
-            var ent = Spawn(_robustRandom.Pick(component.RarePrototypes), Transform(uid).Coordinates);
-            EntityManager.System<SharedTransformSystem>().SetWorldRotation(ent, Transform(uid).LocalRotation);
-            //CorvaxGoob-Rotational Spawners-End
+        if (Deleted(uid))
             return;
 
         if (GetPrototype((uid, component)) is not { } proto)
@@ -216,10 +212,10 @@ public sealed partial class ConditionalSpawnerSystem : EntitySystem
             return spawner.Comp.RarePrototypes;
         }
 
-            //CorvaxGoob-Rotational Spawners-Start
-            var target = SpawnAtPosition(proto, trueCoords);
-            EntityManager.System<SharedTransformSystem>().SetWorldRotation(target, Transform(ent.Owner).LocalRotation);
-            //CorvaxGoob-Rotational Spawners-End
+        if (spawner.Comp.Prototypes.Count == 0)
+        {
+            Log.Warning($"Prototype list in RandomSpawnerComponent is empty! Entity: {ToPrettyString(spawner)}");
+            return null;
         }
 
         // ReSharper disable once CompareOfFloatsByEqualityOperator

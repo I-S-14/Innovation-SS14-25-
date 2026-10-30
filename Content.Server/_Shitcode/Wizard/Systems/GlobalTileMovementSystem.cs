@@ -16,6 +16,7 @@ using Content.Shared.GameTicking.Components;
 using Robust.Server.Audio;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
+using Content.Shared.Ghost;
 
 namespace Content.Server._Goobstation.Wizard.Systems;
 

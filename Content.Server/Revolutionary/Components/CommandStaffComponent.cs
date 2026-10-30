@@ -2,6 +2,8 @@
 
 using Content.Server.GameTicking.Rules;
 using Content.Server.Mindshield; // GoobStation
+using Content.Shared.GameTicking.Rules;
+using Content.Shared.Mindshield;
 
 namespace Content.Server.Revolutionary.Components;
 

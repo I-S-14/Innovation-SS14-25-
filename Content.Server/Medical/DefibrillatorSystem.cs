@@ -34,6 +34,7 @@ using Content.Shared._Shitmed.Damage;
 using Content.Shared._Shitmed.Medical.Surgery.Consciousness.Components;
 using Content.Shared._Shitmed.Medical.Surgery.Consciousness.Systems;
 using Content.Shared.Chat;
+using Content.Shared.Timing.Systems;
 
 namespace Content.Server.Medical;
 

@@ -20,6 +20,8 @@ using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Utility;
+using Content.Shared.GameTicking.Events;
+using Content.Shared.Station.Systems;
 
 namespace Content.Server._CorvaxGoob.Ghostbar;
 

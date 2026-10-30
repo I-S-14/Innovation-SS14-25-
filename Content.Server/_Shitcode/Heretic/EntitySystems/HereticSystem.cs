@@ -43,6 +43,7 @@ using Content.Shared.Mobs.Components;
 using Content.Shared.NPC.Prototypes;
 using Content.Shared.NPC.Systems;
 using Content.Server.Hands.Systems;
+using Content.Shared.Antag;
 
 namespace Content.Server.Heretic.EntitySystems;
 

@@ -1,10 +1,3 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
-using Content.Server.Atmos.Components;
-using Content.Server.Body.Components;
-using Content.Server.Body.Systems;
-using Content.Server.Cargo.Systems;
-using Content.Server.Explosion.EntitySystems;
 using System.Numerics;
 using Content.Shared.Atmos;
 using Content.Shared.Atmos.Components;
@@ -16,6 +9,11 @@ using JetBrains.Annotations;
 using Robust.Shared.Physics.Systems;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
+using Content.Server.Atmos.Components;
+using Content.Server.Body.Components;
+using Content.Server.Body.Systems;
+using Content.Server.Cargo.Systems;
+using Content.Server.Explosion.EntitySystems;
 using Robust.Server.GameObjects;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
@@ -128,14 +126,6 @@ public sealed partial class GasTankSystem : SharedGasTankSystem
 
         if (environment != null)
             _atmosphereSystem.Merge(environment, removed);
-        }
-        var strength = removed.TotalMoles * MathF.Sqrt(removed.Temperature);
-        var dir = _random.NextAngle().ToWorldVec();
-        _throwing.TryThrow(gasTank, dir * strength, strength,
-            predicted: false); // Trauma
-        if (gasTank.Comp.OutputPressure >= MinimumSoundValvePressure)
-            _audioSys.PlayPvs(gasTank.Comp.RuptureSound, gasTank);
-    }
 
         // If we wouldn't produce a sound, don't throw or play a sound.
         if (removed.Pressure < MinimumSoundValvePressure)

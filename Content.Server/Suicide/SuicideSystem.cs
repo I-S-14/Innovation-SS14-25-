@@ -19,6 +19,7 @@ using Robust.Shared.Prototypes;
 using Content.Shared._White.Xenomorphs.Infection;
 using Content.Shared._EinsteinEngines.Silicon.Components;
 using Content.Shared._Shitmed.Medical.Surgery.Consciousness.Components; // Shitmed Change
+using Content.Shared.Suicide;
 
 namespace Content.Server.Suicide;
 

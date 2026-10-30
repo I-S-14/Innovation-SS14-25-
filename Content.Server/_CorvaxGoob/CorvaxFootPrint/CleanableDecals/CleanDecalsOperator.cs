@@ -2,6 +2,7 @@ using Content.Server.NPC;
 using Content.Server.NPC.HTN;
 using Content.Server.NPC.HTN.PrimitiveTasks;
 using Content.Shared.Timing;
+using Content.Shared.Timing.Systems;
 
 namespace Content.Server._CorvaxGoob.CorvaxFootPrint.CleanableDecals;
 

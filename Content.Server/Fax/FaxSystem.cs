@@ -6,8 +6,6 @@ using Content.Server._CorvaxGoob.Photo;
 using Content.Server.Administration;
 using Content.Server.Administration.Managers;
 using Content.Server.Chat.Managers;
-using Content.Server.DeviceNetwork.Systems;
-using Content.Server.Explosion.EntitySystems; // Goobstation
 using Content.Shared.DeviceNetwork.Systems;
 using Content.Server.Popups;
 using Content.Server.Power.Components;
@@ -37,15 +35,14 @@ using Robust.Shared.Audio.Systems;
 using Robust.Shared.Containers;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
+using Content.Server.DeviceNetwork.Systems;
+using Content.Server.Explosion.EntitySystems;
 using Content.Shared.DeviceNetwork.Components;
 
 namespace Content.Server.Fax;
 
 public sealed partial class FaxSystem : EntitySystem
 {
-    [Dependency] private readonly SharedContainerSystem _container = default!; // Goobstation
-    [Dependency] private readonly TransformSystem _transform = default!; // Goobstation
-    [Dependency] private readonly ExplosionSystem _explosion = default!; // Goobstation
     [Dependency] private IChatManager _chat = default!;
     [Dependency] private IAdminManager _adminManager = default!;
     [Dependency] private ItemSlotsSystem _itemSlotsSystem = default!;
@@ -63,6 +60,7 @@ public sealed partial class FaxSystem : EntitySystem
     [Dependency] private MetaDataSystem _metaData = default!;
     [Dependency] private FaxecuteSystem _faxecute = default!;
     [Dependency] private EmagSystem _emag = default!;
+    [Dependency] private readonly ExplosionSystem _explosion = default!; // Goobstation
 
     private static readonly ProtoId<ToolQualityPrototype> ScrewingQuality = "Screwing";
 
@@ -296,43 +294,10 @@ public sealed partial class FaxSystem : EntitySystem
         UpdateUserInterface(ent.Owner, ent.Comp);
     }
 
-                    component.KnownFaxes[args.SenderAddress] = faxName;
-
-                    UpdateUserInterface(uid, component);
-
-                    break;
-                case FaxConstants.FaxPrintCommand:
-                    if (!args.Data.TryGetValue(FaxConstants.FaxPaperNameData, out string? name) ||
-                        !args.Data.TryGetValue(FaxConstants.FaxPaperContentData, out string? content))
-                        return;
-
-                    args.Data.TryGetValue(FaxConstants.FaxPaperLabelData, out string? label);
-                    args.Data.TryGetValue(FaxConstants.FaxPaperStampStateData, out string? stampState);
-                    args.Data.TryGetValue(FaxConstants.FaxPaperStampedByData, out List<StampDisplayInfo>? stampedBy);
-                    args.Data.TryGetValue(FaxConstants.FaxPaperPrototypeData, out string? prototypeId);
-                    args.Data.TryGetValue(FaxConstants.FaxPaperLockedData, out bool? locked);
-
-                    var printout = new FaxPrintout(content, name, label, prototypeId, stampState, stampedBy, locked ?? false);
-                    Receive(uid, printout, args.SenderAddress);
-
-                    break;
-                // Goobstation
-                case FaxConstants.FaxSendEntityCommand:
-                    if (!args.Data.TryGetValue(FaxConstants.FaxEntitySentData, out EntityUid? received))
-                        return;
-
-                    args.Data.TryGetValue(FaxConstants.FaxWorkCrossGridData, out bool? canCrossGrid);
-                    if (!(canCrossGrid ?? true) && _transform.GetGrid(uid) != _transform.GetGrid(received.Value))
-                        return;
-
-                    var faxXform = Transform(uid);
-                    _transform.SetCoordinates(received.Value, faxXform.Coordinates);
-                    _container.AttachParentToContainerOrGrid((received.Value, Transform(received.Value)));
-                    Receive(uid, null, args.SenderAddress);
-
-                    break;
-            }
-        }
+    [SubscribeLocalEvent]
+    private void OnPrintPayload(Entity<FaxMachineComponent> ent, ref DeviceNetworkPacketEvent<FaxPrintPayload> args)
+    {
+        Receive(ent, args.Data.Data, args.SenderAddress);
     }
 
     private void OnToggleInterface(EntityUid uid, FaxMachineComponent component, AfterActivatableUIOpenEvent args)
@@ -647,8 +612,7 @@ public sealed partial class FaxSystem : EntitySystem
     ///     Accepts a new message and adds it to the queue to print
     ///     If has parameter "notifyAdmins" also output a special message to admin chat.
     /// </summary>
-    // Goobstation - make printout nullable
-    public void Receive(EntityUid uid, FaxPrintout? printout, string? fromAddress = null, FaxMachineComponent? component = null)
+    public void Receive(EntityUid uid, FaxPrintout printout, DeviceAddress? fromAddress = null, FaxMachineComponent? component = null)
     {
         if (!Resolve(uid, ref component))
             return;
@@ -673,9 +637,8 @@ public sealed partial class FaxSystem : EntitySystem
 
         var printout = component.PrintingQueue.Dequeue();
 
-        var entityToSpawn = string.IsNullOrEmpty(printout.PrototypeId.Id) ? component.PrintPaperId.ToString() : printout.PrototypeId.Id;
-        var coordinates = _transform.GetMapCoordinates(uid); // Goobstation
-        var printed = Spawn(entityToSpawn, coordinates);
+        var entityToSpawn = ProtoMan.HasIndex(printout.PrototypeId) ? printout.PrototypeId : component.PrintPaperId;
+        var printed = Spawn(entityToSpawn, Transform(uid).Coordinates);
 
         if (TryComp<PaperComponent>(printed, out var paper))
         {
@@ -708,10 +671,6 @@ public sealed partial class FaxSystem : EntitySystem
     private void NotifyAdmins(string faxName)
     {
         _chat.SendAdminAnnouncement(Loc.GetString("fax-machine-chat-notify", ("fax", faxName)));
-
-        // Goobstation - Admin Notifications / Admin Notifications
-        // _audioSystem.PlayGlobal("/Audio/Machines/high_tech_confirm.ogg", Filter.Empty().AddPlayers(_adminManager.ActiveAdmins), false, AudioParams.Default.WithVolume(-8f));
-        foreach (var admin in _adminManager.ActiveAdmins)
-            RaiseNetworkEvent(new AdminNotificationEvent(new SoundPathSpecifier("/Audio/Machines/high_tech_confirm.ogg")), admin);
+        _audioSystem.PlayGlobal("/Audio/Machines/high_tech_confirm.ogg", Filter.Empty().AddPlayers(_adminManager.ActiveAdmins), false, AudioParams.Default.AddVolume(-8f));
     }
 }

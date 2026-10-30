@@ -10,6 +10,7 @@ using Robust.Client.UserInterface.Controls;
 using Robust.Client.UserInterface.XAML;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
+using Content.Shared.Medical.SuitSensors;
 
 namespace Content.Client._CorvaxGoob.SecApartment;
 

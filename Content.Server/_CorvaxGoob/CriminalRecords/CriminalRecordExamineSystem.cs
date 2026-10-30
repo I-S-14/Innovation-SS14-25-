@@ -12,6 +12,7 @@ using Content.Shared.Security;
 using Content.Shared.Security.Components;
 using Content.Shared.StationRecords;
 using Robust.Shared.Utility;
+using Content.Shared.Station.Systems;
 
 namespace Content.Server._CorvaxGoob.CriminalRecords;
 

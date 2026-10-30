@@ -10,6 +10,8 @@ using Content.Shared.Pinpointer;
 using Content.Shared.Warps;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Timing;
+using Robust.Shared.Map;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Content.Server.Pinpointer;
 

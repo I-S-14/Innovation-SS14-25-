@@ -54,6 +54,8 @@ using Content.Shared.Whitelist;
 using Robust.Shared.Audio;
 using Robust.Shared.Network;
 using Robust.Shared.Prototypes;
+using Content.Shared.Speech.Prototypes;
+using Content.Shared.Station.Systems;
 // Goob end
 
 namespace Content.Server.Chat.Systems;

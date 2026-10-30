@@ -1,8 +1,3 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
-
-using Content.Goobstation.Common.CCVar;
-using Robust.Shared.Configuration;
 using Content.Client.UserInterface.Controls;
 using Content.Client.UserInterface.RichText;
 using Content.Client.UserInterface.Systems.Chat.Controls;
@@ -18,6 +13,8 @@ using Robust.Shared.Input;
 using Robust.Shared.Player;
 using Robust.Shared.Utility;
 using static Robust.Client.UserInterface.Controls.LineEdit;
+using Content.Goobstation.Common.CCVar;
+using Robust.Shared.Configuration;
 
 namespace Content.Client.UserInterface.Systems.Chat.Widgets;
 
@@ -25,12 +22,10 @@ namespace Content.Client.UserInterface.Systems.Chat.Widgets;
 [Virtual]
 public partial class ChatBox : UIWidget, IEntityLinkClickHandler
 {
-    // <Trauma>
-    [Dependency] private readonly IConfigurationManager _cfg = default!;
-    [Dependency] private readonly ILocalizationManager _loc = default!;
-    // </Trauma>
     [Dependency] private IEntityManager _entManager = default!;
     [Dependency] private ILogManager _log = default!;
+    [Dependency] private readonly IConfigurationManager _cfg = default!;
+    [Dependency] private readonly ILocalizationManager _loc = default!;
 
     private readonly ISawmill _sawmill;
     private readonly ChatUIController _controller;
@@ -152,6 +147,7 @@ public partial class ChatBox : UIWidget, IEntityLinkClickHandler
         }
     }
 
+    /*
     private void OnChannelFilter(ChatChannel channel, bool active)
     {
         Contents.Clear();

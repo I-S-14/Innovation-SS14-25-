@@ -18,6 +18,7 @@ using Robust.Shared.Localization;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
+using Content.Shared.Station.Systems;
 
 namespace Content.Server._IS14.Economy.VendingMachine;
 

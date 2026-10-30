@@ -5,6 +5,7 @@ using Content.Shared.Item.ItemToggle;
 using Content.Shared.Item.ItemToggle.Components;
 using Content.Shared.Timing;
 using Content.Shared.Weapons.Melee.Events;
+using Content.Shared.Timing.Systems;
 
 namespace Content.Server._EinsteinEngines.TelescopicBaton;
 

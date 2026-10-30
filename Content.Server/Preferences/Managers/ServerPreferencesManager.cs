@@ -26,6 +26,7 @@ using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization.Manager;
 using Robust.Shared.Utility;
+using Content.Corvax.Interfaces.Shared;
 
 namespace Content.Server.Preferences.Managers
 {

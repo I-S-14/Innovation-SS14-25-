@@ -14,6 +14,7 @@ using Content.Shared.Silicons.Borgs.Components;
 using Content.Shared.Silicons.Laws.Components;
 using Robust.Shared.Containers;
 using Robust.Shared.Prototypes;
+using Content.Shared.Antag;
 
 namespace Content.Server._DV.CosmicCult.Abilities;
 

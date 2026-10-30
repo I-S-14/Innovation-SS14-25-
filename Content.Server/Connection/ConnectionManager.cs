@@ -22,6 +22,8 @@ using Robust.Shared.Player;
 using Robust.Shared.Timing;
 using Content.Goobstation.Common.CCVar;
 using Content.Shared._CorvaxGoob.CCCVars; // CorvaxGoob - Queue
+using Content.Corvax.Interfaces.Server;
+using Content.Corvax.Interfaces.Shared;
 
 /*
  * TODO: Remove baby jail code once a more mature gateway process is established. This code is only being issued as a stopgap to help with potential tiding in the immediate future.

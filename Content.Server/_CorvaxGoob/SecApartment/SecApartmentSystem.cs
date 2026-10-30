@@ -17,6 +17,9 @@ using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 using System.Linq;
 using System.Numerics;
+using Content.Shared.DeviceLinking.Components;
+using Content.Shared.Medical.SuitSensors;
+using Content.Shared.Pinpointer;
 
 namespace Content.Server._CorvaxGoob.SecApartment;
 

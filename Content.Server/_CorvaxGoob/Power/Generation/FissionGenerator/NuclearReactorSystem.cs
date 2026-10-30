@@ -1,4 +1,4 @@
-﻿// SPDX-FileCopyrightText: 2025 jhrushbe <capnmerry@gmail.com>
+// SPDX-FileCopyrightText: 2025 jhrushbe <capnmerry@gmail.com>
 // SPDX-FileCopyrightText: 2025 rottenheadphones <juaelwe@outlook.com>
 // SPDX-FileCopyrightText: 2025 taydeo <td12233a@gmail.com>
 //
@@ -46,6 +46,10 @@ using System.Diagnostics.CodeAnalysis;
 using Robust.Shared.Timing;
 
 using Robust.Shared.Player; // Wayfarer
+using Content.Shared.AlertLevel;
+using Content.Shared.Atmos.Components;
+using Content.Shared.DeviceLinking.Systems;
+using Content.Shared.Station.Systems;
 
 namespace Content.Server._CorvaxGoob.Power.Generation.FissionGenerator;
 

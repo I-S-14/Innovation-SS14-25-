@@ -1,4 +1,5 @@
 using Content.Goobstation.Common.CCVar;
+using Content.Shared.GameTicking.Prototypes;
 
 namespace Content.Server.GameTicking;
 

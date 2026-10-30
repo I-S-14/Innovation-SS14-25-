@@ -29,6 +29,7 @@ using Robust.Shared.Containers;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Content.Shared.Emp;
+using Content.Shared.Atmos;
 
 namespace Content.Server.Mech.Systems;
 

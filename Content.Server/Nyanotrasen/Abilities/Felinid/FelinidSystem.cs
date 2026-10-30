@@ -22,6 +22,7 @@ using Robust.Shared.Random;
 using Robust.Shared.Prototypes;
 using Content.Shared.Charges.Systems;
 using Content.Shared.Medical;
+using Content.Server.Chemistry.EntitySystems;
 
 namespace Content.Server.Nyanotrasen.Abilities.Felinid;
 

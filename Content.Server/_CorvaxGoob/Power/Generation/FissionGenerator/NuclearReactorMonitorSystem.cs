@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Content.Server.Administration.Logs;
 using Content.Server.DeviceLinking.Systems;
@@ -8,6 +8,7 @@ using Content.Shared.DeviceLinking;
 using Content.Shared.DeviceLinking.Events;
 using Robust.Server.GameObjects;
 using Robust.Shared.Timing;
+using Content.Shared.DeviceLinking.Systems;
 
 namespace Content.Server._CorvaxGoob.Power.Generation.FissionGenerator;
 

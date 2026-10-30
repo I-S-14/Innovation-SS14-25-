@@ -12,6 +12,7 @@ using Robust.Server.Audio;
 using Robust.Server.GameObjects;
 using Robust.Server.Player;
 using Robust.Shared.Configuration;
+using Content.Shared.Timing.Systems;
 
 namespace Content.Server._CorvaxGoob.Photo;
 

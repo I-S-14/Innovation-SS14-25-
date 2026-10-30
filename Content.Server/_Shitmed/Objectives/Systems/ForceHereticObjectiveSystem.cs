@@ -7,6 +7,7 @@ using Content.Server.GameTicking.Rules.Components;
 using Content.Shared.Database;
 using Content.Shared.Mind;
 using Robust.Shared.Player;
+using Content.Shared.Antag;
 namespace Content.Server._Shitmed.Objectives.Systems;
 
 public sealed class ForceHereticObjectiveSystem : EntitySystem

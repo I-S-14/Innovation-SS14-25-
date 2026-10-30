@@ -6,6 +6,7 @@ using Content.Server._Goobstation.Wizard.Components;
 using Content.Shared._EinsteinEngines.TelescopicBaton;
 using Content.Shared.Timing;
 using Robust.Server.Audio;
+using Content.Shared.Timing.Systems;
 
 namespace Content.Server._Goobstation.Wizard.Systems;
 

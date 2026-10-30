@@ -12,6 +12,7 @@ using Content.Shared.Hands;
 using Content.Shared.Inventory.Events;
 using Content.Shared.Item;
 using Content.Shared.Throwing;
+using Content.Shared.Atmos;
 
 namespace Content.Server._Starlight.VentCrawling;
 

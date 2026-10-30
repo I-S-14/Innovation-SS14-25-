@@ -13,6 +13,7 @@ using Content.Shared._Shitmed.Roles;
 using Content.Shared.Database;
 using Content.Shared.Humanoid;
 using Robust.Shared.Player;
+using Content.Shared.Antag;
 namespace Content.Server._Shitmed.Antags.Abductor;
 
 public sealed partial class AbductorSystem : SharedAbductorSystem

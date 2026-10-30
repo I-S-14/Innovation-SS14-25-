@@ -12,6 +12,7 @@ using Content.Shared.Preferences;
 using Robust.Shared.Configuration;
 using Robust.Shared.Player;
 using Robust.Shared.Timing;
+using Content.Shared.Ghost.Components;
 
 namespace Content.Server._CorvaxGoob.Ghost;
 

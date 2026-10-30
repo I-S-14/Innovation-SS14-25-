@@ -13,6 +13,7 @@ using Robust.Shared.Player;
 using Content.Server.GameTicking;
 using Content.Server.GameTicking.Rules;
 using Robust.Shared.Prototypes;
+using Content.Shared.Station.Systems;
 
 namespace Content.Server.StationEvents.Events;
 

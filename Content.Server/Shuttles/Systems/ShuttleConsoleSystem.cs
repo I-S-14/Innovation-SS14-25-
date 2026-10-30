@@ -25,6 +25,7 @@ using Robust.Shared.Utility;
 using Content.Shared.UserInterface;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
+using Content.Shared.Station.Systems;
 
 namespace Content.Server.Shuttles.Systems;
 

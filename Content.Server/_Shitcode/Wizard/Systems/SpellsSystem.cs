@@ -83,6 +83,7 @@ using Content.Shared.Tag;
 using Content.Goobstation.Shared.Teleportation.Systems;
 using Content.Shared._Shitcode.Wizard.Components;
 using Content.Shared.Power.Components;
+using Content.Shared.Antag;
 
 namespace Content.Server._Goobstation.Wizard.Systems; //todo refactor wiz
 

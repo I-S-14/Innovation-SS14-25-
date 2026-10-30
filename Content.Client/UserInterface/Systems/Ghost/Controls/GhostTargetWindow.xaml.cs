@@ -7,6 +7,7 @@ using Robust.Client.UserInterface.Controls;
 using Robust.Client.UserInterface.CustomControls;
 using Robust.Client.UserInterface.XAML;
 using Content.Shared.Ghost;
+using Content.Shared.Ghost.Systems;
 
 namespace Content.Client.UserInterface.Systems.Ghost.Controls
 {

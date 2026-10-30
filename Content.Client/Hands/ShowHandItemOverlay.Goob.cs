@@ -3,6 +3,7 @@ using Content.Client.Cooldown;
 using Content.Shared.Timing;
 using Robust.Client.Graphics;
 using Robust.Client.UserInterface;
+using Content.Shared.Timing.Systems;
 
 namespace Content.Client.Hands;
 

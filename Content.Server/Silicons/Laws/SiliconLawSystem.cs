@@ -43,6 +43,7 @@ using Content.Server.Research.Systems;
 using Content.Shared.Silicons.StationAi;
 using Content.Shared.Tag;
 using Content.Shared._CorvaxNext.Silicons.Borgs.Components;
+using Content.Shared.Station.Systems;
 namespace Content.Server.Silicons.Laws;
 
 public sealed partial class SiliconLawSystem : SharedSiliconLawSystem

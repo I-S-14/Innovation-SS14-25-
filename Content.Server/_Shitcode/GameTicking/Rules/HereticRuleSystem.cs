@@ -19,6 +19,8 @@ using Robust.Server.GameObjects;
 using Content.Server.Popups;
 using Content.Shared.Roles.Components;
 using Content.Shared.Station.Components;
+using Content.Shared.Antag;
+using Content.Shared.GameTicking.Rules;
 
 namespace Content.Server.GameTicking.Rules;
 
