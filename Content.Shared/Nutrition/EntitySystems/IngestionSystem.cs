@@ -379,7 +379,7 @@ public sealed partial class IngestionSystem : EntitySystem
         var afterEv = new IngestedEvent(args.User, entity, split, forceFed);
         RaiseLocalEvent(food, ref afterEv);
 
-        _stomach.TryTransferSolution(stomachToUse.Value.Owner, split, stomachToUse);
+        _stomach.TryTransferSolution((stomachToUse.Value.Owner, stomachToUse.Value.Comp, null), split); // IS14-merge
 
         if (!afterEv.Destroy)
         {

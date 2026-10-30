@@ -31,7 +31,7 @@ public sealed partial class ParadoxCloneRuleSystem : GameRuleSystem<ParadoxClone
 
         // check if we got enough potential cloning targets, otherwise cancel the gamerule so that the ghost role does not show up
         var allHumans = _mind.GetAliveHumans();
-        allHumans.RemoveWhere(human => _whitelist.IsWhitelistPass(component.TargetBlacklist, human)); // Goobstation
+        allHumans.RemoveWhere(human => _whitelist.IsWhitelistPass(rule.Comp1.TargetBlacklist, human)); // Goobstation
 
         if (allHumans.Count == 0)
         {

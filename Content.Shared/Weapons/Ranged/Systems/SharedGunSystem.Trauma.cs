@@ -101,9 +101,9 @@ public abstract partial class SharedGunSystem
         userImpulse = true;
 
         // If applicable, this ensures the projectile is parented to grid on spawn, instead of the map.
-        var fromEnt = MapSystem.TryFindGridAt(fromMap, out var gridUid, out _)
+        var fromEnt = Maps.TryFindGridAt(fromMap, out var gridUid, out _)
             ? TransformSystem.WithEntityId(fromCoordinates, gridUid)
-            : new EntityCoordinates(MapSystem.GetMapOrInvalid(fromMap.MapId), fromMap.Position);
+            : new EntityCoordinates(Maps.GetMapOrInvalid(fromMap.MapId), fromMap.Position);
 
         var toMapBeforeRecoil = toMap; // Goobstation
 
@@ -233,7 +233,7 @@ public abstract partial class SharedGunSystem
                 {
                     var newuid = PredictedSpawnAtPosition(ammoSpreadComp.Proto, fromEnt);
                     // Lavaland Change: Raise event when a projectile/pellet is fired from a gun.
-                    RaiseLocalEvent(gun, new ProjectileShotEvent()
+                    RaiseLocalEvent(gun, new Content.Shared._Lavaland.Weapons.Ranged.Events.ProjectileShotEvent()
                     {
                         FiredProjectile = newuid
                     });
@@ -425,7 +425,7 @@ public abstract partial class SharedGunSystem
         // 3. Nothing
         if (!forceWeaponSound && modifiedDamage != null && modifiedDamage.GetTotal() > 0 && TryComp<RangedDamageSoundComponent>(otherEntity, out var rangedSound))
         {
-            var type = SharedMeleeWeaponSystem.GetHighestDamageSound(modifiedDamage, ProtoManager);
+            var type = SharedMeleeWeaponSystem.GetHighestDamageSound(modifiedDamage, ProtoMan);
 
             if (type != null && rangedSound.SoundTypes?.TryGetValue(type, out var damageSoundType) == true)
             {

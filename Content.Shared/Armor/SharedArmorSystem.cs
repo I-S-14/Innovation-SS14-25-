@@ -21,9 +21,9 @@ namespace Content.Shared.Armor;
 /// <summary>
 ///     This handles logic relating to <see cref="ArmorComponent" />
 /// </summary>
-public abstract partial class SharedArmorSystem : EntitySystem
+public abstract class SharedArmorSystem : EntitySystem
 {
-    [Dependency] private ExamineSystemShared _examine = default!;
+    [Dependency] private readonly ExamineSystemShared _examine = default!;
     [Dependency] private readonly SharedBodySystem _body = default!;
 
     /// <inheritdoc />
@@ -131,23 +131,33 @@ public abstract partial class SharedArmorSystem : EntitySystem
             foreach (var part in coveredParts)
                 coverageText.Add(Loc.GetString("armor-coverage-type-" + part.ToString().ToLower()));
 
-            // TODO: probably make these prototype fields or have a test that they all exist
-            var armorType = Loc.GetString("armor-damage-type-" + coefficientArmor.Key.Id.ToLower());
-            msg.AddMarkupOrThrow(Loc.GetString("armor-coefficient-value",
-                ("type", armorType),
-                ("value", MathF.Round((1f - coefficientArmor.Value) * 100, 1))
-            ));
+            msg.PushNewline();
+            msg.AddMarkupOrThrow(Loc.GetString("armor-coverage-value", ("type", ContentLocalizationManager.FormatList(coverageText))));
+            // </Trauma>
         }
 
-        foreach (var flatArmor in armorModifiers.FlatReductions)
+        if (!component.ArmourModifiersHidden)
         {
-            msg.PushNewline();
+            foreach (var coefficientArmor in armorModifiers.Coefficients)
+            {
+                msg.PushNewline();
+                var armorType = Loc.GetString("armor-damage-type-" + coefficientArmor.Key.Id.ToLower());
+                msg.AddMarkupOrThrow(Loc.GetString("armor-coefficient-value",
+                    ("type", armorType),
+                    ("value", MathF.Round((1f - coefficientArmor.Value) * 100, 1))
+                ));
+            }
 
-            var armorType = Loc.GetString("armor-damage-type-" + flatArmor.Key.Id.ToLower());
-            msg.AddMarkupOrThrow(Loc.GetString("armor-reduction-value",
-                ("type", armorType),
-                ("value", flatArmor.Value)
-            ));
+            foreach (var flatArmor in armorModifiers.FlatReduction)
+            {
+                msg.PushNewline();
+
+                var armorType = Loc.GetString("armor-damage-type-" + flatArmor.Key.Id.ToLower());
+                msg.AddMarkupOrThrow(Loc.GetString("armor-reduction-value",
+                    ("type", armorType),
+                    ("value", flatArmor.Value)
+                ));
+            }
         }
 
         return msg;

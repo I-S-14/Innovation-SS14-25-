@@ -64,7 +64,7 @@ public sealed class EnchantedBoltActionRifleSystem : EntitySystem
             return;
 
         if (TryComp(uid, out WieldableComponent? wieldable))
-            _wieldable.TryUnwield(uid, wieldable, user, true);
+            _wieldable.TryUnwield((uid, wieldable), user, true);
 
         if (!_hands.TryDrop((user, hands), oldHand, null, false, false))
             return;
@@ -126,7 +126,7 @@ public sealed class EnchantedBoltActionRifleSystem : EntitySystem
         Dirty(gun, newComp);
 
         if (TryComp(gun, out WieldableComponent? newWieldable))
-            _wieldable.TryWield(gun, newWieldable, user, false);
+            _wieldable.TryWield((gun, newWieldable), user);
     }
 
     private bool IsHandValid(Entity<HandsComponent> ent, string hand)

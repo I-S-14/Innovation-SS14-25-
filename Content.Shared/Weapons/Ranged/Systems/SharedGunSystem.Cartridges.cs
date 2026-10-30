@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 using Content.Shared.Damage;
-using Content.Shared.Damage.Components;
 using Content.Shared.Damage.Events;
 using Content.Shared.Damage.Systems;
 using Content.Shared.Examine;
@@ -12,7 +11,7 @@ namespace Content.Shared.Weapons.Ranged.Systems;
 
 public abstract partial class SharedGunSystem
 {
-    [Dependency] private DamageExamineSystem _damageExamine = default!;
+    [Dependency] private readonly DamageExamineSystem _damageExamine = default!;
 
     // needed for server system
     protected virtual void InitializeCartridge()
@@ -31,21 +30,28 @@ public abstract partial class SharedGunSystem
 
     private void OnCartridgeDamageExamine(Entity<CartridgeAmmoComponent> ent, ref DamageExamineEvent args)
     {
-        if (!ProtoMan.TryIndex(ent.Comp.Prototype, out var entityProto))
-            return;
-
-        var damageSpec = GetProjectileDamage(entityProto);
-        var stamina = GetProjectileStamina(entityProto);
+        var damageSpec = GetProjectileDamage(ent.Comp.Prototype);
 
         if (damageSpec == null)
             return;
 
-        _damageExamine.AddDamageExamine(args.Message, Damageable.ApplyUniversalAllModifiers(damageSpec), Loc.GetString("damage-projectile"), stamina);
+        _damageExamine.AddDamageExamine(args.Message, Damageable.ApplyUniversalAllModifiers(damageSpec), Loc.GetString("damage-projectile"));
+
+        // Goobstation START - partial armor penetration
+        var ap = GetProjectilePenetration(ent.Comp.Prototype);
+        if (ap == 0)
+            return;
+        var abs = Math.Abs(ap);
+        args.Message.AddMarkupPermissive("\n" + Loc.GetString("armor-penetration", ("arg", ap/abs), ("abs", abs)));
+        // Goobstation END
     }
 
-    private DamageSpecifier? GetProjectileDamage(EntityPrototype proto)
+    private DamageSpecifier? GetProjectileDamage(EntProtoId proto)
     {
-        if (!proto.TryComp<ProjectileComponent>(out var projectile, Factory))
+        if (!ProtoMan.TryIndex(proto, out var entityProto))
+            return null;
+
+        if (!entityProto.TryGetComponent<ProjectileComponent>(out var projectile, Factory))
             return null;
 
         if (!projectile.Damage.Empty)
@@ -53,13 +59,35 @@ public abstract partial class SharedGunSystem
 
         return null;
     }
-
-    private float? GetProjectileStamina(EntityPrototype proto)
+    // Goobstation start - partial armor penetration
+    private void OnBasicEntityDamageExamine(EntityUid uid, BasicEntityAmmoProviderComponent component, ref DamageExamineEvent args)
     {
-        if (proto.TryComp<StaminaDamageOnCollideComponent>(out var comp, Factory)
-            && comp.Damage != 0)
-            return comp.Damage;
+        if (component.Proto == null)
+            return;
 
-        return null;
+        var damageSpec = GetProjectileDamage(component.Proto.Value);
+
+        if (damageSpec == null)
+            return;
+
+        _damageExamine.AddDamageExamine(args.Message, Damageable.ApplyUniversalAllModifiers(damageSpec), Loc.GetString("damage-projectile"));
+
+        var ap = GetProjectilePenetration(component.Proto);
+        if (ap == 0)
+            return;
+
+        var abs = Math.Abs(ap);
+        args.Message.AddMarkupPermissive("\n" + Loc.GetString("armor-penetration", ("arg", ap/abs), ("abs", abs)));
     }
+    public int GetProjectilePenetration(string proto)
+    {
+        if (!ProtoMan.TryIndex<EntityPrototype>(proto, out var entityProto)
+            || !entityProto.Components.TryGetValue(Factory.GetComponentName<ProjectileComponent>(), out var projectile))
+            return 0;
+
+        var p = (ProjectileComponent) projectile.Component;
+
+        return p.IgnoreResistances ? 100 : (int)Math.Round(p.Damage.ArmorPenetration * 100);
+    }
+    // Goobstation end
 }

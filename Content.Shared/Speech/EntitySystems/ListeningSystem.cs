@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: MIT
+using Robust.Shared.Random;
 using Content.Shared.Chat;
 using Content.Shared.Speech.Components;
 
@@ -10,6 +11,7 @@ namespace Content.Shared.Speech.EntitySystems;
 public sealed partial class ListeningSystem : EntitySystem
 {
     [Dependency] private SharedTransformSystem _xforms = default!;
+    [Dependency] private Robust.Shared.Random.IRobustRandom _random = default!; // Einstein Engines - Language
 
     [SubscribeLocalEvent]
     private void OnSpeak(EntitySpokeEvent ev)
@@ -27,7 +29,7 @@ public sealed partial class ListeningSystem : EntitySystem
 
         var attemptEv = new ListenAttemptEvent(source);
         var ev = new ListenEvent(message, originalMessage, source);
-        var obfuscatedEv = !isWhisper ? null : new ListenEvent(_chat.ObfuscateMessageReadability(message), originalMessage, source); // Einstein Engines - Language
+        var obfuscatedEv = !isWhisper ? null : new ListenEvent(ObfuscateMessageReadability(message), originalMessage, source); // Einstein Engines - Language
         var query = EntityQueryEnumerator<ActiveListenerComponent, TransformComponent>();
 
         while(query.MoveNext(out var listenerUid, out var listener, out var xform))
@@ -53,5 +55,22 @@ public sealed partial class ListeningSystem : EntitySystem
             else
                 RaiseLocalEvent(listenerUid, ev);
         }
+    }
+
+    // Einstein Engines - Language: whisper obfuscation, moved here from the server ChatSystem
+    // because wizden made ListeningSystem shared.
+    private string ObfuscateMessageReadability(string message, float chance = 0.2f)
+    {
+        var modifiedMessage = new System.Text.StringBuilder(message);
+        for (var i = 0; i < message.Length; i++)
+        {
+            if (char.IsWhiteSpace(modifiedMessage[i]))
+                continue;
+
+            if (_random.Prob(1 - chance))
+                modifiedMessage[i] = '~';
+        }
+
+        return modifiedMessage.ToString();
     }
 }

@@ -1,4 +1,4 @@
-﻿using Content.Shared.Actions;
+using Content.Shared.Actions;
 using Content.Shared.Actions.Components;
 using Content.Shared.Administration.Logs;
 using Content.Shared.Alert;
@@ -166,7 +166,7 @@ public sealed class RootableSystem : EntitySystem
             return false;
 
         ent.Comp.Rooted = !ent.Comp.Rooted;
-        _movementSpeedModifier.RefreshMovementSpeedModifiers(ent);
+        _movementSpeedModifier.RefreshMovementSpeedModifiers(ent.Owner);
         _gravity.RefreshWeightless(ent.Owner);
 
         if (ent.Comp.Rooted)

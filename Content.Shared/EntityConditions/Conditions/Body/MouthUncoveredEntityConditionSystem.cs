@@ -15,7 +15,7 @@ public sealed partial class MouthUncoveredEntityConditionSystem : EntityConditio
     /// <inheritdoc/>
     protected override void Condition(Entity<InventoryComponent> entity, ref EntityConditionEvent<MouthUncoveredCondition> args)
     {
-        args.Result = _ingestion.HasMouthAvailable(entity, args.Condition.Slots);
+        args.Result = _ingestion.HasMouthAvailable(entity, entity, args.Condition.Slots);
     }
 }
 

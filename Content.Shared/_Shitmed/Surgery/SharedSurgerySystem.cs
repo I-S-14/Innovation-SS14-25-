@@ -529,7 +529,7 @@ public abstract partial class SharedSurgerySystem : EntitySystem
 
         _allSurgeries.Clear();
         foreach (var entity in _prototypes.EnumeratePrototypes<EntityPrototype>())
-            if (entity.HasComp<SurgeryComponent>())
+            if (entity.HasComp<SurgeryComponent>(EntityManager.ComponentFactory))
                 _allSurgeries.Add(new EntProtoId(entity.ID));
     }
 }

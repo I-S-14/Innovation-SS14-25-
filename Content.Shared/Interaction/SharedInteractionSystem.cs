@@ -92,6 +92,7 @@ namespace Content.Shared.Interaction
         [Dependency] private EntityQuery<WallMountComponent> _wallMountQuery = default!;
         [Dependency] private EntityQuery<UseDelayComponent> _delayQuery = default!;
         [Dependency] private EntityQuery<ActivatableUIComponent> _uiQuery = default!;
+        [Dependency] private EntityQuery<TargetInteractionRelayComponent> _targetRelayQuery = default!; // Trauma
 
         /// <summary>
         /// The collision mask used by default for

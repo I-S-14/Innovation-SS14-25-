@@ -15,6 +15,7 @@ public sealed partial class SetStatusEffectOnTriggerSystem : XOnTriggerSystem<Se
 
 public sealed partial class RemoveStatusEffectOnTriggerSystem : XOnTriggerSystem<RemoveStatusEffectOnTriggerComponent>
 {
+    [Dependency] private StatusEffectsSystem _status = default!;
 
     protected override void OnTrigger(Entity<RemoveStatusEffectOnTriggerComponent> ent, EntityUid target, ref TriggerEvent args)
     {

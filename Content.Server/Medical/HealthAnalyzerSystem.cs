@@ -473,7 +473,7 @@ public sealed class HealthAnalyzerSystem : EntitySystem
     {
         var solutionsList = new Dictionary<NetEntity, Solution>();
 
-        if (!TryComp(target, out SolutionContainerManagerComponent? container) || container.Containers.Count == 0)
+        if (!TryComp(target, out SolutionManagerComponent? container) || container.Containers.Count == 0)
             return solutionsList;
 
         foreach (var (name, solution) in _solutionContainerSystem.EnumerateSolutions((target, container)))

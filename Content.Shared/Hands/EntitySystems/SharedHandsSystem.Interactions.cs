@@ -95,12 +95,7 @@ public abstract partial class SharedHandsSystem : EntitySystem
         if (session?.AttachedEntity is not { } player)
             return;
 
-        if (!_actionBlocker.CanInteract(session.AttachedEntity.Value, null))
-            return;
-
-        // <Goobstation> - use public API
-        SwapHands((session.AttachedEntity.Value, component), reverse);
-        // </Goobstation>
+        SwapHands(player, true, true); // IS14-merge: wizden reverse swap (action blocker checked inside)
     }
 
     /// <summary>

@@ -463,14 +463,14 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
         return splitSol;
     }
 
-    public IEnumerable<string> EnumerateSolutionContainers(Entity<SolutionContainerManagerComponent?> ent,
+    public IEnumerable<string> EnumerateSolutionContainers(Entity<SolutionManagerComponent?> ent,
         bool addPrefix = true)
     {
         if (!Resolve(ent, ref ent.Comp, false))
             yield break;
 
         var prefix = addPrefix ? "solution@" : string.Empty;
-        foreach (var container in ent.Comp.Containers)
+        foreach (var container in ent.Comp.Solutions.Keys)
         {
             yield return prefix + container;
         }

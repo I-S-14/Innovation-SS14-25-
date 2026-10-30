@@ -66,6 +66,7 @@ public abstract partial class SharedChatSystem : EntitySystem
     [Dependency] private SharedAudioSystem _audio = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
+    [Dependency] private SharedLanguageSystem _language = default!; // Einstein Engines - Language
 
     /// <summary>
     /// Cache of the keycodes for faster lookup.

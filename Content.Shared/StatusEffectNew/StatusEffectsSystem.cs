@@ -56,7 +56,6 @@ public sealed partial class StatusEffectsSystem : EntitySystem
             QueueDel(ent);
         }
 
-        StatusEffectPrototypes = prototypes;
     }
 
     private void OnStatusContainerInit(Entity<StatusEffectContainerComponent> ent, ref ComponentInit args)

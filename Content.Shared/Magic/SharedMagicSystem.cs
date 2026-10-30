@@ -340,7 +340,6 @@ public abstract partial class SharedMagicSystem : EntitySystem
         var fromCoords = xform.Coordinates;
         var toCoords = ev.Target;
         _physicsQuery.TryComp(ev.Performer, out var userPhysics);
-        var userVelocity = _physics.GetMapLinearVelocity(ev.Performer, userPhysics, xform);
 
         var userLocalVelocity = userPhysics?.LinearVelocity ?? Vector2.Zero;
 

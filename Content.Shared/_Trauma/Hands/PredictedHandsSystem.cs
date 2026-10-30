@@ -158,7 +158,7 @@ public sealed class PredictedHandsSystem : EntitySystem
 
         if (TryComp(throwEnt, out StackComponent? stack) && stack.Count > 1 && stack.ThrowIndividually)
         {
-            if (_stack.Split(throwEnt.Value, 1, Transform(player).Coordinates, stack) is not { Valid: true } splitStack)
+            if (_stack.Split((throwEnt.Value, stack), 1, Transform(player).Coordinates) is not { Valid: true } splitStack)
                 return false;
 
             throwEnt = splitStack;

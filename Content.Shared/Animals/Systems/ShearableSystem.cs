@@ -47,7 +47,7 @@ public sealed partial class SharedShearableSystem : EntitySystem
         // Even if we are checking items, if no toolQuality has been defined, then they're allowed to use anything, including an empty hand.
         if (checkItem && ent.Comp.ToolQuality is not null &&
             // If so, is the player holding anything at all, and does that item have the correct toolQuality?
-            (usedItem == null || !_tool.HasQuality(usedItem.Value, ent.Comp.ToolQuality)))
+            (usedItem == null || !_tool.HasQuality(usedItem.Value, ent.Comp.ToolQuality.Value)))
         {
             return false;
         }

@@ -673,7 +673,8 @@
             Heat: -0.5
             Shock: -0.5
             Cold: -0.5 # Was .33, Buffed due to limb damage changes(GoobStation)
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: -10
         conditions:
         - !type:ReagentCondition
@@ -959,13 +960,15 @@
   metabolisms:
     Drink:
       effects:
-        - !type:SatiateThirst
+        - !type:Satiate
+          satiationType: Thirst
           conditions: # DeltaV nerf of saline for Feroxi
           - !type:MetabolizerTypeCondition
             type: [ Feroxi ]
             inverted: true
           factor: 6
-        - !type:SatiateThirst # DeltaV nerf of saline for Feroxi
+        - !type:Satiate # DeltaV nerf of saline for Feroxi
+          satiationType: Thirst
           conditions:
           - !type:MetabolizerTypeCondition
             type: [ Feroxi ]
@@ -1581,7 +1584,8 @@
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 3
     Medicine:
       effects:

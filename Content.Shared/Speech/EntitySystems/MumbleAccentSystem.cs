@@ -13,7 +13,7 @@ public sealed partial class MumbleAccentSystem : RelayAccentSystem<MumbleAccentC
     {
         base.Initialize();
 
-        SubscribeLocalEvent<MumbleAccentComponent, EmoteEvent>(OnEmote, before: [typeof(VocalSystem)]);
+        SubscribeLocalEvent<MumbleAccentComponent, EmoteEvent>(OnEmote) /* IS14-merge: VocalSystem is server-side here */;
     }
 
     // TODO: This likely will not hold up with a relay system!

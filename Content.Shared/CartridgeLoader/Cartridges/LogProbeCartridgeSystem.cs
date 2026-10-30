@@ -33,7 +33,6 @@ public sealed partial class LogProbeCartridgeSystem : EntitySystem // DeltaV - M
     public override void Initialize()
     {
         base.Initialize();
-        InitializeNanoChat(); // DeltaV
         SubscribeLocalEvent<LogProbeCartridgeComponent, CartridgeUiReadyEvent>(OnUiReady);
         SubscribeLocalEvent<LogProbeCartridgeComponent, CartridgeRelayedEvent<AfterInteractEvent>>(AfterInteract);
         SubscribeLocalEvent<LogProbeCartridgeComponent, CartridgeMessageEvent>(OnMessage);
@@ -47,14 +46,7 @@ public sealed partial class LogProbeCartridgeSystem : EntitySystem // DeltaV - M
         if (args.Args.Handled || !args.Args.CanReach || args.Args.Target is not { } target)
             return;
 
-        // DeltaV begin - Add NanoChat card scanning
-        if (TryComp<NanoChatCardComponent>(target, out var nanoChatCard))
-        {
-            ScanNanoChatCard(ent, args, target, nanoChatCard);
-            args.InteractEvent.Handled = true;
-            return;
-        }
-        // DeltaV end
+        // IS14-merge TODO: DeltaV NanoChat card scanning needs porting onto wizden's shared LogProbe system
 
         if (!TryComp(target, out AccessReaderComponent? accessReaderComponent))
             return;

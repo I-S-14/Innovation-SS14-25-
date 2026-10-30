@@ -64,7 +64,7 @@ public sealed class CosmicRunesSystem : EntitySystem
             _useDelay.IsDelayed((args.Used, useDelay)))
             return;
 
-        _useDelay.TryResetDelay(args.Used, false, useDelay);
+        _useDelay.TryResetDelay((args.Used, useDelay));
         _audio.PlayPredicted(bible.HealSoundPath, Transform(ent).Coordinates, args.User);
         EnsureComp<FadingTimedDespawnComponent>(ent).Lifetime = 0f;
         args.Handled = true;

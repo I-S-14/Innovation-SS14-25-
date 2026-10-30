@@ -28,6 +28,7 @@ public sealed partial class MindContainerJobEntityConditionSystem : EntityCondit
 /// <inheritdoc cref="EntityConditionSystem{T, TCondition}"/>
 public sealed partial class MindJobEntityConditionSystem : EntityConditionSystem<MindComponent, JobCondition>
 {
+    [Dependency] private SharedJobSystem _job = default!;
 
     protected override void Condition(Entity<MindComponent> entity, ref EntityConditionEvent<JobCondition> args)
     {

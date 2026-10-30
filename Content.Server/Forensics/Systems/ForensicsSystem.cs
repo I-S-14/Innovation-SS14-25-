@@ -184,7 +184,7 @@ namespace Content.Server.Forensics
         public List<(string, TimeSpan)> GetSolutionsDNA(EntityUid uid) // Goobstation
         {
             List<(string, TimeSpan)> list = new(); // Goobstation
-            if (TryComp<SolutionContainerManagerComponent>(uid, out var comp))
+            if (TryComp<SolutionManagerComponent>(uid, out var comp))
             {
                 foreach (var (_, soln) in _solutionContainerSystem.EnumerateSolutions((uid, comp)))
                 {

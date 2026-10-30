@@ -43,7 +43,7 @@ namespace Content.Server.Chemistry.EntitySystems
 
         private void HandleCollide(Entity<VaporComponent> entity, ref StartCollideEvent args)
         {
-            if (!TryComp(entity.Owner, out SolutionContainerManagerComponent? contents)) return;
+            if (!TryComp(entity.Owner, out SolutionManagerComponent? contents)) return;
 
             if (!entity.Comp.ReactedEntities.Add(args.OtherEntity)) // Goob check
                 return;

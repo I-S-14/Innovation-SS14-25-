@@ -148,7 +148,7 @@ public sealed partial class MaterialReclaimerComponent : Component
     [DataField]
     public DamageSpecifier? DamageOnEmag = new DamageSpecifier
     {
-        DamageDict = new Dictionary<ProtoId<DamageTypePrototype>, FixedPoint2>
+        DamageDict = new Dictionary<string, FixedPoint2>
         {
             ["Slash"] = 35.0,
         },

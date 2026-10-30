@@ -32,7 +32,7 @@ public sealed partial class LoadoutSystem : EntitySystem
         base.Initialize();
 
         // Wait until the character has all their organs before we give them their loadout
-        SubscribeLocalEvent<LoadoutComponent, MapInitEvent>(OnMapInit, after: [typeof(InitialBodySystem)]);
+        SubscribeLocalEvent<LoadoutComponent, MapInitEvent>(OnMapInit); // IS14-merge: no wizden InitialBodySystem (we keep the Goob body)
     }
 
     public static string GetJobPrototype(string? loadout)
@@ -191,7 +191,7 @@ public sealed partial class LoadoutSystem : EntitySystem
     public HumanoidCharacterProfile GetProfile(EntityUid? uid)
     {
         return TryComp<HumanoidAppearanceComponent>(uid, out var profile)
-            ? HumanoidCharacterProfile.DefaultWithSpecies(profile.Species, profile.Sex)
+            ? HumanoidCharacterProfile.DefaultWithSpecies(profile.Species)
             : HumanoidCharacterProfile.Random();
     }
 }

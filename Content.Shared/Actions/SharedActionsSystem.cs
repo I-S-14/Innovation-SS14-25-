@@ -748,7 +748,7 @@ public abstract partial class SharedActionsSystem : EntitySystem
 
         // check for action use prevention
         // TODO: make code below use this event with a dedicated component
-        var attemptEv = new ActionAttemptEvent(user);
+        var attemptEv = new ActionAttemptEvent(user, null);
         RaiseLocalEvent(action, ref attemptEv);
         if (attemptEv.Cancelled)
             return false;

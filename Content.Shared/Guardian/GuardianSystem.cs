@@ -1,3 +1,4 @@
+using Content.Shared.Gibbing.Events;
 using Content.Shared.Actions;
 using Content.Shared.Damage.Systems;
 using Content.Shared.DoAfter;
@@ -119,7 +120,7 @@ public sealed partial class GuardianSystem : EntitySystem
 
         // Ensure held items are dropped before deleting guardian.
         if (HasComp<HandsComponent>(guardian))
-            _gibbing.Gib(ent.Comp.HostedGuardian.Value);
+            _gibbing.TryGibEntity(guardian, guardian, GibType.Drop, GibContentsOption.Drop, out _); // IS14-merge: Goob GibbingSystem API
 
         QueueDel(guardian);
         ent.Comp.HostedGuardian = null;

@@ -343,4 +343,14 @@ public sealed partial class ActivatableUISystem : EntitySystem
 
         return true;
     }
+
+    private void OnBoundInterfaceOpenAttempt(Entity<ActivatableUIComponent> ent,
+        ref BoundUserInterfaceMessageAttempt args)
+    {
+        if (args.Message is not OpenBoundInterfaceMessage || ent.Comp.Key != args.UiKey)
+            return;
+
+        if (!RaiseCanOpenEventChecks(args.Actor, ent.Owner))
+            args.Cancel();
+    }
 }

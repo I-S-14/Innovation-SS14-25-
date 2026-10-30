@@ -235,15 +235,15 @@ public abstract class SharedCargoSystem : EntitySystem
     {
         var access = Proto.Index<CargoAccountPrototype>(entity.Comp.Account).SecureCrateOrderAccess;
 
-        if (productProto.HasComponent<StorageFillComponent>()
-            || productProto.HasComponent<EntityTableContainerFillComponent>())
+        if (productProto.HasComp<StorageFillComponent>(EntityManager.ComponentFactory)
+            || productProto.HasComp<EntityTableContainerFillComponent>(EntityManager.ComponentFactory))
         {
             if (productProto.TryGetComponent<AccessReaderComponent>(out var reader)
             && access is not null
             && !AccessReader.AreAccessTagsAllowed(access, reader))
                 return false;
         }
-        else if (!productProto.HasComponent<ItemComponent>())
+        else if (!productProto.HasComp<ItemComponent>(EntityManager.ComponentFactory))
             return false;
 
         return true;

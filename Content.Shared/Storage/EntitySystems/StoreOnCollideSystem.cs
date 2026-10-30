@@ -55,7 +55,7 @@ internal sealed partial class StoreOnCollideSystem : EntitySystem
 
     private void OnTimedDespawn(Entity<StoreOnCollideComponent> ent, ref TimedDespawnEvent args)
     {
-        _storage.OpenStorage(ent);
+        _storage.OpenStorage(ent.Owner);
     }
 
     private void Disable(Entity<StoreOnCollideComponent> ent)

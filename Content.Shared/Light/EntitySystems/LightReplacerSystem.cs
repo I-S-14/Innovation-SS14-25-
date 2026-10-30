@@ -140,7 +140,7 @@ public sealed partial class LightReplacerSystem : EntitySystem
         }
 
         // insert it into fixture
-        var wasReplaced = _poweredLight.ReplaceBulb(lightHolder, insertedBulb.Value, lightHolder.Comp);
+        var wasReplaced = _poweredLight.ReplaceBulb(lightHolder, insertedBulb.Value, out _, lightHolder.Comp); // IS14-merge: Goob ReplaceBulb signature
         if (wasReplaced)
         {
             _audio.PlayPredicted(replacer.Comp.Sound, replacer, userUid);

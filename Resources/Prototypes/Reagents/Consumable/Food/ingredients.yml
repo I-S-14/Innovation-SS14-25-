@@ -242,7 +242,8 @@
       - !type:AdjustReagent
         reagent: Theobromine #Goob - Fix
         amount: 0.25
-      - !type:SatiateHunger
+      - !type:Satiate
+        satiationType: Hunger
         conditions:
         - !type:ReagentCondition #Only satiates when eaten with nutriment
           reagent: Nutriment

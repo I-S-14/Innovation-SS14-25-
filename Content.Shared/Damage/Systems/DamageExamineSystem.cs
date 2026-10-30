@@ -12,7 +12,7 @@ using System.Linq; // Goobstation Change
 
 namespace Content.Shared.Damage.Systems;
 
-public sealed class DamageExamineSystem : EntitySystem
+public sealed partial class DamageExamineSystem : EntitySystem
 {
     [Dependency] private readonly ExamineSystemShared _examine = default!;
     [Dependency] private readonly IPrototypeManager _prototype = default!;

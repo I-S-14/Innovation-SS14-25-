@@ -115,13 +115,13 @@ public sealed class HumanoidProfileTests : GameTest
         });
     }
 
-    private void LoadDependencies(out EntityUid body, out HumanoidProfileComponent humanoidComponent)
+    private void LoadDependencies(out EntityUid body, out HumanoidAppearanceComponent humanoidComponent)
     {
         body = SEntMan.Spawn(BaseSpecies);
-        humanoidComponent = SEntMan.GetComponent<HumanoidProfileComponent>(body);
+        humanoidComponent = SEntMan.GetComponent<HumanoidAppearanceComponent>(body);
     }
 
-    private void AssertValidProfile(Entity<HumanoidProfileComponent> body, HumanoidCharacterProfile profile)
+    private void AssertValidProfile(Entity<HumanoidAppearanceComponent> body, HumanoidCharacterProfile profile)
     {
         _bodySystem.TryGetOrgansWithComponent<VisualOrganComponent>(body.Owner, out var organs);
 

@@ -264,7 +264,7 @@ public abstract partial class SharedRadioDeviceSystem : EntitySystem
 
         // log to chat so people can identity the speaker/source, but avoid clogging ghost chat if there are many radios
         _chat.TrySendInGameICMessage(ent.Owner,
-            args.Message,
+            args.OriginalChatMsg.Message, // IS14-merge: Einstein Engines language radio event
             InGameICChatType.Whisper,
             ChatTransmitRange.GhostRangeLimit,
             nameOverride: name,

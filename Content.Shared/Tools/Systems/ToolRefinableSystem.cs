@@ -1,3 +1,4 @@
+using Content.Shared.Gibbing.Events;
 using System.Diagnostics.CodeAnalysis;
 using Content.Shared.Chemistry.Components;
 using Content.Shared.Chemistry.Components.SolutionManager;
@@ -182,7 +183,7 @@ public sealed partial class ToolRefinableSystem : EntitySystem
         if (component.Sound != null)
             _audio.PlayPredicted(component.Sound, Transform(uid).Coordinates, args.User, AudioParams.Default.WithVolume(-2));
 
-        _gib.Gib(uid);
+        _gib.TryGibEntity(uid, uid, GibType.Gib, GibContentsOption.Drop, out _); // IS14-merge: Goob GibbingSystem API
         _destructible.DestroyEntity(uid);
     }
 

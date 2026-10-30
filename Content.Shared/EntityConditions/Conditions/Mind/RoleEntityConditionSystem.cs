@@ -33,6 +33,7 @@ public sealed partial class MindContainerRoleEntityConditionSystem : EntityCondi
 /// <inheritdoc cref="EntityConditionSystem{T, TCondition}"/>
 public sealed partial class MindRoleEntityConditionSystem : EntityConditionSystem<MindComponent, RoleCondition>
 {
+    [Dependency] private SharedRoleSystem _role = default!;
 
     protected override void Condition(Entity<MindComponent> entity, ref EntityConditionEvent<RoleCondition> args)
     {

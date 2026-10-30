@@ -119,7 +119,7 @@ public sealed partial class MedibotSystem : EntitySystem
             return false;
         }
 
-        if (_damageable.GetPositiveDamage((target, damageable)).Empty && !HasComp<EmaggedComponent>(medibot))
+        if (!damageable.Damage.AnyPositive() && !HasComp<EmaggedComponent>(medibot))
         {
             _popup.PopupEntity(Loc.GetString("medibot-target-healthy"), medibot, medibot);
             return false;

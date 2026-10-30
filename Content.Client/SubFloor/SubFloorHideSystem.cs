@@ -10,11 +10,11 @@ using Robust.Shared.Player;
 
 namespace Content.Client.SubFloor;
 
-public sealed partial class SubFloorHideSystem : SharedSubFloorHideSystem
+public sealed class SubFloorHideSystem : SharedSubFloorHideSystem
 {
-    [Dependency] private SharedAppearanceSystem _appearance = default!;
-    [Dependency] private SpriteSystem _sprite = default!;
-    [Dependency] private IUserInterfaceManager _ui = default!;
+    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
+    [Dependency] private readonly SpriteSystem _sprite = default!;
+    [Dependency] private readonly IUserInterfaceManager _ui = default!;
 
     private bool _showAll;
     private bool _showVentPipe; //Goobstation - Ventcrawler
@@ -66,21 +66,19 @@ public sealed partial class SubFloorHideSystem : SharedSubFloorHideSystem
         ShowAll = false;
     }
 
-    [SubscribeNetworkEvent]
     private void OnRequestReceived(ShowSubfloorRequestEvent ev)
     {
         // When client receives request Queue an update on all vis.
         UpdateAll();
     }
 
-    [SubscribeLocalEvent]
     private void OnAppearanceChanged(EntityUid uid, SubFloorHideComponent component, ref AppearanceChangeEvent args)
     {
         if (args.Sprite == null)
             return;
 
-        args.TryGetData<bool>(SubFloorVisuals.Covered, out var covered);
-        args.TryGetData<bool>(SubFloorVisuals.ScannerRevealed, out var scannerRevealed);
+        _appearance.TryGetData<bool>(uid, SubFloorVisuals.Covered, out var covered, args.Component);
+        _appearance.TryGetData<bool>(uid, SubFloorVisuals.ScannerRevealed, out var scannerRevealed, args.Component);
 
         scannerRevealed &= !ShowAll; // no transparency for show-subfloor mode.
 
@@ -113,17 +111,16 @@ public sealed partial class SubFloorHideSystem : SharedSubFloorHideSystem
         {
             // Allows sandbox mode to make wires visible over other stuff.
             component.OriginalDrawDepth ??= args.Sprite.DrawDepth;
-            var drawDepthDifference = Shared.DrawDepth.DrawDepth.ThickPipe - (Shared.DrawDepth.DrawDepth.Overdoors + 1);
-            _sprite.SetDrawDepth((uid, args.Sprite), args.Sprite.DrawDepth - drawDepthDifference);
+            _sprite.SetDrawDepth((uid, args.Sprite), (int)Shared.DrawDepth.DrawDepth.Overdoors);
         }
         else if (scannerRevealed)
         {
-            // Allows a t-ray to show wires/pipes above walls.
+            // Allows a t-ray to show wires/pipes above carpets/puddles.
             if (component.OriginalDrawDepth is not null)
                 return;
             component.OriginalDrawDepth = args.Sprite.DrawDepth;
-            var drawDepthDifference = Shared.DrawDepth.DrawDepth.ThickPipe - (Shared.DrawDepth.DrawDepth.Walls + 1);
-            _sprite.SetDrawDepth((uid, args.Sprite), args.Sprite.DrawDepth - drawDepthDifference);
+            var drawDepthDifference = Shared.DrawDepth.DrawDepth.ThickPipe - Shared.DrawDepth.DrawDepth.Puddles;
+            _sprite.SetDrawDepth((uid, args.Sprite), args.Sprite.DrawDepth - (drawDepthDifference - 1));
         }
         else if (component.OriginalDrawDepth.HasValue)
         {

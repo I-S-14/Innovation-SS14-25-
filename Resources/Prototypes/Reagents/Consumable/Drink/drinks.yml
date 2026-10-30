@@ -12,7 +12,8 @@
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:ModifyStatusEffect
         effectProto: StatusEffectDrowsiness
@@ -225,7 +226,8 @@
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
     Poison:
       effects:
       - !type:HealthChange
@@ -276,7 +278,8 @@
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 4
       - !type:HealthChange
         conditions:
@@ -376,7 +379,8 @@
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 6
       - !type:ModifyStatusEffect
         effectProto: StatusEffectDrowsiness
@@ -486,7 +490,8 @@
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 4
     Gas: # DeltaV - Feroxi get to breathe with this too!
       effects:
@@ -502,7 +507,8 @@
         conditions:
         - !type:MetabolizerTypeCondition
           type: [ Feroxi ]
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         conditions:
         - !type:MetabolizerTypeCondition
           type: [ Feroxi ]
@@ -511,7 +517,8 @@
         conditions:
         - !type:MetabolizerTypeCondition
           type: [ FeroxiDehydrated ]
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         conditions:
         - !type:MetabolizerTypeCondition
           type: [ FeroxiDehydrated ]
@@ -550,7 +557,8 @@
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 3 # Slightly worse for quenching thirst than just straight water
 # CorvaxGoob start
       - !type:AdjustTemperature

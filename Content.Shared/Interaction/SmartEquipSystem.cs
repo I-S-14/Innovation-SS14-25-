@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
 using Content.Shared.ActionBlocker;
 using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Hands.Components;
@@ -146,62 +144,7 @@ public sealed partial class SmartEquipSystem : EntitySystem
             return;
         }
 
-        // CorvaxGoob edit start
-
-        // case 2 (itemslot item):
-        if (TryComp<ItemSlotsComponent>(slotItem, out var slots))
-        {
-            if (handItem == null)
-            {
-                ItemSlot? toEjectFrom = null;
-
-                foreach (var slot in slots.Slots.Values)
-                {
-                    if (slot.HasItem && slot.Priority > (toEjectFrom?.Priority ?? int.MinValue))
-                        toEjectFrom = slot;
-                }
-
-                if (toEjectFrom == null)
-                {
-                    if (!HasComp<StorageComponent>(slotItem))
-                    {
-                        _popup.PopupClient(emptyEquipmentSlotString, uid, uid);
-                        return;
-                    }
-                }
-                else if (_slots.TryEjectToHands(slotItem, toEjectFrom, uid, excludeUserAudio: true))
-                    return;
-            }
-
-            if (handItem != null)
-            {
-                ItemSlot? toInsertTo = null;
-
-                foreach (var slot in slots.Slots.Values)
-                {
-                    if (!slot.HasItem
-                        && _whitelistSystem.IsWhitelistPassOrNull(slot.Whitelist, handItem.Value)
-                        && slot.Priority > (toInsertTo?.Priority ?? int.MinValue))
-                    {
-                        toInsertTo = slot;
-                    }
-                }
-
-                if (toInsertTo != null)
-                {
-                    _slots.TryInsertFromHand(slotItem, toInsertTo, uid, hands, excludeUserAudio: true);
-                    return;
-                }
-
-                if (!HasComp<StorageComponent>(slotItem))
-                {
-                    _popup.PopupClient(Loc.GetString("smart-equip-no-valid-item-slot-insert", ("item", handItem.Value)), uid, uid);
-                    return;
-                }
-            }
-        }
-
-        // case 3 (storage item):
+        // case 2 (storage item):
         if (TryComp<StorageComponent>(slotItem, out var storage))
         {
             switch (handItem)

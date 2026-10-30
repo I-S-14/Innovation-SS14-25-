@@ -26,7 +26,6 @@ public abstract partial class SharedStackSystem : EntitySystem
 {
     [Dependency] private IViewVariablesManager _vvm = default!;
     [Dependency] private SharedAppearanceSystem _appearance = default!;
-    [Dependency] private SharedHandsSystem _hands = default!;
     [Dependency] private EntityLookupSystem _entityLookup = default!;
     [Dependency] private SharedPhysicsSystem _physics = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
@@ -252,7 +251,7 @@ public abstract partial class SharedStackSystem : EntitySystem
         }
 
         // Tries to merge stack with a stack in hand.
-        if (_hands.TryGetActiveItem(user, out var merger)
+        if (Hands.TryGetActiveItem(user, out var merger)
             && TryMergeStacks(stack.AsNullable(), merger.Value, out _, amount: amount))
         {
             _popup.PopupCursor(Loc.GetString("comp-stack-split"), user);
@@ -263,14 +262,14 @@ public abstract partial class SharedStackSystem : EntitySystem
         if (stack.Comp.Count <= amount)
         {
             // No AnimatePickup passed as this is a normal pickup.
-            _hands.PickupOrDrop(user, stack.Owner);
+            Hands.PickupOrDrop(user, stack.Owner);
             return;
         }
 
         if (Split(stack.AsNullable(), amount, new EntityCoordinates(user, Vector2.Zero), user: user) is not { } split)
             return;
 
-        _hands.PickupOrDrop(user, split, animate: stack.Comp.AnimatePickup);
+        Hands.PickupOrDrop(user, split, animate: stack.Comp.AnimatePickup);
         _popup.PopupCursor(Loc.GetString("comp-stack-split"), user);
     }
 

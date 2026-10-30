@@ -9,7 +9,6 @@ using Robust.Shared.Network;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Random;
-using Robust.Shared.Containers; // Goobstation
 
 namespace Content.Shared.Trigger.Systems;
 
@@ -21,7 +20,6 @@ public sealed partial class ScramOnTriggerSystem : XOnTriggerSystem<ScramOnTrigg
     [Dependency] private SharedAudioSystem _audio = default!;
     [Dependency] private INetManager _net = default!;
     [Dependency] private TurfSystem _turfSystem = default!;
-    [Dependency] private readonly SharedContainerSystem _container = default!; // Goobstation
 
     protected override void OnTrigger(Entity<ScramOnTriggerComponent> ent, EntityUid target, ref TriggerEvent args)
     {
@@ -40,7 +38,7 @@ public sealed partial class ScramOnTriggerSystem : XOnTriggerSystem<ScramOnTrigg
         if (_net.IsClient)
             return;
 
-        var targetCoords = SelectRandomTileInRange(target, ent.Comp.TeleportRadius);
+        var targetCoords = SelectRandomTileInRange(target, new System.Numerics.Vector2(ent.Comp.TeleportRadius, ent.Comp.TeleportRadius));
 
         if (targetCoords != null)
         {
@@ -55,25 +53,12 @@ public sealed partial class ScramOnTriggerSystem : XOnTriggerSystem<ScramOnTrigg
     /// <remarks> Trends towards the outer radius. Compensates for small grids. </remarks>
     private EntityCoordinates? SelectRandomTileInRange(EntityUid uid, Vector2 radius, int tries = 40, PhysicsComponent? physicsComponent = null)
     {
-        if (!Resolve(uid, ref physicsComponent)) // Goobstation - Moved the resolve to top
-            return null;
-
         var userCoords = Transform(uid).Coordinates;
-
-        // Goobstation - start.
-        // Being in a locker any container set your coordinate to the locker with 0 x,y
-        // So get the outer container's coordinate in case if you are a rat inside a backpack 
-        if (_container.IsEntityOrParentInContainer(uid))
-        {
-            if (!_container.TryGetOuterContainer(uid, Transform(uid), out var container))
-                return null;
-
-            userCoords = Transform(container.Owner).Coordinates;
-        }
-        // Goobstation - end
-
         EntityCoordinates? targetCoords = null;
-        var userGrid = _transform.GetGrid(userCoords); // Goobstation
+
+        if (!Resolve(uid, ref physicsComponent))
+            return targetCoords;
+
 
         for (var i = 0; i < tries; i++)
         {
@@ -91,8 +76,7 @@ public sealed partial class ScramOnTriggerSystem : XOnTriggerSystem<ScramOnTrigg
 
             if (!_turfSystem.TryGetTileRef(tempTargetCoords, out var tileRef)
                 || _turfSystem.IsSpace(tileRef.Value)
-                || _turfSystem.IsTileBlocked(tileRef.Value, (CollisionGroup)physicsComponent.CollisionMask)
-                || userGrid != null && tileRef.Value.GridUid != userGrid) // Goobstation - stay on the same grid
+                || _turfSystem.IsTileBlocked(tileRef.Value, (CollisionGroup)physicsComponent.CollisionMask))
                 continue;
 
             targetCoords = tempTargetCoords;

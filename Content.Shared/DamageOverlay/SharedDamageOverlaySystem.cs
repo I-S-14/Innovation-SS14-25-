@@ -39,7 +39,7 @@ public abstract partial class SharedDamageOverlaySystem : EntitySystem
     [SubscribeLocalEvent]
     private void OnThresholdCheck(Entity<DamageOverlayComponent> entity, ref MobThresholdChecked args)
     {
-        UpdateOverlays(entity, args.MobState, args.Damageable, args.Threshold);
+        UpdateOverlays(entity); // IS14-merge: our MobThresholdChecked carries no component refs
     }
 
     protected void ClearOverlay(Entity<DamageOverlayComponent> entity)

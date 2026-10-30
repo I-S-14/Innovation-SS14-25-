@@ -32,7 +32,7 @@ public abstract partial class SharedGunSystem
     {
         // Goobstation start
         WeightedRandomEntityPrototype? prototypes = null;
-        if (ent.Comp.Proto == null && (!ProtoManager.TryIndex(ent.Comp.Prototypes, out prototypes) ||
+        if (ent.Comp.Proto == null && (!ProtoMan.TryIndex(ent.Comp.Prototypes, out prototypes) ||
                                         prototypes.Weights.Count == 0))
             return;
         // Goobstation end

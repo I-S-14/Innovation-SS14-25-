@@ -120,3 +120,12 @@ public sealed partial class StealthComponent : Component
     public bool ThermalsImmune;
     // Goobstation - end
 }
+
+[Serializable, NetSerializable]
+public sealed class StealthComponentState(float stealthLevel, TimeSpan? lastUpdated, bool enabled, float shimmerFrequency) : ComponentState
+{
+    public readonly float Visibility = stealthLevel;
+    public readonly TimeSpan? LastUpdated = lastUpdated;
+    public readonly bool Enabled = enabled;
+    public readonly float ShimmerFrequency = shimmerFrequency;
+}

@@ -1,3 +1,4 @@
+using Content.Shared._Lavaland.ItemUpgrades.Events;
 using Content.Goobstation.Common.Weapons;
 using Content.Shared._Goobstation.Weapons.Ranged;
 using Content.Shared._Lavaland.ItemUpgrades.Components;

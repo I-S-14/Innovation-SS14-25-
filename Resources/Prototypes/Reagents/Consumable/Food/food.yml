@@ -43,7 +43,8 @@
       # Helps you stop bleeding to an extent.
       - !type:ModifyBleed
         amount: -0.25
-      - !type:SatiateHunger #Numbers are balanced with this in mind + it helps limit how much healing you can get from food
+      - !type:Satiate #Numbers are balanced with this in mind + it helps limit how much healing you can get from food
+        satiationType: Hunger
       - !type:ImmunityModifier #Goobstation # 1/3 of immurin
         gainRateModifier: 0.000211695098702 # sqrt(1/3) * immurin
         strengthModifier: 0.00256600119637 # sqrt(1/3) * immurin
@@ -74,7 +75,8 @@
             Brute: -0.85 #goob, was -0.4
       - !type:ModifyBloodLevel
         amount: 2 # Goob
-      - !type:SatiateHunger
+      - !type:Satiate
+        satiationType: Hunger
   pricePerUnit: 3
 
 - type: reagent

@@ -167,11 +167,11 @@ public abstract partial class SharedStackSystem
         if (!_stackQuery.Resolve(item.Owner, ref item.Comp, false))
         {
             // This isn't even a stack. Just try to pickup as normal.
-            _hands.PickupOrDrop(user.Owner, item.Owner, handsComp: user.Comp);
+            Hands.PickupOrDrop(user.Owner, item.Owner, handsComp: user.Comp);
             return;
         }
 
-        foreach (var held in _hands.EnumerateHeld(user))
+        foreach (var held in Hands.EnumerateHeld(user))
         {
             TryMergeStacks(item, held, out _);
 
@@ -179,7 +179,7 @@ public abstract partial class SharedStackSystem
                 return;
         }
 
-        _hands.PickupOrDrop(user.Owner, item.Owner, handsComp: user.Comp);
+        Hands.PickupOrDrop(user.Owner, item.Owner, handsComp: user.Comp);
     }
 
     /// <summary>

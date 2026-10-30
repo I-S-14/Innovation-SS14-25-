@@ -242,9 +242,9 @@ public sealed partial class FoodSequenceSystem : SharedFoodSequenceSystem
         if (!_solutionContainer.TryGetSolution(elementFood.Owner, elementFood.Comp.Solution, out _, out var elementSolution))
             return; // Goob anythingburg
 
-        if (TryComp<SolutionContainerManagerComponent>(elementFood, out var elementSolutionContainer)) // Goobstation - anythingburgers We don't give a FUCK if the solution container is food or not, and i dont see why you woold.
+        if (TryComp<SolutionManagerComponent>(elementFood, out var elementSolutionContainer)) // Goobstation - anythingburgers We don't give a FUCK if the solution container is food or not, and i dont see why you woold.
         {
-            foreach (var name in elementSolutionContainer.Containers)
+            foreach (var name in _solutionContainer.EnumerateSolutionContainers((elementFood.Owner, null), addPrefix: false))
             {
                 if (!_solutionContainer.TryGetSolution(elementFood.Owner, name, out _, out var elementSolutionGoob))
                     continue;

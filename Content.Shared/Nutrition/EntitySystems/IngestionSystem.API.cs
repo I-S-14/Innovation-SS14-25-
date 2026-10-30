@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.Chemistry.Components;
+using Content.Shared.Chemistry.Components.SolutionManager;
 using Content.Shared.Chemistry.Reagent;
 using Content.Shared.EntityEffects.Effects;
 using Content.Shared.EntityEffects.Effects.Body;
@@ -9,7 +10,6 @@ using Content.Shared.Nutrition.Components;
 using Content.Shared.Nutrition.Prototypes;
 using Content.Shared.Verbs;
 using Robust.Shared.Prototypes;
-using Content.Shared.Chemistry.Components.SolutionManager;
 
 namespace Content.Shared.Nutrition.EntitySystems;
 
@@ -61,22 +61,11 @@ public sealed partial class IngestionSystem
     }
 
     /// <summary>
-    /// Check if the action user has an unblocked mouth.
-    /// </summary>
-    /// <param name="user">The mouth action's user to check</param>
-    /// <param name="flags">The slots to check that are not being blocked.</param>
-    /// <returns>True if the user has a free mouth, otherwise False</returns>
-    public bool HasMouthAvailable(EntityUid user, SlotFlags flags = DefaultFlags)
-    {
-        return HasMouthAvailable(user, user, flags);
-    }
-
-    /// <summary>
     ///     Check whether we have an open pie-hole that's in range.
     /// </summary>
     /// <param name="user">The one performing the action</param>
     /// <param name="target">The target whose mouth is checked</param>
-    /// <returns>True if the user has a free mouth that can reach the target, otherwise False</returns>
+    /// <returns></returns>
     public bool HasMouthAvailable(EntityUid user, EntityUid target)
     {
         return HasMouthAvailable(user, target, DefaultFlags);
@@ -89,7 +78,7 @@ public sealed partial class IngestionSystem
         if (!_transform.GetMapCoordinates(user).InRange(_transform.GetMapCoordinates(target), MaxFeedDistance))
         {
             var message = Loc.GetString("interaction-system-user-interaction-cannot-reach");
-            _popup.PopupEntity(message, user, user);
+            _popup.PopupClient(message, user, user);
             return false;
         }
 
@@ -100,7 +89,7 @@ public sealed partial class IngestionSystem
             return true;
 
         if (attempt.Blocker != null)
-            _popup.PopupEntity(Loc.GetString("ingestion-remove-mask", ("entity", attempt.Blocker.Value)), target, user);
+            _popup.PopupClient(Loc.GetString("ingestion-remove-mask", ("entity", attempt.Blocker.Value)), target, user);
 
         return false;
     }
@@ -152,20 +141,27 @@ public sealed partial class IngestionSystem
 
     #region EdibleComponent
 
-    /// <summary>
-    /// Spawns trash for the edible entity, placing it in the same hand if held, otherwise spawning it nearby.
-    /// </summary>
-    /// <param name="entity">Edible entity that will spawn trash.</param>
-    /// <param name="user">Optional user that will attempt to pickup spawned trash.</param>
     public void SpawnTrash(Entity<EdibleComponent> entity, EntityUid? user = null)
     {
-        var pickup = user is not null && _hands.TryDrop(user.Value, entity);
-        foreach (var trash in entity.Comp.Trash)
-        {
-            var spawnedTrash = PredictedSpawnNextToOrDrop(trash, entity);
+        if (entity.Comp.Trash.Count == 0)
+            return;
 
-            if (pickup)
-                _hands.TryPickupAnyHand(user!.Value, spawnedTrash);
+        var position = _transform.GetMapCoordinates(entity);
+        var trashes = entity.Comp.Trash;
+        var pickup = user != null && _hands.IsHolding(user.Value, entity, out _);
+
+        foreach (var trash in trashes)
+        {
+            var spawnedTrash = EntityManager.PredictedSpawn(trash, position);
+
+            // If the user is holding the item
+            if (!pickup)
+                continue;
+
+            // Put the trash in the user's hand
+            // I am 100% confident we don't need this check but rider gets made at me if it's not here.
+            if (user != null)
+                _hands.TryPickupAnyHand(user.Value, spawnedTrash);
         }
     }
 
@@ -221,18 +217,18 @@ public sealed partial class IngestionSystem
         var total = 0f;
         foreach (var quantity in solution.Contents)
         {
-            var reagent = ProtoMan.Index<ReagentPrototype>(quantity.Reagent.Prototype);
+            var reagent = _proto.Index<ReagentPrototype>(quantity.Reagent.Prototype);
             if (reagent.Metabolisms == null)
                 continue;
 
-            foreach (var entry in reagent.Metabolisms.Metabolisms.Values)
+            foreach (var entry in reagent.Metabolisms.Values)
             {
                 foreach (var effect in entry.Effects)
                 {
                     // ignores any effect conditions, just cares about how much it can hydrate
-                    if (effect is Satiate satiate && satiate.SatiationType == SatiationSystem.Hunger)
+                    if (effect is Satiate hunger && hunger.SatiationType == SatiationSystem.Hunger) // IS14-merge: wizden Satiate effect
                     {
-                        total += satiate.Factor * quantity.Quantity.Float();
+                        total += hunger.Factor * quantity.Quantity.Float();
                     }
                 }
             }
@@ -272,18 +268,18 @@ public sealed partial class IngestionSystem
         var total = 0f;
         foreach (var quantity in solution.Contents)
         {
-            var reagent = ProtoMan.Index<ReagentPrototype>(quantity.Reagent.Prototype);
+            var reagent = _proto.Index<ReagentPrototype>(quantity.Reagent.Prototype);
             if (reagent.Metabolisms == null)
                 continue;
 
-            foreach (var entry in reagent.Metabolisms.Metabolisms.Values)
+            foreach (var entry in reagent.Metabolisms.Values)
             {
                 foreach (var effect in entry.Effects)
                 {
                     // ignores any effect conditions, just cares about how much it can hydrate
-                    if (effect is Satiate satiate && satiate.SatiationType == SatiationSystem.Thirst)
+                    if (effect is Satiate thirst && thirst.SatiationType == SatiationSystem.Thirst) // IS14-merge: wizden Satiate effect
                     {
-                        total += satiate.Factor * quantity.Quantity.Float();
+                        total += thirst.Factor * quantity.Quantity.Float();
                     }
                 }
             }
@@ -303,7 +299,7 @@ public sealed partial class IngestionSystem
     /// <param name="user">The entity trying to make the ingestion happening, not necessarily the one eating</param>
     /// <param name="solution">Solution we're returning</param>
     /// <param name="time">The time it takes us to eat this entity</param>
-    public bool CanAccessSolution(EntityUid ingested,
+    public bool CanAccessSolution(Entity<SolutionContainerManagerComponent?> ingested,
         EntityUid user,
         [NotNullWhen(true)] out Entity<SolutionComponent>? solution,
         out TimeSpan? time)
@@ -311,20 +307,19 @@ public sealed partial class IngestionSystem
         solution = null;
         time = null;
 
-        // TODO: Relay this event to solutions using solution relay
+        if (!Resolve(ingested, ref ingested.Comp))
+        {
+            _popup.PopupClient(Loc.GetString("ingestion-try-use-is-empty", ("entity", ingested)), ingested, user);
+            return false;
+        }
+
         var ev = new EdibleEvent(user);
         RaiseLocalEvent(ingested, ref ev);
 
         solution = ev.Solution;
         time = ev.Time;
 
-        if (solution == null)
-        {
-            _popup.PopupEntity(Loc.GetString("ingestion-try-use-is-empty", ("entity", ingested)), ingested, user);
-            return false;
-        }
-
-        return !ev.Cancelled;
+        return !ev.Cancelled && solution != null;
     }
 
     /// <summary>
@@ -358,7 +353,7 @@ public sealed partial class IngestionSystem
         if (!CanIngest(user, ingested))
             return false;
 
-        var proto = ProtoMan.Index(type);
+        var proto = _proto.Index(type);
 
         verb = new()
         {
@@ -406,7 +401,7 @@ public sealed partial class IngestionSystem
 
     public string GetProtoNoun([ForbidLiteral] ProtoId<EdiblePrototype> proto)
     {
-        var prototype = ProtoMan.Index(proto);
+        var prototype = _proto.Index(proto);
 
         return GetProtoNoun(prototype);
     }
@@ -432,7 +427,7 @@ public sealed partial class IngestionSystem
 
     public string GetProtoVerb([ForbidLiteral] ProtoId<EdiblePrototype> proto)
     {
-        var prototype = ProtoMan.Index(proto);
+        var prototype = _proto.Index(proto);
 
         return GetProtoVerb(prototype);
     }

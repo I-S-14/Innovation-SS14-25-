@@ -73,5 +73,5 @@ public sealed partial class GasTankComponent : GasMaxPressureHolderComponent
     ///     Distributed pressure.
     /// </summary>
     [DataField, AutoNetworkedField]
-    public float OutputPressure = DefaultOutputPressure;
+    public float OutputPressure = Atmospherics.OneAtmosphere;
 }
