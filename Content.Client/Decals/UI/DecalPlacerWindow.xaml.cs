@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
 using System.Linq;
 using Content.Client.Stylesheets;
 using Content.Shared.Decals;
@@ -9,10 +7,9 @@ using Robust.Client.Graphics;
 using Robust.Client.UserInterface.Controls;
 using Robust.Client.UserInterface.CustomControls;
 using Robust.Client.UserInterface.XAML;
-// using Robust.Client.Utility; // Commented by CorvaxGoob
+using Robust.Client.Utility;
 using Robust.Shared.Prototypes;
 using static Robust.Client.UserInterface.Controls.BaseButton;
-using Robust.Client.Utility;
 
 namespace Content.Client.Decals.UI;
 
@@ -23,7 +20,6 @@ public sealed partial class DecalPlacerWindow : DefaultWindow
     [Dependency] private IEntityManager _e = default!;
 
     private readonly DecalPlacementSystem _decalPlacementSystem;
-	private readonly DecalCopySystem _decalCopySystem; // CorvaxGoob
     private readonly SpriteSystem _sprite;
 
     public FloatSpinBox RotationSpinBox;
@@ -47,7 +43,6 @@ public sealed partial class DecalPlacerWindow : DefaultWindow
         IoCManager.InjectDependencies(this);
 
         _decalPlacementSystem = _e.System<DecalPlacementSystem>();
-		 _decalCopySystem = _e.System<DecalCopySystem>(); // CorvaxGoob
         _sprite = _e.System<SpriteSystem>();
 
         // This needs to be done in C# so we can have custom stuff passed in the constructor
@@ -60,15 +55,6 @@ public sealed partial class DecalPlacerWindow : DefaultWindow
 
         Search.OnTextChanged += _ => RefreshList();
         ColorPicker.OnColorChanged += OnColorPicked;
-
-// CorvaxGoob-changes-start:
-        _decalCopySystem.UpdateClientColorAction += color =>
-        {
-            _color = color;
-            ColorPicker.Color = color;
-            RefreshList();
-        };
-// CorvaxGoob-changes-end.
 
         PickerOpen.OnPressed += _ =>
         {
@@ -101,13 +87,6 @@ public sealed partial class DecalPlacerWindow : DefaultWindow
             _rotation = args.Value;
             UpdateDecalPlacementInfo();
         };
-// CorvaxGoob-changes-start:
-        SwitchCopy.OnPressed += args =>
-        {
-            _decalPlacementSystem.SetActive(false);
-            _decalCopySystem.SetActive(true);
-        };
-// CorvaxGoob-changes-end.
         EnableAuto.OnToggled += args =>
         {
             _auto = args.Pressed;
@@ -241,6 +220,5 @@ public sealed partial class DecalPlacerWindow : DefaultWindow
     {
         base.Close();
         _decalPlacementSystem.SetActive(false);
-		_decalCopySystem.SetActive(false); // CorvaxGoob
     }
 }

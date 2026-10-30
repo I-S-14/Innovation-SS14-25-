@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
 using System.Numerics;
 using Content.Server.Administration.Logs;
 using Content.Server.Administration.Managers;
@@ -7,22 +5,11 @@ using Content.Shared.Administration;
 using Content.Shared.Database;
 using Content.Shared.Decals;
 using Content.Shared.Maps;
-using Microsoft.Extensions.ObjectPool;
-using Robust.Server.Player;
-using Robust.Shared;
-using Robust.Shared.Configuration;
-using Robust.Shared.Enums;
 using Robust.Shared.EntitySerialization;
 using Robust.Shared.GameStates;
 using Robust.Shared.Map.Events;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
-using Content.Shared.Chunking;
-using Robust.Shared.Player;
-using Robust.Shared.Threading;
-using Robust.Shared.Timing;
-using Robust.Shared.Utility;
-using static Content.Shared.Decals.DecalGridComponent;
 
 namespace Content.Server.Decals;
 
@@ -244,46 +231,13 @@ public sealed partial class DecalSystem : SharedDecalSystem
         if (!TryAllocateDecalId(chunk, out var chunkDecalId))
             return false;
 
-        decalId = comp.ChunkCollection.NextDecalId++;
-        var chunkIndices = GetChunkIndices(decal.Coordinates);
-        var chunk = comp.ChunkCollection.ChunkCollection.GetOrNew(chunkIndices);
-        chunk.Decals[decalId] = decal;
-        comp.DecalIndex[decalId] = chunkIndices;
-        DirtyChunk(gridId.Value, chunkIndices, chunk);
-
-        // CorvaxGoob-Start-Footprint-Refactoring
-        var addedEv = new DecalAddedEvent(gridId.Value, decalId, decal);
-        RaiseLocalEvent(gridId.Value, ref addedEv);
-        // CorvaxGoob-End-Footprint-Refactoring
-
+        AddDecalWithId(chunk, chunkDecalId, decal);
+        decalId = new DecalIndex(chunk.Comp1.Chunk, chunkDecalId);
         return true;
     }
 
-    public override bool RemoveDecal(EntityUid gridId, uint decalId, DecalGridComponent? component = null)
-        => RemoveDecalInternal(gridId, decalId, out _, component);
-
-    // CorvaxGoob-Start-Footprint-Refactoring
-    protected override void OnDecalRemoved(EntityUid gridId, uint decalId, DecalGridComponent component, Vector2i indices, DecalChunk chunk)
-    {
-        base.OnDecalRemoved(gridId, decalId, component, indices, chunk);
-
-        var ev = new DecalRemovedEvent(gridId, decalId, indices);
-        RaiseLocalEvent(gridId, ref ev);
-    }
-    // CorvaxGoob-End-Footprint-Refactoring
-
-    public override HashSet<(uint Index, Decal Decal)> GetDecalsInRange(EntityUid gridId, Vector2 position, float distance = 0.75f, Func<Decal, bool>? validDelegate = null)
-    {
-        var decalIds = new HashSet<(uint, Decal)>();
-        var chunkCollection = ChunkCollection(gridId);
-        var chunkIndices = GetChunkIndices(position);
-        if (chunkCollection == null || !chunkCollection.TryGetValue(chunkIndices, out var chunk))
-            return decalIds;
-
-        foreach (var (uid, decal) in chunk.Decals)
-        {
-            if ((position - decal.Coordinates - new Vector2(0.5f, 0.5f)).Length() > distance)
-                continue;
+    public override bool RemoveDecal(EntityUid gridId, DecalIndex decal)
+        => RemoveDecalInternal(gridId, decal, out _);
 
     public bool RemoveDecal(EntityUid gridId, Vector2i chunkIndices, ushort decalId)
         => RemoveDecalInternal(gridId, chunkIndices, decalId, out _);

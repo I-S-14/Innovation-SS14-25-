@@ -155,7 +155,7 @@ public partial class XenobiologySystem
             var childStomachList = _body.GetBodyOrganEntityComps<StomachComponent>(s);
             foreach (var stomach in childStomachList)
             {
-                _stomach.TryTransferSolution(stomach.Owner, parentStomachSolutionTransfer, stomach);
+                _stomach.TryTransferSolution((stomach.Owner, stomach.Comp1, null), parentStomachSolutionTransfer);
             }
         }
 

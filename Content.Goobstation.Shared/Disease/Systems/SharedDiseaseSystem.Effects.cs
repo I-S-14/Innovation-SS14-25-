@@ -30,6 +30,7 @@ public partial class SharedDiseaseSystem
     [Dependency] private SharedMeleeWeaponSystem _melee = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private StatusEffectsSystem _status = default!;
+    [Dependency] private Content.Shared.StatusEffectNew.StatusEffectsSystem _statusNew = default!; // IS14-merge
     [Dependency] private SharedStunSystem _stun = default!;
     [Dependency] private TileSystem _tile = default!;
     [Dependency] private MovementModStatusSystem _movemod = default!;
@@ -149,7 +150,7 @@ public partial class SharedDiseaseSystem
             return;
 
         // migrate this to new status effects once flashes are
-        _status.TryAddStatusEffect<FlashedComponent>(args.Ent, _flash.FlashedKey.Id, ent.Comp.Duration * GetScale(args, ent.Comp), true);
+        _statusNew.TryAddStatusEffectDuration(args.Ent, SharedFlashSystem.FlashedKey, ent.Comp.Duration * GetScale(args, ent.Comp)); // IS14-merge: wizden flash is a status effect entity
         _movemod.TryUpdateMovementSpeedModDuration(args.Ent.Owner,  MovementModStatusSystem.FlashSlowdown, ent.Comp.Duration * GetScale(args, ent.Comp), ent.Comp.SlowTo, ent.Comp.SlowTo);
 
         if (ent.Comp.StunDuration != null)

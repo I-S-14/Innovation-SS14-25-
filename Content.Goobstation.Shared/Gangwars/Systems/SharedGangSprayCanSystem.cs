@@ -161,7 +161,7 @@ public sealed partial class SharedGangSprayCanSystem : EntitySystem
     {
         var signs = _proto.Index(signPrototypes);
         var seed = SharedRandomExtensions.HashCodeCombine((int) _timing.CurTick.Value, GetNetEntity(sprayCan).Id);
-        var signProto = signs.Pick(new Random(seed));
+        var signProto = signs.Pick(SharedRandomExtensions.PredictedRandom(_timing, GetNetEntity(sprayCan))); // IS14-merge: wizden Pick takes IRobustRandom
         var uid = PredictedSpawnAtPosition(signProto, location);
 
         var gangColor = EnsureComp<GangColorComponent>(uid);

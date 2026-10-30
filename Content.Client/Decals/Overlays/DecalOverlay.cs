@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
 using System.Numerics;
 using Content.Shared.Decals;
 using Robust.Client.GameObjects;
@@ -8,7 +6,6 @@ using Robust.Shared.Enums;
 using Robust.Shared.GameStates;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
-using Robust.Shared.Map.Enumerators;
 
 namespace Content.Client.Decals.Overlays
 {

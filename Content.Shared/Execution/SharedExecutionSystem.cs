@@ -236,4 +236,39 @@ public sealed partial class SharedExecutionSystem : EntitySystem
         _wounds.AmputateWoundable(body.Value,head.Value);
     }
     // Goobstation end
+
+    // IS14-merge: restored member lost in the upstream merge
+    public void ShowExecutionExternalPopup(string locString, EntityUid attacker, EntityUid victim, EntityUid weapon) // Made public by goobstation
+    {
+        _popup.PopupEntity(
+            Loc.GetString(locString, ("attacker", Identity.Entity(attacker, EntityManager)), ("victim", Identity.Entity(victim, EntityManager)), ("weapon", weapon)),
+            attacker,
+            Filter.PvsExcept(attacker),
+            true,
+            PopupType.MediumCaution
+            );
+    }
+
+    // IS14-merge: restored member lost in the upstream merge
+    public void ShowExecutionInternalPopup(string locString, EntityUid attacker, EntityUid victim, EntityUid weapon, bool predict = true) // Made public by goobstation
+    {
+        if (predict)
+        {
+            _popup.PopupClient(
+               Loc.GetString(locString, ("attacker", Identity.Entity(attacker, EntityManager)), ("victim", Identity.Entity(victim, EntityManager)), ("weapon", weapon)),
+               attacker,
+               attacker,
+               PopupType.MediumCaution
+               );
+        }
+        else
+        {
+            _popup.PopupEntity(
+               Loc.GetString(locString, ("attacker", Identity.Entity(attacker, EntityManager)), ("victim", Identity.Entity(victim, EntityManager)), ("weapon", weapon)),
+               attacker,
+               attacker,
+               PopupType.MediumCaution
+               );
+        }
+    }
 }

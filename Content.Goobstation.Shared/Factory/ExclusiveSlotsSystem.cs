@@ -46,7 +46,7 @@ public sealed partial class ExclusiveSlotsSystem : EntitySystem
     private void OnInputLinkAttempt(Entity<ExclusiveInputSlotComponent> ent, ref LinkAttemptEvent args)
     {
         if (TryCancelLink((ent, ent.Comp), args.Sink, args.SinkPort, args.Source, args.SourcePort))
-            args.Cancel();
+            args.Cancelled = true;
     }
 
     private void OnInputNewLink(Entity<ExclusiveInputSlotComponent> ent, ref NewLinkEvent args)
@@ -63,7 +63,7 @@ public sealed partial class ExclusiveSlotsSystem : EntitySystem
     private void OnOutputLinkAttempt(Entity<ExclusiveOutputSlotComponent> ent, ref LinkAttemptEvent args)
     {
         if (TryCancelLink((ent, ent.Comp), args.Source, args.SourcePort, args.Sink, args.SinkPort))
-            args.Cancel();
+            args.Cancelled = true;
     }
 
     private void OnOutputNewLink(Entity<ExclusiveOutputSlotComponent> ent, ref NewLinkEvent args)

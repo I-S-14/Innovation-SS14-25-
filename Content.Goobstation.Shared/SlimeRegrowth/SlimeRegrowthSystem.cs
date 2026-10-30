@@ -145,7 +145,7 @@ public sealed partial class SlimeRegrowthSystem : EntitySystem
         if (!TryFindMissingPart(ent, null, out _))
             failure = "slime-regrowth-nothing-missing";
         else if (TryComp<SatiationComponent>(ent, out var hunger) &&
-                 _hunger.GetHunger(hunger) - ent.Comp.HungerCost < ent.Comp.MinHunger)
+                 _hunger.GetHunger(ent.Owner, hunger) - ent.Comp.HungerCost < ent.Comp.MinHunger)
             failure = "slime-regrowth-too-hungry";
         else if (TryComp<BloodstreamComponent>(ent, out var blood) &&
                  _bloodstream.GetBloodLevel((ent, blood)) < ent.Comp.MinBloodLevel)

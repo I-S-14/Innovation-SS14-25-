@@ -326,7 +326,7 @@ public abstract partial class SharedMagicSystem : EntitySystem
     #endregion
     #region Projectile Spells
     [SubscribeLocalEvent]
-    private void OnProjectileSpell(ProjectileSpellEvent ev)
+    public void OnProjectileSpell(ProjectileSpellEvent ev) // Goobstation - public for advanced mimery
     {
         if (ev.Handled || !PassesSpellPrerequisites(ev.Action, ev.Performer))
             return;

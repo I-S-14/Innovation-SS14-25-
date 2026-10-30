@@ -229,8 +229,8 @@ public sealed partial class AutomationFilterSystem : EntitySystem
         if (!TryComp<ItemSlotsComponent>(ent, out var slots))
             return;
 
-        if (!_slots.TryGetSlot(ent, CombinedFilterComponent.FilterAName, out var filterA, slots) ||
-            !_slots.TryGetSlot(ent, CombinedFilterComponent.FilterBName, out var filterB, slots))
+        if (!_slots.TryGetSlot((ent, slots), CombinedFilterComponent.FilterAName, out var filterA) ||
+            !_slots.TryGetSlot((ent, slots), CombinedFilterComponent.FilterBName, out var filterB))
         {
             Log.Error($"{ToPrettyString(ent)} was missing filter slots!");
             RemCompDeferred<CombinedFilterComponent>(ent);
@@ -382,7 +382,7 @@ public sealed partial class AutomationFilterSystem : EntitySystem
         if (!TryComp<ItemSlotsComponent>(ent, out var slots))
             return;
 
-        if (!_slots.TryGetSlot(ent, ent.Comp.FilterSlotId, out var filterSlot, slots))
+        if (!_slots.TryGetSlot((ent, slots), ent.Comp.FilterSlotId, out var filterSlot))
         {
             Log.Warning($"Missing filter slot {ent.Comp.FilterSlotId} on {ToPrettyString(ent)}");
             RemCompDeferred<FilterSlotComponent>(ent);
@@ -453,7 +453,7 @@ public sealed partial class AutomationFilterSystem : EntitySystem
 
         // have to split it, client will return null here
         var coords = Transform(item).Coordinates;
-        return _stack.Split(item, stack.Count - excess, coords, stack);
+        return _stack.Split((item, stack), stack.Count - excess, coords);
     }
 
     /// <summary>

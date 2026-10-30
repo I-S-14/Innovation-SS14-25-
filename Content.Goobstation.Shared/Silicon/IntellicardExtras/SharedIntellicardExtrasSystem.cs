@@ -72,7 +72,7 @@ public abstract partial class SharedIntellicardExtrasSystem : EntitySystem
             return;
         }
 
-        var cardHasAi = _slots.CanEject(ent.Owner, args.User, cardAiHolder.Slot);
+        var cardHasAi = _slots.CanEject(ent.Owner, cardAiHolder.Slot, args.User);
         var brainHasAi = targetMindContainer!.Mind is { };
 
         if (cardHasAi && brainHasAi)
@@ -129,7 +129,7 @@ public abstract partial class SharedIntellicardExtrasSystem : EntitySystem
             return;
 
         // get mind status of both
-        var cardHasAi = _slots.CanEject(cardUid, args.User, cardAiHolder.Slot) && cardMindContainer is { } && cardMindContainer.Mind is { };
+        var cardHasAi = _slots.CanEject(cardUid, cardAiHolder.Slot, args.User) && cardMindContainer is { } && cardMindContainer.Mind is { };
         var targetHasAi = targetMindContainer.Mind is { };
 
         // Card -> Brain

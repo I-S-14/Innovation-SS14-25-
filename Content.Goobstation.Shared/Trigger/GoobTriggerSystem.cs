@@ -41,11 +41,11 @@ public sealed partial class GoobTriggerSystem : EntitySystem
             return;
 
         if (!TryComp<EnsnareableComponent>(target, out var ensnareable) || !ensnareable.IsEnsnared ||
-            ensnareable.Container.ContainedEntities.Count <= 0)
+            ensnareable.Container!.ContainedEntities.Count <= 0)
             return;
 
-        var bola = ensnareable.Container.ContainedEntities[0];
-        _snare.ForceFree(bola, Comp<EnsnaringComponent>(bola));
+        var bola = ensnareable.Container!.ContainedEntities[0];
+        _snare.ForceFree((bola, Comp<EnsnaringComponent>(bola)));
         args.Handled = true;
     }
 
@@ -73,7 +73,7 @@ public sealed partial class GoobTriggerSystem : EntitySystem
             return;
 
         var xform = Transform(target.Value);
-        var spawns = _entityTable.GetSpawns(ent.Comp.Table, _random.GetRandom()).ToList();
+        var spawns = _entityTable.GetSpawns(ent.Comp.Table, _random).ToList();
 
         if (ent.Comp.UseMapCoords)
         {

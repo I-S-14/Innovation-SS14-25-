@@ -11,9 +11,9 @@ namespace Content.Goobstation.Shared.FloorCleaner;
 public sealed partial class FloorCleanerDoAfterEvent : DoAfterEvent
 {
     [DataField]
-    public HashSet<(uint Index, Decal Decal)> Decals = default!;
+    public HashSet<(DecalIndex Index, Decal Decal)> Decals = default!;
 
-    public FloorCleanerDoAfterEvent(HashSet<(uint Index, Decal Decal)> decals)
+    public FloorCleanerDoAfterEvent(HashSet<(DecalIndex Index, Decal Decal)> decals)
     {
         Decals = decals;
     }

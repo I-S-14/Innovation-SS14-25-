@@ -54,7 +54,7 @@ public sealed partial class MobGrowthSystem : EntitySystem
             growth.NextGrowthTime = _gameTiming.CurTime + growth.GrowthInterval;
 
             if (_mobState.IsDead(uid)
-                || _hunger.GetHunger(hungerComp) < growth.HungerRequired
+                || _hunger.GetHunger(uid, hungerComp) < growth.HungerRequired
                 || !growth.Stages.TryGetValue(growth.CurrentStage, out var currentData)
                 || string.IsNullOrEmpty(currentData.NextStage))
                 continue;

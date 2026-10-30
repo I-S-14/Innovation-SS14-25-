@@ -149,10 +149,10 @@ public sealed partial class SlimeLatchSystem : EntitySystem
             foreach (var stomach in stomachList)
             {
                 var bloodSolution = blood.SplitSolutionWithout(bloodTransfer / stomachCount, ent.Comp.ToxinReagent); // we don't want slime sucking it's own toxin instad of drinking blood
-                _stomach.TryTransferSolution(stomach.Owner, bloodSolution, stomach); // blood first, other chemicals later
+                _stomach.TryTransferSolution((stomach.Owner, stomach.Comp1, null), bloodSolution); // blood first, other chemicals later
 
                 var chemSolution = chem.SplitSolution(chemTransfer / stomachCount);
-                _stomach.TryTransferSolution(stomach.Owner, chemSolution, stomach);
+                _stomach.TryTransferSolution((stomach.Owner, stomach.Comp1, null), chemSolution);
             }
 
             chem.AddReagent(ent.Comp.ToxinReagent, ent.Comp.ToxinUnits);

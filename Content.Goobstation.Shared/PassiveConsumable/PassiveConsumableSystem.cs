@@ -111,7 +111,7 @@ public sealed partial class PassiveConsumableSystem : EntitySystem
 
         foreach (var organ in stomachs)
         {
-            if (!_stomach.CanTransferSolution(organ.Owner, split, organ.Comp1)
+            if (!_stomach.CanTransferSolution((organ.Owner, organ.Comp1, null), split)
                 || !_solution.ResolveSolution(organ.Owner, StomachSystem.DefaultSolutionName, ref organ.Comp1.Solution, out var stomachSol)
                 || stomachSol.AvailableVolume <= highestAvailable)
                 continue;
@@ -128,7 +128,7 @@ public sealed partial class PassiveConsumableSystem : EntitySystem
         }
 
         _reactive.DoEntityReaction(wearer, solution, ReactionMethod.Ingestion);
-        _stomach.TryTransferSolution(bestStomachUid.Value, split, bestStomach);
+        _stomach.TryTransferSolution((bestStomachUid.Value, bestStomach, null), split);
 
         if (soln.Value.Comp.Solution.Volume > FixedPoint2.Zero)
             return false;

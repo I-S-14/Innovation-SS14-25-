@@ -1,3 +1,4 @@
+using Content.Shared.DeviceLinking.Payloads;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Goobstation.Common.DoAfter;
@@ -48,6 +49,7 @@ public abstract partial class SharedInteractorSystem : EntitySystem
         SubscribeLocalEvent<InteractorComponent, ExaminedEvent>(OnExamined);
         SubscribeLocalEvent<InteractorComponent, DoAfterEndedEvent>(OnDoAfterEnded);
         SubscribeLocalEvent<InteractorComponent, SignalReceivedEvent>(OnSignalReceived);
+        SubscribeLocalEvent<InteractorComponent, SignalReceivedEvent<LogicStatePayload>>(OnLogicSignalReceived); // IS14-merge: wizden typed payloads
         // hand visuals
         SubscribeLocalEvent<InteractorComponent, EntInsertedIntoContainerMessage>(OnItemModified);
         SubscribeLocalEvent<InteractorComponent, EntRemovedFromContainerMessage>(OnItemModified);
@@ -94,16 +96,25 @@ public abstract partial class SharedInteractorSystem : EntitySystem
 
     private void OnSignalReceived(Entity<InteractorComponent> ent, ref SignalReceivedEvent args)
     {
-        if (args.Port != ent.Comp.AltInteractPort)
-            return;
+        if (args.Port == ent.Comp.AltInteractPort)
+            HandleAltSignal(ent, SignalState.Momentary);
+    }
 
-        var state = SignalState.Momentary;
-        args.Data?.TryGetValue<SignalState>("logic_state", out state);
+    // IS14-merge: logic state now arrives as a typed payload event instead of the payload dictionary
+    private void OnLogicSignalReceived(Entity<InteractorComponent> ent, ref SignalReceivedEvent<LogicStatePayload> args)
+    {
+        if (args.Port == ent.Comp.AltInteractPort)
+            HandleAltSignal(ent, args.Data.State);
+    }
+
+    private void HandleAltSignal(Entity<InteractorComponent> ent, SignalState state)
+    {
         var alt = state switch
         {
             SignalState.Momentary => !ent.Comp.AltInteract,
             SignalState.Low => false,
-            SignalState.High => true
+            SignalState.High => true,
+            _ => ent.Comp.AltInteract
         };
         SetAltInteract(ent, alt);
     }

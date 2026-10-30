@@ -47,6 +47,13 @@ public sealed partial class EnsnareableComponent : Component
 /// </summary>
     [DataField]
     public ProtoId<AlertPrototype> EnsnaredAlert = "Ensnared";
+
+    // IS14-merge: restored member lost in the upstream merge
+    /// <summary>
+    /// Is this entity currently ensnared?
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public bool IsEnsnared;
 }
 
 public sealed partial class RemoveEnsnareAlertEvent : BaseAlertEvent;

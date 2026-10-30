@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: MIT
-
 using System.Numerics;
 using Content.Client.Actions;
 using Content.Client.Decals.Overlays;
@@ -195,11 +193,4 @@ public sealed partial class DecalPlacementSystem : EntitySystem
         else
             _inputSystem.SetEntityContextActive();
     }
-
-    // CorvaxGoob-changes-start:
-    public bool GetCurrentSnap()
-    {
-        return _snap;
-    }
-    // CorvaxGoob-changes-end.
 }

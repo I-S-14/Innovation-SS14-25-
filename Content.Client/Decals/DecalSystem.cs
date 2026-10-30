@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
 using System.Linq;
 using System.Numerics;
 using Content.Client.Decals.Overlays;
@@ -10,8 +8,6 @@ using Robust.Client.Graphics;
 using Robust.Shared.GameStates;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
-using Robust.Shared.Utility;
-using static Content.Shared.Decals.DecalGridComponent;
 
 namespace Content.Client.Decals
 {

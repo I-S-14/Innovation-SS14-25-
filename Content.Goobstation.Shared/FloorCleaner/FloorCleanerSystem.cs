@@ -84,7 +84,7 @@ public sealed partial class FloorCleanerSystem : EntitySystem
     private bool TryStartCleaning(
         Entity<FloorCleanerComponent> floorCleaner,
         EntityUid user,
-        HashSet<(uint Index, Decal Decal)> decals)
+        HashSet<(DecalIndex Index, Decal Decal)> decals)
     {
         var doAfterArgs = new DoAfterArgs(EntityManager,
             user,

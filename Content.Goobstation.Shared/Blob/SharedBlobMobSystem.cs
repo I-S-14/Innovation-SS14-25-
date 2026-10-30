@@ -50,7 +50,7 @@ public abstract partial class SharedBlobMobSystem : EntitySystem
         if (args.Cancelled || !_tileQuery.HasComp(args.Target) && !_mobQuery.HasComp(args.Target))
             return;
 
-        _popupSystem.PopupCursor(Loc.GetString("blob-mob-attack-blob"), PopupType.Large);
+        _popupSystem.PopupCursor(Loc.GetString("blob-mob-attack-blob"), args.Uid, PopupType.Large);
         args.Cancel();
     }
 }

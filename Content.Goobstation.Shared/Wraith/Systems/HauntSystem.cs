@@ -1,3 +1,4 @@
+using Content.Shared.Flash;
 using Content.Goobstation.Shared.Wraith.Components;
 using Content.Goobstation.Shared.Wraith.Events;
 using Content.Goobstation.Shared.Wraith.WraithPoints;
@@ -17,6 +18,7 @@ public sealed partial class HauntSystem : EntitySystem
 {
     [Dependency] private SharedInteractionSystem _interact = default!;
     [Dependency] private StatusEffectsSystem _statusEffectsOld = default!;
+    [Dependency] private Content.Shared.StatusEffectNew.StatusEffectsSystem _statusNew = default!; // IS14-merge
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private WraithPointsSystem _wraithPointsSystem = default!;
     [Dependency] private EntityLookupSystem _lookup = default!;
@@ -113,10 +115,7 @@ public sealed partial class HauntSystem : EntitySystem
         _statusEffects.Clear();
         _lookup.GetEntitiesInRange(Transform(ent.Owner).Coordinates, 3f, _statusEffects);
         foreach (var entity in _statusEffects)
-            _statusEffectsOld.TryAddStatusEffect<FlashedComponent>(entity,
-                ent.Comp.FlashedId,
-                ent.Comp.HauntFlashDuration,
-                true);
+            _statusNew.TryAddStatusEffectDuration(entity, SharedFlashSystem.FlashedKey, ent.Comp.HauntFlashDuration); // IS14-merge: wizden flash is a status effect entity
 
         // we don't have corporeal so add it
         _statusEffectsOld.TryAddStatusEffect<CorporealComponent>(ent.Owner, ent.Comp.CorporealEffect, ent.Comp.HauntCorporealDuration, true);
