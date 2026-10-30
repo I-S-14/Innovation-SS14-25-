@@ -50,7 +50,7 @@ public sealed partial class SlimeLatchSystem : EntitySystem
     [Dependency] private SharedPhysicsSystem _physic = default!;
 
     private EntityQuery<BloodstreamComponent> _bloodstreamQuery;
-    private EntityQuery<HungerComponent> _hungerQuery;
+    private EntityQuery<SatiationComponent> _hungerQuery;
     private EntityQuery<SlimeComponent> _slimeQuery;
     private EntityQuery<XenoVacuumTankComponent> _tankQuery;
     private EntityQuery<MobStateComponent> _mobQuery;
@@ -78,7 +78,7 @@ public sealed partial class SlimeLatchSystem : EntitySystem
         SubscribeLocalEvent<SlimeDamageOvertimeComponent, TryingToSleepEvent>(OnSleepOverride);
 
         _bloodstreamQuery = GetEntityQuery<BloodstreamComponent>();
-        _hungerQuery = GetEntityQuery<HungerComponent>();
+        _hungerQuery = GetEntityQuery<SatiationComponent>();
         _slimeQuery = GetEntityQuery<SlimeComponent>();
         _tankQuery = GetEntityQuery<XenoVacuumTankComponent>();
         _mobQuery = GetEntityQuery<MobStateComponent>();

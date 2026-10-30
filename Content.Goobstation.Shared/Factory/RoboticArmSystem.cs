@@ -16,6 +16,7 @@ using Robust.Shared.Containers;
 using Robust.Shared.Map;
 using Robust.Shared.Physics.Events;
 using Robust.Shared.Timing;
+using Content.Shared.DeviceLinking.Systems;
 
 namespace Content.Goobstation.Shared.Factory;
 

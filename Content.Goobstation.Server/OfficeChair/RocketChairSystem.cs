@@ -79,7 +79,7 @@ public sealed partial class RocketChairSystem : SharedRocketChairSystem
     {
         var (uid, comp) = ent;
 
-        _solutions.EnsureSolutionEntity((uid, (SolutionContainerManagerComponent?) null),
+        _solutions.EnsureSolutionEntity((uid, (SolutionManagerComponent?) null),
             comp.FuelSolution, out _, out var solEnt, FixedPoint2.New(comp.FuelCapacity));
 
         if (solEnt != null && solEnt.Value.Comp.Solution.Volume == 0 && comp.StartFuel > 0)

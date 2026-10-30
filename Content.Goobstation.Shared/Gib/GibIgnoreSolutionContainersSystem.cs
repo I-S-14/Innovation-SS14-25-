@@ -12,10 +12,10 @@ public sealed partial class GibIgnoreSolutionContainersSystem : EntitySystem
     {
         base.Initialize();
 
-        SubscribeLocalEvent<SolutionContainerManagerComponent, AttemptEntityContentsGibEvent>(OnAttempt);
+        SubscribeLocalEvent<SolutionManagerComponent, AttemptEntityContentsGibEvent>(OnAttempt);
     }
 
-    private void OnAttempt(Entity<SolutionContainerManagerComponent> ent, ref AttemptEntityContentsGibEvent args)
+    private void OnAttempt(Entity<SolutionManagerComponent> ent, ref AttemptEntityContentsGibEvent args)
     {
         foreach (var container in _soln.EnumerateSolutionContainers(ent.AsNullable()))
         {

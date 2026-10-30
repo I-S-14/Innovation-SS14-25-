@@ -4,6 +4,7 @@ using Robust.Shared.Audio;
 using Robust.Shared.Audio.Components;
 using Robust.Shared.Player;
 using Robust.Shared.Random;
+using Content.Shared.Ghost.Components;
 
 namespace Content.Goobstation.Shared.Slasher.Systems;
 

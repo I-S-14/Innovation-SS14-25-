@@ -27,7 +27,7 @@ public sealed partial class SynthBloodstreamSystem : EntitySystem
     {
         base.Update(frameTime);
 
-        var query = EntityQueryEnumerator<SynthBloodstreamComponent, HungerComponent, BloodstreamComponent, DamageableComponent>();
+        var query = EntityQueryEnumerator<SynthBloodstreamComponent, SatiationComponent, BloodstreamComponent, DamageableComponent>();
         while (query.MoveNext(out var uid, out var synth, out var hunger, out var bloodstream, out var damageable))
         {
             if (_timing.CurTime < synth.NextUpdate)
@@ -43,7 +43,7 @@ public sealed partial class SynthBloodstreamSystem : EntitySystem
         }
     }
 
-    private void UpdateSynthBloodstream(Entity<SynthBloodstreamComponent, HungerComponent, BloodstreamComponent, DamageableComponent> ent, bool critical)
+    private void UpdateSynthBloodstream(Entity<SynthBloodstreamComponent, SatiationComponent, BloodstreamComponent, DamageableComponent> ent, bool critical)
     {
         var hunger = _hunger.GetHunger(ent.Comp2);
         if (hunger <= ent.Comp1.MinHunger)
@@ -60,7 +60,7 @@ public sealed partial class SynthBloodstreamSystem : EntitySystem
     }
 
     private void UpdatePassiveRepair(
-        Entity<SynthBloodstreamComponent, HungerComponent, BloodstreamComponent, DamageableComponent> ent,
+        Entity<SynthBloodstreamComponent, SatiationComponent, BloodstreamComponent, DamageableComponent> ent,
         ref float hungerCost,
         float availableHunger,
         bool critical)
@@ -94,7 +94,7 @@ public sealed partial class SynthBloodstreamSystem : EntitySystem
     }
 
     private void UpdateBloodRegeneration(
-        Entity<SynthBloodstreamComponent, HungerComponent, BloodstreamComponent, DamageableComponent> ent,
+        Entity<SynthBloodstreamComponent, SatiationComponent, BloodstreamComponent, DamageableComponent> ent,
         ref float hungerCost,
         float availableHunger)
     {
@@ -115,7 +115,7 @@ public sealed partial class SynthBloodstreamSystem : EntitySystem
         hungerCost += amount.Float() * regeneration.HungerCostPerUnit;
     }
 
-    private DamageSpecifier BuildPassiveRepair(Entity<SynthBloodstreamComponent, HungerComponent, BloodstreamComponent, DamageableComponent> ent, float efficiency)
+    private DamageSpecifier BuildPassiveRepair(Entity<SynthBloodstreamComponent, SatiationComponent, BloodstreamComponent, DamageableComponent> ent, float efficiency)
     {
         var repair = ent.Comp1.PassiveRepair;
         repair.DamageDict.Clear();

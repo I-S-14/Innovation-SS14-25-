@@ -30,10 +30,10 @@ public sealed partial class NutrimentPumpImplantSystem : EntitySystem
                 if (pumpImplant.NextExecutionTime > _gameTiming.CurTime)
                     continue;
 
-                if (TryComp<HungerComponent>(uid, out var hungerComponent))
+                if (TryComp<SatiationComponent>(uid, out var hungerComponent))
                     _hunger.ModifyHunger(uid, pumpImplant.FoodRate, hungerComponent);
 
-                if (TryComp<ThirstComponent>(uid, out var thirstComponent))
+                if (TryComp<SatiationComponent>(uid, out var thirstComponent))
                     _thirst.ModifyThirst(uid, thirstComponent, pumpImplant.DrinkRate); // why the fuck is the order of arguments different for ModifyThirst????
 
                 pumpImplant.NextExecutionTime = _gameTiming.CurTime + pumpImplant.ExecutionInterval;

@@ -55,7 +55,7 @@ public sealed partial class TriggerOnSolutionInsertSystem : EntitySystem
                 }
             }
         }
-        if (TryComp<SolutionContainerManagerComponent>(uid, out var solutionContainerManager)){
+        if (TryComp<SolutionManagerComponent>(uid, out var solutionContainerManager)){
             foreach (var solutionContainer in solutionContainerManager.Containers)
             {
                 if (_solutionContainers.TryGetSolution(uid, solutionContainer, out var _, out var solution))

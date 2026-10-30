@@ -45,7 +45,7 @@ public sealed partial class MobGrowthSystem : EntitySystem
     {
         base.Update(frameTime);
 
-        var query = EntityQueryEnumerator<MobGrowthComponent, HungerComponent>();
+        var query = EntityQueryEnumerator<MobGrowthComponent, SatiationComponent>();
         while (query.MoveNext(out var uid, out var growth, out var hungerComp))
         {
             if (_gameTiming.CurTime < growth.NextGrowthTime)
@@ -66,7 +66,7 @@ public sealed partial class MobGrowthSystem : EntitySystem
     #region Helpers
 
     // Fairly barebones at the moment, this could be expanded to increase HP etc...
-    private void DoGrowth(Entity<MobGrowthComponent, HungerComponent> ent)
+    private void DoGrowth(Entity<MobGrowthComponent, SatiationComponent> ent)
     {
         var (uid, growth, hunger) = ent;
 

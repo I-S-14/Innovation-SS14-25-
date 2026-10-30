@@ -31,6 +31,7 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Numerics;
 using Content.Shared.Damage.Components;
+using Content.Shared.Suicide;
 
 namespace Content.Goobstation.Shared.Execution;
 

@@ -171,7 +171,7 @@ public sealed partial class SandevistanSystem : EntitySystem
             RaiseLocalEvent(ent, ref ev);
         }
 
-        _speed.RefreshMovementSpeedModifiers(ent);
+        _speed.RefreshMovementSpeedModifiers(ent.Owner);
 
         EnsureComp<DogVisionComponent>(ent);
 
@@ -496,7 +496,7 @@ public sealed partial class SandevistanSystem : EntitySystem
         // Mobs
         if (HasComp<MobStateComponent>(ent))
         {
-            _speed.RefreshMovementSpeedModifiers(ent);
+            _speed.RefreshMovementSpeedModifiers(ent.Owner);
             if (HasComp<DogVisionComponent>(ent))
                 RemCompDeferred<DogVisionComponent>(ent);
         }

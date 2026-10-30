@@ -168,26 +168,26 @@ public abstract partial class SharedStasisSystem : EntitySystem
     public void OnEquip(Entity<StasisProtectionComponent> protection, ref GotEquippedEvent args)
     {
         // Making x10 staminaDamage to make sure no one stunbaton them (until stun resist will be added)
-        if (TryComp<StaminaComponent>(args.Equipee, out var staminaComp))
+        if (TryComp<StaminaComponent>(args.EquipTarget, out var staminaComp))
         {
             staminaComp.CritThreshold *= protection.Comp.StaminaModifier;
             staminaComp.Decay *= protection.Comp.StaminaModifier;
         }
 
         // Applying stasis immune
-        EnsureComp<StasisImmunityComponent>(args.Equipee);
+        EnsureComp<StasisImmunityComponent>(args.EquipTarget);
     }
 
     public void OnUnequip(Entity<StasisProtectionComponent> protection, ref GotUnequippedEvent args)
     {
-        if (TryComp<StaminaComponent>(args.Equipee, out var staminaComp))
+        if (TryComp<StaminaComponent>(args.EquipTarget, out var staminaComp))
         {
             staminaComp.CritThreshold /= protection.Comp.StaminaModifier;
             staminaComp.Decay /= protection.Comp.StaminaModifier;
         }
 
-        if (HasComp<StasisImmunityComponent>(args.Equipee) )
-            EntityManager.RemoveComponent<StasisImmunityComponent>(args.Equipee);
+        if (HasComp<StasisImmunityComponent>(args.EquipTarget) )
+            EntityManager.RemoveComponent<StasisImmunityComponent>(args.EquipTarget);
     }
 
     #endregion

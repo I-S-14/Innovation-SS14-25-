@@ -27,7 +27,7 @@ public partial class XenobiologySystem
 
     private List<EntityUid> _slimes = new();
     private EntityQuery<BloodstreamComponent> _bloodQuery;
-    private List<Entity<SlimeComponent, MobGrowthComponent, HungerComponent>> _splitting = new();
+    private List<Entity<SlimeComponent, MobGrowthComponent, SatiationComponent>> _splitting = new();
 
     private void SubscribeBreeding()
     {
@@ -66,7 +66,7 @@ public partial class XenobiologySystem
     {
         _splitting.Clear();
         _slimes.Clear();
-        var query = EntityQueryEnumerator<SlimeComponent, MobGrowthComponent, HungerComponent>();
+        var query = EntityQueryEnumerator<SlimeComponent, MobGrowthComponent, SatiationComponent>();
         while (query.MoveNext(out var uid, out var slime, out var growthComp, out var hungerComp))
         {
             if (_timing.CurTime < slime.NextUpdateTime

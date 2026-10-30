@@ -171,16 +171,16 @@ public sealed partial class CloneProjectorSystem : SharedCloneProjectorSystem
 
     private void OnUnequipped(Entity<CloneProjectorComponent> projector, ref GotUnequippedEvent args)
     {
-        _actions.RemoveProvidedActions(args.Equipee, projector);
+        _actions.RemoveProvidedActions(args.EquipTarget, projector);
         TryInsertClone(projector);
 
         var popup = Loc.GetString(projector.Comp.UnequippedMessage);
-        _popup.PopupEntity(popup, args.Equipee, args.Equipee);
+        _popup.PopupEntity(popup, args.EquipTarget, args.EquipTarget);
 
         if (projector.Comp.DoStun)
-           _stun.TryUpdateParalyzeDuration(args.Equipee, projector.Comp.StunDuration);
+           _stun.TryUpdateParalyzeDuration(args.EquipTarget, projector.Comp.StunDuration);
 
-        RemComp<WearingCloneProjectorComponent>(args.Equipee);
+        RemComp<WearingCloneProjectorComponent>(args.EquipTarget);
     }
 
 

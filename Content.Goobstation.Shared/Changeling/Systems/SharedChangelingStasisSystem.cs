@@ -24,6 +24,7 @@ using Content.Shared.Movement.Pulling.Systems;
 using Content.Shared.Popups;
 using Content.Shared.Stunnable;
 using Robust.Shared.Utility;
+using Content.Shared.Suicide;
 
 namespace Content.Goobstation.Shared.Changeling.Systems;
 

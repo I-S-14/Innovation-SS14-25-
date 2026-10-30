@@ -65,7 +65,7 @@ public sealed partial class EnchantVisualsSystem : EntitySystem
 
     private void OnEquipmentVisualsUpdated(Entity<EnchantedComponent> ent, ref EquipmentVisualsUpdatedEvent args)
     {
-        SetLayers(args.Equipee, args.RevealedLayers);
+        SetLayers(args.EquipTarget, args.RevealedLayers);
     }
 
     private void SetLayers(EntityUid uid, HashSet<string> keys)

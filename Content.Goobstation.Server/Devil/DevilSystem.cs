@@ -106,8 +106,8 @@ public sealed partial class DevilSystem : EntitySystem
     {
         // Remove human components.
         RemComp<CombatModeComponent>(devil);
-        RemComp<HungerComponent>(devil);
-        RemComp<ThirstComponent>(devil);
+        RemComp<SatiationComponent>(devil);
+        RemComp<SatiationComponent>(devil);
         RemComp<TemperatureComponent>(devil);
         RemComp<TemperatureSpeedComponent>(devil);
         RemComp<CondemnedComponent>(devil);

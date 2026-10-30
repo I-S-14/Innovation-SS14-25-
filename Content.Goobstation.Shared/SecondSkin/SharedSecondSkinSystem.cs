@@ -91,11 +91,11 @@ public abstract partial class SharedSecondSkinSystem : EntitySystem
 
         if (!TryComp(secondSkin, out SecondSkinComponent? comp))
         {
-            RemComp<SecondSkinUserComponent>(args.Equipee);
+            RemComp<SecondSkinUserComponent>(args.EquipTarget);
             return;
         }
 
-        DisableSecondSkin((secondSkin.Value, comp), args.Equipee);
+        DisableSecondSkin((secondSkin.Value, comp), args.EquipTarget);
     }
 
     private void OnGetDeduction(Entity<SecondSkinUserComponent> ent, ref GetSecondSkinDeductionEvent args)
@@ -305,7 +305,7 @@ public abstract partial class SharedSecondSkinSystem : EntitySystem
     private void OnMapInit(Entity<SecondSkinHolderComponent> ent, ref MapInitEvent args)
     {
         ent.Comp.Container = Container.EnsureContainer<ContainerSlot>(ent, ent.Comp.ContainerId);
-        _slots.AddItemSlot(ent, ent.Comp.ContainerId, ent.Comp.ItemSlot);
+        _slots.AddItemSlot(ent.Owner, ent.Comp.ContainerId, ent.Comp.ItemSlot);
         _actionContainer.EnsureAction(ent, ref ent.Comp.SecondSkinAction, ent.Comp.SecondSkinActionId);
         Dirty(ent);
     }

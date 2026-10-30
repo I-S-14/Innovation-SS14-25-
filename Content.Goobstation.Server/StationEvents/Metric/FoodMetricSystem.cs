@@ -57,8 +57,8 @@ public sealed class FoodMetricSystem : ChaosMetricSystem<FoodMetricComponent>
         var thirstCounts = new Dictionary<ThirstThreshold, int>();
         var chargeCounts = new Dictionary<string, int>() { {"Critical", 0}, {"Low", 0}, {"Mid", 0} };
 
-        var thirstQ = GetEntityQuery<ThirstComponent>();
-        var hungerQ = GetEntityQuery<HungerComponent>();
+        var thirstQ = GetEntityQuery<SatiationComponent>();
+        var hungerQ = GetEntityQuery<SatiationComponent>();
         var siliconQ = GetEntityQuery<SiliconComponent>();
 
         while (query.MoveNext(out var uid, out var mindContainer, out var mobState))
@@ -111,7 +111,7 @@ public sealed class FoodMetricSystem : ChaosMetricSystem<FoodMetricComponent>
         return chargeSc;
     }
 
-    private static double CalculateHunger(FoodMetricComponent component, EntityQuery<HungerComponent> hungerQ, EntityUid uid,
+    private static double CalculateHunger(FoodMetricComponent component, EntityQuery<SatiationComponent> hungerQ, EntityUid uid,
         double hungerSc, Dictionary<HungerThreshold, int> hungerCounts)
     {
         if (!hungerQ.TryGetComponent(uid, out var hunger))
@@ -123,7 +123,7 @@ public sealed class FoodMetricSystem : ChaosMetricSystem<FoodMetricComponent>
     }
 
     private static double CalculateThirst(FoodMetricComponent component,
-        EntityQuery<ThirstComponent> thirstQ,
+        EntityQuery<SatiationComponent> thirstQ,
         EntityUid uid, double thirstSc,
         Dictionary<ThirstThreshold, int> thirstCounts)
     {

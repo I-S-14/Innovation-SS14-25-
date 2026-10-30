@@ -47,7 +47,7 @@ public sealed partial class HailerSystem : EntitySystem
     {
         if (args.SlotFlags == SlotFlags.MASK)
         {
-            _actionsSystem.AddAction(args.Equipee, ref component.HailActionEntity, component.HailerAction, args.Equipee);
+            _actionsSystem.AddAction(args.EquipTarget, ref component.HailActionEntity, component.HailerAction, args.EquipTarget);
             // CorvaxGoob-HailerRework-start
             if (component.AvailableModes.Count > 0)
                 component.SelectedMode = component.AvailableModes.Keys.First();
@@ -58,7 +58,7 @@ public sealed partial class HailerSystem : EntitySystem
     {
         if (args.SlotFlags == SlotFlags.MASK)
         {
-            _actionsSystem.RemoveAction(args.Equipee, component.HailActionEntity);
+            _actionsSystem.RemoveAction(args.EquipTarget, component.HailActionEntity);
         }
     }
 

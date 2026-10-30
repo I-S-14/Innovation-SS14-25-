@@ -36,7 +36,7 @@ public sealed partial class PuddleMetricSystem : ChaosMetricSystem<PuddleMetricC
     protected override ChaosMetrics CalculateChaos(EntityUid uid, PuddleMetricComponent component, CalculateChaosEvent args)
     {
         // Add up the pain of all the puddles
-        var query = EntityQueryEnumerator<PuddleComponent, SolutionContainerManagerComponent>();
+        var query = EntityQueryEnumerator<PuddleComponent, SolutionManagerComponent>();
         double messChaos = 0;
         var puddleCount = 0;
         double totalPuddleVolume = 0;

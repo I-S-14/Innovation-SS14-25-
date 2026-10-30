@@ -13,6 +13,8 @@ using Content.Shared.Inventory;
 using Content.Shared.StatusEffect;
 using Content.Shared.Stunnable;
 using Content.Shared.Timing;
+using Content.Shared.Timing.Systems;
+using Content.Shared.Timing.Components;
 
 namespace Content.Goobstation.Shared.Weapons.DelayedKnockdown;
 

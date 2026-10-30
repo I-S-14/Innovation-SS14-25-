@@ -71,7 +71,7 @@ public sealed partial class ReverseBearTrapSystem : EntitySystem
         if (args.Slot != "head")
             return;
 
-        ArmTrap(uid, trap, args.Equipee);
+        ArmTrap(uid, trap, args.EquipTarget);
     }
 
     private void OnMeleeHit(EntityUid uid, ReverseBearTrapComponent trap, MeleeHitEvent args)

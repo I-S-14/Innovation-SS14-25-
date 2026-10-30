@@ -6,6 +6,7 @@ using Content.Shared.Ghost;
 using Content.Shared.Mind;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
+using Content.Shared.Ghost.Components;
 
 namespace Content.Goobstation.Shared.Gangwars.Systems;
 

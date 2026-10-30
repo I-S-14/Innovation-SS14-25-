@@ -9,9 +9,9 @@ using Robust.Shared.Prototypes;
 namespace Content.Goobstation.Shared.EntityEffects.EffectConditions;
 
 public sealed partial class HasComponentOnEquipmentConditionSystem
-    : EntityConditionSystem<SolutionContainerManagerComponent, HasComponentOnEquipmentCondition>
+    : EntityConditionSystem<SolutionManagerComponent, HasComponentOnEquipmentCondition>
 {
-    protected override void Condition(Entity<SolutionContainerManagerComponent> entity, ref EntityConditionEvent<HasComponentOnEquipmentCondition> args)
+    protected override void Condition(Entity<SolutionManagerComponent> entity, ref EntityConditionEvent<HasComponentOnEquipmentCondition> args)
     {
         if (args.Condition.Components.Count == 0)
         {

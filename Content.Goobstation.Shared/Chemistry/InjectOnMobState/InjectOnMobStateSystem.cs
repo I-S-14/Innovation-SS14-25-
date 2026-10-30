@@ -26,7 +26,7 @@ public sealed partial class InjectOnMobStateSystem : EntitySystem
         if (ent.Comp.NextUse > _timing.CurTime)
             return;
 
-        if (!HasComp<SolutionContainerManagerComponent>(ent))
+        if (!HasComp<SolutionManagerComponent>(ent))
             return;
 
         if (!_solutionContainers.TryGetInjectableSolution(ent.Owner, out var targetSoln, out var targetSolution))

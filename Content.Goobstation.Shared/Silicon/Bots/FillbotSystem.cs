@@ -3,6 +3,8 @@
 using Content.Shared.DeviceLinking;
 using Content.Shared.DeviceLinking.Events;
 using Content.Shared.Hands.EntitySystems;
+using Content.Shared.DeviceLinking.Systems;
+using Content.Shared.DeviceLinking.Components;
 
 namespace Content.Goobstation.Shared.Silicon.Bots;
 

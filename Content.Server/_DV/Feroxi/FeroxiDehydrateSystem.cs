@@ -13,7 +13,7 @@ public sealed class FeroxiDehydrateSystem : EntitySystem
 
     public override void Update(float frameTime) /// Goob start, reverted this section back to what it was on DV (Durks change broke things)
     {
-        var query = EntityQueryEnumerator<FeroxiDehydrateComponent, ThirstComponent>();
+        var query = EntityQueryEnumerator<FeroxiDehydrateComponent, SatiationComponent>();
 
         while (query.MoveNext(out var uid, out var feroxiDehydrate, out var thirst))
         {

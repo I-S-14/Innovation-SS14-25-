@@ -42,14 +42,14 @@ public sealed partial class ClothingGrantingSystem : EntitySystem
         {
             var newComp = (Component) _componentFactory.GetComponent(name);
 
-            if (HasComp(args.Equipee, newComp.GetType()))
+            if (HasComp(args.EquipTarget, newComp.GetType()))
                 continue;
 
-            newComp.Owner = args.Equipee;
+            newComp.Owner = args.EquipTarget;
 
             var temp = (object) newComp;
             _serializationManager.CopyTo(data.Component, ref temp);
-            EntityManager.AddComponent(args.Equipee, (Component)temp!);
+            EntityManager.AddComponent(args.EquipTarget, (Component)temp!);
 
             component.Active[name] = true; // Goobstation
         }
@@ -68,7 +68,7 @@ public sealed partial class ClothingGrantingSystem : EntitySystem
 
             var newComp = (Component) _componentFactory.GetComponent(name);
 
-            RemComp(args.Equipee, newComp.GetType());
+            RemComp(args.EquipTarget, newComp.GetType());
             component.Active[name] = false; // Goobstation
         }
 
@@ -85,8 +85,8 @@ public sealed partial class ClothingGrantingSystem : EntitySystem
         if (!clothing.Slots.HasFlag(args.SlotFlags))
             return;
 
-        EnsureComp<TagComponent>(args.Equipee);
-        _tagSystem.AddTag(args.Equipee, component.Tag);
+        EnsureComp<TagComponent>(args.EquipTarget);
+        _tagSystem.AddTag(args.EquipTarget, component.Tag);
 
         component.IsActive = true;
     }
@@ -96,7 +96,7 @@ public sealed partial class ClothingGrantingSystem : EntitySystem
         if (!component.IsActive)
             return;
 
-        _tagSystem.RemoveTag(args.Equipee, component.Tag);
+        _tagSystem.RemoveTag(args.EquipTarget, component.Tag);
 
         component.IsActive = false;
     }

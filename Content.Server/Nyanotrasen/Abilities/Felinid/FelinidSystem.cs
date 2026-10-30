@@ -126,7 +126,7 @@ public sealed partial class FelinidSystem : EntitySystem
         if (component.EatActionTarget == null)
             return;
 
-        if (!TryComp<HungerComponent>(uid, out var hunger))
+        if (!TryComp<SatiationComponent>(uid, out var hunger))
             return;
 
         if (hunger.CurrentThreshold == Shared.Nutrition.Components.HungerThreshold.Overfed)

@@ -8,6 +8,7 @@ using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Containers;
 using Robust.Shared.Network;
+using Content.Shared.DeviceLinking.Components;
 
 namespace Content.Goobstation.Shared.StationRadio.Systems;
 

@@ -23,7 +23,7 @@ public sealed partial class PaintEaselSystem : EntitySystem
 
     public EntityUid? GetCanvas(Entity<PaintEaselComponent> easel)
     {
-        return _itemSlots.GetItemOrNull(easel, easel.Comp.Slot);
+        return _itemSlots.GetItemOrNull(easel.Owner, easel.Comp.Slot);
     }
 
     public bool TryGetEasel(EntityUid canvas, out Entity<PaintEaselComponent> easel)
