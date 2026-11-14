@@ -14,7 +14,6 @@ public abstract class SharedPetSystem : EntitySystem
         SubscribeLocalEvent<PetOverlordComponent, ComponentStartup>(OnOverlordStartup);
         SubscribeLocalEvent<PetOverlordComponent, ComponentShutdown>(OnShutdown);
         SubscribeLocalEvent<PetComponent, ComponentShutdown>(OnPetShutdown);
-        SubscribeLocalEvent<PetOverlordComponent, PetOrderActionEvent>(OnOrderAction);
     }
 
     private void OnOverlordStartup(Entity<PetOverlordComponent> ent, ref ComponentStartup args)
@@ -58,19 +57,6 @@ public abstract class SharedPetSystem : EntitySystem
         _action.StartUseDelay(component.StayActionEntity);
         _action.StartUseDelay(component.AttackActionEntity);
         _action.StartUseDelay(component.FollowActionEntity);
-    }
-
-    private void OnOrderAction(Entity<PetOverlordComponent> ent, ref PetOrderActionEvent args)
-    {
-        if (ent.Comp.CurrentOrder == args.Type)
-            return;
-        args.Handled = true;
-
-        ent.Comp.CurrentOrder = args.Type;
-        Dirty(ent.Owner, ent.Comp);
-
-        UpdateActions(ent.Owner, ent.Comp);
-        UpdateAllPets(ent.Owner, ent.Comp);
     }
 
     public void UpdateAllPets(EntityUid uid, PetOverlordComponent component)
