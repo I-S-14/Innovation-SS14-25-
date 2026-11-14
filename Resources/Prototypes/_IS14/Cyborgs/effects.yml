@@ -1,0 +1,106 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+
+# The square border of a hyperkinetic dampening field, radius 3, drawn around the cyborg like tg.
+# Spawned client side while the dampener is on, follows the cyborg without turning with it.
+- type: entity
+  id: IS14CyborgDampenerFieldEffect
+  categories: [ HideSpawnMenu ]
+  save: false
+  components:
+  - type: Sprite
+    sprite: _IS14/Effects/dampener_field.rsi
+    noRot: true
+    drawdepth: Effects
+    layers:
+    - state: projectile_dampen_northwest
+      offset: -3, 3
+      shader: unshaded
+    - state: projectile_dampen_north
+      offset: -2, 3
+      shader: unshaded
+    - state: projectile_dampen_north
+      offset: -1, 3
+      shader: unshaded
+    - state: projectile_dampen_north
+      offset: 0, 3
+      shader: unshaded
+    - state: projectile_dampen_north
+      offset: 1, 3
+      shader: unshaded
+    - state: projectile_dampen_north
+      offset: 2, 3
+      shader: unshaded
+    - state: projectile_dampen_northeast
+      offset: 3, 3
+      shader: unshaded
+    - state: projectile_dampen_west
+      offset: -3, 2
+      shader: unshaded
+    - state: projectile_dampen_east
+      offset: 3, 2
+      shader: unshaded
+    - state: projectile_dampen_west
+      offset: -3, 1
+      shader: unshaded
+    - state: projectile_dampen_east
+      offset: 3, 1
+      shader: unshaded
+    - state: projectile_dampen_west
+      offset: -3, 0
+      shader: unshaded
+    - state: projectile_dampen_east
+      offset: 3, 0
+      shader: unshaded
+    - state: projectile_dampen_west
+      offset: -3, -1
+      shader: unshaded
+    - state: projectile_dampen_east
+      offset: 3, -1
+      shader: unshaded
+    - state: projectile_dampen_west
+      offset: -3, -2
+      shader: unshaded
+    - state: projectile_dampen_east
+      offset: 3, -2
+      shader: unshaded
+    - state: projectile_dampen_southwest
+      offset: -3, -3
+      shader: unshaded
+    - state: projectile_dampen_south
+      offset: -2, -3
+      shader: unshaded
+    - state: projectile_dampen_south
+      offset: -1, -3
+      shader: unshaded
+    - state: projectile_dampen_south
+      offset: 0, -3
+      shader: unshaded
+    - state: projectile_dampen_south
+      offset: 1, -3
+      shader: unshaded
+    - state: projectile_dampen_south
+      offset: 2, -3
+      shader: unshaded
+    - state: projectile_dampen_southeast
+      offset: 3, -3
+      shader: unshaded
+
+# tg's do_smoke for the model transform animation: a quiet puff around the cyborg.
+- type: entity
+  parent: AdminInstantEffectBase
+  id: IS14CyborgTransformSmoke
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: SmokeOnTrigger
+    duration: 2
+    spreadAmount: 1
+
+# tg's do_transform_delay picks one of these four times.
+- type: soundCollection
+  id: IS14CyborgTransform
+  files:
+  - /Audio/Items/drill_use.ogg
+  - /Audio/Items/jaws_cut.ogg
+  - /Audio/Items/jaws_pry.ogg
+  - /Audio/Items/welder.ogg
+  - /Audio/Items/ratchet.ogg

@@ -1,0 +1,14 @@
+# SPDX-License-Identifier: MIT
+
+- files: ["harmalarm.ogg", "liveagain.ogg", "wash_start.ogg", "wash1.ogg", "wash_end.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from tgstation via BandaStation (sound/mobs/non-humanoids/cyborg)."
+  source: "https://github.com/tgstation/tgstation"
+- files: ["borg_deathsound.ogg"]
+  license: "CC-BY-3.0"
+  copyright: "Taken from tgstation via BandaStation. Spliced from https://freesound.org/people/simmfoc/sounds/28477/ and https://freesound.org/people/nicStage/sounds/1522/."
+  source: "https://github.com/tgstation/tgstation"
+- files: ["dispense_click.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from tgstation via BandaStation (sound/machines/click.ogg)."
+  source: "https://github.com/tgstation/tgstation"

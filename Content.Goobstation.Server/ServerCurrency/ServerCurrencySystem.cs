@@ -13,6 +13,7 @@ using Content.Shared.Roles.Jobs;
 using Content.Shared.Silicons.Borgs.Components;
 using Robust.Server.Player;
 using Robust.Shared.Configuration;
+using Content.Shared._IS14.Cyborgs.Components; // IS14-change
 
 namespace Content.Goobstation.Server.ServerCurrency
 {
@@ -72,7 +73,9 @@ namespace Content.Goobstation.Server.ServerCurrency
 
             while (query.MoveNext(out var uid, out var mindContainer))
             {
-                var isBorg = HasComp<BorgChassisComponent>(uid);
+                //IS14-change start - tgstation-style cyborgs count as borgs
+                var isBorg = (HasComp<BorgChassisComponent>(uid) || HasComp<CyborgComponent>(uid));
+                //IS14-change end
                 if (!(HasComp<HumanoidAppearanceComponent>(uid)
                     || HasComp<BorgBrainComponent>(uid)
                     || isBorg))

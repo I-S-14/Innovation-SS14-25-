@@ -5,9 +5,9 @@
   id: ClothingBeltIS14Militia
   components:
   - type: Sprite
-    sprite: _IS14/Clothing/Belt/Militia/militia_belt.rsi
+    sprite: _IS14/Clothing/Belt/Command/HosMilitia/hos_militia_belt.rsi
   - type: Clothing
-    sprite: _IS14/Clothing/Belt/Militia/militia_belt.rsi
+    sprite: _IS14/Clothing/Belt/Command/HosMilitia/hos_militia_belt.rsi
 
 - type: entity
   parent: ClothingBeltSecurityWebbing

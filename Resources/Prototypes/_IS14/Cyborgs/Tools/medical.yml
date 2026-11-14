@@ -1,0 +1,148 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+
+- type: entity
+  parent: [IS14BaseCyborgTool, Syringe]
+  id: IS14CyborgToolSyringe
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, BoneGel]
+  id: IS14CyborgToolBoneGel
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, ChemBag]
+  id: IS14CyborgToolChemBag
+  name: internal medicine storage
+  description: A built-in storage for chemistry, treatment and body bags.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
+    layers:
+    - state: chemical-bag
+  # Also holds the treatment and body bags the medical cyborg picks up.
+  - type: Storage
+    maxItemSize: Normal
+    grid:
+    - 0,0,4,3
+    quickInsert: true
+    areaInsert: true
+    whitelist:
+      components:
+      - FitsInDispenser
+      - Pill
+      tags:
+      - Document
+      - PillCanister
+      - Bottle
+      - Syringe
+      - Dropper
+      - ChemDispensable
+      - MedicalPatch
+      - Ointment
+      - Brutepack
+      - Bloodpack
+      - Gauze
+      - Tourniquet
+      - BodyBag
+
+# tg's /obj/item/borg/cyborg_omnitool/medical: every surgery tool in one, cycled on use.
+# Shitmed tells tools apart by components, so each mode brings its own.
+- type: entity
+  parent: [IS14BaseCyborgTool, BaseItem]
+  id: IS14CyborgToolMedicalOmnitool
+  name: cyborg surgical omni-toolset
+  description: Every surgical tool a medical cyborg needs, built into its arm. Switch tools with a press.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/robot_items.rsi
+    layers:
+    - state: toolkit_medborg_scalpel
+  - type: Item
+    size: Small
+  - type: Tag
+    tags:
+    - SurgeryTool
+  - type: CyborgMultiTool
+    modes:
+    - name: cyborg-multitool-mode-scalpel
+      state: toolkit_medborg_scalpel
+      components:
+      - type: Scalpel
+      - type: Sharp
+      - type: SurgeryTool
+        startSound:
+          path: /Audio/_Shitmed/Medical/Surgery/scalpel1.ogg
+        endSound:
+          path: /Audio/_Shitmed/Medical/Surgery/scalpel2.ogg
+    - name: cyborg-multitool-mode-hemostat
+      state: toolkit_medborg_hemostat
+      components:
+      - type: Hemostat
+      - type: Tweezers
+      - type: Tending
+      - type: SurgeryTool
+        startSound:
+          path: /Audio/_Shitmed/Medical/Surgery/retractor1.ogg
+        endSound:
+          path: /Audio/_Shitmed/Medical/Surgery/hemostat1.ogg
+    - name: cyborg-multitool-mode-retractor
+      state: toolkit_medborg_retractor
+      components:
+      - type: Retractor
+      - type: SurgeryTool
+        startSound:
+          path: /Audio/_Shitmed/Medical/Surgery/retractor1.ogg
+        endSound:
+          path: /Audio/_Shitmed/Medical/Surgery/retractor2.ogg
+    - name: cyborg-multitool-mode-cautery
+      state: toolkit_medborg_cautery
+      components:
+      - type: Cautery
+      - type: AlwaysHot
+      - type: SurgeryTool
+        startSound:
+          path: /Audio/_Shitmed/Medical/Surgery/cautery1.ogg
+        endSound:
+          path: /Audio/_Shitmed/Medical/Surgery/cautery2.ogg
+    - name: cyborg-multitool-mode-saw
+      state: toolkit_medborg_saw
+      components:
+      - type: BoneSaw
+        speed: 1.5
+      - type: SurgeryTool
+        startSound:
+          path: /Audio/_Shitmed/Medical/Surgery/saw.ogg
+    - name: cyborg-multitool-mode-drill
+      state: toolkit_medborg_drill
+      components:
+      - type: Drill
+      - type: SurgeryTool
+        startSound:
+          path: /Audio/_Shitmed/Medical/Surgery/saw.ogg
+    - name: cyborg-multitool-mode-bonesetter
+      state: toolkit_medborg_bonesetter
+      components:
+      - type: BoneSetter
+      - type: SurgeryTool
+        startSound:
+          path: /Audio/_Shitmed/Medical/Surgery/bone_setter.ogg
+
+# Given by the advanced syringe board.
+- type: entity
+  parent: [IS14BaseCyborgTool, SyringeBluespace]
+  id: IS14CyborgToolSyringeBluespace
+  categories: [ HideSpawnMenu ]
+
+# Given by the crew pinpointer board: remote access to the crew monitor.
+- type: entity
+  parent: [IS14BaseCyborgTool, HandheldCrewMonitor]
+  id: IS14CyborgToolCrewMonitor
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
+    layers:
+    - state: tracker-pinpointer

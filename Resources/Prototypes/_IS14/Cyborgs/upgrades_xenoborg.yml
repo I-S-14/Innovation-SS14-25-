@@ -1,0 +1,84 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+
+# The extra xenoborg modules the mothership prints, as upgrade boards. Each one is for one xenoborg type.
+- type: entity
+  parent: IS14BaseCyborgUpgrade
+  id: IS14BaseCyborgUpgradeXenoborg
+  abstract: true
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Robotics/borgmodule.rsi
+  - type: GuideHelp
+    guides:
+    - Xenoborgs
+
+- type: entity
+  parent: IS14BaseCyborgUpgradeXenoborg
+  id: IS14CyborgUpgradeXenoborgDoorControl
+  name: door control xenoborg module
+  description: A door remote and an access configurator for the engi xenoborg.
+  components:
+  - type: Sprite
+    layers:
+    - state: xenoborg_engi
+    - state: icon-xenoborg-access-breaker
+  - type: CyborgUpgrade
+    models:
+    - IS14CyborgModelXenoborgEngi
+    tools:
+    - IS14CyborgToolXenoDoorRemoteXenoborg
+    - IS14CyborgToolXenoAccessConfiguratorXenoborg
+
+- type: entity
+  parent: IS14BaseCyborgUpgradeXenoborg
+  id: IS14CyborgUpgradeXenoborgHeavyLaser
+  name: laser cannon xenoborg module
+  description: Swaps the heavy xenoborg's laser for a laser cannon.
+  components:
+  - type: Sprite
+    layers:
+    - state: xenoborg_heavy
+    - state: icon-xenoborg-laser2
+  - type: CyborgUpgrade
+    models:
+    - IS14CyborgModelXenoborgHeavy
+    tools:
+    - IS14CyborgToolXenoWeaponLaserCannonXenoborg
+    replaces:
+    - IS14CyborgToolXenoWeaponLaserGunXenoborg
+
+- type: entity
+  parent: IS14BaseCyborgUpgradeXenoborg
+  id: IS14CyborgUpgradeXenoborgEnergySword
+  name: energy sword xenoborg module
+  description: Swaps the scout xenoborg's knife for an energy dagger.
+  components:
+  - type: Sprite
+    layers:
+    - state: xenoborg_scout
+    - state: icon-xenoborg-sword2
+  - type: CyborgUpgrade
+    models:
+    - IS14CyborgModelXenoborgScout
+    tools:
+    - IS14CyborgToolXenoEnergyDaggerLoudBlue
+    replaces:
+    - IS14CyborgToolXenoKukriKnife
+
+- type: entity
+  parent: IS14BaseCyborgUpgradeXenoborg
+  id: IS14CyborgUpgradeXenoborgSuperCloak
+  name: super cloaking xenoborg module
+  description: Swaps the stealth xenoborg's cloak for a better one.
+  components:
+  - type: Sprite
+    layers:
+    - state: xenoborg_stealth
+    - state: icon-xenoborg-cloak2
+  - type: CyborgUpgrade
+    models:
+    - IS14CyborgModelXenoborgStealth
+    tools:
+    - IS14CyborgToolXenoSuperCloakingDevice
+    replaces:
+    - IS14CyborgToolXenoCloakingDevice

@@ -1,3 +1,4 @@
+using Content.Shared._IS14.Cyborgs.Components;
 using Content.Server.Heretic.Components.PathSpecific;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
@@ -169,7 +170,7 @@ public abstract class SharedMansusGraspSystem : EntitySystem
             case "Flesh":
                 {
                     if (TryComp<MobStateComponent>(target, out var mobState) && mobState.CurrentState != MobState.Alive &&
-                        !HasComp<BorgChassisComponent>(target))
+                        !(HasComp<BorgChassisComponent>(target) || HasComp<CyborgComponent>(target)))
                     {
                         if (HasComp<GhoulComponent>(target))
                         {
@@ -216,7 +217,7 @@ public abstract class SharedMansusGraspSystem : EntitySystem
                              !_tag.HasTag(target, GraspMeatTag) && // Is it not organic body part or organ?
                              !HasComp<ShadowCloakEntityComponent>(target) && // No instakilling shadow cloak heretics
                              (!HasComp<MobStateComponent>(target) || HasComp<SiliconComponent>(target) ||
-                              HasComp<BorgChassisComponent>(target) ||
+                              HasComp<BorgChassisComponent>(target) || HasComp<CyborgComponent>(target) ||
                               _tag.HasTag(target, GraspBotTag))) // Check for ingorganic target
                     {
                         FixedPoint2 rustDamage = 500;

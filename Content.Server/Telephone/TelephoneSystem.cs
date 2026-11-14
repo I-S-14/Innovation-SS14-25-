@@ -27,6 +27,7 @@ using Robust.Shared.Replays;
 using System.Linq;
 using Content.Shared._CorvaxGoob.TTS;
 using Robust.Shared.Prototypes;
+using Content.Shared._IS14.Cyborgs.Components; // IS14-change
 
 namespace Content.Server.Telephone;
 
@@ -476,7 +477,9 @@ public sealed partial class TelephoneSystem : SharedTelephoneSystem
     {
         var record = new TelephoneCallRecord();
 
-        if (HasComp<StationAiHeldComponent>(uid) || HasComp<BorgChassisComponent>(uid))
+        //IS14-change start - tgstation-style cyborgs count as borgs
+        if (HasComp<StationAiHeldComponent>(uid) || (HasComp<BorgChassisComponent>(uid) || HasComp<CyborgComponent>(uid)))
+        //IS14-change end
         {
             record.CallerId = Name(uid);
         }

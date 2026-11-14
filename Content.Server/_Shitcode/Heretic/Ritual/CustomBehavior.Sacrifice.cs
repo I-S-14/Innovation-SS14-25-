@@ -16,6 +16,7 @@ using Content.Server.Heretic.EntitySystems;
 using Content.Shared.Gibbing.Events;
 using Content.Shared.Silicons.Borgs.Components;
 using Content.Shared.Store.Components;
+using Content.Shared._IS14.Cyborgs.Components; // IS14-change
 
 namespace Content.Server.Heretic.Ritual;
 
@@ -87,7 +88,9 @@ namespace Content.Server.Heretic.Ritual;
         {
             if (!args.EntityManager.TryGetComponent<MobStateComponent>(look, out var mobstate) // only mobs
             || OnlyHumanoid && !args.EntityManager.HasComponent<HumanoidAppearanceComponent>(look) // only humans
-            || args.EntityManager.HasComponent<BorgChassisComponent>(look) // no borgs
+            //IS14-change start - tgstation-style cyborgs count as borgs
+            || (args.EntityManager.HasComponent<BorgChassisComponent>(look) || args.EntityManager.HasComponent<CyborgComponent>(look)) // no borgs
+            //IS14-change end
             || OnlyTargets
                 && hereticComp.SacrificeTargets.All(x => x.Entity != args.EntityManager.GetNetEntity(look)) // only targets
                 && !_heretic.TryGetHereticComponent(look, out _, out _)) // or other heretics

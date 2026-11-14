@@ -1,0 +1,163 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+
+# Xenoborgs on the tgstation-style system. Mirrors upstream BaseXenoborgChassis and xenoborgs.yml:
+# the kits are the items of their old modules, the extra modules the mothership prints are upgrade boards.
+
+# Skins
+- type: cyborgSkin
+  id: IS14CyborgSkinXenoborgEngi
+  name: cyborg-skin-xenoborg-engi
+  sprite: Mobs/Silicon/chassis.rsi
+  bodyState: xenoborg_engi
+  eyesState: xenoborg_engi_e
+  noMindEyesState: xenoborg_engi_e_r
+  lightState: xenoborg_engi_l
+  noHat: true
+
+- type: cyborgSkin
+  id: IS14CyborgSkinXenoborgHeavy
+  name: cyborg-skin-xenoborg-heavy
+  sprite: Mobs/Silicon/chassis.rsi
+  bodyState: xenoborg_heavy
+  eyesState: xenoborg_heavy_e
+  noMindEyesState: xenoborg_heavy_e_r
+  lightState: xenoborg_heavy_l
+  noHat: true
+
+- type: cyborgSkin
+  id: IS14CyborgSkinXenoborgScout
+  name: cyborg-skin-xenoborg-scout
+  sprite: Mobs/Silicon/chassis.rsi
+  bodyState: xenoborg_scout
+  eyesState: xenoborg_scout_e
+  noMindEyesState: xenoborg_scout_e_r
+  lightState: xenoborg_scout_l
+  noHat: true
+
+- type: cyborgSkin
+  id: IS14CyborgSkinXenoborgStealth
+  name: cyborg-skin-xenoborg-stealth
+  sprite: Mobs/Silicon/chassis.rsi
+  bodyState: xenoborg_stealth
+  eyesState: xenoborg_stealth_e
+  noMindEyesState: xenoborg_stealth_e_r
+  lightState: xenoborg_stealth_l
+  noHat: true
+
+# Models. Not selectable: the chassis decides.
+- type: cyborgModel
+  id: IS14CyborgModelXenoborgEngi
+  hudIcon: engineer
+  name: cyborg-model-xenoborg-engi
+  description: cyborg-model-xenoborg-engi-desc
+  selectable: false
+  skins:
+  - IS14CyborgSkinXenoborgEngi
+  # The engineering cyborg's kit, plus the xenoborg's own modules.
+  basicTools:
+  - IS14CyborgToolFlash
+  - IS14CyborgToolRCD
+  - IS14CyborgToolRPD
+  - IS14CyborgToolWelder
+  - IS14CyborgToolOmnitool
+  - IS14CyborgToolOmnitool
+  - IS14CyborgToolTrayScanner
+  - IS14CyborgToolGasAnalyzer
+  - IS14CyborgToolSignaller
+  - IS14CyborgToolSprayPainter
+  - IS14CyborgToolConstructionBag
+  # XenoborgModuleBasic
+  - IS14CyborgToolXenoXenoborgMaterialBag
+  - IS14CyborgToolXenoPinpointerMothership
+  - IS14CyborgToolXenoHandheldGPSBasic
+  # XenoborgModuleAccessBreaker and XenoborgModuleFireExtinguisher, the latter in place of the plain one.
+  - IS14CyborgToolXenoAccessBreaker
+  - IS14CyborgToolXenoSelfRechargingFireExtinguisher
+  # Like the engineering model: materials are carried, not synthesized.
+  pickupStacks:
+  - Steel
+  - MetalRod
+  - Plasteel
+  - Glass
+  - Plasma
+  - Uranium
+  - Gold
+  - Silver
+  - Plastic
+  - Cable
+  - CableMV
+  - CableHV
+  pickupWhitelist:
+    components:
+    - FloorTile # floor tiles and carpets
+    - Flatpack
+    - MachineBoard
+    - ComputerBoard
+    - StockPart # manipulators, matter bins and the rest
+
+- type: cyborgModel
+  id: IS14CyborgModelXenoborgHeavy
+  hudIcon: security
+  name: cyborg-model-xenoborg-heavy
+  description: cyborg-model-xenoborg-heavy-desc
+  selectable: false
+  skins:
+  - IS14CyborgSkinXenoborgHeavy
+  basicTools:
+  - IS14CyborgToolXenoXenoborgMaterialBag
+  - IS14CyborgToolXenoPinpointerMothership
+  - IS14CyborgToolXenoHandheldGPSBasic
+  - IS14CyborgToolXenoCrowbar
+  - IS14CyborgToolXenoWrench
+  - IS14CyborgToolXenoScrewdriver
+  - IS14CyborgToolXenoWirecutter
+  - IS14CyborgToolXenoMultitool
+  - IS14CyborgToolXenoRefuelingWelder
+  - IS14CyborgToolXenoWeaponLaserGunXenoborg
+  - IS14CyborgToolXenoXenoborgRadioJammer
+
+- type: cyborgModel
+  id: IS14CyborgModelXenoborgScout
+  hudIcon: miner
+  name: cyborg-model-xenoborg-scout
+  description: cyborg-model-xenoborg-scout-desc
+  selectable: false
+  skins:
+  - IS14CyborgSkinXenoborgScout
+  basicTools:
+  - IS14CyborgToolXenoXenoborgMaterialBag
+  - IS14CyborgToolXenoPinpointerMothership
+  - IS14CyborgToolXenoHandheldGPSBasic
+  - IS14CyborgToolXenoCrowbar
+  - IS14CyborgToolXenoWrench
+  - IS14CyborgToolXenoScrewdriver
+  - IS14CyborgToolXenoWirecutter
+  - IS14CyborgToolXenoMultitool
+  - IS14CyborgToolXenoRefuelingWelder
+  - IS14CyborgToolXenoKukriKnife
+  - IS14CyborgToolXenoJetpackXenoborg
+  - IS14CyborgToolXenoHandHeldMassScannerBorg
+  - IS14CyborgToolXenoHandheldStationMapUnpowered
+  - IS14CyborgToolXenoWeaponGrapplingGun
+
+- type: cyborgModel
+  id: IS14CyborgModelXenoborgStealth
+  hudIcon: standard
+  name: cyborg-model-xenoborg-stealth
+  description: cyborg-model-xenoborg-stealth-desc
+  selectable: false
+  skins:
+  - IS14CyborgSkinXenoborgStealth
+  basicTools:
+  - IS14CyborgToolXenoXenoborgMaterialBag
+  - IS14CyborgToolXenoPinpointerMothership
+  - IS14CyborgToolXenoHandheldGPSBasic
+  - IS14CyborgToolXenoCrowbar
+  - IS14CyborgToolXenoWrench
+  - IS14CyborgToolXenoScrewdriver
+  - IS14CyborgToolXenoWirecutter
+  - IS14CyborgToolXenoMultitool
+  - IS14CyborgToolXenoRefuelingWelder
+  - IS14CyborgToolXenoNocturineHypo
+  - IS14CyborgToolXenoChameleonProjectorNoBattery
+  - IS14CyborgToolXenoCloakingDevice

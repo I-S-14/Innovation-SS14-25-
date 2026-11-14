@@ -1,0 +1,119 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+
+# Tools shared by several models.
+
+# Base for every built-in cyborg tool. The mechanics come from the parent item,
+# the marker keeps the tool inside the cyborg.
+- type: entity
+  abstract: true
+  id: IS14BaseCyborgTool
+  components:
+  - type: CyborgTool
+
+- type: entity
+  parent: [IS14BaseCyborgTool, Flash]
+  id: IS14CyborgToolFlash
+  categories: [ HideSpawnMenu ]
+  components:
+  # Doesn't burn out: two flashes, then each one comes back after 30 seconds.
+  - type: LimitedCharges
+    maxCharges: 2
+  - type: AutoRecharge
+    rechargeDuration: 30
+
+- type: entity
+  parent: [IS14BaseCyborgTool, BorgFireExtinguisher]
+  id: IS14CyborgToolExtinguisher
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, LargeBeaker]
+  id: IS14CyborgToolBeaker
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, BorgDropper]
+  id: IS14CyborgToolDropper
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, HandheldHealthAnalyzer]
+  id: IS14CyborgToolHealthAnalyzer
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
+    layers:
+    - state: scanner-health
+
+- type: entity
+  parent: [IS14BaseCyborgTool, LauncherLollypopRegenerating]
+  id: IS14CyborgToolLollipop
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/robot_items.rsi
+    layers:
+    - state: lollipop
+
+- type: entity
+  parent: [IS14BaseCyborgTool, SoapNT]
+  id: IS14CyborgToolSoap
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, BorgHandheldGPSBasic]
+  id: IS14CyborgToolGPS
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
+    layers:
+    - state: tracker-gps-b
+
+# Emag tool of the engineering and mining models, tg's electrically-charged arm.
+- type: entity
+  parent: IS14CyborgToolStunbaton
+  id: IS14CyborgToolStunArm
+  name: electrically-charged arm
+  description: A cyborg arm rigged to knock out whoever it touches.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/robot_items.rsi
+    layers:
+    - state: elecarm
+      map: [ "enum.ToggleableVisuals.Layer" ]
+  - type: GenericVisualizer
+    visuals:
+      enum.ToggleableVisuals.Enabled:
+        enum.ToggleableVisuals.Layer:
+          True: { state: elecarm }
+          False: { state: elecarm }
+
+# tg's /obj/item/borg/cyborghug: hugs people awake. Shocks and crushes once emagged.
+- type: entity
+  parent: [IS14BaseCyborgTool, BaseItem]
+  id: IS14CyborgToolHugModule
+  name: hugging module
+  description: For when someone just needs a hug. Use in hand to switch the mode.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/robot_items.rsi
+    layers:
+    - state: hugmodule
+  - type: Item
+    size: Small
+  - type: UseDelay
+    delay: 1
+  - type: CyborgHugModule
+
+# The peacekeeper's version may shock without an emag, like tg's cyborghug/peacekeeper.
+- type: entity
+  parent: IS14CyborgToolHugModule
+  id: IS14CyborgToolHugModulePeacekeeper
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: CyborgHugModule
+    shockAllowed: true

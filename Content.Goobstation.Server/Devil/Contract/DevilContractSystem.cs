@@ -35,6 +35,7 @@ using System.Diagnostics.CodeAnalysis;
 using Content.Goobstation.Shared.Changeling.Components;
 using Content.Goobstation.Shared.Slasher.Components;
 using Content.Shared.Damage.Systems;
+using Content.Shared._IS14.Cyborgs.Components; // IS14-change
 
 namespace Content.Goobstation.Server.Devil.Contract;
 
@@ -247,7 +248,9 @@ public sealed partial class DevilContractSystem : EntitySystem
             || HasComp<SiliconComponent>(user)
             || HasComp<DroneComponent>(user)
             || HasComp<ChangelingComponent>(user)
-            || HasComp<BorgChassisComponent>(user)
+            //IS14-change start - tgstation-style cyborgs count as borgs
+            || (HasComp<BorgChassisComponent>(user) || HasComp<CyborgComponent>(user))
+            //IS14-change end
             || HasComp<SoullessComponent>(user))
         {
             failReason = Loc.GetString("devil-contract-no-soul-sign-failed");

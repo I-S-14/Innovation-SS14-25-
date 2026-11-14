@@ -1,0 +1,67 @@
+<!--
+Licensed under IS14's EULA, see EULA.txt for more information.
+-->
+
+<is14:CyborgModelWindow
+    xmlns="https://spacestation14.io"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Cyborgs.UI"
+    xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
+    xmlns:customControls="clr-namespace:Content.Client.Administration.UI.CustomControls"
+    Title="{Loc 'cyborg-model-window-title'}"
+    SetSize="640 520">
+
+    <BoxContainer Orientation="Vertical">
+        <BoxContainer Orientation="Horizontal" VerticalExpand="True">
+            <!-- Left pane: the models. -->
+            <BoxContainer Orientation="Vertical" MinWidth="220" Margin="2 0">
+                <Label Text="{Loc 'cyborg-model-window-available'}" StyleClasses="LabelHeading" />
+                <ScrollContainer HScrollEnabled="False" VerticalExpand="True">
+                    <BoxContainer Name="ModelList" Orientation="Vertical" SeparationOverride="2" />
+                </ScrollContainer>
+            </BoxContainer>
+
+            <customControls:VSeparator />
+
+            <!-- Right pane: the picked model, its skins and the confirm button. -->
+            <BoxContainer Orientation="Vertical" HorizontalExpand="True" Margin="2 0">
+                <Label Text="{Loc 'cyborg-model-window-information'}" StyleClasses="LabelHeading" />
+                <Control VerticalExpand="True">
+                    <controls:Placeholder Name="InfoPlaceholder"
+                                          PlaceholderText="{Loc 'cyborg-model-window-select-model'}" />
+                    <BoxContainer Name="InfoContents" Orientation="Vertical" Visible="False">
+                        <BoxContainer Orientation="Horizontal" Margin="0 0 0 4" SeparationOverride="8">
+                            <is14:CyborgSkinPreview Name="BigPreview" />
+                            <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalAlignment="Center">
+                                <Label Name="NameLabel" StyleClasses="LabelHeading" />
+                                <Label Name="SkinLabel" StyleClasses="LabelSubText" />
+                            </BoxContainer>
+                        </BoxContainer>
+                        <RichTextLabel Name="DescriptionLabel" VerticalExpand="True" VerticalAlignment="Top" />
+                    </BoxContainer>
+                </Control>
+
+                <BoxContainer Name="SkinSection" Orientation="Vertical" SeparationOverride="4" Visible="False">
+                    <controls:StripeBack>
+                        <Label Text="{Loc 'cyborg-model-window-skins'}"
+                               StyleClasses="LabelSubText"
+                               HorizontalAlignment="Center"
+                               Margin="0 8" />
+                    </controls:StripeBack>
+                    <ScrollContainer HScrollEnabled="True" VScrollEnabled="False" HorizontalExpand="True"
+                                     MinSize="200 96">
+                        <BoxContainer Name="SkinList" Orientation="Horizontal" SeparationOverride="4" />
+                    </ScrollContainer>
+                </BoxContainer>
+
+                <controls:ConfirmButton Name="ConfirmButton" Text="{Loc 'cyborg-model-window-confirm'}"
+                                        Disabled="True" HorizontalAlignment="Right" MinWidth="200"
+                                        Margin="0 4 0 0" />
+            </BoxContainer>
+        </BoxContainer>
+
+        <controls:StripeBack Margin="0 4 0 4">
+            <Label Text="{Loc 'cyborg-model-window-bottom-text'}" HorizontalAlignment="Center"
+                   StyleClasses="LabelSubText" Margin="4 4 0 4" />
+        </controls:StripeBack>
+    </BoxContainer>
+</is14:CyborgModelWindow>

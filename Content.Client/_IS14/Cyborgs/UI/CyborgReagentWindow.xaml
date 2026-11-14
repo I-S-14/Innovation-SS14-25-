@@ -1,0 +1,16 @@
+<!--
+Licensed under IS14's EULA, see EULA.txt for more information.
+-->
+
+<is14:CyborgReagentWindow
+    xmlns="https://spacestation14.io"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Cyborgs.UI"
+    Title="{Loc 'cyborg-reagent-window-title'}"
+    Resizable="False"
+    MinSize="240 120">
+
+    <BoxContainer Orientation="Vertical" Margin="8" SeparationOverride="4">
+        <Label Text="{Loc 'cyborg-reagent-window-hint'}" StyleClasses="LabelSubText" />
+        <BoxContainer Name="ReagentList" Orientation="Vertical" SeparationOverride="4" />
+    </BoxContainer>
+</is14:CyborgReagentWindow>

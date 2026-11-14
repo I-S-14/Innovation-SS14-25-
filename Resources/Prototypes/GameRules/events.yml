@@ -1095,7 +1095,7 @@
   - type: GameRule # Goob
     chaosScore: 150
   - type: AntagSpawner
-    prototype: PlayerEngineeringBorgDerelictGhostRole
+    prototype: IS14CyborgDerelictEngineering
   - type: AntagSelection
     antags:
     - !type:FixedAntagCount
@@ -1119,8 +1119,10 @@
   # Goobstation
   - type: GameRule
     chaosScore: 80
-  - type: AntagSpawner
-    prototype: PlayerBorgDerelictGhostRole
+  - type: CyborgRandomAntagSpawner
+    prototypes:
+      IS14CyborgDerelict: 4
+      IS14CyborgDerelictSyndicate: 1
   - type: AntagSelection
     antags:
     - !type:FixedAntagCount
@@ -1133,7 +1135,7 @@
   - type: GameRule # Goob
     chaosScore: 150
   - type: AntagSpawner
-    prototype: PlayerJanitorBorgDerelictGhostRole
+    prototype: IS14CyborgDerelictJanitor
   - type: AntagSelection
     antags:
     - !type:FixedAntagCount
@@ -1146,7 +1148,7 @@
   - type: GameRule # Goob
     chaosScore: 150
   - type: AntagSpawner
-    prototype: PlayerMedicalBorgDerelictGhostRole
+    prototype: IS14CyborgDerelictMedical
   - type: AntagSelection
     antags:
     - !type:FixedAntagCount
@@ -1159,7 +1161,7 @@
   - type: GameRule # Goob
     chaosScore: 150
   - type: AntagSpawner
-    prototype: PlayerMiningBorgDerelictGhostRole
+    prototype: IS14CyborgDerelictMiner
   - type: AntagSelection
     antags:
     - !type:FixedAntagCount
@@ -1175,7 +1177,7 @@
     earliestStart: 25
     minimumPlayers: 15
   - type: AntagSpawner
-    prototype: PlayerBorgSyndicateDerelictGhostRole
+    prototype: IS14CyborgDerelictSyndicateGhostRole
   - type: AntagSelection
     antags:
     - !type:FixedAntagCount

@@ -1,0 +1,33 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+
+# Printed from the start: the boards tg gives every robotics lab.
+- type: latheRecipePack
+  id: IS14CyborgStatic
+  recipes:
+  - IS14CyborgUpgradeReclassification
+  - IS14CyborgUpgradeBotanyTools
+  - IS14CyborgUpgradeRename
+  - IS14CyborgUpgradeClown
+  - IS14CyborgUpgradeBeakerApparatus
+  - IS14CyborgUpgradeGlassApparatus
+  - IS14CyborgUpgradeCondimentSynth
+  - IS14CyborgUpgradeRollingTable
+  - IS14CyborgUpgradeExpander
+
+# Unlocked by research, see the IS14-change blocks in Research/*.yml.
+- type: latheRecipePack
+  id: IS14CyborgUpgrades
+  recipes:
+  - IS14CyborgUpgradeIonThrusters
+  - IS14CyborgUpgradeSelfRepair
+  - IS14CyborgUpgradeDiamondDrill
+  - IS14CyborgUpgradeSatchelOfHolding
+  - IS14CyborgUpgradeAdvancedSurgery
+  - IS14CyborgUpgradeAdvancedTools
+  - IS14CyborgUpgradeAdvancedMop
+  - IS14CyborgUpgradeDefibrillator
+  - IS14CyborgUpgradeDisablerCooler
+  - IS14CyborgUpgradeTrashBagOfHolding
+  - IS14CyborgUpgradeExpandedHypo
+  - IS14CyborgUpgradeBluespaceSyringe
+  - IS14CyborgUpgradeCrewPinpointer

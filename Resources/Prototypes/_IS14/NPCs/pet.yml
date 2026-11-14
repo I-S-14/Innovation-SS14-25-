@@ -26,3 +26,9 @@
       layers:
       - map: ["enum.DamageStateVisualLayers.Base"]
         state: dogIdle
+    - type: MeleeWeapon
+      damage:
+        types:
+          Blunt: 5
+    - type: StaminaDamageOnHit # goob edited
+      damage: 15

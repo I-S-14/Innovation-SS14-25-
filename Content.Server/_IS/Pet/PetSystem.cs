@@ -44,6 +44,21 @@ public sealed partial class PetSystem : SharedPetSystem
 
         SubscribeLocalEvent<PetOverlordComponent, AfterPointedAtEvent>(OnPointedAt);
         SubscribeLocalEvent<PetMakeOverlordOnOpenComponent, UseInHandEvent>(OnOpen);
+        SubscribeLocalEvent<PetOverlordComponent, PetOrderActionEvent>(OnOrderAction);
+    }
+    private void OnOrderAction(Entity<PetOverlordComponent> ent, ref PetOrderActionEvent args)
+    {
+        if (ent.Comp.CurrentOrder == args.Type)
+            return;
+        args.Handled = true;
+
+        ent.Comp.CurrentOrder = args.Type;
+        Dirty(ent.Owner, ent.Comp);
+
+        _chat.TrySendInGameICMessage(ent, Loc.GetString(ent.Comp.BasePhrases[args.Type]), InGameICChatType.Speak, true, true, checkRadioPrefix: false);
+
+        UpdateActions(ent.Owner, ent.Comp);
+        UpdateAllPets(ent.Owner, ent.Comp);
     }
 
     private void OnInteractUsing(Entity<PetComponent> ent, ref InteractUsingEvent args)

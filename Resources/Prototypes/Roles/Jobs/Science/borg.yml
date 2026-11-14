@@ -36,5 +36,5 @@
   icon: JobIconBorg
   supervisors: job-supervisors-rd
   guides: [ Cyborgs ]
-  jobEntity: PlayerBorgBattery
+  jobEntity: IS14PlayerCyborgBattery
   applyTraits: true

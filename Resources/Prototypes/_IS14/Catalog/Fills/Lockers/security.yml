@@ -41,6 +41,40 @@
     - id: ClothingOuterIS14MilitiaFormalJacket
     - id: ClothingHeadIS14MilitiaCap
 
+- type: entityTable
+  id: IS14FillLockerWarden
+  table: !type:AllSelector
+    children:
+    - id: FlashlightSeclite
+    #- id: WeaponDisabler # Goobstation (Disablers in belts)
+    #- id: ClothingBeltSecurityFilled IS14-edit
+    - id: Flash
+    #- id: ClothingEyesGlassesSecurity IS14-edit
+    - id: ClothingHandsGlovesCombat
+    - id: ClothingShoesBootsJack
+    - id: ClothingOuterCoatWarden
+    - id: ClothingOuterWinterWarden
+    #- id: RubberStampWarden IS14-edit
+    - id: DoorRemoteArmory
+    #- id: HoloprojectorSecurity Goob, its in your belt
+    #- id: BookSpaceLaw IS14-edit
+    - id: ClothingBackpackElectropack
+      amount: 2
+    - id: RemoteSignaller
+      amount: 2
+    #- id: NetworkConfigurator # Goobstation?
+    - id: Binoculars
+    - id: WeaponEnergyShotgun # Goobstation?
+    - id: ClothingHandsGlovesKravMaga # Goobstation - Martial Arts
+    - id: BoxLethalInjection # Goobstation
+    #- id: ClothingHeadsetAltWarden # Goobstation IS14-edit
+    - id: Multitool # Goobstation
+    - id: Wrench # Goobstation
+    - id: ContrabandDetectorFlatpack # Goobstation
+      amount: 2 # CorvaxGoob: added amount, 1 > 2
+    - id: SecurityMegaphone # goob - loudspeakers
+    - id: SecApartmentTablet # CorvaxGoob-SecApartment
+
 - type: entity
   id: IS14WardenLockerFilledHardsuit
   suffix: Filled, Hardsuit
@@ -51,7 +85,7 @@
       entity_storage: !type:AllSelector
         children:
         - !type:NestedSelector
-          tableId: FillLockerWarden
+          tableId: IS14FillLockerWarden
         - !type:NestedSelector
           tableId: FillLockerWardenHarduit
         - !type:NestedSelector
@@ -90,6 +124,42 @@
     - id: ClothingHeadIS14HatBlueMilitiaUshanka
     - id: ClothingHeadIS14MilitiaCap
 
+- type: entityTable
+  id: IS14FillLockerSecurity
+  table: !type:AllSelector
+    children:
+    - id: FlashlightSeclite
+      prob: 0.8
+    #- id: WeaponDisabler # Goobstation (Disablers in belts)
+    - id: ClothingUniformJumpsuitSecGrey
+      prob: 0.3
+    - id: ClothingHeadHelmetBasic
+    - id: ClothingOuterArmorBasic
+    #- id: ClothingBeltSecurityFilled Goob, see GroupSelector below
+    - id: Flash
+      prob: 0.5
+    #- id: ClothingEyesGlassesSecurity IS14-edit
+    # - id: ClothingHeadsetSecurity, Goob, over ear headsets
+    - id: ClothingHandsGlovesColorBlack
+    - id: ClothingShoesBootsJack
+    - id: WeaponMeleeNeedle
+      prob: 0.1
+    #- id: HoloprojectorSecurity, Goobstation, it's in every belt
+    #  prob: 0.6
+    #- id: BookSpaceLaw IS14-edit
+    #  prob: 0.5
+    #- id: ClothingHeadsetAltSecurityRegular # Goobstation IS14-edit
+    - id: PanicButton # Goobstation
+    - id: PepperSpray # Goobstation
+    # Goobstation - Martial Arts - start
+    - !type:GroupSelector
+      children:
+      #- id: ClothingBeltSecurityFilled IS14-edit
+      #  weight: 0.5
+      - id: ClothingBeltCorporateJudoFilled
+        weight: 0.5
+    # Goobstation - Martial Arts - end
+
 - type: entity
   id: IS14SecLockerFilled
   suffix: Filled
@@ -100,7 +170,7 @@
       entity_storage: !type:AllSelector
         children:
         - !type:NestedSelector
-          tableId: FillLockerSecurity
+          tableId: IS14FillLockerSecurity
         - !type:NestedSelector
           tableId: IS14SecLockerFillClothes
 
@@ -132,6 +202,33 @@
     - id: ClothingOuterIS14MedOfficerRobe
     - id: ClothingShoesIS14MilitiaBoots
 
+- type: entityTable
+  id: IS14FillLockerBrigmedic
+  table: !type:AllSelector
+    children:
+    - id: ClothingEyesGlassesSecurity
+    - id: WeaponDisabler
+    - id: TrackingImplanter
+      amount: 2
+    # Goob start
+    - id: BoxAutoinjectorCartidges
+    - id: ClothingBackpackDuffelSurgeryFilled
+    - id: ClothingHandsGlovesLatex
+    - id: OxygenTankFilled
+    - id: NitrogenTankFilled
+    - id: MedkitOxygenFilled
+    - id: MedkitAdvancedFilled
+    #Corvax-Goob-brigmedic-loadout-update-start
+    - id: Defibrillator
+    - id: ClothingMaskSecurityMedicalRespirator
+    #Corvax-Goob-brigmedic-loadout-update-end
+    - id: BoxSyringe
+    - id: BoxBodyBag
+      # Goob end
+    #- id: ClothingOuterHardsuitBrigmedic IS14-edit
+    - id: ClothingUniformJumpskirtOfLife
+      prob: 0.1
+
 - type: entity
   id: IS14BrigmedicLockerFilled
   suffix: Filled
@@ -142,7 +239,7 @@
       entity_storage: !type:AllSelector
         children:
         - !type:NestedSelector
-          tableId: FillLockerBrigmedic
+          tableId: IS14FillLockerBrigmedic
         - !type:NestedSelector
           tableId: IS14BrigmedicLockerFillClothes
 
@@ -190,6 +287,39 @@
     - id: ClothingUniformJumpsuitIS14Investigator
     - id: ClothingHeadIS14InvestigatorHat
 
+- type: entityTable
+  id: IS14FillLockerDetective
+  table: !type:AllSelector
+    children:
+    - id: ClothingEyesGlassesNoir
+    - id: ClothingHeadHatDetGadget
+    - id: ClothingNeckTieDet
+    - !type:GroupSelector #Goob, if you want the other one, get it from detvend
+      children:
+      - id: ClothingOuterVestDetective
+        weight: 0.5
+      - id: ClothingOuterCoatDetectiveLoadout
+        weight: 0.5
+        #Goobend
+    - id: FlippoEngravedLighter
+    - id: FlashlightSeclite
+    - id: ForensicScanner
+    - id: LogProbeCartridge
+    - id: BoxForensicPad
+    - id: DrinkDetFlask
+    - id: ClothingHandsGlovesForensic
+    #- id: RubberStampDetective IS14-edit
+    - id: HoloprojectorSecurity
+    - id: BoxEvidenceMarkers
+    - id: HandLabeler
+    - id: BloodTrak # Goobstation
+    - id: Betty # Goobstation
+    - id: BoxTapeRecorder # DeltaV
+    - id: PoliceBaton # Goobstation
+    - id: ObraDinnClock # Goobstation
+    - id: PhotoCameraFilled # CorvaxGoob
+    #- id: ClothingOuterHardsuitDetective # CorvaxGoob Чтобы мапперам не пришлось перемапливать шкафы на те что со скафом IS14-edit
+
 - type: entity
   id: IS14EvidenceLockerFilled
   suffix: Filled
@@ -200,7 +330,7 @@
       entity_storage: !type:AllSelector
         children:
         - !type:NestedSelector
-          tableId: FillLockerDetective
+          tableId: IS14FillLockerDetective
         - !type:NestedSelector
           tableId: IS14EvidenceLockerFillClothes
 

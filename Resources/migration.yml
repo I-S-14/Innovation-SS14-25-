@@ -1525,8 +1525,6 @@ ClothingShoesTourist: ClothingShoesSandalsBlack
 ClothingShoesWizard: ClothingShoesSandalsBrown
 
 #2026-09-28
-BorgModuleGardening: BorgModuleBotany
-BorgModuleHarvesting: BorgModuleBotany
 
 # 2026-09-29
 WallMalign: WallSolid
@@ -1556,3 +1554,24 @@ voicesensor: VoiceSensor
 # 2026-10-17
 AirlockChapelStandardGlassLocked: AirlockChapelGlassLocked
 AirlockStandardGlass: AirlockGlass
+
+# 2026-10-17 IS14
+# tgstation-style cyborgs: the old borg modules on maps become the closest upgrade board,
+# or go away when the model already has their tools built in.
+BorgModuleAdvancedTool: IS14CyborgUpgradeAdvancedTools
+BorgModuleClowning: IS14CyborgUpgradeClown
+BorgModuleGardening: IS14CyborgUpgradeBotanyTools
+BorgModuleHarvesting: IS14CyborgUpgradeBotanyTools
+BorgModuleSyndicateWeapon: IS14CyborgUpgradeSyndicateWeapon
+BorgModuleAnomaly: null
+BorgModuleAppraisal: null
+BorgModuleArtifact: null
+BorgModuleCable: null
+BorgModuleCleaning: null
+BorgModuleConstruction: null
+BorgModuleFireExtinguisher: null
+BorgModuleL6C: null
+BorgModuleMining: null
+BorgModuleRCD: null
+BorgModuleTool: null
+BorgModuleTopicals: null

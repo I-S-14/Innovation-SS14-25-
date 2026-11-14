@@ -1,0 +1,9 @@
+<!--
+Licensed under IS14's EULA, see EULA.txt for more information.
+-->
+<apps:CyborgDiagnosticsAppFragment xmlns="https://spacestation14.io"
+                                   xmlns:apps="clr-namespace:Content.Client._IS14.OS.Apps">
+    <ScrollContainer HorizontalExpand="True" VerticalExpand="True" HScrollEnabled="False">
+        <RichTextLabel Name="Report" HorizontalExpand="True" />
+    </ScrollContainer>
+</apps:CyborgDiagnosticsAppFragment>

@@ -45,7 +45,7 @@
   id: UplinkSyndicateWeaponModule
   name: uplink-syndicate-weapon-module-name
   description: uplink-syndicate-weapon-module-desc
-  productEntity: BorgModuleSyndicateWeapon
+  productEntity: IS14CyborgUpgradeSyndicateWeapon
   cost:
     Telecrystal: 25 # goob
   categories:
@@ -77,7 +77,7 @@
   id: UplinkSyndicateMartyrModule
   name: uplink-syndicate-martyr-module-name
   description: uplink-syndicate-martyr-module-desc
-  productEntity: BorgModuleMartyr
+  productEntity: IS14CyborgUpgradeMartyr
   icon: { sprite: /Textures/Objects/Specific/Robotics/borgmodule.rsi, state: syndicateborgbomb }
   cost:
     Telecrystal: 20 # goob

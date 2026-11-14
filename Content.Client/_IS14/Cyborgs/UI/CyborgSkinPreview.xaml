@@ -1,0 +1,12 @@
+<!--
+Licensed under IS14's EULA, see EULA.txt for more information.
+-->
+
+<is14:CyborgSkinPreview
+    xmlns="https://spacestation14.io"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Cyborgs.UI"
+    MouseFilter="Ignore">
+
+    <TextureRect Name="Body" Stretch="KeepCentered" MouseFilter="Ignore" />
+    <TextureRect Name="Eyes" Stretch="KeepCentered" MouseFilter="Ignore" />
+</is14:CyborgSkinPreview>

@@ -1,0 +1,61 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+
+- type: entity
+  parent: [IS14BaseCyborgTool, BorgOreBag]
+  id: IS14CyborgToolOreBag
+  categories: [ HideSpawnMenu ]
+  components:
+  # Click opens the bag, alt click switches the magnet.
+  - type: ItemToggle
+    onUse: false
+    onActivate: false
+    soundActivate:
+      collection: sparks
+      params:
+        variation: 0.250
+    soundDeactivate:
+      collection: sparks
+      params:
+        variation: 0.250
+  - type: CyborgAltToggle
+
+- type: entity
+  parent: [IS14BaseCyborgTool, MiningDrill]
+  id: IS14CyborgToolMiningDrill
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
+    layers:
+    - state: mining-handdrill
+
+- type: entity
+  parent: [IS14BaseCyborgTool, Shovel]
+  id: IS14CyborgToolShovel
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
+    layers:
+    - state: mining-shovel
+
+# Fires bolts that break any rock or ore vein in one hit, like tg's mineral turfs.
+- type: entity
+  parent: [IS14BaseCyborgTool, WeaponProtoKineticAccelerator]
+  id: IS14CyborgToolKineticAccelerator
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: BasicEntityAmmoProvider
+    proto: IS14CyborgBulletKinetic
+
+- type: entity
+  parent: BulletKinetic
+  id: IS14CyborgBulletKinetic
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: GatheringProjectile
+
+- type: entity
+  parent: [IS14BaseCyborgTool, AdvancedMineralScannerUnpowered]
+  id: IS14CyborgToolMiningScanner
+  categories: [ HideSpawnMenu ]

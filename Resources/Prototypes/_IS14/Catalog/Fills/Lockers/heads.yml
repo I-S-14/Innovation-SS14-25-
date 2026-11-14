@@ -403,6 +403,32 @@
     - id: ClothingHeadIS14HosMilitiaCap
     - id: ClothingOuterIS14HosMilitiaGreatcoat
 
+- type: entityTable
+  id: IS14LockerFillHeadOfSecurityNoHardsuit
+  table: !type:AllSelector
+    children:
+    - id: WeaponEnergyMagnum
+    #- id: BookSpaceLaw IS14-edit
+    - id: BoxEncryptionKeySecurity
+    - id: CigarGoldCase
+      prob: 0.50
+    - id: ClothingBeltSecurityFilled
+    #- id: ClothingEyesGlassesSecurity IS14-edit
+    #- id: ClothingOuterCoatHoSTrench IS14-edit
+    - id: ClothingShoesBootsJack
+    - id: FlashlightSeclite
+    - id: DoorRemoteSecurity
+    #- id: HoloprojectorSecurity Goob, you have one in the belt
+    #- id: RubberStampHos IS14-edit
+    - id: BoxHoSCircuitboards
+    - id: WeaponDisabler
+    #- id: WeaponDisabler # Goobstation (Disablers in belts)
+    - id: ComputerCargoRequestSecurityFlatpack # Goobstation
+    - id: WantedListCartridge
+    #- id: DrinkHosFlask IS14-edit
+    - id: ClothingBeltSheathHeadOfSecurityFilled # Goobstation - security revamp
+    - id: SecApartmentTablet # CorvaxGoob-SecApartment
+
 # No hardsuit locker
 - type: entity
   id: IS14HoSLockerFilled
@@ -414,7 +440,7 @@
       entity_storage: !type:AllSelector
         children:
         - !type:NestedSelector
-          tableId: LockerFillHeadOfSecurityNoHardsuit
+          tableId: IS14LockerFillHeadOfSecurityNoHardsuit
         - !type:NestedSelector
           tableId: IS14HoSLockerFillClothes
 

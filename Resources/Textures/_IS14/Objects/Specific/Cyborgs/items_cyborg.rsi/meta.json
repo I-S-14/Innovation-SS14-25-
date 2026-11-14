@@ -1,0 +1,262 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from BandaStation (https://github.com/ss220club/BandaStation), icons/obj/items_cyborg.dmi",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "indwelder_cyborg",
+      "delays": [
+        [
+          0.2,
+          0.2,
+          0.2
+        ]
+      ]
+    },
+    {
+      "name": "indwelder_cyborg100"
+    },
+    {
+      "name": "indwelder_cyborg75"
+    },
+    {
+      "name": "indwelder_cyborg50"
+    },
+    {
+      "name": "indwelder_cyborg25"
+    },
+    {
+      "name": "indwelder_cyborg0"
+    },
+    {
+      "name": "indwelder_cyborg-on",
+      "delays": [
+        [
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "knife_cyborg"
+    },
+    {
+      "name": "fingerblades"
+    },
+    {
+      "name": "laser_cyborg",
+      "delays": [
+        [
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ]
+      ]
+    },
+    {
+      "name": "laser_cyborg_charge1"
+    },
+    {
+      "name": "laser_cyborg_charge2"
+    },
+    {
+      "name": "laser_cyborg_charge3"
+    },
+    {
+      "name": "laser_cyborg_charge4"
+    },
+    {
+      "name": "laser_cyborg_empty"
+    },
+    {
+      "name": "taser"
+    },
+    {
+      "name": "taser_charge_disable"
+    },
+    {
+      "name": "taser_disable"
+    },
+    {
+      "name": "taser_charge_stun"
+    },
+    {
+      "name": "taser_stun"
+    },
+    {
+      "name": "claymore_cyborg",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "sili_knife",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "sili_rolling_pin",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "toolkit_engiborg_wrench",
+      "delays": [
+        [
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ]
+      ]
+    },
+    {
+      "name": "toolkit_engiborg_cutters",
+      "delays": [
+        [
+          0.2,
+          0.2,
+          0.2
+        ]
+      ]
+    },
+    {
+      "name": "toolkit_engiborg_screwdriver",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "toolkit_engiborg_crowbar",
+      "delays": [
+        [
+          1.0,
+          1.0
+        ]
+      ]
+    },
+    {
+      "name": "toolkit_engiborg_multitool",
+      "delays": [
+        [
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ]
+      ]
+    },
+    {
+      "name": "toolkit_engiborg"
+    },
+    {
+      "name": "shuttle_database0"
+    },
+    {
+      "name": "shuttle_database1"
+    },
+    {
+      "name": "sili_secateur",
+      "delays": [
+        [
+          0.6,
+          0.15,
+          0.15
+        ]
+      ]
+    },
+    {
+      "name": "sili_hatchet",
+      "delays": [
+        [
+          0.6,
+          0.1,
+          0.16,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "sili_cultivator",
+      "delays": [
+        [
+          0.2,
+          0.2,
+          0.2
+        ]
+      ]
+    },
+    {
+      "name": "sili_shovel"
+    },
+    {
+      "name": "sili"
+    },
+    {
+      "name": "cleanerbox"
+    },
+    {
+      "name": "cleanerbox_on",
+      "delays": [
+        [
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ]
+      ]
+    },
+    {
+      "name": "cleanerbox_locked"
+    },
+    {
+      "name": "cleanerbox_wand"
+    },
+    {
+      "name": "vacuum-wand"
+    },
+    {
+      "name": "vacuum-wand_on",
+      "delays": [
+        [
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ]
+      ]
+    }
+  ]
+}

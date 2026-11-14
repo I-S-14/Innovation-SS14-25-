@@ -47,6 +47,14 @@ public sealed partial class PetOverlordComponent : Component
 
     [DataField, AutoNetworkedField]
     public EntityUid? FollowActionEntity;
+
+    [DataField]
+    public Dictionary<PetOrderType, LocId> BasePhrases = new Dictionary<PetOrderType, LocId>()
+    {
+        { PetOrderType.Attack, "PetBasePhraseAttack" },
+        { PetOrderType.Follow, "PetBasePhraseFollow" },
+        { PetOrderType.Stay, "PetBasePhraseStay" }
+    };
 }
 
 [RegisterComponent]

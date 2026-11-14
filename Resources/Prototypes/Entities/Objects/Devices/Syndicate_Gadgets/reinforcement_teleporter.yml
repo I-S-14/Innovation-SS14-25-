@@ -134,4 +134,7 @@
         settings: default
       job: Borg
     - type: GhostRoleMobSpawner
-      prototype: PlayerBorgSyndicateAssaultBattery
+      #IS14-change start - tgstation-style cyborg
+      # prototype: PlayerBorgSyndicateAssaultBattery
+      prototype: IS14CyborgSyndicateAssault
+      #IS14-change end

@@ -1,0 +1,11 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+
+- type: entity
+  parent: [IS14BaseCyborgTool, HoloprojectorSecurity]
+  id: IS14CyborgToolHoloprojectorSecurity
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
+    layers:
+    - state: tool-signmaker
