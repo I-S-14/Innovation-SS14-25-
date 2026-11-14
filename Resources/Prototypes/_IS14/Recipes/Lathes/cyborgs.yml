@@ -1,0 +1,123 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+
+- type: latheRecipe
+  parent: BaseRoboticsRecipe
+  id: IS14CyborgEndoskeleton
+  result: IS14CyborgEndoskeleton
+  materials:
+    Steel: 1500
+
+- type: latheRecipe
+  parent: BaseBorgModuleRecipe
+  id: IS14CyborgUpgradeReclassification
+  result: IS14CyborgUpgradeReclassification
+
+- type: latheRecipe
+  parent: BaseBorgModuleRecipe
+  id: IS14CyborgUpgradeBotanyTools
+  result: IS14CyborgUpgradeBotanyTools
+
+- type: latheRecipe
+  parent: BaseBorgModuleRecipe
+  id: IS14CyborgUpgradeAdvancedMop
+  result: IS14CyborgUpgradeAdvancedMop
+
+- type: latheRecipe
+  parent: BaseBorgModuleRecipe
+  id: IS14CyborgUpgradeDefibrillator
+  result: IS14CyborgUpgradeDefibrillator
+
+- type: latheRecipe
+  parent: BaseGoldBorgModuleRecipe
+  id: IS14CyborgUpgradeIonThrusters
+  result: IS14CyborgUpgradeIonThrusters
+
+- type: latheRecipe
+  parent: BaseGoldBorgModuleRecipe
+  id: IS14CyborgUpgradeSelfRepair
+  result: IS14CyborgUpgradeSelfRepair
+
+- type: latheRecipe
+  parent: BaseGoldBorgModuleRecipe
+  id: IS14CyborgUpgradeDiamondDrill
+  result: IS14CyborgUpgradeDiamondDrill
+
+- type: latheRecipe
+  parent: BaseGoldBorgModuleRecipe
+  id: IS14CyborgUpgradeSatchelOfHolding
+  result: IS14CyborgUpgradeSatchelOfHolding
+
+- type: latheRecipe
+  parent: BaseGoldBorgModuleRecipe
+  id: IS14CyborgUpgradeAdvancedSurgery
+  result: IS14CyborgUpgradeAdvancedSurgery
+
+- type: latheRecipe
+  parent: BaseGoldBorgModuleRecipe
+  id: IS14CyborgUpgradeAdvancedTools
+  result: IS14CyborgUpgradeAdvancedTools
+
+- type: latheRecipe
+  parent: BaseBorgModuleRecipe
+  id: IS14CyborgUpgradeRename
+  result: IS14CyborgUpgradeRename
+
+- type: latheRecipe
+  parent: BaseBorgModuleRecipe
+  id: IS14CyborgUpgradeClown
+  result: IS14CyborgUpgradeClown
+
+- type: latheRecipe
+  parent: BaseBorgModuleRecipe
+  id: IS14CyborgUpgradeBeakerApparatus
+  result: IS14CyborgUpgradeBeakerApparatus
+
+- type: latheRecipe
+  parent: BaseBorgModuleRecipe
+  id: IS14CyborgUpgradeGlassApparatus
+  result: IS14CyborgUpgradeGlassApparatus
+
+- type: latheRecipe
+  parent: BaseBorgModuleRecipe
+  id: IS14CyborgUpgradeCondimentSynth
+  result: IS14CyborgUpgradeCondimentSynth
+
+- type: latheRecipe
+  parent: BaseBorgModuleRecipe
+  id: IS14CyborgUpgradeRollingTable
+  result: IS14CyborgUpgradeRollingTable
+
+- type: latheRecipe
+  parent: BaseBorgModuleRecipe
+  id: IS14CyborgUpgradeCrewPinpointer
+  result: IS14CyborgUpgradeCrewPinpointer
+
+- type: latheRecipe
+  parent: BaseGoldBorgModuleRecipe
+  id: IS14CyborgUpgradeDisablerCooler
+  result: IS14CyborgUpgradeDisablerCooler
+
+- type: latheRecipe
+  parent: BaseGoldBorgModuleRecipe
+  id: IS14CyborgUpgradeTrashBagOfHolding
+  result: IS14CyborgUpgradeTrashBagOfHolding
+
+- type: latheRecipe
+  parent: BaseGoldBorgModuleRecipe
+  id: IS14CyborgUpgradeExpandedHypo
+  result: IS14CyborgUpgradeExpandedHypo
+
+- type: latheRecipe
+  parent: BaseGoldBorgModuleRecipe
+  id: IS14CyborgUpgradeBluespaceSyringe
+  result: IS14CyborgUpgradeBluespaceSyringe
+
+# tg asks for a hundred iron sheets.
+- type: latheRecipe
+  parent: BaseBorgModuleRecipe
+  id: IS14CyborgUpgradeExpander
+  result: IS14CyborgUpgradeExpander
+  completetime: 10
+  materials:
+    Steel: 5000
+    Plasteel: 250

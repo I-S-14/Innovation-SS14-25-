@@ -1,0 +1,13 @@
+<!--
+Licensed under IS14's EULA, see EULA.txt for more information.
+-->
+
+<is14:CyborgReagentRow
+    xmlns="https://spacestation14.io"
+    xmlns:is14="clr-namespace:Content.Client._IS14.Cyborgs.UI"
+    Orientation="Horizontal"
+    SeparationOverride="6">
+
+    <PanelContainer Name="Swatch" SetSize="16 16" VerticalAlignment="Center" />
+    <Button Name="SelectButton" ToggleMode="True" HorizontalExpand="True" />
+</is14:CyborgReagentRow>

@@ -25,12 +25,20 @@
 - type: weightedRandomEntity
   id: WabbajackRobot
   weights:
-    PlayerBorgGeneric: 30
-    PlayerBorgMining: 30
-    PlayerBorgEngineer: 30
-    PlayerBorgJanitor: 30
-    PlayerBorgMedical: 30
-    PlayerBorgService: 30
+    #IS14-change start - tgstation-style cyborgs
+    # PlayerBorgGeneric: 30
+    # PlayerBorgMining: 30
+    # PlayerBorgEngineer: 30
+    # PlayerBorgJanitor: 30
+    # PlayerBorgMedical: 30
+    # PlayerBorgService: 30
+    IS14CyborgNTBattery: 30
+    IS14CyborgNTMiner: 30
+    IS14CyborgNTEngineering: 30
+    IS14CyborgNTJanitor: 30
+    IS14CyborgNTMedical: 30
+    IS14CyborgNTService: 30
+    #IS14-change end
     MobFireBot: 20
     MobHonkBot: 20
     MobJonkBot: 20
@@ -38,11 +46,18 @@
     MobMedibot: 20
     MobMimeBot: 20
     MobSupplyBot: 20
-    PlayerBorgDerelict: 10
-    PlayerBorgSyndicateAssaultBattery: 1
-    PlayerBorgSyndicateMedicalBattery: 1
-    PlayerBorgSyndicateSaboteurBattery: 1
-    PlayerBorgDerelictSyndicateAssaultBattery: 1
+    #IS14-change start - tgstation-style cyborgs
+    # PlayerBorgDerelict: 10
+    # PlayerBorgSyndicateAssaultBattery: 1
+    # PlayerBorgSyndicateMedicalBattery: 1
+    # PlayerBorgSyndicateSaboteurBattery: 1
+    # PlayerBorgDerelictSyndicateAssaultBattery: 1
+    IS14CyborgDerelict: 10
+    IS14CyborgSyndicateAssault: 1
+    IS14CyborgSyndicateMedical: 1
+    IS14CyborgSyndicateSaboteur: 1
+    IS14CyborgDerelictSyndicate: 1
+    #IS14-change end
 
 - type: weightedRandomEntity
   id: WabbajackSlime

@@ -1117,7 +1117,10 @@
   id: UplinkSyndicateWeaponModule
   name: uplink-syndicate-weapon-module-name
   description: uplink-syndicate-weapon-module-desc
-  productEntity: BorgModuleSyndicateWeapon
+  #IS14-change start - tgstation-style cyborgs take upgrade boards
+  # productEntity: BorgModuleSyndicateWeapon
+  productEntity: IS14CyborgUpgradeSyndicateWeapon
+  #IS14-change end
   cost:
     Telecrystal: 25 # goob
   categories:
@@ -1134,7 +1137,10 @@
   id: UplinkSyndicateMartyrModule
   name: uplink-syndicate-martyr-module-name
   description: uplink-syndicate-martyr-module-desc
-  productEntity: BorgModuleMartyr
+  #IS14-change start - tgstation-style cyborgs take upgrade boards
+  # productEntity: BorgModuleMartyr
+  productEntity: IS14CyborgUpgradeMartyr
+  #IS14-change end
   icon: { sprite: /Textures/Objects/Specific/Robotics/borgmodule.rsi, state: syndicateborgbomb }
   cost:
     Telecrystal: 20 # goob

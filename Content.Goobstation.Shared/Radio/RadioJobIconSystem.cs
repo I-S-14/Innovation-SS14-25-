@@ -7,6 +7,7 @@ using Content.Shared.StatusIcon;
 using Content.Shared.StatusIcon.Components;
 using Robust.Shared.Prototypes;
 using System.Diagnostics.CodeAnalysis;
+using Content.Shared._IS14.Cyborgs.Components; // IS14-change
 
 namespace Content.Goobstation.Shared.Radio;
 
@@ -58,7 +59,9 @@ public sealed class RadioJobIconSystem : EntitySystem
             jobName = Loc.GetString("job-name-station-ai");
             return true;
         }
-        if (HasComp<BorgChassisComponent>(ent)
+        //IS14-change start - tgstation-style cyborgs count as borgs
+        if ((HasComp<BorgChassisComponent>(ent) || HasComp<CyborgComponent>(ent))
+        //IS14-change end
             || HasComp<BorgBrainComponent>(ent)
             || HasComp<PAIComponent>(ent) // pAIs and Drones don't have radio access, but they can still get picked up by an intercom.
             || HasComp<DroneComponent>(ent))

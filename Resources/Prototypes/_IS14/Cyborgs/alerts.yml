@@ -1,0 +1,11 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+
+# Shown while a cyborg is tipped over: the cooldown is the wait before it may roll back by itself.
+- type: alert
+  id: IS14CyborgTipped
+  clickEvent: !type:CyborgTippedAlertEvent
+  icons:
+  - sprite: /Textures/Interface/Alerts/stunnable.rsi
+    state: knocked-down
+  name: alerts-cyborg-tipped-name
+  description: alerts-cyborg-tipped-desc

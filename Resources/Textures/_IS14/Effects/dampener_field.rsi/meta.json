@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from BandaStation (https://github.com/ss220club/BandaStation), icons/effects/fields.dmi",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "projectile_dampen_effect",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "projectile_dampen_west"
+    },
+    {
+      "name": "projectile_dampen_east"
+    },
+    {
+      "name": "projectile_dampen_north"
+    },
+    {
+      "name": "projectile_dampen_south"
+    },
+    {
+      "name": "projectile_dampen_southeast"
+    },
+    {
+      "name": "projectile_dampen_southwest"
+    },
+    {
+      "name": "projectile_dampen_northwest"
+    },
+    {
+      "name": "projectile_dampen_northeast"
+    },
+    {
+      "name": "projectile_dampen_generic"
+    }
+  ]
+}

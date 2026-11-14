@@ -11,6 +11,7 @@ using Content.Shared.Light.Components;
 using Content.Shared.PowerCell;
 using Content.Shared.Silicons.Borgs.Components;
 using Content.Shared.Weapons.Melee.Events;
+using Content.Shared._IS14.Cyborgs.Components; // IS14-change
 
 namespace Content.Goobstation.Server.Nightmare;
 
@@ -93,7 +94,9 @@ public sealed class LightEaterSystem : EntitySystem
                 }
             }
 
-            if (!HasComp<BorgChassisComponent>(target)
+            //IS14-change start - tgstation-style cyborgs count as borgs
+            if (!(HasComp<BorgChassisComponent>(target) || HasComp<CyborgComponent>(target))
+            //IS14-change end
                 || !_powerCellSystem.TryGetBatteryFromSlot(target, out _))
                 continue;
 

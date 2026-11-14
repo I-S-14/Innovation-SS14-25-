@@ -1001,7 +1001,10 @@
   - type: SpaceSpawnRule
     spawnDistance: 0
   - type: AntagSpawner
-    prototype: PlayerEngineeringBorgDerelictGhostRole
+    #IS14-change start - tgstation-style cyborg
+    # prototype: PlayerEngineeringBorgDerelictGhostRole
+    prototype: IS14CyborgDerelictEngineering
+    #IS14-change end
   - type: AntagSelection
     definitions:
     - spawnerPrototype: SpawnPointGhostDerelictEngineeringCyborg
@@ -1029,8 +1032,14 @@
     chaosScore: 80
   - type: SpaceSpawnRule
     spawnDistance: 0
-  - type: AntagSpawner
-    prototype: PlayerBorgDerelictGhostRole
+  #IS14-change start - tgstation-style cyborg, a random specialization or a syndicate one
+  # - type: AntagSpawner
+  #   prototype: PlayerBorgDerelictGhostRole
+  - type: CyborgRandomAntagSpawner
+    prototypes:
+      IS14CyborgDerelict: 4 # engineering, medical, janitor or mining
+      IS14CyborgDerelictSyndicate: 1
+  #IS14-change end
   - type: AntagSelection
     definitions:
     - spawnerPrototype: SpawnPointGhostDerelictCyborg
@@ -1053,7 +1062,10 @@
   - type: SpaceSpawnRule
     spawnDistance: 0
   - type: AntagSpawner
-    prototype: PlayerJanitorBorgDerelictGhostRole
+    #IS14-change start - tgstation-style cyborg
+    # prototype: PlayerJanitorBorgDerelictGhostRole
+    prototype: IS14CyborgDerelictJanitor
+    #IS14-change end
   - type: AntagSelection
     definitions:
     - spawnerPrototype: SpawnPointGhostDerelictJanitorCyborg
@@ -1076,7 +1088,10 @@
   - type: SpaceSpawnRule
     spawnDistance: 0
   - type: AntagSpawner
-    prototype: PlayerMedicalBorgDerelictGhostRole
+    #IS14-change start - tgstation-style cyborg
+    # prototype: PlayerMedicalBorgDerelictGhostRole
+    prototype: IS14CyborgDerelictMedical
+    #IS14-change end
   - type: AntagSelection
     definitions:
     - spawnerPrototype: SpawnPointGhostDerelictMedicalCyborg
@@ -1099,7 +1114,10 @@
   - type: SpaceSpawnRule
     spawnDistance: 0
   - type: AntagSpawner
-    prototype: PlayerMiningBorgDerelictGhostRole
+    #IS14-change start - tgstation-style cyborg
+    # prototype: PlayerMiningBorgDerelictGhostRole
+    prototype: IS14CyborgDerelictMiner
+    #IS14-change end
   - type: AntagSelection
     definitions:
     - spawnerPrototype: SpawnPointGhostDerelictMiningCyborg
@@ -1122,7 +1140,10 @@
   - type: SpaceSpawnRule
     spawnDistance: 0
   - type: AntagSpawner
-    prototype: PlayerBorgSyndicateDerelictGhostRole
+    #IS14-change start - tgstation-style cyborg
+    # prototype: PlayerBorgSyndicateDerelictGhostRole
+    prototype: IS14CyborgDerelictSyndicateGhostRole
+    #IS14-change end
   - type: AntagSelection
     definitions:
     - spawnerPrototype: SpawnPointGhostDerelictSyndicateAssaultCyborg

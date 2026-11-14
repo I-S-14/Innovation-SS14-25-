@@ -1,0 +1,11 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+
+# tgstation's /datum/wires/robot.
+- type: wireLayout
+  id: IS14Cyborg
+  dummyWires: 2
+  wires:
+  - !type:CyborgAiLinkWireAction
+  - !type:CyborgLawSyncWireAction
+  - !type:CyborgLockdownWireAction
+  - !type:CyborgResetModelWireAction

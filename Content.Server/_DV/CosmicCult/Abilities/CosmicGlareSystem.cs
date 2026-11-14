@@ -17,6 +17,7 @@ using Content.Shared.Silicons.Borgs.Components;
 using Content.Shared.Stunnable;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Player;
+using Content.Shared._IS14.Cyborgs.Components; // IS14-change
 
 namespace Content.Server._DV.CosmicCult.Abilities;
 
@@ -88,7 +89,9 @@ public sealed class CosmicGlareSystem : EntitySystem
             _flash.Flash(targetEnt, uid, args.Action, uid.Comp.CosmicGlareDuration, uid.Comp.CosmicGlarePenalty, false, false, uid.Comp.CosmicGlareStun, ignoreProtection: uid.Comp.CosmicEmpowered);
 
             // Goob start we dont have whatever EE comps they're using take ours.
-            if (HasComp<BorgChassisComponent>(targetEnt) // fuck them clankers
+            //IS14-change start - tgstation-style cyborgs count as borgs
+            if ((HasComp<BorgChassisComponent>(targetEnt) || HasComp<CyborgComponent>(targetEnt)) // fuck them clankers
+            //IS14-change end
                 || HasComp<SiliconComponent>(targetEnt))
                 _stun.TryUpdateParalyzeDuration(targetEnt, uid.Comp.CosmicGlareDuration / 2);
             // Goob end.

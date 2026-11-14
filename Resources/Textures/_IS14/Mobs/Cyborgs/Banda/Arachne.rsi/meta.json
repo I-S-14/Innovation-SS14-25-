@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from BandaStation (https://github.com/ss220club/BandaStation), modular_bandastation/borgs by Co0kie-GG",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "arachne_service",
+      "directions": 4
+    },
+    {
+      "name": "arachne_service_e",
+      "directions": 4
+    },
+    {
+      "name": "arachne_service_e_r",
+      "directions": 4
+    },
+    {
+      "name": "arachne_service_l",
+      "directions": 4
+    }
+  ]
+}

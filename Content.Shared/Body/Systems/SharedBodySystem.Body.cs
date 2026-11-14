@@ -40,6 +40,7 @@ using Content.Shared.Popups;
 using Robust.Shared.Configuration;
 using Robust.Shared.Timing;
 using Content.Goobstation.Maths.FixedPoint;
+using Content.Shared._IS14.Cyborgs.Components; // IS14-change
 
 namespace Content.Shared.Body.Systems;
 
@@ -508,7 +509,9 @@ public partial class SharedBodySystem
     {
         if (!TryComp(args.EquipTarget, out BodyComponent? targetBody)
             || targetBody.Prototype == null
-            || HasComp<BorgChassisComponent>(args.EquipTarget))
+            //IS14-change start - tgstation-style cyborgs count as borgs
+            || (HasComp<BorgChassisComponent>(args.EquipTarget) || HasComp<CyborgComponent>(args.EquipTarget)))
+            //IS14-change end
             return;
 
         if (TryGetPartFromSlotContainer(args.Slot, out var bodyPart)

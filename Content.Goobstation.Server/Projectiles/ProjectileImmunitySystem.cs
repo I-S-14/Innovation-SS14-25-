@@ -1,6 +1,7 @@
 using Content.Goobstation.Shared.Projectiles;
 using Content.Server.Power.EntitySystems;
 using Content.Shared.Silicons.Borgs.Components;
+using Content.Shared._IS14.Cyborgs.Components; // IS14-change
 
 namespace Content.Goobstation.Server.Projectiles;
 
@@ -20,7 +21,9 @@ public sealed class ProjectileImmunitySystem : EntitySystem
         if (args.Cancelled || ent.Comp.BatteryCostPerDodge <= 0)
             return;
 
-        if (!HasComp<BorgChassisComponent>(ent))
+        //IS14-change start - tgstation-style cyborgs count as borgs
+        if (!(HasComp<BorgChassisComponent>(ent) || HasComp<CyborgComponent>(ent)))
+        //IS14-change end
             return;
 
         if (!_battery.TryGetBatteryComponent(ent, out var batteryComp, out var battery))

@@ -48,6 +48,7 @@ using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 using Robust.Shared.Prototypes;
 using System.Linq;
+using Content.Shared._IS14.Cyborgs.Components; // IS14-change
 namespace Content.Shared.Clothing.EntitySystems;
 
 // GOOBSTATION - MODSUITS - THIS SYSTEM FULLY CHANGED
@@ -771,7 +772,9 @@ public sealed class ToggleableClothingSystem : EntitySystem
     {
         if (!TryComp(equipTarget, out BodyComponent? targetBody)
             || targetBody.Prototype == null
-            || HasComp<BorgChassisComponent>(equipTarget))
+            //IS14-change start - tgstation-style cyborgs count as borgs
+            || (HasComp<BorgChassisComponent>(equipTarget) || HasComp<CyborgComponent>(equipTarget)))
+            //IS14-change end
             return EquipAbility.CannotEquip;
 
         // Does their species proto include the slot?

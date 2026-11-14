@@ -1,0 +1,99 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+
+- type: entity
+  parent: [IS14BaseCyborgTool, CyborgEnergySword]
+  id: IS14CyborgToolEnergySword
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, CyborgEnergySwordDouble]
+  id: IS14CyborgToolEnergySwordDouble
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, WeaponLightMachineGunL6C]
+  id: IS14CyborgToolL6C
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, Emag]
+  id: IS14CyborgToolEmag
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
+    layers:
+    - state: card-emag
+
+- type: entity
+  parent: [IS14BaseCyborgTool, AccessBreaker]
+  id: IS14CyborgToolAccessBreaker
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, PinpointerSyndicateNuclear]
+  id: IS14CyborgToolPinpointer
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, SyndicateJawsOfLife]
+  id: IS14CyborgToolSyndicateJaws
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, ChameleonProjectorNoBattery]
+  id: IS14CyborgToolChameleonProjector
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, DefibrillatorOneHandedUnpowered]
+  id: IS14CyborgToolDefibrillator
+  categories: [ HideSpawnMenu ]
+
+# tg's syndicate borghypo: combat medicine.
+- type: entity
+  parent: [IS14BaseCyborgTool, BorgHypo]
+  id: IS14CyborgToolSyndicateHypo
+  name: syndicate hypospray
+  description: An integrated hypospray loaded with combat medicine.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    layers:
+    - sprite: _IS14/Objects/Specific/Cyborgs/kit_items.rsi
+      state: syringe-borghypo_s
+      map: [ "enum.SolutionContainerLayers.Base" ]
+    - sprite: Objects/Specific/Medical/hypospray.rsi
+      state: borghypo_fill1
+      map: [ "enum.SolutionContainerLayers.Fill" ]
+      visible: false
+  - type: UserInterface
+    interfaces:
+      enum.CyborgReagentUiKey.Key:
+        type: CyborgReagentBoundUserInterface
+  - type: CyborgReagentSynthesizer
+    solution: hypospray
+    regenAmount: 2
+    reagents:
+    - Dermaline
+    - DexalinPlus
+    - Saline
+    - Ephedrine
+    - TranexamicAcid
+    - Bicaridine
+
+# Tools of the uplink's syndicate boards, the old weapon and martyr modules on the new system.
+- type: entity
+  parent: [IS14BaseCyborgTool, WeaponPistolEchis]
+  id: IS14CyborgToolSyndicatePistol
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, EnergyDaggerLoud]
+  id: IS14CyborgToolSyndicateDagger
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, SelfDestructSeq]
+  id: IS14CyborgToolMartyr
+  categories: [ HideSpawnMenu ]

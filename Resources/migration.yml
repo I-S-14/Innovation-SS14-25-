@@ -1139,3 +1139,24 @@ BannerMilitia: IS14BannerMilitia
 BannerMoko: IS14BannerMoko
 BannerServ: IS14BannerServ
 BannerSyndicatenew: IS14BannerSyndicate
+
+# 2026-10-17 IS14
+# tgstation-style cyborgs: the old borg modules on maps become the closest upgrade board,
+# or go away when the model already has their tools built in.
+BorgModuleAdvancedTool: IS14CyborgUpgradeAdvancedTools
+BorgModuleClowning: IS14CyborgUpgradeClown
+BorgModuleGardening: IS14CyborgUpgradeBotanyTools
+BorgModuleHarvesting: IS14CyborgUpgradeBotanyTools
+BorgModuleSyndicateWeapon: IS14CyborgUpgradeSyndicateWeapon
+BorgModuleAnomaly: null
+BorgModuleAppraisal: null
+BorgModuleArtifact: null
+BorgModuleCable: null
+BorgModuleCleaning: null
+BorgModuleConstruction: null
+BorgModuleFireExtinguisher: null
+BorgModuleL6C: null
+BorgModuleMining: null
+BorgModuleRCD: null
+BorgModuleTool: null
+BorgModuleTopicals: null

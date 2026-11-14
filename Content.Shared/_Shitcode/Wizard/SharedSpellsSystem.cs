@@ -87,6 +87,7 @@ using Robust.Shared.Timing;
 using Content.Shared.Actions.Components;
 using Content.Shared.Charges.Components;
 using Content.Shared.Charges.Systems;
+using Content.Shared._IS14.Cyborgs.Components; // IS14-change
 
 namespace Content.Shared._Goobstation.Wizard;
 
@@ -368,7 +369,9 @@ public abstract class SharedSpellsSystem : EntitySystem
         if (ev.Handled || !_magic.PassesSpellPrerequisites(ev.Action, ev.Performer))
             return;
 
-        if (HasComp<BorgChassisComponent>(ev.Target))
+        //IS14-change start - tgstation-style cyborgs count as borgs
+        if ((HasComp<BorgChassisComponent>(ev.Target) || HasComp<CyborgComponent>(ev.Target)))
+        //IS14-change end
         {
             Popup(ev.Performer, "spell-fail-target-borg");
             return;
@@ -413,7 +416,9 @@ public abstract class SharedSpellsSystem : EntitySystem
             if (!statusQuery.TryComp(target, out var status))
                 continue;
 
-            if (HasComp<SiliconComponent>(target) || HasComp<BorgChassisComponent>(target))
+            //IS14-change start - tgstation-style cyborgs count as borgs
+            if (HasComp<SiliconComponent>(target) || (HasComp<BorgChassisComponent>(target) || HasComp<CyborgComponent>(target)))
+            //IS14-change end
                 Stun.TryUpdateParalyzeDuration(target, ev.SiliconStunTime / range);
             else
                 Stun.KnockdownOrStun(target, ev.KnockdownTime / range, true);
@@ -453,7 +458,9 @@ public abstract class SharedSpellsSystem : EntitySystem
 
         if (_net.IsServer)
         {
-            if (TryComp(ev.Target, out VocalComponent? vocal) && !HasComp<BorgChassisComponent>(ev.Target))
+            //IS14-change start - tgstation-style cyborgs count as borgs
+            if (TryComp(ev.Target, out VocalComponent? vocal) && !(HasComp<BorgChassisComponent>(ev.Target) || HasComp<CyborgComponent>(ev.Target)))
+            //IS14-change end
                 Emote(ev.Target, vocal.ScreamId);
 
             if (ev.Effect != null)
@@ -514,7 +521,9 @@ public abstract class SharedSpellsSystem : EntitySystem
         if (!_magic.PassesSpellPrerequisites(ev.Action, ev.Performer))
             return;
 
-        if (HasComp<SiliconComponent>(ev.Performer) || HasComp<BorgChassisComponent>(ev.Performer))
+        //IS14-change start - tgstation-style cyborgs count as borgs
+        if (HasComp<SiliconComponent>(ev.Performer) || (HasComp<BorgChassisComponent>(ev.Performer) || HasComp<CyborgComponent>(ev.Performer)))
+        //IS14-change end
         {
             Popup(ev.Performer, "spell-fail-bind-soul-silicon");
             return;
@@ -555,7 +564,9 @@ public abstract class SharedSpellsSystem : EntitySystem
         if (ev.Handled || !_magic.PassesSpellPrerequisites(ev.Action, ev.Performer))
             return;
 
-        if (HasComp<SiliconComponent>(ev.Performer) || HasComp<BorgChassisComponent>(ev.Performer))
+        //IS14-change start - tgstation-style cyborgs count as borgs
+        if (HasComp<SiliconComponent>(ev.Performer) || (HasComp<BorgChassisComponent>(ev.Performer) || HasComp<CyborgComponent>(ev.Performer)))
+        //IS14-change end
         {
             Popup(ev.Performer, "spell-fail-mutate-silicon");
             return;
@@ -745,7 +756,9 @@ public abstract class SharedSpellsSystem : EntitySystem
             return;
         }
 
-        if (HasComp<BorgChassisComponent>(ev.Target) || HasComp<SiliconComponent>(ev.Target))
+        //IS14-change start - tgstation-style cyborgs count as borgs
+        if ((HasComp<BorgChassisComponent>(ev.Target) || HasComp<CyborgComponent>(ev.Target)) || HasComp<SiliconComponent>(ev.Target))
+        //IS14-change end
         {
             Popup(ev.Performer, "spell-fail-target-silicon");
             return;

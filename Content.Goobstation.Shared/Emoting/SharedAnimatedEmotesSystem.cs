@@ -12,6 +12,7 @@ using Content.Shared.Standing;
 using Content.Shared.Stunnable;
 using Robust.Shared.GameStates;
 using Robust.Shared.Timing;
+using Content.Shared._IS14.Cyborgs.Components; // IS14-change
 
 namespace Content.Goobstation.Shared.Emoting;
 
@@ -58,7 +59,9 @@ public abstract class SharedAnimatedEmotesSystem : EntitySystem
             return;
         var uid = ent.Owner;
 
-        if (HasComp<BorgChassisComponent>(uid)
+        //IS14-change start - tgstation-style cyborgs count as borgs
+        if ((HasComp<BorgChassisComponent>(uid) || HasComp<CyborgComponent>(uid))
+        //IS14-change end
             && TryComp<MobStateComponent>(uid, out var state))
         {
             if (state.CurrentState != MobState.Alive)
@@ -104,7 +107,9 @@ public abstract class SharedAnimatedEmotesSystem : EntitySystem
         immunity.ExpireTime = pending.ExpireTime;
         immunity.DodgeEffect = FlipDodgeEffect;
 
-        if (HasComp<BorgChassisComponent>(uid))
+        //IS14-change start - tgstation-style cyborgs count as borgs
+        if ((HasComp<BorgChassisComponent>(uid) || HasComp<CyborgComponent>(uid)))
+        //IS14-change end
             immunity.BatteryCostPerDodge = BorgDodgeBatteryCost;
         else
             immunity.StaminaCostPerDodge = DodgeStaminaCost;

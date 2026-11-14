@@ -6,6 +6,7 @@ using Content.Shared.Jittering;
 using Content.Shared.Silicons.Borgs.Components;
 using Content.Shared.Stunnable;
 using Content.Shared.Weapons.Melee.Events;
+using Content.Shared._IS14.Cyborgs.Components; // IS14-change
 
 namespace Content.Goobstation.Shared.ContractorBaton;
 
@@ -27,7 +28,9 @@ public sealed class StungBorgsOnHitSystem : EntitySystem
         if (!_toggle.IsActivated(ent.Owner))
             return;
 
-        foreach (var borg in args.HitEntities.Where(HasComp<BorgChassisComponent>))
+        //IS14-change start - tgstation-style cyborgs count as borgs
+        foreach (var borg in args.HitEntities.Where(e => (HasComp<BorgChassisComponent>(e) || HasComp<CyborgComponent>(e)) || HasComp<CyborgComponent>(e)))
+        //IS14-change end
         {
             _stun.TryUpdateParalyzeDuration(borg, ent.Comp.ParalyzeDuration);
             _jitter.DoJitter(borg, ent.Comp.ParalyzeDuration, true);

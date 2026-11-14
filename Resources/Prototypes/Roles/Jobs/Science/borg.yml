@@ -35,5 +35,8 @@
   - All
   icon: JobIconBorg
   supervisors: job-supervisors-rd
-  jobEntity: PlayerBorgBattery
+  #IS14-change start - tgstation-style cyborg
+  # jobEntity: PlayerBorgBattery
+  jobEntity: IS14PlayerCyborgBattery
+  #IS14-change end
   applyTraits: true

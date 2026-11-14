@@ -147,3 +147,17 @@
   windowSize: 380,340
   components:
   - type: IS14OsGallery
+
+# tg's RoboTact: preinstalled only on the cyborg's built-in tablet.
+- type: osApp
+  id: IS14AppCyborgDiagnostics
+  icon: /Textures/_IS14/Interface/OS/Apps/status.png
+  name: is14-os-app-cyborg-diag-name
+  description: is14-os-app-cyborg-diag-desc
+  category: System
+  source: [ Preinstalled ]
+  order: 1
+  size: 2
+  windowSize: 360,320
+  components:
+  - type: IS14OsCyborgDiagnostics

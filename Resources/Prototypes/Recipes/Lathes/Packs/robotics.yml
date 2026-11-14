@@ -7,7 +7,10 @@
   - MMI
   - PositronicBrain
   - SciFlash
-  - CyborgEndoskeleton
+  #IS14-change start - the endoskeleton assembles into the tgstation-style cyborg
+  # - CyborgEndoskeleton
+  - IS14CyborgEndoskeleton
+  #IS14-change end
 
 - type: latheRecipePack
   id: BorgModulesStatic

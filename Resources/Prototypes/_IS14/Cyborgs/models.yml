@@ -1,0 +1,490 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+
+# Ports of tgstation's /obj/item/robot_model/*. The kits follow tg; cyborg-only items SS14 lacks
+# live in Tools/synthesizers.yml.
+
+- type: cyborgModel
+  id: IS14CyborgModelEngineering
+  hudIcon: engineer
+  name: cyborg-model-engineering
+  description: cyborg-model-engineering-desc
+  order: 10
+  skins:
+  - IS14CyborgSkinEngineering
+  - IS14CyborgSkinGoobEngineeringAntique
+  - IS14CyborgSkinLandmateTreads
+  - IS14CyborgSkinGoobEngineeringNoble
+  - IS14CyborgSkinCanEngineering
+  - IS14CyborgSkinGoobEngineeringRover
+  - IS14CyborgSkinSpiderEngineering
+  - IS14CyborgSkinGoobEngineeringStandart
+  - IS14CyborgSkinEngBot
+  - IS14CyborgSkinGoobEngineeringCricket
+  - IS14CyborgSkinChiefmate
+  radioChannels:
+  - Engineering
+  basicTools:
+  - IS14CyborgToolFlash
+  - IS14CyborgToolRCD
+  - IS14CyborgToolRPD
+  - IS14CyborgToolExtinguisher
+  - IS14CyborgToolWelder
+  - IS14CyborgToolOmnitool
+  - IS14CyborgToolOmnitool
+  - IS14CyborgToolTrayScanner
+  - IS14CyborgToolGasAnalyzer
+  - IS14CyborgToolSignaller
+  - IS14CyborgToolSprayPainter
+  - IS14CyborgToolConstructionBag
+  emagTools:
+  - IS14CyborgToolStunArm
+  # Materials are carried, not synthesized: picked up into a free slot or kept in the construction bag.
+  pickupStacks:
+  - Steel
+  - MetalRod
+  - Plasteel
+  - Glass
+  - Plasma
+  - Uranium
+  - Gold
+  - Silver
+  - Plastic
+  - Cable
+  - CableMV
+  - CableHV
+  pickupWhitelist:
+    components:
+    - FloorTile # floor tiles and carpets
+    - Flatpack
+    - MachineBoard
+    - ComputerBoard
+    - StockPart # manipulators, matter bins and the rest
+  addComponents:
+  - type: MovementIgnoreGravity
+  # tg's meson toggle; SS14 mesons only protect eyes, night vision is the closest to seeing the walls.
+  - type: NightVision
+
+- type: cyborgModel
+  id: IS14CyborgModelMedical
+  hudIcon: medical
+  name: cyborg-model-medical
+  description: cyborg-model-medical-desc
+  order: 20
+  skins:
+  - IS14CyborgSkinMedical
+  - IS14CyborgSkinChiefDoctor
+  - IS14CyborgSkinGoobMedicalNoble
+  - IS14CyborgSkinGoobMedicalQualified
+  - IS14CyborgSkinGoobMedicalRover
+  - IS14CyborgSkinGoobMedicalMedbot
+  - IS14CyborgSkinGoobMedicalAdvanced
+  - IS14CyborgSkinGoobMedicalStandart
+  - IS14CyborgSkinGoobMedicalCricket
+  - IS14CyborgSkinGoobMedicalNeedles
+  radioChannels:
+  - Medical
+  basicTools:
+  - IS14CyborgToolFlash
+  - IS14CyborgToolHealthAnalyzer
+  - IS14CyborgToolHypo
+  - IS14CyborgToolDropper
+  - IS14CyborgToolMedicalOmnitool
+  - IS14CyborgToolMedicalOmnitool
+  - IS14CyborgToolBoneGel
+  - IS14CyborgToolExtinguisher
+  - IS14CyborgToolLollipop
+  - IS14CyborgToolChemBag
+  - IS14CyborgToolHugModule
+  # Treatment, body bags and chemistry are carried, picked up into a free slot or kept in the chem bag.
+  pickupWhitelist:
+    tags:
+    - GlassBeaker
+    - PillCanister
+    - Syringe
+    - Ointment
+    - Brutepack
+    - Bloodpack
+    - Gauze
+    - Tourniquet
+    - BodyBag
+    # Severed limbs and organs, held to carry them or attach them back.
+    components:
+    - BodyPart
+    - Organ
+  # Shitmed surgery, like the upstream medical borg: without SurgeryTarget the surgery window shows no steps.
+  addComponents:
+  - type: Sanitized
+  - type: SurgeryTarget
+  - type: SurgeryIgnoreClothing
+  - type: SurgerySpeedModifier
+    speedModifier: 1.5
+
+- type: cyborgModel
+  id: IS14CyborgModelJanitor
+  hudIcon: janitor
+  name: cyborg-model-janitor
+  description: cyborg-model-janitor-desc
+  order: 30
+  skins:
+  - IS14CyborgSkinJanitor
+  - IS14CyborgSkinGoobJanitorNoble
+  - IS14CyborgSkinCanJanitor
+  - IS14CyborgSkinGoobJanitorRover
+  - IS14CyborgSkinSpiderJanitor
+  - IS14CyborgSkinGoobJanitorStandart
+  - IS14CyborgSkinGoobJanitorCricket
+  - IS14CyborgSkinJanBot
+  - IS14CyborgSkinGoobJanitorMopbot
+  radioChannels:
+  - Service
+  basicTools:
+  - IS14CyborgToolFlash
+  - IS14CyborgToolJanitorToolkit
+  - IS14CyborgToolVacuumWand
+  - IS14CyborgToolSoap
+  - IS14CyborgToolTrashBag
+  - IS14CyborgToolExtinguisher
+  - IS14CyborgToolLightReplacer
+  - IS14CyborgToolHoloprojector
+  - IS14CyborgToolSprayBottle
+  - IS14CyborgToolWireBrush
+  - IS14CyborgToolPlunger
+  emagTools:
+  - IS14CyborgToolLubeSpray
+  # Fixes floors like the engineering model, from the tiles it finds.
+  pickupWhitelist:
+    components:
+    - FloorTile # floor tiles and carpets
+  addComponents:
+  - type: CyborgAutoWash
+
+- type: cyborgModel
+  id: IS14CyborgModelMiner
+  hudIcon: miner
+  name: cyborg-model-miner
+  description: cyborg-model-miner-desc
+  order: 40
+  skins:
+  - IS14CyborgSkinMiner
+  - IS14CyborgSkinGoobMinerCoffin
+  - IS14CyborgSkinGoobMinerNoble
+  - IS14CyborgSkinCanMiner
+  - IS14CyborgSkinGoobMinerSquat
+  - IS14CyborgSkinLavaland
+  - IS14CyborgSkinSpiderMiner
+  - IS14CyborgSkinGoobMinerAdvanced
+  - IS14CyborgSkinGoobMinerCricket
+  radioChannels:
+  - Supply
+  basicTools:
+  - IS14CyborgToolFlash
+  - IS14CyborgToolOreBag
+  - IS14CyborgToolMiningDrill
+  - IS14CyborgToolShovel
+  - IS14CyborgToolOmnitool
+  - IS14CyborgToolWelder
+  - IS14CyborgToolExtinguisher
+  - IS14CyborgToolKineticAccelerator
+  - IS14CyborgToolGPS
+  - IS14CyborgToolMiningScanner
+  emagTools:
+  - IS14CyborgToolStunArm
+
+- type: cyborgModel
+  id: IS14CyborgModelService
+  hudIcon: service
+  name: cyborg-model-service
+  description: cyborg-model-service-desc
+  order: 50
+  skins:
+  - IS14CyborgSkinService
+  - IS14CyborgSkinArachne
+  - IS14CyborgSkinGoobServiceBrobot
+  - IS14CyborgSkinGoobServiceRich
+  - IS14CyborgSkinBro
+  - IS14CyborgSkinGoobServiceWaitress
+  - IS14CyborgSkinGoobServiceNoble
+  - IS14CyborgSkinKent
+  - IS14CyborgSkinGoobServiceStandart
+  - IS14CyborgSkinHandy
+  - IS14CyborgSkinGoobServiceRover
+  - IS14CyborgSkinWaitress
+  - IS14CyborgSkinGoobServiceCricket
+  - IS14CyborgSkinTophat
+  radioChannels:
+  - Service
+  basicTools:
+  - IS14CyborgToolFlash
+  - IS14CyborgToolGardenToolkit
+  - IS14CyborgToolDropper
+  - IS14CyborgToolPen
+  - IS14CyborgToolCrayon
+  - IS14CyborgToolSprayPainter
+  - IS14CyborgToolExtinguisher
+  - IS14CyborgToolHandLabeler
+  - IS14CyborgToolLighter
+  - IS14CyborgToolLollipop
+  - IS14CyborgToolBooksBag
+  - IS14CyborgToolStampApproved
+  - IS14CyborgToolStampDenied
+  # Serves with real dishes: cups, glasses, beakers, shakers and bottles, plates, cutlery and rags.
+  pickupWhitelist:
+    components:
+    - FitsInDispenser
+  pickupPrototypes:
+  - FoodPlate
+  - FoodPlatePlastic
+  - FoodPlateSmallPlastic
+  - FoodPlateTin
+  - FoodPlateMuffinTin
+  - Spoon
+  - SpoonPlastic
+  - BarSpoon
+  - Fork
+  - ForkPlastic
+  - RagItem
+
+- type: cyborgModel
+  id: IS14CyborgModelPeacekeeper
+  hudIcon: standard
+  name: cyborg-model-peacekeeper
+  description: cyborg-model-peacekeeper-desc
+  order: 60
+  skins:
+  - IS14CyborgSkinPeacekeeper
+  - IS14CyborgSkinPeaceBot
+  - IS14CyborgSkinSpiderPeacekeeper
+  basicTools:
+  - IS14CyborgToolFlash
+  - IS14CyborgToolPeaceHypo
+  - IS14CyborgToolCookieSynth
+  - IS14CyborgToolHarmAlarm
+  - IS14CyborgToolProjectileDampener
+  - IS14CyborgToolHoloprojectorSecurity
+  - IS14CyborgToolExtinguisher
+  - IS14CyborgToolLollipop
+  - IS14CyborgToolHugModulePeacekeeper
+
+- type: cyborgModel
+  id: IS14CyborgModelClown
+  hudIcon: brobot
+  name: cyborg-model-clown
+  description: cyborg-model-clown-desc
+  # Only from the clown model board.
+  selectable: false
+  order: 70
+  skins:
+  - IS14CyborgSkinClownDefault
+  radioChannels:
+  - Service
+  basicTools:
+  - IS14CyborgToolFlash
+  - IS14CyborgToolCrayonRainbow
+  - IS14CyborgToolBikeHornInstrument
+  - IS14CyborgToolStampClown
+  - IS14CyborgToolBikeHorn
+  - IS14CyborgToolClownRecorder
+  - IS14CyborgToolPushHorn
+  - IS14CyborgToolSoap
+  - IS14CyborgToolPieCannon
+  - IS14CyborgToolHoloprojectorClown
+  - IS14CyborgToolLollipop
+  - IS14CyborgToolExtinguisher
+  - IS14CyborgToolClownHypo
+  - IS14CyborgToolHugModulePeacekeeper
+
+- type: cyborgModel
+  id: IS14CyborgModelSecurity
+  hudIcon: security
+  name: cyborg-model-security
+  description: cyborg-model-security-desc
+  order: 80
+  skins:
+  - IS14CyborgSkinSecurity
+  radioChannels:
+  - Security
+  basicTools:
+  - IS14CyborgToolFlash
+  - IS14CyborgToolZipties
+  - IS14CyborgToolDisabler
+  - IS14CyborgToolExtinguisher
+  - IS14CyborgToolStunbaton
+  emagTools:
+  - IS14CyborgToolLaser
+
+# IS14's Yasari cyborg, moved over from the upstream module system. Admin only, not selectable.
+- type: cyborgModel
+  id: IS14CyborgModelYasari
+  hudIcon: security
+  name: cyborg-model-yasari
+  description: cyborg-model-yasari-desc
+  selectable: false
+  order: 100
+  skins:
+  - IS14CyborgSkinYasari
+  radioChannels:
+  - Security
+  basicTools:
+  - IS14CyborgToolFlash
+  - IS14CyborgToolOmnitool
+  - IS14CyborgToolWelder
+  - IS14CyborgToolExtinguisher
+  - IS14CyborgToolGPS
+  - IS14CyborgToolTetherGun
+  - IS14CyborgToolDisabler
+  - IS14CyborgToolZipties
+  addComponents:
+  - type: NightVision
+
+# Syndicate models, applied directly by the spawning entity.
+- type: cyborgModel
+  id: IS14CyborgModelSyndicateAssault
+  hudIcon: malf
+  name: cyborg-model-syndicate-assault
+  selectable: false
+  order: 200
+  skins:
+  - IS14CyborgSkinSyndicateAssault
+  basicTools:
+  - IS14CyborgToolFlash
+  - IS14CyborgToolEnergySwordDouble
+  - IS14CyborgToolL6C
+  - IS14CyborgToolEmag
+  - IS14CyborgToolSyndicateJaws
+  - IS14CyborgToolExtinguisher
+  - IS14CyborgToolPinpointer
+
+- type: cyborgModel
+  id: IS14CyborgModelSyndicateMedical
+  hudIcon: malf
+  name: cyborg-model-syndicate-medical
+  selectable: false
+  order: 210
+  skins:
+  - IS14CyborgSkinSyndicateMedical
+  basicTools:
+  - IS14CyborgToolFlash
+  - IS14CyborgToolSyndicateHypo
+  - IS14CyborgToolDefibrillator
+  - IS14CyborgToolHealthAnalyzer
+  - IS14CyborgToolMedicalOmnitool
+  - IS14CyborgToolMedicalOmnitool
+  - IS14CyborgToolBoneGel
+  - IS14CyborgToolEnergySword
+  - IS14CyborgToolSyndicateJaws
+  - IS14CyborgToolExtinguisher
+  - IS14CyborgToolPinpointer
+  # Same pickup list as the medical model.
+  pickupWhitelist:
+    tags:
+    - GlassBeaker
+    - PillCanister
+    - Syringe
+    - Ointment
+    - Brutepack
+    - Bloodpack
+    - Gauze
+    - Tourniquet
+    - BodyBag
+    # Severed limbs and organs, held to carry them or attach them back.
+    components:
+    - BodyPart
+    - Organ
+  # Shitmed surgery, like the upstream medical borg: without SurgeryTarget the surgery window shows no steps.
+  addComponents:
+  - type: Sanitized
+  - type: SurgeryTarget
+  - type: SurgeryIgnoreClothing
+  - type: SurgerySpeedModifier
+    speedModifier: 1.5
+
+- type: cyborgModel
+  id: IS14CyborgModelSyndicateSaboteur
+  hudIcon: malf
+  name: cyborg-model-syndicate-saboteur
+  selectable: false
+  order: 220
+  skins:
+  - IS14CyborgSkinSyndicateSaboteur
+  basicTools:
+  - IS14CyborgToolFlash
+  - IS14CyborgToolRCD
+  - IS14CyborgToolRPD
+  - IS14CyborgToolZipties
+  - IS14CyborgToolExtinguisher
+  - IS14CyborgToolWelder
+  - IS14CyborgToolGasAnalyzer
+  - IS14CyborgToolOmnitool
+  - IS14CyborgToolOmnitool
+  - IS14CyborgToolConstructionBag
+  - IS14CyborgToolPinpointer
+  - IS14CyborgToolChameleonProjector
+  - IS14CyborgToolEmag
+  - IS14CyborgToolAccessBreaker
+  # Like the engineering model: materials are carried, not synthesized.
+  pickupStacks:
+  - Steel
+  - MetalRod
+  - Plasteel
+  - Glass
+  - Plasma
+  - Uranium
+  - Gold
+  - Silver
+  - Plastic
+  - Cable
+  - CableMV
+  - CableHV
+  pickupWhitelist:
+    components:
+    - FloorTile # floor tiles and carpets
+    - Flatpack
+    - MachineBoard
+    - ComputerBoard
+    - StockPart # manipulators, matter bins and the rest
+
+# Derelict cyborgs from the space events: a station kit on a worn chassis, the look comes with it.
+- type: cyborgModel
+  parent: IS14CyborgModelEngineering
+  id: IS14CyborgModelDerelictEngineering
+  name: cyborg-model-derelict-engineering
+  selectable: false
+  order: 300
+  skins:
+  - IS14CyborgSkinDerelictEngineering
+
+- type: cyborgModel
+  parent: IS14CyborgModelMedical
+  id: IS14CyborgModelDerelictMedical
+  name: cyborg-model-derelict-medical
+  selectable: false
+  order: 301
+  skins:
+  - IS14CyborgSkinDerelictMedical
+
+- type: cyborgModel
+  parent: IS14CyborgModelJanitor
+  id: IS14CyborgModelDerelictJanitor
+  name: cyborg-model-derelict-janitor
+  selectable: false
+  order: 302
+  skins:
+  - IS14CyborgSkinDerelictJanitor
+
+- type: cyborgModel
+  parent: IS14CyborgModelMiner
+  id: IS14CyborgModelDerelictMiner
+  name: cyborg-model-derelict-miner
+  selectable: false
+  order: 303
+  skins:
+  - IS14CyborgSkinDerelictMiner
+
+- type: cyborgModel
+  parent: IS14CyborgModelSyndicateAssault
+  id: IS14CyborgModelDerelictSyndicate
+  name: cyborg-model-derelict-syndicate
+  selectable: false
+  order: 310
+  skins:
+  - IS14CyborgSkinDerelictSyndicate

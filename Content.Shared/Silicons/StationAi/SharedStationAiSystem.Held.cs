@@ -171,12 +171,18 @@ public abstract partial class SharedStationAiSystem
         if (!_uiSystem.HasUi(args.Target, AiUi.Key))
             return;
 
+        //IS14-change start - tgstation-style cyborgs get the AI's remote controls
         if (!args.CanComplexInteract
-            || !HasComp<StationAiHeldComponent>(args.User)
+            || !(HasComp<StationAiHeldComponent>(args.User) || HasComp<Content.Shared._IS14.Cyborgs.Components.CyborgComponent>(args.User))
             || !args.CanInteract)
         {
             return;
         }
+
+        // The AI sees everything, a cyborg only reaches what its remote range allows.
+        if (!args.CanAccess && HasComp<Content.Shared._IS14.Cyborgs.Components.CyborgComponent>(args.User))
+            return;
+        //IS14-change end
 
         var user = args.User;
 

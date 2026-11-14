@@ -86,7 +86,9 @@
     - DawInstrumentMachineCircuitboard
     - MassMediaCircuitboard
     - JukeboxCircuitBoard
-    - BorgModuleLollypop # Goobstation
+    #IS14-change start - tgstation-style cyborgs have the lollipop launcher built in
+    # - BorgModuleLollypop # Goobstation
+    #IS14-change end
     - CrayonRainbowLarge # Goobstation
   position: 0,3 # CorvaxGoob-WorkBelts-Techfab
 
@@ -174,8 +176,15 @@
   tier: 2
   cost: 5000
   recipeUnlocks:
-  - BorgModuleAdvancedTopical
-  - BorgModuleAdvancedSurgery # Shitmed - does it make sense to have it before advanced surg? Don't know, but this spices up medborgs.
+  #IS14-change start - tgstation-style cyborg upgrade boards
+  # - BorgModuleAdvancedTopical
+  # - BorgModuleAdvancedSurgery # Shitmed - does it make sense to have it before advanced surg? Don't know, but this spices up medborgs.
+  - IS14CyborgUpgradeDefibrillator
+  - IS14CyborgUpgradeAdvancedSurgery
+  - IS14CyborgUpgradeExpandedHypo
+  - IS14CyborgUpgradeBluespaceSyringe
+  - IS14CyborgUpgradeCrewPinpointer
+  #IS14-change end
   - AdvancedJetInjector
   # Goobstation R&D Console rework start
   position: -2, 4
@@ -197,7 +206,11 @@
   recipeUnlocks:
   - AdvMopItem
   - MegaSprayBottle
-  - BorgModuleAdvancedCleaning
+  #IS14-change start - tgstation-style cyborg upgrade boards
+  # - BorgModuleAdvancedCleaning
+  - IS14CyborgUpgradeAdvancedMop
+  - IS14CyborgUpgradeTrashBagOfHolding
+  #IS14-change end
   # Goobstation R&D Console rework start
   position: -1,4
   technologyPrerequisites:

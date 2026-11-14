@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from BandaStation (https://github.com/ss220club/BandaStation), modular_bandastation/borgs by Co0kie-GG",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "eng-tread",
+      "directions": 4
+    },
+    {
+      "name": "eng-tread-moving",
+      "directions": 4,
+      "delays": [
+        [
+          0.1,
+          0.1
+        ],
+        [
+          0.1,
+          0.1
+        ],
+        [
+          0.1,
+          0.1
+        ],
+        [
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "engineer_e",
+      "directions": 4
+    },
+    {
+      "name": "engineer_e_r",
+      "directions": 4
+    },
+    {
+      "name": "engineer_l",
+      "directions": 4
+    }
+  ]
+}

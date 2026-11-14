@@ -90,7 +90,9 @@
   - type: AntagMultipleRoleSpawner
     antagRoleToPrototypes:
       MothershipCore: [ MothershipCore ]
-      Xenoborg: [ XenoborgEngi, XenoborgHeavy, XenoborgScout, XenoborgStealth ]
+      #IS14-change start - xenoborgs on the tgstation-style cyborg system
+      Xenoborg: [ IS14XenoborgEngi, IS14XenoborgHeavy, IS14XenoborgScout, IS14XenoborgStealth ]
+      #IS14-change end
     pickAndTake: true
   - type: AntagSelection
     selectionTime: PrePlayerSpawn

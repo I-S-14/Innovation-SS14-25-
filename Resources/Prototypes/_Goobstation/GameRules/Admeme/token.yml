@@ -96,7 +96,10 @@
   id: TokenDerelictCyborgSyndicateSpawn
   components:
   - type: AntagSpawner
-    prototype: PlayerBorgDerelictSyndicateAssaultBattery
+    #IS14-change start - tgstation-style cyborg
+    # prototype: PlayerBorgDerelictSyndicateAssaultBattery
+    prototype: IS14CyborgDerelictSyndicate
+    #IS14-change end
   - type: AntagSelection
     definitions:
     - spawnerPrototype: SpawnPointGhostDerelictCyborgSyndicateToken

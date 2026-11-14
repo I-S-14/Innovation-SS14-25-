@@ -1,0 +1,159 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+
+# Derelict cyborgs for the space spawn events. Mirrors upstream BaseBorgChassisDerelict.
+- type: entity
+  parent: IS14BaseCyborgIonStormable
+  id: IS14CyborgDerelict
+  name: derelict cyborg
+  description: A man-machine hybrid that assists in station activity. This one is in a state of great disrepair.
+  suffix: IS14, derelict
+  components:
+  # Prototype icons show the skin this chassis spawns with.
+  - type: Icon
+    sprite: Mobs/Silicon/chassis.rsi
+    state: derelict
+  - type: CyborgAiLink
+    autoLink: false
+    lawSync: false
+  # Drifts in with a random station specialization instead of a model menu.
+  - type: Cyborg
+    randomModels:
+    - IS14CyborgModelDerelictEngineering
+    - IS14CyborgModelDerelictMedical
+    - IS14CyborgModelDerelictJanitor
+    - IS14CyborgModelDerelictMiner
+  - type: NpcFactionMember
+    factions:
+    - NanoTrasen
+  - type: Access
+    groups:
+    - AllAccess
+  - type: AccessReader
+    access: [["Command"], ["Research"]]
+  - type: StartIonStormed
+    ionStormAmount: 3
+  - type: IonStormTarget
+    chance: 1
+  - type: ShowJobIcons
+  - type: RandomMetadata
+    nameSegments:
+    - NamesBorg
+  - type: ContainerFill
+    containers:
+      cyborg_brain:
+      - PositronicBrain
+  - type: ItemSlots
+    slots:
+      cell_slot:
+        name: power-cell-slot-component-slot-name-default
+        startingItem: PowerCellHigh
+  - type: InteractionPopup
+    interactSuccessString: petting-success-derelict-cyborg
+    interactFailureString: petting-failure-derelict-cyborg
+    interactSuccessSound:
+      path: /Audio/Ambience/Objects/periodic_beep.ogg
+
+- type: entity
+  parent: IS14CyborgDerelict
+  id: IS14CyborgDerelictGhostRole
+  suffix: IS14, derelict, ghost role
+  components:
+  - type: GhostRole
+    name: ghost-role-information-derelict-cyborg-name
+    description: ghost-role-information-derelict-cyborg-description
+    rules: ghost-role-information-silicon-rules
+    raffle:
+      settings: default
+    reregister: false
+    job: Borg
+  - type: GhostTakeoverAvailable
+
+# Derelicts of one specialization, for the events that name it.
+- type: entity
+  parent: IS14CyborgDerelict
+  id: IS14CyborgDerelictEngineering
+  name: derelict engineering cyborg
+  components:
+  - type: Icon
+    sprite: Mobs/Silicon/chassis.rsi
+    state: engineer_derelict
+  - type: Cyborg
+    model: IS14CyborgModelDerelictEngineering
+
+- type: entity
+  parent: IS14CyborgDerelict
+  id: IS14CyborgDerelictMedical
+  name: derelict medical cyborg
+  components:
+  - type: Icon
+    sprite: Mobs/Silicon/chassis.rsi
+    state: medical_derelict
+  - type: Cyborg
+    model: IS14CyborgModelDerelictMedical
+
+- type: entity
+  parent: IS14CyborgDerelict
+  id: IS14CyborgDerelictJanitor
+  name: derelict janitor cyborg
+  components:
+  - type: Icon
+    sprite: Mobs/Silicon/chassis.rsi
+    state: janitor_derelict
+  - type: Cyborg
+    model: IS14CyborgModelDerelictJanitor
+
+- type: entity
+  parent: IS14CyborgDerelict
+  id: IS14CyborgDerelictMiner
+  name: derelict mining cyborg
+  components:
+  - type: Icon
+    sprite: Mobs/Silicon/chassis.rsi
+    state: miner_derelict
+  - type: Cyborg
+    model: IS14CyborgModelDerelictMiner
+
+- type: entity
+  parent: IS14BaseCyborgSyndicate
+  id: IS14CyborgDerelictSyndicate
+  name: derelict syndicate assault cyborg
+  description: A lean, mean killing machine. This one is more rust-orange than blood-red.
+  suffix: IS14, derelict
+  components:
+  # Prototype icons show the skin this chassis spawns with.
+  - type: Icon
+    sprite: Mobs/Silicon/chassis.rsi
+    state: synd_sec_derelict
+  - type: Cyborg
+    model: IS14CyborgModelDerelictSyndicate
+    inherentRadioChannels:
+    - Syndicate
+  - type: NukeOperative
+  - type: StartIonStormed
+    ionStormAmount: 2
+  - type: SiliconLawProvider
+    laws: OverlordLawset
+  - type: RandomMetadata
+    nameSegments:
+    - NamesBorg
+  - type: ItemSlots
+    slots:
+      cell_slot:
+        name: power-cell-slot-component-slot-name-default
+        startingItem: PowerCellMedium
+
+- type: entity
+  parent: IS14CyborgDerelictSyndicate
+  id: IS14CyborgDerelictSyndicateGhostRole
+  suffix: IS14, derelict, ghost role
+  components:
+  - type: GhostRole
+    name: ghost-role-information-derelict-cyborg-syndicate-name
+    description: ghost-role-information-derelict-cyborg-syndicate-description
+    rules: ghost-role-information-silicon-rules
+    mindRoles:
+    - MindRoleGhostRoleSilicon
+    job: Borg
+    raffle:
+      settings: default
+  - type: GhostTakeoverAvailable

@@ -106,12 +106,20 @@
       state: generic
   - type: RandomSpawner
     rarePrototypes:
-    - BorgModuleAdvancedTopical
-    - BorgModuleAdvancedCleaning
-    - BorgModuleAdvancedTool
+    #IS14-change start - tgstation-style cyborgs take upgrade boards, not the old modules
+    # - BorgModuleAdvancedTopical
+    # - BorgModuleAdvancedCleaning
+    # - BorgModuleAdvancedTool
+    - IS14CyborgUpgradeExpandedHypo
+    - IS14CyborgUpgradeAdvancedMop
+    - IS14CyborgUpgradeAdvancedTools
+    #IS14-change end
 
     rareChance: 0.1
     prototypes:
-    - BorgModuleFireExtinguisher
+    #IS14-change start - tgstation-style cyborgs take upgrade boards, not the old modules
+    # - BorgModuleFireExtinguisher
+    - IS14CyborgUpgradeRename
+    #IS14-change end
     chance: 0.9
     offset: 0.2
