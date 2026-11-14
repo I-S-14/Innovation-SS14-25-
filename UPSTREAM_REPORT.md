@@ -2,6 +2,14 @@
 
 Ветка: `2026-29-10-upstream`. Ничего не пушилось.
 
+## Схемы YAML в CI: атрибуции и Gear (15 ноября 2026)
+
+Проверки `validate-rgas.yml` и `validate_mapfiles.yml` являются отдельными от Content.YAMLLinter: успешная проверка игровых прототипов не подтверждала корректность этих схем. По сообщению пользователя восстановлена структура двух файлов атрибуции. Удалены пять пустых/лишних записей `files`, а поля Flareguy возвращены к группе тайлов, от которой они были отделены вставкой `lino.png`. У lino сохранено собственное авторство из закреплённого Wizards; повторяющиеся ключи copyright/source устранены. Лицензии и авторы взяты из истории репозитория, новые значения не придумывались. Изображения и аудио не менялись.
+
+`Resources/Maps/gear.yml` содержал неразрешённый diff3-конфликт Oasis/Gear с восьмисимвольными маркерами, затрагивающий всю карту. Файл полностью восстановлен из `bd217732d1:Resources/Maps/gear.yml`, того же снимка Wizards, который использован для апстрима. Подтверждено побайтное совпадение (4593330 байт). Отдельная сохранённая карта `_Goobstation/oasis.yml` не изменена; других файлов карт исправление не затрагивает. Остаточных конфликтных маркеров в Resources/Maps не найдено.
+
+Для локальной проверки использованы именно схемы и custom validators из workflow: `.github/Schemas/rga.yml` + `RobustToolbox/Schemas/rga_validators.py`, `RobustToolbox/Schemas/mapfile.yml` + `RobustToolbox/Schemas/mapfile_validators.py`. Поведение сверено с исходниками `PaulRitter/yaml-schema-validator@v1` (`3d153666aa5d5cd6af5fd030c364aec8d8bfd7f4`): strict-режим, обработка YAML-тегов как значений/списков/словарей и исключение dotfiles при glob. Атрибуции: **245 файлов, 0 ошибок**, код 0 (`upstream-ci-attribution-schemas.log`). Карты из выборки CI: **391 файл, 0 ошибок**, код 0, 221 секунда (`upstream-ci-map-schemas-verified.log`). Временный runner, копия action и журналы исключены из коммита.
+
 ## Слияние актуального origin/master (14 ноября 2026)
 
 Проверки окончательного набора ресурсов: `upstream-origin-master-yaml-final.log` — **0 ошибок, 278595 мс**; `upstream-origin-master-rsi-final.log` — штатный RSI-validator завершён с кодом **0**. Общий набор с новыми Cyborg-тестами: **863 pass, 0 fail, 0 итоговых skip**, 12 мин 50 сек (`upstream-origin-master-migration.log`). Отдельная промежуточная отметка TestSprayingSpaceCleaner не превратилась в итоговый пропуск. Сборка DebugOpt — 0 ошибок, клиент с sandbox — MainScreen без ERRO. Ниже записаны решения и история промежуточных неудачных запусков; они не заменяют эти итоговые результаты.

@@ -125,7 +125,6 @@
   copyright:  "ParadiseStation"
   source: "https://github.com/ParadiseSS13/Paradise/tree/master/sound/machines"
 
-- files: ["airlock_deny.ogg"]
 - files: ["airlock_open.ogg", "airlock_deny.ogg"]
   license: "CC-BY-SA-3.0"
   copyright: "/tg/station"
