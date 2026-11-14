@@ -20,12 +20,23 @@ namespace Content.YAMLLinter
 {
     internal static class Program
     {
-        private static readonly ExternalTestContext TestContext = new("YAML Linter", StreamWriter.Null);
+        private static ExternalTestContext TestContext = new("YAML Linter", StreamWriter.Null);
 
-        private static async Task<int> Main(string[] _)
+        private static async Task<int> Main(string[] args)
         {
+            //IS14-change start: expose startup diagnostics when inheritance fails before validation.
+            if (args.Contains("--verbose-startup"))
+                TestContext = new ExternalTestContext("YAML Linter", Console.Out);
+            //IS14-change end
             GameDataScrounger.NoScrounging = true; // Ugly hack for YAML Linter.
             PoolManager.Startup();
+            // IS14: diagnose incomplete shared/client/server ports without starting a game pair.
+            if (args.Contains("--audit-system-dependencies"))
+            {
+                var result = _IS14.SystemDependencyAudit.Run();
+                PoolManager.Shutdown();
+                return result;
+            }
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
