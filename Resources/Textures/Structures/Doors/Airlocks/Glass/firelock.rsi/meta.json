@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from skyrat-tg at commit https://github.com/Skyrat-SS13/Skyrat-tg/commit/f9e3b58ecd64fa061f83420689bd90bfa3a4c185 | Legacy states: (CC-BY-SA-3.0) Taken from skyrat-tg at commit https://github.com/Skyrat-SS13/Skyrat-tg/commit/f9e3b58ecd64fa061f83420689bd90bfa3a4c185",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "open_unlit"
+    }
+  ]
+}

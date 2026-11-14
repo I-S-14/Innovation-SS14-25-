@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Made by Hyenh | Legacy states: (CC-BY-SA-3.0) Made by Hyenh",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "open_unlit"
+    }
+  ]
+}

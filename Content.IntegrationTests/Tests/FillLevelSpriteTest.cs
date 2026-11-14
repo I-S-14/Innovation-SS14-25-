@@ -67,6 +67,8 @@ public sealed class FillLevelSpriteTest : GameTest
                         for (var i = 1; i <= visuals.MaxFillLevels; i++)
                         {
                             var state = $"{visuals.FillBaseName}{i}";
+                            if (!rsi.TryGetState(state, out _))
+                                TestContext.Out.WriteLine($"Missing fill state: {proto.ID}: {rsi.Path}: {state}");
                             Assert.That(rsi.TryGetState(state, out _), @$"{proto.ID} has SolutionContainerVisualsComponent with
                                 MaxFillLevels = {visuals.MaxFillLevels}, but {rsi.Path} doesn't have state {state}!");
                         }
@@ -81,6 +83,8 @@ public sealed class FillLevelSpriteTest : GameTest
                             foreach (var handname in HandStateNames)
                             {
                                 var state = $"inhand-{handname}{visuals.InHandsFillBaseName}{i}";
+                                if (!rsi.TryGetState(state, out _))
+                                    TestContext.Out.WriteLine($"Missing inhand fill state: {proto.ID}: {rsi.Path}: {state}");
                                 Assert.That(rsi.TryGetState(state, out _), @$"{proto.ID} has SolutionContainerVisualsComponent with
                                     InHandsMaxFillLevels = {visuals.InHandsMaxFillLevels}, but {rsi.Path} doesn't have state {state}!");
                             }
@@ -96,6 +100,8 @@ public sealed class FillLevelSpriteTest : GameTest
                             foreach (var equipName in EquipStateNames)
                             {
                                 var state = $"equipped-{equipName}{visuals.EquippedFillBaseName}{i}";
+                                if (!rsi.TryGetState(state, out _))
+                                    TestContext.Out.WriteLine($"Missing equipped fill state: {proto.ID}: {rsi.Path}: {state}");
                                 Assert.That(rsi.TryGetState(state, out _), @$"{proto.ID} has SolutionContainerVisualsComponent with
                                     EquippedMaxFillLevels = {visuals.EquippedMaxFillLevels}, but {rsi.Path} doesn't have state {state}!");
                             }

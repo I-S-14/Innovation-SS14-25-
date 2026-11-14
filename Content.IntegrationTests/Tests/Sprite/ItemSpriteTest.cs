@@ -40,6 +40,7 @@ public sealed class PrototypeSaveTest : GameTest
     {
         var pair = Pair;
         List<EntityPrototype> badPrototypes = [];
+        List<(EntityPrototype Prototype, EntityUid Entity)> spawned = [];
 
         await pair.Client.WaitPost(() =>
         {
@@ -47,6 +48,16 @@ public sealed class PrototypeSaveTest : GameTest
             {
                 var dummy = pair.Client.EntMan.Spawn(proto.ID);
                 pair.Client.EntMan.RunMapInit(dummy, pair.Client.MetaData(dummy));
+                spawned.Add((proto, dummy));
+            }
+        });
+
+        //IS14-change: appearance-driven sprites (including ID cards) update on the next frame.
+        await pair.Client.WaitRunTicks(2);
+        await pair.Client.WaitPost(() =>
+        {
+            foreach (var (proto, dummy) in spawned)
+            {
                 var spriteComponent = pair.Client.EntMan.GetComponentOrNull<SpriteComponent>(dummy);
                 if (spriteComponent?.Icon == null)
                     badPrototypes.Add(proto);

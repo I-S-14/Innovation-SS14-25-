@@ -105,6 +105,13 @@ public sealed partial class ClientClothingSystem : ClothingSystem
         if (inventory.SpeciesId != null)
             ent.Comp.ClothingVisuals.TryGetValue($"{args.Slot}-{inventory.SpeciesId}", out layers);
 
+        //IS14-change start: retained species can lack a dedicated frame in newer RSIs.
+        if (layers != null && !HasClothingStates(ent, layers)
+            && ent.Comp.ClothingVisuals.TryGetValue(args.Slot, out var genericLayers)
+            && HasClothingStates(ent, genericLayers))
+            layers = genericLayers;
+        //IS14-change end
+
         // if that returned nothing, attempt to find generic data
         if (layers == null && !ent.Comp.ClothingVisuals.TryGetValue(args.Slot, out layers))
         {
@@ -112,6 +119,11 @@ public sealed partial class ClientClothingSystem : ClothingSystem
             if (!TryGetDefaultVisuals(ent, args.Slot, inventory.SpeciesId, out layers))
                 return;
         }
+
+        //IS14-change start: keep legacy Goob/IS14 helmets compatible with modern base layouts.
+        if (TryGetLegacyHelmetVisuals(ent, args.Slot, inventory.SpeciesId, layers, out var legacyLayers))
+            layers = legacyLayers;
+        //IS14-change end
 
         // add each layer to the visuals
         var i = 0;
@@ -130,6 +142,9 @@ public sealed partial class ClientClothingSystem : ClothingSystem
             // Create a copy of the layer, which might get modified.
             PrototypeLayerData newLayer = new();
             _seriMan.CopyTo(layer, ref newLayer, notNullableOverride: true);
+            //IS14-change: honor the clothing RSI, which can differ from the ground sprite.
+            if (newLayer.RsiPath == null && newLayer.TexturePath == null && ent.Comp.RsiPath != null)
+                newLayer.RsiPath = (SpriteSpecifierSerializer.TextureRoot / ent.Comp.RsiPath).ToString();
             args.Layers.Add((key, newLayer));
         }
     }

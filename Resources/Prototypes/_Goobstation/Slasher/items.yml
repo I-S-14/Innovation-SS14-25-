@@ -187,7 +187,7 @@
     sprite: _Goobstation/Objects/Specific/Slasher/mask.rsi
     clothingVisuals:
       mask:
-      - state: equipped-MASK
+      - state: equipped-HELMET
   - type: SelfUnremovableClothing
   - type: SelfEquipOnly
     unequipRequireConscious: false
@@ -308,7 +308,11 @@
       - state: inhand-right
         color: "#1a1a1a"
   - type: Clothing
-    sprite: _Goobstation/Clothing/Uniforms/Jumpsuit/color/black.rsi
+    sprite: _Goobstation/Clothing/Uniforms/Jumpsuit/color/color.rsi
+    clothingVisuals:
+      jumpsuit:
+      - state: equipped-INNERCLOTHING
+        color: "#1a1a1a"
 
 
 - type: entity
@@ -365,6 +369,9 @@
     sprite: _Goobstation/Heretic/mad_mask.rsi
   - type: Clothing
     sprite: _Goobstation/Heretic/mad_mask.rsi
+    clothingVisuals:
+      mask:
+      - state: equipped-MASK
   - type: MadnessMask
     staminaProb: 0
     jitterProb: 0.75
@@ -559,7 +566,7 @@
     sprite: Clothing/Head/Hardsuits/lingspacehelmet.rsi
     clothingVisuals:
       head:
-      - state: equipped-HELMET
+      - state: equipped-head
 
 # Clown Kit
 

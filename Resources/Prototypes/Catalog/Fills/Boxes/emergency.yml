@@ -10,7 +10,8 @@
       - 0,0,1,2
   - type: Storage
     grid:
-      - "0,0,1,2"
+      # Retained Goob provisions need the original nine storage cells.
+      - "0,0,2,2"
 
 - type: entity
   parent: BaseBoxSurvival

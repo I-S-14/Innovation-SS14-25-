@@ -58,6 +58,9 @@
     layers:
     - map: [ "grinder" ]
       state: "grinder_empty"
+    - map: [ "enum.SolutionContainerLayers.Fill" ]
+      state: beakerSlot1
+      visible: false
   - type: SolutionContainerVisuals # Goobstation
     maxFillLevels: 4
     insertedItemSlotID: beakerSlot

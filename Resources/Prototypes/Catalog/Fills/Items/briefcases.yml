@@ -16,7 +16,11 @@
   parent: BriefcaseBrown
   suffix: Syndicate, Sniper Bundle
   components:
+  - type: Storage
+    grid:
+    - 0,0,5,4 # Retain room for the Goob Hristov magazine and all bundle accessories.
   - type: EntityTableContainerFill
+    sort: true # Pack the retained rifle magazine before the smaller accessories.
     containers:
       storagebase: !type:AllSelector
         children:
