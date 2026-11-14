@@ -2,6 +2,7 @@
 
 - type: job
   id: CentralCommandOfficial
+  canBeAntag: false # IS14: retain original role restriction.
   name: job-name-centcomoff
   description: job-description-centcomoff
   playTimeTracker: JobCentralCommandOfficial

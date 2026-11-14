@@ -203,7 +203,7 @@ public sealed partial class SharedModsuitSystem : EntitySystem
             return;
 
         args.Cancel();
-        _popup.PopupClient(Loc.GetString("modsuit-parts-still-deployed"), ent, args.UnEquipTarget);
+            _popup.PopupClient(Loc.GetString("modsuit-parts-still-deployed"), ent, args.User);
     }
 
     /// <summary>

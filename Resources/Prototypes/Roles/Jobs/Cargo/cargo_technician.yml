@@ -23,7 +23,6 @@
   - !type:GiveItemOnHolidaySpecial
     holiday: BoxingDay
     prototype: BoxCardboard
-  weight: 7 # IS14-edit
 
 - type: startingGear
   id: CargoTechGear

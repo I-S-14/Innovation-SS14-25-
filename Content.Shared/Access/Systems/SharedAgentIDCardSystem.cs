@@ -107,3 +107,11 @@ public sealed class AgentIDCardJobIconChangedMessage(ProtoId<JobIconPrototype> i
 {
     public ProtoId<JobIconPrototype> JobIconId { get; } = icon;
 }
+
+//IS14-change start: retain NanoChat number editing.
+[Serializable, NetSerializable]
+public sealed class AgentIDCardNumberChangedMessage(uint number) : BoundUserInterfaceMessage
+{
+    public uint Number { get; } = number;
+}
+//IS14-change end

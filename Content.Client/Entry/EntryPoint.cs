@@ -135,8 +135,8 @@ namespace Content.Client.Entry
             _prototypeManager.RegisterIgnore("stationGoal"); // CorvaxGoob-StationGoal
             _prototypeManager.RegisterIgnore("announcer"); // CorvaxGoob-CustomAnnouncers
             _prototypeManager.RegisterIgnore("ghostRoleRaffleDecider");
-            _prototypeManager.RegisterIgnore("codewordGenerator");
-            _prototypeManager.RegisterIgnore("codewordFaction");
+            //IS14-change: the shared CodewordSystem and shared rule components
+            // now require codewordGenerator/codewordFaction on the client too.
             _prototypeManager.RegisterIgnore("story"); // Goobstation
             _prototypeManager.RegisterIgnore("storyBeat"); // Goobstation
             //IS14-change start

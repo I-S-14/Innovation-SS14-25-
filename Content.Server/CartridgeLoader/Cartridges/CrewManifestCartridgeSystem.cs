@@ -50,7 +50,7 @@ public sealed partial class CrewManifestCartridgeSystem : EntitySystem
     /// <summary>
     /// This gets called when the ui fragment needs to be updated for the first time after activating
     /// </summary>
-    private void OnUiReady(EntityUid uid, CrewManifestCartridgeComponent component, CartridgeUiReadyEvent args)
+    private void OnUiReady(EntityUid uid, CrewManifestCartridgeComponent component, ref CartridgeUiReadyEvent args)
     {
         UpdateUiState(uid, args.Loader, component);
     }

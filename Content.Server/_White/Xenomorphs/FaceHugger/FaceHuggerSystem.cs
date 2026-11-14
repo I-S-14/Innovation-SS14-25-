@@ -120,7 +120,7 @@ public sealed class FaceHuggerSystem : EntitySystem
         FaceHuggerComponent component,
         BeingUnequippedAttemptEvent args)
     {
-        if (component.Slot != args.Slot || args.UnEquipTarget != args.UnEquipTarget ||
+        if (component.Slot != args.Slot || args.User != args.UnEquipTarget ||
             !component.InfectionPrototype.HasValue || _mobState.IsDead(uid) || HasComp<FacehuggerImmuneComponent>(args.UnEquipTarget)) // Omu, add check for FacehuggerImmune
             return;
 
@@ -397,7 +397,7 @@ public sealed class FaceHuggerSystem : EntitySystem
     /// Marks the facehugger as being in flight to track its state.
     /// Goobstation
     /// </summary>
-    private void OnThrown(EntityUid uid, ThrowableFacehuggerComponent component, ThrowEvent args)
+    private void OnThrown(EntityUid uid, ThrowableFacehuggerComponent component, ref ThrowEvent args)
     {
         // Mark the facehugger as flying to track its airborne state
         component.IsFlying = true;
@@ -411,7 +411,7 @@ public sealed class FaceHuggerSystem : EntitySystem
     /// Handles the facehugger's collision with a target after being thrown.
     /// Attempts to attach to a valid target if conditions are met.
     /// </summary>
-    private void OnThrowDoHit(EntityUid uid, ThrowableFacehuggerComponent component, ThrowDoHitEvent args)
+    private void OnThrowDoHit(EntityUid uid, ThrowableFacehuggerComponent component, ref ThrowDoHitEvent args)
     {
         // Only process if the facehugger was actually thrown (not just dropped)
         if (!component.IsFlying)

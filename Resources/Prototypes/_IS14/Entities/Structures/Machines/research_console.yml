@@ -9,17 +9,23 @@
     sprite: _IS14/Structures/Machines/research_console.rsi
     noRot: true
     layers:
-    - map: ["computerLayerBody"]
+    - map: ["enum.ComputerVisualLayers.Frame"]
       state: computer
-    - map: ["computerLayerKeyboard"]
+    - map: ["enum.ComputerVisualLayers.Keyboard"]
       state: generic_keyboard
-    - map: ["computerLayerScreen"]
+    - map: ["enum.ComputerVisualLayers.Screen"]
       sprite: _IS14/Structures/Machines/research_console_screen.rsi
       state: rdcomp
-    - map: ["computerLayerKeys"]
+    - map: ["enum.ComputerVisualLayers.Keys"]
       state: rd_key
     - map: ["enum.WiresVisualLayers.MaintenancePanel"]
       state: generic_panel_open
+  - type: ComputerVisuals # IS14: retain the custom states with modern layer keys.
+    stateFrame: computer
+    stateKeyboard: generic_keyboard
+    stateScreen: rdcomp
+    stateKeys: rd_key
+    statePanel: generic_panel_open
   - type: Fixtures
     fixtures:
       fix1:

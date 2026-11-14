@@ -2,9 +2,6 @@ namespace Content.Client.DoAfter;
 
 public sealed partial class DoAfterOverlay
 {
-    private static readonly TimeSpan MaxAlphaTime = TimeSpan.FromSeconds(0.3f);
-    private static readonly TimeSpan FadeoutAlphaTime = TimeSpan.FromSeconds(0.2f);
-    private static readonly TimeSpan MaxYPosTime = TimeSpan.FromSeconds(0.5f);
 
     private static float GetDoAfterAlpha(TimeSpan elapsed, TimeSpan delay, float maxAlpha)
     {

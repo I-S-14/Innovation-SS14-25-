@@ -1,0 +1,6 @@
+# IS14: route the Wizards entry through the complete retained Goob wizard configuration.
+# Preserve its abilities, real wizard robes, grimoire, languages, profile and ghost spawner.
+# RestrictedAntag retains the Wizards job blacklist on this shared entry point.
+- type: antagSpecifier
+  id: Wizard
+  parent: [RestrictedAntag, IS14BaseWizardRuleAntag03a989a8f]

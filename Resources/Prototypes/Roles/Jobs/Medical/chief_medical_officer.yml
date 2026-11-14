@@ -2,6 +2,7 @@
 
 - type: job
   id: ChiefMedicalOfficer
+  canBeAntag: false # IS14: retain original role restriction.
   name: job-name-cmo
   description: job-description-cmo
   playTimeTracker: JobChiefMedicalOfficer

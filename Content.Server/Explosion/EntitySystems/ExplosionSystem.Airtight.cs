@@ -237,7 +237,7 @@ public sealed partial class ExplosionSystem
         var modifiers = _damageableSystem.GetDamageModifierSet(uid);
         var explosionComp = _explosionResistanceQuery.CompOrNull(uid);
 
-        if (totalDamageTarget == FixedPoint2.MaxValue || !_injurableQuery.TryComp(uid, out var injurable))
+        if (totalDamageTarget == FixedPoint2.MaxValue || !_damageableQuery.TryComp(uid, out var injurable))
         {
             for (var i = 0; i < explosionTolerance.Length; i++)
             {
@@ -266,6 +266,12 @@ public sealed partial class ExplosionSystem
             var damageThresholds = new SortedDictionary<FixedPoint2, FixedPoint2>();
             foreach (var (type, value) in explosionType.DamagePerIntensity.DamageDict)
             {
+                //IS14-change start: a zero-damage channel never overcomes flat armor.
+                // FixedPoint2 cannot represent the infinite threshold from flat / 0.
+                if (value == FixedPoint2.Zero)
+                    continue;
+                //IS14-change end
+
                 if (!_damageableSystem.CanBeDamagedBy((uid, injurable), type))
                     continue;
 
@@ -286,10 +292,17 @@ public sealed partial class ExplosionSystem
                     {
                         if (flat > 0)
                         {
+                            //IS14-change start: immunity (or fixed-point rounding to zero)
+                            // adds no damage when this threshold is crossed.
+                            var addedDamage = value * Math.Max(0, modifier);
+                            if (addedDamage <= FixedPoint2.Zero)
+                                continue;
+                            //IS14-change end
+
                             // If the flat modifier is reducing damage, we cache the extra damage per intensity for later!
                             var intensity = flat / value;
                             var damage = damageThresholds.GetValueOrDefault(intensity);
-                            damageThresholds[intensity] = value * Math.Max(0, modifier) + damage;
+                            damageThresholds[intensity] = addedDamage + damage; //IS14-change
                             continue;
                         }
                     }

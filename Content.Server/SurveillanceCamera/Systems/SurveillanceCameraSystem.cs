@@ -25,7 +25,6 @@ public sealed partial class SurveillanceCameraSystem : SharedSurveillanceCameraS
     [Dependency] private DeviceNetworkRouterSystem _deviceNetworkRouter = default!;
     [Dependency] private UserInterfaceSystem _userInterface = default!;
     [Dependency] private IAdminLogManager _adminLogger = default!;
-    [Dependency] private SurveillanceCameraMapSystem _cameraMapSystem = default!;
     [Dependency] private SharedAppearanceSystem _appearance = default!;
 
     [Dependency] private EntityQuery<SurveillanceCameraRouterComponent> _routerQuery = default!;
@@ -76,13 +75,15 @@ public sealed partial class SurveillanceCameraSystem : SharedSurveillanceCameraS
         if (!_routerQuery.TryComp(args.Sender, out var routerComp))
             return;
 
-        if (routerComp.SubnetName != payload.Subnet)
+        if (routerComp.SubnetFrequencyId != payload.Subnet)
             return;
 
         var name = ent.Comp.UseEntityNameAsCameraId ? MetaData(ent).EntityName : ent.Comp.CameraId;
         var responsePayload = new SurveillanceCameraDataPayload
         {
             Name = name,
+            Subnet = payload.Subnet,
+            Mobile = ent.Comp.Mobile,
         };
         _deviceNetworkRouter.SendPacketRouted(ent.Owner, ref responsePayload, args.SenderAddress, payload.SenderAddress);
     }

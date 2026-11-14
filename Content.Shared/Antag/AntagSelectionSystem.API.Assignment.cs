@@ -57,7 +57,8 @@ public abstract partial class AntagSelectionSystem
             return false;
 
         // Add player to the appropriate antag pool
-        if (checkPref && !TryGetValidAntagPreferences(player, def.PrefRoles))
+        if (checkPref && (!TryGetValidAntagPreferences(player, out var prefs)
+            || !MatchesGoobPreferences(def, prefs)))
             return false;
 
         return true;
@@ -93,6 +94,10 @@ public abstract partial class AntagSelectionSystem
         if (IsAntagBanned(player, def))
             return false;
 
+        //IS14-change: retain job eligibility even before a mind receives a body.
+        if (Jobs.MindTryGetJob(player.GetMind(), out var assignedJob) && !assignedJob.CanBeAntag)
+            return false;
+
         // If our antag is mutually exclusive with other antags, yell about it!
         switch (def.MultiAntagSetting)
         {
@@ -125,11 +130,14 @@ public abstract partial class AntagSelectionSystem
     /// <param name="mind">Mind we are checking</param>
     /// <param name="def">Antag definition we want to give this mind.</param>
     /// <returns>True if there is nothing stopping this mind entity from being this antag.</returns>
-    private bool IsMindValid([NotNullWhen(true)] EntityUid? mind, AntagSpecifierPrototype def)
+    private bool IsMindValid(EntityUid? mind, AntagSpecifierPrototype def)
     {
         // The jobless can always be antag!
         if (!Jobs.MindTryGetJob(mind, out var job))
             return true;
+
+        if (!job.CanBeAntag) //IS14-change: preserve restricted IS14/Goob jobs.
+            return false;
 
         // "Sorry buddy, but you can't be a traitor and the head of security" - Urist 1984
         // This checks nullability for our mind for free as well!
@@ -154,7 +162,7 @@ public abstract partial class AntagSelectionSystem
     }
 
     /// <inhereitdoc cref="IsEntityValid(EntityUid?,AntagSpecifierPrototype)"/>
-    public bool IsEntityValid([NotNullWhen(true)] EntityUid? uid, ProtoId<AntagSpecifierPrototype> def)
+    public bool IsEntityValid(EntityUid? uid, ProtoId<AntagSpecifierPrototype> def)
     {
         if (!ProtoMan.Resolve(def, out var antag))
             return false;
@@ -169,9 +177,13 @@ public abstract partial class AntagSelectionSystem
     /// <param name="uid">Entity whose validity we're checking.</param>
     /// <param name="def">Antag definition we want to give them.</param>
     /// <returns>True if there is nothing stopping this entity from being this antag. Or if there is no entity.</returns>
-    public bool IsEntityValid([NotNullWhen(true)] EntityUid? uid, AntagSpecifierPrototype def)
+    public bool IsEntityValid(EntityUid? uid, AntagSpecifierPrototype def)
     {
         // If the player has not spawned in as any entity (e.g., in the lobby), they can be given an antag role/entity.
+        //IS14-change: null is a valid lobby candidate; it cannot satisfy an entity whitelist.
+        if (uid == null)
+            return true;
+
         if (!Whitelist.CheckBoth(uid, def.Blacklist, def.Whitelist))
             return false;
 
@@ -245,11 +257,15 @@ public abstract partial class AntagSelectionSystem
     /// <returns>Returns true if an open antag slot was found and successfully assigned, false otherwise.</returns>
     public bool TryAssignNextAvailableAntag(Entity<AntagSelectionComponent> gameRule,
         ICommonSession session,
-        int players)
+        int players,
+        bool lateJoinOnly = false)
     {
         foreach (var selector in gameRule.Comp.Antags)
         {
             if (!ProtoMan.Resolve(selector.Proto, out var antag))
+                continue;
+
+            if (lateJoinOnly && antag.LateJoinAdditional == false)
                 continue;
 
             // Because this value can theoretically fluctuate as players leave and join, we don't want to cache it.
@@ -294,7 +310,7 @@ public abstract partial class AntagSelectionSystem
 
         foreach (var (uid, antag) in rules)
         {
-            if (TryAssignNextAvailableAntag((uid, antag), session, players))
+            if (TryAssignNextAvailableAntag((uid, antag), session, players, lateJoinOnly: true))
                 return true;
         }
 

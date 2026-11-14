@@ -1,0 +1,95 @@
+# IS14: retained variants without ordinary-parent destruction.
+# Source: current canonical base_structurecrates.yml.
+# Common generic/weldable/secure components retained without the generic 60 threshold.
+- type: entity
+  parent:
+  - BaseCrate
+  - BaseStructureHealth
+  id: IS14RetainedGenericCrateBase
+  categories: [HideSpawnMenu]
+  components:
+  - type: Icon
+    sprite: Structures/Storage/Crates/generic.rsi
+    state: icon
+  - type: Sprite
+    sprite: Structures/Storage/Crates/generic.rsi
+    layers:
+    - state: base
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: closed
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: welded
+      visible: false
+      map: ["enum.WeldableLayers.BaseWelded"]
+    - state: paper
+      sprite: Structures/Storage/Crates/labels.rsi
+      map: ["enum.PaperLabelVisuals.Layer"]
+  - type: Damageable
+    damageModifierSet: SteelMod
+  - type: Construction
+    graph: CrateGenericSteel
+    node: crategenericsteel
+    containers:
+    - entity_storage
+  - type: Tag
+    tags:
+    - Crate
+  abstract: true
+- type: entity
+  parent:
+  - IS14RetainedGenericCrateBase
+  id: IS14RetainedWeldableCrateBase
+  categories: [HideSpawnMenu]
+  components:
+  - type: Weldable
+  - type: ResistLocker
+  abstract: true
+- type: entity
+  parent:
+  - IS14RetainedWeldableCrateBase
+  id: IS14RetainedSecureCrateBase
+  suffix: Secure
+  components:
+  - type: Lock
+  - type: LockVisuals
+  - type: AccessReader
+  - type: Icon
+    sprite: Structures/Storage/Crates/secure.rsi
+    state: icon
+  - type: Sprite
+    sprite: Structures/Storage/Crates/secure.rsi
+    layers:
+    - state: base
+    - state: closed
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: welded
+      visible: false
+      map: ["enum.WeldableLayers.BaseWelded"]
+    - state: locked
+      map: ["enum.LockVisualLayers.Lock"]
+      shader: unshaded
+    - state: paper
+      sprite: Structures/Storage/Crates/labels.rsi
+      offset: "-0.5,0"
+      map: ["enum.PaperLabelVisuals.Layer"]
+  - type: Damageable
+    damageModifierSet: PlasteelMod
+  - type: Construction
+    graph: CrateSecure
+    node: cratesecure
+    containers:
+    - entity_storage
+  - type: Reflect
+    reflects:
+    - Energy
+    reflectProb: 0.2
+    spread: 90
+  - type: PhysicalComposition
+    materialComposition:
+      Steel: 125
+  - type: RecyclableOnUnlock
+  - type: Paintable
+    group: CrateSecure
+  - type: StaticPrice
+    price: 300
+  abstract: true

@@ -6,7 +6,6 @@ using Robust.Shared.Configuration;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using System.Numerics;
-using Content.IntegrationTests.Fixtures;
 using Content.Shared.Atmos.Components;
 using Robust.Shared.EntitySerialization.Systems;
 using Robust.Shared.Utility;
@@ -15,7 +14,7 @@ namespace Content.IntegrationTests.Tests.Respirator;
 
 [TestFixture]
 [TestOf(typeof(LungSystem))]
-public sealed class LungTest : GameTest
+public sealed class LungTest
 {
     [TestPrototypes]
     private const string Prototypes = @"
@@ -25,11 +24,7 @@ public sealed class LungTest : GameTest
   components:
   - type: SolutionContainerManager
   - type: Body
-  - type: EntityTableContainerFill
-    containers:
-      body_organs: !type:AllSelector
-        children:
-        - id: OrganHumanLungs
+    prototype: Human # IS14: retain the Shitmed organ/part topology used by this test before NuBody.
   - type: MobState
     allowedStates:
       - Alive
@@ -55,7 +50,7 @@ public sealed class LungTest : GameTest
     public async Task AirConsistencyTest()
     {
         // --- Setup
-        var pair = Pair;
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true, Dirty = true });
         var server = pair.Server;
 
         await server.WaitIdleAsync();
@@ -65,6 +60,7 @@ public sealed class LungTest : GameTest
         var mapSys = entityManager.System<SharedMapSystem>();
 
         EntityUid? grid = null;
+        EntityUid testMap = default;
         RespiratorComponent resp = default;
         EntityUid human = default;
         GridAtmosphereComponent relevantAtmos = default;
@@ -74,7 +70,7 @@ public sealed class LungTest : GameTest
 
         await server.WaitPost(() =>
         {
-            mapSys.CreateMap(out var mapId);
+            testMap = mapSys.CreateMap(out var mapId);
             Assert.That(mapLoader.TryLoadGrid(mapId, testMapName, out var gridEnt));
             grid = gridEnt!.Value.Owner;
         });
@@ -124,12 +120,15 @@ public sealed class LungTest : GameTest
                 "Did not exhale as much gas as was inhaled"
             );
         }
+        await server.WaitPost(() => entityManager.DeleteEntity(testMap));
+        await pair.CleanReturnAsync();
     }
 
-    [Test]
-    public async Task NoSuffocationTest()
+    [TestCase("HumanLungDummy")]
+    [TestCase("MobHuman")]
+    public async Task NoSuffocationTest(string prototype)
     {
-        var pair = Pair;
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true, Dirty = true });
         var server = pair.Server;
 
         var entityManager = server.ResolveDependency<IEntityManager>();
@@ -138,6 +137,7 @@ public sealed class LungTest : GameTest
         var mapSys = entityManager.System<SharedMapSystem>();
 
         EntityUid? grid = null;
+        EntityUid testMap = default;
         RespiratorComponent respirator = null;
         EntityUid human = default;
 
@@ -145,7 +145,7 @@ public sealed class LungTest : GameTest
 
         await server.WaitPost(() =>
         {
-            mapSys.CreateMap(out var mapId);
+            testMap = mapSys.CreateMap(out var mapId);
             Assert.That(mapLoader.TryLoadGrid(mapId, testMapName, out var gridEnt));
             grid = gridEnt!.Value.Owner;
         });
@@ -157,7 +157,7 @@ public sealed class LungTest : GameTest
             var center = new Vector2(0.5f, 0.5f);
 
             var coordinates = new EntityCoordinates(grid.Value, center);
-            human = entityManager.SpawnEntity("HumanLungDummy", coordinates);
+            human = entityManager.SpawnEntity(prototype, coordinates);
 
             var mixture = entityManager.System<AtmosphereSystem>().GetContainingMixture(human);
 #pragma warning disable NUnit2045
@@ -181,5 +181,7 @@ public sealed class LungTest : GameTest
                     $"Entity {entityManager.GetComponent<MetaDataComponent>(human).EntityName} is suffocating on tick {tick}");
             });
         }
+        await server.WaitPost(() => entityManager.DeleteEntity(testMap));
+        await pair.CleanReturnAsync();
     }
 }

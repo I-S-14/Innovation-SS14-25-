@@ -21,7 +21,7 @@ namespace Content.Shared.SprayPainter;
 
 /// <summary>
 /// System for painting paintable objects using a spray painter.
-/// Pipes are handled serverside since AtmosPipeColorSystem is server only.
+/// Pipes are painted server-side; their color is replicated for client item visuals. // IS14-change
 /// </summary>
 public abstract partial class SharedSprayPainterSystem : EntitySystem
 {

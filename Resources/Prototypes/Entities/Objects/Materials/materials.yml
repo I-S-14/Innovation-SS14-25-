@@ -558,8 +558,9 @@
     count: 10
     baseLayer: base
     layerStates:
-      - bananium
-      - bananium_1
+      - bananium-1 # IS14: retain stack behavior with Wizards' new sprites.
+      - bananium-2
+      - bananium-3
   # Goobstation - Custom stack splitting dialog
   - type: UserInterface
     interfaces:

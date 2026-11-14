@@ -118,7 +118,6 @@
       - ReagentId: Ethanol
         Quantity: 30
   - type: Damageable
-  - type: Injurable
     damageContainer: Inorganic
   - type: DamageOnLand
     damage:

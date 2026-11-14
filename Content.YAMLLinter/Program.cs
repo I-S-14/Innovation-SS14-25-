@@ -15,7 +15,6 @@ using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 using Robust.UnitTesting;
 using Robust.UnitTesting.Pool;
-using System.IO;
 
 namespace Content.YAMLLinter
 {
@@ -32,7 +31,8 @@ namespace Content.YAMLLinter
 
             var (errors, fieldErrors) = await RunValidation();
 
-            var count = errors.Count + fieldErrors.Count;
+            //IS14-change: the dictionary counts files, not diagnostics within each file.
+            var count = errors.Values.Sum(nodes => nodes.Count) + fieldErrors.Count;
 
             if (count == 0)
             {
@@ -56,6 +56,7 @@ namespace Content.YAMLLinter
                 Console.WriteLine(error);
             }
 
+            Console.WriteLine($"Affected prototype files: {errors.Count}."); //IS14-change: retain the old metric explicitly.
             Console.WriteLine($"{count} errors found in {(int) stopwatch.Elapsed.TotalMilliseconds} ms.");
             PoolManager.Shutdown();
             return -1;

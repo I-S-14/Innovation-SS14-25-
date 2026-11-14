@@ -29,7 +29,7 @@ public sealed partial class RottingSystem : SharedRottingSystem
         SubscribeLocalEvent<TemperatureComponent, IsRottingEvent>(OnTempIsRotting);
     }
 
-    private void OnGibbed(EntityUid uid, RottingComponent component, BeingGibbedEvent args)
+    private void OnGibbed(EntityUid uid, RottingComponent component, ref BeingGibbedEvent args)
     {
         if (!TryComp<PhysicsComponent>(uid, out var physics))
             return;

@@ -3,6 +3,7 @@
 
 - type: technology
   id: PackagedLights
+  position: 2,4 # IS14: retained technology in the civilian branch.
   name: research-technology-packaged-lights
   icon:
     sprite: Objects/Storage/EntityProvider/packaged_lights.rsi

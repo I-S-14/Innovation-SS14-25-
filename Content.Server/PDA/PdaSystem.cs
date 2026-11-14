@@ -49,7 +49,6 @@ namespace Content.Server.PDA
         [Dependency] private UnpoweredFlashlightSystem _unpoweredFlashlight = default!;
         [Dependency] private ContainerSystem _containerSystem = default!;
         [Dependency] private IdCardSystem _idCard = default!;
-        [Dependency] private IPrototypeManager _prototype = default!;
 
         public override void Initialize()
         {
@@ -345,13 +344,13 @@ namespace Content.Server.PDA
             var station = _station.GetOwningStation(uid);
             if (!TryComp(station, out AlertLevelComponent? alertComp))
                 return;
-            pda.StationAlertLevel = alertComp.CurrentLevel;
-            if (alertComp.AlertLevels.Levels.TryGetValue(alertComp.CurrentLevel, out var details))
+            pda.StationAlertLevel = alertComp.CurrentAlertLevel;
+            if (ProtoMan.TryIndex(alertComp.CurrentAlertLevel, out var details))
             {
                 pda.StationAlertColor = details.Color;
                 // CorvaxGoob-custom-alert-instructions-in-pda-start
                 if (details != null)
-                    pda.StationAlertInstructions = details.AlertLevelInstruction;
+                    pda.StationAlertInstructions = details.Instructions is { } instructions ? Loc.GetString(instructions) : null;
                 // CorvaxGoob-custom-alert-instructions-in-pda-end
             }
         }

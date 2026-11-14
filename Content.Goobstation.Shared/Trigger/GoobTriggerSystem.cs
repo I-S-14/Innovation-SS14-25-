@@ -82,7 +82,9 @@ public sealed partial class GoobTriggerSystem : EntitySystem
             {
                 foreach (var spawn in spawns)
                 {
-                    EntityManager.PredictedSpawn(spawn, mapCoords);
+                    //IS14-change start
+                    PredictedSpawn(spawn, mapCoords);
+                    //IS14-change end
                 }
             }
             else if (_net.IsServer)

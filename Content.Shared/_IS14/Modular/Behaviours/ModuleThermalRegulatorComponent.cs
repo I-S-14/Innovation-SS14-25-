@@ -57,5 +57,5 @@ public sealed partial class ModuleThermalRegulatorComponent : Component
     ///     is installed but switched off without resolving a wearer for each.
     /// </summary>
     [ViewVariables]
-    public bool Running;
+    public new bool Running;
 }

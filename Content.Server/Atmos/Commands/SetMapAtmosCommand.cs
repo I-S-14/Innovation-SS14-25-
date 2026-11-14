@@ -14,6 +14,10 @@ namespace Content.Server.Atmos.Commands;
 [AdminCommand(AdminFlags.Admin)]
 public sealed partial class AddMapAtmosCommand : LocalizedEntityCommands
 {
+    //IS14-change start: retain fork fields lost during merge.
+    private SharedMapSystem _mapSystem => _entities.System<SharedMapSystem>();
+    //IS14-change end
+
     [Dependency] private IEntityManager _entities = default!;
     [Dependency] private SharedMapSystem _map = default!;
 

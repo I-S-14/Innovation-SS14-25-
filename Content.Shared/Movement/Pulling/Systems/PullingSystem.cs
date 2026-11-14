@@ -12,8 +12,6 @@ using Content.Shared.Cuffs;
 using Content.Shared.Cuffs.Components;
 using Content.Shared.Damage.Components; // CorvaxGoob
 using Content.Shared.CombatMode;
-using Content.Shared.Cuffs;
-using Content.Shared.Cuffs.Components;
 using Content.Shared.Database;
 using Content.Shared.Hands;
 using Content.Shared.Hands.Components;
@@ -205,7 +203,7 @@ public sealed partial class PullingSystem : EntitySystem
             EnsureComp<ActivePullerComponent>(ent.Owner);
     }
 
-    private void OnDropHandItems(EntityUid uid, PullerComponent pullerComp, DropHandItemsEvent args)
+    private void OnDropHandItems(EntityUid uid, PullerComponent pullerComp, ref DropHandItemsEvent args)
     {
         if (pullerComp.Pulling == null || pullerComp.NeedsHands)
             return;

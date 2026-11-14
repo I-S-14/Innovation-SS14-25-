@@ -2,7 +2,6 @@
 
 using Content.Shared.Codewords;
 using Robust.Shared.Prototypes;
-using Content.Server.Codewords;
 
 namespace Content.Server.Traitor.Components;
 

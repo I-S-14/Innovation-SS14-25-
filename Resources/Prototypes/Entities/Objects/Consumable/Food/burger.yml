@@ -85,24 +85,16 @@
       - meaty
   - type: Sprite
     sprite: Objects/Consumable/Food/burger.rsi
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 15
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 10 # Goobstation - cooked food more useful
-        - ReagentId: Vitamin
-          Quantity: 5 # Goobstation - cooked food more useful
   - type: Solution
     solution:
+      maxVol: 15
       reagents:
       - ReagentId: Nutriment
-        Quantity: 30
-      - ReagentId: Protein
-        Quantity: 10
+        Quantity: 10 # Goobstation - cooked food more useful
       - ReagentId: Vitamin
-        Quantity: 10
+        Quantity: 5 # Goobstation - cooked food more useful
+      temperature: 293.15
+      canReact: true
   - type: Item
     sprite: Objects/Consumable/Food/burger.rsi
     shape:
@@ -193,13 +185,14 @@
     state: bacon
   - type: Solution
     solution:
+      maxVol: 15
       reagents:
       - ReagentId: Nutriment
-        Quantity: 35
-      - ReagentId: Protein
-        Quantity: 5
+        Quantity: 10 # Goobstation - cooked food more useful
       - ReagentId: Vitamin
-        Quantity: 5
+        Quantity: 5 # Goobstation - cooked food more useful
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - FinishedMeal
@@ -235,13 +228,14 @@
     state: baseball
   - type: Solution
     solution:
+      maxVol: 15
       reagents:
       - ReagentId: Nutriment
-        Quantity: 10
-      - ReagentId: Cellulose
-        Quantity: 30
+        Quantity: 10 # Goobstation - cooked food more useful
       - ReagentId: Vitamin
-        Quantity: 5
+        Quantity: 5 # Goobstation - cooked food more useful
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - FinishedMeal
@@ -275,17 +269,18 @@
       - meaty
   - type: Sprite
     state: bearger
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 15
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 10 # Goobstation - cooked food more useful
-        - ReagentId: Protein
-          Quantity: 6
-        - ReagentId: Vitamin
-          Quantity: 5
+  - type: Solution
+    solution:
+      maxVol: 15
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 10 # Goobstation - cooked food more useful
+      - ReagentId: Protein
+        Quantity: 6
+      - ReagentId: Vitamin
+        Quantity: 5
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - FinishedMeal
@@ -311,26 +306,16 @@
       - meaty
       - oily
       - cheesy
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 33
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 20 # Goobstation - cooked food more useful
-        - ReagentId: Vitamin
-          Quantity: 10 # Goobstation - cooked food more useful
   - type: Solution
     solution:
+      maxVol: 33
       reagents:
       - ReagentId: Nutriment
-        Quantity: 75
-      - ReagentId: Protein
-        Quantity: 20
+        Quantity: 20 # Goobstation - cooked food more useful
       - ReagentId: Vitamin
-        Quantity: 5
-      - ReagentId: Allicin
-        Quantity: 2
+        Quantity: 10 # Goobstation - cooked food more useful
+      temperature: 293.15
+      canReact: true
   - type: Sprite
     state: bigbite
   - type: Tag
@@ -406,24 +391,18 @@
       - cheesy
   - type: Sprite
     state: cheese
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 15
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 5 # Goobstation - cooked food more useful
-        - ReagentId: Vitamin
-          Quantity: 7
-        - ReagentId: Protein
-          Quantity: 1
   - type: Solution
     solution:
+      maxVol: 15
       reagents:
       - ReagentId: Nutriment
-        Quantity: 45
+        Quantity: 5 # Goobstation - cooked food more useful
+      - ReagentId: Vitamin
+        Quantity: 7
       - ReagentId: Protein
-        Quantity: 10
+        Quantity: 1
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - FinishedMeal
@@ -457,30 +436,20 @@
       - chicken
   - type: Sprite
     state: chicken
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 15
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 5 # Goobstation - cooked food more useful
-        - ReagentId: Protein
-          Quantity: 10 # Goobstation - cooked food more useful
-        - ReagentId: Vitamin
-          Quantity: 5 # Goobstation - cooked food more useful
-        - ReagentId: Mayo
-          Quantity: 3
   - type: Solution
     solution:
+      maxVol: 15
       reagents:
       - ReagentId: Nutriment
-        Quantity: 30
+        Quantity: 5 # Goobstation - cooked food more useful
       - ReagentId: Protein
-        Quantity: 10
+        Quantity: 10 # Goobstation - cooked food more useful
       - ReagentId: Vitamin
-        Quantity: 10
+        Quantity: 5 # Goobstation - cooked food more useful
       - ReagentId: Mayo
-        Quantity: 2
+        Quantity: 3
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - FinishedMeal
@@ -540,13 +509,14 @@
     state: ian
   - type: Solution
     solution:
+      maxVol: 15
       reagents:
       - ReagentId: Nutriment
-        Quantity: 20
-      - ReagentId: Bicaridine #keeping it somewhat consistent with the meat itself
-        Quantity: 20
+        Quantity: 10 # Goobstation - cooked food more useful
       - ReagentId: Vitamin
-        Quantity: 10
+        Quantity: 5 # Goobstation - cooked food more useful
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - FinishedMeal
@@ -613,48 +583,22 @@
       - flare
   - type: Sprite
     state: crazy
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 25
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 4
-        - ReagentId: Protein
-          Quantity: 6
-        - ReagentId: CapsaicinOil
-          Quantity: 3
-        - ReagentId: Vitamin
-          Quantity: 8
-        - ReagentId: Sulfur # What you get for eating something with a flare in it
-          Quantity: 5
   - type: Solution
     solution:
-      maxVol: 180
+      maxVol: 25
       reagents:
-      - ReagentId: Nutriment # Adds up to 180, completely filled to the brim.
-        Quantity: 100
+      - ReagentId: Nutriment
+        Quantity: 4
       - ReagentId: Protein
-        Quantity: 20
-      - ReagentId: CapsaicinOil
-        Quantity: 10
-      - ReagentId: Vitamin
-        Quantity: 10
-      - ReagentId: MindbreakerToxin
-        Quantity: 10
-      # Taken from flare entity :)
-      - ReagentId: Iron
-        Quantity: 10
-      - ReagentId: Phosphorus
         Quantity: 6
-      - ReagentId: Carbon
-        Quantity: 2
-      - ReagentId: Oxygen
-        Quantity: 4
-      - ReagentId: Charcoal
-        Quantity: 4
-      - ReagentId: Sulfur
-        Quantity: 4
+      - ReagentId: CapsaicinOil
+        Quantity: 3
+      - ReagentId: Vitamin
+        Quantity: 8
+      - ReagentId: Sulfur # What you get for eating something with a flare in it
+        Quantity: 5
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - FinishedMeal
@@ -687,17 +631,18 @@
       - duck
   - type: Sprite
     state: chicken
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 15
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 5 # Goobstation - cooked food more useful
-        - ReagentId: Protein
-          Quantity: 10 # Goobstation - cooked food more useful
-        - ReagentId: Vitamin
-          Quantity: 5 # Goobstation - cooked food more useful
+  - type: Solution
+    solution:
+      maxVol: 15
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 5 # Goobstation - cooked food more useful
+      - ReagentId: Protein
+        Quantity: 10 # Goobstation - cooked food more useful
+      - ReagentId: Vitamin
+        Quantity: 5 # Goobstation - cooked food more useful
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - FinishedMeal
@@ -724,24 +669,16 @@
     flavors:
       - bun
       - shocking
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 15
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 10 # Goobstation - cooked food more useful
-        - ReagentId: Licoxide
-          Quantity: 5
   - type: Solution
     solution:
+      maxVol: 15
       reagents:
       - ReagentId: Nutriment
-        Quantity: 10
-      - ReagentId: Plasma
-        Quantity: 20
+        Quantity: 10 # Goobstation - cooked food more useful
       - ReagentId: Licoxide
-        Quantity: 10
+        Quantity: 5
+      temperature: 293.15
+      canReact: true
 
 # Tastes like bun, pure electricity.
 
@@ -800,32 +737,20 @@
       - spicy
   - type: Sprite
     state: fivealarm
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 20
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 6
-        - ReagentId: CapsaicinOil
-          Quantity: 5
-        - ReagentId: Blackpepper
-          Quantity: 5
-        - ReagentId: Vitamin
-          Quantity: 1
   - type: Solution
     solution:
+      maxVol: 20
       reagents:
       - ReagentId: Nutriment
-        Quantity: 45
-      - ReagentId: Protein
-        Quantity: 10
+        Quantity: 6
       - ReagentId: CapsaicinOil
-        Quantity: 30
+        Quantity: 5
       - ReagentId: Blackpepper
-        Quantity: 3
+        Quantity: 5
       - ReagentId: Vitamin
-        Quantity: 12
+        Quantity: 1
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - FinishedMeal
@@ -866,13 +791,14 @@
     state: ghost
   - type: Solution
     solution:
+      maxVol: 15
       reagents:
       - ReagentId: Nutriment
-        Quantity: 10
+        Quantity: 10 # Goobstation - cooked food more useful
       - ReagentId: Vitamin
-        Quantity: 10
-      - ReagentId: Fresium
-        Quantity: 15
+        Quantity: 5 # Goobstation - cooked food more useful
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - ClothMade
@@ -893,17 +819,18 @@
       - people
   - type: Sprite
     state: human
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 15
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 2
-        - ReagentId: Protein
-          Quantity: 6
-        - ReagentId: Vitamin
-          Quantity: 5
+  - type: Solution
+    solution:
+      maxVol: 15
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 2
+      - ReagentId: Protein
+        Quantity: 6
+      - ReagentId: Vitamin
+        Quantity: 5
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - FinishedMeal
@@ -942,28 +869,18 @@
       - egg
   - type: Sprite
     state: mcguffin
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 15
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 2
-        - ReagentId: Protein
-          Quantity: 7
-        - ReagentId: Vitamin
-          Quantity: 1
   - type: Solution
     solution:
+      maxVol: 15
       reagents:
       - ReagentId: Nutriment
-        Quantity: 25
-      - ReagentId: EggCooked
-        Quantity: 6
+        Quantity: 2
       - ReagentId: Protein
-        Quantity: 5
+        Quantity: 7
       - ReagentId: Vitamin
-        Quantity: 5
+        Quantity: 1
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - FinishedMeal
@@ -984,32 +901,20 @@
       - bacon
   - type: Sprite
     state: mcrib
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 30
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 10 # Goobstation - cooked food more useful
-        - ReagentId: Protein
-          Quantity: 10 # Goobstation - cooked food more useful
-        - ReagentId: Vitamin
-          Quantity: 10 # Goobstation - cooked food more useful
-        - ReagentId: BbqSauce
-          Quantity: 1
   - type: Solution
     solution:
+      maxVol: 30
       reagents:
       - ReagentId: Nutriment
-        Quantity: 70
+        Quantity: 10 # Goobstation - cooked food more useful
       - ReagentId: Protein
-        Quantity: 30
-      - ReagentId: BbqSauce
-        Quantity: 10
-      - ReagentId: Allicin
-        Quantity: 5
+        Quantity: 10 # Goobstation - cooked food more useful
       - ReagentId: Vitamin
-        Quantity: 5
+        Quantity: 10 # Goobstation - cooked food more useful
+      - ReagentId: BbqSauce
+        Quantity: 1
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - FinishedMeal
@@ -1047,13 +952,14 @@
     state: mime
   - type: Solution
     solution:
+      maxVol: 15
       reagents:
       - ReagentId: Nutriment
-        Quantity: 10
+        Quantity: 10 # Goobstation - cooked food more useful
       - ReagentId: Vitamin
-        Quantity: 5
-      - ReagentId: Nothing
-        Quantity: 30
+        Quantity: 5 # Goobstation - cooked food more useful
+      temperature: 293.15
+      canReact: true
   - type: Item
     inhandVisuals:
       left:
@@ -1075,17 +981,18 @@
       - meaty
   - type: Sprite
     state: plain
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 25
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 5 # Goobstation - cooked food more useful
-        - ReagentId: Protein
-          Quantity: 6
-        - ReagentId: Vitamin
-          Quantity: 3
+  - type: Solution
+    solution:
+      maxVol: 25
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 5 # Goobstation - cooked food more useful
+      - ReagentId: Protein
+        Quantity: 6
+      - ReagentId: Vitamin
+        Quantity: 3
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - FinishedMeal
@@ -1109,28 +1016,18 @@
       - meaty
   - type: Sprite
     state: rat
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 15
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 3
-        - ReagentId: Protein
-          Quantity: 6
-        - ReagentId: Vitamin
-          Quantity: 2
   - type: Solution
     solution:
+      maxVol: 15
       reagents:
       - ReagentId: Nutriment
-        Quantity: 15
+        Quantity: 3
       - ReagentId: Protein
-        Quantity: 5
+        Quantity: 6
       - ReagentId: Vitamin
-        Quantity: 5
-      - ReagentId: Fat
-        Quantity: 1
+        Quantity: 2
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - FinishedMeal
@@ -1161,21 +1058,14 @@
     state: ro
   - type: Solution
     solution:
+      maxVol: 15
       reagents:
       - ReagentId: Nutriment
-        Quantity: 15
+        Quantity: 10 # Goobstation - cooked food more useful
       - ReagentId: Vitamin
-        Quantity: 5
-      - ReagentId: SulfuricAcid
-        Quantity: 5
-      - ReagentId: Oil
-        Quantity: 5
-      - ReagentId: Phosphorus
-        Quantity: 5
-      - ReagentId: Iron
-        Quantity: 9
-      - ReagentId: Carbon
-        Quantity: 1
+        Quantity: 5 # Goobstation - cooked food more useful
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - FinishedMeal
@@ -1226,26 +1116,18 @@
       - soy
   - type: Sprite
     state: soylent
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 15
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 4
-        - ReagentId: Protein
-          Quantity: 6
-        - ReagentId: Vitamin
-          Quantity: 5
   - type: Solution
     solution:
+      maxVol: 15
       reagents:
       - ReagentId: Nutriment
-        Quantity: 37
+        Quantity: 4
       - ReagentId: Protein
-        Quantity: 8
+        Quantity: 6
       - ReagentId: Vitamin
         Quantity: 5
+      temperature: 293.15
+      canReact: true
 
 # Tastes like bun, redditors.
 
@@ -1296,17 +1178,14 @@
       - cheesy
   - type: Solution
     solution:
+      maxVol: 15
       reagents:
       - ReagentId: Nutriment
-        Quantity: 79
-      - ReagentId: Protein
-        Quantity: 20
+        Quantity: 10 # Goobstation - cooked food more useful
       - ReagentId: Vitamin
-        Quantity: 11
-      - ReagentId: TableSalt
-        Quantity: 1
-      - ReagentId: Blackpepper
-        Quantity: 1
+        Quantity: 5 # Goobstation - cooked food more useful
+      temperature: 293.15
+      canReact: true
   - type: Sprite
     state: superbite
   - type: Tag
@@ -1328,26 +1207,18 @@
       - tofu
   - type: Sprite
     state: tofu
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 15
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 3
-        - ReagentId: Protein
-          Quantity: 6
-        - ReagentId: Vitamin
-          Quantity: 3
   - type: Solution
     solution:
+      maxVol: 15
       reagents:
       - ReagentId: Nutriment
-        Quantity: 16
+        Quantity: 3
       - ReagentId: Protein
-        Quantity: 9
+        Quantity: 6
       - ReagentId: Vitamin
-        Quantity: 5
+        Quantity: 3
+      temperature: 293.15
+      canReact: true
   - type: Item
     inhandVisuals:
       left:
@@ -1423,17 +1294,18 @@
       - light
   - type: Sprite
     state: mothroach
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 15
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 5 # Goobstation - cooked food more useful
-        - ReagentId: Protein
-          Quantity: 4
-        - ReagentId: Vitamin
-          Quantity: 7
+  - type: Solution
+    solution:
+      maxVol: 15
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 5 # Goobstation - cooked food more useful
+      - ReagentId: Protein
+        Quantity: 4
+      - ReagentId: Vitamin
+        Quantity: 7
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - FinishedMeal

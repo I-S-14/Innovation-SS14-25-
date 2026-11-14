@@ -10,6 +10,10 @@ namespace Content.Client.Overlays;
 
 public sealed partial class ShowMindShieldIconsSystem : EquipmentHudSystem<ShowMindShieldIconsComponent>
 {
+    //IS14-change start: retain fork fields lost during merge.
+    [Dependency] private readonly IPrototypeManager _prototype = default!;
+    //IS14-change end
+
     [Dependency] private MindShieldSystem _mindShield = default!;
 
     [SubscribeLocalEvent]
@@ -19,12 +23,15 @@ public sealed partial class ShowMindShieldIconsSystem : EquipmentHudSystem<ShowM
         if (!IsActive)
             return;
 
-        var statusIcon = component.MindShieldStatusIcon; // Goobstation - check if mindshield is broken
+        _mindShield.GetMindshieldStatus(ent.Owner, out var shielded, out var visible);
+        if (!visible)
+            return;
 
-        if (component.Broken)
-            statusIcon = component.MindShieldBrokenStatusIcon; // Goobstation - check if mindshield is broken
+        ProtoId<Content.Shared.StatusIcon.StatusIconPrototype> icon = shielded ? "MindShieldIcon" : "MindShieldBrokenIcon";
+        if (TryComp<MindShieldComponent>(ent, out var mindshield))
+            icon = mindshield.Broken ? mindshield.MindShieldBrokenStatusIcon : mindshield.MindShieldStatusIcon;
 
-        if (_prototype.Resolve(statusIcon, out var iconPrototype)) // Goobstation
-            ev.StatusIcons.Add(iconPrototype);
+        if (_prototype.Resolve(icon, out var prototype))
+            args.StatusIcons.Add(prototype);
     }
 }

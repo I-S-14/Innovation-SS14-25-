@@ -1,0 +1,227 @@
+# IS14: migrated Goob/Corvax/RMC plant species.
+- type: entity
+  parent: BasePlant
+  id: IS14CucumbertSeedsPlant
+  name: cucumber plant
+  categories:
+  - HideSpawnMenu
+  components:
+  - type: Sprite
+    sprite: _CorvaxGoob/Objects/Specific/Hydroponics/cucumber.rsi
+  - type: PlantData
+    name: seeds-cucumber-name
+    noun: seeds-noun-seeds
+    packetPrototype: CucumbertSeeds
+    productPrototypes:
+    - FoodCucumber
+    mutationPrototypes:
+    - IS14ShashambertSeedsPlant
+  - type: Plant
+    production: 5
+    yield: 2
+    potency: 10
+    lifespan: 25
+    maturation: 8
+  - type: PlantGrowth
+    waterConsumption: 0.5
+    nutrientConsumption: 0.4
+  - type: PlantHarvest
+    harvestRepeat: Repeat
+  - type: PlantChemicals
+    chemicals:
+      Nutriment:
+        min: 1
+        max: 7
+        potencyDivisor: 14
+      Vitamin:
+        min: 1
+        max: 3
+        potencyDivisor: 33
+      Water:
+        min: 1
+        max: 4
+        potencyDivisor: 25
+  - type: PlantAtmospheric
+    lowHeatTolerance: 288
+    highHeatTolerance: 308
+- type: entity
+  parent: BasePlant
+  id: IS14ShashambertSeedsPlant
+  name: shashamber
+  categories:
+  - HideSpawnMenu
+  components:
+  - type: Sprite
+    sprite: _CorvaxGoob/Objects/Specific/Hydroponics/shashamber.rsi
+  - type: PlantData
+    name: seeds-shashamber-name
+    noun: seeds-noun-seeds
+    packetPrototype: ShashambertSeeds
+    productPrototypes:
+    - FoodShashamber
+    mutationPrototypes: []
+  - type: Plant
+    production: 5
+    yield: 2
+    potency: 10
+    lifespan: 25
+    maturation: 8
+  - type: PlantGrowth
+    waterConsumption: 0.5
+    nutrientConsumption: 0.4
+  - type: PlantHarvest
+    harvestRepeat: Repeat
+  - type: PlantChemicals
+    chemicals:
+      Nutriment:
+        min: 1
+        max: 7
+        potencyDivisor: 14
+      Cryptobiolin:
+        min: 5
+        max: 12
+        potencyDivisor: 25
+  - type: PlantAtmospheric
+    lowHeatTolerance: 288
+    highHeatTolerance: 308
+- type: entity
+  parent: BasePlant
+  id: IS14StrangeBerrySeedsPlant
+  name: strange berry bush
+  categories:
+  - HideSpawnMenu
+  components:
+  - type: Sprite
+    sprite: _Goobstation/Objects/Specific/Hydroponics/strange_berries.rsi
+  - type: PlantData
+    name: seeds-strange-berries-name
+    noun: seeds-noun-seeds
+    packetPrototype: StrangeBerrySeeds
+    productPrototypes:
+    - FoodStrangeBerries
+    mutationPrototypes: []
+  - type: Plant
+    production: 6
+    yield: 4
+    lifespan: 50
+    maturation: 6
+  - type: PlantGrowth
+    nutrientConsumption: 0.6
+  - type: PlantHarvest
+    harvestRepeat: Repeat
+  - type: PlantChemicals
+    chemicals:
+      Artifexium:
+        min: 2
+        max: 5
+        potencyDivisor: 30
+      Vitamin:
+        min: 1
+        max: 4
+        potencyDivisor: 40
+- type: entity
+  parent: BasePlant
+  id: IS14SpaceshroomSeedsPlant
+  name: spaceshroom
+  categories:
+  - HideSpawnMenu
+  components:
+  - type: Sprite
+    sprite: _Goobstation/Objects/Specific/Hydroponics/spaceshroom.rsi
+  - type: PlantData
+    name: seeds-spaceshroom-name
+    noun: seeds-noun-spores
+    packetPrototype: SpaceshroomSeeds
+    productPrototypes:
+    - FoodSpaceshroom
+    mutationPrototypes: []
+  - type: Plant
+    production: 5
+    yield: 3
+    growthStages: 3
+    lifespan: 25
+    maturation: 10
+  - type: PlantGrowth
+    waterConsumption: 1
+    nutrientConsumption: 0.4
+  - type: PlantHarvest
+    harvestRepeat: Repeat
+  - type: PlantAtmospheric
+    lowHeatTolerance: 278
+    highHeatTolerance: 298
+- type: entity
+  parent: BasePlant
+  id: IS14MangoSeedsPlant
+  name: mango tree
+  categories:
+  - HideSpawnMenu
+  components:
+  - type: Sprite
+    sprite: _RMC14/Objects/Kitchen/Plants/mango.rsi
+  - type: PlantData
+    name: seeds-mango-name
+    noun: seeds-noun-seeds
+    packetPrototype: MangoSeeds
+    productPrototypes:
+    - FoodMango
+    mutationPrototypes: []
+  - type: Plant
+    production: 6
+    yield: 3
+    potency: 10
+    lifespan: 55
+    maturation: 6
+  - type: PlantGrowth
+  - type: PlantHarvest
+    harvestRepeat: Repeat
+  - type: PlantChemicals
+    chemicals:
+      Nutriment:
+        min: 1
+        max: 5
+        potencyDivisor: 20
+      Vitamin:
+        min: 1
+        max: 4
+        potencyDivisor: 25
+
+- type: entity
+  parent: BasePlant
+  id: IS14BluespaceTomatoSeedsPlant
+  name: bluespace tomato plant
+  categories:
+  - HideSpawnMenu
+  components:
+  - type: Sprite
+    sprite: _Goobstation/Objects/Specific/Hydroponics/bluespace_tomato.rsi
+  - type: PlantData
+    name: seeds-bluespace-tomato-name
+    noun: seeds-noun-seeds
+    packetPrototype: BluespaceTomatoSeeds
+    productPrototypes:
+    - FoodBluespaceTomato
+    mutationPrototypes: []
+  - type: Plant
+    production: 6
+    yield: 2
+    lifespan: 25
+    maturation: 8
+    potency: 10
+  - type: PlantGrowth
+    waterConsumption: 0.5
+    nutrientConsumption: 0.6
+  - type: PlantHarvest
+    harvestRepeat: Repeat
+  - type: PlantChemicals
+    chemicals:
+      Nutriment:
+        min: 1
+        max: 3
+        potencyDivisor: 20
+      Singulo:
+        min: 1
+        max: 10
+        potencyDivisor: 10
+  - type: PlantAtmospheric
+    lowHeatTolerance: 288
+    highHeatTolerance: 308

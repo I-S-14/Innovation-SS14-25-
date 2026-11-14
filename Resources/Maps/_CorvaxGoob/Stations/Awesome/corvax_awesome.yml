@@ -66733,7 +66733,7 @@ entities:
     - type: NavMapBeacon
       text: Комната казни
     - type: WarpPoint
-      location: Комната казни
+      location: is14-map-warp-694e3ce91cbe
   - uid: 8169
     components:
     - type: Transform
@@ -66747,7 +66747,7 @@ entities:
     - type: NavMapBeacon
       text: Допросная
     - type: WarpPoint
-      location: Допросная
+      location: is14-map-warp-f6bd444576c6
   - uid: 8171
     components:
     - type: Transform
@@ -66756,7 +66756,7 @@ entities:
     - type: NavMapBeacon
       text: Стрельбище
     - type: WarpPoint
-      location: Стрельбище
+      location: is14-map-warp-32d3788f6f32
   - uid: 8172
     components:
     - type: Transform
@@ -66765,7 +66765,7 @@ entities:
     - type: NavMapBeacon
       text: Комната брифинга
     - type: WarpPoint
-      location: Комната брифинга
+      location: is14-map-warp-362cc37797f8
 - proto: DefaultStationBeaconBrigMed
   entities:
   - uid: 8173
@@ -66928,7 +66928,7 @@ entities:
     - type: NavMapBeacon
       text: Вирусология
     - type: WarpPoint
-      location: Вирусология
+      location: is14-map-warp-e4e51fe7a28e
 - proto: DefaultStationBeaconMorgue
   entities:
   - uid: 8196
@@ -171589,35 +171589,35 @@ entities:
       pos: 24.5,-42.5
       parent: 2
     - type: WarpPoint
-      location: Южные Солнечные панели
+      location: is14-map-warp-f708677b72ae
   - uid: 21746
     components:
     - type: Transform
       pos: 11.5,-24.5
       parent: 2
     - type: WarpPoint
-      location: Туалет ГП
+      location: is14-map-warp-a33bd8b99e8e
   - uid: 21747
     components:
     - type: Transform
       pos: 17.5,-18.5
       parent: 2
     - type: WarpPoint
-      location: Кабинет АВД
+      location: is14-map-warp-2fa745f5fadd
   - uid: 21748
     components:
     - type: Transform
       pos: -35.5,-14.5
       parent: 2
     - type: WarpPoint
-      location: Телекоммуникации
+      location: is14-map-warp-2fd59fd3e235
   - uid: 21749
     components:
     - type: Transform
       pos: -2.5,-7.5
       parent: 2
     - type: WarpPoint
-      location: Золотой унитаз капитана
+      location: is14-map-warp-d3017b307171
   - uid: 21750
     components:
     - type: Transform
@@ -171625,35 +171625,35 @@ entities:
       parent: 2
     - type: WarpPoint
       follow: True
-      location: Западные Солнечные панели
+      location: is14-map-warp-1ed977874982
   - uid: 21751
     components:
     - type: Transform
       pos: 36.5,-5.5
       parent: 2
     - type: WarpPoint
-      location: Офис КМа
+      location: is14-map-warp-7f9945beff50
   - uid: 21752
     components:
     - type: Transform
       pos: 42.5,6.5
       parent: 2
     - type: WarpPoint
-      location: Стыковочный док снабжения
+      location: is14-map-warp-7a59180d5a85
   - uid: 21753
     components:
     - type: Transform
       pos: 16.5,-27.5
       parent: 2
     - type: WarpPoint
-      location: Спальня ПНТ
+      location: is14-map-warp-2e0be257cd6f
   - uid: 21754
     components:
     - type: Transform
       pos: 16.5,-33.5
       parent: 2
     - type: WarpPoint
-      location: Спальня ОСЩ
+      location: is14-map-warp-f2ff19201b46
 - proto: WaterCooler
   entities:
   - uid: 21755

@@ -38,6 +38,11 @@ namespace Content.Shared._Shitmed.Medical.Surgery;
 
 public abstract partial class SharedSurgerySystem
 {
+    //IS14-change start: typed IDs for the retained behavior.
+    private static readonly ProtoId<DamageGroupPrototype> SurgeryBruteDamageGroup = "Brute";
+    private static readonly ProtoId<DamageTypePrototype> SurgeryPoisonDamageType = "Poison";
+    //IS14-change end
+
     private EntityQuery<BodyPartComponent> _partQuery;
     private EntityQuery<SurgeryIgnoreClothingComponent> _ignoreQuery;
     private EntityQuery<SurgeryStepComponent> _stepQuery;
@@ -297,7 +302,7 @@ public abstract partial class SharedSurgerySystem
         if (targetPart != default)
         {
             // We reward players for properly affixing the parts by healing a little bit of damage, and enabling the part temporarily.
-            _wounds.TryHealWoundsOnWoundable(targetPart.Id, 12f, out _, damageGroup: _prototypes.Index<DamageGroupPrototype>("Brute"));
+            _wounds.TryHealWoundsOnWoundable(targetPart.Id, 12f, out _, damageGroup: _prototypes.Index<DamageGroupPrototype>(SurgeryBruteDamageGroup));
             RemComp<BodyPartReattachedComponent>(targetPart.Id);
         }
     }
@@ -718,7 +723,7 @@ public abstract partial class SharedSurgerySystem
             surgeryTargetComponent.SepsisImmune)
             return;
 
-        var sepsis = new DamageSpecifier(_prototypes.Index<DamageTypePrototype>("Poison"), 5);
+        var sepsis = new DamageSpecifier(_prototypes.Index<DamageTypePrototype>(SurgeryPoisonDamageType), 5);
         var ev = new SurgeryStepDamageEvent(args.User, args.Body, args.Part, args.Surgery, sepsis, 0.5f);
         RaiseLocalEvent(args.Body, ref ev);
     }
@@ -1096,7 +1101,9 @@ public abstract partial class SharedSurgerySystem
 
     private ISurgeryToolComponent? GetSurgeryComp(EntityUid tool, IComponent component)
     {
-        if (EntityManager.TryGetComponent(tool, component.GetType(), out var found) && found is ISurgeryToolComponent data)
+        //IS14-change start
+        if (TryComp(tool, component.GetType(), out var found) && found is ISurgeryToolComponent data)
+        //IS14-change end
             return data;
 
         return null;

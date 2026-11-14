@@ -1,0 +1,12 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: bd217732d1:Resources/Prototypes/Datasets/Names/wizard.yml
+- type: localizedDataset
+  id: NamesWizardFirst
+  values:
+    prefix: names-wizard-first-dataset-
+    count: 44
+- type: localizedDataset
+  id: NamesWizardLast
+  values:
+    prefix: names-wizard-last-dataset-
+    count: 69

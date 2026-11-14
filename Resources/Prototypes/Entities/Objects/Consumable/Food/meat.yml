@@ -45,6 +45,8 @@
   - type: TemperatureDamage
   # required for cooking to work
   - type: InternalTemperature
+    thickness: 0.02 # IS14: retain Goob cooking model dimensions.
+    area: 0.02
   - type: Material
   - type: PhysicalComposition
     materialComposition:

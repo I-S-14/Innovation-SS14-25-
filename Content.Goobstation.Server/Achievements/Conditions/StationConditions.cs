@@ -1,3 +1,4 @@
+using Content.Shared.Station.Systems;
 // Fully deleted by CorvaxGoob
 /*
 using Content.Goobstation.Server.Blob.GameTicking;
@@ -95,7 +96,7 @@ public sealed partial class NukiePaybackConditionSystem : SessionsConditionSyste
 public sealed partial class ResearchCompleteConditionSystem : SessionsConditionSystem<ResearchCompleteCondition>
 {
     [Dependency] private IPrototypeManager _proto = default!;
-    [Dependency] private SharedStationSystem _station = default!;
+    [Dependency] private StationSystem _station = default!;
 
     private readonly HashSet<EntityUid> _completed = new();
 
@@ -141,7 +142,7 @@ public sealed partial class ResearchCompleteConditionSystem : SessionsConditionS
 
 public sealed partial class BlobDefeatedConditionSystem : SessionsConditionSystem<BlobDefeatedCondition>
 {
-    [Dependency] private GameTicker _ticker = default!;
+    [Dependency] private Content.Server.GameTicking.ServerGameTicker _ticker = default!;
 
     private bool _nukeDetonated;
 
@@ -200,7 +201,7 @@ public sealed partial class ZombieVictoryConditionSystem : SessionsConditionSyst
         SubscribeLocalEvent<RoundEndTextAppendEvent>(OnRoundEnd);
     }
 
-    private void OnRoundEnd(RoundEndTextAppendEvent ev)
+    private void OnRoundEnd(ref RoundEndTextAppendEvent ev)
     {
         if (Entries.Count == 0)
             return;
@@ -263,7 +264,7 @@ public sealed partial class CommandProtectedConditionSystem : AchievementConditi
         }
     }
 
-    private void OnRoundEnd(RoundEndTextAppendEvent ev)
+    private void OnRoundEnd(ref RoundEndTextAppendEvent ev)
     {
         foreach (var (proto, condition) in Entries)
         {

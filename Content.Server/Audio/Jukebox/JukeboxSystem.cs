@@ -1,3 +1,4 @@
+using JukeboxComponent = Content.Shared.Audio.Jukebox.JukeboxComponent;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Server.Power.Components;
@@ -14,6 +15,10 @@ namespace Content.Server.Audio.Jukebox;
 
 public sealed partial class JukeboxSystem : SharedJukeboxSystem
 {
+    //IS14-change start: retain fork fields lost during merge.
+    [Dependency] private readonly IPrototypeManager _protoManager = default!;
+    //IS14-change end
+
     [Dependency] private AppearanceSystem _appearanceSystem = default!;
 
     public override void Initialize()
@@ -40,6 +45,10 @@ public sealed partial class JukeboxSystem : SharedJukeboxSystem
 
     private void OnJukeboxPlay(Entity<JukeboxComponent> ent, ref JukeboxPlayingMessage args)
     {
+        //IS14-change: adapt preserved code to the Entity event parameters.
+        var component = ent.Comp;
+        var uid = ent.Owner;
+
         if (Exists(component.AudioStream))
         {
             Audio.SetState(component.AudioStream, AudioState.Playing);

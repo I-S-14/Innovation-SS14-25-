@@ -163,8 +163,8 @@ public sealed partial class HereticAbilitySystem
 
         var fleshStomach = SpawnAttachedTo(null, ent.Owner.ToCoordinates());
         var solutionContainer = EnsureComp<SolutionManagerComponent>(fleshStomach);
-        _solution.EnsureSolutionPrototype((fleshStomach, solutionContainer), solName, 1984, null, out _);
-        _solution.EnsureAllSolutions((fleshStomach, solutionContainer));
+        _solution.EnsureSolution((fleshStomach, solutionContainer), solName, out var stomachSolution);
+        _solution.SetCapacity(stomachSolution, 1984);
         stomach = EnsureComp<StomachComponent>(fleshStomach);
         stomach.DigestionDelay = TimeSpan.FromSeconds(5);
         organ = EnsureComp<OrganComponent>(fleshStomach);

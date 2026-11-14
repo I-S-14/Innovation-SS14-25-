@@ -27,7 +27,7 @@
   - type: Clothing
     sprite: _IS14/Clothing/Neck/Command/HeadOfPersonnel/hop_cloak.rsi
   - type: StealTarget
-    stealGroup: HeadCloak
+    stealGroup: [HeadCloak]
 
 - type: entity
   parent: ClothingUniformJumpsuitIS14Base

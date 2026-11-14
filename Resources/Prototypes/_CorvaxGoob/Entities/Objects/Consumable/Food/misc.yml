@@ -7,15 +7,16 @@
   - type: Sprite
     sprite: _CorvaxGoob/Objects/Consumable/Food/misc.rsi
     state: pureshka
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 20
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 8
-        - ReagentId: Protein
-          Quantity: 2
+  - type: Solution
+    solution:
+      maxVol: 20
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 8
+      - ReagentId: Protein
+        Quantity: 2
+      temperature: 293.15
+      canReact: true
   - type: FlavorProfile
     flavors:
       - meaty
@@ -33,15 +34,16 @@
   - type: Sprite
     sprite: _CorvaxGoob/Objects/Consumable/Food/misc.rsi
     state: salt
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 6
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 2
-        - ReagentId: Protein
-          Quantity: 2
+  - type: Solution
+    solution:
+      maxVol: 6
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 2
+      - ReagentId: Protein
+        Quantity: 2
+      temperature: 293.15
+      canReact: true
   - type: FlavorProfile
     flavors:
       - salty

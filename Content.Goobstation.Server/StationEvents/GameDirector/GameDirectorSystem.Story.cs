@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using Content.Goobstation.Server.StationEvents.Components;
 using Content.Goobstation.Server.StationEvents.Metric;
 using Content.Server.StationEvents.Components;

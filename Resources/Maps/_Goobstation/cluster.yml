@@ -82693,7 +82693,7 @@ entities:
       pos: 1.5,10.5
       parent: 2
     - type: WarpPoint
-      location: bar
+      location: is14-map-warp-fcde2b2edba5
     - type: NavMapBeacon
       color: '#9DED58FF'
       text: Service
@@ -82704,7 +82704,7 @@ entities:
       pos: -1.5,29.5
       parent: 2
     - type: WarpPoint
-      location: bridge
+      location: is14-map-warp-17f29b073143
     - type: NavMapBeacon
       color: '#FFFF00FF'
       text: Command
@@ -82715,7 +82715,7 @@ entities:
       pos: -6.5,52.5
       parent: 2
     - type: WarpPoint
-      location: ai sat
+      location: is14-map-warp-a6bf4d20727d
   - uid: 12567
     components:
     - type: Transform
@@ -82723,7 +82723,7 @@ entities:
       pos: -17.5,10.5
       parent: 2
     - type: WarpPoint
-      location: med
+      location: is14-map-warp-6c6dab33994f
     - type: NavMapBeacon
       color: '#52B4E9FF'
       text: Medical
@@ -82734,7 +82734,7 @@ entities:
       pos: -16.5,-3.5
       parent: 2
     - type: WarpPoint
-      location: sci
+      location: is14-map-warp-eea87b5defd7
     - type: NavMapBeacon
       color: '#D381C9FF'
       text: Science
@@ -82745,7 +82745,7 @@ entities:
       pos: 20.5,-6.5
       parent: 2
     - type: WarpPoint
-      location: engi
+      location: is14-map-warp-ccb5d7b2c78d
     - type: NavMapBeacon
       color: '#ED8B41FF'
       text: Engineering
@@ -82756,7 +82756,7 @@ entities:
       pos: 37.5,-10.5
       parent: 2
     - type: WarpPoint
-      location: atmos
+      location: is14-map-warp-e680b99fc74f
   - uid: 12571
     components:
     - type: Transform
@@ -82764,7 +82764,7 @@ entities:
       pos: 27.5,34.5
       parent: 2
     - type: WarpPoint
-      location: abandoned evac dock
+      location: is14-map-warp-6d309ad05045
   - uid: 12572
     components:
     - type: Transform
@@ -82772,7 +82772,7 @@ entities:
       pos: 21.5,13.5
       parent: 2
     - type: WarpPoint
-      location: Security
+      location: is14-map-warp-8f6fb4eb7f42
     - type: NavMapBeacon
       color: '#DE3A3AFF'
       text: Security
@@ -82783,7 +82783,7 @@ entities:
       pos: 42.5,31.5
       parent: 2
     - type: WarpPoint
-      location: courthouse
+      location: is14-map-warp-2d00418ecdbb
   - uid: 12574
     components:
     - type: Transform
@@ -82791,7 +82791,7 @@ entities:
       pos: 45.5,10.5
       parent: 2
     - type: WarpPoint
-      location: arrivals
+      location: is14-map-warp-1b89b4c9812f
   - uid: 12575
     components:
     - type: Transform
@@ -82799,7 +82799,7 @@ entities:
       pos: -40.5,8.5
       parent: 2
     - type: WarpPoint
-      location: evac
+      location: is14-map-warp-8835cc5b4e0c
 - proto: WarpPointBombing
   entities:
   - uid: 12576
@@ -82809,28 +82809,28 @@ entities:
       pos: -1.5,45.5
       parent: 2
     - type: WarpPoint
-      location: AI power generators
+      location: is14-map-warp-bea5e93d1ef3
   - uid: 12577
     components:
     - type: Transform
       pos: -1.5,30.5
       parent: 2
     - type: WarpPoint
-      location: Command Bridge
+      location: is14-map-warp-4fa4bc369c30
   - uid: 12578
     components:
     - type: Transform
       pos: 24.5,-14.5
       parent: 2
     - type: WarpPoint
-      location: Engineering SMES room
+      location: is14-map-warp-25fec5153bd5
   - uid: 12579
     components:
     - type: Transform
       pos: -10.5,-1.5
       parent: 2
     - type: WarpPoint
-      location: Science Front Desk
+      location: is14-map-warp-c93cc4490117
   - uid: 12580
     components:
     - type: Transform
@@ -82838,14 +82838,14 @@ entities:
       pos: 34.5,11.5
       parent: 2
     - type: WarpPoint
-      location: Armory
+      location: is14-map-warp-de4428ab4bfa
   - uid: 12581
     components:
     - type: Transform
       pos: -11.5,-29.5
       parent: 2
     - type: WarpPoint
-      location: Clowns room
+      location: is14-map-warp-0996494308fb
 - proto: WaterCooler
   entities:
   - uid: 12582

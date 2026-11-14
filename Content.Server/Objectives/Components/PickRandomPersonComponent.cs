@@ -27,5 +27,5 @@ public sealed partial class PickRandomPersonComponent : Component
     /// </summary>
     [DataField]
     [AlwaysPushInheritance]
-    public EntityCondition[] Conditions;
+    public EntityCondition[] Conditions = []; //IS14-change: legacy objectives have no modern conditions; keep prototype copies non-null.
 }

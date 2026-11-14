@@ -99,10 +99,10 @@ public sealed class AppearanceConverterSystem : EntitySystem
     {
         if (!ent.Comp.Transformed
             || ent.Comp.OriginalForm is null
-            || ent.Comp.EquipTarget is null)
+            || ent.Comp.Equipee is null)
             return;
 
-        TransformEntity(ent.Comp.EquipTarget.Value, ent.Comp.OriginalForm.Value, ent.Comp.TransformSound);
+        TransformEntity(ent.Comp.Equipee.Value, ent.Comp.OriginalForm.Value, ent.Comp.TransformSound);
     }
 
     private void OnGotUnequipped(Entity<AppearanceConverterComponent> ent, ref GotUnequippedEvent args)
@@ -122,7 +122,7 @@ public sealed class AppearanceConverterSystem : EntitySystem
 
         ent.Comp.OriginalForm = null;
         ent.Comp.Transformed = false;
-        ent.Comp.EquipTarget = null;
+        ent.Comp.Equipee = null;
 
         UpdateUiState(ent);
     }
@@ -225,7 +225,7 @@ public sealed class AppearanceConverterSystem : EntitySystem
         }
 
         ent.Comp.Transformed = true;
-        ent.Comp.EquipTarget = args.Actor;
+        ent.Comp.Equipee = args.Actor;
 
         var profile = MergeDetailAndVisualProfile(ent.Comp.ProfilesDetailData[ent.Comp.SelectedProfile], ent.Comp.ProfilesVisualData[ent.Comp.SelectedProfile]);
 

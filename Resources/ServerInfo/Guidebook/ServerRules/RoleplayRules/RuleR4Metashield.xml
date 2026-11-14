@@ -3,102 +3,101 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
 <Document>
-  # Roleplay Rule 4 - Do not metagame, obey the Metashield
-  Something that is "shielded" cannot be known by your character during a round until the "revealing condition" happens. This also means that your character cannot do things based on "shielded" information. Knowing or acting on something that is shielded before the revealing condition is met is referred to as metagaming.
+  # Правило отыгрыша 4 — не используйте метаинформацию, соблюдайте метащит
+  Ваш персонаж не может знать сведения, защищённые «метащитом», пока в раунде не выполнится «условие раскрытия». Он также не может действовать на основании таких сведений. Использование защищённых сведений до выполнения условия раскрытия называется метагеймингом.
 
-  Revealing conditions reveal the shielded information for the round, not for a specific instance. This means that once a revealing condition is met in a round, the shield no longer applies in any case for the remainder of the round.
+  Условие раскрытия снимает защиту со сведений на весь раунд, а не только для конкретного случая. После выполнения условия метащит больше не действует ни в одном случае до конца раунда.
 
-  ## Never Revealed IC
-  Some shields are never revealed IC. This means that your character can never act as if they know about that shielded thing.
+  ## Никогда не раскрывается персонажу
+  Некоторые сведения никогда не раскрываются персонажам. Ваш персонаж никогда не может действовать так, будто знает такие сведения.
 
-### Knowledge from past lives
-Except when otherwise specified, you cannot use any information gained in a past life in the same round.
-For example, if you were killed by an antagonist, you cannot warn the crew of said antagonist when you respawn as a mothroach.
-This does _not_ apply when being brought back from death as the same character, having your brain transferred to another body, or being cloned.
-For example, if you were killed by an antagonist, your body was found and your brain was placed in a borg, you can recall what happened prior to your original death and could warn the crew of the antagonist.
+  ### Знания из прошлых жизней
+  Если не указано иное, нельзя использовать сведения, полученные в прошлой жизни в том же раунде.
+  Например, если вас убил антагонист, после возрождения в роли таракамоли вы не можете предупредить о нём экипаж.
+  Это _не_ относится к воскрешению того же персонажа, пересадке его мозга в другое тело или клонированию.
+  Например, если после убийства антагонистом ваше тело нашли и поместили мозг в борга, вы можете помнить события до смерти и предупредить экипаж об антагонисте.
 
-  This does not prevent knowing that a shift will end, but does prohibit things like preparing to kill people at central command when roleplay rules stop being enforced on LRP.
+  Это не мешает знать, что смена закончится, но запрещает, например, готовиться убивать людей на Центральном командовании, когда на LRP перестают действовать правила отыгрыша.
 
-  ## Nuclear Operatives
+  ## Ядерные оперативники
 
-  - Nuclear Operatives are rumoured but not proven. Have fun with this rumour.
+  - О ядерных оперативниках ходят слухи, но их существование не доказано. Используйте эти слухи для отыгрыша.
 
-  ## Changelings
+  ## Генокрады
 
-  - In the eyes of the public, changelings are an exterminated predatory lifeform, they could always come back, but they'd not be on our station, right?
+  - Общественность считает генокрадов истреблённой хищной формой жизни. Они, конечно, могут вернуться, но ведь не на нашу станцию, правда?
 
-  ## Heretics
+  ## Еретики
 
-  - The chaplain is aware of the existence of heretics, but the chaplain is always spewing nonsense. What do they even mean?
+  - Священник знает о существовании еретиков, но он постоянно несёт какую-то чушь. Что он вообще имеет в виду?
 
-  ## Cosmic Cult
+  ## Космический культ
 
-  - The chaplain is saying words again! Why do they hire such weird people?
+  - Священник опять что-то говорит! Зачем вообще нанимают таких странных людей?
 
-  ## Devils
+  ## Дьяволы
 
-  - The chaplain is now...talking about DEVILS? What is this nonsense? Devils are just a myth, right? They can't be real!
+  - Теперь священник говорит о... ДЬЯВОЛАХ? Что за вздор? Дьяволы ведь просто миф, правда? Они не могут существовать!
 
-  Knowledge about the abilities and consequences of a Devil deal are not shielded.
+  Знания о способностях и последствиях сделки с дьяволом не защищены метащитом.
 
-  ## Zombies
+  ## Зомби
 
-  Zombies are known galaxy-wide, but not as real-life, instead, as fiction.
-  Nuclear Operatives and Syndicate Agents are aware of Romerol and what it can do, but there's no benefit to revealing it to the crew. People likely won't believe you anyway.
+  Зомби известны по всей галактике как вымышленные существа.
+  Ядерные оперативники и агенты Синдиката знают о ромероле и его действии, но им нет выгоды раскрывать эти сведения экипажу. Скорее всего, вам всё равно не поверят.
 
-  ## Infections(Once the zombie virus is proven)
+  ## Инфекции (после подтверждения существования зомби-вируса)
 
-  Such infections have been known to be extinct. But luckily advanced medicine has been able to cure the infection. The cure is not known to the public, but it is known to Chemists and Chief Medical Officers. The cure is not known to be a cure for the zombie virus, but it is known to be a cure for an infection that causes people to become zombies.
+  Такие инфекции считались исчезнувшими. К счастью, развитая медицина позволяет их вылечить. Лечение неизвестно широкой публике, но известно химикам и главным врачам. Оно известно как средство от инфекции, превращающей людей в зомби, а не как лекарство от зомби-вируса.
 
-  ## Deathsquad
+  ## Эскадрон смерти
 
-  Deathsquad is a sci-fi trope that is well known in the galaxy, but not as a real thing. It is a myth, a legend, and a story that people tell each other. The Deathsquad is not real, but some will argue that it is.
+  Эскадрон смерти — известный по всей галактике научно-фантастический образ. Это миф, легенда, история, которую люди рассказывают друг другу. Эскадрона смерти не существует, хотя некоторые утверждают обратное.
 
-  ## Implanted implants
+  ## Установленные импланты
 
-  Implants are not shielded by default, but the fact that they are not Nanotrasen (NT) implants is shielded.
+  Сами импланты по умолчанию не защищены метащитом, но их происхождение не от НаноТрейзен (НТ) защищено.
 
-  ## Chameleon Items
+  ## Предметы-хамелеоны
 
-  Chameleon items are shielded.
-  Being suspicious of an item being fake or stolen is not shielded, but testing items or calling them chameleon is covered by this shield.
+  Предметы-хамелеоны защищены метащитом.
+  Подозревать, что предмет поддельный или украденный, можно, но проверять предметы или называть их хамелеонами запрещает метащит.
 
-  ## Stealth Items
+  ## Замаскированные предметы
 
-  The fact that an item can be something other than what its visual appearance and examine description indicate is shielded.
-  Security may be aware of tampered items, but they are not aware of the specific item that is tamped. This means that security may not act on the fact that an item is tamped, but they may act on the fact that an item is suspicious.  (Example: Non-NT weapons on a persons is suspicious, how did they get it on station?)
-  This shield protects stealth items, including protecting them from being tested.
+  Метащит защищает сведения о том, что предмет может быть чем-то иным, чем следует из его внешнего вида и описания при осмотре.
+  Милиция может знать о существовании переделанных предметов, но не знает, какой конкретно предмет переделан. Поэтому действовать на основании такого знания нельзя, а на основании подозрительности предмета — можно. (Например, оружие не от НТ у человека вызывает подозрения: как он пронёс его на станцию?)
+  Этот метащит защищает замаскированные предметы, в том числе от проверок.
 
+  ## Метадружба и метаненависть
+  Этот раздел поясняет понятия, запрещённые несколькими видами метащита, которые никогда не раскрываются персонажу. Предпочтительное отношение к игроку или персонажу на основании того, чего ваш персонаж не должен знать, считается метадружбой. Негативное отношение к игроку или персонажу по таким причинам считается метаненавистью.
 
-  ## Metafriending and Metagrudging
-  This section provides additional information on a concept that is prohibited by multiple metashield items that are never revealed IC. Giving a person or character preferential treatment based on something that your character should not know is considered metafriending. Treating a person or character negatively based on something that your character should not know is considered metagrudging.
+  ## Примеры метадружбы
+  Все эти примеры запрещены как минимум одним видом метащита, который никогда не раскрывается персонажу.
+  - Выдать персонажу дополнительный доступ или должность, потому что вы дружите с его игроком.
+  - Доверять персонажу, потому что вы дружите с его игроком.
+  - Не сражаться с персонажем, потому что вы дружите с его игроком.
+  - Игнорировать цель убийства персонажа, потому что ваши персонажи подружились в предыдущем раунде.
 
-  ## Metafriending Examples
-  These are all examples of things that are prohibited by at least one metashield item that is never revealed IC.
-  - Giving a character additional access or a job because you are friends with the player who is playing that character.
-  - Trusting a character because you are friends with the player who is playing that character.
-  - Not fighting a character because you are friends with the player who is playing that character.
-  - Ignoring your objective to kill a character because your character and theirs became friends in a previous round.
+  ## Примеры метаненависти
+  Все эти примеры запрещены как минимум одним видом метащита, который никогда не раскрывается персонажу.
+  - Не выдавать персонажу дополнительный доступ или должность, потому что вы злитесь на его игрока или недолюбливаете его.
+  - Не доверять персонажу, потому что вы злитесь на его игрока или недолюбливаете его.
+  - Начать драку с персонажем из-за его действий в прошлом раунде.
+  - Начать драку с персонажем, потому что он убил вас, когда вы играли другим персонажем.
+  - Преследовать или травить персонажа из-за его действий вне текущего раунда.
+  - Преследовать или травить персонажа из-за действий его игрока вне игры за этого персонажа.
 
-  ## Metagrudging Examples
-  These are all examples of things that are prohibited by at least one metashield item that is never revealed IC.
-  - Not giving a character additional access or a job because you are mad at or don't like the player who is playing that character.
-  - Not trusting a character because you are mad at or don't like the player who is playing that character.
-  - Starting a fight with a character because of something that they did last round.
-  - Starting a fight with a character because they killed you while you were playing a different character.
-  - Targeting or harassing a character based on anything which that character did outside the current round.
-  - Targeting or harassing a character based on anything which the character's player did while not playing the character.
+  ## Явно не защищено метащитом
+  Следующие сведения явно не защищены метащитом. Отсутствие сведений в списке не означает, что они защищены, но присутствие в нём означает, что они точно не защищены.
+  - Ядерный диск необходимо охранять, и злоумышленник может использовать его для попытки уничтожить станцию.
+  - Ценные предметы и предметы, нужные Синдикату, являются вероятными целями кражи.
+  - У агентов Синдиката и других злоумышленников есть цели или задачи, которые они пытаются выполнить.
+  - Количество целей или задач агента Синдиката или другого злоумышленника.
+  - Синдикат враждует с НаноТрейзен и регулярно пытается отправлять тайных агентов для шпионажа, саботажа или нападения на НаноТрейзен.
+  - Обычная внешность персонажа. При этом помните, что у нескольких персонажей может быть одинаковое имя.
+  - У Синдиката есть скрытые устройства для получения предметов, называемые аплинками.
+  - Маги не защищены метащитом, поскольку о Федерации магов ходит много слухов.
 
-  ## Explicitly Not Shielded
-  The following is a list of things that are explicitly not shielded. If something is not on this list, it doesn't mean that it is shielded, but if something is on it then it definitely is not shielded.
-  - The fact that the nuke disk must be protected and could be used by a bad actor to try to destroy the station.
-  - Items that are of high value or are desired by the Syndicate, and therefore are likely targets of theft.
-  - The idea that any Syndicate agent or other bad actor has goals or objectives that they are attempting to accomplish.
-  - The number of goals or objectives that a Syndicate agent or other bad actor has.
-  - The fact that the Syndicate are enemies of Nanotrasen, and that they regularly attempt to send covert agents to spy on, sabotage, or attack Nanotrasen.
-  - A character's typical appearance. Though you should keep in mind that multiple characters can share the same name.
-  - The fact that the Syndicate have covert items capable of getting items to them, and that these items are known as uplinks.
-  - Wizards are not metashielded as the wizards federation is well rumoured about.
-
-  For revealing conditions check out [textlink="Antag revealing conditions" link="Conditions"]
+  Условия раскрытия перечислены в разделе [textlink="Условия раскрытия антагонистов" link="Conditions"]
 </Document>

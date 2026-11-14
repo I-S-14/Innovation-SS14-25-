@@ -1,8 +1,9 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 - type: entity
-  parent: [ BaseStructureDynamic, StructureHealthFurniture ]
-  id: PottedPlantBase
+  # IS14-change: shared pot components without the ordinary pot's destruction threshold.
+  parent: [ BaseStructureDynamic, BaseStructureHealth ]
+  id: IS14PottedPlantBaseCommon
   name: potted plant
   description: A little bit of nature contained in a pot.
   abstract: true
@@ -39,6 +40,14 @@
   - type: Pullable
   - type: Damageable
     damageModifierSet: RockMod
+
+# IS14-change: ordinary plants retain the Wizards health and break sounds;
+# DimensionPot uses the common components with its own Goob destruction threshold.
+- type: entity
+  abstract: true
+  parent: [ IS14PottedPlantBaseCommon, StructureHealthFurniture ]
+  id: PottedPlantBase
+  components:
   - type: Destructible
     thresholds:
     - trigger:

@@ -1,6 +1,6 @@
+# IS14-change: recipe labels come from localized result entities in the current cooking system.
 - type: microwaveMealRecipe
   id: RecipeMothdogMothroach
-  name: mothdog recipe
   result: FoodSnackMothdog
   time: 10
   group: Savory

@@ -69,7 +69,6 @@
   id: BaseItemDestructible # Should be replaced by a variety of destruction bases, possibly combined with drink_base_materials.yml
   components:
   - type: Damageable
-  - type: Injurable
     damageContainer: Inorganic
   - type: Destructible
     thresholds:

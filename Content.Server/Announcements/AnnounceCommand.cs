@@ -20,7 +20,6 @@ public sealed partial class AnnounceCommand : LocalizedEntityCommands
     [Dependency] private ChatSystem _chat = default!;
     [Dependency] private IPrototypeManager _proto = default!;
     [Dependency] private IResourceManager _res = default!;
-    [Dependency] private IAdminLogManager _adminLogger = default!;
 
     public override string Command => "announce";
     public override string Description => Loc.GetString("cmd-announce-desc");

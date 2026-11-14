@@ -46,7 +46,7 @@ public sealed partial class SealableClothingVisualizerSystem : VisualizerSystem<
         if (!comp.ClothingVisuals.TryGetValue(args.Slot, out var layers))
             return;
         // attempt to get species specific data || if none found will use generic data instead
-        if (TryComp(args.EquipTarget, out InventoryComponent? inventory) &&
+        if (TryComp(args.Equipee, out InventoryComponent? inventory) &&
             inventory.SpeciesId != null &&
             comp.ClothingVisuals.TryGetValue($"{args.Slot}-{inventory.SpeciesId}", out var speciesLayers))
             layers = speciesLayers;

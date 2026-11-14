@@ -9,7 +9,7 @@ using Content.Server.GameTicking.Rules;
 
 namespace Content.Server.Antag;
 
-public sealed partial class AntagRandomSpawnSystem : GameRuleSystem<AntagRandomSpawnComponent>
+public sealed partial class AntagRandomSpawnSystem : ServerGameRuleSystem<AntagRandomSpawnComponent>
 {
     [Dependency] private ServerStationSystem _station = default!;
     [Dependency] private SharedTransformSystem _transform = default!;

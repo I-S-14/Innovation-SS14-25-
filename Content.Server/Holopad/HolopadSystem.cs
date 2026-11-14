@@ -7,7 +7,6 @@ using Content.Server.Telephone;
 using Content.Shared.Access.Systems;
 using Content.Shared.Audio;
 using Content.Shared.Chat; // Einstein Engines - Language
-using Content.Shared.Chat;
 using Content.Shared.Chat.TypingIndicator;
 using Content.Shared.Holopad;
 using Content.Shared.IdentityManagement;
@@ -32,6 +31,10 @@ namespace Content.Server.Holopad;
 
 public sealed partial class HolopadSystem : SharedHolopadSystem
 {
+    //IS14-change start: restore declarations used by merged implementation.
+    private float _updateTimer = 1.0f;
+    //IS14-change end
+
     [Dependency] private TelephoneSystem _telephone = default!;
     [Dependency] private UserInterfaceSystem _ui = default!;
     [Dependency] private TransformSystem _xform = default!;
@@ -441,18 +444,18 @@ public sealed partial class HolopadSystem : SharedHolopadSystem
         _updateTimer += frameTime;
 
         // <Goobstation> - update timer fix ported from EE at e1d701bee25e124ee0e7a9390b46300fc044761f (https://github.com/Simple-Station/Einstein-Engines/pull/2470)
-        if (_updateTimer < UpdateTime)
+        if (_updateTimer < 1f)
             return;
 
         _updateTimer = 0f;
 
-        var query = AllEntityQuery<HolopadComponent, TelephoneComponent, TransformComponent>();
-        while (query.MoveNext(out var uid, out var holopad, out var telephone, out var xform))
+        var query = AllEntityQuery<HolopadUserComponent, TransformComponent>();
+        while (query.MoveNext(out var uid, out var holopadUser, out var xform))
         {
             if (HasComp<IgnoreUIRangeComponent>(uid))
                 continue;
 
-            foreach (var holopad in holopadUser.LinkedHolopads)
+            foreach (var holopad in holopadUser.LinkedHolopads.ToArray())
             {
                 if (TryComp<TelephoneComponent>(holopad, out var telephone) &&
                     !_xform.InRange((holopad.Owner, Transform(holopad)), (uid, xform), telephone.ListeningRange))

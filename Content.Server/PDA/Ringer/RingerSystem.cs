@@ -80,12 +80,12 @@ public sealed partial class RingerSystem : SharedRingerSystem
     /// <summary>
     /// Handles the <see cref="GenerateUplinkCodeEvent{T}"/> for generating an uplink code.
     /// </summary>
-    private void OnGenerateUplinkCode(Entity<RingerAccessUplinkComponent> ent, ref GenerateUplinkCodeEvent ev)
+    private void OnGenerateUplinkCode(Entity<RingerUplinkComponent> ent, ref GenerateUplinkCodeEvent<Note[]> ev)
     {
         var code = GenerateRingtone(true, true);
 
         // Set the code on the component
-        ent.Comp.Code = code;
+        EnsureComp<RingerAccessUplinkComponent>(ent).Code = code;
         // Return the code via the event
         ev.Code = code;
     }

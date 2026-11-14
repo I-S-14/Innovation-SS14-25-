@@ -106,7 +106,9 @@ public sealed partial class AntiMindControlItemSystem : EntitySystem
             if (!HasComp<EnthrallResistanceComponent>(target))
                 EnsureComp<EnthrallResistanceComponent>(target);
 
-            var enthrallRes = EntityManager.GetComponent<EnthrallResistanceComponent>(target);
+            //IS14-change start
+            var enthrallRes = Comp<EnthrallResistanceComponent>(target);
+            //IS14-change end
             enthrallRes.ExtraTime += enthrallRes.ExtraTimeUpdate;
 
             _popupSystem.PopupPredicted(Loc.GetString("mind-control-thrall-done"), target, target, PopupType.MediumCaution);

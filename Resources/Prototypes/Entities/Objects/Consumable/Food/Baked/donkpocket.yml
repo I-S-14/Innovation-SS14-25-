@@ -65,15 +65,16 @@
       - bread
       - meaty
       - cheap
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 10
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 5 # Goobstation - junk food less useful
-        - ReagentId: Omnizine
-          Quantity: 2
+  - type: Solution
+    solution:
+      maxVol: 10
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 5 # Goobstation - junk food less useful
+      - ReagentId: Omnizine
+        Quantity: 2
+      temperature: 293.15
+      canReact: true
 
 - type: entity
   name: dank-pocket
@@ -98,14 +99,16 @@
     flavors:
       - leafy
       - cheap
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 5 # Goobstation - junk food less useful
-        - ReagentId: Omnizine
-          Quantity: 4
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 5 # Goobstation - junk food less useful
+      - ReagentId: Omnizine
+        Quantity: 4
+      maxVol: 0
+      temperature: 293.15
+      canReact: true
 
 - type: entity
   name: spicy-pocket
@@ -132,14 +135,16 @@
       - spicy
       - meaty
       - cheap
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 5 # Goobstation - junk food less useful
-        - ReagentId: Omnizine
-          Quantity: 2
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 5 # Goobstation - junk food less useful
+      - ReagentId: Omnizine
+        Quantity: 2
+      maxVol: 0
+      temperature: 293.15
+      canReact: true
   - type: Sprite
     state: spicy
 
@@ -168,14 +173,16 @@
       - meaty
       - sweet
       - cheap
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 5 # Goobstation - junk food less useful
-        - ReagentId: Omnizine
-          Quantity: 2
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 5 # Goobstation - junk food less useful
+      - ReagentId: Omnizine
+        Quantity: 2
+      maxVol: 0
+      temperature: 293.15
+      canReact: true
 
 - type: entity
   name: pizza-pocket
@@ -189,12 +196,14 @@
       - cheesy
       - tomato
       - cheap
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 5 # Goobstation - junk food less useful
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 5 # Goobstation - junk food less useful
+      maxVol: 0
+      temperature: 293.15
+      canReact: true
   - type: Sprite
     state: pizza
 
@@ -210,14 +219,16 @@
       - cheesy
       - tomato
       - cheap
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 5 # Goobstation - junk food less useful
-        - ReagentId: Omnizine
-          Quantity: 2
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 5 # Goobstation - junk food less useful
+      - ReagentId: Omnizine
+        Quantity: 2
+      maxVol: 0
+      temperature: 293.15
+      canReact: true
 
 - type: entity
   name: honk-pocket
@@ -249,25 +260,18 @@
     flavors:
       - funny
       - cheap
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 5 # Goobstation - junk food less useful
-        - ReagentId: Honk
-          Quantity: 1
-        - ReagentId: Omnizine
-          Quantity: 2
   - type: Solution
     solution:
       reagents:
       - ReagentId: Nutriment
-        Quantity: 10
+        Quantity: 5 # Goobstation - junk food less useful
       - ReagentId: Honk
-        Quantity: 2
+        Quantity: 1
       - ReagentId: Omnizine
-        Quantity: 3
+        Quantity: 2
+      maxVol: 0
+      temperature: 293.15
+      canReact: true
 
 - type: entity
   name: berry-pocket
@@ -292,25 +296,18 @@
     flavors:
       - sweet
       - cheap
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 5 # Goobstation - junk food less useful
-        - ReagentId: Omnizine
-          Quantity: 2
-        - ReagentId: Sugar
-          Quantity: 2
   - type: Solution
     solution:
       reagents:
       - ReagentId: Nutriment
-        Quantity: 10
+        Quantity: 5 # Goobstation - junk food less useful
       - ReagentId: Omnizine
-        Quantity: 3
-      - ReagentId: JuiceBerry
         Quantity: 2
+      - ReagentId: Sugar
+        Quantity: 2
+      maxVol: 0
+      temperature: 293.15
+      canReact: true
 
 - type: entity
   name: stonk-pocket
@@ -334,14 +331,16 @@
     flavors:
       - profits
       - cheap
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 5 # Goobstation - junk food less useful
-        - ReagentId: Omnizine
-          Quantity: 2
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 5 # Goobstation - junk food less useful
+      - ReagentId: Omnizine
+        Quantity: 2
+      maxVol: 0
+      temperature: 293.15
+      canReact: true
 
 - type: entity
   name: carp-pocket
@@ -365,14 +364,16 @@
     flavors:
     - cheap
     - fishops
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 5 # Goobstation - junk food less useful
-        - ReagentId: Omnizine
-          Quantity: 2
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 5 # Goobstation - junk food less useful
+      - ReagentId: Omnizine
+        Quantity: 2
+      maxVol: 0
+      temperature: 293.15
+      canReact: true
 
 - type: entity
   name: dink-pocket
@@ -428,22 +429,15 @@
   parent: [SolutionFoodDonkpocketWarm, FoodDonkpocketMoth]
   id: FoodDonkpocketMothWarm
   components:
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 5 # Goobstation - junk food less useful
-        - ReagentId: Fiber
-          Quantity: 5
-        - ReagentId: Omnizine
-          Quantity: 2
   - type: Solution
     solution:
       reagents:
-      - ReagentId: Fiber
-        Quantity: 10
       - ReagentId: Nutriment
-        Quantity: 2
+        Quantity: 5 # Goobstation - junk food less useful
+      - ReagentId: Fiber
+        Quantity: 5
       - ReagentId: Omnizine
-        Quantity: 3
+        Quantity: 2
+      maxVol: 0
+      temperature: 293.15
+      canReact: true

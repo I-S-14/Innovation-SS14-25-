@@ -1,8 +1,7 @@
 {
     "version": 1,
     "license": "CC-BY-SA-3.0",
-    "copyright": "Original by Emisse, modified by EmoGarbage404. Vox states by Flareguy for SS14. Vulpkanin and Reptilian states by TiniestShark (Github).",
-
+    "copyright": "Original by Emisse, modified by EmoGarbage404. Vox states by Flareguy for SS14. Vulpkanin and Reptilian states by TiniestShark (Github). | Additional legacy states (CC-BY-SA-3.0): Original by Emisse, modified by EmoGarbage404. Vox states by Flareguy for SS14. Dog states modified from base states by Sparlight (GitHub)., vulp sprites made by YERO, feroxi by RedTerror. hydrakin sprite by Zethine / @synthetic_086 (discord).",
     "size": {
         "x": 32,
         "y": 32
@@ -64,6 +63,9 @@
         {
             "name": "equipped-head-unshaded-reptilian",
             "directions": 4
+        },
+        {
+            "name": "icon-flash"
         }
     ]
 }

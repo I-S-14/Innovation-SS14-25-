@@ -12,6 +12,7 @@
       Acidic: [Touch]
   - type: Clickable
   - type: Damageable
+    damageContainer: Inorganic
   - type: InteractionOutline
   - type: Fixtures
     fixtures:
@@ -24,8 +25,6 @@
         - MobMask
         layer:
         - MobLayer
-  - type: Injurable
-    damageContainer: Inorganic
   - type: MovedByPressure
   - type: Physics
     bodyType: KinematicController # Same for all inheritors

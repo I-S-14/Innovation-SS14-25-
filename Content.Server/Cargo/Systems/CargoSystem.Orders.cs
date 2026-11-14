@@ -41,12 +41,10 @@ namespace Content.Server.Cargo.Systems
         [Dependency] private readonly IGameTiming _timing = default!;
 
         // CorvaxGoob-CargoFeatures-Start
-        [Dependency] private readonly IdCardSystem _idCard = default!;
         [Dependency] private readonly EntityStorageSystem _entityStorage = default!;
         [Dependency] private readonly EntityTableSystem _entityTable = default!;
         // CorvaxGoob-CargoFeatures-End
 
-        [Dependency] private readonly StorageSystem _storage = default!;
         private ISawmill _sawmill = default!;
 
         private void InitializeConsole()
@@ -100,7 +98,7 @@ namespace Content.Server.Cargo.Systems
             var orderId = GenerateOrderId(orderDatabase);
 
             // CorvaxGoob-CargoFeatures : Добавлено поле доставки, примечания, защищённости и наценка за безопасную доставку 
-            var data = new CargoOrderData(orderId, product.Product, product.Name, product.Cost + (slip.SecuredDelivery ? ent.Comp.SecureOrderCost : 0), slip.OrderQuantity, slip.Requester, slip.DeliveryDestination, slip.Note, slip.Account, product.Cooldown, slip.SecuredDelivery);
+            var data = new CargoOrderData(orderId, product.Product, product.Name, product.Cost + (slip.SecuredDelivery ? ent.Comp.SecureOrderCost : 0), slip.OrderQuantity, slip.Requester, slip.DeliveryDestination, slip.Note, slip.Account, product.Cooldown, slip.SecuredDelivery, product.Container); //IS14-change
 
             if (!TryAddOrder(stationUid.Value, ent.Comp.Account, data, orderDatabase))
             {
@@ -300,7 +298,7 @@ namespace Content.Server.Cargo.Systems
 
             if (!_emag.CheckFlag(uid, EmagType.Interaction))
             {
-                var tryGetIdentityShortInfoEvent = new TryGetIdentityShortInfoEvent(uid, player);
+                var tryGetIdentityShortInfoEvent = new TryGetIdentityShortInfoEvent(uid, player, forLogging: false);
                 RaiseLocalEvent(tryGetIdentityShortInfoEvent);
                 order.SetApproverData(tryGetIdentityShortInfoEvent.Title);
 
@@ -573,7 +571,7 @@ namespace Content.Server.Cargo.Systems
         private static CargoOrderData GetOrderData(CargoConsoleAddOrderMessage args, CargoProductPrototype cargoProduct, int id, ProtoId<CargoAccountPrototype> account, string requester, int extraPrice = 0)
         {
             // GoobStation - cooldown on Cargo Orders (specifically gamba)
-            return new CargoOrderData(id, cargoProduct.Product, cargoProduct.Name, cargoProduct.Cost + extraPrice, args.Amount, requester, args.DeliveryDestination, args.Note, account, cargoProduct.Cooldown, args.SecuredDelivery);
+            return new CargoOrderData(id, cargoProduct.Product, cargoProduct.Name, cargoProduct.Cost + extraPrice, args.Amount, requester, args.DeliveryDestination, args.Note, account, cargoProduct.Cooldown, args.SecuredDelivery, cargoProduct.Container); //IS14-change
         }
         // CorvaxGoob-CargoFeatures-End
 
@@ -638,14 +636,15 @@ namespace Content.Server.Cargo.Systems
             StationCargoOrderDatabaseComponent component,
             ProtoId<CargoAccountPrototype> account,
             Entity<StationDataComponent> stationData,
-            bool securedDelivery = false // CorvaxGoob-CargoFeatures
+            bool securedDelivery = false, // CorvaxGoob-CargoFeatures
+            CargoProductContainer? container = null //IS14-change: event gifts retain catalog packaging.
         )
         {
             DebugTools.Assert(_protoMan.HasIndex<EntityPrototype>(spawnId));
             // Make an order
             var id = GenerateOrderId(component);
             // GoobStation - cooldown on Cargo Orders (specifically gamba)
-            var order = new CargoOrderData(id, spawnId, name, cost, qty, sender, deliveryDestination, note, account, 0, securedDelivery); // CorvaxGoob-CargoFeatures
+            var order = new CargoOrderData(id, spawnId, name, cost, qty, sender, deliveryDestination, note, account, 0, securedDelivery, container); // CorvaxGoob-CargoFeatures //IS14-change
 
             // Approve it now
             order.SetApproverData(dest, sender);
@@ -729,10 +728,11 @@ namespace Content.Server.Cargo.Systems
         /// Fulfills the specified cargo order and spawns paper attached to it.
         /// </summary>
         /// CorvaxGoob-CargoFeatures : Новые аргументы функции для работы с оптовыми заказами
-        private bool FulfillOrder(CargoOrderData order, ProtoId<CargoAccountPrototype> account, EntityCoordinates spawn, string? paperProto, out EntityUid? nextCrate, out List<string>? excessItemsOut, EntityUid? previousCrate = null, List<string>? excessItemsIn = null, bool addOrderContents = true)
+        internal bool FulfillOrder(CargoOrderData order, ProtoId<CargoAccountPrototype> account, EntityCoordinates spawn, string? paperProto, out EntityUid? nextCrate, out List<string>? excessItemsOut, EntityUid? previousCrate = null, List<string>? excessItemsIn = null, bool addOrderContents = true) //IS14-change: expose actual fulfillment to integration tests.
         {
             // Create the item itself
             EntityUid? item = null;
+            var securedCrate = false; //IS14-change
 
             // Передаётся следующий ящик в случае отправки в следующий круг для заполнения
             nextCrate = null;
@@ -751,12 +751,13 @@ namespace Content.Server.Cargo.Systems
             if (previousCrate is not null) // Если указан ящик который будет заполняться
                 item = previousCrate;
             else if (order.SecuredDelivery && accountProto.SecureCratePrototype is not null // Если поставлена галочка на защиту заказа
-                && (productProto.TryGetComponent<ItemComponent>(out var itemComponent, Factory) || productProto.HasComponent<EntityStorageComponent>())) // и может ли этот заказ быть помещен в ящик?
+                && (productProto.TryGetComponent<ItemComponent>(out var itemComponent, Factory) || HasComp<EntityStorageComponent>(productProto))) // и может ли этот заказ быть помещен в ящик?
             {
                 item = Spawn(accountProto.SecureCratePrototype, spawn);
+                securedCrate = true; //IS14-change
 
                 if (itemComponent is not null) // Если это обычный предмет — спавним его и помещаем в ящик
-                    _entityStorage.Insert(Spawn(productProto.ID), item.Value);
+                    _entityStorage.Insert(PackageCargoProduct(order, Spawn(productProto.ID, spawn)), item.Value); //IS14-change: initialize at delivery coordinates before packaging.
             }
             else
             {
@@ -825,6 +826,10 @@ namespace Content.Server.Cargo.Systems
 
             // Ensure the item doesn't start anchored
             _transformSystem.Unanchor(item.Value, Transform(item.Value));
+            //IS14-change: wrap a newly spawned ordinary delivery; continued bulk crates
+            // already have their original packaging. Secure crate products retain their lockable crate.
+            if (!securedCrate && previousCrate is null)
+                item = PackageCargoProduct(order, item.Value);
 
             // Create a sheet of paper to write the order details on
             if (previousCrate is null) // // CorvaxGoob-CargoFeatures : Проверяем является ли это новым ящиком или старым

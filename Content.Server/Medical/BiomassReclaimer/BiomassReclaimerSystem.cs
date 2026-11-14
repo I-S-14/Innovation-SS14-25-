@@ -1,7 +1,7 @@
+using Content.Shared.Botany.Items.Components; // IS14-change: upstream namespace move
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Numerics;
-using Content.Server.Botany.Components;
 using Content.Server.Fluids.EntitySystems;
 using Content.Server.Materials;
 using Content.Server.Power.Components;
@@ -194,8 +194,7 @@ namespace Content.Server.Medical.BiomassReclaimer
 
         private void OnDragDropTarget(Entity<BiomassReclaimerComponent> reclaimer, ref DragDropTargetEvent args) // # GoobStation
         {   // Safety Checks, If the machine is on safety & if the target is vaild to avoid crashes.
-            if (args.Dragged == null
-            || !CanGib(reclaimer, args.Dragged)
+            if (!CanGib(reclaimer, args.Dragged)
             || !TryComp<PhysicsComponent>(args.Dragged, out var physics))
                 return;
             var delay = reclaimer.Comp.BaseInsertionDelay * physics.FixturesMass;

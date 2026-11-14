@@ -1,7 +1,7 @@
 {
     "version": 1,
     "license": "CC-BY-SA-3.0",
-    "copyright": "created by IProduceWidgets, Vox & light sprites by TiniestShark (Github)",
+    "copyright": "created by IProduceWidgets, Vox & light sprites by TiniestShark (Github) | Additional legacy states (CC-BY-SA-3.0): created by IProduceWidgets.",
     "size": {
         "x": 32,
         "y": 32
@@ -39,6 +39,9 @@
         {
             "name": "equipped-head-light-vox",
             "directions": 4
+        },
+        {
+            "name": "icon-flash"
         }
     ]
 }

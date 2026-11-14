@@ -18,7 +18,7 @@
     maxCharge: 2000
     startingCharge: 2000
   - type: ExaminableBattery
-  - type: WirelessNetworkConnection
+  - type: WirelessNetwork
     range: 500
   - type: Gun
     fireRate: 2
@@ -82,7 +82,7 @@
     maxCharge: 3000
     startingCharge: 3000
   - type: ExaminableBattery
-  - type: WirelessNetworkConnection
+  - type: WirelessNetwork
     range: 500
   - type: Gun
     fireRate: 0.5
@@ -145,7 +145,7 @@
     maxCharge: 20000
     startingCharge: 20000
   - type: ExaminableBattery
-  - type: WirelessNetworkConnection
+  - type: WirelessNetwork
     range: 500
   - type: Fixtures
     fixtures:

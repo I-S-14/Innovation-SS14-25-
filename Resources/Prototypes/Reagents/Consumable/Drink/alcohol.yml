@@ -16,11 +16,19 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: true
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.6
+    Drink:
       effects:
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.3
+    Narcotic:
+      metabolismRate: 0.01
+      effects:
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.05
       - !type:ModifyStatusEffect
         effectProto: StatusEffectSeeingRainbow
         conditions:
@@ -39,7 +47,6 @@
         - !type:ReagentCondition
           reagent: Absinthe
           min: 10
-
 - type: reagent
   id: Ale
   name: reagent-name-ale
@@ -92,11 +99,16 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: true
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.1
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.1
 - type: reagent
   id: Cognac
   name: reagent-name-cognac
@@ -113,11 +125,16 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: true
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.4
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.2
 - type: reagent
   id: DeadRum
   name: reagent-name-dead-rum
@@ -133,11 +150,16 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.4
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.2
 - type: reagent
   id: Ethanol
   name: reagent-name-ethanol
@@ -257,11 +279,16 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.4
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.2
 - type: reagent
   id: CoffeeLiqueur
   name: reagent-name-coffeeliqueur
@@ -377,11 +404,16 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.4
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.2
 - type: reagent
   id: Sake
   name: reagent-name-sake
@@ -397,11 +429,16 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.4
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.2
 - type: reagent
   id: Tequila
   name: reagent-name-tequila
@@ -417,11 +454,16 @@
   metamorphicMaxFillLevels: 3
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.4
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.2
 - type: reagent
   id: Vermouth
   name: reagent-name-vermouth
@@ -455,11 +497,16 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.4
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.2
 - type: reagent
   id: Whiskey
   name: reagent-name-whiskey
@@ -477,11 +524,16 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.4
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.2
 - type: reagent
   id: Wine
   name: reagent-name-wine
@@ -515,14 +567,16 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: true
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.6
+    Drink:
       effects:
       - !type:Satiate
         satiationType: Thirst
         factor: 3
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.3
   fizziness: 0.8
 
 # Mixed Alcohol
@@ -640,11 +694,16 @@
   metamorphicMaxFillLevels: 5
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.3
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.15
 - type: reagent
   id: AtomicBomb
   name: reagent-name-atomic-bomb
@@ -660,12 +719,19 @@
   metamorphicMaxFillLevels: 5
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.3
-        Uranium: 0.1
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.15
+      - !type:AdjustReagent
+        reagent: Uranium
+        amount: 0.05
 - type: reagent
   id: B52
   name: reagent-name-b52
@@ -681,11 +747,16 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.3
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.15
 - type: reagent
   id: BahamaMama
   name: reagent-name-bahama-mama
@@ -746,10 +817,16 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.3
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.15
   fizziness: 0.3
 
 - type: reagent
@@ -767,11 +844,16 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.4
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.2
 - type: reagent
   id: BloodyMary
   name: reagent-name-bloody-mary
@@ -818,11 +900,16 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.4
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.2
 - type: reagent
   id: Bronx
   name: reagent-name-bronx
@@ -854,11 +941,16 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.4
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.2
 - type: reagent
   id: Cosmopolitan
   name: reagent-name-cosmopolitan
@@ -874,11 +966,16 @@
   metamorphicMaxFillLevels: 3
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.3
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.15
 - type: reagent
   id: CrushDepth
   name: reagent-name-crush-depth
@@ -909,10 +1006,16 @@
   metamorphicMaxFillLevels: 5
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.14
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.07
   fizziness: 0.2
 
 - type: reagent
@@ -990,10 +1093,9 @@
   metamorphicMaxFillLevels: 5
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.1
+    Drink:
       effects:
       - !type:Satiate
         satiationType: Thirst
@@ -1001,13 +1103,16 @@
       - !type:Satiate
         satiationType: Hunger
         factor: -2
-      - !type:EvenHealthChange
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.05
+      - !type:HealthChange
         damage:
-          Burn: -1
-          Brute: -1
-          Airloss: -1
-          Toxin: -1
-
+          groups:
+            Burn: -1
+            Brute: -1
+            Airloss: -1
+            Toxin: -1
 - type: reagent
   id: DriestMartini
   name: reagent-name-driest-martini
@@ -1023,11 +1128,16 @@
   metamorphicMaxFillLevels: 3
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.3
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.15
 - type: reagent
   id: Eggnog
   name: reagent-name-eggnog
@@ -1089,11 +1199,16 @@
   metamorphicMaxFillLevels: 5
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.4
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.2
 - type: reagent
   id: GinFizz
   name: reagent-name-gin-fizz
@@ -1109,10 +1224,16 @@
   metamorphicMaxFillLevels: 6
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.14
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.07
   fizziness: 0.4 # A little high, but it has fizz in the name
 
 - type: reagent
@@ -1130,10 +1251,16 @@
   metamorphicMaxFillLevels: 6
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.14
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.07
   fizziness: 0.4
 
 - type: reagent
@@ -1151,11 +1278,16 @@
   metamorphicMaxFillLevels: 3
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: true
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.4
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.2
 - type: reagent
   id: Grog
   name: reagent-name-grog
@@ -1252,11 +1384,16 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.4
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.2
 - type: reagent
   id: IrishCoffee
   name: reagent-name-irish-coffee
@@ -1271,11 +1408,16 @@
   metamorphicMaxFillLevels: 3
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.3
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.15
 - type: reagent
   id: JackRose
   name: reagent-name-jack-rose
@@ -1337,11 +1479,16 @@
   metamorphicMaxFillLevels: 6
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.3
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.15
 - type: reagent
   id: Manhattan
   name: reagent-name-manhattan
@@ -1419,11 +1566,16 @@
   metamorphicMaxFillLevels: 3
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.3
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.15
 - type: reagent
   id: Mead
   name: reagent-name-mead
@@ -1489,11 +1641,16 @@
   metamorphicMaxFillLevels: 6
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.5
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.25
 - type: reagent
   id: Neurotoxin
   name: reagent-name-neurotoxin
@@ -1544,11 +1701,16 @@
   metamorphicMaxFillLevels: 6
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.4
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.2
 - type: reagent
   id: Patron
   name: reagent-name-patron
@@ -1564,11 +1726,16 @@
   metamorphicMaxFillLevels: 3
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: true
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.4
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.2
 - type: reagent
   id: RedMead
   name: reagent-name-red-mead
@@ -1584,11 +1751,16 @@
   metamorphicMaxFillLevels: 5
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.4
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.2
 - type: reagent
   id: PinaColada
   name: reagent-name-pina-colada
@@ -1603,11 +1775,16 @@
   metamorphicMaxFillLevels: 6
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.4
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.2
 - type: reagent
   id: Radler
   name: reagent-name-radler
@@ -1653,11 +1830,16 @@
   metamorphicMaxFillLevels: 6
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.14
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.07
 - type: reagent
   id: CogChamp
   name: reagent-name-cogchamp
@@ -1672,17 +1854,19 @@
   metamorphicMaxFillLevels: 3
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.3
+    Drink:
       effects:
-      - !type:ModifyStatusEffect
-        effectProto: StatusEffectRatvarianLanguage
+      - !type:GenericStatusEffect
+        key: RatvarianLanguage
+        component: RatvarianLanguage
       - !type:Satiate
         satiationType: Thirst
         factor: 2
-
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.15
 - type: reagent
   id: Silencer
   name: reagent-name-silencer
@@ -1698,15 +1882,16 @@
   metamorphicMaxFillLevels: 6
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
+    Drink:
       effects:
-      - !type:ModifyStatusEffect
-        effectProto: StatusEffectMuted
+      - !type:GenericStatusEffect
+        key: Muted
+        component: Muted
       - !type:Satiate
         satiationType: Thirst
         factor: 2
-
 - type: reagent
   id: Singulo
   name: reagent-name-singulo
@@ -1784,11 +1969,16 @@
   metamorphicMaxFillLevels: 5
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.3
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.15
 - type: reagent
   id: TheMartinez
   name: reagent-name-the-martinez
@@ -1819,12 +2009,19 @@
   metamorphicMaxFillLevels: 2
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.3
-        Uranium: 0.1
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.15
+      - !type:AdjustReagent
+        reagent: Uranium
+        amount: 0.05
 - type: reagent
   id: ToxinsSpecial
   name: reagent-name-toxins-special
@@ -1871,11 +2068,16 @@
   metamorphicMaxFillLevels: 3
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.3
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.15
 - type: reagent
   id: VodkaTonic
   name: reagent-name-vodka-tonic
@@ -1891,10 +2093,16 @@
   metamorphicMaxFillLevels: 5
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.14
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.07
   fizziness: 0.4
 
 - type: reagent
@@ -1912,10 +2120,16 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.14
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.07
   fizziness: 0.3
 
 - type: reagent
@@ -1933,10 +2147,16 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.14
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.07
   fizziness: 0.4
 
 - type: reagent
@@ -1947,10 +2167,16 @@
   physicalDesc: reagent-physical-desc-creamy
   flavor: white-gilgamesh
   color: "#e5d27e"
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.3
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 1
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.15
   fizziness: 0.5
 
 - type: reagent
@@ -1968,11 +2194,16 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.3
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.15
 - type: reagent
   id: VodkaRedBool
   name: reagent-name-vodka-red-bool
@@ -1988,19 +2219,23 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: true
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.2
-        Theobromine: 0.1
+    Drink:
       effects:
-        - !type:Satiate
-          satiationType: Thirst
-          factor: 1
-        - !type:ModifyStatusEffect
-          effectProto: StatusEffectDrowsiness
-          time: 1
-          type: Remove
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 1
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.10
+      - !type:AdjustReagent
+        reagent: Theobromine
+        amount: 0.05
+      - !type:ModifyStatusEffect
+        effectProto: StatusEffectDrowsiness
+        time: 1
+        type: Remove
   fizziness: 0.25
 
 - type: reagent
@@ -2017,19 +2252,23 @@
   metamorphicMaxFillLevels: 2
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.3
-        Theobromine: 0.1
+    Drink:
       effects:
-        - !type:Satiate
-          satiationType: Thirst
-          factor: 1
-        - !type:ModifyStatusEffect
-          effectProto: StatusEffectDrowsiness
-          time: 1
-          type: Remove
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 1
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.15
+      - !type:AdjustReagent
+        reagent: Theobromine
+        amount: 0.05
+      - !type:ModifyStatusEffect
+        effectProto: StatusEffectDrowsiness
+        time: 1
+        type: Remove
   fizziness: 0.15
 
 - type: reagent
@@ -2047,19 +2286,23 @@
   metamorphicMaxFillLevels: 6
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: true
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.2
-        Theobromine: 0.1
+    Drink:
       effects:
-        - !type:Satiate
-          satiationType: Thirst
-          factor: 1
-        - !type:ModifyStatusEffect
-          effectProto: StatusEffectDrowsiness
-          time: 1
-          type: Remove
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 1
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.10
+      - !type:AdjustReagent
+        reagent: Theobromine
+        amount: 0.05
+      - !type:ModifyStatusEffect
+        effectProto: StatusEffectDrowsiness
+        time: 1
+        type: Remove
   fizziness: 0.15
 
 - type: reagent
@@ -2076,19 +2319,23 @@
   metamorphicMaxFillLevels: 3
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.3
-        Theobromine: 0.1
+    Drink:
       effects:
-        - !type:Satiate
-          satiationType: Thirst
-          factor: 1
-        - !type:ModifyStatusEffect
-          effectProto: StatusEffectDrowsiness
-          time: 1
-          type: Remove
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 1
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.15
+      - !type:AdjustReagent
+        reagent: Theobromine
+        amount: 0.05
+      - !type:ModifyStatusEffect
+        effectProto: StatusEffectDrowsiness
+        time: 1
+        type: Remove
   fizziness: 0.25
 
 - type: reagent
@@ -2106,19 +2353,23 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: true
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.14
-        Theobromine: 0.1
+    Drink:
       effects:
-        - !type:Satiate
-          satiationType: Thirst
-          factor: 1
-        - !type:ModifyStatusEffect
-          effectProto: StatusEffectDrowsiness
-          time: 1
-          type: Remove
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 1
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.07
+      - !type:AdjustReagent
+        reagent: Theobromine
+        amount: 0.05
+      - !type:ModifyStatusEffect
+        effectProto: StatusEffectDrowsiness
+        time: 1
+        type: Remove
   fizziness: 0.15
 
 - type: reagent
@@ -2136,19 +2387,23 @@
   metamorphicMaxFillLevels: 3
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.3
-        Theobromine: 0.1
+    Drink:
       effects:
-        - !type:Satiate
-          satiationType: Thirst
-          factor: 1
-        - !type:ModifyStatusEffect
-          effectProto: StatusEffectDrowsiness
-          time: 1
-          type: Remove
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 1
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.15
+      - !type:AdjustReagent
+        reagent: Theobromine
+        amount: 0.05
+      - !type:ModifyStatusEffect
+        effectProto: StatusEffectDrowsiness
+        time: 1
+        type: Remove
   fizziness: 0.25
 
 - type: reagent
@@ -2165,11 +2420,16 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.4
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.2
 - type: reagent
   id: Caipirinha
   name: reagent-name-caipirinha
@@ -2185,11 +2445,16 @@
   metamorphicMaxFillLevels: 5
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.2
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.1
 - type: reagent
   id: MoscowMule
   name: reagent-name-moscow-mule
@@ -2205,12 +2470,19 @@
   metamorphicMaxFillLevels: 3
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.2
-        Copper: 0.1
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.2
+      - !type:AdjustReagent
+        reagent: Copper
+        amount: 0.05
 - type: reagent
   id: Mimeosa
   name: reagent-name-mimeosa
@@ -2226,17 +2498,19 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.14
+    Drink:
       effects:
-      - !type:ModifyStatusEffect
-        effectProto: StatusEffectMuted
+      - !type:GenericStatusEffect
+        key: Muted
+        component: Muted
       - !type:Satiate
         satiationType: Thirst
         factor: 2
-
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.07
 - type: reagent
   id: Mimosa
   name: reagent-name-mimosa
@@ -2252,11 +2526,16 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.14
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.07
 - type: reagent
   id: Mayojito
   name: reagent-name-mayojito
@@ -2272,10 +2551,9 @@
   metamorphicMaxFillLevels: 5
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.15
+    Drink:
       effects:
       - !type:Vomit
         conditions:
@@ -2290,7 +2568,9 @@
       - !type:Satiate
         satiationType: Thirst
         factor: 1
-
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.15
 - type: reagent
   id: DeathInTheAfternoon
   name: reagent-name-death-in-the-afternoon
@@ -2305,11 +2585,16 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.6
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.3
 - type: reagent
   id: Empress75
   name: reagent-name-empress-75
@@ -2325,11 +2610,16 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.6
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.3
 - type: reagent
   id: EspressoMartini
   name: reagent-name-espresso-martini
@@ -2345,11 +2635,16 @@
   metamorphicMaxFillLevels: 6
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.4
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.2
 - type: reagent
   id: Daiquiri
   name: reagent-name-daiquiri
@@ -2365,11 +2660,16 @@
   metamorphicMaxFillLevels: 3
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.2
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.1
 - type: reagent
   id: TheSunAlsoRises
   name: reagent-name-the-sun-also-rises
@@ -2385,11 +2685,16 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.6
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.3
 - type: reagent
   id: WhiskeySour
   name: reagent-name-whiskey-sour
@@ -2405,11 +2710,16 @@
   metamorphicMaxFillLevels: 5
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.4
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.2
 - type: reagent
   id: ZombieCocktail
   name: reagent-name-zombiecocktail
@@ -2424,11 +2734,16 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Ethanol: 0.5
-
+    Drink:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 1
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.25
 - type: reagent
   id: BacchusBlessing
   name: reagent-name-bacchus-blessing

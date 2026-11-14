@@ -89,7 +89,6 @@
   - type: InteractionOutline
   - type: Clickable
   - type: Damageable
-  - type: Injurable
   - type: ChameleonDisguise
 
 # actions

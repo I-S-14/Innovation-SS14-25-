@@ -72,7 +72,9 @@ public sealed partial class TeleportLocationsSystem : SharedTeleportLocationsSys
         while (allEnts.MoveNext(out var warpEnt, out var warpPointComp))
         {
 
-            if (string.IsNullOrWhiteSpace(warpPointComp.Location))
+            //IS14-change: retain Goob's per-point exclusion alongside Wizards' teleporter filters.
+            if (string.IsNullOrWhiteSpace(warpPointComp.Location)
+                || _whitelist.IsWhitelistPass(warpPointComp.Blacklist, warpEnt))
                 continue;
 
             if (!_whitelist.CheckBoth(warpEnt, ent.Comp.Blacklist, ent.Comp.Whitelist))

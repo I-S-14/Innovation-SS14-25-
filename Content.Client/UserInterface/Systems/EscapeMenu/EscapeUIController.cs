@@ -37,6 +37,7 @@ namespace Content.Client.UserInterface.Systems.EscapeMenu;
 [UsedImplicitly]
 public sealed partial class EscapeUIController : UIController, IOnStateEntered<GameplayState>, IOnStateExited<GameplayState>
 {
+    [Dependency] private readonly FeedbackPopupUIController _feedback = default!;
     [Dependency] private readonly IClientConsoleHost _console = default!;
     [Dependency] private readonly IConfigurationManager _cfg = default!;
     [Dependency] private readonly ChangelogUIController _changelog = default!;
@@ -372,5 +373,10 @@ public sealed partial class EscapeUIController : UIController, IOnStateEntered<G
         };
 
         savePanel.OpenCentered();
+    }
+    private void OnSeeOwnNotesChanged(bool enabled)
+    {
+        if (_escapeWindow != null)
+            _escapeWindow.AdminRemarksButton.Visible = enabled;
     }
 }

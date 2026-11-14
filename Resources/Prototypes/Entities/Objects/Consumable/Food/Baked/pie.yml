@@ -14,24 +14,16 @@
       - sweet
   - type: Sprite
     sprite: Objects/Consumable/Food/Baked/pie.rsi
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 20
-        reagents: #Most of these are this with slight variations, not worth changing until we have the rest of the reagents
-        - ReagentId: Nutriment
-          Quantity: 11
-        - ReagentId: Vitamin
-          Quantity: 5
   - type: Solution
     solution:
+      maxVol: 20
       reagents: #Most of these are this with slight variations, not worth changing until we have the rest of the reagents
       - ReagentId: Nutriment
-        Quantity: 64
+        Quantity: 11
       - ReagentId: Vitamin
-        Quantity: 8
-      - ReagentId: Sugar
-        Quantity: 8
+        Quantity: 5
+      temperature: 293.15
+      canReact: true
   - type: Edible #It's actually possible now to have a pie stored in a tin rather than spawning trash when you finish eating it. But right now I'm just cleaning up.
     trash:
     - FoodPlateTin
@@ -52,24 +44,16 @@
       - sweet
   - type: Sprite
     sprite: Objects/Consumable/Food/Baked/pie.rsi
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 6
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 1.2
-        - ReagentId: Vitamin
-          Quantity: 1
   - type: Solution
     solution:
+      maxVol: 6
       reagents:
       - ReagentId: Nutriment
-        Quantity: 8
+        Quantity: 1.2
       - ReagentId: Vitamin
         Quantity: 1
-      - ReagentId: Sugar
-        Quantity: 1
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - Pie
@@ -520,15 +504,14 @@
     - state: amanita
   - type: Solution
     solution:
-      reagents:
+      maxVol: 20
+      reagents: #Most of these are this with slight variations, not worth changing until we have the rest of the reagents
       - ReagentId: Nutriment
-        Quantity: 64
+        Quantity: 11
       - ReagentId: Vitamin
-        Quantity: 8
-      - ReagentId: Sugar
-        Quantity: 8
-      - ReagentId: Amatoxin
-        Quantity: 10
+        Quantity: 5
+      temperature: 293.15
+      canReact: true
   - type: ToolRefinable
     refineResult:
     - id: FoodPieAmanitaSlice
@@ -549,15 +532,14 @@
       color: red
   - type: Solution
     solution:
+      maxVol: 6
       reagents:
       - ReagentId: Nutriment
-        Quantity: 8
+        Quantity: 1.2
       - ReagentId: Vitamin
         Quantity: 1
-      - ReagentId: Sugar
-        Quantity: 1
-      - ReagentId: Amatoxin
-        Quantity: 1.25
+      temperature: 293.15
+      canReact: true
 
 # Tastes like pie, mushrooms.
 
@@ -644,23 +626,13 @@
       - chocolate
   - type: Sprite
     state: cocolava
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 26
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 15
-        - ReagentId: Theobromine
-          Quantity: 2
   - type: Solution
     solution:
+      maxVol: 26
       reagents:
       - ReagentId: Nutriment
-        Quantity: 64
-      - ReagentId: Vitamin
-        Quantity: 8
-      - ReagentId: Sugar
-        Quantity: 8
+        Quantity: 15
       - ReagentId: Theobromine
-        Quantity: 8
+        Quantity: 2
+      temperature: 293.15
+      canReact: true

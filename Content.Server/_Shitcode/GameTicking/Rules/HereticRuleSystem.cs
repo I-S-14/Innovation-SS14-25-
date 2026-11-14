@@ -24,7 +24,7 @@ using Content.Shared.GameTicking.Rules;
 
 namespace Content.Server.GameTicking.Rules;
 
-public sealed class HereticRuleSystem : GameRuleSystem<HereticRuleComponent>
+public sealed class HereticRuleSystem : ServerGameRuleSystem<HereticRuleComponent>
 {
     [Dependency] private readonly MindSystem _mind = default!;
     [Dependency] private readonly AntagSelectionSystem _antag = default!;
@@ -32,7 +32,6 @@ public sealed class HereticRuleSystem : GameRuleSystem<HereticRuleComponent>
     [Dependency] private readonly ObjectivesSystem _objective = default!;
     [Dependency] private readonly UserInterfaceSystem _ui = default!;
     [Dependency] private readonly IRobustRandom _rand = default!;
-    [Dependency] private readonly PopupSystem _popup = default!;
 
     public static readonly SoundSpecifier BriefingSound =
         new SoundPathSpecifier("/Audio/_Goobstation/Heretic/Ambience/Antag/Heretic/heretic_gain.ogg");

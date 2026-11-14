@@ -1,5 +1,6 @@
 - type: job
   id: JobHosMilitia
+  spawnPointJob: HeadOfSecurity # IS14: retained maps use the corresponding security marker.
   name: job-name-hos-militia
   description: job-description-hos-militia
   playTimeTracker: JobHosMilitia
@@ -14,7 +15,6 @@
       inverted: true
       species:
       - Abductor
-  weight: 10
   startingGear: IS14GearHosMilitia
   icon: "JobIconHosMilitia"
   supervisors: job-supervisors-captain
@@ -45,6 +45,7 @@
 
 - type: job
   id: JobMilitia
+  spawnPointJob: SecurityOfficer # IS14: retain the militia job and use the security department spawn.
   name: job-name-militia
   description: job-description-militia
   playTimeTracker: JobMilitia
@@ -55,7 +56,6 @@
       inverted: true
       species:
       - Abductor
-  weight: 4
   startingGear: IS14GearMilitia
   icon: "JobIconMilitia"
   supervisors: job-supervisors-hos
@@ -96,7 +96,6 @@
       inverted: true
       species:
       - Abductor
-  weight: 8
   startingGear: IS14GearSeniorMilitia
   icon: "JobIconSeniorMilitia"
   supervisors: job-supervisors-hos
@@ -123,6 +122,7 @@
 
 - type: job
   id: IS_JobCadet
+  spawnPointJob: SecurityCadet # IS14: fallback only when no dedicated cadet marker exists.
   name: job-name-is14-cadet
   description: job-description-is14-cadet
   playTimeTracker: IS_JobCadet
@@ -142,7 +142,6 @@
   - !type:AddComponentSpecial
     components:
       - type: SecurityStaff
-  weight: 3 # IS14-edit
 
 - type: startingGear
   id: IS14GearCadet
@@ -166,7 +165,6 @@
       inverted: true
       species:
       - Abductor
-  weight: 5
   startingGear: IS14GearInvestigator
   icon: "JobIconInvestigator"
   supervisors: job-supervisors-hos
@@ -208,7 +206,6 @@
       inverted: true
       species:
       - Abductor
-  weight: 6
   startingGear: IS14GearMedOfficer
   icon: "JobIconMedOfficer"
   supervisors: job-supervisors-hos
@@ -250,7 +247,6 @@
       inverted: true
       species:
       - Abductor
-  weight: 10
   startingGear: IS14GearLrrChief
   icon: "JobIconLrrChief"
   supervisors: job-supervisors-hos
@@ -291,7 +287,6 @@
       inverted: true
       species:
       - Abductor
-  weight: 7
   startingGear: IS14GearPilot
   icon: "JobIconIS14Pilot"
   supervisors: job-supervisors-hos

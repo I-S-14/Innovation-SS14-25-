@@ -21,7 +21,7 @@ public sealed partial class NotekeeperCartridgeSystem : EntitySystem
     /// <summary>
     /// This gets called when the ui fragment needs to be updated for the first time after activating
     /// </summary>
-    private void OnUiReady(EntityUid uid, NotekeeperCartridgeComponent component, CartridgeUiReadyEvent args)
+    private void OnUiReady(EntityUid uid, NotekeeperCartridgeComponent component, ref CartridgeUiReadyEvent args)
     {
         UpdateUiState(uid, args.Loader, component);
     }

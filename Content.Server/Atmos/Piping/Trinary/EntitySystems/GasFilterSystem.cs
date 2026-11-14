@@ -38,8 +38,11 @@ public sealed partial class GasFilterSystem : SharedGasFilterSystem
     [SubscribeLocalEvent]
     private void OnFilterUpdated(Entity<GasFilterComponent> ent, ref AtmosDeviceUpdateEvent args)
     {
-        if (!filter.Enabled
-            || !_nodeContainer.TryGetNodes(uid, filter.InletName, filter.FilterName, filter.OutletName, out PipeNode? inletNode, out PipeNode? filterNode, out PipeNode? outletNode)
+        //IS14-change: adapt preserved code to the Entity event parameters.
+        var uid = ent.Owner;
+
+        if (!ent.Comp.Enabled
+            || !_nodeContainer.TryGetNodes(uid, ent.Comp.Inlet, ent.Comp.Filter, ent.Comp.Outlet, out PipeNode? inletNode, out PipeNode? filterNode, out PipeNode? outletNode)
             || inletNode != outletNode // Goobstation - ignore pressure if we're inline
                 && outletNode.Air.Pressure >= Atmospherics.MaxOutputPressure)
         {

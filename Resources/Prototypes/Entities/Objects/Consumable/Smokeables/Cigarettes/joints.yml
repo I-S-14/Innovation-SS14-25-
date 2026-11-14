@@ -25,9 +25,10 @@
     node: joint
   - type: Solution
     solution:
+      maxVol: 30
       reagents:
-      - ReagentId: THC
-        Quantity: 20
+        - ReagentId: THC
+          Quantity: 20
   - type: RandomMetadata
     nameSegments: [NamesRollie]
   - type: StaticPrice #Goobstation
@@ -47,19 +48,20 @@
     price: 500        #Goobstation
   - type: Solution
     solution:
+      maxVol: 20
       reagents:
       - ReagentId: SpaceDrugs
-        Quantity: 10
+        Quantity: 4
       - ReagentId: Lipolicide
-        Quantity: 5
+        Quantity: 4
       - ReagentId: MindbreakerToxin
-        Quantity: 5
+        Quantity: 2.66
       - ReagentId: Happiness
-        Quantity: 5
-  #   - ReagentId: ColorfulReagent
-  #     Quantity: 1.33
+        Quantity: 2.66
+      # - ReagentId: ColorfulReagent
+      #   Quantity: 1.33
       - ReagentId: Psicodine
-        Quantity: 3.67
+        Quantity: 0.8
 
 - type: entity
   id: BluntCigar # Shitmed Change
@@ -84,17 +86,16 @@
   - type: Construction
     graph: smokeableBlunt
     node: blunt
-  - type: SolutionContainerManager
-    solutions:
-      smokable:
-        maxVol: 30
-        reagents:
-          - ReagentId: THC
-            Quantity: 20
   - type: RandomMetadata
     nameSegments: [NamesRollie]
   - type: StaticPrice #Goobstation
     price: 300        #Goobstation
+  - type: Solution
+    solution:
+      maxVol: 30
+      reagents:
+        - ReagentId: THC
+          Quantity: 20
 
 - type: entity
   id: BluntRainbow
@@ -110,16 +111,17 @@
     price: 500        #Goobstation
   - type: Solution
     solution:
+      maxVol: 20
       reagents:
       - ReagentId: SpaceDrugs
-        Quantity: 10
+        Quantity: 4
       - ReagentId: Lipolicide
-        Quantity: 5
+        Quantity: 4
       - ReagentId: MindbreakerToxin
-        Quantity: 5
+        Quantity: 2.66
       - ReagentId: Happiness
-        Quantity: 5
-  #   - ReagentId: ColorfulReagent
-  #     Quantity: 1.33
+        Quantity: 2.66
+      # - ReagentId: ColorfulReagent
+      #   Quantity: 1.33
       - ReagentId: Psicodine
-        Quantity: 3.67
+        Quantity: 0.8

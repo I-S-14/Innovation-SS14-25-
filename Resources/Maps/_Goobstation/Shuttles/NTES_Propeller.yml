@@ -15386,7 +15386,7 @@ entities:
       pos: 3.5,-5.5
       parent: 1
     - type: WarpPoint
-      location: Emergency Shuttle
+      location: is14-map-warp-74d78a64b88b
 - proto: WaterCooler
   entities:
   - uid: 763

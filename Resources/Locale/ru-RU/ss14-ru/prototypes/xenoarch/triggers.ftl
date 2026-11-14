@@ -1,0 +1,12 @@
+ent-TriggerConsumeMoney = Взятка
+ent-TriggerConsumeKnowledge = Поглощение знаний
+ent-TriggerConsumeCarbs = Поглощение углеводов
+ent-TriggerConsumeMeat = Поглощение белка
+ent-TriggerConsumeProduce = Поглощение полезной растительной пищи
+ent-TriggerInteractStamp = Бюрократическое одобрение
+ent-TriggerInteractShock = Электрический разряд
+ent-TriggerAttackParticleEngine = Частицы, воздействующие на сингулярность
+ent-TriggerAttackParticleAnomaly = Частицы, воздействующие на аномалии
+ent-TriggerAttackStaminaDamage = Истощение организма
+ent-TriggerAttackLaser = Фотоны высокой интенсивности
+ent-TriggerMicrowave = Микроволновое излучение

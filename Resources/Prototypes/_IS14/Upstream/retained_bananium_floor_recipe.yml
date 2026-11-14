@@ -1,0 +1,17 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: 5327c414c5:Resources/Prototypes/Recipes/Construction/structures.yml
+- type: construction
+  id: FloorBananium
+  graph: FloorBananium
+  startNode: start
+  targetNode: BananiumFloor
+  category: construction-category-structures
+  conditions:
+  - !type:TileNotBlocked
+    failIfSpace: false
+  - !type:TileType
+    targets:
+    - Plating
+  objectType: Structure
+  placementMode: SnapgridCenter
+  canBuildInImpassable: false

@@ -21,6 +21,7 @@ namespace Content.Client.RoundEnd;
 public sealed partial class RoundEndSummaryWindow : DefaultWindow
 {
     [Dependency] private IEntityManager _entityManager = default!;
+    [Dependency] private IFileDialogManager _fileDialogManager = default!;
 
     public int RoundId;
     private readonly RoundEndPlayerInfo[] _playersInfo;
@@ -58,6 +59,8 @@ public sealed partial class RoundEndSummaryWindow : DefaultWindow
         var roundEndTabs = new TabContainer();
         roundEndTabs.AddChild(MakeRoundEndSummaryTab(gm, roundEnd, roundTimeSpan, roundId));
         roundEndTabs.AddChild(MakePlayerManifestTab());
+        if (MakePhotoReportTab() is { } album)
+            roundEndTabs.AddChild(album); // IS14-change: preserve Corvax photo album.
 
         ContentsContainer.AddChild(roundEndTabs);
 
@@ -495,7 +498,7 @@ public sealed partial class RoundEndSummaryWindow : DefaultWindow
                 return;
             }
 
-            _sortIndicator.Text = descending ? "▼" : "▲";
+            _sortIndicator.Text = descending ? "в–ј" : "в–І";
         }
     }
 }

@@ -45,7 +45,7 @@
   - type: Sprite
     sprite: _Goobstation/Clothing/Neck/Cloaks/ChiefEngineer/whitece.rsi # Goob Station - cloak resprite
   - type: StealTarget
-    stealGroup: HeadCloak
+    stealGroup: [HeadCloak]
 
 - type: entity
   parent: [ClothingNeckBase, BaseCommandContraband]

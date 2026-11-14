@@ -1,6 +1,7 @@
 - type: entity
   id: WindowTintedDirectional
-  parent: WindowDirectionalRCDResistant
+  # IS14-change: preserve this reinforced variant's 37 health and its own shard drop.
+  parent: [BaseWindowStructureDirectional, BaseStructureHealth, BaseRCDResistant]
   name: directional tinted window
   description: Don't smudge up the glass down there.
   placement:
@@ -8,6 +9,10 @@
     snap:
     - Window
   components:
+  - type: Tag # IS14-change: retained from WindowDirectional.
+    tags: [Window, DirectionalWindow]
+  - type: StaticPrice # IS14-change: retained from WindowDirectional.
+    price: 10
   - type: Sprite
     sprite: Structures/Windows/directional.rsi
     state: frosted_window

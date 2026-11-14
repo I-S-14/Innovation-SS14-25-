@@ -28,6 +28,11 @@ namespace Content.Client.Construction.UI
     /// </summary>
     internal sealed partial class ConstructionMenuPresenter : IDisposable
     {
+    //IS14-change start: restore declarations used by merged implementation.
+    private int _recipeHistoryIndex = -1;
+    private List<RecipeHistoryRecord> _recipeHistory = [];
+    //IS14-change end
+
         [Dependency] private EntityManager _entManager = default!;
         [Dependency] private IEntitySystemManager _systemManager = default!;
         [Dependency] private IPrototypeManager _prototypeManager = default!;

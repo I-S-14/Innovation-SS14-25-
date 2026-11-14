@@ -44,6 +44,24 @@ public sealed partial class DeviceListSystem : EntitySystem
         ent.Comp.Devices.Clear();
     }
 
+    //IS14-change start: repair legacy map links through the system that owns membership.
+    public int SynchronizeMembership(Entity<DeviceListComponent> list)
+    {
+        var count = 0;
+        foreach (var device in list.Comp.Devices)
+        {
+            if (TerminatingOrDeleted(device) || !HasComp<DeviceNetworkComponent>(device))
+                continue;
+            var linked = EnsureComp<LinkedDeviceNetworkComponent>(device);
+            if (!linked.DeviceLists.Add(list.Owner))
+                continue;
+            DirtyField(device, linked, nameof(LinkedDeviceNetworkComponent.DeviceLists));
+            count++;
+        }
+        return count;
+    }
+    //IS14-change end
+
     public IEnumerable<EntityUid> GetAllDevices(Entity<DeviceListComponent?> ent)
     {
         return !_deviceListQuery.Resolve(ent.Owner, ref ent.Comp) ? [] : ent.Comp.Devices;

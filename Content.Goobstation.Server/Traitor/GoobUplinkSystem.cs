@@ -57,7 +57,7 @@ public sealed partial class GoobUplinkSystem : GoobCommonUplinkSystem
         var ringerEv = new GenerateUplinkCodeEvent<Note[]>();
         RaiseLocalEvent(ent.Owner, ref ringerEv);
 
-        var code = Comp<RingerUplinkComponent>(ent.Owner).Code;
+        var code = ringerEv.Code;
         if (code != null)
         {
             var codeStr = string.Join("-", code).Replace("sharp", "#");

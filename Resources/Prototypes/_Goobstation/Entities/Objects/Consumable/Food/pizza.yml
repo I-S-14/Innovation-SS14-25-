@@ -14,25 +14,36 @@
     state: cotton-pizza-hot
   - type: Edible
     requiresSpecialDigestion: true
-  - type: SliceableFood
-    slice: FoodPizzaCottonHotSlice
+  - type: ToolRefinable
+    qualityNeeded: Slicing
+    refineTime: 1
+    refineFuel: 0
+    refineResult:
+    - id: FoodPizzaCottonHotSlice
+      amount: 5
+    verbText: refined-slice-verb-name
+    tooltipQualityHint: tool-refinable-component-hint-slicing
+    sound:
+      path: /Audio/Items/Culinary/chop.ogg
+  - type: ToolRefinableSolution
   - type: Tag
     tags:
     - ClothMade
     - Pizza
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 40
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 20
-        - ReagentId: Vitamin
-          Quantity: 5
-        - ReagentId: Fiber
-          Quantity: 5
-        - ReagentId: CapsaicinOil
-          Quantity: 5
+  - type: Solution
+    solution:
+      maxVol: 40
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 20
+      - ReagentId: Vitamin
+        Quantity: 5
+      - ReagentId: Fiber
+        Quantity: 5
+      - ReagentId: CapsaicinOil
+        Quantity: 5
+      temperature: 293.15
+      canReact: true
 
 - type: entity
   name: slice of flamin hot cotton pizza
@@ -55,16 +66,17 @@
     - ClothMade
     - Pizza
     - Slice
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 6
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 3.5
-        - ReagentId: Vitamin
-          Quantity: 0.8
-        - ReagentId: Fiber
-          Quantity: 1
-        - ReagentId: CapsaicinOil
-          Quantity: 0.5
+  - type: Solution
+    solution:
+      maxVol: 6
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 3.5
+      - ReagentId: Vitamin
+        Quantity: 0.8
+      - ReagentId: Fiber
+        Quantity: 1
+      - ReagentId: CapsaicinOil
+        Quantity: 0.5
+      temperature: 293.15
+      canReact: true

@@ -97,6 +97,7 @@ public abstract partial class SharedActionsSystem : EntitySystem
 
     private void OnActionMapInit(Entity<ActionComponent> ent, ref MapInitEvent args)
     {
+        OnLegacyIconInit(ent, ref args); // IS14: initialize retained icons through the existing action subscription.
         _appearance.SetData(ent, ActionState.Toggled, ent.Comp.Toggled);
     }
 

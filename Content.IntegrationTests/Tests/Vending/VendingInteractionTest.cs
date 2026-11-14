@@ -61,8 +61,7 @@ public sealed class VendingInteractionTest : InteractionTest
   components:
   - type: VendingMachine
     pack: InteractionTestVendingInventory
-  - type: VendingMachineEject
-    ejectDelay: 0 # no delay to speed up tests
+    ejectDelay: '0'
   - type: Sprite
     sprite: error.rsi
 ";

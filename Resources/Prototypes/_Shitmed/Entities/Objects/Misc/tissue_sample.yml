@@ -11,12 +11,12 @@
   - type: TissueSample
   - type: StaticPrice
     price: 2500 # coroner gameplay
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        reagents:
-        - ReagentId: SulfuricAcid
-          Quantity: 20
+  - type: Solution
+    solution:
+      maxVol: 0
+      reagents:
+      - ReagentId: SulfuricAcid
+        Quantity: 20
   - type: FoodSequenceElement # it's usable as xeno meat in a burger... but what a waste
     entries:
       Burger: MeatXeno

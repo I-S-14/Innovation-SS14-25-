@@ -35,15 +35,16 @@
       - sweet
   - type: Sprite
     sprite: Objects/Consumable/Food/Baked/cake.rsi
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 30
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 20
-        - ReagentId: Vitamin
-          Quantity: 5
+  - type: Solution
+    solution:
+      maxVol: 30
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 20
+      - ReagentId: Vitamin
+        Quantity: 5
+      temperature: 293.15
+      canReact: true
   - type: Item
     size: Normal
   - type: Tag
@@ -75,24 +76,16 @@
     flavors:
       - sweet
   - type: Edible
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 10
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 4
-        - ReagentId: Vitamin
-          Quantity: 1
   - type: Solution
     solution:
+      maxVol: 10
       reagents:
       - ReagentId: Nutriment
-        Quantity: 7.5
+        Quantity: 4
       - ReagentId: Vitamin
-        Quantity: 1.25
-      - ReagentId: Sugar
-        Quantity: 1.25
+        Quantity: 1
+      temperature: 293.15
+      canReact: true
   - type: Item
     size: Tiny
   - type: Tag
@@ -206,17 +199,14 @@
       amount: 8
   - type: Solution
     solution:
+      maxVol: 30
       reagents:
       - ReagentId: Nutriment
-        Quantity: 60
+        Quantity: 20
       - ReagentId: Vitamin
-        Quantity: 24
-      - ReagentId: Sugar
-        Quantity: 10
-      - ReagentId: JuiceCarrot
-        Quantity: 10
-      - ReagentId: Oculine
-        Quantity: 6
+        Quantity: 5
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - Cake
@@ -245,17 +235,14 @@
     state: carrot-slice
   - type: Solution
     solution:
+      maxVol: 10
       reagents:
       - ReagentId: Nutriment
-        Quantity: 7.5
+        Quantity: 4
       - ReagentId: Vitamin
-        Quantity: 3
-      - ReagentId: Sugar
-        Quantity: 1.25
-      - ReagentId: JuiceCarrot
-        Quantity: 1.25
-      - ReagentId: Oculine
-        Quantity: 0.75
+        Quantity: 1
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - Cake
@@ -572,34 +559,22 @@
     flavors:
       - lemoon
       - berry
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 30
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 15
-        - ReagentId: Vitamin
-          Quantity: 5
-        - ReagentId: Milk
-          Quantity: 5
   - type: ToolRefinable
     refineResult:
     - id: FoodCakeLemoonSlice
       amount: 8
   - type: Solution
     solution:
+      maxVol: 30
       reagents:
       - ReagentId: Nutriment
-        Quantity: 64
+        Quantity: 15
       - ReagentId: Vitamin
-        Quantity: 20
-      - ReagentId: Sugar
-        Quantity: 10
+        Quantity: 5
       - ReagentId: Milk
-        Quantity: 10
-      - ReagentId: JuiceBerry
-        Quantity: 6
+        Quantity: 5
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - Cake
@@ -620,30 +595,18 @@
     flavors:
       - lemoon
       - berry
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 15
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 3
-        - ReagentId: Vitamin
-          Quantity: 1
-        - ReagentId: Milk
-          Quantity: 1
   - type: Solution
     solution:
+      maxVol: 15
       reagents:
       - ReagentId: Nutriment
-        Quantity: 8
+        Quantity: 3
       - ReagentId: Vitamin
-        Quantity: 2.5
-      - ReagentId: Sugar
-        Quantity: 1.25
+        Quantity: 1
       - ReagentId: Milk
-        Quantity: 1.25
-      - ReagentId: JuiceBerry
-        Quantity: 0.75
+        Quantity: 1
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - Cake
@@ -673,34 +636,22 @@
     layers:
     - state: alpha
       color: "#ba672e"
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 35
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 20
-        - ReagentId: Theobromine
-          Quantity: 5
-        - ReagentId: Vitamin
-          Quantity: 5
   - type: ToolRefinable
     refineResult:
     - id: FoodCakeChocolateSlice
       amount: 8
   - type: Solution
     solution:
+      maxVol: 35
       reagents:
       - ReagentId: Nutriment
-        Quantity: 60
-      - ReagentId: Vitamin
-        Quantity: 10
-      - ReagentId: Sugar
-        Quantity: 16
-      - ReagentId: CocoaPowder
-        Quantity: 8
+        Quantity: 20
       - ReagentId: Theobromine
-        Quantity: 8
+        Quantity: 5
+      - ReagentId: Vitamin
+        Quantity: 5
+      temperature: 293.15
+      canReact: true
   - type: Item
     inhandVisuals:
       left:
@@ -719,30 +670,18 @@
     layers:
     - state: alpha-slice
       color: "#ba672e"
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 8
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 4
-        - ReagentId: Theobromine
-          Quantity: 1
-        - ReagentId: Vitamin
-          Quantity: 2
   - type: Solution
     solution:
+      maxVol: 8
       reagents:
       - ReagentId: Nutriment
-        Quantity: 7.5
-      - ReagentId: Vitamin
-        Quantity: 1.25
-      - ReagentId: Sugar
-        Quantity: 2
-      - ReagentId: CocoaPowder
-        Quantity: 1
+        Quantity: 4
       - ReagentId: Theobromine
         Quantity: 1
+      - ReagentId: Vitamin
+        Quantity: 2
+      temperature: 293.15
+      canReact: true
   - type: Item
     inhandVisuals:
       left:
@@ -882,28 +821,20 @@
   components:
   - type: Sprite
     state: pumpkinspice
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 50
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 32
-        - ReagentId: Vitamin
-          Quantity: 11
   - type: ToolRefinable
     refineResult:
     - id: FoodCakePumpkinSlice
       amount: 8
   - type: Solution
     solution:
+      maxVol: 50
       reagents:
       - ReagentId: Nutriment
-        Quantity: 84
+        Quantity: 32
       - ReagentId: Vitamin
-        Quantity: 16
-      - ReagentId: Sugar
-        Quantity: 10
+        Quantity: 11
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - Cake
@@ -928,24 +859,16 @@
   components:
   - type: Sprite
     state: pumpkinspice-slice
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 15
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 6.4
-        - ReagentId: Vitamin
-          Quantity: 2.2
   - type: Solution
     solution:
+      maxVol: 15
       reagents:
       - ReagentId: Nutriment
-        Quantity: 10.5
+        Quantity: 6.4
       - ReagentId: Vitamin
-        Quantity: 2
-      - ReagentId: Sugar
-        Quantity: 1.25
+        Quantity: 2.2
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - Cake
@@ -1051,17 +974,18 @@
   components:
   - type: Sprite
     state: vanilla
-  - type: SolutionContainerManager #TODO Sprinkles
-    solutions:
-      food:
-        maxVol: 45
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 20
-        - ReagentId: Vitamin
-          Quantity: 5
-        - ReagentId: Sugar
-          Quantity: 15
+  - type: Solution
+    solution:
+      maxVol: 45
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 20
+      - ReagentId: Vitamin
+        Quantity: 5
+      - ReagentId: Sugar
+        Quantity: 15
+      temperature: 293.15
+      canReact: true
   - type: ToolRefinable
     refineResult:
     - id: FoodCakeVanillaSlice
@@ -1077,17 +1001,18 @@
   components:
   - type: Sprite
     state: vanilla-slice
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 45
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 4
-        - ReagentId: Vitamin
-          Quantity: 1
-        - ReagentId: Sugar
-          Quantity: 5
+  - type: Solution
+    solution:
+      maxVol: 45
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 4
+      - ReagentId: Vitamin
+        Quantity: 1
+      - ReagentId: Sugar
+        Quantity: 5
+      temperature: 293.15
+      canReact: true
   - type: Item
     inhandVisuals:
       left:
@@ -1107,17 +1032,18 @@
   components:
   - type: Sprite
     state: clown
-  - type: SolutionContainerManager #TODO Sprinkles
-    solutions:
-      food:
-        maxVol: 45
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 20
-        - ReagentId: Vitamin
-          Quantity: 5
-        - ReagentId: Sugar
-          Quantity: 15
+  - type: Solution
+    solution:
+      maxVol: 45
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 20
+      - ReagentId: Vitamin
+        Quantity: 5
+      - ReagentId: Sugar
+        Quantity: 15
+      temperature: 293.15
+      canReact: true
   - type: ToolRefinable
     refineResult:
     - id: FoodCakeClownSlice
@@ -1133,17 +1059,18 @@
   components:
   - type: Sprite
     state: clown-slice
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 45
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 4
-        - ReagentId: Vitamin
-          Quantity: 1
-        - ReagentId: Sugar
-          Quantity: 5
+  - type: Solution
+    solution:
+      maxVol: 45
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 4
+      - ReagentId: Vitamin
+        Quantity: 1
+      - ReagentId: Sugar
+        Quantity: 5
+      temperature: 293.15
+      canReact: true
   - type: Item
     heldPrefix: clown-slice
 
@@ -1157,32 +1084,22 @@
   components:
   - type: Sprite
     state: trumpet
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 45
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 20
-        - ReagentId: Vitamin
-          Quantity: 5
-        - ReagentId: PolypyryliumOligomers
-          Quantity: 15
   - type: ToolRefinable
     refineResult:
     - id: FoodCakeSpacemanSlice
       amount: 8
   - type: Solution
     solution:
+      maxVol: 45
       reagents:
       - ReagentId: Nutriment
-        Quantity: 60
+        Quantity: 20
       - ReagentId: Vitamin
-        Quantity: 16
-      - ReagentId: Sugar
-        Quantity: 10
+        Quantity: 5
       - ReagentId: PolypyryliumOligomers
-        Quantity: 12
+        Quantity: 15
+      temperature: 293.15
+      canReact: true
   - type: Item
     heldPrefix: trumpet
 
@@ -1194,28 +1111,18 @@
   components:
   - type: Sprite
     state: trumpet-slice
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 10
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 4
-        - ReagentId: Vitamin
-          Quantity: 1
-        - ReagentId: PolypyryliumOligomers
-          Quantity: 3
   - type: Solution
     solution:
+      maxVol: 10
       reagents:
       - ReagentId: Nutriment
-        Quantity: 7.5
+        Quantity: 4
       - ReagentId: Vitamin
-        Quantity: 2
-      - ReagentId: Sugar
-        Quantity: 1.25
+        Quantity: 1
       - ReagentId: PolypyryliumOligomers
-        Quantity: 1.5
+        Quantity: 3
+      temperature: 293.15
+      canReact: true
   - type: Item
     heldPrefix: trumpet-slice
 
@@ -1329,30 +1236,20 @@
   components:
   - type: Sprite
     state: suppermatter
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 48
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 80
-        - ReagentId: Sugar
-          Quantity: 30
   - type: ToolRefinable
     refineResult:
     - id: FoodCakeSuppermatterSlice
       amount: 8
   - type: Solution
     solution:
+      maxVol: 48
       reagents:
       - ReagentId: Nutriment
-        Quantity: 120
-      - ReagentId: Vitamin
-        Quantity: 20
+        Quantity: 80
       - ReagentId: Sugar
-        Quantity: 50
-      - ReagentId: Plasma
-        Quantity: 10
+        Quantity: 30
+      temperature: 293.15
+      canReact: true
   - type: Edible
     transferAmount: 12
   - type: Item
@@ -1371,26 +1268,16 @@
   components:
   - type: Sprite
     state: suppermatter-shard
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 12
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 10
-        - ReagentId: Sugar
-          Quantity: 5
   - type: Solution
     solution:
+      maxVol: 12
       reagents:
       - ReagentId: Nutriment
-        Quantity: 15
-      - ReagentId: Vitamin
-        Quantity: 2.5
+        Quantity: 10
       - ReagentId: Sugar
-        Quantity: 6.25
-      - ReagentId: Plasma
-        Quantity: 1.25
+        Quantity: 5
+      temperature: 293.15
+      canReact: true
   - type: Edible
     transferAmount: 3
   - type: PointLight
@@ -1427,15 +1314,14 @@
     - FinishedMeal
   - type: Solution
     solution:
+      maxVol: 30
       reagents:
       - ReagentId: Nutriment
-        Quantity: 60
+        Quantity: 20
       - ReagentId: Vitamin
-        Quantity: 10
-      - ReagentId: Sugar
-        Quantity: 10
-      - ReagentId: Fiber
-        Quantity: 10
+        Quantity: 5
+      temperature: 293.15
+      canReact: true
   - type: Item
     heldPrefix: cotton
 
@@ -1455,15 +1341,14 @@
     - Slice
   - type: Solution
     solution:
+      maxVol: 10
       reagents:
       - ReagentId: Nutriment
-        Quantity: 7.5
+        Quantity: 4
       - ReagentId: Vitamin
-        Quantity: 1.25
-      - ReagentId: Sugar
-        Quantity: 1.25
-      - ReagentId: Fiber
-        Quantity: 1.25
+        Quantity: 1
+      temperature: 293.15
+      canReact: true
   - type: Item
     heldPrefix: cotton-slice
 
@@ -1484,17 +1369,14 @@
       - motivating
   - type: Solution
     solution:
+      maxVol: 30
       reagents:
       - ReagentId: Nutriment
-        Quantity: 70
-      - ReagentId: Vitamin
         Quantity: 20
-      - ReagentId: Sugar
-        Quantity: 10
-      - ReagentId: Milk
-        Quantity: 10
-      - ReagentId: JuiceBerry
-        Quantity: 10
+      - ReagentId: Vitamin
+        Quantity: 5
+      temperature: 293.15
+      canReact: true
   - type: ToolRefinable
     refineResult:
     - id: FoodCakeBerryDelightSlice
@@ -1530,17 +1412,14 @@
       - motivating
   - type: Solution
     solution:
+      maxVol: 10
       reagents:
       - ReagentId: Nutriment
-        Quantity: 8.75
+        Quantity: 4
       - ReagentId: Vitamin
-        Quantity: 2.5
-      - ReagentId: Sugar
-        Quantity: 1.25
-      - ReagentId: Milk
-        Quantity: 1.25
-      - ReagentId: JuiceBerry
-        Quantity: 1.25
+        Quantity: 1
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - Cake

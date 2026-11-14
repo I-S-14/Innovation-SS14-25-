@@ -22,7 +22,7 @@ public sealed class MouthStorageSystem : SharedMouthStorageSystem
     }
 
     // Force you to mumble if you have items in your mouth
-    private void OnAccent(EntityUid uid, MouthStorageComponent component, AccentGetEvent args)
+    private void OnAccent(EntityUid uid, MouthStorageComponent component, ref AccentGetEvent args)
     {
         if (IsMouthBlocked(component))
             args.Message = _replacement.ApplyReplacements(args.Message, "mumble");

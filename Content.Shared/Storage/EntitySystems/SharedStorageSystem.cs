@@ -639,7 +639,7 @@ public abstract partial class SharedStorageSystem : EntitySystem //IS14-change: 
         args.Handled = true;
     }
 
-    private void OnReclaimed(EntityUid uid, StorageComponent storageComp, GotReclaimedEvent args)
+    private void OnReclaimed(EntityUid uid, StorageComponent storageComp, ref GotReclaimedEvent args)
     {
         ContainerSystem.EmptyContainer(storageComp.Container, destination: args.ReclaimerCoordinates);
     }

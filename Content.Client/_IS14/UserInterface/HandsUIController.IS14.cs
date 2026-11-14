@@ -17,6 +17,7 @@ public sealed partial class HandsUIController
     /// </summary>
     public bool TryGetHandButton(string handName, [NotNullWhen(true)] out HandButton? button)
     {
-        return _handLookup.TryGetValue(handName, out button);
+        button = GetHand(handName);
+        return button != null;
     }
 }

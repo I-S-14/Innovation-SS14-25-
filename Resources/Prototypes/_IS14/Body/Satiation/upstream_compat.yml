@@ -1,0 +1,166 @@
+# Preserved from Resources/Prototypes/_Afterlight/Entities/Mobs/Species/synth.yml (BaseMobSynth).
+- type: satiation
+  id: IS14BaseMobSynthHunger124189ce
+  parent: NormalSatiationHunger
+  baseChangeRate: -0.02
+
+# Preserved from Resources/Prototypes/_DV/Entities/Mobs/Species/chitinid.yml (BaseMobChitinid).
+- type: satiation
+  id: IS14BaseMobChitinidHungereeb6ed16
+  parent: NormalSatiationHunger
+  baseChangeRate: -0.0467
+
+# Preserved from Resources/Prototypes/_DV/Entities/Mobs/Species/feroxi.yml (BaseMobFeroxi).
+- type: satiation
+  id: IS14BaseMobFeroxiThirstff267fd1
+  parent: NormalSatiationThirst
+  baseChangeRate: -0.25
+
+# Preserved from Resources/Prototypes/_DV/Entities/Mobs/Species/rodentia.yml (BaseMobRodentia).
+- type: satiation
+  id: IS14BaseMobRodentiaHunger69108494
+  parent: NormalSatiationHunger
+  baseChangeRate: -0.054166
+
+# Preserved from Resources/Prototypes/_EinsteinEngines/NPCs/carp.yml (MobCarpGoldfish).
+- type: satiation
+  id: IS14MobCarpGoldfishThirstd8127f3a
+  parent: NormalSatiationThirst
+  baseChangeRate: -0.04
+  thresholds:
+    OverHydrated: 35
+    Okay: 25
+    Thirsty: 15
+    Parched: 10
+    Dead: 0
+  maximumValue: 35
+
+# Preserved from Resources/Prototypes/_EinsteinEngines/NPCs/carp.yml (MobCarpGoldfish).
+- type: satiation
+  id: IS14MobCarpGoldfishHunger3ab82e31
+  parent: NormalSatiationHunger
+  baseChangeRate: -0.04
+  thresholds:
+    Overfed: 35
+    Okay: 25
+    Peckish: 15
+    Starving: 10
+    Dead: 0
+  maximumValue: 35
+
+# Preserved from Resources/Prototypes/_Goobstation/Entities/Mobs/NPCs/animals.yml (MobGondola).
+- type: satiation
+  id: IS14MobGondolaHunger6a185103
+  parent: NormalSatiationHunger
+  baseChangeRate: -0.00925925925926
+  thresholds:
+    Overfed: 100
+    Okay: 50
+    Peckish: 25
+    Starving: 10
+    Dead: 0
+  maximumValue: 100
+
+# Preserved from Resources/Prototypes/_Goobstation/Entities/Mobs/NPCs/animals.yml (MobGondola).
+- type: satiation
+  id: IS14MobGondolaThirst847193af
+  parent: NormalSatiationThirst
+  baseChangeRate: -0.04
+  thresholds:
+    OverHydrated: 200
+    Okay: 150
+    Thirsty: 100
+    Parched: 50
+    Dead: 0
+  maximumValue: 200
+
+# Preserved from Resources/Prototypes/_Goobstation/Entities/Mobs/NPCs/animals.yml (MobClownGoblin).
+- type: satiation
+  id: IS14MobClownGoblinHungerf116f955
+  parent: NormalSatiationHunger
+  baseChangeRate: 0
+
+# Preserved from Resources/Prototypes/_Goobstation/Entities/Mobs/NPCs/animals.yml (MobClownGoblin).
+- type: satiation
+  id: IS14MobClownGoblinThirstd5168eee
+  parent: NormalSatiationThirst
+  baseChangeRate: 0
+
+# Preserved from Resources/Prototypes/_Goobstation/Entities/Mobs/Player/SlasherMob.yml (MobSlasher).
+- type: satiation
+  id: IS14MobSlasherHunger1d6986a2
+  parent: NormalSatiationHunger
+  baseChangeRate: 0
+
+# Preserved from Resources/Prototypes/_Goobstation/Entities/Mobs/Player/SlasherMob.yml (MobSlasher).
+- type: satiation
+  id: IS14MobSlasherThirst2f1e0389
+  parent: NormalSatiationThirst
+  baseChangeRate: 0
+
+# Preserved from Resources/Prototypes/_Goobstation/GameRules/Admeme/token.yml (TokenSlasherSpawn).
+- type: satiation
+  id: IS14TokenSlasherSpawnHungerf7038fe9
+  parent: NormalSatiationHunger
+  baseChangeRate: 0
+
+# Preserved from Resources/Prototypes/_Goobstation/GameRules/Admeme/token.yml (TokenSlasherSpawn).
+- type: satiation
+  id: IS14TokenSlasherSpawnThirst888b1104
+  parent: NormalSatiationThirst
+  baseChangeRate: 0
+
+# Preserved from Resources/Prototypes/_Goobstation/GameRules/midround.yml (SlasherSpawn).
+- type: satiation
+  id: IS14SlasherSpawnHunger9e3a7f0a
+  parent: NormalSatiationHunger
+  baseChangeRate: 0
+
+# Preserved from Resources/Prototypes/_Goobstation/GameRules/midround.yml (SlasherSpawn).
+- type: satiation
+  id: IS14SlasherSpawnThirst6fb8b50a
+  parent: NormalSatiationThirst
+  baseChangeRate: 0
+
+# Preserved from Resources/Prototypes/_Goobstation/Xenobiology/Entities/Mobs/NPCs/slimebase.yml (BaseMobSlimeXenobio).
+- type: satiation
+  id: IS14BaseMobSlimeXenobioHungereab580f4
+  parent: NormalSatiationHunger
+  baseChangeRate: -0.5
+  thresholds:
+    Overfed: 150
+    Okay: 75
+    Peckish: 25
+    Starving: 10
+    Dead: 0
+  maximumValue: 150
+  changeModifiers:
+    Okay: 1.5
+    Peckish: 0.4
+    Starving: 0.2
+    Dead: 0.1
+
+# Preserved from Resources/Prototypes/Entities/Mobs/NPCs/Rodents/mouse.yml (MobMouse).
+- type: satiation
+  id: IS14MobMouseHungerbc29ac72
+  parent: MouseHunger
+  baseChangeRate: -0.04
+  thresholds:
+    Overfed: 35
+    Okay: 25
+    Peckish: 15
+    Starving: 10
+    Dead: 0
+  maximumValue: 35
+
+# Preserved from Resources/Prototypes/Entities/Mobs/Species/diona.yml (BaseMobDiona).
+- type: satiation
+  id: IS14BaseMobDionaHunger8b381acc
+  parent: NormalSatiationHunger
+  baseChangeRate: -0.020833
+
+# Preserved from Resources/Prototypes/Entities/Mobs/Species/diona.yml (BaseMobDiona).
+- type: satiation
+  id: IS14BaseMobDionaThirst551ba080
+  parent: NormalSatiationThirst
+  baseChangeRate: -0.0625

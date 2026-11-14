@@ -116,8 +116,9 @@ public sealed partial class PaintSurfaceSystem : SharedPaintSurfaceSystem
     private void UsePaint(Entity<PaintToolComponent> tool, int pixels)
     {
         if (tool.Comp.ColorMode != PaintColorMode.Solution
+            || tool.Comp.Solution is not { } solutionName
             || tool.Comp.PixelsPerUnit <= 0
-            || !Solutions.TryGetSolution(tool.Owner, tool.Comp.Solution, out var solution, out _))
+            || !Solutions.TryGetSolution(tool.Owner, solutionName, out var solution, out _))
             return;
 
         tool.Comp.PixelDebt += pixels;

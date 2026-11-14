@@ -1,0 +1,57 @@
+# IS14: isolate Wizards fuse-on-damage behavior from retained Goob grenade destruction.
+# Common item components: current GrenadeBase; timer: Wizards bd217732d1.
+- type: entity
+  abstract: true
+  parent: BaseItem
+  id: IS14WizardGrenadeBaseCommon
+  components:
+  - type: ExplosionEffect
+  - type: Sprite
+    sprite: Objects/Weapons/Grenades/grenade.rsi
+    layers:
+    - state: icon
+      map: ["enum.TriggerVisualLayers.Base"]
+  - type: Item
+    size: Small
+  - type: Clothing
+    quickEquip: false
+    slots:
+    - Belt
+  - type: Damageable
+    damageContainer: Inorganic
+  - type: Appearance
+  - type: AnimationPlayer
+  - type: Tag
+    tags:
+    - Grenade
+    - HandGrenade
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeCircle
+          radius: 0.2
+        density: 20
+        mask:
+        - ItemMask
+        restitution: 0.3
+        friction: 0.2
+- type: entity
+  abstract: true
+  parent: IS14WizardGrenadeBaseCommon
+  id: IS14WizardTimerGrenadeBase
+  components:
+  - type: TriggerOnUse
+  - type: TimerTrigger
+    delay: 3
+  - type: Destructible
+    thresholds:
+    - trigger: !type:DamageTrigger
+        damage: 10
+      behaviors:
+      - !type:TimerStartBehavior ''
+  - type: GenericVisualizer
+    visuals:
+      enum.Trigger.TriggerVisuals.VisualState:
+        enum.ConstructionVisuals.Layer:
+          Primed: {state: primed}
+          Unprimed: {state: icon}

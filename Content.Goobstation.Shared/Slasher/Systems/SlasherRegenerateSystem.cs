@@ -49,7 +49,7 @@ public sealed partial class SlasherRegenerateSystem : EntitySystem
     /// <param name="uid">Slasher UID</param>
     /// <param name="comp">SlasherRegenerateComponent</param>
     /// <param name="args">SlasherRegenerateEvent</param>
-    private void OnRegenerate(EntityUid uid, SlasherRegenerateComponent comp, SlasherRegenerateEvent args)
+    private void OnRegenerate(EntityUid uid, SlasherRegenerateComponent comp, ref SlasherRegenerateEvent args)
     {
         if (args.Handled)
             return;

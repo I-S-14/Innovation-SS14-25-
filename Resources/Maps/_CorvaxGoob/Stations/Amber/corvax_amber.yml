@@ -64596,7 +64596,7 @@ entities:
     - type: NavMapBeacon
       text: AI Upload
     - type: WarpPoint
-      location: AI Upload
+      location: is14-map-warp-1c791771282d
   - uid: 19164
     components:
     - type: Transform
@@ -64605,7 +64605,7 @@ entities:
     - type: NavMapBeacon
       text: AI Power
     - type: WarpPoint
-      location: AI Power
+      location: is14-map-warp-ba914b7b6dea
 - proto: DefaultStationBeaconAICore
   entities:
   - uid: 5150
@@ -64864,7 +64864,7 @@ entities:
     - type: NavMapBeacon
       text: Reporter
     - type: WarpPoint
-      location: Reporter
+      location: is14-map-warp-ed738fe883ac
 - proto: DefaultStationBeaconMedbay
   entities:
   - uid: 7722
@@ -64891,7 +64891,7 @@ entities:
     - type: NavMapBeacon
       text: Virology
     - type: WarpPoint
-      location: Virology
+      location: is14-map-warp-c40c59e77909
 - proto: DefaultStationBeaconMorgue
   entities:
   - uid: 15759
@@ -64958,7 +64958,7 @@ entities:
     - type: NavMapBeacon
       text: Brig Med
     - type: WarpPoint
-      location: Brig Med
+      location: is14-map-warp-854af69c1144
   - uid: 19161
     components:
     - type: Transform
@@ -164527,7 +164527,7 @@ entities:
       pos: 5.5,12.5
       parent: 21853
     - type: WarpPoint
-      location: Каторга "Добрый самаритянин"
+      location: is14-map-warp-8440fd2ecc37
 - proto: WaterCooler
   entities:
   - uid: 828

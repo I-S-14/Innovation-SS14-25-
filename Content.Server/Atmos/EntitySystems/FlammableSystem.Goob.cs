@@ -13,7 +13,6 @@ namespace Content.Server.Atmos.EntitySystems;
 public sealed partial class FlammableSystem
 {
     [Dependency] private readonly IConfigurationManager _cfg = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
 
     [Dependency] private readonly SpellbladeSystem _spellblade = default!;
     [Dependency] private readonly SharedBodySystem _body = default!;

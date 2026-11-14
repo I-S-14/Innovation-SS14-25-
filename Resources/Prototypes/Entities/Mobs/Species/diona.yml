@@ -13,10 +13,20 @@
     - kudzu
   - type: HumanoidAppearance
     species: Diona
-  - type: Hunger
-    baseDecayRate: 0.020833 # Goobstation base rate changed, 2 times lower than base
-  - type: Thirst
-    baseDecayRate: 0.0625 # Goobsatation base rate changed, 2 times lower than base
+  - type: Satiation
+    satiations:
+      Hunger:
+        prototype: IS14BaseMobDionaHunger8b381acc
+      Thirst:
+        prototype: IS14BaseMobDionaThirst551ba080
+  - type: SatiationSpeedModifier
+    satiations:
+      Hunger:
+        thresholds:
+          Starving: 0.75
+      Thirst:
+        thresholds:
+          Parched: 0.75
   - type: Icon
     sprite: Mobs/Species/Diona/parts.rsi
     state: full

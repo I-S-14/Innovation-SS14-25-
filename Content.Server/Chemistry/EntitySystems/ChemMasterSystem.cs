@@ -13,7 +13,6 @@ using Content.Shared.Database;
 using Content.Shared.DragDrop;
 using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.Labels.EntitySystems;
-using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.Storage;
 using JetBrains.Annotations;
 using Robust.Server.Audio;

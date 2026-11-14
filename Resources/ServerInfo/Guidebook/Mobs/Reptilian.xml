@@ -6,18 +6,18 @@ SPDX-License-Identifier: AGPL-3.0-or-later
   # Унатхи (унати)
 
   <Box>
-    <GuideEntityEmbed Entity="AppearanceReptilian" Caption=""/>
+    <GuideEntityEmbed Entity="MobReptilianDummy" Caption=""/>
   </Box>
 
-  ## General Information
+  ## Особенности вида
 
-  Reptilians can [color=lightgreen]use their tail to drag objects around[/color], keeping both their hands free.
 
-  Their sharp claws make their unarmed attacks deal Slash damage.
+  Унатхи могут [color=lightgreen]тащить предметы хвостом[/color], оставляя обе руки свободными.
+  Безоружные атаки когтями наносят режущий урон.
 
-  The reptilian digestive system [color=palevioletred]can only process fruits and meat[/color], but can [color=lightgreen]digest raw meat and blood[/color] without ill effects.
-  They are [color=palevioletred]poisoned[/color] by allicin (found in garlic and onions) and theobromine (found in caffeinated beverages and chocolate).
+  Основу рациона унатхов составляют фрукты и мясо. Их пищеварение позволяет усваивать [color=lightgreen]сырое мясо и кровь[/color].
+  Аллицин из чеснока и лука и теобромин, содержащийся в шоколаде, [color=palevioletred]токсичны[/color] для унатхов.
 
-  They take [color=palevioletred]30% more Cold damage.[/color] They prefer a somewhat warmer temperature range than humans.
+  Унатхи предпочитают более тёплую среду, чем люди, и получают [color=palevioletred]на 30% больше урона холодом.[/color]
 
 </Document>

@@ -2,7 +2,6 @@
 
 using Robust.Shared.GameStates;
 using Content.Shared.Inventory;
-using Robust.Shared.GameStates;
 
 namespace Content.Shared.Storage.Components;
 

@@ -5,9 +5,7 @@
   name: uplink-singularity-grenade-name
   description: uplink-singularity-grenade-desc
   productEntity: SingularityGrenade
-  discountCategory: usualDiscounts
-  discountDownTo:
-    Telecrystal: 1
+  # IS14-change: retain Goob automatic discounts and minimum-price calculation.
   cost:
     Telecrystal: 2
   categories:
@@ -152,9 +150,7 @@
   description: uplink-syndimov-law-desc
   icon: { sprite: /Textures/Objects/Storage/boxicons.rsi, state: syndicate_circuit }
   productEntity: SyndimovCircuitKit
-  discountCategory: usualDiscounts
-  discountDownTo:
-    Telecrystal: 6
+  # IS14-change: retain Goob automatic discounts and minimum-price calculation.
   cost:
     Telecrystal: 8
   categories:
@@ -170,9 +166,7 @@
   name: uplink-antimov-law-name
   description: uplink-antimov-law-desc
   productEntity: AntimovCircuitBoard
-  discountCategory: rareDiscounts
-  discountDownTo:
-    Telecrystal: 20
+  # IS14-change: retain Goob automatic discounts and minimum-price calculation.
   cost:
     Telecrystal: 24
   categories:
@@ -292,9 +286,7 @@
   name: uplink-cameraBug-name
   description: uplink-cameraBug-desc
   productEntity: CameraBug
-  discountCategory: usualDiscounts
-  discountDownTo:
-    Telecrystal: 1
+  # IS14-change: retain Goob automatic discounts and minimum-price calculation.
   cost:
     Telecrystal: 12 # goob
   categories:

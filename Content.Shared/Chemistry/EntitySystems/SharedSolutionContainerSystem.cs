@@ -90,13 +90,16 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
         SubscribeLocalEvent<SolutionComponent, ComponentGetState>(OnSolutionGetState);
         SubscribeLocalEvent<SolutionComponent, ComponentHandleState>(OnSolutionHandleState);
         SubscribeLocalEvent<SolutionComponent, ComponentInit>(OnComponentInit);
-        SubscribeLocalEvent<SolutionComponent, MapInitEvent>(OnSolutionInit);
+        //IS14-change: ordering applies to every MapInit handler of this system.
+        SubscribeLocalEvent<SolutionComponent, MapInitEvent>(OnSolutionInit,
+            before: [typeof(Content.Shared.Nutrition.EntitySystems.IngestionSystem), typeof(Content.Shared.Body.Systems.LungSystem)]);
         SubscribeLocalEvent<SolutionComponent, ComponentShutdown>(OnSolutionShutdown);
 
         SubscribeLocalEvent<ExaminableSolutionComponent, ExaminedEvent>(OnExamineSolution);
         SubscribeLocalEvent<ExaminableSolutionComponent, GetVerbsEvent<ExamineVerb>>(OnSolutionExaminableVerb);
 
-        SubscribeLocalEvent<SolutionManagerComponent, MapInitEvent>(OnManagerInit);
+        SubscribeLocalEvent<SolutionManagerComponent, MapInitEvent>(OnManagerInit,
+            before: [typeof(Content.Shared.Nutrition.EntitySystems.IngestionSystem), typeof(Content.Shared.Body.Systems.LungSystem)]);
         SubscribeLocalEvent<SolutionManagerComponent, ComponentShutdown>(OnManagerShutdown);
         SubscribeLocalEvent<SolutionManagerComponent, EntInsertedIntoContainerMessage>(OnSolutionAdded);
         SubscribeLocalEvent<SolutionManagerComponent, EntRemovedFromContainerMessage>(OnSolutionRemoved);
@@ -1188,6 +1191,9 @@ public abstract partial class SharedSolutionContainerSystem : EntitySystem
     {
         // Do NOT ever EnsureSolution during anything other than MapInit!!!
         DebugTools.Assert(LifeStage(entity) == EntityLifeStage.MapInitialized);
+        //IS14-change: initialize declared legacy contents before creating an empty default.
+        if (TryComp<SolutionContainerManagerComponent>(entity, out var legacy) && !legacy.Migrating && !legacy.Migrated)
+            PortLegacySolutions((entity.Owner, legacy));
         if (SolutionQuery.TryComp(entity, out var comp) && comp.Id == name)
         {
             solutionEntity = (entity.Owner, comp);

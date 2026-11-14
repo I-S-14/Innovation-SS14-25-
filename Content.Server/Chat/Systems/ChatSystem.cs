@@ -34,7 +34,6 @@ using Robust.Shared.Random;
 using Robust.Shared.Replays;
 using Robust.Shared.Utility;
 using System.Collections.Immutable; // Goobstation - Starlight collective mind port
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using Content.Shared._RMC14.CCVar;
@@ -79,7 +78,6 @@ public sealed partial class ChatSystem : SharedChatSystem
     [Dependency] private readonly ActionBlockerSystem _actionBlocker = default!;
     [Dependency] private readonly StationSystem _stationSystem = default!;
     [Dependency] private readonly MobStateSystem _mobStateSystem = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly AnnouncerSystem _announcer = default!;
     [Dependency] private readonly ReplacementAccentSystem _wordreplacement = default!;
     [Dependency] private readonly ExamineSystemShared _examineSystem = default!;
@@ -89,13 +87,13 @@ public sealed partial class ChatSystem : SharedChatSystem
     [Dependency] private readonly CollectiveMindUpdateSystem _collectiveMind = default!; // Goobstation - Starlight collective mind port
     [Dependency] private readonly LanguageSystem _language = default!; // Einstein Engines - Language
 
-    public const int VoiceRange = 10; // how far voice goes in world units
-    public const int WhisperClearRange = 2; // how far whisper goes while still being understandable, in world units
-    public const int WhisperMuffledRange = 5; // how far whisper goes at all, in world units
+    public new const int VoiceRange = 10; // how far voice goes in world units
+    public new const int WhisperClearRange = 2; // how far whisper goes while still being understandable, in world units
+    public new const int WhisperMuffledRange = 5; // how far whisper goes at all, in world units
     //public static readonly SoundSpecifier DefaultAnnouncementSound
     //   = new SoundPathSpecifier("/Audio/Announcements/announce.ogg"); // CorvaxGoob-Announcements
 
-    public const string DefaultAnnouncementSound = "/Audio/_CorvaxGoob/Announcements/announce.ogg"; // CorvaxGoob-Announcements
+    public new const string DefaultAnnouncementSound = "/Audio/_CorvaxGoob/Announcements/announce.ogg"; // CorvaxGoob-Announcements
     public const string CentComAnnouncementSound = "/Audio/_CorvaxGoob/Announcements/centcomm.ogg"; // CorvaxGoob-Announcements
     public const float DefaultObfuscationFactor = 0.2f; // Percentage of symbols in a whispered message that can be seen even by "far" listeners
     public readonly Color DefaultSpeakColor = Color.White; // Einstein Engines - Language
@@ -112,7 +110,6 @@ public sealed partial class ChatSystem : SharedChatSystem
     private bool _DeadchatEnabled = true; // RMC14
     private readonly bool _adminLoocEnabled = true;
 
-    private bool _deadChatEnabled = true;
 
     public override void Initialize()
     {
@@ -192,7 +189,7 @@ public sealed partial class ChatSystem : SharedChatSystem
         string? nameOverride = null,
         bool checkRadioPrefix = true,
         bool ignoreActionBlocker = false,
-        Color? colorOverride = null, // Goobstation
+        Color? colorOverride = null,
         LanguagePrototype? languageOverride = null, // Einstein Engines - Language
         bool forced = false // goobstation
         )
@@ -212,7 +209,7 @@ public sealed partial class ChatSystem : SharedChatSystem
         string? nameOverride = null,
         bool checkRadioPrefix = true,
         bool ignoreActionBlocker = false,
-        Color? colorOverride = null, // Goobstation
+        Color? colorOverride = null,
         LanguagePrototype? languageOverride = null, // Einstein Engines - Language
         bool forced = false // goobstation
         )
@@ -401,12 +398,13 @@ public sealed partial class ChatSystem : SharedChatSystem
         string? sender = null,
         bool playSound = true,
         SoundSpecifier? announcementSound = null,
-        Color? colorOverride = null
+        Color? colorOverride = null,
+        string? signature = null
         )
     {
         sender ??= Loc.GetString("chat-manager-sender-announcement");
 
-        var wrappedMessage = Loc.GetString("chat-manager-sender-announcement-wrap-message", ("sender", sender), ("message", FormattedMessage.EscapeText(message)));
+        var wrappedMessage = WrapAnnouncement(sender, message, signature); // IS14-change: preserve signed announcements
         _chatManager.ChatMessageToAll(ChatChannel.Radio, message, wrappedMessage, default, false, true, colorOverride);
         if (playSound)
         {
@@ -425,7 +423,7 @@ public sealed partial class ChatSystem : SharedChatSystem
             sound.Params = sound.Params.WithVolume(-2);
             SendGlobalSound(sound, Filter.Broadcast());
 
-            //_audio.PlayGlobal(announcementSound ?? DefaultAnnouncementSound, Filter.Broadcast(), true, AudioParams.Default.WithVolume(-2f));
+            //_audio.PlayGlobal(announcementSound ?? new SoundPathSpecifier(DefaultAnnouncementSound), Filter.Broadcast(), true, AudioParams.Default.WithVolume(-2f));
             // CorvaxGoob-Announcements-Volume-End
         }
         _adminLogger.Add(LogType.Chat, LogImpact.Low, $"Global station announcement from {sender}: {message}");
@@ -439,20 +437,21 @@ public sealed partial class ChatSystem : SharedChatSystem
         string? sender = null,
         bool playSound = true,
         SoundSpecifier? announcementSound = null,
-        Color? colorOverride = null)
+        Color? colorOverride = null,
+        string? signature = null)
     {
         sender ??= Loc.GetString("chat-manager-sender-announcement");
 
-        var wrappedMessage = Loc.GetString("chat-manager-sender-announcement-wrap-message", ("sender", sender), ("message", FormattedMessage.EscapeText(message)));
+        var wrappedMessage = WrapAnnouncement(sender, message, signature); // IS14-change: preserve signed announcements
         _chatManager.ChatMessageToManyFiltered(filter, ChatChannel.Radio, message, wrappedMessage, source ?? default, false, true, colorOverride);
         if (playSound)
         {
             // CorvaxGoob-Announcements-Volume-Start
             var sound = announcementSound ?? new SoundPathSpecifier(DefaultAnnouncementSound);
             sound.Params = sound.Params.WithVolume(-2);
-            SendGlobalSound(sound, Filter.Broadcast());
+            SendGlobalSound(sound, filter);
 
-            //_audio.PlayGlobal(announcementSound ?? DefaultAnnouncementSound, filter, true, AudioParams.Default.WithVolume(-2f));
+            //_audio.PlayGlobal(announcementSound ?? new SoundPathSpecifier(DefaultAnnouncementSound), filter, true, AudioParams.Default.WithVolume(-2f));
             // CorvaxGoob-Announcements-Volume-End
         }
         _adminLogger.Add(LogType.Chat, LogImpact.Low, $"Station Announcement from {sender}: {message}");
@@ -465,11 +464,12 @@ public sealed partial class ChatSystem : SharedChatSystem
         string? sender = null,
         bool playDefaultSound = true,
         SoundSpecifier? announcementSound = null,
-        Color? colorOverride = null)
+        Color? colorOverride = null,
+        string? signature = null)
     {
         sender ??= Loc.GetString("chat-manager-sender-announcement");
 
-        var wrappedMessage = Loc.GetString("chat-manager-sender-announcement-wrap-message", ("sender", sender), ("message", FormattedMessage.EscapeText(message)));
+        var wrappedMessage = WrapAnnouncement(sender, message, signature); // IS14-change: preserve signed announcements
         var station = _stationSystem.GetOwningStation(source);
 
         if (station == null)
@@ -491,7 +491,7 @@ public sealed partial class ChatSystem : SharedChatSystem
             sound.Params = sound.Params.WithVolume(-2);
             SendGlobalSound(sound, filter);
 
-            //_audio.PlayGlobal(announcementSound ?? DefaultAnnouncementSound, filter, true, AudioParams.Default.WithVolume(-2f));
+            //_audio.PlayGlobal(announcementSound ?? new SoundPathSpecifier(DefaultAnnouncementSound), filter, true, AudioParams.Default.WithVolume(-2f));
             // CorvaxGoob-Announcements-Volume-End
         }
 
@@ -592,7 +592,8 @@ public sealed partial class ChatSystem : SharedChatSystem
         LanguagePrototype language, // Einstein Engines - Language
         bool hideLog = false,
         bool ignoreActionBlocker = false,
-        Color? colorOverride = null // Goobstation
+        Color? colorOverride = null,
+        string? signature = null // Goobstation
         )
     {
         if (!_actionBlocker.CanSpeak(source) && !ignoreActionBlocker)
@@ -701,7 +702,8 @@ public sealed partial class ChatSystem : SharedChatSystem
         LanguagePrototype language, // Einstein Engines - Language
         bool hideLog = false,
         bool ignoreActionBlocker = false,
-        Color? colorOverride = null // Goobstation
+        Color? colorOverride = null,
+        string? signature = null // Goobstation
         )
     {
         if (!_actionBlocker.CanSpeak(source) && !ignoreActionBlocker)
@@ -1158,7 +1160,8 @@ public sealed partial class ChatSystem : SharedChatSystem
        /// <summary>
     ///     Wraps a message sent by the specified entity into an "x says y" string.
     /// </summary>
-    public string WrapPublicMessage(EntityUid source, string name, string message, LanguagePrototype? language = null, Color? colorOverride = null)
+    public string WrapPublicMessage(EntityUid source, string name, string message, LanguagePrototype? language = null, Color? colorOverride = null,
+        string? signature = null)
     {
         var wrapId = GetSpeechVerbWithOverride(source, message).Bold ? "chat-manager-entity-say-bold-wrap-message" : "chat-manager-entity-say-wrap-message"; // Goob
         return WrapMessage(wrapId, InGameICChatType.Speak, source, name, message, language, colorOverride);
@@ -1167,7 +1170,8 @@ public sealed partial class ChatSystem : SharedChatSystem
     /// <summary>
     ///     Wraps a message whispered by the specified entity into an "x whispers y" string.
     /// </summary>
-    public string WrapWhisperMessage(EntityUid source, LocId defaultWrap, string entityName, string message, LanguagePrototype? language = null, Color? colorOverride = null)
+    public string WrapWhisperMessage(EntityUid source, LocId defaultWrap, string entityName, string message, LanguagePrototype? language = null, Color? colorOverride = null,
+        string? signature = null)
     {
         return WrapMessage(defaultWrap, InGameICChatType.Whisper, source, entityName, message, language, colorOverride);
     }

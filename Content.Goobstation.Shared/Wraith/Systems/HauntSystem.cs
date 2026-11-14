@@ -115,7 +115,7 @@ public sealed partial class HauntSystem : EntitySystem
         _statusEffects.Clear();
         _lookup.GetEntitiesInRange(Transform(ent.Owner).Coordinates, 3f, _statusEffects);
         foreach (var entity in _statusEffects)
-            _statusNew.TryAddStatusEffectDuration(entity, SharedFlashSystem.FlashedKey, ent.Comp.HauntFlashDuration); // IS14-merge: wizden flash is a status effect entity
+            _statusNew.TryAddStatusEffectDuration(entity, ent.Comp.FlashedId, ent.Comp.HauntFlashDuration); // IS14-change: respect the migrated configurable status effect entity.
 
         // we don't have corporeal so add it
         _statusEffectsOld.TryAddStatusEffect<CorporealComponent>(ent.Owner, ent.Comp.CorporealEffect, ent.Comp.HauntCorporealDuration, true);

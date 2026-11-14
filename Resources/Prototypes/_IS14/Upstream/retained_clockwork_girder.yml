@@ -1,0 +1,48 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: 5327c414c5:Resources/Prototypes/Entities/Structures/Walls/girders.yml
+- type: entity
+  id: ClockworkGirder
+  # IS14: current ReinforcedGirder adds a 30-damage destruction threshold.
+  # Destructible thresholds always inherit; use the same geometry/health base
+  # and resistance without that earlier threshold, retaining Goob's 50/200.
+  parent: [BaseGirder, BaseStructureHealth]
+  name: wall gear
+  description: A large gear with mounting brackets for additional plating; This could
+    be made into a wall with more brass plating.
+  components:
+  - type: Damageable
+    damageModifierSet: PlasteelStaticMod
+  - type: Sprite
+    sprite: Structures/Walls/clock.rsi
+    state: wall_gear
+  - type: Construction
+    graph: ClockworkGirder
+    node: clockGirder
+  - type: StaticPrice
+    price: 75
+  - type: Destructible
+    thresholds:
+    - trigger: !type:DamageTrigger
+        damage: 200
+      behaviors:
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+    - trigger: !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          SheetBrass1:
+            min: 1
+            max: 2
+          PartRodMetal1:
+            min: 1
+            max: 2
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak

@@ -10,7 +10,6 @@
     sprite: Structures/Windows/window-regal.rsi
   - type: Damageable
     damageModifierSet: RGlass
-  - type: Injurable
     damageContainer: StructuralInorganic
   - type: RCDDeconstructable
     cost: 1

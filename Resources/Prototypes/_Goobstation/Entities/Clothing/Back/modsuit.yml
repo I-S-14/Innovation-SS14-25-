@@ -266,7 +266,7 @@
     - 3,0,6,3
     - 8,0,9,3
   - type: StealTarget # CorvaxGoob-Bugfixes
-    stealGroup: ClothingOuterHardsuitVoidParamed
+    stealGroup: [ClothingOuterHardsuitVoidParamed]
   - type: ToggleableClothing
     clothingPrototypes:
       head: ClothingModsuitHelmetParamedic
@@ -400,7 +400,7 @@
       back:
       - state: equipped-BACKPACK-sealed
   - type: StealTarget
-    stealGroup: ClothingOuterHardsuitRd
+    stealGroup: [ClothingOuterHardsuitRd]
   - type: Tag
     tags:
       - HighRiskItem

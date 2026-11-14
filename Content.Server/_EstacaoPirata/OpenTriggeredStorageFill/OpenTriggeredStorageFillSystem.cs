@@ -46,8 +46,7 @@ public sealed class OpenTriggeredStorageFillSystem : EntitySystem
         var spawnItems = EntitySpawnCollection.GetSpawns(comp.Contents);
         foreach (var item in spawnItems)
         {
-            DebugTools.Assert(!_prototype.Index<EntityPrototype>(item)
-                .HasComponent(typeof(RandomSpawnerComponent)));
+            DebugTools.Assert(!HasComp<RandomSpawnerComponent>(_prototype.Index<EntityPrototype>(item)));
             var ent = Spawn(item, coordinates);
 
             if (!TryComp<ItemComponent>(ent, out var itemComp))

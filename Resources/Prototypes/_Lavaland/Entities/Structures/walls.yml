@@ -15,7 +15,11 @@
   - type: Destructible
   - type: IconSmooth
     key: walls
-    base: hierophant
+    states:
+    - !type:CornerSpriteSmoothing
+      base: hierophant
+      mask:
+      - walls
   - type: SyncSprite
   - type: PointLight
     radius: 5.0
@@ -41,8 +45,12 @@
   - type: Destructible
   - type: IconSmooth
     key: hierofield
-    base: hierotemp
-    shader: unshaded
+    states:
+    - !type:CornerSpriteSmoothing
+      base: hierotemp
+      mask:
+      - hierofield
+      shader: unshaded
   - type: Occluder
     enabled: false
   - type: RustRequiresPathStage
@@ -60,7 +68,11 @@
     sprite: Structures/Walls/necropolis.rsi
   - type: IconSmooth
     key: walls
-    base: necropolis
+    states:
+    - !type:CornerSpriteSmoothing
+      base: necropolis
+      mask:
+      - walls
   - type: Destructible
   - type: RustRequiresPathStage
     pathStage: 11 # Can't rust

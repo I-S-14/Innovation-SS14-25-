@@ -1,5 +1,6 @@
 - type: job
   id: ERTChaplain
+  canBeAntag: false # IS14: retain original role restriction.
   name: job-name-ertchaplain
   description: job-description-ertchaplain
   playTimeTracker: JobERTChaplain
@@ -11,12 +12,16 @@
   - AllAccess
   access:
   - CentralCommand
+  - NanotrasenRepresentative
+  - BlueshieldOfficer
   special:
   - !type:AddComponentSpecial
     components:
     - type: BibleUser #Lets them heal with bibles
+    - type: CurseImmune # Goobstation - Wraith
+    - type: CanEnchant # Goobstation
   - !type:AddImplantSpecial
-    implants: [ MindShieldImplant, DeathRattleImplantCentcomm ]
+    implants: [ MindShieldImplant, FreedomImplant, BluespaceLifelineImplant, RadioImplantCentcomm, NutrimentPumpImplant, StypticStimulatorImplant, DeathRattleImplantCentcomm ]
 
 
 

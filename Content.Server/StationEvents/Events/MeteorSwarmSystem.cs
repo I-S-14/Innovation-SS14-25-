@@ -13,7 +13,6 @@ using Robust.Shared.Map;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Systems;
 using Robust.Shared.Random;
-using System.Numerics;
 using Robust.Server.Audio;
 using Robust.Shared.Player;
 
@@ -25,7 +24,6 @@ namespace Content.Server.StationEvents.Events;
 /// <seealso cref="MeteorSwarmComponent"/>
 public sealed partial class MeteorSwarmSystem : GameRuleSystem<MeteorSwarmComponent>
 {
-    [Dependency] private readonly AudioSystem _audio = default!;
     [Dependency] private readonly ChatSystem _chat = default!;
     [Dependency] private readonly AnnouncerSystem _announcer = default!;
     [Dependency] private SharedPhysicsSystem _physics = default!;
@@ -42,7 +40,7 @@ public sealed partial class MeteorSwarmSystem : GameRuleSystem<MeteorSwarmCompon
         if (_station.GetLargestGrid(station.AsNullable()) is not { } grid)
             return;
 
-        if (!TryComp<StationEventComponent>(uid, out var stationEvent)) // CorvaxGoob-CustomAnnouncers
+        if (!TryComp<StationEventComponent>(rule, out var stationEvent)) // CorvaxGoob-CustomAnnouncers
             return;
 
         // we don't want to send to players who aren't in game (i.e. in the lobby)
@@ -73,7 +71,7 @@ public sealed partial class MeteorSwarmSystem : GameRuleSystem<MeteorSwarmCompon
             return;
 
         var station = RobustRandom.Pick(_station.GetStations());
-        if (_station.GetLargestGrid(station) is not { } grid)
+        if (_station.GetLargestGrid(station.AsNullable()) is not { } grid)
             return;
 
         var mapId = Transform(grid).MapID;

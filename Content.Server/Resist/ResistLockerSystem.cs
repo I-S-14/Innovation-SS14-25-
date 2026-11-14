@@ -49,7 +49,7 @@ public sealed partial class ResistLockerSystem : EntitySystem
 
         if (TryComp<LockComponent>(uid, out var lockComponent) && lockComponent.Locked || _weldable.IsWelded(uid))
         {
-            AttemptResist(args.Entity, uid, storageComponent, component);
+            AttemptResist(args.Entity, uid, component);
         }
     }
 

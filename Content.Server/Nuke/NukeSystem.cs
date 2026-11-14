@@ -1,3 +1,4 @@
+using Content.Shared.GameTicking.Rules.Components; // IS14-change: upstream namespace move
 // SPDX-License-Identifier: AGPL-3.0-or-later
 using Content.Server.Chat.Systems;
 using Content.Server.Explosion.EntitySystems;
@@ -33,7 +34,7 @@ namespace Content.Server.Nuke;
 
 public sealed partial class NukeSystem : EntitySystem // Goob
 {
-    [Dependency] private readonly GameTicker _gameTicker = default!; // Goobstation
+    [Dependency] private readonly ServerGameTicker _gameTicker = default!; // Goobstation
     [Dependency] private AlertLevelSystem _alertLevel = default!;
     [Dependency] private ChatSystem _chatSystem = default!;
     [Dependency] private ExplosionSystem _explosions = default!;
@@ -46,11 +47,9 @@ public sealed partial class NukeSystem : EntitySystem // Goob
     [Dependency] private SharedAudioSystem _audio = default!;
     [Dependency] private SharedDoAfterSystem _doAfter = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
-    [Dependency] private SharedMapSystem _map = default!;
     [Dependency] private ServerStationSystem _station = default!;
     [Dependency] private UserInterfaceSystem _ui = default!;
     [Dependency] private AppearanceSystem _appearance = default!;
-    [Dependency] private TurfSystem _turf = default!;
     [Dependency] private IGameTiming _timing = default!;
 
     /// <summary>

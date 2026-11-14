@@ -1,3 +1,4 @@
+using Content.Shared.DeviceLinking.Components;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Threading;
@@ -30,9 +31,10 @@ public sealed partial class FindLinkedMachineOperator : HTNOperator
     [DataField(required: true)]
     public string TargetMoveKey = string.Empty;
 
-    public override void Initialize(IEntitySystemManager sysManager)
+    public override void Initialize(IDependencyCollection deps)
     {
-        base.Initialize(sysManager);
+        base.Initialize(deps);
+        var sysManager = deps.Resolve<IEntitySystemManager>();
         _pathfinding = sysManager.GetEntitySystem<PathfindingSystem>();
     }
 

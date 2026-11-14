@@ -1,3 +1,4 @@
+using Content.Shared.Station.Systems;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 using Content.Shared.Audio;
 using JetBrains.Annotations;
@@ -12,6 +13,12 @@ namespace Content.Server.Audio;
 /// <inheritdoc/>
 public sealed partial class ServerGlobalSoundSystem : GlobalSoundSystem
 {
+    //IS14-change start: retain fork fields lost during merge.
+
+    [Dependency] private readonly SharedAudioSystem _audio = default!;
+    [Dependency] private readonly StationSystem _stationSystem = default!;
+    //IS14-change end
+
     [Dependency] private IConsoleHost _conHost = default!;
 
     /// <inheritdoc/>
@@ -42,14 +49,14 @@ public sealed partial class ServerGlobalSoundSystem : GlobalSoundSystem
         return stationFilter;
     }
 
-    public void PlayGlobalOnStation(EntityUid source, ResolvedSoundSpecifier specifier, AudioParams? audioParams = null)
+    public new void PlayGlobalOnStation(EntityUid source, ResolvedSoundSpecifier specifier, AudioParams? audioParams = null)
     {
         var msg = new GameGlobalSoundEvent(specifier, audioParams);
         var filter = GetStationAndPvs(source);
         RaiseNetworkEvent(msg, filter);
     }
 
-    public void StopStationEventMusic(EntityUid source, StationEventMusicType type)
+    public new void StopStationEventMusic(EntityUid source, StationEventMusicType type)
     {
         // TODO REPLAYS
         // these start & stop events are gonna be a PITA

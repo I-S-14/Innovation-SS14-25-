@@ -1,3 +1,4 @@
+#nullable enable annotations
 using Content.Server._CorvaxGoob.OfferItem;
 using Content.Shared._CorvaxGoob.OfferItem;
 using Content.Shared.Hands.Components;

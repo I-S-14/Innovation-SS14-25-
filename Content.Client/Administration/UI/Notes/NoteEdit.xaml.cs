@@ -17,6 +17,8 @@ namespace Content.Client.Administration.UI.Notes;
 [GenerateTypedNameReferences]
 public sealed partial class NoteEdit : FancyWindow
 {
+    private enum Multipliers { Minutes, Hours, Days, Weeks, Months, Years, Centuries }
+
     [Dependency] private IGameTiming _gameTiming = default!;
     [Dependency] private IClientConsoleHost _console = default!;
 
@@ -32,6 +34,9 @@ public sealed partial class NoteEdit : FancyWindow
         CanCreate = canCreate;
         CanEdit = canEdit;
 
+        foreach (var unit in Enum.GetValues<Multipliers>())
+            ExpiryLengthDropdown.AddItem(Loc.GetString("admin-note-editor-duration-" + unit.ToString().ToLowerInvariant()), (int)unit);
+        ExpiryLengthDropdown.OnItemSelected += args => ExpiryLengthDropdown.SelectId(args.Id);
         ResetSubmitButton();
 
         TypeOption.AddItem(Loc.GetString("admin-note-editor-type-note"), (int) NoteType.Note);

@@ -15,6 +15,9 @@ public sealed partial class ReplayToggleScreenshotModeCommand : BaseReplayComman
     [Dependency] private ContentReplayPlaybackManager _replayManager = default!;
 
     public override string Command => "replay_toggle_screenshot_mode";
+    // IS14: keep the content-specific behavior description separate from engine localization.
+    public override string Description => Loc.GetString("cmd-is14-replay-toggle-screenshot-mode-desc");
+    public override string Help => Loc.GetString("cmd-is14-replay-toggle-screenshot-mode-help");
 
     public override void Execute(IConsoleShell shell, string argStr, string[] args)
     {

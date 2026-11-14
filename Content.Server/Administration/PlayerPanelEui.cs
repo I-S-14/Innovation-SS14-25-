@@ -38,7 +38,7 @@ public sealed partial class PlayerPanelEui : BaseEui
     private bool _canFreeze;
     private bool _canAhelp;
     private float _trustScore;
-    private TimeSpan? _accountAge; //goob edit
+    private DateTime? _accountCreationDate; //goob edit
     private FollowerSystem _follower;
 
     public PlayerPanelEui(LocatedPlayerData player)
@@ -74,7 +74,7 @@ public sealed partial class PlayerPanelEui : BaseEui
             _frozen,
             _canAhelp,
             _trustScore,
-            _accountAge); // goob edit
+            _accountCreationDate); // goob edit
     }
 
     private void OnPermsChanged(AdminPermsChangedEventArgs args)
@@ -210,7 +210,7 @@ public sealed partial class PlayerPanelEui : BaseEui
 
             var userData = session.Channel.UserData;
             _trustScore = userData.Trust;
-            _accountAge = DateTime.UtcNow - userData.CreatedTime; // goob edit
+            _accountCreationDate = userData.CreatedTime; // goob edit
         }
         else
         {

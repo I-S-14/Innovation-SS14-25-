@@ -7,7 +7,7 @@
   components:
   - type: Objective
     difficulty: 1.5
-    issuer: objective-issuer-abductors
+    issuer: IS14ObjectiveIssuerAbductors
   - type: RoleRequirement
     roles:
     - Abductor
@@ -34,7 +34,7 @@
   components:
   - type: Objective
     difficulty: 1
-    issuer: objective-issuer-voices
+    issuer: IS14ObjectiveIssuerVoices
   - type: RoleplayObjective
   - type: RoleRequirement
     roles:
@@ -385,7 +385,7 @@
   - type: Objective
     icon:
       sprite: Structures/Walls/solid.rsi
-      state: rgeneric
+      state: full # IS14: use the current Wizards wall icon.
 
 - type: entity
   parent: BaseAbductorVictimObjective

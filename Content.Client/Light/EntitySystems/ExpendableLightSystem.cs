@@ -18,10 +18,10 @@ public sealed partial class ExpendableLightVisualsSystem : VisualizerSystem<Expe
             return;
 
         if (AppearanceSystem.TryGetData<string>(uid, ExpendableLightVisuals.Behavior, out var lightBehaviourID, args.Component)
-            && lightBehaviourID != comp.CurrentBehaviour // Goob
-            && TryComp<LightBehaviourComponent>(uid, out var lightBehaviour))
+            && TryComp<LightBehaviourComponent>(uid, out var lightBehaviour)
+            && lightBehaviourID != lightBehaviour.CurrentExpendableBehaviour)
         {
-            comp.CurrentBehaviour = lightBehaviourID; // Goob
+            lightBehaviour.CurrentExpendableBehaviour = lightBehaviourID; // Goob
             _lightBehavior.StopLightBehaviour((uid, lightBehaviour));
 
             if (!string.IsNullOrEmpty(lightBehaviourID))

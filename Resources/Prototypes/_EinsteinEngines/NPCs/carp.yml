@@ -109,24 +109,22 @@
     - type: FlavorProfile
       flavors:
       - fishy
-    - type: Thirst
-      startingThirst: 25
-      thresholds:
-        OverHydrated: 35
-        Okay: 25
-        Thirsty: 15
-        Parched: 10
-        Dead: 0
-      baseDecayRate: 0.04
-    - type: Hunger
-      startingHunger: 25
-      thresholds:
-        Overfed: 35
-        Okay: 25
-        Peckish: 15
-        Starving: 10
-        Dead: 0
-      baseDecayRate: 0.04
+    - type: Satiation
+      satiations:
+        Thirst:
+          prototype: IS14MobCarpGoldfishThirstd8127f3a
+          lastAuthoritativeValue: 25
+        Hunger:
+          prototype: IS14MobCarpGoldfishHunger3ab82e31
+          lastAuthoritativeValue: 25
+    - type: SatiationSpeedModifier
+      satiations:
+        Thirst:
+          thresholds:
+            Parched: 0.75
+        Hunger:
+          thresholds:
+            Starving: 0.75
     - type: Extractable
       grindableSolutionName: food
     - type: SolutionContainerManager

@@ -144,12 +144,24 @@ public abstract partial class AntagSelectionSystem : GameRuleSystem<AntagSelecti
         // Pick a random player session and then try to assign the currently available antags from it!
         // This means each player has the same chance at rolling antag, with minimal alterations to the odds by number of antags selected.
         var weightedPool = GetWeightedPlayerPool(pool);
+        var fallbackPlayers = new List<ICommonSession>(); // IS14: primary preferences precede fallback selection.
         while (RobustRandom.TryPickAndTake(weightedPool, out var session))
         {
             // Antag distributed so we remove the session.
-            if (!PreAssignAntag(session, ref _preSpawnRules))
+            var assigned = PreAssignAntag(session, ref _preSpawnRules, out var selected, allowFallback: false);
+            if (!selected)
+                fallbackPlayers.Add(session);
+            if (!assigned)
                 continue;
 
+            args.PlayerPool.Remove(session);
+            GameTicker.PlayerJoinGame(session);
+        }
+
+        foreach (var session in fallbackPlayers)
+        {
+            if (!PreAssignAntag(session, ref _preSpawnRules, out _, allowFallback: true))
+                continue;
             args.PlayerPool.Remove(session);
             GameTicker.PlayerJoinGame(session);
         }
@@ -170,10 +182,15 @@ public abstract partial class AntagSelectionSystem : GameRuleSystem<AntagSelecti
         // Pick a random player session and then try to assign the currently available antags from it!
         // This means each player has the same chance at rolling antag, with minimal alterations to the odds by number of antags selected.
         var weightedPool = GetWeightedPlayerPool(args.Players);
+        var fallbackPlayers = new List<ICommonSession>();
         while (RobustRandom.TryPickAndTake(weightedPool, out var session))
         {
-            AssignAntag(session, ref _postSpawnRules);
+            if (!AssignAntag(session, ref _postSpawnRules, allowFallback: false))
+                fallbackPlayers.Add(session);
         }
+
+        foreach (var session in fallbackPlayers)
+            AssignAntag(session, ref _postSpawnRules, allowFallback: true);
 
         // Make ghost role spawners for any remaining rules!
         SpawnGhostRoles(_postSpawnRules);
@@ -225,7 +242,9 @@ public abstract partial class AntagSelectionSystem : GameRuleSystem<AntagSelecti
                 continue;
 
             // We do it this way in case our resolve fails.
-            roles.Add((gameRule, proto, active, GetTargetAntagCount(antag, playerCount, ref runningCount)));
+            var count = GetTargetAntagCount(antag, playerCount, ref runningCount);
+            if (count > 0)
+                roles.Add((gameRule, proto, active, count));
         }
     }
 
@@ -244,7 +263,9 @@ public abstract partial class AntagSelectionSystem : GameRuleSystem<AntagSelecti
                 continue;
 
             // We do it this way in case our resolve fails.
-            antags.Add((definition, GetTargetAntagCount(antag, playerCount, ref runningCount)));
+            var count = GetTargetAntagCount(antag, playerCount, ref runningCount);
+            if (count > 0)
+                antags.Add((definition, count));
         }
 
         return antags;
@@ -286,11 +307,20 @@ public abstract partial class AntagSelectionSystem : GameRuleSystem<AntagSelecti
 
     private void AssignAntags(Entity<AntagSelectionComponent> gameRule, Dictionary<ICommonSession, float> weightedPool, List<AntagCount> antags)
     {
+        var fallbackPlayers = new List<ICommonSession>();
         while (RobustRandom.TryPickAndTake(weightedPool, out var session))
         {
-            AssignAntag(gameRule, session, ref antags);
+            if (!AssignAntag(gameRule, session, ref antags, allowFallback: false))
+                fallbackPlayers.Add(session);
 
             // Assignment complete, return early.
+            if (antags.Count == 0)
+                return;
+        }
+
+        foreach (var session in fallbackPlayers)
+        {
+            AssignAntag(gameRule, session, ref antags, allowFallback: true);
             if (antags.Count == 0)
                 return;
         }
@@ -303,8 +333,9 @@ public abstract partial class AntagSelectionSystem : GameRuleSystem<AntagSelecti
     /// Selects and assigns antags from a list, this is called before the game has started.
     /// Is private because it has it should only ever be run in very specific scenarios.
     /// </summary>
-    private bool PreAssignAntag(ICommonSession player, ref List<AntagRule> antags)
+    private bool PreAssignAntag(ICommonSession player, ref List<AntagRule> antags, out bool selected, bool allowFallback)
     {
+        selected = false;
         // If this session cannot be an antag, then get the next session!
         if (!TryGetValidAntagPreferences(player, out var prefs))
             return false;
@@ -321,7 +352,7 @@ public abstract partial class AntagSelectionSystem : GameRuleSystem<AntagSelecti
                 continue;
             }
 
-            if (!PrefsContain(prefs, antag.Definition.PrefRoles))
+            if (!MatchesGoobPreferences(antag.Definition, prefs, allowFallback))
                 continue;
 
             // We break it up like this to not log the server trying to make sessions without valid antag prefs into antags.
@@ -330,6 +361,7 @@ public abstract partial class AntagSelectionSystem : GameRuleSystem<AntagSelecti
 
             // Pre-select the session then deprecate the selection count.
             PreSelectSession(antag.GameRule, antag.Definition, player);
+            selected = true;
 
             // Reduce the slots left by one
             // If we finish assigning all slots
@@ -363,7 +395,7 @@ public abstract partial class AntagSelectionSystem : GameRuleSystem<AntagSelecti
     /// Selects and assigns antags from a list, this is called before the game has started.
     /// Is private because it has it should only ever be run in very specific scenarios.
     /// </summary>
-    private bool AssignAntag(ICommonSession player, ref List<AntagRule> antags)
+    private bool AssignAntag(ICommonSession player, ref List<AntagRule> antags, bool allowFallback)
     {
         // If this session cannot be an antag, then get the next session!
         if (!TryGetValidAntagPreferences(player, out var prefs))
@@ -381,7 +413,7 @@ public abstract partial class AntagSelectionSystem : GameRuleSystem<AntagSelecti
                 continue;
             }
 
-            if (!PrefsContain(prefs, antag.Definition.PrefRoles))
+            if (!MatchesGoobPreferences(antag.Definition, prefs, allowFallback))
                 continue;
 
             // We break it up like this to not log the server trying to make sessions without valid antag prefs into antags.
@@ -415,7 +447,7 @@ public abstract partial class AntagSelectionSystem : GameRuleSystem<AntagSelecti
     /// Selects and assigns antags from a list.
     /// Is private because it has it should only ever be run in very specific scenarios.
     /// </summary>
-    private bool AssignAntag(Entity<AntagSelectionComponent> gameRule, ICommonSession player, ref List<AntagCount> antags)
+    private bool AssignAntag(Entity<AntagSelectionComponent> gameRule, ICommonSession player, ref List<AntagCount> antags, bool allowFallback)
     {
         // If this session cannot be an antag, then get the next session!
         if (!TryGetValidAntagPreferences(player, out var prefs))
@@ -433,7 +465,7 @@ public abstract partial class AntagSelectionSystem : GameRuleSystem<AntagSelecti
                 continue;
             }
 
-            if (!PrefsContain(prefs, antag.Definition.PrefRoles))
+            if (!MatchesGoobPreferences(antag.Definition, prefs, allowFallback))
                 continue;
 
             // We break it up like this to not log the server trying to make sessions without valid antag prefs into antags.
@@ -704,6 +736,9 @@ public abstract partial class AntagSelectionSystem : GameRuleSystem<AntagSelecti
         if (prototype.StartingGear is not null)
             gear.Add(prototype.StartingGear.Value);
 
+        //IS14-change start
+        BeforeAntagEquip(antag, prototype);
+        //IS14-change end
         Loadout.Equip(antag, gear, prototype.RoleLoadout);
 
         // Ensure that we have the right mind for our entity.
@@ -719,6 +754,9 @@ public abstract partial class AntagSelectionSystem : GameRuleSystem<AntagSelecti
 
         SendBriefing(player, prototype.Briefing);
 
+        //IS14-change start
+        AfterAntagEquip(antag, prototype);
+        //IS14-change end
         var afterEv = new AfterAntagEntitySelectedEvent(player, antag, gameRule, prototype);
         RaiseLocalEvent(gameRule, ref afterEv, true);
     }

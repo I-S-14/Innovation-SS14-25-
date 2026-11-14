@@ -463,8 +463,7 @@
       visible: false
   - type: IconSmooth
     key: chitin
-    mode: NoSprite
-
+    states: []
 - type: entity
   parent: AirlockGlass
   id: AirlockGlassXeno
@@ -512,4 +511,4 @@
       visible: false
   - type: IconSmooth
     key: chitin
-    mode: NoSprite
+    states: []

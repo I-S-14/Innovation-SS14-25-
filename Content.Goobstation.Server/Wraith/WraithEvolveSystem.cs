@@ -83,7 +83,7 @@ public sealed partial class WraithEvolveSystem : EntitySystem
         _mind.TransferTo(mindUid, newForm, mind: mind);
         _mind.UnVisit(mindUid, mind);
 
-        EntityManager.CopyComponents(uid, newForm);
+        CopyComps(uid, newForm);
 
         _admin.Add(LogType.Action, LogImpact.High, $"{ToPrettyString(ent.Owner)} evolved to {ToPrettyString(newForm)} as a Wraith");
 

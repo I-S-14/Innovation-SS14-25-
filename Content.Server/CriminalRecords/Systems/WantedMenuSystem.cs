@@ -1,3 +1,4 @@
+using Content.Shared.StationRecords.Components; // IS14-change: upstream namespace move
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Shared.Access.Components;
@@ -107,7 +108,7 @@ public sealed partial class CriminalRecordsConsoleSystem
         var oldStatus = record.Status;
 
         var name = _records.RecordName(key.Value);
-        GetOfficer(msg.Actor, out var officer);
+        var officer = Loc.GetString("criminal-records-console-unknown-officer");
 
         // will probably never fail given the checks above
         name = _records.RecordName(key.Value);
@@ -118,7 +119,7 @@ public sealed partial class CriminalRecordsConsoleSystem
         if (entry != null)
             jobName = entry.JobTitle;
 
-        var tryGetIdentityShortInfoEvent = new TryGetIdentityShortInfoEvent(null, msg.Actor);
+        var tryGetIdentityShortInfoEvent = new TryGetIdentityShortInfoEvent(msg.Actor, ent.Owner, forLogging: false);
         RaiseLocalEvent(tryGetIdentityShortInfoEvent);
         if (tryGetIdentityShortInfoEvent.Title != null)
             officer = tryGetIdentityShortInfoEvent.Title;
@@ -198,7 +199,7 @@ public sealed partial class CriminalRecordsConsoleSystem
         var oldStatus = record.Status;
 
         var name = _records.RecordName(key.Value);
-        GetOfficer(mob.Value, out var officer);
+        var officer = Loc.GetString("criminal-records-console-unknown-officer");
 
         // CorvaxGoob-SecurityFeatures-Start
         var history = Loc.GetString("criminal-records-console-detained-record", ("articles", articles ?? Loc.GetString("criminal-records-console-unspecified")), ("duration", msg.Duration?.ToString() ?? Loc.GetString("criminal-records-console-unspecified")));
@@ -214,7 +215,7 @@ public sealed partial class CriminalRecordsConsoleSystem
         if (entry != null)
             jobName = entry.JobTitle;
 
-        var tryGetIdentityShortInfoEvent = new TryGetIdentityShortInfoEvent(null, mob.Value);
+        var tryGetIdentityShortInfoEvent = new TryGetIdentityShortInfoEvent(mob.Value, ent.Owner, forLogging: false);
         RaiseLocalEvent(tryGetIdentityShortInfoEvent);
         if (tryGetIdentityShortInfoEvent.Title != null)
             officer = tryGetIdentityShortInfoEvent.Title;

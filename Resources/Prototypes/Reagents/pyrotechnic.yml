@@ -31,13 +31,14 @@
   tileReactions:
   - !type:FlammableTileReaction
     temperatureMultiplier: 2
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Bloodstream:
+    Poison:
       effects:
       - !type:HealthChange
         conditions:
-        - !type:MetabolizerTypeCondition # Goobstation - Yowie
-          type: [ Yowie ]
+        - !type:MetabolizerTypeCondition
+          type: [Yowie]
           inverted: true
         damage:
           types:
@@ -45,13 +46,12 @@
             Poison: 1
       - !type:HealthChange
         conditions:
-        - !type:MetabolizerTypeCondition # Goobstation - Yowie
-          type: [ Yowie ]
+        - !type:MetabolizerTypeCondition
+          type: [Yowie]
           inverted: true
         damage:
           types:
             Heat: 2
-
 - type: reagent
   id: Napalm
   name: reagent-name-napalm
@@ -71,30 +71,30 @@
       effects:
       - !type:Flammable
         multiplier: 0.4
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Bloodstream:
+    Poison:
       effects:
       - !type:HealthChange
         conditions:
-        - !type:MetabolizerTypeCondition # Goobstation - Yowie
-          type: [ Yowie ]
+        - !type:MetabolizerTypeCondition
+          type: [Yowie]
           inverted: true
         damage:
           types:
             Heat: 2
             Poison: 1
-            Caustic: 0.5 # based off napalm being an irritant
+            Caustic: 0.5
       - !type:HealthChange
         conditions:
-        - !type:MetabolizerTypeCondition # Goobstation - Yowie
-          type: [ Yowie ]
+        - !type:MetabolizerTypeCondition
+          type: [Yowie]
         damage:
           types:
             Heat: 2
-            Caustic: 0.5 # based off napalm being an irritant
+            Caustic: 0.5
       - !type:Flammable
         multiplier: 0.4
-
 - type: reagent
   id: Phlogiston
   name: reagent-name-phlogiston
@@ -106,12 +106,13 @@
   color: "#D4872A"
   puddleSpriteSet: Acid # Goob
   puddleColor: "#D4872A80" # Goob
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Bloodstream:
+    Poison:
       effects:
       - !type:HealthChange
         conditions:
-        - !type:MetabolizerTypeCondition # Goobstation - Yowie
+        - !type:MetabolizerTypeCondition
           type: [Yowie]
           inverted: true
         damage:
@@ -120,8 +121,8 @@
             Poison: 1
       - !type:HealthChange
         conditions:
-        - !type:MetabolizerTypeCondition # Goobstation - Yowie
-          type: [ Yowie ]
+        - !type:MetabolizerTypeCondition
+          type: [Yowie]
           inverted: true
         damage:
           types:
@@ -130,7 +131,7 @@
         multiplier: 0.1
       - !type:AdjustTemperature
         amount: 6000
-      - !type:Ignite
+      - !type:Ignite ''
   reactiveEffects:
     Flammable:
       methods: [ Touch ]
@@ -151,28 +152,29 @@
   puddleSpriteSet: Acid # Goob
   tileReactions:
   - !type:PryTileReaction
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Bloodstream:
+    Poison:
       effects:
       - !type:HealthChange
         conditions:
-        - !type:MetabolizerTypeCondition # Goobstation - Yowie
-          type: [ Yowie ]
+        - !type:MetabolizerTypeCondition
+          type: [Yowie]
           inverted: true
         damage:
           types:
             Heat: 2
             Poison: 1
-            Caustic: 0.5 # CLF3 is corrosive
+            Caustic: 0.5
       - !type:HealthChange
         conditions:
-        - !type:MetabolizerTypeCondition # Goobstation - Yowie
-          type: [ Yowie ]
+        - !type:MetabolizerTypeCondition
+          type: [Yowie]
           inverted: true
         damage:
           types:
             Heat: 2
-            Caustic: 0.5 # CLF3 is corrosive
+            Caustic: 0.5
       - !type:Flammable
         multiplier: 0.2
       - !type:AdjustTemperature
@@ -223,8 +225,9 @@
   friction: 0.4
   tileReactions:
   - !type:FlammableTileReaction {}
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Bloodstream:
+    Food:
       effects:
       - !type:Satiate
         satiationType: Thirst
@@ -232,17 +235,20 @@
         conditions:
         - !type:MetabolizerTypeCondition
           type: [Vox]
+    Poison:
+      effects:
       - !type:HealthChange
         conditions:
         - !type:MetabolizerTypeCondition
-          type: [Vox]
+          type:
+          - Vox
+          - Yowie
           inverted: true
         damage:
           types:
             Poison: 1
       - !type:Flammable
         multiplier: 0.4
-
 - type: reagent
   parent: BasePyrotechnic
   id: XenoborgOil
@@ -266,8 +272,9 @@
       effects:
       - !type:Flammable
         multiplier: 0.2
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Bloodstream:
+    Medicine:
       effects:
       - !type:Satiate
         satiationType: Thirst
@@ -280,14 +287,13 @@
         - !type:MetabolizerTypeCondition
           type:
           - Vox
-          - Yowie # Goobstation - Yowie
+          - Yowie
           inverted: true
         damage:
           types:
             Poison: 1
       - !type:Flammable
         multiplier: 0.4
-
 - type: reagent
   id: Fluorosurfactant
   name: reagent-name-fluorosurfactant

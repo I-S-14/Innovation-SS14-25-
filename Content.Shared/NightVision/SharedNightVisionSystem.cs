@@ -78,7 +78,7 @@ public abstract partial class SharedNightVisionSystem : EntitySystem
     }
 
     [SubscribeLocalEvent]
-    private void OnToggleNightVisionEvent(ToggleNightVisionEvent args)
+    private void OnToggleNightVisionOverlayEvent(ToggleNightVisionOverlayEvent args)
     {
         var ent = args.Action.Comp.Container;
 

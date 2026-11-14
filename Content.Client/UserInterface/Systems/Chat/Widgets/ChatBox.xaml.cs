@@ -43,7 +43,6 @@ public partial class ChatBox : UIWidget, IEntityLinkClickHandler
     {
         RobustXamlLoader.Load(this);
         _sawmill = _log.GetSawmill("chat");
-        _loc = IoCManager.Resolve<ILocalizationManager>();
 
         ChatInput.Input.OnTextEntered += OnTextEntered;
         ChatInput.Input.OnKeyBindDown += OnInputKeyBindDown;

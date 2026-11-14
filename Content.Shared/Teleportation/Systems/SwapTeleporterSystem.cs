@@ -34,7 +34,6 @@ public sealed partial class SwapTeleporterSystem : EntitySystem
     [Dependency] private readonly EntityWhitelistSystem _whitelistSystem = default!;
     [Dependency] private readonly SparksSystem _sparks = default!; // goob edit - sparks everywhere
 
-    private EntityQuery<TransformComponent> _xformQuery;
 
     /// <inheritdoc/>
     public override void Initialize()

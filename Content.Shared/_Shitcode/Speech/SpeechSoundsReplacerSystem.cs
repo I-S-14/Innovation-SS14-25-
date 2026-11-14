@@ -20,7 +20,9 @@ public sealed class SpeechSoundsReplacerSystem : EntitySystem
 
     private void OnEquip(Entity<SpeechSoundsReplacerComponent> replacer, ref GotEquippedEvent args)
     {
-        if (EntityManager.TryGetComponent<SpeechComponent>(args.EquipTarget, out var speech))
+        //IS14-change start
+        if (TryComp<SpeechComponent>(args.EquipTarget, out var speech))
+        //IS14-change end
         {
             replacer.Comp.PreviousSound = speech.SpeechSounds;
             speech.SpeechSounds = replacer.Comp.SpeechSounds;
@@ -29,7 +31,9 @@ public sealed class SpeechSoundsReplacerSystem : EntitySystem
 
     private void OnUnequip(Entity<SpeechSoundsReplacerComponent> replacer, ref GotUnequippedEvent args)
     {
-        if (EntityManager.TryGetComponent<SpeechComponent>(args.EquipTarget, out var speech))
+        //IS14-change start
+        if (TryComp<SpeechComponent>(args.EquipTarget, out var speech))
+        //IS14-change end
         {
             speech.SpeechSounds = replacer.Comp.PreviousSound;
             replacer.Comp.PreviousSound = null;

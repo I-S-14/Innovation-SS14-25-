@@ -1,4 +1,6 @@
 using Content.Shared.Chemistry.Components.SolutionManager;
+using Content.Shared.Body.Systems;
+using Content.Shared.Nutrition.EntitySystems;
 using Robust.Shared.Containers;
 
 namespace Content.Shared.Chemistry.EntitySystems;
@@ -12,9 +14,31 @@ namespace Content.Shared.Chemistry.EntitySystems;
 /// </summary>
 public abstract partial class SharedSolutionContainerSystem
 {
-    [SubscribeLocalEvent]
+    [SubscribeLocalEvent(before: [typeof(IngestionSystem), typeof(LungSystem)])] //IS14-change: port before consumers ensure defaults.
     [Obsolete("Uses obsolete SolutionContainerManagerComponent.")]
     private void OnSolutionContainerInit(Entity<SolutionContainerManagerComponent> container, ref MapInitEvent args)
+    {
+        PortLegacySolutions(container);
+    }
+
+    //IS14-change: EnsureSolution can request conversion before the scheduled MapInit callback.
+    private void PortLegacySolutions(Entity<SolutionContainerManagerComponent> container)
+    {
+        if (container.Comp.Migrated || container.Comp.Migrating)
+            return;
+        container.Comp.Migrating = true;
+        try
+        {
+            PortLegacySolutionsCore(container);
+            container.Comp.Migrated = true;
+        }
+        finally
+        {
+            container.Comp.Migrating = false;
+        }
+    }
+
+    private void PortLegacySolutionsCore(Entity<SolutionContainerManagerComponent> container)
     {
         // Create the manager, this should also create a container, so we ensure it exists.
         EnsureComp<SolutionManagerComponent>(container, out var manager);
@@ -45,10 +69,11 @@ public abstract partial class SharedSolutionContainerSystem
             // We don't need it anymore
             ContainerSystem.ShutdownContainer(slot);
         }
+        container.Comp.Containers.Clear(); //IS14-change: transferred slots must not survive in saved compatibility data.
 
         if (container.Comp.Solutions == null)
         {
-            RemCompDeferred<SolutionManagerComponent>(container);
+            RemCompDeferred<SolutionContainerManagerComponent>(container); //IS14-change: retain the destination manager.
             return;
         }
 
@@ -71,6 +96,6 @@ public abstract partial class SharedSolutionContainerSystem
 
         // Clear its data
         container.Comp.Solutions = null;
-        RemCompDeferred<SolutionManagerComponent>(container);
+        RemCompDeferred<SolutionContainerManagerComponent>(container); //IS14-change: remove the migrated source, not its replacement.
     }
 }

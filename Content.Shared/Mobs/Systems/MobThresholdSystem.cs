@@ -485,7 +485,7 @@ public sealed partial class MobThresholdSystem : EntitySystem
     }
 
     // Shitmed Change Start
-    private void OnWoundableDamage(EntityUid body, MobThresholdsComponent thresholds, WoundableIntegrityChangedOnBodyEvent args)
+    private void OnWoundableDamage(EntityUid body, MobThresholdsComponent thresholds, ref WoundableIntegrityChangedOnBodyEvent args)
     {
         if (!TryComp<MobStateComponent>(body, out var mobState))
             return;

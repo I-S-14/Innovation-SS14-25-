@@ -17,7 +17,6 @@ namespace Content.Client.Ghost
 {
     public sealed partial class GhostSystem : SharedGhostSystem
     {
-        [Dependency] private readonly PointLightSystem _pointLightSystem = default!;
         [Dependency] private readonly GhostVisibilitySystem _ghostVisSystem = default!; // Goobstation
         [Dependency] private IClientConsoleHost _console = default!;
         [Dependency] private IPlayerManager _playerManager = default!;
@@ -25,34 +24,15 @@ namespace Content.Client.Ghost
         [Dependency] private ContentEyeSystem _contentEye = default!;
         [Dependency] private SpriteSystem _sprite = default!;
         [Dependency] private SharedNightVisionSystem _nv = default!;
-        [Dependency] private EntityQuery<NightVisionComponent> _nightVisionQuery;
+        [Dependency] private EntityQuery<NightVisionComponent> _nightVisionQuery = default!;
 
         public int AvailableGhostRoleCount { get; private set; }
 
-        private bool _ghostVisibility = true;
+        private GhostVisibilityMode _ghostVisibility = GhostVisibilityMode.ShowAllGhosts;
 
-        private bool GhostVisibility
-        {
-            get => _ghostVisSystem.GhostsVisible() || _ghostVisibility; // Goob edit
-            set
-            {
-                if (_ghostVisSystem.GhostsVisible()) // Goobstation
-                    value = true;
-
-                if (_ghostVisibility == value)
-                {
-                    return;
-                }
-
-                _ghostVisibility = value;
-
-                var query = AllEntityQuery<GhostComponent, SpriteComponent>();
-                while (query.MoveNext(out var uid, out _, out var sprite))
-                {
-                    _sprite.SetVisible((uid, sprite), value || uid == _playerManager.LocalEntity);
-                }
-            }
-        }
+        public GhostVisibilityMode GhostVisibility => _ghostVisSystem.GhostsVisible()
+            ? GhostVisibilityMode.ShowAllGhosts
+            : _ghostVisibility;
 
         public GhostComponent? Player => CompOrNull<GhostComponent>(_playerManager.LocalEntity);
         public bool IsGhost => Player != null;
@@ -69,17 +49,17 @@ namespace Content.Client.Ghost
             base.Initialize();
 
             SubscribeLocalEvent<GhostComponent, ComponentStartup>(OnStartup);
-            SubscribeLocalEvent<GhostComponent, ComponentRemove>(OnGhostRemove);
-            SubscribeLocalEvent<GhostComponent, AfterAutoHandleStateEvent>(OnGhostState);
 
-            SubscribeLocalEvent<GhostComponent, LocalPlayerAttachedEvent>(OnGhostPlayerAttach);
-            SubscribeLocalEvent<GhostComponent, LocalPlayerDetachedEvent>(OnGhostPlayerDetach);
 
-            SubscribeNetworkEvent<GhostWarpsResponseEvent>(OnGhostWarpsResponse);
-            SubscribeNetworkEvent<GhostUpdateGhostRoleCountEvent>(OnUpdateGhostRoleCount);
 
-            SubscribeLocalEvent<EyeComponent, ToggleLightingActionEvent>(OnToggleLighting);
-            SubscribeLocalEvent<EyeComponent, ToggleFoVActionEvent>(OnToggleFoV);
+
+
+
+
+
+
+
+
             SubscribeLocalEvent<EyeComponent, ToggleGhostsActionEvent>(OnToggleGhosts); // Goob edit
         }
 
@@ -228,7 +208,9 @@ namespace Content.Client.Ghost
 
         public void ToggleGhostVisibility(bool? visibility = null)
         {
-            var nextMode = GhostVisibility switch
+            var nextMode = visibility is { } forced
+                ? (forced ? GhostVisibilityMode.ShowAllGhosts : GhostVisibilityMode.HideOtherGhosts)
+                : GhostVisibility switch
             {
                 GhostVisibilityMode.ShowAllGhosts => GhostVisibilityMode.HideOtherGhosts,
                 GhostVisibilityMode.HideOtherGhosts => GhostVisibilityMode.HideOtherGhostsAndSelf,
@@ -244,7 +226,7 @@ namespace Content.Client.Ghost
             if (GhostVisibility == mode)
                 return;
 
-            GhostVisibility = mode;
+            _ghostVisibility = mode;
 
             var query = AllEntityQuery<GhostComponent, SpriteComponent>();
             while (query.MoveNext(out var uid, out _, out var sprite))

@@ -1,3 +1,4 @@
+using Content.Corvax.Interfaces.Shared; // IS14-change: upstream namespace move
 using System.Linq;
 using Content.Shared._CorvaxGoob.TTS;
 using Content.Shared.Preferences;

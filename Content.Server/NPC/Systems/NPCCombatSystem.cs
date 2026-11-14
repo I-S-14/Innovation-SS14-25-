@@ -24,7 +24,7 @@ public sealed partial class NPCCombatSystem : EntitySystem
     [Dependency] private InteractionSystem _interaction = default!;
     [Dependency] private SharedAudioSystem _audio = default!;
     [Dependency] private NPCSteeringSystem _steering = default!;
-    [Dependency] private SharedMapSystem _map = default!;
+
     [Dependency] private SharedMeleeWeaponSystem _melee = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
 

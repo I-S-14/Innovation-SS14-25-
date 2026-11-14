@@ -618,10 +618,6 @@
 
 - type: flavor
   id: tomato
-  mutationPrototypes:
-    - blueTomato
-    - bloodTomato
-    - bluespaceTomato # Goob-Add
   flavorType: Complex
   description: flavor-complex-tomato
 
@@ -1605,15 +1601,6 @@
 
 - type: flavor
   id: aloe
-  chemicals:
-    Aloe:
-      Min: 1
-      Max: 5
-      PotencyDivisor: 10
-    SilverSulfadiazine: # Goobstation
-      Min: 1
-      Max: 20
-      PotencyDivisor: 5
   flavorType: Complex
   description: flavor-complex-aloe
 
@@ -2252,7 +2239,6 @@
 
 - type: flavor
   id: cherry
-  plantRsi: _Goobstation/Objects/Specific/Hydroponics/cherry.rsi
   flavorType: Complex
   description: flavor-complex-cherry
 

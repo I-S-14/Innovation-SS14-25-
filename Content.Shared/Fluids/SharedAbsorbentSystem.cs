@@ -288,7 +288,6 @@ public abstract partial class SharedAbsorbentSystem : EntitySystem
         var (_, absorber, useDelay) = absorbEnt;
 
         Solution puddleSplit;
-        var isRemoved = false;
         if (absorber.UseAbsorberSolution)
         {
             // No reason to mop something that 1) can evaporate, 2) is an absorber, and 3) is being mopped with
@@ -350,7 +349,6 @@ public abstract partial class SharedAbsorbentSystem : EntitySystem
                 // Spawn a *sparkle*
                 PredictedSpawnAttachedTo(absorber.MoppedEffect, Transform(target).Coordinates);
                 QueueDel(target);
-                isRemoved = true;
             }
         }
 

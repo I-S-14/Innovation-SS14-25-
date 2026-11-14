@@ -5,13 +5,13 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 <Document>
   # Люди
   <Box>
-    <GuideEntityEmbed Entity="AppearanceHuman" Caption=""/>
+    <GuideEntityEmbed Entity="MobHumanDummy" Caption=""/>
   </Box>
 
-  ## General Information
+  ## Особенности вида
 
-  Depending on who you ask, humans are either unremarkable or the universal standard to which everything else is compared.
+  Люди широко распространены по Галактике. Их родная планета — Земля.
 
-  They have no special mechanics or notable attributes.
+  Показатели людей часто служат точкой отсчёта при сравнении с другими видами.
 
 </Document>

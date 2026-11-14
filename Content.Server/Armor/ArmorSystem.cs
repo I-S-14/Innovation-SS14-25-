@@ -11,6 +11,10 @@ namespace Content.Server.Armor;
 /// <inheritdoc/>
 public sealed partial class ArmorSystem : SharedArmorSystem
 {
+    //IS14-change start: retain fork fields lost during merge.
+    [Dependency] private readonly IPrototypeManager _protoManager = default!;
+    //IS14-change end
+
     public override void Initialize()
     {
         base.Initialize();

@@ -26,7 +26,9 @@ public abstract partial class SharedGunSystem
     {
         for (var i = 0; i < args.Shots; i++)
         {
-            var hitscanEnt = EntityManager.PredictedSpawn(ent.Comp.Proto); // Trauma - predicted
+            //IS14-change start
+            var hitscanEnt = PredictedSpawn(ent.Comp.Proto); // Trauma - predicted
+            //IS14-change end
             args.Ammo.Add((hitscanEnt, _gun.EnsureShootable(hitscanEnt)));
         }
     }

@@ -1,7 +1,11 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 #nullable enable
+using System.Linq;
 using Content.Server.Body.Systems;
+using Content.Shared.Chemistry.Components;
+using Content.Shared.Chemistry.Components.SolutionManager;
+using Content.Shared.Clothing.Components;
 using Robust.Shared.GameObjects;
 
 namespace Content.IntegrationTests.Tests.Body;
@@ -30,8 +34,18 @@ public sealed class GibTest
         Assert.That(client.EntMan.EntityExists(nuid1));
         Assert.That(client.EntMan.EntityExists(nuid2));
 
-        await server.WaitAssertion(() => server.System<BodySystem>().GibBody(target1, gibOrgans: false));
-        await server.WaitAssertion(() => server.System<BodySystem>().GibBody(target2, gibOrgans: true));
+        await server.WaitAssertion(() =>
+        {
+            foreach (var (target, organs) in new[] { (target1, false), (target2, true) })
+            {
+                var dropped = server.System<BodySystem>().GibBody(target, gibOrgans: organs);
+                Assert.That(dropped, Is.Not.Empty);
+                Assert.That(dropped.Any(uid => server.EntMan.HasComponent<ClothingComponent>(uid)), Is.True,
+                    "Real equipped items must still be dropped.");
+                Assert.That(dropped.Any(uid => server.EntMan.HasComponent<ContainedSolutionComponent>(uid)), Is.False,
+                    "Internal solution entities must stay with their owner.");
+            }
+        });
 
         await pair.RunTicksSync(5);
         await pair.WaitCommand("dirty");

@@ -1,3 +1,6 @@
+using Content.Shared.AlertLevel;
+using Content.Shared.Station.Systems;
+using GameTicker = Content.Server.GameTicking.ServerGameTicker;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Linq;
@@ -42,10 +45,14 @@ namespace Content.Goobstation.Server.Blob;
 
 public sealed partial class BlobCoreSystem : EntitySystem
 {
+    //IS14-change start: typed IDs preserve the retained Goob prototypes.
+    private static readonly EntProtoId CompatibilityBlobRuleEntityId = "BlobRule";
+    //IS14-change end
+
     [Dependency] private AlertsSystem _alerts = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
-    [Dependency] private GameTicker _gameTicker = default!;
+    [Dependency] private Content.Server.GameTicking.ServerGameTicker _gameTicker = default!;
     [Dependency] private ExplosionSystem _explosionSystem = default!;
     [Dependency] private DamageableSystem _damageable = default!;
     [Dependency] private StationSystem _stationSystem = default!;
@@ -265,7 +272,7 @@ public sealed partial class BlobCoreSystem : EntitySystem
         var blobRule = EntityQuery<BlobRuleComponent>().FirstOrDefault();
         if (blobRule == null)
         {
-            _gameTicker.StartGameRule("BlobRule", out _);
+            _gameTicker.StartGameRule(CompatibilityBlobRuleEntityId, out _);
         }
 
         var ev = new CreateBlobObserverEvent(userId);
@@ -368,7 +375,7 @@ public sealed partial class BlobCoreSystem : EntitySystem
         }
 
         var blobCoreComp = blobCore.Comp;
-        var blobTileUid = EntityManager.SpawnEntity(blobCoreComp.TilePrototypes[newBlobTile], coordinates);
+        var blobTileUid = Spawn(blobCoreComp.TilePrototypes[newBlobTile], coordinates);
 
         if (!_tile.TryGetComponent(blobTileUid, out var blobTileComp))
         {
@@ -575,7 +582,7 @@ public sealed partial class BlobCoreSystem : EntitySystem
                 if(stationUid != null)
                     _alertLevelSystem.SetLevel(stationUid.Value, "green", true, true, true);
 
-                _roundEndSystem.CancelRoundEndCountdown(null, false);
+                _roundEndSystem.CancelRoundEndCountdown(forceRecall: false);
                 blobRuleComp.Stage = BlobStage.Default;
             }
         }
@@ -634,7 +641,7 @@ public sealed partial class BlobCoreSystem : EntitySystem
         if (!_pointsChange.TryEnterWriteLock(1000))
             return false;
 
-        if (_storeSystem.TryAddCurrency(new Dictionary<string, FixedPoint2>
+        if (_storeSystem.TryAddCurrency(new Dictionary<Robust.Shared.Prototypes.ProtoId<Content.Shared.Store.CurrencyPrototype>, FixedPoint2>
                 {
                     { BlobMoney, amount }
                 },

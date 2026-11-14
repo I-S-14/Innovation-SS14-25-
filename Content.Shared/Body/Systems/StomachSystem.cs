@@ -27,6 +27,13 @@ public sealed partial class StomachSystem : EntitySystem
             return false;
 
         _solutionContainerSystem.TryAddSolution(entity.Comp1.Solution.Value, solution);
+        //IS14-change start
+        // Retained Goob metabolism consumes reagents after their digestion delay.
+        foreach (var reagent in solution.Contents)
+        {
+            entity.Comp1.ReagentDeltas.Add(new StomachComponent.ReagentDelta(reagent));
+        }
+        //IS14-change end
         return true;
     }
 }

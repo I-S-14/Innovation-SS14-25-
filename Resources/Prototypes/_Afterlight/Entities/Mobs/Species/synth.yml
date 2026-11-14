@@ -19,10 +19,20 @@
     species: Synth
     hideLayersOnEquip:
     - Hair
-  - type: Hunger
-    baseDecayRate: 0.02
-    starvingSlowdownModifier: 0.75
-  - type: Thirst
+  - type: Satiation
+    satiations:
+      Hunger:
+        prototype: IS14BaseMobSynthHunger124189ce
+      Thirst:
+        prototype: NormalSatiationThirst
+  - type: SatiationSpeedModifier
+    satiations:
+      Hunger:
+        thresholds:
+          Starving: 0.75
+      Thirst:
+        thresholds:
+          Parched: 0.75
   - type: Puller
     needsHands: false
   - type: Body

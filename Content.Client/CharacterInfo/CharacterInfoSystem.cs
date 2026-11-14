@@ -36,7 +36,7 @@ public sealed partial class CharacterInfoSystem : EntitySystem
     private void OnCharacterInfoEvent(CharacterInfoEvent msg, EntitySessionEventArgs args)
     {
         var entity = GetEntity(msg.NetEntity);
-        var data = new CharacterData(entity, msg.JobProto, msg.Objectives, msg.Briefing, Name(entity)); // CorvaxGoob
+        var data = new CharacterData(entity, msg.Objectives, msg.Briefing, msg.Job, Name(entity)); // CorvaxGoob
 
         OnCharacterUpdate?.Invoke(data);
     }
@@ -50,7 +50,6 @@ public sealed partial class CharacterInfoSystem : EntitySystem
 
     public readonly record struct CharacterData(
         EntityUid Entity,
-        ProtoId<JobPrototype>? JobProto, // CorvaxGoob
         Dictionary<string, List<ObjectiveInfo>> Objectives,
         string? Briefing,
         ProtoId<JobPrototype>? JobId,

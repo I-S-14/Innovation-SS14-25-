@@ -43,7 +43,6 @@ namespace Content.Server.Shuttles.Systems;
 [UsedImplicitly]
 public sealed partial class ShuttleSystem : SharedShuttleSystem
 {
-    [Dependency] private readonly IPrototypeManager _protoManager = default!;
     [Dependency] private readonly BodySystem _bobby = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly EmagSystem _emag = default!;
@@ -52,7 +51,6 @@ public sealed partial class ShuttleSystem : SharedShuttleSystem
     [Dependency] private IGameTiming _gameTiming = default!;
     [Dependency] private IRobustRandom _random = default!;
     [Dependency] private BiomeSystem _biomes = default!;
-    [Dependency] private GibbingSystem _gibbing = default!;
     [Dependency] private BuckleSystem _buckle = default!;
     [Dependency] private DamageableSystem _damageSys = default!;
     [Dependency] private DockingSystem _dockSystem = default!;

@@ -7,7 +7,7 @@
     - type: Sprite
       sprite: _IS14/Clothing/Neck/Minust/MupRepresentative/mup_representative.rsi
     - type: StealTarget
-      stealGroup: HeadCloak # а почему бы и не сделать)))
+      stealGroup: [HeadCloak] # а почему бы и не сделать)))
 
 - type: entity
   parent: ClothingUniformJumpskirtIS14Base

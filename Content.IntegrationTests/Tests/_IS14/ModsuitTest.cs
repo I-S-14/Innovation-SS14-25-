@@ -41,7 +41,10 @@ namespace Content.IntegrationTests.Tests._IS14;
 [TestOf(typeof(ModsuitControlComponent))]
 public sealed class ModsuitTest
 {
-    private const string SuitProto = "IS14ModsuitEngineering";
+    private static readonly ProtoId<DamageTypePrototype> CompatibilityBluntDamageTypeId = "Blunt";
+    private static readonly ProtoId<DamageTypePrototype> CompatibilityIonDamageTypeId = "Ion";
+
+    private const string SuitProto = "IS14ModsuitEngineeringFilled";
     private const string DebugSuitProto = "IS14ModsuitDebug";
     private static readonly ProtoId<AlertPrototype> MagbootsAlert = "Magboots";
 
@@ -56,9 +59,11 @@ public sealed class ModsuitTest
         var server = pair.Server;
         var entMan = server.ResolveDependency<IEntityManager>();
 
+        var map = await pair.CreateTestMap();
+
         await server.WaitAssertion(() =>
         {
-            var suit = entMan.SpawnEntity(SuitProto, MapCoordinates.Nullspace);
+            var suit = entMan.SpawnEntity(SuitProto, map.GridCoords);
 
             var control = entMan.GetComponent<ModsuitControlComponent>(suit);
             var chassis = entMan.GetComponent<ModularChassisComponent>(suit);
@@ -70,8 +75,13 @@ public sealed class ModsuitTest
                     Is.EquivalentTo(new[] { "head", "outerClothing", "gloves", "shoes" }));
 
                 // Integrated modules are free and unremovable, so they must not eat the budget.
-                Assert.That(chassis.ModuleContainer.ContainedEntities, Has.Count.EqualTo(1));
+                Assert.That(chassis.ModuleContainer, Is.Not.Null);
+                Assert.That(chassis.ModuleContainer!.ContainedEntities.Select(uid =>
+                    entMan.GetComponent<MetaDataComponent>(uid).EntityPrototype!.ID),
+                    Is.EquivalentTo(new[] { "IS14ModuleRadProtection", "IS14ModuleWeldingProtection" }));
                 Assert.That(chassis.UsedComplexity, Is.Zero);
+                Assert.That(entMan.System<ModCoreSystem>().GetCore((suit,
+                    entMan.GetComponent<ModCoreSlotComponent>(suit))), Is.Not.Null);
 
                 foreach (var part in control.Parts.Values)
                 {
@@ -232,7 +242,8 @@ public sealed class ModsuitTest
             modsuit.DeployAll(ent, silent: true);
 
             // Find the helmet-gated visor module.
-            var visor = chassis.ModuleContainer.ContainedEntities
+            Assert.That(chassis.ModuleContainer, Is.Not.Null);
+            var visor = chassis.ModuleContainer!.ContainedEntities
                 .Select(m => (uid: m, comp: entMan.GetComponent<ChassisModuleComponent>(m)))
                 .First(m => m.comp.RequiredSlots.Contains(SlotFlags.HEAD));
 
@@ -706,7 +717,7 @@ public sealed class ModsuitTest
             Assert.That(helmet.Integrity, Is.EqualTo(helmet.MaxIntegrity),
                 "a fresh piece comes up intact");
 
-            var blunt = protoMan.Index<DamageTypePrototype>("Blunt");
+            var blunt = protoMan.Index<DamageTypePrototype>(CompatibilityBluntDamageTypeId);
 
             damageable.TryChangeDamage(
                 human,
@@ -1009,7 +1020,7 @@ public sealed class ModsuitTest
 
             damageable.TryChangeDamage(
                 human,
-                new DamageSpecifier(protoMan.Index<DamageTypePrototype>("Blunt"), FixedPoint2.New(60)),
+                new DamageSpecifier(protoMan.Index<DamageTypePrototype>(CompatibilityBluntDamageTypeId), FixedPoint2.New(60)),
                 targetPart: TargetBodyPart.Head,
                 canMiss: false);
 
@@ -1074,7 +1085,7 @@ public sealed class ModsuitTest
 
             damageable.TryChangeDamage(
                 human,
-                new DamageSpecifier(protoMan.Index<DamageTypePrototype>("Ion"), FixedPoint2.New(40)),
+                new DamageSpecifier(protoMan.Index<DamageTypePrototype>(CompatibilityIonDamageTypeId), FixedPoint2.New(40)),
                 targetPart: TargetBodyPart.Head,
                 canMiss: false);
 
@@ -1144,25 +1155,27 @@ public sealed class ModsuitTest
     ///     that cost the wearer nothing.
     /// </summary>
     [Test]
-    [TestCase("IS14ModsuitStandard")]
-    [TestCase("IS14ModsuitEngineering")]
-    [TestCase("IS14ModsuitMedical")]
-    [TestCase("IS14ModsuitSecurity")]
-    [TestCase("IS14ModsuitMining")]
-    [TestCase("IS14ModsuitAtmospheric")]
-    [TestCase("IS14ModsuitResearch")]
-    [TestCase("IS14ModsuitSyndicate")]
+    [TestCase("IS14ModsuitStandardFilled")]
+    [TestCase("IS14ModsuitEngineeringFilled")]
+    [TestCase("IS14ModsuitMedicalFilled")]
+    [TestCase("IS14ModsuitSecurityFilled")]
+    [TestCase("IS14ModsuitMiningFilled")]
+    [TestCase("IS14ModsuitAtmosphericFilled")]
+    [TestCase("IS14ModsuitResearchFilled")]
+    [TestCase("IS14ModsuitSyndicateFilled")]
     public async Task EveryThemeSpawnsWhole(string proto)
     {
         await using var pair = await PoolManager.GetServerClient();
         var server = pair.Server;
         var entMan = server.ResolveDependency<IEntityManager>();
 
+        var map = await pair.CreateTestMap();
+
         await server.WaitAssertion(() =>
         {
             var itemSlots = entMan.System<ItemSlotsSystem>();
 
-            var suit = entMan.SpawnEntity(proto, MapCoordinates.Nullspace);
+            var suit = entMan.SpawnEntity(proto, map.GridCoords);
 
             var control = entMan.GetComponent<ModsuitControlComponent>(suit);
             var chassis = entMan.GetComponent<ModularChassisComponent>(suit);

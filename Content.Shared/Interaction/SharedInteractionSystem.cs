@@ -61,6 +61,10 @@ namespace Content.Shared.Interaction
     [UsedImplicitly]
     public abstract partial class SharedInteractionSystem : EntitySystem
     {
+    //IS14-change start: typed IDs for the retained behavior.
+    private static readonly ProtoId<TagPrototype> CantInteractTag = "CantInteract";
+    //IS14-change end
+
         [Dependency] private IGameTiming _gameTiming = default!;
         [Dependency] private ISharedAdminLogManager _adminLogger = default!;
         [Dependency] private ISharedChatManager _chat = default!;
@@ -167,7 +171,7 @@ namespace Content.Shared.Interaction
                 if (ev.Message is not OpenBoundInterfaceMessage
                     // || !HasComp<GhostComponent>(ev.Actor) // CorvaxGoob-GhostUIGuest
                     // || aUiComp?.BlockSpectators == true // CorvaxGoob-GhostUIGuest
-                    || _tagSystem.HasTag(ev.Actor, "CantInteract")) // Shitmed change
+                    || _tagSystem.HasTag(ev.Actor, CantInteractTag)) // Shitmed change
                 {
                     ev.Cancel();
                     return;

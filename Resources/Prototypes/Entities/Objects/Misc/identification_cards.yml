@@ -82,7 +82,7 @@
     - WhitelistChameleonIdCard
     - HighRiskItem
   - type: StealTarget
-    stealGroup: CaptainIDCard
+    stealGroup: [CaptainIDCard]
 # CorvaxGoob-start:
   - type: CargoSellBlacklist
   - type: SupermatterImmune

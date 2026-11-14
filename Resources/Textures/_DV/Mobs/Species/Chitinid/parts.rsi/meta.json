@@ -1,7 +1,7 @@
 {
     "version": 1,
     "license": "CC-BY-SA-3.0",
-    "copyright": "Made by FairlySadPanda (Github/Discord); with help from ScarKy0 (Github/Discord). eyelid* by qrwas (GitHub).",
+    "copyright": "https://github.com/tgstation/tgstation/commit/1d0eadcb126fc3581eed33490f4be2a88157af58, modified by https://github.com/PixelTheKermit",
     "size": {
         "x": 32,
         "y": 32
@@ -11,10 +11,11 @@
             "name": "full"
         },
         {
-            "name": "icon"
+            "name": "head_f",
+            "directions": 4
         },
         {
-            "name": "head",
+            "name": "head_m",
             "directions": 4
         },
         {
@@ -50,27 +51,23 @@
             "directions": 4
         },
         {
-            "name": "torso_f",
+            "name": "chest_f",
             "directions": 4
         },
         {
-            "name": "torso_m",
+            "name": "chest_m",
+            "directions": 4
+        },
+        {
+            "name": "groin_f",
+            "directions": 4
+        },
+        {
+            "name": "groin_m",
             "directions": 4
         },
         {
             "name": "eyes",
-            "directions": 4
-        },
-        {
-            "name": "eyelid-left",
-            "directions": 4
-        },
-        {
-            "name": "eyelid-right",
-            "directions": 4
-        },
-        {
-            "name": "overlay_husk",
             "directions": 4
         }
     ]

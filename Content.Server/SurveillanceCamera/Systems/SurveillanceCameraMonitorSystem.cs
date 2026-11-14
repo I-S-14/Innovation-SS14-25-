@@ -31,11 +31,12 @@ public sealed partial class SurveillanceCameraMonitorSystem : EntitySystem
         });
     }
 
-    private const float MaxHeartbeatTime = 300f;
-    private const float HeartbeatDelay = 30f;
+    private const float MaxHeartbeatTime = 3f;
+    private const float HeartbeatDelay = 1f;
 
     public override void Update(float frameTime)
     {
+        UpdateReconnections(frameTime);
         var query = EntityQueryEnumerator<ActiveSurveillanceCameraMonitorComponent, SurveillanceCameraMonitorComponent>();
         while (query.MoveNext(out var uid, out _, out var monitor))
         {
@@ -45,6 +46,7 @@ public sealed partial class SurveillanceCameraMonitorSystem : EntitySystem
 
             if (monitor.LastHeartbeat > MaxHeartbeatTime)
             {
+                monitor.ReconnectAddress = monitor.ActiveCameraAddress;
                 DisconnectCamera(uid, true, monitor);
                 RemComp<ActiveSurveillanceCameraMonitorComponent>(uid);
             }
@@ -98,6 +100,7 @@ public sealed partial class SurveillanceCameraMonitorSystem : EntitySystem
         {
             if (payload.SenderAddress != null)
                 ent.Comp.ActiveCameraAddress = payload.SenderAddress.Value;
+            ent.Comp.ReconnectAddress = null;
             TrySwitchCameraByUid(ent, payload.Sender, ent.Comp);
         }
 
@@ -122,10 +125,13 @@ public sealed partial class SurveillanceCameraMonitorSystem : EntitySystem
         if (ent.Comp.ActiveSubnet != subnetData)
         {
             DisconnectFromSubnet(ent, subnetData);
+            return;
         }
 
         if (payload.SenderAddress != null)
-            ent.Comp.KnownCameras.TryAdd(payload.SenderAddress.Value, payload.Name);
+            ent.Comp.KnownCameras[payload.SenderAddress.Value] = payload.Mobile
+                ? Loc.GetString("surveillance-camera-mobile-name", ("name", payload.Name))
+                : payload.Name;
         UpdateUserInterface(ent, ent.Comp);
     }
 
@@ -139,6 +145,7 @@ public sealed partial class SurveillanceCameraMonitorSystem : EntitySystem
     private void OnDisconnectMessage(EntityUid uid, SurveillanceCameraMonitorComponent component,
         SurveillanceCameraDisconnectMessage message)
     {
+        component.ReconnectAddress = null;
         DisconnectCamera(uid, true, component);
     }
 
@@ -160,6 +167,7 @@ public sealed partial class SurveillanceCameraMonitorSystem : EntitySystem
         // there would be a null check here, but honestly
         // whichever one is the "latest" switch message gets to
         // do the switch
+        component.ReconnectAddress = null;
         TrySwitchCameraByAddress(uid, message.Address, message.CameraSubnet, component);
     }
 
@@ -168,6 +176,7 @@ public sealed partial class SurveillanceCameraMonitorSystem : EntitySystem
     {
         if (!args.Powered)
         {
+            component.ReconnectAddress = null;
             RemoveActiveCamera(uid, component);
             component.NextCameraAddress = null;
             component.ActiveSubnet = null;
@@ -184,6 +193,7 @@ public sealed partial class SurveillanceCameraMonitorSystem : EntitySystem
     [SubscribeLocalEvent]
     private void OnSurveillanceCameraDeactivate(EntityUid uid, SurveillanceCameraMonitorComponent monitor, SurveillanceCameraDeactivateEvent args)
     {
+        monitor.ReconnectAddress = monitor.ActiveCameraAddress;
         DisconnectCamera(uid, false, monitor);
     }
 
@@ -251,7 +261,7 @@ public sealed partial class SurveillanceCameraMonitorSystem : EntitySystem
             || !monitor.KnownSubnets.TryGetValue(monitor.ActiveSubnet.Value, out var subnetData))
             return;
 
-        var payload = new SurveillanceCameraPingPayload { Subnet = monitor.ActiveSubnet };
+        var payload = new SurveillanceCameraPingPayload { Subnet = monitor.ActiveSubnet.Value };
         _deviceNetworkRouter.SendPacketRouted(uid, ref payload, null, null, ProtoMan.Index(monitor.ActiveSubnet.Value).Frequency);
     }
 
@@ -338,6 +348,11 @@ public sealed partial class SurveillanceCameraMonitorSystem : EntitySystem
         }
 
         monitor.Viewers.Remove(player);
+        if (monitor.Viewers.Count == 0)
+        {
+            monitor.ReconnectAddress = null;
+            monitor.NextCameraAddress = null;
+        }
 
         if (monitor.ActiveCamera != null)
         {

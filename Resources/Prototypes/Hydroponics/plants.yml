@@ -22,7 +22,6 @@
   - type: InteractionOutline
   - type: Physics
   - type: Damageable
-  - type: Injurable
     damageContainer: Biological
   - type: Destructible
     thresholds:
@@ -675,7 +674,7 @@
     name: seeds-tomato-name
     packetPrototype: TomatoSeeds
     productPrototypes: [ FoodTomato ]
-    mutationPrototypes: [ BlueTomatoPlants, BloodTomatoPlants ]
+    mutationPrototypes: [ BlueTomatoPlants, BloodTomatoPlants, IS14BluespaceTomatoSeedsPlant ] # IS14: retain all three distinct Goob mutations.
   - type: Plant
     lifespan: 25
     maturation: 8
@@ -708,7 +707,8 @@
 - type: entity
   parent: BasePlant
   id: BlueTomatoPlants
-  categories: [HideSpawnMenu]
+  categories:
+  - HideSpawnMenu
   name: blue tomato plant
   components:
   - type: Sprite
@@ -716,7 +716,10 @@
   - type: PlantData
     name: seeds-bluetomato-name
     packetPrototype: BlueTomatoSeeds
-    productPrototypes: [ FoodBlueTomato ]
+    productPrototypes:
+    - FoodBlueTomato
+    noun: seeds-noun-seeds
+    mutationPrototypes: []
   - type: Plant
     lifespan: 25
     maturation: 8
@@ -729,8 +732,8 @@
     waterConsumption: 0.6
     nutrientConsumption: 0.7
   - type: PlantAtmospheric
-    lowHeatTolerance: 288 # 15°C
-    highHeatTolerance: 308 # 35°C
+    lowHeatTolerance: 288
+    highHeatTolerance: 308
   - type: PlantChemicals
     chemicals:
       Nutriment:
@@ -1443,7 +1446,8 @@
 - type: entity
   parent: BasePlant
   id: PoppyPlants
-  categories: [HideSpawnMenu]
+  categories:
+  - HideSpawnMenu
   name: poppy
   components:
   - type: Sprite
@@ -1451,8 +1455,11 @@
   - type: PlantData
     name: seeds-poppy-name
     packetPrototype: PoppySeeds
-    productPrototypes: [ FoodPoppy ]
-    mutationPrototypes: [ LilyPlants ]
+    productPrototypes:
+    - FoodPoppy
+    mutationPrototypes:
+    - LilyPlants
+    noun: seeds-noun-seeds
   - type: Plant
     lifespan: 25
     maturation: 10
@@ -1472,11 +1479,16 @@
         min: 1
         max: 20
         potencyDivisor: 5
+      Heroin:
+        min: 1
+        max: 2
+        potencyDivisor: 50
 
 - type: entity
   parent: BasePlant
   id: LilyPlants
-  categories: [HideSpawnMenu]
+  categories:
+  - HideSpawnMenu
   name: lily
   components:
   - type: Sprite
@@ -1484,8 +1496,11 @@
   - type: PlantData
     name: seeds-lily-name
     packetPrototype: LilySeeds
-    productPrototypes: [ FoodLily ]
-    mutationPrototypes: [ SpacemansTrumpetPlants ]
+    productPrototypes:
+    - FoodLily
+    mutationPrototypes:
+    - SpacemansTrumpetPlants
+    noun: seeds-noun-seeds
   - type: Plant
     lifespan: 25
     maturation: 10
@@ -1501,7 +1516,7 @@
         min: 1
         max: 2
         potencyDivisor: 50
-      Bicaridine:
+      StypticPowder:
         min: 1
         max: 20
         potencyDivisor: 5
@@ -1531,12 +1546,12 @@
     chemicals:
       Aloe:
         min: 1
-        max: 10
+        max: 5 # IS14: retain original IS14/Goob aloe chemistry.
         potencyDivisor: 10
-      Dermaline:
+      SilverSulfadiazine:
         min: 1
-        max: 10
-        potencyDivisor: 10
+        max: 20
+        potencyDivisor: 5
 
 - type: entity
   parent: BasePlant
@@ -2094,7 +2109,8 @@
 - type: entity
   parent: BasePlant
   id: BerryPlants
-  categories: [HideSpawnMenu]
+  categories:
+  - HideSpawnMenu
   name: berry bush
   components:
   - type: Sprite
@@ -2102,7 +2118,11 @@
   - type: PlantData
     name: seeds-berries-name
     packetPrototype: BerrySeeds
-    productPrototypes: [ FoodBerries ]
+    productPrototypes:
+    - FoodBerries
+    noun: seeds-noun-seeds
+    mutationPrototypes:
+    - IS14StrangeBerrySeedsPlant
   - type: Plant
     lifespan: 50
     maturation: 6

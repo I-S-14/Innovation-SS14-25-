@@ -8,54 +8,41 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     <GuideEntityEmbed Entity="MobDiona" Caption=""/>
   </Box>
 
-  ## General Information
+  Диона — сплетение разумных нимф, которые образуют единое тело и действуют сообща.
 
-  Diona have large, dense bodies, so they're slowed less when dragging objects and slow others more when dragged themselves.
+  ## Особенности вида
 
-  They have plant-like metabolisms, [color=lightgreen]getting hungry slower[/color] than other species, but [color=palevioletred]getting thirsty faster[/color].
+  Дионы тяжелее людей. Они дышат углекислым газом, а вместо крови у них древесный сок.
 
-  They have sap rather than blood, which replenishes when metabolizing iron.
-  Sap is slightly nutritious when consumed by other species, though drinking the blood of your coworkers is usually frowned upon.
+  Желудок дионы перерабатывает пищу, напитки, лекарства и другие реагенты.
 
-  They metabolize reagents with a single organ, up to six reagents per metabolism stage (digestion, bloodstream, and metabolites).
+  Дионы получают [color=lightgreen]на 30% меньше тупого и на 20% меньше режущего урона[/color],
+  но [color=palevioletred]на 50% больше урона жаром и на 20% больше урона током[/color].
+  При достаточном нагреве их кора может [color=palevioletred]загореться[/color].
 
-  They take [color=lightgreen]30% less Blunt damage[/color] and [color=lightgreen]20% less Slash damage[/color],
-  but [color=palevioletred]50% more Heat damage[/color] and [color=palevioletred]20% more Shock damage[/color]. Their
-  bark-like skin can [color=palevioletred]easily catch fire[/color] when receiving enough Heat damage from [italic]any[/italic] source.
+  ## Укоренение
 
-  They [color=lightgreen]suffocate 100% slower[/color].
+  Дионы передвигаются на корнях и не могут носить обувь. Укоренившись, диона может ходить по полу в невесомости.
 
-  ## Rooting
+  При укоренении диона [color=palevioletred]движется на 20% медленнее[/color] и впитывает реагенты из луж под собой. Вредные реагенты при этом тоже впитываются.
 
-  Diona move around using a dense network of roots. This [color=palevioletred]prevents them from wearing [italic]any[/italic] footwear[/color], but
-  these roots also allow a diona to firmly root themselves to the ground.
-
-  While rooted, a diona [color=palevioletred]moves 20% slower[/color], but is able to freely move around in zero-gravity environments
-  instead of awkwardly floating around. Being rooted also causes a diona to passively absorb reagents from puddles they're standing in;
-  this can potentially be dangerous if they're standing in something unsafe to drink!
-
-  ## Botanical Reagents
+  ## Ботанические реагенты
   <Box>
     <GuideEntityEmbed Entity="FloraTree" Caption=""/>
   </Box>
 
-  While diona can digest the same foods that most other species can, they're also affected by certain botanical reagents.
-  Fertilizers will [color=lightgreen]sate their hunger[/color], but pesticides will [color=palevioletred]poison[/color] them!
+  Удобрения могут утолить голод дионы, а гербициды и средства от сорняков причиняют ей вред.
 
-  Robust harvest (an especially potent fertilizer) will [color=lightgreen]heal a diona's injuries[/color], but overdosing will cause
-  them to [color=palevioletred]grow out of control[/color], turning into an immobile tree (and dropping all their equipment). Cutting down the tree will
-  "restore" the diona to their regular, mobile state.
+  «Робаст харвест» лечит диону. При передозировке она [color=palevioletred]превращается в неподвижное дерево[/color] и роняет снаряжение. Если срубить дерево, диона вернётся к подвижной форме.
 
-  ## Nymphs
+  ## Нимфы
   <Box>
     <GuideEntityEmbed Entity="MobDionaNymph" Caption=""/>
     <GuideEntityEmbed Entity="MobDionaNymph" Caption=""/>
     <GuideEntityEmbed Entity="MobDionaNymph" Caption=""/>
   </Box>
-  After death, a diona can voluntarily destroy their own body, releasing their internal organs as three "nymphs",
-  with the player taking control of the nymph containing the brain. The brain nymph can speak, but has no hands or inventory.
+  После смерти диона может добровольно распасться на три нимфы. Игрок получает управление нимфой с мозгом. Она умеет говорить, но у неё нет рук и инвентаря.
 
-  After 10 minutes, the brain nymph can regrow into a "full" diona. This will be a brand-new body with a new name, appearance, fingerprints, and even DNA,
-  leaving little definitive evidence about who they were before.
+  Когда действие восстановления станет доступно, нимфа может вырасти в новую диону. Она получит новое тело, имя, внешность, отпечатки и ДНК.
 
 </Document>

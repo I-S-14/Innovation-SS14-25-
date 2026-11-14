@@ -1,3 +1,4 @@
+using System.Linq;
 using Content.Shared.Store;
 using Content.Shared.Store.Components;
 using Robust.Shared.Prototypes;
@@ -33,46 +34,15 @@ public sealed partial class BuyBeforeCondition : ListingCondition
 
         var allListings = storeComp.FullListingsCatalog;
 
-        var purchasesFound = false;
+        if (Blacklist != null && allListings.Any(listing => Blacklist.Contains(listing.ID) && listing.PurchaseAmount > 0))
+            return false;
 
-        if (Blacklist != null)
-        {
-            foreach (var blacklistListing in Blacklist)
-            {
-                foreach (var listing in allListings)
-                {
-                    if (listing.ID == blacklistListing.Id && listing.PurchaseAmount > 0)
-                        return false;
-                }
-            }
-        }
-
-        if (Whitelist == null) // Goobstation
+        if (Whitelist == null || Whitelist.Count == 0)
             return true;
 
-        foreach (var requiredListing in Whitelist)
-        {
-            foreach (var requiredListing in Whitelist)
-            {
-                foreach (var listing in allListings)
-                {
-                    purchasesFound = listing.PurchaseAmount > 0;
+        bool Purchased(ProtoId<ListingPrototype> id) =>
+            allListings.Any(listing => listing.ID == id && listing.PurchaseAmount > 0);
 
-                    // Goobstation
-                    switch (purchasesFound)
-                    {
-                        case true when !WhitelistRequireAll:
-                            return true;
-                        case false when WhitelistRequireAll:
-                            return false;
-                    }
-
-                    break;
-                }
-            }
-            return purchasesFound;
-        }
-
-        return true;
+        return WhitelistRequireAll ? Whitelist.All(Purchased) : Whitelist.Any(Purchased);
     }
 }

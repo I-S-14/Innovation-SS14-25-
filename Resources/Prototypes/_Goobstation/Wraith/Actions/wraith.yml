@@ -315,7 +315,7 @@
       state: open_portal
   - type: InstantAction
     event: !type:SummonPortalEvent
-  - type: ActionUserWhitelist
+  - type: WraithActionUserWhitelist
     whitelist:
       components:
       - Corporeal

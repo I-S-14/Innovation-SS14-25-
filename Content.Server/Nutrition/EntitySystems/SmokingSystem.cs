@@ -11,7 +11,6 @@ using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Clothing.Components;
 using Content.Shared.Clothing.EntitySystems;
 using Content.Goobstation.Maths.FixedPoint;
-using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.Forensics.Systems;
 using Content.Shared.Inventory;
 using Content.Shared.Inventory.Events;

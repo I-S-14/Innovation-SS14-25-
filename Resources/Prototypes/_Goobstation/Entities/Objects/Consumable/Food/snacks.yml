@@ -16,19 +16,20 @@
   - type: Edible
     trash:
     - FoodPacketProteinbarTrash
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 15
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 2 # Goobstation - junk food less useful
-        - ReagentId: Protein
-          Quantity: 2 # Goobstation - junk food less useful
-        - ReagentId: CocoaPowder
-          Quantity: 1
-        - ReagentId: Theobromine
-          Quantity: 1
+  - type: Solution
+    solution:
+      maxVol: 15
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 2 # Goobstation - junk food less useful
+      - ReagentId: Protein
+        Quantity: 2 # Goobstation - junk food less useful
+      - ReagentId: CocoaPowder
+        Quantity: 1
+      - ReagentId: Theobromine
+        Quantity: 1
+      temperature: 293.15
+      canReact: true
 
 - type: entity
   name: mothdog
@@ -51,14 +52,16 @@
     maxFillLevels: 4
     fillBaseName: mothdog-
     changeColor: false
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 10
-        - ReagentId: Protein
-          Quantity: 10
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 10
+      - ReagentId: Protein
+        Quantity: 10
+      maxVol: 0
+      temperature: 293.15
+      canReact: true
   - type: Appearance
   - type: Edible
     trash:
@@ -393,13 +396,14 @@
     sprite: _Goobstation/Objects/Consumable/Food/bay_food.rsi
     state: ancient_burger
   - type: Item
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 20
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 3
+  - type: Solution
+    solution:
+      maxVol: 20
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 3
+      temperature: 293.15
+      canReact: true
   - type: RandomFillSolution
     solution: food
     weightedRandomId: RandomFillSpaceshroom
@@ -564,13 +568,14 @@
     flavors:
     - paper
   - type: BadFood
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 1
-        reagents:
-        - ReagentId: Fiber
-          Quantity: 5
+  - type: Solution
+    solution:
+      maxVol: 1
+      reagents:
+      - ReagentId: Fiber
+        Quantity: 5
+      temperature: 293.15
+      canReact: true
 
 # weebo vend
 - type: entity

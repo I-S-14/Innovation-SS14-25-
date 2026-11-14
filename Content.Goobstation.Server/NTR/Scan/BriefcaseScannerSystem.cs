@@ -90,7 +90,7 @@ namespace Content.Goobstation.Server.NTR.Scan
 
                 else
                 {
-                    _storeSystem.TryAddCurrency(new Dictionary<string, FixedPoint2> {
+                    _storeSystem.TryAddCurrency(new Dictionary<Robust.Shared.Prototypes.ProtoId<Content.Shared.Store.CurrencyPrototype>, FixedPoint2> {
                         { "NTLoyaltyPoint", FixedPoint2.New(points) } },
                     uid,
                     store);

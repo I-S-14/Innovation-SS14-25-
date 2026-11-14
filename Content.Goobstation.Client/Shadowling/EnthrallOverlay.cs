@@ -10,6 +10,10 @@ namespace Content.Goobstation.Client.Shadowling;
 
 public sealed partial class EnthrallOverlay : Overlay
 {
+    //IS14-change start
+    private static readonly ProtoId<ShaderPrototype> CompatibilityEnthrallEffectShaderId = "EnthrallEffect";
+    //IS14-change end
+
     [Dependency] private IPrototypeManager _prototypeManager = default!;
     [Dependency] private IGameTiming _gameTiming = default!;
     [Dependency] private IEntityManager _entityManager = default!;
@@ -24,7 +28,7 @@ public sealed partial class EnthrallOverlay : Overlay
     public EnthrallOverlay()
     {
         IoCManager.InjectDependencies(this);
-        _shader = _prototypeManager.Index<ShaderPrototype>("EnthrallEffect").Instance().Duplicate();
+        _shader = _prototypeManager.Index<ShaderPrototype>(CompatibilityEnthrallEffectShaderId).Instance().Duplicate();
     }
 
     public void ReceiveEnthrall(double duration)

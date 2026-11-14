@@ -308,7 +308,6 @@
     stunChance: 0.10
     stunSeconds: 1.5
   - type: Damageable
-  - type: Injurable
     damageContainer: Inorganic
   - type: Destructible
     thresholds:
@@ -935,7 +934,6 @@
       - ReagentId: JuiceTomato
         Quantity: 10
   - type: Damageable
-  - type: Injurable
     damageContainer: Biological
   - type: DamageOnHighSpeedImpact
     minimumSpeed: 0.1
@@ -1524,22 +1522,16 @@
   - type: FlavorProfile
     flavors:
       - medicine
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 25 ##I'm pretty sure this has to match the total of 100 potency yields
-        reagents:
-        - ReagentId: Aloe
-          Quantity: 5 # Goobstation edit
-        - ReagentId: SilverSulfadiazine # Goobstation edit
-          Quantity: 20
   - type: Solution
     solution:
+      maxVol: 25 ##I'm pretty sure this has to match the total of 100 potency yields
       reagents:
       - ReagentId: Aloe
-        Quantity: 10
-      - ReagentId: Dermaline
-        Quantity: 10
+        Quantity: 5 # Goobstation edit
+      - ReagentId: SilverSulfadiazine # Goobstation edit
+        Quantity: 20
+      temperature: 293.15
+      canReact: true
   - type: Sprite
     sprite: Objects/Specific/Hydroponics/aloe.rsi
   - type: Item
@@ -1569,24 +1561,18 @@
   - type: FlavorProfile
     flavors:
       - medicine
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 24 # Goobstation
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 2
-        - ReagentId: Bicaridine
-          Quantity: 20
-        - ReagentId: Heroin # Goobstation
-          Quantity: 2
   - type: Solution
     solution:
+      maxVol: 24 # Goobstation
       reagents:
       - ReagentId: Nutriment
-        Quantity: 5
+        Quantity: 2
       - ReagentId: Bicaridine
-        Quantity: 10
+        Quantity: 20
+      - ReagentId: Heroin # Goobstation
+        Quantity: 2
+      temperature: 293.15
+      canReact: true
   - type: Sprite
     sprite: Objects/Specific/Hydroponics/poppy.rsi
   - type: Produce
@@ -1611,22 +1597,16 @@
   - type: FlavorProfile
     flavors:
       - medicine
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 22
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 2
-        - ReagentId: StypticPowder
-          Quantity: 20
   - type: Solution
     solution:
+      maxVol: 22
       reagents:
       - ReagentId: Nutriment
-        Quantity: 5
-      - ReagentId: Bicaridine
-        Quantity: 10
+        Quantity: 2
+      - ReagentId: StypticPowder
+        Quantity: 20
+      temperature: 293.15
+      canReact: true
   - type: Sprite
     sprite: Objects/Specific/Hydroponics/lily.rsi
   - type: Produce
@@ -1809,7 +1789,6 @@
   - type: Extractable
     grindableSolutionName: food
   - type: Damageable
-  - type: Injurable
     damageContainer: Inorganic
   - type: ToolRefinable
     refineResult:
@@ -2119,7 +2098,6 @@
       - ReagentId: JuiceWatermelon
         Quantity: 40
   - type: Damageable
-  - type: Injurable
     damageContainer: Biological
   - type: DamageOnHighSpeedImpact
     minimumSpeed: 0.1
@@ -2224,7 +2202,6 @@
       - ReagentId: Wine
         Quantity: 20
   - type: Damageable
-  - type: Injurable
     damageContainer: Biological
   - type: DamageOnHighSpeedImpact
     minimumSpeed: 0.1
@@ -2508,7 +2485,6 @@
   - type: Produce
     plantId: PumpkinPlants
   - type: Damageable
-  - type: Injurable
     damageContainer: Biological
   - type: Destructible
     thresholds:
@@ -2567,7 +2543,6 @@
   - type: Produce
     plantId: BluePumpkinPlants
   - type: Damageable
-  - type: Injurable
     damageContainer: Biological
   - type: Destructible
     thresholds:
@@ -2817,7 +2792,6 @@
     intensitySlope: 1
     totalIntensity: 0.1
   - type: Damageable
-  - type: Injurable
     damageContainer: Biological
   - type: Destructible
     thresholds:

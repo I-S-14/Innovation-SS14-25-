@@ -37,10 +37,7 @@ namespace Content.Shared.Weapons.Reflect;
 public sealed partial class ReflectSystem : EntitySystem
 {
     [Dependency] private readonly IGameTiming _timing = default!; // Trauma
-    [Dependency] private readonly InventorySystem _inventorySystem = default!;
     [Dependency] private readonly DamageableSystem _damageable = default!; // WD EDIT
-    [Dependency] private INetManager _netManager = default!;
-    [Dependency] private IRobustRandom _random = default!;
     [Dependency] private ISharedAdminLogManager _adminLogger = default!;
     [Dependency] private ItemToggleSystem _toggle = default!;
     [Dependency] private SharedPopupSystem _popup = default!;

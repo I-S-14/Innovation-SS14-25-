@@ -16,7 +16,7 @@
     - HighRiskItem
     - FitInTeleporterConsole
   - type: StealTarget
-    stealGroup: HandTeleporter
+    stealGroup: [HandTeleporter]
 # CorvaxGoob-start:
   - type: CargoSellBlacklist
   - type: SupermatterImmune

@@ -1,9 +1,9 @@
+using Content.Shared.Antag;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Text;
 using Content.Goobstation.Shared.Devil.Roles;
 using Content.Goobstation.Shared.Devil;
-using Content.Goobstation.Shared.Devil.Roles;
 using Content.Server.Antag;
 using Content.Server.GameTicking.Rules;
 using Content.Server.Mind;
@@ -17,7 +17,7 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Goobstation.Server.Devil.GameTicking.Rules;
 
-public sealed partial class DevilRuleSystem : GameRuleSystem<DevilRuleComponent>
+public sealed partial class DevilRuleSystem : ServerGameRuleSystem<DevilRuleComponent>
 {
     [Dependency] private MindSystem _mind = default!;
     [Dependency] private AntagSelectionSystem _antag = default!;

@@ -199,7 +199,7 @@ public abstract partial class SharedBloodstreamSystem : EntitySystem
         UpdateWounds(frameTime);
     }
 
-    private void OnMapInit(Entity<BloodstreamComponent> ent, ref MapInitEvent args)
+    protected virtual void OnMapInit(Entity<BloodstreamComponent> ent, ref MapInitEvent args)
     {
         ent.Comp.NextUpdate = _timing.CurTime + ent.Comp.AdjustedUpdateInterval;
         DirtyField(ent, ent.Comp, nameof(BloodstreamComponent.NextUpdate));

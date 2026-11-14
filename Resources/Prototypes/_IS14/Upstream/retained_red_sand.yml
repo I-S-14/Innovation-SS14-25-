@@ -1,0 +1,27 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: 5327c414c5:Resources/Prototypes/Tiles/floors.yml
+- type: tile
+  id: FloorAsteroidSandRedBorderless
+  name: tiles-asteroid-sand-borderless
+  sprite: /Textures/Tiles/Asteroid/asteroid_red.png
+  variants: '13'
+  placementVariants:
+  - '0.8'
+  - '0.0166'
+  - '0.0166'
+  - '0.0166'
+  - '0.0166'
+  - '0.0166'
+  - '0.0166'
+  - '0.0166'
+  - '0.0166'
+  - '0.0166'
+  - '0.0166'
+  - '0.0116'
+  - '0.0116'
+  baseTurf: Space
+  isSubfloor: 'true'
+  footstepSounds:
+    collection: FootstepAsteroid
+  heatCapacity: '10000'
+  weather: 'true'

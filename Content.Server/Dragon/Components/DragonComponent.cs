@@ -71,6 +71,12 @@ namespace Content.Server.Dragon
         [DataField]
         public ProtoId<NpcFactionPrototype> Faction = "Dragon";
 
+        [DataField]
+        public EntProtoId SmokePrototype = "BloodSmoke";
+
+        [DataField]
+        public Solution SmokeSolution = new([new("Blood", 1)]);
+
         #region Goobstation
 
         [DataField]

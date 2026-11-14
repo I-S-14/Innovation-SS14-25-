@@ -1,3 +1,4 @@
+using Content.Shared.DeviceLinking.Components;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Threading;
@@ -44,9 +45,10 @@ public sealed partial class PickNearbyFillableItemOperator : HTNOperator
     public ProtoId<TagPrototype> TrashProto = "Trash";
 
 
-    public override void Initialize(IEntitySystemManager sysManager)
+    public override void Initialize(IDependencyCollection deps)
     {
-        base.Initialize(sysManager);
+        base.Initialize(deps);
+        var sysManager = deps.Resolve<IEntitySystemManager>();
         _whitelistSystem = sysManager.GetEntitySystem<EntityWhitelistSystem>();
         _lookup = sysManager.GetEntitySystem<EntityLookupSystem>();
         _pathfinding = sysManager.GetEntitySystem<PathfindingSystem>();

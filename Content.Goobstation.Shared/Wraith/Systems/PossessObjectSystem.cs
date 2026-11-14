@@ -62,7 +62,9 @@ public sealed partial class PossessObjectSystem : EntitySystem
             var component = (Component) Factory.GetComponent(name);
             var temp = (object) component;
             _seriMan.CopyTo(data.Component, ref temp);
-            EntityManager.AddComponent(target, (Component) temp!);
+            //IS14-change start
+            AddComp(target, (Component) temp!);
+            //IS14-change end
         }
     }
 

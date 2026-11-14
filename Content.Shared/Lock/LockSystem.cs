@@ -493,7 +493,7 @@ public sealed partial class LockSystem : EntitySystem
         _audio.PlayPredicted(component.AccessDeniedSound, uid, args.User);
     }
 
-    private void LockToggled(EntityUid uid, UIRequiresLockComponent component, LockToggledEvent args)
+    private void LockToggled(EntityUid uid, UIRequiresLockComponent component, ref LockToggledEvent args)
     {
         if (!TryComp<LockComponent>(uid, out var lockComp) || lockComp.Locked == component.RequireLocked)
             return;

@@ -31,6 +31,10 @@ public sealed partial class RestartRoundCommand : LocalizedEntityCommands
 [AdminCommand(AdminFlags.Round)]
 public sealed partial class RestartRoundNowCommand : LocalizedEntityCommands
 {
+    //IS14-change start: restore declarations used by merged implementation.
+    [Dependency] private readonly GameTicker _gameTicker = default!;
+    //IS14-change end
+
 
     public override string Command => "restartroundnow";
 

@@ -1,0 +1,80 @@
+# IS14: retained factions use typed Wizards objective issuers.
+- type: objectiveIssuer
+  id: IS14ObjectiveIssuerSlaughterWizardFirst
+  name: objective-condition-kill-wizard-first
+
+- type: objectiveIssuer
+  id: IS14ObjectiveIssuerAbductors
+  name: objective-issuer-abductors
+
+- type: objectiveIssuer
+  id: IS14ObjectiveIssuerBlob
+  name: objective-issuer-blob
+
+- type: objectiveIssuer
+  id: IS14ObjectiveIssuerCosmiccult
+  name: objective-issuer-cosmiccult
+
+- type: objectiveIssuer
+  id: IS14ObjectiveIssuerDevil
+  name: objective-issuer-devil
+
+- type: objectiveIssuer
+  id: IS14ObjectiveIssuerGang
+  name: objective-issuer-gang
+
+- type: objectiveIssuer
+  id: IS14ObjectiveIssuerHeretic
+  name: objective-issuer-heretic
+
+- type: objectiveIssuer
+  id: IS14ObjectiveIssuerHivemind
+  name: objective-issuer-hivemind
+
+- type: objectiveIssuer
+  id: IS14ObjectiveIssuerLordSinguloth
+  name: objective-issuer-lord-singuloth
+
+- type: objectiveIssuer
+  id: IS14ObjectiveIssuerNanotrasen
+  name: objective-issuer-nanotrasen
+
+- type: objectiveIssuer
+  id: IS14ObjectiveIssuerSelf
+  name: objective-issuer-self
+
+- type: objectiveIssuer
+  id: IS14ObjectiveIssuerShadowling
+  name: objective-issuer-shadowling
+
+- type: objectiveIssuer
+  id: IS14ObjectiveIssuerSlasher
+  name: objective-issuer-slasher
+
+- type: objectiveIssuer
+  id: IS14ObjectiveIssuerSlaughterBubblegum
+  name: objective-issuer-slaughter-bubblegum
+
+- type: objectiveIssuer
+  id: IS14ObjectiveIssuerSlaughterDevil
+  name: objective-issuer-slaughter-devil
+
+- type: objectiveIssuer
+  id: IS14ObjectiveIssuerSlaughterSatan
+  name: objective-issuer-slaughter-satan
+
+- type: objectiveIssuer
+  id: IS14ObjectiveIssuerTiger
+  name: objective-issuer-tiger
+
+- type: objectiveIssuer
+  id: IS14ObjectiveIssuerVoices
+  name: objective-issuer-voices
+
+- type: objectiveIssuer
+  id: IS14ObjectiveIssuerWizardFederation
+  name: objective-issuer-wizard-federation
+
+- type: objectiveIssuer
+  id: IS14ObjectiveIssuerXenomorphHive
+  name: objective-issuer-xenomorph-hive

@@ -1,0 +1,72 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: 5327c414c5:Resources/Prototypes/Entities/Objects/Weapons/Guns/Projectiles/magic.yml
+- type: entity
+  categories: [HideSpawnMenu]
+  parent: BaseBulletTrigger
+  id: ProjectileDragonsBreath
+  name: dragon's breath
+  description: Try not to get toasted.
+  components:
+  - type: PointLight
+    color: "#E25822"
+    radius: 3.0
+    energy: 5.0
+  - type: Sprite
+    sprite: Objects/Weapons/Guns/Projectiles/magic.rsi
+    layers:
+    - state: fireball
+      shader: unshaded
+  - type: Reflective
+    reflective: Magic
+  - type: IgnitionSource
+    temperature: 1000
+    ignited: true
+  - type: RepeatingTrigger
+    delay: 0.5
+  - type: ExplodeOnTrigger
+  - type: ExplosionEffect
+  - type: Explosive
+    explosionType: FireBomb
+    totalIntensity: 5
+    intensitySlope: 1
+    maxIntensity: 3
+    canCreateVacuum: false
+    deleteAfterExplosion: false
+    repeatable: true
+  - type: TimedDespawn
+    lifetime: 5
+- type: entity
+  id: ProjectileAnomalyFireball
+  name: fireball
+  description: Hovering blob of flame.
+  parent: ProjectileFireball
+  categories: [HideSpawnMenu]
+  components:
+  - type: Reflective
+    reflective: Magic
+  - type: TimedDespawn
+    lifetime: 30
+  - type: ExplosionEffect
+  - type: Explosive
+    explosionType: Default
+    maxIntensity: 100
+    intensitySlope: 0.1
+    totalIntensity: 0.3
+    maxTileBreak: 0
+- type: entity
+  id: ProjectileIcicle
+  parent: BaseBullet
+  name: icicle
+  description: Brrrrr.
+  categories: [HideSpawnMenu]
+  components:
+  - type: Reflective
+    reflective: Magic
+  - type: Sprite
+    sprite: Structures/Specific/Anomalies/ice_anom.rsi
+  - type: Projectile
+    damage:
+      types:
+        Piercing: 20
+        Cold: 20
+        Structural: 50

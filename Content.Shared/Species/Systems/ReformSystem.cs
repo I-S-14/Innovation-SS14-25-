@@ -17,7 +17,6 @@ namespace Content.Shared.Species.Systems;
 
 public sealed partial class ReformSystem : EntitySystem
 {
-    [Dependency] private readonly IPrototypeManager _protoManager = default!;
     [Dependency] private readonly SharedContainerSystem _container = default!;
     [Dependency] private SharedActionsSystem _actionsSystem = default!;
     [Dependency] private INetManager _netMan = default!;

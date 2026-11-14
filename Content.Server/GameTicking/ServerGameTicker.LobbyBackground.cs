@@ -23,11 +23,11 @@ public sealed partial class ServerGameTicker
         _lobbyBackgrounds ??= new List<ProtoId<LobbyBackgroundPrototype>>();
 
         //create protoids from them
-        foreach (var proto in allprotos)
+        foreach (var prototype in allprotos)
         {
             if (!WhitelistedBackgroundExtensions.Contains(prototype.Background.Extension))
             {
-                _sawmill.Warning($"Lobby background '{prototype.ID}' has an invalid extension '{prototype.Background.Extension}' and will be ignored.");
+                Log.Warning($"Lobby background '{prototype.ID}' has an invalid extension '{prototype.Background.Extension}' and will be ignored.");
                 continue;
             }
 

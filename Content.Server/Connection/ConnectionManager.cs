@@ -63,6 +63,7 @@ namespace Content.Server.Connection
         [Dependency] private readonly ILocalizationManager _loc = default!;
         [Dependency] private readonly ServerDbEntryManager _serverDbEntry = default!;
         [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
+        [Dependency] private readonly IEntitySystemManager _entitySystems = default!; //IS14-change: resolve the current ticker when checking reconnects.
         [Dependency] private readonly IGameTiming _gameTiming = default!;
         [Dependency] private readonly ILogManager _logManager = default!;
         [Dependency] private readonly IChatManager _chatManager = default!;
@@ -71,7 +72,6 @@ namespace Content.Server.Connection
         private ISharedSponsorsManager? _sponsorsMgr; // CorvaxGoob-Sponsors
         private IServerVPNGuardManager? _vpnGuardMgr; // Corvax-VPNGuard
 
-        private GameTicker? _ticker; // CorvaxGoob-Queue
         private ISawmill _sawmill = default!;
         private readonly Dictionary<NetUserId, TimeSpan> _temporaryBypasses = [];
         private IPIntel.IPIntel _ipintel = default!;
@@ -320,8 +320,8 @@ namespace Content.Server.Connection
             }
 
             // CorvaxGoob-Queue-Start
-            var wasInGame = _ticker != null &&
-                            _ticker.PlayerGameStatuses.TryGetValue(userId, out var status) &&
+            var wasInGame = _entitySystems.TryGetEntitySystem<ServerGameTicker>(out var ticker) &&
+                            ticker.PlayerGameStatuses.TryGetValue(userId, out var status) &&
                             status == PlayerGameStatus.JoinedGame;
             var adminBypass = _cfg.GetCVar(CCVars.AdminBypassMaxPlayers) && adminData != null;
             // CorvaxGoob-Queue-End
@@ -412,7 +412,7 @@ namespace Content.Server.Connection
         public async Task<bool> HasPrivilegedJoin(NetUserId userId) // Goobstation - Queue
         {
             var isAdmin = await _db.GetAdminDataForAsync(userId) != null;
-            var ticker = IoCManager.Resolve<IEntityManager>().System<GameTicker>();
+            var ticker = IoCManager.Resolve<IEntityManager>().System<ServerGameTicker>();
             var wasInGame = ticker.PlayerGameStatuses.TryGetValue(userId, out var status) &&
                             status == PlayerGameStatus.JoinedGame;
             return isAdmin || wasInGame;
@@ -424,7 +424,7 @@ namespace Content.Server.Connection
         {
             var adminBypass = _cfg.GetCVar(CCVars.AdminBypassMaxPlayers) && await _db.GetAdminDataForAsync(userId) != null;
             var havePriorityJoin = _sponsorsMgr != null && _sponsorsMgr.HaveServerPriorityJoin(userId); // CorvaxGoob-Sponsors
-            var wasInGame = EntitySystem.TryGet<GameTicker>(out var ticker) &&
+            var wasInGame = EntitySystem.TryGet<ServerGameTicker>(out var ticker) &&
                             ticker.PlayerGameStatuses.TryGetValue(userId, out var status) &&
                             status == PlayerGameStatus.JoinedGame;
             return adminBypass ||

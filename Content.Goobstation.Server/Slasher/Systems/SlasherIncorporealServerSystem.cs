@@ -13,8 +13,6 @@ using Content.Shared.Interaction;
 using Content.Shared.Light;
 using Content.Shared.Light.Components;
 using Content.Shared.Light.EntitySystems;
-using Content.Shared.Atmos;
-using Content.Shared.Atmos.Components;
 using Content.Shared.Physics;
 using Content.Shared.SurveillanceCamera.Components;
 using Robust.Server.GameObjects;
@@ -28,6 +26,8 @@ namespace Content.Goobstation.Server.Slasher.Systems;
 /// </summary>
 public sealed partial class SlasherIncorporealCameraSystem : EntitySystem
 {
+    [Dependency] private Content.Shared.Light.EntitySystems.ExpendableLightSystem _expendable = default!;
+
     [Dependency] private SharedInteractionSystem _interaction = default!;
     [Dependency] private EntityLookupSystem _lookup = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
@@ -143,8 +143,7 @@ public sealed partial class SlasherIncorporealCameraSystem : EntitySystem
         // Handle expendable lights (flares, glowsticks, etc.)
         if (_expendableLightQuery.TryComp(uid, out var expendableLight))
         {
-            expendableLight.CurrentState = ExpendableLightState.Fading;
-            expendableLight.StateExpiryTime = 0;
+            _expendable.BurnOut((uid, expendableLight));
             return;
         }
 

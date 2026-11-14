@@ -1,3 +1,6 @@
+using Content.Shared.Station.Systems;
+using Content.Shared.CartridgeLoader;
+using NavMapSystem = Content.Server.Pinpointer.ServerNavMapSystem;
 using Content.Goobstation.Server.Antag;
 using Content.Goobstation.Shared.Gangwars.Components;
 using Content.Goobstation.Shared.Gangwars.Events;
@@ -20,7 +23,7 @@ using Robust.Shared.Timing;
 
 namespace Content.Goobstation.Server.Gangwars.Systems;
 
-public sealed partial class ServerGangwarRuleSystem : GameRuleSystem<GangwarRuleComponent>
+public sealed partial class ServerGangwarRuleSystem : ServerGameRuleSystem<GangwarRuleComponent>
 {
     [Dependency] private NavMapSystem _navMap = default!;
     [Dependency] private RadioSystem _radio = default!;
@@ -33,7 +36,7 @@ public sealed partial class ServerGangwarRuleSystem : GameRuleSystem<GangwarRule
     [Dependency] private NanoChatCartridgeSystem _nanoChatCartridge = default!;
     [Dependency] private CartridgeLoaderSystem _cartridgeLoader = default!;
     [Dependency] private IGameTiming _timing = default!;
-    [Dependency] private SharedStationSystem _station = default!;
+    [Dependency] private StationSystem _station = default!;
 
     public override void Initialize()
     {
@@ -47,7 +50,7 @@ public sealed partial class ServerGangwarRuleSystem : GameRuleSystem<GangwarRule
         base.Update(frameTime);
 
         var query = QueryActiveRules();
-        while (query.MoveNext(out _, out _, out var rule, out _))
+        while (query.MoveNext(out _, out var rule, out _, out _))
         {
             UpdateCrateDrop(rule);
             UpdateDuffelbagDrop(rule);
@@ -143,7 +146,7 @@ public sealed partial class ServerGangwarRuleSystem : GameRuleSystem<GangwarRule
     private void OnTipOff(GangTipOffEvent ev)
     {
         var query = QueryActiveRules();
-        while (query.MoveNext(out _, out _, out var rule, out _))
+        while (query.MoveNext(out _, out var rule, out _, out _))
         {
             rule.NextGangDuffelbagDrop = Timing.CurTime + rule.TipOffDropDelay;
 

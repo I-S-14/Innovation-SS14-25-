@@ -26,12 +26,10 @@ namespace Content.Server.Anomaly.Effects;
 
 public sealed partial class InnerBodyAnomalySystem : SharedInnerBodyAnomalySystem // Goob
 {
-    [Dependency] private readonly BodySystem _body = default!;
-    [Dependency] private readonly IPrototypeManager _proto = default!;
     [Dependency] private IAdminLogManager _adminLog = default!;
     [Dependency] private AnomalySystem _anomaly = default!;
     [Dependency] private SharedAudioSystem _audio = default!;
-    [Dependency] private GibbingSystem _gibbing = default!;
+    [Dependency] private Content.Shared.Body.Systems.SharedBodySystem _gibbing = default!;
     [Dependency] private IChatManager _chat = default!;
     [Dependency] private ISharedPlayerManager _player = default!;
     [Dependency] private EntityWhitelistSystem _whitelist = default!;
@@ -136,7 +134,7 @@ public sealed partial class InnerBodyAnomalySystem : SharedInnerBodyAnomalySyste
 
     private void OnAnomalySupercritical(Entity<InnerBodyAnomalyComponent> ent, ref AnomalySupercriticalEvent args)
     {
-        _gibbing.Gib(ent.Owner);
+        _gibbing.GibBody(ent.Owner);
     }
 
     private void OnSeverityChanged(Entity<InnerBodyAnomalyComponent> ent, ref AnomalySeverityChangedEvent args)

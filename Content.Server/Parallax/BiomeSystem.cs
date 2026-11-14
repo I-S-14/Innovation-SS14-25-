@@ -38,7 +38,6 @@ namespace Content.Server.Parallax;
 
 public sealed partial class BiomeSystem : SharedBiomeSystem
 {
-    [Dependency] private readonly IPrototypeManager _proto = default!;
     [Dependency] private IConfigurationManager _configManager = default!;
     [Dependency] private IConsoleHost _console = default!;
     [Dependency] private IParallelManager _parallel = default!;

@@ -2,7 +2,7 @@ using Content.Goobstation.Common.Kitchen;
 
 namespace Content.Server.Kitchen.EntitySystems;
 
-public sealed partial class MicrowaveSystem
+public sealed partial class ServerMicrowaveSystem
 {
     private readonly Dictionary<EntityUid, EntityUid> _goobCooks = new();
 

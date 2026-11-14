@@ -70,8 +70,8 @@ public sealed partial class ClientGangColorSystem : EntitySystem
             return;
 
         foreach (var key in args.RevealedLayers)
-            if (_sprite.LayerExists(args.EquipTarget, key))
-                _sprite.LayerSetColor(args.EquipTarget, _sprite.LayerMapGet(args.EquipTarget, key), color);
+            if (_sprite.LayerExists(args.Equipee, key))
+                _sprite.LayerSetColor(args.Equipee, _sprite.LayerMapGet(args.Equipee, key), color);
     }
 
     /// <summary>

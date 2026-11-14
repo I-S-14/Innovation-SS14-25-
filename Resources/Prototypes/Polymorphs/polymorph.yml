@@ -257,11 +257,5 @@
     duration: 120
     effectProto: EffectDesynchronizer
 
-# Changeling Meteor
-- type: polymorph
-  id: ChangelingMeteor
-  configuration:
-    entity: ChangelingMeteor
-    forced: true
-    polymorphPopup: null
-    exitPolymorphPopup: null
+# IS14-change: Goob changeling forms remain in _Goobstation; the unconnected
+# Wizards ChangelingMeteor form requires the alternate changeling implementation.

@@ -3,7 +3,6 @@
 using Robust.Shared.GameStates;
 
 using Content.Shared.Nutrition.EntitySystems;
-using Robust.Shared.GameStates;
 
 namespace Content.Shared.Nutrition.Components;
 // WD EDIT: Moved from Server to Shared

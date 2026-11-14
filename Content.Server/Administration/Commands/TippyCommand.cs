@@ -91,6 +91,10 @@ public sealed partial class TippyCommand : LocalizedEntityCommands
 [AdminCommand(AdminFlags.Fun)]
 public sealed partial class TipCommand : LocalizedEntityCommands
 {
+    //IS14-change start: restore declarations used by merged implementation.
+    [Dependency] private readonly SharedTipsSystem _tips = default!;
+    //IS14-change end
+
 
     public override string Command => "tip";
 

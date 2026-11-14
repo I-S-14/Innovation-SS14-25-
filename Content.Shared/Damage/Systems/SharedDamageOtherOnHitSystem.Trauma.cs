@@ -42,7 +42,7 @@ public abstract partial class SharedDamageOtherOnHitSystem
         SubscribeLocalEvent<DamageOtherOnHitComponent, ThrowDoHitEvent>(OnDoHit);
     }
 
-    private void OnDoHit(EntityUid uid, DamageOtherOnHitComponent component, ThrowDoHitEvent args)
+    private void OnDoHit(EntityUid uid, DamageOtherOnHitComponent component, ref ThrowDoHitEvent args)
     {
         if (TerminatingOrDeleted(args.Target))
             return;

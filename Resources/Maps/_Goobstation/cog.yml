@@ -84132,7 +84132,7 @@ entities:
     - type: NavMapBeacon
       text: Station anchor
     - type: WarpPoint
-      location: Station anchor
+      location: is14-map-warp-d02b193c7d2d
   - uid: 13298
     components:
     - type: Transform
@@ -84141,7 +84141,7 @@ entities:
     - type: NavMapBeacon
       text: Ship constuction bay
     - type: WarpPoint
-      location: Ship constuction bay
+      location: is14-map-warp-4d26a66d8e7f
   - uid: 13299
     components:
     - type: Transform
@@ -84150,7 +84150,7 @@ entities:
     - type: NavMapBeacon
       text: Reporter's office
     - type: WarpPoint
-      location: Reporter's office
+      location: is14-map-warp-6bc8882f2473
   - uid: 13300
     components:
     - type: Transform
@@ -84159,7 +84159,7 @@ entities:
     - type: NavMapBeacon
       text: Pool
     - type: WarpPoint
-      location: Pool
+      location: is14-map-warp-f13024272c38
   - uid: 13301
     components:
     - type: Transform
@@ -84169,7 +84169,7 @@ entities:
       color: '#D381C993'
       text: Science checkpoint
     - type: WarpPoint
-      location: Science checkpoint
+      location: is14-map-warp-a5b8dbf1d7c1
 - proto: DefaultStationBeaconAI
   entities:
   - uid: 13302
@@ -84643,7 +84643,7 @@ entities:
       color: '#EFB34193'
       text: PTL
     - type: WarpPoint
-      location: PTL
+      location: is14-map-warp-32261296df84
 - proto: DefaultStationBeaconVault
   entities:
   - uid: 13372

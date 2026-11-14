@@ -57,7 +57,7 @@ public sealed partial class PayloadSystem : EntitySystem
         }
     }
 
-    private void OnCaseTriggered(EntityUid uid, PayloadCaseComponent component, TriggerEvent args)
+    private void OnCaseTriggered(EntityUid uid, PayloadCaseComponent component, ref TriggerEvent args)
     {
         // TODO: Adjust to the new trigger system
         // Pass trigger event onto all contained payloads. Payload capacity configurable by construction graphs.
@@ -67,7 +67,7 @@ public sealed partial class PayloadSystem : EntitySystem
         }
     }
 
-    private void OnTriggerTriggered(EntityUid uid, PayloadTriggerComponent component, TriggerEvent args)
+    private void OnTriggerTriggered(EntityUid uid, PayloadTriggerComponent component, ref TriggerEvent args)
     {
         // TODO: Adjust to the new trigger system
 

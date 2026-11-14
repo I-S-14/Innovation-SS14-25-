@@ -287,13 +287,17 @@ namespace Content.Client.Lobby
                 var lobbyBackground = _protoMan.Index(_gameTicker.LobbyBackground.Value);
                 Lobby!.Background.Texture = _resourceCache.GetResource<TextureResource>(lobbyBackground.Background);
 
-                var name = string.IsNullOrEmpty(lobbyBackground.Name)
+                // IS14-change: preserve literal Goob credits while supporting localized Wizards entries.
+                var localizedCredits = !string.IsNullOrEmpty(lobbyBackground.Title);
+                var name = localizedCredits
+                    ? Loc.GetString(lobbyBackground.Title!)
+                    : string.IsNullOrEmpty(lobbyBackground.Name)
                     ? Loc.GetString("lobby-state-background-unknown-title")
                     : lobbyBackground.Name;
 
                 var artist = string.IsNullOrEmpty(lobbyBackground.Artist)
                     ? Loc.GetString("lobby-state-background-unknown-artist")
-                    : lobbyBackground.Artist;
+                    : localizedCredits ? Loc.GetString(lobbyBackground.Artist) : lobbyBackground.Artist; // IS14-change
 
                 var markup = Loc.GetString("lobby-state-background-text",
                     ("backgroundName", name),

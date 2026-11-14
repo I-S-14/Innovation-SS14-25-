@@ -28,7 +28,7 @@ public sealed partial class VinylPlayerSystem : EntitySystem
         SubscribeLocalEvent<VinylPlayerComponent, PowerChangedEvent>(OnPowerChanged);
     }
 
-    private void OnPowerChanged(EntityUid uid, VinylPlayerComponent comp, PowerChangedEvent args)
+    private void OnPowerChanged(EntityUid uid, VinylPlayerComponent comp, ref PowerChangedEvent args)
     {
         if (comp.SoundEntity != null && !args.Powered)
             comp.SoundEntity = _audio.Stop(comp.SoundEntity);

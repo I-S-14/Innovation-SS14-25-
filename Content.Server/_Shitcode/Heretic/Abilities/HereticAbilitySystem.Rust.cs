@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+using Content.Shared.Tag;
 using System.Linq;
 using System.Numerics;
 using Content.Goobstation.Shared.SecondSkin;
@@ -24,6 +25,10 @@ namespace Content.Server.Heretic.Abilities;
 
 public sealed partial class HereticAbilitySystem
 {
+    //IS14-change start: typed prototype IDs required by the upstream analyzer.
+    private static readonly ProtoId<TagPrototype> CompatibilityWallTagId = "Wall";
+    //IS14-change end
+
     public static readonly Dictionary<EntProtoId, EntProtoId> Transformations = new()
     {
         { "WallSolid", "WallSolidRust" },
@@ -233,7 +238,7 @@ public sealed partial class HereticAbilitySystem
             targetEntity = SpawnAttachedTo(transformation, coords, rotation: rotation);
         }
 
-        if (TerminatingOrDeleted(targetEntity) || !_tag.HasTag(targetEntity, "Wall"))
+        if (TerminatingOrDeleted(targetEntity) || !_tag.HasTag(targetEntity, CompatibilityWallTagId))
             return false;
 
         if (targetEntity == target && !canRust)

@@ -14,6 +14,7 @@
   parent: BaseStationTile
   name: tiles-grey-shuttle-floor
   sprite: /Textures/Tiles/shuttlegrey.png
+  variants: 4 # IS14: retain fork texture variants
   # Corvax-Goob-Resprites-start
   placementVariants:
   - 1.0
@@ -31,6 +32,7 @@
   parent: BaseStationTile
   name: tiles-black-shuttle-floor
   sprite: /Textures/Tiles/shuttleblack.png
+  variants: 4 # IS14: retain fork texture variants
   # Corvax-Goob-Resprites-start
   placementVariants:
   - 1.0
@@ -69,6 +71,7 @@
   parent: BaseStationTile
   name: tiles-purple-shuttle-floor
   sprite: /Textures/Tiles/shuttlepurple.png
+  variants: 4 # IS14: retain fork texture variants
   # Corvax-Goob-Resprites-start
   placementVariants:
   - 1.0
@@ -84,6 +87,7 @@
   parent: BaseStationTile
   name: tiles-red-shuttle-floor
   sprite: /Textures/Tiles/shuttlered.png
+  variants: 4 # IS14: retain fork texture variants
   # Corvax-Goob-Resprites-start
   placementVariants:
   - 1.0

@@ -192,14 +192,20 @@ public sealed partial class FaxPrintout
     public bool Locked { get; private set; }
 
     [DataField]
+    //IS14-change: the photo source is a server-local reference, never a network identity.
+    [field: NonSerialized]
     public EntityUid? EntityUid { get; private set; } // CorvaxGoob-PhotoCamera
 
     private FaxPrintout()
     {
     }
 
-    public FaxPrintout(string content, string name, string? label = null, string? prototypeId = null, string? stampState = null, List<StampDisplayInfo>? stampedBy = null, bool locked = false, EntityUid? entityUid = null) // CorvaxGoob-PhotoCamera
+    [DataField]
+    public string? SenderFaxName { get; private set; }
+
+    public FaxPrintout(string content, string name, string? label = null, string? prototypeId = null, string? stampState = null, List<StampDisplayInfo>? stampedBy = null, bool locked = false, EntityUid? entityUid = null, string? senderFaxName = null) // CorvaxGoob-PhotoCamera
     {
+        SenderFaxName = senderFaxName;
         Content = content;
         Name = name;
         Label = label;

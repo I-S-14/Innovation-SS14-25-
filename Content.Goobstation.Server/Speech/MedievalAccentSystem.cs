@@ -1,3 +1,4 @@
+using Content.Shared.Speech.EntitySystems;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Goobstation.Common.Speech;
@@ -18,7 +19,7 @@ public sealed partial class MedievalAccentSystem : EntitySystem
         SubscribeLocalEvent<MedievalAccentComponent, AccentGetEvent>(OnAccent);
     }
 
-    private void OnAccent(EntityUid uid, MedievalAccentComponent component, AccentGetEvent args)
+    private void OnAccent(EntityUid uid, MedievalAccentComponent component, ref AccentGetEvent args)
     {
         var message = args.Message;
 

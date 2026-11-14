@@ -44,7 +44,7 @@
         - to: chairRitual
           completed:
             - !type:SpawnPrototype
-              prototype: OrganSkeletonPersonHead
+              prototype: HeadSkeleton # IS14-change: return a compatible Goob skull.
               amount: 1
           steps:
             - tool: Prying

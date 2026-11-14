@@ -38,7 +38,7 @@ public sealed partial class UndamagedConditionSystem : AchievementConditionSyste
             _eligible.Remove(ent);
     }
 
-    private void OnRoundEnd(RoundEndTextAppendEvent ev)
+    private void OnRoundEnd(ref RoundEndTextAppendEvent ev)
     {
         foreach (var session in _player.Sessions)
         {

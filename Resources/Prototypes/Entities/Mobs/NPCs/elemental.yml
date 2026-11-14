@@ -9,7 +9,6 @@
     groups:
       Acidic: [Touch]
   - type: Damageable
-  - type: Injurable
     damageContainer: Inorganic
   - type: MovementSpeedModifier
     baseWalkSpeed : 2
@@ -70,7 +69,7 @@
   - type: NpcFactionMember
     factions:
       - SimpleHostile
-  - type: Injurable
+  - type: Damageable
     damageContainer: StructuralBiological
 
 - type: entity

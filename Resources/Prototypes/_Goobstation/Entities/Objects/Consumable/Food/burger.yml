@@ -11,17 +11,18 @@
   - type: Sprite
     sprite: _Goobstation/Objects/Consumable/Food/chud_burger.rsi
     state: icon
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 15
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 3
-        - ReagentId: Protein
-          Quantity: 6
-        - ReagentId: Nothing
-          Quantity: 5
+  - type: Solution
+    solution:
+      maxVol: 15
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 3
+      - ReagentId: Protein
+        Quantity: 6
+      - ReagentId: Nothing
+        Quantity: 5
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - Meat
@@ -40,17 +41,18 @@
   - type: Sprite
     sprite: _Goobstation/Objects/Consumable/Food/mothroach_burger.rsi
     state: mustard_mothroach
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 15
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 5 # Goobstation - cooked food more useful
-        - ReagentId: Protein
-          Quantity: 5 # Goobstation - cooked food more useful
-        - ReagentId: Vitamin
-          Quantity: 7
+  - type: Solution
+    solution:
+      maxVol: 15
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 5 # Goobstation - cooked food more useful
+      - ReagentId: Protein
+        Quantity: 5 # Goobstation - cooked food more useful
+      - ReagentId: Vitamin
+        Quantity: 7
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - Meat
@@ -102,17 +104,18 @@
   - type: Sprite
     sprite: _Goobstation/Objects/Consumable/Food/chilly_pepper_food.rsi
     state: burger-cold
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 20
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 6
-        - ReagentId: FrostOil
-          Quantity: 10
-        - ReagentId: Vitamin
-          Quantity: 1
+  - type: Solution
+    solution:
+      maxVol: 20
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 6
+      - ReagentId: FrostOil
+        Quantity: 10
+      - ReagentId: Vitamin
+        Quantity: 1
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - Meat
@@ -140,19 +143,20 @@
   - type: Sprite
     sprite: _Goobstation/Objects/Consumable/Food/chilly_pepper_food.rsi
     state: burger-hotcold
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 20
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 6
-        - ReagentId: FrostOil
-          Quantity: 5
-        - ReagentId: CapsaicinOil
-          Quantity: 5
-        - ReagentId: Vitamin
-          Quantity: 1
+  - type: Solution
+    solution:
+      maxVol: 20
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 6
+      - ReagentId: FrostOil
+        Quantity: 5
+      - ReagentId: CapsaicinOil
+        Quantity: 5
+      - ReagentId: Vitamin
+        Quantity: 1
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - Meat

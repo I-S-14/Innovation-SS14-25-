@@ -27,7 +27,7 @@ public sealed partial class TransferMindOnGibSystem : EntitySystem
         SubscribeLocalEvent<TransferMindOnGibComponent, BeingGibbedEvent>(OnGib);
     }
 
-    private void OnGib(EntityUid uid, TransferMindOnGibComponent component, BeingGibbedEvent args)
+    private void OnGib(EntityUid uid, TransferMindOnGibComponent component, ref BeingGibbedEvent args)
     {
         if (!_mindSystem.TryGetMind(uid, out var mindId, out var mind))
             return;

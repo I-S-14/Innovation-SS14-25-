@@ -17,13 +17,13 @@ public sealed partial class ThievingSystem : EntitySystem
 
         SubscribeLocalEvent<ThievingComponent, BeforeStripEvent>(OnBeforeStrip);
         SubscribeLocalEvent<ThievingComponent, InventoryRelayedEvent<BeforeStripEvent>>((e, c, ev) =>
-            OnBeforeStrip(e, c, ev.Args));
+            OnBeforeStrip(e, c, ref ev.Args));
         SubscribeLocalEvent<ThievingComponent, ToggleThievingEvent>(OnToggleStealthy);
         SubscribeLocalEvent<ThievingComponent, ComponentInit>(OnCompInit);
         SubscribeLocalEvent<ThievingComponent, ComponentRemove>(OnCompRemoved);
     }
 
-    private void OnBeforeStrip(EntityUid uid, ThievingComponent component, BeforeStripEvent args)
+    private void OnBeforeStrip(EntityUid uid, ThievingComponent component, ref BeforeStripEvent args)
     {
         args.Stealth |= component.Stealthy;
         if (args.Stealth)

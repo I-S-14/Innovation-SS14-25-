@@ -1,3 +1,4 @@
+using Content.Shared.Radio; // IS14-change: upstream namespace move
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Linq;
@@ -13,7 +14,6 @@ using Content.Shared.Database;
 using Content.Shared._DV.CartridgeLoader.Cartridges;
 using Content.Shared._DV.NanoChat;
 using Content.Shared.PDA;
-using Content.Shared.Radio.Components;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 using Content.Shared.CCVar;
@@ -554,7 +554,7 @@ public sealed partial class NanoChatCartridgeSystem : EntitySystem
 
     private void OnUiReady(Entity<NanoChatCartridgeComponent> ent, ref CartridgeUiReadyEvent args)
     {
-        _cartridge.RegisterBackgroundProgram(args.Loader, ent);
+        //IS14-change: the new loader relays background events to every installed program.
         UpdateUI(ent, args.Loader);
     }
 

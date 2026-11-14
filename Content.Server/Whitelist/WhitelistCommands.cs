@@ -63,6 +63,12 @@ public sealed partial class AddWhitelistCommand : LocalizedCommands
 [AdminCommand(AdminFlags.Ban)]
 public sealed partial class RemoveWhitelistCommand : LocalizedCommands
 {
+    //IS14-change start: restore declarations used by merged implementation.
+    [Dependency] private WhitelistManager _whitelistManager = default!;
+    [Dependency] private readonly IPlayerLocator _locator = default!;
+    [Dependency] private readonly IServerDbManager _dbManager = default!;
+    //IS14-change end
+
 
     public override string Command => "whitelistremove";
 
@@ -109,6 +115,10 @@ public sealed partial class RemoveWhitelistCommand : LocalizedCommands
 [AdminCommand(AdminFlags.Ban)]
 public sealed partial class KickNonWhitelistedCommand : LocalizedCommands
 {
+    //IS14-change start: restore declarations used by merged implementation.
+    [Dependency] private readonly IServerDbManager _dbManager = default!;
+    //IS14-change end
+
     [Dependency] private IConfigurationManager _configManager = default!;
     [Dependency] private IServerNetManager _netManager = default!;
     [Dependency] private IPlayerManager _playerManager = default!;

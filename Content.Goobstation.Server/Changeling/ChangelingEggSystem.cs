@@ -52,7 +52,7 @@ public sealed partial class ChangelingEggSystem : EntitySystem
 
         EnsureComp<ChangelingIdentityComponent>(newUid);
 
-        EntityManager.AddComponent(newUid, comp.lingStore);
+        AddComp(newUid, comp.lingStore);
 
         foreach (var listing in comp.lingStore.FullListingsCatalog)
         {

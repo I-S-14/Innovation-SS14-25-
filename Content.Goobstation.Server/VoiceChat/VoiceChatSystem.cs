@@ -64,7 +64,7 @@ public sealed partial class VoiceChatSystem : EntitySystem
     [Dependency] private SharedHandsSystem _hands = default!;
     [Dependency] private TagSystem _tag = default!;
     [Dependency] private VoiceRadioSystem _radioVoice = default!;
-    [Dependency] private GameTicker _gameTicker = default!;
+    [Dependency] private Content.Server.GameTicking.ServerGameTicker _gameTicker = default!;
     [Dependency] private VoiceLogSystem _voiceLog = default!;
 
     private static readonly TimeSpan TransmissionGap = TimeSpan.FromMilliseconds(500);

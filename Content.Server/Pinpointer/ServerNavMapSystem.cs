@@ -1,3 +1,4 @@
+using JetBrains.Annotations; // IS14-change: upstream API move
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Server.Administration.Logs;
@@ -27,9 +28,9 @@ public sealed partial class ServerNavMapSystem : NavMapSystem
     [Dependency] private IGameTiming _gameTiming = default!;
     [Dependency] private TurfSystem _turfSystem = default!;
 
-    [Dependency] private EntityQuery<AirtightComponent> _airtightQuery;
-    [Dependency] private EntityQuery<MapGridComponent> _gridQuery;
-    [Dependency] private EntityQuery<NavMapComponent> _navQuery;
+    [Dependency] private EntityQuery<AirtightComponent> _airtightQuery = default!;
+    [Dependency] private EntityQuery<MapGridComponent> _gridQuery = default!;
+    [Dependency] private EntityQuery<NavMapComponent> _navQuery = default!;
 
     [SubscribeLocalEvent]
     private void OnStationInit(StationGridAddedEvent ev)
@@ -319,7 +320,7 @@ public sealed partial class ServerNavMapSystem : NavMapSystem
             Dirty(xform.GridUid.Value, navMap);
     }
 
-    private void UpdateBeaconEnabledVisuals(Entity<NavMapBeaconComponent> ent)
+    private new void UpdateBeaconEnabledVisuals(Entity<NavMapBeaconComponent> ent)
     {
         _appearance.SetData(ent, NavMapBeaconVisuals.Enabled, ent.Comp.Enabled && Transform(ent).Anchored);
     }
@@ -352,7 +353,7 @@ public sealed partial class ServerNavMapSystem : NavMapSystem
     /// This is used for things like announcements where you want to find the closest "landmark" to something.
     /// </summary>
     [PublicAPI]
-    public bool TryGetNearestBeacon(Entity<TransformComponent?> ent,
+    public new bool TryGetNearestBeacon(Entity<TransformComponent?> ent,
         [NotNullWhen(true)] out Entity<NavMapBeaconComponent>? beacon,
         [NotNullWhen(true)] out MapCoordinates? beaconCoords)
     {
@@ -368,7 +369,7 @@ public sealed partial class ServerNavMapSystem : NavMapSystem
     /// For a given position, tries to find the nearest configurable beacon that is marked as visible.
     /// This is used for things like announcements where you want to find the closest "landmark" to something.
     /// </summary>
-    public bool TryGetNearestBeacon(MapCoordinates coordinates,
+    public new bool TryGetNearestBeacon(MapCoordinates coordinates,
         [NotNullWhen(true)] out Entity<NavMapBeaconComponent>? beacon,
         [NotNullWhen(true)] out MapCoordinates? beaconCoords)
     {
@@ -406,7 +407,7 @@ public sealed partial class ServerNavMapSystem : NavMapSystem
     /// to the position of <paramref name="ent"/> from the nearest beacon.
     /// </summary>
     [PublicAPI]
-    public string GetNearestBeaconString(Entity<TransformComponent?> ent, bool onlyName = false)
+    public new string GetNearestBeaconString(Entity<TransformComponent?> ent, bool onlyName = false)
     {
         // Add onlyName. Wasn't in the game. Will appear with Upstream - CorvaxGoob-SecApartment.
 
@@ -421,7 +422,7 @@ public sealed partial class ServerNavMapSystem : NavMapSystem
     /// to <paramref name="coordinates"/> from the nearest beacon.
     /// </summary>
 
-    public string GetNearestBeaconString(MapCoordinates coordinates, bool onlyName = false)
+    public new string GetNearestBeaconString(MapCoordinates coordinates, bool onlyName = false)
     {
         // Add onlyName. Wasn't in the game. Will appear with Upstream - CorvaxGoob-SecApartment.
 
@@ -456,7 +457,7 @@ public sealed partial class ServerNavMapSystem : NavMapSystem
         // we can null suppress the text being null because TryGetNearestVisibleStationBeacon always gives us a beacon with not-null text.
         return Loc.GetString("nav-beacon-pos-format-direction",
             ("modifier", modifier),
-            ("direction", ContentLocalizationManager.FormatDirection(adjustedDir).ToLowerInvariant()),
+            ("direction", Content.Shared.Localizations.ContentLocalizationManager.FormatDirection(adjustedDir).ToLowerInvariant()),
             ("color", beacon.Value.Comp.Color),
             ("marker", beacon.Value.Comp.Text!));
     }

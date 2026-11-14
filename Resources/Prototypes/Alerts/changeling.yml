@@ -1,17 +1,4 @@
-# for ChangelingFleshClothingAbilityComponent
-- type: alert
-  id: ChangelingFleshClothing
-  clickEvent: !type:ToggleFleshClothingEvent
-  icons:
-  - sprite: /Textures/Interface/Alerts/changeling.rsi
-    state: flesh-clothing-off
-  - sprite: /Textures/Interface/Alerts/changeling.rsi
-    state: flesh-clothing-on
-  name: changeling-flesh-clothing-alert-name
-  description: changeling-flesh-clothing-alert-desc
-  minSeverity: 0
-  maxSeverity: 1
-
+# IS14: use Goob changeling abilities; the Nubody flesh-clothing alert is omitted.
 - type: alert
   id: ChemicalsChangeling
   category: Chemicals

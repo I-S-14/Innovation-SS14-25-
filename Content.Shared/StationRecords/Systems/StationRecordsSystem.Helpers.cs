@@ -38,7 +38,7 @@ public sealed partial class StationRecordsSystem
 
     private bool IsFilterWithSomeCodeValue(string value, string filter)
     {
-        return !value.StartsWith(filter, StringComparison.OrdinalIgnoreCase);
+        return IsFilterWithSomeCodeValueGoob(value, filter); // IS14-change: Goob partial fingerprint matching
     }
 
     /// <summary>

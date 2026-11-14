@@ -187,7 +187,9 @@ public abstract partial class SharedStasisSystem : EntitySystem
         }
 
         if (HasComp<StasisImmunityComponent>(args.EquipTarget) )
-            EntityManager.RemoveComponent<StasisImmunityComponent>(args.EquipTarget);
+            //IS14-change start
+            RemComp<StasisImmunityComponent>(args.EquipTarget);
+            //IS14-change end
     }
 
     #endregion

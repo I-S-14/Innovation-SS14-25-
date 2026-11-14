@@ -44,7 +44,7 @@
       deviceNetId: Wireless
       transmitFrequencyId: SuitSensor
     - type: StationLimitedNetwork
-    - type: WirelessNetworkConnection
+    - type: WirelessNetwork
       range: 500
 
 - type: entity
@@ -258,9 +258,10 @@
     - type: Store
     # this shit is broken still CBF to fix it but you need to make it find or add a ling rule, then MakeChangeling it
     removed:
-    - type: Hunger
-    - type: Thirst
-
+    - type: Satiation
+      satiations: {}
+    - type: SatiationSpeedModifier
+      satiations: {}
 - type: entity
   parent: BaseSubdermalImplant
   id: AntagImplantSpaceNinja

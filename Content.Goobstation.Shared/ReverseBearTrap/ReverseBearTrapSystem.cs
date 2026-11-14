@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+using Content.Shared.Tools;
+using Robust.Shared.Prototypes;
 using System.Linq;
 using Content.Shared.ActionBlocker;
 using Content.Shared.Damage;
@@ -36,6 +38,11 @@ namespace Content.Goobstation.Shared.ReverseBearTrap;
 
 public sealed partial class ReverseBearTrapSystem : EntitySystem
 {
+    //IS14-change start: typed IDs for retained behavior.
+    private static readonly ProtoId<ToolQualityPrototype> WeldingToolQuality = "Welding";
+    private static readonly ProtoId<TagPrototype> ReverseBearTrapKeyTag = "ReverseBearTrapKey";
+    //IS14-change end
+
     [Dependency] private SharedAudioSystem _audio = default!;
     [Dependency] private SharedDoAfterSystem _doAfter = default!;
     [Dependency] private DamageableSystem _damageable = default!;
@@ -142,7 +149,7 @@ public sealed partial class ReverseBearTrapSystem : EntitySystem
                 {
                     DoContactInteraction = true,
                     Text = "Remove trap",
-                    Disabled = !activeItem.HasValue || !_toolSystem.HasQuality(activeItem.Value, "Welding"),
+                    Disabled = !activeItem.HasValue || !_toolSystem.HasQuality(activeItem.Value, WeldingToolQuality),
                     Act = () =>
                     {
                         var user = args.User;
@@ -157,14 +164,14 @@ public sealed partial class ReverseBearTrapSystem : EntitySystem
                         _popup.PopupClient(Loc.GetString("reverse-bear-trap-component-start-welding-by-other",
                             ("otherName", Identity.Name(user, EntityManager, target))), target, target, PopupType.Large);
 
-                        _toolSystem.UseTool(activeItem!.Value, args.User, uid, 5f, "Welding", new WeldFinishedEvent(), 3f);
+                        _toolSystem.UseTool(activeItem!.Value, args.User, uid, 5f, WeldingToolQuality, new WeldFinishedEvent(), 3f);
                     }
                 });
             }
 
             if (activeItem.HasValue
                 && TryComp<TagComponent>(activeItem, out var tagComponent)
-                && _tag.HasTag(tagComponent, "ReverseBearTrapKey"))
+            && _tag.HasTag(tagComponent, ReverseBearTrapKeyTag))
             {
                 args.Verbs.Add(new Verb()
                 {
@@ -319,7 +326,9 @@ public sealed partial class ReverseBearTrapSystem : EntitySystem
 
     private void ArmTrap(EntityUid uid, ReverseBearTrapComponent trap, EntityUid wearer)
     {
-        if (trap.Ticking || !EntityManager.EntityExists(wearer) || !_interaction.InRangeUnobstructed(uid, wearer))
+        //IS14-change start
+        if (trap.Ticking || !Exists(wearer) || !_interaction.InRangeUnobstructed(uid, wearer))
+        //IS14-change end
             return;
 
         trap.Ticking = true;

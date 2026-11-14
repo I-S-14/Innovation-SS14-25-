@@ -17,13 +17,11 @@ namespace Content.Shared.GameTicking.Rules;
 
 public sealed partial class ParadoxCloneRuleSystem : GameRuleSystem<ParadoxCloneRuleComponent>
 {
-    [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly EntityWhitelistSystem _whitelist = default!; // Goobstation
     [Dependency] private IRobustRandom _random = default!;
     [Dependency] private SharedCloningSystem _cloning = default!;
     [Dependency] private SharedMindSystem _mind = default!;
     [Dependency] private SharedSuitSensorSystem _sensor = default!;
-    [Dependency] private AliveHumanoidTargetSystem _target = default!;
 
     protected override void Started(Entity<ParadoxCloneRuleComponent, GameRuleComponent> rule, ref GameRuleStartedEvent args)
     {

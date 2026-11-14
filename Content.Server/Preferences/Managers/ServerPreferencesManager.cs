@@ -1,3 +1,4 @@
+using Content.Shared.Humanoid;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Diagnostics.CodeAnalysis;
@@ -11,7 +12,6 @@ using Content.Shared.Body;
 using Content.Shared.Chat.Prototypes;
 using Content.Shared.CCVar;
 using Content.Shared.Construction.Prototypes;
-using Content.Shared.Humanoid;
 using Content.Shared.Humanoid.Markings;
 using Content.Shared.Humanoid.Prototypes;
 using Content.Shared.Preferences;
@@ -36,6 +36,10 @@ namespace Content.Server.Preferences.Managers
     /// </summary>
     public sealed partial class ServerPreferencesManager : IServerPreferencesManager, IPostInjectInit
     {
+    //IS14-change start: restore declarations used by merged implementation.
+    [Dependency] private IAfkManager _afkManager = default!;
+    //IS14-change end
+
         [Dependency] private readonly IServerNetManager _netManager = default!;
         [Dependency] private readonly IConfigurationManager _cfg = default!;
         [Dependency] private readonly IServerDbManager _db = default!;
@@ -95,7 +99,6 @@ namespace Content.Server.Preferences.Managers
 
         internal HumanoidCharacterProfile ConvertProfiles(Profile profile)
         {
-
             var jobs = profile.Jobs.ToDictionary(j => new ProtoId<JobPrototype>(j.JobName), j => (JobPriority) j.Priority);
             var antags = profile.Antags.Select(a => new ProtoId<AntagPrototype>(a.AntagName));
             var traits = profile.Traits.Select(t => new ProtoId<TraitPrototype>(t.TraitName));
@@ -110,49 +113,26 @@ namespace Content.Server.Preferences.Managers
             if (Enum.TryParse<Gender>(profile.Gender, true, out var genderVal))
                 gender = genderVal;
 
+            // CorvaxGoob-TTS-Start
+            var ttsVoice = profile.TTSVoice;
+            if (string.IsNullOrEmpty(ttsVoice))
+                ttsVoice = SharedHumanoidAppearanceSystem.DefaultSexVoice[sex];
+            // CorvaxGoob-TTS-End
 
-            var markings =
-                new Dictionary<ProtoId<OrganCategoryPrototype>, Dictionary<HumanoidVisualLayers, List<Marking>>>();
+            // ReSharper disable once ConditionalAccessQualifierIsNonNullableAccordingToAPIContract
+            var markingsRaw = profile.Markings?.Deserialize<List<string>>();
 
-            var species = profile.Species;
-            if (!_prototypeManager.TryIndex<SpeciesPrototype>(species, out var speciesPrototype))
+            List<Marking> markings = new();
+            if (markingsRaw != null)
             {
-                species = HumanoidCharacterProfile.DefaultSpecies;
-                speciesPrototype = _prototypeManager.Index<SpeciesPrototype>(species);
-            }
-
-            var voice = profile.Voice ?? speciesPrototype.DefaultSoundsBySex[(int)sex];
-            if (!_prototypeManager.HasIndex<EmoteSoundsPrototype>(voice))
-                voice = speciesPrototype.DefaultSoundsBySex[(int)sex];
-
-            if (profile.OrganMarkings?.RootElement is { } element)
-            {
-                var data = element.ToDataNode();
-                markings = _serialization
-                    .Read<Dictionary<ProtoId<OrganCategoryPrototype>, Dictionary<HumanoidVisualLayers, List<Marking>>>>(
-                        data,
-                        notNullableOverride: true);
-            }
-            else if (profile.Markings is { } profileMarkings && TryDeserialize<List<string>>(profileMarkings) is { } markingsRaw)
-            {
-                List<Marking> markingsList = new();
-
                 foreach (var marking in markingsRaw)
                 {
                     var parsed = Marking.ParseFromDbString(marking);
 
                     if (parsed is null) continue;
 
-                    markingsList.Add(parsed.Value);
+                    markings.Add(parsed);
                 }
-
-                if (Marking.ParseFromDbString($"{profile.HairName}@{profile.HairColor}") is { } facialMarking)
-                    markingsList.Add(facialMarking);
-
-                if (Marking.ParseFromDbString($"{profile.HairName}@{profile.HairColor}") is { } hairMarking)
-                    markingsList.Add(hairMarking);
-
-                markings = _marking.ConvertMarkings(markingsList, species);
             }
 
             var loadouts = new Dictionary<string, RoleLoadout>();
@@ -179,16 +159,23 @@ namespace Content.Server.Preferences.Managers
                 loadouts[role.RoleName] = loadout;
             }
 
+            // CorvaxGoob-Revert : DB conflicts
+            // var barkVoice = profile.BarkVoice ?? SharedHumanoidAppearanceSystem.DefaultBarkVoice; // Goob Station - Barks
+
             return new HumanoidCharacterProfile(
                 profile.CharacterName,
                 profile.FlavorText,
-                species,
+                profile.Species,
+                ttsVoice, // CorvaxGoob-TTS
                 profile.Age,
                 sex,
-                voice,
                 gender,
                 new HumanoidCharacterAppearance
                 (
+                    profile.HairName,
+                    Color.FromHex(profile.HairColor),
+                    profile.FacialHairName,
+                    Color.FromHex(profile.FacialHairColor),
                     Color.FromHex(profile.EyeColor),
                     Color.FromHex(profile.SkinColor),
                     markings
@@ -199,6 +186,7 @@ namespace Content.Server.Preferences.Managers
                 antags.ToHashSet(),
                 traits.ToHashSet(),
                 loadouts
+                // barkVoice // Goob Station - Barks // CorvaxGoob-Revert : DB conflicts
             );
         }
 
@@ -416,7 +404,7 @@ namespace Content.Server.Preferences.Managers
 
                 async Task LoadPrefs()
                 {
-                    var prefs = await GetOrCreatePreferencesAsync(session.UserId, cancel);
+                    var prefs = ConvertPreferences(await GetOrCreatePreferencesAsync(session.UserId, cancel));
                     // CorvaxGoob-Sponsors-Start: Remove sponsor markings from expired sponsors
                     var collection = IoCManager.Instance!;
                     foreach (var (_, profile) in prefs.Characters)
@@ -558,7 +546,7 @@ namespace Content.Server.Preferences.Managers
 
             return new PlayerPreferences(prefs.Characters.Select(p =>
             {
-                return new KeyValuePair<int, HumanoidCharacterProfile>(p.Key, p.Value.Validated(session, collection));
+                return new KeyValuePair<int, HumanoidCharacterProfile>(p.Key, (HumanoidCharacterProfile) p.Value.Validated(session, collection, sponsorPrototypes));
             }), prefs.SelectedCharacterIndex, prefs.AdminOOCColor, prefs.ConstructionFavorites);
         }
 

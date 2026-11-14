@@ -81,7 +81,7 @@ public sealed class GlobalTileMovementSystem : EntitySystem
         }
     }
 
-    private void OnGhostRoleSpawnerUsed(GhostRoleSpawnerUsedEvent args)
+    private void OnGhostRoleSpawnerUsed(ref GhostRoleSpawnerUsedEvent args)
     {
         if (!GlobalTileMovementIsActive())
             return;

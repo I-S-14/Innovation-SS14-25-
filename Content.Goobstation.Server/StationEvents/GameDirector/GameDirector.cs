@@ -1,4 +1,4 @@
-﻿using Content.Goobstation.Server.StationEvents.Components;
+using Content.Goobstation.Server.StationEvents.Components;
 using Content.Goobstation.Server.StationEvents.Metric;
 
 namespace Content.Goobstation.Server.StationEvents.GameDirector;

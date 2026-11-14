@@ -84,17 +84,12 @@ namespace Content.Client.Construction
                 WarmupRecipesCache();
         }
 
-        private void OnPrototypeReload(PrototypesReloadedEventArgs obj)
-        {
-            if (obj.WasModified<ConstructionPrototype>())
-                WarmupRecipesCache();
-        }
 
         private void WarmupRecipesCache()
         {
             _recipesMetadataCache.Clear();//CorvaxGoob-wizden-port
 
-            foreach (var constructionProto in PrototypeManager.EnumeratePrototypes<ConstructionPrototype>())
+            foreach (var constructionProto in ProtoMan.EnumeratePrototypes<ConstructionPrototype>())
             {
                 if (!ProtoMan.Resolve(constructionProto.Graph, out var graphProto))
                     continue;
@@ -134,7 +129,7 @@ namespace Content.Client.Construction
                         continue;
                     }
 
-                    // If we got the id of the prototype, we exit the “recursion” by clearing the stack.
+                    // If we got the id of the prototype, we exit the вЂњrecursionвЂќ by clearing the stack.
                     stack.Clear();
 
                     if (!ProtoMan.Resolve(entityId, out var proto))

@@ -275,17 +275,14 @@
     layers:
     - state: resin
       map: ["enum.FoamVisualLayers.Base"]
-    - map: [ "enum.EdgeLayer.South" ]
-      state: resin-south
-    - map: [ "enum.EdgeLayer.East" ]
-      state: resin-east
-    - map: [ "enum.EdgeLayer.North" ]
-      state: resin-north
-    - map: [ "enum.EdgeLayer.West" ]
-      state: resin-west
-  - type: SmoothEdge
   - type: IconSmooth
-    mode: NoSprite
+    key: resin
+    states:
+    - !type:EdgeSpriteSmoothing
+      base: resin-
+      mask:
+      - resin
+      index: '1'
   - type: FoamVisuals
     animationTime: 0.6
     animationState: resin-dissolve

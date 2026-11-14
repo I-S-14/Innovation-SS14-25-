@@ -10,19 +10,14 @@ namespace Content.Server.Database.Migrations.Sqlite
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "voice",
-                table: "profile",
-                type: "TEXT",
-                nullable: true);
+            //IS14-change: TTSVoice (2022) already owns this column. SplitTTSVoice
+            // (2026-07-11) preserves it as ttsvoice and creates the new voice column.
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "voice",
-                table: "profile");
+            //IS14-change: no schema operation was performed by Up.
         }
     }
 }

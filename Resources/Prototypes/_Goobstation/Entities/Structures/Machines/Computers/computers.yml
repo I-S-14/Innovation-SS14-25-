@@ -16,16 +16,22 @@
   - type: Sprite
     sprite: Structures/Machines/computers.rsi
     layers:
-    - map: [ "computerLayerBody" ]
+    - map: [ "enum.ComputerVisualLayers.Frame" ]
       state: computer
-    - map: [ "computerLayerKeyboard" ]
+    - map: [ "enum.ComputerVisualLayers.Keyboard" ]
       state: generic_keyboard
-    - map: [ "computerLayerScreen" ]
+    - map: [ "enum.ComputerVisualLayers.Screen" ]
       state: nanotrasen
-    - map: [ "computerLayerKeys" ]
+    - map: [ "enum.ComputerVisualLayers.Keys" ]
       state: generic_keys
     - map: [ "enum.WiresVisualLayers.MaintenancePanel" ]
       state: generic_panel_open
+  - type: ComputerVisuals # IS14: retain the custom states with modern layer keys.
+    stateFrame: computer
+    stateKeyboard: generic_keyboard
+    stateScreen: nanotrasen
+    stateKeys: generic_keys
+    statePanel: generic_panel_open
   - type: ContainerContainer
     containers:
       storagebase: !type:Container
@@ -69,16 +75,22 @@
   - type: Sprite
     sprite: Structures/Machines/computers.rsi
     layers:
-    - map: [ "computerLayerBody" ]
+    - map: [ "enum.ComputerVisualLayers.Frame" ]
       state: computer
-    - map: [ "computerLayerKeyboard" ]
+    - map: [ "enum.ComputerVisualLayers.Keyboard" ]
       state: generic_keyboard
-    - map: [ "computerLayerScreen" ]
+    - map: [ "enum.ComputerVisualLayers.Screen" ]
       state: comm_syndie
-    - map: [ "computerLayerKeys" ]
+    - map: [ "enum.ComputerVisualLayers.Keys" ]
       state: generic_keys
     - map: [ "enum.WiresVisualLayers.MaintenancePanel" ]
       state: generic_panel_open
+  - type: ComputerVisuals # IS14: retain the custom states with modern layer keys.
+    stateFrame: computer
+    stateKeyboard: generic_keyboard
+    stateScreen: comm_syndie
+    stateKeys: generic_keys
+    statePanel: generic_panel_open
   - type: ContainerContainer
     containers:
       storagebase: !type:Container

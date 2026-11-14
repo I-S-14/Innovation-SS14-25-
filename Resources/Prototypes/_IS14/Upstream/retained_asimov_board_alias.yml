@@ -1,0 +1,5 @@
+# IS14: preserve the old Goob ID used by recipes/maps; the lawset remains Crewsimov.
+- type: entity
+  id: AsimovCircuitBoard
+  parent: CrewsimovCircuitBoard
+  categories: [HideSpawnMenu]

@@ -110,7 +110,7 @@ namespace Content.Server.Forensics
             Dirty(uid, updatecomp);
         }
 
-        private void OnBeingGibbed(EntityUid uid, ForensicsComponent component, BeingGibbedEvent args)
+        private void OnBeingGibbed(EntityUid uid, ForensicsComponent component, ref BeingGibbedEvent args)
         {
             string dna = Loc.GetString("forensics-dna-unknown");
 

@@ -279587,7 +279587,7 @@ entities:
     - type: NavMapBeacon
       text: Boxing ring
     - type: WarpPoint
-      location: Boxing ring
+      location: is14-map-warp-17ebbf2b8d04
   - uid: 24251
     components:
     - type: Transform
@@ -279596,7 +279596,7 @@ entities:
     - type: NavMapBeacon
       text: Reporter's office
     - type: WarpPoint
-      location: Reporter's office
+      location: is14-map-warp-6bc8882f2473
   - uid: 24252
     components:
     - type: Transform
@@ -279605,7 +279605,7 @@ entities:
     - type: NavMapBeacon
       text: Pool
     - type: WarpPoint
-      location: Pool
+      location: is14-map-warp-f13024272c38
 - proto: DefaultStationBeaconAICore
   entities:
   - uid: 32817

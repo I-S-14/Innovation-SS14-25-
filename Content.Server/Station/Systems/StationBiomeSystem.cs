@@ -10,10 +10,9 @@ namespace Content.Server.Station.Systems;
 public sealed partial class StationBiomeSystem : EntitySystem
 {
     [Dependency] private readonly SharedMapSystem _mapSystem = default!;
-    [Dependency] private readonly IPrototypeManager _proto = default!;
     [Dependency] private BiomeSystem _biome = default!;
     [Dependency] private ServerStationSystem _station = default!;
-    [Dependency] private SharedMapSystem _map = default!;
+
 
     public override void Initialize()
     {

@@ -17,7 +17,7 @@ cosmiccult-vote-lone-steward-title = Одинокий культист
 cosmiccult-vote-lone-steward-briefing =
     Вы совершенно одни, но должны исполнить свой долг.
     Убедитесь, что Монумент установлен в безопасном месте, и завершите начатое культом.
-cosmiccult-finale-autocall-briefing = Монумент активируется через { $minutesandseconds }! Соберитесь и приготовьтесь к концу.
+cosmiccult-finale-autocall-briefing = Монумент завершён! Соберитесь, активируйте его и приготовьтесь к концу.
 cosmiccult-finale-ready = Ужасающий свет вырывается из Монумента!
 cosmiccult-finale-speedup = Зов усиливается! Энергия пронизывает всё вокруг...
 cosmiccult-finale-degen = Ты чувствуешь, как распадаешься!

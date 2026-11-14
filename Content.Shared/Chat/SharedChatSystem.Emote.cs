@@ -274,7 +274,7 @@ public abstract partial class SharedChatSystem
             return false;
         }
 
-        var ev = new EmoteEvent(GetNetEntity(uid), proto);
+        var ev = new EmoteEvent(GetNetEntity(uid), proto) { Voluntary = voluntary };
         RaiseLocalEvent(uid, ref ev);
 
         return true;

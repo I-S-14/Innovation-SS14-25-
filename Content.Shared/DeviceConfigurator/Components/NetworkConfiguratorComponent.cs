@@ -13,6 +13,10 @@ namespace Content.Shared.DeviceConfigurator.Components;
 [Access(typeof(NetworkConfiguratorSystem))]
 public sealed partial class NetworkConfiguratorComponent : Component
 {
+    //IS14-change: retain Goob prototype behavior.
+    [DataField, AutoNetworkedField]
+    public bool ShowLabel = true;
+
     // AAAAA ALL OF THESE FAA
     /// <summary>
     /// Determines whether the configurator is in linking mode or list mode

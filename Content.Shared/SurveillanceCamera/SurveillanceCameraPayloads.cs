@@ -59,7 +59,7 @@ public partial record struct SurveillanceCameraHeartbeatPayload : IRoutableNetwo
 public partial record struct SurveillanceCameraPingPayload : IRoutableNetworkPayload
 {
     [DataField]
-    public string Subnet;
+    public ProtoId<DeviceFrequencyPrototype> Subnet;
 
     [DataField]
     public DeviceAddress? SenderAddress { get; set; }
@@ -77,7 +77,10 @@ public partial record struct SurveillanceCameraDataPayload : IRoutableNetworkPay
     public string Name;
 
     [DataField]
-    public string Subnet;
+    public bool Mobile;
+
+    [DataField]
+    public ProtoId<DeviceFrequencyPrototype> Subnet;
 
     [DataField]
     public DeviceAddress? SenderAddress { get; set; }

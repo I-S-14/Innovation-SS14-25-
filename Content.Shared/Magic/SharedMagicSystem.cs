@@ -81,7 +81,6 @@ public abstract partial class SharedMagicSystem : EntitySystem
     [Dependency] private SharedPhysicsSystem _physics = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private INetManager _net = default!;
-    [Dependency] private GibbingSystem _gibbing = default!;
     [Dependency] private EntityLookupSystem _lookup = default!;
     [Dependency] private SharedDoorSystem _door = default!;
     [Dependency] private InventorySystem _inventory = default!;
@@ -94,10 +93,9 @@ public abstract partial class SharedMagicSystem : EntitySystem
     [Dependency] private SharedStunSystem _stun = default!;
     [Dependency] private TurfSystem _turf = default!;
     [Dependency] private SharedChargesSystem _charges = default!;
-    [Dependency] private ExamineSystemShared _examine = default!;
     [Dependency] private AliveHumanoidTargetSystem _target = default!;
 
-    [Dependency] private EntityQuery<PhysicsComponent> _physicsQuery;
+    [Dependency] private EntityQuery<PhysicsComponent> _physicsQuery = default!;
     [Dependency] private readonly IGameTiming _timing = default!; // Goobstation
     [Dependency] private readonly SharedBodySystem _body = default!;
     [Dependency] private readonly MobStateSystem _mobState = default!;
@@ -573,7 +571,7 @@ public abstract partial class SharedMagicSystem : EntitySystem
 
             var ent = human.Comp.OwnedEntity.Value;
 
-            if (_tag.HasTag(ent, "InvalidForGlobalSpawnSpell"))
+            if (_tag.HasTag(ent, InvalidForGlobalSpawnSpellTag))
                 continue;
 
             var mapCoords = _transform.GetMapCoordinates(ent);

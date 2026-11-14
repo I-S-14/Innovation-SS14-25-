@@ -9,7 +9,6 @@ namespace Content.Shared.Trigger.Systems;
 public sealed partial class GibOnTriggerSystem : XOnTriggerSystem<GibOnTriggerComponent>
 {
     [Dependency] private readonly SharedBodySystem _body = default!;
-    [Dependency] private GibbingSystem _gibbing = default!;
     [Dependency] private InventorySystem _inventory = default!;
 
     protected override void OnTrigger(Entity<GibOnTriggerComponent> ent, EntityUid target, ref TriggerEvent args)

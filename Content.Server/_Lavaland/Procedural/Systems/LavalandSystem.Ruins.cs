@@ -382,10 +382,8 @@ public sealed partial class LavalandSystem
         }
 
         // Spawn decals
-        if (TryComp<DecalGridComponent>(grid.Owner, out var loadedDecals))
         {
-            EnsureComp<DecalGridComponent>(lavaland);
-            foreach (var (_, decal) in _decals.GetDecalsIntersecting(grid.Owner, box, loadedDecals))
+            foreach (var (_, decal) in _decals.GetDecalsIntersecting(grid.Owner, box))
             {
                 // Offset by 0.5 because decals are offset from bot-left corner
                 // So we convert it to center of tile then convert it back again after transform.
@@ -437,7 +435,7 @@ public sealed partial class LavalandSystem
                         grid,
                         tilePos,
                         _tile.GetVariantTile((ContentTileDefinition) _tiledef[DungeonSystem.FallbackTileId],
-                            _random.GetRandom()));
+                            _random));
                 }
 
                 _decals.TryAddDecal(

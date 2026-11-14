@@ -8,7 +8,6 @@ using Content.Shared.Store.Components;
 using Content.Shared.Store.Events;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
-using Content.Shared.UserInterface;
 using Robust.Shared.Utility;
 using Content.Shared.Interaction;
 using Content.Shared.Popups;
@@ -87,7 +86,8 @@ public sealed partial class StoreSystem : SharedStoreSystem
 
     private void OnImplantActivate(Entity<RemoteStoreComponent> entity, ref OpenUplinkImplantEvent args)
     {
-        if (GetRemoteStore(entity.AsNullable()) is not { } store)
+        //IS14-change: keep explicit remote links (including failed/deleted links); only unlinked implants use the local fallback.
+        if ((entity.Comp.Store != null ? GetRemoteStore(entity.AsNullable()) : GetStore(entity.Owner)) is not { } store)
             return;
 
         ToggleUi(args.Performer, store, store.Comp, entity, entity.Comp);

@@ -1,7 +1,8 @@
+using Content.Shared.Guardian.Components; // IS14-change: upstream namespace move
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Goobstation.Shared.SlaughterDemon;
-using Content.Server.Guardian;
+using Content.Shared.Guardian;
 using Content.Server.Humanoid;
 using Content.Server.Mind;
 using Content.Server.Polymorph.Components;

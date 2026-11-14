@@ -135,7 +135,10 @@
     solutionOnBody: false
     updateInterval: 0.25
     metabolizerTypes: [ Dragon ]
-    stages: [ Digestion, Bloodstream ]
+    # IS14: retain the accepted Goob medicine/poison metabolism, rather than NuBody stages.
+    groups:
+    - id: Medicine
+    - id: Poison
   - type: ToolRefinable
     refineResult:
     - id: FoodMeatDragon
@@ -240,9 +243,6 @@
   #- type: ActionGun # Goobstation - remove fireball because it's tied to lungs now
   #  action: ActionDragonsBreath
   #  gunProto: DragonsBreathGun
-  - type: ActionGrant
-    actions:
-    - ActionDragonsBreath
   - type: GuideHelp
     guides:
     - MinorAntagonists
@@ -329,8 +329,6 @@
     # TODO: actual sprite and iconOn
     itemIconStyle: BigAction
     priority: 2
-    sound: !type:SoundPathSpecifier
-      path: /Audio/Animals/space_dragon_breath.ogg
   - type: Sprite
     sprite: Objects/Weapons/Guns/Projectiles/magic.rsi
     layers:
@@ -339,10 +337,7 @@
     checkCanAccess: false
     range: 0
   - type: WorldTargetAction
-    event: !type:ProjectileSpellEvent
-      prototype: ProjectileDragonsBreath
-      projectileSpeed: 5
-      rearVelocityCompensation: 1.0 # slow projectile, speed it up if shooting backwards
+    event: !type:ActionGunShootEvent # IS14: the Goob lung grants and owns the weapon/action.
 
 # Goobstation start: dragon rework
 - type: entity

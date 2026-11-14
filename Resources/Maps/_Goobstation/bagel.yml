@@ -64888,7 +64888,7 @@ entities:
       color: '#EFB34193'
       text: PTL
     - type: WarpPoint
-      location: PTL
+      location: is14-map-warp-32261296df84
 - proto: DefaultStationBeaconVault
   entities:
   - uid: 9774

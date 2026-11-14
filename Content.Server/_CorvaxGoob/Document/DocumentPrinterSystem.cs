@@ -1,3 +1,4 @@
+using Content.Shared._CorvaxGoob.Documents; // IS14-change: upstream API move
 using Content.Server.Station.Systems;
 using Content.Shared.Access.Components;
 using Content.Shared.Containers.ItemSlots;
@@ -13,7 +14,6 @@ public sealed class DocumentPrinterSystem : EntitySystem
     [Dependency] private readonly ItemSlotsSystem _itemSlots = default!;
     [Dependency] private readonly PaperSystem _paper = default!;
     [Dependency] private readonly StationSystem _station = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly GameTicker _gameTicker = default!;
 
     public override void Initialize()

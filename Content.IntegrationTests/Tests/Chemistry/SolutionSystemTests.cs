@@ -5,7 +5,6 @@ using Content.IntegrationTests.Fixtures.Attributes;
 using Content.Shared.Chemistry.Components;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Goobstation.Maths.FixedPoint;
-using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.Fluids.Components;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Prototypes;

@@ -18,7 +18,6 @@ using Robust.Shared.Physics.Dynamics;
 using Robust.Shared.Physics.Events;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
-using System.Numerics;
 using Content.Shared.Damage.Components;
 using Content.Shared.Shuttles.Components;
 using Content.Shared.Clothing;
@@ -31,6 +30,9 @@ namespace Content.Server.Shuttles.Systems;
 // shuttle impact damage ported from Goobstation (AGPLv3) with agreement of all coders involved
 public sealed partial class ShuttleSystem
 {
+    //IS14-change start: retain fork fields lost during merge.
+    //IS14-change end
+
     [Dependency] private EntityQuery<DamageableComponent> _damageableQuery = default!;
     [Dependency] private EntityQuery<MovedByPressureComponent> _movedByPressureQuery = default!;
 
@@ -256,7 +258,7 @@ public sealed partial class ShuttleSystem
             if (direction.LengthSquared() > minsq)
             {
                 _stuns.TryCrawling(ent.Owner, knockdownTime);
-                _throwing.TryThrow(ent, direction, ent.Comp, Transform(ent), _projQuery, direction.Length(), playSound: false,
+                _throwing.TryThrow(ent, direction, ent.Comp, Transform(ent), direction.Length(), playSound: false,
                     predicted: false); // Trauma
             }
             else
@@ -415,7 +417,7 @@ public sealed partial class ShuttleSystem
                 else
                 {
                     var direction = throwDirection * tileData.DistanceFactor;
-                    _throwing.TryThrow(localEnt, direction, physics, localEnt.Comp, _projQuery, direction.Length(), playSound: false,
+                    _throwing.TryThrow(localEnt, direction, physics, localEnt.Comp, direction.Length(), playSound: false,
                         predicted: false); // Trauma
                 }
             }

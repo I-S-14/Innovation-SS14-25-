@@ -16,6 +16,9 @@ namespace Content.Shared.Speech.Components;
 // IS14-change: VocalSystem stays server-side (Goob emotes), Shared cannot name it in Access
 public sealed partial class VocalComponent : Component
 {
+    [DataField, AutoNetworkedField]
+    public Dictionary<Sex, ProtoId<EmoteSoundsPrototype>>? Sounds;
+
     //TODO: Wilhelm scream logic needs to be more generic
     /// <summary>
     /// Emote ID for screaming (for whilhelm scream)

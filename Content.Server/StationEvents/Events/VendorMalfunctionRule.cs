@@ -1,10 +1,10 @@
+using Content.Shared.VendingMachines; // IS14-change: upstream namespace move
 using System.Linq;
 using Content.Server.Power.EntitySystems;
 using Content.Server.StationEvents.Components;
 using Content.Server.VendingMachines;
 using Content.Shared.GameTicking.Components;
 using Content.Shared.Station.Components;
-using Content.Shared.VendingMachines.Components;
 using Content.Shared.Whitelist;
 
 namespace Content.Server.StationEvents.Events;

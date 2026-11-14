@@ -17,9 +17,6 @@ namespace Content.Server.Nyanotrasen.Item.PseudoItem;
 
 public sealed class PseudoItemSystem : SharedPseudoItemSystem
 {
-    [Dependency] private readonly StorageSystem _storage = default!;
-    [Dependency] private readonly ItemSystem _item = default!;
-    [Dependency] private readonly DoAfterSystem _doAfter = default!;
     [Dependency] private readonly SharedHandsSystem _hands = default!;
     [Dependency] private readonly CarryingSystem _carrying = default!;
     [Dependency] private readonly PopupSystem _popup = default!;
@@ -74,7 +71,7 @@ public sealed class PseudoItemSystem : SharedPseudoItemSystem
     }
 
     // Show a popup when a pseudo-item falls asleep inside a bag.
-    private void OnTrySleeping(EntityUid uid, PseudoItemComponent component, TryingToSleepEvent args)
+    private void OnTrySleeping(EntityUid uid, PseudoItemComponent component, ref TryingToSleepEvent args)
     {
         var parent = Transform(uid).ParentUid;
         if (!HasComp<SleepingComponent>(uid) && parent is { Valid: true } && HasComp<AllowsSleepInsideComponent>(parent))

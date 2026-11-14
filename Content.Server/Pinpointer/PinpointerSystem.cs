@@ -11,7 +11,7 @@ using Content.Shared.Whitelist;
 
 namespace Content.Server.Pinpointer;
 
-public sealed partial class PinpointerSystem : SharedPinpointerSystem
+public sealed class PinpointerSystem : SharedPinpointerSystem
 {
     [Dependency] private readonly AlertsSystem _alerts = default!; // WD EDIT
     [Dependency] private readonly SharedTransformSystem _transform = default!;
@@ -22,6 +22,7 @@ public sealed partial class PinpointerSystem : SharedPinpointerSystem
     public override void Initialize()
     {
         base.Initialize();
+        _xformQuery = GetEntityQuery<TransformComponent>();
 
         // WD EDIT START
         SubscribeLocalEvent<PinpointerComponent, MapInitEvent>(OnMapInit);
@@ -47,25 +48,24 @@ public sealed partial class PinpointerSystem : SharedPinpointerSystem
 
     public override bool TogglePinpointer(EntityUid uid, PinpointerComponent? pinpointer = null)
     {
-        if (!Resolve(ent, ref ent.Comp))
+        if (!Resolve(uid, ref pinpointer))
             return false;
 
-        var isActive = !ent.Comp.IsActive;
-        SetActive(ent, isActive);
-        UpdateAppearance(ent);
+        var isActive = !pinpointer.IsActive;
+        SetActive(uid, isActive, pinpointer);
+        UpdateAppearance(uid, pinpointer);
         return isActive;
     }
 
-    private void UpdateAppearance(Entity<PinpointerComponent?, AppearanceComponent?> ent)
+    private void UpdateAppearance(EntityUid uid, PinpointerComponent pinpointer, AppearanceComponent? appearance = null)
     {
-        if (!Resolve(ent, ref ent.Comp1) || !Resolve(ent, ref ent.Comp2))
+        if (!Resolve(uid, ref appearance))
             return;
-
-        _appearance.SetData(ent, PinpointerVisuals.IsActive, ent.Comp1.IsActive, ent.Comp2);
-        _appearance.SetData(ent, PinpointerVisuals.TargetDistance, ent.Comp1.DistanceToTarget, ent.Comp2);
+        _appearance.SetData(uid, PinpointerVisuals.IsActive, pinpointer.IsActive, appearance);
+        _appearance.SetData(uid, PinpointerVisuals.TargetDistance, pinpointer.DistanceToTarget, appearance);
     }
 
-    private void OnActivate(Entity<PinpointerComponent> ent, ref ActivateInWorldEvent args)
+    private void OnActivate(EntityUid uid, PinpointerComponent component, ActivateInWorldEvent args)
     {
         if (args.Handled || !args.Complex)
             return;
@@ -73,8 +73,8 @@ public sealed partial class PinpointerSystem : SharedPinpointerSystem
         if (component.CanToggle) // WD EDIT
             TogglePinpointer(uid, component);
 
-        if (!ent.Comp.CanRetarget)
-            LocateTarget(ent);
+        if (!component.CanRetarget)
+            LocateTarget(uid, component);
 
         args.Handled = true;
     }
@@ -94,27 +94,31 @@ public sealed partial class PinpointerSystem : SharedPinpointerSystem
             if (pinpointer.CanRetarget)
                 continue;
 
-            LocateTarget((uid, pinpointer));
+            if (transform.GridUid != ev.Entity)
+                continue;
+
+            LocateTarget(uid, pinpointer);
         }
         // Goob edit end
     }
 
-    private void LocateTarget(Entity<PinpointerComponent> ent)
+    /// <summary>
+    /// Goob edit: this was literally fully changed. But still works as intended
+    /// </summary>
+    private void LocateTarget(EntityUid uid, PinpointerComponent component)
     {
-        var component = ent.Comp;
+        if (!component.IsActive || component.Whitelist == null)
+            return;
 
-        // try to find target from whitelist
-        if (component.IsActive && component.Component != null)
+        if (component.CanTargetMultiple)
         {
-            if (!EntityManager.ComponentFactory.TryGetRegistration(component.Component, out var reg))
-            {
-                Log.Error($"Unable to find component registration for {component.Component} for pinpointer!");
-                DebugTools.Assert(false);
-                return;
-            }
-
-            var target = FindTargetFromComponent(ent.Owner, reg.Type);
-            SetTarget(ent.AsNullable(), target);
+            var targets = FindAllTargetsFromComponent(uid, component.Whitelist, component.Blacklist);
+            SetTargets(uid, targets, component);
+        }
+        else
+        {
+            var target = FindTargetFromComponent(uid, component.Whitelist, component.Blacklist);
+            SetTarget(uid, target, component);
         }
     }
 
@@ -127,7 +131,7 @@ public sealed partial class PinpointerSystem : SharedPinpointerSystem
         var query = EntityQueryEnumerator<PinpointerComponent>();
         while (query.MoveNext(out var uid, out var pinpointer))
         {
-            UpdateDirectionToTarget((uid, pinpointer));
+            UpdateDirectionToTarget(uid, pinpointer);
         }
     }
 
@@ -136,17 +140,22 @@ public sealed partial class PinpointerSystem : SharedPinpointerSystem
     ///     Will return null if can't find anything
     ///     Goob edit: requires EntityWhitelist instead of just Type.
     /// </summary>
-    private EntityUid? FindTargetFromComponent(Entity<TransformComponent?> ent, Type whitelist)
+    private EntityUid? FindTargetFromComponent(
+        Entity<TransformComponent?> ent,
+        EntityWhitelist whitelist,
+        EntityWhitelist? blacklist)
     {
-        if (!Resolve(ent, ref ent.Comp))
+        _xformQuery.Resolve(ent, ref ent.Comp, false);
+
+        if (ent.Comp == null)
             return null;
 
         var transform = ent.Comp;
 
         // sort all entities in distance increasing order
-        var mapId = ent.Comp.MapID;
+        var mapId = transform.MapID;
         var l = new SortedList<float, EntityUid>();
-        var worldPos = _transform.GetWorldPosition(ent.Comp);
+        var worldPos = _transform.GetWorldPosition(transform);
 
         // Goob edit start
         if (whitelist.Components == null)
@@ -226,12 +235,10 @@ public sealed partial class PinpointerSystem : SharedPinpointerSystem
     /// <summary>
     ///     Update direction from pinpointer to selected target (if it was set)
     /// </summary>
-    protected override void UpdateDirectionToTarget(Entity<PinpointerComponent?> ent)
+    protected override void UpdateDirectionToTarget(EntityUid uid, PinpointerComponent? pinpointer = null)
     {
-        if (!Resolve(ent, ref ent.Comp))
+        if (!Resolve(uid, ref pinpointer))
             return;
-
-        var pinpointer = ent.Comp;
 
         if (!pinpointer.IsActive)
             return;
@@ -244,21 +251,21 @@ public sealed partial class PinpointerSystem : SharedPinpointerSystem
             return;
         }
 
-        var dirVec = CalculateDirection(ent, target.Value);
+        var dirVec = CalculateDirection(uid, target.Value);
         var oldDist = pinpointer.DistanceToTarget;
         if (dirVec != null)
         {
             var angle = dirVec.Value.ToWorldAngle();
-            TrySetArrowAngle(ent, angle);
+            TrySetArrowAngle(uid, angle, pinpointer);
             var dist = CalculateDistance(dirVec.Value, pinpointer);
-            SetDistance(ent, dist);
+            SetDistance(uid, dist, pinpointer);
         }
         else
         {
-            SetDistance(ent, Distance.Unknown);
+            SetDistance(uid, Distance.Unknown, pinpointer);
         }
         if (oldDist != pinpointer.DistanceToTarget)
-            UpdateAppearance(ent);
+            UpdateAppearance(uid, pinpointer);
     }
 
     /// <summary>
@@ -267,10 +274,12 @@ public sealed partial class PinpointerSystem : SharedPinpointerSystem
     /// <returns>Null if failed to calculate distance between two entities</returns>
     private Vector2? CalculateDirection(EntityUid pinUid, EntityUid trgUid)
     {
+        var xformQuery = GetEntityQuery<TransformComponent>();
+
         // check if entities have transform component
-        if (!TryComp(pinUid, out TransformComponent? pin))
+        if (!xformQuery.TryGetComponent(pinUid, out var pin))
             return null;
-        if (!TryComp(trgUid, out TransformComponent? trg))
+        if (!xformQuery.TryGetComponent(trgUid, out var trg))
             return null;
 
         // check if they are on same map
@@ -278,7 +287,7 @@ public sealed partial class PinpointerSystem : SharedPinpointerSystem
             return null;
 
         // get world direction vector
-        var dir = _transform.GetWorldPosition(trg) - _transform.GetWorldPosition(pin);
+        var dir = _transform.GetWorldPosition(trg, xformQuery) - _transform.GetWorldPosition(pin, xformQuery);
         return dir;
     }
 

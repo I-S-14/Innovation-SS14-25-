@@ -1,3 +1,6 @@
+using Content.Shared.Antag.Components;
+using Content.Shared.Station.Systems;
+using Content.Shared.Antag;
 using Content.Goobstation.Server.Antag;
 using Content.Goobstation.Server.Slasher.Components;
 using Content.Server.Antag;
@@ -18,7 +21,7 @@ namespace Content.Goobstation.Server.Slasher.Systems;
 /// Handles placing the antag ghost-role spawner inside a random station locker.
 /// Works with AntagSelection.
 /// </summary>
-public sealed partial class AntagLockerSpawnSystem : GameRuleSystem<AntagLockerSpawnComponent>
+public sealed partial class AntagLockerSpawnSystem : ServerGameRuleSystem<AntagLockerSpawnComponent>
 {
     private static readonly ProtoId<TagPrototype> MaintenanceClosetTag = "MaintenanceCloset";
 

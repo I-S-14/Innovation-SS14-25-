@@ -23,7 +23,7 @@ namespace Content.Goobstation.Server.StationEvents.GameDirector;
 ///   good or bad events to nudge it in the correct direction.
 /// </summary>
 [UsedImplicitly]
-public sealed partial class GameDirectorSystem : GameRuleSystem<GameDirectorComponent>
+public sealed partial class GameDirectorSystem : ServerGameRuleSystem<GameDirectorComponent>
 {
     [Dependency] private IRobustRandom _random = default!;
     [Dependency] private EventManagerSystem _event = default!;
@@ -79,7 +79,7 @@ public sealed partial class GameDirectorSystem : GameRuleSystem<GameDirectorComp
         if (scheduler.Stories is not { Length: > 0 })
         {
             // No stories (e.g. dummy game rule for printing metrics), end game rule now
-            GameTicker.EndGameRule(uid, gameRule);
+            GameTicker.EndGameRule((uid, gameRule));
             return;
         }
         // Decide what story beat to work with (which sets chaos goals)

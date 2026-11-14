@@ -1,3 +1,4 @@
+using Content.Shared.StatusIcon;
 using Content.Client.Overlays;
 using Content.Goobstation.Shared.Disease;
 using Content.Goobstation.Shared.Disease.Components;

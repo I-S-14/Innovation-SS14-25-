@@ -18,7 +18,6 @@ using Robust.Shared.Network;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Events;
 using Robust.Shared.Physics.Systems;
-using Robust.Shared.Physics.Events;
 using Robust.Shared.Utility;
 using Content.Shared.Projectiles;
 
@@ -27,7 +26,6 @@ namespace Content.Shared.Slippery;
 [UsedImplicitly]
 public sealed partial class SlipperySystem : EntitySystem
 {
-    [Dependency] private readonly INetManager _net = default!; // Goobstation
     [Dependency] private ISharedAdminLogManager _adminLogger = default!;
     [Dependency] private MovementModStatusSystem _movementMod = default!;
     [Dependency] private SharedAudioSystem _audio = default!;
@@ -65,7 +63,7 @@ public sealed partial class SlipperySystem : EntitySystem
         TrySlip(uid, component, args.Target);
     }
 
-    private void OnThrowHit(EntityUid uid, SlipperyComponent component, ThrowDoHitEvent args) // Goob - Deslippler
+    private void OnThrowHit(EntityUid uid, SlipperyComponent component, ref ThrowDoHitEvent args) // Goob - Deslippler
     {
         TrySlip(uid, component, args.Target);
     }

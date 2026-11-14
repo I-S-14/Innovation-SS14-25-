@@ -50,7 +50,7 @@ public sealed partial class XenobiologyTransformingSystem : EntitySystem
             if (ev.TransferAppearance)
                 _humanoid.CloneSpeciesAppearance(uid, @new.Value);
 
-            EntityManager.RemoveComponentDeferred<PolymorphedEntityComponent>(@new.Value);
+            RemCompDeferred<PolymorphedEntityComponent>(@new.Value);
         }
     }
 
@@ -61,7 +61,7 @@ public sealed partial class XenobiologyTransformingSystem : EntitySystem
 
         foreach (var entity in lookupSys.GetEntitiesInRange(uid, args.Radius))
         {
-            if (EntityManager.HasComponent<HumanoidAppearanceComponent>(entity))
+            if (HasComp<HumanoidAppearanceComponent>(entity))
                 scramSys.Scramble(entity);
         }
     }

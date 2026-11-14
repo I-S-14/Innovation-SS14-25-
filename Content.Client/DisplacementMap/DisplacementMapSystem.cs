@@ -121,7 +121,7 @@ public sealed partial class DisplacementMapSystem : EntitySystem
     /// <returns>Returns true if the displacement existed and was removed.</returns>
     public bool EnsureDisplacementIsNotOnSprite(Entity<SpriteComponent> sprite, object key)
     {
-        var displacementLayerKey = BuildDisplacementLayerKey(key);
+        var displacementLayerKey = key.ToString() == null ? null : $"{key}-displacement";
         if (displacementLayerKey is null)
             return false;
 

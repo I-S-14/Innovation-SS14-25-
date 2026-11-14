@@ -31,6 +31,10 @@ namespace Content.Server.Chat.Managers;
 /// </summary>
 internal sealed partial class ChatManager : IChatManager
 {
+    //IS14-change start: restore declarations used by merged implementation.
+    private SharedChatSystem _chatSystem = default!;
+    //IS14-change end
+
     private static readonly Dictionary<string, string> PatronOocColors = new()
     {
         // I had plans for multiple colors and those went nowhere so...
@@ -230,8 +234,24 @@ private ISawmill? _sawmill = default!;
 
     public void SendHookAdmin(string sender, string message)
     {
+        //IS14-change start
+        // Preserve Wizards a9f36e6592: external admin chat is admin-only too.
+        var clients = _adminManager.ActiveAdmins.Select(p => p.Channel);
         var wrappedMessage = Loc.GetString("chat-manager-send-hook-admin-wrap-message", ("senderName", sender), ("message", FormattedMessage.EscapeText(message)));
-        ChatMessageToAll(ChatChannel.AdminChat, message, wrappedMessage, source: EntityUid.Invalid, hideChat: false, recordReplay: false);
+        foreach (var client in clients)
+        {
+            ChatMessageToOne(
+                ChatChannel.AdminChat,
+                message,
+                wrappedMessage,
+                source: EntityUid.Invalid,
+                hideChat: false,
+                client: client,
+                recordReplay: false,
+                audioPath: _netConfigManager.GetClientCVar(client, CCVars.AdminChatSoundPath),
+                audioVolume: _netConfigManager.GetClientCVar(client, CCVars.AdminChatSoundVolume));
+        }
+        //IS14-change end
         _adminLogger.Add(LogType.Chat, LogImpact.Low, $"Hook admin from {sender}: {message}");
     }
 

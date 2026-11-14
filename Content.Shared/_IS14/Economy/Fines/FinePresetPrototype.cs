@@ -6,7 +6,7 @@ namespace Content.Shared._IS14.Economy.Fines;
 /// A chargeable offence with a standard penalty. Officers pick one instead of
 /// inventing a number, which keeps fines predictable enough to argue about.
 /// </summary>
-[Prototype("finePreset")]
+[Prototype]
 public sealed partial class FinePresetPrototype : IPrototype
 {
     [IdDataField]

@@ -1,3 +1,5 @@
+using Content.Shared.Antag;
+using Content.Shared.Roles;
 using Content.Goobstation.Server.Gangwars.Roles;
 using Content.Goobstation.Shared.Gangwars.Components;
 using Content.Goobstation.Shared.Gangwars.Events;

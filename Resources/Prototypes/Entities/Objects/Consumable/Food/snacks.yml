@@ -12,20 +12,16 @@
       - FoodSnack
   - type: Sprite
     sprite: Objects/Consumable/Food/snacks.rsi
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 30 # Room for extra condiments
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 5 # Goobstation - snacks are worse than cooked food
-        - ReagentId: JunkFood # Goobstation - snacks are worse than cooked food
-          Quantity: 5
   - type: Solution
     solution:
+      maxVol: 30 # Room for extra condiments
       reagents:
       - ReagentId: Nutriment
-        Quantity: 10
+        Quantity: 5 # Goobstation - snacks are worse than cooked food
+      - ReagentId: JunkFood # Goobstation - snacks are worse than cooked food
+        Quantity: 5
+      temperature: 293.15
+      canReact: true
   - type: Item
     sprite: Objects/Consumable/Food/snacks.rsi
     heldPrefix: packet
@@ -148,28 +144,20 @@
     tags:
       - FoodSnack
       - ReptilianFood
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 30
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 5 # Goobstation - snacks are worse than cooked food
-        - ReagentId: Theobromine
-          Quantity: 3
-        - ReagentId: CocoaPowder
-          Quantity: 1
-        - ReagentId: JunkFood # Goobstation - snacks are worse than cooked food
-          Quantity: 5
   - type: Solution
     solution:
+      maxVol: 30
       reagents:
       - ReagentId: Nutriment
-        Quantity: 5
+        Quantity: 5 # Goobstation - snacks are worse than cooked food
       - ReagentId: Theobromine
         Quantity: 3
       - ReagentId: CocoaPowder
-        Quantity: 2
+        Quantity: 1
+      - ReagentId: JunkFood # Goobstation - snacks are worse than cooked food
+        Quantity: 5
+      temperature: 293.15
+      canReact: true
 
 - type: entity
   parent: FoodSnackBase
@@ -337,24 +325,18 @@
     solution: food
   - type: InjectableSolution
     solution: food
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 50 #big cup
-        reagents:
-        - ReagentId: DryRamen
-          Quantity: 30
-        - ReagentId: Soysauce
-          Quantity: 5
-        - ReagentId: JunkFood # Goobstation - snacks are worse than cooked food
-          Quantity: 15
   - type: Solution
     solution:
+      maxVol: 50 #big cup
       reagents:
       - ReagentId: DryRamen
-        Quantity: 20
+        Quantity: 30
       - ReagentId: Soysauce
         Quantity: 5
+      - ReagentId: JunkFood # Goobstation - snacks are worse than cooked food
+        Quantity: 15
+      temperature: 293.15
+      canReact: true
   - type: Sprite
     state: ramen
   - type: Edible
@@ -370,24 +352,18 @@
   name: hell ramen
   description: Super spicy flavor!
   components:
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 50
-        reagents:
-        - ReagentId: DryRamen
-          Quantity: 30
-        - ReagentId: CapsaicinOil
-          Quantity: 5
-        - ReagentId: JunkFood # Goobstation - snacks are worse than cooked food
-          Quantity: 15
   - type: Solution
     solution:
+      maxVol: 50
       reagents:
       - ReagentId: DryRamen
-        Quantity: 20
+        Quantity: 30
       - ReagentId: CapsaicinOil
         Quantity: 5
+      - ReagentId: JunkFood # Goobstation - snacks are worse than cooked food
+        Quantity: 15
+      temperature: 293.15
+      canReact: true
 
 - type: entity
   parent: FoodSnackBase
@@ -405,24 +381,18 @@
   - type: Item
     heldPrefix: chinese1
     storedOffset: 1,-2
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 30 # Room for extra condiments
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 5 # Goobstation - snacks are worse than cooked food
-        - ReagentId: Soysauce
-          Quantity: 2
-        - ReagentId: JunkFood # Goobstation - snacks are worse than cooked food
-          Quantity: 5
   - type: Solution
     solution:
+      maxVol: 30 # Room for extra condiments
       reagents:
       - ReagentId: Nutriment
-        Quantity: 10
+        Quantity: 5 # Goobstation - snacks are worse than cooked food
       - ReagentId: Soysauce
         Quantity: 2
+      - ReagentId: JunkFood # Goobstation - snacks are worse than cooked food
+        Quantity: 5
+      temperature: 293.15
+      canReact: true
   - type: Edible
     trash:
     - FoodPacketChowMeinTrash
@@ -443,28 +413,20 @@
   - type: Item
     heldPrefix: chinese2
     storedOffset: 0,-2
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 30 # Room for extra condiments
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 5 # Goobstation - snacks are worse than cooked food
-        - ReagentId: CapsaicinOil
-          Quantity: 2
-        - ReagentId: Soysauce
-          Quantity: 2
-        - ReagentId: JunkFood # Goobstation - snacks are worse than cooked food
-          Quantity: 5
   - type: Solution
     solution:
+      maxVol: 30 # Room for extra condiments
       reagents:
       - ReagentId: Nutriment
-        Quantity: 10
+        Quantity: 5 # Goobstation - snacks are worse than cooked food
       - ReagentId: CapsaicinOil
         Quantity: 2
       - ReagentId: Soysauce
         Quantity: 2
+      - ReagentId: JunkFood # Goobstation - snacks are worse than cooked food
+        Quantity: 5
+      temperature: 293.15
+      canReact: true
   - type: Edible
     trash:
     - FoodPacketDanDanTrash
@@ -482,10 +444,14 @@
     state: cookie_fortune
   - type: Solution
     solution:
-      maxVol: 2.5
+      maxVol: 30 # Room for extra condiments
       reagents:
       - ReagentId: Nutriment
-        Quantity: 1
+        Quantity: 5 # Goobstation - snacks are worse than cooked food
+      - ReagentId: JunkFood # Goobstation - snacks are worse than cooked food
+        Quantity: 5
+      temperature: 293.15
+      canReact: true
   - type: Item
     sprite: Objects/Consumable/Food/snacks.rsi
     heldPrefix: cookie_fortune
@@ -536,15 +502,16 @@
       - ReptilianFood
   - type: Sprite
     state: nutribrick-open
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 20 #Goobstation
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 10 # Goobstation - junk food less useful
-        - ReagentId: JunkFood # Goobstation - snacks are worse than cooked food
-          Quantity: 5
+  - type: Solution
+    solution:
+      maxVol: 20 #Goobstation
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 10 # Goobstation - junk food less useful
+      - ReagentId: JunkFood # Goobstation - snacks are worse than cooked food
+        Quantity: 5
+      temperature: 293.15
+      canReact: true
 
 - type: entity
   parent: BaseItem
@@ -584,24 +551,18 @@
   - type: Item
     heldPrefix: mre-brownie-open
     storedOffset: -1,-1
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 15
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 4 # Goobstation - junk food less useful
-        - ReagentId: Theobromine
-          Quantity: 3
-        - ReagentId: JunkFood # Goobstation - snacks are worse than cooked food
-          Quantity: 5
   - type: Solution
     solution:
+      maxVol: 15
       reagents:
       - ReagentId: Nutriment
-        Quantity: 5
+        Quantity: 4 # Goobstation - junk food less useful
       - ReagentId: Theobromine
-        Quantity: 1
+        Quantity: 3
+      - ReagentId: JunkFood # Goobstation - snacks are worse than cooked food
+        Quantity: 5
+      temperature: 293.15
+      canReact: true
 
 - type: entity
   parent: FoodSnackBase
@@ -622,20 +583,16 @@
     tags:
     - FoodSnack
     - ReptilianFood
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 20 # Room for extra condiments
-        reagents:
-        - ReagentId: Sugar
-          Quantity: 15
-        - ReagentId: JunkFood # Goobstation - snacks are worse than cooked food
-          Quantity: 1
   - type: Solution
     solution:
+      maxVol: 20 # Room for extra condiments
       reagents:
       - ReagentId: Sugar
         Quantity: 15
+      - ReagentId: JunkFood # Goobstation - snacks are worse than cooked food
+        Quantity: 1
+      temperature: 293.15
+      canReact: true
   - type: FlavorProfile
     flavors:
     - sweet
@@ -671,21 +628,16 @@
   - type: SpaceGarbage
   - type: StaticPrice
     price: 0
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 12 #goob, was 10
-        reagents:
-        - ReagentId: ToxinTrash
-          Quantity: 5
-        - ReagentId: Microplastics #Goob
-          Quantity: 2
   - type: Solution
     solution:
-      maxVol: 7.5
+      maxVol: 12 #goob, was 10
       reagents:
       - ReagentId: ToxinTrash
-        Quantity: 7.5
+        Quantity: 5
+      - ReagentId: Microplastics #Goob
+        Quantity: 2
+      temperature: 293.15
+      canReact: true
   - type: Edible
     requiresSpecialDigestion: true
 
@@ -950,9 +902,14 @@
     requiresSpecialDigestion: true
   - type: Solution
     solution:
+      maxVol: 12 #goob, was 10
       reagents:
-      - ReagentId: Fiber
-        Quantity: 10
+      - ReagentId: ToxinTrash
+        Quantity: 5
+      - ReagentId: Microplastics #Goob
+        Quantity: 2
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - ClothMade

@@ -73,7 +73,9 @@ public sealed partial class CargoGiftsRule : StationEventSystem<CargoGiftsRuleCo
 
             if (!_cargoSystem.AddAndApproveOrder(
                     station!.Value,
-                    product,
+                    product.Product,
+                    product.Name,
+                    0,
                     qty,
                     Loc.GetString(component.Sender),
                     Loc.GetString(component.Description),
@@ -81,7 +83,8 @@ public sealed partial class CargoGiftsRule : StationEventSystem<CargoGiftsRuleCo
                     Loc.GetString(component.Dest),
                     cargoDb,
                     component.Account,
-                    (station.Value, stationData)
+                    (station.Value, stationData),
+                    container: product.Container //IS14-change: preserve catalog packaging for gifts too.
             ))
             {
                 break;

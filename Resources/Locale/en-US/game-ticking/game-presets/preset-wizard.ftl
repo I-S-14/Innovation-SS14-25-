@@ -8,25 +8,22 @@ survivor-role-greeting =
     Collect as much firepower as needed to guarantee your survival.
     Trust no one.
 survivor-round-end-dead-count =
-    $deadCount ->
+    { $deadCount ->
         [one] [color=red]{$deadCount}[/color] survivor died.
         *[other] [color=red]{$deadCount}[/color] survivors died.
-{
-}
+    }
 
 survivor-round-end-alive-count =
-    $aliveCount ->
+    { $aliveCount ->
         [one] [color=yellow]{$aliveCount}[/color] survivor was marooned on the station.
         *[other] [color=yellow]{$aliveCount}[/color] survivors were marooned on the station.
-{
-}
+    }
 
 survivor-round-end-alive-on-shuttle-count =
-    $aliveCount ->
+    { $aliveCount ->
         [one] [color=green]{$aliveCount}[/color] survivor made it out alive.
         *[other] [color=green]{$aliveCount}[/color] survivors made it out alive.
-{
-}
+    }
 
 ## Wizard
 # Goob commented out.

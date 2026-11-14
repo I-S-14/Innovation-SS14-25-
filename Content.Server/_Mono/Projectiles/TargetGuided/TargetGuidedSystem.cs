@@ -194,7 +194,9 @@ public sealed class TargetGuidedSystem : EntitySystem
         // Check if controlling console still exists
         if (component.ControllingConsole.HasValue)
         {
-            if (!EntityManager.EntityExists(component.ControllingConsole.Value))
+            //IS14-change start
+            if (!Exists(component.ControllingConsole.Value))
+            //IS14-change end
                 return true;
 
             // Check if console is still powered/functioning

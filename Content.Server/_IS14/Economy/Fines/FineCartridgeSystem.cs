@@ -2,7 +2,7 @@ using System.Linq;
 using Content.Server.Access.Systems;
 using Content.Server.CartridgeLoader;
 using Content.Server.Station.Systems;
-using Content.Server.StationRecords.Systems;
+using Content.Shared.StationRecords.Systems;
 using Content.Shared._IS14.CCVar;
 using Content.Shared._IS14.Economy.Fines;
 using Content.Shared.Access.Components;

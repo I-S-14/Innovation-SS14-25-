@@ -230,7 +230,6 @@
   - type: Anchorable
   - type: Damageable
     damageModifierSet: Metallic
-  - type: Injurable
     damageContainer: Inorganic
   - type: Destructible
     thresholds:
@@ -272,7 +271,6 @@
   - type: Anchorable
   - type: Damageable
     damageModifierSet: Metallic
-  - type: Injurable
     damageContainer: Inorganic
   - type: Destructible
     thresholds:

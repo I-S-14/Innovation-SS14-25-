@@ -16,9 +16,10 @@ public sealed partial class BlobPodZombifyOperator : HTNOperator
     [DataField("zombifyKey")]
     public string ZombifyKey = string.Empty;
 
-    public override void Initialize(IEntitySystemManager sysManager)
+    public override void Initialize(IDependencyCollection deps)
     {
-        base.Initialize(sysManager);
+        base.Initialize(deps);
+        var sysManager = deps.Resolve<IEntitySystemManager>();
         _blobPodSystem = sysManager.GetEntitySystem<BlobPodSystem>();
     }
 

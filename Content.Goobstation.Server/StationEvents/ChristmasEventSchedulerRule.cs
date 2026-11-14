@@ -1,3 +1,4 @@
+using GameTicker = Content.Server.GameTicking.ServerGameTicker;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Server.GameTicking;
@@ -7,9 +8,9 @@ using Content.Shared.GameTicking.Components;
 
 namespace Content.Goobstation.Server.StationEvents;
 
-public sealed partial class ChristmasEventSchedulerRule : GameRuleSystem<ChristmasEventSchedulerComponent>
+public sealed partial class ChristmasEventSchedulerRule : ServerGameRuleSystem<ChristmasEventSchedulerComponent>
 {
-    [Dependency] private GameTicker _gameTicker = default!;
+    [Dependency] private Content.Server.GameTicking.ServerGameTicker _gameTicker = default!;
     [Dependency] private ISharedAdminLogManager _adminLog = default!;
 
     public override void Update(float frameTime)

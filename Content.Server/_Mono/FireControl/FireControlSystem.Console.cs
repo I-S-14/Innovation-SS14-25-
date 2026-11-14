@@ -24,7 +24,7 @@ public sealed partial class FireControlSystem : EntitySystem
         SubscribeLocalEvent<FireControlConsoleComponent, BoundUIOpenedEvent>(OnUIOpened);
     }
 
-    private void OnPowerChanged(EntityUid uid, FireControlConsoleComponent component, PowerChangedEvent args)
+    private void OnPowerChanged(EntityUid uid, FireControlConsoleComponent component, ref PowerChangedEvent args)
     {
         if (args.Powered)
             TryRegisterConsole(uid, component);
@@ -117,7 +117,9 @@ public sealed partial class FireControlSystem : EntitySystem
             foreach (var controllable in server.Controlled)
             {
                 var controlled = new FireControllableEntry();
-                controlled.NetEntity = EntityManager.GetNetEntity(controllable);
+                //IS14-change start
+                controlled.NetEntity = GetNetEntity(controllable);
+                //IS14-change end
                 controlled.Coordinates = GetNetCoordinates(Transform(controllable).Coordinates);
                 controlled.Name = MetaData(controllable).EntityName;
 

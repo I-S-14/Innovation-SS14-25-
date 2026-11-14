@@ -16,6 +16,7 @@ namespace Content.Shared.Light.Components;
 [Access(typeof(ExpendableLightSystem))]
 public sealed partial class ExpendableLightComponent : Component
 {
+
     [ViewVariables(VVAccess.ReadOnly)]
     [AutoNetworkedField]
     public ExpendableLightState CurrentState = ExpendableLightState.Unlit;

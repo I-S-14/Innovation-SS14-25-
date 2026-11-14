@@ -15,7 +15,6 @@ using Content.Shared.Fluids.Components;
 using Content.Shared.Inventory;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components; // Goobstation
-using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.NPC.Systems;
 using Content.Shared.Nutrition.Components;
@@ -35,10 +34,6 @@ using Microsoft.Extensions.ObjectPool;
 using Robust.Server.Containers;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
-using Content.Shared.Atmos.Components;
-using System.Linq;
-using Content.Shared.Damage.Components;
-using Content.Shared.Temperature.Components;
 using Content.Server._Goobstation.Wizard.NPC;
 using Content.Shared.Foldable;
 using Content.Shared.Wieldable;
@@ -64,6 +59,10 @@ namespace Content.Server.NPC.Systems;
 /// </summary>
 public sealed partial class NPCUtilitySystem : EntitySystem
 {
+    //IS14-change start: restore declarations used by merged implementation.
+    [Dependency] private SatiationSystem _satiation = default!;
+    //IS14-change end
+
     [Dependency] private readonly IPrototypeManager _proto = default!;
     [Dependency] private readonly ContainerSystem _container = default!;
     [Dependency] private readonly EntityLookupSystem _lookup = default!;
@@ -85,8 +84,9 @@ public sealed partial class NPCUtilitySystem : EntitySystem
     [Dependency] private readonly MetabolizerSystem _metabolizer = default!;
     // Goobstation end
 
-    private EntityQuery<PuddleComponent> _puddleQuery;
-    private EntityQuery<TransformComponent> _xformQuery;
+    //IS14-change start: initialize retained utility queries.
+    [Dependency] private EntityQuery<PuddleComponent> _puddleQuery = default!;
+    //IS14-change end
 
     private ObjectPool<HashSet<EntityUid>> _entPool =
         new DefaultObjectPool<HashSet<EntityUid>>(new SetPolicy<EntityUid>(), 256);
@@ -332,7 +332,7 @@ public sealed partial class NPCUtilitySystem : EntitySystem
                     !TryComp(targetUid, out WieldableComponent? wieldable))
                     return 1f;
 
-                if (!_wieldable.CanWield(targetUid, wieldable, owner, true, false))
+                if (!_wieldable.CanWield((targetUid, wieldable), owner, true))
                     return 0f;
 
                 var beforeWieldEv = new WieldAttemptEvent(owner, targetUid);
@@ -709,10 +709,10 @@ public sealed partial class NPCUtilitySystem : EntitySystem
 
                     switch (effect)
                     {
-                        case SatiateHunger hunger:
+                        case Satiate hunger when hunger.SatiationType == SatiationSystem.Hunger:
                             utilityParams.TotalNutrition += hunger.Factor * quantity.Quantity.Float();
                             break;
-                        case SatiateThirst thirst:
+                        case Satiate thirst when thirst.SatiationType == SatiationSystem.Thirst:
                             utilityParams.TotalHydration += thirst.Factor * quantity.Quantity.Float();
                             break;
                         case HealthChange damage

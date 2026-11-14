@@ -1,0 +1,1775 @@
+# Generated from retained Goob/IS14 antag definitions by migrate_antags.py.
+- type: antagSpecifier
+  id: IS14NinjaSpawnAntag0a64391de
+  spawnerPrototype: SpawnPointGhostSpaceNinja
+  pickPlayer: false
+  startingGear: SpaceNinjaGear
+  skills:
+  - All
+  roleLoadout:
+  - RoleSurvivalSpaceNinja
+  briefing:
+    text: ninja-role-greeting
+    color: Green
+    sound: /Audio/Misc/ninja_greeting.ogg
+  components:
+  - type: SpaceNinja
+  - type: NpcFactionMember
+    factions:
+    - Syndicate
+  - type: AutoImplant
+    implants:
+    - MicroBombImplant
+  - type: RandomMetadata
+    nameSegments:
+    - NamesNinjaTitle
+    - NamesNinja
+    nameFormat: name-format-ninja
+  mindRoles:
+  - MindRoleNinja
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14ParadoxCloneSpawnAntag0f7b6c925
+  spawnerPrototype: SpawnPointGhostParadoxClone
+  pickPlayer: false
+  startingGear: ParadoxCloneGear
+  skills:
+  - All
+  roleLoadout:
+  - RoleSurvivalVoxTank
+  - RoleSurvivalPlasmaTank
+  briefing:
+    text: paradox-clone-role-greeting
+    color: lightblue
+    sound: /Audio/Misc/paradox_clone_greeting.ogg
+  mindRoles:
+  - MindRoleParadoxClone
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14ZombieOutbreakAntag0e30465e7
+  prefRoles: [InitialInfected]
+  skills:
+  - All
+  blacklist:
+    components:
+    - BibleUser
+    - ZombieImmune
+    - AntagImmune
+  briefing:
+    text: zombie-patientzero-role-greeting
+    color: Plum
+    sound: "/Audio/Ambience/Antag/zombie_start.ogg"
+  components:
+  - type: PendingZombie
+    minInitialInfectedGrace: 300
+    maxInitialInfectedGrace: 450
+  - type: ZombifyOnDeath
+  - type: IncurableZombie
+  - type: InitialInfected
+  mindRoles:
+  - MindRoleInitialInfected
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14LoneOpsSpawnAntag06e4471ec
+  spawnerPrototype: SpawnPointLoneNukeOperative
+  pickPlayer: false
+  startingGear: SyndicateLoneOperativeGearFull
+  unequipOldGear: true
+  skills:
+  - All
+  roleLoadout:
+  - RoleSurvivalNukie
+  components:
+  - type: NukeOperative
+  - type: RandomMetadata
+    nameSegments:
+    - NamesSyndicatePrefix
+    - NamesSyndicateNormal
+    nameFormat: name-format-nukie-generic
+  - type: NpcFactionMember
+    factions:
+    - Syndicate
+  mindRoles:
+  - MindRoleLoneops
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14SleeperAgentsAntag03d30acec
+  prefRoles: [TraitorSleeper]
+  fallbackRoles: [Traitor]
+  skills:
+  - All
+  blacklist:
+    components:
+    - AntagImmune
+    - CommandStaff
+  mindRoles:
+  - MindRoleTraitorSleeper
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14NukeopsAntag026016775
+  prefRoles: [NukeopsCommander]
+  fallbackRoles: [Nukeops, NukeopsMedic]
+  spawnerPrototype: SpawnPointNukeopsCommander
+  startingGear: SyndicateCommanderGearFull
+  unequipOldGear: true
+  skills:
+  - All
+  roleLoadout:
+  - RoleSurvivalNukie
+  components:
+  - type: NukeOperative
+  - type: RandomMetadata
+    nameSegments:
+    - NamesSyndicateElite
+    nameFormat: name-format-nukie-commander
+  - type: NpcFactionMember
+    factions:
+    - Syndicate
+  mindRoles:
+  - MindRoleNukeopsCommander
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14NukeopsAntag1e9c2747a
+  prefRoles: [NukeopsMedic]
+  fallbackRoles: [Nukeops, NukeopsCommander]
+  spawnerPrototype: SpawnPointNukeopsMedic
+  startingGear: SyndicateOperativeMedicFull
+  unequipOldGear: true
+  skills:
+  - All
+  roleLoadout:
+  - RoleSurvivalNukie
+  components:
+  - type: NukeOperative
+  - type: RandomMetadata
+    nameSegments:
+    - NamesSyndicateNormal
+    nameFormat: name-format-nukie-agent
+  - type: NpcFactionMember
+    factions:
+    - Syndicate
+  - type: SurgerySpeedModifier
+    speedModifier: 2
+  mindRoles:
+  - MindRoleNukeopsMedic
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14NukeopsAntag2e8e635a2
+  prefRoles: [Nukeops]
+  fallbackRoles: [NukeopsCommander, NukeopsMedic]
+  spawnerPrototype: SpawnPointNukeopsOperative
+  startingGear: SyndicateOperativeGearFull
+  unequipOldGear: true
+  skills:
+  - All
+  roleLoadout:
+  - RoleSurvivalNukie
+  components:
+  - type: NukeOperative
+  - type: RandomMetadata
+    nameSegments:
+    - NamesSyndicateNormal
+    nameFormat: name-format-nukie-operator
+  - type: NpcFactionMember
+    factions:
+    - Syndicate
+  mindRoles:
+  - MindRoleNukeops
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14TraitorAntag07d7816d0
+  prefRoles: [Traitor]
+  skills:
+  - All
+  blacklist:
+    components:
+    - CommandStaff
+    - AntagImmune
+    - Changeling
+  lateJoinAdditional: true
+  mindRoles:
+  - MindRoleTraitor
+- type: antagSpecifier
+  id: IS14TraitorReinforcementAntag00291ce66
+  prefRoles: [Traitor]
+  blacklist:
+    components:
+    - CommandStaff
+  mindRoles:
+  - MindRoleTraitorReinforcement
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14RevolutionaryAntag02c8a0d07
+  prefRoles: [HeadRev]
+  skills:
+  - All
+  blacklist:
+    components:
+    - CommandStaff
+  jobBlacklist: [Mime]
+  briefing:
+    text: head-rev-role-greeting
+    color: CornflowerBlue
+    sound: "/Audio/Ambience/Antag/headrev_start.ogg"
+  startingGear: HeadRevGear
+  components:
+  - type: Revolutionary
+  - type: HeadRevolutionary
+  mindRoles:
+  - MindRoleHeadRevolutionary
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14ZombieAntag0c42767d9
+  prefRoles: [InitialInfected]
+  jobBlacklist: [Chaplain]
+  skills:
+  - All
+  blacklist:
+    components:
+    - CommandStaff
+    - ZombieImmune
+    - AntagImmune
+  briefing:
+    text: zombie-patientzero-role-greeting
+    color: Plum
+    sound: "/Audio/Ambience/Antag/zombie_start.ogg"
+  components:
+  - type: PendingZombie
+  - type: ZombifyOnDeath
+  - type: IncurableZombie
+  - type: InitialInfected
+  mindRoles:
+  - MindRoleInitialInfected
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14ThiefAntag01ef3621d
+  prefRoles: [Thief]
+  skills:
+  - All
+  lateJoinAdditional: true
+  allowNonHumans: true
+  multiAntagSetting: NotExclusive
+  startingGear: ThiefGear
+  jobBlacklist: [Chaplain]
+  blacklist:
+    components:
+    - CommandStaff
+  components:
+  - type: Thieving
+    stripTimeReduction: 2
+    stealthy: true
+  mindRoles:
+  - MindRoleThief
+  briefing:
+    sound: "/Audio/Misc/thief_greeting.ogg"
+- type: antagSpecifier
+  id: IS14ColossusSpawnAntag0ed0d5248
+  spawnerPrototype: SpawnPointCosmicColossus
+  pickPlayer: false
+  skills:
+  - All
+  mindRoles:
+  - MindRoleCosmicColossus
+  briefing:
+    text: ghost-role-colossus-briefing
+    color: CadetBlue
+    sound: /Audio/_DV/CosmicCult/antag_cosmic_AI_briefing.ogg
+  components:
+  - type: CosmicColossus
+    timed: true
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14CosmicCultAntag01348a7d2
+  prefRoles: [CosmicAntagCultist]
+  jobBlacklist: [Chaplain]
+  skills:
+  - All
+  blacklist:
+    components:
+    - CommandStaff
+    - AntagImmune
+    - BibleUser
+  components:
+  - type: CosmicCult
+  - type: WeakToHoly
+  mindRoles:
+  - MindRoleCosmicCult
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14ShadowlingAntag0a7524129
+  prefRoles: [Shadowling]
+  jobBlacklist: [Chaplain]
+  blacklist:
+    components:
+    - CommandStaff
+  mindRoles:
+  - MindRoleShadowling
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14ContractorSpawnAntag0363f9b12
+  spawnerPrototype: ContractorSpawner
+  pickPlayer: false
+  startingGear: ContractorGear
+  roleLoadout:
+  - RoleSurvivalNukie
+  mindRoles:
+  - MindRoleContractor
+  briefing:
+    text: contractor-role-greeting
+    color: Red
+    sound: /Audio/Ambience/Antag/traitor_wawa.ogg
+  components:
+  - type: RandomMetadata
+    nameSegments:
+    - NamesContractorPrefix
+    - NamesSyndicateElite
+    nameFormat: name-format-standard
+  - type: NpcFactionMember
+    factions:
+    - Syndicate
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14TokenNinjaSpawnAntag0b49305ce
+  spawnerPrototype: SpawnPointGhostSpaceNinjaToken
+  pickPlayer: false
+  startingGear: SpaceNinjaGear
+  roleLoadout:
+  - RoleSurvivalEVA
+  briefing:
+    text: ninja-role-greeting
+    color: Green
+    sound: /Audio/Misc/ninja_greeting.ogg
+  components:
+  - type: SpaceNinja
+  - type: NpcFactionMember
+    factions:
+    - Syndicate
+  - type: AutoImplant
+    implants:
+    - DeathAcidifierImplant
+  - type: RandomMetadata
+    nameSegments:
+    - NamesNinjaTitle
+    - NamesNinja
+    nameFormat: name-format-ninja
+  mindRoles:
+  - MindRoleNinja
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14TokenDragonSpawnAntag0491b383a
+  spawnerPrototype: SpawnPointGhostDragonToken
+  pickPlayer: false
+  mindRoles:
+  - MindRoleDragon
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14TokenLoneOpsSpawnAntag08d15cbe1
+  spawnerPrototype: SpawnPointLoneNukeOperativeToken
+  pickPlayer: false
+  startingGear: SyndicateLoneOperativeGearFull
+  unequipOldGear: true
+  roleLoadout:
+  - RoleSurvivalNukie
+  components:
+  - type: NukeOperative
+  - type: RandomMetadata
+    nameSegments:
+    - NamesSyndicateNormal
+    nameFormat: name-format-nukie-agent
+  - type: NpcFactionMember
+    factions:
+    - Syndicate
+  mindRoles:
+  - MindRoleNukeops
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14TokenDerelictCyborgSyndicateSpawnAntag0360619f8
+  spawnerPrototype: SpawnPointGhostDerelictCyborgSyndicateToken
+  pickPlayer: false
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14TokenAncientRogueKingSpawnAntag016ad0f20
+  spawnerPrototype: AncientRogueKingToken
+  pickPlayer: false
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14TokenLoneAbductorSpawnAntag0e73d6ffd
+  spawnerPrototype: LoneAbductorSpawnerToken
+  pickPlayer: false
+  startingGear: LoneAbductorGear
+  briefing:
+    text: abductor-role-greeting
+    color: Green
+    sound: /Audio/_Shitmed/Misc/abductor.ogg
+  components:
+  - type: Abductor
+  - type: ActionGrant
+    actions:
+    - ActionReturnToShip
+  - type: GhostRole
+    name: abductor-lone-ghost-role-name-token
+    description: ghost-role-information-description-token-generic
+    rules: abductors-ghost-role-rules
+  - type: GhostTakeoverAvailable
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: RandomMetadata
+    nameSegments:
+    - AbductorScientistPrefix
+    - AbductorNames
+  - type: Tag
+    tags:
+    - Abductor
+    - AbductorScientist
+    - CanPilot
+    - FootstepSound
+    - DoorBumpOpener
+  - type: AbductorScientist
+  - type: SurgeryIgnoreClothing
+  - type: Sanitized
+  - type: SurgerySpeedModifier
+    speedModifier: 1.5
+  mindRoles:
+  - MindRoleLoneAbductor
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14TokenWizardAntag08d6fc12f
+  spawnerPrototype: SpawnPointWizardToken
+  pickPlayer: false
+  mindRoles:
+  - MindRoleWizard
+  startingGear: WizardGear
+  unequipOldGear: true
+  roleLoadout:
+  - RoleSurvivalEVA
+  components:
+  - type: Wizard
+  - type: RandomMetadata
+    nameSegments:
+    - WizardFirst
+    - WizardLast
+    nameFormat: name-format-standard
+  - type: NpcFactionMember
+    factions:
+    - Wizard
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14TokenSlaughterDemonAntag0eae32ef2
+  spawnerPrototype: SpawnPointSlaughterDemonToken
+  pickPlayer: false
+  mindRoles:
+  - MindRoleSlaughterDemon
+  briefing:
+    text: slaughter-role-greeting
+    color: Red
+  components:
+  - type: RandomMetadata
+    nameSegments:
+    - NamesSlaughterTitle
+    - NamesSlaughter
+    nameFormat: name-format-slaughter
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14TokenLaughterDemonAntag03abc693e
+  spawnerPrototype: SpawnPointLaughterDemonToken
+  pickPlayer: false
+  mindRoles:
+  - MindRoleSlaughterDemon
+  briefing:
+    text: laughter-role-greeting
+    color: Pink
+  components:
+  - type: RandomMetadata
+    nameSegments:
+    - NamesLaughterTitle
+    - NamesSlaughter
+    nameFormat: name-format-slaughter
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14TokenSlasherSpawnAntag0b2472855
+  spawnerPrototype: SpawnPointGhostSlasherToken
+  pickPlayer: false
+  briefing:
+    text: slasher-role-greeting
+    color: Red
+    sound: /Audio/_Goobstation/Effects/Slasher/SlasherIntro.ogg
+  mindRoles:
+  - MindRoleSlasher
+  components:
+  - type: SlasherKitSelect
+    kits:
+      slasher-kit-butcher:
+        gear: SlasherGear
+        description: slasher-kit-butcher-desc
+        sprite:
+          sprite: _Goobstation/Objects/Specific/Slasher/mask.rsi
+          state: icon
+      slasher-kit-spring:
+        gear: SlasherGearSpring
+        description: slasher-kit-spring-desc
+        sprite:
+          sprite: _Goobstation/Objects/Specific/Slasher/spring_mask.rsi
+          state: icon
+        machetePrototype: SlasherMacheteSpring
+        bloodTrailMusic:
+          path: /Audio/_Goobstation/Slasher/Music/fnaf_bonnies_lullaby.ogg
+          params:
+            volume: -4
+            loop: true
+      slasher-kit-billy:
+        gear: SlasherGearBilly
+        description: slasher-kit-billy-desc
+        sprite:
+          sprite: Objects/Tools/crowbar.rsi
+          state: icon
+        machetePrototype: SlasherCrowbar
+        bloodTrailMusic:
+          path: /Audio/_Goobstation/Slasher/Music/that_handsome_devil_midi.ogg
+          params:
+            volume: -7
+            loop: true
+      slasher-kit-cult:
+        gear: SlasherGearCult
+        description: slasher-kit-cult-desc
+        sprite:
+          sprite: Clothing/Head/Hoods/cult.rsi
+          state: icon
+        machetePrototype: SlasherEldritchBlade
+        bloodTrailMusic:
+          path: /Audio/_Goobstation/Slasher/Music/cultist_chant.ogg
+          params:
+            loop: true
+      slasher-kit-maintenance:
+        gear: SlasherGearMaintenance
+        description: slasher-kit-maintenance-desc
+        sprite:
+          sprite: Clothing/Head/Hats/papersacksmile.rsi
+          state: icon
+        machetePrototype: SlasherButchCleaver
+        bloodTrailMusic:
+          path: /Audio/_Goobstation/Slasher/Music/scared_to_bits.ogg
+          params:
+            loop: true
+      slasher-kit-cannibal:
+        gear: SlasherGearCannibal
+        description: slasher-kit-cannibal-desc
+        sprite:
+          sprite: _Goobstation/Wizard/Clothing/Mask/pig.rsi
+          state: icon
+        machetePrototype: SlasherButchCleaver
+        bloodTrailMusic:
+          path: /Audio/_Goobstation/Slasher/Music/horror_violin_string.ogg
+          params:
+            volume: -7
+            loop: true
+      slasher-kit-clown:
+        gear: SlasherGearClown
+        description: slasher-kit-clown-desc
+        sprite:
+          sprite: Clothing/Mask/clown.rsi
+          state: icon
+        machetePrototype: SlasherOffsetCaneClown
+        bloodTrailMusic:
+          path: /Audio/_Goobstation/Slasher/Music/naktigonis_catwhisker.ogg
+          params:
+            volume: -7
+            loop: true
+        jumpscareSound:
+          path: /Audio/Items/Toys/pushHornHonk.ogg
+        meatSpikePrototype: SlasherMeatSpikeClown
+        bloodTrailReagent: Honk
+        soulStealSound:
+          path: /Audio/Items/Toys/pushHornHonk.ogg
+        ascensionGear: SlasherGearClownAscended
+        ascendanceAnnouncementKey: slasher-soulsteal-ascendance-clown
+        ascendanceSound:
+          path: /Audio/Items/Toys/pushHornHonk.ogg
+          params:
+            volume: -2
+      slasher-kit-glutton:
+        gear: SlasherGearGlutton
+        description: slasher-kit-glutton-desc
+        sprite:
+          sprite: Clothing/OuterClothing/Hardsuits/lingspacesuit.rsi
+          state: icon
+        machetePrototype: SlasherButchCleaver
+        bloodTrailMusic:
+          path: /Audio/_Goobstation/Slasher/Music/padtext_horror.ogg
+          params:
+            volume: -7
+            loop: true
+      slasher-kit-hockey:
+        gear: SlasherGearHockey
+        description: slasher-kit-hockey-desc
+        sprite:
+          sprite: _Goobstation/Objects/Specific/Slasher/hockymask/hockey_mask.rsi
+          state: icon
+        bloodTrailMusic:
+          path: /Audio/_Goobstation/Slasher/Music/horror_synthwave.ogg
+          params:
+            volume: -7
+            loop: true
+        jumpscareSound:
+          path: /Audio/_Goobstation/Effects/Slasher/JasonJumpscare.ogg
+      slasher-kit-boogeyman:
+        gear: SlasherGearBoogeyman
+        description: slasher-kit-boogeyman-desc
+        guide: SlasherBoogeyman
+        sprite:
+          sprite: _Goobstation/Objects/Specific/Slasher/boogeyman/mask.rsi
+          state: icon
+        machetePrototype: SlasherKitchenKnife
+        bloodTrailMusic:
+          path: /Audio/_Goobstation/Slasher/Music/halloween.ogg
+          params:
+            loop: true
+        removeComponents:
+        - type: SlasherIncorporeal
+        grantedToVictimOnSight:
+        - type: SprintDisabled
+        components:
+        - type: BoogeymanShadow
+        - type: SprintDisabled
+        - type: Muted
+        - type: MovementSpeedModifier
+          baseSprintSpeed: 5.0
+    postSelectionComponents:
+    - type: Slasher
+    - type: SlasherSummonMachete
+    - type: SlasherStaggerArea
+    - type: SlasherRelentlessGrab
+    - type: SlasherRegenerate
+    - type: SlasherFear
+    - type: SlasherIncorporeal
+    - type: SlasherSoulSteal
+    - type: SlasherSummonMeatSpike
+    - type: NightVision
+      color: "#FF0000"
+      toggleAction: ActionSlasherNightVision
+      activateSound: !type:SoundCollectionSpecifier
+        collection: EyeOpen
+      deactivateSound: !type:SoundCollectionSpecifier
+        collection: EyeClose
+    - type: GrabIntent
+      grabThrownSpeed: 10
+      throwingDistance: 8
+      softGrabSpeedModifier: 1
+      hardGrabSpeedModifier: 1
+      chokeGrabSpeedModifier: 1
+    - type: BreathingImmunity
+    - type: GunBlocked
+      popupText: slasher-cannot-use-guns
+    - type: WeakToHoly
+    - type: Satiation
+      satiations:
+        Hunger:
+          prototype: IS14TokenSlasherSpawnHungerf7038fe9
+        Thirst:
+          prototype: IS14TokenSlasherSpawnThirst888b1104
+    - type: SatiationSpeedModifier
+      satiations:
+        Hunger:
+          thresholds:
+            Starving: 0.75
+        Thirst:
+          thresholds:
+            Parched: 0.75
+    - type: MobThresholds
+      thresholds:
+        0: Alive
+        150: Dead
+    - type: RandomMetadata
+      nameSegments:
+      - NamesSlasherTitle
+      - NamesSlasher
+      nameFormat: name-format-slasher
+  - type: UserInterface
+    interfaces:
+      enum.SlasherKitSelectUiKey.Key:
+        type: SlasherKitSelectBoundUserInterface
+  - type: GhostRole
+    name: ghost-role-information-slasher-name
+    description: ghost-role-information-slasher-description
+    rules: ghost-role-information-antagonist-rules
+    mindRoles:
+    - MindRoleGhostRoleSoloAntagonist
+  - type: GhostTakeoverAvailable
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14TokenContractorSpawnAntag069bd0fb4
+  spawnerPrototype: ContractorTokenSpawner
+  pickPlayer: false
+  startingGear: ContractorGear
+  unequipOldGear: true
+  roleLoadout:
+  - RoleSurvivalNukie
+  components:
+  - type: RandomMetadata
+    nameSegments:
+    - NamesSyndicateNormal
+    nameFormat: name-format-nukie-agent
+  - type: NpcFactionMember
+    factions:
+    - Syndicate
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14DerelictCyborgSyndicateSpawnAntag026060940
+  spawnerPrototype: SpawnPointGhostDerelictCyborgSyndicate
+  pickPlayer: false
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14TraitorMidroundAntag09fce3309
+  prefRoles: [Traitor]
+  skills:
+  - All
+  blacklist:
+    components:
+    - AntagImmune
+    - CommandStaff
+  lateJoinAdditional: true
+  mindRoles:
+  - MindRoleTraitor
+- type: antagSpecifier
+  id: IS14TunnelClownMidroundAntag0ffa7b289
+  spawnerPrototype: SpawnPointGhostTunnelClown
+  pickPlayer: false
+  mindRoles:
+  - MindRoleGhostRoleSoloAntagonist
+  briefing:
+    text: tunnel-clown-role-greeting
+    color: Pink
+    sound: /Audio/_Goobstation/Misc/clownalwayswinsshort.ogg
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14SingulothKnightsMidroundAntag0e6df4004
+  spawnerPrototype: SpawnPointGhostSingulothKnight
+  pickPlayer: false
+  mindRoles:
+  - MindRoleGhostRoleFreeAgent
+  briefing:
+    text: Singuloth-Knight-role-greeting
+    color: Red
+    sound: /Audio/_Goobstation/Misc/singulothknight_greeting.ogg
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14DarkLordMidroundAntag034bce7e6
+  spawnerPrototype: SpawnPointGhostDarkLord
+  pickPlayer: false
+  mindRoles:
+  - MindRoleGhostRoleSoloAntagonist
+  - MindRoleTraitor
+  briefing:
+    text: dark-lord-role-greeting
+    color: Red
+    sound: /Audio/_Goobstation/Misc/darklord_greeting.ogg
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14ChosenOneMidroundAntag06cae4c84
+  spawnerPrototype: SpawnPointGhostChosenOne
+  pickPlayer: false
+  mindRoles:
+  - MindRoleGhostRoleNeutral
+  briefing:
+    text: chosen-one-role-greeting
+    color: Green
+    sound: /Audio/_Goobstation/Misc/darklord_greeting.ogg
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14MimeAssassinMidroundAntag0da0c6c45
+  spawnerPrototype: SpawnPointGhostMimeAssassin
+  pickPlayer: false
+  skills:
+  - All
+  mindRoles:
+  - MindRoleGhostRoleSoloAntagonist
+  - MindRoleTraitor
+  briefing:
+    text: mime-Assassin-role-greeting
+    color: Red
+    sound: /Audio/Misc/thief_greeting.ogg
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14DarkPriestMidroundAntag00cec934c
+  spawnerPrototype: SpawnPointGhostDarkPriest
+  pickPlayer: false
+  mindRoles:
+  - MindRoleGhostRoleFreeAgent
+  - MindRoleTraitor
+  briefing:
+    text: dark-priest-role-greeting
+    color: Purple
+    sound: /Audio/_Goobstation/Heretic/Ambience/Antag/Heretic/heretic_gain.ogg
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14VoxRaidersMidroundAntag0307a0065
+  spawnerPrototype: SpawnPointGhostVoxRaider
+  pickPlayer: false
+  skills:
+  - All
+  mindRoles:
+  - MindRoleGhostRoleTeamAntagonist
+  - MindRoleThief
+  briefing:
+    text: vox-raider-role-greeting
+    color: Purple
+    sound: /Audio/Misc/thief_greeting.ogg
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14SlasherSpawnAntag0bbd35765
+  spawnerPrototype: SpawnPointGhostSlasher
+  pickPlayer: false
+  skills:
+  - All
+  briefing:
+    text: slasher-role-greeting
+    color: Red
+    sound: /Audio/_Goobstation/Effects/Slasher/SlasherIntro.ogg
+  mindRoles:
+  - MindRoleSlasher
+  components:
+  - type: SlasherKitSelect
+    kits:
+      slasher-kit-butcher:
+        gear: SlasherGear
+        description: slasher-kit-butcher-desc
+        grantedToVictimOnSight:
+        - type: SlasherFearOverlay
+        sprite:
+          sprite: _Goobstation/Objects/Specific/Slasher/mask.rsi
+          state: icon
+      slasher-kit-spring:
+        gear: SlasherGearSpring
+        description: slasher-kit-spring-desc
+        grantedToVictimOnSight:
+        - type: SlasherFearOverlay
+        sprite:
+          sprite: _Goobstation/Objects/Specific/Slasher/spring_mask.rsi
+          state: icon
+        machetePrototype: SlasherMacheteSpring
+        bloodTrailMusic:
+          path: /Audio/_Goobstation/Slasher/Music/fnaf_bonnies_lullaby.ogg
+          params:
+            volume: -4
+            loop: true
+      slasher-kit-billy:
+        gear: SlasherGearBilly
+        description: slasher-kit-billy-desc
+        grantedToVictimOnSight:
+        - type: SlasherFearOverlay
+        sprite:
+          sprite: Objects/Tools/crowbar.rsi
+          state: icon
+        machetePrototype: SlasherCrowbar
+        bloodTrailMusic:
+          path: /Audio/_Goobstation/Slasher/Music/that_handsome_devil_midi.ogg
+          params:
+            volume: -7
+            loop: true
+      slasher-kit-cult:
+        gear: SlasherGearCult
+        description: slasher-kit-cult-desc
+        grantedToVictimOnSight:
+        - type: SlasherFearOverlay
+        sprite:
+          sprite: Clothing/Head/Hoods/cult.rsi
+          state: icon
+        machetePrototype: SlasherEldritchBlade
+        bloodTrailMusic:
+          path: /Audio/_Goobstation/Slasher/Music/cultist_chant.ogg
+          params:
+            loop: true
+      slasher-kit-maintenance:
+        gear: SlasherGearMaintenance
+        description: slasher-kit-maintenance-desc
+        grantedToVictimOnSight:
+        - type: SlasherFearOverlay
+        sprite:
+          sprite: Clothing/Head/Hats/papersacksmile.rsi
+          state: icon
+        machetePrototype: SlasherButchCleaver
+        bloodTrailMusic:
+          path: /Audio/_Goobstation/Slasher/Music/scared_to_bits.ogg
+          params:
+            loop: true
+      slasher-kit-cannibal:
+        gear: SlasherGearCannibal
+        description: slasher-kit-cannibal-desc
+        grantedToVictimOnSight:
+        - type: SlasherFearOverlay
+        sprite:
+          sprite: _Goobstation/Wizard/Clothing/Mask/pig.rsi
+          state: icon
+        machetePrototype: SlasherButchCleaver
+        bloodTrailMusic:
+          path: /Audio/_Goobstation/Slasher/Music/horror_violin_string.ogg
+          params:
+            volume: -7
+            loop: true
+      slasher-kit-clown:
+        gear: SlasherGearClown
+        description: slasher-kit-clown-desc
+        grantedToVictimOnSight:
+        - type: SlasherFearOverlay
+        sprite:
+          sprite: Clothing/Mask/clown.rsi
+          state: icon
+        machetePrototype: SlasherOffsetCaneClown
+        bloodTrailMusic:
+          path: /Audio/_Goobstation/Slasher/Music/naktigonis_catwhisker.ogg
+          params:
+            volume: -7
+            loop: true
+        jumpscareSound:
+          path: /Audio/Items/Toys/pushHornHonk.ogg
+        meatSpikePrototype: SlasherMeatSpikeClown
+        bloodTrailReagent: Honk
+        soulStealSound:
+          path: /Audio/Items/Toys/pushHornHonk.ogg
+        ascensionGear: SlasherGearClownAscended
+        ascendanceAnnouncementKey: slasher-soulsteal-ascendance-clown
+        ascendanceSound:
+          path: /Audio/Items/Toys/pushHornHonk.ogg
+          params:
+            volume: -2
+      slasher-kit-glutton:
+        gear: SlasherGearGlutton
+        description: slasher-kit-glutton-desc
+        grantedToVictimOnSight:
+        - type: SlasherFearOverlay
+        sprite:
+          sprite: Clothing/OuterClothing/Hardsuits/lingspacesuit.rsi
+          state: icon
+        machetePrototype: SlasherButchCleaver
+        bloodTrailMusic:
+          path: /Audio/_Goobstation/Slasher/Music/padtext_horror.ogg
+          params:
+            volume: -7
+            loop: true
+      slasher-kit-hockey:
+        gear: SlasherGearHockey
+        description: slasher-kit-hockey-desc
+        grantedToVictimOnSight:
+        - type: SlasherFearOverlay
+        sprite:
+          sprite: _Goobstation/Objects/Specific/Slasher/hockymask/hockey_mask.rsi
+          state: icon
+        bloodTrailMusic:
+          path: /Audio/_Goobstation/Slasher/Music/horror_synthwave.ogg
+          params:
+            volume: -7
+            loop: true
+        jumpscareSound:
+          path: /Audio/_Goobstation/Effects/Slasher/JasonJumpscare.ogg
+      slasher-kit-boogeyman:
+        gear: SlasherGearBoogeyman
+        description: slasher-kit-boogeyman-desc
+        guide: SlasherBoogeyman
+        sprite:
+          sprite: _Goobstation/Objects/Specific/Slasher/boogeyman/mask.rsi
+          state: icon
+        machetePrototype: SlasherKitchenKnife
+        bloodTrailMusic:
+          path: /Audio/_Goobstation/Slasher/Music/halloween.ogg
+          params:
+            loop: true
+        removeComponents:
+        - type: SlasherIncorporeal
+        grantedToVictimOnSight:
+        - type: SprintDisabled
+        components:
+        - type: BoogeymanShadow
+        - type: SprintDisabled
+        - type: Muted
+        - type: MovementSpeedModifier
+          baseSprintSpeed: 5.0
+    postSelectionComponents:
+    - type: Slasher
+    - type: SlasherSummonMachete
+    - type: SlasherStaggerArea
+    - type: SlasherRelentlessGrab
+    - type: SlasherRegenerate
+    - type: SlasherFear
+    - type: SlasherIncorporeal
+    - type: SlasherSoulSteal
+    - type: SlasherSummonMeatSpike
+    - type: NightVision
+      color: "#FF0000"
+      toggleAction: ActionSlasherNightVision
+      activateSound: !type:SoundCollectionSpecifier
+        collection: EyeOpen
+      deactivateSound: !type:SoundCollectionSpecifier
+        collection: EyeClose
+    - type: GrabIntent
+      grabThrownSpeed: 10
+      throwingDistance: 8
+      softGrabSpeedModifier: 1
+      hardGrabSpeedModifier: 1
+      chokeGrabSpeedModifier: 1
+    - type: BreathingImmunity
+    - type: GunBlocked
+      popupText: slasher-cannot-use-guns
+    - type: WeakToHoly
+    - type: Satiation
+      satiations:
+        Hunger:
+          prototype: IS14SlasherSpawnHunger9e3a7f0a
+        Thirst:
+          prototype: IS14SlasherSpawnThirst6fb8b50a
+    - type: SatiationSpeedModifier
+      satiations:
+        Hunger:
+          thresholds:
+            Starving: 0.75
+        Thirst:
+          thresholds:
+            Parched: 0.75
+    - type: MobThresholds
+      thresholds:
+        0: Alive
+        150: Dead
+    - type: RandomMetadata
+      nameSegments:
+      - NamesSlasherTitle
+      - NamesSlasher
+      nameFormat: name-format-slasher
+  - type: UserInterface
+    interfaces:
+      enum.SlasherKitSelectUiKey.Key:
+        type: SlasherKitSelectBoundUserInterface
+  - type: GhostRole
+    name: ghost-role-information-slasher-name
+    description: ghost-role-information-slasher-description
+    rules: ghost-role-information-antagonist-rules
+    mindRoles:
+    - MindRoleGhostRoleSoloAntagonist
+  - type: GhostTakeoverAvailable
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14ContractorSpawnMidroundAntag05fb49173
+  spawnerPrototype: ContractorSpawner
+  pickPlayer: false
+  startingGear: ContractorGear
+  roleLoadout:
+  - RoleSurvivalNukie
+  mindRoles:
+  - MindRoleContractor
+  briefing:
+    text: contractor-role-greeting
+    color: Red
+    sound: /Audio/Ambience/Antag/traitor_wawa.ogg
+  components:
+  - type: RandomMetadata
+    nameSegments:
+    - NamesContractorPrefix
+    - NamesSyndicateElite
+    nameFormat: name-format-standard
+  - type: NpcFactionMember
+    factions:
+    - Syndicate
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14ChangelingAntag0e1ef2b1d
+  prefRoles: [Changeling]
+  jobBlacklist: [Chaplain]
+  skills:
+  - All
+  blacklist:
+    components:
+    - CommandStaff
+  lateJoinAdditional: true
+  mindRoles:
+  - MindRoleChangeling
+- type: antagSpecifier
+  id: IS14CorporateAgentAntag0de0f8229
+  prefRoles: [Traitor]
+  jobBlacklist: [NanotrasenRepresentative]
+  whitelist:
+    components:
+    - CommandStaff
+  blacklist:
+    components:
+    - Condemned
+  lateJoinAdditional: true
+  mindRoles:
+  - MindRoleTraitor
+- type: antagSpecifier
+  id: IS14CalmTraitorAntag055ee529c
+  prefRoles: [Traitor]
+  blacklist:
+    components:
+    - CommandStaff
+    - AntagImmune
+    - Changeling
+  lateJoinAdditional: true
+  mindRoles:
+  - MindRoleTraitor
+- type: antagSpecifier
+  id: IS14CalmLingAntag0580f79ea
+  prefRoles: [Changeling]
+  blacklist:
+    components:
+    - CommandStaff
+  lateJoinAdditional: true
+  mindRoles:
+  - MindRoleTraitor
+- type: antagSpecifier
+  id: IS14CalmopsAntag0e76186de
+  prefRoles: [NukeopsCommander]
+  fallbackRoles: [Nukeops, NukeopsMedic]
+  spawnerPrototype: SpawnPointNukeopsCommander
+  startingGear: SyndicateCommanderGearFull
+  unequipOldGear: true
+  components:
+  - type: NukeOperative
+  - type: RandomMetadata
+    nameSegments:
+    - NamesSyndicateElite
+    nameFormat: name-format-nukie-commander
+  - type: NpcFactionMember
+    factions:
+    - Syndicate
+  mindRoles:
+  - MindRoleNukeopsCommander
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14CalmopsAntag1f3cf4fd7
+  prefRoles: [NukeopsMedic]
+  fallbackRoles: [Nukeops, NukeopsCommander]
+  spawnerPrototype: SpawnPointNukeopsMedic
+  startingGear: SyndicateOperativeMedicFull
+  unequipOldGear: true
+  components:
+  - type: NukeOperative
+  - type: RandomMetadata
+    nameSegments:
+    - NamesSyndicateElite
+    nameFormat: name-format-nukie-agent
+  - type: NpcFactionMember
+    factions:
+    - Syndicate
+  - type: SurgerySpeedModifier
+    speedModifier: 2
+  mindRoles:
+  - MindRoleNukeopsMedic
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14CalmopsAntag29fef1032
+  prefRoles: [Nukeops]
+  fallbackRoles: [NukeopsCommander, NukeopsMedic]
+  spawnerPrototype: SpawnPointNukeopsOperative
+  startingGear: SyndicateOperativeGearFull
+  unequipOldGear: true
+  components:
+  - type: NukeOperative
+  - type: RandomMetadata
+    nameSegments:
+    - NamesSyndicateElite
+    nameFormat: name-format-nukie-operator
+  - type: NpcFactionMember
+    factions:
+    - Syndicate
+  mindRoles:
+  - MindRoleNukeops
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14CalmRevsAntag07166ca30
+  prefRoles: [HeadRev]
+  blacklist:
+    components:
+    - CommandStaff
+  briefing:
+    text: head-rev-role-greeting
+    color: CornflowerBlue
+    sound: "/Audio/Ambience/Antag/headrev_start.ogg"
+  startingGear: HeadRevGear
+  components:
+  - type: Revolutionary
+  - type: HeadRevolutionary
+  mindRoles:
+  - MindRoleHeadRevolutionary
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14BlobGameModeAntag06756cf76
+  prefRoles: [Blob]
+  allowNonHumans: true
+  jobBlacklist: [Chaplain]
+  blacklist:
+    components:
+    - CommandStaff
+    - AntagImmune
+    - Silicon
+  briefing:
+    text: blob-carrier-role-greeting
+    color: Plum
+    sound: /Audio/Announcements/bloblarm.ogg
+  mindRoles:
+  - MindRoleBlob
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14HonkopsAntag05768b065
+  prefRoles: [NukeopsCommander]
+  fallbackRoles: [Nukeops, NukeopsMedic]
+  spawnerPrototype: SpawnPointNukeopsCommander
+  startingGear: SyndicateCommanderGearFullHonkops
+  roleLoadout:
+  - RoleSurvivalNukieHonkops
+  components:
+  - type: SleepEmitSound
+    snore: /Audio/Voice/Misc/silly_snore.ogg
+    interval: 10
+  - type: NukeOperative
+  - type: RandomMetadata
+    nameSegments:
+    - NamesHonkopsPrefix
+    - NamesHonkopsElite
+    nameFormat: name-format-standard
+  - type: NpcFactionMember
+    factions:
+    - Syndicate
+  mindRoles:
+  - MindRoleNukeopsCommander
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14HonkopsAntag1f63b0e07
+  prefRoles: [NukeopsMedic]
+  fallbackRoles: [Nukeops, NukeopsCommander]
+  spawnerPrototype: SpawnPointNukeopsMedic
+  startingGear: SyndicateOperativeMedicFullHonkops
+  skills:
+  - All
+  roleLoadout:
+  - RoleSurvivalNukieHonkops
+  components:
+  - type: SleepEmitSound
+    snore: /Audio/Voice/Misc/silly_snore.ogg
+    interval: 10
+  - type: NukeOperative
+  - type: RandomMetadata
+    nameSegments:
+    - NamesHonkopsPrefix
+    - NamesHonkopsElite
+    nameFormat: name-format-standard
+  - type: NpcFactionMember
+    factions:
+    - Syndicate
+  - type: SurgerySpeedModifier
+    speedModifier: 2
+  mindRoles:
+  - MindRoleNukeopsMedic
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14HonkopsAntag2142d62bc
+  prefRoles: [Nukeops]
+  fallbackRoles: [NukeopsCommander, NukeopsMedic]
+  spawnerPrototype: SpawnPointNukeopsOperative
+  startingGear: SyndicateOperativeGearFullHonkops
+  skills:
+  - All
+  roleLoadout:
+  - RoleSurvivalNukieHonkops
+  components:
+  - type: SleepEmitSound
+    snore: /Audio/Voice/Misc/silly_snore.ogg
+    interval: 10
+  - type: NukeOperative
+  - type: RandomMetadata
+    nameSegments:
+    - NamesHonkopsPrefix
+    - NamesHonkopsElite
+    nameFormat: name-format-standard
+  - type: NpcFactionMember
+    factions:
+    - Syndicate
+  mindRoles:
+  - MindRoleNukeops
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14XenoborgsAntag07e1eb851
+  prefRoles: [MothershipCore]
+  fallbackRoles: [Xenoborg]
+  spawnerPrototype: SpawnPointGhostRoleMothershipCore
+  mindRoles:
+  - MindRoleMothershipCore
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14XenoborgsAntag1dfef93a5
+  prefRoles: [Xenoborg]
+  fallbackRoles: [MothershipCore]
+  spawnerPrototype: SpawnPointGhostRoleXenoborg
+  mindRoles:
+  - MindRoleXenoborg
+  skills:
+  - All
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14DevilAntag099e090c3
+  prefRoles: [Devil]
+  skills:
+  - All
+  jobBlacklist: [Chaplain, Mime, ChiefEngineer, ResearchDirector, Quartermaster]
+  mindRoles:
+  - DevilMindRole
+  startingGear: DevilStartingGear
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14OopsAllThievesAntag067c64f32
+  prefRoles: [Thief]
+  skills:
+  - All
+  lateJoinAdditional: true
+  allowNonHumans: true
+  multiAntagSetting: NotExclusive
+  startingGear: ThiefGear
+  components:
+  - type: Thieving
+    stripTimeReduction: 2
+    stealthy: true
+  mindRoles:
+  - MindRoleThief
+  briefing:
+    sound: "/Audio/Misc/thief_greeting.ogg"
+- type: antagSpecifier
+  id: IS14SubgamemodeTraitorAntag0ecdea7fb
+  prefRoles: [Traitor]
+  blacklist:
+    components:
+    - AntagImmune
+  lateJoinAdditional: true
+  mindRoles:
+  - MindRoleTraitor
+- type: antagSpecifier
+  id: IS14GangwarsAntag008ebf3de
+  prefRoles: [GangLeader]
+  jobBlacklist: [Captain, HeadOfPersonnel, HeadOfSecurity, ChiefEngineer, ChiefMedicalOfficer,
+    ResearchDirector, BlueshieldOfficer, NanotrasenRepresentative]
+  blacklist:
+    components:
+    - AntagImmune
+  briefing:
+    text: gang-leader-role-greeting
+    color: CornflowerBlue
+    sound: "/Audio/_Goobstation/Gangs/gang_start.ogg"
+  components:
+  - type: GangMember
+  - type: GangLeader
+  - type: ShowGangIcons
+  mindRoles:
+  - MindRoleGangLeader
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14HasturMidroundAntag0635ac949
+  spawnerPrototype: SpawnPointGhostHastur
+  pickPlayer: false
+  mindRoles:
+  - MindRoleGhostRoleSoloAntagonist
+  briefing:
+    text: hastur-role-greeting
+    color: Yellow
+    sound: /Audio/_Goobstation/Misc/Hastur/Void_Song.ogg
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14TokenHasturAntag0dad9848d
+  spawnerPrototype: HasturToken
+  pickPlayer: false
+  mindRoles:
+  - MindRoleGhostRoleSoloAntagonist
+  briefing:
+    text: hastur-role-greeting
+    color: Yellow
+    sound: /Audio/_Goobstation/Misc/Hastur/Void_Song.ogg
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14HereticAntag06078a414
+  prefRoles: [Heretic]
+  lateJoinAdditional: true
+  jobBlacklist: [Chaplain]
+  skills:
+  - All
+  blacklist:
+    components:
+    - CommandStaff
+  mindRoles:
+  - MindRoleHeretic
+- type: antagSpecifier
+  id: IS14CalmHereticAntag0c17a9c3a
+  prefRoles: [Heretic]
+  lateJoinAdditional: true
+  jobBlacklist: [Chaplain]
+  skills:
+  - All
+  blacklist:
+    components:
+    - CommandStaff
+  mindRoles:
+  - MindRoleHeretic
+- type: antagSpecifier
+  id: IS14SlaughterDemonSummonAntag0fa932dba
+  spawnerPrototype: SpawnPointGhostSlaughterDemon
+  pickPlayer: false
+  mindRoles:
+  - MindRoleSlaughterDemon
+  briefing:
+    text: slaughter-role-greeting
+    color: Red
+    sound: /Audio/_Goobstation/SlaughterDemon/briefing.ogg
+  components:
+  - type: RandomMetadata
+    nameSegments:
+    - NamesSlaughterTitle
+    - NamesSlaughter
+    nameFormat: name-format-slaughter
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14LaughterDemonSummonAntag0005945d5
+  spawnerPrototype: SpawnPointGhostLaughterDemon
+  pickPlayer: false
+  mindRoles:
+  - MindRoleSlaughterDemon
+  briefing:
+    text: laughter-role-greeting
+    color: Pink
+    sound: /Audio/_Goobstation/Vehicle/Clowncar/clowncar_fart.ogg
+  components:
+  - type: RandomMetadata
+    nameSegments:
+    - NamesLaughterTitle
+    - NamesSlaughter
+    nameFormat: name-format-slaughter
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14SlaughterDemonMidroundAntag000b041f6
+  spawnerPrototype: SpawnPointGhostSlaughterDemon
+  pickPlayer: false
+  mindRoles:
+  - MindRoleSlaughterDemon
+  briefing:
+    text: slaughter-role-greeting
+    color: Red
+    sound: /Audio/Misc/narsie_rises.ogg
+  components:
+  - type: RandomMetadata
+    nameSegments:
+    - NamesSlaughterTitle
+    - NamesSlaughter
+    nameFormat: name-format-slaughter
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14BaseWizardRuleAntag03a989a8f
+  spawnerPrototype: SpawnPointWizard
+  prefRoles: [Wizard]
+  mindRoles:
+  - MindRoleWizard
+  startingGear: WizardGear
+  skills:
+  - All
+  unequipOldGear: true
+  roleLoadout:
+  - RoleSurvivalEVA
+  components:
+  - type: Wizard
+  - type: CanEnchant
+  - type: LanguageKnowledge
+    speaks: []
+    understands: []
+  - type: UniversalLanguageSpeaker
+  - type: TowerOfBabel
+  - type: LanguageSpeaker
+  - type: RandomMetadata
+    nameSegments:
+    - WizardFirst
+    - WizardLast
+    nameFormat: name-format-standard
+  - type: NpcFactionMember
+    factions:
+    - Wizard
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14WizardMidroundAntag001b3cc92
+  spawnerPrototype: SpawnPointWizard
+  pickPlayer: false
+  mindRoles:
+  - MindRoleWizard
+  startingGear: WizardGear
+  unequipOldGear: true
+  skills:
+  - All
+  roleLoadout:
+  - RoleSurvivalEVA
+  components:
+  - type: Wizard
+  - type: RandomMetadata
+    nameSegments:
+    - WizardFirst
+    - WizardLast
+    nameFormat: name-format-standard
+  - type: CanEnchant
+  - type: LanguageKnowledge
+    speaks: []
+    understands: []
+  - type: UniversalLanguageSpeaker
+  - type: TowerOfBabel
+  - type: LanguageSpeaker
+  - type: NpcFactionMember
+    factions:
+    - Wizard
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14ApprenticeRuleAntag04a5038e2
+  prefRoles: [Apprentice]
+  pickPlayer: false
+  mindRoles:
+  - MindRoleApprentice
+  components:
+  - type: Apprentice
+  - type: CanEnchant
+  - type: LanguageKnowledge
+    speaks: []
+    understands: []
+  - type: UniversalLanguageSpeaker
+  - type: TowerOfBabel
+  - type: LanguageSpeaker
+  - type: NpcFactionMember
+    factions:
+    - Wizard
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14SleeperAgentsWizardAntag0497a9236
+  prefRoles: [TraitorSleeper]
+  fallbackRoles: [Traitor]
+  blacklist:
+    components:
+    - AntagImmune
+  mindRoles:
+  - MindRoleTraitorSleeper
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14WraithMidroundAntag04836e1d8
+  spawnerPrototype: SpawnPointGhostWraith
+  pickPlayer: false
+  mindRoles:
+  - MindRoleGhostRoleSoloAntagonist
+  briefing:
+    text: wraith-role-greeting
+    sound: /Audio/_Goobstation/Wraith/Ambience/Void_Calls.ogg
+  components:
+  - type: RandomMetadata
+    nameSegments:
+    - NamesWraith
+    - NamesWraithTitle
+    nameFormat: name-format-wraith
+  - type: Banishment
+    lives: 1
+    popup: wraith-banishment
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14TokenWraithAntag08cf6078c
+  spawnerPrototype: WraithToken
+  pickPlayer: false
+  mindRoles:
+  - MindRoleGhostRoleSoloAntagonist
+  briefing:
+    text: wraith-role-greeting
+    sound: /Audio/_Goobstation/Wraith/Ambience/Void_Calls.ogg
+  components:
+  - type: RandomMetadata
+    nameSegments:
+    - NamesWraith
+    - NamesWraithTitle
+    nameFormat: name-format-wraith
+  - type: Banishment
+    lives: 1
+    popup: wraith-banishment
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14PiratesSpawnAntag002d6d241
+  spawnerPrototype: SpawnPointPirateCaptain
+  pickPlayer: false
+  mindRoles:
+  - MindRolePirate
+  skills:
+  - All
+  startingGear: PirateGear
+  components:
+  - type: RandomMetadata
+    nameSegments:
+    - NamesDeathCommando
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14LoneAbductorSpawnAntag0d03bb4e8
+  spawnerPrototype: LoneAbductorSpawner
+  pickPlayer: false
+  startingGear: LoneAbductorGear
+  skills:
+  - All
+  briefing:
+    text: abductor-role-greeting
+    color: Green
+    sound: /Audio/_Shitmed/Misc/abductor.ogg
+  components:
+  - type: Abductor
+  - type: ActionGrant
+    actions:
+    - ActionReturnToShip
+  - type: GhostRole
+    name: abductor-lone-ghost-role-name
+    description: abductor-lone-ghost-role-desc
+    rules: abductors-ghost-role-rules
+    mindRoles:
+    - MindRoleLoneAbductor
+    raffle:
+      settings: default
+  - type: GhostTakeoverAvailable
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: RandomMetadata
+    nameSegments:
+    - AbductorScientistPrefix
+    - AbductorNames
+    nameFormat: name-format-standard
+  - type: Tag
+    tags:
+    - Abductor
+    - AbductorScientist
+    - CanPilot
+    - FootstepSound
+    - DoorBumpOpener
+  - type: AbductorScientist
+  - type: SurgeryIgnoreClothing
+  - type: Sanitized
+  - type: SurgerySpeedModifier
+    speedModifier: 1.5
+  - type: PressureImmunity
+  - type: SpecialHighTempImmunity
+  - type: SpecialLowTempImmunity
+  mindRoles:
+  - MindRoleLoneAbductor
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14AbductorVictimAntag08bb180b6
+  mindRoles:
+  - MindRoleAbductorVictim
+  briefing:
+    text: abductor-victim-role-greeting
+    color: Red
+    sound: /Audio/_Shitmed/Misc/abducted.ogg
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14DuoAbductorSpawnAntag0862217be
+  spawnerPrototype: AbductorScientistSpawner
+  pickPlayer: false
+  startingGear: AbductorScientistGear
+  skills:
+  - All
+  briefing:
+    text: abductor-role-greeting
+    color: Green
+    sound: /Audio/_Shitmed/Misc/abductor.ogg
+  components:
+  - type: Abductor
+  - type: ActionGrant
+    actions:
+    - ActionReturnToShip
+  - type: GhostRole
+    name: abductor-scientist-ghost-role-name
+    description: abductor-scientist-ghost-role-desc
+    rules: abductors-ghost-role-rules
+    mindRoles:
+    - MindRoleAbductorScientist
+    raffle:
+      settings: default
+  - type: GhostTakeoverAvailable
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: RandomMetadata
+    nameSegments:
+    - AbductorScientistPrefix
+    - AbductorNames
+    nameFormat: name-format-standard
+  - type: Tag
+    tags:
+    - Abductor
+    - AbductorScientist
+    - CanPilot
+    - FootstepSound
+    - DoorBumpOpener
+  - type: AbductorScientist
+  - type: SurgeryIgnoreClothing
+  - type: Sanitized
+  - type: SurgerySpeedModifier
+    speedModifier: 1.5
+  - type: PressureImmunity
+  - type: SpecialHighTempImmunity
+  - type: SpecialLowTempImmunity
+  mindRoles:
+  - MindRoleAbductorScientist
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14DuoAbductorSpawnAntag135f1dc38
+  spawnerPrototype: AbductorAgentSpawner
+  pickPlayer: false
+  startingGear: AbductorAgentGear
+  skills:
+  - All
+  briefing:
+    text: abductor-role-greeting
+    color: Green
+    sound: /Audio/_Shitmed/Misc/abductor.ogg
+  components:
+  - type: Abductor
+  - type: ActionGrant
+    actions:
+    - ActionReturnToShip
+  - type: GhostRole
+    name: abductor-agent-ghost-role-name
+    description: abductor-agent-ghost-role-desc
+    rules: abductors-ghost-role-rules
+    mindRoles:
+    - MindRoleAbductorAgent
+    raffle:
+      settings: default
+  - type: GhostTakeoverAvailable
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: RandomMetadata
+    nameSegments:
+    - AbductorAgentPrefix
+    - AbductorNames
+    nameFormat: name-format-standard
+  - type: Tag
+    tags:
+    - Abductor
+    - CanPilot
+    - FootstepSound
+    - DoorBumpOpener
+  - type: AbductorScientist
+  - type: PressureImmunity
+  - type: SpecialHighTempImmunity
+  - type: SpecialLowTempImmunity
+  mindRoles:
+  - MindRoleAbductorAgent
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14XenomorphsInfestationAntag0bdf1b3e8
+  spawnerPrototype: SpawnPointGhostXenomorph
+  pickPlayer: false
+  briefing:
+    text: xenomorph-role-greeting
+    color: "#8c3986"
+  mindRoles:
+  - MindRoleXenomorph
+  lateJoinAdditional: false
+- type: antagSpecifier
+  id: IS14XenomorphsInfestationRoundstartAntag058694c89
+  prefRoles: [XenomorphsInfestationRoundstart]
+  spawnerPrototype: SpawnPointGhostXenomorph
+  pickPlayer: true
+  mindRoles:
+  - MindRoleXenomorph
+  briefing:
+    text: xenomorph-role-greeting
+    color: "#8c3986"
+  lateJoinAdditional: false

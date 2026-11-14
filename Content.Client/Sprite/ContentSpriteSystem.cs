@@ -143,6 +143,7 @@ public sealed partial class ContentSpriteSystem : EntitySystem
     /// </summary>
     private sealed partial class ContentSpriteControl : Control
     {
+        [Dependency] private IResourceManager _resManager = default!;
         [Dependency] private IEntityManager _entManager = default!;
         [Dependency] private ILogManager _logMan = default!;
 

@@ -1,0 +1,88 @@
+# IS14: restore the retained Goob/IS14 Fland map configuration.
+# Source: 5327c414c5:Resources/Prototypes/Maps/fland.yml
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+- type: gameMap
+  id: Fland
+  mapName: 'Fland Installation'
+  mapPath: /Maps/_Goobstation/fland.yml # Goobstation - SM
+  minPlayers: 40 # Goobstation return minPlayers requirement for maps
+  maxPlayers: 85 # Goobstation - Limit mappool to highpop versions of maps only
+  stations:
+    Fland:
+      stationProto: StandardNanotrasenStation
+      components:
+        - type: StationNameSetup
+          mapNameTemplate: '{0} Fland Installation {1}'
+          nameGenerator:
+            !type:NanotrasenNameGenerator
+            prefixCreator: 'B'
+        - type: StationEmergencyShuttle
+          emergencyShuttlePath: /Maps/Shuttles/emergency_delta.yml
+        - type: StationCargoShuttle
+          path: /Maps/Shuttles/cargo_fland.yml
+        - type: StationJobs
+          availableJobs:
+            #service
+            Captain: [ 1, 1 ]
+            JobMupRepresentative: [ 1, 1 ] # IS14 Edit
+            BlueshieldOfficer: [ 1, 1 ]
+            HeadOfPersonnel: [ 1, 1 ]
+            CommandSecretary: [ 1, 1 ] # IS14 Edit
+            Bartender: [ 2, 2 ]
+            Botanist: [ 3, 3 ]
+            Chef: [ 2, 2 ]
+            Janitor: [ 3, 3 ]
+            Chaplain: [ 1, 1 ]
+            Librarian: [ 1, 1 ]
+            ServiceWorker: [ 2, 2 ]
+            ChurchServant: [ 1, 1 ] # IS14 Edit
+            #engineering
+            ChiefEngineer: [ 1, 1 ]
+            AtmosphericTechnician: [ 3, 3 ]
+            StationEngineer: [ 5, 5 ]
+            TechnicalAssistant: [ 4, 4 ]
+            SeniorEngineer: [ 1, 1 ] # IS14 Edit
+            #medical
+            ChiefMedicalOfficer: [ 1, 1 ]
+            Chemist: [ 3, 3 ]
+            MedicalDoctor: [ 6, 6 ]
+            Paramedic: [ 2, 2 ]
+            MedicalIntern: [ 4, 4 ]
+            SeniorPhysician: [ 1, 1 ] # IS14 Edit
+            #science
+            ResearchDirector: [ 1, 1 ]
+            Scientist: [ 5, 5 ]
+            ResearchAssistant: [ 6, 6 ]
+            SeniorResearcher: [ 1, 1 ] # IS14 Edit
+            #security
+            JobHosMilitia: [ 1, 1 ] # IS14 Edit
+            JobLrrChief: [ 1, 1 ] # IS14 Edit
+            JobMilitia: [ 8, 8 ] # IS14 Edit
+            JobInvestigator: [ 1, 1 ] # IS14 Edit
+            IS_JobCadet: [ 4, 4 ] # IS14 Edit
+            IS_JobLawyer: [ 2, 2 ] # IS14 Edit
+            JobMedOfficer: [ 1, 1 ] # IS14 Edit
+            InternalControlExecutor: [ 1, 1 ] # IS14 Edit
+            JobSeniorMilitia: [ 1, 1 ] # IS14 Edit
+            IS_JobPilot: [ 1, 1 ] # IS14 Edit
+            JobIvk: [ 1, 1 ] # IS14 Edit
+            #supply
+            Quartermaster: [ 1, 1 ]
+            SalvageSpecialist: [ 3, 3 ]
+            CargoTechnician: [ 4, 4 ]
+            SeniorExpeditioner: [ 1, 1 ] # IS14 Edit
+            #civilian
+            Passenger: [ -1, -1 ]
+            Clown: [ 1, 1 ]
+            Mime: [ 1, 1 ]
+            Musician: [ 1, 1 ]
+            #silicon
+            StationAi: [ 1, 1 ]
+            Borg: [ 2, 2 ]
+        # Goobstation blob-config-start HUGE
+        - type: StationBlobConfig
+          stageBegin: 40
+          stageCritical: 450
+          stageTheEnd: 900
+        # backmen blob-config-end

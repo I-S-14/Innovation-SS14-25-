@@ -43,7 +43,12 @@
       - !type:DoActsBehavior
         acts: [ "Destruction" ]
   - type: IconSmooth
-    base: cwindow
+    key: walls
+    states:
+    - !type:CornerSpriteSmoothing
+      base: cwindow
+      mask:
+      - walls
   - type: Construction
     graph: Window
     node: clockworkWindow

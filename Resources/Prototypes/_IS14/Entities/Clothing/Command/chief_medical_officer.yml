@@ -18,7 +18,7 @@
   - type: Clothing
     sprite: _IS14/Clothing/Neck/Command/ChiefMedicalOfficer/cmo_cloak.rsi
   - type: StealTarget
-    stealGroup: HeadCloak
+    stealGroup: [HeadCloak]
 
 - type: entity
   parent: ClothingNeckBase

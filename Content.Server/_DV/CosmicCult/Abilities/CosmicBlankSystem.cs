@@ -111,7 +111,7 @@ public sealed class CosmicBlankSystem : EntitySystem
         args.Handled = true;
 
         if (!TryComp<MindContainerComponent>(target, out var mindContainer)
-            || !mindContainer.HasMind)
+            || mindContainer.Mind is not { } mindEnt)
             return;
 
         EnsureComp<CosmicBlankComponent>(target);
@@ -121,7 +121,6 @@ public sealed class CosmicBlankSystem : EntitySystem
         _popup.PopupEntity(Loc.GetString("cosmicability-blank-success",
             ("target", Identity.Entity(target, EntityManager))), uid, uid);
         var tgtpos = Transform(target).Coordinates;
-        var mindEnt = mindContainer.Mind.Value;
         var mind = Comp<MindComponent>(mindEnt);
         var comp = uid.Comp;
         mind.PreventGhosting = true;

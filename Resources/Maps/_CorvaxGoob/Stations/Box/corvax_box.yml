@@ -223831,14 +223831,14 @@ entities:
       pos: -49.5,18.5
       parent: 2
     - type: WarpPoint
-      location: port bow
+      location: is14-map-warp-d81f7011612b
   - uid: 28821
     components:
     - type: Transform
       pos: 76.5,-62.5
       parent: 2
     - type: WarpPoint
-      location: starboard quarter
+      location: is14-map-warp-318536d4a2fc
 - proto: WarpPointBombing
   entities:
   - uid: 538
@@ -223847,14 +223847,14 @@ entities:
       pos: -22.5,5.5
       parent: 2
     - type: WarpPoint
-      location: EVA
+      location: is14-map-warp-5517bab65366
   - uid: 2243
     components:
     - type: Transform
       pos: 98.5,-52.5
       parent: 2
     - type: WarpPoint
-      location: Телекомы
+      location: is14-map-warp-d65833edcf13
   - uid: 24769
     components:
     - type: MetaData
@@ -223889,21 +223889,21 @@ entities:
       pos: -53.5,-29.5
       parent: 2
     - type: WarpPoint
-      location: Док Снабжения
+      location: is14-map-warp-2d00f13a6fcc
   - uid: 24774
     components:
     - type: Transform
       pos: -5.5,-61.5
       parent: 2
     - type: WarpPoint
-      location: Главные СМЭС
+      location: is14-map-warp-f6a2347a491b
   - uid: 24775
     components:
     - type: Transform
       pos: -0.5,-75.5
       parent: 2
     - type: WarpPoint
-      location: Ускоритель Частиц
+      location: is14-map-warp-e6759909ff2b
   - uid: 24776
     components:
     - type: MetaData
@@ -223938,7 +223938,7 @@ entities:
       pos: -1.5,43.5
       parent: 2
     - type: WarpPoint
-      location: оружейная красного кода
+      location: is14-map-warp-deccc5005914
 - proto: WaterCooler
   entities:
   - uid: 18361

@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+using Robust.Shared.Prototypes;
 using Content.Shared.Coordinates.Helpers;
 using Content.Shared.Interaction;
 using Content.Shared.Storage;
@@ -13,6 +14,10 @@ namespace Content.Goobstation.Shared.Religion.Nullrod.Systems;
 
 public sealed partial class NullrodTransformSystem : EntitySystem
 {
+    //IS14-change start: typed IDs for retained behavior.
+    private static readonly ProtoId<TagPrototype> NullrodTag = "Nullrod";
+    //IS14-change end
+
     [Dependency] private SharedAudioSystem _audio = default!;
     [Dependency] private INetManager _netManager = default!;
     [Dependency] private TagSystem _tagSystem = default!;
@@ -29,7 +34,7 @@ public sealed partial class NullrodTransformSystem : EntitySystem
         if (args.Handled
         || _netManager.IsClient
         || HasComp<StorageComponent>(args.Target) // If it's a storage component like a bag, we ignore usage so it can be stored.
-        || !_tagSystem.HasTag(args.Used, "Nullrod")) // Checks used entity for the tag we need.
+        || !_tagSystem.HasTag(args.Used, NullrodTag)) // Checks used entity for the tag we need.
         return;
 
         // *flaaavor*

@@ -41,7 +41,6 @@
     bodyType: Simple
   - type: Damageable
     damageModifierSet: HellSpawn
-  - type: Injurable
     damageContainer: BiologicalMetaphysical
   - type: MovementSpeedModifier
     baseWalkSpeed: 2

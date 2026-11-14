@@ -286,7 +286,7 @@
       weight: 0.0008
     - id: ClothingOuterDogi
       weight: 0.00001
-    - id: OrganHumanHead
+    - id: HeadHuman # IS14-change: retained Goob body-part model.
       weight: 0.00001
     - id: OrganHumanKidneys
       weight: 0.00001

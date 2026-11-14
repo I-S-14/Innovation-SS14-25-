@@ -1,0 +1,16 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: 5327c414c5:Resources/Prototypes/Entities/Effects/wallspawn.yml
+- type: entity
+  id: WallSpawnAsteroidBananium
+  parent: WallSpawnAsteroid
+  categories: [HideSpawnMenu]
+  components:
+  - type: SpawnOnDespawn
+    prototype: AsteroidRockBananium
+- type: entity
+  id: WallSpawnAsteroidBananiumCrab
+  parent: WallSpawnAsteroid
+  categories: [HideSpawnMenu]
+  components:
+  - type: SpawnOnDespawn
+    prototype: AsteroidRockBananiumCrab

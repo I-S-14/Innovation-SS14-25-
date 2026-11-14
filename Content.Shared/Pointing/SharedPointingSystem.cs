@@ -1,3 +1,7 @@
+using System.Linq;
+using Content.Shared.Stealth.Components;
+using Content.Shared.Holopad;
+using Content.Shared.Telephone;
 // SPDX-License-Identifier: MIT
 
 using Content.Shared.Examine;
@@ -97,6 +101,21 @@ public abstract partial class SharedPointingSystem : EntitySystem
 
     public bool TryPoint(EntityUid pointer, EntityCoordinates coordsPointed, EntityUid pointed)
     {
+        //IS14-change start: preserve Goob stealth and holopad pointing.
+        if (pointed != pointer && TryComp<StealthComponent>(pointed, out var stealth) && stealth.Enabled)
+            return false;
+
+        if (TryComp<HolopadUserComponent>(pointer, out var holopad))
+        {
+            var stationAi = holopad.LinkedHolopads.FirstOrDefault();
+            if (!TryComp<TelephoneComponent>(stationAi, out var telephone)
+                || telephone.LinkedTelephones.Count != 1)
+                return false;
+
+            pointer = telephone.LinkedTelephones.Single();
+        }
+        //IS14-change end
+
         if (!coordsPointed.IsValid(EntityManager))
         {
             Log.Warning($"Player {ToPrettyString(pointer)} attempted to point at invalid coordinates: {coordsPointed}");

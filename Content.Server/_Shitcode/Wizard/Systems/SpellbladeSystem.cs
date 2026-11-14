@@ -1,3 +1,4 @@
+using Content.Shared.Timing.Components; // IS14-change: upstream namespace move
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Linq;
@@ -6,7 +7,6 @@ using Content.Server.Atmos.EntitySystems;
 using Content.Server.Lightning;
 using Content.Shared._Goobstation.Wizard.Spellblade;
 using Content.Shared._Shitmed.Targeting;
-using Content.Shared.Atmos.Components;
 using Content.Shared.Damage;
 using Content.Shared.Electrocution;
 using Content.Shared.Mobs.Components;

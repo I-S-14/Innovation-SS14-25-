@@ -360,14 +360,14 @@
   puddleSpriteSet: Powder # Goob
   boilingPoint: 445.0
   meltingPoint: 120.0
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Bloodstream:
+    Poison:
       effects:
       - !type:HealthChange
         damage:
           types:
             Caustic: 0.1
-
 - type: reagent
   id: Sodium
   name: reagent-name-sodium
@@ -402,14 +402,14 @@
   - !type:PlantAdjustMutationMod
     probability: 0.2
     amount: 0.1
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Bloodstream:
+    Poison:
       effects:
       - !type:HealthChange
         damage:
           types:
             Radiation: 2
-
 - type: reagent
   id: Zinc
   name: reagent-name-zinc

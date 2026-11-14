@@ -1,3 +1,5 @@
+using Content.Shared.Mindshield.Components; // IS14-change: upstream namespace move
+using Content.Shared.Speech.Components; // IS14-change: upstream namespace move
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Linq;
@@ -40,15 +42,11 @@ using Content.Shared.Zombies;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
-using Content.Shared.Cuffs.Components;
-using Content.Shared.Revolutionary;
 using Content.Server.Communications;
-using System.Linq;
 using Content.Goobstation.Shared.Revolutionary;
 using Content.Server.Antag.Components;
 using Content.Server.Chat.Systems;
 using Content.Shared._EinsteinEngines.Revolutionary;
-using Robust.Shared.Player;
 using Content.Goobstation.Shared.Changeling.Components;
 using Content.Goobstation.Common.Conversion;
 using Content.Shared._EinsteinEngines.Revolutionary.Components;
@@ -58,9 +56,6 @@ namespace Content.Server.GameTicking.Rules;
 
 public sealed partial class ServerRevolutionaryRuleSystem : RevolutionaryRuleSystem
 {
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly SharedRevolutionarySystem _revolutionarySystem = default!;
-    [Dependency] private readonly ChatSystem _chatSystem = default!;
     [Dependency] private AntagSelectionSystem _antag = default!;
     [Dependency] private EmergencyShuttleSystem _emergencyShuttle = default!;
     [Dependency] private EuiManager _euiMan = default!;
@@ -74,7 +69,6 @@ public sealed partial class ServerRevolutionaryRuleSystem : RevolutionaryRuleSys
     [Dependency] private RoundEndSystem _roundEnd = default!;
     [Dependency] private SharedStunSystem _stun = default!;
     [Dependency] private ServerStationSystem _stationSystem = default!;
-    [Dependency] private MindShieldSystem _mindShield = default!;
 
     //Used in OnPostFlash, no reference to the rule component is available
     public readonly ProtoId<NpcFactionPrototype> RevolutionaryNpcFaction = "Revolutionary";

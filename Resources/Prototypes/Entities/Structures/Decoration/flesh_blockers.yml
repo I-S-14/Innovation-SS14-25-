@@ -30,7 +30,7 @@
           closed: ""
           ajar: ""
           open: ""
-  - type: Injurable
+  - type: Damageable
     damageContainer: StructuralBiological
   - type: Destructible
     thresholds:

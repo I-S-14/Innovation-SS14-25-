@@ -1,7 +1,11 @@
+using CorvaxPlantAnalyzerComponent = Content.Shared._CorvaxGoob.Botany.Components.CorvaxPlantAnalyzerComponent;
+using Content.Shared.Botany.Components; // IS14-change: upstream namespace move
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Content.Server.Botany.Components;
-using Content.Server.Botany.Systems;
+using Content.Shared.Botany.Systems;
+using Content.Shared.Botany.Items.Components;
+using Content.Shared.Botany.Traits.Components;
+using Robust.Shared.Prototypes;
 using Content.Server.Popups;
 using Content.Shared._CorvaxGoob.AbstractAnalyzer;
 using Content.Shared._CorvaxGoob.Botany.Components;
@@ -17,8 +21,9 @@ using Robust.Shared.Timing;
 
 namespace Content.Server._CorvaxGoob.Botany.Systems;
 
-public sealed class PlantAnalyzerSystem : AbstractAnalyzerSystem<PlantAnalyzerComponent, PlantAnalyzerDoAfterEvent>
+public sealed class CorvaxPlantAnalyzerSystem : AbstractAnalyzerSystem<CorvaxPlantAnalyzerComponent, CorvaxPlantAnalyzerDoAfterEvent>
 {
+    [Dependency] private readonly BotanySystem _botany = default!;
     [Dependency] private readonly UserInterfaceSystem _uiSystem = default!;
     [Dependency] private readonly IEntityManager _entityManager = default!;
     [Dependency] private readonly IGameTiming _gameTiming = default!;
@@ -27,97 +32,97 @@ public sealed class PlantAnalyzerSystem : AbstractAnalyzerSystem<PlantAnalyzerCo
     [Dependency] private readonly SharedAudioSystem _audioSystem = default!;
     [Dependency] private readonly PaperSystem _paperSystem = default!;
     [Dependency] private readonly LabelSystem _labelSystem = default!;
-    [Dependency] private readonly PlantAnalyzerLocalizationHelper _localizationHelper = default!;
+    [Dependency] private readonly CorvaxPlantAnalyzerLocalizationHelper _localizationHelper = default!;
 
     public override void Initialize()
     {
         base.Initialize();
 
-        SubscribeLocalEvent<PlantAnalyzerComponent, PlantAnalyzerPrintMessage>(OnPrint);
+        SubscribeLocalEvent<CorvaxPlantAnalyzerComponent, CorvaxPlantAnalyzerPrintMessage>(OnPrint);
     }
 
     /// <inheritdoc/>
     public override void UpdateScannedUser(EntityUid analyzer, EntityUid target, bool scanMode)
     {
-        if (!_uiSystem.HasUi(analyzer, PlantAnalyzerUiKey.Key))
+        if (!_uiSystem.HasUi(analyzer, CorvaxPlantAnalyzerUiKey.Key))
             return;
 
         if (!ValidScanTarget(target))
             return;
 
-        if (!_entityManager.TryGetComponent<PlantAnalyzerComponent>(analyzer, out var analyzerComponent))
+        if (!_entityManager.TryGetComponent<CorvaxPlantAnalyzerComponent>(analyzer, out var analyzerComponent))
             return;
 
-        _uiSystem.ServerSendUiMessage(analyzer, PlantAnalyzerUiKey.Key, GatherData(analyzerComponent, scanMode, target: target));
+        _uiSystem.ServerSendUiMessage(analyzer, CorvaxPlantAnalyzerUiKey.Key, GatherData(analyzerComponent, scanMode, target: target));
     }
 
-    private PlantAnalyzerScannedUserMessage GatherData(PlantAnalyzerComponent analyzer, bool? scanMode = null, EntityUid? target = null)
+    private CorvaxPlantAnalyzerScannedUserMessage GatherData(CorvaxPlantAnalyzerComponent analyzer, bool? scanMode = null, EntityUid? target = null)
     {
         target ??= analyzer.ScannedEntity;
-        PlantAnalyzerPlantData? plantData = null;
-        PlantAnalyzerTrayData? trayData = null;
-        PlantAnalyzerTolerancesData? tolerancesData = null;
-        PlantAnalyzerProduceData? produceData = null;
-        if (_entityManager.TryGetComponent<PlantHolderComponent>(target, out var plantHolder))
+        EntityUid? plantEntity = target;
+        EntProtoId? plantPrototype = null;
+        TryComp<PlantTrayComponent>(target, out var tray);
+        if (tray != null)
+            plantEntity = tray.PlantEntity;
+        else if (TryComp<SeedComponent>(target, out var seed))
         {
-            if (plantHolder.Seed is not null)
-            {
-                plantData = new PlantAnalyzerPlantData(
-                    seedDisplayName: plantHolder.Seed.DisplayName,
-                    health: plantHolder.Health,
-                    endurance: plantHolder.Seed.Endurance,
-                    age: plantHolder.Age,
-                    lifespan: plantHolder.Seed.Lifespan,
-                    dead: plantHolder.Dead,
-                    viable: plantHolder.Seed.Viable,
-                    mutating: plantHolder.MutationLevel > 0f,
-                    kudzu: plantHolder.Seed.TurnIntoKudzu
-                );
-                tolerancesData = new PlantAnalyzerTolerancesData(
-                    waterConsumption: plantHolder.Seed.WaterConsumption,
-                    nutrientConsumption: plantHolder.Seed.NutrientConsumption,
-                    toxinsTolerance: plantHolder.Seed.ToxinsTolerance,
-                    pestTolerance: plantHolder.Seed.PestTolerance,
-                    weedTolerance: plantHolder.Seed.WeedTolerance,
-                    lowPressureTolerance: plantHolder.Seed.LowPressureTolerance,
-                    highPressureTolerance: plantHolder.Seed.HighPressureTolerance,
-                    idealHeat: plantHolder.Seed.IdealHeat,
-                    heatTolerance: plantHolder.Seed.HeatTolerance,
-                    idealLight: plantHolder.Seed.IdealLight,
-                    lightTolerance: plantHolder.Seed.LightTolerance,
-                    consumeGasses: [.. plantHolder.Seed.ConsumeGasses.Keys]
-                );
-                produceData = new PlantAnalyzerProduceData(
-                    yield: plantHolder.Seed.ProductPrototypes.Count == 0 ? 0 : BotanySystem.CalculateTotalYield(plantHolder.Seed.Yield, plantHolder.YieldMod),
-                    potency: plantHolder.Seed.Potency,
-                    chemicals: [.. plantHolder.Seed.Chemicals.Keys],
-                    produce: plantHolder.Seed.ProductPrototypes,
-                    exudeGasses: [.. plantHolder.Seed.ExudeGasses.Keys],
-                    seedless: plantHolder.Seed.Seedless
-                );
-            }
-            trayData = new PlantAnalyzerTrayData(
-                waterLevel: plantHolder.WaterLevel,
-                nutritionLevel: plantHolder.NutritionLevel,
-                toxins: plantHolder.Toxins,
-                pestLevel: plantHolder.PestLevel,
-                weedLevel: plantHolder.WeedLevel,
-                chemicals: plantHolder.SoilSolution?.Comp.Solution.Contents.Select(r => r.Reagent.Prototype.Id).ToList()
-            );
+            plantEntity = seed.PlantData;
+            plantPrototype = seed.PlantProtoId;
+        }
+        else if (TryComp<ProduceComponent>(target, out var produce))
+        {
+            plantEntity = produce.PlantData;
+            plantPrototype = produce.PlantProtoId;
         }
 
-        return new PlantAnalyzerScannedUserMessage(
-            GetNetEntity(target),
-            scanMode,
-            plantData,
-            trayData,
-            tolerancesData,
-            produceData,
-            analyzer.PrintReadyAt
-        );
+        T? ReadPlant<T>() where T : class, IComponent, new()
+            => _botany.TryGetPlantComponent<T>(plantEntity, plantPrototype, out var component) ? component : null;
+
+        CorvaxPlantAnalyzerPlantData? plantData = null;
+        CorvaxPlantAnalyzerTolerancesData? tolerancesData = null;
+        CorvaxPlantAnalyzerProduceData? produceData = null;
+        CorvaxPlantAnalyzerTrayData? trayData = null;
+        var plant = ReadPlant<PlantComponent>();
+        var lifecycle = ReadPlant<PlantHolderComponent>();
+        var species = ReadPlant<PlantDataComponent>();
+        if (plant != null && species != null)
+        {
+            plantData = new CorvaxPlantAnalyzerPlantData(species.Name,
+                lifecycle?.Health ?? plant.Endurance, plant.Endurance, lifecycle?.Age ?? 0, plant.Lifespan,
+                lifecycle?.Dead ?? false, ReadPlant<PlantTraitUnviableComponent>() == null,
+                lifecycle?.MutationLevels.Values.Any(value => value > 0) ?? false,
+                ReadPlant<PlantTraitKudzuComponent>() != null);
+            var growth = ReadPlant<PlantGrowthComponent>();
+            var atmosphere = ReadPlant<PlantAtmosphericComponent>();
+            var toxins = ReadPlant<PlantToxinsComponent>();
+            var pests = ReadPlant<PlantWeedPestComponent>();
+            var gases = ReadPlant<PlantConsumeExudeGasComponent>();
+            tolerancesData = new CorvaxPlantAnalyzerTolerancesData(
+                growth?.NutrientConsumption ?? 0, growth?.WaterConsumption ?? 0,
+                atmosphere == null ? 0 : (atmosphere.LowHeatTolerance + atmosphere.HighHeatTolerance) / 2,
+                atmosphere == null ? 0 : (atmosphere.HighHeatTolerance - atmosphere.LowHeatTolerance) / 2,
+                null, null, toxins?.ToxinsTolerance ?? 0,
+                atmosphere?.LowPressureTolerance ?? 0, atmosphere?.HighPressureTolerance ?? 0,
+                pests?.PestTolerance ?? 0, pests?.WeedTolerance ?? 0,
+                gases?.ConsumeGasses.Keys.ToList() ?? []);
+            var chemicals = ReadPlant<PlantChemicalsComponent>();
+            produceData = new CorvaxPlantAnalyzerProduceData(
+                species.ProductPrototypes.Count == 0 ? 0 : plant.Yield * (lifecycle?.YieldMod ?? 1),
+                plant.Potency, chemicals?.Chemicals.Keys.Select(id => id.Id).ToList() ?? [],
+                species.ProductPrototypes.ToList(), gases?.ExudeGasses.Keys.ToList() ?? [],
+                ReadPlant<PlantTraitSeedlessComponent>() != null);
+        }
+        if (tray != null)
+        {
+            trayData = new CorvaxPlantAnalyzerTrayData(tray.WaterLevel, tray.NutritionLevel,
+                tray.ToxinLevel, tray.PestLevel, tray.WeedLevel,
+                tray.SoilSolution?.Comp.Solution.Contents.Select(reagent => reagent.Reagent.Prototype.Id).ToList());
+        }
+        return new CorvaxPlantAnalyzerScannedUserMessage(GetNetEntity(target), scanMode,
+            plantData, trayData, tolerancesData, produceData, analyzer.PrintReadyAt);
     }
 
-    private void OnPrint(EntityUid uid, PlantAnalyzerComponent component, PlantAnalyzerPrintMessage args)
+    private void OnPrint(EntityUid uid, CorvaxPlantAnalyzerComponent component, CorvaxPlantAnalyzerPrintMessage args)
     {
         var user = args.Actor;
 
@@ -130,7 +135,9 @@ public sealed class PlantAnalyzerSystem : AbstractAnalyzerSystem<PlantAnalyzerCo
         }
 
         // Spawn a piece of paper.
-        var printed = EntityManager.SpawnEntity(component.MachineOutput, Transform(uid).Coordinates);
+        //IS14-change start
+        var printed = Spawn(component.MachineOutput, Transform(uid).Coordinates);
+        //IS14-change end
         _handsSystem.PickupOrDrop(args.Actor, printed, checkActionBlocker: false);
 
         if (!TryComp<PaperComponent>(printed, out var paperComp))
@@ -156,8 +163,8 @@ public sealed class PlantAnalyzerSystem : AbstractAnalyzerSystem<PlantAnalyzerCo
             ("kpaTolerance", data.TolerancesData?.PressureTolerance.ToString("0.00") ?? missingData),
             ("temp", data.TolerancesData?.IdealHeat.ToString("0.00") ?? missingData),
             ("tempTolerance", data.TolerancesData?.HeatTolerance.ToString("0.00") ?? missingData),
-            ("lightLevel", data.TolerancesData?.IdealLight.ToString("0.00") ?? missingData),
-            ("lightTolerance", data.TolerancesData?.LightTolerance.ToString("0.00") ?? missingData),
+            ("lightLevel", data.TolerancesData?.IdealLight?.ToString("0.00") ?? missingData),
+            ("lightTolerance", data.TolerancesData?.LightTolerance?.ToString("0.00") ?? missingData),
             ("yield", data.ProduceData?.Yield ?? -1),
             ("potency", data.ProduceData is not null ? Loc.GetString(data.ProduceData.Potency) : missingData),
             ("chemicals", data.ProduceData is not null ? _localizationHelper.ChemicalsToLocalizedStrings(data.ProduceData.Chemicals) : missingData),
@@ -184,11 +191,11 @@ public sealed class PlantAnalyzerSystem : AbstractAnalyzerSystem<PlantAnalyzerCo
     /// <inheritdoc/>
     protected override Enum GetUiKey()
     {
-        return PlantAnalyzerUiKey.Key;
+        return CorvaxPlantAnalyzerUiKey.Key;
     }
 
     /// <inheritdoc/>
-    protected override bool ScanTargetPopupMessage(Entity<PlantAnalyzerComponent> uid, AfterInteractEvent args, [NotNullWhen(true)] out string? message)
+    protected override bool ScanTargetPopupMessage(Entity<CorvaxPlantAnalyzerComponent> uid, AfterInteractEvent args, [NotNullWhen(true)] out string? message)
     {
         message = null;
         return false;
@@ -197,6 +204,7 @@ public sealed class PlantAnalyzerSystem : AbstractAnalyzerSystem<PlantAnalyzerCo
     /// <inheritdoc/>
     protected override bool ValidScanTarget(EntityUid? target)
     {
-        return HasComp<PlantHolderComponent>(target);
+        return HasComp<PlantTrayComponent>(target) || HasComp<PlantComponent>(target)
+            || HasComp<SeedComponent>(target) || HasComp<ProduceComponent>(target);
     }
 }

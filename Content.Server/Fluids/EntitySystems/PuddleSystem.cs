@@ -32,6 +32,14 @@ namespace Content.Server.Fluids.EntitySystems;
 /// </summary>
 public sealed partial class PuddleSystem : SharedPuddleSystem
 {
+    //IS14-change start: restore declarations used by merged implementation.
+    [Dependency] private EntityQuery<EvaporationSparkleComponent> _evaporationSparklesQuery = default!;
+    //IS14-change end
+
+    //IS14-change start: retain fork fields lost during merge.
+    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
+    //IS14-change end
+
     [Dependency] private SharedMapSystem _map = default!;
     [Dependency] private IRobustRandom _random = default!;
     [Dependency] private EntityLookupSystem _lookup = default!;
@@ -55,7 +63,7 @@ public sealed partial class PuddleSystem : SharedPuddleSystem
 
     private static string[] _standoutReagents = [Blood, Slime, CopperBlood, BloodChangeling, BlackBlood]; // goobstation - added BloodChangeling, BlackBlood
 
-    private EntityQuery<PuddleComponent> _puddleQuery;
+    [Dependency] private EntityQuery<PuddleComponent> _puddleQuery = default!; //IS14-change: initialize retained query.
 
     /*
      * TODO: Need some sort of way to do blood slash / vomit solution spill on its own

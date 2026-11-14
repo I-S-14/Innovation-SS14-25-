@@ -20,7 +20,6 @@
     anchored: true
   - type: Damageable
     damageModifierSet: Wood
-  - type: Injurable
     damageContainer: Inorganic
   - type: Destructible
     thresholds:

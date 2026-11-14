@@ -24,7 +24,6 @@ using Robust.Server.Player;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
-using System.Linq;
 using Content.Goobstation.Maths.FixedPoint;
 using Content.Server.Database;
 
@@ -42,7 +41,6 @@ public sealed partial class MindTests : GameTest
   components:
   - type: MindContainer
   - type: Damageable
-  - type: Injurable
     damageContainer: Biological
   - type: Body
     prototype: Human

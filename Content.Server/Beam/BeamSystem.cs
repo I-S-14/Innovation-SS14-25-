@@ -170,7 +170,7 @@ public sealed partial class BeamSystem : SharedBeamSystem
     /// <param name="bodyState">Optional sprite state for the <see cref="bodyPrototype"/> if a default one is not given</param>
     /// <param name="shader">Optional shader for the <see cref="bodyPrototype"/> if a default one is not given</param>
     /// <param name="controller">The virtual beam controller entity to use. If null one will be spawned.</param>
-    public void TryCreateBeam(EntityUid user, EntityUid target, string bodyPrototype, string? bodyState = null, string shader = "unshaded", EntityUid? controller = null)
+    public bool TryCreateBeam(EntityUid user, EntityUid target, string bodyPrototype, string? bodyState = null, string shader = "unshaded", EntityUid? controller = null, Action<EntityUid>? beamAction = null, bool accumulateIndex = true)
     {
         if (Deleted(user) || Deleted(target))
             return false; // Goob edit
@@ -179,7 +179,7 @@ public sealed partial class BeamSystem : SharedBeamSystem
         var targetMapPos = _transform.GetMapCoordinates(target);
 
         if (userMapPos.MapId != targetMapPos.MapId)
-            return;
+            return false;
 
         //The distance between the target and the user.
         var calculatedDistance = targetMapPos.Position - userMapPos.Position;
@@ -187,7 +187,7 @@ public sealed partial class BeamSystem : SharedBeamSystem
 
         //Don't divide by zero
         if (calculatedDistance.Length() == 0)
-            return;
+            return false;
 
         //Where the start of the beam will spawn
         var beamStartPos = userMapPos.Offset(calculatedDistance.Normalized());

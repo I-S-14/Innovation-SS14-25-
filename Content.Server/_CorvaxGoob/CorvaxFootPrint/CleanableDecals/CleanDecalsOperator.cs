@@ -1,3 +1,4 @@
+using Content.Shared.Timing.Components; // IS14-change: upstream namespace move
 using Content.Server.NPC;
 using Content.Server.NPC.HTN;
 using Content.Server.NPC.HTN.PrimitiveTasks;
@@ -23,9 +24,10 @@ public sealed partial class CleanDecalsOperator : HTNOperator
     [DataField]
     public float CleanRadius = 1.5f;
 
-    public override void Initialize(IEntitySystemManager sysManager)
+    public override void Initialize(IDependencyCollection deps)
     {
-        base.Initialize(sysManager);
+        base.Initialize(deps);
+        var sysManager = deps.Resolve<IEntitySystemManager>();
         _transform = sysManager.GetEntitySystem<SharedTransformSystem>();
         _tracker = sysManager.GetEntitySystem<CleanableDecalTrackerSystem>();
         _useDelay = sysManager.GetEntitySystem<UseDelaySystem>();

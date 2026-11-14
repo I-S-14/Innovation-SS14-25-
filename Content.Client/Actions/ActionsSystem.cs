@@ -33,8 +33,6 @@ namespace Content.Client.Actions
     {
         public delegate void OnActionReplaced(EntityUid actionId);
 
-        [Dependency] private readonly SharedChargesSystem _sharedCharges = default!;
-        [Dependency] private readonly IPrototypeManager _proto = default!;
         [Dependency] private readonly ActionTargetMarkSystem _mark = default!;
         [Dependency] private IPlayerManager _playerManager = default!;
         [Dependency] private IResourceManager _resources = default!;
@@ -90,10 +88,16 @@ namespace Content.Client.Actions
             UpdateAction(ent);
         }
 
+        //IS14-change: toggle icons are sprite layers in the Wizards action renderer.
+        public bool HasToggleIcon(EntityUid? actionId)
+        {
+            return TryComp<SpriteComponent>(actionId, out var sprite)
+                && _sprite.LayerExists((actionId.Value, sprite), ActionVisuals.IconToggled);
+        }
+
         public override void UpdateAction(Entity<ActionComponent> ent)
         {
             // TODO: Decouple this.
-            ent.Comp.IconColor = _sharedCharges.GetCurrentCharges(ent.Owner) == 0 || !ent.Comp.Enabled ? ent.Comp.DisabledIconColor : ent.Comp.OriginalIconColor; // WD EDIT
             base.UpdateAction(ent);
             if (_playerManager.LocalEntity != ent.Comp.AttachedEntity)
                 return;

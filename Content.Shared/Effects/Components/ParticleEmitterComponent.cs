@@ -1,10 +1,12 @@
-﻿using Robust.Shared.Prototypes;
+using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Effects.Components;
 
 /// <summary>
 /// Configures an effect emitted while this entity is moving and active.
 /// </summary>
+//IS14-change: coexist with the retained fork component.
+[ComponentProtoName("MovingParticleEmitter")]
 [RegisterComponent]
 public sealed partial class ParticleEmitterComponent : Component
 {

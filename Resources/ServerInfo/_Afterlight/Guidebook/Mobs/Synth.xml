@@ -1,38 +1,37 @@
 <Document>
-  # Synths
+  # Синты
 
   <Box>
     <GuideEntityEmbed Entity="AppearanceSynth" Caption=""/>
   </Box>
 
-  [color=#ffa500]Warning! This species is not recommended for new players due to major gameplay changes![/color]
+  Синты — искусственные гуманоиды, напоминающие двуногих ящеров. Для их обслуживания применяют технику и методы лечения органических тканей.
 
-  Synths are a species of artificial humanoids vaguely resembling bipedal lizards, who are maintained through a combination of known complex machinery and organic flesh treatment methods.
+  ## Питание и ремонт
 
-  ## Racial Features
+  - Синты говорят на общегалактическом языке Тау-Кита и языке роботов.
+  - Тело питается от внутренней батареи. Её можно [color=yellow]извлечь и заменить хирургически[/color] и зарядить в обычном зарядном устройстве. При полном разряде синт передвигается хуже.
+  - Встроенный биореактор перерабатывает органику. Приём пищи восполняет заряд батареи.
+  - Внутренние наниты постепенно устраняют механические, термические и клеточные повреждения. Ремонт расходует запас сытости и замедляется, когда в теле мало фуллерена.
+  - Фуллерен — углеродная жидкость, выполняющая роль крови. Усвоенный углерод помогает пополнить её запас. Пакеты с фуллереном можно изготовить в медицинском техфабе из алмазов.
+  - Реагенты синтам дают через рот. Шприцы и гипоспреи не могут ввести реагенты прямо в их кровоток.
+  - Синтам не нужно дышать. Они могут перерабатывать руду, листы и стержни.
 
-  - They can speak and understand Tau-Ceti Basic and Robot Talk.
-  - They rely on an internal power cell, which can be [color=yellow]replaced via surgery[/color] and recharged in any cell recharger. Movement will be [color=yellow]impaired[/color] if it reaches 0% charge.
-  - In addition to an internal power cell, they feature a miniature bioreactor, which processes organic mass to generate power and facilitates autonomous bodily repair. Eating recharges the power cell.
-  - Internal nanites allow them to passively recover from Brute, Burn, and Cellular damage at the cost of satiation. Autonomous repairs are [color=yellow]slow[/color] and will eventually [color=red]starve[/color] the bioreactor if not maintained.
-  - They contain fullerene, a carbon-based, blood-like solution, which assists their internal nanites in performing repairs. Autonomous repairs will [color=yellow]slow down[/color] as fullerene reserves deplete.
-  - Due to its complexity, it is impossible to inject reagents directly into Synth bloodstreams, rendering oral administration [color=yellow]necessary for metabolization[/color]. Needles and hyposprays [color=red]will not work[/color]!
-  - They do not need to breathe, and can eat raw materials such as ore, sheets and rods.
-  - Metabolized Carbon helps restore depleted fullerene. In the event of an emergency, [color=yellow]replacement fullerene packs[/color] can be fabricated at a medical techfab, requiring diamonds.
-  - They receive [color=#8147ff]40% more Shock damage[/color], [color=#B9BF93]25% less Blunt damage[/color], [color=#B9BF93]10% less Slash damage[/color], [color=#ffa500]5% more Piercing damage[/color], [color=#B9BF93]15% less Heat damage[/color], [color=#1e90ff]40% less Cold damage[/color], and [color=#B9BF93]20% less Radiation damage[/color].
-  - Shock damage [color=yellow]recharges their power cell[/color], but [color=red]also inflicts Cellular damage[/color].
-  - EMPs are [color=red]dangerous[/color] but not lethal, capable of [color=yellow]completely depleting their internal power cell[/color] and dealing Shock and Heat damage.
+  ## Уязвимости
+
+  - Синты получают [color=#8147ff]на 40% больше урона током[/color] и [color=#ffa500]на 10% больше колющего урона[/color].
+  - Они получают на 10% меньше тупого урона, на 5% меньше урона жаром, на 20% меньше урона холодом и на 10% меньше урона радиацией.
+  - Электрический разряд [color=yellow]заряжает батарею[/color] и одновременно [color=red]повреждает клетки[/color]. ЭМИ может разрядить батарею и нанести урон током и жаром.
 
   <Box>
     <GuideEntityEmbed Entity="OrganSynthBrain" Scale="5" Caption=""/>
   </Box>
 
-  ## Central Computing Unit
+  ## Центральный вычислительный блок
 
-  - Synth CCUs function similarly to positronic brains and can be [color=yellow]directly inserted into a cyborg chassis[/color].
+  Центральный вычислительный блок синта похож на позитронный мозг. Его можно [color=yellow]установить в шасси киборга[/color].
 
-  ## Nanites
+  ## Наниты
 
-  - Nanites function as the most effective means of treatment for Synth injuries, despite a [color=red]dangerous OD at >10.5 units[/color], and can be [color=yellow]created via chemistry[/color] using an [color=yellow]electrolysis[/color] machine. [color=red]Warning! Nanites are incredibly lethal to organic species and should be handled with extreme caution![/color]
-
+  Наниты эффективно лечат повреждения синтов. В организме синта [color=red]10,5 единицы нанитов и более вызывают передозировку[/color]. Наниты изготавливают с помощью установки электролиза. Для органических видов наниты ядовиты.
 </Document>

@@ -6,6 +6,8 @@ namespace Content.Goobstation.Shared.Wraith.Actions;
 /// <summary>
 /// Checks whitelist/blacklist against the user. If they don't pass, the action cancels.
 /// </summary>
+//IS14-change: coexist with the retained fork component.
+[ComponentProtoName("WraithActionUserWhitelist")]
 [RegisterComponent, NetworkedComponent]
 public sealed partial class ActionUserWhitelistComponent : Component
 {

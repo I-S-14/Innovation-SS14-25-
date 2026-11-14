@@ -1,3 +1,5 @@
+using Content.Shared.Timing.Components; // IS14-change: upstream namespace move
+using Content.Shared.Timing.Systems; // IS14-change: upstream API move
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Server.Atmos.Rotting;
@@ -10,7 +12,6 @@ using Content.Server.Popups;
 using Content.Shared.PowerCell;
 using Content.Shared.Traits.Assorted;
 using Content.Shared.Chat; // Einstein Engines - Languages
-using Content.Shared.Chat;
 using Content.Shared.Damage.Components;
 using Content.Shared.Damage.Systems;
 using Content.Shared.DoAfter;
@@ -22,29 +23,29 @@ using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Movement.Pulling.Components;
-using Content.Shared.PowerCell;
 using Content.Shared.Timing;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Player;
-using Content.Shared.Timing;
 
 // Shitmed Change
 using Content.Shared._Shitmed.Targeting;
 using Content.Shared._Shitmed.Damage;
 using Content.Shared._Shitmed.Medical.Surgery.Consciousness.Components;
 using Content.Shared._Shitmed.Medical.Surgery.Consciousness.Systems;
-using Content.Shared.Chat;
-using Content.Shared.Timing.Systems;
 
 namespace Content.Server.Medical;
 
-public sealed partial class DefibrillatorSystem : SharedDefibrillatorSystem
+/// <summary>
+/// This handles interactions and logic relating to <see cref="DefibrillatorComponent"/>
+/// </summary>
+public sealed class DefibrillatorSystem : EntitySystem
 {
     [Dependency] private readonly ChatSystem _chatManager = default!;
     [Dependency] private readonly DamageableSystem _damageable = default!;
     [Dependency] private readonly DoAfterSystem _doAfter = default!;
     [Dependency] private readonly ElectrocutionSystem _electrocution = default!;
     [Dependency] private readonly EuiManager _euiManager = default!;
+    [Dependency] private readonly ISharedPlayerManager _player = default!;
     [Dependency] private readonly ItemToggleSystem _toggle = default!;
     [Dependency] private readonly MobStateSystem _mobState = default!;
     [Dependency] private readonly MobThresholdSystem _mobThreshold = default!;
@@ -52,12 +53,10 @@ public sealed partial class DefibrillatorSystem : SharedDefibrillatorSystem
     [Dependency] private readonly PowerCellSystem _powerCell = default!;
     [Dependency] private readonly RottingSystem _rotting = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
+    [Dependency] private readonly SharedMindSystem _mind = default!;
     [Dependency] private readonly UseDelaySystem _useDelay = default!;
     [Dependency] private readonly SharedInteractionSystem _interactionSystem = default!;
     [Dependency] private readonly ConsciousnessSystem _consciousness = default!; // Shitmed Change
-    [Dependency] private EuiManager _eui = default!;
-    [Dependency] private ISharedPlayerManager _player = default!;
-    [Dependency] private SharedMindSystem _mind = default!;
 
     /// <inheritdoc/>
     public override void Initialize()
@@ -278,7 +277,7 @@ public sealed partial class DefibrillatorSystem : SharedDefibrillatorSystem
             _toggle.TryDeactivate(uid);
 
         // TODO clean up this clown show above
-        var ev = new TargetDefibrillatedEvent(user, (uid, component));
+        var ev = new TargetDefibrillatedEvent(user, target, (uid, component), new HashSet<EntityUid> { target });
         RaiseLocalEvent(target, ref ev);
     }
 }

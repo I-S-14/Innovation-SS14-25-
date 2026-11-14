@@ -17,6 +17,8 @@ namespace Content.Goobstation.Server.Shadowling.Systems.Abilities.PreAscension;
 /// </summary>
 public sealed partial class ShadowlingVeilSystem : EntitySystem
 {
+    [Dependency] private Content.Shared.Light.EntitySystems.ExpendableLightSystem _expendable = default!;
+
     [Dependency] private EntityLookupSystem _lookup = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private PoweredLightSystem _light = default!;
@@ -91,8 +93,7 @@ public sealed partial class ShadowlingVeilSystem : EntitySystem
         if (_expendableLightQuery.TryComp(uid, out var expendableLight)
             && !_tag.HasTag(uid, component.TorchTag))
         {
-            expendableLight.CurrentState = ExpendableLightState.Fading;
-            expendableLight.StateExpiryTime = 0;
+            _expendable.BurnOut((uid, expendableLight));
             return;
         }
 

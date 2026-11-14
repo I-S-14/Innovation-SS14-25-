@@ -1,3 +1,4 @@
+using Content.Shared.AlertLevel; // IS14-change: upstream namespace move
 using System.Linq;
 using System.Numerics;
 using Content.Server.AlertLevel;
@@ -586,7 +587,7 @@ public sealed class IS14OsSystem : EntitySystem
         shell.HasUplink = HasComp<UplinkComponent>(uid) && IsUplinkUnlocked(uid);
 
         if (TryComp(uid, out DeviceNetworkComponent? network))
-            shell.Address = network.Address;
+            shell.Address = Content.Shared.DeviceNetwork.DeviceLocalizationHelpers.GetAddressFromId(network);
 
         // A device inside a bag inside a locker can lose its own grid; the carrier still has one.
         var station = _station.GetOwningStation(uid)
@@ -597,15 +598,15 @@ public sealed class IS14OsSystem : EntitySystem
 
         shell.StationName = Name(station.Value);
 
-        if (!TryComp(station, out AlertLevelComponent? alert) || alert.AlertLevels == null)
+        if (!TryComp(station, out AlertLevelComponent? alert))
             return;
 
-        shell.AlertLevel = alert.CurrentLevel;
+        shell.AlertLevel = alert.CurrentAlertLevel;
 
-        if (alert.AlertLevels.Levels.TryGetValue(alert.CurrentLevel, out var details))
+        if (ProtoMan.TryIndex(alert.CurrentAlertLevel, out var details))
         {
             shell.AlertColor = details.Color;
-            shell.AlertInstructions = details.AlertLevelInstruction;
+            shell.AlertInstructions = details.Instructions is { } instructions ? Loc.GetString(instructions) : null;
         }
     }
 

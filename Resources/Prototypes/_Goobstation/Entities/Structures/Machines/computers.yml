@@ -6,16 +6,22 @@
   components:
   - type: Sprite
     layers:
-    - map: ["computerLayerBody"]
+    - map: ["enum.ComputerVisualLayers.Frame"]
       state: computer
-    - map: ["computerLayerKeyboard"]
+    - map: ["enum.ComputerVisualLayers.Keyboard"]
       state: generic_keyboard
-    - map: ["computerLayerScreen"]
+    - map: ["enum.ComputerVisualLayers.Screen"]
       state: viro
-    - map: ["computerLayerKeys"]
+    - map: ["enum.ComputerVisualLayers.Keys"]
       state: med_key
     - map: [ "enum.WiresVisualLayers.MaintenancePanel" ]
       state: generic_panel_open
+  - type: ComputerVisuals # IS14: retain the custom states with modern layer keys.
+    stateFrame: computer
+    stateKeyboard: generic_keyboard
+    stateScreen: viro
+    stateKeys: med_key
+    statePanel: generic_panel_open
   - type: PointLight
     radius: 1.5
     energy: 1.6
@@ -34,5 +40,5 @@
   - type: DeviceNetwork
     deviceNetId: Wireless
     receiveFrequencyId: VirologyServer
-  - type: WirelessNetworkConnection
+  - type: WirelessNetwork
     range: 1200

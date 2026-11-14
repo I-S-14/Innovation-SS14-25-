@@ -28,9 +28,9 @@ public sealed partial class DisposalSignalSystem : EntitySystem
     private void OnSignalReceived(Entity<DisposalUnitComponent> ent, ref SignalReceivedEvent args)
     {
         if (args.Port == FlushPort)
-            _disposal.ToggleEngage(ent, ent);
+            _disposal.ToggleEngage(ent);
         else if (args.Port == EjectPort)
-            _disposal.TryEjectContents(ent, ent);
+            _disposal.EjectContents(ent);
         else if (args.Port == TogglePort)
             _power.TogglePower(ent);
     }

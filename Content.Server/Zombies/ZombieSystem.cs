@@ -73,7 +73,6 @@ namespace Content.Server.Zombies
 {
     public sealed partial class ZombieSystem : SharedZombieSystem
     {
-        [Dependency] private readonly IPrototypeManager _protoManager = default!;
         [Dependency] private readonly LanguageSystem _language = default!;
         [Dependency] private IGameTiming _timing = default!;
         [Dependency] private IRobustRandom _random = default!;
@@ -287,7 +286,7 @@ namespace Content.Server.Zombies
 
         private bool IsUserBlocking(BlockingUserComponent? component) // Goobstation
         {
-            return (TryComp<BlockingComponent>(component?.BlockingItem, out var blockComp) && blockComp.IsBlocking);
+            return (TryComp<BlockingComponent>(component?.BlockingItem, out var blockComp) && blockComp.IsRaised);
         }
 
         private float GetZombieInfectionChance(EntityUid uid, ZombieComponent zombieComponent)
@@ -393,19 +392,18 @@ namespace Content.Server.Zombies
             if (!Resolve(source, ref zombiecomp))
                 return false;
 
-            _visualBody.ApplyProfiles(target, zombiecomp.BeforeZombifiedProfiles);
-            _visualBody.ApplyMarkings(target, zombiecomp.BeforeZombifiedMarkings);
-
+            foreach (var (layer, info) in zombiecomp.BeforeZombifiedCustomBaseLayers)
+            {
+                _humanoidAppearance.SetBaseLayerColor(target, layer, info.Color);
+                _humanoidAppearance.SetBaseLayerId(target, layer, info.Id);
+            }
+            if (TryComp<HumanoidAppearanceComponent>(target, out var appcomp))
+            {
+                appcomp.EyeColor = zombiecomp.BeforeZombifiedEyeColor;
+            }
+            _humanoidAppearance.SetSkinColor(target, zombiecomp.BeforeZombifiedSkinColor, false);
             _bloodstream.ChangeBloodReagents(target, zombiecomp.BeforeZombifiedBloodReagents);
 
-            // Restore the blood refresh amount to what it was before zombification. They can't regain blood otherwise.
-            _bloodstream.ChangeBloodRefreshAmount(target, zombiecomp.BeforeZombifiedBloodRefresh);
-            _bloodstream.ChangeBloodIncreaseEnabled(target, true);
-
-            // no longer a zombie, no longer *that* clumsy
-            _statusEffects.TryRemoveStatusEffect(target, ClumsyZombieStatus);
-
-            // Remove the tags that we added during Zombification
             _tag.RemoveTag(target, CannotSuicideTag);
             _tag.RemoveTag(target, InvalidForGlobalSpawnSpellTag);
             return true;

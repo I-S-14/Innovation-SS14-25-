@@ -1,3 +1,4 @@
+using Content.Shared.Nutrition.EntitySystems;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Threading;
@@ -44,9 +45,10 @@ public sealed partial class PickSlimeLatchTargetOperator : HTNOperator
     [DataField]
     public string PathfindKey = NPCBlackboard.PathfindKey;
 
-    public override void Initialize(IEntitySystemManager sysManager)
+    public override void Initialize(IDependencyCollection deps)
     {
-        base.Initialize(sysManager);
+        base.Initialize(deps);
+        var sysManager = deps.Resolve<IEntitySystemManager>();
         _pathfinding = sysManager.GetEntitySystem<PathfindingSystem>();
         _mobSystem = sysManager.GetEntitySystem<MobStateSystem>();
         _factions = sysManager.GetEntitySystem<NpcFactionSystem>();

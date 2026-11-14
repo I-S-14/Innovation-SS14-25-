@@ -6,7 +6,6 @@ using Content.Server.Popups;
 using Content.Server.Radio.EntitySystems;
 using Content.Server.Station.Systems;
 using Content.Server.StationRecords;
-using Content.Server.StationRecords.Systems;
 using Content.Shared.Access.Components;
 using Content.Shared.Access.Systems;
 using Content.Shared.Containers.ItemSlots;
@@ -23,7 +22,6 @@ using Robust.Server.GameObjects;
 using Robust.Shared.Audio;
 using Robust.Shared.Timing;
 using System.Diagnostics.CodeAnalysis;
-using Content.Shared.IdentityManagement;
 using System.Linq;
 using Content.Shared.Administration.Logs;
 using Content.Shared.Database;
@@ -39,7 +37,6 @@ namespace Content.Server.CriminalRecords.Systems;
 public sealed partial class CriminalRecordsConsoleSystem : SharedCriminalRecordsConsoleSystem
 {
     [Dependency] private AccessReaderSystem _access = default!;
-    [Dependency] private ISharedAdminLogManager _adminLogger = default!;
     [Dependency] private CriminalRecordsSystem _criminalRecords = default!;
     [Dependency] private PopupSystem _popup = default!;
     [Dependency] private RadioSystem _radio = default!;
@@ -251,7 +248,7 @@ public sealed partial class CriminalRecordsConsoleSystem : SharedCriminalRecords
         }
 
         var name = _records.RecordName(key.Value);
-        GetOfficer(mob.Value, out var officer);
+        var officer = Loc.GetString("criminal-records-console-unknown-officer");
 
         var history = Loc.GetString("criminal-records-console-detained-record", ("articles", articles ?? Loc.GetString("criminal-records-console-unspecified")), ("duration", msg.Duration?.ToString() ?? Loc.GetString("criminal-records-console-unspecified")));
         _criminalRecords.TryAddHistory(key.Value, history, officer, articles, msg.Duration, status: SecurityStatus.Detained);
@@ -266,7 +263,7 @@ public sealed partial class CriminalRecordsConsoleSystem : SharedCriminalRecords
         if (entry != null)
             jobName = entry.JobTitle;
 
-        var tryGetIdentityShortInfoEvent = new TryGetIdentityShortInfoEvent(null, mob.Value);
+        var tryGetIdentityShortInfoEvent = new TryGetIdentityShortInfoEvent(mob.Value, ent.Owner, forLogging: false);
         RaiseLocalEvent(tryGetIdentityShortInfoEvent);
         if (tryGetIdentityShortInfoEvent.Title != null)
             officer = tryGetIdentityShortInfoEvent.Title;
@@ -303,7 +300,7 @@ public sealed partial class CriminalRecordsConsoleSystem : SharedCriminalRecords
             return;
 
         var name = _records.RecordName(key.Value);
-        GetOfficer(mob.Value, out var officer);
+        var officer = Loc.GetString("criminal-records-console-unknown-officer");
 
         name = _records.RecordName(key.Value);
 
@@ -314,7 +311,7 @@ public sealed partial class CriminalRecordsConsoleSystem : SharedCriminalRecords
         if (entry != null)
             jobName = entry.JobTitle;
 
-        var tryGetIdentityShortInfoEvent = new TryGetIdentityShortInfoEvent(null, mob.Value);
+        var tryGetIdentityShortInfoEvent = new TryGetIdentityShortInfoEvent(mob.Value, ent.Owner, forLogging: false);
         RaiseLocalEvent(tryGetIdentityShortInfoEvent);
         if (tryGetIdentityShortInfoEvent.Title != null)
             officer = tryGetIdentityShortInfoEvent.Title;

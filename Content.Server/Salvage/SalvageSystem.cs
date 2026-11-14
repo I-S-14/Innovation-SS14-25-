@@ -33,8 +33,6 @@ namespace Content.Server.Salvage
         [Dependency] private readonly IChatManager _chat = default!;
         [Dependency] private readonly IConfigurationManager _configurationManager = default!;
         [Dependency] private readonly IGameTiming _timing = default!;
-        [Dependency] private readonly ILogManager _logManager = default!;
-        [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
         [Dependency] private readonly IRobustRandom _random = default!;
         [Dependency] private readonly AnchorableSystem _anchorable = default!;
         [Dependency] private readonly BiomeSystem _biome = default!;
@@ -53,8 +51,9 @@ namespace Content.Server.Salvage
         [Dependency] private readonly StationSystem _station = default!;
         [Dependency] private readonly UserInterfaceSystem _ui = default!;
 
-        private EntityQuery<MapGridComponent> _gridQuery;
-        private EntityQuery<TransformComponent> _xformQuery;
+        //IS14-change start: retain functional queries after the upstream injection migration.
+        [Dependency] private EntityQuery<MapGridComponent> _gridQuery = default!;
+        //IS14-change end
 
         public override void Initialize()
         {

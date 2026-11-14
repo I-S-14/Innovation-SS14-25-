@@ -43,6 +43,8 @@ public sealed partial class SpawnPointSystem : EntitySystem
             }
         }
 
+        AddRetainedJobSpawnPoints(args, possiblePositions); //IS14-change: own jobs retain corresponding map markers.
+
         if (possiblePositions.Count == 0)
         {
             // Ok we've still not returned, but we need to put them /somewhere/.

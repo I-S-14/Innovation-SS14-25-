@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
 using Content.Shared.Chemistry.Reaction;
 using Content.Shared.Chemistry.Components;
 using Robust.Shared.GameObjects;
@@ -10,7 +8,6 @@ using Content.IntegrationTests.Fixtures;
 using Content.IntegrationTests.Fixtures.Attributes;
 using Content.IntegrationTests.Utility;
 using Content.Shared.Chemistry.EntitySystems;
-using Robust.Shared.Prototypes;
 
 namespace Content.IntegrationTests.Tests.Chemistry;
 
@@ -45,24 +42,10 @@ public sealed class TryAllReactionsTest : GameTest
         {
             foreach (var reaction in Reactions)
             {
-                beaker = entityManager.SpawnEntity("TestSolutionContainer", coordinates);
-                Assert.That(solutionContainerSystem
-                    .TryGetSolution(beaker, "beaker", out solutionEnt, out solution));
-                solutionEnt.Value.Comp.Solution.CanReact = false;
-                foreach (var (id, reactant) in reactionPrototype.Reactants)
-                {
-#pragma warning disable NUnit2045
-                    Assert.That(solutionContainerSystem
-                        .TryAddReagent(solutionEnt.Value, id, reactant.Amount, out var quantity, reactionPrototype.MinimumTemperature));
-                    Assert.That(reactant.Amount, Is.EqualTo(quantity));
-#pragma warning restore NUnit2045
-                }
-                // Goobstation - this part of the test disallows many interesting temperature dependent chemical reactions
-                /*
-                //Get all possible reactions with the current reagents
-                var possibleReactions = prototypeManager.EnumeratePrototypes<ReactionPrototype>()
-                    .Where(x => x.Reactants.All(id => solution.Contents.Any(s => s.Reagent.Prototype == id.Key)))
-                    .ToList();
+                var reactionPrototype = SProtoMan.Index<ReactionPrototype>(reaction);
+
+                EntityUid beaker = default;
+                Solution solution = null;
 
                 try
                 {
@@ -83,35 +66,10 @@ public sealed class TryAllReactionsTest : GameTest
                             Assert.That(reactant.Amount, Is.EqualTo(quantity));
                         }
 
-                        //Get all possible reactions with the current reagents
-                        var possibleReactions = SProtoMan.EnumeratePrototypes<ReactionPrototype>()
-                            .Where(x => x.Reactants.All(id =>
-                                solution.Contents.Any(s => s.Reagent.Prototype == id.Key)))
-                            .ToList();
-
-                        //Check if the reaction is the first to occur when heated
-                        foreach (var possibleReaction in possibleReactions.OrderBy(r => r.MinimumTemperature))
-                        {
-                            if (possibleReaction.Priority >= reactionPrototype.Priority &&
-                                possibleReaction.MinimumTemperature < reactionPrototype.MinimumTemperature &&
-                                possibleReaction.MixingCategories == reactionPrototype.MixingCategories)
-                            {
-                                Assert.Fail(
-                                    $"The {possibleReaction.ID} reaction may occur before {reactionPrototype.ID} when heated.");
-                            }
-                        }
-
-                        //Check if the reaction is the first to occur when freezing
-                        foreach (var possibleReaction in possibleReactions.OrderBy(r => r.MaximumTemperature))
-                        {
-                            if (possibleReaction.Priority >= reactionPrototype.Priority &&
-                                possibleReaction.MaximumTemperature > reactionPrototype.MaximumTemperature &&
-                                possibleReaction.MixingCategories == reactionPrototype.MixingCategories)
-                            {
-                                Assert.Fail(
-                                    $"The {possibleReaction.ID} reaction may occur before {reactionPrototype.ID} when freezing.");
-                            }
-                        }
+                        //IS14-change start
+                        // Goob reactions intentionally share ingredients across temperature ranges.
+                        // Validate their actual products below rather than rejecting that overlap.
+                        //IS14-change end
 
                         //Now safe set the temperature and mix the reagents
                         _solutionContainerSystem.SetTemperature(solutionEnt.Value,

@@ -1,7 +1,7 @@
 using Content.Server.Medical.SuitSensors;
 using Content.Shared.Electrocution;
 using Content.Shared.Inventory;
-using Content.Shared.Medical.SuitSensor;
+
 using Content.Shared.Medical.SuitSensors;
 using Content.Shared.Popups;
 using Robust.Shared.Random;

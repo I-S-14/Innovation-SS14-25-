@@ -1,3 +1,4 @@
+using Content.Client.GameTicking; // IS14-change: ticker namespace move
 using System.Linq;
 using System.Numerics;
 using Content.Client.GameTicking.Managers;

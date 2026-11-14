@@ -1,3 +1,4 @@
+using Content.Server.Cargo.Components; // IS14-change: upstream namespace move
 using Content.Server.Objectives.Components;
 using Content.Shared.Cargo.Components;
 using Content.Shared.Mind;

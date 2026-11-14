@@ -189,9 +189,7 @@
   - type: LockedWiresPanel
   - type: Damageable
     damageContainer: Silicon
-    damageModifierSet: Silicon #Goobstation - Iondamage
-  - type: Injurable
-    damageContainer: Silicon
+    damageModifierSet: Silicon
   - type: HandheldLight
     toggleOnInteract: false
     wattage: 0.2

@@ -9,6 +9,8 @@ namespace Content.Server._DV.Feroxi;
 
 public sealed class FeroxiDehydrateSystem : EntitySystem
 {
+    [Dependency] private Content.Shared.Nutrition.EntitySystems.SatiationSystem _satiation = default!;
+
     [Dependency] private readonly BodySystem _body = default!;
 
     public override void Update(float frameTime) /// Goob start, reverted this section back to what it was on DV (Durks change broke things)
@@ -17,7 +19,7 @@ public sealed class FeroxiDehydrateSystem : EntitySystem
 
         while (query.MoveNext(out var uid, out var feroxiDehydrate, out var thirst))
         {
-            var currentThirst = thirst.CurrentThirst;
+            var currentThirst = _satiation.GetValueOrNull((uid, thirst), Content.Shared.Nutrition.EntitySystems.SatiationSystem.Thirst) ?? 0;
             var shouldBeDehydrated = currentThirst <= feroxiDehydrate.DehydrationThreshold;
 
             if (feroxiDehydrate.Dehydrated != shouldBeDehydrated)

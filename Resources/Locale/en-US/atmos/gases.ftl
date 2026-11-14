@@ -16,7 +16,6 @@ gas-tritium-abbreviation = T
 gas-water-vapor = Water Vapor
 gas-water-vapor-abbreviation = H₂O
 # Goob
-gas-bz-abbreviation = BZ
 gas-healium-abbreviation = HE+
 gas-nitrium-abbreviation = NTR
 gas-pluoxium-abbreviation = PLX

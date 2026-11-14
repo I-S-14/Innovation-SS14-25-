@@ -79,7 +79,7 @@ public sealed partial class PickObjectiveTargetSystem : EntitySystem
             return;
 
         // couldn't find a target :(
-        if (_mind.PickFromPool(ent.Comp.Pool, args.MindId, ent.Comp.Conditions) is not {} picked)
+        if (_mind.PickFromPool(ent.Comp.Pool, args.MindId, ent.Comp.Conditions, ent.Comp.Filters) is not {} picked) //IS14-change: preserve Goob exclusions alongside Wizards conditions.
         {
             args.Cancelled = true;
             return;

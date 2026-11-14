@@ -22,16 +22,20 @@ using Robust.Shared.Physics.Events;
 using Robust.Shared.Physics.Systems;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
-using Content.Shared.Gibbing;
+using Content.Shared.Gibbing.Systems;
 using Content.Server.Body.Systems;
 
 namespace Content.Server.ImmovableRod;
 
 public sealed partial class ImmovableRodSystem : EntitySystem
 {
+    //IS14-change start: restore declarations used by merged implementation.
+    [Dependency] private ISharedAdminLogManager _adminLogger = default!;
+    [Dependency] private Content.Shared.Body.Systems.SharedBodySystem _gibbing = default!;
+    //IS14-change end
+
     [Dependency] private IRobustRandom _random = default!;
 
-    [Dependency] private readonly BodySystem _bodySystem = default!;
     [Dependency] private readonly PopupSystem _popup = default!;
     [Dependency] private readonly SharedPhysicsSystem _physics = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
@@ -156,7 +160,7 @@ public sealed partial class ImmovableRodSystem : EntitySystem
                 return;
             }
 
-            _gibbing.Gib(ent);
+            _gibbing.GibBody(ent);
             _popup.PopupEntity(Loc.GetString("immovable-rod-penetrated-mob", ("rod", uid), ("mob", ent)), uid, PopupType.LargeCaution);
             return;
         }

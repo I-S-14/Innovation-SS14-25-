@@ -66,6 +66,11 @@ public sealed partial class BanExemptionUpdateCommand : LocalizedCommands
 [AdminCommand(AdminFlags.Ban)]
 public sealed partial class BanExemptionGetCommand : LocalizedCommands
 {
+    //IS14-change start: restore declarations used by merged implementation.
+    [Dependency] private readonly IServerDbManager _dbManager = default!;
+    [Dependency] private readonly IPlayerLocator _playerLocator = default!;
+    //IS14-change end
+
 
     public override string Command => "ban_exemption_get";
 

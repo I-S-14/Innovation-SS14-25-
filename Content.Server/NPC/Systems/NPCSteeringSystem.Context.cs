@@ -657,7 +657,7 @@ public sealed partial class NPCSteeringSystem
         var checkSmash = (ent.Comp.Flags & PathFlags.Smashing) != 0x0 &&
                          combatMode != null &&
                          _melee.TryGetWeapon(ent, out _, out var weapon) &&
-                         weapon.NextAttack <= _timing.CurTime;
+                         weapon.NextAttack <= Timing.CurTime;
 
 
         nearbyEntities.RemoveWhere(nearbyEnt =>

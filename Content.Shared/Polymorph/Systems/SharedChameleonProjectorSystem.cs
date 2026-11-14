@@ -28,7 +28,6 @@ namespace Content.Shared.Polymorph.Systems;
 /// </summary>
 public abstract partial class SharedChameleonProjectorSystem : EntitySystem
 {
-    [Dependency] private readonly IPrototypeManager _proto = default!;
     [Dependency] private readonly SparksSystem _sparks = default!; // goob edit
     [Dependency] private DamageableSystem _damageable = default!;
     [Dependency] private EntityWhitelistSystem _whitelist = default!;

@@ -80,10 +80,14 @@ public sealed class VentCrawableSystem : EntitySystem
                 Dirty(entity , ventCrawComp);
             }
 
-            if (EntityManager.TryGetComponent(entity, out PhysicsComponent? physics))
+            //IS14-change start
+            if (TryComp(entity, out PhysicsComponent? physics))
+            //IS14-change end
                 _physicsSystem.WakeBody(entity, body: physics);
         }
 
-        EntityManager.DeleteEntity(uid);
+        //IS14-change start
+        Del(uid);
+        //IS14-change end
     }
 }

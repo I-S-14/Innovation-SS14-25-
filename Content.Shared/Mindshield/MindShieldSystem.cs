@@ -95,7 +95,7 @@ public sealed partial class MindShieldSystem : EntitySystem
     [SubscribeLocalEvent]
     private void OnStatusQuery(Entity<MindShieldComponent> e, ref GetMindShieldStatusEvent args)
     {
-        args.IsMindshielded = true;
+        args.IsMindshielded |= !e.Comp.Broken; // IS14-change: broken Goob implants do not protect.
         args.IsVisible = true;
     }
 

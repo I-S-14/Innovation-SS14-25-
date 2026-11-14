@@ -10,6 +10,10 @@ namespace Content.Server.RandomMetadata;
 
 public sealed partial class RandomMetadataSystem : EntitySystem
 {
+    //IS14-change start: retain fork fields lost during merge.
+    [Dependency] private readonly IPrototypeManager _prototype = default!;
+    //IS14-change end
+
     [Dependency] private IRobustRandom _random = default!;
     [Dependency] private MetaDataSystem _metaData = default!;
 

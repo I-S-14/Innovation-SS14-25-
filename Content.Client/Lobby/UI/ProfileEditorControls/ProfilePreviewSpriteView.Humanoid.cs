@@ -1,5 +1,5 @@
 using System.Linq;
-using Content.Shared.Body;
+using Content.Shared.Humanoid;
 using Content.Shared.Clothing;
 using Content.Shared.GameTicking;
 using Content.Shared.Inventory;
@@ -21,10 +21,10 @@ public sealed partial class ProfilePreviewSpriteView
     private void ReloadHumanoidEntity(HumanoidCharacterProfile humanoid)
     {
         if (!EntMan.EntityExists(PreviewDummy) ||
-            !EntMan.HasComponent<VisualBodyComponent>(PreviewDummy))
+            !EntMan.HasComponent<HumanoidAppearanceComponent>(PreviewDummy))
             return;
 
-        EntMan.System<SharedVisualBodySystem>().ApplyProfileTo(PreviewDummy, humanoid);
+        EntMan.System<SharedHumanoidAppearanceSystem>().LoadProfile(PreviewDummy, humanoid);
     }
 
     /// <summary>
@@ -49,7 +49,7 @@ public sealed partial class ProfilePreviewSpriteView
         {
             var dummy = _prototypeManager.Index(humanoid.Species).DollPrototype;
             PreviewDummy = EntMan.SpawnEntity(dummy, MapCoordinates.Nullspace);
-            EntMan.System<SharedVisualBodySystem>().ApplyProfileTo(PreviewDummy, humanoid);
+            EntMan.System<SharedHumanoidAppearanceSystem>().LoadProfile(PreviewDummy, humanoid);
         }
         else
         {

@@ -35,6 +35,9 @@ namespace Content.Server.Hands.Systems
 {
     public sealed partial class HandsSystem : SharedHandsSystem
     {
+    //IS14-change start: restore declarations used by merged implementation.
+    //IS14-change end
+
         [Dependency] private readonly SharedBodySystem _bodySystem = default!; // Shitmed Change
 
         // Trauma - moved throwing dependencies, query and DropHeldItemsSpread to PredictedHandsSystem
@@ -48,6 +51,8 @@ namespace Content.Server.Hands.Systems
             SubscribeLocalEvent<HandsComponent, ComponentGetState>(GetComponentState);
 
             SubscribeLocalEvent<HandsComponent, BeforeExplodeEvent>(OnExploded);
+            SubscribeLocalEvent<HandsComponent, BodyPartAddedEvent>(HandleBodyPartAdded);
+            SubscribeLocalEvent<HandsComponent, BodyPartRemovedEvent>(HandleBodyPartRemoved);
             SubscribeLocalEvent<HandsComponent, BodyPartEnabledEvent>(HandleBodyPartEnabled); // Shitmed Change
             SubscribeLocalEvent<HandsComponent, BodyPartDisabledEvent>(HandleBodyPartDisabled); // Shitmed Change
 
@@ -98,20 +103,49 @@ namespace Content.Server.Hands.Systems
         // Shitmed Change Start
         private void TryAddHand(EntityUid uid, HandsComponent component, Entity<BodyPartComponent> part, string slot)
         {
-            if (args.Handled)
+            if (part.Comp.PartType != BodyPartType.Hand)
                 return;
 
-            // Break any pulls
-            if (TryComp(uid, out PullerComponent? puller) && TryComp(puller.Pulling, out PullableComponent? pullable))
-                _pullingSystem.TryStopPull(puller.Pulling.Value, pullable);
+            // If this annoys you, which it should.
+            // Ping Smugleaf.
+            var location = part.Comp.Symmetry switch
+            {
+                BodyPartSymmetry.None => HandLocation.Middle,
+                BodyPartSymmetry.Left => HandLocation.Left,
+                BodyPartSymmetry.Right => HandLocation.Right,
+                _ => throw new ArgumentOutOfRangeException(nameof(part.Comp.Symmetry))
+            };
 
-            var offsetRandomCoordinates = _transformSystem.GetMoverCoordinates(args.Target).Offset(_random.NextVector2(1f, 1.5f));
-            if (!ThrowHeldItem(args.Target, offsetRandomCoordinates))
+            if (part.Comp.Enabled
+                && _bodySystem.TryGetParentBodyPart(part, out var _, out var parentPartComp)
+                && parentPartComp.Enabled)
+                AddHand(uid, slot, location);
+        }
+
+        private void HandleBodyPartAdded(Entity<HandsComponent> ent, ref BodyPartAddedEvent args)
+        {
+            TryAddHand(ent.Owner, ent.Comp, args.Part, args.Slot);
+        }
+
+        private void HandleBodyPartRemoved(EntityUid uid, HandsComponent component, ref BodyPartRemovedEvent args)
+        {
+            if (args.Part.Comp is null
+                || args.Part.Comp.PartType != BodyPartType.Hand)
+                return;
+            RemoveHand(uid, args.Slot);
+        }
+
+        private void HandleBodyPartEnabled(EntityUid uid, HandsComponent component, ref BodyPartEnabledEvent args) =>
+            TryAddHand(uid, component, args.Part, SharedBodySystem.GetPartSlotContainerId(args.Part.Comp.ParentSlot?.Id ?? string.Empty));
+
+        private void HandleBodyPartDisabled(EntityUid uid, HandsComponent component, ref BodyPartDisabledEvent args)
+        {
+            if (TerminatingOrDeleted(uid)
+                || args.Part.Comp is null
+                || args.Part.Comp.PartType != BodyPartType.Hand)
                 return;
 
-            args.PopupPrefix = "disarm-action-";
-
-            args.Handled = true; // no shove/stun.
+            RemoveHand(uid, SharedBodySystem.GetPartSlotContainerId(args.Part.Comp.ParentSlot?.Id ?? string.Empty));
         }
 
         #region interactions

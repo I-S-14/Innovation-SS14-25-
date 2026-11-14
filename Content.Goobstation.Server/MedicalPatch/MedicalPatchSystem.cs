@@ -22,7 +22,7 @@ public sealed partial class MedicalPatchSystem : EntitySystem
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private SharedSolutionContainerSystem _solutionContainers = default!;
     [Dependency] private ReactiveSystem _reactiveSystem = default!;
-    [Dependency] protected ISharedAdminLogManager _adminLogger = default!;
+    [Dependency] private ISharedAdminLogManager _adminLogger = default!;
     [Dependency] private SharedHandsSystem _hands = default!;
 
     public override void Initialize()
@@ -55,7 +55,7 @@ public sealed partial class MedicalPatchSystem : EntitySystem
         if (!_timing.IsFirstTimePredicted)
             return;
 
-        foreach (var comp in EntityManager.EntityQuery<MedicalPatchComponent>())
+        foreach (var comp in EntityQuery<MedicalPatchComponent>())
         {
             if (_timing.CurTime < comp.NextUpdate)
                 continue;
@@ -120,7 +120,7 @@ public sealed partial class MedicalPatchSystem : EntitySystem
             return;
 
         //Logg the Patch stick to.
-        _adminLogger.Add(LogType.ForceFeed, $"{EntityManager.ToPrettyString(args.User):user} stuck a patch on  {EntityManager.ToPrettyString(args.Target):target} using {EntityManager.ToPrettyString(uid):using} containing {SharedSolutionContainerSystem.ToPrettyString(medicalPatchSolution):medicalPatchSolution}");
+        _adminLogger.Add(LogType.ForceFeed, $"{ToPrettyString(args.User):user} stuck a patch on  {ToPrettyString(args.Target):target} using {ToPrettyString(uid):using} containing {SharedSolutionContainerSystem.ToPrettyString(medicalPatchSolution):medicalPatchSolution}");
 
         if (component.InjectAmmountOnAttatch > 0)
         {

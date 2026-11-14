@@ -26,6 +26,11 @@ public sealed partial class CCVars
     ///     If it is is false, only the admin's ckey will be displayed in the ahelp.
     /// </summary>
     /// <seealso cref="AdminUseCustomNamesAdminRank"/>
+    //IS14-change start
+    public static readonly CVarDef<bool> AhelpAdminPrefixWebhook =
+        CVarDef.Create("ahelp.admin_prefix_webhook", false, CVar.SERVERONLY);
+    //IS14-change end
+
     public static readonly CVarDef<bool> AhelpAdminPrefix =
         CVarDef.Create("ahelp.admin_prefix", false, CVar.SERVERONLY);
 

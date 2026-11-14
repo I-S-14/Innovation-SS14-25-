@@ -55,7 +55,7 @@
       temperature: 293.15
   - type: Jetpack
     moleUsage: 0.00085
-  - type: ParticleEmitter
+  - type: MovingParticleEmitter
     effectPrototype: JetpackEffect
   - type: Appearance
   - type: GenericVisualizer
@@ -173,7 +173,7 @@
     tags:
     - HighRiskItem
   - type: StealTarget
-    stealGroup: JetpackCaptainFilled
+    stealGroup: [JetpackCaptainFilled]
 # CorvaxGoob-start:
   - type: CargoSellBlacklist
   - type: SupermatterImmune

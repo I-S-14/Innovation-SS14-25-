@@ -13,11 +13,13 @@
   - type: Icon
     sprite: _RMC14/Structures/Xenos/xeno_weeds.rsi # Goobstation new sprites
     state: weed0
-  - type: IconSmooth # Goobstation new sprites
+  - type: IconSmooth
     key: cm_xeno_weeds
-    base: weed_dir
-    mode: CardinalFlags
-#  - type: SmoothEdge # goobstation new sprites
+    states:
+    - !type:DirectionSpriteSmoothing
+      base: weed_dir
+      mask:
+      - cm_xeno_weeds
   - type: Damageable
     damageContainer: Biological
     damageModifierSet: Resin

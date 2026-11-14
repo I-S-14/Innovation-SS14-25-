@@ -17,13 +17,11 @@ using Content.Shared.Damage.Systems;
 using Content.Shared.Medical.Cryogenics;
 using Content.Shared.MedicalScanner;
 using Content.Shared.Temperature.Components;
-using Content.Shared.UserInterface;
 using Content.Shared.Verbs;
 using Content.Shared.Bed.Sleep; // Shitmed Change
 using Robust.Server.GameObjects;
 using Robust.Shared.Containers;
 
-using Content.Shared.Medical.HealthAnalyzer;
 using Content.Server.Atmos.Piping.Components;
 
 namespace Content.Server.Medical;
@@ -36,10 +34,7 @@ public sealed partial class CryoPodSystem : SharedCryoPodSystem
     [Dependency] private readonly SleepingSystem _sleepingSystem = default!; // Shitmed change
     [Dependency] private AtmosphereSystem _atmosphereSystem = default!;
     [Dependency] private GasCanisterSystem _gasCanisterSystem = default!;
-    [Dependency] private GasAnalyzerSystem _gasAnalyzerSystem = default!;
-    [Dependency] private HealthAnalyzerSystem _healthAnalyzerSystem = default!;
     [Dependency] private NodeContainerSystem _nodeContainer = default!;
-    [Dependency] private DamageableSystem _damageable = default!;
 
     public override void Initialize()
     {
@@ -56,13 +51,8 @@ public sealed partial class CryoPodSystem : SharedCryoPodSystem
         if (!entity.Comp.BodyContainer.ContainedEntity.HasValue)
             return;
 
-        var patient = entity.Comp.BodyContainer.ContainedEntity;
-        var gasMix = _gasAnalyzerSystem.GenerateGasMixEntry("Cryo pod", air.Air);
-        var (beakerCapacity, beaker) = GetBeakerInfo(entity);
-        var injecting = GetInjectingReagents(entity);
-        var health = _healthAnalyzerSystem.GetHealthAnalyzerUiState(patient, true);
-        health.ScanMode = true;
-        var hasDamage = patient is null ? false : _damageable.GetTotalDamage(patient.Value) > 0;
+        TryComp<TemperatureComponent>(entity.Comp.BodyContainer.ContainedEntity, out var temp);
+        TryComp<BloodstreamComponent>(entity.Comp.BodyContainer.ContainedEntity, out var bloodstream);
 
         if (TryComp<HealthAnalyzerComponent>(entity, out var healthAnalyzer))
         {

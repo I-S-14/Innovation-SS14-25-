@@ -18,6 +18,11 @@ namespace Content.Shared.Medical;
 [RegisterComponent, NetworkedComponent]
 public sealed partial class DefibrillatorComponent : Component
 {
+    //IS14-change start
+    [DataField]
+    public bool CanDefibCrit = true;
+    //IS14-change end
+
     /// <summary>
     /// How much damage is healed from getting zapped.
     /// </summary>

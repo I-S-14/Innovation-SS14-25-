@@ -9,7 +9,7 @@
       layers:
         - state: redsur
     - type: GasCanister
-      gasMixture:
+      air:
         volume: 1000
         moles:
           - 1310.197357 # oxygen

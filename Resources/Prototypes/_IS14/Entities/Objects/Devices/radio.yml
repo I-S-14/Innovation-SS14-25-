@@ -10,6 +10,17 @@
     - Security
   - type: Sprite
     sprite: _IS14/Objects/Devices/militia_radio.rsi
+    # IS14: keep our radio art; both activity layers use its existing lit state.
+    layers:
+    - state: walkietalkie
+    - map: [enum.RadioDeviceVisualLayers.Broadcasting]
+      state: walkietalkie-on
+      shader: unshaded
+      visible: false
+    - map: [enum.RadioDeviceVisualLayers.Speaker]
+      state: walkietalkie-on
+      shader: unshaded
+      visible: false
   - type: Item
     sprite: _IS14/Objects/Devices/militia_radio.rsi
     heldPrefix: walkietalkie

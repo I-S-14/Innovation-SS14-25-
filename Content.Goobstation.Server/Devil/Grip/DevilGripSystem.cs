@@ -1,3 +1,4 @@
+using Content.Shared.Speech.EntitySystems;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Goobstation.Shared.Devil;
@@ -56,7 +57,7 @@ public sealed partial class DevilGripSystem : EntitySystem
         {
             _stun.KnockdownOrStun(target, ent.Comp.KnockdownTime, true);
             _stamina.TakeStaminaDamage(target, ent.Comp.StaminaDamage);
-            _language.DoRatvarian(target, ent.Comp.SpeechTime, true, status);
+            _language.DoRatvarian(target, ent.Comp.SpeechTime, true);
         }
 
         _actions.SetCooldown(devilComp.DevilGrip, ent.Comp.CooldownAfterUse);

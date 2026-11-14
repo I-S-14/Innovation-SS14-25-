@@ -7,8 +7,6 @@ namespace Content.Client.Delivery;
 
 public sealed partial class DeliveryVisualizerSystem : VisualizerSystem<DeliveryComponent>
 {
-    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
-    [Dependency] private readonly IPrototypeManager _prototype = default!;
     [Dependency] private readonly SpriteSystem _sprite = default!;
 
     private static readonly ProtoId<JobIconPrototype> UnknownIcon = "JobIconUnknown";

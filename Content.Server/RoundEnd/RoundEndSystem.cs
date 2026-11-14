@@ -38,7 +38,6 @@ namespace Content.Server.RoundEnd
     /// </summary>
     public sealed partial class RoundEndSystem : EntitySystem // Goob - partial
     {
-        [Dependency] private readonly IPrototypeManager _protoManager = default!;
         [Dependency] private readonly AnnouncerSystem _announcer = default!;
         [Dependency] private IAdminLogManager _adminLogger = default!;
         [Dependency] private IConfigurationManager _cfg = default!;

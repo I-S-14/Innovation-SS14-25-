@@ -31,22 +31,17 @@
     - ChangelingAbsorbObjective
     - EscapeIdentityObjective
   - type: AntagSelection
-    selectionTime: IntraPlayerSpawn
+    selectionTime: JobsAssigned
     agentName: changeling-roundend-name
-    definitions:
-    - prefRoles: [ Changeling ]
-      max: 4
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14ChangelingAntag0e1ef2b1d
+      range:
+        max: 4
+        min: 1
       playerRatio: 12
       chaosScore: 200
-      jobBlacklist: [ Chaplain ] # GOOBSTATION
-      skills: # CorvaxGoob-Skills
-      - All
-      blacklist:
-        components:
-        - CommandStaff
-      lateJoinAdditional: true
-      mindRoles:
-      - MindRoleChangeling
+    lateJoinAdditional: true
   - type: Tag
     tags:
       - RoundstartAntag
@@ -67,22 +62,15 @@
       min: 465
       max: 665 # Delay is so the heads help their department get set up.
   - type: AntagSelection
-    definitions:
-    - prefRoles: [ Traitor ]
-      max: 2
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14CorporateAgentAntag0de0f8229
+      range:
+        max: 2
+        min: 1
       playerRatio: 25
       chaosScore: 300
-      jobBlacklist: [ NanotrasenRepresentative ]
-      whitelist:
-        components:
-        - CommandStaff
-      blacklist:
-        components:
-        - Condemned # Stops the NTR from rolling it
-      lateJoinAdditional: true
-      mindRoles:
-      - MindRoleTraitor
-
+    lateJoinAdditional: true
 - type: entity
   parent: BaseTraitorRule
   id: CalmTraitor # For Dual Antag Gamemodes
@@ -90,19 +78,15 @@
   - type: GameRule
     minPlayers: 30
   - type: AntagSelection
-    selectionTime: IntraPlayerSpawn
-    definitions:
-    - prefRoles: [ Traitor ]
-      max: 3
+    selectionTime: JobsAssigned
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14CalmTraitorAntag055ee529c
+      range:
+        max: 3
+        min: 1
       playerRatio: 15
-      blacklist:
-        components:
-        - CommandStaff
-        - AntagImmune
-        - Changeling
-      lateJoinAdditional: true
-      mindRoles:
-      - MindRoleTraitor
+    lateJoinAdditional: true
   - type: Tag
     tags:
       - CalmAntag
@@ -114,18 +98,16 @@
   - type: GameRule
     minPlayers: 30
   - type: AntagSelection
-    selectionTime: IntraPlayerSpawn
+    selectionTime: JobsAssigned
     agentName: changeling-roundend-name
-    definitions:
-    - prefRoles: [ Changeling ]
-      max: 2
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14CalmLingAntag0580f79ea
+      range:
+        max: 2
+        min: 1
       playerRatio: 15
-      blacklist:
-        components:
-        - CommandStaff
-      lateJoinAdditional: true
-      mindRoles:
-      - MindRoleTraitor
+    lateJoinAdditional: true
   - type: Tag
     tags:
       - CalmAntag
@@ -140,61 +122,25 @@
     mapPath: /Maps/_Goobstation/Nonstations/nukieplanet.yml
   - type: AntagSelection
     selectionTime: PrePlayerSpawn
-    definitions:
-    - prefRoles: [ NukeopsCommander ]
-      fallbackRoles: [ Nukeops, NukeopsMedic ]
-      spawnerPrototype: SpawnPointNukeopsCommander
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14CalmopsAntag0e76186de
+      range:
+        max: 1
+        min: 1
       playerRatio: 15
-      startingGear: SyndicateCommanderGearFull
-      unequipOldGear: true
-      components:
-      - type: NukeOperative
-      - type: RandomMetadata
-        nameSegments:
-        - NamesSyndicateElite
-        nameFormat: name-format-nukie-commander
-      - type: NpcFactionMember
-        factions:
-        - Syndicate
-      mindRoles:
-      - MindRoleNukeopsCommander
-    - prefRoles: [ NukeopsMedic ]
-      fallbackRoles: [ Nukeops, NukeopsCommander ]
-      spawnerPrototype: SpawnPointNukeopsMedic
+    - !type:LinearAntagCount
+      proto: IS14CalmopsAntag1f3cf4fd7
+      range:
+        max: 1
+        min: 1
       playerRatio: 15
-      startingGear: SyndicateOperativeMedicFull
-      unequipOldGear: true
-      components:
-      - type: NukeOperative
-      - type: RandomMetadata
-        nameSegments:
-        - NamesSyndicateElite
-        nameFormat: name-format-nukie-agent
-      - type: NpcFactionMember
-        factions:
-        - Syndicate
-      - type: SurgerySpeedModifier # shitmed
-        speedModifier: 2
-      mindRoles:
-      - MindRoleNukeopsMedic
-    - prefRoles: [ Nukeops ]
-      fallbackRoles: [ NukeopsCommander, NukeopsMedic ]
-      spawnerPrototype: SpawnPointNukeopsOperative
-      max: 10
+    - !type:LinearAntagCount
+      proto: IS14CalmopsAntag29fef1032
+      range:
+        max: 10
+        min: 1
       playerRatio: 20
-      startingGear: SyndicateOperativeGearFull
-      unequipOldGear: true
-      components:
-      - type: NukeOperative
-      - type: RandomMetadata
-        nameSegments:
-        - NamesSyndicateElite
-        nameFormat: name-format-nukie-operator
-      - type: NpcFactionMember
-        factions:
-        - Syndicate
-      mindRoles:
-      - MindRoleNukeops
   - type: Tag
     tags:
       - CalmAntag
@@ -207,24 +153,14 @@
     minPlayers: 30
   - type: RevolutionaryRule
   - type: AntagSelection
-    selectionTime: IntraPlayerSpawn
-    definitions:
-    - prefRoles: [ HeadRev ]
-      max: 1
+    selectionTime: JobsAssigned
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14CalmRevsAntag07166ca30
+      range:
+        max: 1
+        min: 1
       playerRatio: 20
-      blacklist:
-        components:
-        - CommandStaff
-      briefing:
-        text: head-rev-role-greeting
-        color: CornflowerBlue
-        sound: "/Audio/Ambience/Antag/headrev_start.ogg"
-      startingGear: HeadRevGear
-      components:
-      - type: Revolutionary
-      - type: HeadRevolutionary
-      mindRoles:
-      - MindRoleHeadRevolutionary
   - type: Tag
     tags:
       - CalmAntag
@@ -248,23 +184,14 @@
     minPlayers: 20
     chaosScore: 1000
   - type: AntagSelection
-    selectionTime: IntraPlayerSpawn
-    definitions:
-    - prefRoles: [ Blob ]
-      allowNonHumans: true
-      jobBlacklist: [ Chaplain ] # Goobstation
-      blacklist:
-        components:
-        - CommandStaff
-        - AntagImmune
-        - Silicon
-      briefing:
-        text: blob-carrier-role-greeting
-        color: Plum
-        sound: /Audio/Announcements/bloblarm.ogg
-      mindRoles:
-      - MindRoleBlob
-
+    selectionTime: JobsAssigned
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14BlobGameModeAntag06756cf76
+      range:
+        max: 1
+        min: 1
+      playerRatio: 10
 - type: entity
   id: BlobSpawn
   parent: BaseGameRule
@@ -306,82 +233,28 @@
     mapPath: /Maps/_Goobstation/Nonstations/nukieplanet-honkops.yml
   - type: AntagSelection
     selectionTime: PrePlayerSpawn
-    definitions:
-    - prefRoles: [ NukeopsCommander ]
-      fallbackRoles: [ Nukeops, NukeopsMedic ]
-      spawnerPrototype: SpawnPointNukeopsCommander
-      startingGear: SyndicateCommanderGearFullHonkops
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14HonkopsAntag05768b065
+      range:
+        max: 1
+        min: 1
+      playerRatio: 10
       chaosScore: 300
-      roleLoadout:
-      - RoleSurvivalNukieHonkops
-      components:
-      - type: SleepEmitSound
-        snore: /Audio/Voice/Misc/silly_snore.ogg
-        interval: 10
-      - type: NukeOperative
-      - type: RandomMetadata
-        nameSegments:
-        - NamesHonkopsPrefix
-        - NamesHonkopsElite
-        nameFormat: name-format-standard
-      - type: NpcFactionMember
-        factions:
-        - Syndicate
-      mindRoles:
-      - MindRoleNukeopsCommander
-    - prefRoles: [ NukeopsMedic ]
-      fallbackRoles: [ Nukeops, NukeopsCommander ]
-      spawnerPrototype: SpawnPointNukeopsMedic
-      startingGear: SyndicateOperativeMedicFullHonkops
+    - !type:LinearAntagCount
+      proto: IS14HonkopsAntag1f63b0e07
+      range:
+        max: 1
+        min: 1
+      playerRatio: 10
       chaosScore: 300
-      skills: # CorvaxGoob-Skills
-      - All
-      roleLoadout:
-      - RoleSurvivalNukieHonkops
-      components:
-      - type: SleepEmitSound
-        snore: /Audio/Voice/Misc/silly_snore.ogg
-        interval: 10
-      - type: NukeOperative
-      - type: RandomMetadata
-        nameSegments:
-        - NamesHonkopsPrefix
-        - NamesHonkopsElite
-        nameFormat: name-format-standard
-      - type: NpcFactionMember
-        factions:
-        - Syndicate
-      - type: SurgerySpeedModifier # shitmed
-        speedModifier: 2
-      mindRoles:
-      - MindRoleNukeopsMedic
-    - prefRoles: [ Nukeops ]
-      fallbackRoles: [ NukeopsCommander, NukeopsMedic ]
-      spawnerPrototype: SpawnPointNukeopsOperative
-      max: 10 # Goobstation / 古布空间站 - 没有限制的核特工
-      playerRatio: 16 # Goobstation
-      startingGear: SyndicateOperativeGearFullHonkops
+    - !type:LinearAntagCount
+      proto: IS14HonkopsAntag2142d62bc
+      range:
+        max: 10
+        min: 1
+      playerRatio: 16
       chaosScore: 300
-      skills: # CorvaxGoob-Skills
-      - All
-      roleLoadout:
-      - RoleSurvivalNukieHonkops
-      components:
-      - type: SleepEmitSound
-        snore: /Audio/Voice/Misc/silly_snore.ogg
-        interval: 10
-      - type: NukeOperative
-      - type: RandomMetadata
-        nameSegments:
-        - NamesHonkopsPrefix
-        - NamesHonkopsElite
-        nameFormat: name-format-standard
-      - type: NpcFactionMember
-        factions:
-        - Syndicate
-      mindRoles:
-      - MindRoleNukeops
-
 - type: entity
   parent: BaseGameRule
   id: Xenoborgs
@@ -399,24 +272,21 @@
     pickAndTake: true
   - type: AntagSelection
     selectionTime: PrePlayerSpawn
-    definitions:
-    - prefRoles: [ MothershipCore ]
-      fallbackRoles: [ Xenoborg ]
-      spawnerPrototype: SpawnPointGhostRoleMothershipCore
-      mindRoles:
-      - MindRoleMothershipCore
-      chaosScore: 200 # Goobstation
-    - prefRoles: [ Xenoborg ]
-      fallbackRoles: [ MothershipCore ]
-      spawnerPrototype: SpawnPointGhostRoleXenoborg
-      mindRoles:
-      - MindRoleXenoborg
-      min: 4
-      max: 4
-      chaosScore: 250 # Goobstation
-      skills: # CorvaxGoob-Skills
-      - All
-
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14XenoborgsAntag07e1eb851
+      range:
+        max: 1
+        min: 1
+      playerRatio: 10
+      chaosScore: 200
+    - !type:LinearAntagCount
+      proto: IS14XenoborgsAntag1dfef93a5
+      range:
+        max: 4
+        min: 4
+      playerRatio: 10
+      chaosScore: 250
 - type: entity
   parent: BaseGameRule
   id: Devil
@@ -429,19 +299,16 @@
     - DevilContractObjective
     - DevilWeightObjective
   - type: AntagSelection
-    selectionTime: IntraPlayerSpawn
+    selectionTime: JobsAssigned
     agentName: devil-roundend-name
-    definitions:
-    - prefRoles: [ Devil ]
-      max: 1
-      playerRatio: 40 # from 20 --> 40 , makes it less likely to spawn (Fuck devils)
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14DevilAntag099e090c3
+      range:
+        max: 1
+        min: 1
+      playerRatio: 40
       chaosScore: 150
-      skills: # CorvaxGoob-Skills
-      - All
-      jobBlacklist: [ Chaplain, Mime, ChiefEngineer, ResearchDirector, Quartermaster ] #chaplain is obvious, mime can't write.
-      mindRoles:
-      - DevilMindRole
-      startingGear: DevilStartingGear
   - type: Tag
     tags:
     - RoundstartAntag
@@ -455,22 +322,11 @@
     chaosScore: 1200
   - type: AntagSelection
     agentName: thief-round-end-agent-name
-    definitions:
-    - prefRoles: [ Thief ]
-      max: 10
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14OopsAllThievesAntag067c64f32
+      range:
+        max: 10
+        min: 1
       playerRatio: 7
-      skills: # CorvaxGoob-Skills
-      - All
-      lateJoinAdditional: true
-      allowNonHumans: true
-      multiAntagSetting: NotExclusive
-      startingGear: ThiefGear
-      components:
-      #- type: Pacified # CorvaxGoob
-      - type: Thieving
-        stripTimeReduction: 2
-        stealthy: true
-      mindRoles:
-      - MindRoleThief
-      briefing:
-        sound: "/Audio/Misc/thief_greeting.ogg"
+    lateJoinAdditional: true

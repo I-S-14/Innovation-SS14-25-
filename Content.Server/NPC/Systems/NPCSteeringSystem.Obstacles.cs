@@ -153,7 +153,7 @@ public sealed partial class NPCSteeringSystem
         {
             // Check we have a weapon, can (probably) swing it, and have combat mode.
             if (!_melee.TryGetWeapon(uid, out var weaponUid, out var weaponComp) ||
-                weaponComp.NextAttack > _timing.CurTime ||
+                weaponComp.NextAttack > Timing.CurTime ||
                 !TryComp<CombatModeComponent>(uid, out var combatMode))
                 return SteeringObstacleStatus.Failed;
 

@@ -362,7 +362,7 @@ namespace Content.Server.Communications
 
             var stationUid = _stationSystem.GetOwningStation(uid);
             if (stationUid != null)
-                _alertLevelSystem.SetLevel(stationUid.Value, comp.AlertLevelOnEmag, true, true);
+                _alertLevelSystem.SetLevel(stationUid.Value, comp.AlertLevelOnEmag, true, true, force: true);
 
             args.Handled = true;
         }

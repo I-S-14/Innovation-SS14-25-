@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
 using System.Numerics;
 using Content.Shared.CCVar;
 using Content.Shared.Light.Components;
@@ -14,11 +12,10 @@ using Robust.Shared.Configuration;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Player;
-using Robust.Shared.GameStates;
 
 namespace Content.Client.Weather;
 
-public sealed partial class WeatherSystem : SharedWeatherSystem // Goob edit - made partial
+public sealed partial class WeatherSystem : SharedWeatherSystem
 {
     [Dependency] private IPlayerManager _playerManager = default!;
     [Dependency] private AudioSystem _audio = default!;
@@ -50,22 +47,6 @@ public sealed partial class WeatherSystem : SharedWeatherSystem // Goob edit - m
         base.Update(frameTime);
 
         if (!Timing.IsFirstTimePredicted)
-            return true;
-
-        // Begin DeltaV Additions: Prevent hearing weather in the lobby
-        if (!CanHearWeather(uid, weather))
-            return false;
-        // End DeltaV Additions
-
-        // TODO: Fades (properly)
-        weather.Stream = _audio.Stop(weather.Stream);
-        weather.Stream = _audio.PlayGlobal(weatherProto.Sound, Filter.Local(), true)?.Entity;
-        return true;
-    }
-
-    private void OnWeatherHandleState(EntityUid uid, WeatherComponent component, ref ComponentHandleState args)
-    {
-        if (args.Current is not WeatherComponentState state)
             return;
 
         var player = _playerManager.LocalEntity;

@@ -124,6 +124,11 @@ public sealed class VoiceRadioButton : Button
 
 public sealed class VoiceRadioPopup : Popup
 {
+    //IS14-change start: restore declarations used by merged implementation.
+    [Dependency] private readonly IConfigurationManager _cfg = default!;
+    [Dependency] private readonly IPrototypeManager _prototype = default!;
+    //IS14-change end
+
 
     private const float LabelWidth = 48f;
     private const int BulkThreshold = 3;

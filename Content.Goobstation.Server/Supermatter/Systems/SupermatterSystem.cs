@@ -1,3 +1,5 @@
+using Content.Shared.Station.Systems;
+using Content.Shared.AlertLevel;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Linq;
@@ -36,7 +38,6 @@ using Content.Goobstation.Shared.MisandryBox.Smites;
 using Robust.Shared.Prototypes;
 using Content.Shared.Random;
 using Content.Shared.Random.Helpers;
-using Robust.Shared.Random;
 using System.Numerics;
 using Content.Shared.Radio;
 using Content.Server.Radio.EntitySystems;
@@ -49,6 +50,8 @@ namespace Content.Goobstation.Server.Supermatter.Systems;
 
 public sealed partial class SupermatterSystem : SharedSupermatterSystem
 {
+    [Dependency] private Content.Shared.Radiation.Systems.SharedRadiationSystem _radiationCompat = default!;
+
     [Dependency] private AtmosphereSystem _atmosphere = default!;
     [Dependency] private ChatSystem _chat = default!;
     [Dependency] private SharedContainerSystem _container = default!;
@@ -112,7 +115,7 @@ public sealed partial class SupermatterSystem : SharedSupermatterSystem
         if (!_gameTiming.IsFirstTimePredicted)
             return;
 
-        foreach (var sm in EntityManager.EntityQuery<SupermatterComponent>())
+        foreach (var sm in EntityQuery<SupermatterComponent>())
         {
             if (!sm.Activated)
                 continue;
@@ -304,7 +307,7 @@ public sealed partial class SupermatterSystem : SharedSupermatterSystem
         if (TryComp<RadiationSourceComponent>(uid, out var rad))
         {
             var transmittedpower = sm.Power * Math.Max(0, 1f + transmissionBonus / 10f);
-            rad.Intensity = transmittedpower * sm.RadiationOutputFactor;
+            _radiationCompat.SetIntensity((uid, rad), transmittedpower * sm.RadiationOutputFactor);
         }
 
         //Power * 0.55 * a value between 1 and 0.8

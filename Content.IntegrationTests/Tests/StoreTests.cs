@@ -85,6 +85,7 @@ public sealed class StoreTests : GameTest
             uplinkSystem.AddUplink(human, originalBalance, null, out _, out _, pda, true);
             // </Trauma>
 
+            var notes = entManager.GetComponent<Content.Server.PDA.Ringer.RingerAccessUplinkComponent>(pda).Code;
             Assert.That(notes != null);
             ringerSystem.TryMatchRingtoneToStore(notes, out var storeEnt);
             Assert.That(storeEnt.HasValue);

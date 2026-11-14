@@ -28,7 +28,7 @@
     - WhitelistChameleon
     
 - type: entity
-  parent: ClothingHeadHelmetBasic
+  parent: IS14LegacySecurityHelmetBase # IS14-change: retain Goob hair toggle with original art.
   id: ClothingHeadHelmetSecurityMedic
   name: security medic helmet
   description: A standard issue combat helmet for security medics. Has decent tensile strength and armor. Keep your head down.

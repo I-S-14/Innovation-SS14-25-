@@ -239,7 +239,7 @@ public abstract partial class SharedEnsnareableSystem : EntitySystem
         TryEnsnare(args.Tripper, uid, component);
     }
 
-    private void OnThrowHit(EntityUid uid, EnsnaringComponent component, ThrowDoHitEvent args)
+    private void OnThrowHit(EntityUid uid, EnsnaringComponent component, ref ThrowDoHitEvent args)
     {
         if (!component.CanThrowTrigger)
             return;
@@ -251,7 +251,7 @@ public abstract partial class SharedEnsnareableSystem : EntitySystem
     }
 
     // Goobstation
-    private void OnProjectileHit(EntityUid uid, EnsnaringComponent component, ProjectileHitEvent args)
+    private void OnProjectileHit(EntityUid uid, EnsnaringComponent component, ref ProjectileHitEvent args)
     {
         if (!component.CanThrowTrigger)
             return;

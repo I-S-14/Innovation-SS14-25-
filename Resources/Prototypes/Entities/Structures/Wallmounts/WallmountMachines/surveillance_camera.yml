@@ -27,6 +27,13 @@
   - type: InteractionOutline
   - type: Fixtures
     fixtures:
+      # IS14-change: retained AI light range; leave the newer activity fixture below unchanged.
+      aiLightSensor:
+        shape: !type:PhysShapeCircle
+          radius: 5
+        hard: false
+        mask:
+        - GhostImpassable
       light:
         shape:
           !type:PhysShapeCircle
@@ -48,9 +55,6 @@
     enabled: false
     radius: 5
   - type: Damageable
-    damageContainer: StructuralInorganic
-    # damageModifierSet: Metallic # Goob
-  - type: Injurable
     damageContainer: StructuralInorganic
   - type: Destructible
     thresholds:
@@ -80,6 +84,7 @@
       board: !type:Container
   - type: RequireProjectileTarget
   # </Goob>
+  - type: LightOnCollide # IS14-change: retained AI camera light action.
   - type: SlimPoweredLight
     enabled: false
   - type: Electrified
@@ -247,7 +252,7 @@
   - type: Damageable
     damageModifierSet: SteelMod
   - type: Destructible
-    thresholds:
+    thresholds: []
   - type: Construction
     graph: SurveillanceCamera
     node: assembly

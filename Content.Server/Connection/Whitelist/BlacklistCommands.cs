@@ -65,6 +65,11 @@ public sealed partial class AddBlacklistCommand : LocalizedCommands
 [AdminCommand(AdminFlags.Ban)]
 public sealed partial class RemoveBlacklistCommand : LocalizedCommands
 {
+    //IS14-change start: restore declarations used by merged implementation.
+    [Dependency] private readonly IPlayerLocator _playerLocator = default!;
+    [Dependency] private readonly IServerDbManager _db = default!;
+    //IS14-change end
+
 
     public override string Command => "blacklistremove";
 

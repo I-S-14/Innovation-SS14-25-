@@ -16,7 +16,7 @@ namespace Content.IntegrationTests.Tests.Power;
 
 [Explicit] // Goobstation we are not readyto unexplicit this.
 [Category("MapTests")]
-public sealed class StationPowerTests
+public sealed class StationPowerTests : GameTest
 {
     /// <summary>
     /// How long the station should be able to survive on stored power if nothing is changed from round start.

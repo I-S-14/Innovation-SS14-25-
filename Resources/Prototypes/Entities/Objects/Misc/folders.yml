@@ -552,7 +552,7 @@
     - Folder
     - HighRiskItem
   - type: StealTarget
-    stealGroup: BoxFolderQmClipboard
+    stealGroup: [BoxFolderQmClipboard]
 # CorvaxGoob-start:
   - type: CargoSellBlacklist
   - type: SupermatterImmune

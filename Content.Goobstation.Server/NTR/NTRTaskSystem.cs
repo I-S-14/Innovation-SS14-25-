@@ -1,3 +1,4 @@
+using Content.Shared.Station.Systems;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Diagnostics.CodeAnalysis;
@@ -31,6 +32,11 @@ namespace Content.Goobstation.Server.NTR;
 
 public sealed partial class NtrTaskSystem : EntitySystem
 {
+    //IS14-change start: typed IDs preserve the retained Goob prototypes.
+    private static readonly ProtoId<TagPrototype> CompatibilityVialTagId = "Vial";
+    private static readonly ProtoId<TagPrototype> CompatibilityBottleTagId = "Bottle";
+    //IS14-change end
+
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private IPrototypeManager _prototypes = default!;
     [Dependency] private IRobustRandom _random = default!;
@@ -262,7 +268,7 @@ public sealed partial class NtrTaskSystem : EntitySystem
 
     private bool TryHandleVial(EntityUid item, EntityUid console, NtrTaskConsoleComponent component)
     {
-        if (!_tag.HasTag(item, "Vial") && !_tag.HasTag(item, "Bottle"))
+        if (!_tag.HasTag(item, CompatibilityVialTagId) && !_tag.HasTag(item, CompatibilityBottleTagId))
             return false;
 
         var station = _station.GetOwningStation(console);
@@ -461,7 +467,7 @@ public sealed partial class NtrTaskSystem : EntitySystem
             || string.IsNullOrEmpty(task.ID))
             return false;
 
-        _nameIdentifier.GenerateUniqueName(uid, NameIdentifierGroup, out var id);
+        _nameIdentifier.GenerateUniqueNameModifier(NameIdentifierGroup, out var id);
         var newId = id.ToString();
 
         if (db.Tasks.Any(b => b.Id == newId))

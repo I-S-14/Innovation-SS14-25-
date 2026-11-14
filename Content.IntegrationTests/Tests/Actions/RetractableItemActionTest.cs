@@ -9,13 +9,14 @@ namespace Content.IntegrationTests.Tests.Actions;
 
 public sealed class RetractableItemActionTest : InteractionTest
 {
-    private static readonly EntProtoId ArmbladeActionProtoId = "ActionRetractableItemArmblade";
-
     /// <summary>
     /// Gives the player the arm blade action, then activates it and makes sure they are given the blade.
     /// Afterwards, uses the action again to retract the blade and makes sure their hand is empty.
     /// </summary>
-/*    [Test]
+/*  // Wizards Nubody changeling example; the Goob changeling uses its own action prototypes.
+    private static readonly EntProtoId ArmbladeActionProtoId = "ActionRetractableItemArmblade";
+
+    [Test]
     public async Task ArmBladeActivateDeactivateTest()
     {
         var actionsSystem = Server.System<SharedActionsSystem>();

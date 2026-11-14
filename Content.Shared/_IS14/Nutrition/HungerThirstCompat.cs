@@ -12,16 +12,6 @@ public sealed class HungerSystem : EntitySystem
 {
     [Dependency] private SatiationSystem _satiation = default!;
 
-    // Old HungerComponent defaults; satiation types define their own bounds, these are only used for threshold checks.
-    private static readonly (HungerThreshold Threshold, float Value)[] Thresholds =
-    [
-        (HungerThreshold.Overfed, 200f),
-        (HungerThreshold.Okay, 150f),
-        (HungerThreshold.Peckish, 100f),
-        (HungerThreshold.Starving, 50f),
-        (HungerThreshold.Dead, 0f),
-    ];
-
     public float GetHunger(EntityUid uid, SatiationComponent? comp = null)
     {
         if (!Resolve(uid, ref comp, false))
@@ -53,15 +43,25 @@ public sealed class HungerSystem : EntitySystem
 
     public HungerThreshold GetHungerThreshold(EntityUid uid, float? food = null, SatiationComponent? comp = null)
     {
-        var value = food ?? GetHunger(uid, comp);
-        foreach (var (threshold, min) in Thresholds)
-        {
-            if (value > min)
-                return threshold;
-        }
+        if (!Resolve(uid, ref comp, false)
+            || comp.GetOrNull(SatiationSystem.Hunger) is not { } satiation
+            || !ProtoMan.TryIndex(satiation.Prototype, out var prototype))
+            return HungerThreshold.Dead;
 
-        return HungerThreshold.Dead;
+        var value = food ?? GetHunger(uid, comp);
+        var result = HungerThreshold.Dead;
+        var closest = int.MaxValue;
+        foreach (var threshold in Enum.GetValues<HungerThreshold>())
+        {
+            if (prototype.Thresholds.TryGetValue(threshold.ToString(), out var limit) && limit >= value && limit < closest)
+            {
+                result = threshold;
+                closest = limit;
+            }
+        }
+        return result;
     }
+
 }
 
 /// <inheritdoc cref="HungerSystem"/>
@@ -85,6 +85,33 @@ public sealed class ThirstSystem : EntitySystem
         _satiation.ModifyValue((uid, comp), SatiationSystem.Thirst, amount);
     }
 
+    public ThirstThreshold GetThirstThreshold(EntityUid uid, SatiationComponent? comp = null)
+    {
+        if (!Resolve(uid, ref comp, false)
+            || comp.GetOrNull(SatiationSystem.Thirst) is not { } satiation
+            || !ProtoMan.TryIndex(satiation.Prototype, out var prototype))
+            return ThirstThreshold.Dead;
+
+        var value = GetThirst(uid, comp);
+        var result = ThirstThreshold.Dead;
+        var closest = int.MaxValue;
+        foreach (var threshold in Enum.GetValues<ThirstThreshold>())
+        {
+            // Wizards spells this key "Overhydrated", while the retained Goob enum uses "OverHydrated".
+            if (!prototype.Thresholds.TryGetValue(threshold.ToString(), out var limit)
+                && (threshold != ThirstThreshold.OverHydrated
+                    || !prototype.Thresholds.TryGetValue("Overhydrated", out limit)))
+                continue;
+
+            if (limit >= value && limit < closest)
+            {
+                result = threshold;
+                closest = limit;
+            }
+        }
+        return result;
+    }
+
     public void SetThirst(EntityUid uid, SatiationComponent? comp, float amount)
     {
         if (!Resolve(uid, ref comp, false))
@@ -104,4 +131,13 @@ public enum HungerThreshold : byte
     Peckish = 1 << 1,
     Starving = 1 << 0,
     Dead = 0,
+}
+
+public enum ThirstThreshold : byte
+{
+    Dead = 0,
+    Parched = 1 << 0,
+    Thirsty = 1 << 1,
+    Okay = 1 << 2,
+    OverHydrated = 1 << 3,
 }

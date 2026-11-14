@@ -1,3 +1,4 @@
+using Content.Shared.Station.Systems;
 using System.Linq;
 using Content.Goobstation.Shared.Slasher.Components;
 using Content.Goobstation.Shared.Slasher.Systems;
@@ -14,7 +15,7 @@ namespace Content.Goobstation.Server.Slasher.Systems;
 public sealed partial class SlasherKitSelectSystem : EntitySystem
 {
     [Dependency] private SharedUserInterfaceSystem _ui = default!;
-    [Dependency] private SharedStationSpawningSystem _stationSpawning = default!;
+    [Dependency] private StationSpawningSystem _stationSpawning = default!;
     [Dependency] private MovementSpeedModifierSystem _movement = default!;
     [Dependency] private SlasherIncorporealSystem _incorporeal = default!;
     [Dependency] private SharedActionsSystem _actions = default!;

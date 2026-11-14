@@ -15,6 +15,10 @@ namespace Content.Goobstation.Server.EntityEffects;
 
 public sealed partial class RandomTeleportNearbySystem : EntityEffectSystem<ReactiveComponent, RandomTeleportNearby>
 {
+    //IS14-change start: typed IDs preserve the retained Goob prototypes.
+    private static readonly ProtoId<TagPrototype> CompatibilityBrainTagId = "Brain";
+    //IS14-change end
+
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private EntityLookupSystem _lookup = default!;
     [Dependency] private ExamineSystemShared _occlusion = default!;
@@ -34,7 +38,7 @@ public sealed partial class RandomTeleportNearbySystem : EntityEffectSystem<Reac
         //Prevent Positronic Brain to get teleported too
         entities.RemoveWhere(ent => //todo upstreamtest
             TryComp<TagComponent>(ent, out var tagComp) &&
-            _tag.HasTag(tagComp, "Brain"));
+            _tag.HasTag(tagComp, CompatibilityBrainTagId));
 
         var range = args.Effect.Range;
 

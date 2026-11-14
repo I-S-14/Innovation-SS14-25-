@@ -7249,7 +7249,7 @@ entities:
       pos: 5.5,-4.5
       parent: 2
     - type: WarpPoint
-      location: Automated Trade Station
+      location: is14-map-warp-1d6388bebe3d
 - proto: WeaponTurretHostile
   entities:
   - uid: 412

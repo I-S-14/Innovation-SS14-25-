@@ -1,3 +1,4 @@
+using Content.Shared.DeviceLinking.Components; // IS14-change: upstream namespace move
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Content.Server.Administration.Logs;
@@ -247,7 +248,7 @@ public sealed partial class GasTurbineMonitorSystem : EntitySystem
 
         _uiSystem.CloseUi(uid, TurbineUiKey.Key);
         comp.turbine = null;
-        _signal.RemoveSinkFromSource(uidTurbine.Value, uid, source, sink);
+        _signal.RemoveSinkFromSource((uidTurbine.Value, source), (uid, sink));
         Dirty(uid, comp);
     }
 }

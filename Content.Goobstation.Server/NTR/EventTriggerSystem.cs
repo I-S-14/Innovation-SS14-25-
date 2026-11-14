@@ -1,3 +1,4 @@
+using GameTicker = Content.Server.GameTicking.ServerGameTicker;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Server.GameTicking;
@@ -6,7 +7,7 @@ namespace Content.Goobstation.Server.NTR
 {
     public sealed partial class EventTriggerSystem : EntitySystem
     {
-        [Dependency] private GameTicker _gt = default!;
+        [Dependency] private Content.Server.GameTicking.ServerGameTicker _gt = default!;
 
         public override void Initialize()
         {

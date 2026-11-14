@@ -85,7 +85,7 @@ public sealed class DamageForceSaySystem : EntitySystem
         nextCrit.Timeout = _timing.CurTime + TimeSpan.FromMilliseconds(actor.PlayerSession.Ping * 3);
     }
 
-    private void OnSleep(EntityUid uid, DamageForceSayComponent component, SleepStateChangedEvent args)
+    private void OnSleep(EntityUid uid, DamageForceSayComponent component, ref SleepStateChangedEvent args)
     {
         if (!args.FellAsleep)
             return;

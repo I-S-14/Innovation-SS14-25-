@@ -47,9 +47,10 @@ public sealed partial class GhostGoLobbySystem : EntitySystem
 
     public override void Initialize()
     {
+        base.Initialize();
         SubscribeNetworkEvent<GhostGoLobbyEvent>(OnGhostGoLobby);
         SubscribeLocalEvent<GameRunLevelChangedEvent>(OnRunLevelChanged);
-        SubscribeLocalEvent<GhostComponent, PlayerAttachedEvent>(OnGhostAttached);
+        SubscribeLocalEvent<PlayerAttachedEvent>(OnGhostAttached); // IS14: NewPlayerSystem owns the directed Ghost subscription.
 
         Subs.CVar(_cfg, CCCVars.GhostGoLobbyEnabled, value => _enabled = value, true);
         Subs.CVar(_cfg, CCCVars.GhostGoLobbyTimeHours, value => _requiredPlaytime = TimeSpan.FromHours(value), true);
@@ -78,9 +79,10 @@ public sealed partial class GhostGoLobbySystem : EntitySystem
             _usedCharacters.Clear();
     }
 
-    private void OnGhostAttached(EntityUid uid, GhostComponent component, PlayerAttachedEvent args)
+    private void OnGhostAttached(PlayerAttachedEvent args)
     {
-        if (HasComp<GhostGoLobbyComponent>(uid))
+        var uid = args.Entity;
+        if (!HasComp<GhostComponent>(uid) || HasComp<GhostGoLobbyComponent>(uid))
             return;
 
         var lobby = AddComp<GhostGoLobbyComponent>(uid);

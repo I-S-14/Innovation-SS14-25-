@@ -599,7 +599,7 @@ namespace Content.Server.Voting.Managers
         private Dictionary<string, string> GetGamePresets()
         {
             var presets = new Dictionary<string, string>();
-            var ticker = _entityManager.System<GameTicker>();
+            var ticker = _entityManager.System<Content.Server.GameTicking.ServerGameTicker>();
 
             foreach (var preset in _prototypeManager.EnumeratePrototypes<GamePresetPrototype>())
             {

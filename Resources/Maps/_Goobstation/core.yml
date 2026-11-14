@@ -65015,7 +65015,7 @@ entities:
     - type: NavMapBeacon
       text: Interrogation
     - type: WarpPoint
-      location: Interrogation
+      location: is14-map-warp-88ea218fd314
 - proto: DefaultStationBeaconDisposals
   entities:
   - uid: 14853
@@ -65031,7 +65031,7 @@ entities:
     - type: NavMapBeacon
       text: Bathroom
     - type: WarpPoint
-      location: Bathroom
+      location: is14-map-warp-5834e3de2530
 - proto: DefaultStationBeaconDorms
   entities:
   - uid: 20840
@@ -65056,7 +65056,7 @@ entities:
     - type: NavMapBeacon
       text: Secondary Shuttle Dock
     - type: WarpPoint
-      location: Secondary Shuttle Dock
+      location: is14-map-warp-c1652ac346bc
   - uid: 7059
     components:
     - type: Transform
@@ -65085,7 +65085,7 @@ entities:
     - type: NavMapBeacon
       text: Tertiary Shuttle Dock
     - type: WarpPoint
-      location: Tertiary Shuttle Dock
+      location: is14-map-warp-f1642b4275bc
   - uid: 21053
     components:
     - type: Transform
@@ -65101,7 +65101,7 @@ entities:
     - type: NavMapBeacon
       text: Evacuation
     - type: WarpPoint
-      location: Evacuation
+      location: is14-map-warp-192f44d722e3
 - proto: DefaultStationBeaconEVAStorage
   entities:
   - uid: 20843
@@ -65271,7 +65271,7 @@ entities:
     - type: NavMapBeacon
       text: Arcade
     - type: WarpPoint
-      location: Arcade
+      location: is14-map-warp-df79c0f30f3a
 - proto: DefaultStationBeaconSingularity
   entities:
   - uid: 17163
@@ -65315,7 +65315,7 @@ entities:
     - type: NavMapBeacon
       text: Boards
     - type: WarpPoint
-      location: Boards
+      location: is14-map-warp-4fcd39dd9263
 - proto: DefaultStationBeaconTelecoms
   entities:
   - uid: 20861
@@ -65331,7 +65331,7 @@ entities:
     - type: NavMapBeacon
       text: Cameras
     - type: WarpPoint
-      location: Cameras
+      location: is14-map-warp-a9b675db7c20
 - proto: DefaultStationBeaconTheater
   entities:
   - uid: 20874
@@ -152104,7 +152104,7 @@ entities:
       pos: 8.5,-3.5
       parent: 21128
     - type: WarpPoint
-      location: Unknown shuttle
+      location: is14-map-warp-4207a5fa1b94
 - proto: WaterCooler
   entities:
   - uid: 3471

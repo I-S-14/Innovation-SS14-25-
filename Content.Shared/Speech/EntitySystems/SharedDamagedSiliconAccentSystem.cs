@@ -34,7 +34,7 @@ public abstract partial class SharedDamagedSiliconAccentSystem : RelayAccentSyst
             {
                 currentChargeLevel = ent.Value.Comp.OverrideChargeLevel.Value;
             }
-            else if (_powerCell.TryGetBatteryFromSlot(uid, out var battery))
+            else if (_powerCell.TryGetBatteryFromSlotOrEntity(uid, out var battery)) // IS14: retain Goob built-in batteries.
             {
                 currentChargeLevel = _battery.GetChargeLevel(battery.Value.AsNullable());
             }

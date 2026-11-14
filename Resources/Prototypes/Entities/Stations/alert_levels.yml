@@ -12,4 +12,8 @@
     - Red
     - Violet
     - Yellow
+    - amber # IS14: retained Goob authorization gate controls availability.
+    - omicron
+    - octarine
+    - honk
   - type: AmberAlert # Goobstation - gates the amber alert level

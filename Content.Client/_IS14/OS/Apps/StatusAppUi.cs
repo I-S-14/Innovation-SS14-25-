@@ -1,3 +1,4 @@
+using Content.Client.GameTicking; // IS14-change: ticker namespace move
 using Content.Client._IS14.Controls;
 using Content.Client._IS14.OS.Shell;
 using Content.Client.GameTicking.Managers;

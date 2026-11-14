@@ -169,12 +169,12 @@ public sealed partial class SurveillanceCameraRouterSystem : EntitySystem
     // Pings a subnet to get all camera information.
     private void PingSubnet(Entity<SurveillanceCameraRouterComponent?> ent)
     {
-        if (!_query.Resolve(ref ent) || ent.Comp == null)
+        if (!_query.Resolve(ref ent) || ent.Comp == null || ent.Comp.SubnetFrequencyId == null)
             return;
 
         var payload = new SurveillanceCameraPingPayload
         {
-            Subnet = ent.Comp.SubnetName,
+            Subnet = ent.Comp.SubnetFrequencyId.Value,
         };
         _deviceNetworkSystem.SendPacket(ent.Owner, null, ref payload, ent.Comp.SubnetFrequency);
     }

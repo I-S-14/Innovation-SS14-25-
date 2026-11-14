@@ -7,7 +7,7 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Shared._CorvaxGoob.Botany.PlantAnalyzer;
 
-public sealed class PlantAnalyzerLocalizationHelper : EntitySystem
+public sealed class CorvaxPlantAnalyzerLocalizationHelper : EntitySystem
 {
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
     [Dependency] private readonly SharedAtmosphereSystem _atmo = default!;

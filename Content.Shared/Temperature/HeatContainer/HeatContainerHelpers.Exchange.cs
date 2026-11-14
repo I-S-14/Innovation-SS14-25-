@@ -53,7 +53,7 @@ public static partial class HeatContainerHelpers
         var cTotal = cA.HeatCapacity + cB.HeatCapacity;
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(cTotal);
         // Insert the above solution for Q into T_A_final = T_A_initial - Q / C_A and rearrange the result.
-        return (cA.HeatCapacity * cA.Temperature - cB.HeatCapacity * cB.Temperature) / cTotal;
+        return (cA.HeatCapacity * cA.Temperature + cB.HeatCapacity * cB.Temperature) / cTotal;
     }
 
     /// <summary>
@@ -83,7 +83,7 @@ public static partial class HeatContainerHelpers
         cA.Temperature = tFinal;
         cB.Temperature = tFinal;
         // Guarded against div/0 in EquilibriumTemperatureQuery: totalHeatCapacity > 0.
-        dQ = (tInitialA - tFinal) / cA.HeatCapacity;
+        dQ = (tInitialA - tFinal) * cA.HeatCapacity;
     }
 
     #endregion

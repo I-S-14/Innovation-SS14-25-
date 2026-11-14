@@ -27,10 +27,9 @@ namespace Content.Client.TextScreen;
 public sealed partial class TextScreenSystem : VisualizerSystem<TextScreenVisualsComponent>
 {
     [Dependency] private readonly IGameTiming _gameTiming = default!;
-    [Dependency] private readonly SpriteSystem _sprite = default!;
-    [Dependency] private IGameTiming _timing = default!;
-    [Dependency] private EntityQuery<SpriteComponent> _spriteQuery;
-    [Dependency] private EntityQuery<TextScreenTimerVisualsComponent> _screenTimerQuery;
+
+    [Dependency] private EntityQuery<SpriteComponent> _spriteQuery = default!;
+    [Dependency] private EntityQuery<TextScreenTimerVisualsComponent> _screenTimerQuery = default!;
 
     /// <summary>
     /// Contains the state that should be drawn for each non-alphanumeric character.
@@ -128,7 +127,7 @@ public sealed partial class TextScreenSystem : VisualizerSystem<TextScreenVisual
         args.TryGetData(TextScreenVisuals.DefaultText, out string? defaultTextValue);
 
         if (!args.TryGetData(TextScreenVisuals.ScreenTextTime, out TimeSpan? scrollTime))
-            scrollTime = _timing.CurTime;
+            scrollTime = _gameTiming.CurTime;
 
         if (_screenTimerQuery.TryComp(uid, out var timer)
             && args.TryGetData(TextScreenVisuals.TargetTime, out TimeSpan? textTime))
@@ -180,7 +179,7 @@ public sealed partial class TextScreenSystem : VisualizerSystem<TextScreenVisual
             if (timer.TargetTime == null)
                 continue;
 
-            if (timer.TargetTime <= _timing.CurTime)
+            if (timer.TargetTime <= _gameTiming.CurTime)
             {
                 // Timer finished, draw finished text and reset timer state.
                 SetTextToDisplay(uid, timer.FinishedText);
@@ -192,7 +191,7 @@ public sealed partial class TextScreenSystem : VisualizerSystem<TextScreenVisual
             else
             {
                 // Check if we need to update our time by the value it would print.
-                var screenValue = ConvertTimeToDisplayValue(timer.TargetTime.Value - _timing.CurTime, timer.ShowCentiseconds);
+                var screenValue = ConvertTimeToDisplayValue(timer.TargetTime.Value - _gameTiming.CurTime, timer.ShowCentiseconds);
                 if (screenValue == timer.ScreenValue)
                     continue;
 
@@ -218,7 +217,7 @@ public sealed partial class TextScreenSystem : VisualizerSystem<TextScreenVisual
                 for (var i = 0; i < screen.RowData.Length; i++)
                 {
                     var rowData = screen.RowData[i];
-                    if (rowData.NextScroll > _timing.CurTime)
+                    if (rowData.NextScroll > _gameTiming.CurTime)
                         continue;
 
                     ScrollRow(ref rowData);
@@ -458,7 +457,7 @@ public sealed partial class TextScreenSystem : VisualizerSystem<TextScreenVisual
     /// </summary>
     private void ScrollRow(ref TextScreenRow rowData)
     {
-        var difference = (_timing.CurTime - rowData.NextScroll).TotalSeconds;
+        var difference = (_gameTiming.CurTime - rowData.NextScroll).TotalSeconds;
         if (!double.IsPositive(difference))
             difference = 0.0;
 

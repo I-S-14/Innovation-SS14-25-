@@ -7,6 +7,13 @@ namespace Content.Shared.Speech.EntitySystems;
 
 public sealed partial class MothAccentSystem : RelayAccentSystem<MothAccentComponent>
 {
+    //IS14-change start: cache retained Russian accent patterns.
+    private static readonly Regex RegexLowerCyrillicZh = new("ж+");
+    private static readonly Regex RegexUpperCyrillicZh = new("Ж+");
+    private static readonly Regex RegexLowerCyrillicZ = new("з+");
+    private static readonly Regex RegexUpperCyrillicZ = new("З+");
+    //IS14-change end
+
     private static readonly Regex RegexLowerBuzz = new("z{1,3}");
     private static readonly Regex RegexUpperBuzz = new("Z{1,3}");
 
@@ -21,27 +28,23 @@ public sealed partial class MothAccentSystem : RelayAccentSystem<MothAccentCompo
 
         // CorvaxGoob-Localization-Start
         // ж => жжж
-        message = Regex.Replace(
+        message = RegexLowerCyrillicZh.Replace(
             message,
-            "ж+",
             _random.Pick(new List<string>() { "жж", "жжж" })
         );
         // Ж => ЖЖЖ
-        message = Regex.Replace(
+        message = RegexUpperCyrillicZh.Replace(
             message,
-            "Ж+",
             _random.Pick(new List<string>() { "ЖЖ", "ЖЖЖ" })
         );
         // з => ссс
-        message = Regex.Replace(
+        message = RegexLowerCyrillicZ.Replace(
             message,
-            "з+",
             _random.Pick(new List<string>() { "зз", "ззз" })
         );
         // З => CCC
-        message = Regex.Replace(
+        message = RegexUpperCyrillicZ.Replace(
             message,
-            "З+",
             _random.Pick(new List<string>() { "ЗЗ", "ЗЗЗ" })
         );
         // CorvaxGoob-Localization-End

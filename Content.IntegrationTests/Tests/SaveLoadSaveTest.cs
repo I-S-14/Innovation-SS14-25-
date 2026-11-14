@@ -103,7 +103,7 @@ namespace Content.IntegrationTests.Tests
             Assert.That(SEntMan.EntityCount.Equals(0), "Lingering entities at the end of CreateSaveLoadSaveGrid");
         }
 
-        private const string TestMap = "Maps/_Goobstation/bagel.yml"; // Goob edit - what point is there in testing a map without any goob features??
+        private new const string TestMap = "Maps/_Goobstation/bagel.yml"; // Goob edit - what point is there in testing a map without any goob features??
 
         /// <summary>
         /// Loads the default map, runs it for 5 ticks, then assert that it did not change.

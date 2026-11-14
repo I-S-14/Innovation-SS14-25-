@@ -6,8 +6,6 @@ using Content.Shared.Interaction.Events;
 using Content.Shared.Puppet;
 using Content.Shared.CombatMode;
 using Content.Shared.Hands;
-using Content.Shared.Interaction.Events;
-using Content.Shared.Puppet;
 using Content.Shared.StatusEffectNew;
 using Robust.Shared.Prototypes;
 using Content.Shared.Speech.Muting;

@@ -20,7 +20,7 @@ public sealed partial class StasisOverlaySystem : EntitySystem
         base.Initialize();
 
         SubscribeLocalEvent<InsideStasisComponent, ComponentInit>(OnStasisInit);
-        SubscribeLocalEvent<InsideStasisComponent, ComponentShutdown>(OnStasisShutdown);
+        SubscribeLocalEvent<InsideStasisComponent, ComponentRemove>(OnStasisRemoved); // IS14: the shared stasis system owns shutdown.
 
         SubscribeLocalEvent<InsideStasisComponent, LocalPlayerAttachedEvent>(OnPlayerAttached);
         SubscribeLocalEvent<InsideStasisComponent, LocalPlayerDetachedEvent>(OnPlayerDetached);
@@ -44,7 +44,7 @@ public sealed partial class StasisOverlaySystem : EntitySystem
             _overlayManager.AddOverlay(_overlay);
     }
 
-    private void OnStasisShutdown(Entity<InsideStasisComponent> stasised, ref ComponentShutdown args)
+    private void OnStasisRemoved(Entity<InsideStasisComponent> stasised, ref ComponentRemove args)
     {
         if (_player.LocalEntity == stasised)
         {

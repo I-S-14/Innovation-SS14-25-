@@ -1,0 +1,12 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: 5327c414c5:Resources/Prototypes/Entities/Clothing/Shoes/specific.yml
+- type: entity
+  parent: ClothingShoesBaseButcherable
+  id: ClothingShoesWizard
+  name: wizard shoes
+  description: A pair of magic shoes.
+  components:
+  - type: Sprite
+    sprite: Clothing/Shoes/Specific/wizard.rsi
+  - type: Clothing
+    sprite: Clothing/Shoes/Specific/wizard.rsi

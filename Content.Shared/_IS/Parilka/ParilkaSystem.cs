@@ -1,3 +1,4 @@
+using Robust.Shared.Prototypes;
 using System;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Interaction;
@@ -9,6 +10,10 @@ namespace Content.Shared._IS.Parilka;
 
 public sealed class ParilkaSystem : EntitySystem
 {
+    //IS14-change start: typed IDs for the retained behavior.
+    private static readonly ProtoId<TagPrototype> FuelForFireTag = "FuelForFire";
+    //IS14-change end
+
     [Dependency] private readonly TagSystem _tag = default!;
     [Dependency] private readonly SharedStackSystem _stack = default!;
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
@@ -111,12 +116,14 @@ public sealed class ParilkaSystem : EntitySystem
     {
         var used = args.Used;
 
-        if (_tag.HasTag(used, "FuelForFire"))
+        if (_tag.HasTag(used, FuelForFireTag))
         {
             if (component.Fuel >= component.MaxFuel)
                 return;
 
-            if (!EntityManager.TryGetComponent<StackComponent>(used, out var stack))
+            //IS14-change start
+            if (!TryComp<StackComponent>(used, out var stack))
+            //IS14-change end
                 return;
 
             if (!_stack.TryUse((used, stack), 1))

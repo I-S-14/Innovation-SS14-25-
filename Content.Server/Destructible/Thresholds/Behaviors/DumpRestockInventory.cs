@@ -3,7 +3,6 @@
 using Robust.Shared.Random;
 using Content.Shared.Stacks;
 using Content.Shared.VendingMachines;
-using Content.Shared.VendingMachines.Components;
 using Content.Shared.Prototypes;
 
 namespace Content.Server.Destructible.Thresholds.Behaviors;

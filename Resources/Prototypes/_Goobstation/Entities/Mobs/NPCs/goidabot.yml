@@ -1,6 +1,6 @@
 # goida
 - type: entity
-  parent: [MobSiliconBase, MobCombat]
+  parent: [IS14RetainedSiliconBotBase, MobCombat] # IS14-change: preserve this variant's own destruction threshold.
   id: MobGoidaBot
   name: goida bot
   description: ГОЙДА

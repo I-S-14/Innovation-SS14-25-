@@ -174,7 +174,7 @@ namespace Content.Client.HealthAnalyzer.UI
             // Basic Diagnostic
 
             TemperatureLabel.Text = !float.IsNaN(msg.Temperature)
-                ? $"{msg.Temperature - Atmospherics.T0C:F1} °C ({msg.Temperature:F1} K)"
+                ? $"{msg.Temperature - Atmospherics.T0C:F1} В°C ({msg.Temperature:F1} K)"
                 : Loc.GetString("health-analyzer-window-entity-unknown-value-text");
 
             BloodLabel.Text = !float.IsNaN(msg.BloodLevel)
@@ -483,7 +483,7 @@ namespace Content.Client.HealthAnalyzer.UI
                         ("amount", typeAmount)
                     );
 
-                    groupContainer.AddChild(CreateDiagnosticItemLabel(damageString.Insert(0, " · ")));
+                    groupContainer.AddChild(CreateDiagnosticItemLabel(damageString.Insert(0, " В· ")));
                 }
             }
         }
@@ -514,16 +514,13 @@ namespace Content.Client.HealthAnalyzer.UI
             foreach (var (ent, data) in solutions)
             {
                  // CorvaxGoob-Localization-start
-                var groupTitleText = "";
-
-                if (data.Name != null)
-                    groupTitleText = Loc.GetString(
-                    "group-solution-name",
-                    ("solution", Loc.GetString("solution-type-" + data.Name))
-                    );
-                else
-                    Loc.GetString("group-solution-unknown");
-                 // CorvaxGoob-Localization-end
+                var groupTitleText = Loc.GetString("group-solution-unknown");
+                if (_entityManager.TryGetComponent<SolutionComponent>(_entityManager.GetEntity(ent), out var solutionComponent))
+                {
+                    var name = solutionComponent.Id;
+                    var localizedName = Loc.TryGetString("solution-type-" + name, out var localized) ? localized : name;
+                    groupTitleText = Loc.GetString("group-solution-name", ("solution", localizedName));
+                }
 
                 var groupContainer = new BoxContainer
                 {
@@ -550,7 +547,7 @@ namespace Content.Client.HealthAnalyzer.UI
                         ("quantity", reagent.Quantity)
                     )}";
 
-                    groupContainer.AddChild(CreateDiagnosticItemLabel(reagentString.Insert(0, " · ")));
+                    groupContainer.AddChild(CreateDiagnosticItemLabel(reagentString.Insert(0, " В· ")));
                 }
             }
         }
@@ -585,11 +582,11 @@ namespace Content.Client.HealthAnalyzer.UI
                     Orientation = BoxContainer.LayoutOrientation.Vertical,
                 };
                 diseaseInfoContainer.AddChild(CreateDiagnosticItemLabel(Loc.GetString("health-analyzer-window-disease-type-text", ("type", disease.Genotype))));
-                diseaseInfoContainer.AddChild(CreateDiagnosticItemLabel(" · " + Loc.GetString(
+                diseaseInfoContainer.AddChild(CreateDiagnosticItemLabel(" В· " + Loc.GetString(
                     "health-analyzer-window-disease-progress-text",
                     ("progress", disease.InfectionProgress)
                 )));
-                diseaseInfoContainer.AddChild(CreateDiagnosticItemLabel(" · " + Loc.GetString(
+                diseaseInfoContainer.AddChild(CreateDiagnosticItemLabel(" В· " + Loc.GetString(
                     "health-analyzer-window-immunity-progress-text",
                     ("progress", disease.ImmunityProgress)
                 )));

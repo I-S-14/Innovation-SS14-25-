@@ -138,7 +138,8 @@ public sealed partial class DoAfterOverlay : Overlay // Goob
                     maxAlpha = 0.5f;
                 }
 
-                alpha = GetDoAfterAlpha(time - doAfter.StartTime, doAfter.Args.Delay, alpha); // Goob
+                var elapsed = time - doAfter.StartTime;
+                var alpha = GetDoAfterAlpha(elapsed, doAfter.Args.Delay, maxAlpha); // Goob
 
                 // Use the sprite itself if we know its bounds. This means short or tall sprites don't get overlapped
                 // by the bar.

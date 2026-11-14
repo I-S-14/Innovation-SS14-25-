@@ -99,7 +99,10 @@
     solutionOnBody: false
     updateInterval: 0.25
     metabolizerTypes: [ Dragon ]
-    stages: [ Digestion, Bloodstream ]
+    # IS14: retained Goob metabolizers process these groups, including all derived behonkers.
+    groups:
+    - id: Medicine
+    - id: Poison
   - type: Butcherable
     spawned:
       - id: MaterialBananium1

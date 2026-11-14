@@ -19,7 +19,6 @@ using Content.Shared.Roles;
 using Content.Shared.Roles.Components;
 using Content.Shared.Silicons.Laws;
 using Content.Shared.Silicons.Laws.Components;
-using Content.Shared.Database; // goob logging
 using Content.Server.Administration.Logs; // goob logging
 using Robust.Server.GameObjects;
 using Robust.Shared.Audio;
@@ -48,6 +47,10 @@ namespace Content.Server.Silicons.Laws;
 
 public sealed partial class SiliconLawSystem : SharedSiliconLawSystem
 {
+    //IS14-change start: typed prototype IDs required by the upstream analyzer.
+    private static readonly ProtoId<TagPrototype> CompatibilityStationAiTagId = "StationAi";
+    //IS14-change end
+
     [Dependency] private readonly IChatManager _chatManager = default!;
     [Dependency] private readonly IAdminLogManager _adminLogger = default!; // goob logging
     [Dependency] private readonly SharedMindSystem _mind = default!;
@@ -95,7 +98,7 @@ public sealed partial class SiliconLawSystem : SharedSiliconLawSystem
 
         // Corvax-Next-AiRemoteControl-Start
         if (HasComp<AiRemoteControllerComponent>(uid)
-            || _tagSystem.HasTag(uid, "StationAi")) // skip a law's notification for remotable and AI
+            || _tagSystem.HasTag(uid, CompatibilityStationAiTagId)) // skip a law's notification for remotable and AI
             return;
         // Corvax-Next-AiRemoteControl-End
 
@@ -121,7 +124,7 @@ public sealed partial class SiliconLawSystem : SharedSiliconLawSystem
 
     private void OnLawProviderMindAdded(Entity<SiliconLawProviderComponent> ent, ref MindAddedMessage args)
     {
-        _adminLogger.Add(LogType.SiliconLaw, LogImpact.Low, $"{ent.Owner} laws at MindAdded are [{ent.Comp.Lawset?.LoggingString()}]");
+        _adminLogger.Add(LogType.SiliconLaws, LogImpact.Low, $"{ent.Owner} laws at MindAdded are [{ent.Comp.Lawset?.LoggingString()}]");
 
         if (!ent.Comp.Subverted)
             return;
@@ -299,7 +302,7 @@ public sealed partial class SiliconLawSystem : SharedSiliconLawSystem
     {
         base.NotifyLawsChanged(ent, cue);
 
-        _adminLogger.Add(LogType.SiliconLaw, LogImpact.Low, $"{ent} laws changed to [{ent.Comp.Lawset?.LoggingString()}]");
+        _adminLogger.Add(LogType.SiliconLaws, LogImpact.Low, $"{ent} laws changed to [{ent.Comp.Lawset?.LoggingString()}]");
 
         if (!TryComp<ActorComponent>(ent, out var actor))
             return;
@@ -344,7 +347,7 @@ public sealed partial class SiliconLawSystem : SharedSiliconLawSystem
             component.Lawset = new SiliconLawset();
 
         component.Lawset.Laws = newLaws;
-        NotifyLawsChanged(target, cue);
+        NotifyLawsChanged((target, component), cue);
 
         _adminLogger.Add(LogType.SiliconLaws, LogImpact.Medium, $"{ToPrettyString(target):entity} laws changed to:{component.Lawset.LoggingString()}"); // goob
     }
@@ -547,6 +550,13 @@ public sealed partial class SiliconLawSystem : SharedSiliconLawSystem
         return laws;
     }
     // Goob edit end
+    private void UpdateLawVersion(Entity<SiliconLawBoundComponent?> target)
+    {
+        if (!Resolve(target, ref target.Comp))
+            return;
+
+        target.Comp.Version++;
+    }
 }
 
 [ToolshedCommand, AdminCommand(AdminFlags.Admin)]
@@ -574,4 +584,5 @@ public sealed class LawsCommand : ToolshedCommand
             yield return $"law {law.LawIdentifierOverride ?? law.Order.ToString()}: {Loc.GetString(law.LawString)}";
         }
     }
+
 }

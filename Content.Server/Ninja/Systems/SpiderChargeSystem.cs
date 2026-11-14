@@ -81,7 +81,7 @@ public sealed partial class SpiderChargeSystem : SharedSpiderChargeSystem
     /// Handles greentext after exploding.
     /// Assumes it didn't move and the target was destroyed so be nice.
     /// </summary>
-    private void OnExplode(EntityUid uid, SpiderChargeComponent comp, TriggerEvent args)
+    private void OnExplode(EntityUid uid, SpiderChargeComponent comp, ref TriggerEvent args)
     {
         if (args.Key != comp.TriggerKey)
             return;

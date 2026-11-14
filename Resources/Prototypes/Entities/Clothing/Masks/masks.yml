@@ -840,7 +840,7 @@
     sprite: Clothing/Mask/neckgaiterred.rsi
 
 - type: entity
-  parent: ClothingMaskClownBase
+  parent: IS14LegacyClownMaskBase # IS14-change: original Goob mask has no foldable wig.
   id: ClothingMaskSexyClown
   name: sexy clown mask
   description: Some naughty clowns think this is what the Honkmother looks like.

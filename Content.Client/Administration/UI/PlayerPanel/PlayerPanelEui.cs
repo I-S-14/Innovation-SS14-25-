@@ -72,7 +72,7 @@ public sealed partial class PlayerPanelEui : BaseEui
         PlayerPanel.SetFrozen(s.CanFreeze, s.Frozen);
         PlayerPanel.SetAhelp(s.CanAhelp);
         PlayerPanel.SetTrustScore(s.TrustScore);
-        PlayerPanel.SetAccountAge(s.AccountAge); // goob edit
+        PlayerPanel.SetAccountAge(s.AccountCreationDate is { } created ? DateTime.UtcNow - created : null); // goob edit
         PlayerPanel.SetButtons();
     }
 }

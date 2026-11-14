@@ -1,0 +1,35 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: 5327c414c5:Resources/Prototypes/Entities/Objects/Specific/Robotics/borg_modules.yml
+- type: entity
+  id: BorgModuleGardening
+  parent: [BaseBorgModuleService, BaseProviderBorgModule]
+  name: gardening cyborg module
+  components:
+  - type: Sprite
+    layers:
+    - state: service
+    - state: icon-gardening
+  - type: ItemBorgModule
+    hands:
+    - item: HydroponicsToolMiniHoe
+    - item: HydroponicsToolSpade
+    - item: HydroponicsToolClippers
+    - item: Bucket
+  - type: BorgModuleIcon
+    icon: {sprite: Interface/Actions/actions_borg.rsi, state: gardening-module}
+- type: entity
+  id: BorgModuleHarvesting
+  parent: [BaseBorgModuleService, BaseProviderBorgModule]
+  name: harvesting cyborg module
+  components:
+  - type: Sprite
+    layers:
+    - state: service
+    - state: icon-harvesting
+  - type: ItemBorgModule
+    hands:
+    - item: HydroponicsToolScythe
+    - item: HydroponicsToolHatchet
+    - item: PlantBag
+  - type: BorgModuleIcon
+    icon: {sprite: Interface/Actions/actions_borg.rsi, state: harvesting-module}

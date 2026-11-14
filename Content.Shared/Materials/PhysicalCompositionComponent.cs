@@ -3,7 +3,6 @@
 using Content.Shared.Chemistry.Reagent;
 using Content.Goobstation.Maths.FixedPoint;
 using Robust.Shared.Prototypes;
-using Content.Goobstation.Maths.FixedPoint;
 
 namespace Content.Shared.Materials;
 

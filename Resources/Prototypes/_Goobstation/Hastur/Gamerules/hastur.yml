@@ -4,17 +4,13 @@
   components:
   - type: AntagSelection
     agentName: hastur-round-end-agent-name
-    definitions:
-    - spawnerPrototype: SpawnPointGhostHastur
-      min: 1
-      max: 1
-      pickPlayer: false
-      mindRoles:
-      - MindRoleGhostRoleSoloAntagonist
-      briefing:
-        text: hastur-role-greeting
-        color: Yellow
-        sound: /Audio/_Goobstation/Misc/Hastur/Void_Song.ogg
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14HasturMidroundAntag0635ac949
+      range:
+        max: 1
+        min: 1
+      playerRatio: 10
   - type: AntagRandomSpawn
   - type: AntagSpawner
     prototype: MobHastur
@@ -44,14 +40,10 @@
     prototype: MobHastur
   - type: AntagSelection
     agentName: hastur-round-end-agent-name
-    definitions:
-    - spawnerPrototype: HasturToken
-      min: 1
-      max: 1
-      pickPlayer: false
-      mindRoles:
-      - MindRoleGhostRoleSoloAntagonist
-      briefing:
-        text: hastur-role-greeting
-        color: Yellow
-        sound: /Audio/_Goobstation/Misc/Hastur/Void_Song.ogg
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14TokenHasturAntag0dad9848d
+      range:
+        max: 1
+        min: 1
+      playerRatio: 10

@@ -175,11 +175,10 @@ public sealed class CorvaxFootprintSystem : EntitySystem
         if (_stickyBuffer.Count == 0)
             return false;
 
-        if (!_solution.EnsureSolutionEntity(entity.Owner, FootPrintSolution,
-                out _,
-                out var solution,
-                FixedPoint2.Max(entity.Comp.MaxFootVolume, entity.Comp.MaxBodyVolume)))
+        if (!_solution.EnsureSolution(entity.Owner, FootPrintSolution, out var ensured))
             return false;
+        Entity<SolutionComponent>? solution = ensured;
+        _solution.SetCapacity(ensured, FixedPoint2.Max(entity.Comp.MaxFootVolume, entity.Comp.MaxBodyVolume));
 
         var feetSol = solution.Value.Comp.Solution;
 

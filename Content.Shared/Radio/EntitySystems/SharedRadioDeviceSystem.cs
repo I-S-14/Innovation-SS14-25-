@@ -111,9 +111,13 @@ public abstract partial class SharedRadioDeviceSystem : EntitySystem
         if (!Resolve(ent, ref ent.Comp, false))
             return;
 
-        if (ent.Comp.PowerRequired && !_power.IsPowered(ent.Owner))
+        if (enabled && ent.Comp.PowerRequired && !_power.IsPowered(ent.Owner))
             return;
 
+        //IS14-change start
+        if (enabled && ent.Comp.PowerRequired && !_power.IsPowered(ent.Owner))
+            return;
+        //IS14-change end
         ent.Comp.Enabled = enabled;
         Dirty(ent);
 
@@ -190,6 +194,10 @@ public abstract partial class SharedRadioDeviceSystem : EntitySystem
         if (!Resolve(ent, ref ent.Comp, false))
             return;
 
+        //IS14-change start
+        if (enabled && ent.Comp.PowerRequired && !_power.IsPowered(ent.Owner))
+            return;
+        //IS14-change end
         ent.Comp.Enabled = enabled;
         Dirty(ent);
 
@@ -252,8 +260,10 @@ public abstract partial class SharedRadioDeviceSystem : EntitySystem
     [SubscribeLocalEvent]
     private void OnReceiveRadio(Entity<RadioSpeakerComponent> ent, ref RadioReceiveEvent args)
     {
-        if (ent.Owner == args.RadioSource)
+        //IS14-change start: powered radios and the Goob radio host retain their restrictions.
+        if (ent.Owner == args.RadioSource || ent.Comp.PowerRequired && !_power.IsPowered(ent.Owner))
             return;
+        //IS14-change end
 
         var nameEv = new TransformSpeakerNameEvent(args.MessageSource, Name(args.MessageSource));
         RaiseLocalEvent(args.MessageSource, nameEv);
@@ -265,10 +275,11 @@ public abstract partial class SharedRadioDeviceSystem : EntitySystem
         // log to chat so people can identity the speaker/source, but avoid clogging ghost chat if there are many radios
         _chat.TrySendInGameICMessage(ent.Owner,
             args.OriginalChatMsg.Message, // IS14-merge: Einstein Engines language radio event
-            InGameICChatType.Whisper,
+            ent.Comp.SpeakNormally ? InGameICChatType.Speak : InGameICChatType.Whisper,
             ChatTransmitRange.GhostRangeLimit,
             nameOverride: name,
-            checkRadioPrefix: false);
+            checkRadioPrefix: ent.Comp.SpeakNormally,
+            languageOverride: args.Language);
     }
 
     [SubscribeLocalEvent]

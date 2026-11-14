@@ -23,7 +23,6 @@
       inverted: true
       species:
       - Abductor
-  weight: 9 # IS14-edit
   startingGear: WardenGear
   icon: "JobIconWarden"
   supervisors: job-supervisors-hos

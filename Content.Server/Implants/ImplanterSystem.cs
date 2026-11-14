@@ -18,7 +18,6 @@ public sealed partial class ImplanterSystem : SharedImplanterSystem
 {
     [Dependency] private readonly PopupSystem _popup = default!;
     [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
-    [Dependency] private readonly SharedContainerSystem _container = default!;
     [Dependency] private readonly SkillsSystem _skills = default!; // CorvaxGoob-Skills
 
     // CorvaxGoob-Skills-Start

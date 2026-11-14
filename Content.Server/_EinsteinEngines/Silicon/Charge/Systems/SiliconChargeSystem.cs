@@ -21,7 +21,6 @@ using Robust.Shared.Configuration;
 using Robust.Shared.Utility;
 using Content.Shared.PowerCell.Components;
 using Content.Shared.Alert;
-using Content.Shared.Atmos.Components;
 using Content.Shared.Power.Components;
 using Content.Shared.Temperature.Components;
 // Begin TheDen - IPC Dynamic Power draw
@@ -196,7 +195,9 @@ public sealed class SiliconChargeSystem : EntitySystem
 
             siliconComp.OverheatAccumulator -= 5;
 
-            if (!EntityManager.TryGetComponent<FlammableComponent>(silicon, out var flamComp)
+            //IS14-change start
+            if (!TryComp<FlammableComponent>(silicon, out var flamComp)
+            //IS14-change end
                 || flamComp is { OnFire: true }
                 || !(temperComp.CurrentTemperature > damageComp.HeatDamageThreshold))
                 return hotTempMulti;

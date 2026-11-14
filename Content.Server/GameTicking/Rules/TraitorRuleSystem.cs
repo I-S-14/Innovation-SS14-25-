@@ -16,7 +16,6 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using System.Linq;
 using System.Text;
-using Content.Server.Codewords;
 using Content.Shared.Clumsy;
 using Content.Goobstation.Common.CCVar;
 using Content.Shared.Antag;
@@ -36,10 +35,10 @@ public sealed partial class TraitorRuleSystem : GameRuleSystem<TraitorRuleCompon
     [Dependency] private readonly NpcFactionSystem _npcFaction = default!;
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly SharedRoleCodewordSystem _roleCodewordSystem = default!;
+    [Dependency] private readonly CodewordSystem _roleCodewordSystem = default!;
     [Dependency] private readonly SharedRoleSystem _roleSystem = default!;
     [Dependency] private readonly UplinkSystem _uplink = default!;
-    [Dependency] private readonly CodewordSystem _codewordSystem = default!;
+
 
     public override void Initialize()
     {
@@ -60,7 +59,7 @@ public sealed partial class TraitorRuleSystem : GameRuleSystem<TraitorRuleCompon
     public bool MakeTraitor(EntityUid traitor, TraitorRuleComponent component)
     {
         Log.Debug($"MakeTraitor {ToPrettyString(traitor)} - start");
-        var factionCodewords = _codewordSystem.GetCodewords(component.CodewordFactionPrototypeId);
+        var factionCodewords = _roleCodewordSystem.GetCodewords(component.CodewordFactionPrototypeId);
 
         //Grab the mind if it wasn't provided
         if (!_mindSystem.TryGetMind(traitor, out var mindId, out var mind))
@@ -148,7 +147,7 @@ public sealed partial class TraitorRuleSystem : GameRuleSystem<TraitorRuleCompon
 
         // The mind entity is stored in nullspace with a PVS override for the owner, so only they can see the codewords.
         var codewordComp = EnsureComp<RoleCodewordComponent>(mindId);
-        _roleCodewordSystem.SetRoleCodewords((mindId, codewordComp), "traitor", factionCodewords.ToList(), color);
+        _roleCodewordSystem.SetRoleCodewords((mindId, codewordComp), factionCodewords.ToList(), color);
 
         // Change the faction
         Log.Debug($"MakeTraitor {ToPrettyString(traitor)} - Change faction");
@@ -266,7 +265,7 @@ public sealed partial class TraitorRuleSystem : GameRuleSystem<TraitorRuleCompon
     private void OnObjectivesTextPrepend(EntityUid uid, TraitorRuleComponent comp, ref ObjectivesTextPrependEvent args)
     {
         if (comp.GiveCodewords)
-            args.Text += "\n" + Loc.GetString("traitor-round-end-codewords", ("codewords", string.Join(", ", _codewordSystem.GetCodewords(comp.CodewordFactionPrototypeId))));
+            args.Text += "\n" + Loc.GetString("traitor-round-end-codewords", ("codewords", string.Join(", ", _roleCodewordSystem.GetCodewords(comp.CodewordFactionPrototypeId))));
     }
 
     // TODO: figure out how to handle this? add priority to briefing event?

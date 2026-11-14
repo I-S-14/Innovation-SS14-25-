@@ -12256,7 +12256,7 @@ entities:
       pos: -2.5,-3.5
       parent: 2
     - type: WarpPoint
-      location: Терминал
+      location: is14-map-warp-48a1ed3c72a1
 - proto: WaterCooler
   entities:
   - uid: 1521

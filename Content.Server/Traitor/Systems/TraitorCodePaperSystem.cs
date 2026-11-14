@@ -10,7 +10,6 @@ using Content.Shared.Codewords;
 using Content.Shared.Paper;
 using Robust.Shared.Random;
 using Robust.Shared.Utility;
-using Content.Server.Codewords;
 
 namespace Content.Server.Traitor.Systems;
 

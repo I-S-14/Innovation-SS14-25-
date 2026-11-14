@@ -13,14 +13,14 @@
   - type: Item
     storedRotation: -90
   - type: ActivatableUI
-    key: enum.PlantAnalyzerUiKey.Key
+    key: enum.CorvaxPlantAnalyzerUiKey.Key
   - type: UserInterface
     interfaces:
-      enum.PlantAnalyzerUiKey.Key:
-        type: PlantAnalyzerBoundUserInterface
+      enum.CorvaxPlantAnalyzerUiKey.Key:
+        type: CorvaxPlantAnalyzerBoundUserInterface
   - type: ItemToggle
     onUse: false
-  - type: PlantAnalyzer
+  - type: CorvaxPlantAnalyzer
   - type: GuideHelp
     guides:
     - Botany

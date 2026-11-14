@@ -45,6 +45,9 @@ public record struct EmoteEvent(NetEntity Source, EmotePrototype Emote)
     /// If this message has already been "handled" by a previous system.
     /// </summary>
     public bool Handled;
+
+    //IS14-change: distinguish player spam from forced emotes.
+    public bool Voluntary;
 }
 
 /// <summary>

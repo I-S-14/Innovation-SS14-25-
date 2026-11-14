@@ -15,9 +15,7 @@
     lifetime: 90
   - type: Clickable
   - type: Damageable
-  - type: Injurable
     damageContainer: Inorganic
-
 - type: entity
   parent: BaseHoloSign
   id: HolosignWetFloor

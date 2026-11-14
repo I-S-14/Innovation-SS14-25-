@@ -8,7 +8,7 @@
       sprite: _Goobstation/Gangs/gang_objective_giver.rsi
       state: icon
     difficulty: 1.5
-    issuer: objective-issuer-gang
+    issuer: IS14ObjectiveIssuerGang
 
 - type: entity
   parent: BaseGangObjective

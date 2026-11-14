@@ -17,31 +17,32 @@
   recognizable: true
   standsout: true
   physicalDesc: reagent-physical-desc-ferrous
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        UncookedAnimalProteins: 0.2
+    Drink:
       effects:
       - !type:Satiate
         satiationType: Thirst
         factor: 1.0
         conditions:
-          - !type:MetabolizerTypeCondition
-            type: [ Human ]
-            inverted: true
-      - !type:EvenHealthChange
-        conditions:
         - !type:MetabolizerTypeCondition
-          type: [ Bloodsucker ]
-        damage:
-          Brute: -3
-          Burn: -1.25
-    Bloodstream: # Don't inject someone else's blood into yourself! Your own blood won't actually metabolise.
+          type: [Human]
+          inverted: true
+    Food:
+      effects:
+      - !type:AdjustReagent
+        reagent: UncookedAnimalProteins
+        amount: 0.1
+    Medicine:
       effects:
       - !type:HealthChange
+        conditions:
+        - !type:MetabolizerTypeCondition
+          type: [Bloodsucker]
         damage:
-          types:
-            Poison: 0.2
+          groups:
+            Brute: -3
+            Burn: -1.25
   plantMetabolism:
   - !type:PlantAdjustWater
     amount: 0.5
@@ -87,9 +88,9 @@
   viscosity: 0.25
   tileReactions:
     - !type:SpillTileReaction
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      # Delicious!
+    Food:
       effects:
       - !type:Satiate
         satiationType: Hunger
@@ -99,7 +100,7 @@
           type: [Slime]
           inverted: true
       - !type:ModifyBloodLevel
-        amount: 0.5 # drawing 15u removes 5% blood level from a slimeperson, this will add 5% when injecting 15u
+        amount: 0.5
         conditions:
         - !type:MetabolizerTypeCondition
           type: [Slime]
@@ -127,9 +128,9 @@
   viscosity: 0.10
   tileReactions:
     - !type:SpillTileReaction
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      # Sweet!
+    Food:
       effects:
       - !type:Satiate
         satiationType: Hunger
@@ -211,30 +212,29 @@
   physicalDesc: reagent-physical-desc-necrotic
   flavor: bitter
   color: "#2b0700"
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      # Disgusting!
+    Drink:
       effects:
       - !type:Satiate
         satiationType: Thirst
         factor: -0.5
-    Bloodstream:
+    Poison:
       effects:
       - !type:HealthChange
         conditions:
-        - !type:MetabolizerTypeCondition # Goobstation - Yowie
-          type: [ Yowie ]
+        - !type:MetabolizerTypeCondition
+          type: [Yowie]
           inverted: true
         damage:
           types:
             Poison: 4
       - !type:Vomit
         conditions:
-        - !type:MetabolizerTypeCondition # Goobstation - Yowie
-          type: [ Yowie ]
+        - !type:MetabolizerTypeCondition
+          type: [Yowie]
           inverted: true
         probability: 0.25
-
 - type: reagent
   id: Romerodone
   name: reagent-name-romerodone
@@ -243,14 +243,14 @@
   physicalDesc: reagent-physical-desc-necrotic
   flavor: metallic
   color: "#e62600"
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      # Disgusting!
+    Drink:
       effects:
       - !type:Satiate
         satiationType: Thirst
         factor: -0.5
-    Bloodstream:
+    Medicine:
       effects:
       - !type:HealthChange
         damage:
@@ -258,8 +258,6 @@
             Poison: 2
       - !type:Vomit
         probability: 0.5
-
-
 - type: reagent
   id: Ichor
   name: reagent-name-ichor
@@ -269,17 +267,17 @@
   flavor: metallic
   color: "#f4692e"
   recognizable: true
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Bloodstream:
+    Drink:
       effects:
       - !type:Satiate
         satiationType: Thirst
         factor: 1.5
-      # Goob start
       - !type:SuppressPain
         amount: 4
         time: 28
-      - !type:HealthChange # Goobstation - Make Ichor less shit
+      - !type:HealthChange
         damage:
           types:
             Heat: -5
@@ -293,12 +291,10 @@
             Blunt: -5
             Slash: -5
             Piercing: -5
-      - !type:ModifyBleed # Stop dragons from killing themselves from devouring people.
+      - !type:ModifyBleed
         amount: -3
       - !type:ModifyBloodLevel
         amount: 12
-      # Goob end
-  # Just in case you REALLY  REALLY want to water your plants
   plantMetabolism:
   - !type:PlantAdjustWater
     amount: 1 # Goobstation
@@ -333,14 +329,16 @@
   slipData:
     requiredSlipSpeed: 4.0 #It's not as slippery as water
   friction: 0.4
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      metabolites:
-        Nutriment: 0.1
+    Drink:
       effects:
       - !type:Satiate
         satiationType: Thirst
         factor: 0.5
+      - !type:AdjustReagent
+        reagent: Nutriment
+        amount: 0.1
   footstepSound:
     collection: FootstepBlood
     params:
@@ -355,17 +353,19 @@
   flavor: mindful
   color: "#C584B8"
   puddleSpriteSet: Blood # Goob
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
+    Drink:
       effects:
       - !type:Satiate
         satiationType: Hunger
         factor: 1.5
+    Poison:
+      effects:
       - !type:HealthChange
         damage:
           types:
             Cellular: 2
-
 - type: reagent
   id: LivingTissue
   name: reagent-name-living-tissue
@@ -388,8 +388,9 @@
   contrabandSeverity: Syndicate
   flavor: magical
   color: "#d44e99"
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Bloodstream:
+    Medicine:
       metabolismRate: 5
       effects:
       - !type:DnaImprint
@@ -398,7 +399,6 @@
         leader: true
         friendly: true
         guidebookText: entity-effect-guidebook-dna-imprint
-
 - type: reagent
   id: Ragorium
   name: reagent-name-ragorium
@@ -408,8 +408,9 @@
   contrabandSeverity: Major
   flavor: metallic
   color: "#b32e35"
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Bloodstream:
+    Medicine:
       metabolismRate: 5
       effects:
       - !type:DnaImprint

@@ -14,7 +14,6 @@ namespace Content.Client.NodeContainer
     [UsedImplicitly]
     public sealed partial class NodeGroupSystem : EntitySystem
     {
-        [Dependency] private readonly SharedMapSystem _mapSystem = default!;
         [Dependency] private IOverlayManager _overlayManager = default!;
         [Dependency] private EntityLookupSystem _entityLookup = default!;
         [Dependency] private IInputManager _inputManager = default!;

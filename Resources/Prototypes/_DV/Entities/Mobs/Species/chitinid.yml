@@ -11,9 +11,20 @@
     - HeadTop
     #undergarmentTop:
     #undergarmentBottom: todo marty bottom needs adjusting
-  - type: Hunger
-    baseDecayRate: 0.0467 #needs to eat more to survive
-  - type: Thirst
+  - type: Satiation
+    satiations:
+      Hunger:
+        prototype: IS14BaseMobChitinidHungereeb6ed16
+      Thirst:
+        prototype: NormalSatiationThirst
+  - type: SatiationSpeedModifier
+    satiations:
+      Hunger:
+        thresholds:
+          Starving: 0.75
+      Thirst:
+        thresholds:
+          Parched: 0.75
   - type: UnpoweredFlashlight
   - type: PointLight
     enabled: false

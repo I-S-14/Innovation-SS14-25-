@@ -1,0 +1,7 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: 5327c414c5:Resources/Prototypes/Stacks/Tiles/maints.yml
+- type: stack
+  parent: BaseTileStack
+  id: FloorTileTechmaint
+  name: stack-techmaint-floor
+  spawn: FloorTileItemTechmaint

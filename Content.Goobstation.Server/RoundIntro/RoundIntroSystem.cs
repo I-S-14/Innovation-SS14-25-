@@ -1,3 +1,5 @@
+using System.Linq;
+using Content.Shared.Antag.Components;
 using Content.Goobstation.Shared.RoundIntro;
 using Content.Server.Antag.Components;
 using Content.Shared.GameTicking;
@@ -183,7 +185,7 @@ public sealed partial class RoundIntroSystem : EntitySystem
             if (!ContainsMind(selection, mindId))
                 continue;
 
-            foreach (var (otherMind, _) in selection.AssignedMinds)
+            foreach (var (otherMind, _) in selection.AssignedMinds.Values.SelectMany(minds => minds))
             {
                 if (teammates.Count >= MaxCoworkers)
                     return teammates;
@@ -203,7 +205,7 @@ public sealed partial class RoundIntroSystem : EntitySystem
 
     private static bool ContainsMind(AntagSelectionComponent selection, EntityUid mindId)
     {
-        foreach (var (assigned, _) in selection.AssignedMinds)
+        foreach (var (assigned, _) in selection.AssignedMinds.Values.SelectMany(minds => minds))
         {
             if (assigned == mindId)
                 return true;

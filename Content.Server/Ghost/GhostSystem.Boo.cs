@@ -20,7 +20,7 @@ public sealed partial class GhostSystem
     [Dependency] private ChatSystem _chat = default!;
     [Dependency] private FlammableSystem _flammable = default!;
 
-    [Dependency] private EntityQuery<BlinkingPoweredLightComponent> _blinkingQuery;
+    [Dependency] private EntityQuery<BlinkingPoweredLightComponent> _blinkingQuery = default!;
 
     /// <summary>
     /// BooActionEvent handler. Raises BooActionEvents on nearby entities we run out of entities or we receive a response deemed sufficient.

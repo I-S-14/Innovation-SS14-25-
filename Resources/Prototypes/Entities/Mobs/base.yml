@@ -85,6 +85,7 @@
   abstract: true
   components:
   - type: Damageable
+    damageContainer: Biological
   - type: Destructible
     thresholds:
     - trigger:
@@ -124,8 +125,6 @@
         damage: 40
       behaviors:
       - !type:VomitBehavior
-  - type: Injurable
-    damageContainer: Biological
   - type: DamageOverlay
   - type: RadiationReceiver
   - type: Stamina
@@ -343,7 +342,7 @@
   id: MobNightVision
   abstract: true
   components:
-  - type: NightVision
+  - type: NightVisionOverlay
     prioritized: false
     relayOverlay: false # In case default value ever changes
     lightingColor: '#FFFFFF15' # Basically makes it impossible for things to be "Pitch black" but can still be dark.

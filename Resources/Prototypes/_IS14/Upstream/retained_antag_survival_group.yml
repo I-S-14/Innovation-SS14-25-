@@ -1,0 +1,11 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: bd217732d1:Resources/Prototypes/Loadouts/LoadoutGroups/loadout_groups.yml
+- type: loadoutGroup
+  id: SurvivalExtendedAntag
+  name: loadout-group-survival-extended
+  minLimit: 2
+  hidden: true
+  loadouts:
+  - EmergencyNitrogenExtendedAntag
+  - EmergencyOxygenExtendedAntag
+  - LoadoutSpeciesVoxNitrogen

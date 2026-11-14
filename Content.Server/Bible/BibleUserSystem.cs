@@ -1,8 +1,8 @@
+using Content.Shared.Timing.Components; // IS14-change: upstream namespace move
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Goobstation.Common.Religion;
 using Content.Goobstation.Shared.Bible;
-using Content.Server.Ghost.Roles.Events;
 using Content.Server.Popups;
 using Content.Shared._Shitmed.Damage;
 using Content.Shared._Shitmed.Targeting;
@@ -135,10 +135,10 @@ namespace Content.Server.Bible
             {
                 if (_random.Prob(component.FailChance))
                 {
-                    var othersFailMessage = Loc.GetString(component.LocPrefix + "-heal-fail-others", ("user", Identity.Entity(args.User, EntityManager)), ("target", Identity.Entity(args.Target.Value, EntityManager)), ("bible", uid));
+                    var othersFailMessage = Loc.GetString(component.HealFailOthersText ?? component.LocPrefix + "-heal-fail-others", ("user", userEnt), ("target", targetEnt), ("bible", uid)); // IS14-change: optional Wizards override.
                     _popupSystem.PopupEntity(othersFailMessage, args.User, Filter.PvsExcept(args.User), true, PopupType.SmallCaution);
 
-                    var selfFailMessage = Loc.GetString(component.LocPrefix + "-heal-fail-self", ("target", Identity.Entity(args.Target.Value, EntityManager)), ("bible", Identity.Entity(args.Target.Value, EntityManager)));
+                    var selfFailMessage = Loc.GetString(component.HealFailSelfText ?? component.LocPrefix + "-heal-fail-self", ("user", userEnt), ("target", targetEnt), ("bible", uid)); // IS14-change: pass the book, as in Wizards.
                     _popupSystem.PopupEntity(selfFailMessage, args.User, args.User, PopupType.MediumCaution);
 
                     _audio.PlayPvs(component.BibleHitSound, args.User);
@@ -154,11 +154,14 @@ namespace Content.Server.Bible
             if (_damageableSystem.TryChangeDamage(args.Target.Value, component.Damage, true, origin: uid,
                 targetPart: TargetBodyPart.All, ignoreBlockers: true, splitDamage: SplitDamageBehavior.SplitEnsureAll)) // Woundmed
             {
-                othersMessage = Loc.GetString(component.LocPrefix + "-heal-success-others", ("user", userEnt), ("target", targetEnt), ("bible", uid));
-                selfMessage = Loc.GetString(component.LocPrefix + "-heal-success-self", ("target", targetEnt), ("bible", uid));
+                othersMessage = Loc.GetString(component.HealSuccessOthersText ?? component.LocPrefix + "-heal-success-others", ("user", userEnt), ("target", targetEnt), ("bible", uid)); // IS14-change
+                selfMessage = Loc.GetString(component.HealSuccessSelfText ?? component.LocPrefix + "-heal-success-self", ("target", targetEnt), ("bible", uid)); // IS14-change
 
                 _audio.PlayPvs(component.HealSoundPath, args.User);
                 _delay.TryResetDelay((uid, useDelay));
+                // IS14-change: Wizards books can specify a success effect; Goob defaults stay unchanged.
+                if (component.HealingLightEffect is { } effect)
+                    Spawn(effect, Transform(args.Target.Value).Coordinates);
             }
             else
             {
@@ -225,7 +228,7 @@ namespace Content.Server.Bible
         /// <summary>
         /// When the familiar spawns, set its source to the bible.
         /// </summary>
-        private void OnSpawned(EntityUid uid, FamiliarComponent component, GhostRoleSpawnerUsedEvent args)
+        private void OnSpawned(EntityUid uid, FamiliarComponent component, ref GhostRoleSpawnerUsedEvent args)
         {
             var parent = Transform(args.Spawner).ParentUid;
             if (!TryComp<SummonableComponent>(parent, out var summonable))

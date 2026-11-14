@@ -1,3 +1,5 @@
+using Robust.Shared.Prototypes;
+using Content.Shared.Timing.Components; // IS14-change: upstream namespace move
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Linq;
@@ -34,6 +36,10 @@ namespace Content.Server.Heretic.EntitySystems;
 
 public sealed class MansusGraspSystem : SharedMansusGraspSystem
 {
+    //IS14-change start: typed prototype IDs required by the upstream analyzer.
+    private static readonly ProtoId<TagPrototype> CompatibilityCatwalkTagId = "Catwalk";
+    //IS14-change end
+
     [Dependency] private readonly ITileDefinitionManager _tileDefinitionManager = default!;
     [Dependency] private readonly SharedStaminaSystem _stamina = default!;
     [Dependency] private readonly SharedStunSystem _stun = default!;
@@ -98,7 +104,7 @@ public sealed class MansusGraspSystem : SharedMansusGraspSystem
         }
 
         // Death to catwalks
-        if (_tag.HasTag(args.Target.Value, "Catwalk"))
+        if (_tag.HasTag(args.Target.Value, CompatibilityCatwalkTagId))
         {
             args.Handled = true;
             InvokeGrasp(args.User, (uid, grasp));
@@ -184,7 +190,7 @@ public sealed class MansusGraspSystem : SharedMansusGraspSystem
         {
             _stun.KnockdownOrStun(target, grasp.Comp.KnockdownTime, true);
             _stamina.TakeStaminaDamage(target, grasp.Comp.StaminaDamage);
-            _language.DoRatvarian(target, grasp.Comp.SpeechTime, true, status);
+            _language.DoRatvarian(target, grasp.Comp.SpeechTime, true);
             _statusEffect.TryAddStatusEffect<MansusGraspAffectedComponent>(target,
                 "MansusGraspAffected",
                 grasp.Comp.AffectedTime,

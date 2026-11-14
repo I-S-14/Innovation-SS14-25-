@@ -165,8 +165,8 @@ public sealed partial class GuardianSystem : EntitySystem
         args.Args.Cancelled = true;
     }
 
-    [SubscribeLocalEvent]
-    private void ToggleGuardian(Entity<GuardianHostComponent> ent)
+    //IS14-change: expose the typed API for Goob self-recall actions.
+    public void ToggleGuardian(Entity<GuardianHostComponent> ent)
     {
         if (!_guardianQuery.TryComp(ent.Comp.HostedGuardian, out var guardianComponent))
             return;
@@ -388,8 +388,10 @@ public sealed partial class GuardianSystem : EntitySystem
         if (!guardian.Comp.GuardianLoose)
             return;
 
+        //IS14-change start: preserve Goob's tether instead of retracting at the distance limit.
         if (!_transform.InRange(guardianXform.Coordinates, hostXform.Coordinates, guardian.Comp.DistanceAllowed))
-            RetractGuardian((host.Owner, host.Comp), guardian);
+            PullGuardianToHost(guardian.Owner, guardian.Comp, hostXform, guardianXform);
+        //IS14-change end
     }
 
     private void ReleaseGuardian(Entity<GuardianHostComponent> host, Entity<GuardianComponent> guardian)

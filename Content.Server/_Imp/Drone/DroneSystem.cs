@@ -1,3 +1,4 @@
+using Content.Shared.Ghost.Components; // IS14-change: upstream namespace move
 //using Content.Server._Impstation.Drone.Components;
 using Content.Server.Body.Systems;
 using Content.Server.Ghost.Roles.Components;
@@ -30,7 +31,6 @@ namespace Content.Server._Imp.Drone
 {
     public sealed class DroneSystem : SharedDroneSystem
     {
-        [Dependency] private readonly AlertsSystem _alerts = default!;
         [Dependency] private readonly BodySystem _bodySystem = default!;
         [Dependency] private readonly EntityLookupSystem _lookup = default!;
         [Dependency] private readonly EntityWhitelistSystem _whitelist = default!;
@@ -121,7 +121,7 @@ namespace Content.Server._Imp.Drone
             }
         }
 
-        private void OnPowerCellChanged(EntityUid uid, DroneComponent component, PowerCellChangedEvent args)
+        private void OnPowerCellChanged(EntityUid uid, DroneComponent component, ref PowerCellChangedEvent args)
         {
         	if (TerminatingOrDeleted(uid))
         		return;

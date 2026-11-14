@@ -58580,7 +58580,7 @@ entities:
     - type: NavMapBeacon
       text: Генераторная
     - type: WarpPoint
-      location: Инженерия - ДАМ
+      location: is14-map-warp-a8424f343b2b
 - proto: DefaultStationBeaconAnchor
   entities:
   - uid: 20691
@@ -58596,7 +58596,7 @@ entities:
       pos: 31.5,15.5
       parent: 2
     - type: WarpPoint
-      location: РнД - Генератор аномалий
+      location: is14-map-warp-566f470bae47
 - proto: DefaultStationBeaconArmory
   entities:
   - uid: 6311
@@ -58605,7 +58605,7 @@ entities:
       pos: -52.5,-17.5
       parent: 2
     - type: WarpPoint
-      location: Бриг - Оружейная
+      location: is14-map-warp-ca00a61bdc37
 - proto: DefaultStationBeaconArrivals
   entities:
   - uid: 6312
@@ -58614,7 +58614,7 @@ entities:
       pos: -25.5,-53.5
       parent: 2
     - type: WarpPoint
-      location: Прибытие
+      location: is14-map-warp-38368957d4b2
 - proto: DefaultStationBeaconArtifactLab
   entities:
   - uid: 6313
@@ -58623,7 +58623,7 @@ entities:
       pos: 33.5,7.5
       parent: 2
     - type: WarpPoint
-      location: РнД - Артефакторная
+      location: is14-map-warp-6f1bad061915
 - proto: DefaultStationBeaconAtmospherics
   entities:
   - uid: 6314
@@ -58632,7 +58632,7 @@ entities:
       pos: -47.5,33.5
       parent: 2
     - type: WarpPoint
-      location: Инженерия - Атмос
+      location: is14-map-warp-6fdc89b2e1ca
 - proto: DefaultStationBeaconBar
   entities:
   - uid: 6315
@@ -58641,7 +58641,7 @@ entities:
       pos: -22.5,-5.5
       parent: 2
     - type: WarpPoint
-      location: Сервис - Бар
+      location: is14-map-warp-c71d7e1699e3
 - proto: DefaultStationBeaconBotany
   entities:
   - uid: 6316
@@ -58650,7 +58650,7 @@ entities:
       pos: -6.5,-15.5
       parent: 2
     - type: WarpPoint
-      location: Сервис - Гидропоника
+      location: is14-map-warp-9de88b533b17
 - proto: DefaultStationBeaconBridge
   entities:
   - uid: 6317
@@ -58666,7 +58666,7 @@ entities:
       pos: -42.5,-17.5
       parent: 2
     - type: WarpPoint
-      location: Бриг
+      location: is14-map-warp-2a4ff4460b9a
 - proto: DefaultStationBeaconCaptainsQuarters
   entities:
   - uid: 6319
@@ -58675,7 +58675,7 @@ entities:
       pos: 17.5,25.5
       parent: 2
     - type: WarpPoint
-      location: Командование - Каюта капитана
+      location: is14-map-warp-e7936edcea61
 - proto: DefaultStationBeaconCargoBay
   entities:
   - uid: 6320
@@ -58684,7 +58684,7 @@ entities:
       pos: -19.5,42.5
       parent: 2
     - type: WarpPoint
-      location: Карго - доки
+      location: is14-map-warp-fb58c6935815
 - proto: DefaultStationBeaconCargoReception
   entities:
   - uid: 6321
@@ -58693,7 +58693,7 @@ entities:
       pos: -19.5,31.5
       parent: 2
     - type: WarpPoint
-      location: Карго - Приемная
+      location: is14-map-warp-8ff8e128d88f
 - proto: DefaultStationBeaconCERoom
   entities:
   - uid: 6322
@@ -58702,7 +58702,7 @@ entities:
       pos: -28.5,26.5
       parent: 2
     - type: WarpPoint
-      location: Инженерия - Кабинет СИ
+      location: is14-map-warp-7ebfc1d834ef
 - proto: DefaultStationBeaconChapel
   entities:
   - uid: 6323
@@ -58718,7 +58718,7 @@ entities:
       pos: 4.5,-28.5
       parent: 2
     - type: WarpPoint
-      location: Мед - Химия
+      location: is14-map-warp-d9260324347e
 - proto: DefaultStationBeaconCMORoom
   entities:
   - uid: 6325
@@ -58727,7 +58727,7 @@ entities:
       pos: 8.5,-43.5
       parent: 2
     - type: WarpPoint
-      location: Мед - Кабинет ГВ
+      location: is14-map-warp-6c3138647c99
 - proto: DefaultStationBeaconCommand
   entities:
   - uid: 6326
@@ -58743,7 +58743,7 @@ entities:
       pos: -7.5,24.5
       parent: 2
     - type: WarpPoint
-      location: Командование - Зал суда
+      location: is14-map-warp-cdfab7aeda19
 - proto: DefaultStationBeaconCryonics
   entities:
   - uid: 6328
@@ -58759,7 +58759,7 @@ entities:
       pos: 16.5,-4.5
       parent: 2
     - type: WarpPoint
-      location: Сервис - Криогеника
+      location: is14-map-warp-f666fba0a49c
 - proto: DefaultStationBeaconDetectiveRoom
   entities:
   - uid: 6330
@@ -58768,7 +58768,7 @@ entities:
       pos: -29.5,-7.5
       parent: 2
     - type: WarpPoint
-      location: Бриг - Кабинет Детектива
+      location: is14-map-warp-f64a6a93cf6c
 - proto: DefaultStationBeaconDisposals
   entities:
   - uid: 6331
@@ -58777,7 +58777,7 @@ entities:
       pos: -5.5,-34.5
       parent: 2
     - type: WarpPoint
-      location: Мусорка
+      location: is14-map-warp-f3a6a8dc254e
 - proto: DefaultStationBeaconDorms
   entities:
   - uid: 6332
@@ -58786,7 +58786,7 @@ entities:
       pos: 17.5,-9.5
       parent: 2
     - type: WarpPoint
-      location: Сервис - Жилые помещения
+      location: is14-map-warp-8652426d7b49
 - proto: DefaultStationBeaconEngineering
   entities:
   - uid: 6333
@@ -58795,7 +58795,7 @@ entities:
       pos: -24.5,20.5
       parent: 2
     - type: WarpPoint
-      location: Инженерия
+      location: is14-map-warp-012e9fc41fc4
 - proto: DefaultStationBeaconEscapePodNW
   entities:
   - uid: 6027
@@ -58811,7 +58811,7 @@ entities:
       pos: -31.5,-49.5
       parent: 2
     - type: WarpPoint
-      location: Эвакуация
+      location: is14-map-warp-56cf70946796
 - proto: DefaultStationBeaconEVAStorage
   entities:
   - uid: 6335
@@ -58820,7 +58820,7 @@ entities:
       pos: -10.5,0.5
       parent: 2
     - type: WarpPoint
-      location: Командование - Хранилище EVA
+      location: is14-map-warp-20b455e05eb6
 - proto: DefaultStationBeaconGravGen
   entities:
   - uid: 6336
@@ -58829,7 +58829,7 @@ entities:
       pos: -53.5,15.5
       parent: 2
     - type: WarpPoint
-      location: Инженерия - Генератор гравитации
+      location: is14-map-warp-69912ba29eda
 - proto: DefaultStationBeaconHOPOffice
   entities:
   - uid: 6337
@@ -58838,7 +58838,7 @@ entities:
       pos: -14.5,1.5
       parent: 2
     - type: WarpPoint
-      location: Сервис - Кабинет ГП
+      location: is14-map-warp-e671be6f963e
 - proto: DefaultStationBeaconHOSRoom
   entities:
   - uid: 6338
@@ -58847,7 +58847,7 @@ entities:
       pos: -52.5,-23.5
       parent: 2
     - type: WarpPoint
-      location: Бриг - Кабинет ГСБ
+      location: is14-map-warp-b21cbf9e1401
 - proto: DefaultStationBeaconJanitorsCloset
   entities:
   - uid: 6339
@@ -58856,7 +58856,7 @@ entities:
       pos: 1.5,-12.5
       parent: 2
     - type: WarpPoint
-      location: Сервис - Кабинет уборщика
+      location: is14-map-warp-15ec8defaed8
 - proto: DefaultStationBeaconKitchen
   entities:
   - uid: 6340
@@ -58865,7 +58865,7 @@ entities:
       pos: -14.5,-15.5
       parent: 2
     - type: WarpPoint
-      location: Сервис - Кухня
+      location: is14-map-warp-11c53d8f1810
 - proto: DefaultStationBeaconLawOffice
   entities:
   - uid: 6341
@@ -58881,7 +58881,7 @@ entities:
       pos: 7.5,-0.5
       parent: 2
     - type: WarpPoint
-      location: Сервис - Библиотека
+      location: is14-map-warp-9d99f331c154
 - proto: DefaultStationBeaconMedbay
   entities:
   - uid: 6343
@@ -58890,7 +58890,7 @@ entities:
       pos: 20.5,-28.5
       parent: 2
     - type: WarpPoint
-      location: Мед - палаты
+      location: is14-map-warp-2cbeec860284
 - proto: DefaultStationBeaconMedical
   entities:
   - uid: 6344
@@ -58899,7 +58899,7 @@ entities:
       pos: 12.5,-35.5
       parent: 2
     - type: WarpPoint
-      location: Мед
+      location: is14-map-warp-b02a0dfbcd1a
 - proto: DefaultStationBeaconMorgue
   entities:
   - uid: 6345
@@ -58908,7 +58908,7 @@ entities:
       pos: 18.5,-18.5
       parent: 2
     - type: WarpPoint
-      location: Мед - Морг
+      location: is14-map-warp-62785c50e98e
 - proto: DefaultStationBeaconPermaBrig
   entities:
   - uid: 6346
@@ -58917,7 +58917,7 @@ entities:
       pos: -42.5,3.5
       parent: 2
     - type: WarpPoint
-      location: Бриг - Пермакамеры
+      location: is14-map-warp-a8b9226214f0
 - proto: DefaultStationBeaconPowerBank
   entities:
   - uid: 6347
@@ -58933,7 +58933,7 @@ entities:
       pos: -26.5,37.5
       parent: 2
     - type: WarpPoint
-      location: Карго - Кабинет КМ
+      location: is14-map-warp-f80094b99527
 - proto: DefaultStationBeaconRDRoom
   entities:
   - uid: 6349
@@ -58942,7 +58942,7 @@ entities:
       pos: 27.5,-2.5
       parent: 2
     - type: WarpPoint
-      location: РнД - Кабинет НР
+      location: is14-map-warp-a3fba7a5aac8
 - proto: DefaultStationBeaconRND
   entities:
   - uid: 6350
@@ -58958,7 +58958,7 @@ entities:
       pos: 22.5,14.5
       parent: 2
     - type: WarpPoint
-      location: РнД - Робототехника
+      location: is14-map-warp-04703c0249b0
 - proto: DefaultStationBeaconSalvage
   entities:
   - uid: 6352
@@ -58967,7 +58967,7 @@ entities:
       pos: -7.5,36.5
       parent: 2
     - type: WarpPoint
-      location: Карго - Утилизаторская
+      location: is14-map-warp-422aa5ab7c9f
 - proto: DefaultStationBeaconServerRoom
   entities:
   - uid: 6353
@@ -58976,7 +58976,7 @@ entities:
       pos: 22.5,46.5
       parent: 2
     - type: WarpPoint
-      location: Командование - Серверная
+      location: is14-map-warp-8729835516c4
 - proto: DefaultStationBeaconSingularity
   entities:
   - uid: 6354
@@ -59013,7 +59013,7 @@ entities:
       pos: 20.5,-43.5
       parent: 2
     - type: WarpPoint
-      location: Мед - Операционная
+      location: is14-map-warp-944d95328dfc
 - proto: DefaultStationBeaconTechVault
   entities:
   - uid: 6360
@@ -59022,7 +59022,7 @@ entities:
       pos: 14.5,52.5
       parent: 2
     - type: WarpPoint
-      location: Командование - Хранилище
+      location: is14-map-warp-6a5ac618e19a
 - proto: DefaultStationBeaconTelecoms
   entities:
   - uid: 4885
@@ -59040,7 +59040,7 @@ entities:
     - type: NavMapBeacon
       text: Комната клоуна
     - type: WarpPoint
-      location: Комната клоуна
+      location: is14-map-warp-e64a655678e5
 - proto: DefaultStationBeaconToolRoom
   entities:
   - uid: 6362
@@ -59063,7 +59063,7 @@ entities:
       pos: -38.5,-10.5
       parent: 2
     - type: WarpPoint
-      location: Бриг - Смотритель
+      location: is14-map-warp-4394a26ce6d7
 - proto: DefibrillatorCabinet
   entities:
   - uid: 6365

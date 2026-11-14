@@ -398,7 +398,7 @@
         Caustic: 0.65
   - type: ContainerContainer
     containers:
-      toggleable-clothing: !type:ContainerSlot { }
+      toggleable-clothing: !type:Container { }
       storagebase: !type:Container
         ents: [ ]
 
@@ -788,7 +788,7 @@
         Caustic: 0.85
   - type: ContainerContainer
     containers:
-      toggleable-clothing: !type:ContainerSlot { }
+      toggleable-clothing: !type:Container { }
       storagebase: !type:Container
         ents: [ ]
 

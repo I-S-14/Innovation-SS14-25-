@@ -1202,7 +1202,7 @@
     maxCharge: 1200 # Goobstation
     startingCharge: 1200 # Goobstation
   - type: StealTarget # Goobstation
-    stealGroup: WeaponEnergyShotgun
+    stealGroup: [WeaponEnergyShotgun]
 # CorvaxGoob-start:
   - type: CargoSellBlacklist
   - type: SupermatterImmune

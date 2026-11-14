@@ -20,7 +20,7 @@
     maxCharge: 20000 #CorvaxGoob-ShuttleGuns-Rebalance
     startingCharge: 20000 #CorvaxGoob-ShuttleGuns-Rebalance
   - type: ExaminableBattery
-  - type: WirelessNetworkConnection
+  - type: WirelessNetwork
     range: 500
   - type: Gun
     fireRate: 2 #CorvaxGoob-ShuttleGuns-Rebalance
@@ -69,7 +69,7 @@
     maxCharge: 40000
     startingCharge: 40000
   - type: ExaminableBattery
-  - type: WirelessNetworkConnection
+  - type: WirelessNetwork
     range: 500
   - type: Gun
     fireRate: 0.1
@@ -117,7 +117,7 @@
     maxCharge: 40000
     startingCharge: 40000
   - type: ExaminableBattery
-  - type: WirelessNetworkConnection
+  - type: WirelessNetwork
     range: 500
   - type: Gun
     fireRate: 0.2 #CorvaxGoob-ShuttleGuns-Rebalance
@@ -183,7 +183,7 @@
     maxCharge: 40000
     startingCharge: 40000
   - type: ExaminableBattery
-  - type: WirelessNetworkConnection
+  - type: WirelessNetwork
     range: 500
   - type: Gun
     fireRate: 0.2

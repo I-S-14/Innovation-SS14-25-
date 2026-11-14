@@ -39,9 +39,10 @@ public sealed partial class WeldbotWeldOperator : HTNOperator
     [DataField(required: true)]
     public string TargetKey = string.Empty;
 
-    public override void Initialize(IEntitySystemManager sysManager)
+    public override void Initialize(IDependencyCollection deps)
     {
-        base.Initialize(sysManager);
+        base.Initialize(deps);
+        var sysManager = deps.Resolve<IEntitySystemManager>();
         _chat = sysManager.GetEntitySystem<ChatSystem>();
         _weldbot = sysManager.GetEntitySystem<WeldbotSystem>();
         _audio = sysManager.GetEntitySystem<SharedAudioSystem>();

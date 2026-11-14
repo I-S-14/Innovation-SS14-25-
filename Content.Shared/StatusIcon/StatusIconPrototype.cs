@@ -129,6 +129,10 @@ public sealed partial class StatusIconPrototype : StatusIconData, IPrototype, II
 [Prototype]
 public sealed partial class JobIconPrototype : StatusIconData, IPrototype, IInheritingPrototype
 {
+    //IS14-change: retain Goob prototype behavior.
+    [DataField]
+    public bool AllowSelection = true;
+
     /// <inheritdoc/>
     [IdDataField]
     public string ID { get; private set; } = default!;

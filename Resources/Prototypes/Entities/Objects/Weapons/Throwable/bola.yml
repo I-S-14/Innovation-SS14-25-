@@ -18,7 +18,6 @@
   - type: EmitSoundOnLand
     sound: /Audio/Effects/snap.ogg
   - type: Damageable
-  - type: Injurable
     damageContainer: Inorganic
   - type: Destructible
     thresholds:

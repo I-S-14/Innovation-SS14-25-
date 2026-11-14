@@ -22,7 +22,7 @@ public sealed partial class BlobMobSystem : SharedBlobMobSystem
     [Dependency] private DamageableSystem _damageableSystem = default!;
     [Dependency] private INetManager _netMan = default!;
     [Dependency] private RadioSystem _radioSystem = default!;
-    private EntityQuery<BlobSpeakComponent> _activeBSpeak;
+    //IS14-change: removed unused, never-initialized _activeBSpeak query; speech uses directed events below.
 
     public override void Initialize()
     {

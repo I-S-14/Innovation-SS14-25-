@@ -60,7 +60,7 @@
   - type: Strap
     whitelist:
       components:
-      - HumanoidProfile
+      - HumanoidAppearance # IS14: retain Goob humanoid filtering.
   - type: DisposalUnit
     container:
       occludes: true
@@ -68,7 +68,7 @@
       ents: []
     blacklist:
       components:
-      - HumanoidProfile
+      - HumanoidAppearance # IS14: retain Goob humanoid filtering.
       - Plunger
       - SolutionTransfer
       - EntityStorage

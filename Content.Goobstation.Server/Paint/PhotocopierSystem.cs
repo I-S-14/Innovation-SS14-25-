@@ -96,8 +96,8 @@ public sealed partial class PhotocopierSystem : EntitySystem
             return false;
         }
 
-        var first = _itemSlots.GetItemOrNull(ent, ent.Comp.FirstSlot);
-        var second = _itemSlots.GetItemOrNull(ent, ent.Comp.SecondSlot);
+        var first = _itemSlots.GetItemOrNull(ent.Owner, ent.Comp.FirstSlot);
+        var second = _itemSlots.GetItemOrNull(ent.Owner, ent.Comp.SecondSlot);
         if (first is not { } a || second is not { } b)
         {
             _popup.PopupEntity(Loc.GetString("photocopier-needs-canvases"), ent, user);
@@ -170,8 +170,8 @@ public sealed partial class PhotocopierSystem : EntitySystem
 
     private void SetLocked(Entity<PhotocopierComponent> ent, bool locked)
     {
-        _itemSlots.SetLock(ent, ent.Comp.FirstSlot, locked);
-        _itemSlots.SetLock(ent, ent.Comp.SecondSlot, locked);
+        _itemSlots.SetLock(ent.Owner, ent.Comp.FirstSlot, locked);
+        _itemSlots.SetLock(ent.Owner, ent.Comp.SecondSlot, locked);
     }
 
     private bool IsBlank(EntityUid uid)

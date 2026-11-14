@@ -44,7 +44,9 @@ public sealed class SharedVentCrawableSystem : EntitySystem
     private void OnMoveInput(EntityUid uid, VentCrawlerHolderComponent holder, ref MoveInputEvent args)
     {
 
-        if (!EntityManager.EntityExists(holder.CurrentTube))
+        //IS14-change start
+        if (!Exists(holder.CurrentTube))
+        //IS14-change end
         {
             var ev = new VentCrawlingExitEvent();
             RaiseLocalEvent(uid, ref ev);
@@ -180,7 +182,9 @@ public sealed class SharedVentCrawableSystem : EntitySystem
 
                 if (nextTube != null)
                 {
-                    if (!EntityManager.EntityExists(holder.CurrentTube))
+                    //IS14-change start
+                    if (!Exists(holder.CurrentTube))
+                    //IS14-change end
                     {
                         var ev = new VentCrawlingExitEvent();
                         RaiseLocalEvent(uid, ref ev);

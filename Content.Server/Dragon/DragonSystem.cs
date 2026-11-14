@@ -35,7 +35,7 @@ public sealed partial class DragonSystem : EntitySystem
     [Dependency] private SharedMapSystem _map = default!;
     [Dependency] private MobStateSystem _mobState = default!;
     [Dependency] private TurfSystem _turf = default!;
-    [Dependency] private GibbingSystem _gibbing = default!;
+    [Dependency] private Content.Shared.Body.Systems.SharedBodySystem _gibbing = default!;
     [Dependency] private SmokeSystem _smoke = default!;
 
     [Dependency] private EntityQuery<CarpRiftsConditionComponent> _carpRiftsConditionQuery = default!;
@@ -99,7 +99,7 @@ public sealed partial class DragonSystem : EntitySystem
                 var smoke = Spawn(comp.SmokePrototype, Transform(uid).Coordinates);
                 if (TryComp<SmokeComponent>(smoke, out var smokeComp))
                     _smoke.StartSmoke(smoke, comp.SmokeSolution, smokeComp.Duration, smokeComp.SpreadAmount, smokeComp);
-                _gibbing.Gib(uid);
+                _gibbing.GibBody(uid);
             }
         }
     }

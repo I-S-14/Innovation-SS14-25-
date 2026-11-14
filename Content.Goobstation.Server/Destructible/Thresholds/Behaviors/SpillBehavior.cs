@@ -1,3 +1,4 @@
+using GameTicker = Content.Server.GameTicking.ServerGameTicker;
 using Content.Goobstation.Shared.GameTicking;
 using Content.Server.Destructible;
 using Content.Server.Destructible.Thresholds.Behaviors;

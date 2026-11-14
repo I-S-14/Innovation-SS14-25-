@@ -1,4 +1,4 @@
-﻿- type: entity
+- type: entity
   parent: ClothingHeadBase
   id: ClothingHeadHatBeretCaptainWhite
   name: white captain beret
@@ -361,9 +361,9 @@
     program: 27
   - type: SwappableInstrument
     instrumentList:
-      "Clean": {27: 0}
-      "Jazz": {25: 0}
-      "Muted": {28: 0}
+      is14-instrument-style-clean: {27: 0}
+      is14-instrument-style-jazz: {25: 0}
+      is14-instrument-style-muted: {28: 0}
   - type: HideLayerClothing
     slots:
     - Hair
@@ -402,8 +402,8 @@
     program: 62
   - type: SwappableInstrument
     instrumentList:
-      "Electro": {62: 0}
-      "Bubbles": {63: 0}
+      is14-instrument-style-electro: {62: 0}
+      is14-instrument-style-bubbles: {63: 0}
   - type: HideLayerClothing
     slots:
     - Hair

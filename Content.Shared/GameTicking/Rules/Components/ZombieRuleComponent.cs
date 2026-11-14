@@ -8,6 +8,12 @@ namespace Content.Shared.GameTicking.Rules.Components;
 [RegisterComponent, Access(typeof(ZombieRuleSystem))]
 public sealed partial class ZombieRuleComponent : Component
 {
+    [DataField]
+    public RoundEndBehavior ZombieRoundEndBehavior = RoundEndBehavior.ShuttleCall;
+
+    [DataField]
+    public TimeSpan ZombieEvacShuttleTime = TimeSpan.FromMinutes(5);
+
     /// <summary>
     /// When the round will next check for round end.
     /// </summary>

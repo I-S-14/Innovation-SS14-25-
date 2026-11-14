@@ -1,3 +1,4 @@
+using Content.Shared.Timing.Components; // IS14-change: upstream namespace move
 using System.Numerics;
 using Content.Client.Cooldown;
 using Content.Shared.Timing;
@@ -31,7 +32,8 @@ public sealed partial class ShowHandItemOverlay
             return;
 
         _delay ??= _entMan.System<UseDelaySystem>();
-        var cooldown = _delay.GetLastEndingDelay((handEntity, delay));
+        if (!_delay.GetLastActiveDelay((handEntity, delay), out var cooldown))
+            return;
         if (cooldown.StartTime == cooldown.EndTime || cooldown.Length == TimeSpan.Zero)
             return;
 

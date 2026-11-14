@@ -17,8 +17,6 @@ namespace Content.Server.Objectives.Systems;
 /// </summary>
 public sealed partial class KillPersonConditionSystem : EntitySystem
 {
-    [Dependency] private readonly SharedJobSystem _job = default!;
-    [Dependency] private readonly TraitorRuleSystem _traitor = default!;
     [Dependency] private EmergencyShuttleSystem _emergencyShuttle = default!;
     [Dependency] private IConfigurationManager _config = default!;
     [Dependency] private SharedMindSystem _mind = default!;

@@ -158384,7 +158384,7 @@ entities:
     - type: NavMapBeacon
       text: Уборная
     - type: WarpPoint
-      location: ОБЩ - Уборная
+      location: is14-map-warp-7e1c82981f89
   - uid: 21951
     components:
     - type: Transform
@@ -158393,7 +158393,7 @@ entities:
     - type: NavMapBeacon
       text: Уборные
     - type: WarpPoint
-      location: ОБЩ - Уборные
+      location: is14-map-warp-f6c5d5390d0b
   - uid: 21952
     components:
     - type: Transform
@@ -158402,7 +158402,7 @@ entities:
     - type: NavMapBeacon
       text: Пляж
     - type: WarpPoint
-      location: ОБЩ - Пляж
+      location: is14-map-warp-33a49af8f24f
   - uid: 21953
     components:
     - type: Transform
@@ -158411,7 +158411,7 @@ entities:
     - type: NavMapBeacon
       text: Баня
     - type: WarpPoint
-      location: ОБЩ - Баня
+      location: is14-map-warp-ed17eff38ab2
 - proto: DefaultStationBeaconAICore
   entities:
   - uid: 21946
@@ -158731,7 +158731,7 @@ entities:
     - type: NavMapBeacon
       text: Пермабриг
     - type: WarpPoint
-      location: СБ - Пермабриг
+      location: is14-map-warp-eb6edef142ec
 - proto: DefaultStationBeaconPowerBank
   entities:
   - uid: 21993
@@ -158798,7 +158798,7 @@ entities:
     - type: NavMapBeacon
       text: Тюрьма - камеры
     - type: WarpPoint
-      location: СБ - Тюрьма - камеры
+      location: is14-map-warp-c47ba5707f55
   - uid: 22042
     components:
     - type: Transform
@@ -158807,14 +158807,14 @@ entities:
     - type: NavMapBeacon
       text: Коморка пилота
     - type: WarpPoint
-      location: СБ - Коморка пилота
+      location: is14-map-warp-e0a553178d0c
   - uid: 22047
     components:
     - type: Transform
       pos: -49.5,-16.5
       parent: 2
     - type: WarpPoint
-      location: СБ - Брифинговая зона
+      location: is14-map-warp-3a337ed8e906
 - proto: DefaultStationBeaconSecurityCheckpoint
   entities:
   - uid: 22006
@@ -158869,7 +158869,7 @@ entities:
     - type: NavMapBeacon
       text: Комната музыканта
     - type: WarpPoint
-      location: СЕР - Комната музыканта
+      location: is14-map-warp-a42588a27389
 - proto: DefaultStationBeaconSingularity
   entities:
   - uid: 22016
@@ -385305,7 +385305,7 @@ entities:
       pos: 5.5,12.5
       parent: 56040
     - type: WarpPoint
-      location: Каторга "Добрый самаритянин"
+      location: is14-map-warp-8440fd2ecc37
 - proto: WaterCooler
   entities:
   - uid: 54406

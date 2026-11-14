@@ -15,8 +15,9 @@
   metamorphicMaxFillLevels: 5
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
+    Drink:
       effects:
       - !type:Satiate
         satiationType: Thirst
@@ -45,13 +46,13 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
+    Drink:
       effects:
       - !type:Satiate
         satiationType: Thirst
         factor: 4
-
 - type: reagent
   id: ChangelingSting
   name: reagent-name-changeling-sting
@@ -60,19 +61,19 @@
   physicalDesc: reagent-physical-desc-fizzy
   flavor: soda
   color: "#2E6671"
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
+    Drink:
       effects:
-      - !type:Satiate
-        satiationType: Chemicals
-        factor: 0.5
+      - !type:AdjustInternalResources # IS14: Goob changelings use internal resources.
+        resource: ChangelingChemicals
+        amount: 0.5
         conditions:
         - !type:MetabolizerTypeCondition
-          type: [ Changeling ]
+          type: [Changeling]
       - !type:Satiate
         satiationType: Thirst
         factor: 2
-
 - type: reagent
   id: DrGibb
   name: reagent-name-dr-gibb
@@ -229,13 +230,13 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
+    Drink:
       effects:
       - !type:Satiate
         satiationType: Thirst
         factor: 4
-
 - type: reagent
   id: SpaceMountainWind
   name: reagent-name-space-mountain-wind

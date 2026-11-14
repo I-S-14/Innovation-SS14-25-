@@ -1,34 +1,30 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
+using Content.Shared.Disposal.Unit;
 using Content.Goobstation.Server.Disposals.Tube;
-using Content.Server.Disposal.Tube;
-using Robust.Shared.Random;
+using Content.Shared.Disposal.Holder;
+using Content.Shared.Disposal.Tube;
 
 namespace Content.Goobstation.Server.Disposals;
 
-/// <summary>
-/// This handles...
-/// </summary>
+/// <summary>Forces a blocked tube's holder toward its first exit, retaining the Goob one-way barrier.</summary>
 public sealed partial class DisposalBlockerSystem : EntitySystem
 {
-    [Dependency] private DisposalTubeSystem _disposalSystem = default!;
-    /// <inheritdoc/>
+    [Dependency] private DisposalTubeSystem _tubes = default!;
+
     public override void Initialize()
     {
         base.Initialize();
-        SubscribeLocalEvent<DisposalBlockerComponent, GetDisposalsConnectableDirectionsEvent>(OnGetBlockerConnectableDirections);
-        SubscribeLocalEvent<DisposalBlockerComponent, GetDisposalsNextDirectionEvent>(OnGetBlockerNextDirection);
-    }
-    private void OnGetBlockerConnectableDirections(EntityUid uid, DisposalBlockerComponent component, ref GetDisposalsConnectableDirectionsEvent args)
-    {
-        _disposalSystem.OnGetTransitConnectableDirections(uid, component, ref args);
+        SubscribeLocalEvent<DisposalBlockerComponent, GetDisposalsNextDirectionEvent>(OnNext,
+            before: new[] { typeof(DisposalTubeSystem) });
     }
 
-    private void OnGetBlockerNextDirection(EntityUid uid, DisposalBlockerComponent component, ref GetDisposalsNextDirectionEvent args)
+    private void OnNext(Entity<DisposalBlockerComponent> ent, ref GetDisposalsNextDirectionEvent args)
     {
-        var ev = new GetDisposalsConnectableDirectionsEvent();
-        RaiseLocalEvent(uid, ref ev);
-
-        args.Next = ev.Connectable[0];
+        if (!TryComp<DisposalTubeComponent>(ent, out var tube))
+            return;
+        var exits = _tubes.GetTubeConnectableDirections((ent.Owner, tube));
+        if (exits.Length == 0)
+            return;
+        args.Next = exits[0];
+        args.Handled = true;
     }
 }

@@ -20,6 +20,10 @@ namespace Content.Client.UserInterface.Systems.Chat;
 /// </summary>
 public sealed partial class ChatUIController : IOnSystemChanged<CharacterInfoSystem>
 {
+    //IS14-change start: restore declarations used by merged implementation.
+    private string _chatSpeechDoubleQuoteBegin = default!;
+    //IS14-change end
+
     [Dependency] private readonly ILocalizationManager _loc = default!;
     [UISystemDependency] private readonly ChatHighlightsSystem _chatHighlights = default!; // CorvaxGoob
     [UISystemDependency] private readonly CharacterInfoSystem _characterInfo = default!;

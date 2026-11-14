@@ -1,3 +1,5 @@
+using Robust.Shared.Prototypes;
+using Content.Shared.Timing.Systems;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Numerics;
@@ -16,6 +18,10 @@ namespace Content.Goobstation.Server.Bloodtrak;
 
 public sealed partial class BloodtrakSystem : SharedBloodtrakSystem
 {
+    //IS14-change start: typed IDs preserve the retained Goob prototypes.
+    private static readonly ProtoId<TagPrototype> CompatibilityDNASolutionScannableTagId = "DNASolutionScannable";
+    //IS14-change end
+
     [Dependency] private TagSystem _tag = default!;
     [Dependency] private ForensicsSystem _forensicsSystem = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
@@ -37,7 +43,7 @@ public sealed partial class BloodtrakSystem : SharedBloodtrakSystem
     /// </summary>
     private (EntityUid, TimeSpan)? GetPuddleDnaOwner(EntityUid target, BloodtrakComponent component, EntityUid user)
     {
-        if (!_tag.HasTag(target, "DNASolutionScannable") || !HasComp<PuddleComponent>(target))
+        if (!_tag.HasTag(target, CompatibilityDNASolutionScannableTagId) || !HasComp<PuddleComponent>(target))
         {
             _popupSystem.PopupEntity(Loc.GetString("bloodtrak-scan-failed"), user, user);
             return null;

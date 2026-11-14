@@ -42,7 +42,6 @@ namespace Content.Server.Explosion.EntitySystems;
 
 public sealed partial class ExplosionSystem : SharedExplosionSystem
 {
-    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
     [Dependency] private IRobustRandom _robustRandom = default!;
     [Dependency] private ITileDefinitionManager _tileDefinitionManager = default!;
     [Dependency] private IConfigurationManager _cfg = default!;
@@ -50,7 +49,6 @@ public sealed partial class ExplosionSystem : SharedExplosionSystem
     [Dependency] private IAdminLogManager _adminLogger = default!;
     [Dependency] private IGameTiming _timing = default!;
 
-    [Dependency] private readonly SharedBodySystem _body = default!; // Shitmed Change
     [Dependency] private SharedAppearanceSystem _appearance = default!;
     [Dependency] private DamageableSystem _damageableSystem = default!;
     [Dependency] private NodeGroupSystem _nodeGroupSystem = default!;
@@ -71,7 +69,7 @@ public sealed partial class ExplosionSystem : SharedExplosionSystem
     [Dependency] private EntityQuery<DestructibleComponent> _destructibleQuery = default!;
     [Dependency] private EntityQuery<DamageableComponent> _damageableQuery = default!;
     [Dependency] private EntityQuery<ExplosionResistanceComponent> _explosionResistanceQuery = default!;
-    [Dependency] private EntityQuery<DamageableComponent> _injurableQuery = default!;
+
     [Dependency] private EntityQuery<AirtightComponent> _airtightQuery = default!;
     [Dependency] private EntityQuery<TileHistoryComponent> _tileHistoryQuery = default!;
 

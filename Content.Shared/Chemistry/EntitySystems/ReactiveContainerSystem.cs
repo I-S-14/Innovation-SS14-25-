@@ -36,7 +36,7 @@ public sealed partial class ReactiveContainerSystem : EntitySystem
         _reactiveSystem.DoEntityReaction(args.Entity, solution, ReactionMethod.Touch);
     }
 
-    private void OnSolutionChange(EntityUid uid, ReactiveContainerComponent comp, SolutionChangedEvent args)
+    private void OnSolutionChange(EntityUid uid, ReactiveContainerComponent comp, ref SolutionChangedEvent args)
     {
         // The changes are already networked as part of the same game state.
         if (_timing.ApplyingState)

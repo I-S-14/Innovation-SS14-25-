@@ -1,3 +1,4 @@
+using Content.Shared.Antag;
 using Content.Goobstation.Shared.Devil;
 using Content.Goobstation.Shared.Overlays;
 using Content.Goobstation.Shared.Shadowling;

@@ -6,7 +6,7 @@
   id: StrangeBerrySeeds
   components:
     - type: Seed
-      seedId: strangeBerries
+      plantId: IS14StrangeBerrySeedsPlant
     - type: Sprite
       sprite: _Goobstation/Objects/Specific/Hydroponics/strange_berries.rsi
 
@@ -16,7 +16,7 @@
   id: BluespaceTomatoSeeds
   components:
   - type: Seed
-    seedId: bluespaceTomato
+    plantId: IS14BluespaceTomatoSeedsPlant
   - type: Sprite
     sprite: _Goobstation/Objects/Specific/Hydroponics/bluespace_tomato.rsi
 
@@ -26,6 +26,6 @@
   id: SpaceshroomSeeds
   components:
     - type: Seed
-      seedId: spaceshroom
+      plantId: IS14SpaceshroomSeedsPlant
     - type: Sprite
       sprite: _Goobstation/Objects/Specific/Hydroponics/spaceshroom.rsi

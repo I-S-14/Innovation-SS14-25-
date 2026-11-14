@@ -17,6 +17,10 @@ namespace Content.Shared._White.BackStab;
 
 public sealed class BackStabSystem : EntitySystem
 {
+    //IS14-change start: typed IDs for the retained behavior.
+    private static readonly ProtoId<DamageTypePrototype> BackstabSlashDamageType = "Slash";
+    //IS14-change end
+
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
     [Dependency] private readonly INetManager _net = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
@@ -48,7 +52,7 @@ public sealed class BackStabSystem : EntitySystem
 
         var damage = total * ent.Comp.DamageMultiplier;
 
-        args.BonusDamage += new DamageSpecifier(_prototypeManager.Index<DamageTypePrototype>("Slash"), damage - total);
+        args.BonusDamage += new DamageSpecifier(_prototypeManager.Index<DamageTypePrototype>(BackstabSlashDamageType), damage - total);
     }
 
     public bool TryBackstab(EntityUid target,

@@ -13,10 +13,16 @@
   - type: Sprite
     sprite: Structures/Machines/computers.rsi
     layers:
-    - map: ["computerLayerBody"]
+    - map: ["enum.ComputerVisualLayers.Frame"]
       state: computer
-    - map: ["computerLayerScreen"]
+    - map: ["enum.ComputerVisualLayers.Screen"]
       state: power_monitor
+  - type: ComputerVisuals # IS14: retain the custom states with modern layer keys.
+    stateFrame: computer
+    stateKeyboard: null
+    stateScreen: power_monitor
+    stateKeys: null
+    statePanel: null
   - type: NuclearReactorMonitor
   - type: ActivatableUI
     key: enum.NuclearReactorUiKey.Key
@@ -57,10 +63,16 @@
   - type: Sprite
     sprite: Structures/Machines/computers.rsi
     layers:
-    - map: ["computerLayerBody"]
+    - map: ["enum.ComputerVisualLayers.Frame"]
       state: computer
-    - map: ["computerLayerScreen"]
+    - map: ["enum.ComputerVisualLayers.Screen"]
       state: turbinecomp
+  - type: ComputerVisuals # IS14: retain the custom states with modern layer keys.
+    stateFrame: computer
+    stateKeyboard: null
+    stateScreen: turbinecomp
+    stateKeys: null
+    statePanel: null
   - type: GasTurbineMonitor
   - type: ActivatableUI
     key: enum.TurbineUiKey.Key
@@ -110,15 +122,21 @@
     maxRange: 256
   - type: Sprite
     layers:
-    - map: ["computerLayerBody"]
+    - map: ["enum.ComputerVisualLayers.Frame"]
       state: computer
-    - map: ["computerLayerKeyboard"]
+    - map: ["enum.ComputerVisualLayers.Keyboard"]
       state: generic_keyboard
-    - map: ["computerLayerScreen"]
+    - map: ["enum.ComputerVisualLayers.Screen"]
       state: teleport
-    - map: ["computerLayerKeys"]
+    - map: ["enum.ComputerVisualLayers.Keys"]
       state: generic_keys
     - map: [ "enum.WiresVisualLayers.MaintenancePanel" ]
       state: generic_panel_open
+  - type: ComputerVisuals # IS14: retain the custom states with modern layer keys.
+    stateFrame: computer
+    stateKeyboard: generic_keyboard
+    stateScreen: teleport
+    stateKeys: generic_keys
+    statePanel: generic_panel_open
   - type: Computer
     board: ShuttleRemoteControlSystemCircuitboard

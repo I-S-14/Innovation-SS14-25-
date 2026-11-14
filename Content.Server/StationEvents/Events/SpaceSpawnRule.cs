@@ -70,11 +70,13 @@ public sealed partial class SpaceSpawnRule : StationEventSystem<SpaceSpawnRuleCo
         var size = grid.LocalAABB.Size.Length() / 2;
         var distance = size + spaceSpawn.SpawnDistance;
 
+        var location = RobustRandom.NextAngle().ToVec() * distance;
+
         // create the spawner!
         var xform = Transform(gridUid.Value);
         var position = _transform.GetWorldPosition(xform) + grid.LocalAABB.Center + location; // CorvaxGoob edit
-        comp.Coords = new MapCoordinates(position, xform.MapID);
-        Sawmill.Info($"Picked location {comp.Coords} for {ToPrettyString(uid):rule}");
+        spaceSpawn.Coords = new MapCoordinates(position, xform.MapID);
+        Sawmill.Info($"Picked location {spaceSpawn.Coords} for {ToPrettyString(ent):rule}");
     }
 
     [SubscribeLocalEvent]

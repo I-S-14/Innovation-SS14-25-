@@ -1,3 +1,4 @@
+using Content.Shared.GameTicking.Events;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Diagnostics.CodeAnalysis;
@@ -183,7 +184,7 @@ public sealed partial class DormNotifier : EntitySystem
                 return;
             }
         }
-        catch (KeyNotFoundException e)
+        catch (KeyNotFoundException)
         {
             Log.Warning("Entity didn't have HumanoidAppearanceComponent");
         }

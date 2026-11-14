@@ -214,7 +214,6 @@
     sprite: Structures/Power/Cables/ex_cable.rsi
     state: excable_4
   - type: Damageable
-  - type: Injurable
     damageContainer: StructuralInorganic
   - type: Destructible
     thresholds:

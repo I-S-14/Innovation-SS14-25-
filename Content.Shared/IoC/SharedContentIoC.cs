@@ -13,9 +13,7 @@ namespace Content.Shared.IoC
         {
             deps.Register<MarkingManager, MarkingManager>();
             deps.Register<ContentLocalizationManager, ContentLocalizationManager>();
-            // Goob: to port EE Interaction Verbs. I hate this.
-            deps.Register<EntityWhitelistSystem>();
-            deps.Register<TagSystem>();
+            //IS14-change: interaction verbs resolve entity systems through IEntityManager.
         }
     }
 }

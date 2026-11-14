@@ -64,7 +64,7 @@ internal sealed partial class BuckleSystem : SharedBuckleSystem
                 continue;
 
             // Goobstation start
-            if (HasComp<VehicleComponent>(uid)) // let vehicle handle drawdepth
+            if (HasComp<VehicleComponent>(ent.Owner)) // let vehicle handle drawdepth
                 return;
             buckle.OriginalDrawDepth ??= buckledSprite.DrawDepth;
             if (isNorth)

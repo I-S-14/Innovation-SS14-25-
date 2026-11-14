@@ -28,7 +28,7 @@ public sealed partial class AchievementSystem : EntitySystem
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private IGameMapManager _gameMap = default!;
     [Dependency] private IPlayerManager _player = default!;
-    [Dependency] private GameTicker _ticker = default!;
+    [Dependency] private Content.Server.GameTicking.ServerGameTicker _ticker = default!;
     [Dependency] private SharedMindSystem _mind = default!;
     [Dependency] private SharedRoleSystem _roles = default!;
     [Dependency] private SharedEntityConditionsSystem _conditions = default!;

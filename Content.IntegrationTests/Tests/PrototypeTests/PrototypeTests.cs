@@ -13,6 +13,11 @@ namespace Content.IntegrationTests.Tests.PrototypeTests;
 
 public sealed class PrototypeTests : GameTest
 {
+    //IS14-change start
+    // Validate the production prototype set used by saved games.
+    public override PoolSettings PoolSettings => new() { Connected = true, NoLoadTestPrototypes = true };
+    //IS14-change end
+
     /// <summary>
     /// This test writes all known server prototypes as yaml files, then validates that the result is valid yaml.
     /// Can help prevent instances where prototypes have bad C# default values.

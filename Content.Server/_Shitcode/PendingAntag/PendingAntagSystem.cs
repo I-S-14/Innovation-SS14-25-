@@ -13,10 +13,9 @@ namespace Content.Server._Goobstation.PendingAntag;
 
 public sealed class PendingAntagSystem : EntitySystem
 {
-    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
     [Dependency] private readonly AntagSelectionSystem _selection = default!;
 
-    public Dictionary<NetUserId, (AntagSelectionDefinition, Entity<AntagSelectionComponent>)> PendingAntags = new();
+    public Dictionary<NetUserId, (AntagSpecifierPrototype, Entity<AntagSelectionComponent>)> PendingAntags = new();
 
     public override void Initialize()
     {
@@ -31,13 +30,16 @@ public sealed class PendingAntagSystem : EntitySystem
         if (ev.LateJoin)
             return;
 
-        if (ev.JobId == null || !_prototypeManager.Index<JobPrototype>(ev.JobId).CanBeAntag)
+        if (ev.JobId is not { } job || !PendingAntags.TryGetValue(ev.Player.UserId, out var pendingAntag))
             return;
 
-        if (!PendingAntags.Remove(ev.Player.UserId, out var pendingAntag))
+        var specifier = pendingAntag.Item1;
+        if (specifier.JobWhitelist is { } whitelist && !whitelist.Contains(job)
+            || specifier.JobBlacklist is { } blacklist && blacklist.Contains(job))
             return;
 
-        _selection.TryMakeAntag(pendingAntag.Item2, ev.Player, pendingAntag.Item1, true);
+        PendingAntags.Remove(ev.Player.UserId);
+        _selection.TryMakeAntag(pendingAntag.Item2, pendingAntag.Item1, ev.Player, true);
     }
 
     private void OnRoundRestart(RoundRestartCleanupEvent ev)

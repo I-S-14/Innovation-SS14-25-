@@ -36,5 +36,5 @@ public sealed partial class ModuleKineticChargeComponent : Component
     public MapCoordinates? LastPosition;
 
     [ViewVariables]
-    public bool Running;
+    public new bool Running;
 }

@@ -71,6 +71,7 @@ public abstract partial class SharedStaminaSystem : EntitySystem
     {
         base.Initialize();
 
+        InitializePowerCompat(); //IS14-change
         InitializeModifier();
         InitializeResistance();
 
@@ -244,7 +245,7 @@ public abstract partial class SharedStaminaSystem : EntitySystem
         TakeStaminaDamage(args.Embedded, component.Damage, stamina, source: uid);
     }
 
-    private void OnThrowHit(EntityUid uid, StaminaDamageOnCollideComponent component, ThrowDoHitEvent args)
+    private void OnThrowHit(EntityUid uid, StaminaDamageOnCollideComponent component, ref ThrowDoHitEvent args)
     {
         OnCollide(uid, component, args.Target);
     }

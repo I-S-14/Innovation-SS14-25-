@@ -55,7 +55,7 @@ public abstract partial class NukeopsRuleSystem : GameRuleSystem<NukeopsRuleComp
     }
 
     [SubscribeLocalEvent]
-    private void OnAfterAntagEntSelected(Entity<NukeopsRuleComponent> ent, ref AfterAntagEntitySelectedEvent args)
+    protected virtual void OnAfterAntagEntSelected(Entity<NukeopsRuleComponent> ent, ref AfterAntagEntitySelectedEvent args)
     {
         var target = (ent.Comp.TargetStation is not null) ? Name(ent.Comp.TargetStation.Value) : "the target";
 

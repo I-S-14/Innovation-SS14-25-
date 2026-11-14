@@ -173,7 +173,7 @@
   components:
   - type: Microwave
     cookTimeMultiplier: 0.5
-    baseHeatMultiplier: 200
+    deltaHeat: 200 # IS14-change: current name of the per-second heating multiplier.
     capacity: 10
     canMicrowaveIdsSafely: false
     explosionChance: 0.10 # Goobstation

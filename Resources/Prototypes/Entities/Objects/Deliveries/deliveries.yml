@@ -185,7 +185,6 @@
   components:
   - type: DeliveryFragile
   - type: Damageable
-  - type: Injurable
     damageContainer: Inorganic
   - type: DamageOnHighSpeedImpact
     minimumSpeed: 0.1

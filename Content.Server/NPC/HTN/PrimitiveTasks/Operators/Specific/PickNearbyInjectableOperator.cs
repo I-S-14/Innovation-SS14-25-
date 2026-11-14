@@ -50,7 +50,7 @@ public sealed partial class PickNearbyInjectableOperator : HTNOperator
 
         foreach (var (entity, _) in patients)
         {
-            if (!_medibot.CheckInjectable((owner, medibot), entity, true))
+            if (!_medibot.CheckInjectable((owner, medibot), entity)) //IS14-change: autonomous bots must respect treatment bounds.
                 continue;
 
             //Needed to make sure it doesn't sometimes stop right outside it's interaction range

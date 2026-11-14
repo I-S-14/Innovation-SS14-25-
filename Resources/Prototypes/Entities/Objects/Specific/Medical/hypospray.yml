@@ -103,7 +103,7 @@
     fillBaseName: hypo_fill
     solutionName: hypospray
   - type: StealTarget # CorvaxGoob
-    stealGroup: Hypospray
+    stealGroup: [Hypospray]
 
 - type: entity
   parent: [SolutionHyposprayTiny, BaseHypospray]

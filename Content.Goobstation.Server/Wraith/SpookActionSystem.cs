@@ -23,7 +23,6 @@ using Robust.Shared.Timing;
 using System.Linq;
 using Content.Shared.Atmos.Components;
 using Content.Server.Atmos.EntitySystems;
-using Content.Shared.Atmos.Components;
 using Content.Shared.Humanoid;
 using Content.Shared.Light.Components;
 using Content.Shared.Storage.Components;
@@ -104,7 +103,7 @@ public sealed partial class SpookActionSystem : EntitySystem
         foreach (var entity in entities)
         {
             var ev = new GhostBooEvent();
-            RaiseLocalEvent(entity, ev);
+            RaiseLocalEvent(entity, ref ev);
 
             if (ev.Handled)
                 booCounter++;

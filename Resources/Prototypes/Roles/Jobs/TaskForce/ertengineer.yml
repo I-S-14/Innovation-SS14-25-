@@ -1,5 +1,6 @@
 - type: job
   id: ERTEngineer
+  canBeAntag: false # IS14: retain original role restriction.
   name: job-name-ertengineer
   description: job-description-ertengineer
   playTimeTracker: JobERTEngineer
@@ -11,9 +12,11 @@
   - AllAccess
   access:
   - CentralCommand
+  - NanotrasenRepresentative
+  - BlueshieldOfficer
   special:
   - !type:AddImplantSpecial
-    implants: [ MindShieldImplant, DeathRattleImplantCentcomm ]
+    implants: [ MindShieldImplant, FreedomImplant, BluespaceLifelineImplant, RadioImplantCentcomm, NutrimentPumpImplant, StypticStimulatorImplant, DeathRattleImplantCentcomm ]
 
 
 

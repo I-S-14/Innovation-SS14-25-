@@ -1,3 +1,4 @@
+using Content.Shared.Speech.EntitySystems;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Text.RegularExpressions;
@@ -137,7 +138,7 @@ public sealed partial class GlorpAccentSystem : EntitySystem
         return hasLetters;
     }
 
-    private void OnAccentGet(EntityUid uid, GlorpAccentComponent component, AccentGetEvent args)
+    private void OnAccentGet(EntityUid uid, GlorpAccentComponent component, ref AccentGetEvent args)
     {
         args.Message = Accentuate(args.Message, component);
     }

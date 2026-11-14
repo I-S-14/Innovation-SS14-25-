@@ -65,6 +65,19 @@
         amount: 2
         doAfter: 1
 
+    # IS14: retain the Goob inline exchangers alongside Wizards' variant graphs.
+    - to: inlineradiator
+      steps:
+      - material: Steel
+        amount: 2
+        doAfter: 1
+
+    - to: bendinlineradiator
+      steps:
+      - material: Steel
+        amount: 2
+        doAfter: 1
+
   - node: pressurepump
     entity: !type:CreateVariants
       values: [ GasPressurePump, GasPressurePumpAlt1, GasPressurePumpAlt2 ]
@@ -223,6 +236,43 @@
 
   - node: bendradiator
     entity: HeatExchangerBend
+    edges:
+    - to: start
+      conditions:
+      - !type:EntityAnchored
+        anchored: false
+      completed:
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 2
+      - !type:DeleteEntity
+      steps:
+      - tool: Screwing
+        doAfter: 1
+      - tool: Welding
+        doAfter: 1
+
+  # IS14: exact retained nodes from Goob 5327c414c5, utilities/atmos_binary.yml.
+  - node: inlineradiator
+    entity: HeatExchangerInline
+    edges:
+    - to: start
+      conditions:
+      - !type:EntityAnchored
+        anchored: false
+      completed:
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 2
+      - !type:DeleteEntity
+      steps:
+      - tool: Screwing
+        doAfter: 1
+      - tool: Welding
+        doAfter: 1
+
+  - node: bendinlineradiator
+    entity: HeatExchangerInlineBend
     edges:
     - to: start
       conditions:

@@ -430,7 +430,9 @@ public abstract partial class SharedSealableClothingSystem : EntitySystem
                 return false;
             }
 
-            comp.ProcessQueue.Enqueue(EntityManager.GetNetEntity(sealeable));
+            //IS14-change start
+            comp.ProcessQueue.Enqueue(GetNetEntity(sealeable));
+            //IS14-change end
         }
 
         comp.IsInProcess = true;
@@ -460,7 +462,9 @@ public abstract partial class SharedSealableClothingSystem : EntitySystem
                 return;
             }
 
-            var processingPart = EntityManager.GetEntity(comp.ProcessQueue.Dequeue());
+            //IS14-change start
+            var processingPart = GetEntity(comp.ProcessQueue.Dequeue());
+            //IS14-change end
             Dirty(control);
 
             if (!TryComp<SealableClothingComponent>(processingPart, out var sealableComponent) || !comp.IsInProcess)
@@ -630,7 +634,7 @@ public abstract partial class SharedSealableClothingSystem : EntitySystem
         // Cancel if the control unit is sealed.
         if (TryComp<SealableClothingControlComponent>(toggleableEnt, out var controlSeal) && controlSeal.IsCurrentlySealed || controlSeal!.IsInProcess)
         {
-            _popupSystem.PopupClient(Loc.GetString("sealable-clothing-sealed-toggle-fail"), toggleableEnt, args.UnEquipTarget);
+            _popupSystem.PopupClient(Loc.GetString("sealable-clothing-sealed-toggle-fail"), toggleableEnt, args.User);
             args.Cancel();
             return;
         }
@@ -643,7 +647,7 @@ public abstract partial class SharedSealableClothingSystem : EntitySystem
         {
             if (!TryComp<SealableClothingComponent>(partUid, out var partSeal) || !partSeal.IsSealed)
                 continue;
-            _popupSystem.PopupClient(Loc.GetString("sealable-clothing-sealed-toggle-fail"), toggleableEnt, args.UnEquipTarget);
+            _popupSystem.PopupClient(Loc.GetString("sealable-clothing-sealed-toggle-fail"), toggleableEnt, args.User);
             args.Cancel();
             return;
         }

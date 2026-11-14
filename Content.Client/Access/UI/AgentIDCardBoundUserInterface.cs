@@ -1,5 +1,4 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
+using Content.Shared._DV.NanoChat;
 using Content.Shared.Access.Components;
 using Content.Shared.Access.Systems;
 using Content.Shared.StatusIcon;
@@ -27,13 +26,14 @@ public sealed class AgentIDCardBoundUserInterface(EntityUid owner, Enum uiKey) :
         _window.OnNameChanged += OnNameChanged;
         _window.OnJobChanged += OnJobChanged;
         _window.OnJobIconChanged += OnJobIconChanged;
-        _window.OnNumberChanged += OnNumberChanged; // DeltaV
-    }
+        _window.OnNumberChanged += number => SendMessage(new AgentIDCardNumberChangedMessage(number));
 
-    // DeltaV - Add number change handler
-    private void OnNumberChanged(uint newNumber)
-    {
-        SendMessage(new AgentIDCardNumberChangedMessage(newNumber));
+        ProtoId<JobIconPrototype> currentIcon = default;
+        if (EntMan.TryGetComponent<IdCardComponent>(Owner, out var card))
+            currentIcon = card.JobIcon;
+
+        _window.SetAllowedIcons(agent.IconGroups, currentIcon);
+        Update();
     }
 
     public override void Update()
@@ -47,6 +47,8 @@ public sealed class AgentIDCardBoundUserInterface(EntityUid owner, Enum uiKey) :
             return;
 
         _window.Update(card);
+        if (EntMan.TryGetComponent<NanoChatCardComponent>(Owner, out var nanoChat))
+            _window.SetCurrentNumber(nanoChat.Number);
     }
 
     private void OnNameChanged(string newName)
@@ -61,13 +63,6 @@ public sealed class AgentIDCardBoundUserInterface(EntityUid owner, Enum uiKey) :
 
     private void OnJobIconChanged(ProtoId<JobIconPrototype> newJobIconId)
     {
-        base.UpdateState(state);
-        if (_window == null || state is not AgentIDCardBoundUserInterfaceState cast)
-            return;
-
-        _window.SetCurrentName(cast.CurrentName);
-        _window.SetCurrentJob(cast.CurrentJob);
-        _window.SetAllowedIcons(cast.CurrentJobIconId);
-        _window.SetCurrentNumber(cast.CurrentNumber); // DeltaV
+        SendPredictedMessage(new AgentIDCardJobIconChangedMessage(newJobIconId));
     }
 }

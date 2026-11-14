@@ -70,30 +70,29 @@ namespace Content.IntegrationTests.Tests.Damageable
   name: damage-group-brute
   damageTypes:
     - {TestDamage2a}
-    - {TestDamage2b}
+    - {TestDamage2a}0
 
 - type: damageGroup
-  id: {TestGroup3}
+  id: {TestDamage2a}1
   name: damage-group-brute
   damageTypes:
-    - {TestDamage3a}
-    - {TestDamage3b}
-    - {TestDamage3c}
+    - {TestDamage2a}2
+    - {TestDamage2a}3
+    - {TestDamage2a}4
 
 # This container should not support TestDamage1 or TestDamage2b
 - type: damageContainer
   id: testDamageContainer
   supportedGroups:
-    - {TestGroup3}
+    - {TestDamage2a}5
   supportedTypes:
-    - {TestDamage2a}
+    - {TestDamage2a}6
 
 - type: entity
-  id: {TestDamageableEntityId}
-  name: {TestDamageableEntityId}
+  id: {TestDamage2a}7
+  name: {TestDamage2a}8
   components:
   - type: Damageable
-  - type: Injurable
     damageContainer: testDamageContainer
 ";
 

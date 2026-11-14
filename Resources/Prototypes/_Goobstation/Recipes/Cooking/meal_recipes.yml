@@ -1,8 +1,8 @@
+# IS14-change: recipe labels come from localized result entities in the current cooking system.
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 - type: microwaveMealRecipe
   id: RecipeLollypop
-  name: lollypop recipe
   result: FoodSnackLollypop
   time: 5
   solids:
@@ -12,7 +12,6 @@
 
 - type: microwaveMealRecipe
   id: RecipeFreedomCheeseBlock
-  name: freedom cheese recipe
   result: FoodFreedomCheeseBlock
   time: 5
   solids:
@@ -21,7 +20,6 @@
 
 - type: microwaveMealRecipe
   id: RecipeFriedVoxL
-  name: 'fried "chicken" recipe'
   result: FoodMeatVoxFried
   time: 10
   solids:
@@ -29,7 +27,6 @@
 
 - type: microwaveMealRecipe
   id: RecipeFriedVoxR
-  name: 'fried "chicken" recipe'
   result: FoodMeatVoxFried
   time: 10
   solids:
@@ -37,7 +34,6 @@
 
 - type: microwaveMealRecipe
   id: RecipeChudBurger
-  name: nothing burger recipe
   result: FoodBurgerChud
   time: 10
   group: Savory
@@ -49,7 +45,6 @@
 
 - type: microwaveMealRecipe
   id: RecipeMothdog
-  name: mothdog recipe
   result: FoodSnackMothdog
   time: 5
   group: Savory
@@ -58,7 +53,6 @@
 
 - type: microwaveMealRecipe
   id: RecipeCottonPizzaHot
-  name: flamin hot cotton pizza recipe
   result: FoodPizzaCottonHot
   time: 30
   group: Moth
@@ -68,7 +62,6 @@
 
 - type: microwaveMealRecipe
   id: RecipeColdBurger
-  name: five below burger recipe
   result: FoodBurgerCold
   time: 10
   group: Savory
@@ -79,7 +72,6 @@
 
 - type: microwaveMealRecipe
   id: RecipeHotColdBurger
-  name: five below burger recipe
   result: FoodBurgerHotCold
   time: 10
   group: Savory
@@ -91,7 +83,6 @@
 
 - type: microwaveMealRecipe
   id: RecipeColdChiliAlt
-  name: cold chili recipe
   result: FoodSoupChiliCold
   time: 20
   group: Soup
@@ -104,7 +95,6 @@
 
 - type: microwaveMealRecipe
   id: RecipeHotColdChili
-  name: hellfire chili recipe
   result: FoodSoupChiliHotCold
   time: 20
   group: Soup
@@ -118,7 +108,6 @@
 
 - type: microwaveMealRecipe
   id: RecipeGappleTartAlt
-  name: golden apple streusel tart recipe
   result: FoodTartGapple
   time: 15
   group: Pie

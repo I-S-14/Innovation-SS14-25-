@@ -4084,7 +4084,7 @@ entities:
       pos: 5.5,13.5
       parent: 1
     - type: WarpPoint
-      location: Эвакуационный шаттл
+      location: is14-map-warp-36290838c3d8
 - proto: WindoorSecureEngineeringLocked
   entities:
   - uid: 571

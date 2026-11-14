@@ -44,7 +44,7 @@ public sealed partial class BalloonPopperSystem : EntitySystem
         }
     }
 
-    private void OnThrowHit(EntityUid uid, BalloonPopperComponent component, ThrowDoHitEvent args)
+    private void OnThrowHit(EntityUid uid, BalloonPopperComponent component, ref ThrowDoHitEvent args)
     {
         foreach (var held in _hands.EnumerateHeld(args.Target))
         {

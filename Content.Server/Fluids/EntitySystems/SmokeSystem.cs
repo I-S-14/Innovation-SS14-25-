@@ -38,7 +38,6 @@ namespace Content.Server.Fluids.EntitySystems;
 public sealed partial class SmokeSystem : EntitySystem
 {
     // If I could do it all again this could probably use a lot more of puddles.
-    [Dependency] private readonly IPrototypeManager _prototype = default!;
     [Dependency] private readonly InventorySystem _inventory = default!; // Goobstation
     [Dependency] private IAdminLogManager _logger = default!;
     [Dependency] private IGameTiming _timing = default!;
@@ -272,7 +271,9 @@ public sealed partial class SmokeSystem : EntitySystem
         var blockIngestion = _internals.AreInternalsWorking(entity);
 
         if (_inventory.TryGetSlotEntity(entity, "mask", out var maskUid) &&
-            EntityManager.TryGetComponent<IngestionBlockerComponent>(maskUid, out var blocker) &&
+            //IS14-change start
+            TryComp<IngestionBlockerComponent>(maskUid, out var blocker) &&
+            //IS14-change end
             blocker is { Enabled: true, BlockSmokeIngestion: true }) // Goobstation
         {
             blockIngestion = true;

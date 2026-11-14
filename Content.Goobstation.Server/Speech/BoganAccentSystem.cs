@@ -1,3 +1,4 @@
+using Content.Shared.Speech.EntitySystems;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Goobstation.Common.Speech;
@@ -18,7 +19,7 @@ public sealed partial class BoganAccentSystem : EntitySystem
         SubscribeLocalEvent<BoganAccentComponent, AccentGetEvent>(OnAccent);
     }
 
-    private void OnAccent(EntityUid uid, BoganAccentComponent component, AccentGetEvent args)
+    private void OnAccent(EntityUid uid, BoganAccentComponent component, ref AccentGetEvent args)
     {
         var message = args.Message;
 

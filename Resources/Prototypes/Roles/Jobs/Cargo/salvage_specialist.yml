@@ -9,7 +9,6 @@
     - !type:DepartmentTimeRequirement
       department: Cargo
       time: 2.5h
-  weight: 8 # IS14-edit
   icon: "JobIconShaftMiner"
   startingGear: SalvageSpecialistGear
   #goobcoins: 20 #Goob content Corvax-Goob-coins

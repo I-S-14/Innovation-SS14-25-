@@ -11,6 +11,10 @@ namespace Content.Server.Emoting.Systems;
 
 public sealed partial class BodyEmotesSystem : EntitySystem
 {
+    //IS14-change start: retain fork fields lost during merge.
+    [Dependency] private readonly IPrototypeManager _proto = default!;
+    //IS14-change end
+
     [Dependency] private ChatSystem _chat = default!;
 
     public override void Initialize()

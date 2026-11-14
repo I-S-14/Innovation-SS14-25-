@@ -2,6 +2,7 @@
 
 - type: job
   id: Visitor
+  canBeAntag: false # IS14: retain original role restriction.
   name: job-name-visitor
   description: job-description-visitor
   playTimeTracker: JobVisitor

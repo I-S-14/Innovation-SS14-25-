@@ -36,6 +36,11 @@ namespace Content.Goobstation.Server.Blob;
 
 public sealed partial class ZombieBlobSystem : SharedZombieBlobSystem
 {
+    //IS14-change start: typed IDs preserve the retained Goob prototypes.
+    private static readonly ProtoId<TagPrototype> CompatibilityBlobMobTagId = "BlobMob";
+    private static readonly ProtoId<NpcFactionPrototype> CompatibilityBlobNpcFactionId = "Blob";
+    //IS14-change end
+
     [Dependency] private NpcFactionSystem _faction = default!;
     [Dependency] private NPCSystem _npc = default!;
     [Dependency] private MindSystem _mind = default!;
@@ -120,13 +125,13 @@ public sealed partial class ZombieBlobSystem : SharedZombieBlobSystem
             oldFactions.Add(factionId);
             _faction.RemoveFaction(uid, factionId);
         }
-        _faction.AddFaction(uid, "Blob");
+        _faction.AddFaction(uid, CompatibilityBlobNpcFactionId);
         component.OldFactions = oldFactions;
 
         // var accent = EnsureComp<ReplacementAccentComponent>(uid); // Languages - No need for accents.
         // accent.Accent = "genericAggressive";
 
-        _tagSystem.AddTag(uid, "BlobMob");
+        _tagSystem.AddTag(uid, CompatibilityBlobMobTagId);
 
         EnsureComp<PressureImmunityComponent>(uid);
 
@@ -193,7 +198,7 @@ public sealed partial class ZombieBlobSystem : SharedZombieBlobSystem
             temperatureDamageComponent.ColdDamageThreshold = component.OldColdDamageThreshold.Value;
         }
 
-        _tagSystem.RemoveTag(uid, "BlobMob");
+        _tagSystem.RemoveTag(uid, CompatibilityBlobMobTagId);
 
         /*
         var mindComp = EnsureComp<MindContainerComponent>(uid);
@@ -210,7 +215,7 @@ public sealed partial class ZombieBlobSystem : SharedZombieBlobSystem
         {
             _faction.AddFaction(uid, factionId);
         }
-        _faction.RemoveFaction(uid, "Blob");
+        _faction.RemoveFaction(uid, CompatibilityBlobNpcFactionId);
 
         if (TryComp<FixturesComponent>(uid, out var fixtures))
         {

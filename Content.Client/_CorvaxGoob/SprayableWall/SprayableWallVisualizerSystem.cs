@@ -25,13 +25,13 @@ public sealed class SprayableWallVisualizerSystem : VisualizerSystem<SprayableWa
             {
                 if (TryComp<IconSmoothComponent>(uid, out var origSmooth) && proto.TryGetComponent(out IconSmoothComponent? protoSmooth, _componentFactory))
                 {
-                    origSmooth.StateBase = protoSmooth.StateBase;
 
                     var tempUid = Spawn(prototype);
                     SpriteSystem.CopySprite(tempUid, uid);
                     QueueDel(tempUid);
 
-                    _iconSmooth.DirtyNeighbours(uid);
+                    for (var i = 0; i < Math.Min(origSmooth.States.Length, protoSmooth.States.Length); i++)
+                        _iconSmooth.SetStateBase((uid, origSmooth), i, protoSmooth.States[i].Base);
                 }
             }
         }

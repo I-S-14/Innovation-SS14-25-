@@ -22,7 +22,7 @@ public sealed class InfusedItemSystem : EntitySystem
 
     [Dependency] private readonly SharedStunSystem _stun = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
-    [Dependency] private readonly SharedRatvarianLanguageSystem _language = default!;
+    [Dependency] private readonly RatvarianLanguageSystem _language = default!; // IS14: Wizards status-effect implementation.
     [Dependency] private readonly SharedHandsSystem _hands = default!;
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
     [Dependency] private readonly SharedItemSystem _item = default!;

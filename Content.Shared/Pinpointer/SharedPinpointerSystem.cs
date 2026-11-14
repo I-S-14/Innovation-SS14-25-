@@ -1,10 +1,12 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+using System.Linq;
 using Content.Shared.Administration.Logs;
 using Content.Shared.Database;
 using Content.Shared.Emag.Systems;
 using Content.Shared.Examine;
 using Content.Shared.IdentityManagement;
 using Content.Shared.Interaction;
-using System.Linq;
 using Content.Shared.Popups;
 using Content.Shared.Whitelist;
 
@@ -12,8 +14,10 @@ namespace Content.Shared.Pinpointer;
 
 public abstract partial class SharedPinpointerSystem : EntitySystem
 {
-    [Dependency] private ISharedAdminLogManager _adminLogger = default!;
-    [Dependency] private EmagSystem _emag = default!;
+    [Dependency] private readonly ISharedAdminLogManager _adminLogger = default!;
+    [Dependency] private readonly EmagSystem _emag = default!;
+    [Dependency] protected readonly EntityWhitelistSystem Whitelist = default!; // Goob edit
+    [Dependency] private readonly SharedPopupSystem _popup = default!; // Goob edit
 
     public override void Initialize()
     {
@@ -26,71 +30,122 @@ public abstract partial class SharedPinpointerSystem : EntitySystem
     /// <summary>
     ///     Set the target if capable
     /// </summary>
-    private void OnAfterInteract(Entity<PinpointerComponent> ent, ref AfterInteractEvent args)
+    private void OnAfterInteract(EntityUid uid, PinpointerComponent component, AfterInteractEvent args)
     {
-        if (!args.CanReach || args.Target is not { } target)
+        if (!args.CanReach || args.Target is not { } target || args.Handled)
             return;
 
-        if (!ent.Comp.CanRetarget || ent.Comp.IsActive)
+        if (!component.CanRetarget || component.IsActive)
             return;
+
+        // Goob edit start: retargeting has a whitelist
+        args.Handled = true;
+
+        if (Whitelist.IsWhitelistFail(component.RetargetingWhitelist, target) ||
+            Whitelist.IsWhitelistFail(component.RetargetingBlacklist, target))
+        {
+            return;
+        }
 
         // TODO add doafter once the freeze is lifted
-        args.Handled = true;
-        ent.Comp.Target = args.Target;
-        _adminLogger.Add(LogType.Action, LogImpact.Low, $"{ToPrettyString(args.User):player} set target of {ToPrettyString(ent):pinpointer} to {ToPrettyString(ent.Comp.Target.Value):target}");
-        if (ent.Comp.UpdateTargetName)
-            ent.Comp.TargetName = ent.Comp.Target == null ? null : Identity.Name(ent.Comp.Target.Value, EntityManager);
+        // ignore can target multiple, because too hard to support
+        component.Targets.Clear();
+        component.Targets.Add(target);
+        _adminLogger.Add(LogType.Action, LogImpact.Low, $"{ToPrettyString(args.User):player} set target of {ToPrettyString(uid):pinpointer} to {ToPrettyString(target):target}");
+        if (component.UpdateTargetName)
+            component.TargetName = Identity.Name(target, EntityManager);
+
+        _popup.PopupPredicted(Loc.GetString("pinpointer-link-success"), uid, args.User);
+        // Goob edit end
     }
 
     /// <summary>
     ///     Set pinpointers target to track
+    ///     Goob edit: If CanTargetMultiple is true in Pinpointer component, then it will be ADDED, not set
     /// </summary>
-    public virtual void SetTarget(Entity<PinpointerComponent?> ent, EntityUid? target)
+    public virtual void SetTarget(EntityUid uid, EntityUid? target, PinpointerComponent? pinpointer = null)
     {
-        if (!Resolve(ent, ref ent.Comp))
+        if (!Resolve(uid, ref pinpointer))
             return;
 
-        var pinpointer = ent.Comp;
-
-        if (pinpointer.Target == target)
+        if (target == null || pinpointer.Targets.Contains(target.Value))
+        {
             return;
+        }
 
-        pinpointer.Target = target;
+        if (!pinpointer.CanTargetMultiple)
+        {
+            pinpointer.Targets.Clear();
+        }
+
+        if (TerminatingOrDeleted(target.Value))
+        {
+            TrySetArrowAngle(uid, Angle.Zero, pinpointer);
+            return;
+        }
+
+        pinpointer.Targets.Add(target.Value);
+
         if (pinpointer.UpdateTargetName)
-            pinpointer.TargetName = target == null ? null : Identity.Name(target.Value, EntityManager);
-        if (pinpointer.IsActive)
-            UpdateDirectionToTarget(ent);
+            pinpointer.TargetName = Identity.Name(target.Value, EntityManager);
+        // WD EDIT START - UpdateDirectionToTarget is triggered when updating, no need to run it again
+        // if (pinpointer.IsActive)
+        //    UpdateDirectionToTarget(uid, pinpointer);
+        // WD EDIT END
+    }
+
+    /// <summary>
+    /// Goob edit: sets a list of targets for a pinpointer.
+    /// </summary>
+    public virtual void SetTargets(EntityUid uid, List<EntityUid> targets, PinpointerComponent? pinpointer = null)
+    {
+        if (!Resolve(uid, ref pinpointer))
+            return;
+
+        if (!pinpointer.CanTargetMultiple)
+        {
+            return; // No.
+        }
+
+        var targetsList = targets.Where(Exists).ToList();
+
+        pinpointer.Targets = targetsList;
+
+        // WD EDIT START - UpdateDirectionToTarget is triggered when updating, no need to run it again
+        // if (pinpointer.IsActive)
+        //    UpdateDirectionToTarget(uid, pinpointer);
+        // WD EDIT END
     }
 
     /// <summary>
     ///     Update direction from pinpointer to selected target (if it was set)
     /// </summary>
-    protected virtual void UpdateDirectionToTarget(Entity<PinpointerComponent?> ent)
+    protected virtual void UpdateDirectionToTarget(EntityUid uid, PinpointerComponent? pinpointer = null)
     {
 
     }
 
-    private void OnExamined(Entity<PinpointerComponent> ent, ref ExaminedEvent args)
+    private void OnExamined(EntityUid uid, PinpointerComponent component, ExaminedEvent args)
     {
-        if (!args.IsInDetailsRange || ent.Comp.TargetName == null)
+        if (!component.CanExamine || !args.IsInDetailsRange || component.TargetName == null) // WD EDIT
             return;
 
-        args.PushMarkup(Loc.GetString("examine-pinpointer-linked", ("target", ent.Comp.TargetName)));
+        args.PushMarkup(Loc.GetString("examine-pinpointer-linked", ("target", component.TargetName)));
     }
 
     /// <summary>
     ///     Manually set distance from pinpointer to target
     /// </summary>
-    public void SetDistance(Entity<PinpointerComponent?> ent, Distance distance)
+    public void SetDistance(EntityUid uid, Distance distance, PinpointerComponent? pinpointer = null)
     {
-        if (!Resolve(ent, ref ent.Comp))
+        if (!Resolve(uid, ref pinpointer))
             return;
 
-        if (distance == ent.Comp.DistanceToTarget)
+        if (distance == pinpointer.DistanceToTarget)
             return;
 
-        ent.Comp.DistanceToTarget = distance;
-        Dirty(ent);
+        pinpointer.DistanceToTarget = distance;
+        Dirty(uid, pinpointer);
     }
 
     /// <summary>
@@ -98,16 +153,16 @@ public abstract partial class SharedPinpointerSystem : EntitySystem
     ///     If difference between current angle and new angle is smaller than
     ///     pinpointer precision, new value will be ignored and it will return false.
     /// </summary>
-    public bool TrySetArrowAngle(Entity<PinpointerComponent?> ent, Angle arrowAngle)
+    public bool TrySetArrowAngle(EntityUid uid, Angle arrowAngle, PinpointerComponent? pinpointer = null)
     {
-        if (!Resolve(ent, ref ent.Comp))
+        if (!Resolve(uid, ref pinpointer))
             return false;
 
-        if (ent.Comp.ArrowAngle.EqualsApprox(arrowAngle, ent.Comp.Precision))
+        if (pinpointer.ArrowAngle.EqualsApprox(arrowAngle, pinpointer.Precision))
             return false;
 
-        ent.Comp.ArrowAngle = arrowAngle;
-        Dirty(ent);
+        pinpointer.ArrowAngle = arrowAngle;
+        Dirty(uid, pinpointer);
 
         return true;
     }
@@ -115,16 +170,15 @@ public abstract partial class SharedPinpointerSystem : EntitySystem
     /// <summary>
     ///     Activate/deactivate pinpointer screen. If it has target it will start tracking it.
     /// </summary>
-    public void SetActive(Entity<PinpointerComponent?> ent, bool isActive)
+    public void SetActive(EntityUid uid, bool isActive, PinpointerComponent? pinpointer = null)
     {
-        if (!Resolve(ent, ref ent.Comp))
+        if (!Resolve(uid, ref pinpointer))
+            return;
+        if (isActive == pinpointer.IsActive)
             return;
 
-        if (isActive == ent.Comp.IsActive)
-            return;
-
-        ent.Comp.IsActive = isActive;
-        Dirty(ent);
+        pinpointer.IsActive = isActive;
+        Dirty(uid, pinpointer);
     }
 
 
@@ -132,28 +186,37 @@ public abstract partial class SharedPinpointerSystem : EntitySystem
     ///     Toggle Pinpointer screen. If it has target it will start tracking it.
     /// </summary>
     /// <returns>True if pinpointer was activated, false otherwise</returns>
-    public virtual bool TogglePinpointer(Entity<PinpointerComponent?> ent)
+    public virtual bool TogglePinpointer(EntityUid uid, PinpointerComponent? pinpointer = null)
     {
-        if (!Resolve(ent, ref ent.Comp))
+        if (!Resolve(uid, ref pinpointer))
             return false;
 
-        var isActive = !ent.Comp.IsActive;
-        SetActive(ent, isActive);
+        var isActive = !pinpointer.IsActive;
+        SetActive(uid, isActive, pinpointer);
         return isActive;
     }
 
-    private void OnEmagged(Entity<PinpointerComponent> ent, ref GotEmaggedEvent args)
+    private void OnEmagged(EntityUid uid, PinpointerComponent component, ref GotEmaggedEvent args)
     {
+        // WD EDIT START
+        if (!component.CanEmag)
+            return;
+        // WD EDIT END
+
         if (!_emag.CompareFlag(args.Type, EmagType.Interaction))
             return;
 
-        if (_emag.CheckFlag(ent, EmagType.Interaction))
-            return;
-
-        if (ent.Comp.CanRetarget)
+        if (_emag.CheckFlag(uid, EmagType.Interaction))
             return;
 
         args.Handled = true;
-        ent.Comp.CanRetarget = true;
+
+        if (component.CanRetarget)
+        {
+            component.RetargetingWhitelist = null; // Can target anything
+            return;
+        }
+
+        component.CanRetarget = true;
     }
 }

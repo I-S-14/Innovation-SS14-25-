@@ -25,10 +25,13 @@ public abstract class SharedShopVendorSystem : EntitySystem
     [Dependency] private readonly SharedPointLightSystem _light = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly SharedPowerReceiverSystem _power = default!;
+    [Dependency] private readonly Robust.Shared.GameObjects.SharedUserInterfaceSystem _shopUi = default!;
 
     public override void Initialize()
     {
         base.Initialize();
+
+        SubscribeLocalEvent<ShopVendorComponent, Content.Shared.VendingMachines.Events.OpenVendingUIActionEvent>(OnOpenShopAction);
 
         SubscribeLocalEvent<PointsVendorComponent, ShopVendorBalanceEvent>(OnPointsBalance);
         SubscribeLocalEvent<PointsVendorComponent, ShopVendorPurchaseEvent>(OnPointsPurchase);
@@ -40,6 +43,14 @@ public abstract class SharedShopVendorSystem : EntitySystem
         {
             subs.Event<ShopVendorPurchaseMessage>(OnPurchase);
         });
+    }
+
+    private void OnOpenShopAction(Entity<ShopVendorComponent> ent, ref Content.Shared.VendingMachines.Events.OpenVendingUIActionEvent args)
+    {
+        if (args.Handled)
+            return;
+        _shopUi.TryToggleUi(ent.Owner, VendingMachineUiKey.Key, args.Performer);
+        args.Handled = true;
     }
 
     #region Public API

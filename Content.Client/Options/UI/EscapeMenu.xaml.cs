@@ -16,18 +16,5 @@ public sealed partial class EscapeMenu : DefaultWindow
     {
         RobustXamlLoader.Load(this);
 
-        // TODO: removed with https://github.com/space-wizards/space-station-14/pull/44431
-        var uriOpener = IoCManager.Resolve<IUriOpener>();
-        var cfg = IoCManager.Resolve<IConfigurationManager>();
-
-        var bugReport = cfg.GetCVar(CCVars.InfoLinksBugReport);
-        if (!string.IsNullOrWhiteSpace(bugReport))
-        {
-            BugReportButton.OnPressed += _ => uriOpener.OpenUri(bugReport);
-        }
-        else
-        {
-            BugReportButton.Visible = false;
-        }
     }
 }

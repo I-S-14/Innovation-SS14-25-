@@ -1,3 +1,5 @@
+using Content.Shared.Timing.Components;
+using Content.Shared.Timing.Systems;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Goobstation.Shared.Factory;

@@ -32,7 +32,6 @@ namespace Content.Server.Telephone;
 
 public sealed partial class TelephoneSystem : SharedTelephoneSystem
 {
-    [Dependency] private readonly IPrototypeManager _prototype = default!;
     [Dependency] private readonly LanguageSystem _language = default!; // Einstein Engines - Language
     [Dependency] private AppearanceSystem _appearanceSystem = default!;
     [Dependency] private InteractionSystem _interaction = default!;
@@ -127,12 +126,16 @@ public sealed partial class TelephoneSystem : SharedTelephoneSystem
         // If speaker entity has TTS, the telephone will speak with the same voice
         if (TryComp<TTSComponent>(args.MessageSource, out var ttsSpeaker))
         {
-            EntityManager.EnsureComponent<TTSComponent>(entity, out var ttsTelephone);
+            //IS14-change start
+            EnsureComp<TTSComponent>(entity, out var ttsTelephone);
+            //IS14-change end
             ttsTelephone.VoicePrototypeId = ttsSpeaker.VoicePrototypeId;
         }
         else // Remove TTS if the speaker has no TTS
         {
-            EntityManager.RemoveComponent<TTSComponent>(entity);
+            //IS14-change start
+            RemComp<TTSComponent>(entity);
+            //IS14-change end
         }
         // CorvaxGoob-TTS-End
 

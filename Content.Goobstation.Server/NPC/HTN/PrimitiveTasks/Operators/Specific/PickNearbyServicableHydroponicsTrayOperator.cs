@@ -1,9 +1,10 @@
+using Content.Shared.Botany.Components;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Threading;
 using System.Threading.Tasks;
 using Content.Goobstation.Shared.Silicon.Bots;
-using Content.Server.Botany.Components;
+
 using Content.Server.NPC;
 using Content.Server.NPC.HTN.PrimitiveTasks;
 using Content.Server.NPC.Pathfinding;
@@ -39,9 +40,10 @@ public sealed partial class PickNearbyServicableHydroponicsTrayOperator : HTNOpe
     [DataField(required: true)]
     public string TargetMoveKey = string.Empty;
 
-    public override void Initialize(IEntitySystemManager sysManager)
+    public override void Initialize(IDependencyCollection deps)
     {
-        base.Initialize(sysManager);
+        base.Initialize(deps);
+        var sysManager = deps.Resolve<IEntitySystemManager>();
 
         _lookup = sysManager.GetEntitySystem<EntityLookupSystem>();
         _pathfinding = sysManager.GetEntitySystem<PathfindingSystem>();
@@ -55,7 +57,7 @@ public sealed partial class PickNearbyServicableHydroponicsTrayOperator : HTNOpe
         if (!blackboard.TryGetValue<float>(RangeKey, out var range, _entManager) || !_entManager.TryGetComponent<PlantbotComponent>(owner, out _))
             return (false, null);
 
-        var entityQuery = _entManager.GetEntityQuery<PlantHolderComponent>();
+        var entityQuery = _entManager.GetEntityQuery<PlantTrayComponent>();
         var emagged = _entManager.HasComponent<EmaggedComponent>(owner);
 
         foreach (var target in _lookup.GetEntitiesInRange(owner, range))
@@ -63,7 +65,7 @@ public sealed partial class PickNearbyServicableHydroponicsTrayOperator : HTNOpe
             if (!entityQuery.TryGetComponent(target, out var plantHolderComponent))
                 continue;
 
-            if (plantHolderComponent is { WaterLevel: >= PlantbotServiceOperator.RequiredWaterLevelToService, WeedLevel: <= PlantbotServiceOperator.RequiredWeedsAmountToWeed } && (!emagged || plantHolderComponent.Dead || plantHolderComponent.WaterLevel <= 0f))
+            if (plantHolderComponent is { WaterLevel: >= PlantbotServiceOperator.RequiredWaterLevelToService, WeedLevel: <= PlantbotServiceOperator.RequiredWeedsAmountToWeed } && (!emagged || (plantHolderComponent.PlantEntity is { } plant && _entManager.TryGetComponent<PlantHolderComponent>(plant, out var holder) && holder.Dead) || plantHolderComponent.WaterLevel <= 0f))
                 continue;
 
             //Needed to make sure it doesn't sometimes stop right outside it's interaction range

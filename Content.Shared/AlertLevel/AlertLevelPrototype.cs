@@ -59,6 +59,10 @@ public sealed partial class AlertLevelPrototype : IPrototype, IInheritingPrototy
     [DataField]
     public SoundSpecifier? Sound;
 
+    // IS14: retain Corvax announcers in the Wizards alert prototype format.
+    [DataField]
+    public Dictionary<string, SoundSpecifier> AnnouncersAudio = new();
+
     /// <summary>
     /// The color that this alert level will show in-game in chat.
     /// </summary>

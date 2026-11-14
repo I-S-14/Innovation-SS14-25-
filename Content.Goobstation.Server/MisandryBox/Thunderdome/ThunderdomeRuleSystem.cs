@@ -1,3 +1,6 @@
+using Content.Shared.Spawners.Components;
+using Content.Shared.Ghost.Components;
+using Content.Shared.Station.Systems;
 using System.Linq;
 using Content.Goobstation.Common.Mind;
 using Content.Goobstation.Common.Mobs;
@@ -57,7 +60,7 @@ public sealed partial class ThunderdomeRuleSystem : EntitySystem
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private IServerPreferencesManager _prefs = default!;
     [Dependency] private EuiManager _euiManager = default!;
-    [Dependency] private GameTicker _ticker = default!;
+    [Dependency] private Content.Server.GameTicking.ServerGameTicker _ticker = default!;
     [Dependency] private MindSystem _mind = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private SharedContainerSystem _container = default!;

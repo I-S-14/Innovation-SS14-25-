@@ -20,9 +20,15 @@ public sealed partial class ActionGrantSystem : EntitySystem
         if (!TryComp(ent.Owner, out ActionGrantComponent? grant))
             return;
 
-        // Goobstation - RestrictedSlots
-        if (ent.Comp.ActiveIfWorn && ent.Comp.RestrictedSlots != args.SlotFlags)
-            return;
+        // IS14-change: retain Wizards' worn-only check and Goob's optional slot mask.
+        if (ent.Comp.ActiveIfWorn)
+        {
+            if (args.SlotFlags is not { } slot || (slot & ~SlotFlags.POCKET) == SlotFlags.NONE)
+                return;
+
+            if (ent.Comp.RestrictedSlots is { } restricted && (restricted & slot) == SlotFlags.NONE)
+                return;
+        }
 
         foreach (var action in grant.ActionEntities)
         {

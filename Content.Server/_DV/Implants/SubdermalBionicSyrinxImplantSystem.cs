@@ -66,7 +66,7 @@ public sealed class SubdermalBionicSyrinxImplantSystem : EntitySystem
         UpdateUI(ent, ent.Comp);
     }
 
-    private void OnInsert(EntityUid uid, VoiceMaskComponent component, ImplantImplantedEvent args)
+    private void OnInsert(EntityUid uid, VoiceMaskComponent component, ref ImplantImplantedEvent args)
     {
         if (!args.Implanted.HasValue ||
             !_tag.HasTag(args.Implant, BionicSyrinxImplant))

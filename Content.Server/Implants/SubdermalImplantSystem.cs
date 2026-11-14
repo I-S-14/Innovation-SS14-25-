@@ -47,7 +47,7 @@ public sealed class SubdermalImplantSystem : SharedSubdermalImplantSystem
     // TODO: This shouldn't be in the SubdermalImplantSystem
     private void OnStoreRelay(EntityUid uid, StoreComponent store, ImplantRelayEvent<AfterInteractUsingEvent> implantRelay)
     {
-        var args = implantRelay.Event;
+        var args = implantRelay.Args;
 
         if (args.Handled)
             return;

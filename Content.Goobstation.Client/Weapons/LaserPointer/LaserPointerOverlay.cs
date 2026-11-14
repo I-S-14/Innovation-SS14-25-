@@ -12,6 +12,10 @@ namespace Content.Goobstation.Client.Weapons.LaserPointer;
 
 public sealed class LaserPointerOverlay : Overlay
 {
+    //IS14-change start
+    private static readonly ProtoId<ShaderPrototype> CompatibilityunshadedShaderId = "unshaded";
+    //IS14-change end
+
     public override OverlaySpace Space => OverlaySpace.WorldSpaceEntities;
     private readonly IEntityManager _entManager;
 
@@ -27,7 +31,7 @@ public sealed class LaserPointerOverlay : Overlay
 
         _transform = entManager.System<TransformSystem>();
 
-        _unshadedShader = prototype.Index<ShaderPrototype>("unshaded").Instance();
+        _unshadedShader = prototype.Index<ShaderPrototype>(CompatibilityunshadedShaderId).Instance();
     }
 
     protected override void Draw(in OverlayDrawArgs args)

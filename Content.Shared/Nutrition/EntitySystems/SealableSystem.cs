@@ -27,7 +27,7 @@ public sealed partial class SealableSystem : EntitySystem
         args.PushMarkup(sealedText);
     }
 
-    private void OnOpened(EntityUid uid, SealableComponent comp, OpenableOpenedEvent args)
+    private void OnOpened(EntityUid uid, SealableComponent comp, ref OpenableOpenedEvent args)
     {
         comp.Sealed = false;
 

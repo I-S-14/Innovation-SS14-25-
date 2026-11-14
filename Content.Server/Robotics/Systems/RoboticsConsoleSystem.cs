@@ -41,7 +41,6 @@ public sealed partial class RoboticsConsoleSystem : SharedRoboticsConsoleSystem
     {
         base.Initialize();
 
-        SubscribeLocalEvent<RoboticsConsoleComponent, DeviceNetworkPacketEvent>(OnPacketReceived);
         // Corvax-Goob-MutableLaws-Start
         SubscribeLocalEvent<RoboticsConsoleComponent, EntInsertedIntoContainerMessage>(OnInserted);
         SubscribeLocalEvent<RoboticsConsoleComponent, RoboticsConsoleChangeLawsMessage>(OnChangeLaws);
@@ -120,26 +119,25 @@ public sealed partial class RoboticsConsoleSystem : SharedRoboticsConsoleSystem
         if (_lock.IsLocked(ent.Owner))
             return;
 
-        if (!ent.Comp.Cyborgs.TryGetValue(args.Address, out var data))
+        if (!ent.Comp.CyborgsAddresses.TryGetValue(args.Address, out var borg)
+            || !ent.Comp.Cyborgs.TryGetValue(borg, out var data))
             return;
 
         if (!data.IsLawChangable)
             return;
 
-        if (!_slots.TryGetSlot(ent, ent.Comp.CircuitBoardItemSlot, out var slot) || slot.Item is null)
+        if (!_slots.TryGetSlot(ent.Owner, ent.Comp.CircuitBoardItemSlot, out var slot) || slot.Item is null)
             return;
         // Corvax-Next-AiRemoteControl-Start
         if (data.IsAiControllable)
             return;
         // Corvax-Next-AiRemoteControl-End
 
-        var payload = new NetworkPayload()
+        var payload = new RoboticsCyborgChangeLawsPayload
         {
-            [DeviceNetworkConstants.Command] = RoboticsConsoleConstants.NET_CHANGE_LAWS_COMMAND,
-            [RoboticsConsoleConstants.NET_CIRCUIT_BOARD] = slot.Item.Value,
+            CircuitBoard = slot.Item.Value,
         };
-
-        _deviceNetwork.QueuePacket(ent, args.Address, payload);
+        _deviceNetwork.SendPacket(ent.Owner, args.Address, ref payload);
 
         var message = Loc.GetString(ent.Comp.ChangeLawsMessage, ("name", data.Name));
         _radio.SendRadioMessage(ent, message, ent.Comp.RadioChannel, ent);
@@ -198,8 +196,14 @@ public sealed partial class RoboticsConsoleSystem : SharedRoboticsConsoleSystem
 
     private void UpdateUserInterface(Entity<RoboticsConsoleComponent> ent)
     {
-        var state = new RoboticsConsoleState(ent.Comp.Cyborgs, ent.Comp.AllowBorgControl,
-        _slots.TryGetSlot(ent, ent.Comp.CircuitBoardItemSlot, out var slot) && slot.HasItem);// Corvax-Goob-MutableLaws
+        var cyborgs = new Dictionary<LocDeviceAddress, CyborgControlData>(ent.Comp.Cyborgs.Count);
+        foreach (var (uid, data) in ent.Comp.Cyborgs)
+        {
+            if (_deviceNetworkComp.TryComp(uid, out var device))
+                cyborgs.Add(device, data);
+        }
+        var state = new RoboticsConsoleState(cyborgs, ent.Comp.AllowBorgControl,
+            _slots.TryGetSlot(ent.Owner, ent.Comp.CircuitBoardItemSlot, out var slot) && slot.HasItem);
 
         _ui.SetUiState(ent.Owner, RoboticsConsoleUiKey.Key, state);
     }

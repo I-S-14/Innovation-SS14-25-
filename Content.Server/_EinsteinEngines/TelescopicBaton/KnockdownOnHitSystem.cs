@@ -17,7 +17,7 @@ public sealed class KnockdownOnHitSystem : EntitySystem
 {
     [Dependency] private readonly StunSystem _stun = default!;
     [Dependency] private readonly MobStateSystem _mobState = default!; // Goobstation
-    [Dependency] protected readonly ISharedAdminLogManager AdminLogger = default!;
+    [Dependency] private readonly ISharedAdminLogManager AdminLogger = default!;
 
     public override void Initialize()
     {

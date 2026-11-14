@@ -1,2 +1,2 @@
-cmd-startround-desc = Ends PreRoundLobby state and starts the round.
+cmd-startround-desc = Завершает состояние PreRoundLobby и запускает раунд.
 cmd-startround-help = Usage: startround

@@ -498,7 +498,7 @@ public sealed class MonumentSystem : SharedMonumentSystem
                 _ui.CloseUi((uid.Owner, uiComp2), MonumentKey.Key);
             }
 
-            uiComp.Key = null; //kazne called this the laziest way to disable a UI ever
+            RemCompDeferred<ActivatableUIComponent>(uid);
         }
 
         finaleComp.CurrentState = FinaleState.ReadyFinale;

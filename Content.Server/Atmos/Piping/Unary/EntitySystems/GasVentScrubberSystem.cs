@@ -87,10 +87,10 @@ namespace Content.Server.Atmos.Piping.Unary.EntitySystems
         }
 
         private void OnVentScrubberLeaveAtmosphere(EntityUid uid, GasVentScrubberComponent component,
-            AtmosDeviceDisabledEvent args) => UpdateState(uid, component);
+            ref AtmosDeviceDisabledEvent args) => UpdateState(uid, component);
 
         private void OnVentScrubberEnterAtmosphere(EntityUid uid, GasVentScrubberComponent component,
-            AtmosDeviceEnabledEvent args) => UpdateState(uid, component);
+            ref AtmosDeviceEnabledEvent args) => UpdateState(uid, component);
 
         private void Scrub(float timeDelta, GasVentScrubberComponent scrubber, GasMixture? tile, PipeNode outlet)
         {

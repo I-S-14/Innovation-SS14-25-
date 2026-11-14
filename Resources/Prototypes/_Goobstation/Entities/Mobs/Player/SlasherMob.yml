@@ -184,10 +184,20 @@
     - type: GunBlocked
       popupText: slasher-cannot-use-guns # Seems to be broken inside AntagSelection
     - type: WeakToHoly
-    - type: Hunger
-      baseDecayRate: 0
-    - type: Thirst
-      baseDecayRate: 0
+    - type: Satiation
+      satiations:
+        Hunger:
+          prototype: IS14MobSlasherHunger1d6986a2
+        Thirst:
+          prototype: IS14MobSlasherThirst2f1e0389
+    - type: SatiationSpeedModifier
+      satiations:
+        Hunger:
+          thresholds:
+            Starving: 0.75
+        Thirst:
+          thresholds:
+            Parched: 0.75
     - type: MobThresholds
       thresholds:
         0: Alive

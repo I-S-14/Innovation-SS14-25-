@@ -9,7 +9,7 @@
   - type: Sprite
     sprite: Objects/Specific/Chemistry/jug.rsi
   - type: Item
-    size: Large
+    size: Normal # IS14: retain Goob/IS14 chemistry-bag compatibility; keep the new solution volume.
     sprite: Objects/Specific/Chemistry/jug.rsi
   - type: SolutionContainerVisuals
     maxFillLevels: 6

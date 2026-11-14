@@ -57,7 +57,6 @@
       - type: CanMoveInAir
       - type: Damageable
         damageModifierSet: ManifestedSpirit
-      - type: Injurable
         damageContainer: ManifestedSpirit
       - type: Destructible
         thresholds:

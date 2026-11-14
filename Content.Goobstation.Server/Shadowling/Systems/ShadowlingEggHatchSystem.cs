@@ -89,14 +89,14 @@ public sealed partial class ShadowlingEggHatchSystem : EntitySystem
         if (TryComp<EntityStorageComponent>(egg, out var storage))
         {
             _entityStorage.Remove(sling, egg, storage);
-            _entityStorage.OpenStorage(egg, storage);
+            _entityStorage.OpenStorage((egg, storage));
         }
 
         var newUid = _polymorph.PolymorphEntity(sling, shadowling.ShadowlingPolymorphId);
         if (newUid == null)
             return;
 
-        var ascendantShadowlingComp = EntityManager.GetComponent<ShadowlingComponent>(newUid.Value);
+        var ascendantShadowlingComp = Comp<ShadowlingComponent>(newUid.Value);
         var shadowlingSystem = EntityManager.System<ShadowlingSystem>();
 
         shadowlingSystem.OnPhaseChanged(newUid.Value, ascendantShadowlingComp, ShadowlingPhases.PostHatch);

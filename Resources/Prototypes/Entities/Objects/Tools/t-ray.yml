@@ -39,7 +39,7 @@
     layers:
     - state: tray-off
       map: ["base"]
-  - type: TRayScanner
+  - type: TrayScanner
   - type: ItemToggle
   - type: Item
     sprite: Objects/Tools/t-ray.rsi

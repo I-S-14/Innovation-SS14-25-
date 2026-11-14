@@ -1,3 +1,5 @@
+using Content.Shared.GameTicking;
+using Content.Shared.Antag;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Goobstation.Shared.Shadowling;
@@ -20,7 +22,7 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Goobstation.Server.Shadowling.Rules;
 
-public sealed partial class ShadowlingRuleSystem : GameRuleSystem<ShadowlingRuleComponent>
+public sealed partial class ShadowlingRuleSystem : ServerGameRuleSystem<ShadowlingRuleComponent>
 {
     [Dependency] private SharedRoleSystem _role = default!;
     [Dependency] private AntagSelectionSystem _antag = default!;
@@ -50,7 +52,7 @@ public sealed partial class ShadowlingRuleSystem : GameRuleSystem<ShadowlingRule
     private void OnDeath(ShadowlingDeathEvent args)
     {
         var rulesQuery = QueryActiveRules();
-        while (rulesQuery.MoveNext(out _, out var shadowling, out _))
+        while (rulesQuery.MoveNext(out _, out var shadowling, out _, out _))
         {
             var shadowlingCount = 0;
             var shadowlingDead = 0;
@@ -71,7 +73,7 @@ public sealed partial class ShadowlingRuleSystem : GameRuleSystem<ShadowlingRule
     private void OnAscend(ShadowlingAscendEvent args)
     {
         var rulesQuery = QueryActiveRules();
-        while (rulesQuery.MoveNext(out _, out var shadowling, out _))
+        while (rulesQuery.MoveNext(out _, out var shadowling, out _, out _))
         {
             shadowling.WinCondition = ShadowlingWinCondition.Win;
             _roundEndSystem.EndRound(); //CorvaxGoob edit

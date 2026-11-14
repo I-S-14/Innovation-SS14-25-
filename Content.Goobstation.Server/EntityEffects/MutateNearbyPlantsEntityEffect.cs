@@ -1,4 +1,5 @@
-using Content.Server.Botany.Components;
+using Content.Shared.Botany.Components;
+
 using Content.Shared.EntityEffects;
 using Content.Shared.EntityEffects.Effects.Botany.PlantAttributes;
 using Robust.Shared.Prototypes;

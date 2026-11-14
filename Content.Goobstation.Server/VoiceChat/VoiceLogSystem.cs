@@ -19,7 +19,7 @@ namespace Content.Goobstation.Server.VoiceChat;
 public sealed partial class VoiceLogSystem : EntitySystem
 {
     [Dependency] private VoiceLogManager _logs = default!;
-    [Dependency] private GameTicker _gameTicker = default!;
+    [Dependency] private Content.Server.GameTicking.ServerGameTicker _gameTicker = default!;
     [Dependency] private IAdminManager _admin = default!;
     [Dependency] private EuiManager _eui = default!;
     [Dependency] private IConfigurationManager _cfg = default!;

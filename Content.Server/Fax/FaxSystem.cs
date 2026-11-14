@@ -338,7 +338,8 @@ public sealed partial class FaxSystem : EntitySystem
         // Goobstation
         if (component.PaperSlot.Item != null)
         {
-            var sentEv = new GettingFaxedSentEvent((uid, component), args);
+            Entity<FaxMachineComponent> fax = (uid, component);
+            var sentEv = new GettingFaxedSentEvent(in fax, in args);
             RaiseLocalEvent(component.PaperSlot.Item.Value, ref sentEv);
 
             if (sentEv.Handled)
@@ -588,7 +589,7 @@ public sealed partial class FaxSystem : EntitySystem
                     paper.StampState,
                     paper.StampedBy,
                     paper.EditingDisabled,
-                    component.FaxName),
+                    senderFaxName: component.FaxName),
         };
 
         _deviceNetworkSystem.SendPacket(uid, component.DestinationFaxAddress, ref payload);
@@ -612,12 +613,12 @@ public sealed partial class FaxSystem : EntitySystem
     ///     Accepts a new message and adds it to the queue to print
     ///     If has parameter "notifyAdmins" also output a special message to admin chat.
     /// </summary>
-    public void Receive(EntityUid uid, FaxPrintout printout, DeviceAddress? fromAddress = null, FaxMachineComponent? component = null)
+    public void Receive(EntityUid uid, FaxPrintout? printout, DeviceAddress? fromAddress = null, FaxMachineComponent? component = null)
     {
         if (!Resolve(uid, ref component))
             return;
 
-        var faxName = printout.SenderFaxName ?? Loc.GetString("fax-machine-popup-source-unknown");
+        var faxName = printout?.SenderFaxName ?? Loc.GetString("fax-machine-popup-source-unknown");
 
         _popupSystem.PopupEntity(Loc.GetString("fax-machine-popup-received", ("from", faxName)), uid);
         if (printout != null) // Goobstation

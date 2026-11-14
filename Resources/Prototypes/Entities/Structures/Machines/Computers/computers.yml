@@ -14,14 +14,14 @@
   - type: GenericVisualizer
     visuals:
       enum.ComputerVisuals.Powered:
-        computerLayerScreen:
+        enum.ComputerVisualLayers.Screen:
           True: { visible: true, shader: unshaded }
           False: { visible: false }
-        computerLayerKeys:
+        enum.ComputerVisualLayers.Keys:
           True: { visible: true, shader: unshaded }
           False: { visible: true, shader: shaded }
       enum.AtmosAlertsComputerVisuals.ComputerLayerScreen:
-        computerLayerScreen:
+        enum.ComputerVisualLayers.Screen:
           0: { state: alert-0 }
           1: { state: alert-0 }
           2: { state: alert-1 }
@@ -638,16 +638,22 @@
   # Shitmed
   - type: Sprite
     layers:
-    - map: ["computerLayerBody"]
+    - map: ["enum.ComputerVisualLayers.Frame"]
       state: computer
-    - map: ["computerLayerKeyboard"]
+    - map: ["enum.ComputerVisualLayers.Keyboard"]
       state: generic_keyboard
-    - map: ["computerLayerScreen"]
+    - map: ["enum.ComputerVisualLayers.Screen"]
       state: crew
-    - map: ["computerLayerKeys"]
+    - map: ["enum.ComputerVisualLayers.Keys"]
       state: med_key
     - map: ["enum.WiresVisualLayers.MaintenancePanel"]
       state: generic_panel_open
+  - type: ComputerVisuals # IS14: retain the custom states with modern layer keys.
+    stateFrame: computer
+    stateKeyboard: generic_keyboard
+    stateScreen: crew
+    stateKeys: med_key
+    statePanel: generic_panel_open
   - type: Speech
   - type: BodyScanner
   - type: HealthAnalyzer
@@ -1135,10 +1141,10 @@
   - type: GenericVisualizer
     visuals:
       enum.ComputerVisuals.Powered:
-        computerLayerScreen:
+        enum.ComputerVisualLayers.Screen:
           True: { visible: true, shader: unshaded }
           False: { visible: false }
-        computerLayerKeys:
+        enum.ComputerVisualLayers.Keys:
           True: { visible: true, shader: unshaded }
           False: { visible: true }
   - type: SalvageExpeditionConsole
@@ -1497,14 +1503,14 @@
   - type: GenericVisualizer
     visuals:
       enum.ComputerVisuals.Powered:
-        computerLayerScreen:
+        enum.ComputerVisualLayers.Screen:
           True: { visible: true, shader: unshaded }
           False: { visible: false }
-        computerLayerKeys:
+        enum.ComputerVisualLayers.Keys:
           True: { visible: true, shader: unshaded }
           False: { visible: true, shader: shaded }
       enum.StationAiFixerConsoleVisuals.Key:
-        computerLayerScreen:
+        enum.ComputerVisualLayers.Screen:
           Repair0: { state: ai-fixer-progress-0 }
           Repair1: { state: ai-fixer-progress-1 }
           Repair2: { state: ai-fixer-progress-2 }
@@ -1598,16 +1604,22 @@
   - type: Sprite
     sprite: Structures/Supermatter/computers.rsi
     layers:
-    - map: ["computerLayerBody"]
+    - map: ["enum.ComputerVisualLayers.Frame"]
       state: computer
-    - map: ["computerLayerKeyboard"]
+    - map: ["enum.ComputerVisualLayers.Keyboard"]
       state: generic_keyboard
-    - map: ["computerLayerScreen"]
+    - map: ["enum.ComputerVisualLayers.Screen"]
       state: supermatter-0
-    - map: ["computerLayerKeys"]
+    - map: ["enum.ComputerVisualLayers.Keys"]
       state: supermatter_keys
     - map: [ "enum.WiresVisualLayers.MaintenancePanel" ]
       state: generic_panel_open
+  - type: ComputerVisuals # IS14: retain the custom states with modern layer keys.
+    stateFrame: computer
+    stateKeyboard: generic_keyboard
+    stateScreen: supermatter-0
+    stateKeys: supermatter_keys
+    statePanel: generic_panel_open
   - type: PointLight
     radius: 1.5
     energy: 1.6
@@ -1615,14 +1627,14 @@
   - type: GenericVisualizer
     visuals:
       enum.ComputerVisuals.Powered:
-        computerLayerScreen:
+        enum.ComputerVisualLayers.Screen:
           True: { visible: true, shader: unshaded }
           False: { visible: false }
-        computerLayerKeys:
+        enum.ComputerVisualLayers.Keys:
           True: { visible: true, shader: unshaded }
           False: { visible: true, shader: shaded }
       enum.SupermatterConsoleVisuals.ComputerLayerScreen:
-        computerLayerScreen:
+        enum.ComputerVisualLayers.Screen:
           0: { state: supermatter-0 }
           1: { state: supermatter-1 }
           2: { state: supermatter-2 }

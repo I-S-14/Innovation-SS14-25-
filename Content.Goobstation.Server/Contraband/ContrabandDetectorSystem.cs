@@ -1,3 +1,6 @@
+using Robust.Shared.Prototypes;
+using Content.Shared.DeviceLinking;
+using Content.Shared.DeviceLinking.Systems;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Server.DeviceLinking.Systems;
@@ -12,6 +15,10 @@ namespace Content.Goobstation.Server.Contraband;
 
 public sealed partial class ContrabandDetectorSystem : SharedContrabandDetectorSystem
 {
+    //IS14-change start: typed IDs preserve the retained Goob prototypes.
+    private static readonly ProtoId<SourcePortPrototype> CompatibilitySignalContrabandDetectedSourcePortId = "SignalContrabandDetected";
+    //IS14-change end
+
     [Dependency] private AudioSystem _audioSystem = default!;
     [Dependency] private PowerReceiverSystem _powerReceiverSystem = default!;
     [Dependency] private DeviceLinkSystem _deviceLink = default!;
@@ -50,13 +57,13 @@ public sealed partial class ContrabandDetectorSystem : SharedContrabandDetectorS
         if (isDetected)
         {
             _audioSystem.PlayPvs(component.Detect, uid);
-            _deviceLink.SendSignal(uid, "SignalContrabandDetected", true);
+            _deviceLink.SendSignal(uid, CompatibilitySignalContrabandDetectedSourcePortId, true);
             component.State = ContrabandDetectorState.Alarm;
         }
         else
         {
             _audioSystem.PlayPvs(component.NoDetect, uid);
-            _deviceLink.SendSignal(uid, "SignalContrabandDetected", false);
+            _deviceLink.SendSignal(uid, CompatibilitySignalContrabandDetectedSourcePortId, false);
             component.State = ContrabandDetectorState.Scan;
         }
 

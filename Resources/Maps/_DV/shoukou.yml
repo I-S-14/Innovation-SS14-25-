@@ -35963,7 +35963,7 @@ entities:
     - type: NavMapBeacon
       text: Dojo
     - type: WarpPoint
-      location: Dojo
+      location: is14-map-warp-c09e5feb70f2
   - uid: 10910
     components:
     - type: Transform
@@ -35973,7 +35973,7 @@ entities:
       text: Sec Lockers
       color: '#DE3A3AFF'
     - type: WarpPoint
-      location: Sec Lockers
+      location: is14-map-warp-667864680918
   - uid: 10924
     components:
     - type: Transform
@@ -35983,7 +35983,7 @@ entities:
       text: Sec Front
       color: '#DE3A3AFF'
     - type: WarpPoint
-      location: Sec Front
+      location: is14-map-warp-bc0aeb707d00
   - uid: 10926
     components:
     - type: Transform
@@ -35993,7 +35993,7 @@ entities:
       text: Genpop
       color: '#DE3A3AFF'
     - type: WarpPoint
-      location: Genpop
+      location: is14-map-warp-d3ac53154c74
   - uid: 10934
     components:
     - type: Transform
@@ -36003,7 +36003,7 @@ entities:
       text: Genpop Processing
       color: '#DE3A3AFF'
     - type: WarpPoint
-      location: Genpop Processing
+      location: is14-map-warp-749f8d848d03
   - uid: 11288
     components:
     - type: Transform
@@ -36012,7 +36012,7 @@ entities:
     - type: NavMapBeacon
       text: Gameroom
     - type: WarpPoint
-      location: Gameroom
+      location: is14-map-warp-39a3368f7e8e
   - uid: 15004
     components:
     - type: Transform
@@ -36021,7 +36021,7 @@ entities:
     - type: NavMapBeacon
       text: Station Square
     - type: WarpPoint
-      location: Station Square
+      location: is14-map-warp-0ff40033b694
 - proto: DefaultStationBeaconAIPower
   entities:
   - uid: 10811
@@ -36093,7 +36093,7 @@ entities:
     - type: NavMapBeacon
       text: Atmos Lockers
     - type: WarpPoint
-      location: Atmos Lockers
+      location: is14-map-warp-11aaf5bca062
   - uid: 14850
     components:
     - type: Transform
@@ -36102,7 +36102,7 @@ entities:
     - type: NavMapBeacon
       text: Supermatter
     - type: WarpPoint
-      location: Supermatter
+      location: is14-map-warp-ab4782b9a520
 - proto: DefaultStationBeaconBar
   entities:
   - uid: 5042
@@ -36153,7 +36153,7 @@ entities:
     - type: NavMapBeacon
       text: Cargo
     - type: WarpPoint
-      location: Cargo
+      location: is14-map-warp-fc09b38f3535
   - uid: 10951
     components:
     - type: Transform
@@ -36162,7 +36162,7 @@ entities:
     - type: NavMapBeacon
       text: Cargo Storage
     - type: WarpPoint
-      location: Cargo Storage
+      location: is14-map-warp-0e1b87cae912
 - proto: DefaultStationBeaconCargoReception
   entities:
   - uid: 10952
@@ -36173,7 +36173,7 @@ entities:
     - type: NavMapBeacon
       text: Cargo Front
     - type: WarpPoint
-      location: Cargo Front
+      location: is14-map-warp-0d79f215d2ce
 - proto: DefaultStationBeaconCentcommOffice
   entities:
   - uid: 10817
@@ -36203,7 +36203,7 @@ entities:
     - type: NavMapBeacon
       text: Chaplain
     - type: WarpPoint
-      location: Chaplain
+      location: is14-map-warp-6792613fe668
 - proto: DefaultStationBeaconChemistry
   entities:
   - uid: 5048
@@ -36228,7 +36228,7 @@ entities:
     - type: NavMapBeacon
       text: Conference Room
     - type: WarpPoint
-      location: Conference Room
+      location: is14-map-warp-fb9623fb6b5b
   - uid: 11289
     components:
     - type: Transform
@@ -36237,7 +36237,7 @@ entities:
     - type: NavMapBeacon
       text: Command Lounge
     - type: WarpPoint
-      location: Command Lounge
+      location: is14-map-warp-f5a63eb1786f
   - uid: 11290
     components:
     - type: Transform
@@ -36246,7 +36246,7 @@ entities:
     - type: NavMapBeacon
       text: Bridge Front
     - type: WarpPoint
-      location: Bridge Front
+      location: is14-map-warp-e20daf57724b
 - proto: DefaultStationBeaconCryonics
   entities:
   - uid: 10940
@@ -36304,7 +36304,7 @@ entities:
     - type: NavMapBeacon
       text: Engi Front
     - type: WarpPoint
-      location: Engi Front
+      location: is14-map-warp-7adc15119843
   - uid: 10963
     components:
     - type: Transform
@@ -36313,7 +36313,7 @@ entities:
     - type: NavMapBeacon
       text: Engi Lockers
     - type: WarpPoint
-      location: Engi Lockers
+      location: is14-map-warp-d6089e14b15f
 - proto: DefaultStationBeaconEscapePodN
   entities:
   - uid: 5055
@@ -36387,7 +36387,7 @@ entities:
     - type: NavMapBeacon
       text: Med Lockers
     - type: WarpPoint
-      location: Med Lockers
+      location: is14-map-warp-255f1418054d
   - uid: 10941
     components:
     - type: Transform
@@ -36396,7 +36396,7 @@ entities:
     - type: NavMapBeacon
       text: Virology
     - type: WarpPoint
-      location: Virology
+      location: is14-map-warp-c40c59e77909
   - uid: 10950
     components:
     - type: Transform
@@ -36405,7 +36405,7 @@ entities:
     - type: NavMapBeacon
       text: Med Storage
     - type: WarpPoint
-      location: Med Storage
+      location: is14-map-warp-3bc2cb211166
 - proto: DefaultStationBeaconMedical
   entities:
   - uid: 5065
@@ -36472,7 +36472,7 @@ entities:
     - type: NavMapBeacon
       text: Mining Shuttle
     - type: WarpPoint
-      location: Mining Shuttle
+      location: is14-map-warp-394d6e1645d4
   - uid: 11709
     components:
     - type: Transform
@@ -36488,7 +36488,7 @@ entities:
     - type: NavMapBeacon
       text: Xenobio Lab
     - type: WarpPoint
-      location: Xenobio Lab
+      location: is14-map-warp-baadd711297b
   - uid: 11207
     components:
     - type: Transform
@@ -36497,7 +36497,7 @@ entities:
     - type: NavMapBeacon
       text: Sci Front
     - type: WarpPoint
-      location: Sci Front
+      location: is14-map-warp-709e9ecb87c5
   - uid: 11208
     components:
     - type: Transform
@@ -36506,7 +36506,7 @@ entities:
     - type: NavMapBeacon
       text: Sci Lockers
     - type: WarpPoint
-      location: Sci Lockers
+      location: is14-map-warp-b00c6891cd0f
 - proto: DefaultStationBeaconSecurity
   entities:
   - uid: 10834
@@ -36564,7 +36564,7 @@ entities:
     - type: NavMapBeacon
       text: Telecommunications & Anchor
     - type: WarpPoint
-      location: Telecommunications & Anchor
+      location: is14-map-warp-738ab7e5daf2
 - proto: DefaultStationBeaconToolRoom
   entities:
   - uid: 11222
@@ -95182,7 +95182,7 @@ entities:
     - type: NavMapBeacon
       text: Dorms
     - type: WarpPoint
-      location: Dorms
+      location: is14-map-warp-fb50c2c37a42
   - uid: 13433
     components:
     - type: Transform
@@ -95191,7 +95191,7 @@ entities:
     - type: NavMapBeacon
       text: Dojo
     - type: WarpPoint
-      location: Dojo
+      location: is14-map-warp-c09e5feb70f2
 - proto: WaterCooler
   entities:
   - uid: 13442

@@ -27,7 +27,6 @@
     fillBaseName: fill-
   - type: DnaSubstanceTrace
   - type: Damageable
-  - type: Injurable
     damageContainer: Inorganic
   - type: Spillable
     solution: solution

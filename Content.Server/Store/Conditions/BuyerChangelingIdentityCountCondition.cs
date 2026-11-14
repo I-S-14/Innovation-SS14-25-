@@ -1,3 +1,4 @@
+using Content.Goobstation.Shared.Changeling.Components; // IS14-change: upstream namespace move
 using System.Linq;
 using Content.Shared.Changeling.Components;
 using Content.Shared.Mind;
@@ -30,7 +31,7 @@ public sealed partial class BuyerChangelingIdentityCountCondition : ListingCondi
         if (!args.EntityManager.TryGetComponent<ChangelingIdentityComponent>(mind.OwnedEntity, out var comp))
             return false; // not a changeling
 
-        var count = comp.ConsumedIdentities.Count((e) => (!RequireDevour || e.GrantedDna) && !e.Starting);
+        var count = RequireDevour ? comp.TotalAbsorbedEntities : comp.TotalStolenDNA;
         return count >= Count;
     }
 }

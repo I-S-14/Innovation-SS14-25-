@@ -22,10 +22,8 @@ using Content.Shared.Zombies; // Goob
 namespace Content.Server._Starlight.VentCrawling;
 public sealed class VentCrawlerTubeSystem : EntitySystem
 {
-    [Dependency] private readonly SharedMapSystem _mapSystem = default!;
     [Dependency] private readonly SharedVentCrawableSystem _ventCrawableSystem = default!;
     [Dependency] private readonly SharedContainerSystem _containerSystem = default!;
-    [Dependency] private readonly VentCrawlerTubeSystem _VentCrawlerTubeSystem = default!;
     [Dependency] private readonly SharedDoAfterSystem _doAfterSystem = default!;
     [Dependency] private readonly PopupSystem _popup = default!;
     [Dependency] private readonly SharedMoverController _mover = default!;
@@ -58,7 +56,7 @@ public sealed class VentCrawlerTubeSystem : EntitySystem
             || HasComp<ZombieComponent>(args.User)) // Goob
             return;
 
-        if (TryComp<TransformComponent>(uid, out var transformComponent) && !transformComponent.Anchored)
+        if (TryComp(uid, out TransformComponent? transformComponent) && !transformComponent.Anchored)
             return;
 
         AlternativeVerb verb = new()

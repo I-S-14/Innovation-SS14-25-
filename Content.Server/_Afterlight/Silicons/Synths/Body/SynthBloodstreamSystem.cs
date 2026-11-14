@@ -45,7 +45,7 @@ public sealed partial class SynthBloodstreamSystem : EntitySystem
 
     private void UpdateSynthBloodstream(Entity<SynthBloodstreamComponent, SatiationComponent, BloodstreamComponent, DamageableComponent> ent, bool critical)
     {
-        var hunger = _hunger.GetHunger(ent.Comp2);
+        var hunger = _hunger.GetHunger(ent.Owner, ent.Comp2);
         if (hunger <= ent.Comp1.MinHunger)
             return;
 

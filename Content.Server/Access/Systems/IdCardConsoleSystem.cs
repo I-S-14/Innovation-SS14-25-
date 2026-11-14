@@ -1,3 +1,4 @@
+
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Diagnostics.CodeAnalysis;
@@ -25,7 +26,6 @@ using Robust.Shared.Configuration;
 using Robust.Shared.Containers;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
-using Content.Server.StationRecords.Systems;
 using Content.Shared.Damage;
 using static Content.Shared.Access.Components.IdCardConsoleComponent;
 
@@ -34,6 +34,10 @@ namespace Content.Server.Access.Systems;
 [UsedImplicitly]
 public sealed partial class IdCardConsoleSystem : SharedIdCardConsoleSystem
 {
+    //IS14-change start: retain fork fields lost during merge.
+    [Dependency] private readonly IPrototypeManager _prototype = default!;
+    //IS14-change end
+
     [Dependency] private IConfigurationManager _cfgManager = default!;
     [Dependency] private StationRecordsSystem _record = default!;
     [Dependency] private UserInterfaceSystem _userInterface = default!;
@@ -165,11 +169,8 @@ public sealed partial class IdCardConsoleSystem : SharedIdCardConsoleSystem
         if (_prototype.TryIndex(newJobProto, out var job) // Goob - Fix (client input, no log)
             && _prototype.Resolve(job.Icon, out var jobIcon))
         {
-            if (ProtoMan.Resolve(job.Icon, out var jobIcon))
-            {
-                _idCard.TryChangeJobIcon(targetId, jobIcon, player: player);
-                _idCard.TryChangeJobDepartment(targetId, job);
-            }
+            _idCard.TryChangeJobIcon(targetId, jobIcon, player: player);
+            _idCard.TryChangeJobDepartment(targetId, job);
         }
         else
         {

@@ -1,3 +1,4 @@
+using Content.Shared.Speech.EntitySystems;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 // CREATED BY Goldminermac
@@ -48,7 +49,7 @@ public sealed partial class VulgarAccentSystem : EntitySystem
         return string.Join(" ", messageWords);
     }
 
-    public void OnAccentGet(EntityUid uid, VulgarAccentComponent component, AccentGetEvent args)
+    public void OnAccentGet(EntityUid uid, VulgarAccentComponent component, ref AccentGetEvent args)
     {
         args.Message = Accentuate(args.Message, component);
     }

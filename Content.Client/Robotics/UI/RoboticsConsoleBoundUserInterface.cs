@@ -24,7 +24,7 @@ public sealed class RoboticsConsoleBoundUserInterface : BoundUserInterface
         // Corvax-Goob-MutableLaws-Start
         _window.OnChangeLawsPressed += address =>
         {
-            SendMessage(new RoboticsConsoleChangeLawsMessage(address));
+            SendMessage(new RoboticsConsoleChangeLawsMessage(address.AddressId));
         };
         // Corvax-Goob-MutableLaws-End
 

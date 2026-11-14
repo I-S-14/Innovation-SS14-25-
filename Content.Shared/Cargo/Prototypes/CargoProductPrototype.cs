@@ -35,7 +35,7 @@ namespace Content.Shared.Cargo.Prototypes
             get
             {
                 if (_name.Trim().Length != 0)
-                    return _name;
+                    return Loc.TryGetString(_name, out var localizedName) ? localizedName : _name; //IS14-change: support LocIds and retained literal labels.
 
                 if (IoCManager.Resolve<IPrototypeManager>().Resolve(Product, out EntityPrototype? prototype))
                 {
@@ -55,7 +55,7 @@ namespace Content.Shared.Cargo.Prototypes
             get
             {
                 if (_description.Trim().Length != 0)
-                    return _description;
+                    return Loc.TryGetString(_description, out var localizedDescription) ? localizedDescription : _description; //IS14-change
 
                 if (IoCManager.Resolve<IPrototypeManager>().Resolve(Product, out EntityPrototype? prototype))
                 {

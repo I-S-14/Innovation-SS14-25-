@@ -9,7 +9,6 @@
   components:
   - type: Damageable
     damageModifierSet: FlimsyGlass
-  - type: Injurable
     damageContainer: Inorganic
   - type: Destructible
     thresholds:
@@ -46,7 +45,6 @@
   components:
   - type: Damageable
     damageModifierSet: FlimsyGlass
-  - type: Injurable
     damageContainer: Inorganic
   - type: Destructible
     thresholds:
@@ -76,9 +74,7 @@
   id: DrinkBaseMaterialPlastic
   components:
   - type: Damageable
-  - type: Injurable
     damageContainer: Inorganic
-#    damageModifierSet: FlimsyPlastic TODO
   - type: Destructible
     thresholds:
     - trigger:
@@ -141,7 +137,6 @@
   components:
   - type: Damageable
     damageModifierSet: Card
-  - type: Injurable
     damageContainer: Inorganic
   - type: Destructible
     thresholds:
@@ -175,7 +170,6 @@
   components:
   - type: Damageable
     damageModifierSet: FlimsyMetallic
-  - type: Injurable
     damageContainer: Inorganic
   - type: Destructible
     thresholds:
@@ -233,7 +227,6 @@
   components:
   - type: Damageable
     damageModifierSet: FlimsyMetallic
-  - type: Injurable
     damageContainer: Inorganic
   - type: Destructible
     thresholds:

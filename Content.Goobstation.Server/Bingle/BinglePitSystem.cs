@@ -1,3 +1,5 @@
+using NavMapSystem = Content.Server.Pinpointer.ServerNavMapSystem;
+using Content.Shared.GameTicking;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Numerics;
@@ -260,7 +262,7 @@ public sealed partial class BinglePitSystem : EntitySystem
         _appearance.SetData(uid, ScaleVisuals.Scale, Vector2.One * component.Level);
     }
 
-    private void OnRoundEndTextAppend(RoundEndTextAppendEvent ev)
+    private void OnRoundEndTextAppend(ref RoundEndTextAppendEvent ev)
     {
         var query = AllEntityQuery<BinglePitComponent>();
 

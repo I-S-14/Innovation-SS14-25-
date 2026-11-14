@@ -22,15 +22,15 @@ public sealed class GasCanisterSignalSystem : EntitySystem
 
     private void OnSignalReceived(Entity<GasCanisterComponent> ent, ref SignalReceivedEvent args)
     {
-        var valve = args.Port switch
+        var valve = args.Port.Id switch
         {
             "Open" => true,
             "Close" => false,
-            "Toggle" => !ent.Comp.ReleaseValve,
+            "Toggle" => !ent.Comp.ReleaseValveOpen,
             _ => false // fuck you c# cant just return
         };
 
-        if (ent.Comp.ReleaseValve == valve)
+        if (ent.Comp.ReleaseValveOpen == valve)
             return;
 
         var ev = new GasCanisterChangeReleaseValveMessage(valve);

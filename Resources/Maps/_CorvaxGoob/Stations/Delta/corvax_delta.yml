@@ -98351,7 +98351,7 @@ entities:
     - type: NavMapBeacon
       text: Ксенобиология
     - type: WarpPoint
-      location: Ксенобиология
+      location: is14-map-warp-40efbcdca97d
   - uid: 14493
     components:
     - type: Transform
@@ -98374,7 +98374,7 @@ entities:
     - type: NavMapBeacon
       text: КПП СБ - ИНЖ
     - type: WarpPoint
-      location: КПП СБ - ИНЖ
+      location: is14-map-warp-dd46e9a9067d
   - uid: 14496
     components:
     - type: Transform
@@ -98383,7 +98383,7 @@ entities:
     - type: NavMapBeacon
       text: КПП СБ - Прибытие
     - type: WarpPoint
-      location: КПП СБ - Прибытие
+      location: is14-map-warp-8fc9f24a6452
   - uid: 14497
     components:
     - type: Transform
@@ -98392,7 +98392,7 @@ entities:
     - type: NavMapBeacon
       text: КПП СБ - ГП
     - type: WarpPoint
-      location: КПП СБ - ГП
+      location: is14-map-warp-d68c8d5209bb
   - uid: 14498
     components:
     - type: Transform
@@ -98401,14 +98401,14 @@ entities:
     - type: NavMapBeacon
       text: КПП СБ - МЕД
     - type: WarpPoint
-      location: КПП СБ - МЕД
+      location: is14-map-warp-34acff3e78e3
   - uid: 14499
     components:
     - type: Transform
       pos: -18.5,-26.5
       parent: 2
     - type: WarpPoint
-      location: КПП СБ - НИО
+      location: is14-map-warp-90147bf3a4f2
   - uid: 14500
     components:
     - type: Transform
@@ -98417,7 +98417,7 @@ entities:
     - type: NavMapBeacon
       text: КПП СБ - Отбытие
     - type: WarpPoint
-      location: КПП СБ - Отбытие
+      location: is14-map-warp-5c2f5614d57b
   - uid: 14501
     components:
     - type: Transform
@@ -98426,7 +98426,7 @@ entities:
     - type: NavMapBeacon
       text: КПП СБ - СНБ
     - type: WarpPoint
-      location: КПП СБ - СНБ
+      location: is14-map-warp-d8c0bf272deb
 - proto: DefaultStationBeaconServerRoom
   entities:
   - uid: 14502
@@ -98444,7 +98444,7 @@ entities:
     - type: NavMapBeacon
       text: Вирусология
     - type: WarpPoint
-      location: Вирусология
+      location: is14-map-warp-e4e51fe7a28e
   - uid: 14504
     components:
     - type: Transform

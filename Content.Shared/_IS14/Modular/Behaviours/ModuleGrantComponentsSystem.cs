@@ -52,14 +52,14 @@ public sealed class ModuleGrantComponentsSystem : ModuleBehaviourSystem<ModuleGr
 
             // Leave anything the target already has: overwriting it would silently
             // downgrade the wearer's own equipment, and revoking would then delete it.
-            if (EntityManager.HasComponent(target, registration.Type))
+            if (HasComp(target, registration.Type))
                 continue;
 
             var component = (IComponent)_factory.GetComponent(registration);
             var temp = (object)component;
             _serialization.CopyTo(entry.Component, ref temp);
 
-            EntityManager.AddComponent(target, (Component)temp!);
+            AddComp(target, (Component)temp!);
             ent.Comp.GrantedKeys.Add(name);
         }
 
@@ -81,7 +81,7 @@ public sealed class ModuleGrantComponentsSystem : ModuleBehaviourSystem<ModuleGr
         {
             foreach (var name in ent.Comp.GrantedKeys)
             {
-                EntityManager.RemoveComponent(target, _factory.GetRegistration(name).Type);
+                RemComp(target, _factory.GetRegistration(name).Type);
             }
         }
 

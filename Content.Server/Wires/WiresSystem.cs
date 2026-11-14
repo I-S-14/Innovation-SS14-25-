@@ -27,7 +27,6 @@ namespace Content.Server.Wires;
 
 public sealed partial class WiresSystem : SharedWiresSystem //IS14-change: partial, additions live in _IS14/Wires/WiresSystem.IS14.cs
 {
-    [Dependency] private readonly IPrototypeManager _protoMan = default!;
     [Dependency] private readonly UserInterfaceSystem _uiSystem = default!;
     [Dependency] private readonly TagSystem _tags = default!; // Shitmed Change
     [Dependency] private SharedDoAfterSystem _doAfter = default!;

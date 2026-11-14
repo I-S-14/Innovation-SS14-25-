@@ -1268,7 +1268,6 @@
         Quantity: 150
   - type: Damageable
     damageModifierSet: Infernal
-  - type: Injurable
     damageContainer: BiologicalMetaphysical
   - type: TemperatureDamage
     heatDamageThreshold: 4000 #They come from hell, so..

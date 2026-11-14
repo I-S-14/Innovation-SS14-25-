@@ -26,7 +26,6 @@ using Robust.Server.GameObjects;
 using Robust.Shared.Player;
 using Robust.Shared.Utility;
 using System.Linq;
-using Content.Shared.Humanoid;
 using Content.Shared.Chemistry.Components.SolutionManager;
 using Content.Shared.Interaction;
 using Content.Shared.Nutrition.EntitySystems;
@@ -38,17 +37,19 @@ namespace Content.Server.Materials;
 /// <inheritdoc/>
 public sealed partial class MaterialReclaimerSystem : SharedMaterialReclaimerSystem // Goob
 {
+    //IS14-change start: retain fork fields lost during merge.
+    [Dependency] private readonly SharedBodySystem _body = default!; //bobby
+    //IS14-change end
+
     [Dependency] private AppearanceSystem _appearance = default!;
     [Dependency] private GhostSystem _ghost = default!;
     [Dependency] private MaterialStorageSystem _materialStorage = default!;
     [Dependency] private PopupSystem _popup = default!;
     [Dependency] private SharedSolutionContainerSystem _solutionContainer = default!;
-    [Dependency] private GibbingSystem _gibbing = default!;
     [Dependency] private PuddleSystem _puddle = default!;
     [Dependency] private SharedMindSystem _mind = default!;
     [Dependency] private IAdminLogManager _adminLogger = default!;
     [Dependency] private SharedDestructibleSystem _destructible = default!;
-    [Dependency] private DamageableSystem _damage = default!;
 
     [SubscribeLocalEvent]
     private void OnPowerChanged(Entity<MaterialReclaimerComponent> entity, ref PowerChangedEvent args)

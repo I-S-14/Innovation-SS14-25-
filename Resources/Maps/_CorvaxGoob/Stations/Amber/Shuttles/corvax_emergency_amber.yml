@@ -4727,7 +4727,7 @@ entities:
       pos: 3.5,2.5
       parent: 1
     - type: WarpPoint
-      location: Escape Shuttle
+      location: is14-map-warp-a3f82e57a950
 - proto: WeaponCapacitorRecharger
   entities:
   - uid: 758

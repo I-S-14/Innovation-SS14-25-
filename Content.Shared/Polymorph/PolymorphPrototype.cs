@@ -12,8 +12,6 @@ namespace Content.Shared.Polymorph;
 /// Polymorphs generally describe any type of transformation that can be applied to an entity.
 /// </summary>
 [Prototype]
-[DataDefinition]
-[Serializable, NetSerializable]
 public sealed partial class PolymorphPrototype : IPrototype, IInheritingPrototype
 {
     [ViewVariables]

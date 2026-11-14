@@ -13,7 +13,6 @@ namespace Content.Server._Shitmed.Body.Systems
 {
     public sealed class EyesSystem : EntitySystem
     {
-        [Dependency] private readonly IEntityManager _entityManager = default!;
         [Dependency] private readonly BlindableSystem _blindableSystem = default!;
         [Dependency] private readonly BodySystem _bodySystem = default!;
 
@@ -46,7 +45,7 @@ namespace Content.Server._Shitmed.Body.Systems
         }
 
         // Too much shit would break if I were to nuke blindablecomponent rn. Guess we shitcoding this one.
-        private void OnOrganIntegrityChanged(EntityUid uid, EyesComponent component, OrganIntegrityChangedEvent args)
+        private void OnOrganIntegrityChanged(EntityUid uid, EyesComponent component, ref OrganIntegrityChangedEvent args)
         {
             if (args.NewIntegrity <= 0
                 || !TryComp(uid, out OrganComponent? organ)
@@ -64,7 +63,7 @@ namespace Content.Server._Shitmed.Body.Systems
             _blindableSystem.SetEyeDamage((organ.Body.Value, blindable), blindnessSeverity); // Omu
         }
 
-        private void OnOrganEnabled(EntityUid uid, EyesComponent component, OrganEnabledEvent args)
+        private void OnOrganEnabled(EntityUid uid, EyesComponent component, ref OrganEnabledEvent args)
         {
             if (TerminatingOrDeleted(uid)
             || args.Organ.Comp.Body is not { Valid: true } body
@@ -77,7 +76,7 @@ namespace Content.Server._Shitmed.Body.Systems
             _blindableSystem.SetEyeDamage((body, blindable), (int) (blindable.MaxDamage * lost));
         }
 
-        private void OnOrganDisabled(EntityUid uid, EyesComponent component, OrganDisabledEvent args)
+        private void OnOrganDisabled(EntityUid uid, EyesComponent component, ref OrganDisabledEvent args)
         {
             if (TerminatingOrDeleted(uid)
             || args.Organ.Comp.Body is not { Valid: true } body)

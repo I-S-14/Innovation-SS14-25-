@@ -1,0 +1,14 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: 5327c414c5:Resources/Prototypes/Recipes/Construction/structures.yml
+- type: construction
+  id: ClockworkGirder
+  graph: ClockworkGirder
+  startNode: start
+  targetNode: clockGirder
+  category: construction-category-structures
+  objectType: Structure
+  placementMode: SnapgridCenter
+  canRotate: false
+  canBuildInImpassable: false
+  conditions:
+  - !type:TileNotBlocked ''

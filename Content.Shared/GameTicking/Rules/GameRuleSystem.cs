@@ -87,15 +87,28 @@ public abstract partial class GameRuleSystem<T> : EntitySystem where T : ICompon
     /// <summary>
     /// Called when the gamerule is added
     /// </summary>
-    protected virtual void Ended(Entity<T> rule, ref GameRuleEndedEvent args) { }
+    //IS14-change start: bridge preserved Goob rules to shared ticker callbacks.
+    protected virtual void Ended(EntityUid uid, T component, GameRuleComponent gameRule, GameRuleEndedEvent args) { }
+
+    protected virtual void Ended(Entity<T> rule, ref GameRuleEndedEvent args)
+    {
+        if (TryComp<GameRuleComponent>(rule, out var gameRule))
+            Ended(rule, rule.Comp, gameRule, args);
+    }
+    //IS14-change end
 
     /// <summary>w
     /// Called at the end of a round when text needs to be added for a game rule.
     /// </summary>
+    //IS14-change start
+    protected virtual void AppendRoundEndText(EntityUid uid, T component, GameRuleComponent gameRule, ref RoundEndTextAppendEvent args) { }
+
     protected virtual void AppendRoundEndText(Entity<T> rule, ref RoundEndTextAppendEvent args)
     {
-
+        if (TryComp<GameRuleComponent>(rule, out var gameRule))
+            AppendRoundEndText(rule, rule.Comp, gameRule, ref args);
     }
+    //IS14-change end
 
     /// <summary>
     /// Called on an active gamerule entity in the Update function

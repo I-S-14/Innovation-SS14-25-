@@ -9,7 +9,6 @@ using Content.Shared.Damage.Systems;
 using Content.Shared.Execution;
 using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.Ghost;
-using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.Ghost.Components;
 using Content.Shared.Hands.Components;
 using Content.Shared.Hands.EntitySystems;
@@ -167,7 +166,7 @@ public sealed class SuicideCommandTests : GameTest
                 Assert.That(mobStateSystem.IsDead(player, mobStateComp));
                 Assert.That(entManager.TryGetComponent<GhostComponent>(mindComponent.CurrentEntity, out var ghostComp) &&
                             !ghostComp.CanReturnToBody);
-                Assert.That(mobThresholdSystem.CheckVitalDamage(player, damageableComp), Is.EqualTo(lethalDamageThreshold)); // Goobstation
+                Assert.That(mobThresholdSystem.CheckVitalDamage(player, entManager.GetComponent<DamageableComponent>(player)), Is.EqualTo(lethalDamageThreshold)); // Goobstation
             });
         });
     }

@@ -84,7 +84,10 @@ public sealed partial class EmagSystem : EntitySystem
 
         var typeToUse = customEmagType ?? ent.Comp.EmagType;
 
-        var emaggedEvent = new GotEmaggedEvent(user, ent.Comp.EmagType, EmagUid: ent);
+        //IS14-change start
+        // Keep Goob's tool context while applying the requested Wizards override.
+        var emaggedEvent = new GotEmaggedEvent(user, typeToUse, EmagUid: ent);
+        //IS14-change end
         RaiseLocalEvent(target, ref emaggedEvent);
         if (!emaggedEvent.Handled)
             return false;

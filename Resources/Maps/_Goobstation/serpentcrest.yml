@@ -77473,7 +77473,7 @@ entities:
     - type: NavMapBeacon
       text: Showroom
     - type: WarpPoint
-      location: Showroom
+      location: is14-map-warp-74cc1d00fe9e
   - uid: 26952
     components:
     - type: Transform
@@ -77482,7 +77482,7 @@ entities:
     - type: NavMapBeacon
       text: Command meeting
     - type: WarpPoint
-      location: Command meeting
+      location: is14-map-warp-71ce72680f92
 - proto: DefaultStationBeaconCourtroom
   entities:
   - uid: 8030
@@ -77631,7 +77631,7 @@ entities:
     - type: NavMapBeacon
       text: Virology
     - type: WarpPoint
-      location: Virology
+      location: is14-map-warp-c40c59e77909
 - proto: DefaultStationBeaconMorgue
   entities:
   - uid: 21920

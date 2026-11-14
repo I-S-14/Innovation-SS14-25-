@@ -121,7 +121,7 @@
   #  damage:
   #    types:
   #      Blunt: 5
-  - type: Injurable
+  - type: Damageable
     damageContainer: Inorganic
   - type: UseDelay
   - type: Appearance

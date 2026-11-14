@@ -7,13 +7,18 @@
   startingGear: ERTLeaderGearEVA
   icon: "JobIconERTLeader"
   supervisors: job-supervisors-centcom
+  # IS14: retain Goob role restrictions and skills after the job file move.
+  canBeAntag: false
+  skills: [All]
   accessGroups:
   - AllAccess
   access:
   - CentralCommand
+  - NanotrasenRepresentative
+  - BlueshieldOfficer
   special:
   - !type:AddImplantSpecial
-    implants: [ MindShieldImplant, DeathRattleImplantCentcomm ]
+    implants: [ MindShieldImplant, FreedomImplant, BluespaceLifelineImplant, RadioImplantCentcomm, NutrimentPumpImplant, StypticStimulatorImplant, DeathRattleImplantCentcomm ]
 
 
 

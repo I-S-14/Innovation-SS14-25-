@@ -9,7 +9,6 @@ namespace Content.Client.Chat.TypingIndicator;
 
 public sealed partial class TypingIndicatorVisualizerSystem : VisualizerSystem<TypingIndicatorComponent>
 {
-    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
     [Dependency] private readonly SpriteSystem _sprite = default!;
     [Dependency] private InventorySystem _inventory = default!;
 

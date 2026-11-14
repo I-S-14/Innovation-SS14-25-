@@ -1,0 +1,68 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: 5327c414c5:Resources/Prototypes/Entities/Structures/Doors/MaterialDoors/material_doors.yml
+- type: entity
+  parent: BaseMaterialDoorNavMap
+  id: MetalDoor
+  name: metal door
+  components:
+  - type: Sprite
+    sprite: Structures/Doors/MineralDoors/metal_door.rsi
+  - type: Damageable # IS14: the new BaseStructure no longer supplies Goob's damage container.
+    damageContainer: Inorganic
+  - type: Construction
+    graph: DoorGraph
+    node: metalDoor
+  - type: Destructible
+    thresholds:
+    - trigger: &id002 !type:DamageTrigger
+        damage: 200
+      behaviors: &id003
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+    - trigger: &id004 !type:DamageTrigger
+        damage: 150
+      behaviors:
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          SheetSteel1:
+            min: 3
+            max: 5
+- type: entity
+  parent: BaseMaterialDoorNavMap
+  id: BananiumDoor
+  name: bananium door
+  components:
+  - type: Sprite
+    sprite: Structures/Doors/MineralDoors/bananium_door.rsi
+  - type: Damageable # IS14: retain the original door damage behavior.
+    damageContainer: Inorganic
+  - type: Door
+    openSound: &id001
+      collection: BikeHorn
+      params:
+        variation: 0.125
+    closeSound: *id001
+  - type: Construction
+    graph: DoorGraph
+    node: bananiumDoor
+  - type: Destructible
+    thresholds:
+    - trigger: *id002
+      behaviors: *id003
+    - trigger: *id004
+      behaviors:
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          MaterialBananium1:
+            min: 1
+            max: 2

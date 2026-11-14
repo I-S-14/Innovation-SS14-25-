@@ -125,5 +125,5 @@ public sealed partial class TargetingComponent : Component
     /// What noise does the entity play when swapping targets?
     /// </summary>
     [DataField]
-    public string SwapSound = "/Audio/Effects/toggleoncombat.ogg";
+    public string SwapSound = "/Audio/_CorvaxGoob/Effects/Actions/CombatMode/ui_togglecombat.ogg"; // IS14: use the retained combat toggle sound.
 }

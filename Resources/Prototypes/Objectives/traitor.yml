@@ -162,7 +162,7 @@
         components:
         - HelpProgressCondition
         - KeepAliveCondition
-    - !type:ConflictingTargetMindFilter # Goob
+    - !type:ConflictingTargetCondition # IS14: Goob exclusions in the Wizards condition API.
 
 - type: entity
   parent: [BaseTraitorSocialObjective, BaseHelpProgressObjective]
@@ -194,7 +194,7 @@
         components:
         - HelpProgressCondition
         - KeepAliveCondition
-    - !type:ConflictingTargetMindFilter # Goob
+    - !type:ConflictingTargetCondition # IS14: Goob exclusions in the Wizards condition API.
 
 # steal
 

@@ -1,0 +1,24 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: 5327c414c5:Resources/Prototypes/Recipes/Construction/structures.yml
+- type: construction
+  id: MetalDoor
+  graph: DoorGraph
+  startNode: start
+  targetNode: metalDoor
+  category: construction-category-structures
+  objectType: Structure
+  placementMode: SnapgridCenter
+  canBuildInImpassable: false
+  conditions:
+  - !type:TileNotBlocked ''
+- type: construction
+  id: BananiumDoor
+  graph: DoorGraph
+  startNode: start
+  targetNode: bananiumDoor
+  category: construction-category-structures
+  objectType: Structure
+  placementMode: SnapgridCenter
+  canBuildInImpassable: false
+  conditions:
+  - !type:TileNotBlocked ''

@@ -57,7 +57,6 @@
     fillBaseName: beaker
   - type: Damageable
     damageModifierSet: Glass
-  - type: Injurable
     damageContainer: Inorganic
   - type: Destructible
     thresholds:
@@ -171,7 +170,6 @@
     fillBaseName: beaker
   - type: Damageable
     damageModifierSet: Glass
-  - type: Injurable
     damageContainer: Inorganic
   - type: StaticPrice
     price: 30
@@ -743,7 +741,6 @@
   - type: ExplosionResistance
     damageCoefficient: 0.025 # survives conventional explosives but not minibombs and nukes
   - type: Damageable
-  - type: Injurable
     damageContainer: Inorganic
   - type: Destructible
     thresholds:

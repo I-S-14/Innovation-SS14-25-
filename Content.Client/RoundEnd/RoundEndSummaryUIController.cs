@@ -17,7 +17,6 @@ namespace Content.Client.RoundEnd;
 public sealed partial class RoundEndSummaryUIController : UIController,
     IOnSystemLoaded<ClientGameTicker>
 {
-    [Dependency] private readonly IFileDialogManager _fileDialogManager = default!; // CorvaxGoob-PhotoCamera
     [Dependency] private IInputManager _input = default!;
 
     private RoundEndSummaryWindow? _window;
@@ -45,7 +44,7 @@ public sealed partial class RoundEndSummaryUIController : UIController,
             return;
 
         _window = new RoundEndSummaryWindow(message.GamemodeTitle, message.RoundEndText,
-            message.RoundDuration, message.RoundId, message.AllPlayersEndInfo, EntityManager, _fileDialogManager); // CorvaxGoob-PhotoCamera
+            message.RoundDuration, message.RoundId, message.AllPlayersEndInfo); // CorvaxGoob-PhotoCamera
     }
 
     public void OnSystemLoaded(ClientGameTicker system)

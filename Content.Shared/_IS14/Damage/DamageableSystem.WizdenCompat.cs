@@ -13,6 +13,26 @@ namespace Content.Shared.Damage.Systems;
 /// </summary>
 public sealed partial class DamageableSystem
 {
+    public DamageSpecifier GetPositiveDamage(Entity<DamageableComponent> ent)
+    {
+        return DamageSpecifier.GetPositive(ent.Comp.Damage);
+    }
+
+    public DamageModifierSet? GetDamageModifierSet(Entity<DamageableComponent?> ent)
+    {
+        if (!Resolve(ent, ref ent.Comp, false)
+            || ent.Comp.DamageModifierSetId is not { } id
+            || !_prototypeManager.Resolve(id, out var modifiers))
+            return null;
+
+        return modifiers;
+    }
+
+    public bool CanBeDamagedBy(Entity<DamageableComponent?> ent, ProtoId<DamageTypePrototype> type)
+    {
+        return Resolve(ent, ref ent.Comp, false) && ent.Comp.Damage.DamageDict.ContainsKey(type);
+    }
+
     /// <summary>
     ///     Gets the damages currently sustained by an entity.
     /// </summary>

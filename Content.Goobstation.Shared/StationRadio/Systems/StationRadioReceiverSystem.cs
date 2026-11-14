@@ -20,7 +20,7 @@ public sealed partial class StationRadioReceiverSystem : EntitySystem
         SubscribeLocalEvent<StationRadioReceiverComponent, PowerChangedEvent>(OnPowerChanged);
     }
 
-    private void OnPowerChanged(EntityUid uid, StationRadioReceiverComponent comp, PowerChangedEvent args)
+    private void OnPowerChanged(EntityUid uid, StationRadioReceiverComponent comp, ref PowerChangedEvent args)
     {
         ClearStaleSound(comp);
         if(comp.SoundEntity != null && args.Powered)

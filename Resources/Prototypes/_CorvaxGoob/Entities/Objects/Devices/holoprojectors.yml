@@ -23,7 +23,7 @@
   - type: HolosignProjector
     signProto: CrateHolographic
     chargeUse: 300
-    anchorOnSpawn: false
+    # IS14: current HolosignSystem uses the spawned prototype's anchoring; the crate is movable.
   - type: Sprite
     sprite: _CorvaxGoob/Objects/Devices/Holoprojectors/cargo.rsi
     state: icon

@@ -9,9 +9,13 @@
   - type: Icon
     sprite: _RMC14/Structures/Xenos/xeno_resin_wall.rsi # Goobstation new sprites
     state: resin
-  - type: IconSmooth # Goobstation new sprites
+  - type: IconSmooth
     key: walls
-    base: resin
+    states:
+    - !type:CornerSpriteSmoothing
+      base: resin
+      mask:
+      - walls
   - type: Damageable
     damageContainer: Biological
     damageModifierSet: Resin

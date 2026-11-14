@@ -136,6 +136,10 @@ public sealed partial class PlantHarvestSystem : EntitySystem
         if (harvest.HarvestRepeat == HarvestType.NoRepeat)
             _plant.RemovePlant(ent.Owner);
 
+        //IS14-change start: preserve Goob harvest achievements.
+        var goobEvent = new Content.Goobstation.Common.Botany.PlantHarvestedEvent(ent.Owner);
+        RaiseLocalEvent(user, ref goobEvent);
+        //IS14-change end
         var ev = new PlantHarvestedEvent(user, ent.Owner);
         RaiseLocalEvent(ent.Owner, ref ev);
     }

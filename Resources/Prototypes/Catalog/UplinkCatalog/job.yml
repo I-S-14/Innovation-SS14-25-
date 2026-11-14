@@ -1,83 +1,6 @@
 # Job
 
 - type: listing
-  id: UplinkGatfruitSeeds
-  name: uplink-gatfruit-seeds-name
-  description: uplink-gatfruit-seeds-desc
-  productEntity: GatfruitSeeds
-  discountCategory: usualDiscounts
-  discountDownTo:
-    Telecrystal: 3
-  cost:
-    Telecrystal: 6
-  categories:
-  - UplinkJob
-  conditions:
-  - !type:BuyerJobCondition
-    whitelist:
-    - Botanist
-
-
-
-
-
-
-
-
-
-- type: listing
-  id: UplinkHolyHandGrenade
-  name: uplink-holy-hand-grenade-name
-  description: uplink-holy-hand-grenade-desc
-  productEntity: HolyHandGrenade
-  discountCategory: rareDiscounts
-  discountDownTo:
-    Telecrystal: 14
-  cost:
-    Telecrystal: 20
-  categories:
-  - UplinkJob
-  conditions:
-  - !type:BuyerJobCondition
-    whitelist:
-    - Chaplain
-
-
-
-
-
-
-
-
-
-- type: listing
-  id: UplinkRevolverCapGunFake
-  name: uplink-revolver-cap-gun-fake-name
-  description: uplink-revolver-cap-gun-fake-desc
-  productEntity: RevolverCapGunFake
-  discountCategory: rareDiscounts
-  discountDownTo:
-    Telecrystal: 2
-  cost:
-    Telecrystal: 3
-  categories:
-  - UplinkJob
-  conditions:
-  - !type:BuyerJobCondition
-    whitelist:
-    - Mime
-    - Clown
-
-
-
-
-
-
-
-
-
-
-- type: listing
   id: UplinkClusterBananaPeel
   name: uplink-cluster-banana-peel-name
   description: uplink-cluster-banana-peel-desc
@@ -123,33 +46,6 @@
 
 
 - type: listing
-  id: UplinkHotPotato
-  name: uplink-hot-potato-name
-  description: uplink-hot-potato-desc
-  discountCategory: usualDiscounts
-  discountDownTo:
-    Telecrystal: 2
-  productEntity: HotPotato
-  cost:
-    Telecrystal: 4
-  categories:
-  - UplinkJob
-  conditions:
-  - !type:BuyerJobCondition
-    whitelist:
-    - Chef
-    - Botanist
-    - Clown
-    - Mime
-
-
-
-
-
-
-
-
-- type: listing
   id: UplinkChimpUpgradeKit
   name: uplink-chimp-upgrade-kit-name
   description: uplink-chimp-upgrade-kit-desc
@@ -164,33 +60,6 @@
       - Science
 
 
-
-
-
-
-
-
-
-- type: listing
-  id: UplinkProximityMine
-  name: uplink-proximity-mine-name
-  description: uplink-proximity-mine-desc
-  productEntity: WetFloorSignMineExplosive
-  discountCategory: rareDiscounts
-  discountDownTo:
-    Telecrystal: 2
-  cost:
-    Telecrystal: 5 # was 4, with my buff made it 5 to be closer to minibomb -panzer
-  categories:
-  - UplinkJob
-  conditions:
-  - !type:BuyerJobCondition
-    whitelist:
-    - Janitor
-  - !type:BuyerWhitelistCondition
-    blacklist:
-      components:
-      - SurplusBundle
 
 
 
@@ -294,28 +163,3 @@
   - !type:BuyerJobCondition
     whitelist:
     - MedicalDoctor
-
-
-
-
-
-
-
-
-
-- type: listing
-  id: UplinkBriefcaseGun
-  name: uplink-briefcase-gun-name
-  description: uplink-briefcase-gun-desc
-  productEntity: WeaponSubMachineGunBriefcase
-  discountCategory: veryRareDiscounts
-  discountDownTo:
-    Telecrystal: 10
-  cost:
-    Telecrystal: 14
-  categories:
-  - UplinkJob
-  conditions:
-  - !type:BuyerJobCondition
-    whitelist:
-    - Lawyer

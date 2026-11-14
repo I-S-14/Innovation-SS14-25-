@@ -136,6 +136,20 @@ public sealed partial class AlertLevelSystem : EntitySystem
         if (!Resolve(station, ref station.Comp))
             return;
 
+        // IS14: retained Goob systems use the old lowercase alert IDs.
+        level = level.Id switch
+        {
+            "green" => "Green",
+            "blue" => "Blue",
+            "yellow" => "Yellow",
+            "violet" => "Violet",
+            "red" => "Red",
+            "delta" => "DeltaNuke",
+            "epsilon" => "Epsilon",
+            "gamma" => "Gamma",
+            _ => level,
+        };
+
         if (station.Comp.CurrentAlertLevel == level)
             return;
 
@@ -172,10 +186,12 @@ public sealed partial class AlertLevelSystem : EntitySystem
         var playDefault = false;
         if (playSound)
         {
-            if (prototype.Sound != null)
+            var sound = new AlertLevelSoundEvent(prototype, prototype.Sound);
+            RaiseLocalEvent(ref sound);
+            if (sound.Sound != null)
             {
                 var filter = _station.GetInOwningStation(station);
-                _audio.PlayGlobal(prototype.Sound, filter, true);
+                _audio.PlayGlobal(sound.Sound, filter, true);
             }
             else
             {

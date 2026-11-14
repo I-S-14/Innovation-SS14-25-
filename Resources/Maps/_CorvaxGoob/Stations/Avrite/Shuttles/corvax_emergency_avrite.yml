@@ -9492,7 +9492,7 @@ entities:
       pos: 3.5,5.5
       parent: 1
     - type: WarpPoint
-      location: Эвакуационный шаттл
+      location: is14-map-warp-36290838c3d8
 - proto: WeaponDisabler
   entities:
   - uid: 1379

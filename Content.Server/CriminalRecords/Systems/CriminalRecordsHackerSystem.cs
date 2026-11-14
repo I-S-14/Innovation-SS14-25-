@@ -11,14 +11,12 @@ using Content.Shared.Security;
 using Content.Shared.StationRecords;
 using Content.Shared.StationRecords.Systems;
 using Robust.Shared.Random;
-using Content.Server.StationRecords.Systems;
 using Robust.Shared.Prototypes;
 
 namespace Content.Server.CriminalRecords.Systems;
 
 public sealed partial class CriminalRecordsHackerSystem : SharedCriminalRecordsHackerSystem
 {
-    [Dependency] private readonly IPrototypeManager _proto = default!;
     [Dependency] private readonly PowerReceiverSystem _powerReceiverSystem = default!; // Goobstation - check power
     [Dependency] private ChatSystem _chat = default!;
     [Dependency] private CriminalRecordsSystem _criminalRecords = default!;

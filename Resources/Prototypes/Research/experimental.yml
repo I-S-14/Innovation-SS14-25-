@@ -220,6 +220,7 @@
 
 - type: technology
   id: TeleSci
+  position: -6,2 # IS14: retained technology adjacent to the bluespace branch.
   name: research-technology-telesci
   icon:
     sprite: Effects/portal.rsi

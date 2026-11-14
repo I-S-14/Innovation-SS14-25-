@@ -15,7 +15,6 @@
     size: Normal
   - type: Damageable
     damageModifierSet: FlimsyMetallic
-  - type: Injurable
     damageContainer: Inorganic
   - type: Destructible
     thresholds:
@@ -41,7 +40,6 @@
   - type: InteractionOutline
   - type: Damageable
     damageModifierSet: FlimsyMetallic
-  - type: Injurable
     damageContainer: Inorganic
   - type: Destructible
     thresholds:

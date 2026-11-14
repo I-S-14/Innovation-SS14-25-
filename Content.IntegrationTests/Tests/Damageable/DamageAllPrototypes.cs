@@ -33,7 +33,7 @@ public sealed class DamageAllPrototypesTest : GameTest
 
         try
         {
-            foreach (var injurable in GameDataScrounger.EntitiesWithComponent("Injurable"))
+            foreach (var injurable in GameDataScrounger.EntitiesWithComponent("Damageable"))
             {
                 var entity = await SpawnAtPosition(injurable, map.GridCoords);
 

@@ -25,18 +25,24 @@
     sprite: _IS14/Structures/Machines/computers.rsi
     noRot: false
     layers:
-    - map: ["computerLayerBody"]
+    - map: ["enum.ComputerVisualLayers.Frame"]
       state: cbase
-    - map: ["computerLayerScreen"]
+    - map: ["enum.ComputerVisualLayers.Screen"]
       state: canim
+  - type: ComputerVisuals # IS14: retain the custom states with modern layer keys.
+    stateFrame: cbase
+    stateKeyboard: null
+    stateScreen: canim
+    stateKeys: null
+    statePanel: null
   - type: Appearance
   - type: GenericVisualizer
     visuals:
       enum.ComputerVisuals.Powered:
-        computerLayerScreen:
+        enum.ComputerVisualLayers.Screen:
           True: { visible: true, shader: unshaded }
           False: { visible: false }
-        computerLayerKeys:
+        enum.ComputerVisualLayers.Keys:
           True: { visible: true, shader: unshaded }
           False: { visible: true, shader: shaded }
       enum.WiresVisuals.MaintenancePanelState:
@@ -116,7 +122,7 @@
     access: [[ "Command" ]]
   - type: ActivatableUIRequiresAccess
   - type: Computer
-    board: ComputerBroken
+    board: null # No dedicated board exists; a whole broken computer is not a circuit board.
 
 - type: entity
   parent: IS14BaseComputer
@@ -136,10 +142,16 @@
   components:
   - type: Sprite
     layers:
-    - map: ["computerLayerBody"]
+    - map: ["enum.ComputerVisualLayers.Frame"]
       state: cbase
-    - map: ["computerLayerScreen"]
+    - map: ["enum.ComputerVisualLayers.Screen"]
       state: canim
+  - type: ComputerVisuals # IS14: retain the custom states with modern layer keys.
+    stateFrame: cbase
+    stateKeyboard: null
+    stateScreen: canim
+    stateKeys: null
+    statePanel: null
   - type: AccessReader
     access: [[ "Command" ]]
   - type: CommunicationsConsole
@@ -172,10 +184,16 @@
   components:
   - type: Sprite
     layers:
-    - map: ["computerLayerBody"]
+    - map: ["enum.ComputerVisualLayers.Frame"]
       state: lbase
-    - map: ["computerLayerScreen"]
+    - map: ["enum.ComputerVisualLayers.Screen"]
       state: lanim
+  - type: ComputerVisuals # IS14: retain the custom states with modern layer keys.
+    stateFrame: lbase
+    stateKeyboard: null
+    stateScreen: lanim
+    stateKeys: null
+    statePanel: null
   - type: PointLight
     radius: 1.5
     energy: 1.6
@@ -194,7 +212,7 @@
   - type: DeviceNetwork
     deviceNetId: Wireless
     receiveFrequencyId: CrewMonitor
-  - type: WirelessNetworkConnection
+  - type: WirelessNetwork
     range: 1200
 
 - type: entity
@@ -205,17 +223,23 @@
   components:
   - type: Sprite
     layers:
-    - map: ["computerLayerBody"]
+    - map: ["enum.ComputerVisualLayers.Frame"]
       state: rbase
-    - map: ["computerLayerScreen"]
+    - map: ["enum.ComputerVisualLayers.Screen"]
       state: ranim
+  - type: ComputerVisuals # IS14: retain the custom states with modern layer keys.
+    stateFrame: rbase
+    stateKeyboard: null
+    stateScreen: ranim
+    stateKeys: null
+    statePanel: null
   - type: Computer
     board: SurveillanceWirelessCameraMonitorCircuitboard
   - type: DeviceNetwork
     deviceNetId: Wireless
     receiveFrequencyId: SurveillanceCamera
     transmitFrequencyId: SurveillanceCamera
-  - type: WirelessNetworkConnection
+  - type: WirelessNetwork
     range: 200
   - type: DeviceNetworkRequiresPower
   - type: Speech

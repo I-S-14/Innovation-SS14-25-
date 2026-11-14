@@ -179,7 +179,10 @@ public sealed partial class GuideMicrowaveEmbed : PanelContainer, IDocumentTag, 
 
             // stack name
 
-            var stackName = Loc.GetString(stack.Name);
+            //IS14-change start
+            // Russian stack names select their form from the recipe quantity.
+            var stackName = Loc.GetString(stack.Name, ("amount", amount));
+            //IS14-change end
             var stackNameMsg = new FormattedMessage();
             stackNameMsg.AddMarkupOrThrow(Loc.GetString("guidebook-microwave-stack-name-display", ("stack", stackName)));
             stackNameMsg.Pop();

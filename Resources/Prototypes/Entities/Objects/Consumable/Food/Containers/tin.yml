@@ -51,7 +51,6 @@
       types:
         Blunt: 3
   - type: Damageable
-  - type: Injurable
     damageContainer: Inorganic
   - type: StaticPrice
     price: 50

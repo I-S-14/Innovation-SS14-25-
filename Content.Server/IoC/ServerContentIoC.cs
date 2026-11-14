@@ -85,6 +85,10 @@ internal static class ServerContentIoC
         deps.Register<CVarControlManager>();
         deps.Register<DiscordLink>();
         deps.Register<DiscordChatLink>();
+        deps.Register<ServerFeedbackManager>();
+        deps.Register<ISharedFeedbackManager, ServerFeedbackManager>();
+        deps.Register<WhitelistManager>();
+        deps.Register<Content.Server.Worldgen.Tools.PoissonDiskSampler>(); // IS14: retained Goob world generation.
         //deps.Register<LastRolledAntagManager>(); // Goobstation - antag pity CorvaxGoob-Deleted
         //deps.Register<LinkAccountManager>(); // RMC - Patreon; Deleted by CorvaxGoob
         IoCManager.Register<TTSManager>(); // CorvaxGoob-TTS

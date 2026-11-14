@@ -1,3 +1,4 @@
+using Content.Shared.Speech.EntitySystems;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Server.Speech.EntitySystems;
@@ -15,7 +16,7 @@ public sealed partial class CheeseAccentSystem : EntitySystem
         SubscribeLocalEvent<CheeseAccentComponent, AccentGetEvent>(OnAccent);
     }
 
-    private void OnAccent(EntityUid uid, CheeseAccentComponent component, AccentGetEvent args)
+    private void OnAccent(EntityUid uid, CheeseAccentComponent component, ref AccentGetEvent args)
     {
         var message = args.Message;
 

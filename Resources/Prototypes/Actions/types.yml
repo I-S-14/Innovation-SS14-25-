@@ -518,7 +518,7 @@
     layers:
     - state: icon
   - type: InstantAction
-    event: !type:ToggleNightVisionEvent {}
+    event: !type:ToggleNightVisionOverlayEvent {}
 
 - type: entity
   parent: ActionToggleWagging

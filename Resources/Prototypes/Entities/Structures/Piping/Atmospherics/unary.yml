@@ -25,269 +25,124 @@
 
 - type: entity
   parent: [GasUnaryBase, AirSensorBase]
-  id: GasVentPump
-  name: air vent
-  description: Has a valve and a pump attached to it.
-  placement:
-    mode: SnapgridCenter
-  components:
-    - type: VentCrawlerTube  # Goobstation - ventcrawl
-      containerId: VentCrawlerTube
-    - type: VentCrawlerEntry
-    - type: ContainerContainer # Goobstation - ventcrawl
-      containers:
-        VentCrawlerTube: !type:Container
-    - type: ApcPowerReceiver
-    - type: ExtensionCableReceiver
-    - type: DeviceNetwork
-      prefix: device-address-prefix-vent
-    - type: Tag
-      tags:
-        - GasVent
-        - Unstackable
-    - type: SubFloorHide
-      visibleLayers:
-      - enum.SubfloorLayers.FirstLayer
-    - type: Sprite
-      drawdepth: FloorObjects
-      sprite: Structures/Piping/Atmospherics/vent.rsi
-      noRot: true
-      layers:
-        - sprite: Structures/Piping/Atmospherics/pipe.rsi
-          state: pipeUnaryConnectors
-          map: [ "enum.PipeVisualLayers.Pipe" ]
-        - state: vent_off
-          map: [ "enabled", "enum.SubfloorLayers.FirstLayer" ]
-    - type: Appearance
-    - type: PipeColorVisuals
-    - type: GenericVisualizer
-      visuals:
-        enum.VentPumpVisuals.State:
-          enabled:
-            Off: { state: vent_off }
-            In: { state: vent_in }
-            Out: { state: vent_out }
-            Welded: { state: vent_welded }
-            Lockout: { state: vent_lockout }
-    - type: GasVentPump
-      underPressureLockoutThreshold: 60
-    - type: Construction
-      graph: GasUnary
-      node: ventpump
-    - type: VentCritterSpawnLocation
-    - type: AmbientSound
-      enabled: true
-      volume: -12
-      range: 5
-      sound:
-        path: /Audio/Ambience/Objects/gas_vent.ogg
-    - type: Weldable
-    - type: AtmosMonitoringConsoleDevice
-      navMapBlip: GasVentOpening
-    - type: GuideHelp
-      guides:
-      - AirVent
-      - DeviceMonitoringAndControl
-
-- type: entity
-  parent: GasUnaryBase
-  id: GasPassiveVent
-  name: passive vent
-  description: It's an open vent.
-  placement:
-    mode: SnapgridCenter
-  components:
-    - type: SubFloorHide
-      visibleLayers:
-      - enum.SubfloorLayers.FirstLayer
-    - type: Sprite
-      drawdepth: FloorObjects
-      sprite: Structures/Piping/Atmospherics/vent.rsi
-      noRot: true
-      layers:
-        - sprite: Structures/Piping/Atmospherics/pipe.rsi
-          state: pipeUnaryConnectors
-          map: [ "enum.PipeVisualLayers.Pipe" ]
-        - state: vent_passive
-          map: [ "enum.SubfloorLayers.FirstLayer" ]
-    - type: Appearance
-    - type: PipeColorVisuals
-    - type: GasPassiveVent
-    - type: Construction
-      graph: GasUnary
-      node: passivevent
-    - type: AtmosMonitoringConsoleDevice
-      navMapBlip: GasVentOpening
-    - type: GuideHelp
-      guides:
-      - PassiveVent
-    - type: VentCrawlerEntry # Goobstation - ventcrawl
-    - type: VentCrawlerTube # Goobstation - ventcrawl
-      containerId: VentCrawlerTube
-    - type: ContainerContainer # Goobstation - ventcrawl
-      containers:
-        VentCrawlerTube: !type:Container
-    - type: Weldable  # Goobstation - ventcrawl
-      time: 3
-
-- type: entity
-  parent: GasUnaryBase
-  id: GasOutletInjector
-  name: air injector
-  description: Has a valve and pump attached to it.
-  placement:
-    mode: SnapgridCenter
-  components:
-    - type: Sprite
-      drawdepth: FloorObjects
-      sprite: Structures/Piping/Atmospherics/outletinjector.rsi
-      layers:
-        - state: pipeUnaryConnectors
-          sprite: Structures/Piping/Atmospherics/pipe.rsi
-          map: [ "enum.PipeVisualLayers.Pipe" ]
-        - state: injector
-          map: [ "enum.SubfloorLayers.FirstLayer" ]
-        - state: injector-unshaded
-          shader: unshaded
-          map: [ "enum.LightLayers.Unshaded" ]
-          color: "#990000"
-    - type: Appearance
-    - type: GenericVisualizer
-      visuals:
-       # toggle color of the unshaded light:
-       enum.OutletInjectorVisuals.Enabled:
-         enum.LightLayers.Unshaded:
-           True: { color: "#5eff5e" }
-           False: { color: "#990000" }
-    - type: PipeColorVisuals
-    - type: GasOutletInjector
-    - type: Construction
-      graph: GasUnary
-      node: outletinjector
-    - type: SubFloorHide
-      visibleLayers:
-      - enum.SubfloorLayers.FirstLayer
-      - enum.LightLayers.Unshaded
-    - type: AtmosMonitoringConsoleDevice
-      navMapBlip: GasVentOpening
-    - type: GuideHelp
-      guides:
-      - AirInjector
-    - type: VentCrawlerTube # Goobstation - ventcrawl
-      containerId: VentCrawlerTube
-    - type: VentCrawlerJunction # Goobstation - ventcrawl
-      degrees:
-        - 0
-    - type: ContainerContainer # Goobstation - ventcrawl
-      containers:
-        VentCrawlerTube: !type:Container
-
-- type: entity
-  parent: [GasUnaryBase, AirSensorBase]
   id: !type:CreateVariants
-    values: [ GasVentPump, GasVentPumpAlt1, GasVentPumpAlt2 ]
+    values: [GasVentPump, GasVentPumpAlt1, GasVentPumpAlt2]
   name: air vent
   description: Has a valve and a pump attached to it.
   categories: !type:CreateVariants
-    sequences: [ [ ], [ HideSpawnMenu ], [ HideSpawnMenu ] ]
+    sequences: [[], [HideSpawnMenu], [HideSpawnMenu]]
   placement:
     mode: AlignAtmosPipeLayers
   components:
-    - type: ApcPowerReceiver
-    - type: ExtensionCableReceiver
-    - type: DeviceNetwork
-      prefix: device-address-prefix-vent
-    - type: Tag
-      tags:
-        - GasVent
-        - Unstackable
-    - type: SubFloorHide
-      visibleLayers:
-      - enum.SubfloorLayers.FirstLayer
-    - type: Sprite
-      drawdepth: FloorObjects
-      sprite: Structures/Piping/Atmospherics/vent.rsi
-      layers:
-        - sprite: !type:CreateVariants
-            values: [ Structures/Piping/Atmospherics/pipe.rsi, Structures/Piping/Atmospherics/pipe_alt1.rsi, Structures/Piping/Atmospherics/pipe_alt2.rsi ]
-          state: pipeUnaryConnectors
-          map: [ "enum.PipeVisualLayers.Pipe" ]
-        - state: vent_off
-          map: [ "enabled", "enum.SubfloorLayers.FirstLayer" ]
-    - type: AtmosPipeLayers
-      pipeLayer: !type:CreateVariants
-        values: [ 0, 1, 2 ]
-    - type: Appearance
-    - type: PipeColorVisuals
-    - type: GenericVisualizer
-      visuals:
-        enum.VentPumpVisuals.State:
-          enabled:
-            Off: { state: vent_off }
-            In: { state: vent_in }
-            Out: { state: vent_out }
-            Welded: { state: vent_welded }
-            Lockout: { state: vent_lockout }
-    - type: GasVentPump
-    - type: Construction
-      graph: !type:CreateVariants
-        values: [ GasUnary, GasUnaryAlt1, GasUnaryAlt2 ]
-      node: ventpump
-    - type: VentCritterSpawnLocation
-    - type: AmbientSound
-      enabled: true
-      volume: -12
-      range: 5
-      sound:
-        path: /Audio/Ambience/Objects/gas_vent.ogg
-    - type: Weldable
-    - type: AtmosMonitoringConsoleDevice
-      navMapBlip: GasVentOpening
-    - type: GuideHelp
-      guides:
-      - AirVent
-      - DeviceMonitoringAndControl
-
+  - type: ApcPowerReceiver
+  - type: ExtensionCableReceiver
+  - type: DeviceNetwork
+    prefix: device-address-prefix-vent
+  - type: Tag
+    tags:
+    - GasVent
+    - Unstackable
+  - type: SubFloorHide
+    visibleLayers:
+    - enum.SubfloorLayers.FirstLayer
+  - type: Sprite
+    drawdepth: FloorObjects
+    sprite: Structures/Piping/Atmospherics/vent.rsi
+    layers:
+    - sprite: !type:CreateVariants
+        values: [Structures/Piping/Atmospherics/pipe.rsi, Structures/Piping/Atmospherics/pipe_alt1.rsi,
+          Structures/Piping/Atmospherics/pipe_alt2.rsi]
+      state: pipeUnaryConnectors
+      map: ["enum.PipeVisualLayers.Pipe"]
+    - state: vent_off
+      map: ["enabled", "enum.SubfloorLayers.FirstLayer"]
+  - type: AtmosPipeLayers
+    pipeLayer: !type:CreateVariants
+      values: ['0', '1', '2']
+  - type: Appearance
+  - type: PipeColorVisuals
+  - type: GenericVisualizer
+    visuals:
+      enum.VentPumpVisuals.State:
+        enabled:
+          'Off': {state: vent_off}
+          In: {state: vent_in}
+          Out: {state: vent_out}
+          Welded: {state: vent_welded}
+          Lockout: {state: vent_lockout}
+  - type: GasVentPump
+  - type: Construction
+    graph: !type:CreateVariants
+      values: [GasUnary, GasUnaryAlt1, GasUnaryAlt2]
+    node: ventpump
+  - type: VentCritterSpawnLocation
+  - type: AmbientSound
+    enabled: 'true'
+    volume: '-12'
+    range: '5'
+    sound:
+      path: /Audio/Ambience/Objects/gas_vent.ogg
+  - type: Weldable
+  - type: AtmosMonitoringConsoleDevice
+    navMapBlip: GasVentOpening
+  - type: GuideHelp
+    guides:
+    - AirVent
+    - DeviceMonitoringAndControl
+  - type: VentCrawlerTube
+    containerId: VentCrawlerTube
+  - type: VentCrawlerEntry
+  - type: ContainerContainer
+    containers:
+      VentCrawlerTube: !type:Container ''
 - type: entity
   parent: GasUnaryBase
   id: !type:CreateVariants
-    values: [ GasPassiveVent, GasPassiveVentAlt1, GasPassiveVentAlt2 ]
+    values: [GasPassiveVent, GasPassiveVentAlt1, GasPassiveVentAlt2]
   name: passive vent
   description: It's an open vent.
   categories: !type:CreateVariants
-    sequences: [ [ ], [ HideSpawnMenu ], [ HideSpawnMenu ] ]
+    sequences: [[], [HideSpawnMenu], [HideSpawnMenu]]
   placement:
     mode: AlignAtmosPipeLayers
   components:
-    - type: SubFloorHide
-      visibleLayers:
-      - enum.SubfloorLayers.FirstLayer
-    - type: Sprite
-      drawdepth: FloorObjects
-      sprite: Structures/Piping/Atmospherics/vent.rsi
-      layers:
-        - sprite: !type:CreateVariants
-            values: [ Structures/Piping/Atmospherics/pipe.rsi, Structures/Piping/Atmospherics/pipe_alt1.rsi, Structures/Piping/Atmospherics/pipe_alt2.rsi ]
-          state: pipeUnaryConnectors
-          map: [ "enum.PipeVisualLayers.Pipe" ]
-        - state: vent_passive
-          map: [ "enum.SubfloorLayers.FirstLayer" ]
-    - type: AtmosPipeLayers
-      pipeLayer: !type:CreateVariants
-        values: [ 0, 1, 2 ]
-    - type: Appearance
-    - type: PipeColorVisuals
-    - type: GasPassiveVent
-    - type: Construction
-      graph: !type:CreateVariants
-        values: [ GasUnary, GasUnaryAlt1, GasUnaryAlt2 ]
-      node: passivevent
-    - type: AtmosMonitoringConsoleDevice
-      navMapBlip: GasVentOpening
-    - type: GuideHelp
-      guides:
-      - PassiveVent
-
+  - type: SubFloorHide
+    visibleLayers:
+    - enum.SubfloorLayers.FirstLayer
+  - type: Sprite
+    drawdepth: FloorObjects
+    sprite: Structures/Piping/Atmospherics/vent.rsi
+    layers:
+    - sprite: !type:CreateVariants
+        values: [Structures/Piping/Atmospherics/pipe.rsi, Structures/Piping/Atmospherics/pipe_alt1.rsi,
+          Structures/Piping/Atmospherics/pipe_alt2.rsi]
+      state: pipeUnaryConnectors
+      map: ["enum.PipeVisualLayers.Pipe"]
+    - state: vent_passive
+      map: ["enum.SubfloorLayers.FirstLayer"]
+  - type: AtmosPipeLayers
+    pipeLayer: !type:CreateVariants
+      values: ['0', '1', '2']
+  - type: Appearance
+  - type: PipeColorVisuals
+  - type: GasPassiveVent
+  - type: Construction
+    graph: !type:CreateVariants
+      values: [GasUnary, GasUnaryAlt1, GasUnaryAlt2]
+    node: passivevent
+  - type: AtmosMonitoringConsoleDevice
+    navMapBlip: GasVentOpening
+  - type: GuideHelp
+    guides:
+    - PassiveVent
+  - type: VentCrawlerEntry
+  - type: VentCrawlerTube
+    containerId: VentCrawlerTube
+  - type: ContainerContainer
+    containers:
+      VentCrawlerTube: !type:Container ''
+  - type: Weldable
+    time: '3'
 - type: entity
   parent: [GasUnaryBase, AirSensorBase]
   id: !type:CreateVariants
@@ -354,58 +209,73 @@
       - AirScrubber
       - DeviceMonitoringAndControl
 
+    # IS14: Goob vent crawling and DeltaV critters belong on all scrubber variants.
+    - type: VentCrawlerTube
+      containerId: VentCrawlerTube
+    - type: VentCrawlerEntry
+    - type: ContainerContainer
+      containers:
+        VentCrawlerTube: !type:Container ''
+    - type: VentCritterSpawnLocation
 - type: entity
   parent: GasUnaryBase
   id: !type:CreateVariants
-    values: [ GasOutletInjector, GasOutletInjectorAlt1, GasOutletInjectorAlt2 ]
+    values: [GasOutletInjector, GasOutletInjectorAlt1, GasOutletInjectorAlt2]
   name: air injector
   description: Has a valve and pump attached to it.
   categories: !type:CreateVariants
-    sequences: [ [ ], [ HideSpawnMenu ], [ HideSpawnMenu ] ]
+    sequences: [[], [HideSpawnMenu], [HideSpawnMenu]]
   placement:
     mode: AlignAtmosPipeLayers
   components:
-    - type: Sprite
-      drawdepth: FloorObjects
-      sprite: Structures/Piping/Atmospherics/outletinjector.rsi
-      layers:
-        - state: pipeUnaryConnectors
-          sprite: !type:CreateVariants
-            values: [ Structures/Piping/Atmospherics/pipe.rsi, Structures/Piping/Atmospherics/pipe_alt1.rsi, Structures/Piping/Atmospherics/pipe_alt2.rsi ]
-          map: [ "enum.PipeVisualLayers.Pipe" ]
-        - state: injector
-          map: [ "enum.SubfloorLayers.FirstLayer" ]
-        - state: injector-unshaded
-          shader: unshaded
-          map: [ "enum.LightLayers.Unshaded" ]
-          color: "#990000"
-    - type: AtmosPipeLayers
-      pipeLayer: !type:CreateVariants
-        values: [ 0, 1, 2 ]
-    - type: Appearance
-    - type: GenericVisualizer
-      visuals:
-       # toggle color of the unshaded light:
-       enum.OutletInjectorVisuals.Enabled:
-         enum.LightLayers.Unshaded:
-           True: { color: "#5eff5e" }
-           False: { color: "#990000" }
-    - type: PipeColorVisuals
-    - type: GasOutletInjector
-    - type: Construction
-      graph: !type:CreateVariants
-        values: [ GasUnary, GasUnaryAlt1, GasUnaryAlt2 ]
-      node: outletinjector
-    - type: SubFloorHide
-      visibleLayers:
-      - enum.SubfloorLayers.FirstLayer
-      - enum.LightLayers.Unshaded
-    - type: AtmosMonitoringConsoleDevice
-      navMapBlip: GasVentOpening
-    - type: GuideHelp
-      guides:
-      - AirInjector
-
+  - type: Sprite
+    drawdepth: FloorObjects
+    sprite: Structures/Piping/Atmospherics/outletinjector.rsi
+    layers:
+    - state: pipeUnaryConnectors
+      sprite: !type:CreateVariants
+        values: [Structures/Piping/Atmospherics/pipe.rsi, Structures/Piping/Atmospherics/pipe_alt1.rsi,
+          Structures/Piping/Atmospherics/pipe_alt2.rsi]
+      map: ["enum.PipeVisualLayers.Pipe"]
+    - state: injector
+      map: ["enum.SubfloorLayers.FirstLayer"]
+    - state: injector-unshaded
+      shader: unshaded
+      map: ["enum.LightLayers.Unshaded"]
+      color: "#990000"
+  - type: AtmosPipeLayers
+    pipeLayer: !type:CreateVariants
+      values: ['0', '1', '2']
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.OutletInjectorVisuals.Enabled:
+        enum.LightLayers.Unshaded:
+          'True': {color: "#5eff5e"}
+          'False': {color: "#990000"}
+  - type: PipeColorVisuals
+  - type: GasOutletInjector
+  - type: Construction
+    graph: !type:CreateVariants
+      values: [GasUnary, GasUnaryAlt1, GasUnaryAlt2]
+    node: outletinjector
+  - type: SubFloorHide
+    visibleLayers:
+    - enum.SubfloorLayers.FirstLayer
+    - enum.LightLayers.Unshaded
+  - type: AtmosMonitoringConsoleDevice
+    navMapBlip: GasVentOpening
+  - type: GuideHelp
+    guides:
+    - AirInjector
+  - type: VentCrawlerTube
+    containerId: VentCrawlerTube
+  - type: VentCrawlerJunction
+    degrees:
+    - '0'
+  - type: ContainerContainer
+    containers:
+      VentCrawlerTube: !type:Container ''
 - type: entity
   parent: [ BaseMachinePowered, ConstructibleMachine, BaseConstructibleMachineDestructible ]
   id: BaseGasThermoMachine
@@ -454,108 +324,6 @@
     - type: GuideHelp
       guides:
       - Thermomachines
-
-- type: entity
-  parent: [ BaseMachinePowered, SmallConstructibleMachine, BaseAutomatedMachine ] # Goob: Automation
-  id: BaseGasCondenser
-  name: condenser
-  description: Condenses gases into liquids. Now we just need some plumbing.
-  placement:
-    mode: SnapgridCenter
-  components:
-  - type: Sprite
-    sprite: Structures/Piping/Atmospherics/condenser.rsi
-    snapCardinals: true
-    granularLayersRendering: true
-    layers:
-    - state: off
-      map: [ "enum.PowerDeviceVisualLayers.Powered" ]
-    - state: panel
-      map: ["enum.WiresVisualLayers.MaintenancePanel"]
-    - state: pipe
-      map: [ "enum.PipeVisualLayers.Pipe" ]
-      renderingStrategy: Default
-    - state: fill-1
-      map: ["enum.SolutionContainerLayers.Fill"]
-      visible: false
-    - state: trans
-  - type: Appearance
-  - type: GenericVisualizer
-    visuals:
-      enum.PowerDeviceVisuals.Powered:
-        enum.PowerDeviceVisualLayers.Powered:
-          True: { state: on }
-          False: { state: off }
-  - type: SolutionContainerVisuals
-    maxFillLevels: 7
-    fillBaseName: fill-
-  - type: PipeColorVisuals
-  - type: Rotatable
-  - type: GasCondenser
-  - type: AtmosPipeColor
-  - type: AtmosPipeLayers
-    spriteLayersRsiPaths:
-      enum.PipeVisualLayers.Pipe:
-        Primary: Structures/Piping/Atmospherics/condenser.rsi
-        Secondary: Structures/Piping/Atmospherics/condenser_alt1.rsi
-        Tertiary: Structures/Piping/Atmospherics/condenser_alt2.rsi
-  - type: AtmosDevice
-  - type: PipeRestrictOverlap
-  - type: ApcPowerReceiver
-    powerLoad: 10000
-  - type: Machine
-    board: CondenserMachineCircuitBoard
-  - type: WiresPanel
-  - type: WiresVisuals
-  - type: Destructible
-    thresholds:
-    - trigger:
-        !type:DamageTrigger
-        damage: 200
-      behaviors:
-      - !type:DoActsBehavior
-        acts: [ "Destruction" ]
-    - trigger:
-        !type:DamageTrigger
-        damage: 100
-      behaviors:
-      - !type:DoActsBehavior
-        acts: [ "Destruction" ]
-      - !type:SpillBehavior
-        solution: tank
-      - !type:PlaySoundBehavior
-        sound:
-          collection: MetalBreak
-  - type: NodeContainer
-    nodes:
-      pipe:
-        !type:PipeNode
-        nodeGroupID: Pipe
-        pipeDirection: South
-  - type: Transform
-    noRot: false
-  - type: SolutionContainerManager
-    solutions:
-      tank:
-        maxVol: 400
-  - type: MixableSolution
-    solution: tank
-  - type: DrainableSolution
-    solution: tank
-  - type: ExaminableSolution
-    solution: tank
-  - type: PowerSwitch
-  - type: AtmosMonitoringConsoleDevice
-    navMapBlip: Thermoregulator
-  - type: AutomationSlots # Goobstation
-    slots:
-    - !type:AutomatedSolution
-      solutionName: tank
-      input: PlumbingInput
-      output: PlumbingOutput
-  - type: GuideHelp
-    guides:
-    - GasCondensing
 
 - type: entity
   parent: BaseGasThermoMachine
@@ -728,43 +496,50 @@
     board: HellfireHeaterMachineCircuitBoard
 
 - type: entity
-  parent: [ SolutionTank, SolutionHuge, BaseMachinePowered, SmallConstructibleMachine, BaseSmallConstructibleMachineDestructible ]
+  parent:
+  - SolutionTank
+  - SolutionHuge
+  - BaseMachinePowered
+  - SmallConstructibleMachine
+  - BaseSmallConstructibleMachineDestructible
+  - BaseAutomatedMachine
   id: !type:CreateVariants
-    values: [ BaseGasCondenser, BaseGasCondenserAlt1, BaseGasCondenserAlt2 ]
+    values: [BaseGasCondenser, BaseGasCondenserAlt1, BaseGasCondenserAlt2]
   name: condenser
   description: Condenses gases into liquids. Now we just need some plumbing.
   categories: !type:CreateVariants
-    sequences: [ [ ], [ HideSpawnMenu ], [ HideSpawnMenu ] ]
+    sequences: [[], [HideSpawnMenu], [HideSpawnMenu]]
   placement:
     mode: AlignAtmosPipeLayers
   components:
   - type: Sprite
     sprite: Structures/Piping/Atmospherics/condenser.rsi
-    snapCardinals: true
-    granularLayersRendering: true
+    snapCardinals: 'true'
+    granularLayersRendering: 'true'
     layers:
-    - state: off
-      map: [ "enum.PowerDeviceVisualLayers.Powered" ]
+    - state: 'off'
+      map: ["enum.PowerDeviceVisualLayers.Powered"]
     - state: panel
       map: ["enum.WiresVisualLayers.MaintenancePanel"]
     - sprite: !type:CreateVariants
-        values: [ Structures/Piping/Atmospherics/condenser.rsi, Structures/Piping/Atmospherics/condenser_alt1.rsi, Structures/Piping/Atmospherics/condenser_alt2.rsi ]
+        values: [Structures/Piping/Atmospherics/condenser.rsi, Structures/Piping/Atmospherics/condenser_alt1.rsi,
+          Structures/Piping/Atmospherics/condenser_alt2.rsi]
       state: pipe
-      map: [ "enum.PipeVisualLayers.Pipe" ]
+      map: ["enum.PipeVisualLayers.Pipe"]
       renderingStrategy: Default
     - state: fill-1
       map: ["enum.SolutionContainerLayers.Fill"]
-      visible: false
+      visible: 'false'
     - state: trans
   - type: Appearance
   - type: GenericVisualizer
     visuals:
       enum.PowerDeviceVisuals.Powered:
         enum.PowerDeviceVisualLayers.Powered:
-          True: { state: on }
-          False: { state: off }
+          'True': {state: 'on'}
+          'False': {state: 'off'}
   - type: SolutionContainerVisuals
-    maxFillLevels: 7
+    maxFillLevels: '7'
     fillBaseName: fill-
   - type: PipeColorVisuals
   - type: Rotatable
@@ -772,7 +547,7 @@
   - type: AtmosPipeColor
   - type: AtmosPipeLayers
     pipeLayer: !type:CreateVariants
-      values: [ 0, 1, 2 ]
+      values: ['0', '1', '2']
     spriteLayersRsiPaths:
       enum.PipeVisualLayers.Pipe:
         Primary: Structures/Piping/Atmospherics/condenser.rsi
@@ -781,16 +556,15 @@
   - type: AtmosDevice
   - type: PipeRestrictOverlap
   - type: ApcPowerReceiver
-    powerLoad: 10000
+    powerLoad: '10000'
   - type: Machine
     board: CondenserMachineCircuitBoard
   - type: WiresPanel
   - type: WiresVisuals
   - type: Destructible
     thresholds:
-    - trigger:
-        !type:DamageTrigger
-        damage: 100
+    - trigger: !type:DamageTrigger
+        damage: '100'
       behaviors:
       - !type:SpillBehavior
         solution: tank
@@ -799,12 +573,11 @@
           collection: MetalBreak
   - type: NodeContainer
     nodes:
-      pipe:
-        !type:PipeNode
+      pipe: !type:PipeNode
         nodeGroupID: Pipe
         pipeDirection: South
   - type: Transform
-    noRot: false
+    noRot: 'false'
   - type: MixableSolution
     solution: tank
   - type: DrainableSolution
@@ -817,3 +590,9 @@
   - type: GuideHelp
     guides:
     - GasCondensing
+  - type: AutomationSlots
+    slots:
+    - !type:AutomatedSolution
+      solutionName: tank
+      input: PlumbingInput
+      output: PlumbingOutput

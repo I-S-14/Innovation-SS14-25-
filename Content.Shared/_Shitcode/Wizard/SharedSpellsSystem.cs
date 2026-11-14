@@ -99,7 +99,6 @@ public abstract class SharedSpellsSystem : EntitySystem
 
     [Dependency] protected readonly IGameTiming Timing = default!;
     [Dependency] protected readonly IRobustRandom Random = default!;
-    [Dependency] protected readonly IPrototypeManager ProtoMan = default!;
     [Dependency] protected readonly SharedTransformSystem TransformSystem = default!;
     [Dependency] protected readonly EntityLookupSystem Lookup = default!;
     [Dependency] protected readonly SharedMapSystem Map = default!;

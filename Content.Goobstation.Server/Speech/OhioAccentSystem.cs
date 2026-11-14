@@ -1,3 +1,4 @@
+using Content.Shared.Speech.EntitySystems;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Server.Speech.EntitySystems;
@@ -17,7 +18,7 @@ public sealed partial class OhioAccentSystem : EntitySystem
         SubscribeLocalEvent<Common.Speech.OhioAccentComponent, AccentGetEvent>(OnAccent);
     }
 
-    private void OnAccent(EntityUid uid, Common.Speech.OhioAccentComponent component, AccentGetEvent args)
+    private void OnAccent(EntityUid uid, Common.Speech.OhioAccentComponent component, ref AccentGetEvent args)
     {
         var message = args.Message;
 

@@ -51,7 +51,6 @@ using Content.Shared._Shitmed.Body;
 using Content.Shared._Shitmed.Damage;
 using Content.Shared._Shitmed.Targeting;
 using Content.Shared._EinsteinEngines.Silicon.Components;
-using Content.Shared.Warps;
 using Robust.Shared.Utility;
 using Content.Shared.Examine;
 using Content.Shared.Ghost;
@@ -62,6 +61,10 @@ namespace Content.Server.Ghost
 {
     public sealed partial class GhostSystem : SharedGhostSystem // Goob - made partial
     {
+    //IS14-change start: retain fork fields lost during merge.
+        [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
+    //IS14-change end
+
         [Dependency] private SharedActionsSystem _actions = default!;
         [Dependency] private IAdminLogManager _adminLog = default!;
         [Dependency] private SharedEyeSystem _eye = default!;

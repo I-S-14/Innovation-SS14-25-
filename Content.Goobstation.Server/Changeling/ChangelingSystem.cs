@@ -1,3 +1,4 @@
+using Content.Shared.Guardian.Components;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Goobstation.Common.Actions;
@@ -29,7 +30,7 @@ using Content.Server.DoAfter;
 using Content.Server.Emp;
 using Content.Server.Explosion.EntitySystems;
 using Content.Server.Gravity;
-using Content.Server.Guardian;
+
 using Content.Server.Humanoid;
 using Content.Server.Light.EntitySystems;
 using Content.Server.Polymorph.Components;
@@ -80,7 +81,6 @@ using Content.Shared._CorvaxGoob.TTS;
 using System.Linq;
 using System.Numerics;
 using Content.Goobstation.Common.Grab;
-using Content.Shared.Atmos.Components;
 using Content.Shared.Zombies;
 using Content.Server.Ensnaring;
 
@@ -278,7 +278,7 @@ public sealed partial class ChangelingSystem : SharedChangelingSystem
         if (!_timing.IsFirstTimePredicted)
             return;
 
-        foreach (var comp in EntityManager.EntityQuery<ChangelingIdentityComponent>())
+        foreach (var comp in EntityQuery<ChangelingIdentityComponent>())
         {
             var uid = comp.Owner;
 
@@ -502,7 +502,7 @@ public sealed partial class ChangelingSystem : SharedChangelingSystem
             var coords = Transform(uid).Coordinates;
             foreach (var (proto, slot) in armors)
             {
-                EntityUid armor = EntityManager.SpawnEntity(proto, coords);
+                EntityUid armor = Spawn(proto, coords);
                 if (!_inventory.TryEquip(uid, armor, slot, force: true))
                 {
                     QueueDel(armor);
@@ -535,7 +535,7 @@ public sealed partial class ChangelingSystem : SharedChangelingSystem
     public bool TryStealDNA(EntityUid uid, EntityUid target, ChangelingIdentityComponent comp, bool countObjective = false)
     {
         if (!TryComp<HumanoidAppearanceComponent>(target, out var appearance)
-        || !TryComp<MetaDataComponent>(target, out var metadata)
+        || !TryComp(target, out MetaDataComponent? metadata)
         || !TryComp<DnaComponent>(target, out var dna)
         || !TryComp<FingerprintComponent>(target, out var fingerprint)
         || !TryComp<TTSComponent>(target, out var tts)) // CorvaxGoob-TTS

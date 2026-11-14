@@ -113,6 +113,7 @@
   wires:
   - !type:PowerWireAction
   - !type:AiVisionWireAction
+  - !type:CameraMapVisibilityWireAction # IS14-change: retained Wizards camera-map visibility control.
 
 - type: wireLayout
   id: CryoPod

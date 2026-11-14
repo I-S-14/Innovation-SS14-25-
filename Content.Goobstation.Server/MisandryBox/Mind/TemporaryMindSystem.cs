@@ -1,3 +1,4 @@
+using Content.Shared.Ghost.Components;
 using Content.Goobstation.Shared.MisandryBox.Mind;
 using Content.Server.Ghost;
 using Content.Server.Mind;

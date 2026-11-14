@@ -328,38 +328,8 @@
   - type: DynamicRuleCost
     cost: 75
 
-- type: entity
-  parent: BaseAntagGhostRoleRule
-  id: SpaceChangelingSpawn
-  components:
-  - type: StationEvent
-    weight: 6
-    earliestStart: 20 # can start early since lings need time to start doing stuff
-    reoccurrenceDelay: 40
-    minimumPlayers: 20
-    duration: null
-    occursDuringRoundEnd: false
-  - type: SpaceSpawnRule
-    spawnDistance: 80
-  - type: AntagSpawner
-    prototype: MobHeadSlugElder
-  - type: ChangelingRule
-  - type: AntagRandomObjectives
-    sets:
-    - groups: ChangelingObjectiveGroupDevourDummy
-      maxPicks: 1
-    - groups: ChangelingObjectiveGroupEscapeDummy
-      maxPicks: 1
-    - groups: ChangelingObjectiveGroupKillDummy
-      maxPicks: 1
-    maxDifficulty: 8
-  - type: AntagSelection
-    agentName: changeling-round-end-agent-name
-    antags:
-    - !type:FixedAntagCount
-      proto: SpaceChangeling
-  - type: DynamicRuleCost
-    cost: 75
+# IS14-change: retain Goob changelings and their rules. The unconnected Wizards
+# SpaceChangelingSpawn belongs to the alternate, disabled changeling implementation.
 
 - type: entity
   parent: BaseAntagGhostRoleRule
@@ -406,35 +376,13 @@
     - NinjaProtectObjective # CorvaxGoob
   - type: AntagSelection
     agentName: ninja-round-end-agent-name
-    definitions:
-    - spawnerPrototype: SpawnPointGhostSpaceNinja
-      min: 1
-      max: 1
-      pickPlayer: false
-      startingGear: SpaceNinjaGear
-      skills: # CorvaxGoob-Skills
-      - All
-      roleLoadout:
-      - RoleSurvivalSpaceNinja
-      briefing:
-        text: ninja-role-greeting
-        color: Green
-        sound: /Audio/Misc/ninja_greeting.ogg
-      components:
-      - type: SpaceNinja
-      - type: NpcFactionMember
-        factions:
-        - Syndicate
-      - type: AutoImplant
-        implants:
-        - MicroBombImplant # Goobstation
-      - type: RandomMetadata
-        nameSegments:
-        - NamesNinjaTitle
-        - NamesNinja
-        nameFormat: name-format-ninja
-      mindRoles:
-      - MindRoleNinja
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14NinjaSpawnAntag0a64391de
+      range:
+        max: 1
+        min: 1
+      playerRatio: 10
   - type: DynamicRuleCost
     cost: 75
 
@@ -468,23 +416,13 @@
   - type: AntagRandomSpawn # TODO: improve spawning so they only start in maints
   - type: AntagSelection
     agentName: paradox-clone-round-end-agent-name
-    definitions:
-    - spawnerPrototype: SpawnPointGhostParadoxClone
-      min: 1
-      max: 1
-      pickPlayer: false
-      startingGear: ParadoxCloneGear
-      skills: # CorvaxGoob-Skills
-      - All
-      roleLoadout:
-      - RoleSurvivalVoxTank # give vox something to breath in case they don't get a copy
-      - RoleSurvivalPlasmaTank # Goobstation
-      briefing:
-        text: paradox-clone-role-greeting
-        color: lightblue
-        sound: /Audio/Misc/paradox_clone_greeting.ogg
-      mindRoles:
-      - MindRoleParadoxClone
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14ParadoxCloneSpawnAntag0f7b6c925
+      range:
+        max: 1
+        min: 1
+      playerRatio: 10
   - type: DynamicRuleCost
     cost: 75
 
@@ -941,30 +879,13 @@
     chaosScore: 1400
   - type: ZombieRule
   - type: AntagSelection
-    definitions:
-    - prefRoles: [ InitialInfected ]
-      max: 3
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14ZombieOutbreakAntag0e30465e7
+      range:
+        max: 3
+        min: 1
       playerRatio: 10
-      skills: # CorvaxGoob-Skills
-      - All
-      blacklist:
-        components:
-        - BibleUser
-        - ZombieImmune
-        - AntagImmune
-      briefing:
-        text: zombie-patientzero-role-greeting
-        color: Plum
-        sound: "/Audio/Ambience/Antag/zombie_start.ogg"
-      components:
-      - type: PendingZombie #less time to prepare than normal
-        minInitialInfectedGrace: 300
-        maxInitialInfectedGrace: 450
-      - type: ZombifyOnDeath
-      - type: IncurableZombie
-      - type: InitialInfected
-      mindRoles:
-      - MindRoleInitialInfected
   - type: DynamicRuleCost
     cost: 200
 
@@ -991,29 +912,13 @@
     localePrefix: "loneop-" #Goobstation
     roundEndBehavior: Nothing
   - type: AntagSelection
-    definitions:
-    - spawnerPrototype: SpawnPointLoneNukeOperative
-      min: 1
-      max: 1
-      pickPlayer: false
-      startingGear: SyndicateLoneOperativeGearFull
-      unequipOldGear: true # Goobstation?
-      skills: # CorvaxGoob-Skills
-      - All
-      roleLoadout:
-      - RoleSurvivalNukie
-      components:
-      - type: NukeOperative
-      - type: RandomMetadata
-        nameSegments:
-        - NamesSyndicatePrefix
-        - NamesSyndicateNormal
-        nameFormat: name-format-nukie-generic
-      - type: NpcFactionMember
-        factions:
-        - Syndicate
-      mindRoles:
-      - MindRoleLoneops
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14LoneOpsSpawnAntag06e4471ec
+      range:
+        max: 1
+        min: 1
+      playerRatio: 10
   - type: DynamicRuleCost
     cost: 75
   - type: AntagLoadProfileRule # Goobstation
@@ -1042,21 +947,14 @@
   - type: GameRule
   - type: AlertLevelInterceptionRule
   - type: AntagSelection
-    definitions:
-    - prefRoles: [ TraitorSleeper ]
-      fallbackRoles: [ Traitor ]
-      min: 1
-      max: 2
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14SleeperAgentsAntag03d30acec
+      range:
+        max: 2
+        min: 1
       playerRatio: 10
-      chaosScore: 200 # Goobstation - same as roundstart traitor gamerule
-      skills: # CorvaxGoob-Skills
-      - All
-      blacklist:
-        components:
-        - AntagImmune
-        - CommandStaff
-      mindRoles:
-      - MindRoleTraitorSleeper
+      chaosScore: 200
   - type: DynamicRuleCost
     cost: 50
 

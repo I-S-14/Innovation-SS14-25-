@@ -228,8 +228,6 @@ loadout-group-paramedic-shoes = Paramedic shoes
 # Wildcards
 loadout-group-reporter-jumpsuit = Reporter jumpsuit
 loadout-group-reporter-head = Reporter hat
-loadout-group-reporter-outerclothing = Reporter vest
-
 loadout-group-psychologist-jumpsuit = Psychologist jumpsuit
 
 loadout-group-tramdriver-jumpsuit = Tram driver jumpsuit

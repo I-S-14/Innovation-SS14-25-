@@ -9,7 +9,7 @@
   - type: Sprite
     sprite: _Goobstation/Clothing/Neck/Cloaks/helldiver.rsi
   - type: StealTarget # lmao buying objectives, thief greatest antag
-    stealGroup: HeadCloak
+    stealGroup: [HeadCloak]
 
 - type: entity
   parent: ClothingNeckBase

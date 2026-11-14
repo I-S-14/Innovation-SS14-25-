@@ -266,7 +266,9 @@ public sealed class ToggleableClothingSystem : EntitySystem
         if (GetAttachedToggleStatus(args.UnEquipTarget, toggleable, true) == ToggleableClothingAttachedStatus.NoneToggled)
             return;
 
-        _popupSystem.PopupClient(Loc.GetString("toggleable-clothing-remove-all-attached-first"), args.UnEquipTarget, args.UnEquipTarget);
+                //IS14-change start
+                _popupSystem.PopupClient(Loc.GetString("toggleable-clothing-remove-all-attached-first"), args.UnEquipTarget, args.User);
+                //IS14-change end
 
         args.Cancel();
     }
@@ -378,13 +380,15 @@ public sealed class ToggleableClothingSystem : EntitySystem
             return;
 
         var attachedEnt = new Entity<AttachedClothingComponent>(args.Equipment, attachedComp);
-        if (args.UnEquipTarget != args.UnEquipTarget)
+        //IS14-change start
+        if (args.User != args.UnEquipTarget)
         {
-            StartAttachedDoAfter(args.UnEquipTarget, attachedEnt, args.UnEquipTarget);
+            StartAttachedDoAfter(args.User, attachedEnt, args.UnEquipTarget);
             args.Cancel(); // Cancel original unequip, DoAfter will handle it
         }
         else
             args.Cancel(); // Goob - attempt events are also raised by CanUnequip queries (e.g. building the context menu), so retracting here unequipped the part
+        //IS14-change end
     }
 
     private void OnRemoveAttached(Entity<AttachedClothingComponent> attached, ref ComponentRemove args)

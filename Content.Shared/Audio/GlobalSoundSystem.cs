@@ -119,7 +119,12 @@ public sealed class GameGlobalSoundEvent(ResolvedSoundSpecifier specifier, Audio
 /// </summary>
 public enum StationEventMusicType : byte
 {
-    Nuke
+    Nuke,
+    //IS14-change start
+    CosmicCult,
+    VoidAscended,
+    ShadowLing,
+    //IS14-change end
 }
 
 /// <summary>

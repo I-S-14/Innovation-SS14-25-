@@ -1,3 +1,4 @@
+using Content.Shared.Station.Systems; // IS14-change
 using Content.Server.CrewManifest;
 using Content.Server.DeviceLinking.Components;
 using Content.Server.Medical.CrewMonitoring;
@@ -25,7 +26,7 @@ namespace Content.Server._CorvaxGoob.SecApartment;
 
 public sealed partial class SecApartmentSystem : EntitySystem
 {
-    [Dependency] private readonly SharedStationSystem _station = default!;
+    [Dependency] private readonly StationSystem _station = default!;
     [Dependency] private readonly CrewManifestSystem _crewManifest = default!;
     [Dependency] private readonly UserInterfaceSystem _ui = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
@@ -446,7 +447,8 @@ public sealed partial class SecApartmentSystem : EntitySystem
                 if (TryComp<CrewMonitoringConsoleComponent>(tablet, out var monitoring))
                 {
                     var sensor = monitoring.ConnectedSensors.Values
-                        .FirstOrDefault(s => s.Name == entry.Name && s.Job == entry.JobTitle);
+                        .Where(s => s.Name == entry.Name && s.Job == entry.JobTitle)
+                        .Select(s => (SuitSensorStatus?) s).FirstOrDefault();
 
                     status = sensor;
                     ownerUid = sensor?.OwnerUid;
@@ -483,10 +485,10 @@ public sealed partial class SecApartmentSystem : EntitySystem
             if (memberInfo?.SensorStatus == null)
                 continue;
 
-            if (!memberInfo.SensorStatus.IsAlive)
+            if (!memberInfo.SensorStatus.Value.IsAlive)
                 continue;
 
-            var ownerUid = GetEntity(memberInfo.SensorStatus.OwnerUid);
+            var ownerUid = GetEntity(memberInfo.SensorStatus.Value.OwnerUid);
             var memberTransform = Transform(ownerUid);
             if (memberTransform.GridUid == null)
                 continue;
@@ -613,7 +615,7 @@ public sealed partial class SecApartmentSystem : EntitySystem
                 if (TryComp<SignalTimerComponent>(timerUid, out var timerComp))
                 {
                     TimeSpan remaining;
-                    var total = TimeSpan.FromSeconds(timerComp.Delay);
+                    var total = timerComp.Delay;
                     if (TryComp<ActiveSignalTimerComponent>(timerUid, out var activeComp))
                     {
                         remaining = activeComp.TriggerTime - _gameTiming.CurTime;

@@ -41,9 +41,10 @@ public sealed partial class PickNearbyWeldableOperator : HTNOperator
     [DataField(required: true)]
     public string TargetMoveKey = string.Empty;
 
-    public override void Initialize(IEntitySystemManager sysManager)
+    public override void Initialize(IDependencyCollection deps)
     {
-        base.Initialize(sysManager);
+        base.Initialize(deps);
+        var sysManager = deps.Resolve<IEntitySystemManager>();
         _lookup = sysManager.GetEntitySystem<EntityLookupSystem>();
         _weldbot = sysManager.GetEntitySystem<WeldbotSystem>();
         _pathfinding = sysManager.GetEntitySystem<PathfindingSystem>();

@@ -93,7 +93,7 @@ public sealed partial class PhotoSystem : SharedPhotoSystem
         _userInterface.SetUiState(uid, PhotoCameraUiKey.Key, state);
     }
 
-    private void OnPaperInserted(EntityUid uid, PhotoCameraComponent component, MaterialAmountChangedEvent args)
+    private void OnPaperInserted(EntityUid uid, PhotoCameraComponent component, ref MaterialAmountChangedEvent args)
     {
         if (TryComp<MaterialStorageComponent>(uid, out var storage))
             Dirty(uid, storage);

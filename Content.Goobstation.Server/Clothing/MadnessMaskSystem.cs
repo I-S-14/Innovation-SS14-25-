@@ -38,7 +38,9 @@ public sealed partial class MadnessMaskSystem : EntitySystem
 
     private void OnUnequip(Entity<MadnessMaskComponent> ent, ref BeingUnequippedAttemptEvent args)
     {
-        if (_heretic.IsHereticOrGhoul(args.UnEquipTarget))
+        //IS14-change start
+        if (_heretic.IsHereticOrGhoul(args.User))
+        //IS14-change end
             return;
 
         if (TryComp<ClothingComponent>(ent, out var clothing) && (clothing.Slots & args.SlotFlags) == SlotFlags.NONE)

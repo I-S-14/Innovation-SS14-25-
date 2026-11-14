@@ -1,3 +1,4 @@
+using Content.Shared.DeviceLinking.Payloads;
 // SPDX-FileCopyrightText: 2025 jhrushbe <capnmerry@gmail.com>
 // SPDX-FileCopyrightText: 2025 rottenheadphones <juaelwe@outlook.com>
 // SPDX-FileCopyrightText: 2025 taydeo <td12233a@gmail.com>
@@ -102,7 +103,7 @@ public sealed class TurbineSystem : SharedTurbineSystem
         SubscribeLocalEvent<TurbineComponent, TurbineChangeFlowRateMessage>(OnTurbineFlowRateChanged);
         SubscribeLocalEvent<TurbineComponent, TurbineChangeStatorLoadMessage>(OnTurbineStatorLoadChanged);
 
-        SubscribeLocalEvent<TurbineComponent, SignalReceivedEvent>(OnSignalReceived);
+        SubscribeLocalEvent<TurbineComponent, SignalReceivedEvent<LogicStatePayload>>(OnSignalReceived);
         SubscribeLocalEvent<TurbineComponent, PortDisconnectedEvent>(OnPortDisconnected);
 
         SubscribeLocalEvent<TurbineComponent, AnchorStateChangedEvent>(OnAnchorChanged);
@@ -506,10 +507,9 @@ public sealed class TurbineSystem : SharedTurbineSystem
     }
     #endregion
 
-    private void OnSignalReceived(EntityUid uid, TurbineComponent comp, ref SignalReceivedEvent args)
+    private void OnSignalReceived(EntityUid uid, TurbineComponent comp, ref SignalReceivedEvent<LogicStatePayload> args)
     {
-        var state = SignalState.Momentary;
-        args.Data?.TryGetValue(DeviceNetworkConstants.LogicState, out state);
+        var state = args.Data.State;
 
         if (args.Port == comp.StatorLoadIncreasePort)
             comp.IncreasePortState = state;

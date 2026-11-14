@@ -1,0 +1,191 @@
+# IS14: retained variants without ordinary-parent destruction.
+# Sources: current Goob gunbot/Wraith ancient bot and canonical silicon bot bases.
+# All non-Destructible fields retained; ordinary production bases remain unchanged.
+- type: entity
+  name: gunbot
+  id: IS14RetainedGunbotBase
+  abstract: true
+  parent: [BaseMob, MobCombat]
+  description: A Security Robot, something seems a bit off.
+  components:
+  - type: Sprite
+    sprite: /Textures/_Goobstation/Mobs/Silicon/Bots/gunbot.rsi
+    layers:
+    - map: ["movement"]
+      state: gunbot
+  - type: SpriteMovement
+    movementLayers:
+      movement:
+        state: gunbot_moving
+    noMovementLayers:
+      movement:
+        state: gunbot
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Metallic
+  - type: HTN
+    rootTask:
+      task: SimpleRangedHostileCompound
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeCircle
+          radius: 0.5
+        density: 100
+        mask:
+        - MobMask
+        layer:
+        - MobLayer
+  - type: BatteryAmmoProvider
+    proto: BulletPistol
+    fireCost: 50
+  - type: BatterySelfRecharger
+    autoRechargeRate: 50
+  - type: Battery
+    maxCharge: 1000
+    startingCharge: 1000
+  - type: Gun
+    projectileSpeed: 10
+    fireRate: 0.4
+    useKey: false
+    selectedMode: SemiAuto
+    availableModes:
+    - SemiAuto
+    soundGunshot: /Audio/Weapons/Guns/Gunshots/batrifle.ogg
+  - type: StaticPrice
+    price: 2000
+  - type: CombatMode
+  - type: NoSlip
+  - type: Fauna
+  - type: CombatPower
+    factor: 1
+- type: entity
+  id: IS14RetainedAncientBotBase
+  parent: [BaseMob, MobCombat]
+  name: strange robot
+  description: It looks like some sort of floating repair bot or something?
+  components:
+  - type: Advertise
+    pack: Repairbot
+    minimumWait: 15
+    maximumWait: 45
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+  - type: NpcFactionMember
+    factions:
+    - Wraith
+  - type: Prying
+    pryPowered: true
+  - type: ComplexInteraction
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 4
+    baseSprintSpeed: 4
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _Goobstation/Wraith/Mobs/ancient.rsi
+    layers:
+    - state: ancient_repairbot
+  - type: MeleeWeapon
+    altDisarm: false
+    angle: 0
+    animation: WeaponArcClaw
+    soundHit:
+      collection: Flesh_Stab
+    damage:
+      types:
+        Piercing: 10
+  - type: MobState
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeCircle
+          radius: 0.35
+        density: 20
+        mask:
+        - MobMask
+        layer:
+        - MobLayer
+  - type: SpamEmitSound
+    minInterval: 10
+    maxInterval: 30
+    sound:
+      collection: Repairbot
+      params:
+        volume: -1
+        maxDistance: 12
+        variation: 0.05
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: HeavyArmorSyndi
+  - type: PointLight
+    enabled: true
+    color: "#790c24"
+    radius: 3
+    softness: 5
+    autoRot: true
+    castShadows: false
+  - type: NoSlip
+  - type: Pullable
+  - type: Tag
+    tags:
+    - DoorBumpOpener
+  abstract: true
+- type: entity
+  save: false
+  abstract: true
+  parent: MobRobotic
+  id: IS14RetainedSiliconBotBase
+  components:
+  - type: NpcFactionMember
+    factions:
+    - SimpleNeutral
+  - type: Access
+    tags:
+    - BasicSilicon
+  - type: IntrinsicRadioReceiver
+  - type: IntrinsicRadioTransmitter
+    channels:
+    - Binary
+  - type: ActiveRadio
+    channels:
+    - Common
+    - Binary
+  - type: IntellicardableMind
+  - type: HealthExaminable
+    examinableTypes:
+    - Blunt
+    - Slash
+    - Piercing
+    - Heat
+    - Shock
+    locPrefix: silicon
+  - type: NameIdentifier
+    group: Silicon
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3
+    baseSprintSpeed: 4
+  - type: Stamina
+    baseCritThreshold: 120
+  - type: Input
+    context: "human"
+  - type: InputMover
+  - type: MobMover
+  - type: GuideHelp
+    guides:
+    - Robotics
+  - type: Tag
+    tags:
+    - DoorBumpOpener
+    - Bot
+    - Unimplantable
+    - SiliconMob
+  - type: Body
+    bodyType: Simple
+    prototype: Bot
+  - type: Speech
+    speechVerb: Robotic
+    speechSounds: Pai

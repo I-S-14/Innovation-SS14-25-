@@ -206049,7 +206049,7 @@ entities:
       pos: 49.5,-42.5
       parent: 2
     - type: WarpPoint
-      location: science reception
+      location: is14-map-warp-7904f9f6e1bd
 - proto: WaterCooler
   entities:
   - uid: 2032

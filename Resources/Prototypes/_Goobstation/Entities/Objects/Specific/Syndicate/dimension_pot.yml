@@ -2,7 +2,8 @@
 
 - type: entity
   id: DimensionPot
-  parent: PottedPlantBase
+  # IS14-change: do not inherit the ordinary furniture destruction threshold.
+  parent: IS14PottedPlantBaseCommon
   suffix: Dimension
   components:
   - type: Sprite

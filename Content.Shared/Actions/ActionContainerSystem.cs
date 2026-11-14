@@ -350,7 +350,7 @@ public sealed partial class ActionContainerSystem : EntitySystem
         DirtyField(action, action.Comp, nameof(ActionComponent.Container));
     }
 
-    private void OnActionAdded(EntityUid uid, ActionsContainerComponent component, ActionAddedEvent args)
+    private void OnActionAdded(EntityUid uid, ActionsContainerComponent component, ref ActionAddedEvent args)
     {
         // The results of the container change are already networked on their own; replaying the
         // grant while applying a game state can run before the new mind's own container has

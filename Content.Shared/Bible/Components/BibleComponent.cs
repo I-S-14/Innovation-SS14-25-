@@ -55,6 +55,23 @@ namespace Content.Goobstation.Shared.Bible // Death to serverside components. Gl
         [DataField]
         public string LocPrefix = "bible";
 
+        // IS14-change start: support Wizards books while retaining Goob LocPrefix defaults.
+        [DataField]
+        public string? HealFailOthersText;
+
+        [DataField]
+        public string? HealFailSelfText;
+
+        [DataField]
+        public string? HealSuccessOthersText;
+
+        [DataField]
+        public string? HealSuccessSelfText;
+
+        [DataField]
+        public EntProtoId? HealingLightEffect;
+        // IS14-change end
+
         /// <summary>
         /// How much damage to deal to the entity being smitten - Goob
         /// </summary>

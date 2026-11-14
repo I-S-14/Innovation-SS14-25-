@@ -38,7 +38,7 @@ public sealed class StreetpunkAccentSystem : EntitySystem
         return msg;
     }
 
-    private void OnAccentGet(EntityUid uid, StreetpunkAccentComponent component, AccentGetEvent args)
+    private void OnAccentGet(EntityUid uid, StreetpunkAccentComponent component, ref AccentGetEvent args)
     {
         args.Message = Accentuate(args.Message, component);
     }

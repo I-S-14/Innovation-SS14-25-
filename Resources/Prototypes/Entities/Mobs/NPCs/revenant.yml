@@ -27,7 +27,6 @@
     - Corporeal
   - type: Damageable
     damageModifierSet: ManifestedSpirit
-  - type: Injurable
     damageContainer: ManifestedSpirit
   - type: NoSlip
   - type: Eye

@@ -1,6 +1,7 @@
+using Content.Shared.Mind.Filters;
 using Content.Server.Objectives.Components;
 using Content.Shared.Mind;
-using Content.Shared.Mind.Filters;
+
 using Content.Shared.Whitelist;
 
 namespace Content.Goobstation.Server.Objectives;

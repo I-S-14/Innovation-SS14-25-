@@ -125,8 +125,8 @@ entity-effect-guidebook-status-effect =
         [update]
             { $chance ->
                 [1] Вызывает
-               *[other] вызывают
-            } { LOC($key) } минимум на { NATURALFIXED($time, 3) } { $time ->
+               *[other] вызвать
+            } «{ $key }» минимум на { NATURALFIXED($time, 3) } { $time ->
                 [one] секунду
                 [few] секунды
                *[other] секунд
@@ -134,8 +134,8 @@ entity-effect-guidebook-status-effect =
         [add]
             { $chance ->
                 [1] Вызывает
-               *[other] вызывают
-            } { LOC($key) } минимум на { NATURALFIXED($time, 3) } { $time ->
+               *[other] вызвать
+            } «{ $key }» минимум на { NATURALFIXED($time, 3) } { $time ->
                 [one] секунду
                 [few] секунды
                *[other] секунд
@@ -143,8 +143,8 @@ entity-effect-guidebook-status-effect =
         [set]
             { $chance ->
                 [1] Вызывает
-               *[other] вызывают
-            } { LOC($key) } минимум на { NATURALFIXED($time, 3) } { $time ->
+               *[other] вызвать
+            } «{ $key }» минимум на { NATURALFIXED($time, 3) } { $time ->
                 [one] секунду
                 [few] секунды
                *[other] секунд
@@ -152,12 +152,12 @@ entity-effect-guidebook-status-effect =
        *[remove]
             { $chance ->
                 [1] Удаляет
-               *[other] удаляют
+               *[other] удалить
             } { NATURALFIXED($time, 3) } { $time ->
                 [one] секунду
                 [few] секунды
                *[other] секунд
-            } от { LOC($key) }
+            } от «{ $key }»
     } { $delay ->
         [0] немедленно
        *[other]
@@ -172,23 +172,23 @@ entity-effect-guidebook-status-effect-indef =
         [update]
             { $chance ->
                 [1] Вызывает
-               *[other] вызывает
-            } постоянный { LOC($key) }
+               *[other] вызвать
+            } постоянный эффект «{ $key }»
         [add]
             { $chance ->
                 [1] Вызывает
-               *[other] вызывают
-            } постоянный{ LOC($key) }
+               *[other] вызвать
+            } постоянный эффект «{ $key }»
         [set]
             { $chance ->
                 [1] Вызывает
-               *[other] вызывают
-            } постоянный{ LOC($key) }
+               *[other] вызвать
+            } постоянный эффект «{ $key }»
        *[remove]
             { $chance ->
                 [1] Убирает
-               *[other] убирают
-            } { LOC($key) }
+               *[other] убрать
+            } эффект «{ $key }»
     } { $delay ->
         [0] мгновенно
        *[other]
@@ -203,40 +203,35 @@ entity-effect-guidebook-knockdown =
         [update]{ $chance ->
                 [1] Вызывает
                 *[other] вызвать
-            } { LOC($key) } минимум на { NATURALFIXED($time, 3) } { MANY("секунд", $time) } без накопления эффекта
+            } падение минимум на { NATURALFIXED($time, 3) } { MANY("секунд", $time) } без накопления эффекта
         [add]   { $chance ->
                 [1] Вызывает
                 *[other] вызвать
-            } нокаут миниум { NATURALFIXED($time, 3) } { MANY("секунд", $time) } с накоплением эффекта
+            } падение минимум { NATURALFIXED($time, 3) } { MANY("секунд", $time) } с накоплением эффекта
         *[set]  { $chance ->
                 [1] Вызывает
                 *[other] вызвать
-            } нокаут миниум { NATURALFIXED($time, 3) } { MANY("секунд", $time) } без накопления эффекта
+            } падение минимум { NATURALFIXED($time, 3) } { MANY("секунд", $time) } без накопления эффекта
         [remove]{ $chance ->
                 [1] Удаляет
                 *[other] удалить
-            } { NATURALFIXED($time, 3) } { MANY("секунд", $time) } нокаута
+            } { NATURALFIXED($time, 3) } { MANY("секунд", $time) } времени падения
     }
 entity-effect-guidebook-set-solution-temperature-effect =
     { $chance ->
-        [1] Sets
-       *[other] set
-    } the solution temperature to exactly { NATURALFIXED($temperature, 2) }k
+        [1] Устанавливает
+       *[other] установить
+    } температуру раствора ровно на { NATURALFIXED($temperature, 2) } К
 entity-effect-guidebook-adjust-solution-temperature-effect =
-    { $chance ->
-        [1]
-            { $deltasign ->
-                [1] Adds
-               *[-1] Removes
-            }
-       *[other]
-            { $deltasign ->
-                [1] add
-               *[-1] remove
-            }
-    } heat from the solution until it reaches { $deltasign ->
-        [1] at most { NATURALFIXED($maxtemp, 2) }k
-       *[-1] at least { NATURALFIXED($mintemp, 2) }k
+    { $deltasign ->
+        [1] { $chance ->
+                [1] Нагревает
+               *[other] нагреть
+            } раствор до { NATURALFIXED($maxtemp, 2) } К
+       *[-1] { $chance ->
+                [1] Охлаждает
+               *[other] охладить
+            } раствор до { NATURALFIXED($mintemp, 2) } К
     }
 entity-effect-guidebook-adjust-reagent-reagent =
     { $chance ->
@@ -338,9 +333,12 @@ entity-effect-guidebook-drunk =
     } опьянение
 entity-effect-guidebook-electrocute =
     { $chance ->
-        [1] Поражает электрическим током
-        *[other] поразить электрическим током
-    } на { NATURALFIXED($time, 3) } { MANY("секунд", $time) }
+        [1] Поражает
+       *[other] поразить
+    } электрическим током на { NATURALFIXED($time, 3) } { MANY("секунд", $time) }{ $stuns ->
+        [true] { " " }с оглушением
+       *[false] { "" }
+    }
 entity-effect-guidebook-emote =
     { $chance ->
         [1] Заставляет
@@ -506,18 +504,13 @@ entity-effect-guidebook-add-reagent-to-bloodstream =
        *[other] вводят
     } { $quantity } { $reagent } напрямую в кровоток
 reagent-effect-guidebook-add-to-chemicals =
-    { $chance ->
-        [1]
-            { $deltasign ->
-                [1] Adds
-               *[-1] Removes
-            }
-       *[other]
-            { $deltasign ->
-                [1] add
-               *[-1] remove
-            }
-    } { NATURALFIXED($amount, 2) }u of { $reagent } { $deltasign ->
-        [1] to
-       *[-1] from
-    } the solution
+    { $deltasign ->
+        [1] { $chance ->
+                [1] Добавляет
+               *[other] добавить
+            } в раствор { NATURALFIXED($amount, 2) } ед. вещества «{ $reagent }»
+       *[-1] { $chance ->
+                [1] Удаляет
+               *[other] удалить
+            } из раствора { NATURALFIXED($amount, 2) } ед. вещества «{ $reagent }»
+    }

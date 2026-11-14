@@ -1,3 +1,4 @@
+using Content.Shared.Damage;
 using Content.Server.Administration.Logs;
 using Content.Server.Atmos.Components;
 using Content.Server.Stunnable;
@@ -23,7 +24,6 @@ using Content.Shared.Weapons.Melee.Events;
 using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.Hands;
 using Content.Shared.Temperature.Components;
-using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.Timing.Systems;
 using JetBrains.Annotations;
 using Robust.Server.Audio;
@@ -348,6 +348,15 @@ namespace Content.Server.Atmos.EntitySystems
         /// </summary>
         [PublicAPI]
         [Obsolete("Use TryExtinguish(Entity<FlammableComponent>) instead.")]
+        public bool TryExtinguish(Entity<FlammableComponent?> ent)
+        {
+            if (!Resolve(ent, ref ent.Comp, false) || !ent.Comp.OnFire || !ent.Comp.CanExtinguish)
+                return false;
+
+            Extinguish(ent.Owner, ent.Comp);
+            return true;
+        }
+
         public void Extinguish(EntityUid uid, FlammableComponent? flammable = null)
         {
             // Maintaining prior resolve behavior.
@@ -364,17 +373,9 @@ namespace Content.Server.Atmos.EntitySystems
             flammable.FireStacks = 0;
             flammable.FireProtectionPenetration = 0f; // Goob - fire prot
 
-            if (!ent.Comp.OnFire || !ent.Comp.CanExtinguish)
-                return false;
-
-            _adminLogger.Add(LogType.Flammable, $"{ToPrettyString(ent):entity} stopped being on fire damage");
-            ent.Comp.OnFire = false;
-            ent.Comp.FireStacks = 0;
-
-            _ignitionSourceSystem.SetIgnited(ent.Owner, false);
-
+            _ignitionSourceSystem.SetIgnited(uid, false);
             var extinguished = new ExtinguishedEvent();
-            RaiseLocalEvent(ent, ref extinguished);
+            RaiseLocalEvent(uid, ref extinguished);
 
             UpdateAppearance(uid, flammable);
             _alertsSystem.ClearAlert(uid, flammable.FireAlert); // Goob - Fix Fire Alert
@@ -577,7 +578,7 @@ namespace Content.Server.Atmos.EntitySystems
             cloneComp.Displacement = entity.Comp.Displacement;
             cloneComp.AlwaysCombustible = entity.Comp.AlwaysCombustible;
             cloneComp.CanExtinguish = entity.Comp.CanExtinguish;
-            cloneComp.Damage = entity.Comp.Damage.Clone();
+            cloneComp.Damage = new DamageSpecifier(entity.Comp.Damage);
             cloneComp.FirestackFade = entity.Comp.FirestackFade;
             cloneComp.FirestacksOnIgnite = entity.Comp.FirestacksOnIgnite;
             cloneComp.MaximumFireStacks = entity.Comp.MaximumFireStacks;

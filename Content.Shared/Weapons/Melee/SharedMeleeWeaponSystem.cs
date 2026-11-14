@@ -15,7 +15,6 @@ using Content.Shared.CombatMode;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Components;
 using Content.Shared.Damage.Events;
-using Content.Shared.Damage.Components; // DeltaV - Melee Stamina Resistance Override
 using Content.Shared.Damage.Systems;
 using Content.Shared.Database;
 using Content.Goobstation.Maths.FixedPoint;
@@ -61,11 +60,13 @@ namespace Content.Shared.Weapons.Melee;
 
 public abstract partial class SharedMeleeWeaponSystem : EntitySystem // Goob - partial
 {
+    //IS14-change start: typed IDs for the retained behavior.
+    private static readonly ProtoId<TagPrototype> WideSwingIgnoreTag = "WideSwingIgnore";
+    //IS14-change end
+
     [Dependency] protected readonly IGameTiming Timing = default!;
     [Dependency] protected readonly SharedMapSystem MapSystem = default!;
-    [Dependency] private   readonly INetManager _netMan = default!;
     [Dependency] private   readonly IPrototypeManager _protoManager = default!;
-    [Dependency] private   readonly IRobustRandom _random = default!;
     [Dependency] protected readonly ISharedAdminLogManager AdminLogger = default!;
     [Dependency] protected readonly ActionBlockerSystem Blocker = default!;
     [Dependency] protected readonly DamageableSystem Damageable = default!;
@@ -989,7 +990,7 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem // Goob - p
                 range,
                 ignore,
                 false)
-                .Where(x => !_tag.HasTag(x.HitEntity, "WideSwingIgnore")) // Goobstation
+                .Where(x => !_tag.HasTag(x.HitEntity, WideSwingIgnoreTag)) // Goobstation
                 .ToList();
 
             if (res.Count != 0)
@@ -1246,7 +1247,7 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem // Goob - p
     /// <summary>
     /// Used to update the MeleeWeapon component on item toggle.
     /// </summary>
-    private void OnItemToggle(EntityUid uid, ItemToggleMeleeWeaponComponent itemToggleMelee, ItemToggledEvent args)
+    private void OnItemToggle(EntityUid uid, ItemToggleMeleeWeaponComponent itemToggleMelee, ref ItemToggledEvent args)
     {
         if (!TryComp(uid, out MeleeWeaponComponent? meleeWeapon))
             return;

@@ -145,7 +145,7 @@ public sealed partial class WoundSystem
             args.Cancelled = true;
     }
 
-    private void OnWoundSeverityChanged(EntityUid wound, WoundComponent woundComponent, WoundSeverityChangedEvent args)
+    private void OnWoundSeverityChanged(EntityUid wound, WoundComponent woundComponent, ref WoundSeverityChangedEvent args)
     {
         if (args.NewSeverity != WoundSeverity.Healed)
             return;
@@ -153,7 +153,7 @@ public sealed partial class WoundSystem
         RemoveWound(wound, woundComponent);
     }
 
-    private void OnWoundSeverityPointChanged(EntityUid uid, WoundComponent component, WoundSeverityPointChangedEvent args)
+    private void OnWoundSeverityPointChanged(EntityUid uid, WoundComponent component, ref WoundSeverityPointChangedEvent args)
     {
         if (TerminatingOrDeleted(uid)
             || TerminatingOrDeleted(component.HoldingWoundable)

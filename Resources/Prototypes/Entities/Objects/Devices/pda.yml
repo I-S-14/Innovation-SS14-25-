@@ -84,12 +84,6 @@
     range: 500
   - type: CartridgeLoader
     uiKey: enum.PdaUiKey.Key
-    preinstalled:
-      - CrewManifestCartridge
-      - NotekeeperCartridge
-      - NanoTaskCartridge
-      - NewsReaderCartridge
-      - NanoChatCartridge # DeltaV
     cartridgeSlot:
       priority: -1
       name: device-pda-slot-component-slot-name-cartridge
@@ -98,6 +92,7 @@
       whitelist:
         components:
           - Cartridge
+  # IS14: install retained Goob/DeltaV programs through the current container API.
   - type: EntityTableContainerFill
     containers:
       preinstalled-program-container: !type:AllSelector
@@ -106,6 +101,7 @@
         - id: NotekeeperCartridge
         - id: NanoTaskCartridge
         - id: NewsReaderCartridge
+        - id: NanoChatCartridge
   - type: ActivatableUI
     key: enum.PdaUiKey.Key
     singleUser: true
@@ -175,16 +171,7 @@
   abstract: true
   components:
   - type: CartridgeLoader
-    preinstalled:
-    - CrewManifestCartridge
-    - NotekeeperCartridge
-    - NanoTaskCartridge
-    - NewsReaderCartridge
-    - WantedListCartridge
-    - NanoChatCartridge # DeltaV
-    #IS14-change start
-    - IS14FineCartridge
-    #IS14-change end
+  # IS14: install retained Goob/DeltaV programs through the current container API.
   - type: EntityTableContainerFill
     containers:
       preinstalled-program-container: !type:AllSelector
@@ -194,7 +181,8 @@
         - id: NanoTaskCartridge
         - id: NewsReaderCartridge
         - id: WantedListCartridge
-
+        - id: NanoChatCartridge
+        - id: IS14FineCartridge
 - type: entity
   parent: BasePDA
   id: BaseMedicalPDA
@@ -202,13 +190,7 @@
   components:
   - type: CartridgeLoader
     uiKey: enum.PdaUiKey.Key
-    preinstalled:
-      - CrewManifestCartridge
-      - NotekeeperCartridge
-      - NanoTaskCartridge
-      - NewsReaderCartridge
-      - MedTekCartridge
-      - NanoChatCartridge # DeltaV
+  # IS14: install retained Goob/DeltaV programs through the current container API.
   - type: EntityTableContainerFill
     containers:
       preinstalled-program-container: !type:AllSelector
@@ -218,7 +200,7 @@
         - id: NanoTaskCartridge
         - id: NewsReaderCartridge
         - id: MedTekCartridge
-
+        - id: NanoChatCartridge
 - type: entity
   parent: BasePDA
   id: PassengerPDA
@@ -534,13 +516,7 @@
   - type: Icon
     state: pda-qm
   - type: CartridgeLoader
-    preinstalled:
-    - CrewManifestCartridge
-    - NotekeeperCartridge
-    - NanoTaskCartridge
-    - NewsReaderCartridge
-    - AstroNavCartridge
-    - NanoChatCartridge # DeltaV
+  # IS14: install retained Goob/DeltaV programs through the current container API.
   - type: EntityTableContainerFill
     containers:
       preinstalled-program-container: !type:AllSelector
@@ -550,7 +526,7 @@
         - id: NanoTaskCartridge
         - id: NewsReaderCartridge
         - id: AstroNavCartridge
-
+        - id: NanoChatCartridge
 - type: entity
   parent: BasePDA
   id: CargoPDA
@@ -589,13 +565,7 @@
     state: pda-miner
   - type: CartridgeLoader
     uiKey: enum.PdaUiKey.Key
-    preinstalled:
-      - CrewManifestCartridge
-      - NotekeeperCartridge
-      - NanoTaskCartridge
-      - NewsReaderCartridge
-      - AstroNavCartridge
-      - NanoChatCartridge # DeltaV
+  # IS14: install retained Goob/DeltaV programs through the current container API.
   - type: EntityTableContainerFill
     containers:
       preinstalled-program-container: !type:AllSelector
@@ -605,7 +575,7 @@
         - id: NanoTaskCartridge
         - id: NewsReaderCartridge
         - id: AstroNavCartridge
-
+        - id: NanoChatCartridge
 - type: entity
   parent: BasePDA
   id: BartenderPDA
@@ -948,14 +918,7 @@
   - type: Icon
     state: pda-hos
   - type: CartridgeLoader
-    preinstalled:
-    - CrewManifestCartridge
-    - NotekeeperCartridge
-    - NanoTaskCartridge
-    - NewsReaderCartridge
-    - WantedListCartridge
-    - LogProbeCartridge
-    - NanoChatCartridge # DeltaV
+  # IS14: install retained Goob/DeltaV programs through the current container API.
   - type: EntityTableContainerFill
     containers:
       preinstalled-program-container: !type:AllSelector
@@ -966,7 +929,7 @@
         - id: NewsReaderCartridge
         - id: WantedListCartridge
         - id: LogProbeCartridge
-
+        - id: NanoChatCartridge
 - type: entity
   parent: BaseSecurityPDA
   id: WardenPDA
@@ -1029,16 +992,7 @@
     state: pda-centcom
   - type: CartridgeLoader
     uiKey: enum.PdaUiKey.Key
-    preinstalled:
-      - CrewManifestCartridge
-      - NotekeeperCartridge
-      - NanoTaskCartridge
-      - NewsReaderCartridge
-      - MedTekCartridge
-      - WantedListCartridge
-      - LogProbeCartridge
-      - AstroNavCartridge
-      - NanoChatCartridge # DeltaV
+  # IS14: install retained Goob/DeltaV programs through the current container API.
   - type: EntityTableContainerFill
     containers:
       preinstalled-program-container: !type:AllSelector
@@ -1051,7 +1005,7 @@
         - id: WantedListCartridge
         - id: LogProbeCartridge
         - id: AstroNavCartridge
-
+        - id: NanoChatCartridge
 - type: entity
   parent: CentcomPDA
   id: AdminPDA
@@ -1069,16 +1023,7 @@
     uiKey: enum.PdaUiKey.Key
     notificationsEnabled: false
     diskSpace: 10 # DeltaV
-    preinstalled:
-      - CrewManifestCartridge
-      - NotekeeperCartridge
-      - NanoTaskCartridge
-      - NewsReaderCartridge
-      - LogProbeCartridge
-      - WantedListCartridge
-      - MedTekCartridge
-      - AstroNavCartridge
-      - NanoChatCartridge # DeltaV
+  # IS14: install retained Goob/DeltaV programs through the current container API.
   - type: EntityTableContainerFill
     containers:
       preinstalled-program-container: !type:AllSelector
@@ -1091,6 +1036,7 @@
         - id: WantedListCartridge
         - id: MedTekCartridge
         - id: AstroNavCartridge
+        - id: NanoChatCartridge
   - type: Tag #  Ignore Chameleon tags
     tags:
     - DoorBumpOpener
@@ -1218,17 +1164,14 @@
     state: pda-syndi
   - type: CartridgeLoader
     uiKey: enum.PdaUiKey.Key
-    preinstalled:
-      - NotekeeperCartridge
-      - NanoTaskCartridge
-      - NanoChatCartridge # DeltaV
+  # IS14: install retained Goob/DeltaV programs through the current container API.
   - type: EntityTableContainerFill
     containers:
       preinstalled-program-container: !type:AllSelector
         children:
         - id: NotekeeperCartridge
         - id: NanoTaskCartridge
-
+        - id: NanoChatCartridge
 - type: entity
   parent: [ SyndiPDA, BaseSyndicateContraband ]
   id: SyndiOperativePDA
@@ -1306,16 +1249,7 @@
     state: pda-ert
   - type: CartridgeLoader
     uiKey: enum.PdaUiKey.Key
-    preinstalled:
-      - CrewManifestCartridge
-      - NotekeeperCartridge
-      - NanoTaskCartridge
-      - NewsReaderCartridge
-      - MedTekCartridge
-      - WantedListCartridge
-      - LogProbeCartridge
-      - AstroNavCartridge
-      - NanoChatCartridge # DeltaV
+  # IS14: install retained Goob/DeltaV programs through the current container API.
   - type: EntityTableContainerFill
     containers:
       preinstalled-program-container: !type:AllSelector
@@ -1328,7 +1262,7 @@
         - id: WantedListCartridge
         - id: LogProbeCartridge
         - id: AstroNavCartridge
-
+        - id: NanoChatCartridge
 - type: entity
   parent: ERTLeaderPDA
   id: ERTChaplainPDA
@@ -1401,19 +1335,20 @@
     state: pda-ert
   - type: CartridgeLoader
     uiKey: enum.PdaUiKey.Key
-    preinstalled:
-      - CrewManifestCartridge
-      - NotekeeperCartridge
-      - NanoTaskCartridge
-      - NewsReaderCartridge
-      - MedTekCartridge
-      - WantedListCartridge
-      - LogProbeCartridge
-      - AstroNavCartridge
-      - NanoChatCartridge
-
-# CorvaxGoob-changes-end.
-
+  # IS14: install retained Goob/DeltaV programs through the current container API.
+  - type: EntityTableContainerFill
+    containers:
+      preinstalled-program-container: !type:AllSelector
+        children:
+        - id: CrewManifestCartridge
+        - id: NotekeeperCartridge
+        - id: NanoTaskCartridge
+        - id: NewsReaderCartridge
+        - id: MedTekCartridge
+        - id: WantedListCartridge
+        - id: LogProbeCartridge
+        - id: AstroNavCartridge
+        - id: NanoChatCartridge
 - type: entity
   parent: BasePDA
   id: PsychologistPDA
@@ -1494,14 +1429,7 @@
   - type: Icon
     state: pda-detective
   - type: CartridgeLoader
-    preinstalled:
-    - CrewManifestCartridge
-    - NotekeeperCartridge
-    - NanoTaskCartridge
-    - NewsReaderCartridge
-    - WantedListCartridge
-    - LogProbeCartridge
-    - NanoChatCartridge # DeltaV
+  # IS14: install retained Goob/DeltaV programs through the current container API.
   - type: EntityTableContainerFill
     containers:
       preinstalled-program-container: !type:AllSelector
@@ -1512,7 +1440,7 @@
         - id: NewsReaderCartridge
         - id: WantedListCartridge
         - id: LogProbeCartridge
-
+        - id: NanoChatCartridge
 - type: entity
   parent: BaseMedicalPDA
   id: BrigmedicPDA
@@ -1533,14 +1461,7 @@
   - type: Icon
     state: pda-brigmedic
   - type: CartridgeLoader
-    preinstalled:
-    - CrewManifestCartridge
-    - NotekeeperCartridge
-    - NanoTaskCartridge
-    - NewsReaderCartridge
-    - WantedListCartridge
-    - MedTekCartridge
-    - NanoChatCartridge # DeltaV
+  # IS14: install retained Goob/DeltaV programs through the current container API.
   - type: EntityTableContainerFill
     containers:
       preinstalled-program-container: !type:AllSelector
@@ -1551,7 +1472,7 @@
         - id: NewsReaderCartridge
         - id: WantedListCartridge
         - id: MedTekCartridge
-
+        - id: NanoChatCartridge
 - type: entity
   parent: ClownPDA
   id: CluwnePDA
@@ -1711,12 +1632,15 @@
     state: pda-syndi-corpsman # Goobstation?
   - type: CartridgeLoader
     uiKey: enum.PdaUiKey.Key
-    preinstalled:
-      - NotekeeperCartridge
-      - NanoTaskCartridge
-      - MedTekCartridge
-      - NanoChatCartridge # DeltaV
-
+  # IS14: install retained Goob/DeltaV programs through the current container API.
+  - type: EntityTableContainerFill
+    containers:
+      preinstalled-program-container: !type:AllSelector
+        children:
+        - id: NotekeeperCartridge
+        - id: NanoTaskCartridge
+        - id: MedTekCartridge
+        - id: NanoChatCartridge
 - type: entity
   parent: [BasePDA, SelectableLock]
   id: ChameleonPDA

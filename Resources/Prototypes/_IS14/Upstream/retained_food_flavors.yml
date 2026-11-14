@@ -1,0 +1,15 @@
+# IS14: compatibility flavors referenced by retained Goob lunacake and caviar.
+- type: flavor
+  id: vanilla
+  flavorType: Complex
+  description: flavor-is14-upstream-vanilla
+
+- type: flavor
+  id: rich
+  flavorType: Base
+  description: flavor-is14-upstream-rich
+
+- type: flavor
+  id: fish
+  flavorType: Base
+  description: flavor-base-fishy

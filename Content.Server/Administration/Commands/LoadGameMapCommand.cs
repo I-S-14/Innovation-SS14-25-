@@ -77,6 +77,10 @@ namespace Content.Server.Administration.Commands
     [AdminCommand(AdminFlags.Round | AdminFlags.Spawn)]
     public sealed partial class ListGameMaps : LocalizedCommands
     {
+    //IS14-change start: restore declarations used by merged implementation.
+    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
+    //IS14-change end
+
 
         public override string Command => "listgamemaps";
 

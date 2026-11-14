@@ -234,9 +234,9 @@
       - !type:DoActsBehavior
         acts: ["Destruction"]
     # Goobend
-  - type: IconSmooth # CorvaxGoob-Resprites
+  - type: IconSmooth
     key: walls
-    mode: NoSprite
+    states: []
   - type: Paintable
     group: AirlockStandard
   - type: PryUnpowered

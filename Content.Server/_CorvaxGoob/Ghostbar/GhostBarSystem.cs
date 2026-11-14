@@ -1,3 +1,4 @@
+using Content.Shared.Ghost.Components; // IS14-change: upstream namespace move
 using Content.Server._CorvaxGoob.Ghostbar.Components;
 using Content.Server._CorvaxGoob.Objectives.Components;
 using Content.Server.Actions;
@@ -30,7 +31,7 @@ public sealed class GhostBarSystem : EntitySystem
     [Dependency] private readonly SharedMapSystem _mapSystem = default!;
     [Dependency] private readonly MapLoaderSystem _mapLoader = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly GameTicker _ticker = default!;
+    [Dependency] private readonly ServerGameTicker _ticker = default!;
     [Dependency] private readonly StationSpawningSystem _spawningSystem = default!;
     [Dependency] private readonly MindSystem _mindSystem = default!;
     [Dependency] private readonly IEntityManager _entityManager = default!;

@@ -1,3 +1,4 @@
+using Content.Shared.DeviceLinking.Payloads;
 // SPDX-FileCopyrightText: 2025 jhrushbe <capnmerry@gmail.com>
 // SPDX-FileCopyrightText: 2025 rottenheadphones <juaelwe@outlook.com>
 // SPDX-FileCopyrightText: 2025 taydeo <td12233a@gmail.com>
@@ -73,7 +74,6 @@ public sealed partial class NuclearReactorSystem : SharedNuclearReactorSystem
     [Dependency] private readonly NodeContainerSystem _nodeContainer = default!;
     [Dependency] private readonly RadioSystem _radioSystem = default!;
     [Dependency] private readonly ReactorPartSystem _partSystem = default!;
-    [Dependency] private readonly ServerGlobalSoundSystem _soundSystem = default!;
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly StationSystem _station = default!;
@@ -120,7 +120,7 @@ public sealed partial class NuclearReactorSystem : SharedNuclearReactorSystem
         SubscribeLocalEvent<NuclearReactorComponent, ReactorControlRodModifyMessage>(OnControlRodMessage);
 
         // Signal events
-        SubscribeLocalEvent<NuclearReactorComponent, SignalReceivedEvent>(OnSignalReceived);
+        SubscribeLocalEvent<NuclearReactorComponent, SignalReceivedEvent<LogicStatePayload>>(OnSignalReceived);
         SubscribeLocalEvent<NuclearReactorComponent, PortDisconnectedEvent>(OnPortDisconnected);
 
         // Anchor events
@@ -431,7 +431,7 @@ public sealed partial class NuclearReactorSystem : SharedNuclearReactorSystem
         var comp = EnsureComp<RadiationSourceComponent>(ent.Owner);
 
         // Linear scaling up to maximum, logarithmic beyond that
-        comp.Intensity = (float)Math.Max(reactor.RadiationLevel <= reactor.MaximumRadiation ? reactor.RadiationLevel : reactor.MaximumRadiation + Math.Log(reactor.RadiationLevel - reactor.MaximumRadiation + 1), reactor.Melted ? reactor.MeltdownRadiation : 0);
+        EntityManager.System<Content.Shared.Radiation.Systems.SharedRadiationSystem>().SetIntensity((ent.Owner, comp), (float)Math.Max(reactor.RadiationLevel <= reactor.MaximumRadiation ? reactor.RadiationLevel : reactor.MaximumRadiation + Math.Log(reactor.RadiationLevel - reactor.MaximumRadiation + 1), reactor.Melted ? reactor.MeltdownRadiation : 0));
         reactor.RadiationLevel /= Math.Max(reactor.RadiationStability, 1);
     }
 
@@ -912,10 +912,9 @@ public sealed partial class NuclearReactorSystem : SharedNuclearReactorSystem
     }
     #endregion
 
-    private void OnSignalReceived(EntityUid uid, NuclearReactorComponent comp, ref SignalReceivedEvent args)
+    private void OnSignalReceived(EntityUid uid, NuclearReactorComponent comp, ref SignalReceivedEvent<LogicStatePayload> args)
     {
-        var state = SignalState.Momentary;
-        args.Data?.TryGetValue(DeviceNetworkConstants.LogicState, out state);
+        var state = args.Data.State;
 
         if (args.Port == comp.ControlRodInsertPort)
             comp.InsertPortState = state;

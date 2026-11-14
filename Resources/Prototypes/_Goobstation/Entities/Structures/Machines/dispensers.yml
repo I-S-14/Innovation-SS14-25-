@@ -74,7 +74,7 @@
     - Chemicals
     - Chemist
   - type: StealTarget
-    stealGroup: ChemDispenser
+    stealGroup: [ChemDispenser]
   - type: Machine
     board: EnergyChemDispenserMachineCircuitboard
   - type: ActivatableUI
@@ -184,7 +184,7 @@
     price: 1000
   - type: WiresPanel
   - type: StealTarget
-    stealGroup: ChemDispenser
+    stealGroup: [ChemDispenser]
   - type: Machine
     board: ServiceEnergyChemMachineCircuitboard
   - type: ActivatableUI

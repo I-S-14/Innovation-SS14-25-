@@ -30,6 +30,8 @@ namespace Content.Goobstation.Server.Power.PTL;
 
 public sealed partial class PTLSystem : EntitySystem
 {
+    [Dependency] private Content.Shared.Radiation.Systems.SharedRadiationSystem _radiationCompat = default!;
+
     [Dependency] private GunSystem _gun = default!;
     [Dependency] private IGameTiming _time = default!;
     [Dependency] private IPrototypeManager _protMan = default!;
@@ -87,7 +89,7 @@ public sealed partial class PTLSystem : EntitySystem
     {
         if (TryComp<RadiationSourceComponent>(ent, out var rad)
             && rad.Intensity > 0)
-            rad.Intensity = MathF.Max(0, rad.Intensity - (rad.Intensity * 0.2f + 0.1f)); // Making sure the radition value doesn't go below
+            _radiationCompat.SetIntensity((ent.Owner, rad), MathF.Max(0, rad.Intensity - (rad.Intensity * 0.2f + 0.1f))); // Making sure the radition value doesn't go below
     }
 
     private void Tick(Entity<PTLComponent> ent)
@@ -121,7 +123,7 @@ public sealed partial class PTLSystem : EntitySystem
 
         if (TryComp<GunComponent>(ent, out var gun))
         {
-            if (!TryComp<TransformComponent>(ent, out var xform))
+            if (!TryComp(ent, out TransformComponent? xform))
                 return;
 
             var localDirectionVector = Vector2.UnitY * -1;
@@ -152,7 +154,7 @@ public sealed partial class PTLSystem : EntitySystem
         var evil = (float) (usedMJ/2 * ent.Comp1.EvilMultiplier);
 
         if (TryComp<RadiationSourceComponent>(ent, out var rad))
-            rad.Intensity = evil;
+            _radiationCompat.SetIntensity((ent.Owner, rad), evil);
 
         _flash.FlashArea(ent.Owner, ent, evil/2, TimeSpan.FromSeconds(evil / 2));
 

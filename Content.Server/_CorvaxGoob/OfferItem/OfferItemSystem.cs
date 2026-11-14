@@ -30,12 +30,12 @@ public sealed class OfferItemSystem : SharedOfferItemSystem
     }
 
     // Внутренние обёртки над переходами состояния для интеграционных тестов.
-    internal void StartOffer(EntityUid uid, OfferItemComponent comp, EntityUid item, string hand)
+    internal new void StartOffer(EntityUid uid, OfferItemComponent comp, EntityUid item, string hand)
         => base.StartOffer(uid, comp, item, hand);
 
-    internal void LinkOffer(EntityUid user, OfferItemComponent userComp, EntityUid target, OfferItemComponent targetComp)
+    internal new void LinkOffer(EntityUid user, OfferItemComponent userComp, EntityUid target, OfferItemComponent targetComp)
         => base.LinkOffer(user, userComp, target, targetComp);
 
-    internal void AcceptOffer(Entity<OfferItemComponent> ent)
+    internal new void AcceptOffer(Entity<OfferItemComponent> ent)
         => base.AcceptOffer(ent);
 }

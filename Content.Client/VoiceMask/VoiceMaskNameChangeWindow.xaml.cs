@@ -120,7 +120,7 @@ public sealed partial class VoiceMaskNameChangeWindow : FancyWindow
         _verb = verb;
         ToggleButton.Pressed = active;
         ToggleAccentButton.Pressed = accentHide;
-        Title = Loc.GetString(titleText);
+
         for (int id = 0; id < SpeechVerbSelector.ItemCount; id++)
         {
             if (string.Equals(verb, SpeechVerbSelector.GetItemMetadata(id)))

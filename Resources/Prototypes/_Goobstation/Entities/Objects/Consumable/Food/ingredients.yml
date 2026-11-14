@@ -6,13 +6,14 @@
   name: protein powder packet
   description: Contains 10u of powdered protein. Mix with 20u of water
   components:
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 10
-        reagents:
-        - ReagentId: Protein
-          Quantity: 10
+  - type: Solution
+    solution:
+      maxVol: 10
+      reagents:
+      - ReagentId: Protein
+        Quantity: 10
+      temperature: 293.15
+      canReact: true
   - type: Icon
     state: packet-greygoo
   - type: Appearance
@@ -36,20 +37,28 @@
   - type: Sprite
     sprite: _Goobstation/Objects/Consumable/Food/freedom_cheese.rsi
     state: cheese_block
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 28
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 16
-        - ReagentId: GastroToxin
-          Quantity: 4
-  - type: SliceableFood
-    count: 4
-    slice: FoodFreedomCheeseSlice
-
-
+  - type: Solution
+    solution:
+      maxVol: 28
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 16
+      - ReagentId: GastroToxin
+        Quantity: 4
+      temperature: 293.15
+      canReact: true
+  - type: ToolRefinable
+    qualityNeeded: Slicing
+    refineTime: 1
+    refineFuel: 0
+    refineResult:
+    - id: FoodFreedomCheeseSlice
+      amount: 4
+    verbText: refined-slice-verb-name
+    tooltipQualityHint: tool-refinable-component-hint-slicing
+    sound:
+      path: /Audio/Items/Culinary/chop.ogg
+  - type: ToolRefinableSolution
 - type: entity
   name: freedom cheese slice
   parent: FoodBakingBase
@@ -66,15 +75,16 @@
   - type: Sprite
     sprite: _Goobstation/Objects/Consumable/Food/freedom_cheese.rsi
     state: cheese_slice
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 7
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 4
-        - ReagentId: GastroToxin
-          Quantity: 1
+  - type: Solution
+    solution:
+      maxVol: 7
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 4
+      - ReagentId: GastroToxin
+        Quantity: 1
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - Slice

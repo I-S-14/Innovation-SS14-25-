@@ -192,9 +192,10 @@
       - !type:Emote
         emote: Scream
         probability: 0.3
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Bloodstream:
-      metabolismRate : 3.00 # High damage, high metabolism rate. You need a lot of units to crit. Simulates acid burning through you fast.
+    Poison:
+      metabolismRate: 3.00
       effects:
       - !type:HealthChange
         damage:
@@ -203,12 +204,11 @@
       - !type:PopupMessage
         type: Local
         visualType: Large
-        messages: [ "generic-reagent-effect-burning-insides" ]
+        messages: ["generic-reagent-effect-burning-insides"]
         probability: 0.33
       - !type:Emote
         emote: Scream
         probability: 0.3
-
 - type: reagent
   id: FerrochromicAcid
   name: reagent-name-ferrochromic-acid
@@ -217,8 +217,9 @@
   flavor: sour
   color: "#48b3b8"
   physicalDesc: reagent-physical-desc-ferrous
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Bloodstream:
+    Drink:
       effects:
       - !type:Satiate
         satiationType: Thirst
@@ -229,7 +230,6 @@
           types:
             Heat: 2.5
             Caustic: 1
-
 - type: reagent
   id: FluorosulfuricAcid
   name: reagent-name-fluorosulfuric-acid
@@ -254,9 +254,10 @@
       - !type:Emote
         emote: Scream
         probability: 0.2
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Bloodstream:
-      metabolismRate: 3.00 # High damage, high metabolism rate. You need a lot of units to crit. Simulates acid burning through you fast.
+    Poison:
+      metabolismRate: 3.00
       effects:
       - !type:HealthChange
         damage:
@@ -265,12 +266,11 @@
       - !type:PopupMessage
         type: Local
         visualType: Large
-        messages: [ "generic-reagent-effect-burning-insides" ]
+        messages: ["generic-reagent-effect-burning-insides"]
         probability: 0.33
       - !type:Emote
         emote: Scream
         probability: 0.25
-
 - type: reagent
   id: SulfuricAcid
   name: reagent-name-sulfuric-acid
@@ -304,9 +304,10 @@
       - !type:Emote
         emote: Scream
         probability: 0.1
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Bloodstream:
-      metabolismRate: 3.00 # Okay damage, high metabolism rate. You need a lot of units to crit. Simulates acid burning through you fast.
+    Poison:
+      metabolismRate: 3.00
       effects:
       - !type:HealthChange
         damage:
@@ -315,12 +316,11 @@
       - !type:PopupMessage
         type: Local
         visualType: Large
-        messages: [ "generic-reagent-effect-burning-insides" ]
+        messages: ["generic-reagent-effect-burning-insides"]
         probability: 0.33
       - !type:Emote
         emote: Scream
         probability: 0.2
-
 - type: reagent
   id: UnstableMutagen
   name: reagent-name-unstable-mutagen
@@ -384,15 +384,14 @@
   physicalDesc: reagent-physical-desc-pungent
   contrabandSeverity: Syndicate
   color: "#6b0007"
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Bloodstream:
+    Poison:
       effects:
       - !type:HealthChange
         damage:
-          types:
-            Asphyxiation: 5
-            Bloodloss: 5
-
+          groups:
+            Airloss: 10
 - type: reagent
   id: MindbreakerToxin
   name: reagent-name-mindbreaker-toxin
@@ -405,15 +404,14 @@
   plantMetabolism:
   - !type:PlantAdjustToxins
     amount: 10
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Bloodstream:
+    Poison:
       effects:
       - !type:ModifyStatusEffect
         effectProto: StatusEffectSeeingRainbow
         type: Add
         time: 10
-  # TODO: PROPER hallucinations
-
 - type: reagent
   id: Histamine
   name: reagent-name-histamine
@@ -469,23 +467,23 @@
   puddleSpriteSet: Powder # Goob
   meltingPoint: 351
   boilingPoint: 554 # I'm not a chemist, but it boils at 295, lower than melting point, idk how it works so I gave it higher value
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Bloodstream:
+    Poison:
       metabolismRate: 0.05
       effects:
       - !type:HealthChange
         conditions:
         - !type:MetabolizerTypeCondition
-          type: [ Animal, Arachnid ] # Applying damage to the mobs with lower metabolism capabilities
+          type: [Animal]
         damage:
           types:
             Poison: 0.4
       - !type:Vomit
-        probability: 0.04 #Scaled for time, not metabolismrate.
+        probability: 0.04
         conditions:
         - !type:MetabolizerTypeCondition
-          type: [ Animal, Arachnid ]
-
+          type: [Animal]
 - type: reagent
   id: Amatoxin
   name: reagent-name-amatoxin
@@ -551,15 +549,15 @@
   flavor: bitter
   color: "#7e916e"
   worksOnTheDead: true
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Bloodstream:
+    Medicine:
       effects:
-        - !type:CauseZombieInfection
-          conditions:
-            - !type:ReagentCondition
-              reagent: Romerol
-              min: 5
-
+      - !type:CauseZombieInfection
+        conditions:
+        - !type:ReagentCondition
+          reagent: Romerol
+          min: 5
 - type: reagent
   id: UncookedAnimalProteins
   name: reagent-name-uncooked-animal-proteins
@@ -897,8 +895,9 @@
   desc: reagent-desc-toxintrash
   flavor: trashy
   physicalDesc: reagent-physical-desc-nondescript
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
+    Food:
       effects:
       - !type:Satiate
         satiationType: Hunger
@@ -906,7 +905,6 @@
         conditions:
         - !type:MetabolizerTypeCondition
           type: [Vox]
-
 - type: reagent
   id: Hemorrhinol
   name: reagent-name-hemorrhinol
@@ -916,34 +914,16 @@
   contrabandSeverity: Major
   flavor: sharp
   color: "#96424f"
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Bloodstream:
+    Poison:
       effects:
-      - !type:HealthChange
-        damage:
-          types:
-            Poison: 1.5 # TODO: Remove when bloodloss is more interesting. This is basically meant to give a bit more strength short-term before bloodloss damage kicks in.
+      - !type:ModifyStatusEffect
+        effectProto: StatusEffectHemorrhage
+        time: 21
+        type: Update
       - !type:ModifyBleed
-        amount: 1
-      - !type:ModifyBloodLevel
-        amount: -5
-      - !type:ModifyBloodLevel
-        amount: -5
-        conditions:
-        - !type:BloodLevelCondition
-          min: 0.5 # Stronger when at least 50% blood
-      - !type:PopupMessage
-        type: Local
-        visualType: MediumCaution
-        messages:
-        - hemorrhinol-effect-1
-        - hemorrhinol-effect-2
-        - hemorrhinol-effect-3
-        - hemorrhinol-effect-4
-        probability: 0.1
-      - !type:Jitter
-        probability: 0.25
-
+        amount: 0.5
 - type: reagent
   id: Hivarol
   name: reagent-name-hivarol
@@ -952,8 +932,9 @@
   physicalDesc: reagent-physical-desc-sickly
   flavor: sharp
   color: "#96424f"
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Bloodstream:
+    Medicine:
       effects:
       - !type:HealthChange
         conditions:
@@ -961,7 +942,7 @@
           reagent: Hivarol
           min: 4
         - !type:MetabolizerTypeCondition
-          type: [ Changeling ]
+          type: [Changeling]
         damage:
           types:
             Shock: 3
@@ -971,10 +952,10 @@
           reagent: Hivarol
           min: 4
         - !type:MetabolizerTypeCondition
-          type: [ Changeling ]
+          type: [Changeling]
         type: Local
         visualType: Large
-        messages: [ "generic-reagent-effect-burning-insides" ]
+        messages: ["generic-reagent-effect-burning-insides"]
         probability: 0.33
       - !type:Emote
         conditions:
@@ -982,7 +963,7 @@
           reagent: Hivarol
           min: 4
         - !type:MetabolizerTypeCondition
-          type: [ Changeling ]
+          type: [Changeling]
         emote: Scream
         probability: 0.5
       - !type:Jitter
@@ -991,8 +972,7 @@
           reagent: Hivarol
           min: 4
         - !type:MetabolizerTypeCondition
-          type: [ Changeling ]
-
+          type: [Changeling]
 - type: reagent
   id: PhosphoricAcid
   name: reagent-name-phosphoric-acid
@@ -1018,9 +998,10 @@
       - !type:Emote
         emote: Scream
         probability: 0.1
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Bloodstream:
-      metabolismRate: 0.2 # Phosphoric Acid is a relatively slow acid.
+    Medicine:
+      metabolismRate: 0.2
       effects:
       - !type:HealthChange
         damage:
@@ -1029,12 +1010,11 @@
       - !type:PopupMessage
         type: Local
         visualType: Large
-        messages: [ "generic-reagent-effect-burning-insides" ]
+        messages: ["generic-reagent-effect-burning-insides"]
         probability: 0.2
       - !type:Emote
         emote: Scream
         probability: 0.1
-
 - type: reagent
   id: HardlightToxin
   name: reagent-name-hardlight-toxin
@@ -1044,9 +1024,10 @@
   color: "#00FF00"
   physicalDesc: reagent-physical-desc-glowing
   contrabandSeverity: Syndicate
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Bloodstream: # TODO Make this a metabolite!!!
-      metabolismRate: 2.5 # It's basically pure energy so it metabolizes very fast
+    Medicine:
+      metabolismRate: 2.5
       effects:
       - !type:HealthChange
         damage:

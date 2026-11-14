@@ -3,14 +3,13 @@
 using Content.Shared.CCVar;
 using Content.Shared.Flash;
 using Content.Shared.Flash.Components;
-using Content.Shared.StatusEffectNew;
 using Robust.Client.Graphics;
 using Robust.Client.Player;
 using Robust.Shared.Configuration;
 using Robust.Shared.Enums;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
-using Content.Shared.StatusEffect;
+using Content.Shared.StatusEffectNew;
 
 namespace Content.Client.Flash;
 

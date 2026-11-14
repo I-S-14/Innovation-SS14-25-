@@ -1,3 +1,4 @@
+using Content.Shared.Ghost.Components;
 using System.Linq;
 using Content.Goobstation.Server.MisandryBox.Mind;
 using Content.Goobstation.Shared.MisandryBox.Mind;
@@ -160,7 +161,7 @@ public sealed class TemporaryMindTests
             InLobby = true,
         });
 
-        var ticker = pair.Server.System<GameTicker>();
+        var ticker = pair.Server.System<ServerGameTicker>();
         await pair.Server.WaitPost(() =>
         {
             ticker.ToggleReadyAll(true);

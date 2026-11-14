@@ -8,7 +8,7 @@ namespace Content.Shared.GameTicking.Prototypes;
 /// <summary>
 /// Prototype for a lobby background the game can choose.
 /// </summary>
-[Prototype("lobbyBackground")]
+[Prototype]
 public sealed partial class LobbyBackgroundPrototype : IPrototype
 {
     /// <inheritdoc/>
@@ -23,6 +23,10 @@ public sealed partial class LobbyBackgroundPrototype : IPrototype
 
     [DataField("name")]
     public string? Name;
+
+    // IS14-change: Wizards titles are localization keys; older Goob names stay literal.
+    [DataField]
+    public string? Title;
 
     [DataField("artist")]
     public string? Artist;

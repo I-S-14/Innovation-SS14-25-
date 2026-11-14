@@ -40,7 +40,7 @@ public sealed partial class ShuttleSystem
 {
     [Dependency] private EntityQuery<BodyComponent> _bodyQuery = default!;
     [Dependency] private EntityQuery<FTLSmashImmuneComponent> _immuneQuery = default!;
-    [Dependency] private EntityQuery<MapGridComponent> _mapGridQuery = default!;
+
     [Dependency] private EntityQuery<MapComponent> _mapQuery = default!;
     [Dependency] private EntityWhitelistSystem _whitelistSystem = default!;
 
@@ -388,7 +388,7 @@ public sealed partial class ShuttleSystem
         var fromMatrix = _transform.GetWorldMatrix(xform);
         var fromRotation = _transform.GetWorldRotation(xform);
 
-        var grid = _mapGridQuery.Comp(uid);
+        var grid = _gridQuery.Comp(uid);
         var width = grid.LocalAABB.Width;
         var ftlMap = EnsureFTLMap();
         var body = _physicsQuery.GetComponent(entity);
@@ -500,7 +500,7 @@ public sealed partial class ShuttleSystem
             TryFTLProximity(uid, _mapSystem.GetMap(mapId));
         }
         // Docking FTL
-        else if (_mapGridQuery.HasComp(target.EntityId) &&
+        else if (_gridQuery.HasComp(target.EntityId) &&
                  !_mapQuery.HasComp(target.EntityId))
         {
             var config = _dockSystem.GetDockingConfigAt(uid, target.EntityId, target, entity.Comp1.TargetAngle);
@@ -533,7 +533,7 @@ public sealed partial class ShuttleSystem
 
             // Disable shuttle if it's on a planet; unfortunately can't do this in parent change messages due
             // to event ordering and awake body shenanigans (at least for now).
-            if (_mapGridQuery.HasComp(xform.MapUid))
+            if (_gridQuery.HasComp(xform.MapUid))
             {
                 Disable(uid, component: body);
             }
@@ -618,7 +618,7 @@ public sealed partial class ShuttleSystem
         // Get enumeration exceptions from people dropping things if we just paralyze as we go
         var toKnock = new ValueList<EntityUid>();
         KnockOverKids(xform, ref toKnock);
-        _mapGridQuery.TryComp(xform.GridUid, out var grid);
+        _gridQuery.TryComp(xform.GridUid, out var grid);
 
         if (_physicsQuery.TryComp(xform.GridUid, out var shuttleBody))
         {
@@ -790,7 +790,7 @@ public sealed partial class ShuttleSystem
         // We essentially expand the Box2 of the target area until nothing else is added then we know it's valid.
         // Can't just get an AABB of every grid as we may spawn very far away.
         var nearbyGrids = new HashSet<EntityUid>();
-        var shuttleAABB = _mapGridQuery.Comp(shuttleUid).LocalAABB;
+        var shuttleAABB = _gridQuery.Comp(shuttleUid).LocalAABB;
 
         // Start with small point.
         // If our target pos is offset we mot even intersect our target's AABB so we don't include it.
@@ -827,7 +827,7 @@ public sealed partial class ShuttleSystem
                 // Include the other grid's AABB (expanded by ours) as well.
                 targetAABB = targetAABB.Union(
                     _transform.GetWorldMatrix(grid)
-                    .TransformBox(_mapGridQuery.Comp(grid).LocalAABB.Enlarged(expansionAmount)));
+                    .TransformBox(_gridQuery.Comp(grid).LocalAABB.Enlarged(expansionAmount)));
             }
 
             // Can do proximity
@@ -852,7 +852,7 @@ public sealed partial class ShuttleSystem
 
                 targetAABB = targetAABB.Union(
                     _transform.GetWorldMatrix(uid)
-                    .TransformBox(_mapGridQuery.Comp(uid).LocalAABB.Enlarged(expansionAmount)));
+                    .TransformBox(_gridQuery.Comp(uid).LocalAABB.Enlarged(expansionAmount)));
             }
 
             break;
@@ -890,7 +890,7 @@ public sealed partial class ShuttleSystem
         var offset = Vector2.Zero;
 
         // Offset it because transform does not correspond to AABB position.
-        if (_mapGridQuery.TryComp(shuttleUid, out var shuttleGrid))
+        if (_gridQuery.TryComp(shuttleUid, out var shuttleGrid))
         {
             offset = -shuttleGrid.LocalAABB.Center;
         }

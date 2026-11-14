@@ -1,3 +1,4 @@
+using Content.Shared.DeviceLinking.Components;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Goobstation.Shared.Silicon.Bots;
@@ -27,9 +28,10 @@ public sealed partial class FillLinkedMachineOperator : HTNOperator
     [DataField(required: true)]
     public string TargetKey = string.Empty;
 
-    public override void Initialize(IEntitySystemManager sysManager)
+    public override void Initialize(IDependencyCollection deps)
     {
-        base.Initialize(sysManager);
+        base.Initialize(deps);
+        var sysManager = deps.Resolve<IEntitySystemManager>();
         _sharedMaterialStorage = sysManager.GetEntitySystem<SharedMaterialStorageSystem>();
         _sharedDisposalUnitSystem = sysManager.GetEntitySystem<SharedDisposalUnitSystem>();
         _sharedHandsSystem = sysManager.GetEntitySystem<SharedHandsSystem>();
@@ -72,7 +74,7 @@ public sealed partial class FillLinkedMachineOperator : HTNOperator
 
         if (disposalUnit is not null)
         {
-            _sharedDisposalUnitSystem.DoInsertDisposalUnit(fillbot.LinkedSinkEntity!.Value, heldItem.Value, owner);
+            _sharedDisposalUnitSystem.TryInsert((fillbot.LinkedSinkEntity!.Value, disposalUnit), heldItem.Value, owner);
             return HTNOperatorStatus.Finished;
         }
 

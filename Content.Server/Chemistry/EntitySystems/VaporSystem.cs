@@ -27,11 +27,21 @@ namespace Content.Server.Chemistry.EntitySystems
     [UsedImplicitly]
     public sealed class VaporSystem : EntitySystem // Goobstation: Made this public instead of internal. Cry about it.
     {
+    //IS14-change start: restore declarations used by merged implementation.
+    [Dependency] private readonly SharedSolutionContainerSystem _solutionContainerSystem = default!;
+    //IS14-change end
+
+    //IS14-change start: retain fork fields lost during merge.
+
+
+        [Dependency] private readonly SharedPhysicsSystem _physics = default!;
+    //IS14-change end
+
         [Dependency] private ReactiveSystem _reactive = default!;
         [Dependency] private ThrowingSystem _throwing = default!;
         [Dependency] private SharedAppearanceSystem _appearance = default!;
         [Dependency] private SharedMapSystem _map = default!;
-        [Dependency] private SharedSolutionContainerSystem _solutionContainer = default!;
+
         [Dependency] private SharedTransformSystem _transformSystem = default!;
 
         public override void Initialize()
@@ -103,12 +113,12 @@ namespace Content.Server.Chemistry.EntitySystems
             }
         }
 
-        public bool TryAddSolution(Entity<VaporComponent> vapor, Solution solution) // Goobstation: Made this public instead of internal.
+        public bool TryAddSolution(Entity<SolutionComponent?> vapor, Entity<SolutionComponent> solution, FixedPoint2 split) // Goobstation: Made this public instead of internal.
         {
             if (solution.Comp.Solution.Volume <= 0 || split <= 0 || !Resolve(vapor, ref vapor.Comp))
                 return false;
 
-            var newSolution = _solutionContainer.SplitSolution(solution, split);
+            var newSolution = _solutionContainerSystem.SplitSolution(solution, split);
 
             if (TryComp<AppearanceComponent>(vapor, out var appearance))
             {
@@ -116,7 +126,7 @@ namespace Content.Server.Chemistry.EntitySystems
                 _appearance.SetData(vapor, VaporVisuals.State, true, appearance);
             }
 
-            return _solutionContainer.TryAddSolution((vapor, vapor.Comp), newSolution);
+            return _solutionContainerSystem.TryAddSolution((vapor, vapor.Comp), newSolution);
         }
 
         public override void Update(float frameTime)
@@ -171,7 +181,7 @@ namespace Content.Server.Chemistry.EntitySystems
                         if (reaction > reagentQuantity.Quantity)
                             reaction = reagentQuantity.Quantity;
 
-                        _solutionContainer.RemoveReagent((uid, solution), reagentQuantity.Reagent, reaction);
+                        _solutionContainerSystem.RemoveReagent((uid, solution), reagentQuantity.Reagent, reaction);
                     }
 
                     // Delete the vapor entity if it has no contents

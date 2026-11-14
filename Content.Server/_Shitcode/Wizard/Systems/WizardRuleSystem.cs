@@ -48,7 +48,7 @@ public sealed class WizardRuleSystem : GameRuleSystem<WizardRuleComponent>
     [Dependency] private readonly AntagSelectionSystem _antag = default!;
     [Dependency] private readonly MindSystem _mind = default!;
     [Dependency] private readonly RoleSystem _role = default!;
-    [Dependency] private readonly GameTicker _gameTicker = default!;
+    [Dependency] private readonly ServerGameTicker _gameTicker = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly AtmosphereSystem _atmos = default!;
     [Dependency] private readonly AudioSystem _audio = default!;
@@ -105,7 +105,7 @@ public sealed class WizardRuleSystem : GameRuleSystem<WizardRuleComponent>
 
     public EntityUid? GetTargetMap()
     {
-        var rule = GameTicker.GetActiveGameRules().Where(HasComp<WizardRuleComponent>).FirstOrNull();
+        var rule = _gameTicker.GetActiveGameRules().Where(HasComp<WizardRuleComponent>).FirstOrNull();
         EntityUid? map;
         if (rule != null)
         {
@@ -232,7 +232,7 @@ public sealed class WizardRuleSystem : GameRuleSystem<WizardRuleComponent>
         var endQuery = EntityQueryEnumerator<RuleOnWizardDeathRuleComponent, GameRuleComponent>();
         while (endQuery.MoveNext(out var uid, out var ruleOnDeath, out var gameRule))
         {
-            _gameTicker.EndGameRule(uid, gameRule);
+            _gameTicker.EndGameRule((uid, gameRule));
             _gameTicker.StartGameRule(ruleOnDeath.Rule);
         }
     }

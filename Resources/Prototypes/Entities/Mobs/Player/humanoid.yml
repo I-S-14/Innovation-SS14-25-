@@ -190,17 +190,6 @@
 
 - type: randomHumanoidSettings
   id: ERTLeader
-  icon: "JobIconNanotrasen"
-  skills: # CorvaxGoob-Skills
-  - All
-  access:
-  - CentralCommand
-  # Goobstation
-  - NanotrasenRepresentative
-  - BlueshieldOfficer
-  special: # Goobstation
-  - !type:AddImplantSpecial
-    implants: [ MindShieldImplant, FreedomImplant, BluespaceLifelineImplant, RadioImplantCentcomm, NutrimentPumpImplant, StypticStimulatorImplant, DeathRattleImplantCentcomm ]
   parent: CentcommHumanoid # Goobstation
   components:
     - type: GhostRole
@@ -313,20 +302,6 @@
 
 - type: randomHumanoidSettings
   id: ERTChaplain
-  icon: "JobIconNanotrasen"
-  access:
-  - CentralCommand
-  # Goobstation
-  - NanotrasenRepresentative
-  - BlueshieldOfficer
-  special:
-  - !type:AddComponentSpecial
-    components:
-    - type: BibleUser #Lets them heal with bibles
-    - type: CurseImmune # Goobstation - Wraith
-    - type: CanEnchant #GoobStation
-  - !type:AddImplantSpecial
-     implants: [ MindShieldImplant, FreedomImplant, BluespaceLifelineImplant, RadioImplantCentcomm, NutrimentPumpImplant, StypticStimulatorImplant, DeathRattleImplantCentcomm ]
   parent: ERTLeader
   components:
     - type: BibleUser
@@ -410,15 +385,6 @@
 
 - type: randomHumanoidSettings
   id: ERTJanitor
-  icon: "JobIconNanotrasen"
-  access:
-  - CentralCommand
-  # Goobstation
-  - NanotrasenRepresentative
-  - BlueshieldOfficer
-  special: # Goobstation
-  - !type:AddImplantSpecial
-    implants: [ MindShieldImplant, FreedomImplant, BluespaceLifelineImplant, RadioImplantCentcomm, NutrimentPumpImplant, StypticStimulatorImplant, DeathRattleImplantCentcomm]
   parent: ERTLeader
   components:
     - type: GhostRole
@@ -500,15 +466,6 @@
 
 - type: randomHumanoidSettings
   id: ERTEngineer
-  icon: "JobIconNanotrasen"
-  access:
-  - CentralCommand
-  # Goobstation
-  - NanotrasenRepresentative
-  - BlueshieldOfficer
-  special: # Goobstation
-  - !type:AddImplantSpecial
-    implants: [ MindShieldImplant, FreedomImplant, BluespaceLifelineImplant, RadioImplantCentcomm, NutrimentPumpImplant, StypticStimulatorImplant, DeathRattleImplantCentcomm ]
   parent: ERTLeader
   components:
     - type: GhostRole
@@ -622,15 +579,6 @@
 
 - type: randomHumanoidSettings
   id: ERTSecurity
-  icon: "JobIconNanotrasen"
-  access:
-  - CentralCommand
-  # Goobstation
-  - NanotrasenRepresentative
-  - BlueshieldOfficer
-  special: # Goobstation
-  - !type:AddImplantSpecial
-    implants: [ MindShieldImplant, FreedomImplant, BluespaceLifelineImplant, RadioImplantCentcomm, NutrimentPumpImplant, StypticStimulatorImplant, DeathRattleImplantCentcomm]
   parent: ERTLeader
   components:
     - type: GhostRole
@@ -855,15 +803,6 @@
 
 - type: randomHumanoidSettings
   id: ERTMedical
-  icon: "JobIconNanotrasen"
-  access:
-  - CentralCommand
-  # Goobstation
-  - NanotrasenRepresentative
-  - BlueshieldOfficer
-  special: # Goobstation
-  - !type:AddImplantSpecial
-    implants: [ MindShieldImplant, FreedomImplant, BluespaceLifelineImplant, RadioImplantCentcomm, NutrimentPumpImplant, StypticStimulatorImplant, DeathRattleImplantCentcomm ]
   parent: ERTLeader
   components:
     - type: GhostRole

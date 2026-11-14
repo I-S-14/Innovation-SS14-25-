@@ -144,7 +144,7 @@
   components:
   - type: Physics
     bodyType: KinematicController
-  - type: Vehicle
+  - type: OperatorVehicle
     requiresHands: false # you use your feet!
   - type: MovementSpeedModifier
     baseAcceleration: 2
@@ -374,7 +374,7 @@
   - type: Construction
     graph: Seat
     node: chairMeat
-  - type: Injurable
+  - type: Damageable
     damageContainer: StructuralBiological
   - type: Destructible
     thresholds:

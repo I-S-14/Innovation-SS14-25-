@@ -119,13 +119,16 @@ public sealed partial class MedibotSystem : EntitySystem
             return false;
         }
 
-        if (!damageable.Damage.AnyPositive() && !HasComp<EmaggedComponent>(medibot))
+        //IS14-change: retain Goob's automatic treatment thresholds using the current damage API.
+        var total = _damageable.GetTotalDamage((target, damageable));
+        if (total == 0 && !HasComp<EmaggedComponent>(medibot))
         {
             _popup.PopupEntity(Loc.GetString("medibot-target-healthy"), medibot, medibot);
             return false;
         }
 
-        return TryGetTreatment(medibot.Comp, mobState.CurrentState, out var treatment) && manual;
+        return TryGetTreatment(medibot.Comp, mobState.CurrentState, out var treatment)
+               && (manual || treatment.IsValid(total)); //IS14-change
     }
 
     /// <summary>
@@ -135,12 +138,16 @@ public sealed partial class MedibotSystem : EntitySystem
     {
         if (!Resolve(medibot, ref medibot.Comp, false)) return false;
 
+        //IS14-change: recheck at injection time as another bot may have finished first.
+        if (HasComp<NPCRecentlyInjectedComponent>(target)) return false;
+
         if (!_interaction.InRangeUnobstructed(medibot.Owner, target)) return false;
 
         if (!TryComp<MobStateComponent>(target, out var mobState)) return false;
         if (!TryGetTreatment(medibot.Comp, mobState.CurrentState, out var treatment)) return false;
         if (!_solutionContainer.TryGetInjectableSolution(target, out var injectable, out _)) return false;
 
+        EnsureComp<NPCRecentlyInjectedComponent>(target); //IS14-change: retain the Goob one-minute reinjection cooldown.
         _solutionContainer.TryAddReagent(injectable.Value, treatment.Reagent, treatment.Quantity, out _);
 
         _popup.PopupEntity(Loc.GetString("injector-component-feel-prick-message"), target, target);

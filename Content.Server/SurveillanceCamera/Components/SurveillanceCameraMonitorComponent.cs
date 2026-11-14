@@ -56,7 +56,7 @@ public sealed partial class SurveillanceCameraMonitorComponent : Component
     /// This is cleared when the subnet is changed.
     /// </summary>
     [ViewVariables]
-    public Dictionary<string, (string, (NetEntity, NetCoordinates))> KnownCameras { get; } = new(); //Goobstation
+    public Dictionary<DeviceAddress, string> KnownCameras { get; } = new(); //Goobstation
 
     // The same as KnownCameras but for MobileCameras only: sec bodycams, no pro, dragable wireless camera
     [ViewVariables]

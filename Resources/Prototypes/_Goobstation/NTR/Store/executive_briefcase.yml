@@ -25,7 +25,7 @@
     tags:
     - HighRiskItem
   - type: StealTarget
-    stealGroup: ExecutiveBriefcase
+    stealGroup: [ExecutiveBriefcase]
   - type: ContainerContainer # why this exists oh my god
     containers:
       storagebase: !type:Container

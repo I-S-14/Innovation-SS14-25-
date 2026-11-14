@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-using Content.Server.Atmos.Piping.Components;
+using Content.Shared._IS14.Atmos; // IS14-change: pipe color is shared for item visuals.
 using Content.Server.Atmos.Piping.EntitySystems;
 using Content.Server.Charges;
 using Content.Server.Decals;

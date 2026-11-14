@@ -14,7 +14,6 @@ using Content.Shared.CCVar;
 using Content.Shared.Chat;
 using Content.Shared.Chemistry.Components;
 using Content.Shared.Cloning;
-using Content.Shared.Chat;
 using Content.Shared.Damage.Components;
 using Content.Shared.DeviceLinking.Events;
 using Content.Shared.Emag.Components;
@@ -133,11 +132,15 @@ public sealed partial class CloningPodSystem : EntitySystem
         }
         // </Goobstation>
         if (clonedComponent.Parent == EntityUid.Invalid ||
-            !EntityManager.EntityExists(clonedComponent.Parent) ||
+            //IS14-change start
+            !Exists(clonedComponent.Parent) ||
+            //IS14-change end
             !TryComp<CloningPodComponent>(clonedComponent.Parent, out var cloningPodComponent) ||
             uid != cloningPodComponent.BodyContainer.ContainedEntity)
         {
-            EntityManager.RemoveComponent<BeingClonedComponent>(uid);
+            //IS14-change start
+            RemComp<BeingClonedComponent>(uid);
+            //IS14-change end
             return;
         }
         UpdateStatus(clonedComponent.Parent, CloningPodStatus.Cloning, cloningPodComponent);
@@ -252,7 +255,9 @@ public sealed partial class CloningPodSystem : EntitySystem
             return false;
         }
 
-        var cloneMindReturn = EntityManager.AddComponent<BeingClonedComponent>(mob.Value);
+        //IS14-change start
+        var cloneMindReturn = AddComp<BeingClonedComponent>(mob.Value);
+        //IS14-change end
         cloneMindReturn.Mind = mind;
         cloneMindReturn.Parent = uid;
         cloneMindReturn.Original = bodyToClone; // Goobstation

@@ -13,7 +13,6 @@
   - type: Item
     size: Tiny
   - type: Damageable
-  - type: Injurable
     damageContainer: Inorganic
   - type: Destructible
     thresholds:

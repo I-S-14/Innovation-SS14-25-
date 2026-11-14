@@ -88,15 +88,15 @@ public sealed partial class VirologyMachinesSystem : EntitySystem
 
     private void OnComponentInit(Entity<VirologyMachineComponent> ent, ref ComponentInit args)
     {
-        if (_itemSlots.TryGetSlot(ent, VirologyMachineComponent.SwabSlotId, out var slot))
+        if (_itemSlots.TryGetSlot(ent.Owner, VirologyMachineComponent.SwabSlotId, out var slot))
             ent.Comp.SwabSlot = slot;
         else
-            _itemSlots.AddItemSlot(ent, VirologyMachineComponent.SwabSlotId, ent.Comp.SwabSlot);
+            _itemSlots.AddItemSlot(ent.Owner, VirologyMachineComponent.SwabSlotId, ent.Comp.SwabSlot);
     }
 
     private void OnAnalyzerCheck(Entity<VirologyMachineComponent> ent, ref VirologyMachineCheckEvent args)
     {
-        args.Cancelled = !_itemSlots.TryGetSlot(ent, VirologyMachineComponent.SwabSlotId, out var slot) || slot.Item == null;
+        args.Cancelled = !_itemSlots.TryGetSlot(ent.Owner, VirologyMachineComponent.SwabSlotId, out var slot) || slot.Item == null;
     }
 
     private void OnMachineDone(Entity<VirologyMachineComponent> ent, ref VirologyMachineDoneEvent args)
@@ -109,7 +109,7 @@ public sealed partial class VirologyMachinesSystem : EntitySystem
         }
 
         if (!args.Success
-            || !_itemSlots.TryGetSlot(ent, VirologyMachineComponent.SwabSlotId, out var slot)
+            || !_itemSlots.TryGetSlot(ent.Owner, VirologyMachineComponent.SwabSlotId, out var slot)
             || slot.Item == null)
             return;
 
@@ -147,7 +147,7 @@ public sealed partial class VirologyMachinesSystem : EntitySystem
         var report = new StringBuilder();
         report.AppendLine(Loc.GetString("disease-analyzer-report-title"));
         report.AppendLine(Loc.GetString("disease-analyzer-report-genotype", ("genotype", disease.Genotype)));
-        report.AppendLine(Loc.GetString("disease-analyzer-report-type", ("type", Loc.GetString(_proto.Index(disease.DiseaseType).LocalizedName))));
+        report.AppendLine(Loc.GetString("disease-analyzer-report-type", ("type", _proto.Index(disease.DiseaseType).LocalizedName)));
         report.AppendLine(Loc.GetString("disease-analyzer-report-infection-rate", ("rate", disease.InfectionRate)));
         report.AppendLine(Loc.GetString("disease-analyzer-report-immunity-gain", ("rate", disease.ImmunityGainRate)));
         report.AppendLine(Loc.GetString("disease-analyzer-report-mutation-rate", ("rate", disease.MutationRate)));
@@ -160,8 +160,8 @@ public sealed partial class VirologyMachinesSystem : EntitySystem
             if (TryComp<DiseaseEffectComponent>(effectUid, out var effectComp) && meta.EntityPrototype != null)
             {
                 report.AppendLine(Loc.GetString("disease-analyzer-report-effect-line",
-                    ("effect", Loc.GetString(meta.EntityPrototype.Name)),
-                    ("description", Loc.GetString(meta.EntityPrototype.Description)),
+                    ("effect", meta.EntityPrototype.Name),
+                    ("description", meta.EntityPrototype.Description),
                     ("severity", effectComp.Severity)));
             }
         }

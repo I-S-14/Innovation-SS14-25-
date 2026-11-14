@@ -50,9 +50,10 @@ public sealed partial class PickCorpseEaterTargetOperator : HTNOperator
     [DataField]
     public string PathfindKey = NPCBlackboard.PathfindKey;
 
-    public override void Initialize(IEntitySystemManager sysManager)
+    public override void Initialize(IDependencyCollection deps)
     {
-        base.Initialize(sysManager);
+        base.Initialize(deps);
+        var sysManager = deps.Resolve<IEntitySystemManager>();
         _pathfinding = sysManager.GetEntitySystem<PathfindingSystem>();
         _factions = sysManager.GetEntitySystem<NpcFactionSystem>();
         _hunger = sysManager.GetEntitySystem<GoobHungerSystem>();

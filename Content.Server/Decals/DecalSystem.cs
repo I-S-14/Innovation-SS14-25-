@@ -408,6 +408,10 @@ public sealed partial class DecalSystem : SharedDecalSystem
 
     private void DirtyChunk(Entity<ChunkEntityComponent, DecalChunkComponent> chunk)
     {
+        //IS14-change start: invalidate the Corvax cleaning cache even for changes within one tick.
+        var changed = new DecalChunkChangedEvent();
+        RaiseLocalEvent(chunk.Owner, ref changed);
+        //IS14-change end
         if (chunk.Comp2.Decals.Count == 0)
         {
             RemComp(chunk.Owner, chunk.Comp2);

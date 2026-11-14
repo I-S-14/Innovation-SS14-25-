@@ -21,7 +21,6 @@ using Robust.Shared.Map.Components;
 using Robust.Shared.Random;
 using Robust.Shared.Utility;
 using Robust.UnitTesting.Pool;
-using System.IO;
 
 namespace Content.Benchmarks;
 

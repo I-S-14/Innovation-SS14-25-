@@ -16349,12 +16349,12 @@ entities:
     - type: Transform
       parent: 14
     - type: ToggleableClothing
-      clothingUid: 27
+      clothingUids: {27: head}
       actionEntity: 26
     - type: ContainerContainer
       containers:
-        toggleable-clothing: !type:ContainerSlot
-          ent: 27
+        toggleable-clothing: !type:Container
+          ents: [27]
           showEnts: False
           occludes: True
         actions: !type:Container
@@ -16374,12 +16374,12 @@ entities:
     - type: Transform
       parent: 32
     - type: ToggleableClothing
-      clothingUid: 46
+      clothingUids: {46: head}
       actionEntity: 45
     - type: ContainerContainer
       containers:
-        toggleable-clothing: !type:ContainerSlot
-          ent: 46
+        toggleable-clothing: !type:Container
+          ents: [46]
           showEnts: False
           occludes: True
         actions: !type:Container
@@ -16399,12 +16399,12 @@ entities:
     - type: Transform
       parent: 119
     - type: ToggleableClothing
-      clothingUid: 122
+      clothingUids: {122: head}
       actionEntity: 121
     - type: ContainerContainer
       containers:
-        toggleable-clothing: !type:ContainerSlot
-          ent: 122
+        toggleable-clothing: !type:Container
+          ents: [122]
           showEnts: False
           occludes: True
         actions: !type:Container
@@ -16424,12 +16424,12 @@ entities:
     - type: Transform
       parent: 140
     - type: ToggleableClothing
-      clothingUid: 143
+      clothingUids: {143: head}
       actionEntity: 142
     - type: ContainerContainer
       containers:
-        toggleable-clothing: !type:ContainerSlot
-          ent: 143
+        toggleable-clothing: !type:Container
+          ents: [143]
           showEnts: False
           occludes: True
         actions: !type:Container

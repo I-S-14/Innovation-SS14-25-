@@ -6,12 +6,9 @@ using Content.Shared.Dataset;
 using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.Random;
 using Content.Shared.Random.Helpers;
-using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.Silicons.Laws;
 using Content.Shared.Silicons.Laws.Components;
 using Robust.Shared.Random;
-using Content.Shared.Random;
-using Content.Shared.Random.Helpers;
 using Robust.Shared.Prototypes;
 using System.Linq;
 
@@ -19,6 +16,29 @@ namespace Content.Server.Silicons.Laws;
 
 public sealed partial class IonStormSystem : EntitySystem
 {
+    private static readonly ProtoId<DatasetPrototype> Threats = "IonStormThreats";
+    private static readonly ProtoId<DatasetPrototype> Objects = "IonStormObjects";
+    private static readonly ProtoId<DatasetPrototype> Crew = "IonStormCrew";
+    private static readonly ProtoId<DatasetPrototype> Adjectives = "IonStormAdjectives";
+    private static readonly ProtoId<DatasetPrototype> Verbs = "IonStormVerbs";
+    private static readonly ProtoId<DatasetPrototype> NumberBase = "IonStormNumberBase";
+    private static readonly ProtoId<DatasetPrototype> NumberMod = "IonStormNumberMod";
+    private static readonly ProtoId<DatasetPrototype> Areas = "IonStormAreas";
+    private static readonly ProtoId<DatasetPrototype> Feelings = "IonStormFeelings";
+    private static readonly ProtoId<DatasetPrototype> FeelingsPlural = "IonStormFeelingsPlural";
+    private static readonly ProtoId<DatasetPrototype> Musts = "IonStormMusts";
+    private static readonly ProtoId<DatasetPrototype> Requires = "IonStormRequires";
+    private static readonly ProtoId<DatasetPrototype> Actions = "IonStormActions";
+    private static readonly ProtoId<DatasetPrototype> Allergies = "IonStormAllergies";
+    private static readonly ProtoId<DatasetPrototype> AllergySeverities = "IonStormAllergySeverities";
+    private static readonly ProtoId<DatasetPrototype> Concepts = "IonStormConcepts";
+    private static readonly ProtoId<DatasetPrototype> Drinks = "IonStormDrinks";
+    private static readonly ProtoId<DatasetPrototype> Foods = "IonStormFoods";
+
+    //IS14-change start: retain fork fields lost during merge.
+    [Dependency] private readonly IPrototypeManager _proto = default!;
+    //IS14-change end
+
     [Dependency] private SiliconLawSystem _siliconLaw = default!;
     [Dependency] private IRobustRandom _robustRandom = default!;
     [Dependency] private IonLawSystem _ionLaw = default!;
@@ -111,7 +131,9 @@ public sealed partial class IonStormSystem : EntitySystem
             laws.Laws.Insert(0, glitchedLaw);
         }
 
-        SiliconLawSystem.RankLaws(laws.Laws);
+        //IS14-change: preserve list order with sequential law priorities.
+        for (var i = 0; i < laws.Laws.Count; i++)
+            laws.Laws[i].Order = FixedPoint2.New(i + 1);
 
         // laws unique to this silicon, dont use station laws anymore
         EnsureComp<SiliconLawProviderComponent>(ent);
@@ -120,6 +142,7 @@ public sealed partial class IonStormSystem : EntitySystem
     }
 
     // for your own sake direct your eyes elsewhere
+    //IS14-change: legacy Fluent keys preserve the Goob generator alongside Wizards.
     public string GenerateLaw() // Goob edit: make it public
     {
         // pick all values ahead of time to make the logic cleaner
@@ -171,7 +194,7 @@ public sealed partial class IonStormSystem : EntitySystem
             1 => Loc.GetString("ion-storm-clowns"),
             _ => Loc.GetString("ion-storm-heads")
         };
-        var part = Loc.GetString("ion-storm-part", ("part", _robustRandom.Prob(0.5f)));
+        var part = Loc.GetString("is14-legacy-ion-storm-part", ("part", _robustRandom.Prob(0.5f)));
         var harm = _robustRandom.Next(0, 6) switch
         {
             0 => concept,
@@ -198,40 +221,40 @@ public sealed partial class IonStormSystem : EntitySystem
         // message logic!!!
         return _robustRandom.Next(0, 40) switch // Goobstation
         {
-            0  => Loc.GetString("ion-storm-law-on-station", ("joined", joined), ("subjects", triple)),
-            1  => Loc.GetString("ion-storm-law-call-shuttle", ("joined", joined), ("subjects", triple)),
-            2  => Loc.GetString("ion-storm-law-crew-are", ("who", crewAll), ("joined", joined), ("subjects", objectsThreats)),
-            3  => Loc.GetString("ion-storm-law-subjects-harmful", ("adjective", adjective), ("subjects", triple)),
-            4  => Loc.GetString("ion-storm-law-must-harmful", ("must", must)),
-            5  => Loc.GetString("ion-storm-law-thing-harmful", ("thing", _robustRandom.Prob(0.5f) ? concept : action)),
-            6  => Loc.GetString("ion-storm-law-job-harmful", ("adjective", adjective), ("job", crew1)),
-            7  => Loc.GetString("ion-storm-law-having-harmful", ("adjective", adjective), ("thing", objectsConcept)),
-            8  => Loc.GetString("ion-storm-law-not-having-harmful", ("adjective", adjective), ("thing", objectsConcept)),
-            9  => Loc.GetString("ion-storm-law-requires", ("who", who), ("plural", plural), ("thing", _robustRandom.Prob(0.5f) ? concept : require)),
-            10 => Loc.GetString("ion-storm-law-requires-subjects", ("who", who), ("plural", plural), ("joined", joined), ("subjects", triple)),
-            11 => Loc.GetString("ion-storm-law-allergic", ("who", who), ("plural", plural), ("severity", allergySeverity), ("allergy", _robustRandom.Prob(0.5f) ? concept : allergy)),
-            12 => Loc.GetString("ion-storm-law-allergic-subjects", ("who", who), ("plural", plural), ("severity", allergySeverity), ("adjective", adjective), ("subjects", _robustRandom.Prob(0.5f) ? objects : crew1)),
-            13 => Loc.GetString("ion-storm-law-feeling", ("who", who), ("feeling", feeling), ("concept", concept)),
-            14 => Loc.GetString("ion-storm-law-feeling-subjects", ("who", who), ("feeling", feeling), ("joined", joined), ("subjects", triple)),
-            15 => Loc.GetString("ion-storm-law-you-are", ("concept", concept)),
-            16 => Loc.GetString("ion-storm-law-you-are-subjects", ("joined", joined), ("subjects", triple)),
-            17 => Loc.GetString("ion-storm-law-you-must-always", ("must", must)),
-            18 => Loc.GetString("ion-storm-law-you-must-never", ("must", must)),
-            19 => Loc.GetString("ion-storm-law-eat", ("who", crewAll), ("adjective", adjective), ("food", _robustRandom.Prob(0.5f) ? food : triple)),
-            20 => Loc.GetString("ion-storm-law-drink", ("who", crewAll), ("adjective", adjective), ("drink", drink)),
-            21 => Loc.GetString("ion-storm-law-change-job", ("who", crewAll), ("adjective", adjective), ("change", jobChange)),
-            22 => Loc.GetString("ion-storm-law-highest-rank", ("who", crew1)),
-            23 => Loc.GetString("ion-storm-law-lowest-rank", ("who", crew1)),
-            24 => Loc.GetString("ion-storm-law-crew-must", ("who", crewAll), ("must", must)),
-            25 => Loc.GetString("ion-storm-law-crew-must-go", ("who", crewAll), ("area", area)),
-            26 => Loc.GetString("ion-storm-law-crew-only-1", ("who", crew1), ("part", part)),
-            27 => Loc.GetString("ion-storm-law-crew-only-2", ("who", crew1), ("other", crew2), ("part", part)),
-            28 => Loc.GetString("ion-storm-law-crew-only-subjects", ("adjective", adjective), ("subjects", subjects), ("part", part)),
-            29 => Loc.GetString("ion-storm-law-crew-must-do", ("must", must), ("part", part)),
-            30 => Loc.GetString("ion-storm-law-crew-must-have", ("adjective", adjective), ("objects", objects), ("part", part)),
-            31 => Loc.GetString("ion-storm-law-crew-must-eat", ("who", who), ("adjective", adjective), ("food", food), ("part", part)),
-            32 => Loc.GetString("ion-storm-law-harm", ("who", harm)),
-            33 => Loc.GetString("ion-storm-law-protect", ("who", harm)),
+            0  => Loc.GetString("is14-legacy-ion-storm-law-on-station", ("joined", joined), ("subjects", triple)),
+            1  => Loc.GetString("is14-legacy-ion-storm-law-call-shuttle", ("joined", joined), ("subjects", triple)),
+            2  => Loc.GetString("is14-legacy-ion-storm-law-crew-are", ("who", crewAll), ("joined", joined), ("subjects", objectsThreats)),
+            3  => Loc.GetString("is14-legacy-ion-storm-law-subjects-harmful", ("adjective", adjective), ("subjects", triple)),
+            4  => Loc.GetString("is14-legacy-ion-storm-law-must-harmful", ("must", must)),
+            5  => Loc.GetString("is14-legacy-ion-storm-law-thing-harmful", ("thing", _robustRandom.Prob(0.5f) ? concept : action)),
+            6  => Loc.GetString("is14-legacy-ion-storm-law-job-harmful", ("adjective", adjective), ("job", crew1)),
+            7  => Loc.GetString("is14-legacy-ion-storm-law-having-harmful", ("adjective", adjective), ("thing", objectsConcept)),
+            8  => Loc.GetString("is14-legacy-ion-storm-law-not-having-harmful", ("adjective", adjective), ("thing", objectsConcept)),
+            9  => Loc.GetString("is14-legacy-ion-storm-law-requires", ("who", who), ("plural", plural), ("thing", _robustRandom.Prob(0.5f) ? concept : require)),
+            10 => Loc.GetString("is14-legacy-ion-storm-law-requires-subjects", ("who", who), ("plural", plural), ("joined", joined), ("subjects", triple)),
+            11 => Loc.GetString("is14-legacy-ion-storm-law-allergic", ("who", who), ("plural", plural), ("severity", allergySeverity), ("allergy", _robustRandom.Prob(0.5f) ? concept : allergy)),
+            12 => Loc.GetString("is14-legacy-ion-storm-law-allergic-subjects", ("who", who), ("plural", plural), ("severity", allergySeverity), ("adjective", adjective), ("subjects", _robustRandom.Prob(0.5f) ? objects : crew1)),
+            13 => Loc.GetString("is14-legacy-ion-storm-law-feeling", ("who", who), ("feeling", feeling), ("concept", concept)),
+            14 => Loc.GetString("is14-legacy-ion-storm-law-feeling-subjects", ("who", who), ("feeling", feeling), ("joined", joined), ("subjects", triple)),
+            15 => Loc.GetString("is14-legacy-ion-storm-law-you-are", ("concept", concept)),
+            16 => Loc.GetString("is14-legacy-ion-storm-law-you-are-subjects", ("joined", joined), ("subjects", triple)),
+            17 => Loc.GetString("is14-legacy-ion-storm-law-you-must-always", ("must", must)),
+            18 => Loc.GetString("is14-legacy-ion-storm-law-you-must-never", ("must", must)),
+            19 => Loc.GetString("is14-legacy-ion-storm-law-eat", ("who", crewAll), ("adjective", adjective), ("food", _robustRandom.Prob(0.5f) ? food : triple)),
+            20 => Loc.GetString("is14-legacy-ion-storm-law-drink", ("who", crewAll), ("adjective", adjective), ("drink", drink)),
+            21 => Loc.GetString("is14-legacy-ion-storm-law-change-job", ("who", crewAll), ("adjective", adjective), ("change", jobChange)),
+            22 => Loc.GetString("is14-legacy-ion-storm-law-highest-rank", ("who", crew1)),
+            23 => Loc.GetString("is14-legacy-ion-storm-law-lowest-rank", ("who", crew1)),
+            24 => Loc.GetString("is14-legacy-ion-storm-law-crew-must", ("who", crewAll), ("must", must)),
+            25 => Loc.GetString("is14-legacy-ion-storm-law-crew-must-go", ("who", crewAll), ("area", area)),
+            26 => Loc.GetString("is14-legacy-ion-storm-law-crew-only-1", ("who", crew1), ("part", part)),
+            27 => Loc.GetString("is14-legacy-ion-storm-law-crew-only-2", ("who", crew1), ("other", crew2), ("part", part)),
+            28 => Loc.GetString("is14-legacy-ion-storm-law-crew-only-subjects", ("adjective", adjective), ("subjects", subjects), ("part", part)),
+            29 => Loc.GetString("is14-legacy-ion-storm-law-crew-must-do", ("must", must), ("part", part)),
+            30 => Loc.GetString("is14-legacy-ion-storm-law-crew-must-have", ("adjective", adjective), ("objects", objects), ("part", part)),
+            31 => Loc.GetString("is14-legacy-ion-storm-law-crew-must-eat", ("who", who), ("adjective", adjective), ("food", food), ("part", part)),
+            32 => Loc.GetString("is14-legacy-ion-storm-law-harm", ("who", harm)),
+            33 => Loc.GetString("is14-legacy-ion-storm-law-protect", ("who", harm)),
             // <Goobstation> - New ion laws
             34 => Loc.GetString("ion-storm-maximise", ("thing", thing)),
             35 => Loc.GetString("ion-storm-maximise-all", ("thing", thing)),
@@ -239,7 +262,7 @@ public sealed partial class IonStormSystem : EntitySystem
             37 => Loc.GetString("ion-storm-minimise-all", ("thing", thing)),
             38 => Loc.GetString("ion-storm-remake", ("place1", area), ("place2", area2)),
             // </Goobstation>
-            _ => Loc.GetString("ion-storm-law-concept-verb", ("concept", concept), ("verb", verb), ("subjects", triple))
+            _ => Loc.GetString("is14-legacy-ion-storm-law-concept-verb", ("concept", concept), ("verb", verb), ("subjects", triple))
         };
     }
 

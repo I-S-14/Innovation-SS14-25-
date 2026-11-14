@@ -71,7 +71,7 @@
   - type: StaticPrice
     price: 750
   - type: StealTarget
-    stealGroup: ClothingShoesBootsMagAdv
+    stealGroup: [ClothingShoesBootsMagAdv]
 # CorvaxGoob-start
   - type: CargoSellBlacklist
   - type: SupermatterImmune

@@ -1,3 +1,4 @@
+using Content.Shared.VoiceMask;
 using Content.Goobstation.Shared.IntrinsicVoiceModulator.VoiceMask;
 using Content.Server.VoiceMask;
 using Content.Shared.Chat.RadioIconsEvents;

@@ -55626,7 +55626,7 @@ entities:
       pos: 49.5,56.5
       parent: 2
     - type: WarpPoint
-      location: Инженерка
+      location: is14-map-warp-2d8cc418e6a1
   - uid: 7953
     components:
     - type: Transform
@@ -135363,7 +135363,7 @@ entities:
       pos: 13.5,6.5
       parent: 2
     - type: WarpPoint
-      location: server RnD
+      location: is14-map-warp-93b7ee6c6c0b
   - uid: 18230
     components:
     - type: Transform
@@ -135371,7 +135371,7 @@ entities:
       pos: -0.5,7.5
       parent: 2
     - type: WarpPoint
-      location: 'cargo dock '
+      location: is14-map-warp-4dc90f2043c0
   - uid: 18231
     components:
     - type: Transform
@@ -135379,7 +135379,7 @@ entities:
       pos: 24.5,24.5
       parent: 2
     - type: WarpPoint
-      location: Bridge
+      location: is14-map-warp-3892e10346fd
   - uid: 18232
     components:
     - type: Transform
@@ -135387,7 +135387,7 @@ entities:
       pos: 52.5,60.5
       parent: 2
     - type: WarpPoint
-      location: Energy supply
+      location: is14-map-warp-b5cd2af4a2aa
   - uid: 18233
     components:
     - type: Transform
@@ -135395,7 +135395,7 @@ entities:
       pos: 53.5,48.5
       parent: 2
     - type: WarpPoint
-      location: GravGen
+      location: is14-map-warp-66919e656acf
   - uid: 18234
     components:
     - type: Transform
@@ -135403,7 +135403,7 @@ entities:
       pos: 81.5,17.5
       parent: 2
     - type: WarpPoint
-      location: Telecoms
+      location: is14-map-warp-74d8d14dabf3
   - uid: 18235
     components:
     - type: Transform
@@ -135411,7 +135411,7 @@ entities:
       pos: 58.5,31.5
       parent: 2
     - type: WarpPoint
-      location: Armory
+      location: is14-map-warp-de4428ab4bfa
   - uid: 18236
     components:
     - type: Transform
@@ -135427,7 +135427,7 @@ entities:
       pos: 42.5,8.5
       parent: 2
     - type: WarpPoint
-      location: Chemical lab
+      location: is14-map-warp-673aae045bd2
   - uid: 18238
     components:
     - type: Transform
@@ -135435,7 +135435,7 @@ entities:
       pos: 22.5,-38.5
       parent: 2
     - type: WarpPoint
-      location: AI
+      location: is14-map-warp-11fb682be0a0
   - uid: 18239
     components:
     - type: Transform
@@ -135443,7 +135443,7 @@ entities:
       pos: 7.5,27.5
       parent: 2
     - type: WarpPoint
-      location: Vault
+      location: is14-map-warp-5d55c415e356
   - uid: 18240
     components:
     - type: Transform
@@ -135451,7 +135451,7 @@ entities:
       pos: 27.5,74.5
       parent: 2
     - type: WarpPoint
-      location: Gas miner lifesupport
+      location: is14-map-warp-f00d3357e857
   - uid: 18241
     components:
     - type: Transform
@@ -135459,7 +135459,7 @@ entities:
       pos: 52.5,82.5
       parent: 2
     - type: WarpPoint
-      location: TEG
+      location: is14-map-warp-c352e255390b
 - proto: WaterCooler
   entities:
   - uid: 8917

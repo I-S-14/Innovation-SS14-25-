@@ -21,7 +21,6 @@
           Piercing: 6
           Heat: 6
     - type: Damageable
-    - type: Injurable
       damageContainer: Shield
     - type: ExaminableDamage
       messages: ShieldMessages

@@ -16,9 +16,8 @@ namespace Content.Server.Xenoarchaeology.Equipment.Systems;
 /// <inheritdoc/>
 public sealed partial class ArtifactCrusherSystem : SharedArtifactCrusherSystem
 {
-    [Dependency] private readonly BodySystem _body = default!;
     [Dependency] private IRobustRandom _random = default!;
-    [Dependency] private GibbingSystem _gibbing = default!;
+    [Dependency] private Content.Shared.Body.Systems.SharedBodySystem _gibbing = default!;
     [Dependency] private StackSystem _stack = default!;
     [Dependency] private EntityWhitelistSystem _whitelistSystem = default!;
 
@@ -45,7 +44,7 @@ public sealed partial class ArtifactCrusherSystem : SharedArtifactCrusherSystem
                 }
             }
 
-            var gibs = _gibbing.Gib(contained);
+            var gibs = _gibbing.GibBody(contained);
             foreach (var gib in gibs)
             {
                 ContainerSystem.Insert((gib, null, null, null), crusher.OutputContainer);

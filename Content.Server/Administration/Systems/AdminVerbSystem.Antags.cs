@@ -28,7 +28,7 @@ public sealed partial class AdminVerbSystem
     [Dependency] private ZombieSystem _zombie = default!;
 
     [Dependency] private EntityQuery<ActorComponent> _actorQuery;
-    [Dependency] private EntityQuery<HumanoidProfileComponent> _humanoidQuery;
+    [Dependency] private EntityQuery<HumanoidAppearanceComponent> _humanoidQuery;
     [Dependency] private EntityQuery<MindContainerComponent> _mindContainerQuery;
 
     private static readonly EntProtoId TraitorRule = "Traitor";
@@ -42,7 +42,7 @@ public sealed partial class AdminVerbSystem
     private static readonly EntProtoId ThiefRule = "Thief";
     private static readonly ProtoId<AntagSpecifierPrototype> ThiefSpec = "Thief";
     private static readonly EntProtoId ChangelingRule = "Changeling";
-    private static readonly ProtoId<AntagSpecifierPrototype> ChangelingSpec = "Changeling";
+    private static readonly ProtoId<AntagSpecifierPrototype> ChangelingSpec = "IS14ChangelingAntag0e1ef2b1d"; //IS14-change: retained Goob changeling definition.
     private static readonly EntProtoId ParadoxCloneRule = "ParadoxCloneSpawn";
     private static readonly EntProtoId WizardRule = "Wizard";
     private static readonly ProtoId<AntagSpecifierPrototype> WizardSpec = "Wizard";
@@ -180,7 +180,7 @@ public sealed partial class AdminVerbSystem
             Icon = new SpriteSpecifier.Rsi(new ResPath("/Textures/Objects/Weapons/Melee/armblade.rsi"), "icon"),
             Act = () =>
             {
-                _antag.ForceMakeAntag<ChangelingRuleComponent>(targetPlayer, ChangelingRule, ChangelingSpec);
+                _antag.ForceMakeAntag<Content.Shared.Antag.Components.AntagSelectionComponent>(targetPlayer, ChangelingRule, ChangelingSpec);
             },
             Impact = LogImpact.High,
             Message = string.Join(": ", changelingName, Loc.GetString("admin-verb-make-changeling")),

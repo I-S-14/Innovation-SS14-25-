@@ -25,7 +25,8 @@
   parent: BaseWeapon
   id: MakeshiftLaser
   graph: MakeshiftLaserGraph
-  targetNode: mslaser
+  targetNode: laser # IS14: the retained CorvaxGoob graph ends here.
+  hide: true # IS14: compatibility ID; the existing makeshiftlaser recipe remains visible.
 
 - type: construction
   parent: BaseWeapon

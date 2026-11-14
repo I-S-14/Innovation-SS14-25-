@@ -8,7 +8,7 @@ namespace Content.Server.Store.Systems;
 
 public sealed partial class StoreSystem
 {
-    [Dependency] private readonly GameTicker _ticker = default!;
+    [Dependency] private readonly ServerGameTicker _ticker = default!;
     [Dependency] private readonly PolymorphSystem _polymorph = default!;
 
     private void InitializeGoob()
@@ -26,7 +26,7 @@ public sealed partial class StoreSystem
 
     private void OnPurchase(ListingData listing)
     {
-        if (!_proto.TryIndex<ListingPrototype>(listing.ID, out var prototype))
+        if (!ProtoMan.TryIndex<ListingPrototype>(listing.ID, out var prototype))
             return;
 
         // updating restocktime

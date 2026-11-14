@@ -38,5 +38,5 @@ public sealed partial class ModuleMagnetComponent : Component
     public TimeSpan NextScan;
 
     [ViewVariables]
-    public bool Running;
+    public new bool Running;
 }

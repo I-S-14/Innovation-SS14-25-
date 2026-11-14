@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using Content.Goobstation.Server.StationEvents.Components;
 using Content.Goobstation.Shared.StationEvents;
 using Content.Shared.GameTicking.Components;

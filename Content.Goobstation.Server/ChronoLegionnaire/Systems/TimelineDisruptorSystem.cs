@@ -41,7 +41,7 @@ public sealed partial class TimelineDisruptorSystem : SharedTimelineDisruptorSys
         if (args.Handled || !args.Complex)
             return;
 
-        if (!_itemSlotsSystem.TryGetSlot(ent, comp.DisruptionSlot, out var disruptionSlot))
+        if (!_itemSlotsSystem.TryGetSlot(ent.Owner, comp.DisruptionSlot, out var disruptionSlot))
             return;
 
         if (disruptionSlot.ContainerSlot == null || disruptionSlot.ContainerSlot.ContainedEntities.Count == 0)
@@ -101,7 +101,7 @@ public sealed partial class TimelineDisruptorSystem : SharedTimelineDisruptorSys
         Dirty(uid, disruptor);
     }
 
-    protected void StopDisrupting(Entity<TimelineDisruptorComponent> ent)
+    private void StopDisrupting(Entity<TimelineDisruptorComponent> ent)
     {
         var (_, disruptor) = ent;
 
@@ -120,7 +120,7 @@ public sealed partial class TimelineDisruptorSystem : SharedTimelineDisruptorSys
 
         Dirty(ent, disruptor);
 
-        if (!_itemSlotsSystem.TryGetSlot(ent, disruptor.DisruptionSlot, out var disruptionSlot))
+        if (!_itemSlotsSystem.TryGetSlot(ent.Owner, disruptor.DisruptionSlot, out var disruptionSlot))
             return;
 
         EntityUid? cage = disruptionSlot.ContainerSlot!.ContainedEntity;

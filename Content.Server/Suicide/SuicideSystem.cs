@@ -25,6 +25,10 @@ namespace Content.Server.Suicide;
 
 public sealed partial class SuicideSystem : SharedSuicideSystem
 {
+    //IS14-change start: typed prototype IDs required by the upstream analyzer.
+    private static readonly ProtoId<TagPrototype> CompatibilityCannotSuicideAnyTagId = "CannotSuicideAny";
+    //IS14-change end
+
     [Dependency] private EntityLookupSystem _entityLookupSystem = default!;
     [Dependency] private ISharedAdminLogManager _adminLogger = default!;
     [Dependency] private HandsSystem _hands = default!;
@@ -53,7 +57,7 @@ public sealed partial class SuicideSystem : SharedSuicideSystem
     public bool Suicide(EntityUid victim)
     {
         // Can't suicide if we're already dead
-        if (!TryComp<MobStateComponent>(victim, out var mobState) || _mobState.IsDead(victim, mobState) || _tagSystem.HasTag(victim, "CannotSuicideAny")) // Goobstation
+        if (!TryComp<MobStateComponent>(victim, out var mobState) || _mobState.IsDead(victim, mobState) || _tagSystem.HasTag(victim, CompatibilityCannotSuicideAnyTagId)) // Goobstation
             return false;
 
         _adminLogger.Add(LogType.Mind, $"{ToPrettyString(victim):player} is attempting to suicide");
@@ -179,7 +183,7 @@ public sealed partial class SuicideSystem : SharedSuicideSystem
         else
             args.DamageType ??= "Slash";
 
-        _suicide.ApplyLethalDamage(victim, args.DamageType);
+        ApplyLethalDamage(victim, args.DamageType);
 
         args.Handled = true;
     }

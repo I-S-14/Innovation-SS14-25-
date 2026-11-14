@@ -12,11 +12,6 @@
   - type: Item
     storedRotation: 135
   - type: MagicMirror
-    organs:
-    - Head
-    layers:
-    - Hair
-    - FacialHair
   - type: ActivatableUI
     key: enum.MagicMirrorUiKey.Key
     inHandsOnly: true

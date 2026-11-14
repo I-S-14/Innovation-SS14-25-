@@ -205,7 +205,11 @@
         acts: [ "Destruction" ]
   - type: IconSmooth
     key: walls
-    base: clock
+    states:
+    - !type:CornerSpriteSmoothing
+      base: clock
+      mask:
+      - walls
   - type: RustRequiresPathStage # Goobstation
     pathStage: 4 # Mark of rust
   - type: CosmicCorruptible # DeltaV - Cosmic Cult
@@ -245,7 +249,11 @@
         acts: [ "Destruction" ]
   - type: IconSmooth
     key: walls
-    base: clown
+    states:
+    - !type:CornerSpriteSmoothing
+      base: clown
+      mask:
+      - walls
   - type: Fixtures
     fixtures:
       fix1:
@@ -329,7 +337,7 @@
   - type: Construction
     graph: Girder
     node: meatWall
-  - type: Injurable
+  - type: Damageable
     damageContainer: StructuralBiological
   - type: Destructible
     thresholds:
@@ -394,7 +402,11 @@
         acts: [ "Destruction" ]
   - type: IconSmooth
     key: walls
-    base: cult
+    states:
+    - !type:CornerSpriteSmoothing
+      base: cult
+      mask:
+      - walls
   - type: RustRequiresPathStage # Goobstation
     pathStage: 4 # Mark of rust
 
@@ -457,7 +469,11 @@
         acts: [ "Destruction" ]
   - type: IconSmooth
     key: walls
-    base: diamond
+    states:
+    - !type:CornerSpriteSmoothing
+      base: diamond
+      mask:
+      - walls
   - type: RustRequiresPathStage # Goobstation
     pathStage: 4 # Mark of rust
   - type: CosmicCorruptible # DeltaV - Cosmic Cult
@@ -594,7 +610,11 @@
         acts: [ "Destruction" ]
   - type: IconSmooth
     key: walls
-    base: ice
+    states:
+    - !type:CornerSpriteSmoothing
+      base: ice
+      mask:
+      - walls
   - type: RustRequiresPathStage # Goobstation
     pathStage: 4 # Mark of rust
   - type: CosmicCorruptible # DeltaV - Cosmic Cult
@@ -700,8 +720,11 @@
         acts: ["Destruction"]
   - type: IconSmooth
     key: walls
-    base: plastic
-  # CorvaxGoob-Start
+    states:
+    - !type:CornerSpriteSmoothing
+      base: plastic
+      mask:
+      - walls
   - type: DetailExaminable
     content: wall-plastic-examine-detailed
   - type: Appearance
@@ -1105,7 +1128,11 @@
         acts: [ "Destruction" ]
   - type: IconSmooth
     key: walls
-    base: riveted
+    states:
+    - !type:CornerSpriteSmoothing
+      base: riveted
+      mask:
+      - walls
   - type: StaticPrice
     price: 150
   - type: RustRequiresPathStage # Goobstation
@@ -1169,10 +1196,9 @@
   name: marble wall
   suffix: ""
   components:
-  - type: Injurable
-    damageContainer: StructuralInorganic
   - type: Damageable
     damageModifierSet: RockMod
+    damageContainer: StructuralInorganic
   - type: Destructible
     thresholds:
     - trigger: *DamageWallStrong
@@ -1909,7 +1935,11 @@
         acts: [ "Destruction" ]
   - type: IconSmooth
     key: walls
-    base: necropolis
+    states:
+    - !type:CornerSpriteSmoothing
+      base: necropolis
+      mask:
+      - walls
   - type: RustRequiresPathStage # Goobstation
     pathStage: 10 # Ascension
   - type: CosmicCorruptible # DeltaV - Cosmic Cult
@@ -2143,7 +2173,11 @@
         acts: [ "Destruction" ]
   - type: IconSmooth
     key: cobblebricks
-    base: cobblebrick
+    states:
+    - !type:CornerSpriteSmoothing
+      base: cobblebrick
+      mask:
+      - cobblebricks
   - type: CosmicCorruptible # DeltaV - Cosmic Cult
     convertTo: WallCosmicCult
 

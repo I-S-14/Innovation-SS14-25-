@@ -1,3 +1,4 @@
+using GameTicker = Content.Server.GameTicking.ServerGameTicker;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Goobstation.Shared.GameTicking;
@@ -12,7 +13,7 @@ namespace Content.Goobstation.Server.GameTicking;
 /// </summary>
 public sealed partial class AddGameRuleOnUseSystem : EntitySystem
 {
-    [Dependency] private GameTicker _gameTicker = default!;
+    [Dependency] private Content.Server.GameTicking.ServerGameTicker _gameTicker = default!;
     [Dependency] private PopupSystem _popupSystem = default!;
     /// <inheritdoc/>
     public override void Initialize()

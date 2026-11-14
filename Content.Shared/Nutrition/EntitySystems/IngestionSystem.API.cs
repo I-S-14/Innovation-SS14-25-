@@ -1,7 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.Chemistry.Components;
-using Content.Shared.Chemistry.Components.SolutionManager;
 using Content.Shared.Chemistry.Reagent;
 using Content.Shared.EntityEffects.Effects;
 using Content.Shared.EntityEffects.Effects.Body;
@@ -152,7 +151,9 @@ public sealed partial class IngestionSystem
 
         foreach (var trash in trashes)
         {
-            var spawnedTrash = EntityManager.PredictedSpawn(trash, position);
+            //IS14-change start
+            var spawnedTrash = PredictedSpawn(trash, position);
+            //IS14-change end
 
             // If the user is holding the item
             if (!pickup)
@@ -299,7 +300,7 @@ public sealed partial class IngestionSystem
     /// <param name="user">The entity trying to make the ingestion happening, not necessarily the one eating</param>
     /// <param name="solution">Solution we're returning</param>
     /// <param name="time">The time it takes us to eat this entity</param>
-    public bool CanAccessSolution(Entity<SolutionContainerManagerComponent?> ingested,
+    public bool CanAccessSolution(EntityUid ingested, //IS14-change: use the Wizards solution-provider API.
         EntityUid user,
         [NotNullWhen(true)] out Entity<SolutionComponent>? solution,
         out TimeSpan? time)
@@ -307,19 +308,22 @@ public sealed partial class IngestionSystem
         solution = null;
         time = null;
 
-        if (!Resolve(ingested, ref ingested.Comp))
-        {
-            _popup.PopupClient(Loc.GetString("ingestion-try-use-is-empty", ("entity", ingested)), ingested, user);
-            return false;
-        }
-
+        //IS14-change: EdibleEvent resolves named, direct and migrated solution providers.
         var ev = new EdibleEvent(user);
         RaiseLocalEvent(ingested, ref ev);
 
         solution = ev.Solution;
         time = ev.Time;
 
-        return !ev.Cancelled && solution != null;
+        //IS14-change start: determine availability from the provider, not the removed legacy component.
+        if (solution == null)
+        {
+            _popup.PopupClient(Loc.GetString("ingestion-try-use-is-empty", ("entity", ingested)), ingested, user);
+            return false;
+        }
+
+        return !ev.Cancelled;
+        //IS14-change end
     }
 
     /// <summary>

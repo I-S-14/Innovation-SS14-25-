@@ -27,9 +27,7 @@
   - type: InteractionOutline
   - type: Physics
   - type: Damageable
-  - type: Injurable
     damageContainer: Inorganic
-
 - type: entity
   abstract: true
   parent: BaseTargetIndestructible

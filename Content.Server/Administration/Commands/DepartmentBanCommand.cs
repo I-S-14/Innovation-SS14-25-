@@ -20,7 +20,6 @@ public sealed partial class DepartmentBanCommand : IConsoleCommand
     [Dependency] private IConfigurationManager _cfg = default!;
     [Dependency] private ILogManager _log = default!;
 
-    private ISawmill? _sawmill;
 
     public string Command => "departmentban";
     public string Description => Loc.GetString("cmd-departmentban-desc");

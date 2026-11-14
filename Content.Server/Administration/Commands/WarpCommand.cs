@@ -137,7 +137,7 @@ namespace Content.Server.Administration.Commands
             var query = _entManager.AllEntityQueryEnumerator<WarpPointComponent, MetaDataComponent>();
             while (query.MoveNext(out _, out var warp, out var meta))
             {
-                points.Add(warp.Location ?? meta.EntityName);
+                points.Add(warp.Location == null ? meta.EntityName : Loc.GetString(warp.Location)); //IS14-change: Location is a LocId.
             }
 
             points.Sort();
@@ -150,7 +150,7 @@ namespace Content.Server.Administration.Commands
             var query = _entManager.AllEntityQueryEnumerator<WarpPointComponent, MetaDataComponent, TransformComponent>();
             while (query.MoveNext(out var uid, out var warp, out var meta, out var xform))
             {
-                if (name == (warp.Location ?? meta.EntityName))
+                if (name == (warp.Location == null ? meta.EntityName : Loc.GetString(warp.Location))) //IS14-change
                     points.Add((xform.Coordinates, warp.Follow));
             }
 

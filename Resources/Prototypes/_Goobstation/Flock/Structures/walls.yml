@@ -465,7 +465,7 @@
 
 #Shuttle
 - type: entity
-  parent: WallFlockBase
+  parent: IS14RetainedFlockWallBase # IS14-change: keep the shuttle wall's own 600 health.
   id: WallFeatherZoneShuttle
   components:
   - type: Sprite

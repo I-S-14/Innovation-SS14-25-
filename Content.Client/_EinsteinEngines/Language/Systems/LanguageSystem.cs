@@ -21,6 +21,7 @@ public sealed class LanguageSystem : SharedLanguageSystem
 
     public override void Initialize()
     {
+        base.Initialize(); //IS14-change: initialize shared language prototypes and subscriptions.
         _playerManager.LocalPlayerAttached += NotifyUpdate;
         SubscribeLocalEvent<LanguageSpeakerComponent, ComponentHandleState>(OnHandleState);
     }

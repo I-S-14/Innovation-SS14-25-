@@ -1,3 +1,4 @@
+using Content.Shared.GameTicking; // IS14-change: upstream namespace move
 using Content.Server.GameTicking;
 using Content.Shared._CorvaxGoob.CCCVars;
 using Content.Shared.CCVar;

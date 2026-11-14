@@ -1,3 +1,4 @@
+using Content.Shared.NPC.Components; // IS14-change: upstream namespace move
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Linq;
@@ -39,15 +40,9 @@ using Robust.Shared.Containers;
 using Robust.Shared.Map;
 using Robust.Shared.Random;
 using Robust.Shared.Utility;
-using System.Linq;
-using Content.Shared.Station.Components;
-using Content.Shared.Store.Components;
-using Content.Server.Station.Systems;
 using Content.Server.Chat.Systems;
-using Robust.Server.Player;
 using Robust.Shared.Network;
 using Robust.Shared.Prototypes;
-using Robust.Shared.Utility;
 using Content.Shared.Antag;
 using Content.Shared.GameTicking.Components;
 using Content.Shared.NPC.Systems;
@@ -61,19 +56,16 @@ public sealed partial class ServerNukeopsRuleSystem : NukeopsRuleSystem
     [Dependency] private readonly AntagSelectionSystem _antag = default!;
     [Dependency] private readonly NpcFactionSystem _npcFaction = default!;
     // goob edit
-    [Dependency] private readonly StationSystem _stationSystem = default!;
     [Dependency] private readonly ChatSystem _chat = default!;
     [Dependency] private readonly IPlayerManager _playerManager = default!;
     // goob edit end
     [Dependency] private EmergencyShuttleSystem _emergency = default!;
     [Dependency] private SharedIdCardSystem _idCard = default!;
     [Dependency] private SharedJobSystem _jobs = default!;
-    [Dependency] private IPlayerManager _player = default!;
+
     [Dependency] private SharedMindSystem _mind = default!;
-    [Dependency] private NavMapSystem _navMap = default!;
     [Dependency] private PopupSystem _popupSystem = default!;
     [Dependency] private RoundEndSystem _roundEndSystem = default!;
-    [Dependency] private SharedContainerSystem _containers = default!;
     [Dependency] private SharedRoleSystem _roles = default!;
     [Dependency] private ServerStationSystem _station = default!;
     [Dependency] private StationRecordsSystem _records = default!;
@@ -89,22 +81,20 @@ public sealed partial class ServerNukeopsRuleSystem : NukeopsRuleSystem
     {
         base.Initialize();
 
-        SubscribeLocalEvent<NukeExplodedEvent>(OnNukeExploded);
-        SubscribeLocalEvent<GameRunLevelChangedEvent>(OnRunLevelChanged);
-        SubscribeLocalEvent<NukeDisarmSuccessEvent>(OnNukeDisarm);
 
-        SubscribeLocalEvent<NukeOperativeComponent, ComponentRemove>(OnComponentRemove);
-        SubscribeLocalEvent<NukeOperativeComponent, MobStateChangedEvent>(OnMobStateChanged);
-        SubscribeLocalEvent<NukeOperativeComponent, EntityZombifiedEvent>(OnOperativeZombified);
 
-        SubscribeLocalEvent<NukeopsRoleComponent, GetBriefingEvent>(OnGetBriefing);
 
-        SubscribeLocalEvent<ConsoleFTLAttemptEvent>(OnShuttleFTLAttempt);
-        SubscribeLocalEvent<WarDeclaredEvent>(OnWarDeclared);
-        SubscribeLocalEvent<CommunicationConsoleCallShuttleAttemptEvent>(OnShuttleCallAttempt);
 
-        SubscribeLocalEvent<NukeopsRuleComponent, AfterAntagEntitySelectedEvent>(OnAfterAntagEntSelected);
-        SubscribeLocalEvent<NukeopsRuleComponent, RuleLoadedGridsEvent>(OnRuleLoadedGrids);
+
+
+
+
+
+
+
+
+
+
     }
 
     protected override void Started(EntityUid uid,
@@ -134,6 +124,9 @@ public sealed partial class ServerNukeopsRuleSystem : NukeopsRuleSystem
     protected override void AppendRoundEndText(Entity<NukeopsRuleComponent> rule,
         ref RoundEndTextAppendEvent args)
     {
+        //IS14-change: adapt preserved code to the Entity event parameters.
+        var component = rule.Comp;
+
         var winText = Loc.GetString($"nukeops-{rule.Comp.WinType.ToString().ToLower()}");
         args.AddLine(winText);
 
@@ -569,7 +562,7 @@ public sealed partial class ServerNukeopsRuleSystem : NukeopsRuleSystem
         nukeops.RoundEndBehavior = RoundEndBehavior.Nothing;
     }
 
-    private void OnAfterAntagEntSelected(Entity<NukeopsRuleComponent> ent, ref AfterAntagEntitySelectedEvent args)
+    protected override void OnAfterAntagEntSelected(Entity<NukeopsRuleComponent> ent, ref AfterAntagEntitySelectedEvent args)
     {
         var target = (ent.Comp.TargetStation is not null) ? Name(ent.Comp.TargetStation.Value) : "the target";
 
@@ -579,12 +572,6 @@ public sealed partial class ServerNukeopsRuleSystem : NukeopsRuleSystem
                 ("name", Name(ent))),
             Color.Red,
             ent.Comp.GreetSoundNotification);
-    }
-
-    private void OnGetBriefing(Entity<NukeopsRoleComponent> role, ref GetBriefingEvent args)
-    {
-        // TODO Different character screen briefing for the 3 nukie types
-        args.Append(Loc.GetString("nukeops-briefing")); // TODO: Goobstation: somehow pass the nukeopsrulecomponent here so we can change this based on LocalePrefix for Honkops.
     }
 
     /// <remarks>
@@ -649,7 +636,7 @@ public sealed partial class ServerNukeopsRuleSystem : NukeopsRuleSystem
         if (mind is not null)
         {
             NetUserId? userId = mind.Value.Comp.UserId;
-            if (userId is not null && _player.TryGetPlayerData(userId.Value, out var sessionData))
+            if (userId is not null && _playerManager.TryGetPlayerData(userId.Value, out var sessionData))
                 username = sessionData.UserName;
 
             // Role/job is the trickiest since it can be unknown in some cases

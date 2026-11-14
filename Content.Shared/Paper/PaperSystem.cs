@@ -26,9 +26,7 @@ namespace Content.Shared.Paper;
 
 public sealed partial class PaperSystem : EntitySystem // Goob
 {
-    [Dependency] private readonly IdentitySystem _identitySystem = default!; // Starlight-edit
     [Dependency] private ISharedAdminLogManager _adminLogger = default!;
-    [Dependency] private IRobustRandom _random = default!;
     [Dependency] private SharedAppearanceSystem _appearance = default!;
     [Dependency] private SharedInteractionSystem _interaction = default!;
     [Dependency] private SharedPopupSystem _popupSystem = default!;
@@ -36,7 +34,6 @@ public sealed partial class PaperSystem : EntitySystem // Goob
     [Dependency] private SharedUserInterfaceSystem _uiSystem = default!;
     [Dependency] private MetaDataSystem _metaSystem = default!;
     [Dependency] private SharedAudioSystem _audio = default!;
-    [Dependency] private EntityQuery<PaperComponent> _paperQuery = default!;
 
     private static readonly ProtoId<TagPrototype> WriteIgnoreStampsTag = "WriteIgnoreStamps";
     private static readonly ProtoId<TagPrototype> WriteTag = "Write";

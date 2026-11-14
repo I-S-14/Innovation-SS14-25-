@@ -17,7 +17,7 @@ public sealed partial class RadiationSystem : SharedRadiationSystem
     [Dependency] private IConfigurationManager _cfg = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private SharedStackSystem _stack = default!;
-    [Dependency] private SharedMapSystem _maps = default!;
+
 
     [Dependency] private EntityQuery<RadiationBlockingContainerComponent> _blockerQuery = default!;
     [Dependency] private EntityQuery<RadiationGridResistanceComponent> _resistanceQuery = default!;

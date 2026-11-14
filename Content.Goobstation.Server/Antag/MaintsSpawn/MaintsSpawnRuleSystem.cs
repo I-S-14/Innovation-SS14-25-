@@ -1,3 +1,4 @@
+using Content.Shared.Antag;
 using Content.Server.Antag;
 using Content.Server.StationEvents.Components;
 using Content.Server.StationEvents.Events;

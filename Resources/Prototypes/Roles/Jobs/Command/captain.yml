@@ -2,6 +2,7 @@
 
 - type: job
   id: Captain
+  canBeAntag: false # IS14: retain original role restriction.
   name: job-name-captain
   description: job-description-captain
   playTimeTracker: JobCaptain

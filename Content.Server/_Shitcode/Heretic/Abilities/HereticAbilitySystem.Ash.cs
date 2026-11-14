@@ -11,7 +11,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Content.Shared._Shitmed.Damage;
 using Content.Shared._Shitmed.Targeting;
-using Content.Shared.Atmos.Components;
 
 namespace Content.Server.Heretic.Abilities;
 
@@ -93,7 +92,7 @@ public sealed partial class HereticAbilitySystem
         if (!Transform(args.Performer).GridUid.HasValue || !TryUseAbility(args))
             return;
 
-        CombustArea(args.Performer, 9, false);
+        _ = CombustArea(args.Performer, 9, false); //IS14-change: intentionally start the asynchronous cascade from the event handler.
     }
 
     #region Helper methods
@@ -111,7 +110,9 @@ public sealed partial class HereticAbilitySystem
             await Task.Delay((int) 500f);
         }
 
-        EntityManager.DeleteEntity(beacon); // cleanup
+        //IS14-change start
+        Del(beacon); // cleanup
+        //IS14-change end
     }
 
     public void SpawnFireBox(EntityUid relative, int range = 0, bool hollow = true)

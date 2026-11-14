@@ -58,7 +58,7 @@ public sealed partial class StationAiWarpSystem : SharedStationAiWarpSystem
     {
         List<CameraWarpData> cameras = new();
 
-        var query = EntityManager.EntityQueryEnumerator<SurveillanceCameraComponent>();
+        var query = EntityQueryEnumerator<SurveillanceCameraComponent>();
 
         var aiGrid = _xformSystem.GetGrid(coreUid);
 

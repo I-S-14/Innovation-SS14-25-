@@ -115,7 +115,7 @@ public sealed class PricingSystem : EntitySystem
     private double GetSolutionPrice(Entity<SolutionManagerComponent> entity)
     {
         if (Comp<MetaDataComponent>(entity).EntityLifeStage < EntityLifeStage.MapInitialized)
-            return GetSolutionPrice(entity.Comp);
+            return 0;
 
         var price = 0.0;
 
@@ -135,13 +135,13 @@ public sealed class PricingSystem : EntitySystem
         return price;
     }
 
-    private double GetSolutionPrice(SolutionManagerComponent component)
+    private double GetSolutionPrice(EntityPrototype prototype)
     {
         var price = 0.0;
 
-        foreach (var (_, prototype) in _solutionContainerSystem.EnumerateSolutions(component))
+        foreach (var (_, solution) in _solutionContainerSystem.EnumerateSolutions(prototype))
         {
-            foreach (var (reagent, quantity) in prototype.Contents)
+            foreach (var (reagent, quantity) in solution.Contents)
             {
                 if (!_prototypeManager.TryIndex<ReagentPrototype>(reagent.Prototype, out var reagentProto))
                     continue;
@@ -316,7 +316,7 @@ public sealed class PricingSystem : EntitySystem
         if (prototype.Components.TryGetValue(Factory.GetComponentName<SolutionManagerComponent>(), out var solManager))
         {
             var solComp = (SolutionManagerComponent) solManager.Component;
-            price += GetSolutionPrice(solComp);
+            price += GetSolutionPrice(prototype);
         }
 
         return price;

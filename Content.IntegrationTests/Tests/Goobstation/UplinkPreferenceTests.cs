@@ -19,6 +19,8 @@ namespace Content.IntegrationTests.Tests.Goobstation;
 [FixtureLifeCycle(LifeCycle.InstancePerTestCase)]
 public sealed class UplinkPreferenceTests
 {
+    private static readonly ProtoId<ListingPrototype> CompatibilityUplinkUplinkImplanterListingId = "UplinkUplinkImplanter";
+
     private TestPair _pair = default!;
     private EntityUid _player;
 
@@ -36,7 +38,7 @@ public sealed class UplinkPreferenceTests
         });
 
         var server = _pair.Server;
-        var ticker = server.System<GameTicker>();
+        var ticker = server.System<ServerGameTicker>();
 
         await server.WaitPost(() =>
         {
@@ -223,7 +225,7 @@ public sealed class UplinkPreferenceTests
             var store = entMan.GetComponent<StoreComponent>(implantStore!.Value);
             Assert.That(store.Balance.ContainsKey("Telecrystal"), Is.True);
 
-            var catalog = protoMan.Index<ListingPrototype>("UplinkUplinkImplanter");
+            var catalog = protoMan.Index<ListingPrototype>(CompatibilityUplinkUplinkImplanterListingId);
             var implantCost = (int) catalog.Cost["Telecrystal"];
             var expectedBalance = startingBalance - implantCost;
             Assert.That((int) store.Balance["Telecrystal"], Is.EqualTo(expectedBalance),

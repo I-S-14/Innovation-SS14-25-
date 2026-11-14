@@ -31808,7 +31808,7 @@ entities:
       text: Игровая комната
     - type: WarpPoint
       follow: True
-      location: Игровая комната
+      location: is14-map-warp-15f644ee8082
   - uid: 7673
     components:
     - type: Transform
@@ -31817,7 +31817,7 @@ entities:
     - type: NavMapBeacon
       text: Сауна
     - type: WarpPoint
-      location: Сауна
+      location: is14-map-warp-a2ba568bbeb3
   - uid: 7674
     components:
     - type: Transform
@@ -31826,7 +31826,7 @@ entities:
     - type: NavMapBeacon
       text: Главный зал
     - type: WarpPoint
-      location: Главный зал
+      location: is14-map-warp-0b2340afc49a
 - proto: DefaultStationBeaconAICore
   entities:
   - uid: 10689
@@ -32005,7 +32005,7 @@ entities:
     - type: NavMapBeacon
       text: Генератор гравитации
     - type: WarpPoint
-      location: Генератор гравитации
+      location: is14-map-warp-e6a79710d211
 - proto: DefaultStationBeaconEscapePod
   entities:
   - uid: 9262
@@ -32089,7 +32089,7 @@ entities:
     - type: NavMapBeacon
       text: Психолог
     - type: WarpPoint
-      location: Психолог
+      location: is14-map-warp-bb30c57cd65c
 - proto: DefaultStationBeaconMedical
   entities:
   - uid: 4432
@@ -32100,7 +32100,7 @@ entities:
     - type: NavMapBeacon
       text: Вирусология
     - type: WarpPoint
-      location: Вирусология
+      location: is14-map-warp-e4e51fe7a28e
 - proto: DefaultStationBeaconMorgue
   entities:
   - uid: 4463
@@ -32167,7 +32167,7 @@ entities:
     - type: NavMapBeacon
       text: Ксенобиология
     - type: WarpPoint
-      location: Ксенобиология
+      location: is14-map-warp-40efbcdca97d
 - proto: DefaultStationBeaconSecurityCheckpoint
   entities:
   - uid: 6216
@@ -80647,7 +80647,7 @@ entities:
       pos: 17.5,32.5
       parent: 2
     - type: WarpPoint
-      location: Хранилище EVA
+      location: is14-map-warp-d7f762590c51
 - proto: WaterCooler
   entities:
   - uid: 1371

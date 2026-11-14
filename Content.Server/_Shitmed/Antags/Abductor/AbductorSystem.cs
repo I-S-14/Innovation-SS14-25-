@@ -152,7 +152,7 @@ public sealed partial class AbductorSystem : SharedAbductorSystem
 
         foreach (var station in stations)
         {
-            if (_stationSystem.GetLargestGrid(station) is not { } grid
+            if (_stationSystem.GetLargestGrid(station.AsNullable()) is not { } grid
                 || !TryComp(station, out MetaDataComponent? stationMetaData))
                 return;
 
@@ -161,10 +161,10 @@ public sealed partial class AbductorSystem : SharedAbductorSystem
             if (!_entityManager.TryGetComponent<NavMapComponent>(grid, out var navMap))
                 return;
 
-            result.Add(station.Id, new StationBeacons
+            result.Add(station.Owner.Id, new StationBeacons
             {
                 Name = stationMetaData.EntityName,
-                StationId = station.Id,
+                StationId = station.Owner.Id,
                 Beacons = [.. navMap.Beacons.Values],
             });
         }

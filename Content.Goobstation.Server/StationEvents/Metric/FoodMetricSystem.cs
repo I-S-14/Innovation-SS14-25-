@@ -1,3 +1,4 @@
+using Content.Shared.Nutrition.EntitySystems;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Goobstation.Server.StationEvents.Metric.Components;
@@ -15,8 +16,11 @@ namespace Content.Goobstation.Server.StationEvents.Metric;
 /// <summary>
 ///   Measure crew's hunger, thirst and charge
 /// </summary>
-public sealed class FoodMetricSystem : ChaosMetricSystem<FoodMetricComponent>
+public sealed partial class FoodMetricSystem : ChaosMetricSystem<FoodMetricComponent>
 {
+    [Dependency] private HungerSystem _hunger = default!;
+    [Dependency] private ThirstSystem _thirst = default!;
+
     private static readonly Gauge HungerThresholdCount = Metrics.CreateGauge(
         "game_director_metric_food_hunger_threshold_count",
         "Number of entities at a specific hunger threshold.",
@@ -111,25 +115,25 @@ public sealed class FoodMetricSystem : ChaosMetricSystem<FoodMetricComponent>
         return chargeSc;
     }
 
-    private static double CalculateHunger(FoodMetricComponent component, EntityQuery<SatiationComponent> hungerQ, EntityUid uid,
+    private double CalculateHunger(FoodMetricComponent component, EntityQuery<SatiationComponent> hungerQ, EntityUid uid,
         double hungerSc, Dictionary<HungerThreshold, int> hungerCounts)
     {
         if (!hungerQ.TryGetComponent(uid, out var hunger))
             return hungerSc;
-        var threshold = hunger.CurrentThreshold;
+        var threshold = _hunger.GetHungerThreshold(uid, comp: hunger);
         hungerSc += component.HungerScores.GetValueOrDefault(threshold).Double();
         hungerCounts[threshold] = hungerCounts.GetValueOrDefault(threshold) + 1;
         return hungerSc;
     }
 
-    private static double CalculateThirst(FoodMetricComponent component,
+    private double CalculateThirst(FoodMetricComponent component,
         EntityQuery<SatiationComponent> thirstQ,
         EntityUid uid, double thirstSc,
         Dictionary<ThirstThreshold, int> thirstCounts)
     {
         if (!thirstQ.TryGetComponent(uid, out var thirst))
             return thirstSc;
-        var threshold = thirst.CurrentThirstThreshold;
+        var threshold = _thirst.GetThirstThreshold(uid, thirst);
         thirstSc += component.ThirstScores.GetValueOrDefault(threshold).Double();
         thirstCounts[threshold] = thirstCounts.GetValueOrDefault(threshold) + 1;
 

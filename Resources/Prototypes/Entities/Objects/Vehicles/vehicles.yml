@@ -10,7 +10,7 @@
   - type: Pullable
   - type: Physics
     bodyType: KinematicController
-  - type: Vehicle
+  - type: OperatorVehicle
     canAttack: true
   - type: StrapVehicle
   - type: Strap

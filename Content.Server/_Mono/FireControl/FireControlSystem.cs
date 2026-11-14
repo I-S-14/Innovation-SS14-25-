@@ -53,7 +53,7 @@ public sealed partial class FireControlSystem : EntitySystem
         InitializeTargetGuided();
     }
 
-    private void OnPowerChanged(EntityUid uid, FireControlServerComponent component, PowerChangedEvent args)
+    private void OnPowerChanged(EntityUid uid, FireControlServerComponent component, ref PowerChangedEvent args)
     {
         if (args.Powered)
             TryConnect(uid, component);
@@ -85,7 +85,7 @@ public sealed partial class FireControlSystem : EntitySystem
         );
     }
 
-    private void OnControllablePowerChanged(EntityUid uid, FireControllableComponent component, PowerChangedEvent args)
+    private void OnControllablePowerChanged(EntityUid uid, FireControllableComponent component, ref PowerChangedEvent args)
     {
         if (args.Powered)
             TryRegister(uid, component);
@@ -391,7 +391,7 @@ public sealed partial class FireControlSystem : EntitySystem
             if (!TryComp<GunComponent>(localWeapon, out var gun))
                 continue;
 
-            if (TryComp<TransformComponent>(localWeapon, out var weaponXform))
+            if (TryComp(localWeapon, out TransformComponent? weaponXform))
             {
                 var currentMapCoords = _xform.GetMapCoordinates(localWeapon, weaponXform);
                 var destinationMapCoords = targetCoords.ToMap(EntityManager, _xform);

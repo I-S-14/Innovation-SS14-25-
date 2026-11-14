@@ -233,16 +233,14 @@ public sealed partial class EntityScreenshotGenerator
         if (!_entityManager.TryGetComponent(entity, out AppearanceComponent? appearance))
             return;
 
-        if (!prototype.TryGetComponent<SolutionManagerComponent>(out var manager, _entityManager.ComponentFactory) ||
-            manager.Solutions == null ||
-            manager.Solutions.Count == 0)
-        {
+        var manager = _entitySystemManager.GetEntitySystem<Content.Shared.Chemistry.EntitySystems.SharedSolutionContainerSystem>()
+            .EnumerateSolutions(prototype).ToDictionary(entry => entry.Id, entry => entry.Solution);
+        if (manager.Count == 0)
             return;
-        }
 
-        var solutionEntry = manager.Solutions.FirstOrDefault(entry => entry.Value.Volume > 0);
+        var solutionEntry = manager.FirstOrDefault(entry => entry.Value.Volume > 0);
         if (string.IsNullOrEmpty(solutionEntry.Key))
-            solutionEntry = manager.Solutions.First();
+            solutionEntry = manager.First();
 
         var solution = solutionEntry.Value;
         var appearanceSystem = _entitySystemManager.GetEntitySystem<SharedAppearanceSystem>();

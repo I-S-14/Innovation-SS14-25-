@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Server.VendingMachines;
-using Content.Shared.VendingMachines.Components;
 using Content.Shared.VendingMachines;
 
 namespace Content.Server.Destructible.Thresholds.Behaviors;

@@ -1,0 +1,31 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: 5327c414c5:Resources/Prototypes/Catalog/Fills/Crates/service.yml
+- type: entity
+  parent: CratePlastic
+  id: CrateServiceJanitorialSupplies
+  name: janitorial supplies crate
+  description: Fight back against dirt and grime with Nanotrasen's Janitorial Essentials(tm)!
+    Contains three buckets, caution signs, and cleaner grenades. Also has a single
+    mop, broom, spray cleaner, wire brush, rag, and trash bag.
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:AllSelector
+        children:
+        - !type:NestedSelector
+          tableId: AllSoapsTable
+        - id: MopItem
+        - id: MopBucketCubeWrapped
+        - id: Bucket
+          amount: '3'
+        - id: WetFloorSign
+          amount: '2'
+        - id: SprayBottleSpaceCleaner
+          amount: '2'
+        - id: TrashBag
+          amount: '2'
+        - id: Plunger
+          amount: '2'
+        - id: BoxCleanerGrenades
+        - id: WireBrush
+          amount: '2'

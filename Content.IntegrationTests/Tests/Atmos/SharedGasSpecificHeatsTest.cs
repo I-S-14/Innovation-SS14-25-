@@ -16,8 +16,10 @@ namespace Content.IntegrationTests.Tests.Atmos;
 /// </summary>
 [TestOf(nameof(SharedAtmosphereSystem))]
 [FixtureLifeCycle(LifeCycle.InstancePerTestCase)] // Goobstation
-public sealed class SharedGasSpecificHeatsTest
+public sealed class SharedGasSpecificHeatsTest : Content.IntegrationTests.Fixtures.GameTest
 {
+    [SidedDependency(Side.Server)] private readonly Content.Server.Atmos.EntitySystems.AtmosphereSystem SAtmos = default!;
+    [SidedDependency(Side.Client)] private readonly AtmosphereSystem CAtmos = default!;
     [SidedDependency(Side.Server)] private readonly IConfigurationManager _sConfig = default!;
     [SidedDependency(Side.Client)] private readonly IConfigurationManager _cConfig = default!;
 
@@ -26,13 +28,6 @@ public sealed class SharedGasSpecificHeatsTest
     {
         // ensure that client and server atmos are fully inited otherwise arrays might not agree
         await Pair.ReallyBeIdle(1);
-    }
-
-    // Goobstation
-    [TearDown]
-    public async Task TearDown()
-    {
-        await _pair.CleanReturnAsync();
     }
 
     /// <summary>

@@ -25,7 +25,6 @@
       tags:
       - FoodSnack
   - type: Damageable
-  - type: Injurable
     damageContainer: Inorganic
   - type: DamageOnLand
     damage:

@@ -1,3 +1,5 @@
+using Content.Shared.Station.Systems;
+using Content.Shared.AlertLevel;
 using Content.Goobstation.Server.Devil.Contract;
 using Content.Goobstation.Shared.Slasher.Components;
 using Content.Goobstation.Shared.Slasher;
@@ -45,6 +47,10 @@ namespace Content.Goobstation.Server.Slasher.Systems;
 /// </summary>
 public sealed partial class SlasherSoulStealSystem : EntitySystem
 {
+    //IS14-change start: typed IDs preserve the retained Goob prototypes.
+    private static readonly ProtoId<WeatherPrototype> CompatibilityStormWeatherId = "Storm";
+    //IS14-change end
+
     [Dependency] private SharedActionsSystem _actions = default!;
     [Dependency] private MobStateSystem _mobState = default!;
     [Dependency] private StandingStateSystem _standing = default!;
@@ -67,7 +73,7 @@ public sealed partial class SlasherSoulStealSystem : EntitySystem
     [Dependency] private PoweredLightSystem _light = default!;
     [Dependency] private SlasherRegenerateSystem _regenerate = default!;
     [Dependency] private InventorySystem _inventory = default!;
-    [Dependency] private SharedStationSpawningSystem _spawning = default!;
+    [Dependency] private StationSpawningSystem _spawning = default!;
 
     public override void Initialize()
     {
@@ -252,7 +258,7 @@ public sealed partial class SlasherSoulStealSystem : EntitySystem
 
                 // Make it rain in space
                 var xform = Transform(user);
-                _weather.SetWeather(xform.MapID, _protoMan.Index<WeatherPrototype>("Storm"), null);
+                _weather.SetWeather(xform.MapID, _protoMan.Index<WeatherPrototype>(CompatibilityStormWeatherId), null);
 
                 // Swap clothing if the kit defines ascension gear
                 if (comp.AscensionGear != null)
@@ -481,7 +487,7 @@ public sealed partial class SlasherSoulStealSystem : EntitySystem
                 else
                 {
                     var ev = new GhostBooEvent();
-                    RaiseLocalEvent(entity, ev);
+                    RaiseLocalEvent(entity, ref ev);
                     handled = ev.Handled;
                 }
             }

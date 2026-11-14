@@ -17,25 +17,36 @@
     - state: pyrotton-pizza
   - type: Edible
     requiresSpecialDigestion: true
-  - type: SliceableFood
-    slice: FoodPizzaPyrottonSlice
+  - type: ToolRefinable
+    qualityNeeded: Slicing
+    refineTime: 1
+    refineFuel: 0
+    refineResult:
+    - id: FoodPizzaPyrottonSlice
+      amount: 5
+    verbText: refined-slice-verb-name
+    tooltipQualityHint: tool-refinable-component-hint-slicing
+    sound:
+      path: /Audio/Items/Culinary/chop.ogg
+  - type: ToolRefinableSolution
   - type: Tag
     tags:
     - ClothMade
     - Pizza
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 40
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 15
-        - ReagentId: Vitamin
-          Quantity: 5
-        - ReagentId: Fiber
-          Quantity: 10
-        - ReagentId: Phlogiston
-          Quantity: 5
+  - type: Solution
+    solution:
+      maxVol: 40
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 15
+      - ReagentId: Vitamin
+        Quantity: 5
+      - ReagentId: Fiber
+        Quantity: 10
+      - ReagentId: Phlogiston
+        Quantity: 5
+      temperature: 293.15
+      canReact: true
 
 - type: entity
   name: slice of pyrotton pizza
@@ -62,19 +73,20 @@
     - ClothMade
     - Pizza
     - Slice
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 6
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 3
-        - ReagentId: Vitamin
-          Quantity: 0.8
-        - ReagentId: Fiber
-          Quantity: 1.5
-        - ReagentId: Phlogiston
-          Quantity: 0.5
+  - type: Solution
+    solution:
+      maxVol: 6
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 3
+      - ReagentId: Vitamin
+        Quantity: 0.8
+      - ReagentId: Fiber
+        Quantity: 1.5
+      - ReagentId: Phlogiston
+        Quantity: 0.5
+      temperature: 293.15
+      canReact: true
 
 - type: entity
   name: carptton pizza
@@ -93,25 +105,36 @@
     - state: carptton-pizza
   - type: Edible
     requiresSpecialDigestion: true
-  - type: SliceableFood
-    slice: FoodPizzaCarpttonSlice
+  - type: ToolRefinable
+    qualityNeeded: Slicing
+    refineTime: 1
+    refineFuel: 0
+    refineResult:
+    - id: FoodPizzaCarpttonSlice
+      amount: 5
+    verbText: refined-slice-verb-name
+    tooltipQualityHint: tool-refinable-component-hint-slicing
+    sound:
+      path: /Audio/Items/Culinary/chop.ogg
+  - type: ToolRefinableSolution
   - type: Tag
     tags:
     - ClothMade
     - Pizza
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 40
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 15
-        - ReagentId: Vitamin
-          Quantity: 5
-        - ReagentId: Fiber
-          Quantity: 10
-        - ReagentId: CarpoToxin
-          Quantity: 5
+  - type: Solution
+    solution:
+      maxVol: 40
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 15
+      - ReagentId: Vitamin
+        Quantity: 5
+      - ReagentId: Fiber
+        Quantity: 10
+      - ReagentId: CarpoToxin
+        Quantity: 5
+      temperature: 293.15
+      canReact: true
 
 - type: entity
   name: slice of carptton pizza
@@ -138,19 +161,20 @@
     - ClothMade
     - Pizza
     - Slice
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 6
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 3
-        - ReagentId: Vitamin
-          Quantity: 0.8
-        - ReagentId: Fiber
-          Quantity: 1.5
-        - ReagentId: CarpoToxin
-          Quantity: 0.5
+  - type: Solution
+    solution:
+      maxVol: 6
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 3
+      - ReagentId: Vitamin
+        Quantity: 0.8
+      - ReagentId: Fiber
+        Quantity: 1.5
+      - ReagentId: CarpoToxin
+        Quantity: 0.5
+      temperature: 293.15
+      canReact: true
 
 - type: entity
   name: watermelontton pizza
@@ -169,25 +193,36 @@
     - state: watermelontton-pizza
   - type: Edible
     requiresSpecialDigestion: true
-  - type: SliceableFood
-    slice: FoodPizzaWatermelonttonSlice
+  - type: ToolRefinable
+    qualityNeeded: Slicing
+    refineTime: 1
+    refineFuel: 0
+    refineResult:
+    - id: FoodPizzaWatermelonttonSlice
+      amount: 5
+    verbText: refined-slice-verb-name
+    tooltipQualityHint: tool-refinable-component-hint-slicing
+    sound:
+      path: /Audio/Items/Culinary/chop.ogg
+  - type: ToolRefinableSolution
   - type: Tag
     tags:
     - ClothMade
     - Pizza
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 40
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 15
-        - ReagentId: Vitamin
-          Quantity: 5
-        - ReagentId: Fiber
-          Quantity: 10
-        - ReagentId: JuiceWatermelon
-          Quantity: 5
+  - type: Solution
+    solution:
+      maxVol: 40
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 15
+      - ReagentId: Vitamin
+        Quantity: 5
+      - ReagentId: Fiber
+        Quantity: 10
+      - ReagentId: JuiceWatermelon
+        Quantity: 5
+      temperature: 293.15
+      canReact: true
 
 - type: entity
   name: slice of watermelontton pizza
@@ -214,19 +249,20 @@
     - ClothMade
     - Pizza
     - Slice
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 6
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 3
-        - ReagentId: Vitamin
-          Quantity: 0.8
-        - ReagentId: Fiber
-          Quantity: 1.5
-        - ReagentId: JuiceWatermelon
-          Quantity: 0.5
+  - type: Solution
+    solution:
+      maxVol: 6
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 3
+      - ReagentId: Vitamin
+        Quantity: 0.8
+      - ReagentId: Fiber
+        Quantity: 1.5
+      - ReagentId: JuiceWatermelon
+        Quantity: 0.5
+      temperature: 293.15
+      canReact: true
 
 # Crust
 
@@ -244,13 +280,14 @@
     sprite: _CorvaxGoob/Objects/Consumable/Food/Baked/pizza.rsi
     layers:
     - state: crust
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 1.5
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 1
+  - type: Solution
+    solution:
+      maxVol: 1.5
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 1
+      temperature: 293.15
+      canReact: true
   - type: Item
     size: Tiny
   - type: Tag
@@ -275,15 +312,16 @@
     sprite: _CorvaxGoob/Objects/Consumable/Food/Baked/pizza.rsi
     layers:
     - state: crust
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 1.5
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 0.75
-        - ReagentId: Fiber
-          Quantity: 0.25
+  - type: Solution
+    solution:
+      maxVol: 1.5
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 0.75
+      - ReagentId: Fiber
+        Quantity: 0.25
+      temperature: 293.15
+      canReact: true
   - type: Item
     size: Tiny
   - type: Tag

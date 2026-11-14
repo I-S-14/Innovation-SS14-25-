@@ -13,7 +13,7 @@ using Robust.Shared.Timing;
 
 namespace Content.Client.Crayon;
 
-public sealed partial class CrayonSystem : SharedCrayonSystem
+public sealed partial class CrayonSystem : EntitySystem
 {
     [Dependency] private SharedChargesSystem _charges = default!;
 

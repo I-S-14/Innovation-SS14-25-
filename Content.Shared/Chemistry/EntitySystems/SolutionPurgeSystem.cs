@@ -29,10 +29,23 @@ public sealed partial class SolutionPurgeSystem : EntitySystem
     {
         base.Update(frameTime);
 
-        var query = EntityQueryEnumerator<SolutionPurgeComponent, SolutionComponent>();
-        while (query.MoveNext(out var uid, out var purge, out var solution))
+        //IS14-change: support both new solution entities and retained named item solutions.
+        var query = EntityQueryEnumerator<SolutionPurgeComponent>();
+        while (query.MoveNext(out var uid, out var purge))
         {
             if (_timing.CurTime < purge.NextPurgeTime)
+                continue;
+
+            Entity<SolutionComponent> target;
+            if (purge.SolutionName != null)
+            {
+                if (!_solutionContainer.TryGetSolution(uid, purge.SolutionName, out var named))
+                    continue;
+                target = named.Value;
+            }
+            else if (TryComp<SolutionComponent>(uid, out var solution))
+                target = (uid, solution);
+            else
                 continue;
 
             // timer ignores if it's empty, it's just a fixed cycle
@@ -40,7 +53,7 @@ public sealed partial class SolutionPurgeSystem : EntitySystem
             // Needs to be networked and dirtied so that the client can reroll it during prediction
             Dirty(uid, purge);
 
-            _solutionContainer.SplitSolutionWithout((uid, solution),
+            _solutionContainer.SplitSolutionWithout(target,
                 purge.Quantity,
                 purge.Preserve.ToArray());
         }

@@ -41,7 +41,7 @@ public sealed partial class SpreaderSystem : EntitySystem
     // TODO PERFORMANCE Assign each prototype to an index and convert dictionary to array
     private readonly Dictionary<EntityUid, Dictionary<string, int>> _gridUpdates = [];
 
-    private EntityQuery<EdgeSpreaderComponent> _query;
+    [Dependency] private EntityQuery<EdgeSpreaderComponent> _query = default!; //IS14-change: initialize retained query.
 
     // goob edit - faster smoke.
     // it's funny how it's stored here and spreader prototype updates have 0 references.
@@ -261,31 +261,24 @@ public sealed partial class SpreaderSystem : EntitySystem
             var directionEnumerator = _map.GetAnchoredEntities(neighborEnt, neighborGrid, neighborPos);
             var occupied = false;
 
-            // Goob edit start
+            //IS14-change start: retain Goob's option to spread through blocking tiles.
             if (!spreaderPrototype.IgnoreBlockedTiles)
             {
-                if (!_airtightQuery.TryGetComponent(ent, out var airtight) || !airtight.AirBlocked || _tag.HasTag(ent.Value, IgnoredTag))
+                while (directionEnumerator.MoveNext(out var entity))
                 {
-                    if (!airtightQuery.TryGetComponent(ent, out var airtight) || !airtight.AirBlocked || _tag.HasTag(ent.Value, IgnoredTag))
-                    {
+                    if (!_airtightQuery.TryGetComponent(entity, out var airtight) || !airtight.AirBlocked || _tag.HasTag(entity.Value, IgnoredTag))
                         continue;
-                    }
-
                     if ((airtight.AirBlockedDirection & otherAtmosDir) == 0x0)
                         continue;
-
                     occupied = true;
                     break;
                 }
-
-                if (occupied)
-                    continue;
-
-                directionEnumerator = _map.GetAnchoredEntitiesEnumerator(neighborEnt, neighborGrid, neighborPos);
             }
-
+            if (occupied)
+                continue;
+            directionEnumerator = _map.GetAnchoredEntities(neighborEnt, neighborGrid, neighborPos);
             var oldCount = occupiedTiles.Count;
-            // Goob edit end
+            //IS14-change end
 
             while (directionEnumerator.MoveNext(out var ent))
             {

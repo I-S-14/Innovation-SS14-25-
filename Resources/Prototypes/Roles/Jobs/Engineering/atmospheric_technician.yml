@@ -30,7 +30,6 @@
   - !type:AddComponentSpecial # Goobstation
     components:
     - type: EngineeringStaff
-  weight: 8 # IS14-edit
 
 - type: startingGear
   id: AtmosphericTechnicianGear

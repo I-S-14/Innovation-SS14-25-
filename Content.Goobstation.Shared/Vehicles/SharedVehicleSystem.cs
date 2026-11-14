@@ -204,7 +204,9 @@ public abstract partial class SharedVehicleSystem : EntitySystem
     {
         if (ent.Comp.OverlayPrototype == null)
             return;
-        var overlay = EntityManager.SpawnEntity(ent.Comp.OverlayPrototype, Transform(ent).Coordinates);
+        //IS14-change start
+        var overlay = Spawn(ent.Comp.OverlayPrototype, Transform(ent).Coordinates);
+        //IS14-change end
         _transform.SetParent(overlay, ent);
         _transform.SetLocalPosition(overlay, Vector2.Zero);
         _transform.SetLocalRotation(overlay, Angle.Zero);
@@ -267,7 +269,9 @@ public abstract partial class SharedVehicleSystem : EntitySystem
 
         if (vehicleComp.ActiveOverlay.HasValue)
         {
-            EntityManager.QueueDeleteEntity(vehicleComp.ActiveOverlay.Value);
+            //IS14-change start
+            QueueDel(vehicleComp.ActiveOverlay.Value);
+            //IS14-change end
             vehicleComp.ActiveOverlay = null;
         }
         RemComp<RelayInputMoverComponent>(driver);

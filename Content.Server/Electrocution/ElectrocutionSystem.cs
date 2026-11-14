@@ -1,3 +1,4 @@
+using Content.Shared.Beam.Components; // IS14-change: upstream namespace move
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Goobstation.Common.Effects;
@@ -38,7 +39,6 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Spawners;
 using Robust.Shared.Timing; // Goobstation - Add Cooldown to shock to prevent entity overload
-using Robust.Shared.Timing;
 using PullableComponent = Content.Shared.Movement.Pulling.Components.PullableComponent;
 using PullerComponent = Content.Shared.Movement.Pulling.Components.PullerComponent;
 
@@ -46,12 +46,11 @@ namespace Content.Server.Electrocution;
 
 public sealed partial class ElectrocutionSystem : SharedElectrocutionSystem
 {
-    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
     [Dependency] private readonly IGameTiming _gameTiming = default!; // Goobstation - Add Cooldown to shock to prevent entity overload
     [Dependency] private readonly SparksSystem _sparks = default!; // goob edit - finally visual fucking effects
     [Dependency] private IAdminLogManager _adminLogger = default!;
     [Dependency] private IRobustRandom _random = default!;
-    [Dependency] private IGameTiming _timing = default!;
+
     [Dependency] private DamageableSystem _damageable = default!;
     [Dependency] private EntityLookupSystem _entityLookup = default!;
     [Dependency] private MeleeWeaponSystem _meleeWeapon = default!;
@@ -92,7 +91,6 @@ public sealed partial class ElectrocutionSystem : SharedElectrocutionSystem
 
         SubscribeLocalEvent<ElectrifiedComponent, StartCollideEvent>(OnElectrifiedStartCollide);
         SubscribeLocalEvent<ElectrifiedComponent, AttackedEvent>(OnElectrifiedAttacked);
-        SubscribeLocalEvent<ElectrifiedComponent, ActivateInWorldEvent>(OnElectrifiedActivate); // CorvaxGoob-Fixes
         SubscribeLocalEvent<ElectrifiedComponent, InteractHandEvent>(OnElectrifiedHandInteract);
         SubscribeLocalEvent<ElectrifiedComponent, InteractUsingEvent>(OnElectrifiedInteractUsing);
         SubscribeLocalEvent<ElectrifiedComponent, ActivateInWorldEvent>(OnElectrifiedActivateInWorld, before: [typeof(AirlockSystem), typeof(DoorSystem)]);
@@ -204,12 +202,6 @@ public sealed partial class ElectrocutionSystem : SharedElectrocutionSystem
             TryDoElectrifiedAct(uid, args.User, 1, electrified);
     }
 
-    private void OnElectrifiedActivate(EntityUid uid, ElectrifiedComponent electrified, ActivateInWorldEvent args) // CorvaxGoob-Fixes
-    {
-        if (electrified.OnHandInteract)
-            TryDoElectrifiedAct(uid, args.User, 1, electrified);
-    }
-
     private void OnLightAttacked(EntityUid uid, PoweredLightComponent component, AttackedEvent args)
     {
         if (!component.CurrentLit || args.Used != args.User)
@@ -235,10 +227,11 @@ public sealed partial class ElectrocutionSystem : SharedElectrocutionSystem
 
     private void OnElectrifiedActivateInWorld(EntityUid uid, ElectrifiedComponent electrified, ActivateInWorldEvent args)
     {
-        if (!electrified.OnActivateInWorld || args.Handled)
+        // IS14: combine the Corvax hand-interaction fallback with Wizards activation handling.
+        if (args.Handled || !electrified.OnActivateInWorld && !electrified.OnHandInteract)
             return;
 
-        if (TryDoElectrifiedAct(uid, args.User, 1, electrified))
+        if (TryDoElectrifiedAct(uid, args.User, 1, electrified) && electrified.OnActivateInWorld)
             args.Handled = true;
     }
 
@@ -275,7 +268,7 @@ public sealed partial class ElectrocutionSystem : SharedElectrocutionSystem
         if (!_random.Prob(electrified.Probability))
             return false;
 
-        if (electrified.ShockDelay != null && electrified.NextShock > _timing.CurTime)
+        if (electrified.ShockDelay != null && electrified.NextShock > _gameTiming.CurTime)
             return false;
 
         EnsureComp<ActivatedElectrifiedComponent>(uid);
@@ -313,7 +306,7 @@ public sealed partial class ElectrocutionSystem : SharedElectrocutionSystem
                 );
             }
             if (lastRet)
-                electrified.NextShock = _timing.CurTime + electrified.ShockDelay;
+                electrified.NextShock = _gameTiming.CurTime + electrified.ShockDelay;
             return lastRet;
         }
 

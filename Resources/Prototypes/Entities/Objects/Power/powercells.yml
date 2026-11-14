@@ -44,7 +44,7 @@
           Neither: {visible: true, state: o1}
           Empty: {visible: false}
   - type: StealTarget #Goobstation - IPC steal
-    stealGroup: Battery
+    stealGroup: [Battery]
   - type: BatteryDrinkerSource # Goobstation - Energycrit
     maxAmount: 360
 

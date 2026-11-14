@@ -2,12 +2,12 @@
 
 - type: guideEntry
   id: Changelings
-  name: "Генокрады" # Corvax-Goob-Locale
+  name: is14-upstream-guide-changelings # Corvax-Goob-Locale
   text: "/ServerInfo/_Goobstation/Guidebook/Antagonist/Changelings.xml"
   children:
   - ChangelingsAbilities
 
 - type: guideEntry
   id: ChangelingsAbilities
-  name: "Способности" # Corvax-Goob-Locale
+  name: is14-upstream-guide-changelingsabilities # Corvax-Goob-Locale
   text: "/ServerInfo/_Goobstation/Guidebook/Antagonist/ChangelingsAbilities.xml"

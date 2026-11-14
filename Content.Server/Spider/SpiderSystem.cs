@@ -111,7 +111,8 @@ public sealed partial class SpiderSystem : SharedSpiderSystem
     private bool IsTileBlockedByWeb(EntityCoordinates coords)
     {
         _webs.Clear();
-        _turf.GetEntitiesInTile(coords, _webs);
+        // IS14-change: webs have non-hard fixtures; the current lookup excludes sensors by default.
+        _turf.GetEntitiesInTile(coords, _webs, LookupFlags.Static | LookupFlags.Sensors);
         foreach (var entity in _webs)
         {
             if (HasComp<SpiderWebObjectComponent>(entity))

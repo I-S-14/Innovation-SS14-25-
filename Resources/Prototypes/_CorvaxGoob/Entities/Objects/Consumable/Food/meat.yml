@@ -11,10 +11,18 @@
     graph: VulpkaninSteak
     node: start
     defaultTarget: vulpkanin steak
-  - type: SliceableFood
-    count: 3
-    slice: FoodVulpkaninCutlet
-
+  - type: ToolRefinable
+    qualityNeeded: Slicing
+    refineTime: 1
+    refineFuel: 0
+    refineResult:
+    - id: FoodVulpkaninCutlet
+      amount: 3
+    verbText: refined-slice-verb-name
+    tooltipQualityHint: tool-refinable-component-hint-slicing
+    sound:
+      path: /Audio/Items/Culinary/chop.ogg
+  - type: ToolRefinableSolution
 - type: entity
   name: vulpkanin steak
   parent: FoodMeatCooked
@@ -25,10 +33,18 @@
     sprite: _CorvaxGoob/Objects/Consumable/Food/meat.rsi
     layers:
     - state: vulp-cooked
-  - type: SliceableFood
-    count: 3
-    slice: FoodVulpkaninCutletCooked
-
+  - type: ToolRefinable
+    qualityNeeded: Slicing
+    refineTime: 1
+    refineFuel: 0
+    refineResult:
+    - id: FoodVulpkaninCutletCooked
+      amount: 3
+    verbText: refined-slice-verb-name
+    tooltipQualityHint: tool-refinable-component-hint-slicing
+    sound:
+      path: /Audio/Items/Culinary/chop.ogg
+  - type: ToolRefinableSolution
 - type: entity
   name: raw vulpkanin cutlet
   parent: FoodMeatBase
@@ -43,14 +59,16 @@
   - type: Sprite
     sprite: _CorvaxGoob/Objects/Consumable/Food/meat.rsi
     state: vulp_cutlet
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        reagents:
-        - ReagentId: UncookedAnimalProteins
-          Quantity: 3
-        - ReagentId: Fat
-          Quantity: 2
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: UncookedAnimalProteins
+        Quantity: 3
+      - ReagentId: Fat
+        Quantity: 2
+      maxVol: 0
+      temperature: 293.15
+      canReact: true
   - type: Construction
     graph: VulpkaninCutlet
     node: start
@@ -70,14 +88,16 @@
   - type: Sprite
     sprite: _CorvaxGoob/Objects/Consumable/Food/meat.rsi
     state: vulp_cutlet-cooked
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 2
-        - ReagentId: Protein
-          Quantity: 2
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 2
+      - ReagentId: Protein
+        Quantity: 2
+      maxVol: 0
+      temperature: 293.15
+      canReact: true
   - type: Construction
     graph: VulpkaninCutlet
     node: vulpkanin cutlet
@@ -99,10 +119,18 @@
     graph: ArachnidSteak
     node: start
     defaultTarget: arachnid steak
-  - type: SliceableFood
-    count: 3
-    slice: FoodArachnidCutlet
-
+  - type: ToolRefinable
+    qualityNeeded: Slicing
+    refineTime: 1
+    refineFuel: 0
+    refineResult:
+    - id: FoodArachnidCutlet
+      amount: 3
+    verbText: refined-slice-verb-name
+    tooltipQualityHint: tool-refinable-component-hint-slicing
+    sound:
+      path: /Audio/Items/Culinary/chop.ogg
+  - type: ToolRefinableSolution
 - type: entity
   name: arachnid steak
   parent: FoodMeatCooked
@@ -113,10 +141,18 @@
     sprite: _CorvaxGoob/Objects/Consumable/Food/meat.rsi
     layers:
     - state: arachnid-cooked
-  - type: SliceableFood
-    count: 3
-    slice: FoodArachnidCutletCooked
-
+  - type: ToolRefinable
+    qualityNeeded: Slicing
+    refineTime: 1
+    refineFuel: 0
+    refineResult:
+    - id: FoodArachnidCutletCooked
+      amount: 3
+    verbText: refined-slice-verb-name
+    tooltipQualityHint: tool-refinable-component-hint-slicing
+    sound:
+      path: /Audio/Items/Culinary/chop.ogg
+  - type: ToolRefinableSolution
 - type: entity
   name: raw arachnid cutlet
   parent: FoodMeatBase
@@ -131,14 +167,16 @@
   - type: Sprite
     sprite: _CorvaxGoob/Objects/Consumable/Food/meat.rsi
     state: arachnid_cutlet
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        reagents:
-        - ReagentId: UncookedAnimalProteins
-          Quantity: 3
-        - ReagentId: Fat
-          Quantity: 2
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: UncookedAnimalProteins
+        Quantity: 3
+      - ReagentId: Fat
+        Quantity: 2
+      maxVol: 0
+      temperature: 293.15
+      canReact: true
   - type: Construction
     graph: ArachnidCutlet
     node: start
@@ -158,14 +196,16 @@
   - type: Sprite
     sprite: _CorvaxGoob/Objects/Consumable/Food/meat.rsi
     state: arachnid_cutlet-cooked
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 2
-        - ReagentId: Protein
-          Quantity: 2
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 2
+      - ReagentId: Protein
+        Quantity: 2
+      maxVol: 0
+      temperature: 293.15
+      canReact: true
   - type: Construction
     graph: ArachnidCutlet
     node: arachnid cutlet
@@ -187,22 +227,32 @@
     graph: SlimeSteak
     node: start
     defaultTarget: slime steak
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        reagents:
-        - ReagentId: UncookedAnimalProteins
-          Quantity: 3
-        - ReagentId: Slime
-          Quantity: 6
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: UncookedAnimalProteins
+        Quantity: 3
+      - ReagentId: Slime
+        Quantity: 6
+      maxVol: 0
+      temperature: 293.15
+      canReact: true
   - type: FlavorProfile
     flavors:
       - meaty
       - slimy
-  - type: SliceableFood
-    count: 3
-    slice: FoodSlimeCutlet
-
+  - type: ToolRefinable
+    qualityNeeded: Slicing
+    refineTime: 1
+    refineFuel: 0
+    refineResult:
+    - id: FoodSlimeCutlet
+      amount: 3
+    verbText: refined-slice-verb-name
+    tooltipQualityHint: tool-refinable-component-hint-slicing
+    sound:
+      path: /Audio/Items/Culinary/chop.ogg
+  - type: ToolRefinableSolution
 - type: entity
   name: slime steak
   parent: FoodMeatCooked
@@ -213,24 +263,34 @@
     sprite: _CorvaxGoob/Objects/Consumable/Food/meat.rsi
     layers:
     - state: slime-cooked
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 7
-        - ReagentId: Protein
-          Quantity: 3
-        - ReagentId: Slime
-          Quantity: 5
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 7
+      - ReagentId: Protein
+        Quantity: 3
+      - ReagentId: Slime
+        Quantity: 5
+      maxVol: 0
+      temperature: 293.15
+      canReact: true
   - type: FlavorProfile
     flavors:
       - meaty
       - slimy
-  - type: SliceableFood
-    count: 3
-    slice: FoodSlimeCutletCooked
-
+  - type: ToolRefinable
+    qualityNeeded: Slicing
+    refineTime: 1
+    refineFuel: 0
+    refineResult:
+    - id: FoodSlimeCutletCooked
+      amount: 3
+    verbText: refined-slice-verb-name
+    tooltipQualityHint: tool-refinable-component-hint-slicing
+    sound:
+      path: /Audio/Items/Culinary/chop.ogg
+  - type: ToolRefinableSolution
 - type: entity
   name: raw slime cutlet
   parent: FoodMeatBase
@@ -245,14 +305,16 @@
   - type: Sprite
     sprite: _CorvaxGoob/Objects/Consumable/Food/meat.rsi
     state: slime_cutlet
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        reagents:
-        - ReagentId: UncookedAnimalProteins
-          Quantity: 3
-        - ReagentId: Slime
-          Quantity: 4
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: UncookedAnimalProteins
+        Quantity: 3
+      - ReagentId: Slime
+        Quantity: 4
+      maxVol: 0
+      temperature: 293.15
+      canReact: true
   - type: Construction
     graph: SlimeCutlet
     node: start
@@ -272,16 +334,18 @@
   - type: Sprite
     sprite: _CorvaxGoob/Objects/Consumable/Food/meat.rsi
     state: slime_cutlet-cooked
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 2
-        - ReagentId: Protein
-          Quantity: 2
-        - ReagentId: Slime
-          Quantity: 3
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 2
+      - ReagentId: Protein
+        Quantity: 2
+      - ReagentId: Slime
+        Quantity: 3
+      maxVol: 0
+      temperature: 293.15
+      canReact: true
   - type: Construction
     graph: SlimeCutlet
     node: slime cutlet
@@ -303,10 +367,18 @@
     graph: TajaranSteak
     node: start
     defaultTarget: tajaran steak
-  - type: SliceableFood
-    count: 3
-    slice: FoodTajaranCutlet
-
+  - type: ToolRefinable
+    qualityNeeded: Slicing
+    refineTime: 1
+    refineFuel: 0
+    refineResult:
+    - id: FoodTajaranCutlet
+      amount: 3
+    verbText: refined-slice-verb-name
+    tooltipQualityHint: tool-refinable-component-hint-slicing
+    sound:
+      path: /Audio/Items/Culinary/chop.ogg
+  - type: ToolRefinableSolution
 - type: entity
   name: tajaran steak
   parent: FoodMeatCooked
@@ -317,10 +389,18 @@
     sprite: _CorvaxGoob/Objects/Consumable/Food/meat.rsi
     layers:
     - state: tajaran-cooked
-  - type: SliceableFood
-    count: 3
-    slice: FoodTajaranCutletCooked
-
+  - type: ToolRefinable
+    qualityNeeded: Slicing
+    refineTime: 1
+    refineFuel: 0
+    refineResult:
+    - id: FoodTajaranCutletCooked
+      amount: 3
+    verbText: refined-slice-verb-name
+    tooltipQualityHint: tool-refinable-component-hint-slicing
+    sound:
+      path: /Audio/Items/Culinary/chop.ogg
+  - type: ToolRefinableSolution
 - type: entity
   name: raw tajaran cutlet
   parent: FoodMeatBase
@@ -335,14 +415,16 @@
   - type: Sprite
     sprite: _CorvaxGoob/Objects/Consumable/Food/meat.rsi
     state: tajaran_cutlet
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        reagents:
-        - ReagentId: UncookedAnimalProteins
-          Quantity: 3
-        - ReagentId: Fat
-          Quantity: 2
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: UncookedAnimalProteins
+        Quantity: 3
+      - ReagentId: Fat
+        Quantity: 2
+      maxVol: 0
+      temperature: 293.15
+      canReact: true
   - type: Construction
     graph: TajaranCutlet
     node: start
@@ -362,14 +444,16 @@
   - type: Sprite
     sprite: _CorvaxGoob/Objects/Consumable/Food/meat.rsi
     state: tajaran_cutlet-cooked
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 2
-        - ReagentId: Protein
-          Quantity: 2
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 2
+      - ReagentId: Protein
+        Quantity: 2
+      maxVol: 0
+      temperature: 293.15
+      canReact: true
   - type: Construction
     graph: TajaranCutlet
     node: tajaran cutlet
@@ -394,10 +478,18 @@
   - type: FlavorProfile
     flavors:
     - chicken
-  - type: SliceableFood
-    count: 3
-    slice: FoodVoxCutlet
-
+  - type: ToolRefinable
+    qualityNeeded: Slicing
+    refineTime: 1
+    refineFuel: 0
+    refineResult:
+    - id: FoodVoxCutlet
+      amount: 3
+    verbText: refined-slice-verb-name
+    tooltipQualityHint: tool-refinable-component-hint-slicing
+    sound:
+      path: /Audio/Items/Culinary/chop.ogg
+  - type: ToolRefinableSolution
 - type: entity
   name: vox steak
   parent: FoodMeatCooked
@@ -411,10 +503,18 @@
   - type: FlavorProfile
     flavors:
     - chicken
-  - type: SliceableFood
-    count: 3
-    slice: FoodVoxCutletCooked
-
+  - type: ToolRefinable
+    qualityNeeded: Slicing
+    refineTime: 1
+    refineFuel: 0
+    refineResult:
+    - id: FoodVoxCutletCooked
+      amount: 3
+    verbText: refined-slice-verb-name
+    tooltipQualityHint: tool-refinable-component-hint-slicing
+    sound:
+      path: /Audio/Items/Culinary/chop.ogg
+  - type: ToolRefinableSolution
 - type: entity
   name: raw vox cutlet
   parent: FoodMeatBase
@@ -429,14 +529,16 @@
   - type: Sprite
     sprite: _CorvaxGoob/Objects/Consumable/Food/meat.rsi
     state: vox_cutlet
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        reagents:
-        - ReagentId: UncookedAnimalProteins
-          Quantity: 3
-        - ReagentId: Fat
-          Quantity: 2
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: UncookedAnimalProteins
+        Quantity: 3
+      - ReagentId: Fat
+        Quantity: 2
+      maxVol: 0
+      temperature: 293.15
+      canReact: true
   - type: Construction
     graph: VoxCutlet
     node: start
@@ -456,14 +558,16 @@
   - type: Sprite
     sprite: _CorvaxGoob/Objects/Consumable/Food/meat.rsi
     state: vox_cutlet-cooked
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 2
-        - ReagentId: Protein
-          Quantity: 2
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 2
+      - ReagentId: Protein
+        Quantity: 2
+      maxVol: 0
+      temperature: 293.15
+      canReact: true
   - type: Construction
     graph: VoxCutlet
     node: vox cutlet
@@ -486,22 +590,32 @@
     graph: MothSteak
     node: start
     defaultTarget: moth steak
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        reagents:
-        - ReagentId: Fiber
-          Quantity: 3
-        - ReagentId: UncookedAnimalProteins
-          Quantity: 6
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Fiber
+        Quantity: 3
+      - ReagentId: UncookedAnimalProteins
+        Quantity: 6
+      maxVol: 0
+      temperature: 293.15
+      canReact: true
   - type: FlavorProfile
     flavors:
       - meaty
       - light
-  - type: SliceableFood
-    count: 3
-    slice: FoodMothCutlet
-
+  - type: ToolRefinable
+    qualityNeeded: Slicing
+    refineTime: 1
+    refineFuel: 0
+    refineResult:
+    - id: FoodMothCutlet
+      amount: 3
+    verbText: refined-slice-verb-name
+    tooltipQualityHint: tool-refinable-component-hint-slicing
+    sound:
+      path: /Audio/Items/Culinary/chop.ogg
+  - type: ToolRefinableSolution
 - type: entity
   name: moth steak
   parent: FoodMeatCooked
@@ -512,24 +626,34 @@
     sprite: _CorvaxGoob/Objects/Consumable/Food/meat.rsi
     layers:
     - state: moth-cooked
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 7
-        - ReagentId: Protein
-          Quantity: 5
-        - ReagentId: Fiber
-          Quantity: 3
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 7
+      - ReagentId: Protein
+        Quantity: 5
+      - ReagentId: Fiber
+        Quantity: 3
+      maxVol: 0
+      temperature: 293.15
+      canReact: true
   - type: FlavorProfile
     flavors:
       - meaty
       - light
-  - type: SliceableFood
-    count: 3
-    slice: FoodMothCutletCooked
-
+  - type: ToolRefinable
+    qualityNeeded: Slicing
+    refineTime: 1
+    refineFuel: 0
+    refineResult:
+    - id: FoodMothCutletCooked
+      amount: 3
+    verbText: refined-slice-verb-name
+    tooltipQualityHint: tool-refinable-component-hint-slicing
+    sound:
+      path: /Audio/Items/Culinary/chop.ogg
+  - type: ToolRefinableSolution
 - type: entity
   name: raw moth cutlet
   parent: FoodMeatBase
@@ -544,14 +668,16 @@
   - type: Sprite
     sprite: _CorvaxGoob/Objects/Consumable/Food/meat.rsi
     state: moth_cutlet
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        reagents:
-        - ReagentId: Fiber
-          Quantity: 2
-        - ReagentId: UncookedAnimalProteins
-          Quantity: 3
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Fiber
+        Quantity: 2
+      - ReagentId: UncookedAnimalProteins
+        Quantity: 3
+      maxVol: 0
+      temperature: 293.15
+      canReact: true
   - type: Construction
     graph: MothCutlet
     node: start
@@ -571,16 +697,18 @@
   - type: Sprite
     sprite: _CorvaxGoob/Objects/Consumable/Food/meat.rsi
     state: moth_cutlet-cooked
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 2
-        - ReagentId: Protein
-          Quantity: 2
-        - ReagentId: Fiber
-          Quantity: 1
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 2
+      - ReagentId: Protein
+        Quantity: 2
+      - ReagentId: Fiber
+        Quantity: 1
+      maxVol: 0
+      temperature: 293.15
+      canReact: true
   - type: Construction
     graph: MothCutlet
     node: moth cutlet
@@ -605,10 +733,18 @@
   - type: FlavorProfile
     flavors:
     - chicken
-  - type: SliceableFood
-    count: 3
-    slice: FoodResomiCutlet
-
+  - type: ToolRefinable
+    qualityNeeded: Slicing
+    refineTime: 1
+    refineFuel: 0
+    refineResult:
+    - id: FoodResomiCutlet
+      amount: 3
+    verbText: refined-slice-verb-name
+    tooltipQualityHint: tool-refinable-component-hint-slicing
+    sound:
+      path: /Audio/Items/Culinary/chop.ogg
+  - type: ToolRefinableSolution
 - type: entity
   name: resomi steak
   parent: FoodMeatCooked
@@ -622,10 +758,18 @@
   - type: FlavorProfile
     flavors:
     - chicken
-  - type: SliceableFood
-    count: 3
-    slice: FoodResomiCutletCooked
-
+  - type: ToolRefinable
+    qualityNeeded: Slicing
+    refineTime: 1
+    refineFuel: 0
+    refineResult:
+    - id: FoodResomiCutletCooked
+      amount: 3
+    verbText: refined-slice-verb-name
+    tooltipQualityHint: tool-refinable-component-hint-slicing
+    sound:
+      path: /Audio/Items/Culinary/chop.ogg
+  - type: ToolRefinableSolution
 - type: entity
   name: raw resomi cutlet
   parent: FoodMeatBase
@@ -640,14 +784,16 @@
   - type: Sprite
     sprite: _CorvaxGoob/Objects/Consumable/Food/meat.rsi
     state: resomi_cutlet
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        reagents:
-        - ReagentId: UncookedAnimalProteins
-          Quantity: 3
-        - ReagentId: Fat
-          Quantity: 2
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: UncookedAnimalProteins
+        Quantity: 3
+      - ReagentId: Fat
+        Quantity: 2
+      maxVol: 0
+      temperature: 293.15
+      canReact: true
   - type: Construction
     graph: ResomiCutlet
     node: start
@@ -667,14 +813,16 @@
   - type: Sprite
     sprite: _CorvaxGoob/Objects/Consumable/Food/meat.rsi
     state: resomi_cutlet-cooked
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 2
-        - ReagentId: Protein
-          Quantity: 2
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 2
+      - ReagentId: Protein
+        Quantity: 2
+      maxVol: 0
+      temperature: 293.15
+      canReact: true
   - type: Construction
     graph: ResomiCutlet
     node: resomi cutlet

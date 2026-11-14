@@ -17,7 +17,11 @@
     state: full
   - type: IconSmooth
     key: palemoss
-    base: moss
+    states:
+    - !type:CornerSpriteSmoothing
+      base: moss
+      mask:
+      - palemoss
   - type: MeleeSound
     soundGroups:
       Brute:

@@ -22,9 +22,9 @@ public sealed partial class RoboticsConsoleWindow : FancyWindow
     private readonly LockSystem _lock;
     private readonly SpriteSystem _sprite;
 
-    public Action<string>? OnChangeLawsPressed; // Corvax-Goob-MutableLaws
-    public Action<string>? OnDisablePressed;
-    public Action<string>? OnDestroyPressed;
+    public Action<LocDeviceAddress>? OnChangeLawsPressed; // Corvax-Goob-MutableLaws
+    public Action<LocDeviceAddress>? OnDisablePressed;
+    public Action<LocDeviceAddress>? OnDestroyPressed;
 
     private LocDeviceAddress? _selected;
     private Dictionary<LocDeviceAddress, CyborgControlData> _cyborgs = new();
@@ -59,7 +59,7 @@ public sealed partial class RoboticsConsoleWindow : FancyWindow
         // Corvax-Goob-MutableLaws-Start
         ChangeLawsButton.OnPressed += _ =>
         {
-            OnChangeLawsPressed?.Invoke(_selected!);
+            OnChangeLawsPressed?.Invoke(_selected!.Value);
         };
         // Corvax-Goob-MutableLaws-End
         DisableButton.OnPressed += _ =>
@@ -95,7 +95,7 @@ public sealed partial class RoboticsConsoleWindow : FancyWindow
 
         if (_selected != null)
         {
-            _cyborgs.TryGetValue(_selected, out var data);
+            _cyborgs.TryGetValue(_selected.Value, out var data);
             isAiControllable = data.IsAiControllable;
             isLawChangable = data.IsLawChangable; // Corvax-Goob-MutableLaws
         }

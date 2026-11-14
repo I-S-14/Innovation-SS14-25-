@@ -227,7 +227,6 @@ public abstract partial class SharedJobSystem : EntitySystem
     public bool MindHasJobWithId(EntityUid? mindId, params ProtoId<JobPrototype>[] prototypes)
     {
 
-        MindRoleComponent? comp = null;
         if (mindId is null)
             return false;
 

@@ -14,7 +14,7 @@ public sealed partial class RoundEndCondition : AchievementCondition
 public sealed partial class RoundEndConditionSystem : AchievementConditionSystem<RoundEndCondition>
 {
     [Dependency] private IPlayerManager _player = default!;
-    [Dependency] private GameTicker _ticker = default!;
+    [Dependency] private Content.Server.GameTicking.ServerGameTicker _ticker = default!;
 
     public override void Initialize()
     {
@@ -23,7 +23,7 @@ public sealed partial class RoundEndConditionSystem : AchievementConditionSystem
         SubscribeLocalEvent<RoundEndTextAppendEvent>(OnRoundEnd);
     }
 
-    private void OnRoundEnd(RoundEndTextAppendEvent ev)
+    private void OnRoundEnd(ref RoundEndTextAppendEvent ev)
     {
         var duration = _ticker.RoundDuration();
         foreach (var session in _player.Sessions)

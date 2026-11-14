@@ -30,16 +30,20 @@ namespace Content.Server.Maps;
 [AdminCommand(AdminFlags.Mapping)]
 public sealed partial class PlanetCommand : LocalizedEntityCommands
 {
+    //IS14-change start: retain fork fields lost during merge.
+    private SharedMapSystem _mapSystem => _entManager.System<SharedMapSystem>();
+    //IS14-change end
+
     [Dependency] private IEntityManager _entManager = default!;
     [Dependency] private IPrototypeManager _protoManager = default!;
     [Dependency] private SharedMapSystem _map = default!;
 
 
 
-    public string Command => "planet";
-    public string Description => Loc.GetString("cmd-planet-desc");
-    public string Help => Loc.GetString("cmd-planet-help", ("command", Command));
-    public async void Execute(IConsoleShell shell, string argStr, string[] args)
+    public override string Command => "planet";
+    public override string Description => Loc.GetString("cmd-planet-desc");
+    public override string Help => Loc.GetString("cmd-planet-help", ("command", Command));
+    public override async void Execute(IConsoleShell shell, string argStr, string[] args)
     {
         if (args.Length != 2)
         {
@@ -123,7 +127,7 @@ public sealed partial class PlanetCommand : LocalizedEntityCommands
 
     // - End of GoobStation changes -
 
-    public CompletionResult GetCompletion(IConsoleShell shell, string[] args)
+    public override CompletionResult GetCompletion(IConsoleShell shell, string[] args)
     {
         if (args.Length == 1)
             return CompletionResult.FromHintOptions(CompletionHelper.MapIds(_entManager), "Map Id");

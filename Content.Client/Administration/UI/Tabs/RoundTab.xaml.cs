@@ -17,10 +17,9 @@ namespace Content.Client.Administration.UI.Tabs
             RobustXamlLoader.Load(this);
             IoCManager.InjectDependencies(this);
 
-            StartRound.OnPressed += _ => _console.ExecuteCommand("startround");
-            EndRound.OnPressed += _ => _console.ExecuteCommand("endround");
-            RestartRound.OnPressed += _ => _console.ExecuteCommand("restartround");
-            RestartRoundNow.OnPressed += _ => _console.ExecuteCommand("restartroundnow");
+
+
+
         }
     }
 }

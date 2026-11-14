@@ -12,7 +12,6 @@ using Robust.Shared.Analyzers;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Maths;
 using Robust.UnitTesting.Pool;
-using System.IO;
 
 namespace Content.Benchmarks;
 

@@ -31,7 +31,6 @@
           - id: FoodSpaceshroom
     - type: Damageable
       damageModifierSet: WoodMod
-    - type: Injurable
       damageContainer: StructuralBiological
     - type: Destructible
       thresholds:
@@ -61,7 +60,7 @@
   description: A wild mushroom. There's no telling what effect it could have...
   components:
   - type: Produce
-    seedId: spaceshroom # GoobStation - growable spaceshrooms
+    plantId: IS14SpaceshroomSeedsPlant # GoobStation - growable spaceshrooms
   - type: Sprite
     sprite: Objects/Misc/spaceshroom.rsi
     state: object
@@ -107,6 +106,9 @@
     heatCapacity: 750
   - type: TemperatureDamage
   - type: InternalTemperature
+    thickness: 0.02 # IS14: retain Goob mushroom cooking dimensions.
+    area: 0.02
+    conductivity: 0.43
   - type: Tag
     tags:
     - Mushroom

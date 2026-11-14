@@ -18,9 +18,10 @@ public sealed partial class EatCorpseOperator : HTNOperator
     [DataField]
     public string CorpseKey = string.Empty;
 
-    public override void Initialize(IEntitySystemManager sysManager)
+    public override void Initialize(IDependencyCollection deps)
     {
-        base.Initialize(sysManager);
+        base.Initialize(deps);
+        var sysManager = deps.Resolve<IEntitySystemManager>();
         _eatCorpse = sysManager.GetEntitySystem<EatCorpseSystem>();
         _doAfter = sysManager.GetEntitySystem<SharedDoAfterSystem>();
 

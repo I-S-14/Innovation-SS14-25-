@@ -10,7 +10,11 @@ namespace Content.Server.Salvage;
 [AdminCommand(AdminFlags.Admin)]
 sealed partial class SalvageRulerCommand : LocalizedEntityCommands
 {
-    [Dependency] private SharedMapSystem _maps = default!;
+    //IS14-change start: retain fork fields lost during merge.
+    [Dependency] private readonly IEntityManager _entities = default!;
+    private SharedMapSystem _mapSystem => _entities.System<SharedMapSystem>();
+    //IS14-change end
+
 
     public override string Command => "salvageruler";
 

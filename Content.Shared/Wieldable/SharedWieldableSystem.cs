@@ -113,7 +113,7 @@ public abstract partial class SharedWieldableSystem : EntitySystem
         }
     }
 
-    private void OnGunUnwielded(EntityUid uid, GunWieldBonusComponent component, ItemUnwieldedEvent args)
+    private void OnGunUnwielded(EntityUid uid, GunWieldBonusComponent component, ref ItemUnwieldedEvent args)
     {
         _gun.RefreshModifiers(uid, args.User);
     }
@@ -144,12 +144,12 @@ public abstract partial class SharedWieldableSystem : EntitySystem
         }
     }
 
-    private void OnSpeedModifierWielded(EntityUid uid, SpeedModifiedOnWieldComponent component, ItemWieldedEvent args)
+    private void OnSpeedModifierWielded(EntityUid uid, SpeedModifiedOnWieldComponent component, ref ItemWieldedEvent args)
     {
         _movementSpeedModifier.RefreshMovementSpeedModifiers(args.User);
     }
 
-    private void OnSpeedModifierUnwielded(EntityUid uid, SpeedModifiedOnWieldComponent component, ItemUnwieldedEvent args)
+    private void OnSpeedModifierUnwielded(EntityUid uid, SpeedModifiedOnWieldComponent component, ref ItemUnwieldedEvent args)
     {
         _movementSpeedModifier.RefreshMovementSpeedModifiers(args.User);
     }
@@ -416,7 +416,7 @@ public abstract partial class SharedWieldableSystem : EntitySystem
         _appearance.SetData(ent, WieldableVisuals.Wielded, wielded);
     }
 
-    private void OnItemUnwielded(EntityUid uid, WieldableComponent component, ItemUnwieldedEvent args)
+    private void OnItemUnwielded(EntityUid uid, WieldableComponent component, ref ItemUnwieldedEvent args)
     {
         _item.SetHeldPrefix(uid, component.OldInhandPrefix);
 

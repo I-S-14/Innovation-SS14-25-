@@ -4952,7 +4952,7 @@ entities:
       pos: -6.5,4.5
       parent: 1
     - type: WarpPoint
-      location: Эвакуационный Шаттл
+      location: is14-map-warp-58d4c587dc2d
 - proto: WeaponCapacitorRecharger
   entities:
   - uid: 219

@@ -193,7 +193,7 @@ public sealed partial class SquadEntry : PanelContainer
         Color backgroundColor;
         Color borderColor;
 
-        if (member.SensorStatus == null || !member.SensorStatus.IsAlive)
+        if (member.SensorStatus == null || !member.SensorStatus.Value.IsAlive)
         {
             backgroundColor = Color.FromHex("#1a0a0a");
             borderColor = Color.FromHex("#990000");
@@ -254,13 +254,13 @@ public sealed partial class SquadEntry : PanelContainer
 
         if (member.SensorStatus != null)
         {
-            if (!member.SensorStatus.IsAlive)
+            if (!member.SensorStatus.Value.IsAlive)
             {
                 specifier = new SpriteSpecifier.Rsi(new ResPath("Interface/Alerts/human_crew_monitoring.rsi"), "dead");
             }
-            else if (member.SensorStatus.DamagePercentage != null)
+            else if (member.SensorStatus.Value.DamagePercentage != null)
             {
-                var index = MathF.Round(4f * member.SensorStatus.DamagePercentage.Value);
+                var index = MathF.Round(4f * member.SensorStatus.Value.DamagePercentage.Value);
 
                 if (index >= 5)
                     specifier = new SpriteSpecifier.Rsi(new ResPath("Interface/Alerts/human_crew_monitoring.rsi"), "critical");
@@ -366,7 +366,7 @@ public sealed partial class SquadEntry : PanelContainer
         Color backgroundColor;
         Color borderColor;
 
-        if (status == null || !status.IsAlive)
+        if (status == null || !status.Value.IsAlive)
         {
             backgroundColor = Color.FromHex("#1a0a0a");
             borderColor = Color.FromHex("#990000");
@@ -409,16 +409,16 @@ public sealed partial class SquadEntry : PanelContainer
 
                         if (status != null)
                         {
-                            if (!status.IsAlive)
+                            if (!status.Value.IsAlive)
                             {
                                 specifier = new SpriteSpecifier.Rsi(
                                     new ResPath("Interface/Alerts/human_crew_monitoring.rsi"),
                                     "dead"
                                 );
                             }
-                            else if (status.DamagePercentage != null)
+                            else if (status.Value.DamagePercentage != null)
                             {
-                                var index = MathF.Round(4f * status.DamagePercentage.Value);
+                                var index = MathF.Round(4f * status.Value.DamagePercentage.Value);
                                 if (index >= 5)
                                     specifier = new SpriteSpecifier.Rsi(
                                         new ResPath("Interface/Alerts/human_crew_monitoring.rsi"),

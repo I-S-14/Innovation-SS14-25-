@@ -19,9 +19,9 @@ public sealed partial class BatterySlotRequiresToggleSystem : EntitySystem
     private void OnToggle(Entity<BatterySlotRequiresToggleComponent> ent, ref ItemToggledEvent args)
     {
         if (!TryComp<ItemSlotsComponent>(ent, out var itemslots)
-            || !_itemSlotsSystem.TryGetSlot(ent, ent.Comp.ItemSlot, out var slot, itemslots))
+            || !_itemSlotsSystem.TryGetSlot((ent.Owner, itemslots), ent.Comp.ItemSlot, out var slot))
             return;
 
-        _itemSlotsSystem.SetLock(ent, slot, args.Activated ^ ent.Comp.Inverted, itemslots);
+        _itemSlotsSystem.SetLock((ent.Owner, itemslots), slot, args.Activated ^ ent.Comp.Inverted);
     }
 }

@@ -12,8 +12,9 @@
   color: "#081a80"
   puddleSpriteSet: Acid # Goob
   puddleColor: "#081a8080" # Goob
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Bloodstream:
+    Medicine:
       effects:
       - !type:ModifyStatusEffect
         effectProto: StatusEffectScrambled
@@ -21,7 +22,6 @@
       - !type:ModifyStatusEffect
         effectProto: StatusEffectWoozy
         time: 20.0
-
 - type: reagent
   id: Dylovene
   name: reagent-name-dylovene
@@ -92,8 +92,9 @@
   flavor: medicine
   color: "#64ffe6"
   puddleSpriteSet: Splotchy # Goob
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Bloodstream:
+    Medicine:
       effects:
       - !type:AdjustReagent
         reagent: Histamine
@@ -109,7 +110,6 @@
         damage:
           types:
             Poison: -3
-
 - type: reagent
   id: Ethylredoxrazine
   name: reagent-name-ethylredoxrazine
@@ -942,12 +942,12 @@
   physicalDesc: reagent-physical-desc-pulpy
   flavor: medicine
   color: "#FFE774"
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Bloodstream:
+    Medicine:
       effects:
       - !type:ModifyBleed
         amount: -0.5
-
 - type: reagent
   id: Saline
   name: reagent-name-saline
@@ -1157,16 +1157,13 @@
   physicalDesc: reagent-physical-desc-oily
   flavor: medicine
   color: "#2690b5"
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Bloodstream:
+    Medicine:
       effects:
-      # what the hell, this isn't satiating at all!!
       - !type:Satiate
         satiationType: Hunger
         factor: -1
-
-  # Should heal quite literally everything, use in very small amounts
-
 - type: reagent
   id: Omnizine
   name: reagent-name-omnizine
@@ -1209,8 +1206,9 @@
   physicalDesc: reagent-physical-desc-sticky
   flavor: magical
   color: "#faf5ef"
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Bloodstream:
+    Medicine:
       effects:
       - !type:EvenHealthChange
         conditions:
@@ -1235,7 +1233,6 @@
           types:
             Caustic: 2
             Poison: 2
-
 - type: reagent
   id: ApotheosoticExtract
   name: reagent-name-apotheosotic-extract
@@ -1244,8 +1241,9 @@
   physicalDesc: reagent-physical-desc-chalky
   flavor: chalky
   color: "#fffff0"
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Bloodstream:
+    Medicine:
       effects:
       - !type:EvenHealthChange
         conditions:
@@ -1266,7 +1264,6 @@
           types:
             Caustic: 2
             Poison: 2
-
 - type: reagent
   id: Ultravasculine
   name: reagent-name-ultravasculine
@@ -1275,8 +1272,9 @@
   physicalDesc: reagent-physical-desc-thick-and-grainy
   flavor: medicine
   color: "#520e30"
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Bloodstream:
+    Medicine:
       effects:
       - !type:EvenHealthChange
         conditions:
@@ -1293,8 +1291,8 @@
           min: 0
           max: 20
         damage:
-          types:
-            Blunt: 1.5
+          groups:
+            Brute: 1.5
       - !type:EvenHealthChange
         conditions:
         - !type:ReagentCondition
@@ -1308,8 +1306,8 @@
           reagent: Ultravasculine
           min: 20
         damage:
-          types:
-            Blunt: 6
+          groups:
+            Brute: 6
       - !type:AdjustReagent
         conditions:
         - !type:ReagentCondition
@@ -1324,7 +1322,6 @@
           min: 1
         reagent: Ultravasculine
         amount: 0.5
-
 - type: reagent
   id: Oculine
   name: reagent-name-oculine
@@ -1335,11 +1332,11 @@
   color: "#404040"
   puddleSpriteSet: Shiny # Goob
   puddleColor: "#40404050" # Goob
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Bloodstream:
+    Medicine:
       effects:
-      - !type:EyeDamage
-
+      - !type:EyeDamage ''
 - type: reagent
   id: Cognizine
   name: reagent-name-cognizine
@@ -1348,15 +1345,15 @@
   physicalDesc: reagent-physical-desc-enigmatic
   flavor: magical
   color: "#b50ee8"
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Bloodstream:
+    Medicine:
       effects:
       - !type:MakeSentient
         conditions:
         - !type:ReagentCondition
           reagent: Cognizine
           min: 5
-
 - type: reagent
   id: Ethyloxyephedrine
   name: reagent-name-ethyloxyephedrine
@@ -1365,10 +1362,11 @@
   physicalDesc: reagent-physical-desc-shiny
   flavor: medicine
   color: "#d5d5e4"
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Bloodstream:
+    Medicine:
       effects:
-      - !type:Jitter
+      - !type:Jitter ''
       - !type:GenericStatusEffect
         key: Stutter
         component: StutteringAccent
@@ -1386,7 +1384,6 @@
         messages: ["ethyloxyephedrine-effect-feeling-awake", "ethyloxyephedrine-effect-clear-mind"]
         type: Local
         probability: 0.1
-
 - type: reagent
   id: Diphenylmethylamine
   name: reagent-name-diphenylmethylamine
@@ -1395,8 +1392,9 @@
   physicalDesc: reagent-physical-desc-glowing
   flavor: medicine
   color: "#b0abaa"
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Bloodstream:
+    Medicine:
       effects:
       - !type:ModifyStatusEffect
         effectProto: StatusEffectDrowsiness
@@ -1412,7 +1410,6 @@
         messages: ["ethyloxyephedrine-effect-feeling-awake", "ethyloxyephedrine-effect-clear-mind"]
         type: Local
         probability: 0.1
-
 - type: reagent
   id: Sigynate
   name: reagent-name-sigynate
@@ -1746,19 +1743,28 @@
   flavor: medicine
   color: "#0cbfe9"
   worksOnTheDead: true
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Bloodstream:
+    Medicine:
       effects:
-      - !type:AdjustTemperature
-        amount: 60000 # Heats you up as it metabolizes necessitating constant cooling.
       - !type:EvenHealthChange
         conditions:
         - !type:TemperatureCondition
-          max: 273.15
+          max: 213.0
+        - !type:TotalDamageCondition
+          min: 199.9
         damage:
-          Brute: -3
-          Burn: -3
-
+          Brute: -2
+          Burn: -2
+      - !type:EvenHealthChange
+        conditions:
+        - !type:TemperatureCondition
+          max: 213.0
+        - !type:TotalDamageCondition
+          min: 500
+        damage:
+          Brute: -4
+          Burn: -4
 - type: reagent
   id: Necrosol
   name: reagent-name-necrosol
@@ -1857,8 +1863,9 @@
   physicalDesc: reagent-physical-desc-opaque
   flavor: sweet
   color: "#A0A0A0"
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Bloodstream:
+    Medicine:
       effects:
       - !type:PopupMessage
         conditions:
@@ -1867,9 +1874,8 @@
           min: 15
         type: Local
         visualType: Medium
-        messages: [ "mannitol-effect-enlightened" ]
+        messages: ["mannitol-effect-enlightened"]
         probability: 0.2
-
 - type: reagent
   id: Psicodine
   name: reagent-name-psicodine
@@ -2019,12 +2025,13 @@
   - Medical
   flavor: medicine
   color: "#d0e21b"
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Bloodstream:
-      effects: # One day this could be useful for treating blood clots, if we get those
+    Medicine:
+      effects:
       - !type:ModifyStatusEffect
         effectProto: StatusEffectAnticoagulant
-        time: 30 # 10 bleed ticks, you bleed every 3 seconds by default.
+        time: 30
         type: Update
       - !type:ModifyBleed
         conditions:

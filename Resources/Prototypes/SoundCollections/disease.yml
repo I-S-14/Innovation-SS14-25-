@@ -73,13 +73,13 @@
 - type: soundCollection
   id: VulpkaninYawns
   files:
-  - /Audio/Voice/Vulpkanin/vulp_yawn1.ogg
-  - /Audio/Voice/Vulpkanin/vulp_yawn2.ogg
+  - /Audio/_DV/Voice/Vulpkanin/vulp_yawn1.ogg # IS14: retained assets live under _DV.
+  - /Audio/_DV/Voice/Vulpkanin/vulp_yawn2.ogg
 
 - type: soundCollection
   id: VulpkaninSneeze
   files:
-  - /Audio/Voice/Vulpkanin/vulp_sneeze.ogg
+  - /Audio/_DV/Voice/Vulpkanin/vulp_sneeze.ogg
 
 - type: soundCollection
   id: DionaSneeze

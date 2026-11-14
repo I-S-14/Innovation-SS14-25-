@@ -1,0 +1,17 @@
+ent-StatusEffectAdrenaline = адреналин
+ent-StatusEffectNightVision = ночное зрение
+ent-StatusEffectClumsyAll = неуклюжесть
+ent-StatusEffectRadiationProtection = защита от радиации
+ent-StatusEffectFrail = хрупкость
+ent-StatusEffectPressureImmunity = невосприимчивость к давлению
+ent-StatusEffectChangelingMuted = незаметная немота
+ent-StatusEffectBlindness = временная слепота
+ent-StatusEffectFlashed = ослепление вспышкой
+ent-StatusEffectForcedItemCatEars = принудительное ношение кошачьих ушек
+ent-StatusEffectForcedItemMaid = принудительное ношение костюма горничной
+ent-StatusEffectForcedItemArmblade = принудительное превращение руки в клинок
+ent-StatusEffectHorrorFormArmblades = клинки рук ужасной формы
+ent-StatusEffectKnockdown = падение
+ent-StatusEffectAllCaps = речь заглавными буквами
+ent-StatusEffectRatvarianLanguage = ратварские речевые шаблоны
+ent-TraitStatusEffectPainNumbness = нечувствительность к боли

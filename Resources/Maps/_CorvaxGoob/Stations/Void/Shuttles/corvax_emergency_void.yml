@@ -6129,7 +6129,7 @@ entities:
       pos: -0.5,16.5
       parent: 1
     - type: WarpPoint
-      location: Эвакуационный шаттл
+      location: is14-map-warp-36290838c3d8
 - proto: WeaponCapacitorRecharger
   entities:
   - uid: 758

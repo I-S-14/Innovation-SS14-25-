@@ -4,9 +4,6 @@ using System.Linq;
 using Content.Goobstation.Common.Temperature;
 using Content.Shared._DV.CosmicCult.Components;
 using Content.Shared.Atmos;
-using Content.Goobstation.Common.Temperature; // goob
-using Content.Shared.Atmos;
-using Content.Shared._DV.CosmicCult.Components; // DeltaV
 using Content.Shared.Movement.Components;
 using Content.Shared.Movement.Systems;
 using Content.Shared.Temperature.Components;
@@ -120,7 +117,14 @@ public abstract class SharedTemperatureSystem : EntitySystem
 
     public float GetHeatCapacity(EntityUid uid, TemperatureComponent? comp = null, PhysicsComponent? physics = null)
     {
-        if (!TemperatureQuery.Resolve(uid, ref comp) || !Resolve(uid, ref physics, false) || physics.FixturesMass <= 0)
+        if (!TemperatureQuery.Resolve(uid, ref comp))
+            return Atmospherics.MinimumHeatCapacity;
+
+        //IS14-change: explicit Wizards capacities also work for objects without physics fixtures.
+        if (comp.HeatCapacity is > 0)
+            return comp.HeatCapacity.Value;
+
+        if (!Resolve(uid, ref physics, false) || physics.FixturesMass <= 0)
         {
             return Atmospherics.MinimumHeatCapacity;
         }

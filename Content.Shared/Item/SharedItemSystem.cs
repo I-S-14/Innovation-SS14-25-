@@ -317,7 +317,7 @@ public abstract partial class SharedItemSystem : EntitySystem
     /// <summary>
     /// Used to update the Item component on item toggle (specifically size).
     /// </summary>
-    private void OnItemToggle(EntityUid uid, ItemToggleSizeComponent itemToggleSize, ItemToggledEvent args)
+    private void OnItemToggle(EntityUid uid, ItemToggleSizeComponent itemToggleSize, ref ItemToggledEvent args)
     {
         if (!TryComp(uid, out ItemComponent? item))
             return;

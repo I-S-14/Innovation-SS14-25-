@@ -9,12 +9,7 @@
   components:
   - type: Destructible
   - type: Damageable
-  - type: Injurable
     damageContainer: StructuralInorganic
-
-#region Furniture
-
-# Poster / faberge egg
 - type: entity
   abstract: true
   parent: BaseStructureHealth

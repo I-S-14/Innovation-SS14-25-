@@ -18,15 +18,10 @@
   - type: AntagSelection
     selectionTime: PrePlayerSpawn
     agentName: xenomorph-round-end-agent-name
-    definitions:
-    - prefRoles: [ XenomorphsInfestationRoundstart ]
-      spawnerPrototype: SpawnPointGhostXenomorph
-      min: 2
-      max: 4
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14XenomorphsInfestationRoundstartAntag058694c89
+      range:
+        max: 4
+        min: 2
       playerRatio: 15
-      pickPlayer: true
-      mindRoles:
-      - MindRoleXenomorph
-      briefing:
-        text: xenomorph-role-greeting
-        color: "#8c3986"

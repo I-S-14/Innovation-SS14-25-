@@ -329,7 +329,9 @@ public sealed partial class SlasherIncorporealSystem : EntitySystem
         if (ent.Comp.AddedIncorporealComponents.Count == 0)
             return;
 
-        foreach (var component in EntityManager.GetComponents(uid))
+        //IS14-change start
+        foreach (var component in AllComps(uid))
+        //IS14-change end
         {
             var componentName = component.GetType().FullName;
             if (componentName != null && ent.Comp.AddedIncorporealComponents.Contains(componentName))

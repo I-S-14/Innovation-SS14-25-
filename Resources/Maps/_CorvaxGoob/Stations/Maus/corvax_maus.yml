@@ -55487,7 +55487,7 @@ entities:
     - type: NavMapBeacon
       text: Аномалистика
     - type: WarpPoint
-      location: Аномалистика
+      location: is14-map-warp-efa937f50cd5
 - proto: DefaultStationBeaconArmory
   entities:
   - uid: 4739
@@ -55498,7 +55498,7 @@ entities:
     - type: NavMapBeacon
       text: Арсенал
     - type: WarpPoint
-      location: Арсенал
+      location: is14-map-warp-d7ca8056cbd1
 - proto: DefaultStationBeaconArrivals
   entities:
   - uid: 6220
@@ -55527,7 +55527,7 @@ entities:
     - type: NavMapBeacon
       text: Атмосия
     - type: WarpPoint
-      location: Атмосия
+      location: is14-map-warp-b4ac4f371c39
 - proto: DefaultStationBeaconBar
   entities:
   - uid: 20912
@@ -55606,7 +55606,7 @@ entities:
       pos: -65.5,-66.5
       parent: 2
     - type: WarpPoint
-      location: Церковь
+      location: is14-map-warp-489361ed55d5
 - proto: DefaultStationBeaconChemistry
   entities:
   - uid: 6974
@@ -55650,7 +55650,7 @@ entities:
       color: '#9FED58FF'
       text: Радиостудия
     - type: WarpPoint
-      location: Радиостудия
+      location: is14-map-warp-9af0a759d670
 - proto: DefaultStationBeaconDisposals
   entities:
   - uid: 20664
@@ -55813,7 +55813,7 @@ entities:
     - type: NavMapBeacon
       text: Ксенобиология
     - type: WarpPoint
-      location: Ксенобиология
+      location: is14-map-warp-40efbcdca97d
 - proto: DefaultStationBeaconRND
   entities:
   - uid: 6236
@@ -55824,7 +55824,7 @@ entities:
     - type: NavMapBeacon
       text: Научный отдел
     - type: WarpPoint
-      location: НИО холл
+      location: is14-map-warp-d4474928a146
 - proto: DefaultStationBeaconRobotics
   entities:
   - uid: 6237
@@ -55833,7 +55833,7 @@ entities:
       pos: -49.5,-62.5
       parent: 2
     - type: WarpPoint
-      location: РНД роботехника
+      location: is14-map-warp-8ce66dff7f08
 - proto: DefaultStationBeaconSalvage
   entities:
   - uid: 6238
@@ -55862,7 +55862,7 @@ entities:
     - type: NavMapBeacon
       text: Северная ветка солнечных панелей
     - type: WarpPoint
-      location: Северная ветка солнечных панелей
+      location: is14-map-warp-e042abbe2c03
   - uid: 6240
     components:
     - type: Transform
@@ -55901,7 +55901,7 @@ entities:
     - type: NavMapBeacon
       text: Вирусология
     - type: WarpPoint
-      location: Вирусология
+      location: is14-map-warp-e4e51fe7a28e
 - proto: DefaultStationBeaconTelecoms
   entities:
   - uid: 591
@@ -135827,14 +135827,14 @@ entities:
       pos: -3.5,-4.5
       parent: 17265
     - type: WarpPoint
-      location: Протуберанец
+      location: is14-map-warp-c4faeba4ee0a
   - uid: 20910
     components:
     - type: Transform
       pos: -76.5,-74.5
       parent: 2
     - type: WarpPoint
-      location: Подпольная бойцовская арена
+      location: is14-map-warp-92f67a03b83c
 - proto: WaterCooler
   entities:
   - uid: 3883

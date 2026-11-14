@@ -406,7 +406,9 @@ public sealed partial class AutoSurgeonSystem : EntitySystem
             newComp.Owner = ent;
             object? temp = newComp;
             _serializationManager.CopyTo(data.Component, ref temp);
-            EntityManager.AddComponent(ent, (Component) temp!, true);
+            //IS14-change start
+            AddComp(ent, (Component) temp!, true);
+            //IS14-change end
 
             result.Add(name, data);
         }

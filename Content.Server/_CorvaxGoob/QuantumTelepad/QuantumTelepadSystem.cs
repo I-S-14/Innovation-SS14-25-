@@ -1,3 +1,4 @@
+using Content.Shared.DeviceLinking.Components; // IS14-change: upstream namespace move
 using Content.Server.Power.Components;
 using Content.Shared._CorvaxGoob.QuantumTelepad;
 using Content.Shared.DeviceLinking;

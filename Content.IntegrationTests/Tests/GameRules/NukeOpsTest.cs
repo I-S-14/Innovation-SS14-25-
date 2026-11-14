@@ -16,7 +16,6 @@ using Content.Shared.Damage;
 using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.Damage.Components;
 using Content.Shared.Damage.Systems;
-using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.GameTicking;
 using Content.Shared.GameTicking.Prototypes;
 using Content.Shared.GameTicking.Rules.Components;

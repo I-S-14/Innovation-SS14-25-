@@ -1,3 +1,4 @@
+using Content.Shared.GameTicking.Events;
 using System.Linq;
 using Content.Goobstation.Shared.MisandryBox.JobObjective;
 using Content.Server.GameTicking;
@@ -14,7 +15,7 @@ public sealed partial class JobObjectiveSystem : EntitySystem
 {
     [Dependency] private MindSystem _mind = default!;
     [Dependency] private ObjectivesSystem _obj = default!;
-    [Dependency] private GameTicker _ticker = default!;
+    [Dependency] private Content.Server.GameTicking.ServerGameTicker _ticker = default!;
 
     private const string Rule = "JobObjectiveRule";
 

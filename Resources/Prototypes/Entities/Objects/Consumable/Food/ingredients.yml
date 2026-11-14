@@ -28,7 +28,6 @@
     utensil: Spoon
     destroyOnEmpty: false
   - type: Damageable
-  - type: Injurable
     damageContainer: Inorganic
   - type: Spillable
     solution: food

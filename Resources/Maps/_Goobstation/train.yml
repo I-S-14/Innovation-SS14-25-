@@ -110585,7 +110585,7 @@ entities:
       pos: -0.5,-88.5
       parent: 2
     - type: WarpPoint
-      location: 'Car 03: Kitchen, Hydroponic'
+      location: is14-map-warp-0df1564e2d3d
   - uid: 16887
     components:
     - type: Transform
@@ -110593,7 +110593,7 @@ entities:
       pos: 0.5,-144.5
       parent: 2
     - type: WarpPoint
-      location: 'Car 05: Chapel, Library'
+      location: is14-map-warp-2f21b7342747
   - uid: 16888
     components:
     - type: Transform
@@ -110601,7 +110601,7 @@ entities:
       pos: 0.5,-35.5
       parent: 2
     - type: WarpPoint
-      location: 'Car 01: Arrivals, Evacuation'
+      location: is14-map-warp-5208a5124c19
   - uid: 16889
     components:
     - type: Transform
@@ -110609,7 +110609,7 @@ entities:
       pos: 0.5,-63.5
       parent: 2
     - type: WarpPoint
-      location: 'Car 02: Bar'
+      location: is14-map-warp-c0f02f706156
   - uid: 16891
     components:
     - type: Transform
@@ -110617,7 +110617,7 @@ entities:
       pos: 0.5,-116.5
       parent: 2
     - type: WarpPoint
-      location: 'Car 04: HoP, Dormatories'
+      location: is14-map-warp-b1f9b418bedc
   - uid: 16892
     components:
     - type: Transform
@@ -110625,7 +110625,7 @@ entities:
       pos: 0.5,-171.5
       parent: 2
     - type: WarpPoint
-      location: 'Car 06: Med'
+      location: is14-map-warp-997aa6b09ac1
   - uid: 16893
     components:
     - type: Transform
@@ -110633,14 +110633,14 @@ entities:
       pos: 0.5,-225.5
       parent: 2
     - type: WarpPoint
-      location: 'Car 08: Solar panels'
+      location: is14-map-warp-4e7c86ca458b
   - uid: 16894
     components:
     - type: Transform
       pos: 0.5,-252.5
       parent: 2
     - type: WarpPoint
-      location: 'Car 09: Engneering'
+      location: is14-map-warp-1a66a44e056e
   - uid: 16895
     components:
     - type: Transform
@@ -110648,28 +110648,28 @@ entities:
       pos: 0.5,-279.5
       parent: 2
     - type: WarpPoint
-      location: 'Car 10: Cargo'
+      location: is14-map-warp-921faa16eeab
   - uid: 16896
     components:
     - type: Transform
       pos: 0.5,-308.5
       parent: 2
     - type: WarpPoint
-      location: 'Car 11: RnD'
+      location: is14-map-warp-45fff3950861
   - uid: 16897
     components:
     - type: Transform
       pos: 0.5,-338.5
       parent: 2
     - type: WarpPoint
-      location: 'Car 12: Brig'
+      location: is14-map-warp-f2880cfd814f
   - uid: 17667
     components:
     - type: Transform
       pos: 0.5,-363.5
       parent: 2
     - type: WarpPoint
-      location: 'Car 13: GenPop'
+      location: is14-map-warp-1252adae4a56
 - proto: WaterCooler
   entities:
   - uid: 14369

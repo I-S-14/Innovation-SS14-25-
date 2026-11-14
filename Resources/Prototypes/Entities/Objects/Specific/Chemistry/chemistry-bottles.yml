@@ -77,7 +77,6 @@
       types:
         Blunt: 4
   - type: Damageable
-  - type: Injurable
     damageContainer: Inorganic
   - type: Destructible
     thresholds:

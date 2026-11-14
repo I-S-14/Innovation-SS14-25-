@@ -6,9 +6,13 @@
   components:
   - type: Sprite
     sprite: Objects/Specific/Medical/syndihandheldcrewmonitor.rsi
-    state: syndiscanner
+    # IS14-change: this RSI has one animated state, not the new base/screen layers.
+    layers:
+    - state: syndiscanner
   - type: Item
-    sprite: Objects/Specific/Medical/syndihandheldcrewmonitor.rsi
+    sprite: Objects/Specific/Medical/handheldcrewmonitor.rsi # IS14-change: valid scanner in-hands.
+  - type: GenericVisualizer
+    visuals: {} # IS14-change: preserve the original always-animated Syndicate icon.
   - type: PowerCellDraw
     useCharge: 0
 

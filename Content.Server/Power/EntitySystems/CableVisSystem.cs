@@ -16,7 +16,7 @@ namespace Content.Server.Power.EntitySystems
         [Dependency] private readonly SharedMapSystem _mapSystem = default!;
         [Dependency] private SharedAppearanceSystem _appearance = default!;
         [Dependency] private NodeContainerSystem _nodeContainer = default!;
-        [Dependency] private SharedMapSystem _map = default!;
+
 
         public override void Initialize()
         {

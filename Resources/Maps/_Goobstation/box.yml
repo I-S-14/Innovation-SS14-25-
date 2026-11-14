@@ -173095,21 +173095,21 @@ entities:
       pos: -49.5,18.5
       parent: 2
     - type: WarpPoint
-      location: port bow
+      location: is14-map-warp-d81f7011612b
   - uid: 27213
     components:
     - type: Transform
       pos: 67.5,11.5
       parent: 2
     - type: WarpPoint
-      location: starboard bow
+      location: is14-map-warp-9451ec4027f3
   - uid: 27214
     components:
     - type: Transform
       pos: 76.5,-62.5
       parent: 2
     - type: WarpPoint
-      location: starboard quarter
+      location: is14-map-warp-318536d4a2fc
 - proto: WaterCooler
   entities:
   - uid: 27215

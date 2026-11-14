@@ -20,6 +20,13 @@ public sealed partial class MaxPressureVisualsSystem : EntitySystem
         if (!TryComp<SpriteComponent>(entity, out var sprite))
             return;
 
+        //IS14-change: retain custom tank artwork without requiring foreign masks.
+        if (entity.Comp.IntegrityColor != null)
+        {
+            entity.Comp.OriginalColor = sprite.Color;
+            return;
+        }
+
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(entity.Comp.IntegritySteps);
 
         if (_sprite.LayerMapTryGet((entity, sprite), MaxPressureVisualLayers.Base, out var layerIndex, false))
@@ -44,6 +51,16 @@ public sealed partial class MaxPressureVisualsSystem : EntitySystem
         if (!args.TryGetData<float>(GasIntegrity.Integrity, out var integrity)
             || !args.TryGetData<float>(GasIntegrity.MaxIntegrity, out var maxIntegrity))
             return;
+
+        //IS14-change: old tank RSIs show damage by tint and restore their original colour on recovery.
+        if (entity.Comp.IntegrityColor is { } warningColor)
+        {
+            var loss = maxIntegrity > 0 ? Math.Clamp((maxIntegrity - integrity) / maxIntegrity, 0f, 1f) : 0f;
+            var alpha = sprite.Color.A;
+            _sprite.SetColor((entity, sprite), Color.InterpolateBetween(entity.Comp.OriginalColor.WithAlpha(alpha),
+                warningColor.WithAlpha(alpha), loss * 0.75f));
+            return;
+        }
 
         // We don't want visuals at max integrity, so we return if we're at max.
         if (integrity >= maxIntegrity)

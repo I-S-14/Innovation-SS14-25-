@@ -13,6 +13,11 @@ public sealed partial class BeamComponent : Component
     /// <summary>
     /// The ID of the fixture that will be created for the beam.
     /// </summary>
+    //IS14-change start: index shared by all segments of one electrical beam.
+    [DataField]
+    public uint BeamIndex;
+    //IS14-change end
+
     public static string FixtureID = "BeamBody";
 
     /// <summary>

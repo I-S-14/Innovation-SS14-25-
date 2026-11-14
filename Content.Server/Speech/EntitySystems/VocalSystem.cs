@@ -37,16 +37,16 @@ public sealed class VocalSystem : EntitySystem
     private void OnMapInit(EntityUid uid, VocalComponent component, MapInitEvent args)
     {
         // try to add scream action when vocal comp added
-        _actions.AddAction(uid, ref component.ScreamActionEntity, component.ScreamAction);
+        _actions.AddAction(uid, ref component.EmoteActionEntity, component.EmoteAction);
         LoadSounds(uid, component);
     }
 
     private void OnShutdown(EntityUid uid, VocalComponent component, ComponentShutdown args)
     {
         // remove scream action when component removed
-        if (component.ScreamActionEntity != null)
+        if (component.EmoteActionEntity != null)
         {
-            _actions.RemoveAction(uid, component.ScreamActionEntity);
+            _actions.RemoveAction(uid, component.EmoteActionEntity);
         }
     }
 
@@ -147,5 +147,6 @@ public sealed class VocalSystem : EntitySystem
             return;
 
         component.EmoteSounds = protoId;
+        Dirty(uid, component);
     }
 }

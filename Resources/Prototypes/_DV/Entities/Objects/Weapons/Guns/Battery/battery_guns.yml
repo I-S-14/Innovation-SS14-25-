@@ -72,7 +72,7 @@
     - HighRiskItem
     - Sidearm
   - type: StealTarget
-    stealGroup: WeaponEnergyGunMultiphase
+    stealGroup: [WeaponEnergyGunMultiphase]
   - type: StaticPrice
     price: 750
   - type: Multishot

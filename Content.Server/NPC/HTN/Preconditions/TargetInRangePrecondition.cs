@@ -13,15 +13,19 @@ public sealed partial class TargetInRangePrecondition : HTNPrecondition
 {
     [Dependency] private readonly IEntityManager _entManager = default!;
     private SharedTransformSystem _transformSystem = default!;
+    [DataField]
+    public bool Invert;
+
     private StealthSystem _stealth = default!; // goob edit
 
     [DataField("targetKey", required: true)] public string TargetKey = default!;
 
     [DataField("rangeKey", required: true)]
     public string RangeKey = default!;
-    public override void Initialize(IEntitySystemManager sysManager)
+    public override void Initialize(IDependencyCollection deps)
     {
-        base.Initialize(sysManager);
+        base.Initialize(deps);
+        var sysManager = deps.Resolve<IEntitySystemManager>();
         _transformSystem = sysManager.GetEntitySystem<SharedTransformSystem>();
         _stealth = sysManager.GetEntitySystem<StealthSystem>(); // goob edit
     }

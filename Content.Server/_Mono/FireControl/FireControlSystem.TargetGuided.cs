@@ -217,7 +217,9 @@ public sealed partial class FireControlSystem
         // Remove positions for consoles without any missiles
         foreach (var consoleUid in _consoleMousePositions.Keys.ToList())
         {
-            if (!activeConsoles.Contains(consoleUid) || !EntityManager.EntityExists(consoleUid))
+            //IS14-change start
+            if (!activeConsoles.Contains(consoleUid) || !Exists(consoleUid))
+            //IS14-change end
             {
                 _consoleMousePositions.Remove(consoleUid);
             }

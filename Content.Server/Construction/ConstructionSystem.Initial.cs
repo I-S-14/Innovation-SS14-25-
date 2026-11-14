@@ -29,6 +29,10 @@ namespace Content.Server.Construction
 {
     public sealed partial class ConstructionSystem
     {
+    //IS14-change start: retain fork fields lost during merge.
+        [Dependency] private readonly SharedTransformSystem _transformSystem = default!;
+    //IS14-change end
+
         [Dependency] private InventorySystem _inventorySystem = default!;
         [Dependency] private SharedInteractionSystem _interactionSystem = default!;
         [Dependency] private ActionBlockerSystem _actionBlocker = default!;
@@ -461,7 +465,7 @@ namespace Content.Server.Construction
             NetEntity? with = null)
         {
             // </Goobstation>
-            if (!PrototypeManager.TryIndex(prototypeName, out ConstructionPrototype? constructionPrototype))
+            if (!ProtoMan.TryIndex(prototypeName, out ConstructionPrototype? constructionPrototype))
             {
                 Log.Error($"Tried to start construction of invalid recipe '{prototypeName}'!");
                 RaiseNetworkEvent(new AckStructureConstructionMessage(ack), user);

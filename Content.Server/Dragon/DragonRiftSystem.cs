@@ -15,10 +15,6 @@ using Robust.Shared.GameStates;
 using Robust.Shared.Map;
 using Robust.Shared.Player;
 using Robust.Shared.Serialization.Manager;
-using System.Numerics;
-using Content.Shared.Damage.Components;
-using Robust.Shared.Audio.Systems;
-using Robust.Shared.GameStates;
 using Robust.Shared.Random; // Goobstation - Buff carp rift
 using Robust.Shared.Utility;
 using Content.Server.Pinpointer;
@@ -37,7 +33,6 @@ public sealed partial class DragonRiftSystem : EntitySystem
     [Dependency] private NavMapSystem _navMap = default!;
     [Dependency] private NPCSystem _npc = default!;
     [Dependency] private SharedAudioSystem _audio = default!;
-    [Dependency] private EntityTableSystem _entityTable = default!;
 
     public override void Initialize()
     {
@@ -101,9 +96,7 @@ public sealed partial class DragonRiftSystem : EntitySystem
                 comp.SpawnAccumulator -= comp.SpawnCooldown;
                 var ent = Spawn(_random.Prob(comp.StrongSpawnChance) ? comp.SpawnPrototypeStrong : comp.SpawnPrototype, xform.Coordinates); // Goobstation - Buff carp rift
 
-                foreach (var spawn in _entityTable.GetSpawns(comp.Spawn))
                 {
-                    var ent = Spawn(spawn, xform.Coordinates);
 
                     // Update their look to match the leader.
                     if (TryComp<RandomSpriteComponent>(comp.Dragon, out var randomSprite))

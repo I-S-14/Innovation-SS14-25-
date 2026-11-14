@@ -13,13 +13,14 @@
   puddleSpriteSet: Shiny # Goob
   boilingPoint: 111.0
   meltingPoint: -5.0
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Bloodstream:
+    Poison:
       effects:
       - !type:HealthChange
         conditions:
-        - !type:MetabolizerTypeCondition # Goobstation - Yowie
-          type: [ Yowie ]
+        - !type:MetabolizerTypeCondition
+          type: [Yowie]
           inverted: true
         damage:
           types:
@@ -28,19 +29,18 @@
       - !type:PopupMessage
         type: Local
         visualType: MediumCaution
-        messages: [ "generic-reagent-effect-burning-insides" ]
+        messages: ["generic-reagent-effect-burning-insides"]
         probability: 0.33
       - !type:Emote
         conditions:
-        - !type:MetabolizerTypeCondition # Goobstation - Yowie
-          type: [ Yowie ]
+        - !type:MetabolizerTypeCondition
+          type: [Yowie]
           inverted: true
         emote: Scream
         probability: 0.15
-      # Goobstation
       - !type:DiseaseProgressChange
         affectedType: Viral
-        progressModifier: -0.15 # extremely strong antiviral
+        progressModifier: -0.15
   tileReactions:
   - !type:CleanTileReaction
     cleanCost: 0.01
@@ -76,14 +76,15 @@
   recognizable: true
   boilingPoint: 100.0
   meltingPoint: 60.0
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
+    Food:
       effects:
       - !type:Vomit
         conditions:
         - !type:ReagentCondition
           reagent: SoapReagent
-        - !type:MetabolizerTypeCondition # Goobstation - Yowie
+        - !type:MetabolizerTypeCondition
           type:
           - Yowie
           inverted: true
@@ -91,11 +92,13 @@
           reagent: SoapReagent
           min: 6
         probability: 0.20
+    Drink:
+      effects:
       - !type:Vomit
         conditions:
         - !type:ReagentCondition
           reagent: SoapReagent
-        - !type:MetabolizerTypeCondition # Goobstation - Yowie
+        - !type:MetabolizerTypeCondition
           type:
           - Yowie
           inverted: true
@@ -103,7 +106,6 @@
           reagent: SoapReagent
           min: 6
         probability: 0.20
-
 - type: reagent
   id: SpaceLube
   name: reagent-name-space-lube
@@ -144,17 +146,19 @@
       # pva glue? no, antibiotic glue for sealing wounds
       - !type:ModifyBleed
         amount: -1.5
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Bloodstream:
+    Narcotic:
       effects:
       - !type:ModifyStatusEffect
         effectProto: StatusEffectSeeingRainbow
         time: 5
         type: Add
-    Digestion:
+    Drink:
       effects:
-      - !type:ModifyStatusEffect
-        effectProto: StatusEffectMuted
+      - !type:GenericStatusEffect
+        key: Muted
+        component: Muted
         time: 5
   footstepSound:
     collection: FootstepSlime

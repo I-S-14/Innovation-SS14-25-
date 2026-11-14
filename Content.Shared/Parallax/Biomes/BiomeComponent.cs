@@ -47,7 +47,7 @@ public sealed partial class BiomeComponent : Component
     /// <summary>
     /// Decals that have been loaded as a part of this biome.
     /// </summary>
-    [DataField("decals")]
+    [DataField("decals", customTypeSerializer: typeof(Content.Shared._IS14.Parallax.BiomeDecalsSerializer))] //IS14-change: retain saved biome decal ownership.
     public Dictionary<Vector2i, Dictionary<DecalIndex, Vector2i>> LoadedDecals = new();
 
     [DataField("entities")]

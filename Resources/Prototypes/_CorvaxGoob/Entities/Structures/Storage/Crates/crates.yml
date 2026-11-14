@@ -1,5 +1,5 @@
 - type: entity
-  parent: CrateBaseSecure
+  parent: IS14RetainedSecureCrateBase # IS14-change: preserve this variant's own destruction threshold.
   id: CrateBaseBluespace
   name: bluespace crate
   description: A large storage container made of a steel alloy and bluespace crystals.

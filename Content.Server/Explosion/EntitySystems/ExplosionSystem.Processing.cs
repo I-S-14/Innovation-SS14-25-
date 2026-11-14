@@ -15,14 +15,11 @@ using Robust.Shared.Physics;
 using Robust.Shared.Physics.Dynamics;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
-using System.Numerics;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
 using TimedDespawnComponent = Robust.Shared.Spawners.TimedDespawnComponent;
 using Content.Shared._Shitmed.Damage;
 using Content.Shared._Shitmed.Targeting;
-using Content.Shared.Damage.Systems;
-using Robust.Shared.Utility;
 using Content.Shared.Damage.Components;
 using Content.Shared.Projectiles;
 using Content.Shared.Tag;
@@ -32,6 +29,9 @@ namespace Content.Server.Explosion.EntitySystems;
 
 public sealed partial class ExplosionSystem
 {
+    //IS14-change start: retain fork fields lost during merge.
+    //IS14-change end
+
     /// <summary>
     ///     Used to limit explosion processing time. See <see cref="MaxProcessingTime"/>.
     /// </summary>
@@ -506,7 +506,6 @@ public sealed partial class ExplosionSystem
                 dir,
                 physics,
                 xform,
-                _projectileQuery,
                 throwForce,
                 predicted: false); // Trauma
         }
@@ -628,7 +627,7 @@ sealed class Explosion
         /// <summary>
         ///     Lookup component for this grid (or space/map).
         /// </summary>
-        public BroadphaseComponent Lookup;
+        public Entity<BroadphaseComponent> Lookup;
 
         /// <summary>
         ///     The actual grid that this corresponds to. If null, this implies space.
@@ -898,10 +897,10 @@ sealed class Explosion
                 _mapSystem.TryGetTileRef(currentGrid.Owner, currentGrid.Comp1, _currentEnumerator.Current, out var tileRef) &&
                 !tileRef.Tile.IsEmpty)
             {
-                if (!_tileUpdateDict.TryGetValue((currentGrid.Owner, currentGrid.Comp1), out var tileUpdateList))
+                if (!_tileUpdateDict.TryGetValue(currentGrid.Comp1, out var tileUpdateList))
                 {
                     tileUpdateList = new();
-                    _tileUpdateDict[(currentGrid.Owner, currentGrid.Comp1)] = tileUpdateList;
+                    _tileUpdateDict[currentGrid.Comp1] = tileUpdateList;
                 }
 
                 // damage entities on the tile. Also figures out whether there are any solid entities blocking the floor

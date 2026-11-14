@@ -19,6 +19,11 @@ namespace Content.Shared.VoiceMask;
 [RegisterComponent]
 public sealed partial class VoiceMaskComponent : Component
 {
+    //IS14-change start
+    [DataField]
+    public bool IsInnate;
+    //IS14-change end
+
     /// <summary>
     ///     The name that will override an entities default name. If null, it will use the default override.
     /// </summary>

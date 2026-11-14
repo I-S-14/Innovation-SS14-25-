@@ -1,0 +1,33 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# IS14: retain the complete dirty-floor placement/drop group.
+# Source: 5327c414c5:Resources/Prototypes/Tiles/floors.yml
+# Source: 5327c414c5:Resources/Prototypes/Entities/Objects/Misc/tiles.yml
+# Source: 5327c414c5:Resources/Prototypes/Stacks/Tiles/four_square.yml
+- type: tile
+  id: FloorSteelDirty
+  parent: BaseStationTile
+  name: tiles-dirty-steel-floor
+  sprite: /Textures/Tiles/steel_dirty.png
+  footstepSounds:
+    collection: FootstepPlating
+  itemDrop: FloorTileItemDirty
+- type: entity
+  name: dirty tile
+  parent: FloorTileItemBase
+  id: FloorTileItemDirty
+  components:
+  - type: Sprite
+    state: dirty
+  - type: Item
+    heldPrefix: dirty
+  - type: FloorTile
+    outputs:
+    - Plating
+    - FloorSteelDirty
+  - type: Stack
+    stackType: FloorTileDirty
+- type: stack
+  parent: BaseTileStack
+  id: FloorTileDirty
+  name: stack-dirty-tile
+  spawn: FloorTileItemDirty

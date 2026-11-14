@@ -2,6 +2,6 @@
 
 - type: guideEntry
   id: Conditions
-  name: "Раскрытие антагонистов" # Corvax-Goob-Locale
+  name: is14-upstream-guide-conditions # Corvax-Goob-Locale
   priority: 60
   text: "/ServerInfo/_Goobstation/Guidebook/Antagonist/MetaReveal.xml"

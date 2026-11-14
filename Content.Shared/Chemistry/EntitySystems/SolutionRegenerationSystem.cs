@@ -29,18 +29,30 @@ public sealed partial class SolutionRegenerationSystem : EntitySystem
     {
         base.Update(frameTime);
 
-        // TODO: SolutionRegenerationComponent on Solution Entities!
-        var query = EntityQueryEnumerator<SolutionRegenerationComponent, SolutionComponent>();
-        while (query.MoveNext(out var uid, out var regen, out var solution))
+        //IS14-change: retain named item solutions alongside new solution entities.
+        var query = EntityQueryEnumerator<SolutionRegenerationComponent>();
+        while (query.MoveNext(out var uid, out var regen))
         {
             if (_timing.CurTime < regen.NextRegenTime)
+                continue;
+
+            Entity<SolutionComponent> target;
+            if (regen.SolutionName != null)
+            {
+                if (!_solutionContainer.TryGetSolution(uid, regen.SolutionName, out var named))
+                    continue;
+                target = named.Value;
+            }
+            else if (TryComp<SolutionComponent>(uid, out var solution))
+                target = (uid, solution);
+            else
                 continue;
 
             // timer ignores if its full, it's just a fixed cycle
             regen.NextRegenTime += regen.Duration;
             // Needs to be networked and dirtied so that the client can reroll it during prediction
             Dirty(uid, regen);
-            var amount = FixedPoint2.Min(solution.Solution.AvailableVolume, regen.Generated.Volume);
+            var amount = FixedPoint2.Min(target.Comp.Solution.AvailableVolume, regen.Generated.Volume);
             if (amount <= FixedPoint2.Zero)
                 continue;
 
@@ -49,7 +61,7 @@ public sealed partial class SolutionRegenerationSystem : EntitySystem
                 ? regen.Generated
                 : regen.Generated.Clone().SplitSolution(amount);
 
-            _solutionContainer.TryAddSolution((uid, solution), generated);
+            _solutionContainer.TryAddSolution(target, generated);
         }
     }
 }

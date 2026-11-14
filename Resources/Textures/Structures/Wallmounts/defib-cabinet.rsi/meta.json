@@ -1,7 +1,7 @@
 {
     "version": 1,
     "license": "CC-BY-SA-3.0",
-    "copyright": "By AftrLite (GitHub)",
+    "copyright": "By AftrLite (GitHub); light.png by Ko4erga (discord), CC0-1.0, retained from Goob 5327c414c5.",
     "size": {
         "x": 32,
         "y": 32
@@ -22,6 +22,9 @@
         {
             "name": "open",
             "directions": 4
+        },
+        {
+            "name": "light"
         }
     ]
 }

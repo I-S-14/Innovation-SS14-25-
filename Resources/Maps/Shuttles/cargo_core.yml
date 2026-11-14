@@ -1179,7 +1179,7 @@ entities:
       parent: 2
       pos: 1.5,-3.5
     - type: WarpPoint
-      location: Cargo Shuttle
+      location: is14-map-warp-f8030a7848d3
 - proto: WindoorCargoLocked
   entities:
   - uid: 58

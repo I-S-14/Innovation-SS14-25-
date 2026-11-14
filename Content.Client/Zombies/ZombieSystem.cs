@@ -40,7 +40,7 @@ public sealed partial class ZombieSystem : SharedZombieSystem
 
     private void OnStartup(EntityUid uid, ZombieComponent component, ComponentStartup args)
     {
-        if (HasComp<VisualBodyComponent>(uid))
+        if (HasComp<HumanoidAppearanceComponent>(uid))
             return;
 
         if (!TryComp<SpriteComponent>(uid, out var sprite))

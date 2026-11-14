@@ -6,12 +6,13 @@
   components:
   - type: SignalTimer
     canEditLabel: true
+  # IS14: timer rendering is a separate component in the Wizards text-screen API.
+  - type: TextScreenTimerVisuals
   - type: TextScreenVisuals
     color: Gold
     textOffset: 0,0
-    timerOffset: 0,0
     rowOffset: 5
-    rows: 1
+    rowData: [{}]
   - type: Appearance
   - type: Sprite
     sprite: _CorvaxGoob/Objects/Devices/portable_screen_timer.rsi

@@ -37,16 +37,24 @@ namespace Content.Shared._Shitcode.Heretic.Systems;
 
 public abstract class SharedMansusGraspSystem : EntitySystem
 {
+    //IS14-change start: typed IDs for the retained behavior.
+    private static readonly ProtoId<TagPrototype> GraspBladeTag = "HereticBladeBlade";
+    private static readonly ProtoId<TagPrototype> GraspWallTag = "Wall";
+    private static readonly ProtoId<TagPrototype> GraspCatwalkTag = "Catwalk";
+    private static readonly ProtoId<TagPrototype> GraspMeatTag = "Meat";
+    private static readonly ProtoId<TagPrototype> GraspBotTag = "Bot";
+    private static readonly ProtoId<DamageTypePrototype> GraspSlashDamageType = "Slash";
+    private static readonly ProtoId<DamageGroupPrototype> GraspBruteDamageGroup = "Brute";
+    //IS14-change end
+
     [Dependency] private readonly IPrototypeManager _proto = default!;
     [Dependency] private readonly IComponentFactory _compFactory = default!;
     [Dependency] private readonly INetManager _net = default!;
-    [Dependency] private readonly SharedMapSystem _mapSystem = default!;
 
     [Dependency] private readonly SharedDoorSystem _door = default!;
     [Dependency] private readonly DamageableSystem _damage = default!;
     [Dependency] private readonly MobThresholdSystem _threshold = default!;
     [Dependency] private readonly StatusEffectsSystem _statusEffect = default!;
-    [Dependency] private readonly StatusEffectNew.StatusEffectsSystem _statusNew = default!;
     [Dependency] private readonly TagSystem _tag = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly BackStabSystem _backstab = default!;
@@ -56,7 +64,6 @@ public abstract class SharedMansusGraspSystem : EntitySystem
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly SharedStarMarkSystem _starMark = default!;
-    [Dependency] private readonly NpcFactionSystem _faction = default!;
 
     public bool TryApplyGraspEffectAndMark(EntityUid user,
         HereticComponent hereticComp,
@@ -122,7 +129,7 @@ public abstract class SharedMansusGraspSystem : EntitySystem
 
             case "Blade":
                 {
-                    if (grasp != null && heretic.PathStage >= 7 && _tag.HasTag(target, "HereticBladeBlade"))
+                    if (grasp != null && heretic.PathStage >= 7 && _tag.HasTag(target, GraspBladeTag))
                     {
                         // empowering blades and shit
                         var infusion = EnsureComp<MansusInfusedComponent>(target);
@@ -135,7 +142,7 @@ public abstract class SharedMansusGraspSystem : EntitySystem
                     {
                         _stun.TryUpdateParalyzeDuration(target, TimeSpan.FromSeconds(1.5f));
                         _damage.ChangeDamage(target,
-                            new DamageSpecifier(_proto.Index<DamageTypePrototype>("Slash"), 10),
+                            new DamageSpecifier(_proto.Index<DamageTypePrototype>(GraspSlashDamageType), 10),
                             ignoreResistances: true,
                             origin: performer,
                             targetPart: TargetBodyPart.Chest);
@@ -201,23 +208,23 @@ public abstract class SharedMansusGraspSystem : EntitySystem
                 {
                     if (TryComp(target, out StationAiHolderComponent? aiHolder)) // Kill AI
                         QueueDel(aiHolder.Slot.ContainerSlot?.ContainedEntity);
-                    else if (HasComp<RustGraspComponent>(grasp) && _tag.HasAnyTag(target, "Wall", "Catwalk") ||
+                    else if (HasComp<RustGraspComponent>(grasp) && _tag.HasAnyTag(target, GraspWallTag, GraspCatwalkTag) ||
                              HasComp<HereticRitualRuneComponent>(
                                  target)) // If we have rust grasp and targeting a wall (or a catwalk) - do nothing, let other methods handle that. Also don't damage transmutation rune.
                         return false;
                     else if (TryComp(target, out DamageableComponent? damageable) && // Is it even damageable?
-                             !_tag.HasTag(target, "Meat") && // Is it not organic body part or organ?
+                             !_tag.HasTag(target, GraspMeatTag) && // Is it not organic body part or organ?
                              !HasComp<ShadowCloakEntityComponent>(target) && // No instakilling shadow cloak heretics
                              (!HasComp<MobStateComponent>(target) || HasComp<SiliconComponent>(target) ||
                               HasComp<BorgChassisComponent>(target) ||
-                              _tag.HasTag(target, "Bot"))) // Check for ingorganic target
+                              _tag.HasTag(target, GraspBotTag))) // Check for ingorganic target
                     {
                         FixedPoint2 rustDamage = 500;
                         if (_threshold.TryGetThresholdForState(target, MobState.Dead, out var dead))
                             rustDamage = FixedPoint2.Max(dead.Value - damageable.TotalDamage + 10, 0);
 
                         _damage.ChangeDamage(target,
-                            new DamageSpecifier(_proto.Index<DamageGroupPrototype>("Brute"), rustDamage),
+                            new DamageSpecifier(_proto.Index<DamageGroupPrototype>(GraspBruteDamageGroup), rustDamage),
                             ignoreResistances: true,
                             origin: performer,
                             targetPart: TargetBodyPart.Chest);

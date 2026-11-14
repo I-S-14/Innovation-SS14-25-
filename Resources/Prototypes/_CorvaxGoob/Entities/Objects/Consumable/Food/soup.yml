@@ -18,15 +18,16 @@
       layers:
         - state: bowl
         - state: pelmeni
-    - type: SolutionContainerManager
-      solutions:
-        food:
-          maxVol: 30
-          reagents:
-            - ReagentId: Nutriment
-              Quantity: 10
-            - ReagentId: Protein
-              Quantity: 20
+    - type: Solution
+      solution:
+        maxVol: 30
+        reagents:
+          - ReagentId: Nutriment
+            Quantity: 10
+          - ReagentId: Protein
+            Quantity: 20
+        temperature: 293.15
+        canReact: true
     - type: Tag
       tags:
       - Meat
@@ -45,15 +46,16 @@
     layers:
     - state: bowl
     - state: goool
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 15
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 8
-        - ReagentId: Vitamin
-          Quantity: 6
+  - type: Solution
+    solution:
+      maxVol: 15
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 8
+      - ReagentId: Vitamin
+        Quantity: 6
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - Soup
@@ -76,17 +78,18 @@
     layers:
     - state: bowl
     - state: okroshka
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 15
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 4
-        - ReagentId: Vitamin
-          Quantity: 4
-        - ReagentId: Water
-          Quantity: 7
+  - type: Solution
+    solution:
+      maxVol: 15
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 4
+      - ReagentId: Vitamin
+        Quantity: 4
+      - ReagentId: Water
+        Quantity: 7
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - Soup
@@ -108,15 +111,16 @@
     layers:
     - state: bowl
     - state: oliviel
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 20
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 10
-        - ReagentId: Vitamin
-          Quantity: 10
+  - type: Solution
+    solution:
+      maxVol: 20
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 10
+      - ReagentId: Vitamin
+        Quantity: 10
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - Soup
@@ -136,15 +140,16 @@
     layers:
     - state: bowl
     - state: solanka
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 15
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 8
-        - ReagentId: Vitamin
-          Quantity: 7
+  - type: Solution
+    solution:
+      maxVol: 15
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 8
+      - ReagentId: Vitamin
+        Quantity: 7
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - Soup
@@ -165,15 +170,16 @@
     layers:
     - state: bowl
     - state: plow
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 15
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 7
-        - ReagentId: Vitamin
-          Quantity: 4
+  - type: Solution
+    solution:
+      maxVol: 15
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 7
+      - ReagentId: Vitamin
+        Quantity: 4
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - Soup

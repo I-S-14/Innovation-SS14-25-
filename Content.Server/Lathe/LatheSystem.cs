@@ -20,7 +20,6 @@ using Content.Shared.Database;
 using Content.Shared.Emag.Systems;
 using Content.Shared.Lathe;
 using Content.Shared.Lathe.Prototypes;
-using Content.Shared.Lathe;
 using Content.Shared.Localizations;
 using Content.Shared.Materials;
 using Content.Shared.Power;
@@ -43,6 +42,10 @@ namespace Content.Server.Lathe
     [UsedImplicitly]
     public sealed partial class LatheSystem : SharedLatheSystem
     {
+    //IS14-change start: retain fork fields lost during merge.
+        [Dependency] private readonly IPrototypeManager _proto = default!;
+    //IS14-change end
+
         [Dependency] private IGameTiming _timing = default!;
         [Dependency] private IAdminLogManager _adminLogger = default!;
         [Dependency] private AtmosphereSystem _atmosphere = default!;
@@ -345,7 +348,7 @@ namespace Content.Server.Lathe
                 AddRecipesFromDynamicPacks(ref args, database, component.EmagDynamicPacks);
         }
 
-        private void OnHeatStartPrinting(EntityUid uid, LatheHeatProducingComponent component, LatheStartPrintingEvent args)
+        private void OnHeatStartPrinting(EntityUid uid, LatheHeatProducingComponent component, ref LatheStartPrintingEvent args)
         {
             component.NextSecond = _timing.CurTime;
         }

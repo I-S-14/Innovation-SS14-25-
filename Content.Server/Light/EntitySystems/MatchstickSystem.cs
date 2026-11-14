@@ -122,7 +122,9 @@ namespace Content.Server.Light.EntitySystems
                 _lights.SetEnabled(uid, component.CurrentState == SmokableState.Lit, pointLightComponent);
             }
 
-            if (EntityManager.TryGetComponent(uid, out ItemComponent? item))
+            //IS14-change start
+            if (TryComp(uid, out ItemComponent? item))
+            //IS14-change end
             {
                 switch (component.CurrentState)
                 {
@@ -135,7 +137,9 @@ namespace Content.Server.Light.EntitySystems
                 }
             }
 
-            if (EntityManager.TryGetComponent(uid, out AppearanceComponent? appearance))
+            //IS14-change start
+            if (TryComp(uid, out AppearanceComponent? appearance))
+            //IS14-change end
             {
                 _appearance.SetData(uid, SmokingVisuals.Smoking, component.CurrentState, appearance);
             }

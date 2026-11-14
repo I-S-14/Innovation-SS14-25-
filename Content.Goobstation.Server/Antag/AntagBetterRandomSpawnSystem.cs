@@ -1,3 +1,4 @@
+using Content.Shared.Antag;
 using Content.Goobstation.Server.Antag.Components;
 using Content.Server.Antag;
 using Content.Server.Atmos.EntitySystems;
@@ -19,7 +20,7 @@ namespace Content.Goobstation.Server.Antag;
 /// <summary>
 /// System for AntagBetterRandomSpawn that finds safe spawn locations avoiding cameras and solid objects.
 /// </summary>
-public sealed partial class AntagBetterRandomSpawnSystem : GameRuleSystem<AntagBetterRandomSpawnComponent>
+public sealed partial class AntagBetterRandomSpawnSystem : ServerGameRuleSystem<AntagBetterRandomSpawnComponent>
 {
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private SharedInteractionSystem _interaction = default!;

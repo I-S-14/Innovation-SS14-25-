@@ -449,4 +449,8 @@
         acts: [ "Destruction" ]
   - type: IconSmooth
     key: cosmictable
-    base: state_
+    states:
+    - !type:CornerSpriteSmoothing
+      base: state_
+      mask:
+      - cosmictable

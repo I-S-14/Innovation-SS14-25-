@@ -62,7 +62,6 @@ public sealed partial class ActionUIController : UIController, IOnStateChanged<G
     [UISystemDependency] private readonly ActionsSystem? _actionsSystem = default;
     [UISystemDependency] private readonly InteractionOutlineSystem? _interactionOutline = default;
     [UISystemDependency] private readonly TargetOutlineSystem? _targetOutline = default;
-    [UISystemDependency] private readonly SpriteSystem _spriteSystem = default!;
     [UISystemDependency] private readonly TransformSystem _transform = default!; // Goobstation
     [UISystemDependency] private readonly SpellsSystem? _spells = default!; // Goobstation
     [UISystemDependency] private readonly ActionTargetMarkSystem? _mark = default!; // Goobstation

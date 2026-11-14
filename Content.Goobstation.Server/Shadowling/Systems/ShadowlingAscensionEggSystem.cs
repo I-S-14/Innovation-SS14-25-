@@ -1,3 +1,6 @@
+using Content.Shared.AlertLevel;
+using Content.Shared.Station.Systems;
+using NavMapSystem = Content.Server.Pinpointer.ServerNavMapSystem;
 using Content.Goobstation.Shared.Overlays;
 using Content.Goobstation.Shared.Shadowling.Components;
 using Content.Goobstation.Shared.Shadowling.Components.Abilities.PreAscension;
@@ -113,7 +116,7 @@ public sealed partial class ShadowlingAscensionEggSystem : EntitySystem
             || !component.StartTimer) // This indicates that the shadowling was inside the egg
             return;
 
-        var shadowlingComp = EntityManager.GetComponent<ShadowlingComponent>(component.Creator.Value);
+        var shadowlingComp = Comp<ShadowlingComponent>(component.Creator.Value);
         _shadowling.OnPhaseChanged(component.Creator.Value, shadowlingComp, ShadowlingPhases.FailedAscension);
         component.StartTimer = false;
     }

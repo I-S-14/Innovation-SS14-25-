@@ -18,9 +18,10 @@ public sealed partial class SlimeLatchOperator : HTNOperator
     [DataField]
     public string LatchKey = string.Empty;
 
-    public override void Initialize(IEntitySystemManager sysManager)
+    public override void Initialize(IDependencyCollection deps)
     {
-        base.Initialize(sysManager);
+        base.Initialize(deps);
+        var sysManager = deps.Resolve<IEntitySystemManager>();
         _slimeLatch = sysManager.GetEntitySystem<SlimeLatchSystem>();
 
         _slimeQuery = _entManager.GetEntityQuery<SlimeComponent>();

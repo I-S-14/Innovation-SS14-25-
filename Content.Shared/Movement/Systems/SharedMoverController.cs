@@ -82,9 +82,11 @@ public abstract partial class SharedMoverController : VirtualController
 
     private static readonly ProtoId<TagPrototype> FootstepSoundTag = "FootstepSound";
 
-    protected EntityQuery<FixturesComponent> FixturesQuery; // Tile Movement Change
-    protected EntityQuery<TileMovementComponent> TileMovementQuery; // Tile Movement Change
-    protected EntityQuery<MomentumSteeringComponent> MomentumSteeringQuery; // Goobstation - momentum steering
+    //IS14-change start: initialize retained movement queries through the new injection API.
+    [Dependency] protected EntityQuery<FixturesComponent> FixturesQuery = default!; // Tile Movement Change
+    [Dependency] protected EntityQuery<TileMovementComponent> TileMovementQuery = default!; // Tile Movement Change
+    [Dependency] protected EntityQuery<MomentumSteeringComponent> MomentumSteeringQuery = default!; // Goobstation - momentum steering
+    //IS14-change end
 
     private bool _relativeMovement;
     private float _minDamping;
@@ -496,8 +498,11 @@ public abstract partial class SharedMoverController : VirtualController
 
     public void Friction(float minimumFrictionSpeed, float frameTime, float friction, ref float velocity)
     {
-        if (velocity < minimumFrictionSpeed)
+        //IS14-change start
+        // Wizards 11d0799e1a: angular friction must work in both directions.
+        if (Math.Abs(velocity) < minimumFrictionSpeed)
             return;
+        //IS14-change end
 
         // This equation is lifted from the Physics Island solver.
         // We re-use it here because Kinematic Controllers can't/shouldn't use the Physics Friction

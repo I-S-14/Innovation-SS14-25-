@@ -14,17 +14,17 @@
     program: 52
   - type: SwappableInstrument
     instrumentList:
-      "Voice": {52: 0}
-      "Trumpet": {56: 0}
-      "Electric": {27: 0}
-      "Bass": {33: 0}
-      "Rock": {29: 0}
-      "Acoustic": {24: 0}
-      "Flute": {73: 0}
-      "Sax": {66: 0}
-      "Piano": {1: 0}
-      "Church Organ": {19: 0}
-      "Violin": {41: 0}
+      is14-instrument-style-voice: {52: 0}
+      is14-instrument-style-trumpet: {56: 0}
+      is14-instrument-style-electric: {27: 0}
+      is14-instrument-style-bass: {33: 0}
+      is14-instrument-style-rock: {29: 0}
+      is14-instrument-style-acoustic: {24: 0}
+      is14-instrument-style-flute: {73: 0}
+      is14-instrument-style-sax: {66: 0}
+      is14-instrument-style-piano: {1: 0}
+      is14-instrument-style-church-organ: {19: 0}
+      is14-instrument-style-violin: {41: 0}
   - type: UserInterface
     interfaces:
       enum.InstrumentUiKey.Key:

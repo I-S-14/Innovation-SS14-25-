@@ -2,5 +2,5 @@
 
 - type: guideEntry
   id: Bingle
-  name: "Бингл" # Corvax-Goob-Locale
+  name: is14-upstream-guide-bingle # Corvax-Goob-Locale
   text: "/ServerInfo/_Goobstation/Guidebook/Antagonist/Bingle.xml"

@@ -401,7 +401,9 @@ public abstract partial class SharedGunSystem
         {
             ent.Comp.UnspawnedCount--;
             DirtyField(ent.AsNullable(), nameof(BallisticAmmoProviderComponent.UnspawnedCount));
-            var ammoEnt = EntityManager.PredictedSpawn(ent.Comp.Proto, coordinates);
+            //IS14-change start
+            var ammoEnt = PredictedSpawn(ent.Comp.Proto, coordinates);
+            //IS14-change end
             EnsureShootable(ammoEnt);
             EjectCartridge(GetRandom(ent), user, ammoEnt);
         }

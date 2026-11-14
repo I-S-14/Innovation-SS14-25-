@@ -27,7 +27,7 @@
   - type: Clothing
     sprite: _IS14/Clothing/Neck/Command/Quartermaster/qm_cloak.rsi
   - type: StealTarget
-    stealGroup: HeadCloak
+    stealGroup: [HeadCloak]
 
 - type: entity
   parent: ClothingOuterIS14Base

@@ -12,17 +12,17 @@
       currentOre: OreCoal
     - type: Sprite
       layers:
-        - state: rock_asteroid
-        - map: [ "enum.EdgeLayer.South" ]
-          state: rock_asteroid_south
-        - map: [ "enum.EdgeLayer.East" ]
-          state: rock_asteroid_east
-        - map: [ "enum.EdgeLayer.North" ]
-          state: rock_asteroid_north
-        - map: [ "enum.EdgeLayer.West" ]
-          state: rock_asteroid_west
-        - state: rock_coal
-
+      - state: rock_asteroid
+      - state: rock_coal
+        sprite: Structures/Walls/stone-ore.rsi
+    - type: IconSmooth
+      key: walls
+      states:
+      - !type:EdgeSpriteSmoothing
+        base: rock_asteroid_
+        mask:
+        - walls
+        index: '1'
 - type: entity
   id: MeteorRockGold
   parent: MeteorRock
@@ -33,17 +33,17 @@
       currentOre: OreGold
     - type: Sprite
       layers:
-        - state: rock_asteroid
-        - map: [ "enum.EdgeLayer.South" ]
-          state: rock_asteroid_south
-        - map: [ "enum.EdgeLayer.East" ]
-          state: rock_asteroid_east
-        - map: [ "enum.EdgeLayer.North" ]
-          state: rock_asteroid_north
-        - map: [ "enum.EdgeLayer.West" ]
-          state: rock_asteroid_west
-        - state: rock_gold
-
+      - state: rock_asteroid
+      - state: rock_gold
+        sprite: Structures/Walls/stone-ore.rsi
+    - type: IconSmooth
+      key: walls
+      states:
+      - !type:EdgeSpriteSmoothing
+        base: rock_asteroid_
+        mask:
+        - walls
+        index: '1'
 - type: entity
   id: MeteorRockDiamond
   parent: MeteorRock
@@ -54,17 +54,17 @@
       currentOre: OreDiamond
     - type: Sprite
       layers:
-        - state: rock_asteroid
-        - map: [ "enum.EdgeLayer.South" ]
-          state: rock_asteroid_south
-        - map: [ "enum.EdgeLayer.East" ]
-          state: rock_asteroid_east
-        - map: [ "enum.EdgeLayer.North" ]
-          state: rock_asteroid_north
-        - map: [ "enum.EdgeLayer.West" ]
-          state: rock_asteroid_west
-        - state: rock_diamond
-
+      - state: rock_asteroid
+      - state: rock_diamond
+        sprite: Structures/Walls/stone-ore.rsi
+    - type: IconSmooth
+      key: walls
+      states:
+      - !type:EdgeSpriteSmoothing
+        base: rock_asteroid_
+        mask:
+        - walls
+        index: '1'
 - type: entity
   id: MeteorRockPlasma
   parent: MeteorRock
@@ -75,17 +75,17 @@
       currentOre: OrePlasma
     - type: Sprite
       layers:
-        - state: rock_asteroid
-        - map: [ "enum.EdgeLayer.South" ]
-          state: rock_asteroid_south
-        - map: [ "enum.EdgeLayer.East" ]
-          state: rock_asteroid_east
-        - map: [ "enum.EdgeLayer.North" ]
-          state: rock_asteroid_north
-        - map: [ "enum.EdgeLayer.West" ]
-          state: rock_asteroid_west
-        - state: rock_phoron
-
+      - state: rock_asteroid
+      - state: rock_phoron
+        sprite: Structures/Walls/stone-ore.rsi
+    - type: IconSmooth
+      key: walls
+      states:
+      - !type:EdgeSpriteSmoothing
+        base: rock_asteroid_
+        mask:
+        - walls
+        index: '1'
 - type: entity
   id: MeteorRockQuartz
   parent: MeteorRock
@@ -96,17 +96,17 @@
       currentOre: OreSpaceQuartz
     - type: Sprite
       layers:
-        - state: rock_asteroid
-        - map: [ "enum.EdgeLayer.South" ]
-          state: rock_asteroid_south
-        - map: [ "enum.EdgeLayer.East" ]
-          state: rock_asteroid_east
-        - map: [ "enum.EdgeLayer.North" ]
-          state: rock_asteroid_north
-        - map: [ "enum.EdgeLayer.West" ]
-          state: rock_asteroid_west
-        - state: rock_quartz
-
+      - state: rock_asteroid
+      - state: rock_quartz
+        sprite: Structures/Walls/stone-ore.rsi
+    - type: IconSmooth
+      key: walls
+      states:
+      - !type:EdgeSpriteSmoothing
+        base: rock_asteroid_
+        mask:
+        - walls
+        index: '1'
 - type: entity
   id: MeteorRockSilver
   parent: MeteorRock
@@ -117,18 +117,17 @@
       currentOre: OreSilver
     - type: Sprite
       layers:
-        - state: rock_asteroid
-        - map: [ "enum.EdgeLayer.South" ]
-          state: rock_asteroid_south
-        - map: [ "enum.EdgeLayer.East" ]
-          state: rock_asteroid_east
-        - map: [ "enum.EdgeLayer.North" ]
-          state: rock_asteroid_north
-        - map: [ "enum.EdgeLayer.West" ]
-          state: rock_asteroid_west
-        - state: rock_silver
-
-# Tin name is a holdover from the asteroid.yml prototype.
+      - state: rock_asteroid
+      - state: rock_silver
+        sprite: Structures/Walls/stone-ore.rsi
+    - type: IconSmooth
+      key: walls
+      states:
+      - !type:EdgeSpriteSmoothing
+        base: rock_asteroid_
+        mask:
+        - walls
+        index: '1'
 - type: entity
   id: MeteorRockTin
   parent: MeteorRock
@@ -139,17 +138,17 @@
       currentOre: OreSteel
     - type: Sprite
       layers:
-        - state: rock_asteroid
-        - map: [ "enum.EdgeLayer.South" ]
-          state: rock_asteroid_south
-        - map: [ "enum.EdgeLayer.East" ]
-          state: rock_asteroid_east
-        - map: [ "enum.EdgeLayer.North" ]
-          state: rock_asteroid_north
-        - map: [ "enum.EdgeLayer.West" ]
-          state: rock_asteroid_west
-        - state: rock_tin
-
+      - state: rock_asteroid
+      - state: rock_tin
+        sprite: Structures/Walls/stone-ore.rsi
+    - type: IconSmooth
+      key: walls
+      states:
+      - !type:EdgeSpriteSmoothing
+        base: rock_asteroid_
+        mask:
+        - walls
+        index: '1'
 - type: entity
   id: MeteorRockUranium
   parent: MeteorRock
@@ -160,17 +159,17 @@
       currentOre: OreUranium
     - type: Sprite
       layers:
-        - state: rock_asteroid
-        - map: [ "enum.EdgeLayer.South" ]
-          state: rock_asteroid_south
-        - map: [ "enum.EdgeLayer.East" ]
-          state: rock_asteroid_east
-        - map: [ "enum.EdgeLayer.North" ]
-          state: rock_asteroid_north
-        - map: [ "enum.EdgeLayer.West" ]
-          state: rock_asteroid_west
-        - state: rock_uranium
-
+      - state: rock_asteroid
+      - state: rock_uranium
+        sprite: Structures/Walls/stone-ore.rsi
+    - type: IconSmooth
+      key: walls
+      states:
+      - !type:EdgeSpriteSmoothing
+        base: rock_asteroid_
+        mask:
+        - walls
+        index: '1'
 - type: entity
   id: MeteorRockBananium
   parent: MeteorRock
@@ -181,13 +180,14 @@
       currentOre: OreBananium
     - type: Sprite
       layers:
-        - state: rock_asteroid
-        - map: [ "enum.EdgeLayer.South" ]
-          state: rock_asteroid_south
-        - map: [ "enum.EdgeLayer.East" ]
-          state: rock_asteroid_east
-        - map: [ "enum.EdgeLayer.North" ]
-          state: rock_asteroid_north
-        - map: [ "enum.EdgeLayer.West" ]
-          state: rock_asteroid_west
-        - state: rock_bananium
+      - state: rock_asteroid
+      - state: rock_bananium
+        sprite: Structures/Walls/rock.rsi
+    - type: IconSmooth
+      key: walls
+      states:
+      - !type:EdgeSpriteSmoothing
+        base: rock_asteroid_
+        mask:
+        - walls
+        index: '1'

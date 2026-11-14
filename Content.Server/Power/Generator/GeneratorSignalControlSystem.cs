@@ -19,7 +19,7 @@ public sealed partial class GeneratorSignalControlSystem: EntitySystem
     /// <summary>
     /// Change the state of the generator depending on what signal is sent.
     /// </summary>
-    private void OnSignalReceived(EntityUid uid, GeneratorSignalControlComponent component, SignalReceivedEvent args)
+    private void OnSignalReceived(EntityUid uid, GeneratorSignalControlComponent component, ref SignalReceivedEvent args)
     {
         if (!TryComp<FuelGeneratorComponent>(uid, out var generator))
             return;

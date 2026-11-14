@@ -162,23 +162,6 @@
   targetNode: bend
 
 - type: construction
-  id: GasPipeStraight
-  name: construction-recipe-gas-pipe-straight
-  graph: GasPipe
-  startNode: start
-  targetNode: straight
-  category: construction-category-utilities
-  placementMode: AlignAtmosPipeLayers
-  canBuildInImpassable: true
-  alternativePrototypes:
-  - GasPipeStraight
-  - GasPipeStraightAlt1
-  - GasPipeStraightAlt2
-
-# endregion Disposals
-
-# region Intercom
-- type: construction
   parent: BaseUtilityWallmount
   id: IntercomAssembly
   graph: Intercom

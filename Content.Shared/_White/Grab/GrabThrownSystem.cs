@@ -70,7 +70,7 @@ public sealed class GrabThrownSystem : EntitySystem
         _color.RaiseEffect(Color.Red, new List<EntityUid>() { ent }, Filter.Pvs(ent, entityManager: EntityManager));
     }
 
-    private void OnStopThrow(EntityUid uid, GrabThrownComponent comp, StopThrowEvent args)
+    private void OnStopThrow(EntityUid uid, GrabThrownComponent comp, ref StopThrowEvent args)
     {
         if (comp.DamageOnCollide != null)
             _damageable.TryChangeDamage(uid, comp.DamageOnCollide);

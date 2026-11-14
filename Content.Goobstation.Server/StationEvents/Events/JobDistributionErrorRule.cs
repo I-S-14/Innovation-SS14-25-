@@ -1,3 +1,5 @@
+using Content.Shared.Station.Components;
+using StationJobsSystem = Content.Server.Station.Systems.ServerStationJobsSystem;
 using Content.Goobstation.Server.StationEvents.Components;
 using Content.Server.Station.Components;
 using Content.Server.Station.Systems;

@@ -34,6 +34,7 @@ public sealed class CosmicGlyphSystem : SharedCosmicGlyphSystem
 
     public override void Initialize()
     {
+        base.Initialize();
         SubscribeLocalEvent<CosmicGlyphComponent, ActivateInWorldEvent>(OnUseGlyph);
         SubscribeLocalEvent<CosmicGlyphComponent, ComponentStartup>(OnGlyphCreated);
     }

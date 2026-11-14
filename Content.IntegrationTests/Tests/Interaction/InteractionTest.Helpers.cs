@@ -1,3 +1,4 @@
+using Content.Shared.Ghost.Components;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 #nullable enable
@@ -304,7 +305,8 @@ public abstract partial class InteractionTest
     {
         await Server.WaitPost(() =>
         {
-            HandSys.SwapHands((ToServer(Player), Hands), reverse: reverse);
+            Assert.That(Hands, Is.Not.Null);
+            HandSys.SwapHands((ToServer(Player), Hands!), reverse: reverse);
         });
 
         await RunTicks(1);

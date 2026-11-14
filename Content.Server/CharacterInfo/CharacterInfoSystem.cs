@@ -37,7 +37,6 @@ public sealed partial class CharacterInfoSystem : EntitySystem
         var objectives = new Dictionary<string, List<ObjectiveInfo>>();
         ProtoId<JobPrototype>? jobId = null; // CorvaxGoob
         string? briefing = null;
-        ProtoId<JobPrototype>? job = null;
         if (_minds.TryGetMind(entity, out var mindId, out var mind))
         {
             // Get objectives
@@ -60,13 +59,13 @@ public sealed partial class CharacterInfoSystem : EntitySystem
                 objectives[issuer].Add(info.Value);
             }
 
-            if (_jobs.MindTryGetJob(mindId, out var job)) // CorvaxGoob
-                jobId = job;
+            if (_jobs.MindTryGetJob(mindId, out var mindJob)) // CorvaxGoob
+                jobId = mindJob;
 
             // Get briefing
             briefing = _roles.MindGetBriefing(mindId);
         }
 
-        RaiseNetworkEvent(new CharacterInfoEvent(GetNetEntity(entity), jobId, objectives, briefing), args.SenderSession); // CorvaxGoob
+        RaiseNetworkEvent(new CharacterInfoEvent(GetNetEntity(entity), objectives, briefing, jobId), args.SenderSession); // CorvaxGoob
     }
 }

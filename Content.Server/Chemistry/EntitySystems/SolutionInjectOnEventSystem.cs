@@ -164,7 +164,7 @@ public sealed partial class SolutionInjectOnCollideSystem : EntitySystem
     /// </list>
     /// </remarks>
     /// <returns>true if at least one target was successfully injected, otherwise false</returns>
-    private bool TryInjectTargets(Entity<BaseSolutionInjectOnEventComponent> injector, IReadOnlySet<EntityUid> targets, EntityUid? user = null)
+    private bool TryInjectTargets(Entity<BaseSolutionInjectOnEventComponent> injector, IReadOnlyCollection<EntityUid> targets, EntityUid? user = null)
     {
         // Make sure we have at least one target
         if (targets.Count == 0)
@@ -211,8 +211,8 @@ public sealed partial class SolutionInjectOnCollideSystem : EntitySystem
                 if (blocked)
                 {
                     // Only show popup to attacker
-                    if (source != null)
-                        _popup.PopupEntity(Loc.GetString(injector.Comp.BlockedByArmorPopupMessage, ("weapon", injector.Owner), ("target", target)), target, source.Value, PopupType.SmallCaution);
+                    if (user != null)
+                        _popup.PopupEntity(Loc.GetString(injector.Comp.BlockedByArmorPopupMessage, ("weapon", injector.Owner), ("target", target)), target, user.Value, PopupType.SmallCaution);
 
                     continue;
                 }

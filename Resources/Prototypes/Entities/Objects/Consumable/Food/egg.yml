@@ -19,23 +19,17 @@
   - type: Item
     sprite: Objects/Consumable/Food/egg.rsi
     size: Tiny
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 11 #Goob edit - homunculus
-        reagents:
-        - ReagentId: Egg
-          Quantity: 6
   - type: Rehydratable #Goob start
-    catalyst: UnstableMutagen
+    catalysts: [UnstableMutagen] # IS14: retained Goob hydration uses a catalyst set.
     catalystMinimum: 5
     possibleSpawns:
     - MobHomunculus #Goob end
   - type: Solution
     solution:
+      maxVol: 11 # Goob: keep room for the homunculus catalyst.
       reagents:
       - ReagentId: Egg
-        Quantity: 6 # About 50ml which is the expected size of an egg
+        Quantity: 6
   - type: DrawableSolution
     solution: food
   - type: SolutionSpiker
@@ -49,7 +43,6 @@
       types:
         Blunt: 1
   - type: Damageable
-  - type: Injurable
     damageContainer: Biological
   - type: Destructible
     thresholds:
@@ -78,6 +71,8 @@
     heatCapacity: 15000
   - type: TemperatureDamage
   - type: InternalTemperature
+    thickness: 0.011 # IS14: retain Goob shell/albumen cooking dimensions.
+    area: 0.04
 
 # Splat
 - type: entity
@@ -130,6 +125,7 @@
       map: [ "enum.DamageStateVisualLayers.Base" ]
   - type: Solution
     solution:
+      maxVol: 6 # IS14: retain the boiled egg's original capacity.
       reagents:
       - ReagentId: EggCooked
         Quantity: 6

@@ -256,7 +256,7 @@ public sealed partial class SensorMonitoringConsoleSystem : EntitySystem
     private void AtmosUpdate(
         EntityUid uid,
         SensorMonitoringConsoleComponent comp,
-        AtmosDeviceUpdateEvent args)
+        ref AtmosDeviceUpdateEvent args)
     {
         foreach (var (ent, data) in comp.Sensors)
         {

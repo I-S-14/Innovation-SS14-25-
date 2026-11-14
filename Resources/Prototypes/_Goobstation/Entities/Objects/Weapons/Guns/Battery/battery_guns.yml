@@ -425,7 +425,7 @@
     - Sidearm
     - WeaponEnergyGunLawbringer
   - type: StealTarget
-    stealGroup: WeaponEnergyGunLawbringer
+    stealGroup: [WeaponEnergyGunLawbringer]
   - type: RestrictById
     restrictMelee: true
     restrictRanged: true

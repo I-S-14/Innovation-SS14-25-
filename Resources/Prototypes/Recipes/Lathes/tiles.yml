@@ -398,14 +398,12 @@
 # Circuit
 - type: latheRecipe
   parent: BaseCircuitTileRecipe
-  tileRipResistance: 225 # Goob
   id: FloorGreenCircuit
   result: FloorTileItemGCircuit
   iconPath: /Textures/Tiles/green_circuit.png # CorvaxGoob
 
 - type: latheRecipe
   parent: BaseCircuitTileRecipe
-  tileRipResistance: 225 # Goob
   id: FloorBlueCircuit
   result: FloorTileItemBCircuit
   iconPath: /Textures/Tiles/blue_circuit.png # CorvaxGoob

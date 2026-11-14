@@ -2,7 +2,7 @@
 
 using Content.Goobstation.Shared.Skinnable;
 using Content.Server.DoAfter;
-using Content.Server.Kitchen.Components;
+
 using Content.Server.Popups;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Systems;

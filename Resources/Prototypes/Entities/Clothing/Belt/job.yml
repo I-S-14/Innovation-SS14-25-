@@ -283,7 +283,9 @@
   - type: Storage
     whitelist:
       tags:
+      - Wrench # IS14: retain the Goob medical-belt contents alongside Wizards' EMT tools.
       - Bottle
+      - Spray
       - Brutepack
       - Bloodpack
       - Gauze
@@ -295,11 +297,19 @@
       - DiscreteHealthAnalyzer
       - SurgeryTool
       - Dropper
+      - MedicalPatch
+      - AutoinjectorCartridge
+      - HandheldCrewMonitor
       components:
       - Injector
       - Pill
       - Prying
       - SpraySafety
+      - HandLabeler
+      - SurgeryTool
+      - Defibrillator
+      - SyringeGun
+      - GunApplySolution
 
 - type: entity
   parent: ClothingBeltStorageBase

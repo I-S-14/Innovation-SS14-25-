@@ -1,3 +1,7 @@
+using Content.Shared.Ghost.Components;
+using Content.Shared.Station.Components;
+using Content.Shared.Station.Systems;
+using StationJobsSystem = Content.Server.Station.Systems.ServerStationJobsSystem;
 using Content.Goobstation.Shared.Silicon;
 using Content.Goobstation.Shared.Silicon.Components;
 using Content.Server.Chat.Systems;

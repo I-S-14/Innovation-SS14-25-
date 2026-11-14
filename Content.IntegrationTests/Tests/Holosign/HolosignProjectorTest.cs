@@ -1,6 +1,7 @@
 #nullable enable
 using Content.IntegrationTests.Tests.Movement;
 using Content.Shared.PowerCell;
+using Content.Shared.Holosign;
 using Robust.Shared.Maths;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Spawners;

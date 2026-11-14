@@ -24,7 +24,8 @@ public sealed partial class ReplacementAccentSystem : RelayAccentSystem<Replacem
     /// </summary>
     private static readonly Regex PunctuationRegex = new("[!?.]{1,3}$", RegexOptions.Compiled);
 
-    private readonly Dictionary<ProtoId<ReplacementAccentPrototype>, (Regex regex, string replacement)[]>
+    //IS14-change: cached localized rules must follow changes to the active culture.
+    private readonly Dictionary<(ProtoId<ReplacementAccentPrototype> Accent, string? Culture), (Regex regex, string replacement)[]>
         _cachedReplacements = new();
 
     public override void Initialize()
@@ -139,11 +140,12 @@ public sealed partial class ReplacementAccentSystem : RelayAccentSystem<Replacem
 
     private (Regex regex, string replacement)[] GetCachedReplacements(ReplacementAccentPrototype prototype)
     {
-        if (_cachedReplacements.TryGetValue(prototype.ID, out var replacements))
+        var key = (new ProtoId<ReplacementAccentPrototype>(prototype.ID), Loc.DefaultCulture?.Name); //IS14-change
+        if (_cachedReplacements.TryGetValue(key, out var replacements))
             return replacements;
 
         replacements = GenerateCachedReplacements(prototype);
-        _cachedReplacements.Add(prototype.ID, replacements);
+        _cachedReplacements.Add(key, replacements); //IS14-change
         return replacements;
     }
 
@@ -152,20 +154,7 @@ public sealed partial class ReplacementAccentSystem : RelayAccentSystem<Replacem
         if (prototype.WordReplacements is not { } replacements)
             return [];
 
-        return
-        [
-            .. replacements.Select(kv =>
-            {
-                var (first, replace) = kv;
-                var firstLoc = Loc.GetString(first);
-                var replaceLoc = Loc.GetString(replace);
-
-                var regex = new Regex($@"(?<![\w']){firstLoc}(?![\w'])", RegexOptions.IgnoreCase);
-
-                return (regex, replaceLoc);
-
-            }),
-        ];
+        return GenerateLocalizedReplacements(replacements); //IS14-change: retain language-specific Goob dictionaries.
     }
 
     private void OnPrototypesReloaded(PrototypesReloadedEventArgs obj)

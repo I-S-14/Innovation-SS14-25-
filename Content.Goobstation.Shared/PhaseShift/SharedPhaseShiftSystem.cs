@@ -144,7 +144,7 @@ public abstract partial class SharedPhaseShiftSystem : EntitySystem
         args.Cancel();
     }
 
-    private void OnPointAttempt(EntityUid uid, PhaseShiftedComponent comp, PointAttemptEvent args)
+    private void OnPointAttempt(EntityUid uid, PhaseShiftedComponent comp, ref PointAttemptEvent args)
     {
         args.Cancel();
     }

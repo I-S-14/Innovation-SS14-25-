@@ -36,7 +36,6 @@
   # - BlueshieldOfficer SOP Hidden by CorvaxGoob
   - Command
   # - Succession Hidden by CorvaxGoob
-  weight: 20
   startingGear: BlueshieldOfficerGear
   icon: "JobIconBlueshield"
   joinNotifyCrew: true

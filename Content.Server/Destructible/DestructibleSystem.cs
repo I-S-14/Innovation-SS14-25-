@@ -41,6 +41,9 @@ public sealed partial class DestructibleSystem : SharedDestructibleSystem
     [Dependency] public AtmosphereSystem AtmosphereSystem = default!;
     [Dependency] public ConstructionSystem ConstructionSystem = default!;
     [Dependency] public ExplosionSystem ExplosionSystem = default!;
+    //IS14-change start
+    [Dependency] public Content.Shared.Body.Systems.SharedBodySystem BodySystem = default!;
+    //IS14-change end
     [Dependency] public GibbingSystem Gibbing = default!;
     [Dependency] public PuddleSystem PuddleSystem = default!;
     [Dependency] public SharedContainerSystem ContainerSystem = default!;

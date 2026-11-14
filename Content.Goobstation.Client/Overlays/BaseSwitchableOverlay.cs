@@ -8,6 +8,15 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Goobstation.Client.Overlays;
 
+//IS14-change start: static prototype validation cannot inspect open generic types.
+internal sealed class SwitchableOverlayPrototypeIds
+{
+    private SwitchableOverlayPrototypeIds() { }
+
+    internal static readonly ProtoId<ShaderPrototype> NightVision = "NightVision";
+}
+//IS14-change end
+
 public sealed partial class BaseSwitchableOverlay<TComp> : Overlay where TComp : SwitchableVisionOverlayComponent
 {
     [Dependency] private IEyeManager _eyeManager = default!;
@@ -27,7 +36,7 @@ public sealed partial class BaseSwitchableOverlay<TComp> : Overlay where TComp :
     public BaseSwitchableOverlay()
     {
         IoCManager.InjectDependencies(this);
-        _shader = _prototype.Index<ShaderPrototype>("NightVision").InstanceUnique();
+        _shader = _prototype.Index<ShaderPrototype>(SwitchableOverlayPrototypeIds.NightVision).InstanceUnique();
     }
 
     protected override bool BeforeDraw(in OverlayDrawArgs args)

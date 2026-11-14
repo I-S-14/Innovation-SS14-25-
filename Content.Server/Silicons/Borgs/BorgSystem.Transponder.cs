@@ -82,12 +82,8 @@ public sealed partial class BorgSystem
                 false,
                 false); // Corvax-Goob-MutableLaws
 
-            var payload = new NetworkPayload()
-            {
-                [DeviceNetworkConstants.Command] = DeviceNetworkConstants.CmdUpdatedState,
-                [RoboticsConsoleConstants.NET_CYBORG_DATA] = data
-            };
-            _deviceNetwork.QueuePacket(uid, null, payload, device: device);
+            var payload = new RoboticsCyborgDataPayload { Data = data };
+            _deviceNetwork.SendPacket((uid, device), null, ref payload);
 
             comp.NextBroadcast = now + comp.BroadcastDelay;
         }
@@ -122,6 +118,12 @@ public sealed partial class BorgSystem
     private void OnDestroy(Entity<BorgTransponderComponent> ent, ref DeviceNetworkPacketEvent<RoboticsCyborgDestroyPayload> args)
     {
         Destroy(ent.AsNullable());
+    }
+
+    [SubscribeLocalEvent]
+    private void OnChangeLawsPacket(Entity<BorgTransponderComponent> ent, ref DeviceNetworkPacketEvent<RoboticsCyborgChangeLawsPayload> args)
+    {
+        ChangeLaws(ent.Owner, args.Data.CircuitBoard);
     }
 
     // Corvax-Goob-MutableLaws-Start

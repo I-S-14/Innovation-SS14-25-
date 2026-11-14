@@ -165,74 +165,28 @@
     mapPath: /Maps/_Goobstation/Nonstations/nukieplanet.yml # goob edit
   - type: AntagSelection
     selectionTime: PrePlayerSpawn
-    definitions:
-    - prefRoles: [ NukeopsCommander ]
-      fallbackRoles: [ Nukeops, NukeopsMedic ]
-      spawnerPrototype: SpawnPointNukeopsCommander
-      startingGear: SyndicateCommanderGearFull
-      unequipOldGear: true
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14NukeopsAntag026016775
+      range:
+        max: 1
+        min: 1
+      playerRatio: 10
       chaosScore: 300
-      skills: # CorvaxGoob-Skills
-      - All
-      roleLoadout:
-      - RoleSurvivalNukie
-      components:
-      - type: NukeOperative
-      - type: RandomMetadata
-        nameSegments:
-        - NamesSyndicateElite
-        nameFormat: name-format-nukie-commander
-      - type: NpcFactionMember
-        factions:
-        - Syndicate
-      mindRoles:
-      - MindRoleNukeopsCommander
-    - prefRoles: [ NukeopsMedic ]
-      fallbackRoles: [ Nukeops, NukeopsCommander ]
-      spawnerPrototype: SpawnPointNukeopsMedic
-      startingGear: SyndicateOperativeMedicFull
-      unequipOldGear: true
-      chaosScore: 300 # Goobstation
-      skills: # CorvaxGoob-Skills
-      - All
-      roleLoadout:
-      - RoleSurvivalNukie
-      components:
-      - type: NukeOperative
-      - type: RandomMetadata
-        nameSegments:
-        - NamesSyndicateNormal
-        nameFormat: name-format-nukie-agent
-      - type: NpcFactionMember
-        factions:
-        - Syndicate
-      - type: SurgerySpeedModifier # shitmed
-        speedModifier: 2
-      mindRoles:
-      - MindRoleNukeopsMedic
-    - prefRoles: [ Nukeops ]
-      fallbackRoles: [ NukeopsCommander, NukeopsMedic ]
-      spawnerPrototype: SpawnPointNukeopsOperative
-      max: 10 # Goobstation / 古布空间站 - 没有限制的核特工
-      playerRatio: 16 # Goobstation
-      chaosScore: 300 # Goobstation
-      startingGear: SyndicateOperativeGearFull
-      unequipOldGear: true
-      skills: # CorvaxGoob-Skills
-      - All
-      roleLoadout:
-      - RoleSurvivalNukie
-      components:
-      - type: NukeOperative
-      - type: RandomMetadata
-        nameSegments:
-        - NamesSyndicateNormal
-        nameFormat: name-format-nukie-operator
-      - type: NpcFactionMember
-        factions:
-        - Syndicate
-      mindRoles:
-      - MindRoleNukeops
+    - !type:LinearAntagCount
+      proto: IS14NukeopsAntag1e9c2747a
+      range:
+        max: 1
+        min: 1
+      playerRatio: 10
+      chaosScore: 300
+    - !type:LinearAntagCount
+      proto: IS14NukeopsAntag2e8e635a2
+      range:
+        max: 10
+        min: 1
+      playerRatio: 16
+      chaosScore: 300
   - type: DynamicRuleCost
     cost: 200
 
@@ -272,25 +226,16 @@
       min: 240
       max: 420
   - type: AntagSelection
-    selectionTime: IntraPlayerSpawn
-    definitions:
-    - prefRoles: [ Traitor ]
-      max: 8
+    selectionTime: JobsAssigned
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14TraitorAntag07d7816d0
+      range:
+        max: 8
+        min: 1
       playerRatio: 10
-      chaosScore: 150 # Goobstation
-      skills: # CorvaxGoob-Skills
-      - All
-      blacklist:
-        components:
-        - CommandStaff # Goobstation
-        - AntagImmune
-        - Changeling # Goobstation
-      lateJoinAdditional: true # Goobstation
-      mindRoles:
-      - MindRoleTraitor
-
-# Goobstation - order swapped since admin verbs use .Last() for some reason
-# TODO GOOBSTATION: Fix that
+      chaosScore: 150
+    lateJoinAdditional: true
 - type: entity
   id: TraitorReinforcement # This shouldn't be in here but I'm not sure where to put it :(
   parent: BaseTraitorRuleNoObjectives # Goobstation
@@ -299,24 +244,14 @@
     giveUplink: false
     giveBriefing: false
   - type: AntagSelection
-    selectionTime: PostPlayerSpawn # Goobstation
-    definitions:
-    - prefRoles: [ Traitor ]
-      blacklist: # Goobstation
-        components:
-        - CommandStaff
-      mindRoles:
-      - MindRoleTraitorReinforcement
-
-#- type: entity
-#  id: TraitorReinforcement
-#  parent: Traitor
-#  components:
-#  - type: TraitorRule
-#    giveUplink: false
-#    giveCodewords: false # It would actually give them a different set of codewords than the regular traitors, anyway
-#    giveBriefing: false
-
+    selectionTime: RuleStarted
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14TraitorReinforcementAntag00291ce66
+      range:
+        max: 1
+        min: 1
+      playerRatio: 10
 - type: entity
   id: Revolutionary
   parent: [BaseGameRule, BaseRoundstartAntagRule]
@@ -326,27 +261,14 @@
     chaosScore: 1000 # Goobstation - intentionally not per-antag
   - type: RevolutionaryRule
   - type: AntagSelection
-    selectionTime: IntraPlayerSpawn # Goobstation
-    definitions:
-    - prefRoles: [ HeadRev ]
-      max: 3
+    selectionTime: JobsAssigned
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14RevolutionaryAntag02c8a0d07
+      range:
+        max: 3
+        min: 1
       playerRatio: 15
-      skills: # CorvaxGoob-Skills
-      - All
-      blacklist:
-        components:
-        - CommandStaff # Goobstation
-      jobBlacklist: [ Mime ] # Goobstation
-      briefing:
-        text: head-rev-role-greeting
-        color: CornflowerBlue
-        sound: "/Audio/Ambience/Antag/headrev_start.ogg"
-      startingGear: HeadRevGear
-      components:
-      - type: Revolutionary
-      - type: HeadRevolutionary
-      mindRoles:
-      - MindRoleHeadRevolutionary
   - type: DynamicRuleCost
     cost: 200
 
@@ -433,30 +355,14 @@
     - LoneRunRule
   - type: ZombieRule
   - type: AntagSelection
-    selectionTime: IntraPlayerSpawn
-    definitions:
-    - prefRoles: [ InitialInfected ]
-      max: 4 # Goobstation
-      playerRatio: 15 # Goobstation
-      jobBlacklist: [ Chaplain ] # Goobstation
-      skills: # CorvaxGoob-Skills
-      - All
-      blacklist:
-        components:
-        - CommandStaff # Goobstation
-        - ZombieImmune
-        - AntagImmune
-      briefing:
-        text: zombie-patientzero-role-greeting
-        color: Plum
-        sound: "/Audio/Ambience/Antag/zombie_start.ogg"
-      components:
-      - type: PendingZombie
-      - type: ZombifyOnDeath
-      - type: IncurableZombie
-      - type: InitialInfected
-      mindRoles:
-      - MindRoleInitialInfected
+    selectionTime: JobsAssigned
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14ZombieAntag0c42767d9
+      range:
+        max: 4
+        min: 1
+      playerRatio: 15
   - type: DynamicRuleCost
     cost: 200
 

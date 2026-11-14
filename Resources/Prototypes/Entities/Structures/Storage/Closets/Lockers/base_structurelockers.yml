@@ -2,8 +2,10 @@
 
 - type: entity
   abstract: true
-  parent: [ ClosetBase, StructureHealthContainerWeak ]
-  id: LockerBase
+  # IS14-change: share locker mechanics without forcing the weak 60-damage threshold
+  # onto retained secure variants. Ordinary LockerBase below keeps its original health.
+  parent: [ ClosetBase, BaseStructureHealth ]
+  id: IS14LockerBaseCommon
   components:
   - type: AccessReader
   - type: Lock
@@ -40,6 +42,14 @@
     group: Locker
   - type: Damageable
     damageModifierSet: PlasteelMod
+  - type: StaticPrice
+    price: 300
+
+- type: entity
+  abstract: true
+  parent: [ IS14LockerBaseCommon, StructureHealthContainerWeak ]
+  id: LockerBase
+  components:
   - type: Destructible
     thresholds:
     - trigger:
@@ -56,5 +66,3 @@
           SheetSteel1:
             min: 1
             max: 2
-  - type: StaticPrice
-    price: 300

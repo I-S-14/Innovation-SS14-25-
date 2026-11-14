@@ -1,3 +1,4 @@
+using Content.Shared.DeviceLinking.Components; // IS14-change: upstream namespace move
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Content.Server.Administration.Logs;
@@ -190,7 +191,7 @@ public sealed partial class NuclearReactorMonitorSystem : EntitySystem
 
         _uiSystem.CloseUi(uid, NuclearReactorUiKey.Key);
         comp.reactor = null;
-        _signal.RemoveSinkFromSource(uidReactor.Value, uid, source, sink);
+        _signal.RemoveSinkFromSource((uidReactor.Value, source), (uid, sink));
         Dirty(uid, comp);
     }
 }

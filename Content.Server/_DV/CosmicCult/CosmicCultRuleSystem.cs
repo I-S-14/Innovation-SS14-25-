@@ -1,3 +1,4 @@
+using Content.Shared.RoundEnd;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Server._DV.CosmicCult.Components;
@@ -65,7 +66,6 @@ using System.Collections.Immutable;
 using System.Linq;
 using Content.Goobstation.Common.Religion;
 using Content.Server.Station.Systems;
-using Content.Shared.Cuffs.Components;
 using Content.Server.Cuffs;
 using Content.Shared.Light.Components;
 using Content.Shared.Roles.Components;
@@ -81,7 +81,7 @@ namespace Content.Server._DV.CosmicCult;
 /// <summary>
 /// Where all the main stuff for Cosmic Cultists happens.
 /// </summary>
-public sealed class CosmicCultRuleSystem : GameRuleSystem<CosmicCultRuleComponent>
+public sealed class CosmicCultRuleSystem : ServerGameRuleSystem<CosmicCultRuleComponent>
 {
     [Dependency] private readonly ActionsSystem _actions = default!;
     [Dependency] private readonly AlertsSystem _alerts = default!;
@@ -116,7 +116,6 @@ public sealed class CosmicCultRuleSystem : GameRuleSystem<CosmicCultRuleComponen
     [Dependency] private readonly VisibilitySystem _visibility = default!;
     [Dependency] private readonly IPlayerManager _player = default!;
     [Dependency] private readonly StationSystem _station = default!;
-    [Dependency] private readonly CuffableSystem _cuffable = default!; // goob edit
 
     private ISawmill _sawmill = default!;
     private TimeSpan _t3RevealDelay = default!;
@@ -420,7 +419,7 @@ public sealed class CosmicCultRuleSystem : GameRuleSystem<CosmicCultRuleComponen
     private void OnGodSpawn(Entity<CosmicGodComponent> uid, ref ComponentInit args)
     {
         var query = QueryActiveRules();
-        while (query.MoveNext(out var ruleUid, out _, out var cultRule, out _))
+        while (query.MoveNext(out var ruleUid, out var cultRule, out _, out _))
         {
             SetWinType((ruleUid, cultRule), WinType.CultComplete); // There's no coming back from this. Cult wins this round
             QueueDel(cultRule.MonumentInGame); // The monument doesn't need to stick around postround! Into the bin with you.
@@ -484,7 +483,7 @@ public sealed class CosmicCultRuleSystem : GameRuleSystem<CosmicCultRuleComponen
 
         var query = QueryActiveRules();
 
-        while (query.MoveNext(out var uid, out _, out var cultRule, out _))
+        while (query.MoveNext(out var uid, out var cultRule, out _, out _))
             ConfirmWinState((uid, cultRule)); //If so, let's consult our Winconditions and set an appropriate WinType.
     }
 
@@ -518,7 +517,7 @@ public sealed class CosmicCultRuleSystem : GameRuleSystem<CosmicCultRuleComponen
 
         var query = QueryActiveRules();
 
-        while (query.MoveNext(out var ruleUid, out _, out var ruleComp, out _))
+        while (query.MoveNext(out var ruleUid, out var ruleComp, out _, out _))
             ConfirmWinState((ruleUid, ruleComp));
     }
 
@@ -964,7 +963,7 @@ public sealed class CosmicCultRuleSystem : GameRuleSystem<CosmicCultRuleComponen
         }
 
         UpdateCultData(cosmicGamerule.MonumentInGame);
-        _movementSpeed.RefreshMovementSpeedModifiers(uid);
+        _movementSpeed.RefreshMovementSpeedModifiers(uid.Owner);
     }
     #endregion
 }

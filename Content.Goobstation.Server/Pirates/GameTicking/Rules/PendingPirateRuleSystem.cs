@@ -1,3 +1,5 @@
+using Content.Shared.Station.Systems;
+using GameTicker = Content.Server.GameTicking.ServerGameTicker;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Server.Cargo.Components;
@@ -17,12 +19,12 @@ using Robust.Shared.Random;
 
 namespace Content.Goobstation.Server.Pirates.GameTicking.Rules;
 
-public sealed partial class PendingPirateRuleSystem : GameRuleSystem<PendingPirateRuleComponent>
+public sealed partial class PendingPirateRuleSystem : ServerGameRuleSystem<PendingPirateRuleComponent>
 {
     [Dependency] private ChatSystem _chat = default!;
     [Dependency] private IRobustRandom _rand = default!;
     [Dependency] private IPrototypeManager _prot = default!;
-    [Dependency] private GameTicker _gt = default!;
+    [Dependency] private Content.Server.GameTicking.ServerGameTicker _gt = default!;
     [Dependency] private StationSystem _station = default!;
     [Dependency] private CargoSystem _cargo = default!;
 
@@ -33,7 +35,7 @@ public sealed partial class PendingPirateRuleSystem : GameRuleSystem<PendingPira
         base.Update(frameTime);
 
         var eqe = QueryActiveRules();
-        while (eqe.MoveNext(out var uid, out _, out var pending, out var gamerule))
+        while (eqe.MoveNext(out var uid, out var pending, out _, out var gamerule))
         {
             pending.PirateSpawnTimer += frameTime;
             if (pending.PirateSpawnTimer >= pending.PirateSpawnTime)
@@ -42,7 +44,7 @@ public sealed partial class PendingPirateRuleSystem : GameRuleSystem<PendingPira
                 if (!AllEntityQuery<BecomesStationComponent, StationMemberComponent>().MoveNext(out var eqData, out _, out _))
                 {
                     // No station found, end the rule
-                    _gt.EndGameRule(uid, gamerule);
+                    _gt.EndGameRule((uid, gamerule));
                     break;
                 }
 
@@ -50,7 +52,7 @@ public sealed partial class PendingPirateRuleSystem : GameRuleSystem<PendingPira
                 if (station == null || !TryComp<StationBankAccountComponent>(station, out var bank))
                 {
                     // Invalid station or no bank account, end the rule
-                    _gt.EndGameRule(uid, gamerule);
+                    _gt.EndGameRule((uid, gamerule));
                     break;
                 }
 
@@ -61,7 +63,7 @@ public sealed partial class PendingPirateRuleSystem : GameRuleSystem<PendingPira
 
                 SendAnnouncement((uid, pending), AnnouncementType.Arrival);
                 _gt.StartGameRule(PirateSpawnRule);
-                _gt.EndGameRule(uid, gamerule);
+                _gt.EndGameRule((uid, gamerule));
                 break;
             }
         }
@@ -122,7 +124,7 @@ public sealed partial class PendingPirateRuleSystem : GameRuleSystem<PendingPira
         _chat.DispatchGlobalAnnouncement(announcement, announcer, colorOverride: Color.Orange);
     }
 
-    public EntityQueryEnumerator<ActiveGameRuleComponent, PendingPirateRuleComponent, GameRuleComponent> GetPendingRules()
+    public EntityQueryEnumerator<PendingPirateRuleComponent, ActiveGameRuleComponent, GameRuleComponent> GetPendingRules()
         => QueryActiveRules();
 
     public enum AnnouncementType

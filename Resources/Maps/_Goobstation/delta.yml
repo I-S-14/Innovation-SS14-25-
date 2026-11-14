@@ -119421,7 +119421,7 @@ entities:
       pos: -118.5,33.5
       parent: 2
     - type: WarpPoint
-      location: AI
+      location: is14-map-warp-11fb682be0a0
   - uid: 15988
     components:
     - type: Transform
@@ -119442,7 +119442,7 @@ entities:
       pos: -17.5,-57.5
       parent: 2
     - type: WarpPoint
-      location: Science - anomaly lab
+      location: is14-map-warp-05c7e8f439da
 - proto: DefaultStationBeaconArmory
   entities:
   - uid: 15991
@@ -119451,7 +119451,7 @@ entities:
       pos: 62.5,6.5
       parent: 2
     - type: WarpPoint
-      location: Security - armory
+      location: is14-map-warp-8c7e5c40702a
 - proto: DefaultStationBeaconArrivals
   entities:
   - uid: 15992
@@ -119460,7 +119460,7 @@ entities:
       pos: -11.5,69.5
       parent: 2
     - type: WarpPoint
-      location: Arrivals
+      location: is14-map-warp-dee9bac14cb9
 - proto: DefaultStationBeaconArtifactLab
   entities:
   - uid: 15993
@@ -119469,7 +119469,7 @@ entities:
       pos: -28.5,-41.5
       parent: 2
     - type: WarpPoint
-      location: Science - artifacts
+      location: is14-map-warp-981bdfc1109e
 - proto: DefaultStationBeaconBar
   entities:
   - uid: 15994
@@ -119478,7 +119478,7 @@ entities:
       pos: -10.5,41.5
       parent: 2
     - type: WarpPoint
-      location: Bar
+      location: is14-map-warp-95d64cacce0f
 - proto: DefaultStationBeaconBotany
   entities:
   - uid: 15995
@@ -119487,7 +119487,7 @@ entities:
       pos: -29.5,50.5
       parent: 2
     - type: WarpPoint
-      location: Hydroponics
+      location: is14-map-warp-49e5494aff86
 - proto: DefaultStationBeaconBridge
   entities:
   - uid: 15996
@@ -119496,7 +119496,7 @@ entities:
       pos: -0.5,16.5
       parent: 2
     - type: WarpPoint
-      location: Bridge
+      location: is14-map-warp-3892e10346fd
 - proto: DefaultStationBeaconBrig
   entities:
   - uid: 15997
@@ -119505,7 +119505,7 @@ entities:
       pos: 47.5,7.5
       parent: 2
     - type: WarpPoint
-      location: Security
+      location: is14-map-warp-8f6fb4eb7f42
 - proto: DefaultStationBeaconCaptainsQuarters
   entities:
   - uid: 15998
@@ -119514,7 +119514,7 @@ entities:
       pos: 9.5,3.5
       parent: 2
     - type: WarpPoint
-      location: Captain
+      location: is14-map-warp-2e786c488b83
 - proto: DefaultStationBeaconCargoBay
   entities:
   - uid: 15999
@@ -119523,7 +119523,7 @@ entities:
       pos: 37.5,50.5
       parent: 2
     - type: WarpPoint
-      location: Cargo - bay
+      location: is14-map-warp-430d06871854
 - proto: DefaultStationBeaconCERoom
   entities:
   - uid: 16000
@@ -119532,7 +119532,7 @@ entities:
       pos: -63.5,7.5
       parent: 2
     - type: WarpPoint
-      location: CE
+      location: is14-map-warp-d68956cd067a
 - proto: DefaultStationBeaconChapel
   entities:
   - uid: 16001
@@ -119541,7 +119541,7 @@ entities:
       pos: -16.5,-70.5
       parent: 2
     - type: WarpPoint
-      location: Chapel
+      location: is14-map-warp-ea6483ea1e01
 - proto: DefaultStationBeaconChemistry
   entities:
   - uid: 16002
@@ -119550,7 +119550,7 @@ entities:
       pos: 5.5,-32.5
       parent: 2
     - type: WarpPoint
-      location: Medical - chemistry
+      location: is14-map-warp-c381ed4179a6
 - proto: DefaultStationBeaconCMORoom
   entities:
   - uid: 16003
@@ -119559,7 +119559,7 @@ entities:
       pos: 22.5,-45.5
       parent: 2
     - type: WarpPoint
-      location: CMO
+      location: is14-map-warp-d7edf1b99ed0
 - proto: DefaultStationBeaconCourtroom
   entities:
   - uid: 16004
@@ -119568,7 +119568,7 @@ entities:
       pos: 26.5,-1.5
       parent: 2
     - type: WarpPoint
-      location: Courtroom
+      location: is14-map-warp-2b92b4586efa
 - proto: DefaultStationBeaconCryonics
   entities:
   - uid: 16005
@@ -119577,7 +119577,7 @@ entities:
       pos: 22.5,-39.5
       parent: 2
     - type: WarpPoint
-      location: Medical - cryogenics
+      location: is14-map-warp-796a1b38ac97
 - proto: DefaultStationBeaconDetectiveRoom
   entities:
   - uid: 16006
@@ -119586,7 +119586,7 @@ entities:
       pos: 30.5,10.5
       parent: 2
     - type: WarpPoint
-      location: Security - detective
+      location: is14-map-warp-dd0309556e05
 - proto: DefaultStationBeaconDisposals
   entities:
   - uid: 16007
@@ -119595,7 +119595,7 @@ entities:
       pos: 28.5,59.5
       parent: 2
     - type: WarpPoint
-      location: Disposals
+      location: is14-map-warp-9b4f96c80d71
 - proto: DefaultStationBeaconDorms
   entities:
   - uid: 16008
@@ -119604,7 +119604,7 @@ entities:
       pos: 48.5,-19.5
       parent: 2
     - type: WarpPoint
-      location: Dorms
+      location: is14-map-warp-fb50c2c37a42
 - proto: DefaultStationBeaconEngineering
   entities:
   - uid: 16009
@@ -119613,7 +119613,7 @@ entities:
       pos: -53.5,11.5
       parent: 2
     - type: WarpPoint
-      location: Engineering - lobby
+      location: is14-map-warp-291bffd01414
 - proto: DefaultStationBeaconEscapePod
   entities:
   - uid: 350
@@ -119644,7 +119644,7 @@ entities:
       pos: -4.5,-72.5
       parent: 2
     - type: WarpPoint
-      location: Evac
+      location: is14-map-warp-869de917e539
 - proto: DefaultStationBeaconEVAStorage
   entities:
   - uid: 16011
@@ -119653,7 +119653,7 @@ entities:
       pos: -11.5,-13.5
       parent: 2
     - type: WarpPoint
-      location: EVA
+      location: is14-map-warp-5517bab65366
 - proto: DefaultStationBeaconGravGen
   entities:
   - uid: 16012
@@ -119662,7 +119662,7 @@ entities:
       pos: -71.5,7.5
       parent: 2
     - type: WarpPoint
-      location: Engineering - gravity
+      location: is14-map-warp-f8306142e06c
 - proto: DefaultStationBeaconHOPOffice
   entities:
   - uid: 16013
@@ -119671,7 +119671,7 @@ entities:
       pos: -10.5,1.5
       parent: 2
     - type: WarpPoint
-      location: HoP
+      location: is14-map-warp-dfaccfc912f3
 - proto: DefaultStationBeaconHOSRoom
   entities:
   - uid: 16014
@@ -119680,7 +119680,7 @@ entities:
       pos: 40.5,20.5
       parent: 2
     - type: WarpPoint
-      location: HoS
+      location: is14-map-warp-3684135e1711
 - proto: DefaultStationBeaconJanitorsCloset
   entities:
   - uid: 16015
@@ -119689,7 +119689,7 @@ entities:
       pos: 1.5,52.5
       parent: 2
     - type: WarpPoint
-      location: Janitor
+      location: is14-map-warp-944cbfb2604e
 - proto: DefaultStationBeaconKitchen
   entities:
   - uid: 16016
@@ -119698,7 +119698,7 @@ entities:
       pos: -30.5,35.5
       parent: 2
     - type: WarpPoint
-      location: Kitchen
+      location: is14-map-warp-d98e82ae3ccb
 - proto: DefaultStationBeaconLawOffice
   entities:
   - uid: 16017
@@ -119707,7 +119707,7 @@ entities:
       pos: 35.5,0.5
       parent: 2
     - type: WarpPoint
-      location: Lawyer
+      location: is14-map-warp-f5fa37965d3d
 - proto: DefaultStationBeaconLibrary
   entities:
   - uid: 16018
@@ -119716,7 +119716,7 @@ entities:
       pos: -28.5,-3.5
       parent: 2
     - type: WarpPoint
-      location: Library
+      location: is14-map-warp-dc20b3d5d2cd
 - proto: DefaultStationBeaconMedbay
   entities:
   - uid: 16019
@@ -119735,7 +119735,7 @@ entities:
       pos: 7.5,-50.5
       parent: 2
     - type: WarpPoint
-      location: Medical - morgue
+      location: is14-map-warp-626f0426d4cc
 - proto: DefaultStationBeaconPermaBrig
   entities:
   - uid: 16021
@@ -119744,7 +119744,7 @@ entities:
       pos: 91.5,1.5
       parent: 2
     - type: WarpPoint
-      location: Security - perma
+      location: is14-map-warp-aa167bc87d9e
 - proto: DefaultStationBeaconQMRoom
   entities:
   - uid: 16022
@@ -119753,7 +119753,7 @@ entities:
       pos: 26.5,36.5
       parent: 2
     - type: WarpPoint
-      location: QM
+      location: is14-map-warp-a4c4a4465e76
 - proto: DefaultStationBeaconRadioStation
   entities:
   - uid: 30451
@@ -119769,7 +119769,7 @@ entities:
       pos: -18.5,-40.5
       parent: 2
     - type: WarpPoint
-      location: RD
+      location: is14-map-warp-4414cdcb7cc8
 - proto: DefaultStationBeaconSalvage
   entities:
   - uid: 16024
@@ -119778,7 +119778,7 @@ entities:
       pos: 23.5,29.5
       parent: 2
     - type: WarpPoint
-      location: Cargo - salvage
+      location: is14-map-warp-160bcdb1fdcd
 - proto: DefaultStationBeaconScience
   entities:
   - uid: 16025
@@ -119787,7 +119787,7 @@ entities:
       pos: -6.5,-32.5
       parent: 2
     - type: WarpPoint
-      location: Science
+      location: is14-map-warp-9d948c73e0ad
 - proto: DefaultStationBeaconSecurityCheckpoint
   entities:
   - uid: 16026
@@ -119824,21 +119824,21 @@ entities:
       pos: 28.5,95.5
       parent: 2
     - type: WarpPoint
-      location: Solars NE
+      location: is14-map-warp-313194e10a64
   - uid: 16030
     components:
     - type: Transform
       pos: -75.5,73.5
       parent: 2
     - type: WarpPoint
-      location: Solars NW
+      location: is14-map-warp-e019eef18de3
   - uid: 16031
     components:
     - type: Transform
       pos: -51.5,-85.5
       parent: 2
     - type: WarpPoint
-      location: Solars SW
+      location: is14-map-warp-84876890b48e
 - proto: DefaultStationBeaconSupply
   entities:
   - uid: 16032
@@ -119857,7 +119857,7 @@ entities:
       pos: 32.5,-48.5
       parent: 2
     - type: WarpPoint
-      location: Medical - surgery
+      location: is14-map-warp-b631c0cf8f45
 - proto: DefaultStationBeaconTEG
   entities:
   - uid: 16034
@@ -119883,7 +119883,7 @@ entities:
       pos: -12.5,30.5
       parent: 2
     - type: WarpPoint
-      location: Theater
+      location: is14-map-warp-fbfbad677c30
 - proto: DefaultStationBeaconToolRoom
   entities:
   - uid: 16037
@@ -119892,7 +119892,7 @@ entities:
       pos: -26.5,12.5
       parent: 2
     - type: WarpPoint
-      location: Tool room
+      location: is14-map-warp-36af279b34f0
 - proto: DefaultStationBeaconUnanchored
   entities:
   - uid: 16038
@@ -119908,7 +119908,7 @@ entities:
       color: '#D381C993'
       text: Xenobiologie
     - type: WarpPoint
-      location: Xenobiologie
+      location: is14-map-warp-355a9fa3e8fe
 - proto: DefaultStationBeaconWardensOffice
   entities:
   - uid: 16039
@@ -260491,70 +260491,70 @@ entities:
       pos: -51.5,50.5
       parent: 2
     - type: WarpPoint
-      location: TEG
+      location: is14-map-warp-c352e255390b
   - uid: 37926
     components:
     - type: Transform
       pos: -62.5,31.5
       parent: 2
     - type: WarpPoint
-      location: Atmospherics
+      location: is14-map-warp-6fb81a05434e
   - uid: 37927
     components:
     - type: Transform
       pos: 24.5,14.5
       parent: 2
     - type: WarpPoint
-      location: Vault
+      location: is14-map-warp-5d55c415e356
   - uid: 37928
     components:
     - type: Transform
       pos: -81.5,-7.5
       parent: 2
     - type: WarpPoint
-      location: Engineering - PA
+      location: is14-map-warp-4e7333e1a21e
   - uid: 37929
     components:
     - type: Transform
       pos: 16.5,-50.5
       parent: 2
     - type: WarpPoint
-      location: Medical - psychologist
+      location: is14-map-warp-7da5adbd1892
   - uid: 37930
     components:
     - type: Transform
       pos: 54.5,25.5
       parent: 2
     - type: WarpPoint
-      location: Security - briefing
+      location: is14-map-warp-12782e581342
   - uid: 37931
     components:
     - type: Transform
       pos: 11.5,78.5
       parent: 2
     - type: WarpPoint
-      location: Shuttle workshop
+      location: is14-map-warp-8a660284784c
   - uid: 37932
     components:
     - type: Transform
       pos: 19.5,46.5
       parent: 2
     - type: WarpPoint
-      location: Cargo
+      location: is14-map-warp-fc09b38f3535
   - uid: 37933
     components:
     - type: Transform
       pos: -35.5,12.5
       parent: 2
     - type: WarpPoint
-      location: Circuitboard storage
+      location: is14-map-warp-39d18efd3652
   - uid: 37934
     components:
     - type: Transform
       pos: -52.5,-7.5
       parent: 2
     - type: WarpPoint
-      location: Engineering
+      location: is14-map-warp-729bb48d0f86
 - proto: WaterCooler
   entities:
   - uid: 37935

@@ -31,6 +31,10 @@ namespace Content.Server.Administration.Commands
     [AdminCommand(AdminFlags.Round)]
     public sealed partial class RecallShuttleCommand : LocalizedEntityCommands
     {
+    //IS14-change start: restore declarations used by merged implementation.
+    [Dependency] private readonly RoundEndSystem _roundEndSystem = default!;
+    //IS14-change end
+
 
         public override string Command => "recallshuttle";
 

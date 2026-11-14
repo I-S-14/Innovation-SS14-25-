@@ -17,6 +17,7 @@ public sealed partial class WeatherSystem : SharedWeatherSystem
 
     public override void Initialize()
     {
+        base.Initialize();
         SubscribeLocalEvent<WeatherStatusEffectComponent, ComponentInit>(OnCompInit);
         SubscribeLocalEvent<WeatherStatusEffectComponent, ComponentShutdown>(OnCompShutdown);
     }

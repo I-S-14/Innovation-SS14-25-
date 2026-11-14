@@ -657,7 +657,9 @@ public sealed partial class WoundSystem
             || !Resolve(uid, ref woundable))
             return false;
 
-        var wound = EntityManager.PredictedSpawn(woundProtoId); // why isnt predicted spawn not exposed to entitysystems?
+        //IS14-change start
+        var wound = PredictedSpawn(woundProtoId); // why isnt predicted spawn not exposed to entitysystems?
+        //IS14-change end
         if (AddWound(uid, wound, severity, damageGroup))
         {
             woundCreated = (wound, Comp<WoundComponent>(wound));

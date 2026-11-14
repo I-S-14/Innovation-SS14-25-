@@ -1,3 +1,8 @@
+using Content.Shared.Station.Components;
+using Content.Shared.AlertLevel;
+using Content.Shared.Station.Systems;
+using Content.Shared.Antag;
+using Content.Shared.GameTicking;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Diagnostics.CodeAnalysis;
@@ -25,7 +30,7 @@ using Robust.Shared.Player;
 
 namespace Content.Goobstation.Server.Blob.GameTicking;
 
-public sealed partial class BlobRuleSystem : GameRuleSystem<BlobRuleComponent>
+public sealed partial class BlobRuleSystem : ServerGameRuleSystem<BlobRuleComponent>
 {
     [Dependency] private MindSystem _mindSystem = default!;
     [Dependency] private RoundEndSystem _roundEndSystem = default!;
@@ -62,7 +67,7 @@ public sealed partial class BlobRuleSystem : GameRuleSystem<BlobRuleComponent>
             if(uid == entityUid)
                 continue;
 
-            GameTicker.EndGameRule(uid, gameRule);
+            GameTicker.EndGameRule((uid, gameRule));
             Log.Warning("blob is active!!! remove!");
             break;
         }
@@ -160,7 +165,7 @@ public sealed partial class BlobRuleSystem : GameRuleSystem<BlobRuleComponent>
                     blobRuleComp.DetectedAudio,
                     Color.Red);
 
-                _alertLevelSystem.SetLevel(stationUid, StationAlertDetected, true, true, true, true);
+                _alertLevelSystem.SetLevel(stationUid.Owner, StationAlertDetected, true, true, true, true);
 
                 RaiseLocalEvent(stationUid,
                     new BlobChangeLevelEvent
@@ -193,7 +198,7 @@ public sealed partial class BlobRuleSystem : GameRuleSystem<BlobRuleComponent>
                     Color.Red);
                 }
 
-                _alertLevelSystem.SetLevel(stationUid, StationAlertCritical, true, true, true, true);
+                _alertLevelSystem.SetLevel(stationUid.Owner, StationAlertCritical, true, true, true, true);
 
                 RaiseLocalEvent(stationUid,
                     new BlobChangeLevelEvent
@@ -276,7 +281,7 @@ public sealed partial class BlobRuleSystem : GameRuleSystem<BlobRuleComponent>
             else if (name != null)
                 result += "\n" + Loc.GetString("blob-was-a-blob-with-objectives-named", ("name", name));
 
-            foreach (var objectiveGroup in objectives.GroupBy(o => Comp<ObjectiveComponent>(o).LocIssuer))
+            foreach (var objectiveGroup in objectives.GroupBy(o => Comp<ObjectiveComponent>(o).Issuer))
             {
                 foreach (var objective in objectiveGroup)
                 {
@@ -319,7 +324,7 @@ public sealed partial class BlobRuleSystem : GameRuleSystem<BlobRuleComponent>
         comp.TransformationDelay = 10 * 60; // 10min
     }
 
-    private void AfterAntagSelected(EntityUid uid, BlobRuleComponent component, AfterAntagEntitySelectedEvent args)
+    private void AfterAntagSelected(EntityUid uid, BlobRuleComponent component, ref AfterAntagEntitySelectedEvent args)
     {
         MakeBlob(args.EntityUid);
     }

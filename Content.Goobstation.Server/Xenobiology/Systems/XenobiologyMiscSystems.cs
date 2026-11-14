@@ -8,7 +8,6 @@ using Content.Server.Body.Components;
 using Content.Server.Body.Systems;
 using Content.Server.Fluids.EntitySystems;
 using Content.Server.Spreader;
-using Content.Shared.Atmos.Components;
 using Content.Shared.Chemistry.Components;
 using Content.Shared.Chemistry.Reaction;
 using Content.Shared.Coordinates.Helpers;
@@ -36,7 +35,7 @@ public sealed class XenobiologyMiscSystems : EntitySystem
 
         foreach (var entity in lookupSys.GetEntitiesInRange(uid, args.Range))
         {
-            if (EntityManager.TryGetComponent(entity, out FlammableComponent? flammable))
+            if (TryComp(entity, out FlammableComponent? flammable))
                 flamSys.Extinguish(entity, flammable);
         }
     }
@@ -48,7 +47,7 @@ public sealed class XenobiologyMiscSystems : EntitySystem
 
         foreach (var entity in lookupSys.GetEntitiesInRange(uid, args.Range))
         {
-            if (EntityManager.TryGetComponent(entity, out RespiratorComponent? resp))
+            if (TryComp(entity, out RespiratorComponent? resp))
                 respSys.UpdateSaturation(entity, args.Factor, resp);
         }
     }
@@ -60,7 +59,7 @@ public sealed class XenobiologyMiscSystems : EntitySystem
 
         foreach (var entity in lookupSys.GetEntitiesInRange(uid, args.Radius))
         {
-            if (EntityManager.TryGetComponent(entity, out FlammableComponent? flammable))
+            if (TryComp(entity, out FlammableComponent? flammable))
                 flamSys.AdjustFireStacks(entity, args.FireStacks, flammable, true);
         }
     }
@@ -73,7 +72,7 @@ public sealed class XenobiologyMiscSystems : EntitySystem
         var spreaderSys = EntityManager.System<SpreaderSystem>();
         var smokeSys = EntityManager.System<SmokeSystem>();
 
-        if (!EntityManager.TryGetComponent(uid, out TransformComponent? xform))
+        if (!TryComp(uid, out TransformComponent? xform))
             return;
 
         var mapCoords = transformSys.GetMapCoordinates(uid, xform);
@@ -88,10 +87,10 @@ public sealed class XenobiologyMiscSystems : EntitySystem
             return;
 
         var coords = mapSys.MapToGrid(gridUid, mapCoords);
-        var ent = EntityManager.SpawnAtPosition(args.SmokePrototype, coords.SnapToGrid());
-        if (!EntityManager.TryGetComponent<SmokeComponent>(ent, out var smoke))
+        var ent = SpawnAtPosition(args.SmokePrototype, coords.SnapToGrid());
+        if (!TryComp<SmokeComponent>(ent, out var smoke))
         {
-            EntityManager.QueueDeleteEntity(ent);
+            QueueDel(ent);
             return;
         }
 

@@ -30,7 +30,7 @@ public sealed partial class AlmanacBladeSystem : SharedAlmanacBladeSystem
     [Dependency] private SharedAudioSystem _audio = default!;
     [Dependency] private FlammableSystem _flammable = default!;
     [Dependency] private ExplosionSystem _explosion = default!;
-    [Dependency] private GameTicker _ticker = default!;
+    [Dependency] private Content.Server.GameTicking.ServerGameTicker _ticker = default!;
     [Dependency] private SharedHandsSystem _hands = default!;
     [Dependency] private SharedEntityStorageSystem _entityStorage = default!;
     [Dependency] private TagSystem _tag = default!;

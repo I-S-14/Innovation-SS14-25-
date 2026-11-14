@@ -8,11 +8,7 @@
     mode: SnapgridCenter
   components:
   - type: DragonRift
-    spawn: !type:GroupSelector
-      children:
-      - id: MobCarpDragon
-      - id: MobSharkDragon
-        weight: 0.15
+    spawn: MobCarpDragon # IS14: Goob rifts retain their separate strong-spawn probability.
   - type: Transform
     anchored: true
   - type: Physics
@@ -40,7 +36,6 @@
     enabled: false
   - type: Damageable
     damageModifierSet: Metallic
-  - type: Injurable
     damageContainer: Inorganic
   - type: Destructible
     thresholds:

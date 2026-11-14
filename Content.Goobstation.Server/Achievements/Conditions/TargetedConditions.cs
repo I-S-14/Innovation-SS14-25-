@@ -172,7 +172,7 @@ public sealed partial class MicrowaveIdConditionSystem : AchievementConditionSys
 
 public sealed partial class ArtifactExplosionConditionSystem : AchievementConditionSystem<ArtifactExplosionCondition>
 {
-    [Dependency] private GameTicker _ticker = default!;
+    [Dependency] private Content.Server.GameTicking.ServerGameTicker _ticker = default!;
 
     public override void Initialize()
     {

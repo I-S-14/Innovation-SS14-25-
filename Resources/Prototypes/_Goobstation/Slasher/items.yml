@@ -424,15 +424,15 @@
 
 - type: entity
   name: monastic robe
-  parent: ClothingUniformSlasher
+  parent: IS14SlasherCustomUniformBase # IS14-change: custom artwork
   id: ClothingUniformSlasherMaintenance
   categories: [ HideSpawnMenu ]
   description: A light robe worn by a wandering something.
   components:
   - type: Sprite
-    sprite: Clothing/Uniforms/Jumpsuit/monastic_robe_light.rsi
+    sprite: Clothing/Uniforms/Jumpsuits/Service/monastic_robe_light.rsi
   - type: Clothing
-    sprite: Clothing/Uniforms/Jumpsuit/monastic_robe_light.rsi
+    sprite: Clothing/Uniforms/Jumpsuits/Service/monastic_robe_light.rsi
 
 - type: entity
   name: butcher's cleaver
@@ -474,15 +474,15 @@
 
 - type: entity
   name: chef's uniform
-  parent: ClothingUniformSlasher
+  parent: IS14SlasherCustomUniformBase # IS14-change: custom artwork
   id: ClothingUniformSlasherCannibal
   categories: [ HideSpawnMenu ]
   description: A chef's uniform. Still warm from the last shift.
   components:
   - type: Sprite
-    sprite: Clothing/Uniforms/Jumpsuit/chef.rsi
+    sprite: Clothing/Uniforms/Jumpsuits/Service/chef.rsi
   - type: Clothing
-    sprite: Clothing/Uniforms/Jumpsuit/chef.rsi
+    sprite: Clothing/Uniforms/Jumpsuits/Service/chef.rsi
 
 - type: entity
   name: chef's hat
@@ -580,15 +580,15 @@
 
 - type: entity
   name: clown suit
-  parent: ClothingUniformSlasher
+  parent: IS14SlasherCustomUniformBase # IS14-change: custom artwork
   id: ClothingUniformSlasherClown
   categories: [ HideSpawnMenu ]
   description: HONK!
   components:
   - type: Sprite
-    sprite: Clothing/Uniforms/Jumpsuit/clown.rsi
+    sprite: Clothing/Uniforms/Jumpsuits/Service/clown.rsi
   - type: Clothing
-    sprite: Clothing/Uniforms/Jumpsuit/clown.rsi
+    sprite: Clothing/Uniforms/Jumpsuits/Service/clown.rsi
 
 - type: entity
   name: large clown shoes
@@ -696,9 +696,9 @@
   description: A banana-yellow clown suit, radiating with honk energy.
   components:
   - type: Sprite
-    sprite: Clothing/Uniforms/Jumpsuit/clown_banana.rsi
+    sprite: Clothing/Uniforms/Jumpsuits/Service/clown_banana.rsi
   - type: Clothing
-    sprite: Clothing/Uniforms/Jumpsuit/clown_banana.rsi
+    sprite: Clothing/Uniforms/Jumpsuits/Service/clown_banana.rsi
 
 - type: entity
   name: banana clown wig and mask
@@ -732,7 +732,7 @@
       - state: equipped-MASK
 
 - type: entity
-  parent: ClothingUniformSlasher
+  parent: IS14SlasherCustomUniformBase # IS14-change: custom artwork
   id: ClothingUniformSlasherHockey
   name: worn jumpsuit
   description: A tattered, muddied jumpsuit. Smells like a forest after rain. And blood.
@@ -792,7 +792,7 @@
       - state: equipped-MASK
 
 - type: entity
-  parent: ClothingUniformSlasher
+  parent: IS14SlasherCustomUniformBase # IS14-change: custom artwork
   id: ClothingUniformSlasherBoogeyman
   name: tattered outfit
   description: A dark, ragged outfit that seems to drink the light around it.

@@ -1,3 +1,6 @@
+using Content.Shared.DeviceLinking.Components;
+using Content.Shared.Station.Systems;
+using GameTicker = Content.Server.GameTicking.ServerGameTicker;
 using Content.Goobstation.Shared.StationRadio.Components;
 using Content.Goobstation.Shared.StationRadio.Events;
 using Content.Server.GameTicking;
@@ -28,7 +31,7 @@ public sealed partial class VinylSummonRuleSystem : EntitySystem
 {
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private SharedAudioSystem _audio = default!;
-    [Dependency] private GameTicker _gameTicker = default!;
+    [Dependency] private Content.Server.GameTicking.ServerGameTicker _gameTicker = default!;
     [Dependency] private SharedContainerSystem _containers = default!;
     [Dependency] private IPrototypeManager _prototypeManager = default!;
     [Dependency] private IRobustRandom _random = default!;

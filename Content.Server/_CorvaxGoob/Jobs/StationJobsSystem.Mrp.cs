@@ -1,10 +1,11 @@
+using Content.Shared.Station.Components; // IS14-change: upstream namespace move
 using System.Linq;
 using Content.Server.Station.Components;
 using Robust.Shared.Prototypes;
 
 namespace Content.Server.Station.Systems;
 
-public sealed partial class StationJobsSystem
+public sealed partial class ServerStationJobsSystem
 {
 
     /// <summary>
@@ -22,7 +23,7 @@ public sealed partial class StationJobsSystem
 
         foreach (var jobId in jobs.JobList.Keys.ToList())
         {
-            if (!_prototypeManager.TryIndex(jobId, out var proto))
+            if (!ProtoMan.TryIndex(jobId, out var proto))
                 continue;
 
             if (proto.Mrp is null)

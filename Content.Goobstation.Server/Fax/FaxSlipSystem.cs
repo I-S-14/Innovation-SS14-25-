@@ -1,3 +1,5 @@
+using Content.Shared.Fax;
+using DeviceNetworkSystem = Content.Shared.DeviceNetwork.Systems.DeviceNetworkSystem;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Goobstation.Shared.Fax;
@@ -49,20 +51,14 @@ public sealed partial class FaxSlipSystem : EntitySystem
             if (sendEntity == null)
                 return;
 
-            if (args.Fax.Comp.DestinationFaxAddress == null)
+            if (args.Fax.Comp.DestinationFaxAddress is not { } destination)
                 return;
 
-            if (!args.Fax.Comp.KnownFaxes.TryGetValue(args.Fax.Comp.DestinationFaxAddress, out var faxName))
+            if (!args.Fax.Comp.KnownFaxes.TryGetValue(destination, out var faxName))
                 return;
 
-            var payload = new NetworkPayload()
-            {
-                { DeviceNetworkConstants.Command, FaxConstants.FaxSendEntityCommand },
-                { FaxConstants.FaxEntitySentData, args.Fax.Comp.PaperSlot.Item },
-                { FaxConstants.FaxWorkCrossGridData, ent.Comp.CrossGrid }
-            };
-
-            _deviceNetwork.QueuePacket(args.Fax, args.Fax.Comp.DestinationFaxAddress, payload);
+            var payload = new FaxEntityPayload { Entity = sendEntity.Value, CrossGrid = ent.Comp.CrossGrid };
+            _deviceNetwork.SendPacket(args.Fax.Owner, destination, ref payload);
 
             var actor = args.Args.Actor;
             if (actor.IsValid())

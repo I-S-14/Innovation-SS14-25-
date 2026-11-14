@@ -17,7 +17,7 @@ public sealed partial class ItemSlotsSystem
         SubscribeLocalEvent<ItemSlotsComponent, BeforeBeingButcheredEvent>(OnBeforeBeingButchered);
     }
 
-    private void OnReclaimed(EntityUid uid, ItemSlotsComponent component, GotReclaimedEvent args)
+    private void OnReclaimed(EntityUid uid, ItemSlotsComponent component, ref GotReclaimedEvent args)
     {
         foreach (var slot in component.Slots.Values)
         {

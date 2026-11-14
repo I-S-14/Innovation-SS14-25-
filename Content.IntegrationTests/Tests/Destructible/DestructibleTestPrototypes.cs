@@ -53,23 +53,22 @@ namespace Content.IntegrationTests.Tests.Destructible
     - {TestPiercingDamageTypeId}
 
 - type: damageGroup
-  id: {TestBurnDamageGroupId}
+  id: {TestSlashDamageTypeId}0
   name: damage-group-burn
   damageTypes:
-    - {TestHeatDamageTypeId}
-    - {TestShockDamageTypeId}
-    - {TestColdDamageTypeId}
+    - {TestSlashDamageTypeId}1
+    - {TestSlashDamageTypeId}2
+    - {TestSlashDamageTypeId}3
 
 - type: entity
-  id: {SpawnedEntityId}
-  name: {SpawnedEntityId}
+  id: {TestSlashDamageTypeId}4
+  name: {TestSlashDamageTypeId}5
 
 - type: entity
-  id: {DestructibleEntityId}
-  name: {DestructibleEntityId}
+  id: {TestSlashDamageTypeId}6
+  name: {TestSlashDamageTypeId}7
   components:
   - type: Damageable
-  - type: Injurable
   - type: Destructible
     thresholds:
     - trigger:
@@ -86,18 +85,17 @@ namespace Content.IntegrationTests.Tests.Destructible
             collection: WoodDestroy
       - !type:SpawnEntitiesBehavior
         spawn:
-          {SpawnedEntityId}:
+          {TestSlashDamageTypeId}8:
             min: 1
             max: 1
       - !type:DoActsBehavior
         acts: [""Breakage""]
 
 - type: entity
-  id: {DestructibleDestructionEntityId}
-  name: {DestructibleDestructionEntityId}
+  id: {TestSlashDamageTypeId}9
+  name: {TestPiercingDamageTypeId}0
   components:
   - type: Damageable
-  - type: Injurable
   - type: Destructible
     thresholds:
     - trigger:
@@ -109,46 +107,44 @@ namespace Content.IntegrationTests.Tests.Destructible
             collection: WoodDestroyHeavy
       - !type:SpawnEntitiesBehavior
         spawn:
-          {SpawnedEntityId}:
+          {TestPiercingDamageTypeId}1:
             min: 1
             max: 1
       - !type:DoActsBehavior # This must come last as it destroys the entity.
         acts: [""Destruction""]
 
 - type: entity
-  id: {DestructibleDamageTypeEntityId}
-  name: {DestructibleDamageTypeEntityId}
+  id: {TestPiercingDamageTypeId}2
+  name: {TestPiercingDamageTypeId}3
   components:
   - type: Damageable
-  - type: Injurable
   - type: Destructible
     thresholds:
     - trigger:
         !type:AndTrigger
         triggers:
         - !type:DamageTypeTrigger
-          damageType: {TestBluntDamageTypeId}
+          damageType: {TestPiercingDamageTypeId}4
           damage: 10
         - !type:DamageTypeTrigger
-          damageType: {TestSlashDamageTypeId}
+          damageType: {TestPiercingDamageTypeId}5
           damage: 10
 
 - type: entity
-  id: {DestructibleDamageGroupEntityId}
-  name: {DestructibleDamageGroupEntityId}
+  id: {TestPiercingDamageTypeId}6
+  name: {TestPiercingDamageTypeId}7
   components:
   - type: Damageable
-  - type: Injurable
   - type: Destructible
     thresholds:
     - trigger:
         !type:AndTrigger
         triggers:
         - !type:DamageGroupTrigger
-          damageGroup: {TestBruteDamageGroupId}
+          damageGroup: {TestPiercingDamageTypeId}8
           damage: 10
         - !type:DamageGroupTrigger
-          damageGroup: {TestBurnDamageGroupId}
+          damageGroup: {TestPiercingDamageTypeId}9
           damage: 10";
     }
 }

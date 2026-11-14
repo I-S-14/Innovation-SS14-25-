@@ -4,6 +4,8 @@
   name: mouse
   description: Squeak!
   components:
+  - type: Body
+    prototype: Mouse # IS14: retain Goob stomach and reproduction organ.
   - type: VentCrawler # goobstation - Ventcrawl
     enterDelay: 0.5
   - type: Sprite
@@ -12,7 +14,6 @@
     layers:
     - map: [ "enum.DamageStateVisualLayers.Base", "movement" ]
       state: mouse-0
-    - map: [ "enum.HumanoidVisualLayers.Eyelids" ]
   - type: SpriteMovement
     movementLayers:
       movement:
@@ -20,9 +21,6 @@
     noMovementLayers:
       movement:
         state: mouse-0
-  - type: EyeBlinking
-    eyelidsSprite: /Textures/Mobs/Animals/Rodents/mouse.rsi
-    eyelidsColor: "#c9c9c9"
   - type: Physics
   - type: Fixtures
     fixtures:
@@ -157,33 +155,32 @@
   - type: FlavorProfile
     flavors:
     - meaty
-  - type: Hunger
-    startingHunger: 15 # Goobstation change
-    thresholds:
-      Overfed: 35
-      Okay: 25
-      Peckish: 15
-      Starving: 10
-      Dead: 0
-    baseDecayRate: 0.04 #Goob change
   - type: Satiation
     satiations:
       Hunger:
-        prototype: MouseHunger
+        prototype: IS14MobMouseHungerbc29ac72
+        lastAuthoritativeValue: 15
       Thirst:
         prototype: MouseThirst
+  - type: SatiationSpeedModifier
+    satiations:
+      Hunger:
+        thresholds:
+          Starving: 0.75
   - type: Extractable
     grindableSolutionName: food
   - type: SolutionContainerManager
     solutions:
-      food:
-        reagents:
-        - ReagentId: UncookedAnimalProteins
-          Quantity: 3
-        - ReagentId: MouseBites
-          Quantity: 3
       melee:
         maxVol: 5
+  - type: Solution
+    solution:
+      maxVol: 0
+      reagents:
+      - ReagentId: UncookedAnimalProteins
+        Quantity: 3
+      - ReagentId: MouseBites
+        Quantity: 3
   - type: LanguageKnowledge # Einstein Engines - Language
     speaks:
     - Mouse
@@ -297,7 +294,6 @@
     layers:
     - map: [ "enum.DamageStateVisualLayers.Base", "movement" ]
       state: mouse-1
-    - map: [ "enum.HumanoidVisualLayers.Eyelids" ]
   - type: SpriteMovement
     movementLayers:
       movement:
@@ -305,8 +301,6 @@
     noMovementLayers:
       movement:
         state: mouse-1
-  - type: EyeBlinking
-    eyelidsColor: "#b57f4c"
   - type: Item
     heldPrefix: 1
   - type: MouseSwarm # Goobstation
@@ -332,7 +326,6 @@
     layers:
     - map: [ "enum.DamageStateVisualLayers.Base", "movement" ]
       state: mouse-2
-    - map: [ "enum.HumanoidVisualLayers.Eyelids" ]
   - type: SpriteMovement
     movementLayers:
       movement:
@@ -340,8 +333,6 @@
     noMovementLayers:
       movement:
         state: mouse-2
-  - type: EyeBlinking
-    eyelidsColor: "#6b6b6b"
   - type: Item
     heldPrefix: 2
   - type: MouseSwarm # Goobstation

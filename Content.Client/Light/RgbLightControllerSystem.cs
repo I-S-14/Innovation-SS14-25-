@@ -89,15 +89,15 @@ namespace Content.Client.Light
 
         private void OnEquipmentVisualsUpdated(EntityUid uid, RgbLightControllerComponent rgb, EquipmentVisualsUpdatedEvent args)
         {
-            rgb.Holder = args.EquipTarget;
+            rgb.Holder = args.Equipee;
             rgb.HolderLayers = new();
 
-            if (!TryComp(args.EquipTarget, out SpriteComponent? sprite))
+            if (!TryComp(args.Equipee, out SpriteComponent? sprite))
                 return;
 
             foreach (var key in args.RevealedLayers)
             {
-                if (!_sprite.LayerMapTryGet((args.EquipTarget, sprite), key, out var index, false) || sprite[index] is not Layer layer)
+                if (!_sprite.LayerMapTryGet((args.Equipee, sprite), key, out var index, false) || sprite[index] is not Layer layer)
                     continue;
 
                 if (layer.ShaderPrototype == "unshaded")

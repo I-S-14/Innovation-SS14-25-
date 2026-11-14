@@ -79,11 +79,12 @@ public sealed partial class RocketChairSystem : SharedRocketChairSystem
     {
         var (uid, comp) = ent;
 
-        _solutions.EnsureSolutionEntity((uid, (SolutionManagerComponent?) null),
-            comp.FuelSolution, out _, out var solEnt, FixedPoint2.New(comp.FuelCapacity));
+        if (!_solutions.EnsureSolution(uid, comp.FuelSolution, out var solEnt))
+            return;
+        _solutions.SetCapacity(solEnt, FixedPoint2.New(comp.FuelCapacity));
 
-        if (solEnt != null && solEnt.Value.Comp.Solution.Volume == 0 && comp.StartFuel > 0)
-            _solutions.TryAddReagent(solEnt.Value, comp.FuelReagent, FixedPoint2.New(comp.StartFuel));
+        if (solEnt.Comp.Solution.Volume == 0 && comp.StartFuel > 0)
+            _solutions.TryAddReagent(solEnt, comp.FuelReagent, FixedPoint2.New(comp.StartFuel));
     }
 
     private void SpawnVaporBurst(EntityUid uid, RocketChairComponent comp)
@@ -126,7 +127,7 @@ public sealed partial class RocketChairSystem : SharedRocketChairSystem
 
             var vap = Comp<VaporComponent>(vapor);
             var vapEnt = (vapor, vap);
-            _vapor.TryAddSolution(vapEnt, extracted);
+            _solutions.TryAddSolution((vapor, Comp<SolutionComponent>(vapor)), extracted);
 
             var speed = comp.VaporVelocity;
             var life = comp.VaporLifetime;

@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Text.Json.Nodes;
+using Content.Corvax.Interfaces.Server; // CorvaxGoob - Queue
 using Content.Shared.CCVar;
 using Content.Shared.GameTicking;
 using Robust.Server.ServerStatus;
@@ -34,9 +35,15 @@ public sealed partial class ServerGameTicker
             jObject["name"] = _baseServer.ServerName;
             jObject["map"] = _gameMapManager.GetSelectedMap()?.MapName;
             jObject["round_id"] = RoundId;
+            // CorvaxGoob-Queue-Start
+            var players = IoCManager.Instance?.TryResolveType<IServerJoinQueueManager>(out var joinQueueManager) ?? false
+                ? joinQueueManager.ActualPlayersCount
+                : _playerManager.PlayerCount;
+
             jObject["players"] = Cfg.GetCVar(CCVars.AdminsCountInReportedPlayerCount)
-                ? _playerManager.PlayerCount
-                : _playerManager.PlayerCount - _adminManager.ActiveAdmins.Count();
+                ? players
+                : players - _adminManager.ActiveAdmins.Count();
+            // CorvaxGoob-Queue-End
             jObject["soft_max_players"] = Cfg.GetCVar(CCVars.SoftMaxPlayers);
             jObject["panic_bunker"] = Cfg.GetCVar(CCVars.PanicBunkerEnabled);
             jObject["run_level"] = (int) RunLevel;

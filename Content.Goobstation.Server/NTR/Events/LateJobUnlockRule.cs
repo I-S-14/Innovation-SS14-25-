@@ -1,3 +1,6 @@
+using Content.Shared.Station.Components;
+using Content.Shared.Station.Systems;
+using StationJobsSystem = Content.Server.Station.Systems.ServerStationJobsSystem;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Server.Chat.Managers;

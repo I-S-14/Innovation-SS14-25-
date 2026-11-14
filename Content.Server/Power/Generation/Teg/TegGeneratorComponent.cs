@@ -10,6 +10,9 @@ namespace Content.Server.Power.Generation.Teg;
 [Access(typeof(TegSystem))]
 public sealed partial class TegGeneratorComponent : Component
 {
+    [DataField]
+    public float PowerSmoothingFactor = 0.2f;
+
     /// <summary>
     /// When transferring energy from the hot to cold side,
     /// determines how much of that energy can be extracted as electricity.

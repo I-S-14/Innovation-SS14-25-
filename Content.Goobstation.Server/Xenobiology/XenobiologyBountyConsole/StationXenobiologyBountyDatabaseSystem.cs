@@ -111,7 +111,7 @@ public sealed partial class StationXenobiologyBountyDatabaseSystem : EntitySyste
         if (component.Bounties.Count >= component.MaxBounties)
             return false;
 
-        _nameIdentifier.GenerateUniqueName(uid, BountyNameIdentifierGroup, out var randomVal);
+        _nameIdentifier.GenerateUniqueNameModifier(BountyNameIdentifierGroup, out var randomVal);
         var newBounty = new XenobiologyBountyData(bounty, randomVal);
 
         if (component.Bounties.Any(bountyData => bountyData.Id == newBounty.Id))
@@ -145,7 +145,7 @@ public sealed partial class StationXenobiologyBountyDatabaseSystem : EntitySyste
             string? actorName = null;
             if (actor != null)
             {
-                var getIdentityEvent = new TryGetIdentityShortInfoEvent(ent.Owner, actor.Value);
+                var getIdentityEvent = new TryGetIdentityShortInfoEvent(actor.Value, ent.Owner, forLogging: false);
                 RaiseLocalEvent(getIdentityEvent);
                 actorName = getIdentityEvent.Title;
             }

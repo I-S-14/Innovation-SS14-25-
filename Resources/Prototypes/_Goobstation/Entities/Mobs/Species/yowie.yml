@@ -10,11 +10,23 @@
     # scale: 1.3, 1.3 # Goobstation: port EE height/width sliders
   - type: ScaleData # Goobstation
     # scale: 1.3, 1.3 # Goobstation: port EE height/width sliders
-  - type: Hunger
+  - type: Satiation
+    satiations:
+      Hunger:
+        prototype: NormalSatiationHunger
+      Thirst:
+        prototype: NormalSatiationThirst
+  - type: SatiationSpeedModifier
+    satiations:
+      Hunger:
+        thresholds:
+          Starving: 0.75
+      Thirst:
+        thresholds:
+          Parched: 0.75
   - type: Icon # It will not have an icon in the adminspawn menu without this. Body parts seem fine for whatever reason.
     sprite: _Goobstation/Mobs/Species/Yowie/parts.rsi
     state: full
-  - type: Thirst
   - type: Butcherable
     butcheringType: Spike
     spawned:

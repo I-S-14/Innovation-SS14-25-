@@ -1,3 +1,4 @@
+using Content.Shared.Ghost.Components;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Linq;
@@ -43,7 +44,7 @@ public sealed partial class HealNearOnPraySystem : EntitySystem
     {
         var lookup = _lookup.GetEntitiesInRange(args.User, comp.Range);
         var canTarget = new HashSet<EntityUid>(lookup
-            .Where(entity => entity != null && _occlusion.InRangeUnOccluded(uid, entity, comp.Range))
+            .Where(entity => _occlusion.InRangeUnOccluded(uid, entity, comp.Range))
             .Select(entity => entity));
 
         foreach (var entity in canTarget.Where(HasComp<MobStateComponent>))

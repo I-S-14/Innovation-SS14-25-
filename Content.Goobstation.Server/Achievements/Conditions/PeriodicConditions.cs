@@ -1,3 +1,4 @@
+using Content.Shared.Station.Systems;
 // Fully deleted by CorvaxGoob
 /*
 using Content.Goobstation.Shared.EntityConditions;
@@ -119,7 +120,7 @@ public sealed partial class CarryingStackConditionSystem : PeriodicConditionSyst
 
 public sealed partial class DistanceFromStationConditionSystem : PeriodicConditionSystem<DistanceFromStationCondition>
 {
-    [Dependency] private SharedStationSystem _station = default!;
+    [Dependency] private StationSystem _station = default!;
     [Dependency] private TransformSystem _transform = default!;
 
     protected override void Check()

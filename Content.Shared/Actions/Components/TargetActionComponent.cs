@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: MIT
 
 using Content.Shared.Actions;
-﻿using Content.Shared.Interaction;
-﻿using Robust.Shared.GameStates;
 using Content.Shared.Interaction;
 using Content.Shared.Physics;
 using Robust.Shared.GameStates;

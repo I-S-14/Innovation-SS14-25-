@@ -30,7 +30,6 @@ public sealed partial class TemperatureSystem : SharedTemperatureSystem
 
     private EntityQuery<TemperatureImmunityComponent> _immuneQuery; // DeltaV
 
-    [Dependency] private readonly SpellbladeSystem _spellblade = default!; // Goobstation
 
     public override void Initialize()
     {
@@ -166,6 +165,23 @@ public sealed partial class TemperatureSystem : SharedTemperatureSystem
         var temperatureDelta = args.GasMixture.Temperature - temperature.CurrentTemperature;
         var airHeatCapacity = _atmosphere.GetHeatCapacity(args.GasMixture, false);
         var heatCapacity = GetHeatCapacity(uid, temperature);
+        //IS14-change: honor explicit Wizards heat-transfer data while preserving
+        // Goob's established atmosphere coupling for unchanged prototypes.
+        if (temperature.ThermalConductivity != null || temperature.HeatCapacity != null)
+        {
+            if (airHeatCapacity <= Atmospherics.MinimumHeatCapacity || heatCapacity <= 0)
+                return;
+            var conductance = Math.Max(0f, temperature.ThermalConductivity ?? 150f) * Math.Max(0f, args.ConductivityMod);
+            var equilibriumHeat = temperatureDelta * (airHeatCapacity * heatCapacity / (airHeatCapacity + heatCapacity));
+            var requestedHeat = conductance * temperatureDelta * Math.Max(0f, args.DeltaTime);
+            var transfer = Math.Clamp(requestedHeat, -Math.Abs(equilibriumHeat), Math.Abs(equilibriumHeat));
+            var previous = temperature.CurrentTemperature;
+            ChangeHeat(uid, transfer, temperature: temperature);
+            // Use the applied delta so Goob protection and temperature hooks remain authoritative.
+            var appliedHeat = (temperature.CurrentTemperature - previous) * heatCapacity;
+            args.GasMixture.Temperature = Math.Max(0f, args.GasMixture.Temperature - appliedHeat / airHeatCapacity);
+            return;
+        }
         // TODO ATMOS: This heat transfer formula is really really wrong, it needs to be pulled out. Pending on HeatContainers.
         var heat = temperatureDelta * (airHeatCapacity * heatCapacity /
                                        (airHeatCapacity + heatCapacity));

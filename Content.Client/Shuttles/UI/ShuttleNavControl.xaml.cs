@@ -23,6 +23,10 @@ namespace Content.Client.Shuttles.UI;
 [GenerateTypedNameReferences]
 public sealed partial class ShuttleNavControl : BaseShuttleControl
 {
+    //IS14-change start: retain fork fields lost during merge.
+    [Dependency] private readonly IUserInterfaceManager _uiManager = default!;
+    //IS14-change end
+
     private readonly SharedMapSystem _maps;
     private readonly SharedShuttleSystem _shuttles;
     private readonly SharedTransformSystem _transform;
@@ -340,7 +344,7 @@ public sealed partial class ShuttleNavControl : BaseShuttleControl
                 var gridCenterMapPos = _transform.ToWorldPosition(new EntityCoordinates(gUid, gridBody.LocalCenter));
 
                 var gridDistance = (gridCenterMapPos - mapPos.Position).Length();
-                var labelText = Loc.GetString("shuttle-console-iff-label", ("name", labelName),
+                var labelText = Loc.GetString("shuttle-console-iff-label", ("name", labelName ?? string.Empty),
                     ("distance", $"{gridDistance:0.0}"));
                 var coordsText = $"({gridCenterMapPos.X:0.0}, {gridCenterMapPos.Y:0.0})";
 
@@ -434,7 +438,7 @@ public sealed partial class ShuttleNavControl : BaseShuttleControl
                 {
                     // Shows decimal when distance is < 50m, otherwise pointless to show it.
                     var displayedDistance = distance < 50f ? $"{distance:0.0}" : distance < 1000 ? $"{distance:0}" : $"{distance / 1000:0.0}k";
-                    var labelText = Loc.GetString("shuttle-console-iff-label", ("name", labelName)!, ("distance", displayedDistance));
+                    var labelText = Loc.GetString("shuttle-console-iff-label", ("name", labelName ?? string.Empty)!, ("distance", displayedDistance));
 
                     var coordsText = $"({gridMapPos.X:0.0}, {gridMapPos.Y:0.0})";
 

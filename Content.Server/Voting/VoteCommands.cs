@@ -70,6 +70,11 @@ namespace Content.Server.Voting
     [AdminCommand(AdminFlags.Round)]
     public sealed partial class CreateCustomCommand : LocalizedEntityCommands
     {
+    //IS14-change start: restore declarations used by merged implementation.
+    [Dependency] private readonly IAdminLogManager _adminLogger = default!;
+    [Dependency] private readonly IVoteManager _voteManager = default!;
+    //IS14-change end
+
         [Dependency] private IChatManager _chatManager = default!;
         [Dependency] private VoteWebhooks _voteWebhooks = default!;
         [Dependency] private IConfigurationManager _cfg = default!;
@@ -163,6 +168,10 @@ namespace Content.Server.Voting
     [AnyCommand]
     public sealed partial class VoteCommand : LocalizedEntityCommands
     {
+    //IS14-change start: restore declarations used by merged implementation.
+    [Dependency] private readonly IVoteManager _voteManager = default!;
+    //IS14-change end
+
 
         public override string Command => "vote";
 
@@ -220,6 +229,10 @@ namespace Content.Server.Voting
     [AnyCommand]
     public sealed partial class ListVotesCommand : LocalizedEntityCommands
     {
+    //IS14-change start: restore declarations used by merged implementation.
+    [Dependency] private readonly IVoteManager _voteManager = default!;
+    //IS14-change end
+
 
         public override string Command => "listvotes";
 
@@ -235,6 +248,11 @@ namespace Content.Server.Voting
     [AdminCommand(AdminFlags.Round)]
     public sealed partial class CancelVoteCommand : LocalizedEntityCommands
     {
+    //IS14-change start: restore declarations used by merged implementation.
+    [Dependency] private readonly IAdminLogManager _adminLogger = default!;
+    [Dependency] private readonly IVoteManager _voteManager = default!;
+    //IS14-change end
+
 
         public override string Command => "cancelvote";
 

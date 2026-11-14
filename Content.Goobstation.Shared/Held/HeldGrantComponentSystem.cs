@@ -28,7 +28,9 @@ public sealed partial class HeldGrantComponentSystem : EntitySystem
 
             object? temp = newComp;
             _serializationManager.CopyTo(data.Component, ref temp);
-            EntityManager.AddComponent(args.User, (Component)temp!);
+            //IS14-change start
+            AddComp(args.User, (Component)temp!);
+            //IS14-change end
 
             ent.Comp.Active[name] = true; // Goobstation
         }

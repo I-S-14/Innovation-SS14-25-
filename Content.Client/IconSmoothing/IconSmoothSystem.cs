@@ -1,8 +1,4 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
-using System.Numerics;
 using Content.Client._Shitcode.Heretic;
-using Content.Shared.IconSmoothing;
 using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
 using Robust.Client.GameObjects;
@@ -10,8 +6,6 @@ using Robust.Shared.Collections;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Map.Enumerators;
 using Robust.Shared.Utility;
-using Robust.Shared.Map;
-using Robust.Client.GameObjects.SpriteComponent;
 
 namespace Content.Client.IconSmoothing;
 
@@ -69,10 +63,10 @@ public sealed partial class IconSmoothSystem : EntitySystem
         if (_dirtyEntities.Count == 0)
             return;
 
-        SetCornerLayers((uid, sprite), component);
-        RaiseLocalEvent(uid, new IconSmoothCornersInitializedEvent()); // Goobstation
-
-        if (component.Shader != null)
+        // Right now performance for this isn't a huge issue.
+        // If it ever does become an issue, make this a parallel job.
+        // However, I'm pretty sure the caching behavior is more taxing, although that can't be made parallel without engine changes.
+        while (_dirtyEntities.TryDequeue(out var entity))
         {
             CalculateNewSprite(entity);
         }
@@ -97,9 +91,9 @@ public sealed partial class IconSmoothSystem : EntitySystem
             return;
         }
 
-        component.StateBase = newState;
-        SetCornerLayers((uid, sprite), component);
-        RaiseLocalEvent(uid, new IconSmoothCornersInitializedEvent()); // Goobstation
+        var tile = _map.TileIndicesFor(grid, mapGrid, xform.Coordinates);
+        PopulateAdjacentKeys((grid, iconGrid, mapGrid), xform.LocalRotation, tile);
+        ApplyStates((entity, entity.Comp, sprite));
     }
 
     private void ApplyStates(Entity<IconSmoothComponent, SpriteComponent> entity)
@@ -108,6 +102,8 @@ public sealed partial class IconSmoothSystem : EntitySystem
         {
             ApplyState((entity, entity.Comp2), spriteSmooth);
         }
+        //IS14-change: let Goob shaders follow updated corner layers.
+        RaiseLocalEvent(entity.Owner, new IconSmoothCornersInitializedEvent());
     }
 
     private void ApplyState<T>(Entity<SpriteComponent> entity, T smoothState) where T : ISpriteSmoothState

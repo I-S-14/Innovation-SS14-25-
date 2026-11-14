@@ -4,7 +4,6 @@ using Content.Goobstation.Maths.FixedPoint;
 using Robust.Shared.Serialization;
 using Robust.Shared.Prototypes;
 using System.Linq;
-using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Chemistry.Reagent;
 

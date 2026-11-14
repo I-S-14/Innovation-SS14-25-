@@ -8,6 +8,8 @@ namespace Content.Shared.Overlays;
 /// <summary>
 /// Enables the night-vision fullscreen overlay for the entity it is attached to or the wearer.
 /// </summary>
+//IS14-change: coexist with the retained fork component.
+[ComponentProtoName("NightVisionOverlay")]
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState(true)]
 public sealed partial class NightVisionComponent : Component
 {
@@ -75,4 +77,4 @@ public sealed partial class NightVisionComponent : Component
     public float NoiseMultiplier;
 }
 
-public sealed partial class ToggleNightVisionEvent : InstantActionEvent;
+public sealed partial class ToggleNightVisionOverlayEvent : InstantActionEvent;

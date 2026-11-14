@@ -20,7 +20,7 @@ namespace Content.Goobstation.Server.WeaponRandomExplode
             SubscribeLocalEvent<WeaponRandomExplodeComponent, ShotAttemptedEvent>(OnShot);
         }
 
-        private void OnShot(EntityUid uid, WeaponRandomExplodeComponent component, ShotAttemptedEvent args)
+        private void OnShot(EntityUid uid, WeaponRandomExplodeComponent component, ref ShotAttemptedEvent args)
         {
             if (component.explosionChance <= 0)
                 return;

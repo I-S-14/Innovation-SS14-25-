@@ -35,22 +35,16 @@
   - type: Tag
     tags:
     - Trash
-  - type: SolutionContainerManager
-    solutions:
-      smokable:
-        maxVol: 25
-        reagents:
-          - ReagentId: Nicotine
-            Quantity: 15
     # Goobstation - Grindable cigarette start
   - type: Extractable
     grindableSolutionName: smokable
     # Goobstation - Grindable cigarette end
   - type: Solution
     solution:
+      maxVol: 25
       reagents:
-      - ReagentId: Nicotine
-        Quantity: 10
+        - ReagentId: Nicotine
+          Quantity: 15
 
 - type: entity
   parent: BaseSmokable

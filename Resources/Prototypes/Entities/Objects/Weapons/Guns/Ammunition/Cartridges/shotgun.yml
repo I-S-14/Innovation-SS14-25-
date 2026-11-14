@@ -127,18 +127,13 @@
   - type: CartridgeAmmo
     proto: PelletShotgunTranquilizer
   - type: ChemicalAmmo
-  - type: SolutionContainerManager
-    solutions:
-      ammo:
-        reagents:
-    # CorvaxGoob start
-        - ReagentId: Haloperidol
-          Quantity: 5
+  # IS14-change: keep the original CorvaxGoob dose in the current solution layout.
   - type: Solution
     solution:
+      maxVol: 5
       reagents:
-      - ReagentId: ChloralHydrate
-        Quantity: 7.5
+      - ReagentId: Haloperidol
+        Quantity: 5
   - type: SolutionTransfer
     maxTransferAmount: 5
     # CorvaxGoob end

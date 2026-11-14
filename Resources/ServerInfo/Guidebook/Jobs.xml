@@ -5,26 +5,26 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 <Document>
 # Должности
 
-Nanotrasen space stations have a large number of jobs, divided into seven main departments:
+Должности на станциях NanoTrasen распределены по семи основным отделам.
 
-[bullet/][color=#1b67a5]Command[/color] consists of the station's Captain and the heads of every other department. They are collectively responsible for keeping the station and its departments running efficiently.
+[bullet/][color=#1b67a5]Командование[/color] состоит из капитана и глав отделов. Вместе они отвечают за работу станции и координируют действия экипажа.
 
-[bullet/][color=#b18644]Cargo[/color] is responsible for the station's logistics, acquiring resources for the station via purchase or salvage and distributing those resources to other departments.
+[bullet/][color=#b18644]Отдел снабжения[/color] отвечает за логистику. Его сотрудники закупают ресурсы, добывают их на утилизации и распределяют между отделами.
 
-[bullet/][color=#f39f27]Engineering[/color] is responsible for keeping the station powered, intact, and habitable, largely focusing on repairs and maintenance.
+[bullet/][color=#f39f27]Инженерный отдел[/color] поддерживает электроснабжение, герметичность и пригодную для жизни атмосферу. Инженеры ремонтируют и обслуживают оборудование станции.
 
-[bullet/][color=#5b97bc]Medical[/color] is responsible for the retrieval and treatment of injured and sick crew.
+[bullet/][color=#5b97bc]Медицинский отдел[/color] эвакуирует пострадавших и лечит раненых и больных членов экипажа.
 
-[bullet/][color=#c96dbf]Science[/color] is responsible for researching various otherworldly phenomena, and using that research to produce powerful new devices for the station.
+[bullet/][color=#c96dbf]Научный отдел[/color] изучает аномалии и другие необычные явления. Результаты исследований позволяют создавать новые устройства для станции.
 
-[bullet/][color=#cb0000]Security[/color] is responsible for enforcing Space Law, and dealing with troublemakers and threats to the station.
+[bullet/][color=#cb0000]Отдел милиции[/color] следит за соблюдением космического закона, пресекает нарушения и защищает станцию от угроз.
 
-[bullet/][color=#9fed58]Service[/color] is a diverse department that's collectively responsible for providing the crew with sustenance, sanitation, entertainment, and many other basic needs.
+[bullet/][color=#9fed58]Сервисный отдел[/color] обеспечивает экипаж едой и напитками, поддерживает чистоту и организует досуг.
 
-Aside from these seven main departments, there are also [color=#7f7f7f]Civilian[/color] members of the station who have no explicit responsibilities.
+На станции также есть [color=#7f7f7f]гражданские[/color], у которых нет служебных обязанностей.
 
-# Getting Your Job Changed
-The [color=cyan]Head of Personnel[/color] is generally in charge of changing ID accesses and handing out encryption keys. Head over to their office and let them know what job you'd like to work instead.
+# Смена должности
+[color=cyan]Глава персонала[/color] меняет доступы на ID-картах и выдаёт ключи шифрования. Чтобы сменить должность, сообщите ему, на какую работу хотите перейти.
 
-Often, they'll want you to go get a paper stamped by another member of Command. Don't sweat it, just find them and hand them the paper.
+Глава персонала может попросить согласие начальника нужного отдела. В этом случае отнесите документ на подпись и печать.
 </Document>

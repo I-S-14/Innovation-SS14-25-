@@ -1,0 +1,39 @@
+# IS14: retain Goob thresholds, inherited decay and initial value ranges in Satiation.
+- type: satiation
+  id: IS14RatKingHunger
+  parent: SimpleMobBaseHunger
+  maximumValue: 400
+  thresholds:
+    Overfed: 400
+    Okay: 250
+    Peckish: 125
+    Starving: 50
+    Dead: 0
+  startingValueMinimum: 135
+  startingValueMaximum: 250
+
+- type: satiation
+  id: IS14RatServantHunger
+  parent: SimpleMobBaseHunger
+  maximumValue: 200
+  thresholds:
+    Overfed: 200
+    Okay: 150
+    Peckish: 100
+    Starving: 50
+    Dead: 0
+  startingValueMinimum: 110
+  startingValueMaximum: 150
+
+- type: satiation
+  id: IS14RatKingThirst
+  parent: SimpleMobBaseThirst
+  maximumValue: 600
+  thresholds:
+    Overhydrated: 600
+    Okay: 450
+    Thirsty: 300
+    Parched: 150
+    Dead: 0
+  startingValueMinimum: 310
+  startingValueMaximum: 449 # Goob initializes thirst below Okay - 1.

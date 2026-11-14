@@ -68,6 +68,10 @@ namespace Content.Server.Heretic.Abilities;
 
 public sealed partial class HereticAbilitySystem : SharedHereticAbilitySystem
 {
+    //IS14-change start: typed prototype IDs required by the upstream analyzer.
+    private static readonly ProtoId<TagPrototype> CompatibilityHereticBladeBladeTagId = "HereticBladeBlade";
+    //IS14-change end
+
     // keeping track of all systems in a single file
     [Dependency] private readonly StoreSystem _store = default!;
     [Dependency] private readonly HandsSystem _hands = default!;
@@ -82,7 +86,6 @@ public sealed partial class HereticAbilitySystem : SharedHereticAbilitySystem
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly SharedBodySystem _body = default!;
-    [Dependency] private readonly PhysicsSystem _phys = default!;
     [Dependency] private readonly SharedStunSystem _stun = default!;
     [Dependency] private readonly ThrowingSystem _throw = default!;
     [Dependency] private readonly SharedUserInterfaceSystem _ui = default!;
@@ -229,10 +232,12 @@ public sealed partial class HereticAbilitySystem : SharedHereticAbilitySystem
             var success = false;
             foreach (var blade in blades)
             {
-                if (!EntityManager.EntityExists(blade))
+                //IS14-change start
+                if (!Exists(blade))
+                //IS14-change end
                     continue;
 
-                if (!_tag.HasTag(blade, "HereticBladeBlade"))
+                if (!_tag.HasTag(blade, CompatibilityHereticBladeBladeTagId))
                     continue;
 
                 if (TryComp(blade, out MansusInfusedComponent? infused) &&

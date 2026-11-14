@@ -16,31 +16,16 @@
     maxDifficulty: 2.5
   - type: AntagSelection
     agentName: thief-round-end-agent-name
-    selectionTime: IntraPlayerSpawn
-    definitions:
-    - prefRoles: [ Thief ]
-      max: 3
+    selectionTime: JobsAssigned
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14ThiefAntag01ef3621d
+      range:
+        max: 3
+        min: 1
       playerRatio: 15
-      chaosScore: 100 # Goobstation
-      skills: # CorvaxGoob-Skills
-      - All
-      lateJoinAdditional: true
-      allowNonHumans: true
-      multiAntagSetting: NotExclusive
-      startingGear: ThiefGear
-      jobBlacklist: [ Chaplain ] # GOOBSTATION
-      blacklist: # GOOBSTATION
-        components:
-        - CommandStaff
-      components:
-      #- type: Pacified # CorvaxGoob
-      - type: Thieving
-        stripTimeReduction: 2
-        stealthy: true
-      mindRoles:
-      - MindRoleThief
-      briefing:
-        sound: "/Audio/Misc/thief_greeting.ogg"
+      chaosScore: 100
+    lateJoinAdditional: true
   - type: DynamicRuleCost
     cost: 75
   - type: GameRule

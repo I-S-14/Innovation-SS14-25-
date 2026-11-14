@@ -6,7 +6,6 @@ namespace Content.Client.Chat.Managers
 {
     public interface IChatManager : ISharedChatManager
     {
-        void Initialize(); // Goobstation - Starlight collective mind port
 
         public void SendMessage(string text, ChatSelectChannel channel);
 

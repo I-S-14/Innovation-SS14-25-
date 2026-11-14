@@ -27,6 +27,10 @@ namespace Content.Client.NodeContainer
 
     public sealed partial class NodeVisFilterCommand : LocalizedEntityCommands
     {
+    //IS14-change start: restore declarations used by merged implementation.
+    [Dependency] private readonly NodeGroupSystem _nodeSystem = default!;
+    //IS14-change end
+
 
         public override string Command => "nodevisfilter";
 

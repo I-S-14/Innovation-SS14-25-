@@ -68,7 +68,7 @@ public sealed partial class NetProbeCartridgeSystem : EntitySystem
     /// <summary>
     /// This gets called when the ui fragment needs to be updated for the first time after activating
     /// </summary>
-    private void OnUiReady(EntityUid uid, NetProbeCartridgeComponent component, CartridgeUiReadyEvent args)
+    private void OnUiReady(EntityUid uid, NetProbeCartridgeComponent component, ref CartridgeUiReadyEvent args)
     {
         UpdateUiState(uid, args.Loader, component);
     }

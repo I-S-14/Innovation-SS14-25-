@@ -8,7 +8,7 @@ namespace Content.Shared.Chemistry.Components.SolutionManager;
 
 /// <remarks>
 /// Exists for simple backwards compatibility.
-/// On <see cref="ComponentInit"/> this component will transfer all its data where it can to a <see cref="SolutionManagerComponent"/>
+/// On <see cref="MapInitEvent"/> this component will transfer all its data where it can to a <see cref="SolutionManagerComponent"/>
 /// Then it will delete itself.
 /// This component will be deleted in the indeterminate future.
 /// </remarks>
@@ -38,4 +38,9 @@ public sealed partial class SolutionContainerManagerComponent : Component
     /// </remarks>
     [DataField]
     public Dictionary<string, Solution>? Solutions;
+
+    //IS14-change: prevent recursive/repeated conversion when a MapInit consumer
+    // requests its solution before this compatibility component's own callback.
+    internal bool Migrating;
+    internal bool Migrated;
 }

@@ -1,5 +1,6 @@
 - type: tile
   id: FloorGreenCircuit
+  tileRipResistance: 225 # IS14: Goob tile balance belongs on the tile, not its lathe recipe.
   parent: BaseStationTile
   name: tiles-green-circuit-floor
   sprite: /Textures/Tiles/Circuit/circuit-green.png
@@ -10,6 +11,7 @@
 
 - type: tile
   id: FloorBlueCircuit
+  tileRipResistance: 225 # IS14: retain Goob circuit-floor resistance.
   parent: BaseStationTile
   name: tiles-blue-circuit-floor
   sprite: /Textures/Tiles/Circuit/circuit-blue.png

@@ -59677,7 +59677,7 @@ entities:
     - type: NavMapBeacon
       text: КПП - Прибытие
     - type: WarpPoint
-      location: КПП - Прибытие
+      location: is14-map-warp-f7f595d386f7
 - proto: DefaultStationBeaconDisposals
   entities:
   - uid: 9090
@@ -59861,7 +59861,7 @@ entities:
     - type: NavMapBeacon
       text: КПП - Медицинский
     - type: WarpPoint
-      location: КПП - Медицинский
+      location: is14-map-warp-dee49218a012
   - uid: 9116
     components:
     - type: Transform
@@ -59875,7 +59875,7 @@ entities:
     - type: NavMapBeacon
       text: КПП - Инженерный
     - type: WarpPoint
-      location: КПП - Инженерный
+      location: is14-map-warp-0843647c7280
 - proto: DefaultStationBeaconServerRoom
   entities:
   - uid: 9118

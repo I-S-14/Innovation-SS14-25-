@@ -126,8 +126,11 @@
             max: 2
   - type: IconSmooth
     key: walls
-    base: window
-
+    states:
+    - !type:CornerSpriteSmoothing
+      base: window
+      mask:
+      - walls
 - type: entity
   parent: Window
   id: TintedWindow

@@ -24,6 +24,10 @@ public sealed class GosplanEvaluateCommand : LocalizedEntityCommands
 [AdminCommand(AdminFlags.Admin)]
 public sealed class GosplanStatusCommand : LocalizedEntityCommands
 {
+    //IS14-change start: restore declarations used by merged implementation.
+    [Dependency] private readonly GosplanSystem _gosplan = default!;
+    //IS14-change end
+
 
     public override string Command => "gosplan_status";
     public override string Description => "Prints current plan fulfillment for every station.";

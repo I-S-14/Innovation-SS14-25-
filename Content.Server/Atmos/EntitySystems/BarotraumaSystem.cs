@@ -44,6 +44,21 @@ namespace Content.Server.Atmos.EntitySystems
             SubscribeLocalEvent<PressureImmunityComponent, ComponentRemove>(OnPressureImmuneRemove);
         }
 
+        private void OnPressureImmuneInit(EntityUid uid, PressureImmunityComponent comp, ComponentInit args)
+        {
+            RefreshPressureImmunity(uid);
+        }
+
+        private void OnPressureImmuneRemove(EntityUid uid, PressureImmunityComponent comp, ComponentRemove args)
+        {
+            if (TryComp<BarotraumaComponent>(uid, out var barotrauma))
+            {
+                var ev = new RefreshPressureImmunityEvent();
+                RaiseLocalEvent(uid, ref ev);
+                barotrauma.HasImmunity = ev.IsImmune;
+            }
+        }
+
         [SubscribeLocalEvent]
         private void OnBarotraumaInit(Entity<BarotraumaComponent> ent, ref MapInitEvent args)
         {
@@ -198,7 +213,7 @@ namespace Content.Server.Atmos.EntitySystems
 
             var ev = new RefreshPressureImmunityEvent();
             RaiseLocalEvent(uid, ref ev);
-            barotrauma.HasImmunity = ev.IsImmune;
+            barotrauma.HasImmunity = ev.IsImmune || HasComp<PressureImmunityComponent>(uid);
         }
 
         public bool TryGetPressureProtectionValues(

@@ -49,7 +49,7 @@ public sealed partial class CargoSystem
         UpdateBankAccount((station, bank), -args.Amount,  ent.Comp.Account, dirty: false);
         _audio.PlayPvs(ApproveSound, ent);
 
-        var tryGetIdentityShortInfoEvent = new TryGetIdentityShortInfoEvent(ent, args.Actor);
+        var tryGetIdentityShortInfoEvent = new TryGetIdentityShortInfoEvent(ent, args.Actor, forLogging: false);
         RaiseLocalEvent(tryGetIdentityShortInfoEvent);
 
         var ourAccount = _protoMan.Index(ent.Comp.Account);

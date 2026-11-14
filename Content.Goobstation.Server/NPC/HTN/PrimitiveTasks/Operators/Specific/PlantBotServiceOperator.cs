@@ -1,7 +1,9 @@
+using Content.Shared.Botany.Components;
+using Content.Shared.Botany.Systems;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Goobstation.Shared.Silicon.Bots;
-using Content.Server.Botany.Components;
+
 using Content.Server.Botany.Systems;
 using Content.Server.Chat.Systems;
 using Content.Server.NPC;
@@ -28,9 +30,7 @@ public sealed partial class PlantbotServiceOperator : HTNOperator
     private SharedAudioSystem _audio = default!;
     private SharedInteractionSystem _interaction = default!;
     private SharedPopupSystem _popup = default!;
-    private PlantHolderSystem _plantHolderSystem = default!;
-    private DamageableSystem _damageableSystem = default!;
-    private TagSystem _tagSystem = default!;
+    private PlantTraySystem _plantHolderSystem = default!;
 
     public const float RequiredWaterLevelToService = 80f;
     public const float RequiredWeedsAmountToWeed = 1f;
@@ -44,15 +44,16 @@ public sealed partial class PlantbotServiceOperator : HTNOperator
     [DataField(required: true)]
     public string TargetKey = string.Empty;
 
-    public override void Initialize(IEntitySystemManager sysManager)
+    public override void Initialize(IDependencyCollection deps)
     {
-        base.Initialize(sysManager);
+        base.Initialize(deps);
+        var sysManager = deps.Resolve<IEntitySystemManager>();
 
         _chat = sysManager.GetEntitySystem<ChatSystem>();
         _audio = sysManager.GetEntitySystem<SharedAudioSystem>();
         _interaction = sysManager.GetEntitySystem<SharedInteractionSystem>();
         _popup = sysManager.GetEntitySystem<SharedPopupSystem>();
-        _plantHolderSystem = sysManager.GetEntitySystem<PlantHolderSystem>();
+        _plantHolderSystem = sysManager.GetEntitySystem<PlantTraySystem>();
     }
 
     public override void TaskShutdown(NPCBlackboard blackboard, HTNOperatorStatus status)
@@ -69,9 +70,14 @@ public sealed partial class PlantbotServiceOperator : HTNOperator
             return HTNOperatorStatus.Failed;
 
         if (!_entMan.TryGetComponent<PlantbotComponent>(owner, out var botComp)
-            || !_entMan.TryGetComponent<PlantHolderComponent>(target, out var plantHolderComponent)
-            || !_interaction.InRangeUnobstructed(owner, target)
-            || (plantHolderComponent is { WaterLevel: >= RequiredWaterLevelToService, WeedLevel: <= RequiredWeedsAmountToWeed } && (!_entMan.HasComponent<EmaggedComponent>(owner) || plantHolderComponent.Dead || plantHolderComponent.WaterLevel <= 0f)))
+            || !_entMan.TryGetComponent<PlantTrayComponent>(target, out var plantHolderComponent)
+            || !_interaction.InRangeUnobstructed(owner, target))
+            return HTNOperatorStatus.Failed;
+
+        var dead = plantHolderComponent.PlantEntity is { } plant
+            && _entMan.TryGetComponent<PlantHolderComponent>(plant, out var holder) && holder.Dead;
+        if (plantHolderComponent is { WaterLevel: >= RequiredWaterLevelToService, WeedLevel: <= RequiredWeedsAmountToWeed }
+            && (!_entMan.HasComponent<EmaggedComponent>(owner) || dead || plantHolderComponent.WaterLevel <= 0f))
             return HTNOperatorStatus.Failed;
 
         if (botComp.IsEmagged)
@@ -89,7 +95,7 @@ public sealed partial class PlantbotServiceOperator : HTNOperator
             }
             else if (plantHolderComponent.WeedLevel >= RequiredWeedsAmountToWeed)
             {
-                plantHolderComponent.WeedLevel -= WeedsRemovedAmount;
+                _plantHolderSystem.AdjustWeed(target, -WeedsRemovedAmount);
                 _audio.PlayPvs(botComp.WeedSound, target);
                 _chat.TrySendInGameICMessage(owner, Loc.GetString("plantbot-remove-weeds"), InGameICChatType.Speak, hideChat: true, hideLog: true);
             }

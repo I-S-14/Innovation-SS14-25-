@@ -15,7 +15,13 @@
       types:
         Blunt: 10
   - type: Produce
-    seedId: towercap
-  - type: Log
-    spawnedPrototype: MaterialAshwoodPlank1
-    spawnCount: 1
+    plantId: TowercapPlants
+  - type: ToolRefinable
+    qualityNeeded: Slicing
+    refineTime: 0
+    refineFuel: 0
+    refineResult:
+    - id: MaterialAshwoodPlank1
+      amount: 1
+    verbText: refined-slice-verb-name
+    tooltipQualityHint: tool-refinable-component-hint-slicing

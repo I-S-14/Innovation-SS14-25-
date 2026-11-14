@@ -122,7 +122,7 @@
   - type: ActiveRadio
     receiveAllChannels: true
     globalReceive: true
-  - type: NightVision
+  - type: NightVisionOverlay
     netsync: false
     enabled: false
     prioritized: false

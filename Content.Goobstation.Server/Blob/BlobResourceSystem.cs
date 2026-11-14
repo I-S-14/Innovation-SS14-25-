@@ -1,3 +1,4 @@
+using Content.Shared.GameTicking;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Goobstation.Server.Blob.Components;
@@ -63,7 +64,7 @@ public sealed partial class BlobResourceSystem : EntitySystem
     /// On round end makes all the blobs resource nodes generate 100 points each pulse.
     /// </summary>
     /// <param name="args"></param>
-    private void OnRoundEnd(RoundEndTextAppendEvent args)
+    private void OnRoundEnd(ref RoundEndTextAppendEvent args)
     {
         var query = EntityQueryEnumerator<BlobResourceComponent>();
         while(query.MoveNext(out var resource))

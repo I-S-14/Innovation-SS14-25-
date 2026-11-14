@@ -81,6 +81,7 @@ public abstract partial class InteractionTest : GameTest
     /// The player entity that performs all these interactions. Defaults to an admin-observer with 1 hand.
     /// </summary>
     protected NetEntity Player;
+    [SidedDependency(Side.Server)] protected Content.Shared.Weapons.Melee.SharedMeleeWeaponSystem SMelee = default!;
     protected EntityUid SPlayer;
     protected EntityUid CPlayer;
 
@@ -107,7 +108,7 @@ public abstract partial class InteractionTest : GameTest
 
     // SERVER dependencies
     [SidedDependency(Side.Server)] protected ITileDefinitionManager TileMan = default!;
-    [SidedDependency(Side.Server)] protected IPrototypeManager ProtoMan => SProtoMan;
+    protected IPrototypeManager ProtoMan => SProtoMan;
     protected IGameTiming STiming => SGameTiming;
     [SidedDependency(Side.Server)] protected IComponentFactory Factory = default!;
     [SidedDependency(Side.Server)] protected HandsSystem HandSys = default!;
@@ -122,10 +123,10 @@ public abstract partial class InteractionTest : GameTest
     [SidedDependency(Side.Server)] protected SharedMapSystem MapSystem = default!;
     [SidedDependency(Side.Server)] protected ILogManager SLogMan = default!;
     protected ISawmill SLogger = default!;
-    protected SharedUserInterfaceSystem SUiSys = default!;
-    protected SharedCombatModeSystem SCombatMode = default!;
-    protected SharedGunSystem SGun = default!;
-    protected PredictedHandsSystem PredictedHands = default!; // Trauma
+    [SidedDependency(Side.Server)] protected SharedUserInterfaceSystem SUiSys = default!;
+    [SidedDependency(Side.Server)] protected SharedCombatModeSystem SCombatMode = default!;
+    [SidedDependency(Side.Server)] protected SharedGunSystem SGun = default!;
+    [SidedDependency(Side.Server)] protected PredictedHandsSystem PredictedHands = default!; // Trauma
 
     // CLIENT dependencies
     protected IClientGameTiming CTiming => CGameTiming;
@@ -189,40 +190,9 @@ public abstract partial class InteractionTest : GameTest
         //
     }
 
-        // server dependencies
-        SEntMan = Server.ResolveDependency<IEntityManager>();
-        TileMan = Server.ResolveDependency<ITileDefinitionManager>();
-        ProtoMan = Server.ResolveDependency<IPrototypeManager>();
-        Factory = Server.ResolveDependency<IComponentFactory>();
-        STiming = Server.ResolveDependency<IGameTiming>();
-        SLogger = Server.ResolveDependency<ILogManager>().RootSawmill;
-        HandSys = SEntMan.System<HandsSystem>();
-        InteractSys = SEntMan.System<SharedInteractionSystem>();
-        ToolSys = SEntMan.System<ToolSystem>();
-        ItemToggleSys = SEntMan.System<ItemToggleSystem>();
-        DoAfterSys = SEntMan.System<SharedDoAfterSystem>();
-        Transform = SEntMan.System<SharedTransformSystem>();
-        MapSystem = SEntMan.System<SharedMapSystem>();
-        SConstruction = SEntMan.System<Server.Construction.ConstructionSystem>();
-        STestSystem = SEntMan.System<InteractionTestSystem>();
-        Stack = SEntMan.System<StackSystem>();
-        SUiSys = SEntMan.System<SharedUserInterfaceSystem>();
-        SCombatMode = SEntMan.System<SharedCombatModeSystem>();
-        SGun = SEntMan.System<SharedGunSystem>();
-        PredictedHands = SEntMan.System<PredictedHandsSystem>(); // Trauma
-
-        // client dependencies
-        CEntMan = Client.ResolveDependency<IEntityManager>();
-        UiMan = Client.ResolveDependency<IUserInterfaceManager>();
-        CTiming = Client.ResolveDependency<IGameTiming>();
-        InputManager = Client.ResolveDependency<IInputManager>();
-        CLogger = Client.ResolveDependency<ILogManager>().RootSawmill;
-        InputSystem = CEntMan.System<Robust.Client.GameObjects.InputSystem>();
-        CTestSystem = CEntMan.System<InteractionTestSystem>();
-        CConSys = CEntMan.System<ConstructionSystem>();
-        ExamineSys = CEntMan.System<ExamineSystem>();
-        CUiSys = CEntMan.System<SharedUserInterfaceSystem>();
-        CDragDropSys = CEntMan.System<DragDropSystem>();
+    public override async Task DoSetup()
+    {
+        await base.DoSetup();
 
         // Setup map.
         if (TestMapPath == null)

@@ -48,9 +48,12 @@ namespace Content.Server.Destructible.Thresholds.Behaviors
             {
                 for (var execution = 0; execution < executions; execution++)
                 {
-                    var count = minMax.Min >= minMax.Max
+                    //IS14-change start
+                    // Individual drops must truncate like stacks, rather than rounding up in the spawn loop.
+                    var count = (int) (minMax.Min >= minMax.Max
                         ? minMax.Min
-                        : system.Random.NextFloat(minMax.Min, minMax.Max + 1);
+                        : system.Random.NextFloat(minMax.Min, minMax.Max + 1));
+                    //IS14-change end
 
                     if (count == 0)
                         continue;

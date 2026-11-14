@@ -55,10 +55,14 @@ public partial class SharedDiseaseSystem
         foreach (var (compName, _) in ent.Comp.Components)
         {
             if (!Factory.TryGetRegistration(compName, out var registration)
-                || EntityManager.HasComponent(args.Ent, registration.Type))
+                //IS14-change start
+                || HasComp(args.Ent, registration.Type))
+                //IS14-change end
                 continue;
             var component = _factory.GetComponent(registration.Type);
-            EntityManager.AddComponent(args.Ent, component);
+            //IS14-change start
+            AddComp(args.Ent, component);
+            //IS14-change end
         }
     }
 
@@ -67,7 +71,9 @@ public partial class SharedDiseaseSystem
         foreach (var (compName, _) in ent.Comp.Components)
         {
             if (Factory.TryGetRegistration(compName, out var registration))
-                EntityManager.RemoveComponent(args.Ent, registration.Type);
+                //IS14-change start
+                RemComp(args.Ent, registration.Type);
+                //IS14-change end
         }
     }
 

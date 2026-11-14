@@ -89,25 +89,26 @@
   id: TemperatureProtectionMinimal # Really light jackets and hoods.
   components:
   - type: TemperatureProtection
-    coefficient: 0.8
-
+    heatingCoefficient: '0.8'
+    coolingCoefficient: '0.8'
 - type: entity
   abstract: true
   id: TemperatureProtection # Winter coats and environmentally sealed helmets
   components:
   - type: TemperatureProtection
-    coefficient: 0.6
-
+    heatingCoefficient: '0.6'
+    coolingCoefficient: '0.6'
 - type: entity
   abstract: true
   id: TemperatureProtectionGood # EVA suits and basic hardsuits
   components:
   - type: TemperatureProtection
-    coefficient: 0.05
-
+    heatingCoefficient: '0.05'
+    coolingCoefficient: '0.05'
 - type: entity
   abstract: true
   id: TemperatureProtectionGreat # Fire-retardant suits
   components:
   - type: TemperatureProtection
-    coefficient: 0.01
+    heatingCoefficient: '0.01'
+    coolingCoefficient: '0.01'

@@ -5,7 +5,7 @@ using Robust.Shared.Utility;
 
 namespace Content.Shared.Heretic.Prototypes;
 
-[Prototype("runeCarving")]
+[Prototype]
 public sealed partial class RuneCarvingPrototype : IPrototype
 {
     [IdDataField]

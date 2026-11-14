@@ -1,27 +1,23 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
+using Content.Shared.Containers.ItemSlots;
+using Content.Shared.Chemistry.EntitySystems;
 using Content.Client.Items.Systems;
 using Content.Shared.Chemistry;
 using Content.Shared.Chemistry.Components;
-using Content.Shared.Chemistry.EntitySystems; // Goobstation
 using Content.Shared.Chemistry.Reagent;
 using Content.Shared.Clothing;
 using Content.Shared.Clothing.Components;
-using Content.Shared.Containers.ItemSlots; // Goobstation
 using Content.Shared.Hands;
 using Content.Shared.Item;
 using Content.Shared.Rounding;
 using Robust.Client.GameObjects;
-using Robust.Shared.Prototypes;
 
 namespace Content.Client.Chemistry.Visualizers;
 
 public sealed partial class SolutionContainerVisualsSystem : VisualizerSystem<SolutionContainerVisualsComponent>
 {
-    [Dependency] private readonly IPrototypeManager _prototype = default!;
-    [Dependency] private readonly SpriteSystem _sprite = default!;
-    [Dependency] private readonly AppearanceSystem _appearance = default!; // Goobstation
-    [Dependency] private readonly SharedSolutionContainerSystem _solutionContainers = default!; // Goobstation
+    [Dependency] private SharedSolutionContainerSystem _solutionContainers = default!;
+    [Dependency] private ItemSlotsSystem _itemSlots = default!;
+
     [Dependency] private ItemSystem _itemSystem = default!;
 
     public override void Initialize()
@@ -39,31 +35,6 @@ public sealed partial class SolutionContainerVisualsSystem : VisualizerSystem<So
 
     protected override void OnAppearanceChange(EntityUid uid, SolutionContainerVisualsComponent component, ref AppearanceChangeEvent args)
     {
-        // Check if the solution that was updated is the one set as represented
-        if (!string.IsNullOrEmpty(component.SolutionName))
-        {
-            if (AppearanceSystem.TryGetData<string>(uid, SolutionContainerVisuals.SolutionName, out var name,
-                args.Component) && name != component.SolutionName)
-            {
-                return;
-            }
-        }
-
-        // Goobstation start
-
-        float fraction = 0;
-        SolutionComponent? solutionComponent = null;
-        if (component.InsertedItemSlotID != null)
-        {
-            GetSolutionFromEntity(uid, component.InsertedItemSlotID, out solutionComponent);
-            if (solutionComponent != null)
-                fraction = solutionComponent.Solution.FillFraction;
-        }
-        else if (!AppearanceSystem.TryGetData<float>(uid, SolutionContainerVisuals.FillFraction, out fraction, args.Component))
-            return;
-
-        // GoobStation end
-
         if (args.Sprite == null)
             return;
 
@@ -73,8 +44,19 @@ public sealed partial class SolutionContainerVisualsSystem : VisualizerSystem<So
             && name != component.SolutionName)
             return;
 
-        if (!args.TryGetData<float>(SolutionContainerVisuals.FillFraction, out var fraction))
+        float fraction;
+        //IS14-change start: machines can display the beaker held in their item slot.
+        if (component.InsertedItemSlotID is { } slotId
+            && _itemSlots.TryGetSlot(uid, slotId, out var slot)
+            && slot.Item is { } inserted
+            && _solutionContainers.TryGetFitsInDispenser(inserted, out var solution, out _)
+            && solution is { } insertedSolution)
+        {
+            fraction = insertedSolution.Comp.Solution.FillFraction;
+        }
+        else if (!args.TryGetData<float>(SolutionContainerVisuals.FillFraction, out fraction))
             return;
+        //IS14-change end
 
         // C# moment; setting it as nullable (even though it's not) avoids a
         // gazillion .AsNullable calls.
@@ -129,10 +111,10 @@ public sealed partial class SolutionContainerVisualsSystem : VisualizerSystem<So
             if (fillSprite != null)
                 SpriteSystem.LayerSetSprite(ent, fillLayer, fillSprite);
 
-            if (component.InsertedItemSlotID != null && solutionComponent != null) // Goobstation start
-                _sprite.LayerSetColor((uid, args.Sprite), fillLayer, solutionComponent.Solution.GetColor(_prototype));
-            else if (changeColor && AppearanceSystem.TryGetData<Color>(uid, SolutionContainerVisuals.Color, out var color, args.Component))
-                _sprite.LayerSetColor((uid, args.Sprite), fillLayer, color); // Goobstation end
+            SpriteSystem.LayerSetRsiState(ent, fillLayer, fillBaseName + closestFillSprite);
+
+            if (changeColor && args.TryGetData<Color>(SolutionContainerVisuals.Color, out var color))
+                SpriteSystem.LayerSetColor(ent, fillLayer, color);
             else
                 SpriteSystem.LayerSetColor(ent, fillLayer, Color.White);
         }
@@ -147,40 +129,20 @@ public sealed partial class SolutionContainerVisualsSystem : VisualizerSystem<So
             }
         }
 
-        // Goobstation Start
-        var parentuid = Transform(uid).ParentUid;
-        var parentApp = CompOrNull<AppearanceComponent>(parentuid);
-        if (parentApp != null && HasComp<SolutionContainerVisualsComponent>(parentuid))
-            _appearance.QueueUpdate(parentuid, parentApp);
-        // Goobstation end
+        //IS14-change: refresh a machine when its inserted container changes appearance.
+        var parent = Transform(uid).ParentUid;
+        if (HasComp<SolutionContainerVisualsComponent>(parent) && TryComp<AppearanceComponent>(parent, out var parentAppearance))
+            AppearanceSystem.QueueUpdate(parent, parentAppearance);
 
         // in-hand visuals
         _itemSystem.VisualsChanged(uid);
     }
 
-    // Goobstation start
-    private bool GetSolutionFromEntity(EntityUid containerUid, string insertedItemSlotID, out SolutionComponent? solutionComponent)
-    {
-        solutionComponent = null;
-        var itemSlotsComponent = CompOrNull<ItemSlotsComponent>(containerUid);
-
-        if (itemSlotsComponent == null) return false;
-
-        var slot = itemSlotsComponent.Slots[insertedItemSlotID];
-        var insertedUid = slot.Item;  //Uid of item (beaker for example) inserted into machine 
-
-        if (insertedUid == null ||
-            !_solutionContainers.TryGetFitsInDispenser(insertedUid.Value, out var solution, out _) ||
-            solution == null)
-            return false;
-
-        solutionComponent = solution;
-        return true;
-    }
-
-    // Goobstation end
-
-    private void OnGetHeldVisuals(EntityUid uid, SolutionContainerVisualsComponent component, GetInhandVisualsEvent args)
+    private ReagentPrototype? MetamorphicChanged(EntityUid uid,
+        SolutionContainerVisualsComponent component,
+        AppearanceChangeEvent args,
+        Entity<SpriteComponent?> ent,
+        int fillLayer)
     {
         if (!args.TryGetData<string>(SolutionContainerVisuals.BaseOverride, out var baseOverride))
             return null;

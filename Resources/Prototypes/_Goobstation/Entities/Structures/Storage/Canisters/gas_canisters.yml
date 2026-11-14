@@ -1,7 +1,7 @@
 # /tg/ gases
 
 - type: entity
-  parent: GasCanister
+  parent: IS14GasCanisterBaseCommon # IS14-change: preserve the Goob 300-damage break threshold.
   id: BZCanister
   name: bz canister
   components:
@@ -9,7 +9,7 @@
     layers:
     - state: purple
   - type: GasCanister
-    gasMixture:
+    air:
       volume: 1000
       moles:
       - 0 # oxygen
@@ -50,7 +50,7 @@
     locked: true
 
 - type: entity
-  parent: GasCanister
+  parent: IS14GasCanisterBaseCommon # IS14-change: preserve the Goob 300-damage break threshold.
   id: HealiumCanister
   name: healium canister
   components:
@@ -58,7 +58,7 @@
     layers:
     - state: healium
   - type: GasCanister
-    gasMixture:
+    air:
       volume: 1000
       moles:
       - 0 # oxygen
@@ -100,7 +100,7 @@
     locked: true
 
 - type: entity
-  parent: GasCanister
+  parent: IS14GasCanisterBaseCommon # IS14-change: preserve the Goob 300-damage break threshold.
   id: NitriumCanister
   name: nitrium canister
   components:
@@ -108,7 +108,7 @@
     layers:
     - state: brown
   - type: GasCanister
-    gasMixture:
+    air:
       volume: 1000
       moles:
       - 0 # oxygen
@@ -151,7 +151,7 @@
     locked: true
 
 - type: entity
-  parent: GasCanister
+  parent: IS14GasCanisterBaseCommon # IS14-change: preserve the Goob 300-damage break threshold.
   id: PluoxiumCanister
   name: pluoxium canister
   components:
@@ -159,7 +159,7 @@
     layers:
     - state: darkblue
   - type: GasCanister
-    gasMixture:
+    air:
       volume: 1000
       moles:
       - 0 # oxygen

@@ -181,3 +181,6 @@ ent-SyringeStimulants = { ent-PrefilledSyringe }
 ent-Bloodpack1 = { ent-Bloodpack }
     .desc = { ent-Bloodpack.desc }
     .suffix = Один
+ent-PillCanisterAmbuzol = { ent-PillCanister }
+    .desc = { ent-PillCanister.desc }
+    .suffix = Амбузол 15 ед., 2

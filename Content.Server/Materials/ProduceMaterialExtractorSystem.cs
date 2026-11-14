@@ -8,7 +8,6 @@ using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Interaction;
 using Content.Shared.Popups;
 using Robust.Server.Audio;
-using Content.Server.Botany.Components;
 
 namespace Content.Server.Materials;
 

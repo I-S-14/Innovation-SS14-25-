@@ -18,11 +18,18 @@ namespace Content.Server.Anomaly.Effects;
 /// </summary>
 public sealed partial class ProjectileAnomalySystem : EntitySystem
 {
+    //IS14-change start: restore declarations used by merged implementation.
+    [Dependency] private readonly SharedMapSystem _mapSystem = default!;
+    //IS14-change end
+
+    //IS14-change start: retain fork fields lost during merge.
+    //IS14-change end
+
     [Dependency] private TransformSystem _xform = default!;
     [Dependency] private EntityLookupSystem _lookup = default!;
     [Dependency] private IRobustRandom _random = default!;
     [Dependency] private GunSystem _gunSystem = default!;
-    [Dependency] private SharedMapSystem _map = default!;
+
     [Dependency] private EntityQuery<MobStateComponent> _mobStateQuery = default!;
 
     /// <summary> Pre-allocated collection for calculating entities in range. </summary>
@@ -95,7 +102,7 @@ public sealed partial class ProjectileAnomalySystem : EntitySystem
     {
         var mapPos = _xform.ToMapCoordinates(coords);
 
-        var spawnCoords = _map.TryFindGridAt(mapPos, out var gridUid, out _)
+        var spawnCoords = _mapSystem.TryFindGridAt(mapPos, out var gridUid, out _)
                 ? _xform.WithEntityId(coords, gridUid)
                 : new(_mapSystem.GetMapOrInvalid(mapPos.MapId), mapPos.Position);
 

@@ -105179,7 +105179,7 @@ entities:
       color: '#D411D493'
       text: Xenobio
     - type: WarpPoint
-      location: Xenobio
+      location: is14-map-warp-58c93154f0e1
 - proto: DefaultStationBeaconAI
   entities:
   - uid: 9024
@@ -105280,7 +105280,7 @@ entities:
       enabled: False
       text: Captain's Room
     - type: WarpPoint
-      location: Captain's Room
+      location: is14-map-warp-8b8bb3d28126
 - proto: DefaultStationBeaconCargoBay
   entities:
   - uid: 16930
@@ -105299,7 +105299,7 @@ entities:
       enabled: False
       text: Cargo Reception
     - type: WarpPoint
-      location: Cargo Reception
+      location: is14-map-warp-49a8afd9a23f
 - proto: DefaultStationBeaconCentcommOffice
   entities:
   - uid: 16932
@@ -105318,7 +105318,7 @@ entities:
       enabled: False
       text: CE's Room
     - type: WarpPoint
-      location: CE's Room
+      location: is14-map-warp-abcf83cc2268
 - proto: DefaultStationBeaconChapel
   entities:
   - uid: 16934
@@ -105344,7 +105344,7 @@ entities:
       enabled: False
       text: CMO's Room
     - type: WarpPoint
-      location: CMO's Room
+      location: is14-map-warp-35f3f02be1a2
 - proto: DefaultStationBeaconCourtroom
   entities:
   - uid: 16937
@@ -105426,7 +105426,7 @@ entities:
       enabled: False
       text: HOS' Room
     - type: WarpPoint
-      location: HOS' Room
+      location: is14-map-warp-6545c27b176a
 - proto: DefaultStationBeaconJanitorsCloset
   entities:
   - uid: 16948
@@ -105466,7 +105466,7 @@ entities:
       enabled: False
       text: Medbay
     - type: WarpPoint
-      location: Medbay
+      location: is14-map-warp-d24833ce119c
   - uid: 16953
     components:
     - type: Transform
@@ -105482,7 +105482,7 @@ entities:
     - type: NavMapBeacon
       text: 'Cloning '
     - type: WarpPoint
-      location: 'Cloning '
+      location: is14-map-warp-0d3145358592
 - proto: DefaultStationBeaconMorgue
   entities:
   - uid: 16955
@@ -105508,7 +105508,7 @@ entities:
       enabled: False
       text: QM's Room
     - type: WarpPoint
-      location: QM's Room
+      location: is14-map-warp-9f1c9cf41fea
 - proto: DefaultStationBeaconRDRoom
   entities:
   - uid: 16958
@@ -105520,7 +105520,7 @@ entities:
       enabled: False
       text: RD's Room
     - type: WarpPoint
-      location: RD's Room
+      location: is14-map-warp-309611e2f35b
 - proto: DefaultStationBeaconRobotics
   entities:
   - uid: 16959
@@ -105558,7 +105558,7 @@ entities:
       enabled: False
       text: Security
     - type: WarpPoint
-      location: Security
+      location: is14-map-warp-8f6fb4eb7f42
 - proto: DefaultStationBeaconServerRoom
   entities:
   - uid: 16963
@@ -105570,7 +105570,7 @@ entities:
       enabled: False
       text: Research Server Room
     - type: WarpPoint
-      location: Research Server Room
+      location: is14-map-warp-3f9c91c3e4f8
 - proto: DefaultStationBeaconSolars
   entities:
   - uid: 15121
@@ -105586,7 +105586,7 @@ entities:
     - type: NavMapBeacon
       text: Solar
     - type: WarpPoint
-      location: Solar
+      location: is14-map-warp-31ce6e791780
   - uid: 16966
     components:
     - type: Transform
@@ -105595,7 +105595,7 @@ entities:
     - type: NavMapBeacon
       text: Solar
     - type: WarpPoint
-      location: Solar
+      location: is14-map-warp-31ce6e791780
   - uid: 16967
     components:
     - type: Transform
@@ -105604,7 +105604,7 @@ entities:
     - type: NavMapBeacon
       text: Solar
     - type: WarpPoint
-      location: Solar
+      location: is14-map-warp-31ce6e791780
 - proto: DefaultStationBeaconSurgery
   entities:
   - uid: 16968
@@ -105627,7 +105627,7 @@ entities:
     - type: NavMapBeacon
       text: TEG
     - type: WarpPoint
-      location: TEG
+      location: is14-map-warp-c352e255390b
 - proto: DefaultStationBeaconTelecoms
   entities:
   - uid: 16971
@@ -105667,7 +105667,7 @@ entities:
       enabled: False
       text: Warden's Office
     - type: WarpPoint
-      location: Warden's Office
+      location: is14-map-warp-9811211fdda0
 - proto: DefibrillatorCabinet
   entities:
   - uid: 16344

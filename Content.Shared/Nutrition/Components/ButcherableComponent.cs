@@ -9,7 +9,7 @@ namespace Content.Shared.Nutrition.Components;
 /// <summary>
 /// Indicates that the entity can be butchered through use of butcher hook.
 /// </summary>
-[RegisterComponent, NetworkedComponent, AutoGenerateComponentState, Access(typeof(SharedKitchenSpikeSystem))]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState, Access(typeof(SharedKitchenSpikeSystem), Other = AccessPermissions.ReadExecute)] //IS14-change: retained Goob knife/biomass systems read the shared configuration.
 public sealed partial class ButcherableComponent : Component
 {
     /// <summary>

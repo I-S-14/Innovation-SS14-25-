@@ -22,7 +22,7 @@ using System.Numerics;
 namespace Content.Client._IS14.Modular;
 
 /// <summary>
-///     The chassis readout. Deliberately knows nothing about MOD suits specifically —
+///     The chassis readout. Deliberately knows nothing about MOD suits specifically вЂ”
 ///     it renders charge, complexity, shell parts and modules, so a mech can open the same
 ///     window once the mech rework lands.
 ///
@@ -106,7 +106,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
     ///     The setting whose handle is being held right now, if any.
     ///
     ///     The suit pushes a fresh state on almost anything, charge included, and charge
-    ///     changes every tick — so the module list is rebuilt constantly. Rebuilding it
+    ///     changes every tick вЂ” so the module list is rebuilt constantly. Rebuilding it
     ///     under a held handle destroys the very control being dragged.
     /// </summary>
     private (NetEntity Module, string Key)? _draggedConfig;
@@ -128,7 +128,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
     ///
     ///     Acting on the setting pushes a state itself, so confirmation normally arrives
     ///     within a push or two. The count only matters when the suit clamps what it was
-    ///     given and will therefore never echo it back — then the slider has to stop
+    ///     given and will therefore never echo it back вЂ” then the slider has to stop
     ///     insisting and show what the suit actually did.
     /// </summary>
     private const int PendingConfigLife = 5;
@@ -198,7 +198,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
         _valveButton.OnPressed += _ => SendTankConfig(SharedModuleGasTankSystem.ValveKey, !(_state?.TankValveOpen ?? false));
 
         // The station's own internals toggle is the alert in the corner of the HUD, and it
-        // still works — but a suit that only becomes a breathing rig once every piece of it
+        // still works вЂ” but a suit that only becomes a breathing rig once every piece of it
         // is closed is not something a player finds by guessing.
         _internalsButton = IS14Button.Make(
             UiIcon(IconInternals),
@@ -255,7 +255,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
 
     /// <summary>
     ///     Routes a gauge switch back to the module that owns the bottle. Nothing here is
-    ///     special-cased on the suit's side — it is the same channel the module cards use.
+    ///     special-cased on the suit's side вЂ” it is the same channel the module cards use.
     /// </summary>
     private void SendTankConfig(string key, bool value)
     {
@@ -295,7 +295,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
 
     /// <summary>
     ///     Drops pending values the suit has confirmed, and ages out the ones it never
-    ///     will — a setting clamped on arrival comes back as a different number, and the
+    ///     will вЂ” a setting clamped on arrival comes back as a different number, and the
     ///     slider has to stop insisting on what was asked for.
     /// </summary>
     private void SettlePendingConfig(ModularChassisUiState state)
@@ -355,7 +355,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
             ? Loc.GetString("chassis-ui-unworn")
             : string.IsNullOrEmpty(state.WearerJob)
                 ? state.WearerName
-                : $"{state.WearerName} — {state.WearerJob}";
+                : $"{state.WearerName} вЂ” {state.WearerJob}";
 
         ChipsContainer.RemoveAllChildren();
 
@@ -417,7 +417,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
         }
         else
         {
-            ChargePercentLabel.Text = "—";
+            ChargePercentLabel.Text = "вЂ”";
             ChargePercentLabel.FontColorOverride = IS14Palette.Bad;
             ChargeLabel.Text = NoChargeReason(state);
         }
@@ -438,7 +438,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
 
     /// <summary>
     ///     The two things a core can offer the panel. Both hide themselves when the
-    ///     installed core has nothing of the sort — an empty row of dead buttons reads as
+    ///     installed core has nothing of the sort вЂ” an empty row of dead buttons reads as
     ///     broken, not as "not applicable".
     /// </summary>
     /// <summary>
@@ -668,15 +668,13 @@ public sealed partial class ModularChassisWindow : FancyWindow
 
     private Color GasColor(Gas gas)
     {
-        if (!_protos.TryIndex<GasPrototype>(gas.ToString(), out var proto)
-            || string.IsNullOrEmpty(proto.Color)
-            || !Color.TryFromHex("#" + proto.Color, out var color))
+        if (!_protos.TryIndex<GasPrototype>(gas.ToString(), out var proto))
         {
             return IS14Palette.Text;
         }
 
         // Gas colours are picked to show up against a dark tile, not against panel grey.
-        return Color.InterpolateBetween(color, IS14Palette.Text, 0.35f);
+        return Color.InterpolateBetween(proto.Color, IS14Palette.Text, 0.35f);
     }
 
     #endregion
@@ -815,7 +813,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
     }
 
     /// <summary>
-    ///     The control unit's own tile — core, panel and lock hang off this one.
+    ///     The control unit's own tile вЂ” core, panel and lock hang off this one.
     /// </summary>
     private Control HardwareTile(ModularChassisUiState state)
     {
@@ -842,7 +840,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
         };
 
         // Draw the core that is actually in there. The tile used to hardcode the standard
-        // one, so swapping in a plasma core changed the name underneath and nothing else —
+        // one, so swapping in a plasma core changed the name underneath and nothing else вЂ”
         // and the picture is the half people read.
         if (state.Core is { } core)
         {
@@ -942,7 +940,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
                 return;
             }
 
-            // The part went away — fall back rather than leaving a blank panel.
+            // The part went away вЂ” fall back rather than leaving a blank panel.
             _hardwareSelected = true;
             _selectedPart = null;
         }
@@ -1175,7 +1173,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
     ///     Everything wrong with the suit, in one list.
     ///
     ///     These used to be rows alongside the core and the panel, each reading "fine" almost
-    ///     all of the time — which is a lot of readout spent saying nothing, and it buried
+    ///     all of the time вЂ” which is a lot of readout spent saying nothing, and it buried
     ///     the one line that mattered when something did break. A list that is empty when
     ///     the suit is healthy puts the weight back where it belongs: anything in here is a
     ///     problem, and there is nothing else to read past.
@@ -1224,7 +1222,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
     }
 
     /// <summary>
-    ///     A fault has no label to put on the left — the fault is the whole line — so it
+    ///     A fault has no label to put on the left вЂ” the fault is the whole line вЂ” so it
     ///     gets its own row rather than reusing the name/value pair above.
     /// </summary>
     private static Control FaultRow(Texture? icon, string text, Color color)
@@ -1450,7 +1448,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
     /// <summary>
     ///     The module's own icon, with the pieces of the shell it is bolted to stacked
     ///     underneath it. There is dead space below a 32-pixel icon, and "which part does
-    ///     this hang off?" is the question a dead module most often raises — so the answer
+    ///     this hang off?" is the question a dead module most often raises вЂ” so the answer
     ///     lives there, carrying the same state colour the paper doll uses.
     /// </summary>
     private Control BuildModuleIcon(ChassisModuleUiEntry module, ModularChassisUiState state)
@@ -1495,7 +1493,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
         }
 
         // Whether the module can run at all, as a tick or a cross beside the pieces it
-        // hangs off — which is where the answer usually lies. The reason is on the
+        // hangs off вЂ” which is where the answer usually lies. The reason is on the
         // tooltip; a line of red text saying "the suit is not active" told the player
         // something they could already see and cost a whole row of the card to say it.
         var running = module.BlockReason == ModuleBlockReason.None;
@@ -1528,7 +1526,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
         {
             Orientation = BoxContainer.LayoutOrientation.Vertical,
             Margin = new Thickness(1, 0),
-            ToolTip = $"{part.Name} — {Loc.GetString(PartStateLocId(part))}",
+            ToolTip = $"{part.Name} вЂ” {Loc.GetString(PartStateLocId(part))}",
 
             // Containers ignore the mouse by default, and a tooltip nobody can hover is
             // not a tooltip.
@@ -1604,7 +1602,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
             return column;
 
         // The suit answers the same question the button will ask, so a module that would
-        // refuse — compression holding the suit on a belt, for one — comes up already
+        // refuse вЂ” compression holding the suit on a belt, for one вЂ” comes up already
         // dead with the reason on hover, instead of looking pressable and then failing.
         var canEject = state.PanelOpen && module.EjectBlocked == null;
 
@@ -1728,7 +1726,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
                 header.AddChild(new Control { HorizontalExpand = true });
                 header.AddChild(readout);
                 header.AddChild(IS14Palette.Sub(
-                    $" {FormatConfigNumber(entry.Min)}–{FormatConfigNumber(entry.Max)}",
+                    $" {FormatConfigNumber(entry.Min)}вЂ“{FormatConfigNumber(entry.Max)}",
                     IS14Palette.Border));
 
                 var slider = new IS14Slider
@@ -1877,7 +1875,7 @@ public sealed partial class ModularChassisWindow : FancyWindow
     #region Helpers
 
     /// <summary>
-    ///     Redraws from the last known state — used when a click only changed what the
+    ///     Redraws from the last known state вЂ” used when a click only changed what the
     ///     window is showing, not what the suit is doing.
     /// </summary>
     private void Rebuild()
@@ -1904,8 +1902,8 @@ public sealed partial class ModularChassisWindow : FancyWindow
     }
 
     /// <summary>
-    ///     Fluent prints a bare float at full binary precision — 0.15f becomes
-    ///     0.150000000596046448 — so numbers reach it already formatted.
+    ///     Fluent prints a bare float at full binary precision вЂ” 0.15f becomes
+    ///     0.150000000596046448 вЂ” so numbers reach it already formatted.
     /// </summary>
     private static string Num(float value) =>
         value.ToString("0.##", CultureInfo.InvariantCulture);

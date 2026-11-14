@@ -14,15 +14,23 @@ namespace Content.Server.StationEvents.Events;
 /// <seealso cref="AlertLevelInterceptionRuleComponent"/>
 public sealed partial class AlertLevelInterceptionRule : StationEventSystem<AlertLevelInterceptionRuleComponent>
 {
-    [Dependency] private AlertLevelSystem _alertLevel = default!;
+    //IS14-change start: restore declarations used by merged implementation.
+    [Dependency] private readonly AlertLevelSystem _alertLevelSystem = default!;
+    //IS14-change end
+
+    //IS14-change start: retain fork fields lost during merge.
+    //IS14-change end
+
+
 
     protected override void Started(EntityUid uid, AlertLevelInterceptionRuleComponent component, GameRuleComponent gameRule, GameRuleStartedEvent args) // Goobstation - Changed an indent.
     {
-        base.Started(ent, ref args);
+        base.Started(uid, component, gameRule, args);
 
         if (!TryGetRandomStation(out var chosenStation))
             return;
-        if (_alertLevelSystem.GetLevel(chosenStation.Value) != "green" && component.OverrideAlert == false) // Goobstation
+        if (TryComp<AlertLevelComponent>(chosenStation, out var alert)
+            && alert.CurrentAlertLevel != alert.DefaultAlertLevel && !component.OverrideAlert)
             return;
 
         _alertLevelSystem.SetLevel(chosenStation.Value, component.AlertLevel, true, true, true, component.Locked); // Goobstation

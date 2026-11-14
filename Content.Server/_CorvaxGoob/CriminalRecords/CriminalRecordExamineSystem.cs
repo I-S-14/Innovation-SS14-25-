@@ -1,8 +1,9 @@
+using Content.Shared.StationRecords.Components; // IS14-change: upstream namespace move
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Diagnostics.CodeAnalysis;
 using Content.Server.Station.Systems;
-using Content.Server.StationRecords.Systems;
+using Content.Shared.StationRecords.Systems;
 using Content.Shared.Access.Components;
 using Content.Shared.CriminalRecords;
 using Content.Shared.Examine;
@@ -73,7 +74,7 @@ public sealed class CriminalRecordExamineSystem : EntitySystem
 
         // Match the existing glasses criminal records menu: the target record is resolved by station and entity name.
         var name = MetaData(target).EntityName;
-        if (_records.GetRecordByName(station, name, stationRecords) is not { } id)
+        if (_records.GetRecordByName((station, stationRecords), name) is not { } id)
             return false;
 
         return _records.TryGetRecord<CriminalRecord>(

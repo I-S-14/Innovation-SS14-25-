@@ -85,7 +85,7 @@
     - Structure
     - IgnoreImmovableRod
 
-#  - type: Injurable                          Indestructible because
+#  - type: Damageable                          Indestructible because
 #    damageContainer: StructuralInorganic
 #  - type: Damageable
 #    damageModifierSet: PlastitaniumMod

@@ -44,7 +44,7 @@ public sealed class ReagentEntry
         Description = proto.LocalizedDescription;
         PhysicalDescription = proto.LocalizedPhysicalDescription;
         SubstanceColor = proto.SubstanceColor.ToHex();
-        Metabolisms = proto.Metabolisms?.Metabolisms.ToDictionary(x => x.Key.Id, x => x.Value);
+        Metabolisms = proto.Metabolisms?.ToDictionary(x => x.Key.Id, x => x.Value);
     }
 }
 
@@ -57,10 +57,10 @@ public sealed class ReactionEntry
     public string Name { get; }
 
     [JsonPropertyName("reactants")]
-    public Dictionary<ProtoId<ReagentPrototype>, ReactantEntry> Reactants { get; }
+    public Dictionary<string, ReactantEntry> Reactants { get; }
 
     [JsonPropertyName("products")]
-    public Dictionary<ProtoId<ReagentPrototype>, float> Products { get; }
+    public Dictionary<string, float> Products { get; }
 
     [JsonPropertyName("effects")]
     public List<EntityEffect> Effects { get; }

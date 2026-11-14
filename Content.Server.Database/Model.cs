@@ -300,6 +300,7 @@ namespace Content.Server.Database
                 .HasDefaultValue(HwidType.Legacy);
 
             ModelBan.OnModelCreating(modelBuilder);
+            ModelCustomVoteLog.OnModelCreating(modelBuilder);
             // GoobOnModelCreating(modelBuilder); // Goob // CorvaxGoob - achievements removed
 
             // Corvax-Goob нам такое не надо

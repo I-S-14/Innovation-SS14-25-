@@ -22,7 +22,6 @@ public abstract partial class SharedSuicideSystem : EntitySystem
 {
     private static readonly ProtoId<DamageTypePrototype> FallbackDamageType = "Blunt";
 
-    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
     [Dependency] private readonly ConsciousnessSystem _consciousness = default!; // Shitmed Change
     [Dependency] private readonly MobThresholdSystem _mobThresholdSystem = default!; // Goobstation
     [Dependency] private DamageableSystem _damageableSystem = default!;

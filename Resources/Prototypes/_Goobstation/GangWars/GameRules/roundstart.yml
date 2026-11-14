@@ -13,22 +13,11 @@
     - GangEarnPointsObjective
     - GangMemberSurviveObjective
   - type: AntagSelection
-    selectionTime: IntraPlayerSpawn
-    definitions:
-    - prefRoles: [ GangLeader ]
-      max: 4
+    selectionTime: JobsAssigned
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14GangwarsAntag008ebf3de
+      range:
+        max: 4
+        min: 1
       playerRatio: 15
-      jobBlacklist: [ Captain, HeadOfPersonnel, HeadOfSecurity, ChiefEngineer, ChiefMedicalOfficer, ResearchDirector, BlueshieldOfficer, NanotrasenRepresentative ] # QM / Det should be allowed
-      blacklist:
-        components:
-        - AntagImmune
-      briefing:
-        text: gang-leader-role-greeting
-        color: CornflowerBlue
-        sound: "/Audio/_Goobstation/Gangs/gang_start.ogg"
-      components:
-      - type: GangMember
-      - type: GangLeader
-      - type: ShowGangIcons
-      mindRoles:
-      - MindRoleGangLeader

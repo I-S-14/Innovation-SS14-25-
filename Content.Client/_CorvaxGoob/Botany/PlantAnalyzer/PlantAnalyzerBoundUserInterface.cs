@@ -5,19 +5,19 @@ using Robust.Client.UserInterface;
 namespace Content.Client._CorvaxGoob.Botany.PlantAnalyzer;
 
 [UsedImplicitly]
-public sealed class PlantAnalyzerBoundUserInterface : BoundUserInterface
+public sealed class CorvaxPlantAnalyzerBoundUserInterface : BoundUserInterface
 {
     [ViewVariables]
-    private PlantAnalyzerWindow? _window;
+    private CorvaxPlantAnalyzerWindow? _window;
 
-    public PlantAnalyzerBoundUserInterface(EntityUid owner, Enum uiKey) : base(owner, uiKey)
+    public CorvaxPlantAnalyzerBoundUserInterface(EntityUid owner, Enum uiKey) : base(owner, uiKey)
     {
     }
 
     protected override void Open()
     {
         base.Open();
-        _window = this.CreateWindow<PlantAnalyzerWindow>();
+        _window = this.CreateWindow<CorvaxPlantAnalyzerWindow>();
         _window.Title = EntMan.GetComponent<MetaDataComponent>(Owner).EntityName;
         _window.Print.OnPressed += _ => Print();
     }
@@ -27,7 +27,7 @@ public sealed class PlantAnalyzerBoundUserInterface : BoundUserInterface
         if (_window == null)
             return;
 
-        if (message is not PlantAnalyzerScannedUserMessage cast)
+        if (message is not CorvaxPlantAnalyzerScannedUserMessage cast)
             return;
 
         _window.Populate(cast);
@@ -35,7 +35,7 @@ public sealed class PlantAnalyzerBoundUserInterface : BoundUserInterface
 
     private void Print()
     {
-        SendMessage(new PlantAnalyzerPrintMessage());
+        SendMessage(new CorvaxPlantAnalyzerPrintMessage());
         if (_window != null)
             _window.Print.Disabled = true;
     }

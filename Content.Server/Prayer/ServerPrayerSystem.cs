@@ -1,3 +1,4 @@
+using Content.Goobstation.Common.Religion; // IS14-change: upstream namespace move
 using Content.Server.Administration;
 using Content.Server.Administration.Logs;
 using Content.Server.Chat.Managers;

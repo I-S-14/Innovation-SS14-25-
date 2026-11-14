@@ -35,15 +35,9 @@ namespace Content.Server.Weapons.Ranged.Systems;
 
 public sealed partial class GunSystem : SharedGunSystem
 {
-    [Dependency] private readonly SharedColorFlashEffectSystem _color = default!;
-    [Dependency] private readonly SharedStaminaSystem _stamina = default!;
-    [Dependency] private readonly SharedContainerSystem _container = default!;
-    [Dependency] private readonly PowerCellSystem _powerCell = default!;
     [Dependency] private PricingSystem _pricing = default!;
-    [Dependency] private SharedMapSystem _map = default!;
 
     // Goobstation
-    [Dependency] private readonly FlammableSystem _flammable = default!;
 
     public override void Initialize()
     {

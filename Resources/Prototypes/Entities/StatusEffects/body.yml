@@ -99,5 +99,5 @@
   id: StatusEffectNightVision
   name: Night Vision
   components:
-    - type: NightVision
+    - type: NightVisionOverlay
       relayOverlay: True

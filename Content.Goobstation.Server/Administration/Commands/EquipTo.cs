@@ -15,6 +15,10 @@ namespace Content.Goobstation.Server.Administration.Commands;
 [AdminCommand(AdminFlags.Spawn)]
 public sealed class EquipTo : LocalizedCommands
 {
+    //IS14-change start: typed IDs preserve the retained Goob prototypes.
+    private static readonly ProtoId<InventoryTemplatePrototype> CompatibilityhumanInventoryTemplateId = "human";
+    //IS14-change end
+
 
     public const string CommandName = "equipto";
     public override string Command => CommandName;
@@ -133,7 +137,7 @@ public sealed class EquipTo : LocalizedCommands
         var prototypeManager = IoCManager.Resolve<IPrototypeManager>();
 
         if (args.Length != 4
-            || !prototypeManager.TryIndex<InventoryTemplatePrototype>("human", out var inventoryTemplate))
+            || !prototypeManager.TryIndex<InventoryTemplatePrototype>(CompatibilityhumanInventoryTemplateId, out var inventoryTemplate))
             return CompletionResult.Empty;
 
         var options = inventoryTemplate.Slots.Select(c => c.Name).OrderBy(c => c).ToArray();

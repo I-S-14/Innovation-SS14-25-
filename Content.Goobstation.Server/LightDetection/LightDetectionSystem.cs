@@ -1,3 +1,4 @@
+using Content.Shared.Disposal.Unit;
 using Content.Goobstation.Common.CCVar;
 using Content.Goobstation.Shared.LightDetection.Components;
 using Content.Goobstation.Shared.LightDetection.Systems;

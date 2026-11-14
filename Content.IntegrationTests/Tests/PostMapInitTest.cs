@@ -36,11 +36,16 @@ namespace Content.IntegrationTests.Tests
     [TestFixture]
     public sealed class PostMapInitTest : GameTest
     {
+    private static readonly ProtoId<EntityCategoryPrototype> CompatibilityDoNotMapEntityCategoryId = "DoNotMap";
+
         public override PoolSettings PoolSettings => new PoolSettings()
         {
             Connected = true,
             Dirty = true,
         };
+
+        private static readonly ResPath[] AllMapFiles = GameDataScrounger.FilesInDirectoryInVfs("/Maps", "*.yml");
+        private static readonly ResPath[] ShuttleMapFiles = GameDataScrounger.FilesInDirectoryInVfs("/Maps/Shuttles", "*.yml");
 
         private const bool SkipTestMaps = true;
         private const string TestMapsPath = "/Maps/Test/";
@@ -357,7 +362,7 @@ namespace Content.IntegrationTests.Tests
                 // testing that maps have nothing with the DoNotMap entity category
                 // I do it here because it's basically copy-paste code for the most part
                 var yamlEntities = root["entities"];
-                if (!protoManager.TryIndex<EntityCategoryPrototype>("DoNotMap", out var dnmCategory))
+                if (!protoManager.TryIndex<EntityCategoryPrototype>(CompatibilityDoNotMapEntityCategoryId, out var dnmCategory))
                     return;
                 foreach (var yamlEntity in (YamlSequenceNode) yamlEntities)
                 {

@@ -2036,7 +2036,7 @@
       shader: unshaded
     - type: RadiationSource
       intensity: 4
-      slope: 1
+      # IS14-change: the retained Goob radiation model uses terminalDecay*, not slope.
     - type: AmbientSound
       range: 6
       volume: -3

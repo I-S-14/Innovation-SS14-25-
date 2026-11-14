@@ -17,7 +17,7 @@ using Robust.Client.UserInterface.CustomControls;
 using Robust.Shared.Containers;
 using Robust.Shared.Input;
 using Robust.Shared.Timing;
-using Robust.Client.UserInterface.Controls.BaseButton;
+using static Robust.Client.UserInterface.Controls.BaseButton;
 
 namespace Content.Client.Instruments.UI;
 

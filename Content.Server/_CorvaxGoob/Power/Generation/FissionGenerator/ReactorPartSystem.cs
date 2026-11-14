@@ -1,4 +1,4 @@
-﻿// SPDX-FileCopyrightText: 2025 jhrushbe <capnmerry@gmail.com>
+// SPDX-FileCopyrightText: 2025 jhrushbe <capnmerry@gmail.com>
 // SPDX-FileCopyrightText: 2025 rottenheadphones <juaelwe@outlook.com>
 // SPDX-FileCopyrightText: 2025 taydeo <td12233a@gmail.com>
 //
@@ -83,7 +83,7 @@ public sealed partial class ReactorPartSystem : SharedReactorPartSystem
         if (radvalue > 0)
         {
             var radcomp = EnsureComp<RadiationSourceComponent>(uid);
-            radcomp.Intensity = radvalue;
+            EntityManager.System<Content.Shared.Radiation.Systems.SharedRadiationSystem>().SetIntensity((uid, radcomp), radvalue);
         }
 
         if (component.Properties.NeutronRadioactivity > 0)

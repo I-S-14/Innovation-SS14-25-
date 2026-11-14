@@ -41,12 +41,12 @@ public sealed partial class ModifyEnvirohelmSpecial : JobSpecial
 
         var itemSlotsSystem = entMan.System<ItemSlotsSystem>();
 
-        if (itemSlotsSystem.GetItemOrNull(envirohelm, ItemSlot, itemSlotsComp) is { } powerCellToDelete)
+        if (itemSlotsSystem.GetItemOrNull((envirohelm, itemSlotsComp), ItemSlot) is { } powerCellToDelete)
             entMan.DeleteEntity(powerCellToDelete);
 
         var powerCell = entMan.Spawn(PowerCell);
 
-        if (!itemSlotsSystem.TryInsert(envirohelm, ItemSlot, powerCell, null, itemSlotsComp, excludeUserAudio: true))
+        if (!itemSlotsSystem.TryInsert((envirohelm, itemSlotsComp), ItemSlot, powerCell, null, excludeUserAudio: true))
             entMan.DeleteEntity(powerCell);
     }
 }

@@ -1,3 +1,4 @@
+using Content.Client.GameTicking; // IS14-change: ticker namespace move
 // SPDX-License-Identifier: AGPL-3.0-or-later
 using Content.Shared.PDA;
 using Robust.Shared.Utility;
@@ -18,6 +19,10 @@ namespace Content.Client.PDA
     [GenerateTypedNameReferences]
     public sealed partial class PdaMenu : PdaWindow
     {
+    //IS14-change start: restore declarations used by merged implementation.
+    private readonly AlertLevelSystem _alert = default!;
+    //IS14-change end
+
         [Dependency] private readonly IClipboardManager _clipboard = null!;
         [Dependency] private readonly IGameTiming _gameTiming = default!;
         [Dependency] private readonly IEntitySystemManager _entitySystem = default!;
@@ -46,7 +51,7 @@ namespace Content.Client.PDA
         {
             IoCManager.InjectDependencies(this);
             _alert = _entitySystem.GetEntitySystem<AlertLevelSystem>();
-            _gameTicker = _entitySystem.GetEntitySystem<GameTicker>();
+            _gameTicker = _entitySystem.GetEntitySystem<ClientGameTicker>();
             RobustXamlLoader.Load(this);
 
             ViewContainer.OnChildAdded += control => control.Visible = false;
@@ -177,6 +182,7 @@ namespace Content.Client.PDA
                 ("time", stationTime.ToString("hh\\:mm\\:ss"))));
 
             var alertColor = state.PdaOwnerInfo.StationAlertColor;
+            var alertLevel = state.PdaOwnerInfo.StationAlertLevel;
             // CorvaxGoob-custom-alert-instructions-in-pda-start
             var alertInstructions = state.PdaOwnerInfo.StationAlertInstructions;
             if (alertLevel != null)
@@ -192,7 +198,7 @@ namespace Content.Client.PDA
             StationAlertLevelLabel.SetMarkup(Loc.GetString(
                 "comp-pda-ui-station-alert-level",
                 ("color", alertColor),
-                ("level", _alertLevel)
+                ("level", _alertLevel ?? Loc.GetString("alert-level-unknown"))
             ));
 
             if (alertInstructions != null)
@@ -209,7 +215,7 @@ namespace Content.Client.PDA
 
             StationAlertLevelInstructions.SetMarkup(Loc.GetString(
                 "comp-pda-ui-station-alert-level-instructions",
-                ("instructions", _instructions))
+                ("instructions", _instructions ?? Loc.GetString("alert-level-unknown-instructions")))
             );
 
             AddressLabel.Text = state.Address?.ToUpper() ?? " - ";

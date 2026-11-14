@@ -14,6 +14,13 @@ namespace Content.Shared.Antag;
 
 public abstract partial class AntagSelectionSystem
 {
+    //IS14-change start: Goob selection includes connected players still in the lobby.
+    public int GetTotalPlayerCount(IList<ICommonSession> pool) => pool.Count(session => !IsDisconnected(session));
+
+    public List<ICommonSession> GetAliveConnectedPlayers(IList<ICommonSession> pool) =>
+        pool.Where(session => !IsDisconnected(session)).ToList();
+    //IS14-change end
+
     /// <inhereitdoc cref="GetActivePlayerCount(IList{ICommonSession})"/>
     [PublicAPI]
     public int GetActivePlayerCount()

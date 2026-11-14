@@ -1,3 +1,4 @@
+using Content.Shared.Ghost.Components; // IS14-change: upstream namespace move
 using Content.Server._White.Xenomorphs.FaceHugger;
 using Content.Server.Popups;
 using Content.Shared._White.Xenomorphs.Egg;

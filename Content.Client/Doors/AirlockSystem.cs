@@ -12,9 +12,13 @@ namespace Content.Client.Doors;
 /// <inheritdoc/>
 public sealed partial class AirlockSystem : SharedAirlockSystem
 {
+    //IS14-change start: retain fork fields lost during merge.
+    [Dependency] private readonly AppearanceSystem _appearanceSystem = default!;
+    //IS14-change end
+
     [Dependency] private SpriteSystem _sprite = default!;
 
-    [Dependency] private EntityQuery<DoorComponent> _doorQuery;
+    [Dependency] private EntityQuery<DoorComponent> _doorQuery = default!;
 
     [SubscribeLocalEvent]
     private void OnComponentStartup(Entity<AirlockComponent> ent, ref ComponentStartup args)
@@ -92,10 +96,10 @@ public sealed partial class AirlockSystem : SharedAirlockSystem
 
         if (hasPower)
         {
-            _appearanceSystem.TryGetData<bool>(uid, DoorVisuals.BoltLights, out var boltedVisible, args.Component);
-            showBolted = boltedVisible && (state == DoorState.Closed || state == DoorState.Welded);
+            _appearanceSystem.TryGetData<bool>(ent.Owner, DoorVisuals.BoltLights, out var boltedVisible, args.Component);
+            showBolted = boltedVisible && (state == DoorState.Closed);
 
-            _appearanceSystem.TryGetData<bool>(uid, DoorVisuals.EmergencyLights, out var emergencyVisible, args.Component);
+            _appearanceSystem.TryGetData<bool>(ent.Owner, DoorVisuals.EmergencyLights, out var emergencyVisible, args.Component);
             showEmergency = emergencyVisible;
 
             if (!showBolted && !showEmergency)
@@ -103,11 +107,11 @@ public sealed partial class AirlockSystem : SharedAirlockSystem
                 if (state == DoorState.Closing || state == DoorState.Opening || state == DoorState.Denying)
                     showBaseUnlit = true;
 
-                if (state == DoorState.Open && comp.OpenUnlitVisible
-                    || state == DoorState.Closed && comp.OpenUnlitVisible) // CorvaxGoob-Resprite-Airlocks-Edit
+                if (state == DoorState.Open && ent.Comp.OpenUnlitVisible
+                    || state == DoorState.Closed && ent.Comp.OpenUnlitVisible) // CorvaxGoob-Resprite-Airlocks-Edit
                     showBaseUnlit = true;
 
-                _appearanceSystem.TryGetData<bool>(uid, DoorVisuals.ClosedLights, out var closedLightsVisible, args.Component);
+                _appearanceSystem.TryGetData<bool>(ent.Owner, DoorVisuals.ClosedLights, out var closedLightsVisible, args.Component);
                 if (state == DoorState.Closed && closedLightsVisible)
                     showBaseUnlit = true;
             }

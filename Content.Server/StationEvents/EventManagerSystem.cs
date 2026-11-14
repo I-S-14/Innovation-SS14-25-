@@ -18,13 +18,18 @@ namespace Content.Server.StationEvents;
 
 public sealed partial class EventManagerSystem : EntitySystem
 {
+    //IS14-change start: retained Goob event scheduling CVars.
+    public float EventSpeedup = 1f;
+    public int PlayerCountBias;
+    //IS14-change end
+
     [Dependency] private IConfigurationManager _configurationManager = default!;
     [Dependency] private IPlayerManager _playerManager = default!;
     [Dependency] private IRobustRandom _random = default!;
     [Dependency] private EntityTableSystem _entityTable = default!;
     [Dependency] private ServerGameTicker _gameTicker = default!;
     [Dependency] private RoundEndSystem _roundEnd = default!;
-    [Dependency] public readonly GameTicker GameTicker = default!;
+
 
     public bool EventsEnabled { get; private set; }
     private void SetEnabled(bool value) => EventsEnabled = value;
@@ -54,7 +59,7 @@ public sealed partial class EventManagerSystem : EntitySystem
     /// </summary>
     public void RunNamedEvent(string eventId)
     {
-        var ent = GameTicker.AddGameRule(eventId);
+        var ent = _gameTicker.AddGameRule(eventId);
         Log.Info($"Running event {eventId} as entity {ent}");
     }
     // Goobstation end
@@ -309,7 +314,7 @@ public sealed partial class EventManagerSystem : EntitySystem
         return allEvents;
     }
 
-    private bool CanRun(EntityPrototype prototype, StationEventComponent stationEvent, int playerCount, TimeSpan currentTime)
+    public bool CanRun(EntityPrototype prototype, StationEventComponent stationEvent, int playerCount, TimeSpan currentTime, float reoccurrenceMult = 1f)
     {
         // Do the really simple comparisons BEFORE we create an IEnumerable for GameRules :V
         if (playerCount < stationEvent.MinimumPlayers)
@@ -343,7 +348,7 @@ public sealed partial class EventManagerSystem : EntitySystem
         if (stationEvent.MaxOccurrences is { } maxOccurrences && count >= maxOccurrences)
             return false;
 
-        if (count > 0 && currentTime < TimeSpan.FromMinutes(stationEvent.ReoccurrenceDelay) + lastRun)
+        if (count > 0 && currentTime < TimeSpan.FromMinutes(stationEvent.ReoccurrenceDelay * reoccurrenceMult) + lastRun)
             return false;
 
         return !_roundEnd.IsRoundEndRequested() || stationEvent.OccursDuringRoundEnd || _roundEnd.CanCallOrRecall();

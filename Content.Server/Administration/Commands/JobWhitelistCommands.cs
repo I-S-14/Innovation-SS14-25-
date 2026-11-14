@@ -90,6 +90,12 @@ public sealed partial class JobWhitelistAddCommand : LocalizedCommands
 [AdminCommand(AdminFlags.Ban)]
 public sealed partial class GetJobWhitelistCommand : LocalizedCommands
 {
+    //IS14-change start: restore declarations used by merged implementation.
+    [Dependency] private readonly IPlayerLocator _playerLocator = default!;
+    [Dependency] private readonly IServerDbManager _db = default!;
+    [Dependency] private readonly IPlayerManager _players = default!;
+    //IS14-change end
+
 
     public override string Command => "jobwhitelistget";
 
@@ -139,6 +145,14 @@ public sealed partial class GetJobWhitelistCommand : LocalizedCommands
 [AdminCommand(AdminFlags.Ban)]
 public sealed partial class RemoveJobWhitelistCommand : LocalizedCommands
 {
+    //IS14-change start: restore declarations used by merged implementation.
+    [Dependency] private readonly IPlayerLocator _playerLocator = default!;
+    [Dependency] private readonly IServerDbManager _db = default!;
+    [Dependency] private readonly JobWhitelistManager _jobWhitelist = default!;
+    [Dependency] private readonly IPlayerManager _players = default!;
+    [Dependency] private readonly IPrototypeManager _prototypes = default!;
+    //IS14-change end
+
 
     public override string Command => "jobwhitelistremove";
 

@@ -154,7 +154,7 @@ internal sealed partial class PowerMonitoringConsoleSystem : SharedPowerMonitori
         }
     }
 
-    public void OnCableAnchorStateChanged(EntityUid uid, CableComponent component, CableAnchorStateChangedEvent args)
+    public void OnCableAnchorStateChanged(EntityUid uid, CableComponent component, ref CableAnchorStateChangedEvent args)
     {
         var xform = args.Cable.Comp;
 
@@ -228,7 +228,7 @@ internal sealed partial class PowerMonitoringConsoleSystem : SharedPowerMonitori
         }
     }
 
-    public void OnNodeGroupRebuilt(EntityUid uid, PowerMonitoringDeviceComponent component, NodeGroupsRebuilt args)
+    public void OnNodeGroupRebuilt(EntityUid uid, PowerMonitoringDeviceComponent component, ref NodeGroupsRebuilt args)
     {
         if (component.IsCollectionMasterOrChild)
             AssignEntityAsCollectionMaster(uid, component);

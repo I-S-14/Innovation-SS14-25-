@@ -134,13 +134,6 @@
   - type: Ringer
   - type: CartridgeLoader
     uiKey: enum.PdaUiKey.Key
-    preinstalled:
-      - CrewManifestCartridge
-      - NotekeeperCartridge
-      - NewsReaderCartridge
-      - NanoChatCartridge
-      #- MailMetricsCartridge CorvaxGoob временно вырезано оффгубами - Марти. Искать по todo <mailfix>
-      - WantedListCartridge
     cartridgeSlot:
       priority: -1
       name: device-pda-slot-component-slot-name-cartridge
@@ -157,6 +150,16 @@
       enum.PdaUiKey.Key:
         type: PdaBoundUserInterface
 
+  # IS14: install retained Goob/DeltaV programs through the current container API.
+  - type: EntityTableContainerFill
+    containers:
+      preinstalled-program-container: !type:AllSelector
+        children:
+        - id: CrewManifestCartridge
+        - id: NotekeeperCartridge
+        - id: NewsReaderCartridge
+        - id: NanoChatCartridge
+        - id: WantedListCartridge
 - type: entity
   id: SyndiOperativePDAUnremoveable
   parent: SyndiOperativePDA

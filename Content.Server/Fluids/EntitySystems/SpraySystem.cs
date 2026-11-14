@@ -1,3 +1,5 @@
+using Content.Shared.Chemistry.Components;
+using Content.Shared.Timing.Components; // IS14-change: upstream namespace move
 // SPDX-License-Identifier: AGPL-3.0-or-later
 using Content.Server.Chemistry.EntitySystems;
 using Content.Server.Gravity;
@@ -36,7 +38,6 @@ public sealed partial class SpraySystem : SharedSpraySystem
     [Dependency] private readonly InventorySystem _inventory = default!; // Assmos - Extinguisher Nozzle
     [Dependency] private readonly EntityWhitelistSystem _whitelistSystem = default!; // Assmos - Extinguisher Nozzle
     [Dependency] private readonly SharedHandsSystem _handsSystem = default!; // Assmos - Extinguisher Nozzle
-    [Dependency] private readonly SprayPushableVehicleSystem _sprayPushSys = default!; // Goobstation - Vehicle Spray Pushback (Office chairs)
     [Dependency] private GravitySystem _gravity = default!;
     [Dependency] private PhysicsSystem _physics = default!;
     [Dependency] private UseDelaySystem _useDelay = default!;
@@ -192,7 +193,7 @@ public sealed partial class SpraySystem : SharedSpraySystem
                 // Spawn vapor with a slight offset to create movement
                 var offset = new Vector2(0.1f, 0); // Small offset to ensure collision
                 var vapor = Spawn(entity.Comp.SprayedPrototype, sprayerMapPos.Offset(offset));
-                var vaporXform = xformQuery.GetComponent(vapor);
+                var vaporXform = Transform(vapor);
 
                 if (TryComp(vapor, out AppearanceComponent? appearance))
                 {
@@ -202,7 +203,7 @@ public sealed partial class SpraySystem : SharedSpraySystem
 
                 var vaporComponent = Comp<VaporComponent>(vapor);
                 var ent = (vapor, vaporComponent);
-                _vapor.TryAddSolution(ent, newSolution);
+                _solutionContainer.TryAddSolution((vapor, Comp<SolutionComponent>(vapor)), newSolution);
 
                 // Create a slight movement effect
                 var rotation = Angle.FromDegrees(45);

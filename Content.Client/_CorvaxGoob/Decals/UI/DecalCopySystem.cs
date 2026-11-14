@@ -34,7 +34,7 @@ public sealed class DecalCopySystem : EntitySystem
                     id: decal.Id,
                     color: decal.Color != null ? decal.Color.Value : Color.White,
                     rotation: (float)decal.Angle.Degrees,
-                    snap: _decalPlacementSystem.GetCurrentSnap(),
+                    snap: _decalPlacementSystem.GetActiveDecal().Snap,
                     zIndex: decal.ZIndex,
                     cleanable: decal.Cleanable
                 );

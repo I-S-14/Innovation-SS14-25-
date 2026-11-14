@@ -1,3 +1,4 @@
+using Content.Shared.Ghost.Systems; // IS14-change: upstream namespace move
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Server._CorvaxGoob.Skills;
@@ -18,7 +19,6 @@ using Content.Shared.GameTicking;
 using Content.Shared.Ghost;
 using Content.Shared.Ghost.Roles;
 using Content.Shared.Ghost.Roles.Components;
-using Content.Shared.Ghost.Roles.Raffles;
 using Content.Shared.Mind;
 using Content.Shared.Mind.Components;
 using Content.Shared.Mobs;
@@ -37,10 +37,6 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
-using Content.Server.Popups;
-using Content.Shared.Verbs;
-using Robust.Shared.Collections;
-using Content.Shared.Ghost.Roles.Components;
 using Content.Shared.Roles.Components;
 using Content.Server.GameTicking;
 using System.Linq;
@@ -51,8 +47,6 @@ namespace Content.Server.Ghost.Roles;
 [UsedImplicitly]
 public sealed partial class GhostRoleSystem : EntitySystem
 {
-    [Dependency] private readonly IEntityManager _ent = default!;
-    [Dependency] private readonly IPrototypeManager _prototype = default!;
     [Dependency] private readonly SkillsSystem _skillsSystem = default!; // CorvaxGoob-Skills
     [Dependency] private readonly GhostSystem _ghost = default!; // CorvaxGoob-GhostBarMoreFeatures
     [Dependency] private IBanManager _ban = default!;
@@ -499,7 +493,9 @@ public sealed partial class GhostRoleSystem : EntitySystem
         }
 
         if (HasComp<GhostBarPlayerComponent>(player.AttachedEntity) // CorvaxGoob-GhostBar
-            || EntityManager.TryGetComponent<GhostComponent>(attached, out var ghost) && ghost.CanTakeGhostRoles)
+            //IS14-change start
+            || TryComp<GhostComponent>(attached, out var ghost) && ghost.CanTakeGhostRoles)
+            //IS14-change end
         {
             if (roleEnt.Comp.RaffleConfig is not null)
             {
@@ -626,7 +622,7 @@ public sealed partial class GhostRoleSystem : EntitySystem
         // CorvaxGoob-GhostBar-Start
         if (HasComp<GhostBarPlayerComponent>(player.AttachedEntity) && _mindSystem.TryGetMind(player, out var mindId, out var mindComp))
         {
-            var ghostEnt = Spawn(GameTicker.ObserverPrototypeName, _transform.GetMapCoordinates(player.AttachedEntity.Value));
+            var ghostEnt = Spawn(ServerGameTicker.ObserverPrototypeName, _transform.GetMapCoordinates(player.AttachedEntity.Value));
             _mindSystem.Visit(mindId, ghostEnt, mindComp);
 
             _followerSystem.StartFollowingEntity(ghostEnt, role);
@@ -840,7 +836,7 @@ public sealed partial class GhostRoleSystem : EntitySystem
         var mob = Spawn(component.Prototype, spawnCoordinates.Value);
 
         var spawnedEvent = new GhostRoleSpawnerUsedEvent(uid, mob);
-        RaiseLocalEvent(mob, spawnedEvent, true); // Goob Edit: Broadcast
+        RaiseLocalEvent(mob, ref spawnedEvent, true); // Goob Edit: Broadcast
 
         if (ghostRole.MakeSentient)
             _mindSystem.MakeSentient(mob, ghostRole.AllowMovement, ghostRole.AllowSpeech);

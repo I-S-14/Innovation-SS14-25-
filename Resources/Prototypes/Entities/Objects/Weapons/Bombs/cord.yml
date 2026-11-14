@@ -36,7 +36,7 @@
         Quantity: 3
       - ReagentId: Charcoal
         Quantity: 2
-  - type: Injurable
+  - type: Damageable
     damageContainer: StructuralInorganic
   - type: Destructible # should have the same general explosive behavior as in cables.yml & detonator.yml
     thresholds:

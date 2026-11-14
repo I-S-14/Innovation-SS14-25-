@@ -1,3 +1,4 @@
+using Content.Shared.DeviceLinking.Components; // IS14-change: upstream namespace move
 using System.Numerics;
 using Content.Server._Mono.FireControl;
 using Content.Server._Mono.SpaceArtillery.Components;
@@ -24,7 +25,6 @@ namespace Content.Server._Mono.SpaceArtillery;
 public sealed partial class SpaceArtillerySystem : EntitySystem
 {
     [Dependency] private readonly GunSystem _gun = default!;
-    [Dependency] private readonly DeviceLinkSystem _deviceLink = default!;
     [Dependency] private readonly BatterySystem _battery = default!;
     [Dependency] private readonly SharedTransformSystem _xform = default!;
     [Dependency] private readonly SharedCameraRecoilSystem _recoilSystem = default!;
@@ -138,7 +138,7 @@ public sealed partial class SpaceArtillerySystem : EntitySystem
         }
     }
 
-    private void OnEmptyShotEvent(EntityUid uid, SpaceArtilleryComponent component, OnEmptyGunShotEvent args)
+    private void OnEmptyShotEvent(EntityUid uid, SpaceArtilleryComponent component, ref OnEmptyGunShotEvent args)
     {
         OnMalfunction(uid, component);
     }
@@ -147,7 +147,7 @@ public sealed partial class SpaceArtillerySystem : EntitySystem
     {
     }
 
-    private void OnProjectileHit(EntityUid uid, ShipWeaponProjectileComponent component, ProjectileHitEvent hitEvent)
+    private void OnProjectileHit(EntityUid uid, ShipWeaponProjectileComponent component, ref ProjectileHitEvent hitEvent)
     {
         var grid = Transform(hitEvent.Target).GridUid;
         if (grid == null)

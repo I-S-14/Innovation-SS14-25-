@@ -19,7 +19,6 @@ using Robust.Shared.Maths;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.UnitTesting.Pool;
-using System.IO;
 
 namespace Content.Benchmarks;
 

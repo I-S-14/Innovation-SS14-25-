@@ -140,16 +140,16 @@
   color: saddlebrown
   puddleSpriteSet: Shiny # Goob
   recognizable: true
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
+    Food:
       effects:
       - !type:Satiate
         satiationType: Hunger
         factor: 0.5
       - !type:Satiate
         satiationType: Thirst
-        factor: -0.5 # high salt content
-
+        factor: -0.5
 - type: reagent
   id: TableSalt
   name: reagent-name-table-salt
@@ -175,10 +175,10 @@
     amount: -1
   - !type:PlantAdjustHealth
     amount: -2
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
+    Food:
       effects:
-      # eating salt on its own kinda sucks, kids
       - !type:Satiate
         satiationType: Thirst
         factor: -0.5
@@ -206,13 +206,13 @@
   viscosity: 0.55 #Start using syrup to attach your remote recievers to your microwaves!
   tileReactions:
     - !type:SpillTileReaction
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
-    Digestion:
-      # 12 diona blood for 1 unit of syrup, this stuff better be worthwhile.
+    Food:
       effects:
       - !type:Satiate
         satiationType: Hunger
-        factor: 6.0 #Stronger than cookedramen
+        factor: 6.0
   footstepSound:
     collection: FootstepSlime
     params:

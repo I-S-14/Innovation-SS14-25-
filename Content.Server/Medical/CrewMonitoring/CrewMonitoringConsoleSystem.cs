@@ -9,7 +9,6 @@ using Content.Shared.DeviceNetwork;
 using Content.Shared.DeviceNetwork.Events;
 using Content.Shared.Medical.CrewMonitoring;
 using Content.Shared.Pinpointer;
-using Content.Shared.PowerCell;
 using Robust.Server.GameObjects;
 
 namespace Content.Server.Medical.CrewMonitoring;

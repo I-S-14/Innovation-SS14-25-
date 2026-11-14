@@ -27,8 +27,11 @@ namespace Content.Client.Popups;
 
 public sealed partial class PopupSystem : SharedPopupSystem
 {
+    //IS14-change start: restore declarations used by merged implementation.
+    private readonly List<IPopupPredictionInstance> _predictionInstances = new();
+    //IS14-change end
+
     [Dependency] private readonly IPrototypeManager _prototype = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly IRobustRandom _random = default!; // Goob
     [Dependency] private IConfigurationManager _configManager = default!;
     [Dependency] private IInputManager _inputManager = default!;
@@ -64,10 +67,10 @@ public sealed partial class PopupSystem : SharedPopupSystem
 
     public override void Initialize()
     {
-        SubscribeNetworkEvent<PopupCursorEvent>(OnPopupCursorEvent);
-        SubscribeNetworkEvent<PopupCoordinatesEvent>(OnPopupCoordinatesEvent);
-        SubscribeNetworkEvent<PopupEntityEvent>(OnPopupEntityEvent);
-        SubscribeNetworkEvent<RoundRestartCleanupEvent>(OnRoundRestart);
+
+
+
+
         _overlay
             .AddOverlay(new PopupOverlay(
                 _configManager,

@@ -1,3 +1,4 @@
+using static Content.Shared.Pinpointer.NavMapSystem; // IS14-change: upstream API move
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Shared._Shitmed.Antags.Abductor;
@@ -16,7 +17,11 @@ public sealed class AbductorCameraConsoleBui : BoundUserInterface
     public AbductorCameraConsoleBui(EntityUid owner, Enum uiKey) : base(owner, uiKey)
     {
     }
-    protected override void Open() => UpdateState(State);
+    protected override void Open()
+    {
+        base.Open();
+        UpdateState(State);
+    }
     protected override void UpdateState(BoundUserInterfaceState? state)
     {
         if (state is AbductorCameraConsoleBuiState s)

@@ -25,7 +25,6 @@ namespace Content.Server.Clothing.Systems;
 
 public sealed partial class OutfitSystem : EntitySystem
 {
-    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
     [Dependency] private readonly InternalEncryptionKeySpawner _encryptionSystem = default!; // Goobstation
     [Dependency] private IServerPreferencesManager _preferenceManager = default!;
     [Dependency] private HandsSystem _handSystem = default!;
@@ -155,7 +154,7 @@ public sealed partial class OutfitSystem : EntitySystem
 
             // Don't require a player, so this works on Urists
             profile ??= TryComp<HumanoidAppearanceComponent>(target, out var comp)
-                ? HumanoidCharacterProfile.DefaultWithSpecies(comp.Species, comp.Sex)
+                ? HumanoidCharacterProfile.DefaultWithSpecies(comp.Species).WithSex(comp.Sex)
                 : new HumanoidCharacterProfile();
             // Try to get the user's existing loadout for the role
             profile.Loadouts.TryGetValue(jobProtoId, out var roleLoadout);

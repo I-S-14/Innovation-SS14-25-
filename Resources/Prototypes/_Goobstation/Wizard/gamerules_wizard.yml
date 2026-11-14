@@ -16,37 +16,13 @@
     useCharacterNames: true
     selectionTime: PrePlayerSpawn
     agentName: wizard-roundend-name
-    definitions:
-    - spawnerPrototype: SpawnPointWizard
-      prefRoles: [ Wizard ]
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14BaseWizardRuleAntag03a989a8f
+      range:
+        max: 1
+        min: 1
       playerRatio: 20
-      min: 1
-      max: 1
-      mindRoles:
-      - MindRoleWizard
-      startingGear: WizardGear
-      skills: # CorvaxGoob-Skills
-      - All
-      unequipOldGear: true
-      roleLoadout:
-      - RoleSurvivalEVA
-      components:
-      - type: Wizard
-      - type: CanEnchant
-      - type: LanguageKnowledge
-        speaks: []
-        understands: []
-      - type: UniversalLanguageSpeaker
-      - type: TowerOfBabel
-      - type: LanguageSpeaker
-      - type: RandomMetadata
-        nameSegments:
-        - WizardFirst
-        - WizardLast
-        nameFormat: name-format-standard
-      - type: NpcFactionMember
-        factions:
-        - Wizard
   - type: AntagLoadProfileRule
     speciesOverride: Human
     speciesOverrideBlacklist:
@@ -80,38 +56,14 @@
       Death: 200
   - type: AntagSelection
     useCharacterNames: true
-    selectionTime: PostPlayerSpawn
-    definitions:
-    - spawnerPrototype: SpawnPointWizard
+    selectionTime: RuleStarted
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14WizardMidroundAntag001b3cc92
+      range:
+        max: 1
+        min: 1
       playerRatio: 20
-      min: 1
-      max: 1
-      pickPlayer: false
-      mindRoles:
-      - MindRoleWizard
-      startingGear: WizardGear
-      unequipOldGear: true
-      skills: # CorvaxGoob-Skills
-      - All
-      roleLoadout:
-      - RoleSurvivalEVA
-      components:
-      - type: Wizard
-      - type: RandomMetadata
-      - type: CanEnchant
-      - type: LanguageKnowledge
-        speaks: []
-        understands: []
-      - type: UniversalLanguageSpeaker
-      - type: TowerOfBabel
-      - type: LanguageSpeaker
-        nameSegments:
-        - WizardFirst
-        - WizardLast
-        nameFormat: name-format-standard
-      - type: NpcFactionMember
-        factions:
-        - Wizard
   - type: Tag
     tags:
       - MidroundAntag
@@ -123,29 +75,15 @@
   - type: GameRule
   - type: AntagSelection
     useCharacterNames: true
-    selectionTime: PostPlayerSpawn
+    selectionTime: RuleStarted
     agentName: apprentice-roundend-name
-    definitions:
-    - prefRoles: [ Apprentice ]
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14ApprenticeRuleAntag04a5038e2
+      range:
+        max: 1
+        min: 1
       playerRatio: 1
-      min: 1
-      max: 1
-      pickPlayer: false
-      mindRoles:
-      - MindRoleApprentice
-      components:
-      - type: Apprentice
-      - type: CanEnchant
-      - type: LanguageKnowledge
-        speaks: []
-        understands: []
-      - type: UniversalLanguageSpeaker
-      - type: TowerOfBabel
-      - type: LanguageSpeaker
-      - type: NpcFactionMember
-        factions:
-        - Wizard
-
 - type: entity
   parent: BaseGameRule
   id: SleepersOnWizardDeath
@@ -159,18 +97,13 @@
   components:
   - type: StationEvent
   - type: AntagSelection
-    definitions:
-    - prefRoles: [ TraitorSleeper ]
-      fallbackRoles: [ Traitor ]
-      min: 4
-      max: 6
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14SleeperAgentsWizardAntag0497a9236
+      range:
+        max: 6
+        min: 4
       playerRatio: 10
-      blacklist:
-        components:
-        - AntagImmune
-      mindRoles:
-      - MindRoleTraitorSleeper
-
 - type: entity
   parent: BaseGameRule
   id: GhostsVisible

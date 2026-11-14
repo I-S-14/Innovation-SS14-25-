@@ -1,22 +1,31 @@
 {
     "version": 1,
     "license": "CC-BY-SA-3.0",
-    "copyright": "Taken from tgstation at commit https://github.com/tgstation/tgstation/commit/c6e3401f2e7e1e55c57060cdf956a98ef1fefc24 | Moth sprites made by PuroSlavKing (Github) | Spider sprites made by PixelTheKermit (Github) | Lizard sprites made by AmalgoMyte (Github) | Diona, Gingerbread, and Regalsprites made by YoungThugSS14 (Github) | Xenoborg sprites by Samuka-c (Github) | Vulpkanin sprites by Cabin_keeper (Github)",
+    "copyright": "Taken from tgstation at commit https://github.com/tgstation/tgstation/commit/c6e3401f2e7e1e55c57060cdf956a98ef1fefc24 | Moth sprites made by PuroSlavKing (Github) | Spider sprites made by PixelTheKermit (Github) | Lizard sprites made by AmalgoMyte (Github) | Diona, Gingerbread, and Regalsprites made by YoungThugSS14 (Github) | Xenoborg sprites by Samuka-c (Github) | Felinid sprites made by Adrian16199 (Github), Rodentia sprites made by portfiend | Skeleton/Plasmaman sprites made by Skubman (github: angelofallars) | Oni sprites made by angelofallars and leonardo-dabepis (Github) | Additional states: Taken from tgstation at commit https://github.com/tgstation/tgstation/commit/c6e3401f2e7e1e55c57060cdf956a98ef1fefc24 | Moth sprites made by PuroSlavKing (Github) | Spider sprites made by PixelTheKermit (Github) | Lizard sprites made by AmalgoMyte (Github) | Diona, Gingerbread, and Regalsprites made by YoungThugSS14 (Github) | Xenoborg sprites by Samuka-c (Github) | Vulpkanin sprites by Cabin_keeper (Github)",
     "size": {
         "x": 32,
         "y": 32
     },
     "states": [
         {
+            "name": "empty0"
+        },
+        {
             "name": "alien0",
             "delays": [
                 [
+                    0.1,
+                    0.1,
                     0.2,
+                    0.1,
+                    0.1,
                     0.2,
-                    0.2,
-                    0.2,
-                    0.2,
-                    0.4
+                    0.1,
+                    0.1,
+                    0.1,
+                    1,
+                    0.1,
+                    0.5
                 ]
             ]
         },
@@ -30,11 +39,28 @@
             "name": "alien3",
             "delays": [
                 [
-                    0.2,
-                    0.3,
-                    0.3,
-                    0.5,
-                    0.5
+                    0.1,
+                    0.05,
+                    0.05,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.6
                 ]
             ]
         },
@@ -42,12 +68,34 @@
             "name": "alienroyal0",
             "delays": [
                 [
+                    0.05,
+                    0.05,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.075,
+                    0.05,
                     0.2,
-                    0.3,
-                    0.3,
-                    0.3,
-                    0.3,
-                    0.5
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.075,
+                    0.05,
+                    0.2,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.05,
+                    0.1,
+                    1,
+                    0.1,
+                    1
                 ]
             ]
         },
@@ -61,12 +109,30 @@
             "name": "alienroyal3",
             "delays": [
                 [
-                    0.2,
-                    0.3,
-                    0.3,
-                    0.3,
-                    0.3,
-                    0.5
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    1,
+                    0.1,
+                    0.1
                 ]
             ]
         },
@@ -75,11 +141,9 @@
             "delays": [
                 [
                     0.2,
-                    0.4,
-                    0.4,
-                    0.4,
-                    0.4,
-                    0.4
+                    0.2,
+                    0.05,
+                    0.05
                 ]
             ]
         },
@@ -88,6 +152,19 @@
         },
         {
             "name": "blob2"
+        },
+        {
+            "name": "blob3",
+            "delays": [
+                [
+                    1,
+                    1,
+                    0.1,
+                    1,
+                    0.6,
+                    1
+                ]
+            ]
         },
         {
             "name": "clock0",
@@ -136,10 +213,14 @@
             "name": "default0",
             "delays": [
                 [
-                    0.2,
                     0.3,
-                    0.3,
-                    0.5
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    1,
+                    0.1,
+                    0.1
                 ]
             ]
         },
@@ -153,11 +234,23 @@
             "name": "default3",
             "delays": [
                 [
-                    0.2,
-                    0.3,
-                    0.3,
-                    0.5,
-                    0.5
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.05,
+                    0.05,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    1,
+                    0.1,
+                    0.1
                 ]
             ]
         },
@@ -223,10 +316,18 @@
             "name": "guardian0",
             "delays": [
                 [
-                    0.4,
-                    0.4,
-                    0.4,
-                    0.6
+                    0.12,
+                    0.12,
+                    0.12,
+                    0.12,
+                    0.12,
+                    0.12,
+                    0.12,
+                    0.12,
+                    0.12,
+                    0.12,
+                    0.12,
+                    0.12
                 ]
             ]
         },
@@ -240,11 +341,18 @@
             "name": "guardian3",
             "delays": [
                 [
-                    0.2,
-                    0.3,
-                    0.3,
-                    0.5,
-                    0.5
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15
                 ]
             ]
         },
@@ -252,12 +360,18 @@
             "name": "holo0",
             "delays": [
                 [
-                    0.2,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.1,
-                    0.2
+                    0.12,
+                    0.12,
+                    0.12,
+                    0.12,
+                    0.12,
+                    0.12,
+                    0.12,
+                    0.12,
+                    0.12,
+                    0.12,
+                    0.12,
+                    0.12
                 ]
             ]
         },
@@ -271,11 +385,18 @@
             "name": "holo3",
             "delays": [
                 [
-                    0.2,
-                    0.3,
-                    0.3,
-                    0.5,
-                    0.5
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15,
+                    0.15
                 ]
             ]
         },
@@ -283,10 +404,13 @@
             "name": "lawyer0",
             "delays": [
                 [
-                    0.3,
-                    0.3,
-                    0.3,
-                    0.4
+                    1,
+                    0.05,
+                    0.1,
+                    0.05,
+                    0.5,
+                    0.1,
+                    0.1
                 ]
             ]
         },
@@ -422,10 +546,27 @@
             "name": "machine0",
             "delays": [
                 [
-                    0.4,
-                    0.4,
-                    0.4,
-                    0.4
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    1
                 ]
             ]
         },
@@ -434,6 +575,19 @@
         },
         {
             "name": "machine2"
+        },
+        {
+            "name": "machine3",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ]
         },
         {
             "name": "regal0",
@@ -468,10 +622,27 @@
             "name": "robot0",
             "delays": [
                 [
-                    0.4,
-                    0.4,
-                    0.4,
-                    0.4
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    1
                 ]
             ]
         },
@@ -485,13 +656,12 @@
             "name": "robot3",
             "delays": [
                 [
-                    0.2,
-                    0.2,
-                    0.2,
-                    0.2,
-                    0.2,
-                    0.2,
-                    0.2
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
                 ]
             ]
         },
@@ -501,12 +671,12 @@
                 [
                     0.1,
                     0.1,
-                    0.2,
                     0.1,
                     0.1,
                     0.1,
                     0.1,
-                    0.5
+                    0.1,
+                    0.1
                 ]
             ]
         },
@@ -515,11 +685,13 @@
             "delays": [
                 [
                     0.1,
-                    0.3,
                     0.1,
                     0.1,
                     0.1,
-                    0.6
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
                 ]
             ]
         },
@@ -528,11 +700,13 @@
             "delays": [
                 [
                     0.1,
-                    0.3,
                     0.1,
                     0.1,
                     0.1,
-                    0.6
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
                 ]
             ]
         },
@@ -540,11 +714,23 @@
             "name": "slime3",
             "delays": [
                 [
-                    0.2,
-                    0.3,
-                    0.3,
-                    0.5,
-                    0.5
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
                 ]
             ]
         },
@@ -603,10 +789,27 @@
             "name": "syndibot0",
             "delays": [
                 [
-                    0.2,
-                    0.2,
-                    0.2,
-                    0.2
+                    0.1,
+                    0.1,
+                    0.05,
+                    0.05,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    1
                 ]
             ]
         },
@@ -620,13 +823,12 @@
             "name": "syndibot3",
             "delays": [
                 [
-                    0.2,
-                    0.2,
-                    0.2,
-                    0.2,
-                    0.2,
-                    0.2,
-                    0.2
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
                 ]
             ]
         },
@@ -651,11 +853,23 @@
             "name": "spider3",
             "delays": [
                 [
-                    0.2,
-                    0.3,
-                    0.3,
-                    0.5,
-                    0.5
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
                 ]
             ]
         },
@@ -667,35 +881,6 @@
                     0.3,
                     0.3,
                     0.4
-                ]
-            ]
-        },
-        {
-            "name": "vulpkanin0",
-            "delays": [
-                [
-                    0.3,
-                    0.3,
-                    0.3,
-                    0.4
-                ]
-            ]
-        },
-        {
-            "name": "vulpkanin1"
-        },
-        {
-            "name": "vulpkanin2"
-        },
-        {
-            "name": "vulpkanin3",
-            "delays": [
-                [
-                    0.2,
-                    0.3,
-                    0.3,
-                    0.5,
-                    0.5
                 ]
             ]
         },
@@ -727,6 +912,168 @@
                     0.2,
                     0.2,
                     0.2
+                ]
+            ]
+        },
+        {
+            "name": "felinid0",
+            "delays": [
+                [
+                    0.2,
+                    0.3,
+                    0.3,
+                    0.5
+                ]
+            ]
+        },
+        {
+            "name": "felinid1"
+        },
+        {
+            "name": "felinid2"
+        },
+        {
+            "name": "rodentia0",
+            "delays": [
+                [
+                    0.2,
+                    0.3,
+                    0.3,
+                    0.5
+                ]
+            ]
+        },
+        {
+            "name": "rodentia1"
+        },
+        {
+            "name": "rodentia2"
+        },
+        {
+            "name": "chitinid0",
+            "delays": [
+                [
+                    0.2,
+                    0.3,
+                    0.3,
+                    0.3
+                ]
+            ]
+        },
+        {
+            "name": "chitinid1"
+        },
+        {
+            "name": "chitinid2"
+        },
+        {
+            "name": "feroxi0",
+            "delays": [
+                [
+                    0.2,
+                    0.3,
+                    0.3,
+                    0.3
+                ]
+            ]
+        },
+        {
+            "name": "feroxi1"
+        },
+        {
+            "name": "feroxi2"
+        },
+        {
+            "name": "plasmaman0",
+            "delays": [
+                [
+                    0.15,
+                    0.25,
+                    0.25,
+                    0.5,
+                    0.1,
+                    0.15,
+                    0.1,
+                    0.7,
+                    0.25,
+                    0.25,
+                    0.1
+                ]
+            ]
+        },
+        {
+            "name": "plasmaman1"
+        },
+        {
+            "name": "plasmaman2"
+        },
+        {
+            "name": "skeleton0",
+            "delays": [
+                [
+                    0.15,
+                    0.25,
+                    0.25,
+                    0.5,
+                    0.1,
+                    0.15,
+                    0.1,
+                    0.7,
+                    0.25,
+                    0.25,
+                    0.1
+                ]
+            ]
+        },
+        {
+            "name": "skeleton1"
+        },
+        {
+            "name": "skeleton2"
+        },
+        {
+            "name": "oni0",
+            "delays": [
+                [
+                    0.2,
+                    0.3,
+                    0.3,
+                    0.5
+                ]
+            ]
+        },
+        {
+            "name": "oni1"
+        },
+        {
+            "name": "oni2"
+        },
+        {
+            "name": "vulpkanin0",
+            "delays": [
+                [
+                    0.3,
+                    0.3,
+                    0.3,
+                    0.4
+                ]
+            ]
+        },
+        {
+            "name": "vulpkanin1"
+        },
+        {
+            "name": "vulpkanin2"
+        },
+        {
+            "name": "vulpkanin3",
+            "delays": [
+                [
+                    0.2,
+                    0.3,
+                    0.3,
+                    0.5,
+                    0.5
                 ]
             ]
         }

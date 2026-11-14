@@ -30,7 +30,6 @@ namespace Content.IntegrationTests.Tests.Commands
   id: DamageableDummy
   components:
   - type: Damageable
-  - type: Injurable
     damageContainer: Biological
   - type: MobState
   - type: MobThresholds

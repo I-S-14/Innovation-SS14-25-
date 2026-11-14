@@ -1,6 +1,6 @@
+# IS14-change: recipe labels come from localized result entities in the current cooking system.
 - type: microwaveMealRecipe
   id: RecipePyrottonPizza
-  name: pyrotton pizza recipe
   result: FoodPizzaPyrotton
   time: 30
   group: Moth
@@ -11,7 +11,6 @@
 
 - type: microwaveMealRecipe
   id: RecipeCarpttonPizza
-  name: carptton pizza recipe
   result: FoodPizzaCarptton
   time: 30
   group: Moth
@@ -22,7 +21,6 @@
 
 - type: microwaveMealRecipe
   id: RecipeWatermelonttonPizza
-  name: watermelontton pizza recipe
   result: FoodPizzaWatermelontton
   time: 30
   group: Moth

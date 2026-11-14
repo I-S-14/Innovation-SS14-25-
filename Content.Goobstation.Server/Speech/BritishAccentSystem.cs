@@ -1,3 +1,4 @@
+using Content.Shared.Speech.EntitySystems;
 using Content.Goobstation.Common.Speech;
 using Content.Server.Speech.EntitySystems;
 using Content.Shared.Speech;
@@ -17,7 +18,7 @@ public sealed partial class BritishAccentSystem : EntitySystem
         SubscribeLocalEvent<BritishAccentComponent, AccentGetEvent>(OnAccent);
     }
 
-    private void OnAccent(EntityUid uid, BritishAccentComponent component, AccentGetEvent args)
+    private void OnAccent(EntityUid uid, BritishAccentComponent component, ref AccentGetEvent args)
     {
         var message = args.Message;
 

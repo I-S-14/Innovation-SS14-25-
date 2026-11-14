@@ -10,10 +10,20 @@
     hideLayersOnEquip:
     - Snout
     undergarmentBottom: UndergarmentBottomBoxersReptilian # todo marty doesn't fit needs adjusting
-  - type: Hunger
-  # - type: Carriable # ShibaStation - disabled because broken, for now.
-  - type: Thirst
-    baseDecayRate: 0.25 # Goobstation base rate changed, 2 times more than base
+  - type: Satiation
+    satiations:
+      Hunger:
+        prototype: NormalSatiationHunger
+      Thirst:
+        prototype: IS14BaseMobFeroxiThirstff267fd1
+  - type: SatiationSpeedModifier
+    satiations:
+      Hunger:
+        thresholds:
+          Starving: 0.75
+      Thirst:
+        thresholds:
+          Parched: 0.75
   - type: Icon
     sprite: _Goobstation/Mobs/Species/Feroxi/parts.rsi #RedTerror Goob Resprite
     state: full

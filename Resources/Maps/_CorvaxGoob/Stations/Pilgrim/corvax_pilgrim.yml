@@ -102788,7 +102788,7 @@ entities:
     - type: NavMapBeacon
       text: Пляж
     - type: WarpPoint
-      location: Пляж
+      location: is14-map-warp-e2b14d2c1333
   - uid: 15123
     components:
     - type: Transform
@@ -102804,7 +102804,7 @@ entities:
     - type: NavMapBeacon
       text: Причал
     - type: WarpPoint
-      location: Причал
+      location: is14-map-warp-415af145b7e9
   - uid: 15140
     components:
     - type: Transform
@@ -102974,7 +102974,7 @@ entities:
     - type: NavMapBeacon
       text: Док
     - type: WarpPoint
-      location: Док
+      location: is14-map-warp-922e3abbfb00
   - uid: 19132
     components:
     - type: Transform
@@ -103293,7 +103293,7 @@ entities:
     - type: NavMapBeacon
       text: Ксенобиология
     - type: WarpPoint
-      location: Ксенобиология
+      location: is14-map-warp-40efbcdca97d
   - uid: 10949
     components:
     - type: Transform
@@ -103314,7 +103314,7 @@ entities:
     - type: NavMapBeacon
       text: Разлом
     - type: WarpPoint
-      location: Разлом
+      location: is14-map-warp-2662fc114807
 - proto: DefaultStationBeaconSecurity
   entities:
   - uid: 19164
@@ -103405,7 +103405,7 @@ entities:
     - type: NavMapBeacon
       text: Южные солн. панели
     - type: WarpPoint
-      location: Южные солн. панели
+      location: is14-map-warp-689f393f9661
   - uid: 19177
     components:
     - type: Transform
@@ -103414,7 +103414,7 @@ entities:
     - type: NavMapBeacon
       text: Северные солн. панели
     - type: WarpPoint
-      location: Северные солн. панели
+      location: is14-map-warp-d07290de8299
   - uid: 19178
     components:
     - type: Transform
@@ -297341,21 +297341,21 @@ entities:
       pos: 62.5,26.5
       parent: 31772
     - type: WarpPoint
-      location: Каторга
+      location: is14-map-warp-b41d7a65e937
   - uid: 29664
     components:
     - type: Transform
       pos: 0.5,0.5
       parent: 29662
     - type: WarpPoint
-      location: Ксено яма
+      location: is14-map-warp-80586f8d733d
   - uid: 30075
     components:
     - type: Transform
       pos: -0.5,0.5
       parent: 28663
     - type: WarpPoint
-      location: Aiur isl. "Вонглэнд"
+      location: is14-map-warp-c8443ba4689f
 - proto: WarpPointBombing
   entities:
   - uid: 28991
@@ -297364,7 +297364,7 @@ entities:
       pos: 37.5,0.5
       parent: 2
     - type: WarpPoint
-      location: конференц-зал командования
+      location: is14-map-warp-33ce74509aa5
 - proto: WaterCooler
   entities:
   - uid: 3059

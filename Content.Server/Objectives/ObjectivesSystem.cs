@@ -34,8 +34,6 @@ namespace Content.Server.Objectives;
 // if you wanna upstream something think twice
 public sealed partial class ObjectivesSystem : SharedObjectivesSystem
 {
-    [Dependency] private readonly GameTicker _gameTicker = default!;
-    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
     // [Dependency] private readonly ServerCurrencyManager _currencyMan = default!; Deleted by CorvaxGoob
     [Dependency] private readonly ISharedAdminLogManager _adminLog = default!;
     [Dependency] private readonly SharedRoleSystem _roles = default!;
@@ -49,7 +47,6 @@ public sealed partial class ObjectivesSystem : SharedObjectivesSystem
 
     private bool _showGreentext;
 
-    private int _goobcoinsServerMultiplier = 1;
     public override void Initialize()
     {
         base.Initialize();
@@ -73,7 +70,7 @@ public sealed partial class ObjectivesSystem : SharedObjectivesSystem
     private void OnRoundEndText(ref RoundEndTextAppendEvent ev)
     {
         // go through each gamerule getting data for the roundend summary.
-        var summaries = new Dictionary<string, Dictionary<string, List<(EntityUid, string)>>>();
+        var summaries = new Dictionary<string, Dictionary<string, Dictionary<string, List<(EntityUid, string)>>>>();
         var query = EntityQueryEnumerator<ActiveGameRuleComponent, GameRuleComponent>();
         while (query.MoveNext(out var uid, out _, out var comp))
         {
@@ -195,7 +192,7 @@ public sealed partial class ObjectivesSystem : SharedObjectivesSystem
                 agentSummary.AppendLine(ev.Text);
             // Goobstation end
 
-            foreach (var objectiveGroup in objectives.GroupBy(o => Comp<ObjectiveComponent>(o).LocIssuer))
+            foreach (var objectiveGroup in objectives.GroupBy(o => Comp<ObjectiveComponent>(o).Issuer))
             {
                 //TO DO:
                 //check for the right group here. Getting the target issuer is easy: objectiveGroup.Key

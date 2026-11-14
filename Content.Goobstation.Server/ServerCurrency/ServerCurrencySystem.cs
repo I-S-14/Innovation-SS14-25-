@@ -28,7 +28,7 @@ namespace Content.Goobstation.Server.ServerCurrency
         [Dependency] private IPlayerManager _players = default!;
         [Dependency] private IConfigurationManager _cfg = default!;
         [Dependency] private LinkAccountManager _linkAccount = default!;
-        [Dependency] private GameTicker _gameTicker = default!;
+        [Dependency] private Content.Server.GameTicking.ServerGameTicker _gameTicker = default!;
 
         private int _goobcoinsPerPlayer = 10;
         private int _goobcoinsNonAntagMultiplier = 1;
@@ -61,7 +61,7 @@ namespace Content.Goobstation.Server.ServerCurrency
             _currencyMan.BalanceChange -= OnBalanceChange;
         }
 
-        private void OnRoundEndText(RoundEndTextAppendEvent ev)
+        private void OnRoundEndText(ref RoundEndTextAppendEvent ev)
         {
             if (_players.PlayerCount < _goobcoinsMinPlayers)
                 return;

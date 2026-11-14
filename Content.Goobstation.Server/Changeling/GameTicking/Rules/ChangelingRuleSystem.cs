@@ -1,3 +1,4 @@
+using Content.Shared.Antag;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Text;
@@ -19,7 +20,7 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Goobstation.Server.Changeling.GameTicking.Rules;
 
-public sealed partial class ChangelingRuleSystem : GameRuleSystem<ChangelingRuleComponent>
+public sealed partial class ChangelingRuleSystem : ServerGameRuleSystem<ChangelingRuleComponent>
 {
     [Dependency] private MindSystem _mind = default!;
     [Dependency] private AntagSelectionSystem _antag = default!;
@@ -65,7 +66,7 @@ public sealed partial class ChangelingRuleSystem : GameRuleSystem<ChangelingRule
 
         // briefing
         // Everypony has a metadata component, why are you trycomp'ing it?
-        if (TryComp<MetaDataComponent>(target, out var metaData))
+        if (TryComp(target, out MetaDataComponent? metaData))
         {
             var briefing = Loc.GetString("changeling-role-greeting", ("name", metaData?.EntityName ?? "Unknown"));
             var briefingShort = Loc.GetString("changeling-role-greeting-short", ("name", metaData?.EntityName ?? "Unknown"));
@@ -106,7 +107,7 @@ public sealed partial class ChangelingRuleSystem : GameRuleSystem<ChangelingRule
             if (!_mind.TryGetMind(ling.Owner, out var mindId, out var mind))
                 continue;
 
-            if (!TryComp<MetaDataComponent>(ling.Owner, out var metaData))
+            if (!TryComp(ling.Owner, out MetaDataComponent? metaData))
                 continue;
 
             if (ling.TotalAbsorbedEntities > mostAbsorbed)

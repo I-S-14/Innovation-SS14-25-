@@ -1,4 +1,4 @@
-﻿- type: entity
+- type: entity
   parent: Clothing
   id: IS14_IdCardBase
   name: identification card
@@ -29,7 +29,7 @@
     - WhitelistChameleon
     - WhitelistChameleonIdCard
   - type: StealTarget
-    stealGroup: IDCard
+    stealGroup: [IDCard]
   - type: MiningPoints # DeltaV
   - type: NanoChatCard # DeltaV
   - type: EmitSoundOnPickup

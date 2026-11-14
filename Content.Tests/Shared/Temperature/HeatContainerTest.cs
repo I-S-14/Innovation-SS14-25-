@@ -96,7 +96,7 @@ public sealed class HeatContainerTest
         var totalEnergy = c1.InternalEnergy;
 
         // Split equally.
-        HeatContainerHelpers.SplitFrom(ref c1, ref c2, fraction: 0.5f);
+        c2 = HeatContainerHelpers.Split(ref c1, fraction: 0.5f);
 
         // The heat capacity should be split equally.
         // The temperature should be the same.
@@ -111,7 +111,7 @@ public sealed class HeatContainerTest
         c1 = new HeatContainer(3000f, 42f);
 
         // Split into 2/3 + 1/3.
-        HeatContainerHelpers.SplitFrom(ref c1, ref c2, fraction: 1f / 3);
+        c2 = HeatContainerHelpers.Split(ref c1, fraction: 1f / 3);
 
         // The heat capacity should be split according to the fraction.
         // The temperature should be the same.
@@ -131,7 +131,7 @@ public sealed class HeatContainerTest
         var c1 = new HeatContainer(3000f, 42f);
 
         // Split equally.
-        HeatContainerHelpers.SplitFrom(ref c1, fraction: 0.5f);
+        HeatContainerHelpers.Split(ref c1, fraction: 0.5f);
 
         // The heat capacity should be split equally, the temperature should be the same.
         Assert.That(c1.Temperature, Is.EqualTo(42f));
@@ -141,7 +141,7 @@ public sealed class HeatContainerTest
         c1 = new HeatContainer(3000f, 42f);
 
         // Split into 1/3 + 2/3.
-        HeatContainerHelpers.SplitFrom(ref c1, fraction: 1f / 3);
+        HeatContainerHelpers.Split(ref c1, fraction: 1f / 3);
 
         // The heat capacity should be split according to the fraction, the temperature should be the same.
         Assert.That(c1.Temperature, Is.EqualTo(42f));
@@ -158,7 +158,9 @@ public sealed class HeatContainerTest
         var cA = new HeatContainer[n];
 
         // Split into n + 1 equal parts.
-        HeatContainerHelpers.SplitFrom(ref c1, cA);
+        var parts = c1.Divide(n + 1);
+        c1 = parts[^1];
+        System.Array.Copy(parts, cA, n);
 
         for (var i = 0; i < n; i++)
         {
@@ -183,7 +185,7 @@ public sealed class HeatContainerTest
         var cA = new HeatContainer[n];
 
         // Divide into n equal parts.
-        HeatContainerHelpers.SplitAndCopy(ref c1, cA);
+        cA = c1.Divide(n);
 
         for (var i = 0; i < n; i++)
         {
@@ -213,7 +215,7 @@ public sealed class HeatContainerTest
         var energy2 = c2.InternalEnergy;
 
         // Merge 2 containers of the same capacity and different temperatures.
-        HeatContainerHelpers.MergeInto(ref c1, ref c2);
+        HeatContainerHelpers.Merge(ref c1, c2);
 
         // The temperature should be the average of the two initial ones.
         // The total heat capacity should be the sum of the two initial capacities.
@@ -238,7 +240,7 @@ public sealed class HeatContainerTest
         energy2 = c2.InternalEnergy;
 
         // Merge 2 containers with different temperature and capacity.
-        HeatContainerHelpers.MergeInto(ref c1, ref c2);
+        HeatContainerHelpers.Merge(ref c1, c2);
 
         // The temperature should averaged weighted by capacity.
         // (100*750+300*250)/(750+250)=150
@@ -274,7 +276,7 @@ public sealed class HeatContainerTest
         }
 
         // Merge the array into the single heat container.
-        HeatContainerHelpers.MergeInto(ref c1, cA);
+        HeatContainerHelpers.Merge(ref c1, cA);
 
         // The temperature should averaged weighted by capacity.
         // (200*50+100*5*40)/(50+5*40)=120
@@ -304,7 +306,7 @@ public sealed class HeatContainerTest
         }
 
         // Merge the array into the single heat container.
-        HeatContainerHelpers.MergeAndCopy(ref c1, cA);
+        c1 = HeatContainerHelpers.Merge(cA);
 
         // The temperature of all merged containers was the same.
         // The total heat capacity should be the sum of the initial capacities.

@@ -1,0 +1,30 @@
+# Translations from space-syndicate/space-station-14, commit 6041191c48f5f75a6284b65bcabd913e186bd442.
+# Existing IS14 translations take precedence.
+
+exception-censored-1 = мяузан `ГВ` мя мяучния `Мяу`
+
+exception-censored-2 = SyntaxError: недопустимый кскскс
+
+exception-censored-3 = java.lang.NullPointerException: невозможно вызвать "com.spacestation14.ss14.Cat.meow(java.lang.String)", поскольку возвращаемое значение "com.spacestation14.robusttoolbox.Utils.getCatSound()" равно мяу
+
+exception-censored-4 = Ошибка: невозможно открыть дисплей: мяу x3
+
+exception-censored-5 = Ошибка сегментации (образ кошки сохранён)
+
+exception-censored-6 = cat-speech-dataset-120
+
+exception-censored-7 = Не удалось найти "Robust.Shared.GameObjects.MetaDataComponent" для сущности 5233063!
+
+exception-censored-8 = Необработанная ReferenceError: мяу не определён
+
+exception-censored-9 = TabError: в отступах непоследовательно используются табуляции и кошки
+
+exception-censored-10 = code.dm:3:error: meow: неопределённая процедура
+
+exception-censored-11 = Не удалось стереть память: Эксепшен
+
+exception-censored-12 = Мяудитация: #МЯУ
+
+exception-censored-13 = Неожиданный токен ':3'
+
+exception-censored-14 = Время ожидания операции истекло: AwaitNap()

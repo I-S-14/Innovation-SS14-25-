@@ -13,7 +13,6 @@ using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
 using Robust.UnitTesting.Pool;
-using System.IO;
 
 namespace Content.Benchmarks;
 

@@ -23,9 +23,10 @@ public sealed partial class PickCleanableDecalOperator : HTNOperator
     [DataField]
     public string TargetCoordinatesKey = "CleanDecalCoordinates";
 
-    public override void Initialize(IEntitySystemManager sysManager)
+    public override void Initialize(IDependencyCollection deps)
     {
-        base.Initialize(sysManager);
+        base.Initialize(deps);
+        var sysManager = deps.Resolve<IEntitySystemManager>();
         _transform = sysManager.GetEntitySystem<SharedTransformSystem>();
         _tracker = sysManager.GetEntitySystem<CleanableDecalTrackerSystem>();
     }

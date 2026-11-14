@@ -25,7 +25,7 @@ public sealed partial class AHelpBotApiSystem : EntitySystem
     [Dependency] private ILogManager _logManager = default!;
     [Dependency] private ITaskManager _taskManager = default!;
     [Dependency] private BwoinkSystem _bwoinkSystem = default!;
-    [Dependency] private GameTicker _gameTicker = default!;
+    [Dependency] private ServerGameTicker _gameTicker = default!;
     [Dependency] private AHelpBotCommandSystem _commands = default!;
 
     private readonly HttpClient _httpClient = new();

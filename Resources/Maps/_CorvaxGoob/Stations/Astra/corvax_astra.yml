@@ -113832,7 +113832,7 @@ entities:
     - type: NavMapBeacon
       text: Ядро ИИ
     - type: WarpPoint
-      location: Ядро ИИ
+      location: is14-map-warp-543a63b19311
 - proto: DefaultStationBeaconAISatellite
   entities:
   - uid: 16978
@@ -113843,7 +113843,7 @@ entities:
     - type: NavMapBeacon
       text: Спутник ИИ
     - type: WarpPoint
-      location: Спутник ИИ
+      location: is14-map-warp-807d5fe114ef
 - proto: DefaultStationBeaconAME
   entities:
   - uid: 16979
@@ -113861,7 +113861,7 @@ entities:
     - type: NavMapBeacon
       text: Аномалистика
     - type: WarpPoint
-      location: РнД - аномалистика
+      location: is14-map-warp-046505b73d86
 - proto: DefaultStationBeaconArmory
   entities:
   - uid: 16981
@@ -113879,7 +113879,7 @@ entities:
     - type: NavMapBeacon
       text: Прибытие
     - type: WarpPoint
-      location: Прибытие
+      location: is14-map-warp-38368957d4b2
 - proto: DefaultStationBeaconArtifactLab
   entities:
   - uid: 16983
@@ -113890,7 +113890,7 @@ entities:
     - type: NavMapBeacon
       text: Артфектная
     - type: WarpPoint
-      location: РнД - ксеноархеология
+      location: is14-map-warp-6e32741f71a8
 - proto: DefaultStationBeaconAtmospherics
   entities:
   - uid: 16984
@@ -113901,7 +113901,7 @@ entities:
     - type: NavMapBeacon
       text: Атмос
     - type: WarpPoint
-      location: Инж - атмосферный отсек
+      location: is14-map-warp-f94e321f274b
 - proto: DefaultStationBeaconBar
   entities:
   - uid: 16985
@@ -113933,7 +113933,7 @@ entities:
     - type: NavMapBeacon
       text: Мостик
     - type: WarpPoint
-      location: Мостик
+      location: is14-map-warp-51560891333c
 - proto: DefaultStationBeaconBrig
   entities:
   - uid: 16989
@@ -113958,7 +113958,7 @@ entities:
     - type: NavMapBeacon
       text: Капитан
     - type: WarpPoint
-      location: Каюта капитана
+      location: is14-map-warp-cc1f12675333
 - proto: DefaultStationBeaconCargoBay
   entities:
   - uid: 16992
@@ -113969,7 +113969,7 @@ entities:
     - type: NavMapBeacon
       text: Карго док
     - type: WarpPoint
-      location: Карго - стыковочный док
+      location: is14-map-warp-a78309fdf4c8
 - proto: DefaultStationBeaconCargoReception
   entities:
   - uid: 16993
@@ -113980,7 +113980,7 @@ entities:
     - type: NavMapBeacon
       text: 'Приёмная карго '
     - type: WarpPoint
-      location: Карго - приёмная
+      location: is14-map-warp-4069623069c6
 - proto: DefaultStationBeaconCERoom
   entities:
   - uid: 16994
@@ -113991,7 +113991,7 @@ entities:
     - type: NavMapBeacon
       text: СИ
     - type: WarpPoint
-      location: Инж - кабинет СИ
+      location: is14-map-warp-0c3e199fdf19
 - proto: DefaultStationBeaconChapel
   entities:
   - uid: 16995
@@ -114002,7 +114002,7 @@ entities:
     - type: NavMapBeacon
       text: Церковь
     - type: WarpPoint
-      location: Церковь
+      location: is14-map-warp-489361ed55d5
 - proto: DefaultStationBeaconChemistry
   entities:
   - uid: 16996
@@ -114013,7 +114013,7 @@ entities:
     - type: NavMapBeacon
       text: Химия
     - type: WarpPoint
-      location: Химия
+      location: is14-map-warp-bd77539a283b
 - proto: DefaultStationBeaconCMORoom
   entities:
   - uid: 16997
@@ -114024,7 +114024,7 @@ entities:
     - type: NavMapBeacon
       text: ГВ
     - type: WarpPoint
-      location: Мед - кабинет ГВ
+      location: is14-map-warp-5d519895bc23
 - proto: DefaultStationBeaconCommand
   entities:
   - uid: 16998
@@ -114035,7 +114035,7 @@ entities:
     - type: NavMapBeacon
       text: Мастерская
     - type: WarpPoint
-      location: Мастерская
+      location: is14-map-warp-6c50317db885
 - proto: DefaultStationBeaconCourtroom
   entities:
   - uid: 16999
@@ -114053,7 +114053,7 @@ entities:
     - type: NavMapBeacon
       text: Крио
     - type: WarpPoint
-      location: Мед - крионика
+      location: is14-map-warp-8f6c05c3554a
 - proto: DefaultStationBeaconDetectiveRoom
   entities:
   - uid: 17001
@@ -114071,7 +114071,7 @@ entities:
     - type: NavMapBeacon
       text: Мусорка
     - type: WarpPoint
-      location: Мусоросброс
+      location: is14-map-warp-0fb3d0bb7ccd
 - proto: DefaultStationBeaconDockingArm
   entities:
   - uid: 17003
@@ -114089,7 +114089,7 @@ entities:
     - type: NavMapBeacon
       text: Дормы
     - type: WarpPoint
-      location: Жилой отсек
+      location: is14-map-warp-358f3a98e93a
   - uid: 17005
     components:
     - type: Transform
@@ -114098,7 +114098,7 @@ entities:
     - type: NavMapBeacon
       text: Спортзал
     - type: WarpPoint
-      location: Спортзал
+      location: is14-map-warp-4da8b0664226
 - proto: DefaultStationBeaconEngineering
   entities:
   - uid: 17006
@@ -114109,7 +114109,7 @@ entities:
     - type: NavMapBeacon
       text: Верфь
     - type: WarpPoint
-      location: Верфь
+      location: is14-map-warp-aaa772e1b4c3
   - uid: 17007
     components:
     - type: Transform
@@ -114118,7 +114118,7 @@ entities:
     - type: NavMapBeacon
       text: Инженер
     - type: WarpPoint
-      location: Инженерный отдел
+      location: is14-map-warp-e9fd7fb3bd6d
   - uid: 17008
     components:
     - type: Transform
@@ -114127,7 +114127,7 @@ entities:
     - type: NavMapBeacon
       text: Тесла
     - type: WarpPoint
-      location: Инж - тесла
+      location: is14-map-warp-11903d1b3d9d
   - uid: 17009
     components:
     - type: Transform
@@ -114136,7 +114136,7 @@ entities:
     - type: NavMapBeacon
       text: Якорь
     - type: WarpPoint
-      location: Якорь
+      location: is14-map-warp-5d3b5b8bfd2f
   - uid: 17010
     components:
     - type: Transform
@@ -114145,7 +114145,7 @@ entities:
     - type: NavMapBeacon
       text: СВ Площадка Обслуживания
     - type: WarpPoint
-      location: СВ Площадка Обслуживания
+      location: is14-map-warp-9a6112467b00
 - proto: DefaultStationBeaconEscapePodN
   entities:
   - uid: 17011
@@ -114175,7 +114175,7 @@ entities:
     - type: NavMapBeacon
       text: Отбытие
     - type: WarpPoint
-      location: Отбытие
+      location: is14-map-warp-3f16f934488b
 - proto: DefaultStationBeaconEVAStorage
   entities:
   - uid: 17015
@@ -114200,7 +114200,7 @@ entities:
     - type: NavMapBeacon
       text: ГП
     - type: WarpPoint
-      location: Офис ГП
+      location: is14-map-warp-91f4bb7f55c5
 - proto: DefaultStationBeaconHOSRoom
   entities:
   - uid: 17018
@@ -114244,7 +114244,7 @@ entities:
     - type: NavMapBeacon
       text: Библио.
     - type: WarpPoint
-      location: Библиотека
+      location: is14-map-warp-d659e27ebecd
 - proto: DefaultStationBeaconMedbay
   entities:
   - uid: 17024
@@ -114256,7 +114256,7 @@ entities:
       color: '#73B567FF'
       text: Вирусология
     - type: WarpPoint
-      location: Мед - вирусология
+      location: is14-map-warp-c5b6b7fb32c2
 - proto: DefaultStationBeaconMedical
   entities:
   - uid: 17025
@@ -114267,7 +114267,7 @@ entities:
     - type: NavMapBeacon
       text: Медотсек
     - type: WarpPoint
-      location: Медотсек
+      location: is14-map-warp-85770545aa00
 - proto: DefaultStationBeaconMorgue
   entities:
   - uid: 17026
@@ -114299,7 +114299,7 @@ entities:
     - type: NavMapBeacon
       text: КМ
     - type: WarpPoint
-      location: Карго - кабинет КМа
+      location: is14-map-warp-462b41741a21
 - proto: DefaultStationBeaconRDRoom
   entities:
   - uid: 17030
@@ -114310,7 +114310,7 @@ entities:
     - type: NavMapBeacon
       text: НР
     - type: WarpPoint
-      location: РнД - кабинет НРа
+      location: is14-map-warp-9b8db5e45891
 - proto: DefaultStationBeaconRepresenterNT
   entities:
   - uid: 17031
@@ -114328,7 +114328,7 @@ entities:
     - type: NavMapBeacon
       text: РнД
     - type: WarpPoint
-      location: РнД
+      location: is14-map-warp-e1ee7b65765a
 - proto: DefaultStationBeaconRobotics
   entities:
   - uid: 17033
@@ -114339,7 +114339,7 @@ entities:
     - type: NavMapBeacon
       text: Роботех
     - type: WarpPoint
-      location: РнД - робототехника
+      location: is14-map-warp-11c54e51983e
 - proto: DefaultStationBeaconSalvage
   entities:
   - uid: 17034
@@ -114357,7 +114357,7 @@ entities:
     - type: NavMapBeacon
       text: Тюрьма
     - type: WarpPoint
-      location: Тюрьма
+      location: is14-map-warp-a918e21d1d30
   - uid: 17036
     components:
     - type: Transform
@@ -114373,7 +114373,7 @@ entities:
     - type: NavMapBeacon
       text: КПП эвак
     - type: WarpPoint
-      location: Сб - КПП отбытия
+      location: is14-map-warp-4eb5ce54d210
   - uid: 17038
     components:
     - type: Transform
@@ -114382,7 +114382,7 @@ entities:
     - type: NavMapBeacon
       text: КПП прибытие
     - type: WarpPoint
-      location: Сб - КПП прибытия
+      location: is14-map-warp-21f5ed3fcc1a
 - proto: DefaultStationBeaconServerRoom
   entities:
   - uid: 17039
@@ -114393,7 +114393,7 @@ entities:
     - type: NavMapBeacon
       text: Серверная
     - type: WarpPoint
-      location: Серверная
+      location: is14-map-warp-230d76d72891
 - proto: DefaultStationBeaconService
   entities:
   - uid: 17040
@@ -114404,7 +114404,7 @@ entities:
     - type: NavMapBeacon
       text: Офис репортёра
     - type: WarpPoint
-      location: Офис репортёра
+      location: is14-map-warp-be56709ed8c3
   - uid: 17041
     components:
     - type: Transform
@@ -114413,7 +114413,7 @@ entities:
     - type: NavMapBeacon
       text: Радиорубка
     - type: WarpPoint
-      location: Радиорубка
+      location: is14-map-warp-9cf211f20718
 - proto: DefaultStationBeaconSingularity
   entities:
   - uid: 17042
@@ -114431,7 +114431,7 @@ entities:
     - type: NavMapBeacon
       text: ЮЗ Сол.Панели
     - type: WarpPoint
-      location: ЮЗ Сол.Панели
+      location: is14-map-warp-bbe09bc3640a
   - uid: 17044
     components:
     - type: Transform
@@ -114440,7 +114440,7 @@ entities:
     - type: NavMapBeacon
       text: СЗ Сол.Панели
     - type: WarpPoint
-      location: СЗ Сол.Панели
+      location: is14-map-warp-81e8d7f241a3
   - uid: 17045
     components:
     - type: Transform
@@ -114449,7 +114449,7 @@ entities:
     - type: NavMapBeacon
       text: ЮВ Сол.Панели
     - type: WarpPoint
-      location: ЮВ Сол.Панели
+      location: is14-map-warp-d2ab6df58ce1
 - proto: DefaultStationBeaconSupply
   entities:
   - uid: 17046
@@ -114460,7 +114460,7 @@ entities:
     - type: NavMapBeacon
       text: Карго
     - type: WarpPoint
-      location: Карго
+      location: is14-map-warp-53ae01002a27
 - proto: DefaultStationBeaconSurgery
   entities:
   - uid: 17047
@@ -114471,7 +114471,7 @@ entities:
     - type: NavMapBeacon
       text: Хирургия
     - type: WarpPoint
-      location: Мед - операционная
+      location: is14-map-warp-5d19dbaeb05f
 - proto: DefaultStationBeaconTechVault
   entities:
   - uid: 17048
@@ -114482,7 +114482,7 @@ entities:
     - type: NavMapBeacon
       text: Хран. плат
     - type: WarpPoint
-      location: Хранилище плат
+      location: is14-map-warp-bcc7f5cdf89c
 - proto: DefaultStationBeaconTEG
   entities:
   - uid: 17049
@@ -114493,7 +114493,7 @@ entities:
     - type: NavMapBeacon
       text: Тут был ТЭГ
     - type: WarpPoint
-      location: ТЭГ
+      location: is14-map-warp-91f46a643d4a
 - proto: DefaultStationBeaconTelecoms
   entities:
   - uid: 17050
@@ -114504,7 +114504,7 @@ entities:
     - type: NavMapBeacon
       text: Телеком
     - type: WarpPoint
-      location: Телокоммуникация
+      location: is14-map-warp-f3497cb79b4c
   - uid: 17051
     components:
     - type: Transform
@@ -114513,7 +114513,7 @@ entities:
     - type: NavMapBeacon
       text: Маршрут.
     - type: WarpPoint
-      location: Маршрутизаторы
+      location: is14-map-warp-e4aa30f16222
 - proto: DefaultStationBeaconTheater
   entities:
   - uid: 17052
@@ -114531,7 +114531,7 @@ entities:
     - type: NavMapBeacon
       text: Инструменты
     - type: WarpPoint
-      location: Склад инструментов
+      location: is14-map-warp-71e7c6d707fc
   - uid: 17054
     components:
     - type: Transform
@@ -114540,7 +114540,7 @@ entities:
     - type: NavMapBeacon
       text: Инструменты 2
     - type: WarpPoint
-      location: Доп склад инструментов
+      location: is14-map-warp-7f93e8df2d1a
 - proto: DefaultStationBeaconVault
   entities:
   - uid: 17055
@@ -114551,7 +114551,7 @@ entities:
     - type: NavMapBeacon
       text: Хранилище
     - type: WarpPoint
-      location: Хранилище
+      location: is14-map-warp-f8f37144a47b
 - proto: DefaultStationBeaconWardensOffice
   entities:
   - uid: 17056
@@ -202494,7 +202494,7 @@ entities:
       pos: 19.502789,21.587538
       parent: 2
     - type: WarpPoint
-      location: интелкарта
+      location: is14-map-warp-4bd80acf7b74
 - proto: IntercomCommand
   entities:
   - uid: 29300
@@ -204769,7 +204769,7 @@ entities:
           occludes: True
           ent: null
     - type: WarpPoint
-      location: я-44
+      location: is14-map-warp-849d6154f111
   - uid: 20847
     components:
     - type: Transform
@@ -250749,7 +250749,7 @@ entities:
     - type: Gun
       burstCooldownModified: 0.25
     - type: WarpPoint
-      location: я-93
+      location: is14-map-warp-90c57649bb66
 - proto: SyringeSaline
   entities:
   - uid: 969
@@ -256370,7 +256370,7 @@ entities:
       pos: 8.5,-72.5
       parent: 2
     - type: WarpPoint
-      location: я-73
+      location: is14-map-warp-1567edd590aa
   - uid: 36054
     components:
     - type: Transform

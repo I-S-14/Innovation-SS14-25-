@@ -51,11 +51,7 @@
   name: waypointer-name-dragon-rift
   trackedComponents:
   - type: DragonRift
-    spawn: !type:GroupSelector # This doesn't spawn anything. This is here because dragonRiftComponent requires spawn to be filled.
-      children:
-        - id: MobCarpDragon
-        - id: MobSharkDragon
-          weight: 0.15
+    spawn: MobCarpDragon # IS14: Goob rifts retain their separate strong-spawn probability.
   workOnGrid: true
   color: Orange
   maxRange: 50

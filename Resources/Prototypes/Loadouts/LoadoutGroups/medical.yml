@@ -88,7 +88,7 @@
   minLimit: 0
   loadouts:
   - MedicalBeret
-  - SeniorPhysicianBeret
+  # IS14-change: senior physician is a separate job with its own loadouts.
   - MedicalHeadMirror
   - BlueSurgeryCap
   - GreenSurgeryCap
@@ -101,8 +101,7 @@
   loadouts:
   - MedicalDoctorJumpsuit
   - MedicalDoctorJumpskirt
-  - SeniorPhysicianJumpsuit
-  - SeniorPhysicianJumpskirt
+  # IS14-change: retain the separately configured senior physician job.
   - MedicalBlueScrubs
   - MedicalGreenScrubs
   - MedicalPurpleScrubs
@@ -114,14 +113,14 @@
   loadouts:
   - RegularLabCoat
   - MedicalDoctorWintercoat
-  - SeniorPhysicianLabCoat
+  # IS14-change: retain the separately configured senior physician job.
 
 - type: loadoutGroup
   id: MedicalDoctorPDA
   name: loadout-group-medical-doctor-id
   loadouts:
   - MedicalDoctorPDA
-  - SeniorPhysicianPDA
+  # IS14-change: retain the separately configured senior physician job.
 
 #- type: loadoutGroup
 #  id: MedicalDoctorJobTrinkets

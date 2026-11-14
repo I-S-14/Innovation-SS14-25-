@@ -173,7 +173,11 @@ public partial record struct RoboticsCyborgDestroyPayload : INetworkPayload;
 /// Corvax-Goob-MutableLaws: tells a borg to take the law set of the console's circuit board.
 /// Replaces the old "cyborg-change-laws" string command.
 /// </summary>
-public partial record struct RoboticsCyborgChangeLawsPayload : INetworkPayload;
+public partial record struct RoboticsCyborgChangeLawsPayload : INetworkPayload
+{
+    [DataField]
+    public EntityUid CircuitBoard;
+}
 
 /// <summary>
 /// A wrapper for <see cref="CyborgControlData"/>

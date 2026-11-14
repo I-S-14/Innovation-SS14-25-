@@ -1,3 +1,5 @@
+using Content.Shared.GameTicking;
+using GameTicker = Content.Server.GameTicking.ServerGameTicker;
 using Content.Goobstation.Shared.Flashbang;
 using Content.Goobstation.Shared.Shadowling;
 using Content.Goobstation.Shared.Shadowling.Components;
@@ -29,7 +31,7 @@ public sealed partial class ShadowlingSystem : SharedShadowlingSystem
     [Dependency] private InventorySystem _inventorySystem = default!;
     [Dependency] private DamageableSystem _damageable = default!;
     [Dependency] private RoundEndSystem _roundEnd = default!;
-    [Dependency] private GameTicker _gameTicker = default!;
+    [Dependency] private Content.Server.GameTicking.ServerGameTicker _gameTicker = default!;
     [Dependency] private IGameTiming _timing = default!;
 
     public override void Update(float frameTime)

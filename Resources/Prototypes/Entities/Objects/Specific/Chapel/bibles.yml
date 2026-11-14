@@ -133,7 +133,7 @@
   - type: AlternatePrayable # Goobstation
     requireBibleUser: false
   - type: Summonable
-    summonEntity: SpawnPointGhostRemilia
+    specialItem: SpawnPointGhostRemilia # IS14: retained Goob summoning field.
   - type: ReactionMixer
     mixMessage: "bible-mixing-success"
     reactionTypes:
@@ -159,7 +159,7 @@
   #    tags:
   #    - Bible
   - type: StealTarget # Goobstation - fix
-    stealGroup: Bible
+    stealGroup: [Bible]
   - type: EnchantingTool # Goobstation
   - type: StatusEffectOnCollideGhost # Goobstation
     whitelist:
@@ -195,7 +195,7 @@
     healSound: "/Audio/Effects/lightburn.ogg"
     healingLightEffect: EvilLightEffect
   - type: Summonable
-    summonEntity: SpawnPointGhostCerberus
+    specialItem: SpawnPointGhostCerberus # IS14: retained Goob summoning field.
     respawnTime: 300
   - type: Sprite
     sprite: Objects/Specific/Chapel/necronomicon.rsi

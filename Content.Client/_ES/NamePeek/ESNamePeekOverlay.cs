@@ -74,7 +74,7 @@ public sealed class ESNamePeekOverlay : Overlay
             return false;
 
         var player = _playerManager.LocalEntity;
-        if (_entityManager.HasComponent<FlashedComponent>(player)
+        if (_entityManager.System<Content.Shared.StatusEffectNew.StatusEffectsSystem>().HasEffectComp<FlashedStatusEffectComponent>(player)
             || _entityManager.TryGetComponent<BlindableComponent>(player, out var blindable) && blindable.IsBlind)
             return false;
 

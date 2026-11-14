@@ -58,7 +58,6 @@
   - type: Clickable
   - type: Damageable
     damageModifierSet: Wood
-  - type: Injurable
   - type: Destructible
     thresholds:
     - trigger:
@@ -215,7 +214,6 @@
   - type: KudzuVisuals
   - type: Clickable
   - type: Damageable
-  - type: Injurable
   - type: Destructible
     thresholds:
     - trigger:

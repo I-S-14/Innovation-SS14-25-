@@ -169,6 +169,10 @@ public sealed partial class ClientGameTicker : GameTicker
     [SubscribeNetworkEvent]
     private void JoinGame(TickerJoinGameEvent message)
     {
+        //IS14-change start: preserve Goob round intro.
+        if (GoobJoinGameAttempt())
+            return;
+        //IS14-change end
         _stateManager.RequestStateChange<GameplayState>();
     }
 

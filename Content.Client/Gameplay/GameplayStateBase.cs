@@ -32,6 +32,10 @@ namespace Content.Client.Gameplay
     [Virtual]
     public partial class GameplayStateBase : State, IEntityEventSubscriber
     {
+    //IS14-change start: retain fork fields lost during merge.
+        private SharedMapSystem _mapSystem => _entityManager.System<SharedMapSystem>();
+    //IS14-change end
+
         [Dependency] private IEyeManager _eyeManager = default!;
         [Dependency] private IInputManager _inputManager = default!;
         [Dependency] private IPlayerManager _playerManager = default!;

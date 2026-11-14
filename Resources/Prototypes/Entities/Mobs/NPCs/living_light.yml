@@ -65,7 +65,6 @@
           - Opaque
   - type: Damageable
     damageModifierSet: LivingLight
-  - type: Injurable
     damageContainer: Inorganic
   - type: PassiveDamage
     intervalHaltOnDamageTaken: 5s

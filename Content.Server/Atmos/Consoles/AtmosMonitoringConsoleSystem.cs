@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-using Content.Server.Atmos.Piping.Components;
+using Content.Shared._IS14.Atmos; // IS14-change: shared pipe colors retain console notifications.
 using Content.Server.NodeContainer.EntitySystems;
 using Content.Server.NodeContainer.NodeGroups;
 using Content.Server.NodeContainer.Nodes;
@@ -77,12 +77,12 @@ public sealed partial class AtmosMonitoringConsoleSystem : SharedAtmosMonitoring
         InitializeAtmosMonitoringConsole(uid, component);
     }
 
-    private void OnEntityNodeGroupsRebuilt(EntityUid uid, AtmosMonitoringConsoleDeviceComponent component, NodeGroupsRebuilt args)
+    private void OnEntityNodeGroupsRebuilt(EntityUid uid, AtmosMonitoringConsoleDeviceComponent component, ref NodeGroupsRebuilt args)
     {
         InitializeAtmosMonitoringDevice(uid, component);
     }
 
-    private void OnEntityPipeColorChanged(EntityUid uid, AtmosMonitoringConsoleDeviceComponent component, AtmosPipeColorChangedEvent args)
+    private void OnEntityPipeColorChanged(EntityUid uid, AtmosMonitoringConsoleDeviceComponent component, ref AtmosPipeColorChangedEvent args)
     {
         InitializeAtmosMonitoringDevice(uid, component);
     }

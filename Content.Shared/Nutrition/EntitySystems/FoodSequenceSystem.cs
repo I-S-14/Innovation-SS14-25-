@@ -239,14 +239,21 @@ public sealed partial class FoodSequenceSystem : SharedFoodSequenceSystem
         if (!_solutionContainer.TryGetSolution(start.Owner, start.Comp.Solution, out var startSolutionEntity, out var startSolution))
             return;
 
-        if (!_solutionContainer.TryGetSolution(elementFood.Owner, elementFood.Comp.Solution, out _, out var elementSolution))
+        if (!_solutionContainer.TryGetSolution(elementFood.Owner, elementFood.Comp.Solution, out var elementSolutionEntity, out var elementSolution))
             return; // Goob anythingburg
+
+        //IS14-change start: the edible solution can live directly on the ingredient.
+        // Preserve it even when there is no manager, or the manager only holds extra solutions.
+        startSolution.MaxVolume += elementSolution.MaxVolume;
+        _solutionContainer.TryAddSolution(startSolutionEntity.Value, elementSolution);
+        //IS14-change end
 
         if (TryComp<SolutionManagerComponent>(elementFood, out var elementSolutionContainer)) // Goobstation - anythingburgers We don't give a FUCK if the solution container is food or not, and i dont see why you woold.
         {
             foreach (var name in _solutionContainer.EnumerateSolutionContainers((elementFood.Owner, null), addPrefix: false))
             {
-                if (!_solutionContainer.TryGetSolution(elementFood.Owner, name, out _, out var elementSolutionGoob))
+                if (!_solutionContainer.TryGetSolution(elementFood.Owner, name, out var extraSolutionEntity, out var elementSolutionGoob)
+                    || extraSolutionEntity.Value.Owner == elementSolutionEntity.Value.Owner) //IS14-change: do not copy the edible solution twice.
                     continue;
 
                 startSolution.MaxVolume += elementSolutionGoob.MaxVolume;

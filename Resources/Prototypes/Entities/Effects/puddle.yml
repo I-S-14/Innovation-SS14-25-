@@ -153,6 +153,8 @@
     sprite: Fluids/puddle.rsi
     drawdepth: Puddles
     color: "#FFFFFF80"
+    layers:
+    - {} # IS14: the retained sprite-set visualizer populates layer zero on appearance updates.
   - type: Physics
     bodyType: Static
   - type: Fixtures
