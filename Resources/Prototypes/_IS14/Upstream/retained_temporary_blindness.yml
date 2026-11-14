@@ -1,0 +1,4 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: 5327c414c5:Resources/Prototypes/status_effects.yml
+- type: statusEffect
+  id: TemporaryBlindness

@@ -4,6 +4,8 @@ using Content.Shared.Construction;
 using JetBrains.Annotations;
 using Content.Shared.Examine;
 using Content.Shared.Tag;
+using Content.Shared.Doors.Components;
+using YamlDotNet.Core.Tokens;
 
 namespace Content.Server.Construction.Conditions
 {

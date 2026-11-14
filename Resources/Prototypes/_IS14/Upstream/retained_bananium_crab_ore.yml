@@ -1,0 +1,5 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: 5327c414c5:Resources/Prototypes/ore.yml
+- type: ore
+  id: OreBananiumCrab
+  oreEntity: MobSpawnCrabBananium

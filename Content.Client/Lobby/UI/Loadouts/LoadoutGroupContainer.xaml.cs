@@ -1,7 +1,7 @@
+using Content.Corvax.Interfaces.Shared; // IS14-change: upstream namespace move
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Linq;
-using Content.Corvax.Interfaces.Shared;
 using Content.Shared.Clothing;
 using Content.Shared.Preferences;
 using Content.Shared.Preferences.Loadouts;
@@ -10,7 +10,6 @@ using Robust.Client.UserInterface.Controls;
 using Robust.Client.UserInterface.XAML;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
-using System.Linq;
 
 namespace Content.Client.Lobby.UI.Loadouts;
 

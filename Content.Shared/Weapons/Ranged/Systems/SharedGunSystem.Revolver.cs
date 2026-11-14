@@ -11,6 +11,9 @@ using Robust.Shared.Utility;
 using System.Linq;
 using Content.Shared.Interaction.Events;
 using JetBrains.Annotations;
+using System;
+using Content.Shared.Wieldable;
+using Content.Shared.Wieldable.Components;
 
 namespace Content.Shared.Weapons.Ranged.Systems;
 
@@ -35,13 +38,13 @@ public partial class SharedGunSystem
         if (args.Handled)
             return;
 
-        if (!_useDelay.TryResetDelay(ent))
+        if (!_useDelay.TryResetDelay(ent.Owner))
             return;
 
         args.Handled = true;
 
         Cycle(ent.Comp);
-        UpdateAmmoCount(ent, prediction: false);
+        UpdateAmmoCount(ent); // Trauma - do predict it
         Dirty(ent);
     }
 
@@ -89,7 +92,7 @@ public partial class SharedGunSystem
         // Handle spins
         if (oldIndex != state.CurrentIndex)
         {
-            UpdateAmmoCount(ent, prediction: false);
+            UpdateAmmoCount(ent); // Trauma - do predict it
         }
     }
 
@@ -113,19 +116,18 @@ public partial class SharedGunSystem
 
             if (freeSlots == 0)
             {
-                Popup(Loc.GetString("gun-revolver-full"), ent, user);
+                PopupSystem.PopupEntity(Loc.GetString("gun-revolver-full"), ent, user);
                 return false;
             }
 
-            var xformQuery = GetEntityQuery<TransformComponent>();
-            var xform = xformQuery.GetComponent(insertEnt);
+            var xform = Transform(insertEnt);
             var ammo = new List<(EntityUid? Entity, IShootable Shootable)>(freeSlots);
             var ev = new TakeAmmoEvent(freeSlots, ammo, xform.Coordinates, user);
             RaiseLocalEvent(insertEnt, ev);
 
             if (ev.Ammo.Count == 0)
             {
-                Popup(Loc.GetString("gun-speedloader-empty"), ent, user);
+                PopupSystem.PopupEntity(Loc.GetString("gun-speedloader-empty"), ent, user);
                 return false;
             }
 
@@ -150,7 +152,7 @@ public partial class SharedGunSystem
 
                 ent.Comp.AmmoSlots[index] = ammoEnt.Value;
                 Containers.Insert(ammoEnt.Value, ent.Comp.AmmoContainer);
-                SetChamber(ent, insertEnt, index);
+                SetChamber(ent, ammoEnt.Value, index);
 
                 if (ev.Ammo.Count == 0)
                     break;
@@ -162,7 +164,7 @@ public partial class SharedGunSystem
             Dirty(ent);
 
             Audio.PlayPredicted(ent.Comp.SoundInsert, ent, user);
-            Popup(Loc.GetString("gun-revolver-insert"), ent, user);
+            PopupSystem.PopupEntity(Loc.GetString("gun-revolver-insert"), ent, user);
             return true;
         }
 
@@ -181,14 +183,14 @@ public partial class SharedGunSystem
             Containers.Insert(insertEnt, ent.Comp.AmmoContainer);
             SetChamber(ent, insertEnt, index);
             Audio.PlayPredicted(ent.Comp.SoundInsert, ent, user);
-            Popup(Loc.GetString("gun-revolver-insert"), ent, user);
+            PopupSystem.PopupEntity(Loc.GetString("gun-revolver-insert"), ent, user);
             UpdateRevolverAppearance(ent);
             UpdateAmmoCount(ent);
             Dirty(ent);
             return true;
         }
 
-        Popup(Loc.GetString("gun-revolver-full"), ent, user);
+        PopupSystem.PopupEntity(Loc.GetString("gun-revolver-full"), ent, user);
         return false;
     }
 
@@ -284,6 +286,7 @@ public partial class SharedGunSystem
     {
         var mapCoordinates = TransformSystem.GetMapCoordinates(ent);
         var anyEmpty = false;
+        var rand = GetRandom(ent); // Trauma
 
         for (var i = 0; i < ent.Comp.Capacity; i++)
         {
@@ -295,16 +298,16 @@ public partial class SharedGunSystem
                 if (chamber == null)
                     continue;
 
-                // Too lazy to make a new method don't sue me.
-                if (!_netManager.IsClient)
-                {
-                    var uid = Spawn(ent.Comp.FillPrototype, mapCoordinates);
+                // <Trauma> - predicted
+                //IS14-change start
+                var uid = PredictedSpawn(ent.Comp.FillPrototype, mapCoordinates);
+                //IS14-change end
 
-                    if (TryComp<CartridgeAmmoComponent>(uid, out var cartridge))
-                        SetCartridgeSpent(uid, cartridge, !(bool)chamber);
+                if (TryComp<CartridgeAmmoComponent>(uid, out var cartridge))
+                    SetCartridgeSpent(uid, cartridge, !(bool)chamber);
 
-                    EjectCartridge(uid);
-                }
+                EjectCartridge(rand, user, uid);
+                // </Trauma>
 
                 ent.Comp.Chambers[i] = null;
                 anyEmpty = true;
@@ -315,8 +318,7 @@ public partial class SharedGunSystem
                 Containers.Remove(slot.Value, ent.Comp.AmmoContainer);
                 ent.Comp.Chambers[i] = null;
 
-                if (!_netManager.IsClient)
-                    EjectCartridge(slot.Value);
+                EjectCartridge(rand, user, slot.Value); // Trauma - predicted
 
                 anyEmpty = true;
             }
@@ -325,7 +327,7 @@ public partial class SharedGunSystem
         if (anyEmpty)
         {
             Audio.PlayPredicted(ent.Comp.SoundEject, ent, user);
-            UpdateAmmoCount(ent, prediction: false);
+            UpdateAmmoCount(ent); // Trauma - do predict it
             UpdateRevolverAppearance(ent);
             Dirty(ent);
         }
@@ -338,14 +340,18 @@ public partial class SharedGunSystem
 
         var count = GetRevolverCount(ent.Comp);
         Appearance.SetData(ent, AmmoVisuals.HasAmmo, count != 0, appearance);
+        Appearance.SetData(ent, AmmoVisuals.IsFull, count == ent.Comp.Capacity, appearance);
         Appearance.SetData(ent, AmmoVisuals.AmmoCount, count, appearance);
         Appearance.SetData(ent, AmmoVisuals.AmmoMax, ent.Comp.Capacity, appearance);
     }
 
-    protected virtual void SpinRevolver(Entity<RevolverAmmoProviderComponent> ent, EntityUid? user = null)
+    /// <summary>
+    /// Trauma - made concrete, predicted the actual spinning logic
+    /// </summary>
+    protected void SpinRevolver(Entity<RevolverAmmoProviderComponent> ent, EntityUid? user = null)
     {
         Audio.PlayPredicted(ent.Comp.SoundSpin, ent, user);
-        Popup(Loc.GetString("gun-revolver-spun"), ent, user);
+        PopupSystem.PopupEntity(Loc.GetString("gun-revolver-spun"), ent, user);
     }
 
     private void OnRevolverTakeAmmo(Entity<RevolverAmmoProviderComponent> ent, ref TakeAmmoEvent args)
@@ -372,7 +378,7 @@ public partial class SharedGunSystem
                 if (chamber == true)
                 {
                     // Pretend it's always been there.
-                    ammoEnt = Spawn(ent.Comp.FillPrototype, args.Coordinates);
+                    ammoEnt = SpawnAtPosition(ent.Comp.FillPrototype, args.Coordinates);
 
                     if (!_netManager.IsClient)
                     {
@@ -395,7 +401,7 @@ public partial class SharedGunSystem
 
                 // Mark cartridge as spent and if it's caseless delete from the chamber slot.
                 SetCartridgeSpent(ammoEnt.Value, cartridge, true);
-                var spawned = Spawn(cartridge.Prototype, args.Coordinates);
+                var spawned = SpawnAtPosition(cartridge.Prototype, args.Coordinates);
                 args.Ammo.Add((spawned, EnsureComp<AmmoComponent>(spawned)));
 
                 if (cartridge.DeleteOnSpawn)
@@ -412,13 +418,15 @@ public partial class SharedGunSystem
             }
 
             // Delete the cartridge entity on client
+            /* Trauma - it's predicted now
             if (_netManager.IsClient)
             {
                 QueueDel(ammoEnt);
             }
+            */
         }
 
-        UpdateAmmoCount(ent, prediction: false);
+        UpdateAmmoCount(ent); // Trauma - do predict it
         UpdateRevolverAppearance(ent);
         Dirty(ent);
     }
@@ -456,6 +464,7 @@ public partial class SharedGunSystem
         }
 
         DebugTools.Assert(ent.Comp.AmmoSlots.Count == ent.Comp.Capacity);
+        UpdateAmmoCount(ent); // Trauma - lets client predict the first shot
     }
 
     [Serializable, NetSerializable]

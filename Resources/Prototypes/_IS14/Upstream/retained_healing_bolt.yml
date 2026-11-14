@@ -1,0 +1,40 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: 5327c414c5:Resources/Prototypes/Entities/Objects/Weapons/Guns/Projectiles/magic.yml
+- type: entity
+  id: ProjectileHealingBolt
+  name: healing bolt
+  description: I COMMAND YOU TO LIVE!
+  parent: BaseBullet
+  categories: [HideSpawnMenu]
+  components:
+  - type: Sprite
+    sprite: Objects/Weapons/Guns/Projectiles/magic.rsi
+    layers:
+    - state: magicm_yellow
+      shader: unshaded
+  - type: Projectile
+    damage:
+      types:
+        Heat: 0
+  - type: RejuvenateOnProjectileHit
+    undeadList:
+      components:
+      - Zombie
+      tags:
+      - Undead
+    damage:
+      types:
+        Heat: 600
+  - type: Reflective
+    reflective: Magic
+  - type: Ammo
+    muzzleFlash: null
+  - type: Trail
+    lerpTime: 0.05
+    frequency: 0.02
+    lifetime: 1
+    alphaLerpAmount: 0.4
+    shader: unshaded
+    sprite:
+      sprite: /Textures/Objects/Weapons/Guns/Projectiles/magic.rsi
+      state: magicm_yellow

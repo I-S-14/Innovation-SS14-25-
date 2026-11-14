@@ -23,7 +23,7 @@ public sealed partial class SalvageSystem
      * Handles actively running a salvage expedition.
      */
 
-    [Dependency] private readonly MobStateSystem _mobState = default!;
+    [Dependency] private MobStateSystem _mobState = default!;
 
     private void InitializeRunner()
     {
@@ -76,7 +76,7 @@ public sealed partial class SalvageSystem
             ChatChannel.Radio,
             text,
             text,
-            _mapManager.GetMapEntityId(mapId),
+            _mapSystem.GetMapOrInvalid(mapId),
             false,
             true,
             null);

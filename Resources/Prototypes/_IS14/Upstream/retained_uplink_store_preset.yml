@@ -1,0 +1,5 @@
+# IS14: concrete hidden template for copying the retained preset through the current prototype API.
+- type: entity
+  parent: StorePresetUplink
+  id: IS14RetainedUplinkStorePreset
+  categories: [HideSpawnMenu]

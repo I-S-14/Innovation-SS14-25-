@@ -9,6 +9,7 @@
   - type: Tag
     tags:
     - PlantSampleTaker
+    - Wirecutter # Goobstation
   - type: Sprite
     sprite: Objects/Tools/Cowtools/haycutters.rsi
     state: haycutters
@@ -21,11 +22,13 @@
   - type: Tool
     qualities:
     - Cutting
+    - Shearing
     useSound:
       path: /Audio/Items/wirecutter.ogg
     speedModifier: 0.05
   - type: Item
     sprite: Objects/Tools/Cowtools/haycutters.rsi
+  - type: BotanySampleTaker
 
 - type: entity
   name: moodriver
@@ -49,6 +52,9 @@
     useSound:
       collection: Screwdriver
     speedModifier: 0.05
+  - type: Tag # Goobstation
+    tags:
+    - Screwdriver
 
 - type: entity
   name: wronch
@@ -72,6 +78,9 @@
     useSound:
       path: /Audio/Items/ratchet.ogg
     speedModifier: 0.05
+  - type: Tag # Goobstation
+    tags:
+    - Wrench
 
 - type: entity
   name: cowbar
@@ -99,6 +108,9 @@
     speedModifier: 0.05
   - type: UseDelay # Goobstation - For insta prying
     delay: 3
+  - type: Tag # Goobstation
+    tags:
+    - Crowbar
 
 - type: entity
   name: mooltitool

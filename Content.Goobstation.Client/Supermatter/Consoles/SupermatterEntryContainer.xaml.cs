@@ -134,7 +134,7 @@ public sealed partial class SupermatterEntryContainer : BoxContainer
                 foreach (var gas in gases)
                 {
                     var name = gas.Name;
-                    var color = Color.FromHex(gas.Color.StartsWith("#") ? gas.Color : $"#{gas.Color}");
+                    var color = gas.Color;
                     var value = GetStoredGas(gas, focusData) / focusData.Value.AbsorbedMoles * 100;
 
                     //Log.Debug(string.Format("{0:N2}", value));

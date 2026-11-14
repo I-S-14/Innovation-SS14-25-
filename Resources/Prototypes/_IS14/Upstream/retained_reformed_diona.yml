@@ -1,0 +1,10 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: 5327c414c5:Resources/Prototypes/Entities/Mobs/Player/diona.yml
+- type: entity
+  parent: MobDiona
+  categories: [HideSpawnMenu]
+  id: MobDionaReformed
+  name: Reformed Diona
+  components:
+  - type: IsDeadIC
+  - type: RandomHumanoidAppearance

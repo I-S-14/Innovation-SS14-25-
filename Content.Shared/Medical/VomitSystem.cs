@@ -11,6 +11,7 @@ using Content.Shared.Mobs.Systems;
 using Content.Shared.Movement.Systems;
 using Content.Shared.Nutrition.Components;
 using Content.Shared.Nutrition.EntitySystems;
+using Content.Shared._Funkystation.WallStains; // Goob
 using Content.Shared.Popups;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
@@ -23,10 +24,9 @@ public sealed class VomitSystem : EntitySystem
 {
     [Dependency] private readonly INetManager _netManager = default!;
     [Dependency] private readonly IPrototypeManager _proto = default!;
-    [Dependency] private readonly HungerSystem _hunger = default!;
+    [Dependency] private readonly SatiationSystem _satiation = default!; //IS14-change: wizden hunger/thirst -> satiation
     [Dependency] private readonly MobStateSystem _mobState = default!;
     [Dependency] private readonly MovementModStatusSystem _movementMod = default!;
-    [Dependency] private readonly ThirstSystem _thirst = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly SharedBloodstreamSystem _bloodstream = default!;
     [Dependency] private readonly SharedBodySystem _body = default!;
@@ -99,11 +99,15 @@ public sealed class VomitSystem : EntitySystem
         // goob end
 
         // Vomiting makes you hungrier and thirstier
-        if (TryComp<HungerComponent>(uid, out var hunger))
-            _hunger.ModifyHunger(uid, hungerAdded, hunger);
+        //IS14-change start: wizden hunger/thirst -> satiation
+        if (TryComp<SatiationComponent>(uid, out var satiation))
+        {
+            Entity<SatiationComponent> satEnt = (uid, satiation);
+            _satiation.ModifyValue(satEnt, SatiationSystem.Hunger, hungerAdded);
+            _satiation.ModifyValue(satEnt, SatiationSystem.Thirst, thirstAdded);
+        }
+        //IS14-change end
 
-        if (TryComp<ThirstComponent>(uid, out var thirst))
-            _thirst.ModifyThirst(uid, thirst, thirstAdded);
 
         // It fully empties the stomach, this amount from the chem stream is relatively small
         var solutionSize = (MathF.Abs(thirstAdded) + MathF.Abs(hungerAdded)) / 6;
@@ -132,6 +136,9 @@ public sealed class VomitSystem : EntitySystem
             // Makes a vomit solution the size of 90% of the chemicals removed from the chemstream
             solution.AddReagent(new ReagentId(VomitPrototype, _bloodstream.GetEntityBloodData((uid, bloodStream))), vomitAmount);
         }
+
+        var wallSplash = new SplashOnWallEvent(Transform(uid).Coordinates, solution.Clone()); // Goob
+        RaiseLocalEvent(ref wallSplash); // Goob
 
         if (_puddle.TrySpillAt(uid, solution, out var puddle, false))
         {

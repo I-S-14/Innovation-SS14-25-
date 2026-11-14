@@ -96,13 +96,15 @@
     state: pill18
   - type: Label
     currentLabel: tramadol 7.5u
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 20
-        reagents:
-        - ReagentId: Tramadol
-          Quantity: 7.5 # Half OD
+  - type: Solution
+    id: food
+    solution:
+      temperature: 293.15
+      canReact: true
+      maxVol: 20
+      reagents:
+      - ReagentId: Tramadol
+        Quantity: 7.5 # Half OD
 
 - type: entity
   name: pill canister
@@ -129,13 +131,15 @@
     state: pill19
   - type: Label
     currentLabel: oxycodone 5u
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 20
-        reagents:
-        - ReagentId: Oxycodone
-          Quantity: 5
+  - type: Solution
+    id: food
+    solution:
+      temperature: 293.15
+      canReact: true
+      maxVol: 20
+      reagents:
+      - ReagentId: Oxycodone
+        Quantity: 5
 
 - type: entity
   name: pill canister
@@ -162,13 +166,15 @@
     state: pill1
   - type: Label
     currentLabel: Ibuprofen 10u
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 20
-        reagents:
-        - ReagentId: Ibuprofen
-          Quantity: 10
+  - type: Solution
+    id: food
+    solution:
+      temperature: 293.15
+      canReact: true
+      maxVol: 20
+      reagents:
+      - ReagentId: Ibuprofen
+        Quantity: 10
 
 - type: entity
   name: pill canister

@@ -1,0 +1,12 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: 5327c414c5:Resources/Prototypes/Entities/StatusEffects/body.yml
+- type: entity
+  parent: MobStatusEffectBase
+  id: PainNumbnessTraitStatusEffect
+  components:
+  - type: StatusEffect
+    whitelist:
+      components:
+      - MobState
+      - MobThresholds
+  - type: PainNumbnessStatusEffect

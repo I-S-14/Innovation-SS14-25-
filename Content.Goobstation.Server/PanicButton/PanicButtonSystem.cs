@@ -1,3 +1,6 @@
+using Content.Shared.Timing.Components;
+using Content.Shared.Timing.Systems;
+using NavMapSystem = Content.Server.Pinpointer.ServerNavMapSystem;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Server.DoAfter;
@@ -15,10 +18,10 @@ namespace Content.Goobstation.Server.PanicButton
 {
     public sealed partial class PanicButtonSystem : EntitySystem
     {
-        [Dependency] private readonly NavMapSystem _navMap = default!;
-        [Dependency] private readonly RadioSystem _radioSystem = default!;
-        [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
-        [Dependency] private readonly UseDelaySystem _useDelaySystem = default!;
+        [Dependency] private NavMapSystem _navMap = default!;
+        [Dependency] private RadioSystem _radioSystem = default!;
+        [Dependency] private IPrototypeManager _prototypeManager = default!;
+        [Dependency] private UseDelaySystem _useDelaySystem = default!;
 
         public override void Initialize()
         {

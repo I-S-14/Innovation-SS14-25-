@@ -19,7 +19,7 @@ public abstract partial class SharedMapTextComponent : Component
     /// The text to display. This will override <see cref="LocText"/>.
     /// </summary>
     [DataField]
-    public string? Text;
+    public string Text = "";
 
     /// <summary>
     /// The localized-id of the text that should be displayed.
@@ -44,7 +44,7 @@ public abstract partial class SharedMapTextComponent : Component
 [Serializable, NetSerializable]
 public sealed class MapTextComponentState : ComponentState
 {
-    public string? Text { get; init;}
+    public string Text { get; init;} = default!;
     public LocId LocText { get; init;}
     public Color Color { get; init;}
     public string FontId { get; init; } = default!;

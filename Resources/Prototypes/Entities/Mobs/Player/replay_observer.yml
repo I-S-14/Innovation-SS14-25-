@@ -11,3 +11,8 @@
     baseWalkSpeed: 16
   - type: LanguageSpeaker # Einstein Engines - Languages
   - type: UniversalLanguageSpeaker # Einstein Engines - Languages
+  - type: Tag
+    tags:
+    - AllowPortalTraversal
+    - BypassInteractionRangeChecks
+    - PreventPortalCollision

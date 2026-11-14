@@ -7,21 +7,22 @@
   - type: FlavorProfile
     flavors:
       - water
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 14
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 7
-        - ReagentId: Vitamin
-          Quantity: 3
-        - ReagentId: Water
-          Quantity: 4
+  - type: Solution
+    solution:
+      maxVol: 14
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 7
+      - ReagentId: Vitamin
+        Quantity: 3
+      - ReagentId: Water
+        Quantity: 4
+      temperature: 293.15
+      canReact: true
   - type: Sprite
     sprite: _CorvaxGoob/Objects/Specific/Hydroponics/cucumber.rsi
   - type: Produce
-    seedId: cucumberSeed
+    plantId: IS14CucumbertSeedsPlant
   - type: Tag
     tags:
     - Fruit
@@ -41,19 +42,20 @@
   - type: FlavorProfile
     flavors:
       - water
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 14
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 7
-        - ReagentId: Cryptobiolin
-          Quantity: 12
+  - type: Solution
+    solution:
+      maxVol: 14
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 7
+      - ReagentId: Cryptobiolin
+        Quantity: 12
+      temperature: 293.15
+      canReact: true
   - type: Sprite
     sprite: _CorvaxGoob/Objects/Specific/Hydroponics/shashamber.rsi
   - type: Produce
-    seedId: shashamberSeed
+    plantId: IS14ShashambertSeedsPlant
   - type: Tag
     tags:
     - Fruit

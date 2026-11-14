@@ -2,6 +2,7 @@
 
 using Content.Shared.GridPreloader.Prototypes;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Map;
 
 namespace Content.Server.GridPreloader;
 

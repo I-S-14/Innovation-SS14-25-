@@ -94,7 +94,7 @@ public abstract partial class SharedGunSystem
     /// <summary>
     /// Opens then closes the bolt, or just closes it if currently open.
     /// </summary>
-    private void UseChambered(EntityUid uid, ChamberMagazineAmmoProviderComponent component, EntityUid? user = null)
+    public void UseChambered(EntityUid uid, ChamberMagazineAmmoProviderComponent component, EntityUid? user = null)
     {
         if (component.BoltClosed == false)
         {
@@ -104,15 +104,9 @@ public abstract partial class SharedGunSystem
 
         if (TryTakeChamberEntity(uid, out var chamberEnt))
         {
-            if (_netManager.IsServer)
-            {
-                EjectCartridge(chamberEnt.Value);
-            }
-            else
-            {
-                // Similar to below just due to prediction.
-                TransformSystem.DetachEntity(chamberEnt.Value, Transform(chamberEnt.Value));
-            }
+            // <Trauma> - replace fake prediction
+            EjectCartridge(GetRandom(uid), user, chamberEnt.Value);
+            // </Trauma>
         }
 
         if (!CycleCartridge(uid, component, user))
@@ -161,11 +155,11 @@ public abstract partial class SharedGunSystem
             CycleCartridge(uid, component, user, appearance);
 
             if (user != null)
-                PopupSystem.PopupClient(Loc.GetString("gun-chamber-bolt-closed"), uid, user.Value);
+                PopupSystem.PopupEntity(Loc.GetString("gun-chamber-bolt-closed"), uid, user.Value);
 
             if (slots != null)
             {
-                _slots.SetLock(uid, ChamberSlot, true, slots);
+                _slots.SetLock((uid, slots), ChamberSlot, true);
             }
 
             Audio.PlayPredicted(component.BoltClosedSound, uid, user);
@@ -174,28 +168,19 @@ public abstract partial class SharedGunSystem
         {
             if (TryTakeChamberEntity(uid, out var chambered))
             {
-                if (_netManager.IsServer)
-                {
-                    EjectCartridge(chambered.Value);
-                }
-                else
-                {
-                    // Prediction moment
-                    // The problem is client will dump the cartridge on the ground and the new server state
-                    // won't correspond due to randomness so looks weird
-                    // but we also need to always take it from the chamber or else ammocount won't be correct.
-                    TransformSystem.DetachEntity(chambered.Value, Transform(chambered.Value));
-                }
+                // <Trauma> - replace fake prediction
+                EjectCartridge(GetRandom(uid), user, chambered.Value);
+                // </Trauma>
 
                 UpdateAmmoCount(uid);
             }
 
             if (user != null)
-                PopupSystem.PopupClient(Loc.GetString("gun-chamber-bolt-opened"), uid, user.Value);
+                PopupSystem.PopupEntity(Loc.GetString("gun-chamber-bolt-opened"), uid, user.Value);
 
             if (slots != null)
             {
-                _slots.SetLock(uid, ChamberSlot, false, slots);
+                _slots.SetLock((uid, slots), ChamberSlot, false);
             }
 
             Audio.PlayPredicted(component.BoltOpenedSound, uid, user);
@@ -235,6 +220,7 @@ public abstract partial class SharedGunSystem
                 UpdateAmmoCount(uid);
 
                 // Clientside reconciliation things
+                /* Trauma - spawns are predicted now, deleting it here would delete the chambered round
                 if (_netManager.IsClient)
                 {
                     foreach (var (ent, _) in relayedArgs.Ammo)
@@ -245,6 +231,7 @@ public abstract partial class SharedGunSystem
                         Del(ent.Value);
                     }
                 }
+                */
             }
             else
             {

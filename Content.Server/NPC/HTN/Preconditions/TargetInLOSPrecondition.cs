@@ -2,6 +2,7 @@
 
 using Content.Server.Interaction;
 using Content.Server.Stealth;
+using Content.Shared.Interaction;
 using Content.Shared.Physics;
 using Content.Shared.Stealth.Components;
 
@@ -22,9 +23,10 @@ public sealed partial class TargetInLOSPrecondition : HTNPrecondition
     [DataField("opaqueKey")]
     public bool UseOpaqueForLOSChecksKey = true;
 
-    public override void Initialize(IEntitySystemManager sysManager)
+    public override void Initialize(IDependencyCollection deps)
     {
-        base.Initialize(sysManager);
+        base.Initialize(deps);
+        var sysManager = deps.Resolve<IEntitySystemManager>();
         _interaction = sysManager.GetEntitySystem<InteractionSystem>();
         _stealth = sysManager.GetEntitySystem<StealthSystem>(); // goob edit
     }

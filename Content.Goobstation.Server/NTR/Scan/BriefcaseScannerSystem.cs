@@ -14,13 +14,13 @@ using Content.Shared.Store.Components;
 
 namespace Content.Goobstation.Server.NTR.Scan
 {
-    public sealed class BriefcaseScannerSystem : EntitySystem
+    public sealed partial class BriefcaseScannerSystem : EntitySystem
     {
-        [Dependency] private readonly SharedDoAfterSystem _doAfterSystem = default!;
-        [Dependency] private readonly StoreSystem _storeSystem = default!;
-        [Dependency] private readonly SharedMindSystem _mind = default!;
-        [Dependency] private readonly SharedPopupSystem _popup = default!;
-        [Dependency] private readonly ChatSystem _chatManager = default!;
+        [Dependency] private SharedDoAfterSystem _doAfterSystem = default!;
+        [Dependency] private StoreSystem _storeSystem = default!;
+        [Dependency] private SharedMindSystem _mind = default!;
+        [Dependency] private SharedPopupSystem _popup = default!;
+        [Dependency] private ChatSystem _chatManager = default!;
 
         public override void Initialize()
         {
@@ -90,7 +90,7 @@ namespace Content.Goobstation.Server.NTR.Scan
 
                 else
                 {
-                    _storeSystem.TryAddCurrency(new Dictionary<string, FixedPoint2> {
+                    _storeSystem.TryAddCurrency(new Dictionary<Robust.Shared.Prototypes.ProtoId<Content.Shared.Store.CurrencyPrototype>, FixedPoint2> {
                         { "NTLoyaltyPoint", FixedPoint2.New(points) } },
                     uid,
                     store);

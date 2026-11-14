@@ -4,7 +4,8 @@ using Content.Shared.Administration.Logs;
 using Content.Shared.Body.Components;
 using Content.Shared.Body.Systems;
 using Content.Shared.Chemistry.EntitySystems;
-using Content.Shared.Damage;
+using Content.Shared.Damage.Components;
+using Content.Shared.Damage.Systems;
 using Content.Shared.Database;
 using Content.Shared.DoAfter;
 using Content.Goobstation.Maths.FixedPoint;
@@ -25,14 +26,13 @@ using Content.Shared._Shitmed.Medical.Surgery.Traumas.Systems;
 using Content.Shared._Shitmed.Medical.Surgery.Wounds.Components;
 using Content.Shared._Shitmed.Medical.Surgery.Wounds.Systems;
 using Content.Shared._Shitmed.Targeting;
-using Content.Shared.Body.Components;
-using Content.Shared.Body.Systems;
 using Content.Shared.Damage.Prototypes;
 using Robust.Shared.Audio;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
 using System.Linq;
 using Robust.Shared.Network;
+using Content.Shared.Damage;
 
 namespace Content.Shared.Medical.Healing;
 
@@ -52,12 +52,10 @@ public sealed class HealingSystem : EntitySystem
     // Shitmed Change
     [Dependency] private readonly SharedBodySystem _bodySystem = default!;
     [Dependency] private readonly IPrototypeManager _prototypes = default!;
-    [Dependency] private readonly SharedTargetingSystem _targetingSystem = default!;
     [Dependency] private readonly TraumaSystem _trauma = default!;
     [Dependency] private readonly WoundSystem _wounds = default!;
 
     // Goobstation edit
-    [Dependency] private readonly INetManager _net = default!;
 
     // Goobstation start
     private TargetBodyPart[] _partHealingOrder =
@@ -125,12 +123,10 @@ public sealed class HealingSystem : EntitySystem
         if (healing.ModifyBloodLevel != 0 && bloodstream != null)
             _bloodstreamSystem.TryModifyBloodLevel((target.Owner, bloodstream), -healing.ModifyBloodLevel); // Goobedit
 
-        var healed = _damageable.TryChangeDamage(target.Owner, healing.Damage * _damageable.UniversalTopicalsHealModifier, true, origin: args.Args.User);
-
-        if (healed == null && healing.BloodlossModifier != 0)
+        if (!_damageable.TryChangeDamage(target.Owner, healing.Damage * _damageable.UniversalTopicalsHealModifier, out var healed, true, origin: args.Args.User) && healing.BloodlossModifier != 0)
             return;
 
-        var total = healed?.GetTotal() ?? FixedPoint2.Zero;
+        var total = healed.GetTotal();
 
         // Re-verify that we can heal the damage.
         var dontRepeat = false;
@@ -183,7 +179,7 @@ public sealed class HealingSystem : EntitySystem
         var healingDict = healing.Comp.Damage.DamageDict;
         foreach (var type in healingDict)
         {
-            if (damageableDict[type.Key].Value > 0)
+            if (damageableDict.GetValueOrDefault(type.Key) > 0) // Goob
             {
                 return true;
             }
@@ -210,6 +206,17 @@ public sealed class HealingSystem : EntitySystem
     }
 
     // Shitmed Change Start
+
+    private bool IsWoundableBleeding(EntityUid woundable, WoundableComponent comp)
+    {
+        foreach (var wound in _wounds.GetWoundableWounds(woundable, comp))
+        {
+            if (TryComp<BleedInflicterComponent>(wound, out var bleeds) && bleeds.IsBleeding)
+                return true;
+        }
+
+        return false;
+    }
 
     private string? GetDamageGroupByType(string id)
         => (from @group in _prototypes.EnumeratePrototypes<DamageGroupPrototype>() where @group.DamageTypes.Contains(id) select @group.ID).FirstOrDefault();
@@ -386,26 +393,18 @@ public sealed class HealingSystem : EntitySystem
                 targetedWoundable = woundablesQueue.Dequeue();
                 if (!TryComp<WoundableComponent>(targetedWoundable, out var woundableComp2))
                     continue;
-                if (TraumaSystem.TraumasBlockingHealing.Any(traumaType => _trauma.HasWoundableTrauma(targetedWoundable, traumaType, woundableComp2, false)))
-                {
-                    canHeal = false;
-
-                    if (!healedBleedLevel)
-                    {
-                        leftoverHealAndTrauma = true;
-                        continue;
-                    }
-                }
+                if (_trauma.HasHealingBlockingTrauma(targetedWoundable, woundableComp2) && !healedBleedLevel)
+                    leftoverHealAndTrauma = true;
 
                 if (canHeal)
                 {
-                    if (healing.BloodlossModifier == 0 && healing.ModifyBloodLevel >= 0 && woundableComp2.Bleeds > 0)  // If the healing item has no bleeding heals, and its bleeding, we raise the alert. Goobstation edit
+                    if (healing.BloodlossModifier == 0 && healing.ModifyBloodLevel >= 0 && IsWoundableBleeding(targetedWoundable, woundableComp2))
                     {
                         leftoverHealAndBleed = true;
                         continue;
                     }
 
-                    var damageChanged = _damageable.TryChangeDamage(targetedWoundable, healingLeft, true, origin: args.User, ignoreBlockers: healedBleed || healing.BloodlossModifier == 0); // GOOBEDIT
+                    var damageChanged = _damageable.ChangeDamage(targetedWoundable, healingLeft, true, origin: args.User, ignoreBlockers: false);
 
                     if (damageChanged is not null)
                     {
@@ -418,7 +417,7 @@ public sealed class HealingSystem : EntitySystem
         }
         else
         {
-            var healed = _damageable.TryChangeDamage(ent, healing.Damage * _damageable.UniversalTopicalsHealModifier, true, origin: args.User);
+            var healed = _damageable.ChangeDamage(ent, healing.Damage * _damageable.UniversalTopicalsHealModifier, true, origin: args.User);
             if (healed != null)
                 healingLeft -= healed;
         }
@@ -451,12 +450,16 @@ public sealed class HealingSystem : EntitySystem
         if (ent != args.User)
         {
             _adminLogger.Add(LogType.Healed,
-                $"{EntityManager.ToPrettyString(args.User):user} healed {EntityManager.ToPrettyString(ent):target} for {healedTotal.GetTotal():damage} damage"); // Goobstation
+                //IS14-change start
+                $"{ToPrettyString(args.User):user} healed {ToPrettyString(ent):target} for {healedTotal.GetTotal():damage} damage"); // Goobstation
+                //IS14-change end
         }
         else
         {
             _adminLogger.Add(LogType.Healed,
-                $"{EntityManager.ToPrettyString(args.User):user} healed themselves for {healedTotal.GetTotal():damage} damage"); // Goobstation
+                //IS14-change start
+                $"{ToPrettyString(args.User):user} healed themselves for {healedTotal.GetTotal():damage} damage"); // Goobstation
+                //IS14-change end
         }
         _audio.PlayPredicted(healing.HealingEndSound, ent, ent, AudioParams.Default.WithVariation(0.125f).WithVolume(1f)); // Goob edit
 

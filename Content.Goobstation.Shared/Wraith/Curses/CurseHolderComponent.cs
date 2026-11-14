@@ -1,3 +1,4 @@
+using Content.Shared.StatusIcon;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 
@@ -23,7 +24,7 @@ public sealed partial class CurseHolderComponent : Component
     public Dictionary<ProtoId<CursePrototype>, TimeSpan> CurseUpdate = new();
 
     [ViewVariables, AutoNetworkedField]
-    public List<ProtoId<CurseStatusIconPrototype>> CurseStatusIcons = new();
+    public List<ProtoId<StatusIconPrototype>> CurseStatusIcons = new();
 
     /// <summary>
     /// The entity that cursed us

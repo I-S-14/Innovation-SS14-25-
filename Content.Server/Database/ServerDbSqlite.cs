@@ -15,6 +15,7 @@ using Content.Shared.Database;
 using Microsoft.EntityFrameworkCore;
 using Robust.Shared.Configuration;
 using Robust.Shared.Network;
+using Robust.Shared.Serialization.Manager;
 using Robust.Shared.Utility;
 
 namespace Content.Server.Database
@@ -38,8 +39,10 @@ namespace Content.Server.Database
             bool inMemory,
             IConfigurationManager cfg,
             bool synchronous,
-            ISawmill opsLog)
-            : base(opsLog)
+            ISawmill opsLog,
+            ISerializationManager serialization,
+            bool snapshot)
+            : base(opsLog, serialization)
         {
             _options = options;
 
@@ -51,7 +54,12 @@ namespace Content.Server.Database
 
             if (synchronous)
             {
-                prefsCtx.Database.Migrate();
+                // EnsureCreated means you can't apply migrations later, fine for tests
+                if (snapshot)
+                    prefsCtx.Database.EnsureCreated();
+                else
+                    prefsCtx.Database.Migrate();
+
                 _dbReadyTask = Task.CompletedTask;
                 prefsCtx.Dispose();
             }

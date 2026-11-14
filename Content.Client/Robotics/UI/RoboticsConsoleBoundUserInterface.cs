@@ -24,17 +24,17 @@ public sealed class RoboticsConsoleBoundUserInterface : BoundUserInterface
         // Corvax-Goob-MutableLaws-Start
         _window.OnChangeLawsPressed += address =>
         {
-            SendMessage(new RoboticsConsoleChangeLawsMessage(address));
+            SendMessage(new RoboticsConsoleChangeLawsMessage(address.AddressId));
         };
         // Corvax-Goob-MutableLaws-End
 
         _window.OnDisablePressed += address =>
         {
-            SendMessage(new RoboticsConsoleDisableMessage(address));
+            SendMessage(new RoboticsConsoleDisableMessage(address.AddressId));
         };
         _window.OnDestroyPressed += address =>
         {
-            SendMessage(new RoboticsConsoleDestroyMessage(address));
+            SendMessage(new RoboticsConsoleDestroyMessage(address.AddressId));
         };
     }
 

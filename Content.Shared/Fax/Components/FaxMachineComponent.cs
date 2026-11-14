@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Shared.Containers.ItemSlots;
+using Content.Shared.DeviceNetwork;
 using Content.Shared.Paper;
 using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+using Robust.Shared.Serialization;
 
 namespace Content.Shared.Fax.Components;
 
@@ -15,23 +16,26 @@ public sealed partial class FaxMachineComponent : Component
     /// <summary>
     /// Name with which the fax will be visible to others on the network
     /// </summary>
-    [ViewVariables(VVAccess.ReadWrite)]
     [DataField("name")]
     public string FaxName { get; set; } = "Unknown";
 
     /// <summary>
     /// Sprite to use when inserting an object.
     /// </summary>
-    [ViewVariables(VVAccess.ReadWrite)]
     [DataField, AutoNetworkedField]
     public string InsertingState = "inserting";
 
     /// <summary>
     /// Device address of fax in network to which data will be send
     /// </summary>
-    [ViewVariables(VVAccess.ReadWrite)]
     [DataField("destinationAddress")]
-    public string? DestinationFaxAddress { get; set; }
+    public DeviceAddress? DestinationFaxAddress { get; set; }
+
+    /// <summary>
+    /// Name of fax in network to which data will be send
+    /// </summary>
+    [DataField("destinationName")]
+    public string? DestinationFaxName { get; set; }
 
     /// <summary>
     /// Contains the item to be sent, assumes it's paper...
@@ -43,21 +47,18 @@ public sealed partial class FaxMachineComponent : Component
     /// Is fax machine should respond to pings in network
     /// This will make it visible to others on the network
     /// </summary>
-    [ViewVariables(VVAccess.ReadWrite)]
     [DataField]
     public bool ResponsePings { get; set; } = true;
 
     /// <summary>
     /// Should admins be notified on message receive
     /// </summary>
-    [ViewVariables(VVAccess.ReadWrite)]
     [DataField]
     public bool NotifyAdmins { get; set; } = false;
 
     /// <summary>
     /// Should that fax receive nuke codes send by admins. Probably should be captain fax only
     /// </summary>
-    [ViewVariables(VVAccess.ReadWrite)]
     [DataField]
     public bool ReceiveNukeCodes { get; set; } = false;
 
@@ -91,7 +92,7 @@ public sealed partial class FaxMachineComponent : Component
     /// Known faxes in network by address with fax names
     /// </summary>
     [ViewVariables]
-    public Dictionary<string, string> KnownFaxes { get; } = new();
+    public Dictionary<DeviceAddress, string> KnownFaxes { get; } = new();
 
     /// <summary>
     /// Print queue of the incoming message
@@ -151,9 +152,22 @@ public sealed partial class FaxMachineComponent : Component
     /// </summary>
     [DataField]
     public EntProtoId PrintOfficePaperId = "PaperOffice";
+
+    /// <summary>
+    ///     If the fax machine should add a bit of text in the end of the fax that specifies from where and to where the fax is for
+    /// </summary>
+    [DataField]
+    public bool AddSenderInfo = true;
+
+    /// <summary>
+    ///     The text that is sent along with the paper's content if <see cref="AddSenderInfo"/> is true
+    /// </summary>
+    [DataField]
+    public LocId SenderInfo = "fax-machine-sender-info";
 }
 
 [DataDefinition]
+[Serializable, NetSerializable]
 public sealed partial class FaxPrintout
 {
     [DataField(required: true)]
@@ -165,27 +179,33 @@ public sealed partial class FaxPrintout
     [DataField(required: true)]
     public string Content { get; private set; } = default!;
 
-    [DataField(customTypeSerializer: typeof(PrototypeIdSerializer<EntityPrototype>), required: true)]
-    public string PrototypeId { get; private set; } = default!;
+    [DataField(required: true)]
+    public EntProtoId PrototypeId { get; private set; } = default!;
 
-    [DataField("stampState")]
+    [DataField]
     public string? StampState { get; private set; }
 
-    [DataField("stampedBy")]
+    [DataField]
     public List<StampDisplayInfo> StampedBy { get; private set; } = new();
 
     [DataField]
     public bool Locked { get; private set; }
 
     [DataField]
+    //IS14-change: the photo source is a server-local reference, never a network identity.
+    [field: NonSerialized]
     public EntityUid? EntityUid { get; private set; } // CorvaxGoob-PhotoCamera
 
     private FaxPrintout()
     {
     }
 
-    public FaxPrintout(string content, string name, string? label = null, string? prototypeId = null, string? stampState = null, List<StampDisplayInfo>? stampedBy = null, bool locked = false, EntityUid? entityUid = null) // CorvaxGoob-PhotoCamera
+    [DataField]
+    public string? SenderFaxName { get; private set; }
+
+    public FaxPrintout(string content, string name, string? label = null, string? prototypeId = null, string? stampState = null, List<StampDisplayInfo>? stampedBy = null, bool locked = false, EntityUid? entityUid = null, string? senderFaxName = null) // CorvaxGoob-PhotoCamera
     {
+        SenderFaxName = senderFaxName;
         Content = content;
         Name = name;
         Label = label;

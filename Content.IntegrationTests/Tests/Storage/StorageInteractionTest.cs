@@ -6,10 +6,11 @@ using Content.IntegrationTests.Tests.Interaction;
 using Content.Shared.Input;
 using Content.Shared.PDA;
 using Content.Shared.Storage;
-using Content.Shared.Timing;
+using Content.Shared.Timing.Components;
 using Robust.Client.UserInterface;
 using Robust.Shared.Containers;
 using Robust.Shared.GameObjects;
+using Content.Shared.Timing;
 
 namespace Content.IntegrationTests.Tests.Storage;
 

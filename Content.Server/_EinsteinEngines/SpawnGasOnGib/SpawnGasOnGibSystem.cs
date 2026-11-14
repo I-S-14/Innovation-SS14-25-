@@ -16,7 +16,7 @@ public sealed partial class SpawnGasOnGibSystem : EntitySystem
         SubscribeLocalEvent<SpawnGasOnGibComponent, BeingGibbedEvent>(OnBeingGibbed);
     }
 
-    private void OnBeingGibbed(EntityUid uid, SpawnGasOnGibComponent comp, BeingGibbedEvent args)
+    private void OnBeingGibbed(EntityUid uid, SpawnGasOnGibComponent comp, ref BeingGibbedEvent args)
     {
         if (_atmos.GetContainingMixture(uid, false, true) is not { } air)
             return;

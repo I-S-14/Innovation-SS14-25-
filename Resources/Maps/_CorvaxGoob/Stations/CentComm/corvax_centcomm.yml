@@ -35724,7 +35724,7 @@ entities:
     - type: NavMapBeacon
       text: Офисы ОЦК
     - type: WarpPoint
-      location: Офисы ОЦК
+      location: is14-map-warp-ba88b83cc0ac
   - uid: 4288
     components:
     - type: Transform
@@ -35733,7 +35733,7 @@ entities:
     - type: NavMapBeacon
       text: Мостик
     - type: WarpPoint
-      location: Мостик
+      location: is14-map-warp-51560891333c
   - uid: 4289
     components:
     - type: Transform
@@ -35742,7 +35742,7 @@ entities:
     - type: NavMapBeacon
       text: Архив
     - type: WarpPoint
-      location: Архив
+      location: is14-map-warp-3c54b5e783ef
   - uid: 4290
     components:
     - type: Transform
@@ -35751,7 +35751,7 @@ entities:
     - type: NavMapBeacon
       text: Офис НЩЦК
     - type: WarpPoint
-      location: Офис НЩЦК
+      location: is14-map-warp-38e9953e684c
 - proto: DefaultStationBeaconCourtroom
   entities:
   - uid: 4291
@@ -40527,7 +40527,7 @@ entities:
     - type: FaxMachine
       name: ЦентКом
     - type: WarpPoint
-      location: Факс ЦК
+      location: is14-map-warp-af9a1c377ddb
 - proto: FaxMachineSyndie
   entities:
   - uid: 5046
@@ -89143,7 +89143,7 @@ entities:
       pos: 11.5,49.5
       parent: 1
     - type: WarpPoint
-      location: Факс Синдиката
+      location: is14-map-warp-37821c71e498
     missingComponents:
     - WizardTeleportWarpPoint
   - uid: 11349
@@ -89152,7 +89152,7 @@ entities:
       pos: 47.5,59.5
       parent: 1
     - type: WarpPoint
-      location: Станция Центральное Командование
+      location: is14-map-warp-9f0345b6bf57
     missingComponents:
     - WizardTeleportWarpPoint
 - proto: WaterCooler

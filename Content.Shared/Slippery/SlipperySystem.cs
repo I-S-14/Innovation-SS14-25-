@@ -7,7 +7,6 @@ using Content.Shared.Inventory;
 using Content.Shared.Movement.Components;
 using Content.Shared.Movement.Systems;
 using Content.Shared.Standing;
-using Content.Shared.StatusEffect;
 using Content.Shared.StatusEffectNew;
 using Content.Shared.StepTrigger.Systems;
 using Content.Shared.Stunnable;
@@ -19,37 +18,31 @@ using Robust.Shared.Network;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Events;
 using Robust.Shared.Physics.Systems;
-using Robust.Shared.Physics.Events;
 using Robust.Shared.Utility;
 using Content.Shared.Projectiles;
 
 namespace Content.Shared.Slippery;
 
 [UsedImplicitly]
-public sealed class SlipperySystem : EntitySystem
+public sealed partial class SlipperySystem : EntitySystem
 {
-    [Dependency] private readonly INetManager _net = default!; // Goobstation
-    [Dependency] private readonly ISharedAdminLogManager _adminLogger = default!;
-    [Dependency] private readonly MovementModStatusSystem _movementMod = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
-    [Dependency] private readonly SharedStunSystem _stun = default!;
-    [Dependency] private readonly StatusEffectNew.StatusEffectsSystem _status = default!;
-    [Dependency] private readonly SharedStaminaSystem _stamina = default!;
-    [Dependency] private readonly SharedContainerSystem _container = default!;
-    [Dependency] private readonly SharedPhysicsSystem _physics = default!;
-    [Dependency] private readonly SpeedModifierContactsSystem _speedModifier = default!;
+    [Dependency] private ISharedAdminLogManager _adminLogger = default!;
+    [Dependency] private MovementModStatusSystem _movementMod = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private SharedStunSystem _stun = default!;
+    [Dependency] private StatusEffectsSystem _status = default!;
+    [Dependency] private SharedStaminaSystem _stamina = default!;
+    [Dependency] private SharedContainerSystem _container = default!;
+    [Dependency] private SharedPhysicsSystem _physics = default!;
+    [Dependency] private SpeedModifierContactsSystem _speedModifier = default!;
 
-    private EntityQuery<KnockedDownComponent> _knockedDownQuery;
-    private EntityQuery<PhysicsComponent> _physicsQuery;
-    private EntityQuery<SlidingComponent> _slidingQuery;
+    [Dependency] private EntityQuery<KnockedDownComponent> _knockedDownQuery = default!;
+    [Dependency] private EntityQuery<PhysicsComponent> _physicsQuery = default!;
+    [Dependency] private EntityQuery<SlidingComponent> _slidingQuery = default!;
 
     public override void Initialize()
     {
         base.Initialize();
-
-        _knockedDownQuery = GetEntityQuery<KnockedDownComponent>();
-        _physicsQuery = GetEntityQuery<PhysicsComponent>();
-        _slidingQuery = GetEntityQuery<SlidingComponent>();
 
         SubscribeLocalEvent<SlipperyComponent, StepTriggerAttemptEvent>(HandleAttemptCollide);
         SubscribeLocalEvent<SlipperyComponent, StepTriggeredOffEvent>(HandleStepTrigger);
@@ -70,7 +63,7 @@ public sealed class SlipperySystem : EntitySystem
         TrySlip(uid, component, args.Target);
     }
 
-    private void OnThrowHit(EntityUid uid, SlipperyComponent component, ThrowDoHitEvent args) // Goob - Deslippler
+    private void OnThrowHit(EntityUid uid, SlipperyComponent component, ref ThrowDoHitEvent args) // Goob - Deslippler
     {
         TrySlip(uid, component, args.Target);
     }

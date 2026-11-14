@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 
 using Content.Server.StationEvents.Events;
+using Content.Shared.Destructible.Thresholds;
 using Robust.Shared.Prototypes;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
 
 namespace Content.Server.StationEvents.Components;
 
@@ -12,6 +12,12 @@ namespace Content.Server.StationEvents.Components;
 [RegisterComponent, Access(typeof(AnomalySpawnRule))]
 public sealed partial class AnomalySpawnRuleComponent : Component
 {
-    [DataField("anomalySpawnerPrototype", customTypeSerializer: typeof(PrototypeIdSerializer<EntityPrototype>))]
-    public string AnomalySpawnerPrototype = "RandomAnomalySpawner";
+    [DataField]
+    public EntProtoId AnomalySpawnerPrototype = "RandomAnomalySpawner";
+
+    /// <summary>
+    /// How many anomalies should be spawned?
+    /// </summary>
+    [DataField]
+    public MinMax AmountToSpawn = new MinMax(1, 1);
 }

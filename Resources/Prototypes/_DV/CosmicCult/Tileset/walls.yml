@@ -23,8 +23,11 @@
         acts: [ "Destruction" ]
   - type: IconSmooth
     key: cultwalls
-    base: cult
-
+    states:
+    - !type:CornerSpriteSmoothing
+      base: cult
+      mask:
+      - cultwalls
 - type: entity
   parent: WallCosmicCult
   id: WallCosmicCultTrimmed
@@ -37,25 +40,21 @@
   - type: Sprite
     sprite: _DV/CosmicCult/Tileset/cosmicwall.rsi
     layers:
-      - state: full
-      - map: [ "enum.EdgeLayer.South" ]
-        state: trim_south
-      - map: [ "enum.EdgeLayer.East" ]
-        state: trim_east
-      - map: [ "enum.EdgeLayer.North" ]
-        state: trim_north
-      - map: [ "enum.EdgeLayer.West" ]
-        state: trim_west
+    - state: full
   - type: IconSmooth
     key: cultwalls
-    base: cult
-  - type: SmoothEdge
-
+    states:
+    - !type:EdgeSpriteSmoothing
+      base: trim_
+      mask:
+      - cultwalls
+      index: '1'
 - type: entity
   id: WindowCosmicCult
   name: malign pane
   description: An odd-looking window. Something about it unnerves you.
-  parent: WindowRCDResistant
+  # IS14-change: common window behavior and RCD resistance without ordinary-window breakage at 80.
+  parent: [BaseWindowStructure, BaseStructureHealth, BaseRCDResistant]
   components:
   - type: Sprite
     drawdepth: WallTops
@@ -84,7 +83,12 @@
       - !type:DoActsBehavior
         acts: [ "Destruction" ]
   - type: IconSmooth
-    base: coswindow
+    key: walls
+    states:
+    - !type:CornerSpriteSmoothing
+      base: coswindow
+      mask:
+      - walls
   - type: Appearance
   - type: DamageVisuals
     thresholds: [5, 10, 20]
@@ -108,8 +112,12 @@
     sprite: _DV/CosmicCult/Tileset/cosmicwindow_dark.rsi
     state: full
   - type: IconSmooth
-    base: cosDwindow
-
+    key: walls
+    states:
+    - !type:CornerSpriteSmoothing
+      base: cosDwindow
+      mask:
+      - walls
 - type: entity
   parent: WallShuttleDiagonal
   description: An odd-looking window. Something about it unnerves you.
@@ -128,9 +136,12 @@
     sprite: _DV/CosmicCult/Tileset/cosmicwindow_diagonal.rsi
     state: coswindow0
   - type: IconSmooth
-    mode: Diagonal
     key: cultwindows
-    base: coswindow
+    states:
+    - !type:DiagonalSpriteSmoothing
+      base: coswindow
+      mask:
+      - cultwindows
   - type: Icon
     sprite: _DV/CosmicCult/Tileset/cosmicwindow_diagonal.rsi
     state: coswindow0
@@ -160,9 +171,12 @@
     sprite: _DV/CosmicCult/Tileset/cosmicwindow_dark_diagonal.rsi
     state: cosDwindow0
   - type: IconSmooth
-    mode: Diagonal
     key: cultwindows
-    base: cosDwindow
+    states:
+    - !type:DiagonalSpriteSmoothing
+      base: cosDwindow
+      mask:
+      - cultwindows
   - type: Icon
     sprite: _DV/CosmicCult/Tileset/cosmicwindow_dark_diagonal.rsi
     state: cosDwindow0

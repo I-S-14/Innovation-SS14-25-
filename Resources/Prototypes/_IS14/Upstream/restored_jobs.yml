@@ -1,0 +1,643 @@
+# IS14: retain jobs lost while upstream moved Civilian/Service/TaskForce files.
+
+# Source: ad9cfe0c41:Resources/Prototypes/Roles/Jobs/CentComm/cburn.yml
+- type: job
+  id: CBURN
+  name: job-name-cburn
+  description: job-description-cburn
+  playTimeTracker: JobCBURN
+  setPreference: false
+  startingGear: CBURNGear
+  icon: "JobIconNanotrasen"
+  supervisors: job-supervisors-centcom
+  canBeAntag: false
+  skills:
+  - All
+  accessGroups:
+  - AllAccess
+  access:
+  - CentralCommand
+  - NanotrasenRepresentative
+  - BlueshieldOfficer
+  special:
+  - !type:AddImplantSpecial
+    implants: [MindShieldImplant, FreedomImplant, BluespaceLifelineImplant, RadioImplantCentcomm,
+      NutrimentPumpImplant, StypticStimulatorImplant, DeathRattleImplantCentcomm]
+- type: startingGear
+  id: CBURNGear
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitColorBrown
+    back: ClothingBackpackDuffelCBURN
+    mask: ClothingMaskGasERT
+    neck: ExecutiveIDCard
+    eyes: ClothingEyesGlassesMedSec
+    ears: ClothingHeadsetAltCentCom
+    gloves: ClothingHandsGlovesCombat
+    outerClothing: ClothingOuterHardsuitCBURN
+    shoes: ClothingShoesBootsMagEmergencyResponseTeam
+    id: CBURNPDA
+    pocket1: InfectionScannerCburn
+    pocket2: WeaponPulsePistol
+    belt: ClothingBeltSecurityFilled
+  storage:
+    back:
+    - WeaponPulseCarbine
+    - AmbuzolPlusMedipen
+    - AmbuzolMedipen
+    - AmbuzolMedipen
+    - MedkitCombatFilled
+    - CburnSpear
+- type: chameleonOutfit
+  id: CBURNChameleonOutfit
+  job: CBURN
+  hasMindShield: true
+  equipment:
+    head: ClothingHeadHelmetCBURN
+    neck: ClothingNeckScarfStripedBrown
+
+# Source: ad9cfe0c41:Resources/Prototypes/Roles/Jobs/CentComm/deathsquad.yml
+- type: job
+  id: DeathSquad
+  name: job-name-deathsquad
+  description: job-description-deathsquad
+  playTimeTracker: JobDeathSquad
+  setPreference: false
+  startingGear: DeathSquadGear
+  icon: "JobIconNanotrasen"
+  supervisors: job-supervisors-centcom
+  canBeAntag: false
+  skills:
+  - All
+  accessGroups:
+  - AllAccess
+  access:
+  - CentralCommand
+  - NanotrasenRepresentative
+  - BlueshieldOfficer
+  special:
+  - !type:AddImplantSpecial
+    implants: [MindShieldImplant, FreedomImplant, BluespaceLifelineImplant, RadioImplantCentcomm,
+      NutrimentPumpImplant, StypticStimulatorImplant, DeathRattleImplantCentcomm]
+  - !type:AddComponentSpecial
+    components:
+    - type: DeathSquadMember
+- type: startingGear
+  id: DeathSquadGear
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitDeathSquad
+    back: ClothingDeathSquadronBackpack
+    mask: ClothingMaskGasDeathSquad
+    eyes: ClothingEyesGlassesDeathsquad
+    neck: ExecutiveIDCard
+    ears: ClothingHeadsetDeathsquad
+    gloves: ClothingHandsGlovesDeathsquadUnremovable
+    outerClothing: ClothingOuterHardsuitDeathsquad
+    shoes: ClothingShoesBootsMagDeathsquad
+    id: DeathsquadPDA
+    pocket1: PhoronSabre
+    pocket2: WeaponRevolverMateba
+    belt: ClothingBeltDeathsquadWebbingFilled
+  storage:
+    back:
+    - SpeedLoaderMatebaAP
+    - SpeedLoaderMatebaAP
+    - ToolDebug
+    - WelderExperimental
+    - BlueShieldShieldEvilFilled
+    - DeterrentCaseFilled
+  inhand:
+  - WeaponPulseRifle
+- type: chameleonOutfit
+  id: DeathSquadChameleonOutfit
+  job: DeathSquad
+  hasMindShield: true
+  equipment:
+    head: ClothingHeadHelmetHardsuitDeathsquad
+    neck: ClothingNeckBronzeheart
+
+# Source: ad9cfe0c41:Resources/Prototypes/Roles/Jobs/Civilian/assistant.yml
+- type: job
+  id: Passenger
+  name: job-name-passenger
+  description: job-description-passenger
+  playTimeTracker: JobPassenger
+  startingGear: PassengerGear
+  icon: "JobIconPassenger"
+  supervisors: job-supervisors-everyone
+  access:
+  - Maintenance
+  special:
+  - !type:AddComponentSpecial
+    components:
+    - type: NpcFactionMember
+      factions:
+      - NanoTrasen
+      - Assistant
+- type: startingGear
+  id: PassengerGear
+  equipment:
+    id: PassengerPDA
+    ears: ClothingHeadsetGrey
+- type: chameleonOutfit
+  id: PassengerChameleonOutfit
+  job: Passenger
+  equipment:
+    head: ClothingHeadHatWelding
+    eyes: ClothingEyesGlassesCheapSunglasses
+    mask: ClothingMaskGas
+    neck: ClothingNeckMantle
+    outerClothing: ClothingOuterWinterCoat
+    gloves: ClothingHandsGlovesColorYellowBudget
+
+# Source: ad9cfe0c41:Resources/Prototypes/Roles/Jobs/Civilian/bartender.yml
+- type: job
+  id: Bartender
+  name: job-name-bartender
+  description: job-description-bartender
+  playTimeTracker: JobBartender
+  requirements:
+  - !type:DepartmentTimeRequirement
+    department: Civilian
+    time: 0.5h
+  startingGear: BartenderGear
+  icon: "JobIconBartender"
+  supervisors: job-supervisors-hop
+  guides:
+  - Bartender
+  - Drinks
+  access:
+  - Service
+  - Maintenance
+  - Bar
+  extendedAccess:
+  - Kitchen
+  - Hydroponics
+- type: startingGear
+  id: BartenderGear
+  equipment:
+    shoes: ClothingShoesColorBlack
+    id: BartenderPDA
+    ears: ClothingHeadsetService
+- type: chameleonOutfit
+  id: BartenderChameleonOutfit
+  job: Bartender
+  equipment:
+    head: ClothingHeadHatTophat
+    eyes: ClothingEyesGlassesSunglasses
+    mask: ClothingMaskBreath
+    neck: ClothingNeckScarfStripedBlack
+    outerClothing: ClothingOuterArmorBasicSlim
+    gloves: ClothingHandsGlovesColorBlack
+
+# Source: ad9cfe0c41:Resources/Prototypes/Roles/Jobs/Civilian/botanist.yml
+- type: job
+  id: Botanist
+  name: job-name-botanist
+  description: job-description-botanist
+  playTimeTracker: JobBotanist
+  startingGear: BotanistGear
+  icon: "JobIconBotanist"
+  supervisors: job-supervisors-hop
+  guides: [Botany]
+  access:
+  - Service
+  - Maintenance
+  - Hydroponics
+  extendedAccess:
+  - Kitchen
+  - Bar
+  special:
+  - !type:GiveItemOnHolidaySpecial
+    holiday: FourTwenty
+    prototype: CannabisSeeds
+- type: startingGear
+  id: BotanistGear
+  equipment:
+    shoes: ClothingShoesColorBrown
+    id: BotanistPDA
+    ears: ClothingHeadsetService
+    belt: ClothingBeltPlantFilled
+- type: chameleonOutfit
+  id: BotanistChameleonOutfit
+  job: Botanist
+  equipment:
+    head: ClothingHeadBandBotany
+    eyes: ClothingEyesGlassesCheapSunglasses
+    mask: ClothingMaskBreath
+    neck: ClothingNeckScarfStripedGreen
+    outerClothing: ClothingOuterApronBotanist
+    gloves: ClothingHandsGlovesLeather
+
+# Source: ad9cfe0c41:Resources/Prototypes/Roles/Jobs/Civilian/chaplain.yml
+- type: job
+  id: Chaplain
+  name: job-name-chaplain
+  description: job-description-chaplain
+  playTimeTracker: JobChaplain
+  requirements:
+  - !type:OverallPlaytimeRequirement
+    time: 15h
+  startingGear: ChaplainGear
+  icon: "JobIconChaplain"
+  supervisors: job-supervisors-hop
+  guides: [Chaplain]
+  access:
+  - Chapel
+  - Maintenance
+  special:
+  - !type:AddComponentSpecial
+    components:
+    - type: BibleUser
+    - type: Condemned
+      soulOwnedNotDevil: true
+    - type: CanEnchant
+    - type: CurseImmune
+- type: startingGear
+  id: ChaplainGear
+  equipment:
+    shoes: ClothingShoesColorBlack
+    id: ChaplainPDA
+    ears: ClothingHeadsetService
+  storage:
+    back:
+    - ChaplainUndeterminedBible
+    - RubberStampChaplain
+    - CosmicCenser
+    - Nullrod
+    - ArmamentsBeacon
+- type: chameleonOutfit
+  id: ChaplainChameleonOutfit
+  job: Chaplain
+  equipment:
+    head: ClothingHeadHatPlaguedoctor
+    eyes: ClothingEyesGlasses
+    mask: ClothingMaskPlague
+    neck: ClothingNeckStoleChaplain
+    outerClothing: ClothingOuterPlagueSuit
+    gloves: ClothingHandsGlovesColorBlack
+
+# Source: ad9cfe0c41:Resources/Prototypes/Roles/Jobs/Civilian/chef.yml
+- type: job
+  id: Chef
+  name: job-name-chef
+  description: job-description-chef
+  playTimeTracker: JobChef
+  requirements:
+  - !type:DepartmentTimeRequirement
+    department: Civilian
+    time: 0.5h
+  startingGear: ChefGear
+  icon: "JobIconChef"
+  supervisors: job-supervisors-hop
+  skills:
+  - Butchering
+  guides:
+  - Chef
+  - FoodRecipes
+  - CQC
+  access:
+  - Service
+  - Maintenance
+  - Kitchen
+  extendedAccess:
+  - Hydroponics
+  - Bar
+  special:
+  - !type:AddComponentSpecial
+    components:
+    - type: GrantCqc
+      startingStage: Hard
+      isBlocked: true
+  - !type:AddImplantSpecial
+    implants: [SpaceItalianTranslatorImplant]
+- type: startingGear
+  id: ChefGear
+  equipment:
+    shoes: ClothingShoesChef
+    id: ChefPDA
+    ears: ClothingHeadsetService
+    belt: ClothingBeltChefFilled
+- type: chameleonOutfit
+  id: ChefChameleonOutfit
+  job: Chef
+  equipment:
+    head: ClothingHeadHatChef
+    eyes: ClothingEyesGlassesCheapSunglasses
+    mask: ClothingMaskItalianMoustache
+    neck: ClothingNeckScarfStripedBrown
+    outerClothing: ClothingOuterJacketChef
+    gloves: ClothingHandsGlovesColorWhite
+    shoes: ClothingShoesChef
+
+# Source: ad9cfe0c41:Resources/Prototypes/Roles/Jobs/Civilian/clown.yml
+- type: job
+  id: Clown
+  name: job-name-clown
+  description: job-description-clown
+  playTimeTracker: JobClown
+  startingGear: ClownGear
+  icon: "JobIconClown"
+  supervisors: job-supervisors-hop
+  access:
+  - Theatre
+  - Maintenance
+  special:
+  - !type:AddComponentSpecial
+    components:
+    - type: Clumsy
+      gunShootFailDamage:
+        types:
+          Blunt: 5
+          Piercing: 4
+          Heat: 3
+      catchingFailDamage:
+        types:
+          Blunt: 1
+    - type: SleepEmitSound
+      snore: /Audio/Voice/Misc/silly_snore.ogg
+      interval: 10
+  - !type:AddImplantSpecial
+    implants: [SadTromboneImplant]
+- type: startingGear
+  id: ClownGear
+  equipment:
+    mask: ClothingMaskClown
+    pocket1: BikeHorn
+    pocket2: ClownRecorder
+    id: ClownPDA
+    ears: ClothingHeadsetService
+  inhand:
+  - FoolboxFilled
+  storage:
+    back:
+    - RubberStampClown
+    - CrayonRainbow
+- type: chameleonOutfit
+  id: ClownChameleonOutfit
+  job: Clown
+  equipment:
+    head: ClothingHeadHatXmasCrown
+    eyes: ClothingEyesGlassesCheapSunglasses
+    neck: ClothingHeadHatFlowerWreath
+    outerClothing: ClothingOuterClownPriest
+    gloves: ClothingHandsGlovesColorYellowBudget
+
+# Source: ad9cfe0c41:Resources/Prototypes/Roles/Jobs/Civilian/janitor.yml
+- type: job
+  id: Janitor
+  name: job-name-janitor
+  description: job-description-janitor
+  playTimeTracker: JobJanitor
+  startingGear: JanitorGear
+  icon: "JobIconJanitor"
+  supervisors: job-supervisors-hop
+  guides: [Janitorial]
+  access:
+  - Service
+  - Janitor
+  - Maintenance
+  special:
+  - !type:GiveItemOnHolidaySpecial
+    holiday: GarbageDay
+    prototype: WeaponRevolverInspector
+- type: startingGear
+  id: JanitorGear
+  equipment:
+    shoes: ClothingShoesGaloshes
+    id: JanitorPDA
+    ears: ClothingHeadsetService
+    belt: ClothingBeltJanitorFilled
+    pocket1: KeyRingJanitor
+- type: startingGear
+  id: JanitorMaidGear
+  equipment:
+    jumpsuit: ClothingUniformJumpskirtJanimaid
+    id: JanitorPDA
+    gloves: ClothingHandsCatPawsBlack
+    head: ClothingHeadHatCatEars
+    ears: ClothingHeadsetService
+    belt: ClothingBeltJanitorFilled
+    pocket1: KeyRingJanitor
+- type: chameleonOutfit
+  id: JanitorChameleonOutfit
+  job: Janitor
+  equipment:
+    head: ClothingHeadHatPurplesoft
+    eyes: ClothingEyesGlassesCheapSunglasses
+    mask: ClothingMaskGas
+    neck: ClothingNeckScarfStripedPurple
+    outerClothing: ClothingOuterWinterJani
+    gloves: ClothingHandsGlovesJanitor
+
+# Source: ad9cfe0c41:Resources/Prototypes/Roles/Jobs/Civilian/lawyer.yml
+- type: job
+  id: Lawyer
+  name: job-name-lawyer
+  description: job-description-lawyer
+  playTimeTracker: JobLawyer
+  requirements:
+  - !type:OverallPlaytimeRequirement
+    time: 2.5h
+  - !type:SpeciesRequirement
+    inverted: true
+    species:
+    - Abductor
+  startingGear: LawyerGear
+  icon: "JobIconLawyer"
+  supervisors: job-supervisors-hop
+  access:
+  - Service
+  - Lawyer
+  - Brig
+  - Maintenance
+  special:
+  - !type:AddComponentSpecial
+    components:
+    - type: Condemned
+      soulOwnedNotDevil: true
+- type: startingGear
+  id: LawyerGear
+  equipment:
+    shoes: ClothingShoesBootsLaceup
+    id: LawyerPDA
+    ears: ClothingHeadsetLawyer
+  inhand:
+  - BriefcaseBrownFilled
+  storage:
+    back:
+    - RubberStampLawyer
+    - BookSpaceLaw
+- type: chameleonOutfit
+  id: LawyerChameleonOutfit
+  job: Lawyer
+  equipment:
+    head: ClothingHeadHatBowlerHat
+    eyes: ClothingEyesGlassesCheapSunglasses
+    mask: ClothingMaskBreath
+    neck: ClothingNeckLawyerbadge
+    outerClothing: ClothingOuterWinterColorBlack
+    gloves: ClothingHandsGlovesColorBlack
+    ears: ClothingHeadsetLawyer
+
+# Source: ad9cfe0c41:Resources/Prototypes/Roles/Jobs/Civilian/librarian.yml
+- type: job
+  id: Librarian
+  name: job-name-librarian
+  description: job-description-librarian
+  playTimeTracker: JobLibrarian
+  startingGear: LibrarianGear
+  icon: "JobIconLibrarian"
+  supervisors: job-supervisors-hop
+  access:
+  - Service
+  - Maintenance
+  special:
+  - !type:AddImplantSpecial
+    implants: [LibrarianTranslatorImplant]
+- type: startingGear
+  id: LibrarianGear
+  equipment:
+    shoes: ClothingShoesBootsLaceup
+    id: LibrarianPDA
+    ears: ClothingHeadsetService
+    pocket1: d20Dice
+    pocket2: HandLabeler
+  storage:
+    back:
+    - BookRandom
+- type: chameleonOutfit
+  id: LibrarianChameleonOutfit
+  job: Librarian
+  equipment:
+    head: ClothingHeadHatCanadaBeanie
+    eyes: ClothingEyesGlassesJamjar
+    mask: ClothingMaskGas
+    neck: ClothingNeckScarfStripedGreen
+    outerClothing: ClothingOuterWinterColorGreen
+    gloves: ClothingHandsGlovesColorBlack
+
+# Source: ad9cfe0c41:Resources/Prototypes/Roles/Jobs/Civilian/mime.yml
+- type: job
+  id: Mime
+  name: job-name-mime
+  description: job-description-mime
+  playTimeTracker: JobMime
+  requirements:
+  - !type:OverallPlaytimeRequirement
+    time: 4h
+  startingGear: MimeGear
+  icon: "JobIconMime"
+  supervisors: job-supervisors-hop
+  access:
+  - Theatre
+  - Maintenance
+  special:
+  - !type:AddComponentSpecial
+    components:
+    - type: MimePowers
+      preventWriting: true
+    - type: FrenchAccent
+- type: startingGear
+  id: MimeGear
+  equipment:
+    id: MimePDA
+    pocket1: CrayonMime
+    ears: ClothingHeadsetService
+  storage:
+    back:
+    - RubberStampMime
+- type: entity
+  parent: BaseAction
+  id: ActionMimeInvisibleWall
+  name: Create Invisible Wall
+  description: Create an invisible wall in front of you, if placeable there.
+  components:
+  - type: Action
+    priority: -1
+    useDelay: 30
+    icon:
+      sprite: Structures/Walls/solid.rsi
+      state: full
+  - type: InstantAction
+    event: !type:InvisibleWallActionEvent ''
+- type: chameleonOutfit
+  id: MimeChameleonOutfit
+  job: Mime
+  equipment:
+    head: ClothingHeadHatMimesoft
+    eyes: ClothingEyesGlassesCheapSunglasses
+    neck: ClothingNeckScarfStripedZebra
+    outerClothing: ClothingOuterWinterMime
+
+# Source: ad9cfe0c41:Resources/Prototypes/Roles/Jobs/Civilian/musician.yml
+- type: job
+  id: Musician
+  name: job-name-musician
+  description: job-description-musician
+  playTimeTracker: JobMusician
+  startingGear: MusicianGear
+  icon: "JobIconMusician"
+  supervisors: job-supervisors-hire
+  access:
+  - Maintenance
+  - Theatre
+  special:
+  - !type:GiveItemOnHolidaySpecial
+    holiday: MikuDay
+    prototype: BoxPerformer
+- type: startingGear
+  id: MusicianGear
+  equipment:
+    shoes: ClothingShoesBootsLaceup
+    id: MusicianPDA
+    ears: ClothingHeadsetService
+- type: chameleonOutfit
+  id: MusicianChameleonOutfit
+  job: Musician
+  equipment:
+    head: ClothingHeadHatTophat
+    mask: ClothingMaskBreath
+    neck: ClothingMultipleHeadphones
+    outerClothing: ClothingOuterWinterMusician
+    gloves: ClothingHandsGlovesColorBlack
+
+# Source: ad9cfe0c41:Resources/Prototypes/Roles/Jobs/Civilian/service_worker.yml
+- type: job
+  id: ServiceWorker
+  name: job-name-serviceworker
+  description: job-description-serviceworker
+  playTimeTracker: JobServiceWorker
+  requirements:
+  - !type:DepartmentTimeRequirement
+    department: Civilian
+    time: 0.5h
+  startingGear: ServiceWorkerGear
+  icon: "JobIconServiceWorker"
+  supervisors: job-supervisors-service
+  guides: [Service]
+  access:
+  - Service
+  - Maintenance
+  - Bar
+  - Kitchen
+  extendedAccess:
+  - Hydroponics
+  special:
+  - !type:AddImplantSpecial
+    implants: [BasicSpaceItalianTranslatorImplant]
+- type: startingGear
+  id: ServiceWorkerGear
+  equipment:
+    shoes: ClothingShoesColorBlack
+    id: ServiceWorkerPDA
+    ears: ClothingHeadsetService
+- type: chameleonOutfit
+  id: ServiceWorkerChameleonOutfit
+  job: ServiceWorker
+  equipment:
+    head: ClothingHeadHatBowlerHat
+    eyes: ClothingEyesGlassesSunglasses
+    mask: ClothingMaskGas
+    neck: ClothingNeckScarfStripedBrown
+    outerClothing: ClothingOuterVest
+    gloves: ClothingHandsGlovesColorBlack

@@ -43,7 +43,7 @@ public partial class SharedGunSystem
 
     protected virtual (EntityUid Entity, IShootable) GetSolutionShot(Entity<SolutionAmmoProviderComponent> ent, EntityCoordinates position)
     {
-        var shot = Spawn(ent.Comp.Prototype, position);
+        var shot = PredictedSpawnAtPosition(ent.Comp.Prototype, position); // Trauma - predicted
         return (shot, EnsureShootable(shot));
     }
 
@@ -53,6 +53,7 @@ public partial class SharedGunSystem
             return;
 
         Appearance.SetData(ent, AmmoVisuals.HasAmmo, ent.Comp.Shots != 0, appearance);
+        Appearance.SetData(ent, AmmoVisuals.IsFull, ent.Comp.Shots == ent.Comp.MaxShots, appearance);
         Appearance.SetData(ent, AmmoVisuals.AmmoCount, ent.Comp.Shots, appearance);
         Appearance.SetData(ent, AmmoVisuals.AmmoMax, ent.Comp.MaxShots, appearance);
     }

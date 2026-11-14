@@ -11,6 +11,7 @@ using Robust.Client.UserInterface.Controls;
 using Robust.Client.UserInterface.CustomControls;
 using Robust.Client.UserInterface.XAML;
 using Robust.Shared.Timing;
+using System;
 
 namespace Content.Client.Power
 {
@@ -90,11 +91,11 @@ namespace Content.Client.Power
 
     }
 
-    public sealed class SolarControlNotARadar : Control
+    public sealed partial class SolarControlNotARadar : Control
     {
         // This is used for client-side prediction of the panel rotation.
         // This makes the display feel a lot smoother.
-        [Dependency] private readonly IGameTiming _gameTiming = default!;
+        [Dependency] private IGameTiming _gameTiming = default!;
 
         private SolarControlConsoleBoundInterfaceState _lastState = new(0, 0, 0, 0);
 

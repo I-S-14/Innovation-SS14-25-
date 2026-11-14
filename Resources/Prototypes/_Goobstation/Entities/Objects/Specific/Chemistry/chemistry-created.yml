@@ -22,16 +22,16 @@
   components:
   - type: Sprite
     state: bear # looks pretty disgusting
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        reagents:
-        - ReagentId: Synthflesh
-          Quantity: 20
-        - ReagentId: UncookedAnimalProteins
-          Quantity: 5
-        - ReagentId: GastroToxin
-          Quantity: 5
+  - type: Solution
+    solution:
+      maxVol: 0
+      reagents:
+      - ReagentId: Synthflesh
+        Quantity: 20
+      - ReagentId: UncookedAnimalProteins
+        Quantity: 5
+      - ReagentId: GastroToxin
+        Quantity: 5
   - type: FoodSequenceElement
     entries:
       Burger: FSE_FoodMeatSynth # just in case you really want to

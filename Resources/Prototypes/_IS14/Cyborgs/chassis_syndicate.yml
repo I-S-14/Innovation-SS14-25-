@@ -20,12 +20,15 @@
     subverted: true
   - type: Cyborg
     inherentRadioChannels:
+    - Binary
     - Syndicate
   - type: IntrinsicRadioTransmitter
     channels:
+    - Binary
     - Syndicate
   - type: ActiveRadio
     channels:
+    - Binary
     - Syndicate
   - type: ShowSyndicateIcons
   - type: CyborgAiLink
@@ -72,6 +75,7 @@
   - type: Cyborg
     model: IS14CyborgModelSyndicateAssault
     inherentRadioChannels:
+    - Binary
     - Syndicate
   - type: NukeOperative
 
@@ -89,6 +93,7 @@
   - type: Cyborg
     model: IS14CyborgModelSyndicateMedical
     inherentRadioChannels:
+    - Binary
     - Syndicate
   - type: NukeOperative
 
@@ -106,6 +111,7 @@
   - type: Cyborg
     model: IS14CyborgModelSyndicateSaboteur
     inherentRadioChannels:
+    - Binary
     - Syndicate
   - type: NukeOperative
 

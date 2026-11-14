@@ -38,10 +38,13 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
-using Content.Shared.Popups;
-using Content.Shared.Radio;
 using Content.Shared.IdentityManagement.Components;
 using Content.Shared.Radio.Components;
+using Content.Shared.AlertLevel;
+using Content.Shared.Antag;
+using Content.Shared.GameTicking.Events;
+using Content.Shared.Pinpointer;
+using Content.Shared.Station.Systems;
 
 namespace Content.Server._DV.CosmicCult;
 
@@ -226,14 +229,14 @@ public sealed partial class CosmicCultSystem
     #region Equipment Pickup
     private void OnGotCosmicItemEquipped(Entity<CosmicEquipmentComponent> ent, ref GotEquippedEvent args)
     {
-        if (!EntityIsCultist(args.Equipee))
-            _statusEffects.TryAddStatusEffect<CosmicEntropyNonCultistComponent>(args.Equipee, EntropicDegenNonCultist, TimeSpan.FromDays(1), true); // TimeSpan.MaxValue causes a crash here, so we use FromDays(1) instead.
+        if (!EntityIsCultist(args.EquipTarget))
+            _statusEffects.TryAddStatusEffect<CosmicEntropyNonCultistComponent>(args.EquipTarget, EntropicDegenNonCultist, TimeSpan.FromDays(1), true); // TimeSpan.MaxValue causes a crash here, so we use FromDays(1) instead.
     }
 
     private void OnGotCosmicItemUnequipped(Entity<CosmicEquipmentComponent> ent, ref GotUnequippedEvent args)
     {
-        if (!EntityIsCultist(args.Equipee))
-            _statusEffects.TryRemoveStatusEffect(args.Equipee, EntropicDegenNonCultist);
+        if (!EntityIsCultist(args.EquipTarget))
+            _statusEffects.TryRemoveStatusEffect(args.EquipTarget, EntropicDegenNonCultist);
     }
     private void OnGotHeld(Entity<CosmicEquipmentComponent> ent, ref GotEquippedHandEvent args)
     {
@@ -252,36 +255,36 @@ public sealed partial class CosmicCultSystem
 
     private void OnGotSpeechOverrideEquipped(Entity<SpeechOverrideComponent> ent, ref GotEquippedEvent args)
     {
-        if (ent.Comp.OverrideIDs is not { } overrides || !TryComp<VocalComponent>(args.Equipee, out var vocalComp))
+        if (ent.Comp.OverrideIDs is not { } overrides || !TryComp<VocalComponent>(args.EquipTarget, out var vocalComp))
             return;
         ent.Comp.StoredIDs = vocalComp.Sounds;
         vocalComp.Sounds = overrides;
         var ev = new SoundsChangedEvent();
-        RaiseLocalEvent(args.Equipee, ref ev);
+        RaiseLocalEvent(args.EquipTarget, ref ev);
     }
 
     private void OnGotSpeechOverrideUnequipped(Entity<SpeechOverrideComponent> ent, ref GotUnequippedEvent args)
     {
-        if (ent.Comp.StoredIDs is not { } stored || !TryComp<VocalComponent>(args.Equipee, out var vocalComp)) return;
+        if (ent.Comp.StoredIDs is not { } stored || !TryComp<VocalComponent>(args.EquipTarget, out var vocalComp)) return;
         ent.Comp.StoredIDs = null;
         vocalComp.Sounds = stored;
         var ev = new SoundsChangedEvent();
-        RaiseLocalEvent(args.Equipee, ref ev);
+        RaiseLocalEvent(args.EquipTarget, ref ev);
     }
     #endregion
 
     #region Movespeed
     private void OnStartInfluenceStride(Entity<InfluenceStrideComponent> uid, ref ComponentInit args) => // i wish movespeed was easier to work with
-        _movementSpeed.RefreshMovementSpeedModifiers(uid);
+        _movementSpeed.RefreshMovementSpeedModifiers(uid.Owner);
     private void OnEndInfluenceStride(Entity<InfluenceStrideComponent> uid, ref ComponentRemove args) => // that movespeed applies more-or-less correctly
-        _movementSpeed.RefreshMovementSpeedModifiers(uid);
+        _movementSpeed.RefreshMovementSpeedModifiers(uid.Owner);
     private void OnStartImposition(Entity<CosmicImposingComponent> uid, ref ComponentInit args) // these functions just make sure
     {
-        _movementSpeed.RefreshMovementSpeedModifiers(uid);
+        _movementSpeed.RefreshMovementSpeedModifiers(uid.Owner);
     }
     private void OnEndImposition(Entity<CosmicImposingComponent> uid, ref ComponentRemove args) // as various cosmic cult effects get added and removed
     {
-        _movementSpeed.RefreshMovementSpeedModifiers(uid);
+        _movementSpeed.RefreshMovementSpeedModifiers(uid.Owner);
     }
 
     private void OnRefreshMoveSpeed(EntityUid uid, InfluenceStrideComponent comp, RefreshMovementSpeedModifiersEvent args)
@@ -295,9 +298,9 @@ public sealed partial class CosmicCultSystem
 
     // Goob start
     private void OnStartCosmicEmpowered(Entity<CosmicEmpoweredSpeedComponent> uid, ref ComponentInit args) =>
-        _movementSpeed.RefreshMovementSpeedModifiers(uid);
+        _movementSpeed.RefreshMovementSpeedModifiers(uid.Owner);
     private void OnEndCosmicEmpowered(Entity<CosmicEmpoweredSpeedComponent> uid, ref ComponentRemove args) =>
-        _movementSpeed.RefreshMovementSpeedModifiers(uid);
+        _movementSpeed.RefreshMovementSpeedModifiers(uid.Owner);
     private void OnCosmicEmpoweredMove(EntityUid uid, CosmicEmpoweredSpeedComponent comp, RefreshMovementSpeedModifiersEvent args) =>
         args.ModifySpeed(comp.SpeedBoost, comp.SpeedBoost);
     // Goob end

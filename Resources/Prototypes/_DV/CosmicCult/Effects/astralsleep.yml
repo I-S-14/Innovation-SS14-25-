@@ -1,4 +1,4 @@
-- type: ssdIcon
+- type: statusIcon
   id: CosmicSSDIcon
   icon:
     sprite: /Textures/_DV/CosmicCult/Effects/astralsleep.rsi

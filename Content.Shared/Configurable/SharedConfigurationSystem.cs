@@ -1,17 +1,17 @@
+using static Content.Shared.Configurable.ConfigurationComponent;
 using Content.Shared.Interaction;
 using Content.Shared.Tools.Systems;
 using Robust.Shared.Containers;
-using static Content.Shared.Configurable.ConfigurationComponent;
 
 namespace Content.Shared.Configurable;
 
 /// <summary>
 /// <see cref="ConfigurationComponent"/>
 /// </summary>
-public abstract class SharedConfigurationSystem : EntitySystem
+public abstract partial class SharedConfigurationSystem : EntitySystem
 {
-    [Dependency] private readonly SharedUserInterfaceSystem _uiSystem = default!;
-    [Dependency] private readonly SharedToolSystem _toolSystem = default!;
+    [Dependency] private SharedUserInterfaceSystem _uiSystem = default!;
+    [Dependency] private SharedToolSystem _toolSystem = default!;
 
     public override void Initialize()
     {

@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 - type: entity
-  parent: BaseItem
+  parent: [ BaseItem, BaseItemDestructible ]
   id: LogicEmptyCircuit
   name: empty circuit
   description: Something seems to be missing.
@@ -12,7 +12,6 @@
     layers:
     - state: base
   - type: Anchorable
-  - type: Rotatable
   - type: Construction
     graph: LogicGate
     node: empty
@@ -25,8 +24,16 @@
   - type: DeviceNetwork
     deviceNetId: Wireless
     receiveFrequencyId: BasicDevice
-  - type: WirelessNetworkConnection
+  - type: WirelessNetwork
     range: 200
+  - type: EntityEffectOnDeviceOverload
+    effects:
+    - !type:SpawnEntity
+      entity: EffectSparks
+      predicted: false
+    - !type:PlaySound
+      sound: /Audio/Items/Defib/defib_zap.ogg
+      predicted: false
 
 - type: entity
   parent: BaseLogicItem

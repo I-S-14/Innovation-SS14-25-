@@ -34,10 +34,6 @@
   - type: SiliconLawProvider
     laws: XenoborgLawset
     subverted: true
-  - type: CollectiveMind
-    defaultChannel: Binary
-    channels:
-    - Binary
   - type: IntrinsicRadioTransmitter
     channels:
     - Xenoborg

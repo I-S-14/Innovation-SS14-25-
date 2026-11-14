@@ -1,3 +1,6 @@
+using Robust.Shared.Prototypes;
+using Content.Shared.DeviceLinking;
+using Content.Shared.DeviceLinking.Systems;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Server.DeviceLinking.Systems;
@@ -10,13 +13,17 @@ using Robust.Shared.Random;
 
 namespace Content.Goobstation.Server.Contraband;
 
-public sealed class ContrabandDetectorSystem : SharedContrabandDetectorSystem
+public sealed partial class ContrabandDetectorSystem : SharedContrabandDetectorSystem
 {
-    [Dependency] private readonly AudioSystem _audioSystem = default!;
-    [Dependency] private readonly PowerReceiverSystem _powerReceiverSystem = default!;
-    [Dependency] private readonly DeviceLinkSystem _deviceLink = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
+    //IS14-change start: typed IDs preserve the retained Goob prototypes.
+    private static readonly ProtoId<SourcePortPrototype> CompatibilitySignalContrabandDetectedSourcePortId = "SignalContrabandDetected";
+    //IS14-change end
+
+    [Dependency] private AudioSystem _audioSystem = default!;
+    [Dependency] private PowerReceiverSystem _powerReceiverSystem = default!;
+    [Dependency] private DeviceLinkSystem _deviceLink = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private IRobustRandom _random = default!;
 
     public override void Initialize()
     {
@@ -50,13 +57,13 @@ public sealed class ContrabandDetectorSystem : SharedContrabandDetectorSystem
         if (isDetected)
         {
             _audioSystem.PlayPvs(component.Detect, uid);
-            _deviceLink.SendSignal(uid, "SignalContrabandDetected", true);
+            _deviceLink.SendSignal(uid, CompatibilitySignalContrabandDetectedSourcePortId, true);
             component.State = ContrabandDetectorState.Alarm;
         }
         else
         {
             _audioSystem.PlayPvs(component.NoDetect, uid);
-            _deviceLink.SendSignal(uid, "SignalContrabandDetected", false);
+            _deviceLink.SendSignal(uid, CompatibilitySignalContrabandDetectedSourcePortId, false);
             component.State = ContrabandDetectorState.Scan;
         }
 

@@ -2,12 +2,13 @@
 
 using Content.Shared.Examine;
 using Content.Shared.Nutrition.Components;
+using Content.Shared.Nutrition.EntitySystems;
 
 namespace Content.Shared.Nutrition.EntitySystems;
 
 public sealed partial class SealableSystem : EntitySystem
 {
-    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
+    [Dependency] private SharedAppearanceSystem _appearance = default!;
     public override void Initialize()
     {
         base.Initialize();
@@ -26,7 +27,7 @@ public sealed partial class SealableSystem : EntitySystem
         args.PushMarkup(sealedText);
     }
 
-    private void OnOpened(EntityUid uid, SealableComponent comp, OpenableOpenedEvent args)
+    private void OnOpened(EntityUid uid, SealableComponent comp, ref OpenableOpenedEvent args)
     {
         comp.Sealed = false;
 

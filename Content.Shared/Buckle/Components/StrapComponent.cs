@@ -14,6 +14,10 @@ namespace Content.Shared.Buckle.Components;
 [Access(typeof(SharedBuckleSystem))]
 public sealed partial class StrapComponent : Component
 {
+    //IS14-change: retained Goob draw-depth behavior.
+    [DataField, AutoNetworkedField]
+    public bool ModifyBuckleDrawDepth = true;
+
     /// <summary>
     /// The entities that are currently buckled to this strap.
     /// </summary>

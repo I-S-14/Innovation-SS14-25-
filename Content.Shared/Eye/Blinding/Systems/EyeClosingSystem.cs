@@ -121,7 +121,9 @@ public sealed class EyeClosingSystem : EntitySystem
         var ev = new GetBlurEvent(blindable.Comp.EyeDamage);
         RaiseLocalEvent(blindable.Owner, ev);
 
-        if (EntityManager.TryGetComponent<EyeClosingComponent>(blindable, out var eyelids) && !eyelids.NaturallyCreated)
+        //IS14-change start
+        if (TryComp<EyeClosingComponent>(blindable, out var eyelids) && !eyelids.NaturallyCreated)
+        //IS14-change end
             return;
 
         if (ev.Blur < BlurryVisionComponent.MaxMagnitude || ev.Blur >= blindable.Comp.MaxDamage)

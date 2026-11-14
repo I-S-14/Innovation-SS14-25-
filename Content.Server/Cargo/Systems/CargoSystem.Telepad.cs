@@ -1,3 +1,4 @@
+using Content.Shared.DeviceLinking.Components; // IS14-change: upstream namespace move
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Diagnostics.CodeAnalysis;
@@ -138,7 +139,7 @@ public sealed partial class CargoSystem
 
         if (_station.GetOwningStation(ent) is not { } station)
         {
-            station = _random.Pick(_station.GetStations().Where(HasComp<StationCargoOrderDatabaseComponent>).ToList());
+            station = _random.Pick(_station.GetStations().Where(station => HasComp<StationCargoOrderDatabaseComponent>(station.Owner)).ToList());
         }
 
         if (!TryComp<StationCargoOrderDatabaseComponent>(station, out var db) ||

@@ -18,9 +18,8 @@ using Robust.Shared.Utility;
 
 namespace Content.Server.Power.EntitySystems;
 
-public sealed class BatterySystem : SharedBatterySystem
+public sealed partial class BatterySystem : SharedBatterySystem
 {
-    [Dependency] private readonly SharedContainerSystem _containers = default!; // WD EDIT
 
     private EntityQuery<EmpDisabledComponent> _disabledQuery; // Goobstation
 

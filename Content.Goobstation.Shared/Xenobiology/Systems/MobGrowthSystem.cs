@@ -12,12 +12,12 @@ namespace Content.Goobstation.Shared.Xenobiology.Systems;
 // This handles mob growth between development stages.
 public sealed partial class MobGrowthSystem : EntitySystem
 {
-    [Dependency] private readonly IGameTiming _gameTiming = default!;
-    [Dependency] private readonly HungerSystem _hunger = default!;
-    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
-    [Dependency] private readonly MobStateSystem _mobState = default!;
-    [Dependency] private readonly MetaDataSystem _metaData = default!;
-    [Dependency] private readonly INetManager _net = default!;
+    [Dependency] private IGameTiming _gameTiming = default!;
+    [Dependency] private HungerSystem _hunger = default!;
+    [Dependency] private SharedAppearanceSystem _appearance = default!;
+    [Dependency] private MobStateSystem _mobState = default!;
+    [Dependency] private MetaDataSystem _metaData = default!;
+    [Dependency] private INetManager _net = default!;
 
     public override void Initialize()
     {
@@ -45,7 +45,7 @@ public sealed partial class MobGrowthSystem : EntitySystem
     {
         base.Update(frameTime);
 
-        var query = EntityQueryEnumerator<MobGrowthComponent, HungerComponent>();
+        var query = EntityQueryEnumerator<MobGrowthComponent, SatiationComponent>();
         while (query.MoveNext(out var uid, out var growth, out var hungerComp))
         {
             if (_gameTiming.CurTime < growth.NextGrowthTime)
@@ -54,7 +54,7 @@ public sealed partial class MobGrowthSystem : EntitySystem
             growth.NextGrowthTime = _gameTiming.CurTime + growth.GrowthInterval;
 
             if (_mobState.IsDead(uid)
-                || _hunger.GetHunger(hungerComp) < growth.HungerRequired
+                || _hunger.GetHunger(uid, hungerComp) < growth.HungerRequired
                 || !growth.Stages.TryGetValue(growth.CurrentStage, out var currentData)
                 || string.IsNullOrEmpty(currentData.NextStage))
                 continue;
@@ -66,7 +66,7 @@ public sealed partial class MobGrowthSystem : EntitySystem
     #region Helpers
 
     // Fairly barebones at the moment, this could be expanded to increase HP etc...
-    private void DoGrowth(Entity<MobGrowthComponent, HungerComponent> ent)
+    private void DoGrowth(Entity<MobGrowthComponent, SatiationComponent> ent)
     {
         var (uid, growth, hunger) = ent;
 

@@ -9,8 +9,8 @@ namespace Content.Server.Arcade.BlockGame;
 
 public sealed partial class BlockGame
 {
-    [Dependency] private readonly IEntityManager _entityManager = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
+    [Dependency] private IEntityManager _entityManager = default!;
+    [Dependency] private IRobustRandom _random = default!;
     private readonly ArcadeSystem _arcadeSystem;
     private readonly UserInterfaceSystem _uiSystem;
 
@@ -84,6 +84,7 @@ public sealed partial class BlockGame
         {
             _highScorePlacement = _arcadeSystem.RegisterHighScore(meta.EntityName, Points);
             SendHighscoreUpdate();
+            RaiseGameOver(cabinet.Player.Value); // Goob
         }
         SendMessage(new BlockGameMessages.BlockGameGameOverScreenMessage(Points, _highScorePlacement?.LocalPlacement, _highScorePlacement?.GlobalPlacement));
     }

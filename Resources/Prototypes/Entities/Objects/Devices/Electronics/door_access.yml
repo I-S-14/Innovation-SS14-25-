@@ -138,6 +138,14 @@
   - type: AccessReader
     access: [["Cargo"]]
 
+- type: entity
+  parent: DoorElectronics
+  id: DoorElectronicsCargoSalvage
+  suffix: Cargo, Salvage, Locked
+  components:
+  - type: AccessReader
+    access: [["Cargo"], ["Salvage"]]
+
 # Engineering
 - type: entity
   parent: DoorElectronics
@@ -154,6 +162,14 @@
   components:
   - type: AccessReader
     access: [["Atmospherics"]]
+
+- type: entity
+  parent: DoorElectronics
+  id: DoorElectronicsAtmosphericsEngineering
+  suffix: Atmospherics, Engineering, Locked
+  components:
+  - type: AccessReader
+    access: [["Atmospherics"], ["Engineering"]]
 
 - type: entity
   parent: DoorElectronics
@@ -270,6 +286,14 @@
   - type: AccessReader
     access: [["Medical"]]
 
+- type: entity
+  parent: DoorElectronics
+  id: DoorElectronicsMedicalChemistry
+  suffix: Medical, Chemistry, Locked
+  components:
+  - type: AccessReader
+    access: [["Medical"], ["Chemistry"]]
+
 # Syndicate
 - type: entity
   parent: DoorElectronics
@@ -295,6 +319,14 @@
   components:
   - type: AccessReader
     access: [["CentralCommand"]]
+
+- type: entity
+  parent: DoorElectronics
+  id: DoorElectronicsEVA
+  suffix: EVA, Locked
+  components:
+  - type: AccessReader
+    access: [["Command"], ["External"]]
 
 - type: entity
   parent: DoorElectronics

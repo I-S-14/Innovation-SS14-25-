@@ -32,8 +32,9 @@
     allowed:
     - Electrocution
   - type: Repairable
-    doAfterDelay: 8
-    fuelCost: 15
+    damageValue: -15 # 8 seconds to repair from dead
+    doAfterDelay: 1
+    fuelCost: 0.5
   - type: Pullable
   - type: Tag
     tags:
@@ -58,8 +59,7 @@
   - type: TypingIndicator
     proto: robot
   - type: Vocal
-    sounds:
-      Unsexed: UnisexSilicon
+    emoteSounds: UnisexSilicon
   - type: Emoting
   - type: ZombieImmune
   - type: ProtectedFromStepTriggers
@@ -87,17 +87,12 @@
     tags:
     - BasicSilicon
   - type: IntrinsicRadioReceiver
-  #- type: IntrinsicRadioTransmitter
-  #  channels:
-  #  - Binary # Goobstation - replaced with collective mind
+  - type: IntrinsicRadioTransmitter
+    channels:
+    - Binary
   - type: ActiveRadio
     channels:
     - Common
-    # - Binary # Goobstation - replaced with collective mind
-  # Goobstation
-  - type: CollectiveMind
-    defaultChannel: Binary
-    channels:
     - Binary
   - type: IntellicardableMind # Goobstation - intellicard on more AIs
   - type: HealthExaminable
@@ -149,7 +144,7 @@
     speechSounds: Pai #couldn't decide if this should be borg or pai sounds so I flipped a coin.
 
 - type: entity
-  parent: MobSiliconBase
+  parent: [MobSiliconBase, SolutionFireExtinguisherMini]
   id: MobFireBot
   name: firebot
   description: A little fire extinguishing bot. He looks rather anxious.
@@ -163,15 +158,7 @@
   - type: HTN
     rootTask:
       task: FirebotCompound
-  - type: SolutionContainerManager
-    solutions:
-      spray:
-        maxVol: 10
-        reagents:
-        - ReagentId: Water
-          Quantity: 10
   - type: SolutionRegeneration
-    solution: spray
     generated:
       reagents:
         - ReagentId: Water
@@ -296,8 +283,7 @@
       params:
         variation: 0.125
   - type: Vocal
-    sounds:
-      Unsexed: Cluwne
+    emoteSounds: Cluwne
   - type: ExplodeOnTrigger
   - type: Explosive
     explosionType: Default
@@ -307,7 +293,7 @@
     canCreateVacuum: false
 
 - type: entity
-  parent: MobSiliconBase
+  parent: [MobSiliconBase, SolutionMopNormal]
   id: MobCleanBot
   name: cleanbot
   description: The creep of automation now threatening space janitors.
@@ -325,28 +311,20 @@
   - type: UseDelay
     delay: 2
   - type: SolutionRegeneration
-    solution: absorbed
     generated:
       reagents:
         - ReagentId: Water
           Quantity: 10
   - type: SolutionPurge
-    solution: absorbed
     preserve:
       - Water
     quantity: 10
-  - type: SolutionContainerManager
-    solutions:
-      absorbed:
-        maxVol: 50
   - type: MovementSpeedModifier
     baseWalkSpeed: 2
     baseSprintSpeed: 3
   - type: HTN
     rootTask:
       task: CleanbotCompound
-  - type: DrainableSolution
-    solution: drainBuffer
   - type: InteractionPopup
     interactSuccessString: petting-success-cleanbot
     interactFailureString: petting-failure-cleanbot
@@ -517,7 +495,7 @@
     enabled: false
     radius: 3.5
     softness: 2
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: FootstepModifier
     footstepSoundCollection:
@@ -530,13 +508,16 @@
     - Unimplantable
   - type: ActiveRadio
     channels:
-    # - Binary # Goobstation - replaced with collective mind
+    - Binary
     - Common
     - Supply
   - type: StationAiVision # Goobstation - AI can see through NT silicon
     range: 1
   - type: Puller
     needsHands: false
+  - type: Strap
+    position: Down
+    rotation: -90
 
 - type: entity
   parent: [ MobSiliconBase, MobCombat ]
@@ -565,8 +546,6 @@
   - type: Hands # This probably REALLY needs hand whitelisting, but we NEED hands for hugs, so...
   - type: ComplexInteraction # Hugging is a complex interaction, apparently.
   - type: HugBot
-  - type: Body
-    prototype: HugBot
   - type: HTN
     rootTask:
       task: HugBotCompound

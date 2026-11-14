@@ -5,6 +5,7 @@ using Content.Shared._Goobstation.Wizard.FadingTimedDespawn;
 using Content.Shared._Shitmed.Targeting;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Components;
+using Content.Shared.Damage.Systems;
 using Content.Shared.Electrocution;
 using Content.Shared.Examine;
 using Content.Shared.Eye.Blinding.Components;
@@ -21,6 +22,7 @@ using Robust.Shared.Network;
 using Robust.Shared.Physics.Events;
 using Robust.Shared.Player;
 using Robust.Shared.Timing;
+using Content.Shared.Ghost.Components;
 
 namespace Content.Shared._Goobstation.Wizard.Traps;
 

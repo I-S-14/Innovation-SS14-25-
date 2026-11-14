@@ -160,6 +160,7 @@
   components:
     - type: Sprite
       sprite: _Goobstation/Clothing/Back/Satchels/cargo.rsi
+
 - type: entity
   parent: ClothingBackpackSatchel
   id: ClothingBackpackSatchelSalvage
@@ -182,7 +183,7 @@
     storageInsertSound: null
 
 - type: entity
-  parent: ClothingBackpackSatchel
+  parent: ClothingBackpackHoldingBase #Standardized Bluespace Bags
   id: ClothingBackpackSatchelHolding
   name: satchel of holding
   description: A satchel that opens into a localized pocket of bluespace.
@@ -194,8 +195,6 @@
     - state: icon
     - state: icon-unlit
       shader: unshaded
-  - type: Item
-    size: Ginormous
   - type: Storage
     maxItemSize: Huge
     grid:

@@ -1,13 +1,12 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-
-using Content.Server.Store.Components;
-using Content.Server.Store.Systems;
 using Content.Shared.Implants;
 using Content.Shared.Interaction;
 using Content.Shared.Popups;
 using Content.Shared.Implants.Components;
 using Content.Shared.Polymorph;
 using Content.Shared.Store.Components;
+using Content.Server.Store.Components;
+using Content.Server.Store.Systems;
 
 namespace Content.Server.Implants;
 public sealed class SubdermalImplantSystem : SharedSubdermalImplantSystem
@@ -27,6 +26,9 @@ public sealed class SubdermalImplantSystem : SharedSubdermalImplantSystem
     // goob edit - implants now transfer on polymorph
     private void OnPolymorphed(Entity<ImplantedComponent> ent, ref PolymorphedEvent args)
     {
+        if (ent.Owner == args.NewEntity)
+            return;
+
         // copy it to prevent collection modification error
         var implants = new List<EntityUid>(ent.Comp.ImplantContainer.ContainedEntities);
         foreach (var implant in implants)
@@ -45,7 +47,7 @@ public sealed class SubdermalImplantSystem : SharedSubdermalImplantSystem
     // TODO: This shouldn't be in the SubdermalImplantSystem
     private void OnStoreRelay(EntityUid uid, StoreComponent store, ImplantRelayEvent<AfterInteractUsingEvent> implantRelay)
     {
-        var args = implantRelay.Event;
+        var args = implantRelay.Args;
 
         if (args.Handled)
             return;

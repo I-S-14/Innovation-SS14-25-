@@ -9,6 +9,7 @@
   contrabandSeverity: Minor
   flavor: bitter
   color: "#FAFAFA"
+  puddleSpriteSet: Shiny # Goob
   boilingPoint: 212.0  # Dexosyephedrine vape when?
   meltingPoint: 170.0
   metabolisms:
@@ -93,6 +94,7 @@
           reagent: Desoxyephedrine
           min: 5
 
+
 - type: reagent
   id: Ephedrine
   name: reagent-name-ephedrine
@@ -101,6 +103,7 @@
   physicalDesc: reagent-physical-desc-powdery
   flavor: bitter
   color: "#D2FFFA"
+  puddleSpriteSet: Powder # Goob
   boilingPoint: 255.0
   meltingPoint: 36.0
   metabolisms:
@@ -111,7 +114,6 @@
         conditions:
         - !type:MetabolizerTypeCondition # Goobstation - Yowie
           type: [ Yowie ]
-          inverted: true
         damage:
           groups:
             Brute: -1
@@ -183,6 +185,30 @@
           reagent: Ephedrine
           min: 15
 
+
+- type: reagent
+  id: Pax
+  name: reagent-name-pax
+  group: Narcotics
+  desc: reagent-desc-pax
+  physicalDesc: reagent-physical-desc-soothing
+  allowedDepartments:
+  - Security
+  - Medical
+  color: "#AAAAAA"
+  metabolisms:
+    Poison:
+      effects:
+      - !type:GenericStatusEffect
+        key: Pacified
+        component: Pacified
+        time: 4
+      - !type:ImmunityModifier #Goobstation
+        gainRateModifier: -0.00111111111111 #double spaceacilin penalty
+        strengthModifier: -0.0088888888888 #ditto
+        statusLifetime: 1.5 # 1.5s per 1u
+
+
 - type: reagent
   id: Stimulants
   name: reagent-name-stimulants
@@ -192,6 +218,7 @@
   contrabandSeverity: Syndicate
   flavor: sharp
   color: "#9A040E"
+  puddleSpriteSet: Acid # Goob
   boilingPoint: 212.0
   meltingPoint: 170.0
   metabolisms:
@@ -202,7 +229,6 @@
         conditions:
         - !type:MetabolizerTypeCondition # Goobstation - Yowie
           type: [ Yowie ]
-          inverted: true
         damage:
           groups:
             Brute: -1
@@ -232,6 +258,11 @@
           min: 1
         reagent: ChloralHydrate
         amount: -10
+      # CorvaxGoob-Start
+      - !type:AdjustReagent
+        reagent: Haloperidol
+        amount: -3.0
+      # CorvaxGoob-End
       - !type:ModifyStatusEffect
         effectProto: StatusEffectStimulantsStamina # You are on meth. You keep going.
         time: 3
@@ -311,10 +342,13 @@
             Asphyxiation: -2
       # Side effects
       - !type:ResetNarcolepsy
-      - !type:SatiateHunger
+      - !type:Satiate
+        satiationType: Hunger
         factor: 1
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 1
+
 
 - type: reagent
   id: THC
@@ -324,6 +358,7 @@
   flavor: bitter
   flavorMinimum: 0.05
   color: "#808080"
+  puddleSpriteSet: Powder # Goob
   physicalDesc: reagent-physical-desc-crystalline
   plantMetabolism:
   - !type:PlantAdjustNutrition
@@ -350,6 +385,7 @@
         time: 16
         type: Add
 
+
 - type: reagent
   id: Nicotine
   name: reagent-name-nicotine
@@ -357,6 +393,7 @@
   desc: reagent-desc-nicotine
   flavor: bitter
   color: "#C0C0C0"
+  puddleSpriteSet: Powder # Goob
   physicalDesc: reagent-physical-desc-strong-smelling
   plantMetabolism:
   - !type:PlantAdjustHealth
@@ -377,6 +414,7 @@
             Cold: -0.1
             Radiation: -0.1
 
+
 # TODO: Replace these nonstandardized effects with generic brain damage
 - type: reagent
   id: Impedrezene
@@ -394,7 +432,6 @@
         conditions:
         - !type:MetabolizerTypeCondition # Goobstation - Yowie
           type: [ Yowie ]
-          inverted: true
         damage:
           groups:
             Brute: -1
@@ -422,6 +459,7 @@
         probability: 0.05
       - !type:Drunk # Headaches and slurring are major symptoms of brain damage, this is close enough
         boozePower: 5
+
 
 - type: reagent
   id: SpaceDrugs
@@ -451,6 +489,7 @@
         type: Add
         time: 5
 
+
 - type: reagent
   id: Bananadine
   name: reagent-name-bananadine
@@ -466,7 +505,6 @@
         conditions:
         - !type:MetabolizerTypeCondition # Goobstation - Yowie
           type: [ Yowie ]
-          inverted: true
         damage:
           groups:
             Brute: -1
@@ -479,6 +517,7 @@
         effectProto: StatusEffectSeeingRainbow
         type: Add
         time: 5
+
 
 # Probably replace this one with sleeping chem when putting someone in a comatose state is easier
 - type: reagent
@@ -501,13 +540,14 @@
         conditions:
         - !type:ReagentCondition
           reagent: Nocturine
-          min: 8
+          min: 4
         - !type:MetabolizerTypeCondition # Goobstation - Yowie
           type: [ Yowie ]
           inverted: true
         effectProto: StatusEffectForcedSleeping
-        time: 6
-        delay: 5
+        time: 8
+        delay: 1
+
 
 - type: reagent
   id: MuteToxin
@@ -532,6 +572,7 @@
         type: Add
         time: 10
 
+
 - type: reagent
   id: NorepinephricAcid
   name: reagent-name-norepinephric-acid
@@ -543,6 +584,7 @@
   color: "#96a8b5"
   boilingPoint: 255.0
   meltingPoint: 36.0
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Narcotic:
       effects:
@@ -570,7 +612,6 @@
           reagent: NorepinephricAcid
           min: 20
         probability: 0.03
-        #If anyone wants to add a light dimming or grayscale effect when under 20u, be my guest
       - !type:GenericStatusEffect
         key: TemporaryBlindness
         component: TemporaryBlindness
@@ -578,7 +619,6 @@
         - !type:ReagentCondition
           reagent: NorepinephricAcid
           min: 20
-
 - type: reagent
   id: TearGas
   name: reagent-name-tear-gas
@@ -644,6 +684,104 @@
           reagent: TearGas
           min: 4
 
+
+- type: reagent
+  id: StrawberryIce
+  name: reagent-name-StrawberryIce
+  group: Narcotics
+  desc: reagent-desc-StrawberryIce
+  physicalDesc: reagent-physical-desc-fizzy
+  contrabandSeverity: Minor
+  flavor: fizzy
+  color: "#FF36AE"
+  # IS14: retain Goob organ metabolism and reagent effects.
+  metabolisms:
+    Drink:
+      metabolismRate: 1.0
+      effects:
+      - !type:HealthChange
+        conditions:
+        - !type:ReagentCondition
+          reagent: StrawberryIce
+          min: 20
+        damage:
+          types:
+            Cellular: 1.5
+            Poison: 1.5
+      - !type:HealthChange
+        damage:
+          types:
+            Cellular: 0.05
+      - !type:AdjustReagent
+        reagent: Hydroxysomnolene
+        amount: 1
+      - !type:MovementSpeedModifier
+        walkSpeedModifier: 1.50
+        sprintSpeedModifier: 1.50
+      - !type:ModifyStatusEffect
+        effectProto: StatusEffectDesoxyStamina
+        time: 10
+      - !type:ModifyStatusEffect
+        effectProto: StatusEffectAdrenaline
+        time: 10
+      - !type:ModifyStatusEffect
+        effectProto: StatusEffectPainNumbness
+        time: 10
+      - !type:ModifyStatusEffect
+        effectProto: StatusEffectDrowsiness
+        time: null
+        type: Remove
+      - !type:ResetNarcolepsy
+        conditions:
+        - !type:ReagentCondition
+          reagent: StrawberryIce
+          min: 10
+      - !type:ModifyStatusEffect
+        effectProto: StatusEffectSeeingRainbow
+        time: 10
+      - !type:GenericStatusEffect
+        key: Stutter
+        component: StutteringAccent
+      - !type:Jitter ''
+- type: reagent
+  id: Hydroxysomnolene
+  name: reagent-name-Hydroxysomnolene
+  group: Toxins
+  desc: reagent-desc-Hydroxysomnolene
+  physicalDesc: reagent-physical-desc-gloopy
+  flavor: bitter
+  color: "#b51472"
+  # IS14: retain Goob organ metabolism and reagent effects.
+  metabolisms:
+    Drink:
+      effects:
+      - !type:MovementSpeedModifier
+        conditions:
+        - !type:ReagentCondition
+          reagent: StrawberryIce
+          max: 0.1
+        walkSpeedModifier: 0.65
+        sprintSpeedModifier: 0.65
+      - !type:ModifyStatusEffect
+        conditions:
+        - !type:ReagentCondition
+          reagent: StrawberryIce
+          max: 0.1
+        effectProto: StatusEffectDrowsiness
+        time: 2
+        type: Add
+      - !type:PopupMessage
+        conditions:
+        - !type:ReagentCondition
+          reagent: StrawberryIce
+          max: 0.1
+        type: Local
+        visualType: MediumCaution
+        messages:
+        - hydroxysomnolene-effect-flavor
+        - hydroxysomnolene-effect-another-hit
+        - hydroxysomnolene-effect-sluggish
+        probability: 0.15
 - type: reagent
   id: Happiness
   name: reagent-name-happiness
@@ -659,7 +797,6 @@
         conditions:
         - !type:MetabolizerTypeCondition # Goobstation - Yowie
           type: [ Yowie ]
-          inverted: true
         damage:
           groups:
             Brute: -1
@@ -709,6 +846,7 @@
         type: Add
         time: 5
 
+
 - type: reagent # Assmos - /tg/ gases
   id: NitrosylPlasmide
   name: reagent-name-nitrosyl-plasmide
@@ -736,9 +874,9 @@
         key: Drowsiness
         time: 10
         type: Remove
-      - !type:GenericStatusEffect
+      - !type:ModifyStatusEffect
         conditions:
-        key: ForcedSleep
+        effectProto: StatusEffectForcedSleeping # Goob
         type: Remove
         time: 10
       - !type:HealthChange
@@ -755,3 +893,26 @@
         - !type:ReagentCondition
           reagent: NitrosylPlasmide
           min: 1
+
+
+- type: reagent
+  id: Nyctalon
+  name: reagent-name-nyctalon
+  group: Narcotics
+  desc: reagent-desc-nyctalon
+  physicalDesc: reagent-physical-desc-translucent
+  flavor: bitter
+  color: "#1A0A2E"
+  # IS14: retain Goob organ metabolism and reagent effects.
+  metabolisms:
+    Medicine:
+      metabolismRate: 0.2
+      effects:
+      - !type:ModifyStatusEffect
+        effectProto: StatusEffectNightVision
+        time: 2
+        type: Add
+      - !type:HealthChange
+        damage:
+          types:
+            Radiation: 0.5

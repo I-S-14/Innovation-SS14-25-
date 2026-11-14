@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 /* CorvaxGoob-Coins-start
-using Content.Client._durkcode.ServerCurrency; CorvaxGoob-Coins
 using Content.Client._RMC14.LinkAccount;
 CorvaxGoob-Coins-end */
 using Content.Client.Audio;
-using Content.Client.GameTicking.Managers;
+using Content.Client.GameTicking;
 using Content.Client.LateJoin;
 using Content.Client.Lobby.UI;
 using Content.Client.Message;
@@ -22,10 +21,11 @@ using Robust.Client.UserInterface.Controls;
 using Robust.Shared.Configuration;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
+using Content.Client.GameTicking.Managers;
 
 namespace Content.Client.Lobby
 {
-    public sealed class LobbyState : Robust.Client.State.State
+    public sealed partial class LobbyState : Robust.Client.State.State
     {
         [Dependency] private readonly IBaseClient _baseClient = default!;
         [Dependency] private readonly IConfigurationManager _cfg = default!;
@@ -287,13 +287,17 @@ namespace Content.Client.Lobby
                 var lobbyBackground = _protoMan.Index(_gameTicker.LobbyBackground.Value);
                 Lobby!.Background.Texture = _resourceCache.GetResource<TextureResource>(lobbyBackground.Background);
 
-                var name = string.IsNullOrEmpty(lobbyBackground.Name)
+                // IS14-change: preserve literal Goob credits while supporting localized Wizards entries.
+                var localizedCredits = !string.IsNullOrEmpty(lobbyBackground.Title);
+                var name = localizedCredits
+                    ? Loc.GetString(lobbyBackground.Title!)
+                    : string.IsNullOrEmpty(lobbyBackground.Name)
                     ? Loc.GetString("lobby-state-background-unknown-title")
                     : lobbyBackground.Name;
 
                 var artist = string.IsNullOrEmpty(lobbyBackground.Artist)
                     ? Loc.GetString("lobby-state-background-unknown-artist")
-                    : lobbyBackground.Artist;
+                    : localizedCredits ? Loc.GetString(lobbyBackground.Artist) : lobbyBackground.Artist; // IS14-change
 
                 var markup = Loc.GetString("lobby-state-background-text",
                     ("backgroundName", name),

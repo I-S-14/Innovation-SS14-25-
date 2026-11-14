@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Robust.Shared.Configuration;
+using Content.Shared.Administration; // CorvaxGoob
+using Content.Shared.CCVar.CVarAccess; // CorvaxGoob
 
 namespace Content.Shared.CCVar;
 
@@ -11,6 +13,7 @@ public sealed partial class CCVars
     ///     After the period has passed, the count resets.
     /// </summary>
     /// <seealso cref="ChatRateLimitCount"/>
+    [CVarControl(AdminFlags.VarEdit)] // CorvaxGoob
     public static readonly CVarDef<float> ChatRateLimitPeriod =
         CVarDef.Create("chat.rate_limit_period", 2f, CVar.SERVERONLY);
 
@@ -22,6 +25,7 @@ public sealed partial class CCVars
     ///     <see cref="ChatRateLimitCount"/> divided by <see cref="ChatRateLimitCount"/>.
     /// </remarks>
     /// <seealso cref="ChatRateLimitPeriod"/>
+    [CVarControl(AdminFlags.VarEdit)] // CorvaxGoob
     public static readonly CVarDef<int> ChatRateLimitCount =
         CVarDef.Create("chat.rate_limit_count", 10, CVar.SERVERONLY);
 
@@ -55,6 +59,16 @@ public sealed partial class CCVars
             false,
             CVar.CLIENTONLY | CVar.ARCHIVE,
             "Toggles displaying a background under the speaking character's name.");
+
+    /// <summary>
+    ///     When enabled, shows a speech bubble above the character's head previewing the text
+    ///     they are currently typing.
+    /// </summary>
+    public static readonly CVarDef<bool> ChatTypingPreviewEnabled =
+        CVarDef.Create("chat.typing_preview_enabled",
+            true,
+            CVar.CLIENTONLY | CVar.ARCHIVE,
+            "When enabled, shows a speech bubble above your character's head previewing what you are typing.");
 
     /// <summary>
     ///     A message broadcast to each player that joins the lobby.
@@ -102,4 +116,11 @@ public sealed partial class CCVars
     // Goobstation - end
     #endregion
 
+
+    // IS14-merge: restored member lost in the upstream merge
+    /// <summary>
+    /// If true will allow TextLinkTags to make interactable chat labels in place of sender names.
+    /// </summary>
+    public static readonly CVarDef<bool> ChatNameLinks =
+        CVarDef.Create("chat.chat_name_links", true, CVar.REPLICATED | CVar.SERVER, "Toggles Chat Name Link functionality.");
 }

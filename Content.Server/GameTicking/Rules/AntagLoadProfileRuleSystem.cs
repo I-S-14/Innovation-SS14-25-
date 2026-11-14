@@ -1,3 +1,5 @@
+using Content.Shared.GameTicking.Rules; // IS14-change: upstream API move
+using Content.Shared.Antag; // IS14-change: upstream API move
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Server.Antag;
@@ -50,7 +52,7 @@ public sealed class AntagLoadProfileRuleSystem : GameRuleSystem<AntagLoadProfile
         if (ent.Comp.SpeciesHardOverride is not null) // Shitmed - Starlight Abductors
             species = _proto.Index(ent.Comp.SpeciesHardOverride.Value); // Shitmed - Starlight Abductors
 
-        args.Entity = Spawn(species.Prototype);
+        args.Entity = Spawn(species.Prototype, args.Coords); // IS14-change: the Wizards selection API expects handlers to place the created body at the selected spawn point.
         _humanoid.LoadProfile(args.Entity.Value, profile?.WithSpecies(species.ID));
 
         // Goobstation start - Make entities spawn at max size for their species

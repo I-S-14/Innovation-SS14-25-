@@ -2,6 +2,7 @@
 
 using Content.Server.Tesla.EntitySystems;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
+using Robust.Shared.Audio;
 
 namespace Content.Server.Tesla.Components;
 

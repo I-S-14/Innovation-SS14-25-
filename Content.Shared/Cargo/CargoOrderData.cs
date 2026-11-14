@@ -79,7 +79,7 @@ namespace Content.Shared.Cargo
 
         // GoobStation - (cooldown parameter) cooldown on Cargo Orders (specifically gamba)
         // CorvaxGoob-CargoFeatures : Добавлен параметр доставки, заметки и защиты груза.
-        public CargoOrderData(int orderId, string productId, string productName, int price, int amount, string requester, string? deliveryDestination, string? note, ProtoId<CargoAccountPrototype> account, int cooldown, bool securedDelivery = false)
+        public CargoOrderData(int orderId, string productId, string productName, int price, int amount, string requester, string? deliveryDestination, string? note, ProtoId<CargoAccountPrototype> account, int cooldown, bool securedDelivery = false, CargoProductContainer? container = null) //IS14-change: retain Wizards packaging.
         {
             OrderId = orderId;
             ProductId = productId;
@@ -95,6 +95,7 @@ namespace Content.Shared.Cargo
             Account = account;
             // GoobStation - (cooldown assignment) cooldown on Cargo Orders (specifically gamba)
             Cooldown = cooldown;
+            Container = container; //IS14-change
         }
 
         public void SetApproverData(string? approver)

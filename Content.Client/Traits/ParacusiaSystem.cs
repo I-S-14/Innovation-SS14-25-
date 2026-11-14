@@ -7,15 +7,16 @@ using Robust.Client.Player;
 using Robust.Shared.Player;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Timing;
+using Robust.Shared.Audio;
 
 namespace Content.Client.Traits;
 
-public sealed class ParacusiaSystem : SharedParacusiaSystem
+public sealed partial class ParacusiaSystem : SharedParacusiaSystem
 {
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly IPlayerManager _player = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private IPlayerManager _player = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
 
     public override void Initialize()
     {

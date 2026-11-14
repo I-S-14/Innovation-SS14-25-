@@ -1,3 +1,4 @@
+using Content.Shared.GameTicking;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Goobstation.Server.Blob.Components;
@@ -7,10 +8,10 @@ using Content.Shared.Popups;
 
 namespace Content.Goobstation.Server.Blob;
 
-public sealed class BlobResourceSystem : EntitySystem
+public sealed partial class BlobResourceSystem : EntitySystem
 {
-    [Dependency] private readonly BlobCoreSystem _blobCoreSystem = default!;
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
+    [Dependency] private BlobCoreSystem _blobCoreSystem = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
     private EntityQuery<BlobTileComponent> _blobTile;
     private EntityQuery<BlobCoreComponent> _blobCore;
 
@@ -46,6 +47,11 @@ public sealed class BlobResourceSystem : EntitySystem
             points += 1;
         }
 
+        if (blobCoreComponent.CurrentChem == BlobChemType.ChainCoating)
+        {
+            points -= 1;
+        }
+
         if (_blobCoreSystem.ChangeBlobPoint(blobTileComponent.Core.Value, points))
         {
             _popup.PopupClient(Loc.GetString("blob-get-resource", ("point", points)),
@@ -58,7 +64,7 @@ public sealed class BlobResourceSystem : EntitySystem
     /// On round end makes all the blobs resource nodes generate 100 points each pulse.
     /// </summary>
     /// <param name="args"></param>
-    private void OnRoundEnd(RoundEndTextAppendEvent args)
+    private void OnRoundEnd(ref RoundEndTextAppendEvent args)
     {
         var query = EntityQueryEnumerator<BlobResourceComponent>();
         while(query.MoveNext(out var resource))

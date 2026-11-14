@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Linq;
-using System.Linq;
 using Content.Server.Body.Components;
 using Content.Shared.Administration.Logs;
 using Content.Shared.Bed.Sleep; // Shitmed Change
@@ -42,17 +41,17 @@ public sealed class MetabolizerSystem : SharedMetabolizerSystem
     [Dependency] private readonly SharedSolutionContainerSystem _solutionContainerSystem = default!;
 
     private EntityQuery<OrganComponent> _organQuery;
-    private EntityQuery<SolutionContainerManagerComponent> _solutionQuery;
+    private EntityQuery<SolutionManagerComponent> _solutionQuery;
     private static readonly ProtoId<MetabolismGroupPrototype> Gas = "Gas";
+    private readonly List<ReagentQuantity> _metabolizeList = new(); // Goob
 
     public override void Initialize()
     {
         base.Initialize();
 
         _organQuery = GetEntityQuery<OrganComponent>();
-        _solutionQuery = GetEntityQuery<SolutionContainerManagerComponent>();
+        _solutionQuery = GetEntityQuery<SolutionManagerComponent>();
 
-        SubscribeLocalEvent<MetabolizerComponent, ComponentInit>(OnMetabolizerInit);
         SubscribeLocalEvent<MetabolizerComponent, MapInitEvent>(OnMapInit);
         SubscribeLocalEvent<MetabolizerComponent, ApplyMetabolicMultiplierEvent>(OnApplyMetabolicMultiplier);
     }
@@ -60,9 +59,10 @@ public sealed class MetabolizerSystem : SharedMetabolizerSystem
     private void OnMapInit(Entity<MetabolizerComponent> ent, ref MapInitEvent args)
     {
         ent.Comp.NextUpdate = _gameTiming.CurTime + ent.Comp.AdjustedUpdateInterval;
+        InitializeSolution(ent); //IS14-change: ensure solutions only after map initialization.
     }
 
-    private void OnMetabolizerInit(Entity<MetabolizerComponent> entity, ref ComponentInit args)
+    private void InitializeSolution(Entity<MetabolizerComponent> entity)
     {
         if (!entity.Comp.SolutionOnBody)
         {
@@ -102,7 +102,7 @@ public sealed class MetabolizerSystem : SharedMetabolizerSystem
         }
     }
 
-    private void TryMetabolize(Entity<MetabolizerComponent, OrganComponent?, SolutionContainerManagerComponent?> ent)
+    private void TryMetabolize(Entity<MetabolizerComponent, OrganComponent?, SolutionManagerComponent?> ent)
     {
         _organQuery.Resolve(ent, ref ent.Comp2, logMissing: false);
 
@@ -141,7 +141,9 @@ public sealed class MetabolizerSystem : SharedMetabolizerSystem
         }
 
         // Copy the solution do not edit the original solution list
-        var list = solution.Contents.ToList();
+        var list = _metabolizeList; // Goob
+        list.Clear(); // Goob
+        list.AddRange(solution.Contents); // Goob
 
         // Collecting blood reagent for filtering
         var ev = new MetabolismExclusionEvent();

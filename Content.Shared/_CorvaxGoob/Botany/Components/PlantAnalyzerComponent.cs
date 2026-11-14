@@ -9,7 +9,7 @@ namespace Content.Shared._CorvaxGoob.Botany.Components;
 
 /// <inheritdoc/>
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentPause]
-public sealed partial class PlantAnalyzerComponent : AbstractAnalyzerComponent
+public sealed partial class CorvaxPlantAnalyzerComponent : AbstractAnalyzerComponent
 {
     /// <inheritdoc/>
     [DataField(customTypeSerializer: typeof(TimeOffsetSerializer))]
@@ -39,5 +39,5 @@ public sealed partial class PlantAnalyzerComponent : AbstractAnalyzerComponent
     /// What the machine will print.
     /// </summary>
     [DataField]
-    public EntProtoId<PaperComponent> MachineOutput = "PlantAnalyzerReportPaper";
+    public EntProtoId<PaperComponent> MachineOutput = "PlantAnalyzerReportPaper"; //IS14-change: retain the existing report prototype ID.
 }

@@ -17,7 +17,7 @@
                         StyleClasses="Caution"
                         HorizontalAlignment="Right" />
             </BoxContainer>
-            <controls:HighDivider />
+            <controls:Separator StyleClasses="HighDivider" />
 
             <!-- Queue stats -->
             <BoxContainer Orientation="Horizontal" Margin="0 16 0 8"
@@ -43,7 +43,7 @@
                    StyleClasses="LabelSecondaryColor" Align="Center"
                    Margin="0 0 0 8" />
 
-            <controls:HighDivider />
+            <controls:Separator StyleClasses="HighDivider" />
 
             <!-- Server info -->
             <Label Name="ServerInfo"

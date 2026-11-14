@@ -14,6 +14,7 @@ using Content.Shared.Access;
 using Content.Shared.Access.Components;
 using Content.Shared.Access.Systems;
 using Content.Shared.Damage;
+using Content.Shared.Damage.Components;
 using Content.Shared.Damage.Prototypes;
 using Content.Shared.Damage.Systems;
 using Content.Shared.Database;
@@ -36,6 +37,7 @@ using Robust.Shared.Random;
 using Robust.Shared.Map;
 using Robust.Shared.Timing;
 using Content.Shared.Administration.Systems;
+using Content.Shared.Antag;
 
 namespace Content.Server._CorvaxGoob.Dice;
 

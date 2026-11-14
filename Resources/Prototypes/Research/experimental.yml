@@ -171,7 +171,7 @@
   id: GravityManipulation
   name: research-technology-gravity-manipulation
   icon:
-    sprite: Objects/Weapons/Guns/Launchers/tether_gun.rsi
+    sprite: _Goobstation/Objects/Weapons/Guns/Launchers/tether_gun.rsi
     state: base
   discipline: Experimental
   tier: 2
@@ -222,3 +222,18 @@
   technologyPrerequisites:
   - GravityManipulation
   # Goobstation R&D Console rework end
+
+- type: technology
+  id: TeleSci
+  position: -6,2 # IS14: retained technology adjacent to the bluespace branch.
+  name: research-technology-telesci
+  icon:
+    sprite: Effects/portal.rsi
+    state: portal-artifact
+  discipline: Experimental
+  tier: 3
+  cost: 10000
+  recipeUnlocks:
+  - StationTeleportersControlCircuitboard
+  - StationTeleporterMachineCircuitboard
+  - TeleporterChipBlank

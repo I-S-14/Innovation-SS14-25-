@@ -14,13 +14,13 @@ namespace Content.Goobstation.Server.Shadowling.Systems;
 /// This handles the hatching process
 /// </summary>
 ///
-public sealed class ShadowlingEggHatchSystem : EntitySystem
+public sealed partial class ShadowlingEggHatchSystem : EntitySystem
 {
-    [Dependency] private readonly PolymorphSystem _polymorph = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly EntityStorageSystem _entityStorage = default!;
-    [Dependency] private readonly SharedPopupSystem _popupSystem = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
+    [Dependency] private PolymorphSystem _polymorph = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private EntityStorageSystem _entityStorage = default!;
+    [Dependency] private SharedPopupSystem _popupSystem = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
 
     public override void Initialize()
     {
@@ -89,14 +89,14 @@ public sealed class ShadowlingEggHatchSystem : EntitySystem
         if (TryComp<EntityStorageComponent>(egg, out var storage))
         {
             _entityStorage.Remove(sling, egg, storage);
-            _entityStorage.OpenStorage(egg, storage);
+            _entityStorage.OpenStorage((egg, storage));
         }
 
         var newUid = _polymorph.PolymorphEntity(sling, shadowling.ShadowlingPolymorphId);
         if (newUid == null)
             return;
 
-        var ascendantShadowlingComp = EntityManager.GetComponent<ShadowlingComponent>(newUid.Value);
+        var ascendantShadowlingComp = Comp<ShadowlingComponent>(newUid.Value);
         var shadowlingSystem = EntityManager.System<ShadowlingSystem>();
 
         shadowlingSystem.OnPhaseChanged(newUid.Value, ascendantShadowlingComp, ShadowlingPhases.PostHatch);

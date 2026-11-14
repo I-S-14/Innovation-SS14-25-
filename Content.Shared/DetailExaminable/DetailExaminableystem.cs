@@ -7,9 +7,9 @@ using Robust.Shared.Utility;
 
 namespace Content.Shared.DetailExaminable;
 
-public sealed class DetailExaminableSystem : EntitySystem
+public sealed partial class DetailExaminableSystem : EntitySystem
 {
-    [Dependency] private readonly ExamineSystemShared _examine = default!;
+    [Dependency] private ExamineSystemShared _examine = default!;
 
     public override void Initialize()
     {
@@ -32,7 +32,7 @@ public sealed class DetailExaminableSystem : EntitySystem
             Act = () =>
             {
                 var markup = new FormattedMessage();
-                markup.AddMarkupPermissive(ent.Comp.Content);
+                markup.AddMarkupPermissive(Loc.GetString(ent.Comp.Content)); // CorvaxGoob-Fixes
                 _examine.SendExamineTooltip(user, ent, markup, false, false);
             },
             Text = Loc.GetString("detail-examinable-verb-text"),

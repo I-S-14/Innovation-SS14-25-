@@ -31,14 +31,14 @@ namespace Content.Goobstation.Server.Chemistry.EntitySystems
     /// <seealso cref="EnergyReagentDispenserComponent"/>
     /// </summary>
     [UsedImplicitly]
-    public sealed class EnergyReagentDispenserSystem : EntitySystem
+    public sealed partial class EnergyReagentDispenserSystem : EntitySystem
     {
-        [Dependency] private readonly AudioSystem _audioSystem = default!;
-        [Dependency] private readonly SharedSolutionContainerSystem _solutionContainerSystem = default!;
-        [Dependency] private readonly ItemSlotsSystem _itemSlotsSystem = default!;
-        [Dependency] private readonly UserInterfaceSystem _userInterfaceSystem = default!;
-        [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
-        [Dependency] private readonly BatterySystem _battery = default!;
+        [Dependency] private AudioSystem _audioSystem = default!;
+        [Dependency] private SharedSolutionContainerSystem _solutionContainerSystem = default!;
+        [Dependency] private ItemSlotsSystem _itemSlotsSystem = default!;
+        [Dependency] private UserInterfaceSystem _userInterfaceSystem = default!;
+        [Dependency] private IPrototypeManager _prototypeManager = default!;
+        [Dependency] private BatterySystem _battery = default!;
 
         public override void Initialize()
         {
@@ -62,7 +62,7 @@ namespace Content.Goobstation.Server.Chemistry.EntitySystems
 
         private void UpdateUiState(Entity<EnergyReagentDispenserComponent> reagentDispenser)
         {
-            var outputContainer = _itemSlotsSystem.GetItemOrNull(reagentDispenser, SharedEnergyReagentDispenser.OutputSlotName);
+            var outputContainer = _itemSlotsSystem.GetItemOrNull(reagentDispenser.Owner, SharedEnergyReagentDispenser.OutputSlotName);
             var outputContainerInfo = BuildOutputContainerInfo(outputContainer);
             var inventory = GetInventory(reagentDispenser.Comp);
             var batteryCharge = 0f;
@@ -152,7 +152,7 @@ namespace Content.Goobstation.Server.Chemistry.EntitySystems
 
         private void OnDispenseReagentMessage(Entity<EnergyReagentDispenserComponent> reagentDispenser, ref EnergyReagentDispenserDispenseReagentMessage message)
         {
-            var outputContainer = _itemSlotsSystem.GetItemOrNull(reagentDispenser, SharedEnergyReagentDispenser.OutputSlotName);
+            var outputContainer = _itemSlotsSystem.GetItemOrNull(reagentDispenser.Owner, SharedEnergyReagentDispenser.OutputSlotName);
             if (outputContainer is not { Valid: true }
                 || !_solutionContainerSystem.TryGetFitsInDispenser(outputContainer.Value, out var solution, out _))
                 return;
@@ -181,7 +181,7 @@ namespace Content.Goobstation.Server.Chemistry.EntitySystems
 
         private void OnClearContainerSolutionMessage(Entity<EnergyReagentDispenserComponent> reagentDispenser, ref EnergyReagentDispenserClearContainerSolutionMessage message)
         {
-            var outputContainerNullable = _itemSlotsSystem.GetItemOrNull(reagentDispenser, SharedEnergyReagentDispenser.OutputSlotName);
+            var outputContainerNullable = _itemSlotsSystem.GetItemOrNull(reagentDispenser.Owner, SharedEnergyReagentDispenser.OutputSlotName);
             if (outputContainerNullable is not { Valid: true } outputContainer
                 || !_solutionContainerSystem.TryGetFitsInDispenser(outputContainer, out var solution, out var soln))
                 return;

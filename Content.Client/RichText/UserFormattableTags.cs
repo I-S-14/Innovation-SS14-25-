@@ -1,4 +1,4 @@
-﻿using Content.Client.UserInterface.RichText;
+using Content.Client.UserInterface.RichText;
 using Robust.Client.UserInterface.RichText;
 
 namespace Content.Client.RichText;
@@ -26,5 +26,14 @@ public static class UserFormattableTags
         typeof(SignatureTagHandler),
         typeof(CheckTagHandler)
         // Starlight paperwork end
+    ];
+
+    /// <summary>
+    /// Tags allowed in Silicon UIs. Extends from BaseAllowedTags.
+    /// </summary>
+    public static readonly Type[] SiliconAllowedTags =
+    [
+        ..BaseAllowedTags,
+        typeof(ScrambleTag)
     ];
 }

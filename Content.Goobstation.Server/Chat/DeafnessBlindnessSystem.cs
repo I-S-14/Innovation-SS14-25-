@@ -1,3 +1,4 @@
+using Content.Shared.Radio;
 
 using System.Linq;
 using Content.Goobstation.Common.Traits;
@@ -52,8 +53,11 @@ public sealed class DeafnessBlindnessSystem : EntitySystem
     }
     private void OnBlindnessOverrideInRange(Entity<PermanentBlindnessComponent> ent, ref ChatMessageOverrideInRange args)
     {
+        // Goob edit start
         if (!args.RequiresSight)
             return;
-        args.Cancel();
+        if (ent.Comp.Blindness <= 0)
+            args.Cancel();
+        // Goob edit end
     }
 }

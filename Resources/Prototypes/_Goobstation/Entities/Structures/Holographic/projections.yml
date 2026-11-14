@@ -1,9 +1,12 @@
 - type: entity
   id: HolosignSecurityAdvanced
-  parent: HolosignWetFloor
+  parent: BaseHoloSign # IS14-change: keep the barrier's own 100 health instead of the sign's 30.
   name: advanced holographic barrier
   description: An advanced barrier of hard light that blocks movement. You can't crawl under this one.
   components:
+  - type: Tag # IS14-change: retain the tag previously inherited from HolosignWetFloor.
+    tags:
+    - Holosign
   - type: Physics
     bodyType: Static
     canCollide: true

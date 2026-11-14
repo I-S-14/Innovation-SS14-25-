@@ -155,31 +155,12 @@ entities:
   - uid: 51
     components:
     - type: MetaData
-      name: 'How to Fly: For Dum Dums'
+      name: "Как летать: для чайников"
     - type: Transform
       pos: 0.50006104,1.4869615
       parent: 1
     - type: Paper
-      content: >+
-        [head=2][bold]Steps to flying:[/bold][/head]
-
-
-        1. Locate power generation or storage. Some small crafts utilize P.A.C.M.A.N. brand generators.
-
-
-        2. Ensure your generator is connected to the power network. Some small crafts utilize only a Medium Voltage (MV) network!
-
-
-        3. Fuel and start your generator or power source.
-
-
-        4. Wait for your shuttle to prime, and all services to come online.
-
-
-        5. Use the Shuttle Console to locate your destination of choice. You may find further away destinations on the Map tab when scanning for objects.
-
-
-        6. Attempt to avoid crashing you forgot to buy insurance.
+      content: "[head=2][bold]Как управлять шаттлом:[/bold][/head]\n\n1. Найдите генератор или накопитель энергии. Некоторые небольшие суда используют генераторы «П.А.К.М.А.Н.».\n\n2. Убедитесь, что генератор подключён к электросети. Некоторые небольшие суда используют только сеть среднего напряжения (СН)!\n\n3. Заправьте и включите генератор или другой источник питания.\n\n4. Подождите, пока шаттл подготовится к работе и все системы включатся.\n\n5. Выберите нужное место назначения на консоли шаттла. Более далёкие объекты можно обнаружить сканированием на вкладке «Карта».\n\n6. Постарайтесь ни во что не врезаться: вы забыли купить страховку.\n\n\n\n"
 
 
 

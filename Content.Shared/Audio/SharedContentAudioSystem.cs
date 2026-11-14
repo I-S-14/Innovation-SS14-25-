@@ -3,12 +3,13 @@
 using Content.Shared.Physics;
 using Robust.Shared.Audio.Components;
 using Robust.Shared.Audio.Systems;
+using Robust.Shared.Audio;
 
 namespace Content.Shared.Audio;
 
-public abstract class SharedContentAudioSystem : EntitySystem
+public abstract partial class SharedContentAudioSystem : EntitySystem
 {
-    [Dependency] protected readonly SharedAudioSystem Audio = default!;
+    [Dependency] protected SharedAudioSystem Audio = default!;
 
     /// <summary>
     /// Standard variation to use for sounds.

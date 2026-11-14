@@ -1,0 +1,514 @@
+# Required upstream bases lost when old and reorganized resource files were merged.
+# entity/AnomalyRockBananium: 5327c414c5:Resources/Prototypes/Entities/Structures/Specific/Anomaly/anomalies.yml
+# entity/BaseDebris: 5327c414c5:Resources/Prototypes/Entities/World/Debris/base_debris.yml
+# entity/BaseGateway: 5327c414c5:Resources/Prototypes/Entities/Structures/Machines/gateway.yml
+# entity/BaseMobAnimal: bd217732d1:Resources/Prototypes/Body/Animals/animal.yml
+# entity/BaseMobBloodsucker: bd217732d1:Resources/Prototypes/Body/Animals/bloodsucker.yml
+# entity/BaseMobHemocyanin: bd217732d1:Resources/Prototypes/Body/Animals/hemocyanin.yml
+# entity/BaseMobMothroach: bd217732d1:Resources/Prototypes/Body/Animals/mothroach.yml
+# entity/BaseMobRuminant: bd217732d1:Resources/Prototypes/Body/Animals/ruminant.yml
+# entity/BaseStationGateway: 5327c414c5:Resources/Prototypes/Entities/Stations/base.yml
+# entity/ClothingHeadSuitWithLightBase: bd217732d1:Resources/Prototypes/Entities/Clothing/Head/base_clothinghead.yml
+# entity/ClothingUniformJumpsuitColorGrey: bd217732d1:Resources/Prototypes/Entities/Clothing/Uniforms/Jumpsuits/color.yml
+# entity/DrinkCartonSmallBaseFull: 5327c414c5:Resources/Prototypes/Entities/Objects/Consumable/Drinks/drinks-cartons.yml
+# entity/EdibleBase: 5327c414c5:Resources/Prototypes/Entities/Objects/Consumable/Food/food_base.yml
+# entity/GasPipeSensor: 5327c414c5:Resources/Prototypes/Entities/Structures/Piping/Atmospherics/gas_pipe_sensor.yml
+# entity/HolofanProjectorBorg: bd217732d1:Resources/Prototypes/Entities/Objects/Devices/holoprojectors.yml
+# entity/LockerBaseSecure: 5327c414c5:Resources/Prototypes/Entities/Structures/Storage/Closets/Lockers/base_structurelockers.yml
+# entity/MeteorRock: 5327c414c5:Resources/Prototypes/Entities/Structures/Walls/meteor.yml
+# entity/MobArachnid: 5327c414c5:Resources/Prototypes/Entities/Mobs/Player/arachnid.yml
+# entity/MobDwarf: 5327c414c5:Resources/Prototypes/Entities/Mobs/Player/dwarf.yml
+# entity/MobGiantSpiderAngry: 5327c414c5:Resources/Prototypes/Entities/Mobs/NPCs/animals.yml
+# entity/MobGiantSpider: 5327c414c5:Resources/Prototypes/Entities/Mobs/NPCs/animals.yml
+# entity/MobGingerbread: 5327c414c5:Resources/Prototypes/Entities/Mobs/Player/gingerbread.yml
+# entity/MobHuman: 5327c414c5:Resources/Prototypes/Entities/Mobs/Player/human.yml
+# entity/MobMoth: 5327c414c5:Resources/Prototypes/Entities/Mobs/Player/moth.yml
+# entity/MobReptilian: 5327c414c5:Resources/Prototypes/Entities/Mobs/Player/reptilian.yml
+# entity/MobSkeletonPerson: 5327c414c5:Resources/Prototypes/Entities/Mobs/Player/skeleton.yml
+# entity/MobSlimePerson: 5327c414c5:Resources/Prototypes/Entities/Mobs/Player/slime.yml
+# entity/MobVox: 5327c414c5:Resources/Prototypes/Entities/Mobs/Player/vox.yml
+# entity/PelletShotgun: 5327c414c5:Resources/Prototypes/Entities/Objects/Weapons/Guns/Ammunition/Projectiles/shotgun.yml
+# entity/WallRockAndesite: 5327c414c5:Resources/Prototypes/Entities/Structures/Walls/asteroid.yml
+# entity/WallRockBasalt: 5327c414c5:Resources/Prototypes/Entities/Structures/Walls/asteroid.yml
+# entity/WindoorSecurePlasma: 5327c414c5:Resources/Prototypes/Entities/Structures/Doors/Windoors/windoor.yml
+# latheRecipe/BaseCubeRecipe: bd217732d1:Resources/Prototypes/Recipes/Lathes/rehydrateable.yml
+
+- type: entity
+  id: AnomalyRockBananium
+  parent: AnomalyRockBase
+  suffix: Rock, Bananium
+  components:
+  - type: Sprite
+    color: "#ddde40"
+  - type: PointLight
+    radius: '2.0'
+    energy: '7.5'
+    color: "#ddde40"
+  - type: EntitySpawnAnomaly
+    entries:
+    - settings:
+        spawnOnPulse: 'true'
+        minAmount: '8'
+        maxAmount: '15'
+        minRange: '4.5'
+        maxRange: '7.5'
+      spawns:
+      - WallSpawnAsteroid
+      - WallSpawnAsteroid
+      - WallSpawnAsteroidBananium
+      - WallSpawnAsteroidBananiumCrab
+    - settings:
+        spawnOnPulse: 'true'
+        maxAmount: '3'
+        minRange: '2.5'
+        maxRange: '4.5'
+      spawns:
+      - CrystalYellow
+    - settings:
+        spawnOnSuperCritical: 'true'
+        minAmount: '30'
+        maxAmount: '40'
+        minRange: '5'
+        maxRange: '15'
+      spawns:
+      - CrystalYellow
+      - WallSpawnAsteroid
+      - WallSpawnAsteroid
+      - WallSpawnAsteroidBananiumCrab
+    - settings:
+        spawnOnSuperCritical: 'true'
+        minAmount: '3'
+        maxAmount: '6'
+        maxRange: '5'
+      spawns:
+      - MobSpawnCrabBananium
+- type: entity
+  id: BaseDebris
+  abstract: 'true'
+  components:
+  - type: OwnedDebris
+  - type: LocalityLoader
+- type: entity
+  abstract: 'true'
+  parent: BaseStructure
+  id: BaseGateway
+  name: gateway
+  description: A mysterious gateway built by unknown hands, it allows for faster than
+    light travel to far-flung locations.
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/gateway.rsi
+    noRot: 'true'
+    layers:
+    - state: frame
+    - state: portal
+      shader: unshaded
+      map: ["enum.GatewayVisualLayers.Portal"]
+    - state: 'on'
+      shader: unshaded
+      map: ["enum.PowerDeviceVisualLayers.Powered"]
+  - type: GenericVisualizer
+    visuals:
+      enum.PowerDeviceVisuals.Powered:
+        enum.PowerDeviceVisualLayers.Powered:
+          'True': {visible: 'true'}
+          'False': {visible: 'false'}
+      enum.GatewayVisuals.Active:
+        enum.GatewayVisualLayers.Portal:
+          'True': {visible: 'true'}
+          'False': {visible: 'false'}
+  - type: InteractionOutline
+  - type: Physics
+    bodyType: Static
+  - type: Transform
+    noRot: 'true'
+  - type: Fixtures
+    fixtures:
+      portalFixture:
+        shape: !type:PhysShapeAabb
+          bounds: "-0.25,-0.48,0.25,0.48"
+        mask:
+        - FullTileMask
+        layer:
+        - WallLayer
+        hard: 'false'
+  - type: Appearance
+- type: entity
+  id: BaseMobAnimal
+  abstract: 'true'
+  components:
+  - type: Body
+    prototype: Animal
+- type: entity
+  id: BaseMobBloodsucker
+  abstract: 'true'
+  components:
+  - type: Body
+    prototype: Bloodsucker
+- type: entity
+  id: BaseMobHemocyanin
+  abstract: 'true'
+  components:
+  - type: Body
+    prototype: AnimalHemocyanin
+- type: entity
+  parent: [MobNightVision]
+  id: BaseMobMothroach
+  abstract: 'true'
+  components:
+  - type: Body
+    prototype: Mothroach
+- type: entity
+  id: BaseMobRuminant
+  abstract: 'true'
+  components:
+  - type: Body
+    prototype: AnimalRuminant
+- type: entity
+  id: BaseStationGateway
+  abstract: 'true'
+  components:
+  - type: GatewayGenerator
+- type: entity
+  abstract: 'true'
+  id: ClothingHeadSuitWithLightBase
+  name: base hardsuit helmet with light
+  categories: [HideSpawnMenu]
+  components:
+  - type: Sprite
+    layers:
+    - state: icon
+    - state: icon-unshaded
+      shader: unshaded
+    - state: light-overlay
+      visible: 'false'
+      shader: unshaded
+      map: ["light"]
+  - type: Clothing
+    equippedPrefix: 'off'
+  - type: ToggleableVisuals
+    spriteLayer: light
+    clothingVisuals:
+      head:
+      - state: equipped-head-light
+        shader: unshaded
+  - type: ItemTogglePointLight
+  - type: PointLight
+    enabled: 'false'
+    radius: '3'
+    energy: '2'
+    lightMask: ConeSingle
+    autoRot: 'true'
+    netsync: 'false'
+  - type: Appearance
+  - type: HandheldLight
+    addPrefix: 'true'
+    blinkingBehaviourId: blinking
+    radiatingBehaviourId: radiating
+  - type: LightBehaviour
+    behaviours:
+    - !type:FadeBehaviour
+      id: radiating
+      interpolate: Linear
+      maxDuration: '2.0'
+      startValue: '3.0'
+      endValue: '2.0'
+      isLooped: 'true'
+      reverseWhenFinished: 'true'
+    - !type:PulseBehaviour
+      id: blinking
+      interpolate: Nearest
+      maxDuration: '1.0'
+      startValue: '0.1'
+      endValue: '2.0'
+      isLooped: 'true'
+  - type: Battery
+    maxCharge: '600'
+    startingCharge: '600'
+  - type: BatterySelfRecharger
+    autoRechargeRate: '2'
+- type: entity
+  parent: ClothingUniformBase
+  id: ClothingUniformJumpsuitColorGrey
+  name: grey jumpsuit
+  description: A tasteful grey jumpsuit that reminds you of the good old days.
+  components:
+  - type: Sprite
+    sprite: Clothing/Uniforms/Jumpsuits/Color/color.rsi
+    layers:
+    - state: icon
+      color: "#b3b3b3"
+    - state: trinkets-icon
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left
+        color: "#b3b3b3"
+      - state: trinkets-inhand-left
+      right:
+      - state: inhand-right
+        color: "#b3b3b3"
+      - state: trinkets-inhand-right
+  - type: Clothing
+    sprite: Clothing/Uniforms/Jumpsuits/Color/color.rsi
+    clothingVisuals:
+      jumpsuit:
+      - state: equipped-INNERCLOTHING
+        color: "#b3b3b3"
+      - state: trinkets-equipped-INNERCLOTHING
+- type: entity
+  abstract: 'true'
+  parent: DrinkCartonBaseFull
+  id: DrinkCartonSmallBaseFull
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      drink:
+        maxVol: '50'
+  - type: Item
+    size: Small
+- type: entity
+  abstract: 'true'
+  parent: BaseItem
+  id: EdibleBase
+  components:
+  - type: FlavorProfile
+    flavors:
+    - food
+  - type: Edible
+  - type: Sprite
+  - type: StaticPrice
+    price: '0'
+- type: entity
+  parent: HolofanProjector
+  id: HolofanProjectorBorg
+  name: integrated holofan
+  description: Stops idiots from causing more crew harm during atmospheric emergencies.
+    Installed directly into an engineering cyborg, it recharges over time.
+  components:
+  - type: ItemSlots
+    slots:
+      cell_slot:
+        name: power-cell-slot-component-slot-name-default
+        startingItem: PowerCellMicroreactor
+        disableEject: 'true'
+        swap: 'false'
+- type: entity
+  id: LockerBaseSecure
+  parent: IS14LockerBaseCommon # IS14-change: keep Goob's 150/300 without inheriting weak-locker destruction.
+  abstract: 'true'
+  components:
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: StructuralMetallic
+  - type: Destructible
+    thresholds:
+    - trigger: !type:DamageTrigger
+        damage: '300'
+      behaviors:
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+    - trigger: !type:DamageTrigger
+        damage: '150'
+      behaviors:
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+          params:
+            volume: '-6'
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          SheetSteel1:
+            min: '1'
+            max: '2'
+- type: entity
+  id: MeteorRock
+  parent: AsteroidRock
+  name: meteorite rock
+  description: What remains of a meteorite.
+  components:
+  - type: Destructible
+    thresholds:
+    - trigger: !type:DamageTrigger
+        damage: '12'
+      behaviors:
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/break_stone.ogg
+          params:
+            volume: '-6'
+- type: entity
+  save: 'false'
+  name: Urist McWeb
+  parent: BaseMobArachnid
+  id: MobArachnid
+  components:
+  - type: Respirator
+    damage:
+      types:
+        Asphyxiation: '1.5'
+    damageRecovery:
+      types:
+        Asphyxiation: '-0.5'
+- type: entity
+  save: 'false'
+  name: Urist McHands The Dwarf
+  parent: BaseMobDwarf
+  id: MobDwarf
+- type: entity
+  parent:
+  - MobSpiderAngryBase
+  - MobGiantSpider
+  id: MobGiantSpiderAngry
+- type: entity
+  name: tarantula
+  parent: MobSpiderBase
+  id: MobGiantSpider
+  description: Widely recognized to be the literal worst thing in existence.
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    layers:
+    - map: ["enum.DamageStateVisualLayers.Base", "movement"]
+      state: tarantula
+      sprite: Mobs/Animals/spider.rsi
+  - type: SpriteMovement
+    movementLayers:
+      movement:
+        state: tarantula-moving
+    noMovementLayers:
+      movement:
+        state: tarantula
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: tarantula
+      Critical:
+        Base: tarantula_dead
+      Dead:
+        Base: tarantula_dead
+  - type: MeleeWeapon
+    altDisarm: 'false'
+    angle: '0'
+    animation: WeaponArcBite
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    damage:
+      types:
+        Piercing: '6'
+- type: entity
+  save: 'false'
+  name: Urist McCookie
+  parent: BaseMobGingerbread
+  id: MobGingerbread
+  components:
+  - type: Respirator
+    damage:
+      types:
+        Asphyxiation: '0.5'
+    damageRecovery:
+      types:
+        Asphyxiation: '-1.0'
+- type: entity
+  save: 'false'
+  name: Urist McHands
+  parent: BaseMobHuman
+  id: MobHuman
+- type: entity
+  save: 'false'
+  name: Urist McFluff
+  parent: BaseMobMoth
+  id: MobMoth
+- type: entity
+  save: 'false'
+  name: Urist McScales
+  suffix: Urisst' Mzhand
+  parent: BaseMobReptilian
+  id: MobReptilian
+- type: entity
+  save: 'false'
+  parent: BaseMobSkeletonPerson
+  id: MobSkeletonPerson
+  components:
+  - type: InteractionPopup
+    successChance: '1'
+    interactSuccessString: hugging-success-generic
+    interactSuccessSound: /Audio/Effects/thudswoosh.ogg
+    messagePerceivedByOthers: hugging-success-generic-others
+- type: entity
+  save: 'false'
+  parent: BaseMobSlimePerson
+  id: MobSlimePerson
+- type: entity
+  save: 'false'
+  name: Uristititi McVox
+  parent: BaseMobVox
+  id: MobVox
+- type: entity
+  parent: BaseBullet
+  id: PelletShotgun
+  categories: [HideSpawnMenu]
+  name: pellet (.50)
+  components:
+  - type: Projectile
+    damage:
+      types:
+        Piercing: '10'
+        Structural: '15'
+      woundSeverityMultipliers:
+        Piercing: 1.5 # IS14: retain the original Goob/IS14 wound severity.
+- type: entity
+  id: WallRockAndesite
+  name: andesite
+  parent: WallRock
+  components:
+  - type: Icon
+    sprite: Structures/Walls/rock.rsi
+    state: rock_andesite
+  - type: Sprite
+    sprite: Structures/Walls/rock.rsi
+    layers:
+    - state: rock_andesite
+  - type: IconSmooth
+    key: stone
+    states:
+    - !type:EdgeSpriteSmoothing
+      base: rock_andesite_
+      mask:
+      - stone
+      index: '1'
+- type: entity
+  id: WallRockBasalt
+  name: basalt
+  parent: WallRock
+  components:
+  - type: Icon
+    sprite: Structures/Walls/rock.rsi
+    state: rock_wall
+  - type: Sprite
+    sprite: Structures/Walls/rock.rsi
+    layers:
+    - state: rock_wall
+  - type: IconSmooth
+    key: stone
+    states:
+    - !type:EdgeSpriteSmoothing
+      base: rock_wall_
+      mask:
+      - stone
+      index: '1'
+- type: entity
+  id: WindoorSecurePlasma
+  parent: BaseSecurePlasmaWindoor
+  name: secure plasma windoor
+  description: It's a sturdy purple window *and* a sliding door. Spectacular!
+- type: latheRecipe
+  abstract: 'true'
+  id: BaseCubeRecipe
+  completetime: '30'
+  materials:
+    Biomass: '16'

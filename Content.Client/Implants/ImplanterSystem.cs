@@ -34,7 +34,7 @@ public sealed class ImplanterSystem : SharedImplanterSystem
                     implants.Add(proto.ID, proto.Name);
             }
 
-            bui.UpdateState(implants, component.DeimplantChosen);
+            bui.Update();
         }
 
         component.UiUpdateNeeded = true;

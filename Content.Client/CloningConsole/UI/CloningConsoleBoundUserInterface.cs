@@ -3,6 +3,7 @@
 using JetBrains.Annotations;
 using Content.Shared.Cloning.CloningConsole;
 using Robust.Client.UserInterface;
+using Robust.Client.GameObjects;
 
 namespace Content.Client.CloningConsole.UI
 {

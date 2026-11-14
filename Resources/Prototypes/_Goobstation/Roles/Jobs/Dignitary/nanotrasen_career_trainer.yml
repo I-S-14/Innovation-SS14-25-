@@ -4,7 +4,6 @@
   description: job-description-nct
   playTimeTracker: JobNanotrasenCareerTrainer
   #goobcoins: 45 Corvax-Goob-coins
-  weight: 20
   startingGear: NanotrasenCareerTrainerGear
   icon: "JobIconNanotrasenTrainer"
   joinNotifyCrew: true

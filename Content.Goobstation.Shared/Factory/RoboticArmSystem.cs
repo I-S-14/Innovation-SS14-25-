@@ -16,23 +16,24 @@ using Robust.Shared.Containers;
 using Robust.Shared.Map;
 using Robust.Shared.Physics.Events;
 using Robust.Shared.Timing;
+using Content.Shared.DeviceLinking.Systems;
 
 namespace Content.Goobstation.Shared.Factory;
 
-public sealed class RoboticArmSystem : EntitySystem
+public sealed partial class RoboticArmSystem : EntitySystem
 {
-    [Dependency] private readonly AutomationSystem _automation = default!;
-    [Dependency] private readonly AutomationFilterSystem _filter = default!;
-    [Dependency] private readonly CollisionWakeSystem _wake = default!;
-    [Dependency] private readonly ExclusiveSlotsSystem _exclusive = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly IMapManager _map = default!;
-    [Dependency] private readonly ItemSlotsSystem _slots = default!;
-    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
-    [Dependency] private readonly SharedDeviceLinkSystem _device = default!;
-    [Dependency] private readonly SharedPowerReceiverSystem _power = default!;
-    [Dependency] private readonly SharedTransformSystem _transform = default!;
-    [Dependency] private readonly TurfSystem _turf = default!;
+    [Dependency] private AutomationSystem _automation = default!;
+    [Dependency] private AutomationFilterSystem _filter = default!;
+    [Dependency] private CollisionWakeSystem _wake = default!;
+    [Dependency] private ExclusiveSlotsSystem _exclusive = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private SharedMapSystem _mapSystem = default!;
+    [Dependency] private ItemSlotsSystem _slots = default!;
+    [Dependency] private SharedAppearanceSystem _appearance = default!;
+    [Dependency] private DeviceLinkSystem _device = default!;
+    [Dependency] private SharedPowerReceiverSystem _power = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private TurfSystem _turf = default!;
 
     private EntityQuery<ItemComponent> _itemQuery;
     private EntityQuery<ThrownItemComponent> _thrownQuery;
@@ -277,7 +278,7 @@ public sealed class RoboticArmSystem : EntitySystem
         if (!TryComp<ItemSlotsComponent>(ent, out var slots))
             return;
 
-        if (!_slots.TryGetSlot(ent, ent.Comp.ItemSlotId, out var slot, slots))
+        if (!_slots.TryGetSlot((ent, slots), ent.Comp.ItemSlotId, out var slot))
         {
             Log.Warning($"Missing item slot {ent.Comp.ItemSlotId} on robotic arm {ToPrettyString(ent)}");
             RemCompDeferred<RoboticArmComponent>(ent);

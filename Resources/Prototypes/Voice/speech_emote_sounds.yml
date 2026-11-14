@@ -2,6 +2,7 @@
 
 - type: emoteSounds
   id: MaleHuman
+  voiceSelectorName: humanoid-profile-editor-voice-masculine
   params:
     variation: 0.125
   sounds:
@@ -50,6 +51,7 @@
 
 - type: emoteSounds
   id: FemaleHuman
+  voiceSelectorName: humanoid-profile-editor-voice-feminine
   params:
     variation: 0.125
   sounds:
@@ -144,11 +146,12 @@
 
 - type: emoteSounds
   id: MaleReptilian
+  voiceSelectorName: humanoid-profile-editor-voice-masculine
   params:
     variation: 0.125
   sounds:
     Scream:
-      path: /Audio/Voice/Reptilian/reptilian_scream.ogg
+      collection: ReptilianScream # Omu
     Laugh:
       path: /Audio/Animals/lizard_happy.ogg
     Honk:
@@ -185,14 +188,21 @@
       collection: MaleYawn
     #Belch: # Frontier # CorvaxGoob-deleted Cringe - Belch
       #collection: Belch # Frontier
+    Purr: #Omu
+      path: /Audio/_Omu/Voice/Reptilian/Reptilian_lizard_purr.ogg
+    Rattle: #Omu
+      path: /Audio/_Omu/Voice/Reptilian/Reptilian_lizard_rattle.ogg
+    ReptilianScreech: #Omu
+      collection: ReptilianScreech
 
 - type: emoteSounds
   id: FemaleReptilian
+  voiceSelectorName: humanoid-profile-editor-voice-feminine
   params:
     variation: 0.125
   sounds:
     Scream:
-      path: /Audio/Voice/Reptilian/reptilian_scream.ogg
+      collection: ReptilianScream # Omu
     Laugh:
       path: /Audio/Animals/lizard_happy.ogg
     Honk:
@@ -229,9 +239,16 @@
       collection: FemaleYawn
     #Belch: # Frontier # CorvaxGoob-deleted Cringe - Belch
       #collection: Belch # Frontier
+    Purr: #Omu
+      path: /Audio/_Omu/Voice/Reptilian/Reptilian_lizard_purr.ogg
+    Rattle: #Omu
+      path: /Audio/_Omu/Voice/Reptilian/Reptilian_lizard_rattle.ogg
+    ReptilianScreech: #Omu
+      collection: ReptilianScreech
 
 - type: emoteSounds
   id: MaleSlime
+  voiceSelectorName: humanoid-profile-editor-voice-masculine
   sounds:
     Squish:
       collection: Squishes
@@ -286,6 +303,7 @@
 
 - type: emoteSounds
   id: FemaleSlime
+  voiceSelectorName: humanoid-profile-editor-voice-feminine
   sounds:
     Squish:
       collection: Squishes
@@ -340,6 +358,7 @@
 
 - type: emoteSounds
   id: UnisexVox
+  voiceSelectorName: humanoid-profile-editor-voice-neutral
   sounds:
     Scream:
       collection: VoxScreams
@@ -402,6 +421,8 @@
       #collection: Belch # Frontier
     Caw:
       collection: HarpyCaws
+    Bagawk:
+      path: /Audio/_Mono/Voice/bagawk.ogg 
     # Goob end
     #Gasp: # Goob
     #  path: /Audio/Effects/Gasp/vox_gasp.ogg
@@ -412,6 +433,7 @@
 
 - type: emoteSounds
   id: UnisexDiona
+  voiceSelectorName: humanoid-profile-editor-voice-neutral
   sounds:
     Scream:
       path: /Audio/Voice/Diona/diona_scream.ogg
@@ -450,9 +472,9 @@
   params:
     variation: 0.125
 
-
 - type: emoteSounds
   id: UnisexArachnid
+  voiceSelectorName: humanoid-profile-editor-voice-neutral
   params:
     variation: 0.125
   sounds:
@@ -485,6 +507,7 @@
 
 - type: emoteSounds
   id: UnisexDwarf
+  voiceSelectorName: humanoid-profile-editor-voice-masculine
   sounds:
     Scream:
       collection: MaleScreams
@@ -534,6 +557,7 @@
 
 - type: emoteSounds
   id: FemaleDwarf
+  voiceSelectorName: humanoid-profile-editor-voice-feminine
   sounds:
     Scream:
       collection: FemaleScreams
@@ -581,6 +605,7 @@
 
 - type: emoteSounds
   id: UnisexMoth
+  voiceSelectorName: humanoid-profile-editor-voice-neutral
   params:
     variation: 0.125
   sounds:
@@ -916,6 +941,22 @@
     Crack: # Imp
       collection: Cracks # Imp
 
+- type: emoteSounds
+  id: MothBodyEmotes
+  sounds:
+    Flap:
+      path: /Audio/Voice/Moth/moth_flap.ogg
+    Clap:
+      collection: Claps
+    ClapSingle:
+      collection: ClapSingle
+    Snap:
+      collection: Snaps
+      params:
+        volume: -6
+    Salute:
+      collection: Salutes
+
 # mobs
 - type: emoteSounds
   id: Zombie
@@ -992,6 +1033,20 @@
     path: /Audio/Animals/goat_bah.ogg
     params:
       variation: 0.125
+
+- type: emoteSounds
+  id: Sheep
+  sound:
+    collection: Sheep
+    params:
+      variation: 0.05
+
+- type: emoteSounds
+  id: SheepSpace
+  sound:
+    collection: SheepSpace
+    params:
+      variation: 0.05
 
 - type: emoteSounds
   id: Scurret

@@ -15,10 +15,12 @@
   metamorphicMaxFillLevels: 5
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:ModifyStatusEffect
         effectProto: StatusEffectDrowsiness
@@ -44,21 +46,34 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 4
-
 - type: reagent
   id: ChangelingSting
   name: reagent-name-changeling-sting
-  parent: BaseSoda
+  parent: [ BaseSoda, BaseAlcohol ]
   desc: reagent-desc-changeling-sting
   physicalDesc: reagent-physical-desc-fizzy
   flavor: soda
   color: "#2E6671"
-
+  # IS14: retain Goob organ metabolism and reagent effects.
+  metabolisms:
+    Drink:
+      effects:
+      - !type:AdjustInternalResources # IS14: Goob changelings use internal resources.
+        resource: ChangelingChemicals
+        amount: 0.5
+        conditions:
+        - !type:MetabolizerTypeCondition
+          type: [Changeling]
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
 - type: reagent
   id: DrGibb
   name: reagent-name-dr-gibb
@@ -82,10 +97,12 @@
   physicalDesc: reagent-physical-desc-fizzy
   flavor: energydrink
   color: "#ffffbf"
+  puddleColor: "#ffffbf60" # Goob
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:ModifyStatusEffect
         effectProto: StatusEffectDrowsiness
@@ -94,6 +111,9 @@
       - !type:AdjustReagent
         reagent: Theobromine
         amount: 0.1
+      - !type:AdjustReagent # Goobstation: Caffeine
+        reagent: Caffeine
+        amount: 1.0
   fizziness: 0.4
 
 - type: reagent
@@ -210,12 +230,13 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 4
-
 - type: reagent
   id: SpaceMountainWind
   name: reagent-name-space-mountain-wind
@@ -272,7 +293,8 @@
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Theobromine

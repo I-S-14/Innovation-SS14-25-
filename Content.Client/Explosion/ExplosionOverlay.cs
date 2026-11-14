@@ -8,17 +8,18 @@ using Robust.Shared.Enums;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
+using Robust.Shared.Map;
 
 namespace Content.Client.Explosion;
 
 [UsedImplicitly]
-public sealed class ExplosionOverlay : Overlay
+public sealed partial class ExplosionOverlay : Overlay
 {
     private static readonly ProtoId<ShaderPrototype> UnshadedShader = "unshaded";
 
-    [Dependency] private readonly IRobustRandom _robustRandom = default!;
-    [Dependency] private readonly IEntityManager _entMan = default!;
-    [Dependency] private readonly IPrototypeManager _proto = default!;
+    [Dependency] private IRobustRandom _robustRandom = default!;
+    [Dependency] private IEntityManager _entMan = default!;
+    [Dependency] private IPrototypeManager _proto = default!;
     private readonly SharedTransformSystem _transformSystem;
     private SharedAppearanceSystem _appearance;
 
@@ -53,9 +54,6 @@ public sealed class ExplosionOverlay : Overlay
             index = Math.Min(index, visuals.Intensity.Count - 1);
             DrawExplosion(drawHandle, args.WorldBounds, visuals, index, xforms, textures);
         }
-
-        drawHandle.SetTransform(Matrix3x2.Identity);
-        drawHandle.UseShader(null);
     }
 
     private void DrawExplosion(

@@ -22,9 +22,12 @@
     sprite: _Shitmed/Structures/Walls/abductor_diagonal.rsi
     state: state0
   - type: IconSmooth
-    mode: Diagonal
     key: walls
-    base: state
+    states:
+    - !type:DiagonalSpriteSmoothing
+      base: state
+      mask:
+      - walls
   - type: Icon
     sprite: _Shitmed/Structures/Walls/abductor_diagonal.rsi
     state: state0
@@ -89,7 +92,11 @@
     node: shuttleWall
   - type: IconSmooth
     key: walls
-    base: state
+    states:
+    - !type:CornerSpriteSmoothing
+      base: state
+      mask:
+      - walls
   - type: Appearance
   - type: Reflect
     reflectProb: 1

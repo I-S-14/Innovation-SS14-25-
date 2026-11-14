@@ -4,6 +4,7 @@ using Content.Server.Popups;
 using Content.Server.Power.Components;
 using Content.Server.Power.EntitySystems;
 using Content.Shared.Damage;
+using Content.Shared.Damage.Systems;
 using Content.Shared.Examine;
 using Content.Shared.Item.ItemToggle;
 using Content.Shared.Item.ItemToggle.Components;
@@ -18,8 +19,6 @@ public sealed class RechargeableBlockingSystem : EntitySystem
 {
     [Dependency] private readonly BatterySystem _battery = default!;
     [Dependency] private readonly ItemToggleSystem _itemToggle = default!;
-    [Dependency] private readonly PopupSystem _popup = default!;
-    [Dependency] private readonly PowerCellSystem _powerCell = default!;
 
     public override void Initialize()
     {
@@ -73,12 +72,12 @@ public sealed class RechargeableBlockingSystem : EntitySystem
 
         args.Cancelled = true;
     }
-    private void OnChargeChanged(EntityUid uid, RechargeableBlockingComponent component, ChargeChangedEvent args)
+    private void OnChargeChanged(EntityUid uid, RechargeableBlockingComponent component, ref ChargeChangedEvent args)
     {
         CheckCharge(uid, component);
     }
 
-    private void OnPowerCellChanged(EntityUid uid, RechargeableBlockingComponent component, PowerCellChangedEvent args)
+    private void OnPowerCellChanged(EntityUid uid, RechargeableBlockingComponent component, ref PowerCellChangedEvent args)
     {
         CheckCharge(uid, component);
     }

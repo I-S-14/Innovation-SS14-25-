@@ -1,0 +1,19 @@
+- type: entity
+  id: BaseStationAlertLevels
+  abstract: true
+  components:
+  - type: AlertLevel
+    availableAlertLevels:
+    - Blue
+    - DeltaNuke
+    - Epsilon
+    - Gamma
+    - Green
+    - Red
+    - Violet
+    - Yellow
+    - amber # IS14: retained Goob authorization gate controls availability.
+    - omicron
+    - octarine
+    - honk
+  - type: AmberAlert # Goobstation - gates the amber alert level

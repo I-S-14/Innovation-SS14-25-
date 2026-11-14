@@ -13,7 +13,9 @@ public sealed partial class RemoveComponentEffectSystem : EntityEffectSystem<Met
             return;
 
         var compType = EntityManager.ComponentFactory.GetRegistration(args.Effect.Component).Type;
-        EntityManager.RemoveComponentDeferred(entity.Owner, compType);
+        //IS14-change start
+        RemCompDeferred(entity.Owner, compType);
+        //IS14-change end
     }
 }
 

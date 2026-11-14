@@ -14,7 +14,7 @@ using Robust.Shared.Containers;
 
 namespace Content.Client.DoAfter;
 
-public sealed class DoAfterOverlay : Overlay
+public sealed partial class DoAfterOverlay : Overlay // Goob
 {
     private static readonly ProtoId<ShaderPrototype> UnshadedShader = "unshaded";
 
@@ -38,6 +38,15 @@ public sealed class DoAfterOverlay : Overlay
     // Hardcoded width of the progress bar because it doesn't match the texture.
     private const float StartX = 2;
     private const float EndX = 22f;
+
+    // Time after which the doafter will lerp to max alpha.
+    private static readonly TimeSpan MaxAlphaTime = TimeSpan.FromSeconds(0.3f);
+
+    // After finishing, how long it takes to fade out to 0 alpha
+    private static readonly TimeSpan FadeoutAlphaTime = TimeSpan.FromSeconds(0.2f);
+
+    // Time after which the doafter will lerp to its final y offset.
+    private static readonly TimeSpan MaxYPosTime = TimeSpan.FromSeconds(0.5f);
 
     public override OverlaySpace Space => OverlaySpace.WorldSpaceBelowFOV;
 
@@ -117,7 +126,7 @@ public sealed class DoAfterOverlay : Overlay
             foreach (var doAfter in comp.DoAfters.Values)
             {
                 // Hide some DoAfters from other players for stealthy actions (ie: thieving gloves)
-                var alpha = 1f;
+                var maxAlpha = 1f;
                 if (doAfter.Args.Hidden || isInContainer)
                 {
                     // Goobstation - Show doAfter progress bar to another entity
@@ -126,12 +135,15 @@ public sealed class DoAfterOverlay : Overlay
                         continue;
 
                     // Hints to the local player that this do-after is not visible to other players.
-                    alpha = 0.5f;
+                    maxAlpha = 0.5f;
                 }
+
+                var elapsed = time - doAfter.StartTime;
+                var alpha = GetDoAfterAlpha(elapsed, doAfter.Args.Delay, maxAlpha); // Goob
 
                 // Use the sprite itself if we know its bounds. This means short or tall sprites don't get overlapped
                 // by the bar.
-                var yOffset = _sprite.GetLocalBounds((uid, sprite)).Height / 2f + 0.05f;
+                var yOffset = GetDoAfterYOffset(time - doAfter.StartTime, _sprite.GetLocalBounds((uid, sprite)).Height); // Goob
 
                 // Position above the entity (we've already applied the matrix transform to the entity itself)
                 // Offset by the texture size for every do_after we have.
@@ -139,7 +151,7 @@ public sealed class DoAfterOverlay : Overlay
                     yOffset / scale + offset / EyeManager.PixelsPerMeter * scale);
 
                 // Draw the underlying bar texture
-                handle.DrawTexture(_barTexture, position);
+                handle.DrawTexture(_barTexture, position, Color.White.WithAlpha(alpha)); // Goob
 
                 Color color;
                 float elapsedRatio;
@@ -147,7 +159,7 @@ public sealed class DoAfterOverlay : Overlay
                 // if we're cancelled then flick red / off.
                 if (doAfter.CancelledTime != null)
                 {
-                    var elapsed = doAfter.CancelledTime.Value - doAfter.StartTime;
+                    elapsed = doAfter.CancelledTime.Value - doAfter.StartTime;
                     elapsedRatio = (float)Math.Min(1, elapsed.TotalSeconds / doAfter.Args.Delay.TotalSeconds);
                     var cancelElapsed = (time - doAfter.CancelledTime.Value).TotalSeconds;
                     var flash = Math.Floor(cancelElapsed / FlashTime) % 2 == 0;
@@ -155,7 +167,6 @@ public sealed class DoAfterOverlay : Overlay
                 }
                 else
                 {
-                    var elapsed = time - doAfter.StartTime;
                     elapsedRatio = (float)Math.Min(1, elapsed.TotalSeconds / doAfter.Args.Delay.TotalSeconds);
                     color = GetProgressColor(elapsedRatio, alpha);
                 }
@@ -163,13 +174,10 @@ public sealed class DoAfterOverlay : Overlay
                 var xProgress = (EndX - StartX) * elapsedRatio + StartX;
                 var box = new Box2(new Vector2(StartX, 3f) / EyeManager.PixelsPerMeter, new Vector2(xProgress, 4f) / EyeManager.PixelsPerMeter);
                 box = box.Translated(position);
-                handle.DrawRect(box, doAfter.Args.ColorOverride ?? color); // Goob edit
+                handle.DrawRect(box, ApplyOverrideAlpha(doAfter.Args.ColorOverride, color)); // Goob edit
                 offset += _barTexture.Height / scale;
             }
         }
-
-        handle.UseShader(null);
-        handle.SetTransform(Matrix3x2.Identity);
     }
 
     public Color GetProgressColor(float progress, float alpha = 1f)

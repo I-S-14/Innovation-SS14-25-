@@ -41,18 +41,24 @@ public sealed class HeightAdjustSystem : EntitySystem
         var succeeded = true;
         var avg = (scale.X + scale.Y) / 2;
 
-        if (_config.GetCVar(CCVars.HeightAdjustModifiesZoom) && EntityManager.TryGetComponent<ContentEyeComponent>(uid, out var eye))
+        //IS14-change start
+        if (_config.GetCVar(CCVars.HeightAdjustModifiesZoom) && TryComp<ContentEyeComponent>(uid, out var eye))
+        //IS14-change end
             _eye.SetMaxZoom(uid, eye.MaxZoom * avg);
         else
             succeeded = false;
 
-        if (_config.GetCVar(CCVars.HeightAdjustModifiesHitbox) && EntityManager.TryGetComponent<FixturesComponent>(uid, out var fixtures))
+        //IS14-change start
+        if (_config.GetCVar(CCVars.HeightAdjustModifiesHitbox) && TryComp<FixturesComponent>(uid, out var fixtures))
+        //IS14-change end
             foreach (var fixture in fixtures.Fixtures)
                 _physics.SetRadius(uid, fixture.Key, fixture.Value, fixture.Value.Shape, MathF.MinMagnitude(fixture.Value.Shape.Radius * avg, 0.49f));
         else
             succeeded = false;
 
-        if (EntityManager.HasComponent<HumanoidAppearanceComponent>(uid))
+        //IS14-change start
+        if (HasComp<HumanoidAppearanceComponent>(uid))
+        //IS14-change end
             _appearance.SetScale(uid, scale);
         else
             succeeded = false;

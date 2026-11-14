@@ -7,10 +7,11 @@ using Robust.Client.Utility;
 using Robust.Shared.Graphics.RSI;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
+using Robust.Shared.Graphics;
 
 namespace Content.Client.Clickable
 {
-    internal sealed class ClickMapManager : IClickMapManager, IPostInjectInit
+    internal sealed partial class ClickMapManager : IClickMapManager, IPostInjectInit
     {
         private static readonly string[] IgnoreTexturePaths =
         {
@@ -24,7 +25,7 @@ namespace Content.Client.Clickable
         private const float Threshold = 0.1f;
         private const int ClickRadius = 2;
 
-        [Dependency] private readonly IResourceCache _resourceCache = default!;
+        [Dependency] private IResourceCache _resourceCache = default!;
 
         [ViewVariables]
         private readonly Dictionary<Texture, ClickMap> _textureMaps = new();

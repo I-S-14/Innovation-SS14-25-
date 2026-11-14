@@ -2,7 +2,7 @@
 
 - type: entity
   name: lamp
-  parent: BaseItem
+  parent: [SolutionToolWelderIndsutrial, BaseItem]
   id: ArabianLamp
   description: Why the heck won't this piece of junk open!?
   components:
@@ -53,6 +53,7 @@
         volume: -12
     deactivatedSoundOnHitNoDamage:
       collection: MetalThud
+  - type: ItemToggleExaminableStatus
   - type: ItemToggle
     predictable: false
     soundActivate:
@@ -93,13 +94,6 @@
       right:
       - state: inhand-right-flame
         shader: unshaded
-  - type: SolutionContainerManager
-    solutions:
-      Welder:
-        reagents:
-        - ReagentId: WeldingFuel
-          Quantity: 25
-        maxVol: 25
   - type: SolutionTransfer
     transferAmount: 5
     canChangeTransferAmount: false
@@ -116,7 +110,6 @@
     heldOnly: true
     exactVolume: true
   - type: SolutionRegeneration
-    solution: Welder
     generated:
       reagents:
       - ReagentId: WeldingFuel

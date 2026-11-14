@@ -110,14 +110,14 @@ public sealed class SanguineStrikeSystem : SharedSanguineStrikeSystem
         base.BloodSteal(user, hitEntities, bloodStealAmount, bloodSpillCoordinates);
 
         var bloodQuery = GetEntityQuery<BloodstreamComponent>();
-        var solutionQuery = GetEntityQuery<SolutionContainerManagerComponent>();
+        var solutionQuery = GetEntityQuery<SolutionManagerComponent>();
 
         // I love solutions :)
         if (!bloodQuery.TryComp(user, out var userBlood) || !solutionQuery.TryComp(user, out var userSolution) ||
             !_solution.ResolveSolution((user, userSolution), userBlood.BloodSolutionName, ref userBlood.BloodSolution))
             return;
 
-        List<Entity<BloodstreamComponent, SolutionContainerManagerComponent>> bloodEntities = new();
+        List<Entity<BloodstreamComponent, SolutionManagerComponent>> bloodEntities = new();
         foreach (var hitEnt in hitEntities)
         {
             if (bloodQuery.TryComp(hitEnt, out var hitBlood) && solutionQuery.TryComp(hitEnt, out var hitSolution))

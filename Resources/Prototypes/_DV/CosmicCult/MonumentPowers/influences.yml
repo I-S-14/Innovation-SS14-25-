@@ -87,8 +87,10 @@
     sprite: _DV/CosmicCult/Icons/cosmiccult_abilities.rsi
     state: metabolism
   remove:
-  - type: Hunger
-  - type: Thirst
+  - type: Satiation
+    satiations: {}
+  - type: SatiationSpeedModifier
+    satiations: {}
   tier: 1
 
 - type: influence

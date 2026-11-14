@@ -11,6 +11,7 @@ job-name-futureagent = Future Agent
 job-name-salvagediver = Salvage Diver
 job-name-ntr = MJR Representative
 job-name-bs = State Security Service Operative
+job-name-bso = State Security Service Operative
 job-name-overall = Overall
 job-name-tider = Tider
 

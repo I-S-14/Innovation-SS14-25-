@@ -28,7 +28,7 @@
   - type: MultipleTool
     statusShowBehavior: true
     entries:
-    - behavior: Prying
+    - behavior: [ Prying ]
       sprite:
         sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
         state: toolkit_engiborg_crowbar
@@ -36,7 +36,7 @@
         path: /Audio/Items/crowbar.ogg
       changeSound:
         path: /Audio/Items/change_drill.ogg
-    - behavior: Anchoring
+    - behavior: [ Anchoring ]
       sprite:
         sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
         state: toolkit_engiborg_wrench
@@ -44,7 +44,7 @@
         path: /Audio/Items/ratchet.ogg
       changeSound:
         path: /Audio/Items/change_drill.ogg
-    - behavior: Screwing
+    - behavior: [ Screwing ]
       sprite:
         sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
         state: toolkit_engiborg_screwdriver
@@ -52,7 +52,7 @@
         collection: Screwdriver
       changeSound:
         path: /Audio/Items/change_drill.ogg
-    - behavior: Cutting
+    - behavior: [ Cutting ]
       sprite:
         sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
         state: toolkit_engiborg_cutters
@@ -60,7 +60,7 @@
         path: /Audio/Items/wirecutter.ogg
       changeSound:
         path: /Audio/Items/change_drill.ogg
-    - behavior: Pulsing
+    - behavior: [ Pulsing ]
       sprite:
         sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
         state: toolkit_engiborg_multitool

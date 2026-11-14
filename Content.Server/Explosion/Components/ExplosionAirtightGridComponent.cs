@@ -1,4 +1,4 @@
-﻿using Content.Server.Explosion.EntitySystems;
+using Content.Server.Explosion.EntitySystems;
 using Content.Shared.Atmos;
 using Content.Goobstation.Maths.FixedPoint;
 using Robust.Shared.Map.Components;

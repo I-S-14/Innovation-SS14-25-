@@ -1,18 +1,25 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Diagnostics;
+using Content.Shared.CombatMode; // CorvaxGoob-IgnorGrab
 using Content.Shared.Database;
 using Content.Shared.Hands.Components;
 using Content.Shared.Item;
+using Content.Shared.Tag; // CorvaxGoob-IgnorGrab
 using Robust.Shared.Containers;
 using Robust.Shared.Physics;
 using Robust.Shared.Physics.Components;
+using Robust.Shared.Prototypes; // CorvaxGoob-IgnorGrab
 using Robust.Shared.Utility;
 
 namespace Content.Shared.Hands.EntitySystems;
 
 public abstract partial class SharedHandsSystem
 {
+    [Dependency] private readonly SharedCombatModeSystem _combatMode = default!; // CorvaxGoob-IgnorGrab
+
+    private static readonly ProtoId<TagPrototype> IgnorGrab = "IgnorGrab"; // CorvaxGoob-IgnorGrab
+
     private void InitializePickup()
     {
         SubscribeLocalEvent<HandsComponent, EntInsertedIntoContainerMessage>(HandleEntityInserted);
@@ -83,6 +90,10 @@ public abstract partial class SharedHandsSystem
         if (handId == null)
             return false;
 
+        // don't try to pick up the item if it's being deleted anyways
+        if (TerminatingOrDeleted(entity) || EntityManager.IsQueuedForDeletion(entity))
+            return false;
+
         if (!Resolve(entity, ref item, false))
             return false;
 
@@ -128,7 +139,8 @@ public abstract partial class SharedHandsSystem
         if (!Resolve(ent, ref ent.Comp, false))
             return false;
 
-        TryDrop(ent, hand, checkActionBlocker: checkActionBlocker);
+        if (!HandIsEmpty(ent, hand) && !TryDrop(ent, hand, checkActionBlocker: checkActionBlocker))
+            return false;
 
         return TryPickup(ent, entity, hand, checkActionBlocker, animate: animate, handsComp: handsComp, item: item);
     }
@@ -192,6 +204,15 @@ public abstract partial class SharedHandsSystem
         // could be made with respect to that.
         if (!Resolve(entity, ref item, false))
             return false;
+
+        // CorvaxGoob-IgnorGrab-start
+        if (_tagSystem.HasTag(entity, IgnorGrab)
+             && _combatMode.IsInCombatMode(uid)
+            && ActiveHandIsEmpty((uid, handsComp)))
+        {
+            return false;
+        }
+        // CorvaxGoob-IgnorGrab-end
 
         if (TryComp(entity, out PhysicsComponent? physics) && physics.BodyType == BodyType.Static)
             return false;
@@ -288,7 +309,7 @@ public abstract partial class SharedHandsSystem
             return;
         }
 
-        _interactionSystem.DoContactInteraction(uid, entity); //Possibly fires twice if manually picked up via interacting with the object
+        _interactionSystem.DoContactInteraction(uid, entity, null, true); // Goob - Possibly fires twice if manually picked up via interacting with the object
 
         if (log)
             _adminLogger.Add(LogType.Pickup, LogImpact.Low, $"{ToPrettyString(uid):user} picked up {ToPrettyString(entity):entity}");

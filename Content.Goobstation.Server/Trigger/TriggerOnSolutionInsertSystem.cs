@@ -9,10 +9,10 @@ using Robust.Shared.Containers;
 
 namespace Content.Goobstation.Server.Trigger;
 
-public sealed class TriggerOnSolutionInsertSystem : EntitySystem
+public sealed partial class TriggerOnSolutionInsertSystem : EntitySystem
 {
-    [Dependency] private readonly SharedSolutionContainerSystem _solutionContainers = default!;
-    [Dependency] private readonly TriggerSystem _triggersystem = default!;
+    [Dependency] private SharedSolutionContainerSystem _solutionContainers = default!;
+    [Dependency] private TriggerSystem _triggersystem = default!;
 
     public override void Initialize()
     {
@@ -55,14 +55,9 @@ public sealed class TriggerOnSolutionInsertSystem : EntitySystem
                 }
             }
         }
-        if (TryComp<SolutionContainerManagerComponent>(uid, out var solutionContainerManager)){
-            foreach (var solutionContainer in solutionContainerManager.Containers)
-            {
-                if (_solutionContainers.TryGetSolution(uid, solutionContainer, out var _, out var solution))
-                {
-                    solutionFound += solution.GetTotalPrototypeQuantity(component.SolutionName);
-                }
-            }
+        if (TryComp<SolutionManagerComponent>(uid, out var solutionContainerManager)){
+            foreach (var (_, solution) in _solutionContainers.EnumerateSolutions((uid, solutionContainerManager)))
+                solutionFound += solution.Comp.Solution.GetTotalPrototypeQuantity(component.SolutionName);
         }
         return solutionFound;
     }

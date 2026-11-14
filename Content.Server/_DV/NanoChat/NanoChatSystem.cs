@@ -1,9 +1,9 @@
+using Content.Shared.Kitchen.Components; // IS14-change: upstream namespace move
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Linq;
 using Content.Server.Access.Systems;
 using Content.Server.Administration.Logs;
-using Content.Server.Kitchen.Components;
 using Content.Server.NameIdentifier;
 using Content.Shared.Database;
 using Content.Shared._DV.CartridgeLoader.Cartridges;
@@ -150,7 +150,7 @@ public sealed class NanoChatSystem : SharedNanoChatSystem
             return;
 
         // Assign a random number
-        _name.GenerateUniqueName(ent, _nameIdentifierGroup, out var number);
+        _name.GenerateUniqueNameModifier(_nameIdentifierGroup, out var number);
         ent.Comp.Number = (uint)number;
         Dirty(ent);
     }

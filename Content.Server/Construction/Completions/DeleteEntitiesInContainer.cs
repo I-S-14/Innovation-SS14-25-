@@ -3,6 +3,7 @@
 using System.Linq;
 using Content.Shared.Construction;
 using Robust.Server.Containers;
+using Robust.Shared.Containers;
 
 namespace Content.Server.Construction.Completions
 {

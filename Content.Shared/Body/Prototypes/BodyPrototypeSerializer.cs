@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Linq;
+using System.Diagnostics.CodeAnalysis;
 using Content.Shared.Body.Organ;
 using Content.Shared.Prototypes;
 using Robust.Shared.Prototypes;
@@ -54,7 +55,7 @@ public sealed class BodyPrototypeSerializer : ITypeReader<BodyPrototype, Mapping
                     continue;
                 }
 
-                if (!organPrototype.HasComponent<OrganComponent>(factory))
+                if (!organPrototype.HasComp<OrganComponent>(factory))
                 {
                     nodes.Add(new ErrorNode(value, $"Organ {organ.Value} does not have a body component"));
                 }
@@ -107,6 +108,9 @@ public sealed class BodyPrototypeSerializer : ITypeReader<BodyPrototype, Mapping
         return new ValidatedSequenceNode(nodes);
     }
 
+    //IS14-change start
+    [SuppressMessage("Usage", "RA0039", Justification = "This prototype type reader constructs the body being loaded by PrototypeManager; it cannot index that prototype before loading finishes.")]
+    //IS14-change end
     public BodyPrototype Read(ISerializationManager serializationManager, MappingDataNode node,
         IDependencyCollection dependencies,
         SerializationHookContext hookCtx, ISerializationContext? context = null,

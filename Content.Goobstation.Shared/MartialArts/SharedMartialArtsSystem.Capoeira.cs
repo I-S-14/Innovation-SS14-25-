@@ -57,7 +57,7 @@ public abstract partial class SharedMartialArtsSystem
         if (args.Type == ComboAttackType.Grab)
         {
             ApplyMultiplier(ent, 1.2f, 0f, TimeSpan.FromSeconds(4), MartialArtModifierType.MoveSpeed);
-            _modifier.RefreshMovementSpeedModifiers(ent);
+            _modifier.RefreshMovementSpeedModifiers(ent.Owner);
             if (!TryComp(args.Target, out SprinterComponent? sprinter))
                 return;
 
@@ -116,11 +116,8 @@ public abstract partial class SharedMartialArtsSystem
         DoDamage(ent, target, proto.DamageType, proto.ExtraDamage * power, out _);
         ApplyMultiplier(ent, args.AttackSpeedMultiplier, 0f, args.AttackSpeedMultiplierTime);
 
-        if (args.Emote != null && TryComp(ent, out AnimatedEmotesComponent? emotes))
-        {
-            emotes.Emote = args.Emote.Value;
-            Dirty(ent, emotes);
-        }
+        if (args.Emote != null)
+            _animatedEmotes.SetEmote(ent.Owner, args.Emote.Value);
 
         ComboPopup(ent, target, proto.ID); // CorvaxGoob-Localization // proto.Name -> proto.ID
         ent.Comp.LastAttacks.Clear();

@@ -7,6 +7,7 @@ using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
 using Robust.Shared.Timing;
 using static Robust.Client.UserInterface.Controls.BoxContainer;
+using Content.Shared.Light;
 
 namespace Content.Client.Light.Components;
 

@@ -9,8 +9,6 @@ using Content.Shared.Radio;
 using Content.Shared.Salvage;
 using Robust.Server.GameObjects;
 using Robust.Shared.Configuration;
-using Robust.Shared.Map;
-using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Content.Server.Chat.Managers;
 using Content.Server.Gravity;
@@ -24,6 +22,9 @@ using Robust.Shared.Map.Components;
 using Robust.Shared.Timing;
 using Content.Shared.Labels.EntitySystems;
 using Robust.Shared.EntitySerialization.Systems;
+using Robust.Shared.Map;
+using Robust.Shared.Prototypes;
+using Content.Shared.Station.Systems;
 
 namespace Content.Server.Salvage
 {
@@ -32,9 +33,6 @@ namespace Content.Server.Salvage
         [Dependency] private readonly IChatManager _chat = default!;
         [Dependency] private readonly IConfigurationManager _configurationManager = default!;
         [Dependency] private readonly IGameTiming _timing = default!;
-        [Dependency] private readonly ILogManager _logManager = default!;
-        [Dependency] private readonly IMapManager _mapManager = default!;
-        [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
         [Dependency] private readonly IRobustRandom _random = default!;
         [Dependency] private readonly AnchorableSystem _anchorable = default!;
         [Dependency] private readonly BiomeSystem _biome = default!;
@@ -53,15 +51,13 @@ namespace Content.Server.Salvage
         [Dependency] private readonly StationSystem _station = default!;
         [Dependency] private readonly UserInterfaceSystem _ui = default!;
 
-        private EntityQuery<MapGridComponent> _gridQuery;
-        private EntityQuery<TransformComponent> _xformQuery;
+        //IS14-change start: retain functional queries after the upstream injection migration.
+        [Dependency] private EntityQuery<MapGridComponent> _gridQuery = default!;
+        //IS14-change end
 
         public override void Initialize()
         {
             base.Initialize();
-
-            _gridQuery = GetEntityQuery<MapGridComponent>();
-            _xformQuery = GetEntityQuery<TransformComponent>();
 
             InitializeExpeditions();
             InitializeMagnet();
@@ -71,7 +67,7 @@ namespace Content.Server.Salvage
         private void Report(EntityUid source, string channelName, string messageKey, params (string, object)[] args)
         {
             var message = args.Length == 0 ? Loc.GetString(messageKey) : Loc.GetString(messageKey, args);
-            var channel = _prototypeManager.Index<RadioChannelPrototype>(channelName);
+            var channel = ProtoMan.Index<RadioChannelPrototype>(channelName);
             _radioSystem.SendRadioMessage(source, message, channel, source);
         }
 

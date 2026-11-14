@@ -6,7 +6,7 @@ using Robust.Client.GameObjects;
 
 namespace Content.Client.Light.EntitySystems;
 
-public sealed class EmergencyLightSystem : VisualizerSystem<EmergencyLightComponent>
+public sealed partial class EmergencyLightSystem : VisualizerSystem<EmergencyLightComponent>
 {
     [Dependency] private readonly SpriteSystem _sprite = default!;
 
@@ -15,13 +15,13 @@ public sealed class EmergencyLightSystem : VisualizerSystem<EmergencyLightCompon
         if (args.Sprite == null)
             return;
 
-        if (!AppearanceSystem.TryGetData<bool>(uid, EmergencyLightVisuals.On, out var on, args.Component))
+        if (!args.TryGetData<bool>(EmergencyLightVisuals.On, out var on))
             on = false;
 
         _sprite.LayerSetVisible((uid, args.Sprite), EmergencyLightVisualLayers.LightOff, !on);
         _sprite.LayerSetVisible((uid, args.Sprite), EmergencyLightVisualLayers.LightOn, on);
 
-        if (AppearanceSystem.TryGetData<Color>(uid, EmergencyLightVisuals.Color, out var color, args.Component))
+        if (args.TryGetData<Color>(EmergencyLightVisuals.Color, out var color))
         {
             _sprite.LayerSetColor((uid, args.Sprite), EmergencyLightVisualLayers.LightOn, color);
             _sprite.LayerSetColor((uid, args.Sprite), EmergencyLightVisualLayers.LightOff, color);

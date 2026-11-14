@@ -2,6 +2,7 @@
 
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
+using Content.Shared.Item.ItemToggle;
 
 namespace Content.Shared.Item.ItemToggle.Components;
 

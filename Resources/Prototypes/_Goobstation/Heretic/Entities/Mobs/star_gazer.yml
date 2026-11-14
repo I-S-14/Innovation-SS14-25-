@@ -108,7 +108,7 @@
   - type: StarGazer
   - type: WarpPoint
     follow: true
-    location: star gazer
+    location: is14-upstream-warp-mobstargazer
   - type: NightVision
     color: white
     activateSound: null

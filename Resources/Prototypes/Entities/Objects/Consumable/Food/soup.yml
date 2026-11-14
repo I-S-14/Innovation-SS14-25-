@@ -3,7 +3,7 @@
 
 - type: entity
   abstract: true
-  parent: FoodInjectableBase
+  parent: [SolutionSmall, FoodInjectableBase]
   id: FoodBowlBase
   components:
   - type: Item
@@ -14,13 +14,11 @@
     trash:
     - FoodBowlBig
     utensil: Spoon
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 20
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 20
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 30
   - type: Sprite
     sprite: Objects/Consumable/Food/bowl.rsi
   - type: DamageOnLand
@@ -88,15 +86,15 @@
     - state: bowl
     - state: alpha-filling
       color: green
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 20
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 10
-        - ReagentId: Vitamin
-          Quantity: 5
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 30
+      - ReagentId: Vitamin
+        Quantity: 15
+      - ReagentId: Water
+        Quantity: 15
 
 # Salad
 
@@ -113,17 +111,15 @@
     layers:
     - state: bowl
     - state: aesir
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 25
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 8
-        - ReagentId: Vitamin
-          Quantity: 6
-        - ReagentId: Omnizine
-          Quantity: 8
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 30
+      - ReagentId: Vitamin
+        Quantity: 15
+      - ReagentId: Omnizine
+        Quantity: 8
   - type: Tag
     tags:
     - Soup
@@ -143,15 +139,16 @@
     layers:
     - state: bowl
     - state: herb
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 15
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 8
-        - ReagentId: Vitamin
-          Quantity: 2
+  - type: Solution
+    solution:
+      maxVol: 15
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 8
+      - ReagentId: Vitamin
+        Quantity: 2
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - Fruit
@@ -173,17 +170,18 @@
     layers:
     - state: bowl
     - state: valid
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 20
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 8
-        - ReagentId: Vitamin
-          Quantity: 2
-        - ReagentId: DoctorsDelight
-          Quantity: 5
+  - type: Solution
+    solution:
+      maxVol: 20
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 8
+      - ReagentId: Vitamin
+        Quantity: 2
+      - ReagentId: DoctorsDelight
+        Quantity: 5
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - Meat
@@ -205,17 +203,18 @@
     layers:
     - state: bowl
     - state: coleslaw
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 15
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 8
-        - ReagentId: Vitamin
-          Quantity: 2
-        - ReagentId: Allicin
-          Quantity: 3
+  - type: Solution
+    solution:
+      maxVol: 15
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 8
+      - ReagentId: Vitamin
+        Quantity: 2
+      - ReagentId: Allicin
+        Quantity: 3
+      temperature: 293.15
+      canReact: true
 
 - type: entity
   name: caesar salad
@@ -233,15 +232,16 @@
     layers:
     - state: bowl
     - state: caesar
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 15
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 8
-        - ReagentId: Vitamin
-          Quantity: 6
+  - type: Solution
+    solution:
+      maxVol: 15
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 8
+      - ReagentId: Vitamin
+        Quantity: 6
+      temperature: 293.15
+      canReact: true
 
 - type: entity
   name: kimchi salad
@@ -258,17 +258,18 @@
     layers:
     - state: bowl
     - state: kimchi
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 15
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 8
-        - ReagentId: Vitamin
-          Quantity: 2
-        - ReagentId: Allicin
-          Quantity: 2
+  - type: Solution
+    solution:
+      maxVol: 15
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 8
+      - ReagentId: Vitamin
+        Quantity: 2
+      - ReagentId: Allicin
+        Quantity: 2
+      temperature: 293.15
+      canReact: true
 
 - type: entity
   name: fruit salad
@@ -283,15 +284,16 @@
     layers:
     - state: bowl
     - state: fruit
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 10
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 2
-        - ReagentId: Vitamin
-          Quantity: 4
+  - type: Solution
+    solution:
+      maxVol: 10
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 2
+      - ReagentId: Vitamin
+        Quantity: 4
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - Fruit
@@ -311,15 +313,16 @@
     layers:
     - state: bowl
     - state: fruit
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 15
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 7
-        - ReagentId: Vitamin
-          Quantity: 17
+  - type: Solution
+    solution:
+      maxVol: 15
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 7
+      - ReagentId: Vitamin
+        Quantity: 17
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - Fruit
@@ -339,15 +342,19 @@
     layers:
     - state: bowl
     - state: citrusdelight
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 38
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 18
-        - ReagentId: Vitamin
-          Quantity: 15
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 15
+      - ReagentId: Vitamin
+        Quantity: 15
+      - ReagentId: JuiceOrange
+        Quantity: 5
+      - ReagentId: JuiceLemon
+        Quantity: 5
+      - ReagentId: JuiceLime
+        Quantity: 5
   - type: Tag
     tags:
     - Fruit
@@ -367,17 +374,15 @@
     layers:
     - state: bowl
     - state: eden
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 25
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 8
-        - ReagentId: Vitamin
-          Quantity: 5
-        - ReagentId: Omnizine
-          Quantity: 5
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 25
+      - ReagentId: Vitamin
+        Quantity: 15
+      - ReagentId: Omnizine
+        Quantity: 5
 
 # Rice
 
@@ -409,15 +414,16 @@
     layers:
     - state: bowl
     - state: rice-egg
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 12
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 4
-        - ReagentId: Vitamin
-          Quantity: 4
+  - type: Solution
+    solution:
+      maxVol: 12
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 4
+      - ReagentId: Vitamin
+        Quantity: 4
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - Meat
@@ -437,19 +443,17 @@
     layers:
     - state: bowl
     - state: rice-pork
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 40.5
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 18
-        - ReagentId: Vitamin
-          Quantity: 7
-        - ReagentId: Dexalin ##This is probably a reference to something but I don't get it
-          Quantity: 6.5
-        - ReagentId: Epinephrine
-          Quantity: 2
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 42
+      - ReagentId: Protein
+        Quantity: 6
+      - ReagentId: Dexalin #This is probably a reference to something but I don't get it. Same.
+        Quantity: 6.5
+      - ReagentId: Epinephrine
+        Quantity: 2
   - type: Tag
     tags:
     - Meat
@@ -469,19 +473,19 @@
     layers:
     - state: bowl
     - state: rice-pudding
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 25
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 9
-        - ReagentId: Vitamin
-          Quantity: 3
-        - ReagentId: Milk ##This is probably a reference to something but I don't get it
-          Quantity: 5
-        - ReagentId: Sugar
-          Quantity: 5
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 20
+      - ReagentId: Protein
+        Quantity: 5
+      - ReagentId: Vitamin
+        Quantity: 5
+      - ReagentId: Milk
+        Quantity: 5
+      - ReagentId: Sugar
+        Quantity: 5
 
 - type: entity
   name: black-eyed gumbo
@@ -499,17 +503,18 @@
     layers:
     - state: bowl
     - state: gumbo
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 12
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 5
-        - ReagentId: Vitamin
-          Quantity: 3
-        - ReagentId: CapsaicinOil
-          Quantity: 2
+  - type: Solution
+    solution:
+      maxVol: 12
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 5
+      - ReagentId: Vitamin
+        Quantity: 3
+      - ReagentId: CapsaicinOil
+        Quantity: 2
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - Meat
@@ -531,17 +536,6 @@
     layers:
     - state: bowl
     - state: oatmeal
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 20
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 7
-        - ReagentId: Vitamin
-          Quantity: 2
-        - ReagentId: Milk
-          Quantity: 10
 
 - type: entity
   name: space liberty duff
@@ -552,7 +546,7 @@
   - type: FlavorProfile
     flavors:
       - jelly
-      - mushrooms
+      - mushroom
   - type: Sprite
     layers:
     - state: bowl
@@ -574,15 +568,24 @@
   - type: Sprite
     sprite: Objects/Consumable/Food/meals.rsi
     state: amanita-jelly
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 15
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 6
-        - ReagentId: Amatoxin
-          Quantity: 6
+  - type: Jiggle # Goobstation
+    stiffness: 300
+    damping: 3
+    inertia: 4
+    drag: 0.1
+    maxOffset: 2
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Amatoxin
+        Quantity: 30
+      - ReagentId: Nutriment
+        Quantity: 15
+      - ReagentId: Vodka
+        Quantity: 5
+  - type: Tag
+    tags:
+    - FinishedMeal
 
 # Soup
 
@@ -599,17 +602,18 @@
     layers:
     - state: bowl
     - state: meatball
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 30
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 7
-        - ReagentId: Vitamin
-          Quantity: 8
-        - ReagentId: Water
-          Quantity: 10
+  - type: Solution
+    solution:
+      maxVol: 30
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 7
+      - ReagentId: Vitamin
+        Quantity: 8
+      - ReagentId: Water
+        Quantity: 10
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - Meat
@@ -628,17 +632,18 @@
     layers:
     - state: bowl
     - state: slime
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 20
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 1
-        - ReagentId: Vitamin
-          Quantity: 5
-        - ReagentId: Water
-          Quantity: 10
+  - type: Solution
+    solution:
+      maxVol: 20
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 1
+      - ReagentId: Vitamin
+        Quantity: 5
+      - ReagentId: Water
+        Quantity: 10
+      temperature: 293.15
+      canReact: true
 
 - type: entity
   name: tomato soup
@@ -654,17 +659,18 @@
     layers:
     - state: bowl
     - state: tomato
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 20
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 3
-        - ReagentId: Iron
-          Quantity: 10
-        - ReagentId: Blood
-          Quantity: 5
+  - type: Solution
+    solution:
+      maxVol: 20
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 3
+      - ReagentId: Iron
+        Quantity: 10
+      - ReagentId: Blood
+        Quantity: 5
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - Fruit
@@ -684,17 +690,18 @@
     layers:
     - state: bowl
     - state: wingfangchu
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 30
-        reagents:
-        - ReagentId: Protein
-          Quantity: 9
-        - ReagentId: Soysauce
-          Quantity: 10
-        - ReagentId: Vitamin
-          Quantity: 7
+  - type: Solution
+    solution:
+      maxVol: 30
+      reagents:
+      - ReagentId: Protein
+        Quantity: 9
+      - ReagentId: Soysauce
+        Quantity: 10
+      - ReagentId: Vitamin
+        Quantity: 7
+      temperature: 293.15
+      canReact: true
 
 - type: entity
   name: clown's tears
@@ -709,17 +716,18 @@
     layers:
     - state: bowl
     - state: clowntears
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 25
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 2
-        - ReagentId: Vitamin
-          Quantity: 9
-        - ReagentId: Water
-          Quantity: 10
+  - type: Solution
+    solution:
+      maxVol: 25
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 2
+      - ReagentId: Vitamin
+        Quantity: 9
+      - ReagentId: Water
+        Quantity: 10
+      temperature: 293.15
+      canReact: true
 
 - type: entity
   name: vegetable soup
@@ -735,19 +743,20 @@
     layers:
     - state: bowl
     - state: vegetable
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 25
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 5
-        - ReagentId: Vitamin
-          Quantity: 7
-        - ReagentId: Water
-          Quantity: 10
-        - ReagentId: Oculine
-          Quantity: 1
+  - type: Solution
+    solution:
+      maxVol: 25
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 5
+      - ReagentId: Vitamin
+        Quantity: 7
+      - ReagentId: Water
+        Quantity: 10
+      - ReagentId: Oculine
+        Quantity: 1
+      temperature: 293.15
+      canReact: true
 
 - type: entity
   name: nettle soup
@@ -762,21 +771,22 @@
     layers:
     - state: bowl
     - state: nettle
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 30.5
-        reagents:
-        - ReagentId: Nutriment
-          Quantity: 5
-        - ReagentId: Vitamin
-          Quantity: 8
-        - ReagentId: Water
-          Quantity: 10
-        - ReagentId: Omnizine
-          Quantity: 5
-        - ReagentId: Histamine
-          Quantity: 0.5
+  - type: Solution
+    solution:
+      maxVol: 30.5
+      reagents:
+      - ReagentId: Nutriment
+        Quantity: 5
+      - ReagentId: Vitamin
+        Quantity: 8
+      - ReagentId: Water
+        Quantity: 10
+      - ReagentId: Omnizine
+        Quantity: 5
+      - ReagentId: Histamine
+        Quantity: 0.5
+      temperature: 293.15
+      canReact: true
 
 - type: entity
   name: mystery soup
@@ -805,23 +815,24 @@
     layers:
     - state: bowl
     - state: chili-hot
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 25
-        reagents:
-          - ReagentId: Nutriment
-            Quantity: 8
-          - ReagentId: CapsaicinOil
-            Quantity: 5
-          - ReagentId: Vitamin
-            Quantity: 4
-          - ReagentId: Allicin
-            Quantity: 3
+  - type: Solution
+    solution:
+      maxVol: 25
+      reagents:
+        - ReagentId: Nutriment
+          Quantity: 8
+        - ReagentId: CapsaicinOil
+          Quantity: 5
+        - ReagentId: Vitamin
+          Quantity: 4
+        - ReagentId: Allicin
+          Quantity: 3
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - ChiliBowl
-
+    - FinishedMeal
 
 - type: entity
   name: cold chili
@@ -837,22 +848,24 @@
     layers:
     - state: bowl
     - state: chili-cold
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 20
-        reagents:
-          - ReagentId: Nutriment
-            Quantity: 8
-          - ReagentId: Vitamin
-            Quantity: 4
+  - type: Solution
+    solution:
+      maxVol: 20
+      reagents:
+        - ReagentId: Nutriment
+          Quantity: 8
+        - ReagentId: Vitamin
+          Quantity: 4
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - ChiliBowl
+    - FinishedMeal
 
 - type: entity
   name: chili con carnival
-  parent: FoodBowlBase
+  parent: FoodSoupChiliHot
   id: FoodSoupChiliClown
   description: A delicious stew of meat, chilies, and salty, salty clown tears.
   components:
@@ -866,22 +879,24 @@
     layers:
     - state: bowl
     - state: chili-clown
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 20
-        reagents:
-          - ReagentId: Nutriment
-            Quantity: 6
-          - ReagentId: CapsaicinOil
-            Quantity: 5
-          - ReagentId: Vitamin
-            Quantity: 4
-          - ReagentId: Allicin
-            Quantity: 3
+  - type: Solution
+    solution:
+      maxVol: 20
+      reagents:
+        - ReagentId: Nutriment
+          Quantity: 6
+        - ReagentId: CapsaicinOil
+          Quantity: 5
+        - ReagentId: Vitamin
+          Quantity: 4
+        - ReagentId: Allicin
+          Quantity: 3
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - ChiliBowl
+    - FinishedMeal
 
 - type: entity
   name: monkey's delight
@@ -897,19 +912,20 @@
     layers:
     - state: bowl
     - state: monkeydelight
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 20
-        reagents:
-          - ReagentId: Nutriment
-            Quantity: 10
-          - ReagentId: Vitamin
-            Quantity: 5
-          - ReagentId: TableSalt
-            Quantity: 1
-          - ReagentId: Blackpepper
-            Quantity: 1
+  - type: Solution
+    solution:
+      maxVol: 20
+      reagents:
+        - ReagentId: Nutriment
+          Quantity: 10
+        - ReagentId: Vitamin
+          Quantity: 5
+        - ReagentId: TableSalt
+          Quantity: 1
+        - ReagentId: Blackpepper
+          Quantity: 1
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - Meat
@@ -928,17 +944,18 @@
     layers:
     - state: bowl
     - state: tomato
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 22
-        reagents:
-          - ReagentId: Nutriment
-            Quantity: 3
-          - ReagentId: Vitamin
-            Quantity: 5
-          - ReagentId: Water
-            Quantity: 10
+  - type: Solution
+    solution:
+      maxVol: 22
+      reagents:
+        - ReagentId: Nutriment
+          Quantity: 3
+        - ReagentId: Vitamin
+          Quantity: 5
+        - ReagentId: Water
+          Quantity: 10
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - Fruit
@@ -958,15 +975,16 @@
     layers:
     - state: bowl
     - state: eyeball
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 12
-        reagents:
-          - ReagentId: Nutriment
-            Quantity: 5
-          - ReagentId: Vitamin
-            Quantity: 3
+  - type: Solution
+    solution:
+      maxVol: 12
+      reagents:
+        - ReagentId: Nutriment
+          Quantity: 5
+        - ReagentId: Vitamin
+          Quantity: 3
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - Meat
@@ -989,17 +1007,18 @@
     - state: bowl2
     - state: miso
         #rip milo
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 30
-        reagents:
-          - ReagentId: Nutriment
-            Quantity: 9
-          - ReagentId: Vitamin
-            Quantity: 3
-          - ReagentId: Water
-            Quantity: 10
+  - type: Solution
+    solution:
+      maxVol: 30
+      reagents:
+        - ReagentId: Nutriment
+          Quantity: 9
+        - ReagentId: Vitamin
+          Quantity: 3
+        - ReagentId: Water
+          Quantity: 10
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - Meat
@@ -1018,19 +1037,20 @@
     layers:
     - state: bowl
     - state: mushroom
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 25
-        reagents:
-          - ReagentId: Nutriment
-            Quantity: 2
-          - ReagentId: Vitamin
-            Quantity: 6
-          - ReagentId: Water
-            Quantity: 5
-          - ReagentId: Milk
-            Quantity: 5
+  - type: Solution
+    solution:
+      maxVol: 25
+      reagents:
+        - ReagentId: Nutriment
+          Quantity: 2
+        - ReagentId: Vitamin
+          Quantity: 6
+        - ReagentId: Water
+          Quantity: 5
+        - ReagentId: Milk
+          Quantity: 5
+      temperature: 293.15
+      canReact: true
 
 - type: entity
   name: beet soup
@@ -1042,17 +1062,19 @@
     layers:
     - state: bowl
     - state: beet
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 25
-        reagents:
-          - ReagentId: Nutriment
-            Quantity: 3
-          - ReagentId: Vitamin
-            Quantity: 7
-          - ReagentId: Water
-            Quantity: 10
+  - type: Solution
+    solution:
+      maxVol: 25
+      reagents:
+        - ReagentId: Nutriment
+          Quantity: 3
+        - ReagentId: Vitamin
+          Quantity: 7
+        - ReagentId: Water
+          Quantity: 10
+      temperature: 293.15
+      canReact: true
+
 # Tastes like borsch, bortsch, borstch, borsh, borshch, borscht.
 
 - type: entity
@@ -1065,15 +1087,17 @@
     layers:
     - state: bowl
     - state: redbeet
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 15
-        reagents:
-          - ReagentId: Nutriment
-            Quantity: 4
-          - ReagentId: Vitamin
-            Quantity: 6
+  - type: Solution
+    solution:
+      maxVol: 15
+      reagents:
+        - ReagentId: Nutriment
+          Quantity: 4
+        - ReagentId: Vitamin
+          Quantity: 6
+      temperature: 293.15
+      canReact: true
+
 # Tastes like beet.
 
 - type: entity
@@ -1091,17 +1115,18 @@
     layers:
     - state: bowl
     - state: stew
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 25
-        reagents:
-          - ReagentId: Nutriment
-            Quantity: 15
-          - ReagentId: Protein
-            Quantity: 5
-          - ReagentId: Vitamin
-            Quantity: 2
+  - type: Solution
+    solution:
+      maxVol: 25
+      reagents:
+        - ReagentId: Nutriment
+          Quantity: 15
+        - ReagentId: Protein
+          Quantity: 5
+        - ReagentId: Vitamin
+          Quantity: 2
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - Meat
@@ -1121,15 +1146,17 @@
     layers:
     - state: bowl
     - state: sweetpotato
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 12
-        reagents:
-          - ReagentId: Nutriment
-            Quantity: 4
-          - ReagentId: Vitamin
-            Quantity: 5
+  - type: Solution
+    solution:
+      maxVol: 12
+      reagents:
+        - ReagentId: Nutriment
+          Quantity: 4
+        - ReagentId: Vitamin
+          Quantity: 5
+      temperature: 293.15
+      canReact: true
+
 # Tastes like sweet potato.
 
 - type: entity
@@ -1145,17 +1172,18 @@
     layers:
     - state: bowl
     - state: onion
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 15
-        reagents:
-          - ReagentId: Nutriment
-            Quantity: 1
-          - ReagentId: Vitamin
-            Quantity: 5
-          - ReagentId: Allicin
-            Quantity: 5
+  - type: Solution
+    solution:
+      maxVol: 15
+      reagents:
+        - ReagentId: Nutriment
+          Quantity: 1
+        - ReagentId: Vitamin
+          Quantity: 5
+        - ReagentId: Allicin
+          Quantity: 5
+      temperature: 293.15
+      canReact: true
 
 - type: entity
   name: bisque
@@ -1170,19 +1198,21 @@
     layers:
     - state: bowl
     - state: bisque
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 30
-        reagents:
-          - ReagentId: Nutriment
-            Quantity: 6
-          - ReagentId: Vitamin
-            Quantity: 6
-          - ReagentId: Protein
-            Quantity: 6
-          - ReagentId: Water
-            Quantity: 5
+  - type: Solution
+    solution:
+      maxVol: 30
+      reagents:
+        - ReagentId: Nutriment
+          Quantity: 6
+        - ReagentId: Vitamin
+          Quantity: 6
+        - ReagentId: Protein
+          Quantity: 6
+        - ReagentId: Water
+          Quantity: 5
+      temperature: 293.15
+      canReact: true
+
 # Tastes like crab.
 
 - type: entity
@@ -1198,21 +1228,22 @@
     storedOffset: 0,2
   - type: FlavorProfile
     flavors:
-      - mushrooms
+      - mushroom
       - electrons
   - type: Sprite
     layers:
     - state: bowl
     - state: electron
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 10
-        reagents:
-          - ReagentId: Nutriment
-            Quantity: 3
-          - ReagentId: Licoxide
-            Quantity: 6
+  - type: Solution
+    solution:
+      maxVol: 10
+      reagents:
+        - ReagentId: Nutriment
+          Quantity: 3
+        - ReagentId: Licoxide
+          Quantity: 6
+      temperature: 293.15
+      canReact: true
 
 - type: entity
   name: bungo curry
@@ -1227,21 +1258,23 @@
     layers:
     - state: bowl
     - state: bungo
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 20
-        reagents:
-          - ReagentId: Nutriment
-            Quantity: 6
-          - ReagentId: Vitamin
-            Quantity: 5
-          - ReagentId: CapsaicinOil
-            Quantity: 5
+  - type: Solution
+    solution:
+      maxVol: 20
+      reagents:
+        - ReagentId: Nutriment
+          Quantity: 6
+        - ReagentId: Vitamin
+          Quantity: 5
+        - ReagentId: CapsaicinOil
+          Quantity: 5
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - Fruit
     - Soup
+
 # Tastes like bungo, hot curry.
 
 - type: entity
@@ -1258,17 +1291,18 @@
     layers:
     - state: bowl
     - state: escargot
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 20
-        reagents:
-          - ReagentId: Nutriment
-            Quantity: 6
-          - ReagentId: Vitamin
-            Quantity: 6
-          - ReagentId: Allicin
-            Quantity: 3
+  - type: Solution
+    solution:
+      maxVol: 20
+      reagents:
+        - ReagentId: Nutriment
+          Quantity: 6
+        - ReagentId: Vitamin
+          Quantity: 6
+        - ReagentId: Allicin
+          Quantity: 3
+      temperature: 293.15
+      canReact: true
   - type: Tag
     tags:
     - Meat

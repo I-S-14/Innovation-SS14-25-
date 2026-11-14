@@ -209,7 +209,7 @@
     - EncryptionSecurity
 
 - type: entity
-  parent: [ EncryptionKey, BaseCivilianContraband ]
+  parent: [ EncryptionKey, BaseServiceContraband ]
   id: EncryptionKeyService
   name: service encryption key
   description: An encryption key used by the service staff, tasked with keeping the station full, happy and clean.
@@ -249,11 +249,10 @@
   name: binary translator key
   description: An encryption key that translates binary signals used by silicons.
   components:
-  # Goobstation - replaced with collective mind
-  #- type: EncryptionKey
-  #  channels:
-  #  - Binary
-  #  defaultChannel: Binary
+  - type: EncryptionKey
+    channels:
+    - Binary
+    defaultChannel: Binary
   - type: Sprite
     layers:
     - state: crypt_silver
@@ -265,11 +264,10 @@
   name: binary translator key
   description: A syndicate encryption key that translates binary signals used by silicons.
   components:
-  # Goobstation - replaced with collective mind
-  #- type: EncryptionKey
-  #  channels:
-  #  - Binary
-  #  defaultChannel: Binary
+  - type: EncryptionKey
+    channels:
+    - Binary
+    defaultChannel: Binary
   - type: Sprite
     layers:
     - state: crypt_red

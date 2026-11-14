@@ -11,6 +11,24 @@
   - type: Sprite
     state: piano
   - type: Climbable
+  - type: Damageable
+    damageModifierSet: WoodMod
+  - type: Destructible
+    thresholds: &ThresholdsFurnitureStrongWood
+    - trigger: &DamageFurnitureStrong
+        !type:DamageTrigger
+        damage: 80
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: WoodDestroy
+          params:
+            volume: -3
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          MaterialWoodPlank1:
+            min: 2
+            max: 4
 
 - type: entity
   name: upright piano
@@ -23,6 +41,10 @@
   - type: Sprite
     state: piano-upright
   - type: Climbable
+  - type: Damageable
+    damageModifierSet: WoodMod
+  - type: Destructible
+    thresholds: *ThresholdsFurnitureStrongWood
 
 - type: entity
   name: vibraphone
@@ -34,6 +56,20 @@
     program: 11
   - type: Sprite
     state: vibraphone
+  - type: Damageable
+    damageModifierSet: SteelMod
+  - type: Destructible
+    thresholds: &ThresholdsFurnitureStrongRods
+    - trigger: *DamageFurnitureStrong
+      behaviors:
+      - &SoundMetalBreak !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          PartRodMetal1:
+            min: 2
+            max: 4
 
 - type: entity
   name: marimba
@@ -44,6 +80,10 @@
     program: 12
   - type: Sprite
     state: marimba
+  - type: Damageable
+    damageModifierSet: WoodMod
+  - type: Destructible
+    thresholds: *ThresholdsFurnitureStrongWood
 
 - type: entity
   name: church organ
@@ -55,6 +95,18 @@
     program: 19
   - type: Sprite
     state: church-organ
+  - type: Damageable
+    damageModifierSet: BrassMod
+  - type: Destructible
+    thresholds: &ThresholdsFurnitureStrongBrass
+    - trigger: *DamageFurnitureStrong
+      behaviors:
+      - *SoundMetalBreak
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          SheetBrass1:
+            min: 2
+            max: 4
 
 - type: entity
   name: tuba
@@ -66,6 +118,10 @@
     program: 58
   - type: Sprite
     state: tuba
+  - type: Damageable
+    damageModifierSet: BrassMod
+  - type: Destructible
+    thresholds: *ThresholdsFurnitureStrongBrass
 
 - type: entity
   id: HarpInstrument
@@ -77,6 +133,10 @@
     program: 46
   - type: Sprite
     state: harp
+  - type: Damageable
+    damageModifierSet: WoodMod
+  - type: Destructible
+    thresholds: *ThresholdsFurnitureStrongWood
 
 - type: entity
   id: TimpaniInstrument
@@ -88,6 +148,10 @@
     program: 47
   - type: Sprite
     state: timpani
+  - type: Damageable
+    damageModifierSet: WoodMod
+  - type: Destructible
+    thresholds: *ThresholdsFurnitureStrongWood
 
 - type: entity
   id: TaikoInstrument
@@ -99,6 +163,10 @@
     program: 116
   - type: Sprite
     state: taiko
+  - type: Damageable
+    damageModifierSet: WoodMod
+  - type: Destructible
+    thresholds: *ThresholdsFurnitureStrongWood
 
 - type: entity
   id: ContrabassInstrument
@@ -110,6 +178,10 @@
     program: 43
   - type: Sprite
     state: contrabass
+  - type: Damageable
+    damageModifierSet: WoodMod
+  - type: Destructible
+    thresholds: *ThresholdsFurnitureStrongWood
   - type: Fixtures
     fixtures:
       fix1:
@@ -137,6 +209,10 @@
     program: 81
   - type: Sprite
     state: minimoog
+  - type: Damageable
+    damageModifierSet: WoodMod
+  - type: Destructible
+    thresholds: *ThresholdsFurnitureStrongWood
 
 - type: entity
   id: TomDrumsInstrument
@@ -148,6 +224,10 @@
     program: 117
   - type: Sprite
     state: toms
+  - type: Damageable
+    damageModifierSet: SteelMod
+  - type: Destructible
+    thresholds: *ThresholdsFurnitureStrongRods
 
 - type: entity
   parent: [ BasePlaceableInstrumentRotatable, ConstructibleMachine]
@@ -170,3 +250,27 @@
   - type: Instrument
     allowPercussion: true
     allowProgramChange: true
+  - type: Destructible
+    thresholds:
+    - trigger: *DamageFurnitureStrong
+      behaviors:
+      - *SoundMetalBreak
+      - !type:ChangeConstructionNodeBehavior
+        node: machineFrame
+
+- type: entity
+  parent: BasePlaceableInstrumentRotatable
+  id: BigDrumsInstrument
+  name: drum kit
+  description: Ba dum tss!
+  components:
+  - type: Instrument
+    program: 7
+    bank: 100 # Defined in space-station-14.sf2
+    allowPercussion: true
+  - type: Sprite
+    state: drum
+  - type: Damageable
+    damageModifierSet: SteelMod
+  - type: Destructible
+    thresholds: *ThresholdsFurnitureStrongRods

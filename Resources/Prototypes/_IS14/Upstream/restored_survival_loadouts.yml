@@ -1,0 +1,8 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: ad9cfe0c41:Resources/Prototypes/Loadouts/Miscellaneous/survival.yml
+- type: loadoutEffectGroup
+  id: OxygenBreatherMimeMoth
+  effects:
+  - !type:SpeciesLoadoutEffect
+    species:
+    - Moth

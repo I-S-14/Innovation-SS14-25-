@@ -11,6 +11,7 @@
   abstract: true
   components:
   - type: Cyborg
+    inherentRadioChannels: [Binary, Common]
   - type: Reactive
     groups:
       Acidic: [Touch]
@@ -143,15 +144,12 @@
   - type: IntrinsicRadioReceiver
   - type: IntrinsicRadioTransmitter
     channels:
+    - Binary
     - Common
   - type: ActiveRadio
     channels:
-    - Common
-  - type: CollectiveMind
-    defaultChannel: Binary
-    channels:
     - Binary
-    canUseInCrit: true
+    - Common
   - type: ZombieImmune
   - type: Repairable
     doAfterDelay: 10

@@ -6,7 +6,7 @@ using Content.Client.Resources;
 using Content.Client.Stylesheets;
 using Content.Shared.Atmos.Components;
 using Content.Shared.Atmos.EntitySystems;
-using Content.Shared.Timing;
+using Content.Shared.Timing.Systems;
 using Robust.Client.Graphics;
 using Robust.Client.ResourceManagement;
 using Robust.Client.UserInterface;
@@ -14,14 +14,15 @@ using Robust.Client.UserInterface.Controls;
 using Robust.Client.UserInterface.CustomControls;
 using Robust.Shared.Timing;
 using static Robust.Client.UserInterface.Controls.BoxContainer;
+using Content.Shared.Timing;
 
 namespace Content.Client.UserInterface.Systems.Atmos.GasTank;
 
-public sealed class GasTankWindow
+public sealed partial class GasTankWindow
     : BaseWindow
 {
-    [Dependency] private readonly IEntityManager _entManager = default!;
-    [Dependency] private readonly IResourceCache _cache = default!;
+    [Dependency] private IEntityManager _entManager = default!;
+    [Dependency] private IResourceCache _cache = default!;
 
     private readonly RichTextLabel _lblPressure;
     private readonly FloatSpinBox _spbPressure;

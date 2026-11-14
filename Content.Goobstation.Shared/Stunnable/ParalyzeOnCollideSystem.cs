@@ -7,10 +7,10 @@ using Robust.Shared.Physics.Events;
 
 namespace Content.Goobstation.Shared.Stunnable;
 
-public sealed class ParalyzeOnCollideSystem : EntitySystem
+public sealed partial class ParalyzeOnCollideSystem : EntitySystem
 {
-    [Dependency] private readonly SharedStunSystem _stunSystem = default!;
-    [Dependency] private readonly EntityWhitelistSystem _whitelistSystem = default!;
+    [Dependency] private SharedStunSystem _stunSystem = default!;
+    [Dependency] private EntityWhitelistSystem _whitelistSystem = default!;
 
     /// <inheritdoc/>
     public override void Initialize()
@@ -25,9 +25,9 @@ public sealed class ParalyzeOnCollideSystem : EntitySystem
             _whitelistSystem.IsValid(component.CollidableEntities, args.OtherEntity))
             return;
 
-        if (component.ParalyzeOther && args.OtherEntity != null)
+        if (component.ParalyzeOther)
             _stunSystem.TryUpdateParalyzeDuration(args.OtherEntity, component.ParalyzeTime);
-        if (component.ParalyzeSelf && uid != null)
+        if (component.ParalyzeSelf)
             _stunSystem.TryUpdateParalyzeDuration(uid, component.ParalyzeTime);
 
         if (component.RemoveAfterCollide)

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.IO;
+using Content.Shared.DeviceNetwork;
 using Content.Shared.Fax;
 using JetBrains.Annotations;
 using Robust.Client.UserInterface;
@@ -8,9 +9,9 @@ using Robust.Client.UserInterface;
 namespace Content.Client.Fax.UI;
 
 [UsedImplicitly]
-public sealed class FaxBoundUi : BoundUserInterface
+public sealed partial class FaxBoundUi : BoundUserInterface
 {
-    [Dependency] private readonly IFileDialogManager _fileDialogManager = default!;
+    [Dependency] private IFileDialogManager _fileDialogManager = default!;
 
     [ViewVariables]
     private FaxWindow? _window;
@@ -87,7 +88,7 @@ public sealed class FaxBoundUi : BoundUserInterface
         SendMessage(new FaxRefreshMessage());
     }
 
-    private void OnPeerSelected(string address)
+    private void OnPeerSelected(DeviceAddress address)
     {
         SendMessage(new FaxDestinationMessage(address));
     }

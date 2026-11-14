@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 - type: entity
+  parent: [ BaseMachineDestructible, ConstructibleMachine, BaseAutomatedMachine ]
   id: RadiationCollector
-  parent: [ ConstructibleMachine, BaseAutomatedMachine ] # Goob: Automation
   name: radiation collector
   suffix: Empty tank
   description: A machine that collects radiation and turns it into power. Requires plasma gas to function.
@@ -104,6 +104,15 @@
     lightningExplode: false # Goobstation
   - type: Machine # Goobstation
     board: RadiationCollectorCircuitboard # Goobstation
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 175
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalGlassBreak
 
 - type: entity
   id: RadiationCollectorNoTank

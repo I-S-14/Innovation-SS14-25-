@@ -24,18 +24,21 @@
   contrabandSeverity: Minor
   flavor: bitter
   color: "#757245"
+  puddleSpriteSet: Powder # Goob
+  puddleColor: "#75724580" # Goob
   boilingPoint: 2977.0 # Aluminum oxide
   meltingPoint: 2030.0
   tileReactions:
   - !type:FlammableTileReaction
     temperatureMultiplier: 2
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Poison:
       effects:
       - !type:HealthChange
         conditions:
-        - !type:MetabolizerTypeCondition # Goobstation - Yowie
-          type: [ Yowie ]
+        - !type:MetabolizerTypeCondition
+          type: [Yowie]
           inverted: true
         damage:
           types:
@@ -43,13 +46,12 @@
             Poison: 1
       - !type:HealthChange
         conditions:
-        - !type:MetabolizerTypeCondition # Goobstation - Yowie
-          type: [ Yowie ]
+        - !type:MetabolizerTypeCondition
+          type: [Yowie]
           inverted: true
         damage:
           types:
             Heat: 2
-
 - type: reagent
   id: Napalm
   name: reagent-name-napalm
@@ -59,6 +61,7 @@
   contrabandSeverity: Major
   flavor: bitter
   color: "#FA00AF"
+  puddleSpriteSet: Acid # Goob
   tileReactions:
   - !type:FlammableTileReaction
     temperatureMultiplier: 5
@@ -68,30 +71,30 @@
       effects:
       - !type:Flammable
         multiplier: 0.4
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Poison:
       effects:
       - !type:HealthChange
         conditions:
-        - !type:MetabolizerTypeCondition # Goobstation - Yowie
-          type: [ Yowie ]
+        - !type:MetabolizerTypeCondition
+          type: [Yowie]
           inverted: true
         damage:
           types:
             Heat: 2
             Poison: 1
-            Caustic: 0.5 # based off napalm being an irritant
+            Caustic: 0.5
       - !type:HealthChange
         conditions:
-        - !type:MetabolizerTypeCondition # Goobstation - Yowie
-          type: [ Yowie ]
+        - !type:MetabolizerTypeCondition
+          type: [Yowie]
         damage:
           types:
             Heat: 2
-            Caustic: 0.5 # based off napalm being an irritant
+            Caustic: 0.5
       - !type:Flammable
         multiplier: 0.4
-
 - type: reagent
   id: Phlogiston
   name: reagent-name-phlogiston
@@ -101,12 +104,15 @@
   contrabandSeverity: Major
   flavor: bitter
   color: "#D4872A"
+  puddleSpriteSet: Acid # Goob
+  puddleColor: "#D4872A80" # Goob
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Poison:
       effects:
       - !type:HealthChange
         conditions:
-        - !type:MetabolizerTypeCondition # Goobstation - Yowie
+        - !type:MetabolizerTypeCondition
           type: [Yowie]
           inverted: true
         damage:
@@ -115,8 +121,8 @@
             Poison: 1
       - !type:HealthChange
         conditions:
-        - !type:MetabolizerTypeCondition # Goobstation - Yowie
-          type: [ Yowie ]
+        - !type:MetabolizerTypeCondition
+          type: [Yowie]
           inverted: true
         damage:
           types:
@@ -125,7 +131,7 @@
         multiplier: 0.1
       - !type:AdjustTemperature
         amount: 6000
-      - !type:Ignite
+      - !type:Ignite ''
   reactiveEffects:
     Flammable:
       methods: [ Touch ]
@@ -143,30 +149,32 @@
   contrabandSeverity: Major
   flavor: bitter
   color: "#FFC8C8"
+  puddleSpriteSet: Acid # Goob
   tileReactions:
   - !type:PryTileReaction
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Poison:
       effects:
       - !type:HealthChange
         conditions:
-        - !type:MetabolizerTypeCondition # Goobstation - Yowie
-          type: [ Yowie ]
+        - !type:MetabolizerTypeCondition
+          type: [Yowie]
           inverted: true
         damage:
           types:
             Heat: 2
             Poison: 1
-            Caustic: 0.5 # CLF3 is corrosive
+            Caustic: 0.5
       - !type:HealthChange
         conditions:
-        - !type:MetabolizerTypeCondition # Goobstation - Yowie
-          type: [ Yowie ]
+        - !type:MetabolizerTypeCondition
+          type: [Yowie]
           inverted: true
         damage:
           types:
             Heat: 2
-            Caustic: 0.5 # CLF3 is corrosive
+            Caustic: 0.5
       - !type:Flammable
         multiplier: 0.2
       - !type:AdjustTemperature
@@ -195,6 +203,7 @@
   physicalDesc: reagent-physical-desc-foamy
   flavor: bitter
   color: "#215263"
+  puddleSpriteSet: Acid # Goob
   boilingPoint: 418.0 # I went with ammonium lauryl sulfate as the basis for this
   meltingPoint: 7.4 # I made this up
 
@@ -209,16 +218,19 @@
   flavor: bitter
   flavorMinimum: 0.01
   color: "#a76b1c"
+  puddleSpriteSet: Shiny # Goob
   recognizable: true
   boilingPoint: -84.7 # Acetylene. Close enough.
   meltingPoint: -80.7
   friction: 0.4
   tileReactions:
   - !type:FlammableTileReaction {}
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Food:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 1
         conditions:
         - !type:MetabolizerTypeCondition
@@ -230,14 +242,58 @@
         - !type:MetabolizerTypeCondition
           type:
           - Vox
-          - Yowie # Goobstation - Yowie
+          - Yowie
           inverted: true
         damage:
           types:
             Poison: 1
       - !type:Flammable
         multiplier: 0.4
-
+- type: reagent
+  parent: BasePyrotechnic
+  id: XenoborgOil
+  name: reagent-name-xenoborg-oil
+  desc: reagent-desc-xenoborg-oil
+  physicalDesc: reagent-physical-desc-oily
+  evaporationSpeed: 0.2
+  slipData:
+    requiredSlipSpeed: 3.5
+  flavor: bitter
+  flavorMinimum: 0.01
+  color: "#3d5cff"
+  boilingPoint: -84.7 # Acetylene. Close enough.
+  meltingPoint: -80.7
+  friction: 0.4
+  tileReactions:
+  - !type:FlammableTileReaction {}
+  reactiveEffects:
+    Flammable:
+      methods: [ Touch ]
+      effects:
+      - !type:Flammable
+        multiplier: 0.2
+  # IS14: retain Goob organ metabolism and reagent effects.
+  metabolisms:
+    Medicine:
+      effects:
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 1
+        conditions:
+        - !type:MetabolizerTypeCondition
+          type: [Vox]
+      - !type:HealthChange
+        conditions:
+        - !type:MetabolizerTypeCondition
+          type:
+          - Vox
+          - Yowie
+          inverted: true
+        damage:
+          types:
+            Poison: 1
+      - !type:Flammable
+        multiplier: 0.4
 - type: reagent
   id: Fluorosurfactant
   name: reagent-name-fluorosurfactant
@@ -246,5 +302,6 @@
   physicalDesc: reagent-physical-desc-opaque
   flavor: bitter
   color: "#9e6b38"
+  puddleSpriteSet: Shiny # Goob
   boilingPoint: 190.0 # Perfluorooctanoic Acid.
   meltingPoint: 45.0

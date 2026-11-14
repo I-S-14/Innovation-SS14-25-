@@ -43,53 +43,58 @@ namespace Content.Shared.Movement.Systems;
 /// </summary>
 public abstract partial class SharedMoverController : VirtualController
 {
-    [Dependency] private   readonly IConfigurationManager _configManager = default!;
-    [Dependency] protected readonly IGameTiming Timing = default!;
-    [Dependency] private   readonly ITileDefinitionManager _tileDefinitionManager = default!;
-    [Dependency] private   readonly ActionBlockerSystem _blocker = default!;
-    [Dependency] private   readonly EntityLookupSystem _lookup = default!;
-    [Dependency] private   readonly InventorySystem _inventory = default!;
-    [Dependency] private   readonly MobStateSystem _mobState = default!;
-    [Dependency] private   readonly SharedAudioSystem _audio = default!;
-    [Dependency] private   readonly SharedContainerSystem _container = default!;
-    [Dependency] private   readonly SharedMapSystem _mapSystem = default!;
-    [Dependency] private   readonly SharedGravitySystem _gravity = default!;
-    [Dependency] private   readonly SharedTransformSystem _transform = default!;
-    [Dependency] private   readonly TagSystem _tags = default!;
-    [Dependency] private   readonly SharedInteractionSystem _interaction = default!; // Tile Movement Change
+    [Dependency] private IConfigurationManager _configManager = default!;
+    [Dependency] protected IGameTiming Timing = default!;
+    [Dependency] private ITileDefinitionManager _tileDefinitionManager = default!;
+    [Dependency] private ActionBlockerSystem _blocker = default!;
+    [Dependency] private EntityLookupSystem _lookup = default!;
+    [Dependency] private InventorySystem _inventory = default!;
+    [Dependency] private MobStateSystem _mobState = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private SharedContainerSystem _container = default!;
+    [Dependency] private SharedMapSystem _mapSystem = default!;
+    [Dependency] private SharedGravitySystem _gravity = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private TagSystem _tags = default!;
+
+    [Dependency] protected EntityQuery<CanMoveInAirComponent> CanMoveInAirQuery = default!;
+    [Dependency] protected EntityQuery<FootstepModifierComponent> FootstepModifierQuery = default!;
+    [Dependency] protected EntityQuery<FTLComponent> FTLQuery = default!;
+    [Dependency] protected EntityQuery<InputMoverComponent> MoverQuery = default!;
+    [Dependency] protected EntityQuery<MapComponent> MapQuery = default!;
+    [Dependency] protected EntityQuery<MapGridComponent> MapGridQuery = default!;
+    [Dependency] protected EntityQuery<MobMoverComponent> MobMoverQuery = default!;
+    [Dependency] protected EntityQuery<MovementRelayTargetComponent> RelayTargetQuery = default!;
+    [Dependency] protected EntityQuery<MovementSpeedModifierComponent> ModifierQuery = default!;
+    [Dependency] protected EntityQuery<NoRotateOnMoveComponent> NoRotateQuery = default!;
+    [Dependency] protected EntityQuery<PhysicsComponent> PhysicsQuery = default!;
+    [Dependency] protected EntityQuery<PilotComponent> PilotQuery = default!;
+    [Dependency] protected EntityQuery<PreventPilotComponent> PreventPilotQuery = default!;
+    [Dependency] protected EntityQuery<RelayInputMoverComponent> RelayQuery = default!;
+    [Dependency] protected EntityQuery<PullableComponent> PullableQuery = default!;
+    [Dependency] protected EntityQuery<TransformComponent> XformQuery = default!;
     [Dependency] private   readonly StandingStateSystem _standing = default!; // Goobstation - kil mofs
     [Dependency] private   readonly CommonMomentumSteeringSystem _momentumSteering = default!; // Goobstation - momentum steering
     [Dependency] private   readonly CommonMomentumThrustSystem _momentumThrust = default!; // Goobstation - jetpack thrust falloff
+    [Dependency] protected EntityQuery<NoShoesSilentFootstepsComponent> NoShoesSilentQuery = default!; // DeltaV - NoShoesSilentFootstepsComponent
 
-    protected EntityQuery<CanMoveInAirComponent> CanMoveInAirQuery;
-    protected EntityQuery<FootstepModifierComponent> FootstepModifierQuery;
-    protected EntityQuery<FTLComponent> FTLQuery;
-    protected EntityQuery<InputMoverComponent> MoverQuery;
-    protected EntityQuery<MapComponent> MapQuery;
-    protected EntityQuery<MapGridComponent> MapGridQuery;
-    protected EntityQuery<MobMoverComponent> MobMoverQuery;
-    protected EntityQuery<MovementRelayTargetComponent> RelayTargetQuery;
-    protected EntityQuery<MovementSpeedModifierComponent> ModifierQuery;
-    protected EntityQuery<NoRotateOnMoveComponent> NoRotateQuery;
-    protected EntityQuery<PhysicsComponent> PhysicsQuery;
-    protected EntityQuery<PilotComponent> PilotQuery;
-    protected EntityQuery<PreventPilotComponent> PreventPilotQuery;
-    protected EntityQuery<RelayInputMoverComponent> RelayQuery;
-    protected EntityQuery<PullableComponent> PullableQuery;
-    protected EntityQuery<TransformComponent> XformQuery;
-    protected EntityQuery<NoShoesSilentFootstepsComponent> NoShoesSilentQuery; // DeltaV - NoShoesSilentFootstepsComponent
+    private TimeSpan CurrentTime => PhysicsSystem.EffectiveCurTime ?? Timing.CurTime; // Tile Movement Change
 
     private static readonly ProtoId<TagPrototype> FootstepSoundTag = "FootstepSound";
 
-    protected EntityQuery<FixturesComponent> FixturesQuery; // Tile Movement Change
-    protected EntityQuery<TileMovementComponent> TileMovementQuery; // Tile Movement Change
-    protected EntityQuery<MomentumSteeringComponent> MomentumSteeringQuery; // Goobstation - momentum steering
+    //IS14-change start: initialize retained movement queries through the new injection API.
+    [Dependency] protected EntityQuery<FixturesComponent> FixturesQuery = default!; // Tile Movement Change
+    [Dependency] protected EntityQuery<TileMovementComponent> TileMovementQuery = default!; // Tile Movement Change
+    [Dependency] protected EntityQuery<MomentumSteeringComponent> MomentumSteeringQuery = default!; // Goobstation - momentum steering
+    //IS14-change end
 
     private bool _relativeMovement;
     private float _minDamping;
     private float _airDamping;
     private float _offGridDamping;
-    private TimeSpan CurrentTime => PhysicsSystem.EffectiveCurTime ?? Timing.CurTime; // Tile Movement Change
+    private float _frictionModifier;
+
+    private const LookupFlags _touchingFlags = LookupFlags.Approximate | LookupFlags.Dynamic | LookupFlags.Static;
 
     /// <summary>
     /// Cache the mob movement calculation to re-use elsewhere.
@@ -103,27 +108,6 @@ public abstract partial class SharedMoverController : VirtualController
         UpdatesBefore.Add(typeof(TileFrictionController));
         base.Initialize();
 
-        MoverQuery = GetEntityQuery<InputMoverComponent>();
-        MobMoverQuery = GetEntityQuery<MobMoverComponent>();
-        ModifierQuery = GetEntityQuery<MovementSpeedModifierComponent>();
-        RelayTargetQuery = GetEntityQuery<MovementRelayTargetComponent>();
-        PhysicsQuery = GetEntityQuery<PhysicsComponent>();
-        RelayQuery = GetEntityQuery<RelayInputMoverComponent>();
-        PullableQuery = GetEntityQuery<PullableComponent>();
-        XformQuery = GetEntityQuery<TransformComponent>();
-        NoRotateQuery = GetEntityQuery<NoRotateOnMoveComponent>();
-        CanMoveInAirQuery = GetEntityQuery<CanMoveInAirComponent>();
-        FootstepModifierQuery = GetEntityQuery<FootstepModifierComponent>();
-        MapGridQuery = GetEntityQuery<MapGridComponent>();
-        FixturesQuery = GetEntityQuery<FixturesComponent>(); // Tile Movement Change
-        TileMovementQuery = GetEntityQuery<TileMovementComponent>(); // Tile Movement Change
-        NoShoesSilentQuery = GetEntityQuery<NoShoesSilentFootstepsComponent>(); // DeltaV - NoShoesSilentFootstepsComponent
-        MapQuery = GetEntityQuery<MapComponent>();
-        FTLQuery = GetEntityQuery<FTLComponent>();
-        PilotQuery = GetEntityQuery<PilotComponent>();
-        PreventPilotQuery = GetEntityQuery<PreventPilotComponent>();
-        MomentumSteeringQuery = GetEntityQuery<MomentumSteeringComponent>(); // Goobstation - momentum steering
-
         SubscribeLocalEvent<MovementSpeedModifierComponent, TileFrictionEvent>(OnTileFriction);
         SubscribeLocalEvent<InputMoverComponent, ComponentStartup>(OnMoverStartup);
         SubscribeLocalEvent<InputMoverComponent, PhysicsBodyTypeChangedEvent>(OnPhysicsBodyChanged);
@@ -131,7 +115,8 @@ public abstract partial class SharedMoverController : VirtualController
 
         InitializeInput();
         InitializeRelay();
-        InitializeCVars();
+
+        Subs.CVar(_configManager, CCVars.TileFrictionModifier, value => _frictionModifier = value, true);
         Subs.CVar(_configManager, CCVars.RelativeMovement, value => _relativeMovement = value, true);
         Subs.CVar(_configManager, CCVars.MinFriction, value => _minDamping = value, true);
         Subs.CVar(_configManager, CCVars.AirFriction, value => _airDamping = value, true);
@@ -140,7 +125,7 @@ public abstract partial class SharedMoverController : VirtualController
 
     protected virtual void OnMoverStartup(Entity<InputMoverComponent> ent, ref ComponentStartup args)
     {
-       _blocker.UpdateCanMove(ent, ent.Comp);
+        _blocker.UpdateCanMove(ent, ent.Comp);
     }
 
     public override void Shutdown()
@@ -190,12 +175,6 @@ public abstract partial class SharedMoverController : VirtualController
             if (relayTargetMover.TargetRelativeRotation != mover.TargetRelativeRotation)
             {
                 relayTargetMover.TargetRelativeRotation = mover.TargetRelativeRotation;
-                dirtied = true;
-            }
-
-            if (relayTargetMover.CanMove != mover.CanMove)
-            {
-                relayTargetMover.CanMove = mover.CanMove;
                 dirtied = true;
             }
 
@@ -310,7 +289,7 @@ public abstract partial class SharedMoverController : VirtualController
         }
 
         var touching = false;
-        // Whether we use tilefriction or not
+        // Should we use tile friction or not?
         if (weightless || inAirHelpless)
         {
             // Find the speed we should be moving at and make sure we're not trying to move faster than that
@@ -326,7 +305,7 @@ public abstract partial class SharedMoverController : VirtualController
 
             // If we're not on a grid, and not able to move in space check if we're close enough to a grid to touch.
             if (!touching && MobMoverQuery.TryComp(uid, out var mobMover))
-                touching |= IsAroundCollider(_lookup, (uid, physicsComponent, mobMover, xform));
+                touching |= IsAroundCollider((uid, physicsComponent, mobMover, xform));
 
             // If we're touching then use the weightless values
             if (touching)
@@ -348,6 +327,7 @@ public abstract partial class SharedMoverController : VirtualController
         }
         else
         {
+            // Should we ignore the friction of the tile we're standing on?
             if (MapGridQuery.TryComp(xform.GridUid, out var gridComp)
                 && _mapSystem.TryGetTileRef(xform.GridUid.Value, gridComp, xform.Coordinates, out var tile)
                 && physicsComponent.BodyStatus == BodyStatus.OnGround)
@@ -360,12 +340,12 @@ public abstract partial class SharedMoverController : VirtualController
 
             if (wishDir != Vector2.Zero)
             {
-                friction = moveSpeedComponent?.Friction ?? MovementSpeedModifierComponent.DefaultFriction;
+                friction = moveSpeedComponent?.Friction ?? MovementSpeedModifierComponent.DefaultFriction * _frictionModifier;
                 friction *= tileDef?.MobFriction ?? tileDef?.Friction ?? 1f;
             }
             else
             {
-                friction = moveSpeedComponent?.FrictionNoInput ?? MovementSpeedModifierComponent.DefaultFrictionNoInput;
+                friction = moveSpeedComponent?.FrictionNoInput ?? MovementSpeedModifierComponent.DefaultFrictionNoInput * _frictionModifier;
                 friction *= tileDef?.Friction ?? 1f;
             }
 
@@ -439,7 +419,7 @@ public abstract partial class SharedMoverController : VirtualController
                 var soundModifier = mover.Sprinting ? InputMoverComponent.SprintingSoundModifier : InputMoverComponent.WalkingSoundModifier;
 
                 var audioParams = sound.Params
-                    .WithVolume(sound.Params.Volume + soundModifier)
+                    .AddVolume(sound.Params.Volume + soundModifier)
                     .WithVariation(sound.Params.Variation ?? mobMover.FootstepVariation);
 
                 // If we're a relay target then predict the sound for all relays.
@@ -518,8 +498,11 @@ public abstract partial class SharedMoverController : VirtualController
 
     public void Friction(float minimumFrictionSpeed, float frameTime, float friction, ref float velocity)
     {
-        if (velocity < minimumFrictionSpeed)
+        //IS14-change start
+        // Wizards 11d0799e1a: angular friction must work in both directions.
+        if (Math.Abs(velocity) < minimumFrictionSpeed)
             return;
+        //IS14-change end
 
         // This equation is lifted from the Physics Island solver.
         // We re-use it here because Kinematic Controllers can't/shouldn't use the Physics Friction
@@ -555,26 +538,26 @@ public abstract partial class SharedMoverController : VirtualController
     /// <summary>
     /// Used for weightlessness to determine if we are near a wall.
     /// </summary>
-    private bool IsAroundCollider(EntityLookupSystem lookupSystem, Entity<PhysicsComponent, MobMoverComponent, TransformComponent> entity)
+    private bool IsAroundCollider(Entity<PhysicsComponent, MobMoverComponent, TransformComponent> entity)
     {
         var (uid, collider, mover, transform) = entity;
         var enlargedAABB = _lookup.GetWorldAABB(entity.Owner, transform).Enlarged(mover.GrabRange);
 
         _aroundColliderSet.Clear();
-        lookupSystem.GetEntitiesIntersecting(transform.MapID, enlargedAABB, _aroundColliderSet);
+        _lookup.GetEntitiesIntersecting(transform.MapID, enlargedAABB, _aroundColliderSet, _touchingFlags);
         foreach (var otherEntity in _aroundColliderSet)
         {
-            if (otherEntity == uid)
-                continue; // Don't try to push off of yourself!
+            if (otherEntity == uid || _transform.IsParentOf(transform, otherEntity))
+                continue; // Don't try to push off of yourself or your children!
 
             if (!PhysicsQuery.TryComp(otherEntity, out var otherCollider))
                 continue;
 
             // Only allow pushing off of anchored things that have collision.
+            // NOTE: collision is one-way - we want the mover to push off (collide with) walls, not vice versa (consider bullets and lasers)
             if (otherCollider.BodyType != BodyType.Static ||
                 !otherCollider.CanCollide ||
-                (collider.CollisionMask & otherCollider.CollisionLayer) == 0 &&
-                (otherCollider.CollisionMask & collider.CollisionLayer) == 0 ||
+                (collider.CollisionMask & otherCollider.CollisionLayer) == 0 ||
                 PullableQuery.TryComp(otherEntity, out var pullable) && pullable.BeingPulled)
             {
                 continue;
@@ -683,7 +666,7 @@ public abstract partial class SharedMoverController : VirtualController
 
         // If the coordinates have a FootstepModifier component
         // i.e. component that emit sound on footsteps emit that sound
-        var anchored = grid.GetAnchoredEntitiesEnumerator(position);
+        var anchored = _mapSystem.GetAnchoredEntities(xform.GridUid.Value, grid, position);
 
         while (anchored.MoveNext(out var maybeFootstep))
         {
@@ -932,7 +915,16 @@ public abstract partial class SharedMoverController : VirtualController
         // minPressedTime will be 1.05x the time it should take for you to go from 1 tile to another. Need to
         // account for diagonals being sqrt(2) length as well. Max of 10 seconds just in case.
         var distanceToDestination = (tileMovement.Destination - tileMovement.Origin.Position).Length();
-        var minPressedTime = Math.Min((1.05f / movementSpeed) * distanceToDestination, 20);
+        float minPressedTime;
+
+        if (movementSpeed == 0) // Goobstation: DO FUCKING NOT!!!!!
+        {
+            minPressedTime = 0.5f;
+        }
+        else
+        {
+            minPressedTime = Math.Min((1.05f / movementSpeed) * distanceToDestination, 20);
+        }
 
         // We need to stop the move once we are close enough. This isn't perfect, since it technically ends the move
         // 1 tick early in some cases. This is because there's a fundamental issue where because this is a physics-based

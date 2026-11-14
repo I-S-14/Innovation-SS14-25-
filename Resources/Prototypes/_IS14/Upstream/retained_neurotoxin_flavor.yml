@@ -1,0 +1,6 @@
+# IS14: retained Goob cocktail still references this flavor.
+# Source: 5327c414c5:Resources/Prototypes/Flavors/flavors.yml
+- type: flavor
+  id: neurotoxin
+  flavorType: Complex
+  description: flavor-complex-neurotoxin

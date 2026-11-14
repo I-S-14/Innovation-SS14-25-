@@ -1,0 +1,41 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: 5327c414c5:Resources/Prototypes/Catalog/Fills/Crates/emergency.yml
+- type: entity
+  parent: CrateInternals
+  id: CrateEmergencyInternals
+  name: internals crate
+  description: Master your life energy and control your breathing with three breath
+    masks, three gas masks, three emergency EVA suits, three oxygen tanks, and three
+    nitrogen tanks.
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:AllSelector
+        children:
+        - id: ClothingMaskGas
+          amount: '3'
+        - id: ClothingMaskBreath
+          amount: '3'
+        - id: OxygenTankFilled
+          amount: '3'
+        - id: NitrogenTankFilled
+          amount: '3'
+        - id: ClothingOuterSuitEmergency
+          amount: '3'
+- type: entity
+  parent: CrateInternals
+  id: CrateNitrogenInternals
+  name: internals crate (nitrogen)
+  description: Contains two breath masks, two gas masks, and four nitrogen tanks.
+    Intended for nitrogen-breathing species.
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:AllSelector
+        children:
+        - id: ClothingMaskGas
+          amount: '2'
+        - id: ClothingMaskBreath
+          amount: '2'
+        - id: NitrogenTankFilled
+          amount: '4'

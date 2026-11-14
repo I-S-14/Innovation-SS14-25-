@@ -53,7 +53,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 Обратитесь в гидропонику за тем, что вам нужно. Без ботаника вам, возможно, придется выращивать растения самостоятельно.
 <Box>
 <GuideEntityEmbed Entity="SignHydro1" Caption=" "/>
-<GuideEntityEmbed Entity="hydroponicsTray"/>
+<GuideEntityEmbed Entity="HydroponicsTray"/>
 <GuideEntityEmbed Entity="WheatBushel"/>
 </Box>
 ## Сбор молока:

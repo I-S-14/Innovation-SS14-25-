@@ -51,6 +51,11 @@
     Biomass: 16
 
 - type: latheRecipe
+  parent: BaseCubeRecipe
+  id: SlimeCube
+  result: SlimeCube
+
+- type: latheRecipe
   id: SpaceCarpCube
   result: SpaceCarpCube
   completetime: 30
@@ -179,4 +184,3 @@
   completetime: 5
   materials:
     Biomass: 5
-# Shitmed Change End

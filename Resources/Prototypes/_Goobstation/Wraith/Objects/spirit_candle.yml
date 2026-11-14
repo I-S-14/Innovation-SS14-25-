@@ -1,6 +1,6 @@
 - type: entity
   name: spirit candle
-  parent: Candle
+  parent: IS14RetainedCandleBase # IS14-change: retain 60 health and the skull drop without inherited destruction at 50.
   id: SpiritCandle
   description: Feels vaguely ominous!
   components:

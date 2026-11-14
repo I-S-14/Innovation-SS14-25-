@@ -9,6 +9,7 @@
   - type: Tag
     tags:
     - ShellShotgun
+    - IgnorGrab # CorvaxGoob
   - type: CartridgeAmmo
     soundEject:
       collection: ShellEject
@@ -111,7 +112,7 @@
     state: "practice"
 
 - type: entity
-  parent: [ BaseShellShotgun, BaseSecurityContraband ]
+  parent: [ SolutionAmmo, SolutionToolVeryTiny, BaseShellShotgun, BaseSecurityContraband ]
   id: ShellTranquilizer
   name: shell (12 Gauge tranquilizer) # Goobstation
   components:
@@ -126,14 +127,16 @@
   - type: CartridgeAmmo
     proto: PelletShotgunTranquilizer
   - type: ChemicalAmmo
-  - type: SolutionContainerManager
-    solutions:
-      ammo:
-        reagents:
-        - ReagentId: ChloralHydrate
-          Quantity: 7
+  # IS14-change: keep the original CorvaxGoob dose in the current solution layout.
+  - type: Solution
+    solution:
+      maxVol: 5
+      reagents:
+      - ReagentId: Haloperidol
+        Quantity: 5
   - type: SolutionTransfer
-    maxTransferAmount: 7
+    maxTransferAmount: 5
+    # CorvaxGoob end
   - type: SpentAmmoVisuals
     state: "tranquilizer"
 

@@ -1,3 +1,4 @@
+using Content.Shared.Station.Systems;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Diagnostics.CodeAnalysis;
@@ -29,20 +30,25 @@ using Robust.Shared.Timing;
 
 namespace Content.Goobstation.Server.NTR;
 
-public sealed class NtrTaskSystem : EntitySystem
+public sealed partial class NtrTaskSystem : EntitySystem
 {
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly IPrototypeManager _prototypes = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly ISharedAdminLogManager _adminLogger = default!;
-    [Dependency] private readonly AccessReaderSystem _accessReader = default!;
-    [Dependency] private readonly NameIdentifierSystem _nameIdentifier = default!;
-    [Dependency] private readonly PopupSystem _popup = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
-    [Dependency] private readonly StationSystem _station = default!;
-    [Dependency] private readonly UserInterfaceSystem _ui = default!;
-    [Dependency] private readonly SharedSolutionContainerSystem _solutionContainer = default!;
-    [Dependency] private readonly TagSystem _tag = default!;
+    //IS14-change start: typed IDs preserve the retained Goob prototypes.
+    private static readonly ProtoId<TagPrototype> CompatibilityVialTagId = "Vial";
+    private static readonly ProtoId<TagPrototype> CompatibilityBottleTagId = "Bottle";
+    //IS14-change end
+
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private IPrototypeManager _prototypes = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private ISharedAdminLogManager _adminLogger = default!;
+    [Dependency] private AccessReaderSystem _accessReader = default!;
+    [Dependency] private NameIdentifierSystem _nameIdentifier = default!;
+    [Dependency] private PopupSystem _popup = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private StationSystem _station = default!;
+    [Dependency] private UserInterfaceSystem _ui = default!;
+    [Dependency] private SharedSolutionContainerSystem _solutionContainer = default!;
+    [Dependency] private TagSystem _tag = default!;
 
     private const string NameIdentifierGroup = "Task";
 
@@ -249,7 +255,7 @@ public sealed class NtrTaskSystem : EntitySystem
     #endregion
 
     #region Document Processing
-    private void OnItemInsertAttempt(EntityUid uid, NtrTaskConsoleComponent component, ItemSlotInsertAttemptEvent args)
+    private void OnItemInsertAttempt(EntityUid uid, NtrTaskConsoleComponent component, ref ItemSlotInsertAttemptEvent args)
     {
         args.Cancelled = true;
         var item = args.Item;
@@ -262,7 +268,7 @@ public sealed class NtrTaskSystem : EntitySystem
 
     private bool TryHandleVial(EntityUid item, EntityUid console, NtrTaskConsoleComponent component)
     {
-        if (!_tag.HasTag(item, "Vial") && !_tag.HasTag(item, "Bottle"))
+        if (!_tag.HasTag(item, CompatibilityVialTagId) && !_tag.HasTag(item, CompatibilityBottleTagId))
             return false;
 
         var station = _station.GetOwningStation(console);
@@ -461,7 +467,7 @@ public sealed class NtrTaskSystem : EntitySystem
             || string.IsNullOrEmpty(task.ID))
             return false;
 
-        _nameIdentifier.GenerateUniqueName(uid, NameIdentifierGroup, out var id);
+        _nameIdentifier.GenerateUniqueNameModifier(NameIdentifierGroup, out var id);
         var newId = id.ToString();
 
         if (db.Tasks.Any(b => b.Id == newId))
@@ -551,7 +557,7 @@ public sealed class NtrTaskSystem : EntitySystem
     #endregion
 }
 
-public sealed class TaskFailedEvent : EntityEventArgs
+public sealed partial class TaskFailedEvent : EntityEventArgs
 {
     public EntityUid User;
     public NtrTaskData Task;

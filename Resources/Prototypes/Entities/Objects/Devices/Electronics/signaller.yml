@@ -28,7 +28,7 @@
   - type: DeviceNetwork
     deviceNetId: Wireless
     receiveFrequencyId: BasicDevice
-  - type: WirelessNetworkConnection
+  - type: WirelessNetwork
     range: 40 # goobstation
   - type: PhysicalComposition #Goobstation - Recycle update
     materialComposition:
@@ -67,7 +67,7 @@
       - state: advanced-inhand-left
       right:
       - state: advanced-inhand-right
-  - type: WirelessNetworkConnection
+  - type: WirelessNetwork
     range: 500000 # goobstation
   - type: StaticPrice
     price: 30

@@ -1,17 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 - type: entity
-  save: false
-  parent: BaseMobSkeletonPerson
-  id: MobSkeletonPerson
-  components:
-  - type: InteractionPopup
-    successChance: 1
-    interactSuccessString: hugging-success-generic
-    interactSuccessSound: /Audio/Effects/thudswoosh.ogg
-    messagePerceivedByOthers: hugging-success-generic-others
-
-- type: entity
   name: skeleton pirate
   parent: MobSkeletonPerson
   id: MobSkeletonPirate

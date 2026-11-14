@@ -11,28 +11,29 @@ using Content.Shared.Popups;
 using Content.Shared.Tag;
 using Robust.Shared.Player;
 using Robust.Shared.Audio.Systems;
-using static Content.Shared.Paper.PaperComponent;
 using Robust.Shared.Prototypes;
 // Starlight-start
 using Content.Shared.IdentityManagement;
 using Content.Shared.IdentityManagement.Components;
 using Content.Shared.Mind.Components;
 using Content.Shared.Roles;
+using Content.Shared.Random.Helpers;
+using Robust.Shared.Random;
+using static Content.Shared.Paper.PaperComponent;
 // Starlight-end
 
 namespace Content.Shared.Paper;
 
-public sealed class PaperSystem : EntitySystem
+public sealed partial class PaperSystem : EntitySystem // Goob
 {
-    [Dependency] private readonly ISharedAdminLogManager _adminLogger = default!;
-    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
-    [Dependency] private readonly SharedInteractionSystem _interaction = default!;
-    [Dependency] private readonly SharedPopupSystem _popupSystem = default!;
-    [Dependency] private readonly TagSystem _tagSystem = default!;
-    [Dependency] private readonly SharedUserInterfaceSystem _uiSystem = default!;
-    [Dependency] private readonly MetaDataSystem _metaSystem = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
-    [Dependency] private readonly IdentitySystem _identitySystem = default!; // Starlight-edit
+    [Dependency] private ISharedAdminLogManager _adminLogger = default!;
+    [Dependency] private SharedAppearanceSystem _appearance = default!;
+    [Dependency] private SharedInteractionSystem _interaction = default!;
+    [Dependency] private SharedPopupSystem _popupSystem = default!;
+    [Dependency] private TagSystem _tagSystem = default!;
+    [Dependency] private SharedUserInterfaceSystem _uiSystem = default!;
+    [Dependency] private MetaDataSystem _metaSystem = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
 
     private static readonly ProtoId<TagPrototype> WriteIgnoreStampsTag = "WriteIgnoreStamps";
     private static readonly ProtoId<TagPrototype> WriteTag = "Write";
@@ -130,7 +131,7 @@ public sealed class PaperSystem : EntitySystem
                 if (entity.Comp.EditingDisabled)
                 {
                     var paperEditingDisabledMessage = Loc.GetString("paper-tamper-proof-modified-message");
-                    _popupSystem.PopupClient(paperEditingDisabledMessage, entity, args.User);
+                    _popupSystem.PopupEntity(paperEditingDisabledMessage, entity, args.User);
 
                     args.Handled = true;
                     return;
@@ -143,7 +144,7 @@ public sealed class PaperSystem : EntitySystem
                     if (ev.FailReason is not null)
                     {
                         var fileWriteMessage = Loc.GetString(ev.FailReason);
-                        _popupSystem.PopupClient(fileWriteMessage, entity.Owner, args.User);
+                        _popupSystem.PopupEntity(fileWriteMessage, entity.Owner, args.User);
                     }
 
                     args.Handled = true;

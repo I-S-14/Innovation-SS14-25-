@@ -1,3 +1,4 @@
+using GameTicker = Content.Server.GameTicking.ServerGameTicker;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Goobstation.Common.Pirates;
@@ -9,8 +10,8 @@ namespace Content.Goobstation.Server.Pirates.Ransom;
 
 public sealed partial class RansomSystem : EntitySystem
 {
-    [Dependency] private readonly PendingPirateRuleSystem _pprs = default!;
-    [Dependency] private readonly GameTicker _gt = default!;
+    [Dependency] private PendingPirateRuleSystem _pprs = default!;
+    [Dependency] private Content.Server.GameTicking.ServerGameTicker _gt = default!;
 
     public override void Initialize()
     {
@@ -24,7 +25,7 @@ public sealed partial class RansomSystem : EntitySystem
         var eqe = EntityQueryEnumerator<PendingPirateRuleComponent, GameRuleComponent>();
         while (eqe.MoveNext(out var uid, out var prule, out var gamerule))
         {
-            _gt.EndGameRule(uid, gamerule);
+            _gt.EndGameRule((uid, gamerule));
             _pprs.SendAnnouncement((uid, prule), PendingPirateRuleSystem.AnnouncementType.Paid);
         }
     }

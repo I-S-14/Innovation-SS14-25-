@@ -50,8 +50,8 @@ namespace Content.Client.Options.UI;
 [GenerateTypedNameReferences]
 public sealed partial class OptionsTabControlRow : Control
 {
-    [Dependency] private readonly ILocalizationManager _loc = default!;
-    [Dependency] private readonly IConfigurationManager _cfg = default!;
+    [Dependency] private ILocalizationManager _loc = default!;
+    [Dependency] private IConfigurationManager _cfg = default!;
 
     private ValueList<BaseOption> _options;
 
@@ -358,6 +358,13 @@ public abstract class BaseOptionCVar<TValue> : BaseOption
     {
         _cfg = cfg;
         _cVar = cVar;
+        
+        _cfg.OnValueChanged(cVar,
+            v =>
+            {
+                Value = v;
+                ValueChanged();
+            });
     }
 
     public override void LoadValue()
@@ -546,7 +553,7 @@ public sealed class OptionColorSliderCVar : BaseOptionCVar<string>
         get => _slider.Slider.Color.ToHex();
         set
         {
-            _slider.Slider.Color = Color.FromHex(value);
+            _slider.Slider.Color = Color.FromHex(value, Color.Black); // Goob
             UpdateLabelColor();
         }
     }
@@ -577,11 +584,17 @@ public sealed class OptionColorSliderCVar : BaseOptionCVar<string>
             ValueChanged();
             UpdateLabelColor();
         };
+
+        slider.ResetDefaults.OnPressed += _ => // Goob
+        { // Goob
+            Value = cVar.DefaultValue; // Goob
+            ValueChanged(); // Goob
+        }; // Goob
     }
 
     private void UpdateLabelColor()
     {
-        _slider.ExampleLabel.FontColorOverride = Color.FromHex(Value);
+        _slider.ExampleLabel.FontColorOverride = Color.FromHex(Value, Color.Black).WithAlpha(1f); // Goob
     }
 }
 

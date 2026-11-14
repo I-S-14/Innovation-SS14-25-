@@ -6,9 +6,6 @@
 # SPDX-FileCopyrightText: 2025 c4llv07e <igor@c4llv07e.xyz>
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
-
-particle-accelerator-control-menu-on-button = On
-particle-accelerator-control-menu-off-button = Off
 particle-accelerator-control-menu-service-manual-reference = Refer to p.132 of service manual
 particle-accelerator-control-menu-device-version-label = Mark 2 Particle Accelerator
 particle-accelerator-control-menu-power-label = [bold]Power:[/bold]

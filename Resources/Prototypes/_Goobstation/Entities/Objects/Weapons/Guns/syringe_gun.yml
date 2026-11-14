@@ -78,11 +78,15 @@
     shape:
     - 0,0,3,1
   - type: StealTarget
-    stealGroup: RapidSyringeGun
+    stealGroup: [RapidSyringeGun]
   - type: Tag
     tags:
     - HighRiskItem
     - GunCanAimShooter
+# CorvaxGoob-start:
+  - type: CargoSellBlacklist
+  - type: SupermatterImmune
+# CorvaxGoob-end.
 
 - type: entity
   name: syringe pistol

@@ -3,16 +3,17 @@
 using Content.Goobstation.Shared.Factory.Slots;
 using Content.Shared.DeviceLinking;
 using Content.Shared.DeviceLinking.Events;
+using Content.Shared.DeviceLinking.Systems;
 
 namespace Content.Goobstation.Shared.Factory;
 
 /// <summary>
 /// Tracks port/machine state and prevents linking multiple machines to exclusive ports.
 /// </summary>
-public sealed class ExclusiveSlotsSystem : EntitySystem
+public sealed partial class ExclusiveSlotsSystem : EntitySystem
 {
-    [Dependency] private readonly AutomationSystem _automation = default!;
-    [Dependency] private readonly SharedDeviceLinkSystem _device = default!;
+    [Dependency] private AutomationSystem _automation = default!;
+    [Dependency] private DeviceLinkSystem _device = default!;
 
     private EntityQuery<ExclusiveInputSlotComponent> _inputQuery;
     private EntityQuery<ExclusiveOutputSlotComponent> _outputQuery;
@@ -45,7 +46,7 @@ public sealed class ExclusiveSlotsSystem : EntitySystem
     private void OnInputLinkAttempt(Entity<ExclusiveInputSlotComponent> ent, ref LinkAttemptEvent args)
     {
         if (TryCancelLink((ent, ent.Comp), args.Sink, args.SinkPort, args.Source, args.SourcePort))
-            args.Cancel();
+            args.Cancelled = true;
     }
 
     private void OnInputNewLink(Entity<ExclusiveInputSlotComponent> ent, ref NewLinkEvent args)
@@ -62,7 +63,7 @@ public sealed class ExclusiveSlotsSystem : EntitySystem
     private void OnOutputLinkAttempt(Entity<ExclusiveOutputSlotComponent> ent, ref LinkAttemptEvent args)
     {
         if (TryCancelLink((ent, ent.Comp), args.Source, args.SourcePort, args.Sink, args.SinkPort))
-            args.Cancel();
+            args.Cancelled = true;
     }
 
     private void OnOutputNewLink(Entity<ExclusiveOutputSlotComponent> ent, ref NewLinkEvent args)

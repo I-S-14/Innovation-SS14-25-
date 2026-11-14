@@ -4,6 +4,7 @@ using Content.Shared.Beeper.Systems;
 using Content.Goobstation.Maths.FixedPoint;
 using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
+using Content.Shared.ProximityDetection.Systems;
 
 namespace Content.Shared.Beeper.Components;
 

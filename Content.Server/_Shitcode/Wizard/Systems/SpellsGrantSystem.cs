@@ -19,6 +19,7 @@ using Content.Shared.Random;
 using Robust.Server.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
+using Content.Shared.Antag;
 
 namespace Content.Server._Goobstation.Wizard.Systems;
 
@@ -133,10 +134,10 @@ public sealed class SpellsGrantSystem : EntitySystem
 
         comp.Granted = true;
 
-        if (comp.AntagProfile != null)
+        if (comp.AntagProfile is { } antagProfile)
         {
-            _player.TryGetSessionById(args.Mind.Comp.UserId, out var session);
-            _antag.ForceMakeAntag<SpellsGrantComponent>(session, comp.AntagProfile);
+            if (_player.TryGetSessionById(args.Mind.Comp.UserId, out var session))
+                _antag.ForceMakeAntag<SpellsGrantComponent>(session, antagProfile);
         }
 
         var container = EnsureComp<ActionsContainerComponent>(args.Mind.Owner);
@@ -161,7 +162,7 @@ public sealed class SpellsGrantSystem : EntitySystem
         if (totalWeight <= 0f || !_proto.TryIndex(spells, out var randomActions))
             return (totalWeight, chosenSpells);
 
-        var weights = FilterDictionary(randomActions.Weights, ignoredSpells);
+        var weights = FilterDictionary(randomActions.Weights.ToDictionary(x => x.Key.Id, x => x.Value), ignoredSpells);
 
         while (totalWeight > 0f && weights.Count > 0 && maxAmount is null or > 0)
         {

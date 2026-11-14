@@ -4,6 +4,7 @@ using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Nuke;
 using JetBrains.Annotations;
 using Robust.Client.UserInterface;
+using Robust.Client.GameObjects;
 
 namespace Content.Client.Nuke
 {

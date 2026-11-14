@@ -1,0 +1,47 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: 5327c414c5:Resources/Prototypes/Entities/Objects/Weapons/Guns/Projectiles/magic.yml
+- type: entity
+  id: ProjectileFireball
+  name: fireball
+  description: You better GITTAH WEIGH.
+  parent: BulletRocket
+  categories: [HideSpawnMenu]
+  components:
+  - type: PointLight
+    color: "#E25822"
+    radius: '2.0'
+    energy: '5.0'
+  - type: Projectile
+    damage:
+      types:
+        Heat: '10'
+  - type: Sprite
+    sprite: Objects/Weapons/Guns/Projectiles/magic.rsi
+    layers:
+    - state: fireball
+      shader: unshaded
+  - type: ExplosionEffect
+  - type: Explosive
+    explosionType: Transparent
+    maxIntensity: '40'
+    intensitySlope: '6'
+    totalIntensity: '200'
+    maxTileBreak: '0'
+  - type: IgnitionSource
+    temperature: '400'
+    ignited: 'true'
+  - type: IgniteOnCollide
+    fireStacks: '0.35'
+  - type: Ammo
+    muzzleFlash: null # IS14: nullable prototype ID, not an entity named "null".
+  - type: FlashOnTrigger
+    duration: '4'
+    range: '1.8'
+  - type: Flashbang
+    stunTime: '1'
+    knockdownTime: '6'
+  - type: Reflective
+    reflective: Magic
+  - type: Tag
+    tags:
+    - FlashIgnoreResistances

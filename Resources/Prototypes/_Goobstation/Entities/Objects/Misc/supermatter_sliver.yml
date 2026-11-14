@@ -20,7 +20,7 @@
       sprite: _Goobstation/Supermatter/supermatter_sliver.rsi
       state: icon
     - type: StealTarget
-      stealGroup: SupermatterSliver
+      stealGroup: [SupermatterSliver]
     - type: Tag
       tags:
         - HighRiskItem

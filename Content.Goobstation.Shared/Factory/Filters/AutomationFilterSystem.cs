@@ -17,13 +17,13 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Goobstation.Shared.Factory.Filters;
 
-public sealed class AutomationFilterSystem : EntitySystem
+public sealed partial class AutomationFilterSystem : EntitySystem
 {
-    [Dependency] private readonly ItemSlotsSystem _slots = default!;
-    [Dependency] private readonly ItemToggleSystem _toggle = default!;
-    [Dependency] private readonly SharedCuffableSystem _cuffable = default!;
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] private readonly SharedStackSystem _stack = default!;
+    [Dependency] private ItemSlotsSystem _slots = default!;
+    [Dependency] private ItemToggleSystem _toggle = default!;
+    [Dependency] private SharedCuffableSystem _cuffable = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private SharedStackSystem _stack = default!;
 
     private EntityQuery<AnchorableComponent> _anchorableQuery;
     private EntityQuery<CuffableComponent> _cuffableQuery;
@@ -173,7 +173,8 @@ public sealed class AutomationFilterSystem : EntitySystem
             NameFilterMode.Contain => name.Contains(check),
             NameFilterMode.Start => name.StartsWith(check),
             NameFilterMode.End => name.EndsWith(check),
-            NameFilterMode.Match => name == check
+            NameFilterMode.Match => name == check,
+            _ => false, //IS14-change: an unknown mode must not pass items.
         };
         // entity names usually don't change except for the end including a label
         args.CouldAllow = ent.Comp.Mode switch
@@ -229,8 +230,8 @@ public sealed class AutomationFilterSystem : EntitySystem
         if (!TryComp<ItemSlotsComponent>(ent, out var slots))
             return;
 
-        if (!_slots.TryGetSlot(ent, CombinedFilterComponent.FilterAName, out var filterA, slots) ||
-            !_slots.TryGetSlot(ent, CombinedFilterComponent.FilterBName, out var filterB, slots))
+        if (!_slots.TryGetSlot((ent, slots), CombinedFilterComponent.FilterAName, out var filterA) ||
+            !_slots.TryGetSlot((ent, slots), CombinedFilterComponent.FilterBName, out var filterB))
         {
             Log.Error($"{ToPrettyString(ent)} was missing filter slots!");
             RemCompDeferred<CombinedFilterComponent>(ent);
@@ -276,7 +277,8 @@ public sealed class AutomationFilterSystem : EntitySystem
             LogicGate.Xor => a != b,
             LogicGate.Nor => !(a || b),
             LogicGate.Nand => !(a && b),
-            LogicGate.Xnor => a == b
+            LogicGate.Xnor => a == b,
+            _ => false, //IS14-change: an unknown gate must not pass items.
         };
         args.CouldAllow = couldAllowA || couldAllowB; // if any subfilter could allow it, this could allow it too
     }
@@ -382,7 +384,7 @@ public sealed class AutomationFilterSystem : EntitySystem
         if (!TryComp<ItemSlotsComponent>(ent, out var slots))
             return;
 
-        if (!_slots.TryGetSlot(ent, ent.Comp.FilterSlotId, out var filterSlot, slots))
+        if (!_slots.TryGetSlot((ent, slots), ent.Comp.FilterSlotId, out var filterSlot))
         {
             Log.Warning($"Missing filter slot {ent.Comp.FilterSlotId} on {ToPrettyString(ent)}");
             RemCompDeferred<FilterSlotComponent>(ent);
@@ -453,7 +455,7 @@ public sealed class AutomationFilterSystem : EntitySystem
 
         // have to split it, client will return null here
         var coords = Transform(item).Coordinates;
-        return _stack.Split(item, stack.Count - excess, coords, stack);
+        return _stack.Split((item, stack), stack.Count - excess, coords);
     }
 
     /// <summary>

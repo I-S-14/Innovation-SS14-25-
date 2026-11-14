@@ -6,10 +6,12 @@
   abstract: true
   slipData:
     requiredSlipSpeed: 3.5
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 3
   reactiveEffects:
     Extinguish:
@@ -25,12 +27,15 @@
 
 - type: reagent
   id: BaseSoda
+  puddleSpriteSet: Shiny # Goob
   parent: BaseDrink
   abstract: true
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
   plantMetabolism:
   - !type:PlantAdjustNutrition
@@ -50,10 +55,12 @@
   slipData:
     requiredSlipSpeed: 3.5
   friction: 0.4
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol

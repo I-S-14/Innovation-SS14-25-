@@ -16,7 +16,7 @@
     mobile: True  # Goobstation - mobile cameras fix
     id: Bodycam
   - type: Eye
-  - type: WirelessNetworkConnection
+  - type: WirelessNetwork
     range: 200
   - type: SurveillanceCameraMicrophone
     blacklist:

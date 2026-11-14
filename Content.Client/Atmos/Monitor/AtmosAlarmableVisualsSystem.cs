@@ -7,7 +7,7 @@ using Robust.Client.Graphics;
 
 namespace Content.Client.Atmos.Monitor;
 
-public sealed class AtmosAlarmableVisualsSystem : VisualizerSystem<AtmosAlarmableVisualsComponent>
+public sealed partial class AtmosAlarmableVisualsSystem : VisualizerSystem<AtmosAlarmableVisualsComponent>
 {
     [Dependency] private readonly SpriteSystem _sprite = default!;
 
@@ -16,11 +16,8 @@ public sealed class AtmosAlarmableVisualsSystem : VisualizerSystem<AtmosAlarmabl
         if (args.Sprite == null || !_sprite.LayerMapTryGet((uid, args.Sprite), component.LayerMap, out var layer, false))
             return;
 
-        if (!args.AppearanceData.TryGetValue(PowerDeviceVisuals.Powered, out var poweredObject) ||
-            poweredObject is not bool powered)
-        {
+        if (!args.TryGetData<bool>(PowerDeviceVisuals.Powered, out var powered))
             return;
-        }
 
         if (component.HideOnDepowered != null)
         {
@@ -40,8 +37,7 @@ public sealed class AtmosAlarmableVisualsSystem : VisualizerSystem<AtmosAlarmabl
             }
         }
 
-        if (args.AppearanceData.TryGetValue(AtmosMonitorVisuals.AlarmType, out var alarmTypeObject)
-            && alarmTypeObject is AtmosAlarmType alarmType
+        if (args.TryGetData<AtmosAlarmType>(AtmosMonitorVisuals.AlarmType, out var alarmType)
             && powered
             && component.AlarmStates.TryGetValue(alarmType, out var state))
         {

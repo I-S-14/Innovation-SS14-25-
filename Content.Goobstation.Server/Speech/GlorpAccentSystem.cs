@@ -1,3 +1,4 @@
+using Content.Shared.Speech.EntitySystems;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Text.RegularExpressions;
@@ -7,9 +8,9 @@ using Content.Shared.Speech;
 
 namespace Content.Goobstation.Server.Speech;
 
-public sealed class GlorpAccentSystem : EntitySystem
+public sealed partial class GlorpAccentSystem : EntitySystem
 {
-    [Dependency] private readonly ReplacementAccentSystem _replacement = default!;
+    [Dependency] private ReplacementAccentSystem _replacement = default!;
     private static readonly string[] StartingLetters = { "н", "к", "з", "в", "г" };
     private static readonly string[] Suffixes = { "нарп", "лорп", "либ", "орп", "орпл", "ип", "оп", "игл" };
     private static readonly string[] RandomInserts = { "глорпито", "глорп" };
@@ -137,7 +138,7 @@ public sealed class GlorpAccentSystem : EntitySystem
         return hasLetters;
     }
 
-    private void OnAccentGet(EntityUid uid, GlorpAccentComponent component, AccentGetEvent args)
+    private void OnAccentGet(EntityUid uid, GlorpAccentComponent component, ref AccentGetEvent args)
     {
         args.Message = Accentuate(args.Message, component);
     }

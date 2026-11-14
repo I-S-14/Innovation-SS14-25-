@@ -8,15 +8,16 @@ using Robust.Server.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Player;
 using Robust.Shared.Timing;
+using System.Linq;
 
 namespace Content.Server.Spider;
 
-public sealed class SpiderSystem : SharedSpiderSystem
+public sealed partial class SpiderSystem : SharedSpiderSystem
 {
-    [Dependency] private readonly PopupSystem _popup = default!;
-    [Dependency] private readonly TurfSystem _turf = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly MobStateSystem _mobState = default!;
+    [Dependency] private PopupSystem _popup = default!;
+    [Dependency] private TurfSystem _turf = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private MobStateSystem _mobState = default!;
 
     /// <summary>
     ///     A recycled hashset used to check turfs for spiderwebs.
@@ -49,6 +50,9 @@ public sealed class SpiderSystem : SharedSpiderSystem
                 continue;
 
             var transform = Transform(uid);
+            if (transform.GridUid == null || transform.ParentUid != transform.GridUid) // Goob
+                continue;
+
             SpawnWeb((uid, spider), transform.Coordinates);
         }
     }
@@ -60,7 +64,7 @@ public sealed class SpiderSystem : SharedSpiderSystem
 
         var transform = Transform(uid);
 
-        if (transform.GridUid == null)
+        if (transform.GridUid == null || transform.ParentUid != transform.GridUid) // Goob - not from inside vents/containers
         {
             _popup.PopupEntity(Loc.GetString("spider-web-action-nogrid"), args.Performer, args.Performer);
             return;
@@ -107,7 +111,8 @@ public sealed class SpiderSystem : SharedSpiderSystem
     private bool IsTileBlockedByWeb(EntityCoordinates coords)
     {
         _webs.Clear();
-        _turf.GetEntitiesInTile(coords, _webs);
+        // IS14-change: webs have non-hard fixtures; the current lookup excludes sensors by default.
+        _turf.GetEntitiesInTile(coords, _webs, LookupFlags.Static | LookupFlags.Sensors);
         foreach (var entity in _webs)
         {
             if (HasComp<SpiderWebObjectComponent>(entity))

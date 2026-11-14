@@ -6,6 +6,7 @@ using Content.Shared.Mind;
 using Content.Shared.Mind.Components;
 using Content.Shared.Tag;
 using Robust.Shared.Random;
+using Content.Shared.Gibbing;
 
 namespace Content.Server.Mind;
 
@@ -14,11 +15,11 @@ namespace Content.Server.Mind;
 /// to a different entity when they gib.
 /// used for skeletons.
 /// </summary>
-public sealed class TransferMindOnGibSystem : EntitySystem
+public sealed partial class TransferMindOnGibSystem : EntitySystem
 {
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly TagSystem _tag = default!;
-    [Dependency] private readonly SharedMindSystem _mindSystem = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private TagSystem _tag = default!;
+    [Dependency] private SharedMindSystem _mindSystem = default!;
 
     /// <inheritdoc/>
     public override void Initialize()
@@ -26,7 +27,7 @@ public sealed class TransferMindOnGibSystem : EntitySystem
         SubscribeLocalEvent<TransferMindOnGibComponent, BeingGibbedEvent>(OnGib);
     }
 
-    private void OnGib(EntityUid uid, TransferMindOnGibComponent component, BeingGibbedEvent args)
+    private void OnGib(EntityUid uid, TransferMindOnGibComponent component, ref BeingGibbedEvent args)
     {
         if (!_mindSystem.TryGetMind(uid, out var mindId, out var mind))
             return;

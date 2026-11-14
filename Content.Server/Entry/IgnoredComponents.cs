@@ -7,6 +7,8 @@ namespace Content.Server.Entry
     {
         public static string[] List => new[] {
             "ConstructionGhost",
+            "DirectionalArrowIndicator", // IS14: client-only Wizards components.
+            "SandboxCopyable",
             "IconSmooth",
             "InteractionOutline",
             "Marker",

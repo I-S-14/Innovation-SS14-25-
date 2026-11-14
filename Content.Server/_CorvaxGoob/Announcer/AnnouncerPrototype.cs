@@ -3,7 +3,7 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Server._CorvaxGoob.Announcer;
 
-[Prototype("announcer")]
+[Prototype]
 public sealed partial class AnnouncerPrototype : IPrototype
 {
     [IdDataField]

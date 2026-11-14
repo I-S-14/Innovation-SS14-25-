@@ -11,6 +11,10 @@ namespace Content.Client._DV.Overlays;
 
 public sealed partial class UltraVisionOverlay : Overlay
 {
+    //IS14-change start: typed prototype IDs required by the upstream analyzer.
+    private static readonly ProtoId<ShaderPrototype> CompatibilityUltraVisionShaderId = "UltraVision";
+    //IS14-change end
+
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
     [Dependency] private readonly IPlayerManager _playerManager = default!;
     [Dependency] IEntityManager _entityManager = default!;
@@ -23,7 +27,7 @@ public sealed partial class UltraVisionOverlay : Overlay
     public UltraVisionOverlay()
     {
         IoCManager.InjectDependencies(this);
-        _ultraVisionShader = _prototypeManager.Index<ShaderPrototype>("UltraVision").Instance().Duplicate();
+        _ultraVisionShader = _prototypeManager.Index<ShaderPrototype>(CompatibilityUltraVisionShaderId).Instance().Duplicate();
     }
 
     protected override bool BeforeDraw(in OverlayDrawArgs args)

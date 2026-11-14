@@ -56,7 +56,7 @@ public abstract class SharedCyborgAiLinkSystem : EntitySystem
 
         ent.Comp.Lockdown = lockdown;
         Dirty(ent);
-        _movementSpeed.RefreshMovementSpeedModifiers(ent);
+        _movementSpeed.RefreshMovementSpeedModifiers(ent.Owner);
 
         if (lockdown && TryComp<CyborgComponent>(ent, out var cyborg))
             Cyborg.StoreAllTools((ent, cyborg));

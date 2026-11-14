@@ -1,0 +1,54 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: 5327c414c5:Resources/Prototypes/Entities/Mobs/NPCs/animals.yml
+- type: entity
+  name: clown spider
+  parent: [MobSpiderAngryBase, MobSpiderBase] # IS14: AngryBase is now a behavior-only mixin.
+  id: MobClownSpider
+  description: Combines the two most terrifying things in existence, spiders and clowns.
+  components:
+  - type: SpriteMovement # IS14: the retained clown RSI has no idle/moving states.
+    movementLayers: {}
+    noMovementLayers: {}
+  - type: Sprite
+    drawdepth: Mobs
+    layers:
+    - map: ["enum.DamageStateVisualLayers.Base"]
+      state: clown
+      sprite: Mobs/Animals/clownspider.rsi
+  - type: Butcherable
+    spawned:
+    - id: MaterialBananium1
+      amount: 1
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: clown
+      Critical:
+        Base: dead
+      Dead:
+        Base: dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      180: Dead
+  - type: Spider
+    webPrototype: SpiderWebClown
+  - type: MeleeWeapon
+    altDisarm: false
+    angle: 0
+    animation: WeaponArcBite
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    damage:
+      types:
+        Piercing: 8
+  - type: FootstepModifier
+    footstepSoundCollection:
+      collection: FootstepClownFast
+  - type: Speech
+    speechVerb: Cluwne
+  - type: Bloodstream
+    bloodReferenceSolution:
+      reagents:
+      - ReagentId: Laughter
+        Quantity: 150

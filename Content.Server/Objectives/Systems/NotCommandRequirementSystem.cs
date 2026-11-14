@@ -3,10 +3,11 @@
 using Content.Server.Objectives.Components;
 using Content.Shared.Objectives.Components;
 using Content.Shared.Roles.Jobs;
+using Content.Server.Revolutionary.Components;
 
 namespace Content.Server.Objectives.Systems;
 
-public sealed class NotCommandRequirementSystem : EntitySystem
+public sealed partial class NotCommandRequirementSystem : EntitySystem
 {
     [Dependency] private readonly SharedJobSystem _job = default!;
 

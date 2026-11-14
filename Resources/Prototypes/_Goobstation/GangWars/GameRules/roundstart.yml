@@ -1,0 +1,23 @@
+- type: entity
+  id: Gangwars
+  parent: BaseGameRule
+  components:
+  - type: GameRule
+    minPlayers: 0
+    chaosScore: 1000
+  - type: GangwarRule
+  - type: AntagObjectives
+    objectives:
+    - GangLeaderRecruitObjective
+    - GangFirstPlaceObjective
+    - GangEarnPointsObjective
+    - GangMemberSurviveObjective
+  - type: AntagSelection
+    selectionTime: JobsAssigned
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14GangwarsAntag008ebf3de
+      range:
+        max: 4
+        min: 1
+      playerRatio: 15

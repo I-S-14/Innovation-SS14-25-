@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Shared.Security;
+using Content.Shared.StationRecords;
 using Robust.Shared.Serialization;
 
 namespace Content.Shared.CriminalRecords;
@@ -9,8 +10,8 @@ namespace Content.Shared.CriminalRecords;
 /// Criminal record for a crewmember.
 /// Can be viewed and edited in a criminal records console by security.
 /// </summary>
-[Serializable, NetSerializable, DataRecord]
-public sealed partial record CriminalRecord
+[Serializable, NetSerializable]
+public sealed partial record CriminalRecord : StationRecord
 {
     /// <summary>
     /// Status of the person (None, Wanted, Detained).
@@ -43,4 +44,4 @@ public sealed partial record CriminalRecord
 /// A line of criminal activity and the time it was added at.
 /// </summary>
 [Serializable, NetSerializable]
-public record struct CrimeHistory(TimeSpan AddTime, string Crime, string? InitiatorName);
+public record struct CrimeHistory(TimeSpan AddTime, string Crime, string? InitiatorName, string? Articles = null, int? Duration = null, SecurityStatus? Status = null); // CorvaxGoob-SecurityFeatures

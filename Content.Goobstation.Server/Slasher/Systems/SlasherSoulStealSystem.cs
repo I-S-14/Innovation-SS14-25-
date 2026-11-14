@@ -1,3 +1,5 @@
+using Content.Shared.Station.Systems;
+using Content.Shared.AlertLevel;
 using Content.Goobstation.Server.Devil.Contract;
 using Content.Goobstation.Shared.Slasher.Components;
 using Content.Goobstation.Shared.Slasher;
@@ -36,37 +38,42 @@ using Robust.Server.GameObjects;
 using Content.Shared.Inventory;
 using Content.Shared.Roles;
 using Content.Shared.Station;
+using Content.Shared.Damage.Systems;
 
 namespace Content.Goobstation.Server.Slasher.Systems;
 
 /// <summary>
 /// Soul steal system for the slasher. Gives bonuses for stealing souls from incapacitated or dead targets.
 /// </summary>
-public sealed class SlasherSoulStealSystem : EntitySystem
+public sealed partial class SlasherSoulStealSystem : EntitySystem
 {
-    [Dependency] private readonly SharedActionsSystem _actions = default!;
-    [Dependency] private readonly MobStateSystem _mobState = default!;
-    [Dependency] private readonly StandingStateSystem _standing = default!;
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] private readonly SharedHandsSystem _hands = default!;
-    [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
-    [Dependency] private readonly DamageableSystem _damageable = default!;
-    [Dependency] private readonly DevilContractSystem _devilContractSystem = default!;
-    [Dependency] private readonly SharedMindSystem _mindSystem = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly AtmosphereSystem _atmos = default!;
-    [Dependency] private readonly StationSystem _stationSystem = default!;
-    [Dependency] private readonly ChatSystem _chatSystem = default!;
-    [Dependency] private readonly AlertLevelSystem _alertLevel = default!;
-    [Dependency] private readonly SharedWeatherSystem _weather = default!;
-    [Dependency] private readonly IPrototypeManager _protoMan = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly EntityLookupSystem _lookup = default!;
-    [Dependency] private readonly PoweredLightSystem _light = default!;
-    [Dependency] private readonly SlasherRegenerateSystem _regenerate = default!;
-    [Dependency] private readonly InventorySystem _inventory = default!;
-    [Dependency] private readonly SharedStationSpawningSystem _spawning = default!;
+    //IS14-change start: typed IDs preserve the retained Goob prototypes.
+    private static readonly ProtoId<WeatherPrototype> CompatibilityStormWeatherId = "Storm";
+    //IS14-change end
+
+    [Dependency] private SharedActionsSystem _actions = default!;
+    [Dependency] private MobStateSystem _mobState = default!;
+    [Dependency] private StandingStateSystem _standing = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private SharedHandsSystem _hands = default!;
+    [Dependency] private SharedDoAfterSystem _doAfter = default!;
+    [Dependency] private DamageableSystem _damageable = default!;
+    [Dependency] private DevilContractSystem _devilContractSystem = default!;
+    [Dependency] private SharedMindSystem _mindSystem = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private AtmosphereSystem _atmos = default!;
+    [Dependency] private StationSystem _stationSystem = default!;
+    [Dependency] private ChatSystem _chatSystem = default!;
+    [Dependency] private AlertLevelSystem _alertLevel = default!;
+    [Dependency] private SharedWeatherSystem _weather = default!;
+    [Dependency] private IPrototypeManager _protoMan = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private EntityLookupSystem _lookup = default!;
+    [Dependency] private PoweredLightSystem _light = default!;
+    [Dependency] private SlasherRegenerateSystem _regenerate = default!;
+    [Dependency] private InventorySystem _inventory = default!;
+    [Dependency] private StationSpawningSystem _spawning = default!;
 
     public override void Initialize()
     {
@@ -238,6 +245,8 @@ public sealed class SlasherSoulStealSystem : EntitySystem
         {
             comp.HasAscended = true;
 
+            RaiseLocalEvent(new SlasherAscendedEvent(user));
+
             // Initialize the light flicker timer when ascending
             comp.NextLightFlicker = _timing.CurTime + comp.LightFlickerInterval;
 
@@ -249,7 +258,7 @@ public sealed class SlasherSoulStealSystem : EntitySystem
 
                 // Make it rain in space
                 var xform = Transform(user);
-                _weather.SetWeather(xform.MapID, _protoMan.Index<WeatherPrototype>("Storm"), null);
+                _weather.SetWeather(xform.MapID, _protoMan.Index<WeatherPrototype>(CompatibilityStormWeatherId), null);
 
                 // Swap clothing if the kit defines ascension gear
                 if (comp.AscensionGear != null)
@@ -478,7 +487,7 @@ public sealed class SlasherSoulStealSystem : EntitySystem
                 else
                 {
                     var ev = new GhostBooEvent();
-                    RaiseLocalEvent(entity, ev);
+                    RaiseLocalEvent(entity, ref ev);
                     handled = ev.Handled;
                 }
             }

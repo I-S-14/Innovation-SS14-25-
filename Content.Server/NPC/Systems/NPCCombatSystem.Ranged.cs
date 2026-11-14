@@ -15,15 +15,15 @@ namespace Content.Server.NPC.Systems;
 
 public sealed partial class NPCCombatSystem
 {
-    [Dependency] private readonly SharedCombatModeSystem _combat = default!;
-    [Dependency] private readonly RotateToFaceSystem _rotate = default!;
     [Dependency] private readonly SharedLaserPointerSystem _pointer = default!; // Goobstation
+    [Dependency] private SharedCombatModeSystem _combat = default!;
+    [Dependency] private RotateToFaceSystem _rotate = default!;
 
-    private EntityQuery<CombatModeComponent> _combatQuery;
-    private EntityQuery<NPCSteeringComponent> _steeringQuery;
-    private EntityQuery<RechargeBasicEntityAmmoComponent> _rechargeQuery;
-    private EntityQuery<PhysicsComponent> _physicsQuery;
-    private EntityQuery<TransformComponent> _xformQuery;
+    [Dependency] private EntityQuery<CombatModeComponent> _combatQuery = default!;
+    [Dependency] private EntityQuery<NPCSteeringComponent> _steeringQuery = default!;
+    [Dependency] private EntityQuery<RechargeBasicEntityAmmoComponent> _rechargeQuery = default!;
+    [Dependency] private EntityQuery<PhysicsComponent> _physicsQuery = default!;
+    [Dependency] private EntityQuery<TransformComponent> _xformQuery = default!;
 
     // TODO: Don't predict for hitscan
     private const float ShootSpeed = 20f;
@@ -35,12 +35,6 @@ public sealed partial class NPCCombatSystem
 
     private void InitializeRanged()
     {
-        _combatQuery = GetEntityQuery<CombatModeComponent>();
-        _physicsQuery = GetEntityQuery<PhysicsComponent>();
-        _rechargeQuery = GetEntityQuery<RechargeBasicEntityAmmoComponent>();
-        _steeringQuery = GetEntityQuery<NPCSteeringComponent>();
-        _xformQuery = GetEntityQuery<TransformComponent>();
-
         SubscribeLocalEvent<NPCRangedCombatComponent, ComponentStartup>(OnRangedStartup);
         SubscribeLocalEvent<NPCRangedCombatComponent, ComponentShutdown>(OnRangedShutdown);
     }
@@ -221,9 +215,9 @@ public sealed partial class NPCCombatSystem
 
             EntityCoordinates targetCordinates;
 
-            if (_mapManager.TryFindGridAt(xform.MapID, targetPos, out var gridUid, out var mapGrid))
+            if (_mapSystem.TryFindGridAt(xform.MapID, targetPos, out var gridUid, out var mapGrid))
             {
-                targetCordinates = new EntityCoordinates(gridUid, mapGrid.WorldToLocal(targetSpot));
+                targetCordinates = new EntityCoordinates(gridUid, _mapSystem.WorldToLocal(gridUid, mapGrid, targetSpot));
             }
             else
             {

@@ -10,19 +10,15 @@ namespace Content.Shared.Actions;
 /// <summary>
 /// Handles action priming, confirmation and automatic unpriming.
 /// </summary>
-public sealed class ConfirmableActionSystem : EntitySystem
+public sealed partial class ConfirmableActionSystem : EntitySystem
 {
-    [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
+
+    [Dependency] private EntityQuery<ActionComponent> _actionQuery = default!;
     [Dependency] private readonly SharedActionsSystem _actions = default!; // Goobstation
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
 
-    public override void Initialize()
-    {
-        base.Initialize();
-
-        SubscribeLocalEvent<ConfirmableActionComponent, ActionAttemptEvent>(OnAttempt);
-    }
-
+    /// <inheritdoc/>
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
@@ -40,6 +36,7 @@ public sealed class ConfirmableActionSystem : EntitySystem
         }
     }
 
+    [SubscribeLocalEvent]
     private void OnAttempt(Entity<ConfirmableActionComponent> ent, ref ActionAttemptEvent args)
     {
         if (!ent.Comp.ShouldCancel) // Goobstation
@@ -48,8 +45,17 @@ public sealed class ConfirmableActionSystem : EntitySystem
         if (args.Cancelled)
             return;
 
+        // Check if we should be confirming based on the action's toggle status.
+        if (_actionQuery.TryComp(ent, out var action))
+        {
+            if (action.Toggled && !ent.Comp.ConfirmWhenToggled)
+                return;
+            if (!action.Toggled && !ent.Comp.ConfirmWhenUntoggled)
+                return;
+        }
+
         // if not primed, prime it and cancel the action
-        if (ent.Comp.NextConfirm is not {} confirm)
+        if (ent.Comp.NextConfirm is not { } confirm)
         {
             Prime(ent, args.User);
             args.Cancelled = true;
@@ -74,12 +80,7 @@ public sealed class ConfirmableActionSystem : EntitySystem
         comp.NextUnprime = comp.NextConfirm + comp.PrimeTime;
         Dirty(uid, comp);
 
-        // Goobstation - Confirmable action with changed icon - Start
-        if (!string.IsNullOrEmpty(comp.Popup))
-            _popup.PopupClient(Loc.GetString(comp.Popup), user, user, comp.PopupFontType);
-
-        _actions.SetToggled(ent.Owner, true);
-        // Goobstation - Confirmable action with changed icon - End
+        _popup.PopupEntity(Loc.GetString(comp.Popup), user, user, PopupType.LargeCaution);
     }
 
     public void Unprime(Entity<ConfirmableActionComponent> ent) // Goob edit

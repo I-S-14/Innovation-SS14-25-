@@ -40,7 +40,7 @@ public sealed class TranslatorSystem : SharedTranslatorSystem
         SubscribeLocalEvent<HandheldTranslatorComponent, ItemToggledEvent>(OnItemToggled);
     }
 
-    private void OnDetermineLanguages(EntityUid uid, IntrinsicTranslatorComponent component, DetermineEntityLanguagesEvent ev)
+    private void OnDetermineLanguages(EntityUid uid, IntrinsicTranslatorComponent component, ref DetermineEntityLanguagesEvent ev)
     {
         if (!component.Enabled
             || component.LifeStage >= ComponentLifeStage.Removing
@@ -51,7 +51,7 @@ public sealed class TranslatorSystem : SharedTranslatorSystem
         CopyLanguages(component, ev, knowledge);
     }
 
-    private void OnProxyDetermineLanguages(EntityUid uid, HoldsTranslatorComponent component, DetermineEntityLanguagesEvent ev)
+    private void OnProxyDetermineLanguages(EntityUid uid, HoldsTranslatorComponent component, ref DetermineEntityLanguagesEvent ev)
     {
         if (!TryComp<LanguageKnowledgeComponent>(uid, out var knowledge))
             return;
@@ -132,7 +132,7 @@ public sealed class TranslatorSystem : SharedTranslatorSystem
         }
     }
 
-    private void OnPowerCellSlotEmpty(EntityUid translator, HandheldTranslatorComponent component, PowerCellSlotEmptyEvent args)
+    private void OnPowerCellSlotEmpty(EntityUid translator, HandheldTranslatorComponent component, ref PowerCellSlotEmptyEvent args)
     {
         component.Enabled = false;
         _powerCell.SetDrawEnabled(translator, false);
@@ -142,7 +142,7 @@ public sealed class TranslatorSystem : SharedTranslatorSystem
             _language.UpdateEntityLanguages(holderCont.Owner);
     }
 
-    private void OnPowerCellChanged(EntityUid translator, HandheldTranslatorComponent component, PowerCellChangedEvent args)
+    private void OnPowerCellChanged(EntityUid translator, HandheldTranslatorComponent component, ref PowerCellChangedEvent args)
     {
         var hasCharge = _powerCell.HasActivatableCharge(translator);
         component.Enabled = hasCharge;
@@ -153,7 +153,7 @@ public sealed class TranslatorSystem : SharedTranslatorSystem
             _language.UpdateEntityLanguages(holderCont.Owner);
     }
 
-    private void OnItemToggled(EntityUid translator, HandheldTranslatorComponent component, ItemToggledEvent args)
+    private void OnItemToggled(EntityUid translator, HandheldTranslatorComponent component, ref ItemToggledEvent args)
     {
         var hasCharge = _powerCell.HasActivatableCharge(translator);
         var shouldEnable = args.Activated && hasCharge;

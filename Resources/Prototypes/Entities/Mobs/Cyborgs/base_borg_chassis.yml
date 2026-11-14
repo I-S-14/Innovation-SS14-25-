@@ -8,6 +8,8 @@
   save: false
   abstract: true
   components:
+  - type: VoiceChatEffect # Goobstation - Voice chat
+    effect: Robot
   - type: Reactive
     groups:
       Acidic: [Touch]
@@ -107,23 +109,19 @@
   - type: IntrinsicRadioReceiver
   - type: IntrinsicRadioTransmitter
     channels:
-    # - Binary # Goobstation - replaced with collective mind
+    - Binary
     - Common
     - Science
   - type: ActiveRadio
     channels:
-    # - Binary # Goobstation - replaced with collective mind
+    - Binary
     - Common
     - Science
-  # Goobstation
-  - type: CollectiveMind
-    defaultChannel: Binary
-    channels:
-    - Binary
-    canUseInCrit: true # Goobstation
   - type: ZombieImmune
   - type: Repairable
-    doAfterDelay: 10
+    damageValue: -10 # 10 seconds to repair from crit
+    doAfterDelay: 1
+    fuelCost: 0.5
     # allowSelfRepair: false # Goobstation
   - type: BorgChassis
   - type: LockingWhitelist
@@ -168,10 +166,10 @@
     - Crying
     - Whistle
   - type: Vocal
-    sounds:
-      Unsexed: UnisexSilicon
+    emoteSounds: UnisexSilicon
     wilhelmProbability: 0
   - type: DamagedSiliconAccent
+    damageAtMaxCorruption: 300
   - type: UnblockableSpeech
   - type: FootstepModifier
     footstepSoundCollection:
@@ -191,32 +189,7 @@
   - type: LockedWiresPanel
   - type: Damageable
     damageContainer: Silicon
-    damageModifierSet: Silicon #Goobstation - Iondamage
-  - type: Destructible
-    thresholds:
-    - trigger:
-        !type:DamageTrigger
-        damage: 75
-      behaviors:
-      - !type:PlaySoundBehavior
-        sound:
-          path: /Audio/Machines/warning_buzzer.ogg
-          params:
-            volume: 5
-    - trigger:
-        !type:DamageTrigger
-        damage: 300
-      behaviors:
-      - !type:PlaySoundBehavior
-        sound:
-          collection: MetalBreak
-      - !type:EmptyContainersBehaviour
-        containers:
-        - borg_brain
-        - borg_module
-        - cell_slot
-      - !type:DoActsBehavior
-        acts: [ "Destruction" ]
+    damageModifierSet: Silicon
   - type: HandheldLight
     toggleOnInteract: false
     wattage: 0.2
@@ -245,12 +218,12 @@
       isLooped: true
   - type: PointLight
     enabled: false
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
     radius: 4
     netsync: false
   - type: Pullable
-  - type: Grabbable # CorvaxGoob
+  - type: Grabbable # Goob
   - type: Puller
     needsHands: false
   - type: StandingState
@@ -288,6 +261,7 @@
     - Tradeband
     - Schechi
     - NewKinPidgin
+    - Hydraspeak # CorvaxGoob
     understands:
     - TauCetiBasic
     - Canilunzt
@@ -308,12 +282,14 @@
     - Sign
     - Schechi
     - NewKinPidgin
+    - Hydraspeak # CorvaxGoob
   - type: ProtectedFromStepTriggers
   - type: DamageOnInteractProtection
     damageProtection:
       flatReductions:
         Heat: 10 # capable of touching light bulbs and stoves without feeling pain!
   - type: BypassLock
+    openWiresPanel: true
   - type: BypassLockRequiresMobState
     requiredMobState:
     - Critical
@@ -331,6 +307,32 @@
   id: BaseBorgChassis
   components:
   - type: IonStormTarget
+  - type: Destructible
+    generateOverkillThreshold: false
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 75
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Machines/warning_buzzer.ogg
+          params:
+            volume: 5
+    - trigger:
+        !type:DamageTrigger
+        damage: 300
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:EmptyContainersBehaviour
+        containers:
+        - borg_brain
+        - borg_module
+        - cell_slot
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
 
 - type: entity
   abstract: true
@@ -354,8 +356,9 @@
     keysIn:
     - timer
   # explosion does most of its damage in the center and less at the edges
+  - type: ExplosionEffect # Goob
   - type: Explosive
-    explosionType: Minibomb
+    explosionType: TransparentMinibomb # Goob
     deleteAfterExplosion: false # let damage threshold gib the borg
     totalIntensity: 30
     intensitySlope: 20
@@ -376,8 +379,9 @@
     mobile: True # Goobstation - mobile cameras fix, borg camera not really relevant since monitor doesn't see it anyways but eh
     id: Xenoborg
     useEntityNameAsCameraId: true
+  - type: ExplosionEffect # Goob
   - type: Explosive
-    explosionType: Minibomb
+    explosionType: TransparentMinibomb # Goob
     deleteAfterExplosion: false # let damage threshold gib the borg
     totalIntensity: 200 # bigger kaboom
     intensitySlope: 20
@@ -409,6 +413,7 @@
   - type: ShowJobIcons
   - type: StationAiVision # Goobstation - AI can see through NT silicon
     range: 3
+  - type: ShowCrewIcons
   - type: InteractionPopup
     interactSuccessSound:
       path: /Audio/Ambience/Objects/periodic_beep.ogg
@@ -432,11 +437,11 @@
     subverted: true
   - type: IntrinsicRadioTransmitter
     channels:
-    # - Binary  # Goobstation - replaced with collective mind
+    - Binary
     - Syndicate
   - type: ActiveRadio
     channels:
-    # - Binary # Goobstation collectivemind binary
+    - Binary
     - Syndicate
   - type: ShowSyndicateIcons
   - type: MovementAlwaysTouching
@@ -450,8 +455,7 @@
     - Whistle
     # end Goobstation - Cyborg emote sounds
   - type: Vocal
-    sounds:
-      Unsexed: UnisexSiliconSyndicate
+    emoteSounds: UnisexSiliconSyndicate
   - type: PointLight
     color: "#dd200b"
   - type: BypassLock
@@ -483,6 +487,7 @@
   - type: IonStormTarget
     chance: 1
   - type: ShowJobIcons
+  - type: ShowCrewIcons
 
 - type: entity
   id: BaseBorgChassisSyndicateDerelict #For assault borg and maybe others in time
@@ -496,6 +501,7 @@
   - type: IonStormTarget
     chance: 1
   - type: ShowJobIcons
+  - type: ShowCrewIcons
   - type: NpcFactionMember # They're still syndicate even if they can't listen to the radio or see icons
     factions:
     - Syndicate
@@ -508,27 +514,22 @@
   - type: IntrinsicRadioTransmitter # Copy components from base SyndiBorg but without the stuff we don't want
     channels:
     - Common # Goobstation i need this to not be null and if theyre derelict its whatever
-    #- Binary #1984 # Goobstation collectivemind binary
+    - Binary #1984
   - type: ActiveRadio
     channels:
     - Common # Goobstation i need this to not be null and if theyre derelict its whatever
-    #- Binary # Goobstation collectivemind binary
+    - Binary
   - type: MovementAlwaysTouching
   - type: Speech
     speechSounds: SyndieBorg
     allowedEmotes:
     - Laugh
   - type: Vocal
-    sounds:
-      Unsexed: UnisexSiliconSyndicate
+    emoteSounds: UnisexSiliconSyndicate
   - type: PointLight
     color: "#dd200b"
   - type: BypassLock
     bypassDelay: 15 # We don't want people to easily be able to remove syndieborg brains.
-  - type: CollectiveMind # Goobstation collectivemind binary
-    defaultChannel: Binary
-    channels:
-    - Binary
 
 - type: entity
   parent: BaseBorgChassisNotIonStormable
@@ -546,29 +547,29 @@
   - type: Sprite
     sprite: Mobs/Silicon/chassis.rsi
   - type: MobThresholds
-    thresholds: # slightly tankier than a normal borg
+    thresholds: # goob - tankier than a normal borg
       0: Alive
-      125: Critical
-      375: Dead # Same as destruction threshold. Borgs act exactly like crit when dead, except for ghosting on move
-  - type: EmagSiliconLaw # should xenoborgs be emagable?
-    stunTime: 5
+      175: Critical # goob - increased to match overall goob balance
+      400: Dead # Same as destruction threshold. Borgs act exactly like crit when dead, except for ghosting on move
+#  - type: EmagSiliconLaw # should xenoborgs be emagable? # goob - No
+ #   stunTime: 5
   - type: SiliconLawProvider
     laws: XenoborgLawset # custom laws here
     subverted: true
-  - type: IntrinsicRadioReceiver # Goob - moved binary to CM
-  - type: CollectiveMind
-    defaultChannel: Binary
-    channels:
-    - Binary
+  - type: Damageable
+    damageContainer: Silicon
+    damageModifierSet: Xenoborg # Goob - xenoborg buff
   - type: IntrinsicRadioTransmitter # can only use binary and xenoborg channel
     channels:
     - Xenoborg
+    - Binary
   - type: ActiveRadio # but can hear the mothership channel
     channels:
     - Mothership
     - Xenoborg
+    - Binary
   - type: Repairable
-    doAfterDelay: 13 # 25% more HP, so 30% more time to heal
+    doAfterDelay: 10 # goob - reduced to fit new values
   - type: BorgChassis
     maxModules: 0
     hasMindState: robot_e
@@ -589,8 +590,7 @@
     - Whistle
     # end Goobstation - Cyborg emote sounds
   - type: Vocal
-    sounds:
-      Unsexed: UnisexSiliconXenoborg
+    emoteSounds: UnisexSiliconXenoborg
     wilhelmProbability: 0
   - type: DamagedSiliconAccent
   - type: UnblockableSpeech
@@ -613,7 +613,7 @@
     thresholds:
     - trigger:
         !type:DamageTrigger
-        damage: 90
+        damage: 150 # goob
       behaviors:
       - !type:PlaySoundBehavior
         sound:
@@ -622,7 +622,7 @@
             volume: 5
     - trigger:
         !type:DamageTrigger
-        damage: 375
+        damage: 400 # goob
       behaviors:
       - !type:PlaySoundBehavior
         sound:
@@ -653,9 +653,47 @@
   - type: AccessReader
     access: [["Xenoborg"]]
   - type: ShowJobIcons # not sure if it is needed
+  - type: ShowCrewIcons
   - type: InteractionPopup
     interactSuccessSound:
       path: /Audio/Ambience/Objects/periodic_beep.ogg
   - type: Xenoborg
   - type: BypassLock
     bypassDelay: 15 # We don't want people to easily be able to remove xenoborg brains.
+  - type: EmpResistance
+    strengthMultiplier: 0
+
+- type: entity
+  abstract: true
+  id: BaseXenoborgDestructible
+  components:
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 90
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Machines/warning_buzzer_xenoborg.ogg
+          params:
+            volume: 5
+    - trigger:
+        !type:DamageTrigger
+        damage: 375
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          PinpointerMothershipPiece: # drop a piece of core pinpointer upon being destructed (4 pieces to make a core pinpointer)
+            min: 1
+            max: 1
+      - !type:EmptyContainersBehaviour
+        containers:
+        - borg_brain
+        - borg_module
+        - cell_slot
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]

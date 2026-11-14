@@ -6,17 +6,19 @@ using Content.Server.Administration;
 using Content.Server.Chat.Managers;
 using Content.Server.Station.Systems;
 using Content.Shared.Administration;
+using Content.Shared.Administration.Logs;
 using Content.Shared.Chat;
+using Content.Shared.Database;
 using Content.Shared.Emag.Systems;
 using Content.Shared.GameTicking;
 using Content.Shared.Mind;
 using Content.Shared.Mind.Components;
+using Content.Shared.Overlays;
 using Content.Shared.Radio.Components;
 using Content.Shared.Roles;
 using Content.Shared.Roles.Components;
 using Content.Shared.Silicons.Laws;
 using Content.Shared.Silicons.Laws.Components;
-using Content.Shared.Database; // goob logging
 using Content.Server.Administration.Logs; // goob logging
 using Robust.Server.GameObjects;
 using Robust.Shared.Audio;
@@ -40,10 +42,15 @@ using Content.Server.Research.Systems;
 using Content.Shared.Silicons.StationAi;
 using Content.Shared.Tag;
 using Content.Shared._CorvaxNext.Silicons.Borgs.Components;
+using Content.Shared.Station.Systems;
 namespace Content.Server.Silicons.Laws;
 
-public sealed class SiliconLawSystem : SharedSiliconLawSystem
+public sealed partial class SiliconLawSystem : SharedSiliconLawSystem
 {
+    //IS14-change start: typed prototype IDs required by the upstream analyzer.
+    private static readonly ProtoId<TagPrototype> CompatibilityStationAiTagId = "StationAi";
+    //IS14-change end
+
     [Dependency] private readonly IChatManager _chatManager = default!;
     [Dependency] private readonly IAdminLogManager _adminLogger = default!; // goob logging
     [Dependency] private readonly SharedMindSystem _mind = default!;
@@ -91,7 +98,7 @@ public sealed class SiliconLawSystem : SharedSiliconLawSystem
 
         // Corvax-Next-AiRemoteControl-Start
         if (HasComp<AiRemoteControllerComponent>(uid)
-            || _tagSystem.HasTag(uid, "StationAi")) // skip a law's notification for remotable and AI
+            || _tagSystem.HasTag(uid, CompatibilityStationAiTagId)) // skip a law's notification for remotable and AI
             return;
         // Corvax-Next-AiRemoteControl-End
 
@@ -117,6 +124,8 @@ public sealed class SiliconLawSystem : SharedSiliconLawSystem
 
     private void OnLawProviderMindAdded(Entity<SiliconLawProviderComponent> ent, ref MindAddedMessage args)
     {
+        _adminLogger.Add(LogType.SiliconLaws, LogImpact.Low, $"{ent.Owner} laws at MindAdded are [{ent.Comp.Lawset?.LoggingString()}]");
+
         if (!ent.Comp.Subverted)
             return;
         EnsureSubvertedSiliconRole(args.Mind);
@@ -124,10 +133,10 @@ public sealed class SiliconLawSystem : SharedSiliconLawSystem
 
     private void OnLawProviderMindRemoved(Entity<SiliconLawProviderComponent> ent, ref MindRemovedMessage args)
     {
-        if (!ent.Comp.Subverted)
+        if (!ent.Comp.Subverted || args.TransferEntity == null)
             return;
-        RemoveSubvertedSiliconRole(args.Mind);
 
+        RemoveSubvertedSiliconRole(args.Mind);
     }
 
 
@@ -145,7 +154,7 @@ public sealed class SiliconLawSystem : SharedSiliconLawSystem
         TryComp(uid, out IntrinsicRadioTransmitterComponent? intrinsicRadio);
         var radioChannels = intrinsicRadio?.Channels;
 
-        var state = new SiliconLawBuiState(GetLaws(uid).Laws, radioChannels);
+        var state = new SiliconLawBuiState(GetLaws(uid).Laws, radioChannels, component.Version);
         _userInterface.SetUiState(args.Entity, SiliconLawsUiKey.Key, state);
     }
 
@@ -167,21 +176,21 @@ public sealed class SiliconLawSystem : SharedSiliconLawSystem
         args.Handled = true;
     }
 
-    private void OnIonStormLaws(EntityUid uid, SiliconLawProviderComponent component, ref IonStormLawsEvent args)
+    private void OnIonStormLaws(Entity<SiliconLawProviderComponent> ent, ref IonStormLawsEvent args)
     {
         // Emagged borgs are immune to ion storm
-        if (!_emag.CheckFlag(uid, EmagType.Interaction))
+        if (!_emag.CheckFlag(ent, EmagType.Interaction))
         {
-            component.Lawset = args.Lawset;
+            ent.Comp.Lawset = args.Lawset;
 
             // gotta tell player to check their laws
-            NotifyLawsChanged(uid, component.LawUploadSound);
+            NotifyLawsChanged(ent, ent.Comp.LawUploadSound);
 
             // Show the silicon has been subverted.
-            component.Subverted = true;
+            ent.Comp.Subverted = true;
 
             // new laws may allow antagonist behaviour so make it clear for admins
-            if(_mind.TryGetMind(uid, out var mindId, out _))
+            if(_mind.TryGetMind(ent, out var mindId, out _))
                 EnsureSubvertedSiliconRole(mindId);
 
         }
@@ -289,18 +298,21 @@ public sealed class SiliconLawSystem : SharedSiliconLawSystem
         return ev.Laws;
     }
 
-    public override void NotifyLawsChanged(EntityUid uid, SoundSpecifier? cue = null)
+    public override void NotifyLawsChanged(Entity<SiliconLawProviderComponent> ent, SoundSpecifier? cue = null)
     {
-        base.NotifyLawsChanged(uid, cue);
+        base.NotifyLawsChanged(ent, cue);
 
-        if (!TryComp<ActorComponent>(uid, out var actor))
+        _adminLogger.Add(LogType.SiliconLaws, LogImpact.Low, $"{ent} laws changed to [{ent.Comp.Lawset?.LoggingString()}]");
+
+        if (!TryComp<ActorComponent>(ent, out var actor))
             return;
 
         var msg = Loc.GetString("laws-update-notify");
         var wrappedMessage = Loc.GetString("chat-manager-server-wrap-message", ("message", msg));
+        UpdateLawVersion(ent.Owner);
         _chatManager.ChatMessageToOne(ChatChannel.Server, msg, wrappedMessage, default, false, actor.PlayerSession.Channel, colorOverride: Color.Red);
 
-        if (cue != null && _mind.TryGetMind(uid, out var mindId, out _))
+        if (cue != null && _mind.TryGetMind(ent, out var mindId, out _))
             _roles.MindPlaySound(mindId, cue);
     }
 
@@ -309,14 +321,14 @@ public sealed class SiliconLawSystem : SharedSiliconLawSystem
     /// </summary>
     public SiliconLawset GetLawset(ProtoId<SiliconLawsetPrototype> lawset)
     {
-        var proto = _prototype.Index(lawset);
+        var proto = ProtoMan.Index(lawset);
         var laws = new SiliconLawset()
         {
             Laws = new List<SiliconLaw>(proto.Laws.Count)
         };
         foreach (var law in proto.Laws)
         {
-            laws.Laws.Add(_prototype.Index<SiliconLawPrototype>(law).ShallowClone());
+            laws.Laws.Add(ProtoMan.Index<SiliconLawPrototype>(law).ShallowClone());
         }
         laws.ObeysTo = proto.ObeysTo;
 
@@ -335,7 +347,7 @@ public sealed class SiliconLawSystem : SharedSiliconLawSystem
             component.Lawset = new SiliconLawset();
 
         component.Lawset.Laws = newLaws;
-        NotifyLawsChanged(target, cue);
+        NotifyLawsChanged((target, component), cue);
 
         _adminLogger.Add(LogType.SiliconLaws, LogImpact.Medium, $"{ToPrettyString(target):entity} laws changed to:{component.Lawset.LoggingString()}"); // goob
     }
@@ -538,6 +550,13 @@ public sealed class SiliconLawSystem : SharedSiliconLawSystem
         return laws;
     }
     // Goob edit end
+    private void UpdateLawVersion(Entity<SiliconLawBoundComponent?> target)
+    {
+        if (!Resolve(target, ref target.Comp))
+            return;
+
+        target.Comp.Version++;
+    }
 }
 
 [ToolshedCommand, AdminCommand(AdminFlags.Admin)]
@@ -565,4 +584,5 @@ public sealed class LawsCommand : ToolshedCommand
             yield return $"law {law.LawIdentifierOverride ?? law.Order.ToString()}: {Loc.GetString(law.LawString)}";
         }
     }
+
 }

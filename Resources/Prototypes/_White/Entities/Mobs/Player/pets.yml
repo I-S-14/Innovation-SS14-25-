@@ -15,4 +15,4 @@
   - type: UseDelay
     delay: 7
   - type: StealTarget
-    stealGroup: AnimalLamarr
+    stealGroup: [AnimalLamarr]

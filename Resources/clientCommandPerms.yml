@@ -40,6 +40,8 @@
     - replay_load
     - saveconfig
     - chatwindow
+    - voicechat # Goobstation - Voice chat
+    - achievements # Goobstation - Achievements
 
 - Flags: DEBUG
   Commands:
@@ -99,3 +101,7 @@
 - Flags: ADMINCHAT
   Commands:
     - achatwindow
+
+- Flags: ADMIN
+  Commands:
+    - admin_overlay

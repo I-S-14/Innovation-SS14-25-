@@ -2,9 +2,9 @@
 
 using Content.Shared.Parallax.Biomes.Layers;
 using Content.Shared.Parallax.Biomes.Markers;
+using Content.Shared.Decals;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.Dictionary;
 
 namespace Content.Shared.Parallax.Biomes;
 
@@ -47,8 +47,8 @@ public sealed partial class BiomeComponent : Component
     /// <summary>
     /// Decals that have been loaded as a part of this biome.
     /// </summary>
-    [DataField("decals")]
-    public Dictionary<Vector2i, Dictionary<uint, Vector2i>> LoadedDecals = new();
+    [DataField("decals", customTypeSerializer: typeof(Content.Shared._IS14.Parallax.BiomeDecalsSerializer))] //IS14-change: retain saved biome decal ownership.
+    public Dictionary<Vector2i, Dictionary<DecalIndex, Vector2i>> LoadedDecals = new();
 
     [DataField("entities")]
     public Dictionary<Vector2i, Dictionary<EntityUid, Vector2i>> LoadedEntities = new();
@@ -70,8 +70,8 @@ public sealed partial class BiomeComponent : Component
     /// <summary>
     /// Track what markers we've loaded already to avoid double-loading.
     /// </summary>
-    [DataField("loadedMarkers", customTypeSerializer:typeof(PrototypeIdDictionarySerializer<HashSet<Vector2i>, BiomeMarkerLayerPrototype>))]
-    public Dictionary<string, HashSet<Vector2i>> LoadedMarkers = new();
+    [DataField]
+    public Dictionary<ProtoId<BiomeMarkerLayerPrototype>, HashSet<Vector2i>> LoadedMarkers = new();
 
     [DataField]
     public HashSet<ProtoId<BiomeMarkerLayerPrototype>> MarkerLayers = new();

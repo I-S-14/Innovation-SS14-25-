@@ -14,11 +14,18 @@
   - Diona # Goobstation - Lack of legs makes it weaker than other species in combat
   - Harpy # Goobstation - Same with Diona
   - Plasmaman # Goobstation - Do i need to fucking say it?
+  - Synth # Goob
   components:
     - type: RandomHumanoidAppearance
       randomizeName: false
     - type: GhostTakeoverAvailable
     - type: IdBind
+
+
+
+
+
+
 
 - type: randomHumanoidSettings
   id: EventHumanoidMindShielded
@@ -29,16 +36,34 @@
       - MindShieldImplant
     - type: AntagImmune
 
+
+
+
+
+
+
 # Goobstation start
 - type: randomHumanoidSettings
   id: EventHuman
   parent: EventHumanoid
   speciesWhitelist: Human
 
+
+
+
+
+
+
 - type: randomHumanoidSettings
   id: EventHumanMindShielded
   parent: EventHumanoidMindShielded
   speciesWhitelist: Human
+
+
+
+
+
+
 
 - type: randomHumanoidSettings
   id: EventHumanoidLibrarian
@@ -48,6 +73,12 @@
     implants:
     - LibrarianTranslatorImplant      #Librarians should speak most languages
 
+
+
+
+
+
+
 - type: randomHumanoidSettings
   id: EventHumanoidChef
   parent: EventHumanoid
@@ -56,6 +87,13 @@
     implants:
     - SpaceItalianTranslatorImplant   #chefs should speak space italian
   - type: GrantCqc                    #Chefs should have CqC
+
+
+
+
+
+
+
 # Goobstation end
 
 - type: randomHumanoidSettings
@@ -67,6 +105,12 @@
     implants:
     - MindShieldImplant
     - DeathRattleImplantCentcomm
+
+
+
+
+
+
 
 ## Death Squad
 
@@ -85,6 +129,12 @@
       nameFormat: name-format-ert
     - type: RandomHumanoidSpawner
       settings: DeathSquad
+
+
+
+
+
+
 
 - type: randomHumanoidSettings
   id: DeathSquad
@@ -114,6 +164,11 @@
       nameFormat: name-format-ert
 
 
+
+
+
+
+
 ## ERT Leader
 
 - type: entity
@@ -126,6 +181,12 @@
       state: ertleader
     - type: RandomHumanoidSpawner
       settings: ERTLeader
+
+
+
+
+
+
 
 - type: randomHumanoidSettings
   id: ERTLeader
@@ -150,6 +211,12 @@
       - NamesMilitaryLast
       nameFormat: name-format-ert-leader
 
+
+
+
+
+
+
 - type: entity
   id: RandomHumanoidSpawnerERTLeaderEVA
   parent: RandomHumanoidSpawnerERTLeader
@@ -162,6 +229,12 @@
     - type: RandomHumanoidSpawner
       settings: ERTLeaderEVA
 
+
+
+
+
+
+
 - type: randomHumanoidSettings
   id: ERTLeaderEVA
   parent: ERTLeader
@@ -173,6 +246,12 @@
       prototypes: [ ERTLeaderGearEVA ]
       roleLoadout: [ RoleSurvivalMilitaryDouble ]
 
+
+
+
+
+
+
 - type: entity
   id: RandomHumanoidSpawnerERTLeaderArmed
   parent: RandomHumanoidSpawnerERTLeaderEVA
@@ -181,6 +260,12 @@
     - type: RandomHumanoidSpawner
       settings: ERTLeaderArmed
 
+
+
+
+
+
+
 - type: randomHumanoidSettings
   id: ERTLeaderArmed
   parent: ERTLeaderEVA
@@ -188,6 +273,12 @@
     - type: Loadout
       prototypes: [ ERTLeaderGearArmed ]
       roleLoadout: [ RoleSurvivalMilitaryDouble ]
+
+
+
+
+
+
 
 ## ERT Chaplain
 
@@ -202,6 +293,12 @@
       state: ertchaplain
     - type: RandomHumanoidSpawner
       settings: ERTChaplain
+
+
+
+
+
+
 
 - type: randomHumanoidSettings
   id: ERTChaplain
@@ -225,6 +322,12 @@
       prototypes: [ ERTChaplainGear ]
       roleLoadout: [ RoleSurvivalMilitaryDouble ]
 
+
+
+
+
+
+
 - type: entity
   id: RandomHumanoidSpawnerERTChaplainEVA
   parent: RandomHumanoidSpawnerERTChaplain
@@ -237,6 +340,12 @@
     - type: RandomHumanoidSpawner
       settings: ERTChaplainEVA
 
+
+
+
+
+
+
 - type: randomHumanoidSettings
   id: ERTChaplainEVA
   parent: ERTChaplain
@@ -247,6 +356,12 @@
     - type: Loadout
       prototypes: [ ERTChaplainGearEVA ]
       roleLoadout: [ RoleSurvivalMilitaryDouble ]
+
+
+
+
+
+
 
 ## ERT Janitor
 
@@ -261,6 +376,12 @@
       state: ertjanitor
     - type: RandomHumanoidSpawner
       settings: ERTJanitor
+
+
+
+
+
+
 
 - type: randomHumanoidSettings
   id: ERTJanitor
@@ -283,6 +404,12 @@
       prototypes: [ ERTJanitorGear ]
       roleLoadout: [ RoleSurvivalMilitaryDouble ]
 
+
+
+
+
+
+
 - type: entity
   id: RandomHumanoidSpawnerERTJanitorEVA
   parent: RandomHumanoidSpawnerERTJanitor
@@ -294,6 +421,12 @@
     - type: RandomHumanoidSpawner
       settings: ERTJanitorEVA
 
+
+
+
+
+
+
 - type: randomHumanoidSettings
   id: ERTJanitorEVA
   parent: ERTJanitor
@@ -304,6 +437,12 @@
     - type: Loadout
       prototypes: [ ERTJanitorGearEVA ]
       roleLoadout: [ RoleSurvivalMilitaryDouble ]
+
+
+
+
+
+
 
 ## ERT Engineer
 
@@ -318,6 +457,12 @@
       state: ertengineer
     - type: RandomHumanoidSpawner
       settings: ERTEngineer
+
+
+
+
+
+
 
 - type: randomHumanoidSettings
   id: ERTEngineer
@@ -340,6 +485,12 @@
       prototypes: [ ERTEngineerGear ]
       roleLoadout: [ RoleSurvivalMilitaryDouble ]
 
+
+
+
+
+
+
 - type: entity
   id: RandomHumanoidSpawnerERTEngineerEVA
   parent: RandomHumanoidSpawnerERTEngineer
@@ -350,6 +501,12 @@
       state: ertengineereva
     - type: RandomHumanoidSpawner
       settings: ERTEngineerEVA
+
+
+
+
+
+
 
 - type: randomHumanoidSettings
   id: ERTEngineerEVA
@@ -362,6 +519,12 @@
       prototypes: [ ERTEngineerGearEVA ]
       roleLoadout: [ RoleSurvivalMilitaryDouble ]
 
+
+
+
+
+
+
 - type: entity
   parent: RandomHumanoidSpawnerERTEngineerEVA
   id: RandomHumanoidSpawnerERTEngineerArmed
@@ -369,6 +532,12 @@
   components:
   - type: RandomHumanoidSpawner
     settings: ERTEngineerArmed
+
+
+
+
+
+
 
 - type: randomHumanoidSettings
   id: ERTEngineerArmed
@@ -381,6 +550,12 @@
   - type: Loadout
     prototypes: [ ERTEngineerGearArmed ]
     roleLoadout: [ RoleSurvivalMilitaryDouble ]
+
+
+
+
+
+
 
 ## ERT Security
 
@@ -395,6 +570,12 @@
       state: ertsecurity
     - type: RandomHumanoidSpawner
       settings: ERTSecurity
+
+
+
+
+
+
 
 - type: randomHumanoidSettings
   id: ERTSecurity
@@ -419,6 +600,12 @@
     - type: AutoImplant # Goobstation
       implants: [ FreedomImplant, RadioImplantCentcomm, NutrimentPumpImplant, StypticStimulatorImplant ] # Goobstation
 
+
+
+
+
+
+
 - type: entity
   id: RandomHumanoidSpawnerERTSecurityEVA
   parent: RandomHumanoidSpawnerERTSecurity
@@ -430,6 +617,12 @@
       state: ertsecurityeva
     - type: RandomHumanoidSpawner
       settings: ERTSecurityEVA
+
+
+
+
+
+
 
 - type: randomHumanoidSettings
   id: ERTSecurityEVA
@@ -450,6 +643,12 @@
     - type: AutoImplant
       implants: [ FreedomImplant, RadioImplantCentcomm, NutrimentPumpImplant, StypticStimulatorImplant ] # Goobstation
 
+
+
+
+
+
+
 - type: entity
   id: RandomHumanoidSpawnerERTSecurityArmedRifle
   parent: RandomHumanoidSpawnerERTSecurityEVA
@@ -458,6 +657,12 @@
   components:
   - type: RandomHumanoidSpawner
     settings: ERTSecurityArmedRifle
+
+
+
+
+
+
 
 - type: randomHumanoidSettings
   id: ERTSecurityArmedRifle
@@ -471,6 +676,12 @@
     prototypes: [ ERTSecurityGearArmedRifle ]
     roleLoadout: [ RoleSurvivalMilitaryDouble ]
 
+
+
+
+
+
+
 - type: entity
   parent: RandomHumanoidSpawnerERTSecurityEVA
   id: RandomHumanoidSpawnerERTSecurityArmedGrenade
@@ -479,6 +690,12 @@
   components:
   - type: RandomHumanoidSpawner
     settings: ERTSecurityArmedGrenade
+
+
+
+
+
+
 
 - type: randomHumanoidSettings
   parent: ERTSecurityEVA
@@ -492,6 +709,12 @@
     prototypes: [ ERTSecurityGearArmedGrenade ]
     roleLoadout: [ RoleSurvivalMilitaryDouble ]
 
+
+
+
+
+
+
 - type: entity
   parent: RandomHumanoidSpawnerERTSecurityEVA
   id: RandomHumanoidSpawnerERTSecurityArmedVanguard
@@ -500,6 +723,12 @@
   components:
   - type: RandomHumanoidSpawner
     settings: ERTSecurityArmedVanguard
+
+
+
+
+
+
 
 - type: randomHumanoidSettings
   parent: ERTSecurityEVA
@@ -513,6 +742,12 @@
     prototypes: [ ERTSecurityGearArmedVanguard ]
     roleLoadout: [ RoleSurvivalMilitaryDouble ]
 
+
+
+
+
+
+
 - type: entity
   parent: RandomHumanoidSpawnerERTSecurityEVA
   id: RandomHumanoidSpawnerERTSecurityArmedShotgun
@@ -521,6 +756,12 @@
   components:
   - type: RandomHumanoidSpawner
     settings: ERTSecurityArmedShotgun
+
+
+
+
+
+
 
 - type: randomHumanoidSettings
   parent: ERTSecurityEVA
@@ -533,6 +774,12 @@
   - type: Loadout
     prototypes: [ ERTSecurityGearArmedShotgun ]
     roleLoadout: [ RoleSurvivalMilitaryDouble ]
+
+
+
+
+
+
 
 ## ERT Medic
 
@@ -547,6 +794,12 @@
       state: ertmedical
     - type: RandomHumanoidSpawner
       settings: ERTMedical
+
+
+
+
+
+
 
 - type: randomHumanoidSettings
   id: ERTMedical
@@ -573,6 +826,12 @@
     - type: SurgerySpeedModifier # CorvaxGoob-ERT-Skills
       speedModifier: 2.5
 
+
+
+
+
+
+
 - type: entity
   id: RandomHumanoidSpawnerERTMedicalEVA
   parent: RandomHumanoidSpawnerERTMedical
@@ -583,6 +842,12 @@
       state: ertmedicaleva
     - type: RandomHumanoidSpawner
       settings: ERTMedicalEVA
+
+
+
+
+
+
 
 - type: randomHumanoidSettings
   id: ERTMedicalEVA
@@ -597,6 +862,12 @@
     - type: AutoImplant
       implants: [ FreedomImplant, RadioImplantCentcomm, NutrimentPumpImplant, StypticStimulatorImplant ] # Goobstation
 
+
+
+
+
+
+
 - type: entity
   parent: RandomHumanoidSpawnerERTMedicalEVA
   id: RandomHumanoidSpawnerERTMedicalArmed
@@ -604,6 +875,12 @@
   components:
   - type: RandomHumanoidSpawner
     settings: ERTMedicalArmed
+
+
+
+
+
+
 
 - type: randomHumanoidSettings
   parent: ERTMedicalEVA
@@ -617,6 +894,12 @@
     prototypes: [ ERTMedicalGearArmed ]
     roleLoadout: [ RoleSurvivalMilitaryDouble ]
 
+
+
+
+
+
+
 ## CBURN
 
 - type: entity
@@ -629,6 +912,12 @@
       state: cburn
     - type: RandomHumanoidSpawner
       settings: CBURNAgent
+
+
+
+
+
+
 
 - type: randomHumanoidSettings
   id: CBURNAgent
@@ -654,6 +943,12 @@
       - NamesMilitaryLast
       nameFormat: name-format-ert
 
+
+
+
+
+
+
 ## Central Command
 
 - type: entity
@@ -665,6 +960,12 @@
       state: centcom
     - type: RandomHumanoidSpawner
       settings: CentcomOfficial
+
+
+
+
+
+
 
 - type: randomHumanoidSettings
   id: CentcomOfficial
@@ -685,6 +986,12 @@
       prototypes: [ CentcomGear ]
       roleLoadout: [ RoleSurvivalStandard ]
 
+
+
+
+
+
+
 ## Syndicate
 
 - type: entity
@@ -695,9 +1002,18 @@
       sprite: Mobs/Species/Human/parts.rsi
       state: full
     - type: RandomMetadata
-      nameSegments: [ NamesDeathCommando ]
+      nameSegments:
+      - NamesDeathCommandoFirst
+      - NamesDeathCommandoLast
+      nameFormat: name-format-standard
     - type: RandomHumanoidSpawner
       settings: SyndicateAgent
+
+
+
+
+
+
 
 - type: randomHumanoidSettings
   parent: EventHumanoid # Goobstation
@@ -709,6 +1025,12 @@
       prototypes: [SyndicateOperativeGearExtremelyBasic]
       roleLoadout: [ RoleSurvivalSyndicate ]
 
+
+
+
+
+
+
 - type: entity
   id: RandomHumanoidSpawnerNukeOp
   name: Nuclear Operative
@@ -719,6 +1041,12 @@
     - type: RandomHumanoidSpawner
       settings: NukeOp
 
+
+
+
+
+
+
 - type: randomHumanoidSettings
   parent: EventHumanoid # Goobstation
   id: NukeOp
@@ -726,6 +1054,12 @@
     - type: RandomHumanoidAppearance
       randomizeName: false
     - type: NukeOperative
+
+
+
+
+
+
 
 - type: entity
   id: RandomHumanoidSpawnerCluwne
@@ -742,6 +1076,12 @@
       - NamesFirst
       - NamesLast
       nameFormat: name-format-standard
+
+
+
+
+
+
 
 - type: randomHumanoidSettings
   id: Cluwne

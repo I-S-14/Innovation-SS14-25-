@@ -21,7 +21,7 @@
     program: 52
   - type: SwappableInstrument
     instrumentList:
-      "Daw": { 0: 0 }
+      is14-instrument-style-daw: { 0: 0 }
   - type: UserInterface
     interfaces:
       enum.InstrumentUiKey.Key:

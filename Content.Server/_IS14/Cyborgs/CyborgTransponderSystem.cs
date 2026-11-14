@@ -1,13 +1,13 @@
 // Licensed under IS14's EULA, see EULA.txt for more information.
 
 using Content.Goobstation.Maths.FixedPoint;
-using Content.Server.DeviceNetwork.Systems;
+using Content.Shared.DeviceNetwork.Systems;
 using Content.Server.Silicons.Laws;
 using Content.Shared._CorvaxNext.Silicons.Borgs.Components;
 using Content.Shared._IS14.Cyborgs.Components;
 using Content.Shared._IS14.Cyborgs.Systems;
 using Content.Shared.Containers.ItemSlots;
-using Content.Shared.Damage;
+using Content.Shared.Damage.Components;
 using Content.Shared.DeviceNetwork;
 using Content.Shared.DeviceNetwork.Components;
 using Content.Shared.DeviceNetwork.Events;
@@ -48,7 +48,9 @@ public sealed class CyborgTransponderSystem : EntitySystem
     {
         base.Initialize();
 
-        SubscribeLocalEvent<CyborgTransponderComponent, DeviceNetworkPacketEvent>(OnPacketReceived);
+        SubscribeLocalEvent<CyborgTransponderComponent, DeviceNetworkPacketEvent<RoboticsCyborgDisablePayload>>(OnDisablePacket);
+        SubscribeLocalEvent<CyborgTransponderComponent, DeviceNetworkPacketEvent<RoboticsCyborgDestroyPayload>>(OnDestroyPacket);
+        SubscribeLocalEvent<CyborgTransponderComponent, DeviceNetworkPacketEvent<RoboticsCyborgChangeLawsPayload>>(OnChangeLawsPacket);
     }
 
     public override void Update(float frameTime)
@@ -82,33 +84,24 @@ public sealed class CyborgTransponderSystem : EntitySystem
                 transponder.NextDisable == null && !transponder.FakeDisabling,
                 HasComp<AiRemoteControllerComponent>(uid));
 
-            var payload = new NetworkPayload
-            {
-                [DeviceNetworkConstants.Command] = DeviceNetworkConstants.CmdUpdatedState,
-                [RoboticsConsoleConstants.NET_CYBORG_DATA] = data,
-            };
-            _deviceNetwork.QueuePacket(uid, null, payload, device: device);
+            var payload = new RoboticsCyborgDataPayload { Data = data };
+            _deviceNetwork.SendPacket((uid, device), null, ref payload);
         }
     }
 
-    private void OnPacketReceived(Entity<CyborgTransponderComponent> ent, ref DeviceNetworkPacketEvent args)
+    private void OnDisablePacket(Entity<CyborgTransponderComponent> ent, ref DeviceNetworkPacketEvent<RoboticsCyborgDisablePayload> args)
     {
-        if (!args.Data.TryGetValue(DeviceNetworkConstants.Command, out string? command))
-            return;
+        Disable(ent);
+    }
 
-        switch (command)
-        {
-            case RoboticsConsoleConstants.NET_CHANGE_LAWS_COMMAND:
-                if (args.Data.TryGetValue(RoboticsConsoleConstants.NET_CIRCUIT_BOARD, out EntityUid board))
-                    ChangeLaws(ent, board);
-                break;
-            case RoboticsConsoleConstants.NET_DISABLE_COMMAND:
-                Disable(ent);
-                break;
-            case RoboticsConsoleConstants.NET_DESTROY_COMMAND:
-                Destroy(ent);
-                break;
-        }
+    private void OnDestroyPacket(Entity<CyborgTransponderComponent> ent, ref DeviceNetworkPacketEvent<RoboticsCyborgDestroyPayload> args)
+    {
+        Destroy(ent);
+    }
+
+    private void OnChangeLawsPacket(Entity<CyborgTransponderComponent> ent, ref DeviceNetworkPacketEvent<RoboticsCyborgChangeLawsPayload> args)
+    {
+        ChangeLaws(ent, args.Data.CircuitBoard);
     }
 
     private void ChangeLaws(EntityUid uid, EntityUid board)

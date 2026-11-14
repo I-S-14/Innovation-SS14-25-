@@ -5,6 +5,7 @@ using Content.Server.StationEvents.Events;
 using Content.Shared.GameTicking.Components;
 using Content.Shared.Station.Components;
 using Robust.Shared.Map;
+using Content.Shared.Antag;
 
 namespace Content.Server._White.StationEvents.Events;
 

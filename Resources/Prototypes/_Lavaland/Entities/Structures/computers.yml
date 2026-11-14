@@ -7,16 +7,22 @@
   components:
   - type: Sprite
     layers:
-    - map: [ "computerLayerBody" ]
+    - map: [ "enum.ComputerVisualLayers.Frame" ]
       state: computer
-    - map: [ "computerLayerKeyboard" ]
+    - map: [ "enum.ComputerVisualLayers.Keyboard" ]
       state: generic_keyboard
-    - map: [ "computerLayerScreen" ]
+    - map: [ "enum.ComputerVisualLayers.Screen" ]
       state: shuttle
-    - map: ["computerLayerKeys" ]
+    - map: ["enum.ComputerVisualLayers.Keys" ]
       state: generic_keys
     - map: [ "enum.WiresVisualLayers.MaintenancePanel" ]
       state: generic_panel_open
+  - type: ComputerVisuals # IS14: retain the custom states with modern layer keys.
+    stateFrame: computer
+    stateKeyboard: generic_keyboard
+    stateScreen: shuttle
+    stateKeys: generic_keys
+    statePanel: generic_panel_open
   - type: ActivatableUI
     key: enum.DockingConsoleUiKey.Key
   - type: UserInterface

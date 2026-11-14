@@ -1,11 +1,14 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+using Content.Goobstation.Common.Sleeping;
 using Content.Shared.Actions;
 using Content.Shared.Actions.Components;
 using Content.Shared.Buckle.Components;
+using Content.Shared.Cuffs;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Events;
 using Content.Shared.Damage.ForceSay;
+using Content.Shared.Damage.Systems;
 using Content.Shared.Emoting;
 using Content.Shared.Examine;
 using Content.Shared.Eye.Blinding.Systems;
@@ -34,14 +37,14 @@ namespace Content.Shared.Bed.Sleep;
 
 public sealed partial class SleepingSystem : EntitySystem
 {
-    [Dependency] private readonly IGameTiming _gameTiming = default!;
-    [Dependency] private readonly SharedActionsSystem _actionsSystem = default!;
-    [Dependency] private readonly BlindableSystem _blindableSystem = default!;
-    [Dependency] private readonly SharedPopupSystem _popupSystem = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
-    [Dependency] private readonly SharedEmitSoundSystem _emitSound = default!;
-    [Dependency] private readonly StatusEffectsSystem _statusEffect = default!;
-    [Dependency] private readonly SharedStunSystem _stun = default!;
+    [Dependency] private IGameTiming _gameTiming = default!;
+    [Dependency] private SharedActionsSystem _actionsSystem = default!;
+    [Dependency] private BlindableSystem _blindableSystem = default!;
+    [Dependency] private SharedPopupSystem _popupSystem = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private SharedEmitSoundSystem _emitSound = default!;
+    [Dependency] private StatusEffectsSystem _statusEffect = default!;
+    [Dependency] private SharedStunSystem _stun = default!;
 
     public static readonly EntProtoId SleepActionId = "ActionSleep";
     public static readonly EntProtoId WakeActionId = "ActionWake";
@@ -74,6 +77,7 @@ public sealed partial class SleepingSystem : EntitySystem
         SubscribeLocalEvent<SleepingComponent, StunEndAttemptEvent>(OnStunEndAttempt);
         SubscribeLocalEvent<SleepingComponent, StandUpAttemptEvent>(OnStandUpAttempt);
 
+        SubscribeLocalEvent<ForcedSleepingStatusEffectComponent, StatusEffectRelayedEvent<MobStateChangedEvent>>(OnStatusMobStateChanged);
         SubscribeLocalEvent<ForcedSleepingStatusEffectComponent, StatusEffectAppliedEvent>(OnStatusEffectApplied);
         SubscribeLocalEvent<SleepingComponent, UnbuckleAttemptEvent>(OnUnbuckleAttempt);
         SubscribeLocalEvent<SleepingComponent, EmoteAttemptEvent>(OnEmoteAttempt);
@@ -164,7 +168,6 @@ public sealed partial class SleepingSystem : EntitySystem
 
     private void OnSpeakAttempt(Entity<SleepingComponent> ent, ref SpeakAttemptEvent args)
     {
-        // TODO reduce duplication of this behavior with MobStateSystem somehow
         if (HasComp<AllowNextCritSpeechComponent>(ent))
         {
             RemCompDeferred<AllowNextCritSpeechComponent>(ent);
@@ -204,6 +207,12 @@ public sealed partial class SleepingSystem : EntitySystem
     {
         // Shh the Urist McHands is sleeping...
         args.Cancelled = true;
+    }
+
+    [SubscribeLocalEvent]
+    private void OnIncapCuffCheck(Entity<SleepingComponent> ent, ref CheckIncapacitatedCuffEvent args)
+    {
+        args.Incapacitated = true;
     }
 
     private void OnExamined(Entity<SleepingComponent> ent, ref ExaminedEvent args)
@@ -251,15 +260,19 @@ public sealed partial class SleepingSystem : EntitySystem
         if (!args.DamageIncreased || args.DamageDelta == null)
             return;
 
-        /* Shitmed Change Start - Surgery needs this, sorry! If the nocturine gamers get too feisty
-        I'll probably just increase the threshold */
+        // Shitmed start - Surgery needs this, sorry! If the nocturine gamers get too feisty
+        // TODO: i dont know what the fuck that above comment means.
+        // anyways this is currently used for xenobiology. replace this with ForcedSleepingStatusEffect later
+        var ev = new WakeDamageOverrideEvent();
+        RaiseLocalEvent(ent.Owner, ref ev);
 
+        if (ev.Cancelled || ev.IgnoreDamage)
+            return;
+        // Shitmed end
 
         if (args.DamageDelta.GetTotal() >= ent.Comp.WakeThreshold
-            && !_statusEffect.HasEffectComp<ForcedSleepingStatusEffectComponent>(ent))
+            && !_statusEffect.HasEffectComp<ForcedSleepingStatusEffectComponent>(ent)) // Shitmed
             TryWaking((ent, ent.Comp));
-
-        // Shitmed Change End
     }
 
     /// <summary>
@@ -278,7 +291,7 @@ public sealed partial class SleepingSystem : EntitySystem
     /// </summary>
     private void OnMobStateChanged(Entity<SleepingComponent> ent, ref MobStateChangedEvent args)
     {
-        if (args.NewMobState == MobState.Dead)
+        if (args.NewMobState == MobState.Dead || args.NewMobState == MobState.Critical) // Goobstation - xenobio
         {
             RemComp<SpamEmitSoundComponent>(ent);
             RemComp<SleepingComponent>(ent);
@@ -286,6 +299,17 @@ public sealed partial class SleepingSystem : EntitySystem
         }
         if (TryComp<SpamEmitSoundComponent>(ent, out var spam))
             _emitSound.SetEnabled((ent, spam), args.NewMobState == MobState.Alive);
+
+        if (args.NewMobState == MobState.Dead)
+            RemCompDeferred<SleepingComponent>(ent);
+    }
+
+    private void OnStatusMobStateChanged(Entity<ForcedSleepingStatusEffectComponent> ent, ref StatusEffectRelayedEvent<MobStateChangedEvent> args)
+    {
+        if (args.Args.NewMobState == MobState.Dead || HasComp<SleepingComponent>(args.Args.Target))
+            return;
+
+        TrySleeping(args.Args.Target);
     }
 
     private void OnStatusEffectApplied(Entity<ForcedSleepingStatusEffectComponent> ent, ref StatusEffectAppliedEvent args)
@@ -344,7 +368,7 @@ public sealed partial class SleepingSystem : EntitySystem
             if (user != null)
             {
                 _audio.PlayPredicted(ent.Comp.WakeAttemptSound, ent, user);
-                _popupSystem.PopupClient(Loc.GetString("wake-other-failure", ("target", Identity.Entity(ent, EntityManager))), ent, user, PopupType.SmallCaution);
+                _popupSystem.PopupEntity(Loc.GetString("wake-other-failure", ("target", Identity.Entity(ent, EntityManager))), ent, user, PopupType.SmallCaution);
             }
             return false;
         }
@@ -352,7 +376,7 @@ public sealed partial class SleepingSystem : EntitySystem
         if (user != null)
         {
             _audio.PlayPredicted(ent.Comp.WakeAttemptSound, ent, user);
-            _popupSystem.PopupClient(Loc.GetString("wake-other-success", ("target", Identity.Entity(ent, EntityManager))), ent, user);
+            _popupSystem.PopupEntity(Loc.GetString("wake-other-success", ("target", Identity.Entity(ent, EntityManager))), ent, user);
         }
 
         return RemComp<SleepingComponent>(ent);

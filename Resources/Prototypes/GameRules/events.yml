@@ -96,6 +96,14 @@
         - id: DerelictSyndicateAssaultCyborgSpawn
 
 - type: entity
+  abstract: true
+  parent: BaseGameRule
+  id: BaseAntagGhostRoleRule
+  components:
+  - type: AntagSelection
+    selectionTime: Never
+
+- type: entity
   id: BaseStationEvent
   parent: BaseGameRule
   abstract: true
@@ -104,6 +112,16 @@
     delay:
       min:  10
       max:  20
+
+- type: entity
+  abstract: true
+  parent: BaseGameRule
+  id: BaseStationEventVeryShortDelay
+  components:
+  - type: GameRule
+    delay:
+      min:  5
+      max:  10
 
 - type: entity
   id: BaseStationEventShortDelay
@@ -145,6 +163,8 @@
   - type: GameRule
     chaosScore: 70
   - type: AnomalySpawnRule
+  - type: DynamicRuleCost
+    cost: 10
 
 - type: entity
   id: BluespaceArtifact
@@ -168,6 +188,8 @@
       Anomaly: 40
     eventType: Chaotic # Goobstation
   - type: BluespaceArtifactRule
+  - type: DynamicRuleCost
+    cost: 10
 
 - type: entity
   id: BluespaceLocker
@@ -185,10 +207,12 @@
   - type: GameRule
     chaosScore: 40
   - type: BluespaceLockerRule
+  - type: DynamicRuleCost
+    cost: 10
 
 - type: entity
-  id: BreakerFlip
   parent: BaseGameRule
+  id: BreakerFlip
   components:
   - type: StationEvent
     startAudio: # CorvaxGoob-Announcements
@@ -206,10 +230,12 @@
   - type: GameRule
     chaosScore: 60
   - type: BreakerFlipRule
+  - type: DynamicRuleCost
+    cost: 10
 
 - type: entity
-  id: BureaucraticError
   parent: BaseGameRule
+  id: BureaucraticError
   components:
   - type: StationEvent
     startAnnouncement: station-event-bureaucratic-error-announcement
@@ -227,6 +253,8 @@
     - MedicalIntern
     - SecurityCadet
     - TechnicalAssistant
+  - type: DynamicRuleCost
+    cost: 10
 
 - type: entity
   id: ClericalError
@@ -242,6 +270,8 @@
   - type: GameRule
     chaosScore: 30
   - type: ClericalErrorRule
+  - type: DynamicRuleCost
+    cost: 15
 
 - type: entity
   parent: BaseGameRule
@@ -257,9 +287,11 @@
     chaosScore: 60
   - type: RandomEntityStorageSpawnRule
     prototype: MobSkeletonCloset
+  - type: DynamicRuleCost
+    cost: 50
 
 - type: entity
-  parent: BaseGameRule
+  parent: BaseAntagGhostRoleRule
   id: DragonSpawn
   components:
   - type: StationEvent
@@ -290,18 +322,17 @@
     - DragonSurviveObjective
   - type: AntagSelection
     agentName: dragon-round-end-agent-name
-    definitions:
-    - spawnerPrototype: SpawnPointGhostDragon
-      min: 1
-      max: 1
-      pickPlayer: false
-      mindRoles:
-      - MindRoleDragon
+    antags:
+    - !type:FixedAntagCount
+      proto: Dragon
   - type: DynamicRuleCost
     cost: 75
 
+# IS14-change: retain Goob changelings and their rules. The unconnected Wizards
+# SpaceChangelingSpawn belongs to the alternate, disabled changeling implementation.
+
 - type: entity
-  parent: BaseGameRule
+  parent: BaseAntagGhostRoleRule
   id: NinjaSpawn
   components:
   - type: StationEvent
@@ -332,6 +363,7 @@
     - Abductor
     - Harpy
     - Plasmaman # EE
+    - Synth # Goob
     # Goobstation end
   - type: AntagObjectives
     objectives:
@@ -344,40 +376,18 @@
     - NinjaProtectObjective # CorvaxGoob
   - type: AntagSelection
     agentName: ninja-round-end-agent-name
-    definitions:
-    - spawnerPrototype: SpawnPointGhostSpaceNinja
-      min: 1
-      max: 1
-      pickPlayer: false
-      startingGear: SpaceNinjaGear
-      skills: # CorvaxGoob-Skills
-      - All
-      roleLoadout:
-      - RoleSurvivalSpaceNinja
-      briefing:
-        text: ninja-role-greeting
-        color: Green
-        sound: /Audio/Misc/ninja_greeting.ogg
-      components:
-      - type: SpaceNinja
-      - type: NpcFactionMember
-        factions:
-        - Syndicate
-      - type: AutoImplant
-        implants:
-        - MicroBombImplant # Goobstation
-      - type: RandomMetadata
-        nameSegments:
-        - NamesNinjaTitle
-        - NamesNinja
-        nameFormat: name-format-ninja
-      mindRoles:
-      - MindRoleNinja
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14NinjaSpawnAntag0a64391de
+      range:
+        max: 1
+        min: 1
+      playerRatio: 10
   - type: DynamicRuleCost
     cost: 75
 
 - type: entity
-  parent: BaseGameRule
+  parent: BaseAntagGhostRoleRule
   id: ParadoxCloneSpawn
   components:
   - type: StationEvent
@@ -406,25 +416,15 @@
   - type: AntagRandomSpawn # TODO: improve spawning so they only start in maints
   - type: AntagSelection
     agentName: paradox-clone-round-end-agent-name
-    definitions:
-    - spawnerPrototype: SpawnPointGhostParadoxClone
-      min: 1
-      max: 1
-      pickPlayer: false
-      startingGear: ParadoxCloneGear
-      skills: # CorvaxGoob-Skills
-      - All
-      roleLoadout:
-      - RoleSurvivalVoxTank # give vox something to breath in case they don't get a copy
-      - RoleSurvivalPlasmaTank # Goobstation
-      briefing:
-        text: paradox-clone-role-greeting
-        color: lightblue
-        sound: /Audio/Misc/paradox_clone_greeting.ogg
-      mindRoles:
-      - MindRoleParadoxClone
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14ParadoxCloneSpawnAntag0f7b6c925
+      range:
+        max: 1
+        min: 1
+      playerRatio: 10
   - type: DynamicRuleCost
-    cost: 50
+    cost: 75
 
 #- type: entity   Goobstaion start - disabled until rework
 #  parent: BaseGameRule
@@ -525,6 +525,8 @@
   - type: GameRule
     chaosScore: 80 # most of the time scrubbers just clean it
   - type: GasLeakRule
+  - type: DynamicRuleCost
+    cost: 25
 
 - type: entity
   id: KudzuGrowth
@@ -544,6 +546,8 @@
   - type: GameRule
     chaosScore: 80
   - type: KudzuGrowthRule
+  - type: DynamicRuleCost
+    cost: 40 #this shit can get insane
 
 - type: entity
   id: PowerGridCheck
@@ -567,6 +571,8 @@
   - type: GameRule
     chaosScore: 80
   - type: PowerGridCheckRule
+  - type: DynamicRuleCost
+    cost: 20
 
 - type: entity
   parent: BaseGameRule
@@ -604,6 +610,22 @@
     extraCount: 2
     lightBreakChancePerSecond: 0.0003
     doorToggleChancePerSecond: 0.001
+  - type: DynamicRuleCost
+    cost: 10
+
+- type: entity
+  parent: BaseStationEventVeryShortDelay
+  id: VendorMalfunction
+  components:
+  - type: StationEvent
+    startAnnouncement: station-event-vendor-malfunction-announcement
+    startAudio:
+      path: /Audio/Announcements/announce.ogg
+    weight: 5
+    duration: 1
+  - type: VendorMalfunctionRule
+  - type: DynamicRuleCost
+    cost: 5
 
 - type: entity
   id: VentClog
@@ -631,6 +653,8 @@
     - Slime
     - SpaceGlue
     - SpaceLube
+  - type: DynamicRuleCost
+    cost: 15
 
 - type: entity
   id: SlimesSpawn
@@ -741,6 +765,100 @@
     table: # DeltaV: EntityTable instead of spawn entries
       id: MobClownSpider
 
+# Critters
+
+- type: entity
+  id: SlimesSpawnHorde
+  parent: BaseStationEventShortDelay
+  components:
+  - type: StationEvent
+    startAnnouncement: station-event-vent-creatures-start-horde-announcement
+    startAudio:
+      path: /Audio/Announcements/attention.ogg
+    earliestStart: 20
+    minimumPlayers: 15
+    weight: 5
+    duration: 5
+    maxDuration: 20
+  - type: VentHordeRule
+    table: !type:GroupSelector
+      rolls: 4, 8
+      children:
+      - id: MobAdultSlimesBlueAngry
+      - id: MobAdultSlimesGreenAngry
+      - id: MobAdultSlimesYellowAngry
+  - type: DynamicRuleCost
+    cost: 30
+
+- type: entity
+  id: SnakeSpawnHorde
+  parent: BaseStationEventShortDelay
+  components:
+  - type: StationEvent
+    startAnnouncement: station-event-vent-creatures-start-horde-announcement
+    startAudio:
+      path: /Audio/Announcements/attention.ogg
+    earliestStart: 20
+    minimumPlayers: 15
+    weight: 5
+    duration: 5
+    maxDuration: 20
+  - type: VentHordeRule
+    table: !type:GroupSelector
+      rolls: 4, 8
+      children:
+      - id: MobPurpleSnake
+      - id: MobSmallPurpleSnake
+      - id: MobCobraSpace
+  - type: DynamicRuleCost
+    cost: 30
+
+- type: entity
+  id: SpiderSpawnHorde
+  parent: BaseStationEventShortDelay
+  components:
+  - type: StationEvent
+    startAnnouncement: station-event-vent-creatures-start-horde-announcement
+    startAudio:
+      path: /Audio/Announcements/attention.ogg
+    earliestStart: 20
+    minimumPlayers: 15
+    weight: 5
+    duration: 5
+    maxDuration: 20
+  - type: VentHordeRule
+    table: !type:GroupSelector
+      rolls: 4, 8
+      children:
+      - id: MobGiantSpiderTarantulaAngry
+      - id: MobGiantSpiderHunterAngry
+      - id: MobGiantSpiderGuardAngry
+      - id: MobGiantSpiderMidwifeAngry
+      - id: MobGiantSpiderNurseAngry
+  - type: DynamicRuleCost
+    cost: 30
+
+- type: entity
+  id: SpiderClownSpawnHorde
+  parent: BaseStationEventShortDelay
+  components:
+  - type: StationEvent
+    startAnnouncement: station-event-vent-creatures-start-horde-announcement
+    startAudio:
+      path: /Audio/Announcements/attention.ogg
+    earliestStart: 20
+    minimumPlayers: 20
+    weight: 1.5
+    duration: 5
+    maxDuration: 20
+  - type: VentHordeRule
+    table: !type:GroupSelector
+      rolls: 4, 8
+      children:
+      - id: MobGiantSpiderClownAngry
+  - type: DynamicRuleCost
+    cost: 30
+
 - type: entity
   id: ZombieOutbreak
   parent: BaseGameRule
@@ -761,35 +879,18 @@
     chaosScore: 1400
   - type: ZombieRule
   - type: AntagSelection
-    definitions:
-    - prefRoles: [ InitialInfected ]
-      max: 3
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14ZombieOutbreakAntag0e30465e7
+      range:
+        max: 3
+        min: 1
       playerRatio: 10
-      skills: # CorvaxGoob-Skills
-      - All
-      blacklist:
-        components:
-        - BibleUser
-        - ZombieImmune
-        - AntagImmune
-      briefing:
-        text: zombie-patientzero-role-greeting
-        color: Plum
-        sound: "/Audio/Ambience/Antag/zombie_start.ogg"
-      components:
-      - type: PendingZombie #less time to prepare than normal
-        minInitialInfectedGrace: 300
-        maxInitialInfectedGrace: 450
-      - type: ZombifyOnDeath
-      - type: IncurableZombie
-      - type: InitialInfected
-      mindRoles:
-      - MindRoleInitialInfected
   - type: DynamicRuleCost
     cost: 200
 
 - type: entity
-  parent: BaseNukeopsRule
+  parent: [ BaseAntagGhostRoleRule, BaseNukeopsRule ]
   id: LoneOpsSpawn
   components:
   - type: StationEvent
@@ -811,29 +912,13 @@
     localePrefix: "loneop-" #Goobstation
     roundEndBehavior: Nothing
   - type: AntagSelection
-    definitions:
-    - spawnerPrototype: SpawnPointLoneNukeOperative
-      min: 1
-      max: 1
-      pickPlayer: false
-      startingGear: SyndicateLoneOperativeGearFull
-      unequipOldGear: true # Goobstation?
-      skills: # CorvaxGoob-Skills
-      - All
-      roleLoadout:
-      - RoleSurvivalNukie
-      components:
-      - type: NukeOperative
-      - type: RandomMetadata
-        nameSegments:
-        - NamesSyndicatePrefix
-        - NamesSyndicateNormal
-        nameFormat: name-format-nukie-generic
-      - type: NpcFactionMember
-        factions:
-        - Syndicate
-      mindRoles:
-      - MindRoleLoneops
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14LoneOpsSpawnAntag06e4471ec
+      range:
+        max: 1
+        min: 1
+      playerRatio: 10
   - type: DynamicRuleCost
     cost: 75
   - type: AntagLoadProfileRule # Goobstation
@@ -862,21 +947,16 @@
   - type: GameRule
   - type: AlertLevelInterceptionRule
   - type: AntagSelection
-    definitions:
-    - prefRoles: [ TraitorSleeper ]
-      fallbackRoles: [ Traitor ]
-      min: 1
-      max: 2
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14SleeperAgentsAntag03d30acec
+      range:
+        max: 2
+        min: 1
       playerRatio: 10
-      chaosScore: 200 # Goobstation - same as roundstart traitor gamerule
-      skills: # CorvaxGoob-Skills
-      - All
-      blacklist:
-        components:
-        - AntagImmune
-        - CommandStaff
-      mindRoles:
-      - MindRoleTraitorSleeper
+      chaosScore: 200
+  - type: DynamicRuleCost
+    cost: 50
 
 - type: entity
   id: MassHallucinations
@@ -899,6 +979,8 @@
     maxSoundDistance: 7
     sounds:
       collection: Paracusia
+  - type: DynamicRuleCost
+    cost: 10
 
 - type: entity
   parent: BaseGameRule
@@ -922,6 +1004,8 @@
   - type: GameRule
     chaosScore: 150
   - type: IonStormRule
+  - type: DynamicRuleCost
+    cost: 25
 
 - type: entity
   id: MimicVendorRule
@@ -972,6 +1056,8 @@
     - Service
     blacklist:
     - External # don't space everything
+  - type: DynamicRuleCost
+    cost: 25
 
 - type: entity
   parent: BaseGameRule
@@ -980,40 +1066,43 @@
   - type: StationEvent
     earliestStart: 0
     duration: 1
-    minimumPlayers: 1
     maxOccurrences: 2
     weight: 10
   - type: RandomSpawnRule
     prototype: RandomSatchelSpawner
 
 - type: entity
-  parent: BaseGameRule
-  id: DerelictEngineerCyborgSpawn
+  abstract: true
+  parent: BaseAntagGhostRoleRule
+  id: BaseDerelictCyborgSpawn
   components:
-  - type: GameRule # Goob
-    chaosScore: 150
   - type: StationEvent
     weight: 2.5
     earliestStart: 15
     reoccurrenceDelay: 20
     minimumPlayers: 4
     duration: null
+    occursDuringRoundEnd: false
   - type: SpaceSpawnRule
     spawnDistance: 0
-  - type: AntagSpawner
-    #IS14-change start - tgstation-style cyborg
-    # prototype: PlayerEngineeringBorgDerelictGhostRole
-    prototype: IS14CyborgDerelictEngineering
-    #IS14-change end
-  - type: AntagSelection
-    definitions:
-    - spawnerPrototype: SpawnPointGhostDerelictEngineeringCyborg
-      min: 1
-      max: 1
-      pickPlayer: false
+  - type: DynamicRuleCost
+    cost: 45
 
 - type: entity
-  parent: BaseGameRule
+  parent: BaseDerelictCyborgSpawn
+  id: DerelictEngineerCyborgSpawn
+  components:
+  - type: GameRule # Goob
+    chaosScore: 150
+  - type: AntagSpawner
+    prototype: IS14CyborgDerelictEngineering
+  - type: AntagSelection
+    antags:
+    - !type:FixedAntagCount
+      proto: DerelictEngineeringCyborg
+
+- type: entity
+  parent: BaseDerelictCyborgSpawn
   id: DerelictGenericCyborgSpawn
   components:
   - type: StationEvent
@@ -1030,123 +1119,66 @@
   # Goobstation
   - type: GameRule
     chaosScore: 80
-  - type: SpaceSpawnRule
-    spawnDistance: 0
-  #IS14-change start - tgstation-style cyborg, a random specialization or a syndicate one
-  # - type: AntagSpawner
-  #   prototype: PlayerBorgDerelictGhostRole
   - type: CyborgRandomAntagSpawner
     prototypes:
-      IS14CyborgDerelict: 4 # engineering, medical, janitor or mining
+      IS14CyborgDerelict: 4
       IS14CyborgDerelictSyndicate: 1
-  #IS14-change end
   - type: AntagSelection
-    definitions:
-    - spawnerPrototype: SpawnPointGhostDerelictCyborg
-      min: 1
-      max: 1
-      pickPlayer: false
+    antags:
+    - !type:FixedAntagCount
+      proto: DerelictGenericCyborg
 
 - type: entity
-  parent: BaseGameRule
+  parent: BaseDerelictCyborgSpawn
   id: DerelictJanitorCyborgSpawn
   components:
   - type: GameRule # Goob
     chaosScore: 150
-  - type: StationEvent
-    weight: 2.5
-    earliestStart: 15
-    reoccurrenceDelay: 20
-    minimumPlayers: 4
-    duration: null
-  - type: SpaceSpawnRule
-    spawnDistance: 0
   - type: AntagSpawner
-    #IS14-change start - tgstation-style cyborg
-    # prototype: PlayerJanitorBorgDerelictGhostRole
     prototype: IS14CyborgDerelictJanitor
-    #IS14-change end
   - type: AntagSelection
-    definitions:
-    - spawnerPrototype: SpawnPointGhostDerelictJanitorCyborg
-      min: 1
-      max: 1
-      pickPlayer: false
+    antags:
+    - !type:FixedAntagCount
+      proto: DerelictJanitorCyborg
 
 - type: entity
-  parent: BaseGameRule
+  parent: BaseDerelictCyborgSpawn
   id: DerelictMedicalCyborgSpawn
   components:
   - type: GameRule # Goob
     chaosScore: 150
-  - type: StationEvent
-    weight: 2.5
-    earliestStart: 15
-    reoccurrenceDelay: 20
-    minimumPlayers: 4
-    duration: null
-  - type: SpaceSpawnRule
-    spawnDistance: 0
   - type: AntagSpawner
-    #IS14-change start - tgstation-style cyborg
-    # prototype: PlayerMedicalBorgDerelictGhostRole
     prototype: IS14CyborgDerelictMedical
-    #IS14-change end
   - type: AntagSelection
-    definitions:
-    - spawnerPrototype: SpawnPointGhostDerelictMedicalCyborg
-      min: 1
-      max: 1
-      pickPlayer: false
+    antags:
+    - !type:FixedAntagCount
+      proto: DerelictMedicalCyborg
 
 - type: entity
-  parent: BaseGameRule
+  parent: BaseDerelictCyborgSpawn
   id: DerelictMiningCyborgSpawn
   components:
   - type: GameRule # Goob
     chaosScore: 150
-  - type: StationEvent
-    weight: 2.5
-    earliestStart: 15
-    reoccurrenceDelay: 20
-    minimumPlayers: 4
-    duration: null
-  - type: SpaceSpawnRule
-    spawnDistance: 0
   - type: AntagSpawner
-    #IS14-change start - tgstation-style cyborg
-    # prototype: PlayerMiningBorgDerelictGhostRole
     prototype: IS14CyborgDerelictMiner
-    #IS14-change end
   - type: AntagSelection
-    definitions:
-    - spawnerPrototype: SpawnPointGhostDerelictMiningCyborg
-      min: 1
-      max: 1
-      pickPlayer: false
+    antags:
+    - !type:FixedAntagCount
+      proto: DerelictMiningCyborg
 
 - type: entity
-  parent: BaseGameRule
+  parent: BaseDerelictCyborgSpawn
   id: DerelictSyndicateAssaultCyborgSpawn
   components:
   - type: GameRule # Goob
     chaosScore: 150
   - type: StationEvent
-    weight: 2.5
     earliestStart: 25
-    reoccurrenceDelay: 20
     minimumPlayers: 15
-    duration: null
-  - type: SpaceSpawnRule
-    spawnDistance: 0
   - type: AntagSpawner
-    #IS14-change start - tgstation-style cyborg
-    # prototype: PlayerBorgSyndicateDerelictGhostRole
     prototype: IS14CyborgDerelictSyndicateGhostRole
-    #IS14-change end
   - type: AntagSelection
-    definitions:
-    - spawnerPrototype: SpawnPointGhostDerelictSyndicateAssaultCyborg
-      min: 1
-      max: 1
-      pickPlayer: false
+    antags:
+    - !type:FixedAntagCount
+      proto: DerelictSyndicateAssaultCyborg

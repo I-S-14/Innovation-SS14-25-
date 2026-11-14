@@ -1,4 +1,4 @@
-- type: factionIcon
+- type: statusIcon
   id: SleepingCarpFaction
   priority: 7 # 6.5 rounded
   icon:

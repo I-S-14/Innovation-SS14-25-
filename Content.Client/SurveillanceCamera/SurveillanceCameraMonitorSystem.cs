@@ -4,7 +4,7 @@ using Robust.Client.Timing; // Goobstation
 
 namespace Content.Client.SurveillanceCamera;
 
-public sealed class SurveillanceCameraMonitorSystem : EntitySystem
+public sealed partial class SurveillanceCameraMonitorSystem : EntitySystem
 {
     [Dependency] private readonly IClientGameTiming _gameTiming = default!; // Goobstation
 

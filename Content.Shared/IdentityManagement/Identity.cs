@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-using Content.Shared.Ghost;
+using Content.Shared.Ghost.Components;
 using Content.Shared.IdentityManagement.Components;
 using Robust.Shared.Utility; // Goob
+using Content.Shared.Ghost;
 
 namespace Content.Shared.IdentityManagement;
 

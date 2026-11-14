@@ -1,3 +1,5 @@
+using Content.Shared.Timing.Components; // IS14-change: upstream namespace move
+using Content.Shared.Timing.Systems; // IS14-change: upstream API move
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Server.Atmos.Rotting;
@@ -10,8 +12,8 @@ using Content.Server.Popups;
 using Content.Shared.PowerCell;
 using Content.Shared.Traits.Assorted;
 using Content.Shared.Chat; // Einstein Engines - Languages
-using Content.Shared.Chat;
-using Content.Shared.Damage;
+using Content.Shared.Damage.Components;
+using Content.Shared.Damage.Systems;
 using Content.Shared.DoAfter;
 using Content.Shared.Interaction;
 using Content.Shared.Item.ItemToggle;
@@ -21,18 +23,15 @@ using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Movement.Pulling.Components;
-using Content.Shared.PowerCell;
 using Content.Shared.Timing;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Player;
-using Content.Shared.Timing;
 
 // Shitmed Change
 using Content.Shared._Shitmed.Targeting;
 using Content.Shared._Shitmed.Damage;
 using Content.Shared._Shitmed.Medical.Surgery.Consciousness.Components;
 using Content.Shared._Shitmed.Medical.Surgery.Consciousness.Systems;
-using Content.Shared.Chat;
 
 namespace Content.Server.Medical;
 
@@ -278,7 +277,7 @@ public sealed class DefibrillatorSystem : EntitySystem
             _toggle.TryDeactivate(uid);
 
         // TODO clean up this clown show above
-        var ev = new TargetDefibrillatedEvent(user, (uid, component));
+        var ev = new TargetDefibrillatedEvent(user, target, (uid, component), new HashSet<EntityUid> { target });
         RaiseLocalEvent(target, ref ev);
     }
 }

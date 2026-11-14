@@ -51,7 +51,7 @@ public sealed partial class DevourerComponent : Component
     [DataField, AutoNetworkedField]
     public SoundSpecifier? SoundDevour = new SoundPathSpecifier("/Audio/Effects/demon_consume.ogg")
     {
-        Params = AudioParams.Default.WithVolume(-3f),
+        Params = AudioParams.Default.AddVolume(-3f),
     };
 
     /// <summary>
@@ -60,7 +60,7 @@ public sealed partial class DevourerComponent : Component
     [DataField, AutoNetworkedField]
     public SoundSpecifier? SoundStructureDevour = new SoundPathSpecifier("/Audio/Machines/airlock_creaking.ogg")
     {
-        Params = AudioParams.Default.WithVolume(-3f),
+        Params = AudioParams.Default.AddVolume(-3f),
     };
 
     /// <summary>

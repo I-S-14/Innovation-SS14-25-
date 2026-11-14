@@ -144,22 +144,12 @@
   id: TreeMorph
   configuration:
     entity: FloraTree
+    allowMovement: false # Goobstation
     forced: true
     transferName: true
     revertOnDeath: true
     inventory: Drop
     cooldown: 160
-
-- type: polymorph
-  id: SmartCorgiMorph
-  configuration:
-    entity: MobCorgiSmart
-    forced: false
-    inventory: Drop
-    transferName: true
-    revertOnCrit: false
-    revertOnDeath: false
-    allowRepeatedMorphs: false
 
 # this is the monkey polymorph for artifact.
 - type: polymorph
@@ -213,6 +203,7 @@
   id: WizardSpider
   configuration:
     entity: MobGiantSpiderWizard #Not angry so ghosts can't just take over the wizard
+    revertConfirmationPopup: false
     transferName: true
     inventory: None
     revertOnDeath: true
@@ -258,9 +249,13 @@
     transferName: false
     inventory: None
     forced: false
+    revertConfirmationPopup: false
     revertOnDeath: true
     allowRepeatedMorphs: false
     polymorphSound: /Audio/Magic/ethereal_enter.ogg
     exitPolymorphSound: /Audio/Magic/ethereal_exit.ogg
     duration: 120
     effectProto: EffectDesynchronizer
+
+# IS14-change: Goob changeling forms remain in _Goobstation; the unconnected
+# Wizards ChangelingMeteor form requires the alternate changeling implementation.

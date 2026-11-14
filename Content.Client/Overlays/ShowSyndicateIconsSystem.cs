@@ -8,10 +8,8 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Client.Overlays;
 
-public sealed class ShowSyndicateIconsSystem : EquipmentHudSystem<ShowSyndicateIconsComponent>
+public sealed partial class ShowSyndicateIconsSystem : EquipmentHudSystem<ShowSyndicateIconsComponent>
 {
-    [Dependency] private readonly IPrototypeManager _prototype = default!;
-
     public override void Initialize()
     {
         base.Initialize();
@@ -24,7 +22,7 @@ public sealed class ShowSyndicateIconsSystem : EquipmentHudSystem<ShowSyndicateI
         if (!IsActive)
             return;
 
-        if (_prototype.TryIndex<FactionIconPrototype>(component.SyndStatusIcon, out var iconPrototype))
+        if (ProtoMan.TryIndex(component.SyndStatusIcon, out var iconPrototype))
             ev.StatusIcons.Add(iconPrototype);
     }
 }

@@ -30,14 +30,13 @@
   - !type:AddComponentSpecial # Goobstation
     components:
     - type: EngineeringStaff
-  weight: 8 # IS14-edit
 
 - type: startingGear
   id: AtmosphericTechnicianGear
   equipment:
     eyes: ClothingEyesGlassesMeson
     id: AtmosPDA
-    belt: ClothingBeltUtilityEngineering
+#    belt: ClothingBeltUtilityEngineering # Goobstation - Belt Change
     ears: ClothingHeadsetEngineering
   #storage:
     #back:

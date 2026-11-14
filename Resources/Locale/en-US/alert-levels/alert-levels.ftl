@@ -12,7 +12,8 @@
 
 alert-level-announcement = Attention! Station alert level is now {$name}! {$announcement}
 
-alert-level-unknown = Unknown.
+# unknown name uses generic-unknown-title
+alert-level-unknown-announcement = This is a test of the alert broadcast system.
 alert-level-unknown-instructions = Unknown.
 
 alert-level-green = Green
@@ -40,7 +41,7 @@ alert-level-gamma-announcement = Central Command has ordered the Gamma security 
 alert-level-gamma-instructions = All civilians are to immediately seek their nearest head for transportation to a secure location.
 
 alert-level-delta = Delta
-alert-level-delta-announcement = The station is currently under threat of imminent destruction. Crewmembers are advised to listen to heads of staff for more information.
+alert-level-delta-nuke-announcement = The station is currently under threat of imminent destruction. Crewmembers are advised to listen to heads of staff for more information.
 alert-level-delta-instructions = Crewmembers are advised to listen to heads of staff for more information.
 
 alert-level-epsilon = Epsilon
@@ -64,3 +65,16 @@ alert-level-honk-instructions = Crewmembers are advised to execute the clown.
 alert-level-amber = Amber
 alert-level-amber-announcement = There is an immediate station ending threat. All crewmembers are to be armed by any means and all non-essential personnel must assist Security and the Heads of Staff in the defence of the station.
 alert-level-amber-instructions = Crewmembers are to be armed to fight a station ending threat.
+alert-level-amber-locked = Amber alert is locked. It must be unlocked by command authorization or a station-ending threat before it can be activated.
+alert-level-amber-unlocked = Amber alert unlocked. It can now be activated from any communications console.
+alert-level-amber-no-id = No ID card detected. Hold or wear an ID to swipe.
+alert-level-amber-needs-command = Unlocking amber alert must be initiated with a Captain or Head of Security ID.
+alert-level-amber-first-swipe = First ID accepted. Swipe a second, different command ID to unlock the amber alert.
+alert-level-amber-same-id = That ID was already swiped. A second, different command ID is required.
+alert-level-amber-needs-second-command = The second ID must have command access.
+alert-level-amber-verb-text = Unlock Amber Alert
+alert-level-amber-verb-message = Swipe your ID to unlock amber alert so it can be activated. Requires a Captain or Head of Security ID plus a second, different command ID.
+alert-level-amber-authorized-initiated-announcement = Amber alert unlock initiated by {$name}.
+alert-level-amber-authorized-announcement = Amber alert has been unlocked by {$name}.
+alert-level-amber-unknown-name = Unknown
+alert-level-amber-unlocked-announcement = Amber alert has been unlocked and can now be activated from any communications console.

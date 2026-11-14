@@ -1,3 +1,6 @@
+using Content.Shared.AlertLevel;
+using Content.Shared.Station.Systems;
+using GameTicker = Content.Server.GameTicking.ServerGameTicker;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Linq;
@@ -34,36 +37,40 @@ using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Network;
 using Robust.Shared.Player;
+using Content.Shared.Damage.Systems;
+using Content.Shared.Damage.Components;
+using Robust.Shared.Prototypes;
 
 namespace Content.Goobstation.Server.Blob;
 
-public sealed class BlobCoreSystem : EntitySystem
+public sealed partial class BlobCoreSystem : EntitySystem
 {
-    [Dependency] private readonly AlertsSystem _alerts = default!;
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] private readonly SharedTransformSystem _transform = default!;
-    [Dependency] private readonly GameTicker _gameTicker = default!;
-    [Dependency] private readonly ExplosionSystem _explosionSystem = default!;
-    [Dependency] private readonly DamageableSystem _damageable = default!;
-    [Dependency] private readonly StationSystem _stationSystem = default!;
-    [Dependency] private readonly AlertLevelSystem _alertLevelSystem = default!;
-    [Dependency] private readonly RoundEndSystem _roundEndSystem = default!;
-    [Dependency] private readonly MetaDataSystem _metaDataSystem = default!;
-    [Dependency] private readonly ActionsSystem _action = default!;
-    [Dependency] private readonly MapSystem _mapSystem = default!;
-    [Dependency] private readonly StoreSystem _storeSystem = default!;
-    [Dependency] private readonly BlobTileSystem _blobTile = default!;
+    //IS14-change start: typed IDs preserve the retained Goob prototypes.
+    private static readonly EntProtoId CompatibilityBlobRuleEntityId = "BlobRule";
+    //IS14-change end
+
+    [Dependency] private AlertsSystem _alerts = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private Content.Server.GameTicking.ServerGameTicker _gameTicker = default!;
+    [Dependency] private ExplosionSystem _explosionSystem = default!;
+    [Dependency] private DamageableSystem _damageable = default!;
+    [Dependency] private StationSystem _stationSystem = default!;
+    [Dependency] private AlertLevelSystem _alertLevelSystem = default!;
+    [Dependency] private RoundEndSystem _roundEndSystem = default!;
+    [Dependency] private MetaDataSystem _metaDataSystem = default!;
+    [Dependency] private ActionsSystem _action = default!;
+    [Dependency] private MapSystem _mapSystem = default!;
+    [Dependency] private StoreSystem _storeSystem = default!;
+    [Dependency] private BlobTileSystem _blobTile = default!;
 
     private EntityQuery<BlobTileComponent> _tile;
     private EntityQuery<BlobFactoryComponent> _factory;
     private EntityQuery<BlobNodeComponent> _node;
 
-    [ValidatePrototypeId<AlertPrototype>]
-    private const string BlobHealth = "BlobHealth";
-    [ValidatePrototypeId<AlertPrototype>]
-    private const string BlobResource = "BlobResource";
-    [ValidatePrototypeId<CurrencyPrototype>]
-    private const string BlobMoney = "BlobPoint";
+    private static readonly ProtoId<AlertPrototype> BlobHealth = "BlobHealth";
+    private static readonly ProtoId<AlertPrototype> BlobResource = "BlobResource";
+    private static readonly ProtoId<CurrencyPrototype> BlobMoney = "BlobPoint";
 
     private readonly ReaderWriterLockSlim _pointsChange = new();
 
@@ -91,7 +98,7 @@ public sealed class BlobCoreSystem : EntitySystem
     private const double KillCoreJobTime = 0.5;
     private readonly JobQueue _killCoreJobQueue = new(KillCoreJobTime);
 
-    public sealed class KillBlobCore(
+    public sealed partial class KillBlobCore(
         BlobCoreSystem system,
         EntityUid? station,
         Entity<BlobCoreComponent> ent,
@@ -265,7 +272,7 @@ public sealed class BlobCoreSystem : EntitySystem
         var blobRule = EntityQuery<BlobRuleComponent>().FirstOrDefault();
         if (blobRule == null)
         {
-            _gameTicker.StartGameRule("BlobRule", out _);
+            _gameTicker.StartGameRule(CompatibilityBlobRuleEntityId, out _);
         }
 
         var ev = new CreateBlobObserverEvent(userId);
@@ -330,6 +337,12 @@ public sealed class BlobCoreSystem : EntitySystem
             case BlobChemType.ElectromagneticWeb:
                 _damageable.SetDamageModifierSetId(uid, "ElectromagneticWebBlob");
                 break;
+            case BlobChemType.SinewyTendons:
+                _damageable.SetDamageModifierSetId(uid, "SinewyTendonsBlob");
+                break;
+            case BlobChemType.ChainCoating:
+                _damageable.SetDamageModifierSetId(uid, "ChainCoatingBlob");
+                break;
             default:
                 _damageable.SetDamageModifierSetId(uid, "BaseBlob");
                 break;
@@ -362,7 +375,7 @@ public sealed class BlobCoreSystem : EntitySystem
         }
 
         var blobCoreComp = blobCore.Comp;
-        var blobTileUid = EntityManager.SpawnEntity(blobCoreComp.TilePrototypes[newBlobTile], coordinates);
+        var blobTileUid = Spawn(blobCoreComp.TilePrototypes[newBlobTile], coordinates);
 
         if (!_tile.TryGetComponent(blobTileUid, out var blobTileComp))
         {
@@ -393,7 +406,6 @@ public sealed class BlobCoreSystem : EntitySystem
         var tileComp = tile.Comp;
 
         coreComp.BlobTiles.Add(tile);
-
         tileComp.Color = coreComp.ChemСolors[coreComp.CurrentChem];
         tileComp.Core = core;
         Dirty(tile, tileComp);
@@ -517,7 +529,7 @@ public sealed class BlobCoreSystem : EntitySystem
         if (!CheckValidBlobTile(blobTile.Value, nearNode, args.RequireNode, args))
             return;
 
-        if (!TryUseAbility(blobCore, blobCore.Comp.BlobTileCosts[tileType], coords))
+        if (!TryUseAbility(blobCore, GetTileCost(blobCore, tileType), coords))
             return;
 
         TransformBlobTile(
@@ -570,7 +582,7 @@ public sealed class BlobCoreSystem : EntitySystem
                 if(stationUid != null)
                     _alertLevelSystem.SetLevel(stationUid.Value, "green", true, true, true);
 
-                _roundEndSystem.CancelRoundEndCountdown(null, false);
+                _roundEndSystem.CancelRoundEndCountdown(forceRecall: false);
                 blobRuleComp.Stage = BlobStage.Default;
             }
         }
@@ -585,6 +597,16 @@ public sealed class BlobCoreSystem : EntitySystem
         _killCoreJobQueue.EnqueueJob(job);
     }
 
+    public FixedPoint2 GetTileCost(Entity<BlobCoreComponent> core, BlobTileType tileType)
+    {
+        if (core.Comp.BlobTileCostsByChem.TryGetValue(tileType, out var chemCosts) && chemCosts.TryGetValue(core.Comp.CurrentChem, out var specialCost))
+        {
+            return specialCost;
+        }
+
+        return core.Comp.BlobTileCosts[tileType];
+    }
+
     public void RemoveTileWithReturnCost(Entity<BlobTileComponent> target, Entity<BlobCoreComponent> core)
     {
         RemoveBlobTile(target, core);
@@ -594,7 +616,7 @@ public sealed class BlobCoreSystem : EntitySystem
 
         if (target.Comp.ReturnCost)
         {
-            returnCost = core.Comp.BlobTileCosts[tileComp.BlobTileType];
+            returnCost = GetTileCost(core, tileComp.BlobTileType);
         }
 
         if (returnCost <= 0)
@@ -619,7 +641,7 @@ public sealed class BlobCoreSystem : EntitySystem
         if (!_pointsChange.TryEnterWriteLock(1000))
             return false;
 
-        if (_storeSystem.TryAddCurrency(new Dictionary<string, FixedPoint2>
+        if (_storeSystem.TryAddCurrency(new Dictionary<Robust.Shared.Prototypes.ProtoId<Content.Shared.Store.CurrencyPrototype>, FixedPoint2>
                 {
                     { BlobMoney, amount }
                 },

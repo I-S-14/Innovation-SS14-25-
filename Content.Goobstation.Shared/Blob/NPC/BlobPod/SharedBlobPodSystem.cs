@@ -13,9 +13,9 @@ using Robust.Shared.Serialization;
 
 namespace Content.Goobstation.Shared.Blob.NPC.BlobPod;
 
-public abstract class SharedBlobPodSystem : EntitySystem
+public abstract partial class SharedBlobPodSystem : EntitySystem
 {
-    [Dependency] private readonly MobStateSystem _mobs = default!;
+    [Dependency] private MobStateSystem _mobs = default!;
 
 
     private EntityQuery<HumanoidAppearanceComponent> _query;
@@ -63,7 +63,9 @@ public abstract class SharedBlobPodSystem : EntitySystem
 
     private void OnUnequipAttempt(Entity<BlobPodComponent> ent, ref BeingUnequippedAttemptEvent args)
     {
-        if (args.Unequipee == args.UnEquipTarget)
+        //IS14-change start
+        if (args.User == args.UnEquipTarget)
+        //IS14-change end
         {
             args.Cancel();
             return;

@@ -521,7 +521,7 @@
 
 - type: entity
   id: MobAncientGuardBot
-  parent: MobAncientRepairBot
+  parent: IS14RetainedAncientBotBase # IS14-change: preserve this variant's own destruction threshold.
   name: strange robot
   description: A Security Robot, something seems a bit off.
   components:

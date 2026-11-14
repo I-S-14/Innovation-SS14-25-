@@ -13,6 +13,8 @@ using Content.Shared.Wieldable.Components;
 using Robust.Shared.Network;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
+using Content.Shared.Timing.Systems;
+using Content.Shared.Timing.Components;
 
 namespace Content.Shared._Goobstation.Wizard.LesserSummonGuns;
 
@@ -26,7 +28,6 @@ public sealed class EnchantedBoltActionRifleSystem : EntitySystem
     [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly UseDelaySystem _useDelay = default!;
     [Dependency] private readonly SharedWieldableSystem _wieldable = default!;
-    [Dependency] private readonly SharedVirtualItemSystem _virtual = default!;
 
     public override void Initialize()
     {
@@ -62,7 +63,7 @@ public sealed class EnchantedBoltActionRifleSystem : EntitySystem
             return;
 
         if (TryComp(uid, out WieldableComponent? wieldable))
-            _wieldable.TryUnwield(uid, wieldable, user, true);
+            _wieldable.TryUnwield((uid, wieldable), user, true);
 
         if (!_hands.TryDrop((user, hands), oldHand, null, false, false))
             return;
@@ -76,7 +77,8 @@ public sealed class EnchantedBoltActionRifleSystem : EntitySystem
         var dir = _random.NextAngle().ToVec();
         var speed = _random.NextFloat(comp.ThrowingSpeed.X, comp.ThrowingSpeed.Y);
 
-        _throwingSystem.TryThrow(uid, dir, speed, user, 0, recoil: false);
+        _throwingSystem.TryThrow(uid, dir, speed, user, 0, recoil: false,
+            predicted: false); // Trauma - server only
 
         EnsureComp<FadingTimedDespawnComponent>(uid);
 
@@ -123,7 +125,7 @@ public sealed class EnchantedBoltActionRifleSystem : EntitySystem
         Dirty(gun, newComp);
 
         if (TryComp(gun, out WieldableComponent? newWieldable))
-            _wieldable.TryWield(gun, newWieldable, user, false);
+            _wieldable.TryWield((gun, newWieldable), user);
     }
 
     private bool IsHandValid(Entity<HandsComponent> ent, string hand)

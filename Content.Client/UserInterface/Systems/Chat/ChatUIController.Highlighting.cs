@@ -9,6 +9,7 @@ using Content.Shared.CCVar;
 using Content.Client.CharacterInfo;
 using Content.Client.Gameplay;
 using Robust.Shared.Utility;
+using Content.Client._CorvaxGoob.Chat;
 using static Content.Client.CharacterInfo.CharacterInfoSystem;
 
 namespace Content.Client.UserInterface.Systems.Chat;
@@ -19,7 +20,12 @@ namespace Content.Client.UserInterface.Systems.Chat;
 /// </summary>
 public sealed partial class ChatUIController : IOnSystemChanged<CharacterInfoSystem>
 {
+    //IS14-change start: restore declarations used by merged implementation.
+    private string _chatSpeechDoubleQuoteBegin = default!;
+    //IS14-change end
+
     [Dependency] private readonly ILocalizationManager _loc = default!;
+    [UISystemDependency] private readonly ChatHighlightsSystem _chatHighlights = default!; // CorvaxGoob
     [UISystemDependency] private readonly CharacterInfoSystem _characterInfo = default!;
 
     // Goobstation - Highlight chat ping sound!
@@ -40,6 +46,7 @@ public sealed partial class ChatUIController : IOnSystemChanged<CharacterInfoSys
     private string? _highlightsColor;
 
     private bool _autoFillHighlightsEnabled;
+    private string _autoHighlights = "";
 
     /// <summary>
     ///     The boolean that keeps track of the 'OnCharacterUpdated' event, whenever it's a player attaching or opening the character info panel.
@@ -75,7 +82,15 @@ public sealed partial class ChatUIController : IOnSystemChanged<CharacterInfoSys
 
     private void InitializeHighlights()
     {
-        _config.OnValueChanged(CCVars.ChatAutoFillHighlights, (value) => { _autoFillHighlightsEnabled = value; }, true);
+        _config.OnValueChanged(CCVars.ChatAutoFillHighlights, (value) =>
+        {
+            _autoFillHighlightsEnabled = value;
+            if (value)
+                UpdateAutoFillHighlights();
+            else
+                ReloadHighlights();
+        }, true);
+
         _config.OnValueChanged(CCVars.ChatHighlightsColor, (value) => { _highlightsColor = value; }, true);
 
         // Load highlights if any were saved.
@@ -85,6 +100,8 @@ public sealed partial class ChatUIController : IOnSystemChanged<CharacterInfoSys
         {
             UpdateHighlights(highlights, true);
         }
+
+        _chatSpeechDoubleQuoteBegin = _loc.GetString("chat-manager-speech-double-quote-begin");
     }
 
     public void OnSystemLoaded(CharacterInfoSystem system)
@@ -105,7 +122,7 @@ public sealed partial class ChatUIController : IOnSystemChanged<CharacterInfoSys
         // If auto highlights are enabled generate a request for new character info
         // that will be used to determine the highlights.
         _charInfoIsAttach = true;
-        _characterInfo.RequestCharacterInfo();
+        _characterInfo?.RequestCharacterInfo();
     }
 
     public void UpdateHighlights(string newHighlights, bool firstLoad = false)
@@ -117,11 +134,26 @@ public sealed partial class ChatUIController : IOnSystemChanged<CharacterInfoSys
         _config.SetCVar(CCVars.ChatHighlights, newHighlights);
         _config.SaveToFile();
 
+        ReloadHighlights();
+        HighlightsUpdated?.Invoke(newHighlights);
+    }
+
+    public void ReloadHighlights()
+    {
         _highlights.Clear();
+
+        var combined = _config.GetCVar(CCVars.ChatHighlights);
+        if (_autoFillHighlightsEnabled && !string.IsNullOrEmpty(_autoHighlights))
+        {
+            if (string.IsNullOrEmpty(combined))
+                combined = _autoHighlights;
+            else
+                combined += "\n" + _autoHighlights;
+        }
 
         // We first subdivide the highlights based on newlines to prevent replacing
         // a valid "\n" tag and adding it to the final regex.
-        var splittedHighlights = newHighlights.Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        var splittedHighlights = combined.Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
         for (var i = 0; i < splittedHighlights.Length; i++)
         {
@@ -150,7 +182,8 @@ public sealed partial class ChatUIController : IOnSystemChanged<CharacterInfoSys
 
             // Make sure the character's name is highlighted only when mentioned directly (eg. it's said by someone),
             // for example in 'Name Surname says, "..."' 'Name Surname' won't be highlighted.
-            keyword = StartAtSign.Replace(keyword, @"(?<=(?<=^.?OOC:.*:.*)|(?<=,.*"".*)|(?<=\n.*))");
+            keyword = StartAtSign.Replace(keyword,
+                $@"(?<=(?<=(L?OOC|DEAD|ADMIN):.*:.*)|(?<=,.*{_chatSpeechDoubleQuoteBegin}.*)|(?<=\n.*))");
 
             _highlights.Add(keyword);
         }
@@ -167,7 +200,7 @@ public sealed partial class ChatUIController : IOnSystemChanged<CharacterInfoSys
         if (!_charInfoIsAttach)
             return;
 
-        var (_, job, _, _, entityName) = data;
+        var (_, _, _, job, entityName) = data;
 
         // Mark this entity's name as our character name for the "UpdateHighlights" function.
         var newHighlights = "@" + entityName;
@@ -181,14 +214,24 @@ public sealed partial class ChatUIController : IOnSystemChanged<CharacterInfoSys
         if (newHighlights.Count(c => c == '-') > 1)
             newHighlights = newHighlights.Split('-')[0] + "\n@" + newHighlights.Split('-')[^1];
 
-        // Convert the job title to kebab-case and use it as a key for the loc file.
-        var jobKey = job.Replace(' ', '-').ToLower();
+        // CorvaxGoob-Start : Редактирование кода
+        if (_prototypeManager.TryIndex(job, out var jobPrototype))
+        {
+            if (_chatHighlights.TryGetSavedHighlights(jobPrototype.ID, out var highlights))
+                newHighlights += '\n' + highlights.Replace(", ", "\n");
+            else
+            {
+                // Convert the job title to kebab-case and use it as a key for the loc file.
+                var jobKey = jobPrototype.Name.Replace("job-name-", "").ToLower();
 
-        if (_loc.TryGetString($"highlights-{jobKey}", out var jobMatches))
-            newHighlights += '\n' + jobMatches.Replace(", ", "\n");
+                if (_loc.TryGetString($"highlights-{jobKey}", out var jobMatches))
+                    newHighlights += '\n' + jobMatches.Replace(", ", "\n");
+            }
+        }
+        // CorvaxGoob-End
 
-        UpdateHighlights(newHighlights);
-        HighlightsUpdated?.Invoke(newHighlights);
+        _autoHighlights = newHighlights;
+        ReloadHighlights();
         _charInfoIsAttach = false;
     }
 }

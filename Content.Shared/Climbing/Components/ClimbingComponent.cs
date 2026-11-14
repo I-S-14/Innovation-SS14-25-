@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 using Content.Shared.DoAfter;
+using Content.Shared.Physics;
 using System.Numerics;
 using Robust.Shared.GameStates;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
@@ -52,6 +53,12 @@ public sealed partial class ClimbingComponent : Component
     /// </summary>
     [DataField]
     public float TransitionRate = 5f;
+
+    /// <summary>
+    /// Collision layers that stop movement onto a climbable surface.
+    /// </summary>
+    [DataField]
+    public int TransitionCollisionMask = (int) CollisionGroup.Impassable;
 
     [AutoNetworkedField, DataField]
     public Dictionary<string, int> DisabledFixtureMasks = new();

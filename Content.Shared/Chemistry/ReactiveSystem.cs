@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-using Content.Goobstation.Common.Chemistry;
 using Content.Goobstation.Common.Slasher.Events;
-using Content.Shared.Administration.Logs;
 using Content.Shared.Chemistry.Components;
 using Content.Shared.Chemistry.Reagent;
 using JetBrains.Annotations;
@@ -12,10 +10,10 @@ using Content.Goobstation.Maths.FixedPoint;
 namespace Content.Shared.Chemistry;
 
 [UsedImplicitly]
-public sealed class ReactiveSystem : EntitySystem
+public sealed partial class ReactiveSystem : EntitySystem
 {
-    [Dependency] private readonly IPrototypeManager _proto = default!;
 
+    // TODO: Someone add documentation, I beg you
     public void DoEntityReaction(EntityUid uid, Solution solution, ReactionMethod method)
     {
         foreach (var reagent in solution.Contents.ToArray())
@@ -30,7 +28,7 @@ public sealed class ReactiveSystem : EntitySystem
             return;
 
         // We throw if the reagent specified doesn't exist.
-        if (!_proto.Resolve<ReagentPrototype>(reagentQuantity.Reagent.Prototype, out var proto))
+        if (!ProtoMan.Resolve<ReagentPrototype>(reagentQuantity.Reagent.Prototype, out var proto))
             return;
 
         var ev = new ReactionEntityEvent(method, reagentQuantity, proto);
@@ -43,7 +41,6 @@ public sealed class ReactiveSystem : EntitySystem
             var relayEv = new ShitRelayEventFixMeReactionEntityEvent();
             RaiseLocalEvent(uid, ref relayEv);
         }
-
     }
 }
 

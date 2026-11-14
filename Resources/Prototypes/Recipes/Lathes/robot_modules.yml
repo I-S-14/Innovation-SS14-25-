@@ -22,8 +22,8 @@
 # Generic
 - type: latheRecipe
   parent: BaseBorgModuleRecipe
-  id: BorgModuleTool
-  result: BorgModuleTool
+  id: BorgModuleArtistry
+  result: BorgModuleArtistry
 
 - type: latheRecipe
   parent: BaseBorgModuleRecipe
@@ -42,8 +42,13 @@
 
 - type: latheRecipe
   parent: BaseBorgModuleRecipe
-  id: BorgModuleArtistry
-  result: BorgModuleArtistry
+  id: BorgModuleMusique
+  result: BorgModuleMusique
+
+- type: latheRecipe
+  parent: BaseBorgModuleRecipe
+  id: BorgModuleTool
+  result: BorgModuleTool
 
 # Cargo Modules
 
@@ -76,3 +81,13 @@
 # Science Modules
 
 # Service Modules
+
+- type: latheRecipe
+  parent: BaseGoldBorgModuleRecipe
+  id: BorgModuleAdvancedClowning
+  result: BorgModuleAdvancedClowning
+  materials:
+    Steel: 500
+    Glass: 500
+    Plastic: 250
+    Gold: 375

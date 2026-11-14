@@ -102,7 +102,7 @@ public sealed class ModuleJetpackSystem : ModuleBehaviourSystem<ModuleJetpackCom
             return;
 
         RemComp<ChassisJetpackUserComponent>(user);
-        _jetpack.SetEnabled(chassis, jetpack, false, user);
+        _jetpack.SetEnabled((chassis, jetpack), false, user);
     }
 
     private void OnWeightlessnessChanged(Entity<ChassisJetpackUserComponent> ent, ref WeightlessnessChangedEvent args)
@@ -120,7 +120,7 @@ public sealed class ModuleJetpackSystem : ModuleBehaviourSystem<ModuleJetpackCom
         if (shouldFire == HasComp<ActiveJetpackComponent>(chassis))
             return;
 
-        _jetpack.SetEnabled(chassis, jetpack, shouldFire, user);
+        _jetpack.SetEnabled((chassis, jetpack), shouldFire, user);
 
         // Refusing to light is the server's call — only it can see how much gas is in the
         // bottle. Say so, rather than leaving the wearer drifting and guessing.

@@ -6,13 +6,15 @@ using Robust.Client.UserInterface.Controllers;
 using Robust.Client.UserInterface.CustomControls;
 using Robust.Shared.Input;
 using Robust.Shared.Input.Binding;
+using Content.Client.Gameplay;
+using Content.Client.Info;
 
 namespace Content.Client.UserInterface.Systems.Info;
 
-public sealed class CloseAllWindowsUIController : UIController
+public sealed partial class CloseAllWindowsUIController : UIController
 {
-    [Dependency] private readonly IInputManager _inputManager = default!;
-    [Dependency] private readonly IUserInterfaceManager _uiManager = default!;
+    [Dependency] private IInputManager _inputManager = default!;
+    [Dependency] private IUserInterfaceManager _uiManager = default!;
 
     public override void Initialize()
     {

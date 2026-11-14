@@ -2,6 +2,8 @@
 
 using Content.Shared.SensorMonitoring;
 using Robust.Shared.Collections;
+using Robust.Server.Player;
+using Robust.Shared.Player;
 
 namespace Content.Server.SensorMonitoring;
 

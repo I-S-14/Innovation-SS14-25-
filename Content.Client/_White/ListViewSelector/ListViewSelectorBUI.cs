@@ -20,6 +20,7 @@ public sealed class ListViewSelectorBUI(EntityUid owner, Enum uiKey) : BoundUser
 
     protected override void Open()
     {
+        base.Open();
         _window = FormWindow();
         _window.OnClose += Close;
         _window.OpenCentered();
@@ -84,7 +85,7 @@ public sealed class ListViewSelectorBUI(EntityUid owner, Enum uiKey) : BoundUser
         {
             var itemName = item.Name;
             var itemDesc = item.Description;
-            if (_prototypeManager.TryIndex(item.Id, out var itemPrototype, false))
+            if (_prototypeManager.TryIndex(item.Id, out var itemPrototype))
             {
                 itemName = itemPrototype.Name;
                 itemDesc = itemPrototype.Description;

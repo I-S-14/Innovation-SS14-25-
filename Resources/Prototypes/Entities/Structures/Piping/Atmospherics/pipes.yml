@@ -3,7 +3,7 @@
 - type: entity
   abstract: true
   parent: BaseItem
-  id: GasPipeSansLayers
+  id: GasPipeSansLayersIndestructible
   name: gas pipe
   description: Holds gas.
   placement:
@@ -15,43 +15,11 @@
     size: Normal
   - type: Transform
     anchored: true
-  - type: Damageable
-    damageContainer: StructuralInorganic
-    damageModifierSet: Metallic
   - type: SubFloorHide
   - type: CollideOnAnchor
   - type: Anchorable
   - type: Rotatable
-  - type: RCDDeconstructable
-    cost: 1
-    delay: 2
-    fx: EffectRCDDeconstruct2
-    rpd: true
-  - type: Destructible
-    thresholds:
-    - trigger: # for nukes
-        !type:DamageTrigger
-        damage: 200
-      behaviors:
-      - !type:DoActsBehavior
-        acts: ["Destruction"]
-    - trigger: # regular damage trigger (replace with broken pipe)
-        !type:DamageTrigger
-        damage: 100
-      behaviors:
-      - !type:PlaySoundBehavior
-        sound:
-          collection: MetalBreak
-          params:
-            volume: -8
-      - !type:SpawnEntitiesBehavior
-        spawn:
-          GasPipeBroken:
-            min: 1
-            max: 1
-        offset: 0
-      - !type:DoActsBehavior
-        acts: ["Breakage"]
+    increment: 90
   - type: Sprite
     sprite: Structures/Piping/Atmospherics/pipe.rsi
     drawdepth: ThinPipe
@@ -72,6 +40,36 @@
     bodyType: static
   - type: StaticPrice
     price: 30
+
+- type: entity
+  abstract: true
+  parent: [ GasPipeSansLayersIndestructible, StructureHealthContainer ]
+  id: GasPipeSansLayers
+  components:
+  - type: Damageable
+    damageModifierSet: SteelMod
+  - type: RCDDeconstructable
+    cost: 1
+    delay: 2
+    fx: EffectRCDDeconstruct2
+    rpd: true
+  - type: Destructible
+    thresholds:
+    - trigger: # regular damage trigger (replace with broken pipe)
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+          params:
+            volume: -8
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          GasPipeBroken:
+            min: 1
+            max: 1
+        offset: 0
   - type: ContainerContainer # Goobstation - ventcrawl
     containers:
       VentCrawlerTube: !type:Container
@@ -104,8 +102,7 @@
 
 - type: entity
   abstract: true
-  parent: GasPipeSansLayers
-  id: GasPipeBase
+  id: BaseGasPipeLayers
   components:
   - type: AtmosPipeLayers
     spriteLayersRsiPaths:
@@ -113,14 +110,22 @@
         Primary: Structures/Piping/Atmospherics/pipe.rsi
         Secondary: Structures/Piping/Atmospherics/pipe_alt1.rsi
         Tertiary: Structures/Piping/Atmospherics/pipe_alt2.rsi
+  - type: SandboxCopyable
+
+- type: entity
+  abstract: true
+  parent: [ GasPipeSansLayers, BaseGasPipeLayers ]
+  id: GasPipeBase
 
 #Note: The PipeDirection of the PipeNode should be the south-facing version, because the entity starts at an angle of 0 (south)
 
 - type: entity
-  # Goobstation - Allow device-on-pipe stacking
   parent: GasPipeBase
-  id: GasPipeHalf
+  id: !type:CreateVariants
+    values: [ GasPipeHalf, GasPipeHalfAlt1, GasPipeHalfAlt2 ]
   suffix: Half
+  categories: !type:CreateVariants
+    sequences: [ [ ], [ HideSpawnMenu ], [ HideSpawnMenu ] ]
   placement:
     mode: AlignAtmosPipeLayers
   components:
@@ -130,18 +135,20 @@
         !type:PipeNode
         nodeGroupID: Pipe
         pipeDirection: South
+        volume: 100
   - type: Sprite
     layers:
-    - state: pipeHalf
+    - sprite: !type:CreateVariants
+        values: [ Structures/Piping/Atmospherics/pipe.rsi, Structures/Piping/Atmospherics/pipe_alt1.rsi, Structures/Piping/Atmospherics/pipe_alt2.rsi ]
+      state: pipeHalf
       map: [ "enum.PipeVisualLayers.Pipe" ]
-  - type: AtmosPipeLayers
-    alternativePrototypes:
-      Primary: GasPipeHalf
-      Secondary: GasPipeHalfAlt1
-      Tertiary: GasPipeHalfAlt2
   - type: Construction
-    graph: GasPipe
+    graph: !type:CreateVariants
+      values: [ GasPipe, GasPipeAlt1, GasPipeAlt2 ]
     node: half
+  - type: AtmosPipeLayers
+    pipeLayer: !type:CreateVariants
+      values: [ 0, 1, 2 ]
   - type: Item
     size: Small
     storedSprite:
@@ -154,34 +161,32 @@
 
 - type: entity
   parent: GasPipeBase
-  id: GasPipeStraight
+  id: !type:CreateVariants
+    values: [GasPipeStraight, GasPipeStraightAlt1, GasPipeStraightAlt2]
   suffix: Straight
+  categories: !type:CreateVariants
+    sequences: [[], [HideSpawnMenu], [HideSpawnMenu]]
   placement:
     mode: AlignAtmosPipeLayers
   components:
   - type: NodeContainer
     nodes:
-      pipe:
-        !type:PipeNode
+      pipe: !type:PipeNode
         nodeGroupID: Pipe
         pipeDirection: Longitudinal
-  - type: VentCrawlerTube # Goobstation - ventcrawl
-    containerId: VentCrawlerTube
-  - type: VentCrawlerTransit # Goobstation - ventcrawl
-  - type: ContainerContainer # Goobstation - ventcrawl
-    containers:
-      VentCrawlerTube: !type:Container
   - type: Sprite
     layers:
-    - state: pipeStraight
-      map: [ "enum.PipeVisualLayers.Pipe" ]
+    - sprite: !type:CreateVariants
+        values: [Structures/Piping/Atmospherics/pipe.rsi, Structures/Piping/Atmospherics/pipe_alt1.rsi,
+          Structures/Piping/Atmospherics/pipe_alt2.rsi]
+      state: pipeStraight
+      map: ["enum.PipeVisualLayers.Pipe"]
   - type: AtmosPipeLayers
-    alternativePrototypes:
-      Primary: GasPipeStraight
-      Secondary: GasPipeStraightAlt1
-      Tertiary: GasPipeStraightAlt2
+    pipeLayer: !type:CreateVariants
+      values: ['0', '1', '2']
   - type: Construction
-    graph: GasPipe
+    graph: !type:CreateVariants
+      values: [GasPipe, GasPipeAlt1, GasPipeAlt2]
     node: straight
   - type: Item
     storedSprite:
@@ -190,47 +195,50 @@
     shape:
     - 0,0,0,2
   - type: MeleeWeapon
-    attackRate: 1
+    attackRate: '1'
     damage:
       types:
-        Blunt: 8
+        Blunt: '8'
     soundHit:
-      collection: MetalThud # this NEEDS to changed to the metal pipe falling sound effect on april first every year
+      collection: MetalThud
   - type: GuideHelp
     guides:
     - Pipes
     - PipeNetworks
-
+  - type: VentCrawlerTube
+    containerId: VentCrawlerTube
+  - type: VentCrawlerTransit
+  - type: ContainerContainer
+    containers:
+      VentCrawlerTube: !type:Container ''
 - type: entity
   parent: GasPipeBase
-  id: GasPipeBend
+  id: !type:CreateVariants
+    values: [GasPipeBend, GasPipeBendAlt1, GasPipeBendAlt2]
   suffix: Bend
+  categories: !type:CreateVariants
+    sequences: [[], [HideSpawnMenu], [HideSpawnMenu]]
   placement:
     mode: AlignAtmosPipeLayers
   components:
   - type: NodeContainer
     nodes:
-      pipe:
-        !type:PipeNode
+      pipe: !type:PipeNode
         nodeGroupID: Pipe
         pipeDirection: SWBend
-  - type: VentCrawlerTube # Goobstation - ventcrawl
-    containerId: VentCrawlerTube
-  - type: VentCrawlerBend # Goobstation - ventcrawl
-  - type: ContainerContainer # Goobstation - ventcrawl
-    containers:
-      VentCrawlerTube: !type:Container
   - type: Sprite
     layers:
-      - state: pipeBend
-        map: [ "enum.PipeVisualLayers.Pipe" ]
+    - sprite: !type:CreateVariants
+        values: [Structures/Piping/Atmospherics/pipe.rsi, Structures/Piping/Atmospherics/pipe_alt1.rsi,
+          Structures/Piping/Atmospherics/pipe_alt2.rsi]
+      state: pipeBend
+      map: ["enum.PipeVisualLayers.Pipe"]
   - type: AtmosPipeLayers
-    alternativePrototypes:
-      Primary: GasPipeBend
-      Secondary: GasPipeBendAlt1
-      Tertiary: GasPipeBendAlt2
+    pipeLayer: !type:CreateVariants
+      values: ['0', '1', '2']
   - type: Construction
-    graph: GasPipe
+    graph: !type:CreateVariants
+      values: [GasPipe, GasPipeAlt1, GasPipeAlt2]
     node: bend
   - type: Item
     shape:
@@ -241,51 +249,60 @@
       sprite: Structures/Piping/Atmospherics/pipe.rsi
       state: storageBend
   - type: MeleeWeapon
-    wideAnimationRotation: 180
-    attackRate: 1
+    wideAnimationRotation: '180'
+    attackRate: '1'
     damage:
       types:
-        Blunt: 6
+        Blunt: '6'
     soundHit:
       collection: MetalThud
   - type: DamageOtherOnHit
     damage:
       types:
-        Blunt: 8 # Woe, pipe be upon ye!
-  - type: ThrowableBlocked # Goobstation
-    behavior: Damage
-    damage:
-      types:
-        Blunt: 100
+        Blunt: '8'
   - type: GuideHelp
     guides:
     - Pipes
     - PipeNetworks
-
+  - type: VentCrawlerTube
+    containerId: VentCrawlerTube
+  - type: VentCrawlerBend
+  - type: ContainerContainer
+    containers:
+      VentCrawlerTube: !type:Container ''
+  - type: ThrowableBlocked
+    behavior: Damage
+    damage:
+      types:
+        Blunt: '100'
 - type: entity
   parent: GasPipeBase
-  id: GasPipeTJunction
+  id: !type:CreateVariants
+    values: [GasPipeTJunction, GasPipeTJunctionAlt1, GasPipeTJunctionAlt2]
+  suffix: TJunction
+  categories: !type:CreateVariants
+    sequences: [[], [HideSpawnMenu], [HideSpawnMenu]]
   placement:
     mode: AlignAtmosPipeLayers
-  suffix: TJunction
   components:
   - type: NodeContainer
     nodes:
-      pipe:
-        !type:PipeNode
+      pipe: !type:PipeNode
         nodeGroupID: Pipe
         pipeDirection: TSouth
   - type: Sprite
     layers:
-      - state: pipeTJunction
-        map: [ "enum.PipeVisualLayers.Pipe" ]
+    - sprite: !type:CreateVariants
+        values: [Structures/Piping/Atmospherics/pipe.rsi, Structures/Piping/Atmospherics/pipe_alt1.rsi,
+          Structures/Piping/Atmospherics/pipe_alt2.rsi]
+      state: pipeTJunction
+      map: ["enum.PipeVisualLayers.Pipe"]
   - type: AtmosPipeLayers
-    alternativePrototypes:
-      Primary: GasPipeTJunction
-      Secondary: GasPipeTJunctionAlt1
-      Tertiary: GasPipeTJunctionAlt2
+    pipeLayer: !type:CreateVariants
+      values: ['0', '1', '2']
   - type: Construction
-    graph: GasPipe
+    graph: !type:CreateVariants
+      values: [GasPipe, GasPipeAlt1, GasPipeAlt2]
     node: tjunction
   - type: Item
     heldPrefix: TJunction
@@ -293,119 +310,110 @@
       sprite: Structures/Piping/Atmospherics/pipe.rsi
       state: storageTJunction
   - type: MeleeWeapon
-    wideAnimationRotation: 90
-    attackRate: 0.75
+    wideAnimationRotation: '90'
+    attackRate: '0.75'
     damage:
       types:
-        Blunt: 10
+        Blunt: '10'
     soundHit:
       collection: MetalThud
   - type: GuideHelp
     guides:
     - Pipes
     - PipeNetworks
-  - type: VentCrawlerTube # Goobstation - ventcrawl
+  - type: VentCrawlerTube
     containerId: VentCrawlerTube
-  - type: VentCrawlerJunction # Goobstation - ventcrawl
+  - type: VentCrawlerJunction
     degrees:
-      - 0
-      - 90
-      - -90
-  - type: ContainerContainer # Goobstation - ventcrawl
+    - '0'
+    - '90'
+    - '-90'
+  - type: ContainerContainer
     containers:
-      VentCrawlerTube: !type:Container
-
+      VentCrawlerTube: !type:Container ''
 - type: entity
   parent: GasPipeBase
-  id: GasPipeFourway
+  id: !type:CreateVariants
+    values: [GasPipeFourway, GasPipeFourwayAlt1, GasPipeFourwayAlt2]
   suffix: Fourway
+  categories: !type:CreateVariants
+    sequences: [[], [HideSpawnMenu], [HideSpawnMenu]]
   placement:
     mode: AlignAtmosPipeLayers
   components:
   - type: Transform
-    noRot: true
+    noRot: 'true'
   - type: NodeContainer
     nodes:
-      pipe:
-        !type:PipeNode
+      pipe: !type:PipeNode
         nodeGroupID: Pipe
         pipeDirection: Fourway
   - type: Sprite
     layers:
-      - state: pipeFourway
-        map: [ "enum.PipeVisualLayers.Pipe" ]
+    - sprite: !type:CreateVariants
+        values: [Structures/Piping/Atmospherics/pipe.rsi, Structures/Piping/Atmospherics/pipe_alt1.rsi,
+          Structures/Piping/Atmospherics/pipe_alt2.rsi]
+      state: pipeFourway
+      map: ["enum.PipeVisualLayers.Pipe"]
   - type: AtmosPipeLayers
-    alternativePrototypes:
-      Primary: GasPipeFourway
-      Secondary: GasPipeFourwayAlt1
-      Tertiary: GasPipeFourwayAlt2
+    pipeLayer: !type:CreateVariants
+      values: ['0', '1', '2']
   - type: Construction
-    graph: GasPipe
+    graph: !type:CreateVariants
+      values: [GasPipe, GasPipeAlt1, GasPipeAlt2]
     node: fourway
-  - type: VentCrawlerTube # Goobstation - ventcrawl
-    containerId: VentCrawlerTube
-  - type: VentCrawlerJunction # Goobstation - ventcrawl
-    degrees:
-      - 0
-      - 90
-      - -90
-      - 180
-  - type: ContainerContainer # Goobstation - ventcrawl
-    containers:
-      VentCrawlerTube: !type:Container
   - type: Item
     heldPrefix: Fourway
     storedSprite:
       sprite: Structures/Piping/Atmospherics/pipe.rsi
       state: storageFourway
   - type: MeleeWeapon
-    wideAnimationRotation: 90
-    attackRate: 0.75
+    wideAnimationRotation: '90'
+    attackRate: '0.75'
     damage:
       types:
-        Blunt: 10
+        Blunt: '10'
     soundHit:
       collection: MetalThud
   - type: GuideHelp
     guides:
     - Pipes
     - PipeNetworks
-
+  - type: VentCrawlerTube
+    containerId: VentCrawlerTube
+  - type: VentCrawlerJunction
+    degrees:
+    - '0'
+    - '90'
+    - '-90'
+    - '180'
+  - type: ContainerContainer
+    containers:
+      VentCrawlerTube: !type:Container ''
 - type: entity
   id: GasPipeBroken
-  parent: GasPipeBase
+  parent: [ GasPipeSansLayersIndestructible, BaseGasPipeLayers, StructureHealthFurniture ]
   name: broken pipe
   description: It used to hold gas.
   components:
   - type: Sprite
-    sprite: Structures/Piping/Atmospherics/pipe.rsi
-    drawdepth: ThinPipe
-    state: pipeBroken
     layers:
-      - state: pipeBroken
-        map: [ "enum.PipeVisualLayers.Pipe" ]
-  - type: AtmosPipeLayers
-    numberOfPipeLayers: 1
+    - state: pipeBroken
+      map: [ "enum.PipeVisualLayers.Pipe" ]
   - type: Construction
-    graph: GasPipe
+    graph: GasPipeSpecial
     node: broken
   - type: Item
     size: Small
-  - type: Destructible
-    thresholds: # override parent to avoid recursive destruction
-    - trigger:
-        !type:DamageTrigger
-        damage: 100
-      behaviors:
-      - !type:DoActsBehavior
-        acts: ["Destruction"]
+  - type: Damageable
+    damageModifierSet: SteelMod
   - type: GuideHelp
     guides:
     - Pipes
     - PipeNetworks
 
 - type: entity
-  parent: GasPipeSansLayers
+  parent: GasPipeBase
   id: GasPipeManifold
   name: gas pipe manifold
   description: Allows gas pipes of different configurations to be connected together.
@@ -413,19 +421,19 @@
     mode: SnapgridCenter
   components:
   - type: Sprite
-    sprite: Structures/Piping/Atmospherics/manifold.rsi
     layers:
-    - state: pipeManifold
+    - sprite: Structures/Piping/Atmospherics/manifold.rsi
+      state: pipeManifold
       map: [ "enum.PipeVisualLayers.Pipe" ]
-  - type: AtmosPipeLayers
-    pipeLayersLocked: true
   - type: PipeAppearance
     sprite:
     - { sprite: Structures/Piping/Atmospherics/manifold.rsi, state: pipeConnector }
     - { sprite: Structures/Piping/Atmospherics/manifold.rsi, state: pipeConnector_alt1 }
     - { sprite: Structures/Piping/Atmospherics/manifold.rsi, state: pipeConnector_alt2 }
+  - type: AtmosPipeLayers
+    pipeLayersLocked: true
   - type: Construction
-    graph: GasPipe
+    graph: GasPipeSpecial
     node: manifold
   - type: Item
     size: Small

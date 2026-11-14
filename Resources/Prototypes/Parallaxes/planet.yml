@@ -20,7 +20,7 @@
   layers:
     - texture:
         !type:ImageParallaxTextureSource
-        path: "/Textures/Tiles/Planet/Grass/grass.png"
+        path: "/Textures/Tiles/Grass/grass.png"
       slowness: 0
       scale: "1, 1"
       shader: ""
@@ -30,7 +30,7 @@
   layers:
     - texture:
         !type:ImageParallaxTextureSource
-        path: /Textures/Tiles/Planet/Grass/grass.png
+        path: /Textures/Tiles/Grass/grass.png
       slowness: 0
       scale: "1, 1"
       shader: ""
@@ -40,7 +40,7 @@
   layers:
     - texture:
         !type:ImageParallaxTextureSource
-        path: "/Textures/Tiles/snow.png"
+        path: "/Textures/Tiles/Snow/snow.png"
       slowness: 0
       scale: "1, 1"
       shader: ""

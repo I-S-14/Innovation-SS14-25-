@@ -7,6 +7,7 @@ using Content.Client.Resources;
 using Content.Client.IoC;
 using Robust.Client.Graphics;
 using Robust.Shared.Utility;
+using Robust.Shared.Graphics;
 
 namespace Content.Client.Parallax.Data;
 

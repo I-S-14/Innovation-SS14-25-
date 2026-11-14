@@ -5,17 +5,19 @@ using Robust.Client.Graphics;
 using Robust.Client.Player;
 using Robust.Shared.Enums;
 using Robust.Shared.Prototypes;
+using Robust.Client.Input;
+using Robust.Client.UserInterface;
 using static Content.Client.Mapping.MappingState;
 
 namespace Content.Client.Mapping;
 
-public sealed class MappingOverlay : Overlay
+public sealed partial class MappingOverlay : Overlay
 {
     private static readonly ProtoId<ShaderPrototype> UnshadedShader = "unshaded";
 
-    [Dependency] private readonly IEntityManager _entities = default!;
-    [Dependency] private readonly IPlayerManager _player = default!;
-    [Dependency] private readonly IPrototypeManager _prototypes = default!;
+    [Dependency] private IEntityManager _entities = default!;
+    [Dependency] private IPlayerManager _player = default!;
+    [Dependency] private IPrototypeManager _prototypes = default!;
 
     private readonly SpriteSystem _sprite;
 
@@ -84,7 +86,5 @@ public sealed class MappingOverlay : Overlay
                 break;
             }
         }
-
-        handle.UseShader(null);
     }
 }

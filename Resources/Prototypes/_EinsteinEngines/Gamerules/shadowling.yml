@@ -6,16 +6,14 @@
   - type: GameRule
     minPlayers: 30
   - type: AntagSelection
-    definitions:
-    - prefRoles: [ Shadowling ]
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14ShadowlingAntag0a7524129
+      range:
+        max: 1
+        min: 1
       playerRatio: 30
       chaosScore: 500
-      jobBlacklist: [ Chaplain ] # GOOBSTATION
-      blacklist:
-        components:
-        - CommandStaff
-      mindRoles:
-      - MindRoleShadowling
   - type: AntagObjectives
     objectives:
     - ShadowlingAscendObjective

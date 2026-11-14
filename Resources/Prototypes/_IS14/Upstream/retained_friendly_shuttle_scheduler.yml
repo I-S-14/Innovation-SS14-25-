@@ -1,0 +1,13 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: 5327c414c5:Resources/Prototypes/GameRules/roundstart.yml
+- type: entity
+  id: SpaceTrafficControlFriendlyEventScheduler
+  parent: BaseGameRule
+  components:
+  - type: BasicStationEventScheduler
+    minimumTimeUntilFirstEvent: 1200
+    minMaxEventTiming:
+      min: 600
+      max: 1800
+    scheduledGameRules: !type:NestedSelector
+      tableId: UnknownShuttlesFriendlyTable

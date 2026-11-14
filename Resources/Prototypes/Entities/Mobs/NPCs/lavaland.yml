@@ -3,7 +3,7 @@
 - type: entity
   name: watcher
   id: MobWatcherBase
-  parent: [ SimpleSpaceMobBase, FlyingMobBase ]
+  parent: [ SimpleSpaceMobBase, FlyingMobBase, BaseSlicingRefinableButchering, BaseMobDestructible ]
   abstract: true
   description: It's like it's staring right through you.
   components:
@@ -51,6 +51,10 @@
     - id: DiamondOre1
     - id: MaterialWatcherWing1
       maxAmount: 2
+  - type: ToolRefinable
+    refineResult:
+    - id: DiamondOre1
+      amount: 1
   - type: MovementSpeedModifier
     baseWalkSpeed: 1.65 # Lavaland change // Slightly slower than regular walkspeed, makes it not annoying as fuck to catch
     baseSprintSpeed: 1.65 # Lavaland change

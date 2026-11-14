@@ -1,11 +1,12 @@
+using Content.Shared.Beam.Components; // IS14-change: upstream namespace move
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Goobstation.Common.Effects;
 using Content.Server._Goobstation.Wizard.Components;
 using Content.Server.Administration.Logs;
 using Content.Server.NodeContainer;
-using Content.Server.Beam.Components;
 using Content.Server.Light.Components;
+using Content.Server.Doors.Systems;
 using Content.Server.NodeContainer.EntitySystems;
 using Content.Server.Power.Components;
 using Content.Server.Power.EntitySystems;
@@ -13,6 +14,7 @@ using Content.Server.Power.NodeGroups;
 using Content.Server.Weapons.Melee;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
+using Content.Shared.Damage.Systems;
 using Content.Shared.Database;
 using Content.Shared.Electrocution;
 using Content.Shared.IdentityManagement;
@@ -42,28 +44,28 @@ using PullerComponent = Content.Shared.Movement.Pulling.Components.PullerCompone
 
 namespace Content.Server.Electrocution;
 
-public sealed class ElectrocutionSystem : SharedElectrocutionSystem
+public sealed partial class ElectrocutionSystem : SharedElectrocutionSystem
 {
-    [Dependency] private readonly IAdminLogManager _adminLogger = default!;
-    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly DamageableSystem _damageable = default!;
-    [Dependency] private readonly EntityLookupSystem _entityLookup = default!;
-    [Dependency] private readonly MeleeWeaponSystem _meleeWeapon = default!;
-    [Dependency] private readonly NodeContainerSystem _nodeContainer = default!;
-    [Dependency] private readonly NodeGroupSystem _nodeGroup = default!;
-    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
-    [Dependency] private readonly StatusEffectsSystem _statusEffects = default!;
-    [Dependency] private readonly SharedJitteringSystem _jittering = default!;
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] private readonly SharedStunSystem _stun = default!;
-    [Dependency] private readonly SharedStutteringSystem _stuttering = default!;
-    [Dependency] private readonly TagSystem _tag = default!;
-    [Dependency] private readonly MetaDataSystem _metaData = default!;
-    [Dependency] private readonly TurfSystem _turf = default!;
     [Dependency] private readonly IGameTiming _gameTiming = default!; // Goobstation - Add Cooldown to shock to prevent entity overload
     [Dependency] private readonly SparksSystem _sparks = default!; // goob edit - finally visual fucking effects
+    [Dependency] private IAdminLogManager _adminLogger = default!;
+    [Dependency] private IRobustRandom _random = default!;
+
+    [Dependency] private DamageableSystem _damageable = default!;
+    [Dependency] private EntityLookupSystem _entityLookup = default!;
+    [Dependency] private MeleeWeaponSystem _meleeWeapon = default!;
+    [Dependency] private NodeContainerSystem _nodeContainer = default!;
+    [Dependency] private NodeGroupSystem _nodeGroup = default!;
+    [Dependency] private SharedAppearanceSystem _appearance = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private StatusEffectsSystem _statusEffects = default!;
+    [Dependency] private SharedJitteringSystem _jittering = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private SharedStunSystem _stun = default!;
+    [Dependency] private StutteringSystem _stuttering = default!;
+    [Dependency] private TagSystem _tag = default!;
+    [Dependency] private MetaDataSystem _metaData = default!;
+    [Dependency] private TurfSystem _turf = default!;
 
     private static readonly ProtoId<StatusEffectPrototype> StatusKeyIn = "Electrocution";
     private static readonly ProtoId<DamageTypePrototype> DamageType = "Shock";
@@ -91,6 +93,8 @@ public sealed class ElectrocutionSystem : SharedElectrocutionSystem
         SubscribeLocalEvent<ElectrifiedComponent, AttackedEvent>(OnElectrifiedAttacked);
         SubscribeLocalEvent<ElectrifiedComponent, InteractHandEvent>(OnElectrifiedHandInteract);
         SubscribeLocalEvent<ElectrifiedComponent, InteractUsingEvent>(OnElectrifiedInteractUsing);
+        SubscribeLocalEvent<ElectrifiedComponent, ActivateInWorldEvent>(OnElectrifiedActivateInWorld, before: [typeof(AirlockSystem), typeof(DoorSystem)]);
+
         SubscribeLocalEvent<RandomInsulationComponent, MapInitEvent>(OnRandomInsulationMapInit);
         SubscribeLocalEvent<PoweredLightComponent, AttackedEvent>(OnLightAttacked);
 
@@ -221,7 +225,28 @@ public sealed class ElectrocutionSystem : SharedElectrocutionSystem
         TryDoElectrifiedAct(uid, args.User, siemens, electrified);
     }
 
-    public bool TryDoElectrifiedAct(EntityUid uid, EntityUid targetUid,
+    private void OnElectrifiedActivateInWorld(EntityUid uid, ElectrifiedComponent electrified, ActivateInWorldEvent args)
+    {
+        // IS14: combine the Corvax hand-interaction fallback with Wizards activation handling.
+        if (args.Handled || !electrified.OnActivateInWorld && !electrified.OnHandInteract)
+            return;
+
+        if (TryDoElectrifiedAct(uid, args.User, 1, electrified) && electrified.OnActivateInWorld)
+            args.Handled = true;
+    }
+
+    /// <summary>
+    /// Attempt to trigger an electrocution via an entity interacting with the electrified entity. Checks what type of electrocution to apply and handles daisy-chaining.
+    /// </summary>
+    /// <param name="uid">The entity emitting electricity.</param>
+    /// <param name="targetUid">The entity interacting.</param>
+    /// <param name="siemens">The electric conductance. 0 means no electricity can pass through, 1 means full force.</param>
+    /// <param name="electrified">The electrified component of uid entity.</param>
+    /// <param name="nodeContainer">The node container of uid entity.</param>
+    /// <param name="transform">The transform of the uid entity.</param>
+    /// <returns>If the attempt caused an electrocution.</returns>
+    public bool TryDoElectrifiedAct(EntityUid uid,
+        EntityUid targetUid,
         float siemens = 1,
         ElectrifiedComponent? electrified = null,
         NodeContainerComponent? nodeContainer = null,
@@ -241,6 +266,9 @@ public sealed class ElectrocutionSystem : SharedElectrocutionSystem
             return false;
 
         if (!_random.Prob(electrified.Probability))
+            return false;
+
+        if (electrified.ShockDelay != null && electrified.NextShock > _gameTiming.CurTime)
             return false;
 
         EnsureComp<ActivatedElectrifiedComponent>(uid);
@@ -277,6 +305,8 @@ public sealed class ElectrocutionSystem : SharedElectrocutionSystem
                     ignoreInsulation: electrified.IgnoreInsulation // Goobstation
                 );
             }
+            if (lastRet)
+                electrified.NextShock = _gameTiming.CurTime + electrified.ShockDelay;
             return lastRet;
         }
 
@@ -452,13 +482,10 @@ public sealed class ElectrocutionSystem : SharedElectrocutionSystem
 
         if (shockDamage is { } dmg)
         {
-            var actual = _damageable.TryChangeDamage(uid,
-                new DamageSpecifier(_prototypeManager.Index(DamageType), dmg), origin: sourceUid);
-
-            if (actual != null)
+            if (_damageable.TryChangeDamage(uid, new DamageSpecifier(ProtoMan.Index(DamageType), dmg), out var damage, origin: sourceUid))
             {
                 _adminLogger.Add(LogType.Electrocution,
-                    $"{ToPrettyString(uid):entity} received {actual.GetTotal():damage} powered electrocution damage{(sourceUid != null ? " from " + ToPrettyString(sourceUid.Value) : ""):source}");
+                    $"{ToPrettyString(uid):entity} received {damage:damage} powered electrocution damage{(sourceUid != null ? " from " + ToPrettyString(sourceUid.Value) : ""):source}");
             }
         }
 
@@ -535,6 +562,9 @@ public sealed class ElectrocutionSystem : SharedElectrocutionSystem
         {
             return;
         }
-        _audio.PlayPvs(electrified.ShockNoises, targetUid, AudioParams.Default.WithVolume(electrified.ShockVolume));
+
+        var audioParams = electrified.ShockNoises?.Params ?? AudioParams.Default;
+        audioParams = audioParams.AddVolume(electrified.ShockVolume);
+        _audio.PlayPvs(electrified.ShockNoises, targetUid, audioParams);
     }
 }

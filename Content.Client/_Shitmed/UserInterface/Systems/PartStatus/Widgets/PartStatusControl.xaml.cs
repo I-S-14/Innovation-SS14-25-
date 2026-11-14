@@ -19,7 +19,6 @@ public sealed partial class PartStatusControl : UIWidget
     [Dependency] private readonly IGameTiming _timing = default!;
     private readonly Dictionary<TargetBodyPart, TextureRect> _partStatusControls;
     private readonly PartStatusUIController _controller;
-    public event Action<GUIBoundKeyEventArgs>? OnMouseDown;
     public PartStatusControl()
     {
         IoCManager.InjectDependencies(this);

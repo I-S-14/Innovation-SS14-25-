@@ -2,6 +2,11 @@
 
 using Robust.Client.UserInterface.Controls;
 using Robust.Shared.Utility;
+using Content.Client.Changelog;
+using Content.Client.Credits;
+using Robust.Client.UserInterface;
+using Robust.Shared.IoC;
+using Robust.Shared.Localization;
 
 namespace Content.Client.Info
 {

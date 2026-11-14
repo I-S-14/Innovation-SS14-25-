@@ -48,7 +48,7 @@ public sealed class OsMessengerNotifyTest
 
         var server = pair.Server;
         var client = pair.Client;
-        var ticker = server.System<GameTicker>();
+        var ticker = server.System<ServerGameTicker>();
 
         await server.WaitPost(() =>
         {
@@ -81,8 +81,8 @@ public sealed class OsMessengerNotifyTest
 
         await server.WaitPost(() =>
         {
-            myAddress = entMan.GetComponent<DeviceNetworkComponent>(mine).Address!;
-            theirAddress = entMan.GetComponent<DeviceNetworkComponent>(theirs).Address!;
+            myAddress = Content.Shared.DeviceNetwork.DeviceLocalizationHelpers.GetAddressFromId(entMan.GetComponent<DeviceNetworkComponent>(mine));
+            theirAddress = Content.Shared.DeviceNetwork.DeviceLocalizationHelpers.GetAddressFromId(entMan.GetComponent<DeviceNetworkComponent>(theirs));
 
             Assert.That(myAddress, Is.Not.Empty, "the worn PDA never got a network address");
             Assert.That(theirAddress, Is.Not.Empty, "the spawned PDA never got a network address");
@@ -140,7 +140,8 @@ public sealed class OsMessengerNotifyTest
 
         Assert.Multiple(() =>
         {
-            Assert.That(link.Name, Is.EqualTo("is14reply"), "the notification carries no reply link");
+            Assert.That(link, Is.Not.Null, "the notification carries no reply link");
+            Assert.That(link!.Name, Is.EqualTo("is14reply"), "the notification carries no reply link");
             Assert.That(link.Attributes["device"].StringValue, Is.EqualTo(netDevice),
                 "the reply link points at the wrong device");
             Assert.That(link.Attributes["chat"].StringValue, Is.EqualTo(theirAddress),

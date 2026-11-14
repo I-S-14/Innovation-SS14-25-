@@ -58,6 +58,7 @@ public abstract partial class InteractionAction
         [Dependency] public readonly IRobustRandom Random = default!;
         [Dependency] public readonly IGameTiming Timing = default!;
         [Dependency] public readonly ISerializationManager Serialization = default!;
-        [Dependency] public readonly EntityWhitelistSystem WhitelistSystem = default!;
+        //IS14-change: use the initialized entity-system instance.
+        public EntityWhitelistSystem WhitelistSystem => EntMan.System<EntityWhitelistSystem>();
     }
 }

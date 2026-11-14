@@ -7,6 +7,7 @@ using Content.Shared.IdentityManagement;
 using Content.Shared.Interaction;
 using Content.Shared.Verbs;
 using Robust.Shared.Utility;
+using System.Linq;
 
 namespace Content.Shared.Buckle;
 
@@ -19,9 +20,22 @@ public abstract partial class SharedBuckleSystem
         SubscribeLocalEvent<StrapComponent, InteractHandEvent>(OnStrapInteractHand, before: [typeof(InteractionPopupSystem)]);
         SubscribeLocalEvent<StrapComponent, DragDropTargetEvent>(OnStrapDragDropTarget);
         SubscribeLocalEvent<StrapComponent, CanDropTargetEvent>(OnCanDropTarget);
+        SubscribeLocalEvent<StrapComponent, GetInteractingEntitiesEvent>(OnGetInteractingForStrap);
 
+        SubscribeLocalEvent<BuckleComponent, GetInteractingEntitiesEvent>(OnGetInteractingForBuckle);
         SubscribeLocalEvent<BuckleComponent, InteractHandEvent>(OnBuckleInteractHand, before: [typeof(InteractionPopupSystem)]);
         SubscribeLocalEvent<BuckleComponent, GetVerbsEvent<InteractionVerb>>(AddUnbuckleVerb);
+    }
+
+    private void OnGetInteractingForBuckle(Entity<BuckleComponent> ent, ref GetInteractingEntitiesEvent args)
+    {
+        if (ent.Comp.BuckledTo.HasValue)
+            args.InteractingEntities.Add(ent.Comp.BuckledTo.Value);
+    }
+
+    private void OnGetInteractingForStrap(Entity<StrapComponent> ent, ref GetInteractingEntitiesEvent args)
+    {
+        args.InteractingEntities.UnionWith(ent.Comp.BuckledEntities);
     }
 
     private void OnCanDropTarget(EntityUid uid, StrapComponent component, ref CanDropTargetEvent args)
@@ -99,6 +113,7 @@ public abstract partial class SharedBuckleSystem
         {
             TryBuckle(args.User, args.User, uid, buckle, popup: true);
             args.Handled = true;
+            args.InteractionParticle = false; // Goob
             return;
         }
 
@@ -106,6 +121,7 @@ public abstract partial class SharedBuckleSystem
         if (buckle.BuckledTo == uid && TryUnbuckle(args.User, args.User, buckle, popup: true))
         {
             args.Handled = true;
+            args.InteractionParticle = false; // Goob
             return;
         }
 
@@ -115,6 +131,7 @@ public abstract partial class SharedBuckleSystem
             TryUnbuckle(buckled.Value, args.User))
         {
             args.Handled = true;
+            args.InteractionParticle = false; // Goob
             return;
         }
 
@@ -131,7 +148,10 @@ public abstract partial class SharedBuckleSystem
             return;
 
         if (ent.Comp.BuckledTo != null)
+        {
             args.Handled = TryUnbuckle(ent!, args.User, popup: true);
+            args.InteractionParticle = !args.Handled; // Goob
+        }
 
         // TODO BUCKLE add out bool for whether a pop-up was generated or not.
     }
@@ -237,5 +257,4 @@ public abstract partial class SharedBuckleSystem
 
         args.Verbs.Add(verb);
     }
-
 }

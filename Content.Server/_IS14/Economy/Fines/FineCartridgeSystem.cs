@@ -2,7 +2,7 @@ using System.Linq;
 using Content.Server.Access.Systems;
 using Content.Server.CartridgeLoader;
 using Content.Server.Station.Systems;
-using Content.Server.StationRecords.Systems;
+using Content.Shared.StationRecords.Systems;
 using Content.Shared._IS14.CCVar;
 using Content.Shared._IS14.Economy.Fines;
 using Content.Shared.Access.Components;
@@ -10,6 +10,7 @@ using Content.Shared.CartridgeLoader;
 using Content.Shared.StationRecords;
 using Robust.Shared.Configuration;
 using Robust.Shared.Prototypes;
+using Content.Shared.Station.Systems;
 
 namespace Content.Server._IS14.Economy.Fines;
 

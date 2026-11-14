@@ -1,0 +1,16 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: 5327c414c5:Resources/Prototypes/Entities/Objects/Specific/Chemistry/chemistry-bottles.yml
+- type: entity
+  id: ChemistryBottleNecrosol
+  suffix: necrosol
+  parent: BaseChemistryBottleFilled
+  components:
+  - type: Label
+    currentLabel: reagent-name-necrosol
+  - type: SolutionContainerManager
+    solutions:
+      drink:
+        maxVol: 30
+        reagents:
+        - ReagentId: Necrosol
+          Quantity: 30

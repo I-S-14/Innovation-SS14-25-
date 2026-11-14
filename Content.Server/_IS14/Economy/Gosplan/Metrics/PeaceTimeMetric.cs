@@ -1,3 +1,4 @@
+using Content.Shared.AlertLevel; // IS14-change: upstream namespace move
 // SPDX-FileCopyrightText: 2025 IS14
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
@@ -14,12 +15,11 @@ public sealed partial class PeaceTimeMetric : SampledPlanMetric
 {
     protected override float Read(in PlanMetricArgs args)
     {
-        if (!args.EntityManager.TryGetComponent<AlertLevelComponent>(args.Station, out var alert)
-            || alert.AlertLevels == null)
+        if (!args.EntityManager.TryGetComponent<AlertLevelComponent>(args.Station, out var alert))
         {
             return 1f;
         }
 
-        return alert.CurrentLevel == alert.AlertLevels.DefaultLevel ? 1f : 0f;
+        return alert.CurrentAlertLevel == alert.DefaultAlertLevel ? 1f : 0f;
     }
 }

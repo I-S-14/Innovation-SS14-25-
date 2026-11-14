@@ -8,7 +8,6 @@ using Content.Server.Body.Components;
 using Content.Server.Body.Systems;
 using Content.Server.Fluids.EntitySystems;
 using Content.Server.Spreader;
-using Content.Shared.Atmos.Components;
 using Content.Shared.Chemistry.Components;
 using Content.Shared.Chemistry.Reaction;
 using Content.Shared.Coordinates.Helpers;
@@ -18,7 +17,7 @@ using Robust.Shared.Map;
 namespace Content.Goobstation.Server.Xenobiology.Systems;
 
 // any other bs needed serverside
-public class XenobiologyMiscSystems : EntitySystem
+public sealed class XenobiologyMiscSystems : EntitySystem
 {
     public override void Initialize()
     {
@@ -36,7 +35,7 @@ public class XenobiologyMiscSystems : EntitySystem
 
         foreach (var entity in lookupSys.GetEntitiesInRange(uid, args.Range))
         {
-            if (EntityManager.TryGetComponent(entity, out FlammableComponent? flammable))
+            if (TryComp(entity, out FlammableComponent? flammable))
                 flamSys.Extinguish(entity, flammable);
         }
     }
@@ -48,7 +47,7 @@ public class XenobiologyMiscSystems : EntitySystem
 
         foreach (var entity in lookupSys.GetEntitiesInRange(uid, args.Range))
         {
-            if (EntityManager.TryGetComponent(entity, out RespiratorComponent? resp))
+            if (TryComp(entity, out RespiratorComponent? resp))
                 respSys.UpdateSaturation(entity, args.Factor, resp);
         }
     }
@@ -60,7 +59,7 @@ public class XenobiologyMiscSystems : EntitySystem
 
         foreach (var entity in lookupSys.GetEntitiesInRange(uid, args.Radius))
         {
-            if (EntityManager.TryGetComponent(entity, out FlammableComponent? flammable))
+            if (TryComp(entity, out FlammableComponent? flammable))
                 flamSys.AdjustFireStacks(entity, args.FireStacks, flammable, true);
         }
     }
@@ -68,30 +67,30 @@ public class XenobiologyMiscSystems : EntitySystem
     public void OnSmoke(EntityUid uid, ReactiveComponent component, ref DoSmokeEntityEffect args)
     {
 
-        var mapMan = IoCManager.Resolve<IMapManager>();
+        var mapSys = IoCManager.Resolve<IEntityManager>().System<SharedMapSystem>();
         var transformSys = EntityManager.System<SharedTransformSystem>();
         var spreaderSys = EntityManager.System<SpreaderSystem>();
         var smokeSys = EntityManager.System<SmokeSystem>();
 
-        if (!EntityManager.TryGetComponent(uid, out TransformComponent? xform))
+        if (!TryComp(uid, out TransformComponent? xform))
             return;
 
         var mapCoords = transformSys.GetMapCoordinates(uid, xform);
 
 
-        if (!mapMan.TryFindGridAt(mapCoords, out _, out var grid)
-            || !grid.TryGetTileRef(xform.Coordinates, out var tileRef)
+        if (!mapSys.TryFindGridAt(mapCoords, out var gridUid, out var grid)
+            || !mapSys.TryGetTileRef(gridUid, grid, xform.Coordinates, out var tileRef)
             || tileRef.Tile.IsEmpty)
             return;
 
         if (spreaderSys.RequiresFloorToSpread(args.SmokePrototype.ToString()) && tileRef.Tile.IsEmpty)
             return;
 
-        var coords = grid.MapToGrid(mapCoords);
-        var ent = EntityManager.SpawnAtPosition(args.SmokePrototype, coords.SnapToGrid());
-        if (!EntityManager.TryGetComponent<SmokeComponent>(ent, out var smoke))
+        var coords = mapSys.MapToGrid(gridUid, mapCoords);
+        var ent = SpawnAtPosition(args.SmokePrototype, coords.SnapToGrid());
+        if (!TryComp<SmokeComponent>(ent, out var smoke))
         {
-            EntityManager.QueueDeleteEntity(ent);
+            QueueDel(ent);
             return;
         }
 

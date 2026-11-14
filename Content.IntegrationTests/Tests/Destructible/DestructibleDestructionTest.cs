@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Linq;
+using Content.IntegrationTests.Fixtures;
 using Content.Server.Destructible.Thresholds.Behaviors;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
+using Content.Shared.Damage.Systems;
 using Content.Shared.Destructible.Thresholds;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Prototypes;
@@ -11,12 +13,12 @@ using static Content.IntegrationTests.Tests.Destructible.DestructibleTestPrototy
 
 namespace Content.IntegrationTests.Tests.Destructible
 {
-    public sealed class DestructibleDestructionTest
+    public sealed class DestructibleDestructionTest : GameTest
     {
         [Test]
         public async Task Test()
         {
-            await using var pair = await PoolManager.GetServerClient();
+            var pair = Pair;
             var server = pair.Server;
 
             var testMap = await pair.CreateTestMap();
@@ -90,7 +92,6 @@ namespace Content.IntegrationTests.Tests.Destructible
 
                 Assert.That(found, Is.True, $"Unable to find {SpawnedEntityId} nearby for destructible test; found {entitiesInRange.Count} entities.");
             });
-            await pair.CleanReturnAsync();
         }
     }
 }

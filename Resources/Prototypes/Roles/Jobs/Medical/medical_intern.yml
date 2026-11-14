@@ -29,7 +29,6 @@
     components:
     - type: SurgerySpeedModifier
       speedModifier: 1.25
-  weight: -1 # IS14-edit
 
 - type: startingGear
   id: MedicalInternGear
@@ -37,11 +36,7 @@
     shoes: ClothingShoesColorWhite
     id: MedicalInternPDA
     ears: ClothingHeadsetMedical
-    belt: ClothingBeltMedicalFilled
     pocket2: BookMedicalReferenceBook
-  #storage:
-    #back:
-    #- Stuff
 
 - type: chameleonOutfit
   id: MedicalInternChameleonOutfit

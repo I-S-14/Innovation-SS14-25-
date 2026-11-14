@@ -1,25 +1,36 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+using Robust.Client.UserInterface.RichText; // Goob
 using System.Numerics;
+using Content.Goobstation.Common.CCVar; // Goob
 using Content.Shared.CCVar;
 using Content.Shared.Chat;
-using Content.Shared.Speech;
 using Robust.Client.Graphics;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
-using Robust.Shared.Configuration;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
+using Content.Shared.Speech;
+using Robust.Shared.Configuration;
 
 namespace Content.Client.Chat.UI
 {
-    public abstract class SpeechBubble : Control
+    public abstract partial class SpeechBubble : BaseBubble
     {
-        [Dependency] private readonly IGameTiming _timing = default!;
-        [Dependency] private readonly IEyeManager _eyeManager = default!;
-        [Dependency] private readonly IEntityManager _entityManager = default!;
-        [Dependency] protected readonly IConfigurationManager ConfigManager = default!;
-        private readonly SharedTransformSystem _transformSystem;
+        [Dependency] private IGameTiming _timing = default!;
+
+        // <Goob>
+        public static readonly Type[] AllowedTags =
+        [
+            typeof(BoldItalicTag),
+            typeof(BoldTag),
+            typeof(BulletTag),
+            typeof(ColorTag),
+            typeof(HeadingTag),
+            typeof(ItalicTag),
+            typeof(FontTag),
+        ];
+        // </Goob>
 
         public enum SpeechType : byte
         {
@@ -40,33 +51,23 @@ namespace Content.Client.Chat.UI
         private static readonly TimeSpan FadeTime = TimeSpan.FromSeconds(0.25f);
 
         /// <summary>
-        ///     The distance in world space to offset the speech bubble from the center of the entity.
-        ///     i.e. greater -> higher above the mob's head.
-        /// </summary>
-        private const float EntityVerticalOffset = 0.5f;
-
-        /// <summary>
         ///     The default maximum width for speech bubbles.
         /// </summary>
         public const float SpeechMaxWidth = 256;
-
-        private readonly EntityUid _senderEntity;
 
         /// <summary>
         /// The time at which this bubble will die.
         /// </summary>
         private TimeSpan _deathTime;
 
-        public float VerticalOffset { get; set; }
-        private float _verticalOffsetAchieved;
-
-        public Vector2 ContentSize { get; private set; }
-
         // man down
         public event Action<EntityUid, SpeechBubble>? OnDied;
 
         public static SpeechBubble CreateSpeechBubble(SpeechType type, ChatMessage message, EntityUid senderEntity)
         {
+            if (IoCManager.Resolve<IConfigurationManager>().GetCVar(GoobCVars.ChatRunechat)) // Goob
+                return new RunechatSpeechBubble(message, senderEntity, type); // Goob
+
             switch (type)
             {
                 case SpeechType.Emote:
@@ -87,13 +88,9 @@ namespace Content.Client.Chat.UI
         }
 
         public SpeechBubble(ChatMessage message, EntityUid senderEntity, string speechStyleClass, Color? fontColor = null)
+            : base(senderEntity)
         {
             IoCManager.InjectDependencies(this);
-            _senderEntity = senderEntity;
-            _transformSystem = _entityManager.System<SharedTransformSystem>();
-
-            // Use text clipping so new messages don't overlap old ones being pushed up.
-            RectClipContent = true;
 
             var bubble = BuildBubble(message, speechStyleClass, fontColor);
 
@@ -103,7 +100,8 @@ namespace Content.Client.Chat.UI
 
             bubble.Measure(Vector2Helpers.Infinity);
             ContentSize = bubble.DesiredSize;
-            _verticalOffsetAchieved = -ContentSize.Y;
+            VerticalOffsetAchieved = -ContentSize.Y;
+
             _deathTime = _timing.RealTime + TotalTime;
         }
 
@@ -114,28 +112,14 @@ namespace Content.Client.Chat.UI
             base.FrameUpdate(args);
 
             var timeLeft = (float)(_deathTime - _timing.RealTime).TotalSeconds;
-            if (_entityManager.Deleted(_senderEntity) || timeLeft <= 0)
+            if (EntityManager.Deleted(SenderEntity) || timeLeft <= 0)
             {
                 // Timer spawn to prevent concurrent modification exception.
                 Timer.Spawn(0, Die);
                 return;
             }
 
-            // Lerp to our new vertical offset if it's been modified.
-            if (MathHelper.CloseToPercent(_verticalOffsetAchieved - VerticalOffset, 0, 0.1))
-            {
-                _verticalOffsetAchieved = VerticalOffset;
-            }
-            else
-            {
-                _verticalOffsetAchieved = MathHelper.Lerp(_verticalOffsetAchieved, VerticalOffset, 10 * args.DeltaSeconds);
-            }
-
-            if (!_entityManager.TryGetComponent<TransformComponent>(_senderEntity, out var xform) || xform.MapID != _eyeManager.CurrentEye.Position.MapId)
-            {
-                Modulate = Color.White.WithAlpha(0);
-                return;
-            }
+            UpdateBubblePosition(args);
 
             if (timeLeft <= FadeTime.TotalSeconds)
             {
@@ -147,23 +131,6 @@ namespace Content.Client.Chat.UI
                 // Make opaque otherwise, because it might have been hidden before
                 Modulate = Color.White;
             }
-
-            var baseOffset = 0f;
-
-            if (_entityManager.TryGetComponent<SpeechComponent>(_senderEntity, out var speech))
-                baseOffset = speech.SpeechBubbleOffset;
-
-            var offset = (-_eyeManager.CurrentEye.Rotation).ToWorldVec() * -(EntityVerticalOffset + baseOffset);
-            var worldPos = _transformSystem.GetWorldPosition(xform) + offset;
-
-            var lowerCenter = _eyeManager.WorldToScreen(worldPos) / UIScale;
-            var screenPos = lowerCenter - new Vector2(ContentSize.X / 2, ContentSize.Y + _verticalOffsetAchieved);
-            // Round to nearest 0.5
-            screenPos = (screenPos * 2).Rounded() / 2;
-            LayoutContainer.SetPosition(this, screenPos);
-
-            var height = MathF.Ceiling(MathHelper.Clamp(lowerCenter.Y - screenPos.Y, 0, ContentSize.Y));
-            SetHeight = height;
         }
 
         private void Die()
@@ -173,7 +140,7 @@ namespace Content.Client.Chat.UI
                 return;
             }
 
-            OnDied?.Invoke(_senderEntity, this);
+            OnDied?.Invoke(SenderEntity, this);
         }
 
         /// <summary>
@@ -215,9 +182,10 @@ namespace Content.Client.Chat.UI
             var label = new RichTextLabel
             {
                 MaxWidth = SpeechMaxWidth,
+                OutlineColorOverride = TextOutline.Default.Color,
             };
 
-            label.SetMessage(FormatSpeech(message.WrappedMessage, fontColor));
+            label.SetMessage(FormatSpeech(message.WrappedMessage, fontColor), tagsAllowed: null);
 
             var panel = new PanelContainer
             {
@@ -244,10 +212,11 @@ namespace Content.Client.Chat.UI
             {
                 var label = new RichTextLabel
                 {
-                    MaxWidth = SpeechMaxWidth
+                    MaxWidth = SpeechMaxWidth,
+                    OutlineColorOverride = TextOutline.Default.Color,
                 };
 
-                label.SetMessage(ExtractAndFormatSpeechSubstring(message, "BubbleContent", fontColor));
+                label.SetMessage(ExtractAndFormatSpeechSubstring(message, "BubbleContent", fontColor), AllowedTags); // Goob - added AllowedTags
 
                 var unfanciedPanel = new PanelContainer
                 {
@@ -261,20 +230,22 @@ namespace Content.Client.Chat.UI
             var bubbleHeader = new RichTextLabel
             {
                 ModulateSelfOverride = Color.White.WithAlpha(ConfigManager.GetCVar(CCVars.SpeechBubbleSpeakerOpacity)),
-                Margin = new Thickness(1, 1, 1, 1),
+                Margin = new Thickness(2, 0, 2, 0),
+                OutlineColorOverride = TextOutline.Default.Color,
             };
 
             var bubbleContent = new RichTextLabel
             {
                 ModulateSelfOverride = Color.White.WithAlpha(ConfigManager.GetCVar(CCVars.SpeechBubbleTextOpacity)),
                 MaxWidth = SpeechMaxWidth,
-                Margin = new Thickness(2, 6, 2, 2),
+                Margin = new Thickness(2, 0, 2, 0),
                 StyleClasses = { "bubbleContent" },
+                OutlineColorOverride = TextOutline.Default.Color,
             };
 
             //We'll be honest. *Yes* this is hacky. Doing this in a cleaner way would require a bottom-up refactor of how saycode handles sending chat messages. -Myr
-            bubbleHeader.SetMessage(ExtractAndFormatSpeechSubstring(message, "BubbleHeader", fontColor));
-            bubbleContent.SetMessage(ExtractAndFormatSpeechSubstring(message, "BubbleContent", fontColor));
+            bubbleHeader.SetMessage(ExtractAndFormatSpeechSubstring(message, "BubbleHeader", fontColor), AllowedTags); // Goob - added AllowedTags
+            bubbleContent.SetMessage(ExtractAndFormatSpeechSubstring(message, "BubbleContent", fontColor), AllowedTags); // Goob - added AllowedTags
 
             //As for below: Some day this could probably be converted to xaml. But that is not today. -Myr
             var mainPanel = new PanelContainer
@@ -284,7 +255,7 @@ namespace Content.Client.Chat.UI
                 ModulateSelfOverride = Color.White.WithAlpha(ConfigManager.GetCVar(CCVars.SpeechBubbleBackgroundOpacity)),
                 HorizontalAlignment = HAlignment.Center,
                 VerticalAlignment = VAlignment.Bottom,
-                Margin = new Thickness(4, 14, 4, 2)
+                Margin = new Thickness(4, 20, 4, 2)
             };
 
             var headerPanel = new PanelContainer

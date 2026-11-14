@@ -6,6 +6,7 @@ using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
 using Robust.Shared.Serialization;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
+using Content.Shared.Item.ItemToggle.Components;
 
 namespace Content.Shared.Medical;
 
@@ -17,6 +18,11 @@ namespace Content.Shared.Medical;
 [RegisterComponent, NetworkedComponent]
 public sealed partial class DefibrillatorComponent : Component
 {
+    //IS14-change start
+    [DataField]
+    public bool CanDefibCrit = true;
+    //IS14-change end
+
     /// <summary>
     /// How much damage is healed from getting zapped.
     /// </summary>
@@ -59,11 +65,8 @@ public sealed partial class DefibrillatorComponent : Component
     [DataField]
     public bool AllowDoAfterMovement = true;
 
-    [DataField]
-    public bool CanDefibCrit = true;
-
     /// <summary>
-    /// The sound when someone is zapped.
+    /// The sound to play when someone is zapped.
     /// </summary>
     [ViewVariables(VVAccess.ReadWrite), DataField("zapSound")]
     public SoundSpecifier? ZapSound = new SoundPathSpecifier("/Audio/Items/Defib/defib_zap.ogg");

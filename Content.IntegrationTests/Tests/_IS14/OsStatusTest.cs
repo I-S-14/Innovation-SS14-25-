@@ -34,7 +34,7 @@ public sealed class OsStatusTest
         });
 
         var server = pair.Server;
-        var ticker = server.System<GameTicker>();
+        var ticker = server.System<ServerGameTicker>();
 
         await server.WaitPost(() =>
         {

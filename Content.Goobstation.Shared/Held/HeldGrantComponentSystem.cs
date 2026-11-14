@@ -5,10 +5,10 @@ using Robust.Shared.Serialization.Manager;
 
 namespace Content.Goobstation.Shared.Held;
 
-public sealed class HeldGrantComponentSystem : EntitySystem
+public sealed partial class HeldGrantComponentSystem : EntitySystem
 {
-    [Dependency] private readonly IComponentFactory _componentFactory = default!;
-    [Dependency] private readonly ISerializationManager _serializationManager = default!;
+    [Dependency] private IComponentFactory _componentFactory = default!;
+    [Dependency] private ISerializationManager _serializationManager = default!;
 
     public override void Initialize()
     {
@@ -28,7 +28,9 @@ public sealed class HeldGrantComponentSystem : EntitySystem
 
             object? temp = newComp;
             _serializationManager.CopyTo(data.Component, ref temp);
-            EntityManager.AddComponent(args.User, (Component)temp!);
+            //IS14-change start
+            AddComp(args.User, (Component)temp!);
+            //IS14-change end
 
             ent.Comp.Active[name] = true; // Goobstation
         }

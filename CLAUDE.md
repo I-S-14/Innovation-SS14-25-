@@ -28,7 +28,19 @@ dotnet run --project Content.Packaging server --platform linux-x64
 dotnet run --project Content.Packaging client --no-wipe-release
 ```
 
-SDK: .NET 9.0.100 (pinned in `global.json`). Use `runclient-Tools` / `runserver-Tools` variants for in-game developer tools.
+SDK: .NET 10.0.100 (pinned in `global.json`, with feature-band roll-forward). Use `runclient-Tools` / `runserver-Tools` variants for in-game developer tools.
+
+Upstream migration is in progress on `2026-29-10-upstream`; read `UPSTREAM_REPORT.md`
+before continuing. Wizards is the new regular upstream; retained Goob medicine,
+body/appearance, antagonists and IS14 features take priority during adaptation.
+Use published Wizards engine revisions; do not introduce local engine changes.
+Successful compilation alone does not establish runtime or prototype compatibility.
+Run `Tools/_IS14/upstream/run_compatibility_tests.ps1` from the repository root after
+a DebugOpt build for the explicit migration suite. Run integration-test processes
+sequentially when they share `bin/Content.IntegrationTests`: the engine test pool
+uses shared `gravestone-*.txt` files. The YAML linter has a separate output directory
+and can run alongside an integration test. Do not rebuild output assemblies while
+their test/linter processes are using them.
 
 ## Architecture
 

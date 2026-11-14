@@ -4,6 +4,8 @@ using System.Linq;
 using Content.Shared.Mech.Equipment.Components;
 using Content.Shared.Timing;
 using Robust.Shared.Audio.Systems;
+using Content.Shared.Timing.Systems;
+using Content.Shared.Timing.Components;
 
 namespace Content.Shared.Mech.Equipment.Systems;
 
@@ -26,7 +28,7 @@ public sealed class MechSoundboardSystem : EntitySystem
     private void OnUiStateReady(EntityUid uid, MechSoundboardComponent comp, MechEquipmentUiStateReadyEvent args)
     {
         // you have to specify a collection so it must exist probably
-        var sounds = comp.Sounds.Select(sound => sound.Collection!);
+        var sounds = comp.Sounds.Select(sound => sound.Collection!.Value.Id);
         var state = new MechSoundboardUiState
         {
             Sounds = sounds.ToList()

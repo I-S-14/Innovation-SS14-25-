@@ -9,10 +9,22 @@
   components:
   - type: HumanoidAppearance
     species: Vulpkanin
-  - type: Hunger
+  - type: Satiation
+    satiations:
+      Hunger:
+        prototype: NormalSatiationHunger
+      Thirst:
+        prototype: NormalSatiationThirst
+  - type: SatiationSpeedModifier
+    satiations:
+      Hunger:
+        thresholds:
+          Starving: 0.75
+      Thirst:
+        thresholds:
+          Parched: 0.75
   - type: Inventory # Allows vulps to wear properly shaped helmets
     speciesId: vulpkanin
-  - type: Thirst
   - type: Icon
     sprite: _DV/Mobs/Species/Vulpkanin/parts.rsi
     state: full
@@ -43,6 +55,8 @@
       - map: [ "enum.HumanoidVisualLayers.LArm" ]
       - map: [ "enum.HumanoidVisualLayers.RLeg" ]
       - map: [ "enum.HumanoidVisualLayers.LLeg" ]
+      - map: [ "enum.HumanoidVisualLayers.UndergarmentBottom"]  # Goobstation
+      - map: [ "enum.HumanoidVisualLayers.UndergarmentTop" ] # Goobstation
       - shader: StencilClear
         sprite: Mobs/Species/Human/parts.rsi #PJB on stencil clear being on the left leg: "...this is 'fine'" -https://github.com/space-wizards/space-station-14/pull/12217#issuecomment-1291677115
         # its fine, but its still very stupid that it has to be done like this instead of allowing sprites to just directly insert a stencil clear.

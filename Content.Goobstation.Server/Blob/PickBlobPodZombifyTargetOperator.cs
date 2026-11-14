@@ -13,7 +13,7 @@ namespace Content.Goobstation.Server.Blob;
 
 public sealed partial class PickBlobPodZombifyTargetOperator : HTNOperator
 {
-    [Dependency] private readonly IEntityManager _entManager = default!;
+    [Dependency] private IEntityManager _entManager = default!;
     private NpcFactionSystem _factions = default!;
     private MobStateSystem _mobSystem = default!;
 
@@ -35,9 +35,10 @@ public sealed partial class PickBlobPodZombifyTargetOperator : HTNOperator
     [DataField("pathfindKey")]
     public string PathfindKey = NPCBlackboard.PathfindKey;
 
-    public override void Initialize(IEntitySystemManager sysManager)
+    public override void Initialize(IDependencyCollection deps)
     {
-        base.Initialize(sysManager);
+        base.Initialize(deps);
+        var sysManager = deps.Resolve<IEntitySystemManager>();
         _lookup = sysManager.GetEntitySystem<EntityLookupSystem>();
         _pathfinding = sysManager.GetEntitySystem<PathfindingSystem>();
         _mobSystem = sysManager.GetEntitySystem<MobStateSystem>();

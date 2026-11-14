@@ -9,14 +9,15 @@ using Robust.Client.UserInterface.Controls;
 using Robust.Client.UserInterface.CustomControls;
 using Robust.Client.UserInterface.XAML;
 using Robust.Shared.Prototypes;
+using Content.Client.Clothing.Systems;
 
 namespace Content.Client.Clothing.UI;
 
 [GenerateTypedNameReferences]
 public sealed partial class ChameleonMenu : DefaultWindow
 {
-    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
-    [Dependency] private readonly IEntityManager _entityManager = default!;
+    [Dependency] private IPrototypeManager _prototypeManager = default!;
+    [Dependency] private IEntityManager _entityManager = default!;
     private readonly SpriteSystem _sprite;
     public event Action<string>? OnIdSelected;
 

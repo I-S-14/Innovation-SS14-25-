@@ -12,6 +12,7 @@ using Content.Shared.Hands;
 using Content.Shared.Inventory.Events;
 using Content.Shared.Item;
 using Content.Shared.Throwing;
+using Content.Shared.Atmos;
 
 namespace Content.Server._Starlight.VentCrawling;
 
@@ -59,7 +60,7 @@ public sealed class BeingVentCrawSystem : EntitySystem
         }
     }
 
-    private void OnInhaleLocation(EntityUid uid, BeingVentCrawlerComponent component, InhaleLocationEvent args)
+    private void OnInhaleLocation(EntityUid uid, BeingVentCrawlerComponent component, ref InhaleLocationEvent args)
     {
         if (!TryComp<VentCrawlerHolderComponent>(component.Holder, out var holder))
             return;
@@ -79,7 +80,7 @@ public sealed class BeingVentCrawSystem : EntitySystem
         }
     }
 
-    private void OnExhaleLocation(EntityUid uid, BeingVentCrawlerComponent component, ExhaleLocationEvent args)
+    private void OnExhaleLocation(EntityUid uid, BeingVentCrawlerComponent component, ref ExhaleLocationEvent args)
     {
         if (!TryComp<VentCrawlerHolderComponent>(component.Holder, out var holder))
             return;

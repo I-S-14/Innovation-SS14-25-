@@ -47,7 +47,6 @@ using Content.Shared.Friction;
 using Content.Shared.Gibbing.Events;
 using Content.Shared.Hands.Components;
 using Content.Shared.Humanoid;
-using Content.Shared.IdentityManagement;
 using Content.Shared.Item;
 using Content.Shared.Magic.Components;
 using Content.Shared.Maps;
@@ -74,15 +73,9 @@ using Robust.Shared.Random;
 using Robust.Shared.Spawners;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
-using Content.Shared.Actions.Components;
-using Content.Shared.Body.Components;
-using Content.Shared.Construction.Components;
-using Content.Shared.Friction;
-using Content.Shared.Item;
-using Content.Shared.Tag;
-using Content.Goobstation.Shared.Teleportation.Systems;
 using Content.Shared._Shitcode.Wizard.Components;
 using Content.Shared.Power.Components;
+using Content.Shared.Antag;
 
 namespace Content.Server._Goobstation.Wizard.Systems; //todo refactor wiz
 
@@ -208,7 +201,7 @@ public sealed class SpellsSystem : SharedSpellsSystem
         var xform = Transform(ev.Performer);
         var mapCoords = TransformSystem.GetMapCoordinates(ev.Performer, xform);
 
-        if (!MapManager.TryFindGridAt(mapCoords, out var gridUid, out var grid) ||
+        if (!Map.TryFindGridAt(mapCoords, out var gridUid, out var grid) ||
             !Map.TryGetTileRef(gridUid, grid, xform.Coordinates, out var tileRef) ||
             tileRef.Tile.IsEmpty)
             return;
@@ -708,9 +701,9 @@ public sealed class SpellsSystem : SharedSpellsSystem
 
             Stun.KnockdownOrStun(target, stunTime, true);
 
-            if (!fart.SuperFarted)
+            if (!fart.Buttless)
             {
-                fart.FartInhale = true;
+                fart.Inhaled = true;
                 _chat.TryEmoteWithChat(target, "FartSuper", ignoreActionBlocker: true, forceEmote: true);
             }
             else

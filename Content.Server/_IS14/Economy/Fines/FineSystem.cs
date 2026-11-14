@@ -2,7 +2,7 @@ using System.Linq;
 using Content.Server.Chat.Systems;
 using Content.Server.CriminalRecords.Systems;
 using Content.Server.GameTicking;
-using Content.Server.StationRecords.Systems;
+using Content.Shared.StationRecords.Systems;
 using Content.Shared._IS14.CCVar;
 using Content.Shared._IS14.Economy;
 using Content.Shared._IS14.Economy.EconomyMonitor;
@@ -31,7 +31,7 @@ public sealed class FineSystem : EntitySystem
     [Dependency] private readonly StationRecordsSystem _records = default!;
     [Dependency] private readonly ChatSystem _chat = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
-    [Dependency] private readonly GameTicker _ticker = default!;
+    [Dependency] private readonly ServerGameTicker _ticker = default!;
     [Dependency] private readonly IConfigurationManager _cfg = default!;
 
     private static readonly SoundPathSpecifier FineSound = new("/Audio/Effects/Cargo/buzz_sigh.ogg");

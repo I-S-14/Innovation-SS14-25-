@@ -17,7 +17,7 @@ namespace Content.Server._IS14.Economy.Gosplan;
 /// Server-only, because the measuring is: the board sees quotas as finished text and
 /// numbers in its UI state. The client registers this kind as ignored.
 /// </remarks>
-[Prototype("planQuota")]
+[Prototype]
 public sealed partial class PlanQuotaPrototype : IPrototype
 {
     [IdDataField]

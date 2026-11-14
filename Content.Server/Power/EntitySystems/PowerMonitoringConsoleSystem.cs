@@ -3,6 +3,7 @@
 using Content.Server.NodeContainer;
 using Content.Server.NodeContainer.EntitySystems;
 using Content.Server.Power.Components;
+using Content.Server.Power.Events;
 using Content.Server.Power.Nodes;
 using Content.Server.Power.NodeGroups;
 using Content.Server.StationEvents.Components;
@@ -24,9 +25,9 @@ namespace Content.Server.Power.EntitySystems;
 [UsedImplicitly]
 internal sealed partial class PowerMonitoringConsoleSystem : SharedPowerMonitoringConsoleSystem
 {
-    [Dependency] private readonly UserInterfaceSystem _userInterfaceSystem = default!;
-    [Dependency] private readonly SharedMapSystem _sharedMapSystem = default!;
-    [Dependency] private readonly SharedBatterySystem _battery = default!;
+    [Dependency] private UserInterfaceSystem _userInterfaceSystem = default!;
+    [Dependency] private SharedMapSystem _sharedMapSystem = default!;
+    [Dependency] private SharedBatterySystem _battery = default!;
 
     // Note: this data does not need to be saved
     private Dictionary<EntityUid, Dictionary<Vector2i, PowerCableChunk>> _gridPowerCableChunks = new();
@@ -153,9 +154,9 @@ internal sealed partial class PowerMonitoringConsoleSystem : SharedPowerMonitori
         }
     }
 
-    public void OnCableAnchorStateChanged(EntityUid uid, CableComponent component, CableAnchorStateChangedEvent args)
+    public void OnCableAnchorStateChanged(EntityUid uid, CableComponent component, ref CableAnchorStateChangedEvent args)
     {
-        var xform = args.Transform;
+        var xform = args.Cable.Comp;
 
         if (xform.GridUid == null || !TryComp<MapGridComponent>(xform.GridUid, out var grid))
             return;
@@ -227,7 +228,7 @@ internal sealed partial class PowerMonitoringConsoleSystem : SharedPowerMonitori
         }
     }
 
-    public void OnNodeGroupRebuilt(EntityUid uid, PowerMonitoringDeviceComponent component, NodeGroupsRebuilt args)
+    public void OnNodeGroupRebuilt(EntityUid uid, PowerMonitoringDeviceComponent component, ref NodeGroupsRebuilt args)
     {
         if (component.IsCollectionMasterOrChild)
             AssignEntityAsCollectionMaster(uid, component);
@@ -242,7 +243,7 @@ internal sealed partial class PowerMonitoringConsoleSystem : SharedPowerMonitori
 
     private void OnPowerGridCheckStarted(ref GameRuleStartedEvent ev)
     {
-        if (!TryComp<PowerGridCheckRuleComponent>(ev.RuleEntity, out var rule))
+        if (!TryComp<PowerGridCheckRuleComponent>(ev.Rule, out var rule))
             return;
 
         var query = AllEntityQuery<PowerMonitoringConsoleComponent, TransformComponent>();
@@ -258,7 +259,7 @@ internal sealed partial class PowerMonitoringConsoleSystem : SharedPowerMonitori
 
     private void OnPowerGridCheckEnded(ref GameRuleEndedEvent ev)
     {
-        if (!TryComp<PowerGridCheckRuleComponent>(ev.RuleEntity, out var rule))
+        if (!TryComp<PowerGridCheckRuleComponent>(ev.Rule, out var rule))
             return;
 
         var query = AllEntityQuery<PowerMonitoringConsoleComponent, TransformComponent>();
@@ -835,6 +836,9 @@ internal sealed partial class PowerMonitoringConsoleSystem : SharedPowerMonitori
 
     private void UpdateCollectionChildMetaData(EntityUid child, EntityUid master)
     {
+        if (TerminatingOrDeleted(child) || TerminatingOrDeleted(master)) // Goob - Fix (deleted collection devices)
+            return;
+
         var netEntity = GetNetEntity(child);
         var xform = Transform(child);
 
@@ -974,7 +978,8 @@ internal sealed partial class PowerMonitoringConsoleSystem : SharedPowerMonitori
             {
                 if (!entDevice.IsCollectionMaster)
                 {
-                    metaData.CollectionMaster = GetNetEntity(entDevice.CollectionMaster);
+                    if (!TerminatingOrDeleted(entDevice.CollectionMaster)) // Goob - Fix (deleted collection master)
+                        metaData.CollectionMaster = GetNetEntity(entDevice.CollectionMaster);
                 }
 
                 else if (entDevice.ChildDevices.Count > 0)

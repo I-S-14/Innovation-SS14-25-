@@ -12,7 +12,6 @@
     - state: "lightning_1"
       shader: unshaded
   - type: Physics
-    canCollide: false
   - type: Electrified
     requirePower: false
   - type: Lightning
@@ -30,6 +29,10 @@
   - type: Tag
     tags:
       - HideContextMenu
+  # At least one fixture is needed for the CanCollide field of the PhysicsComponent to not always be false.
+  - type: Fixtures
+    fixtures:
+      fix1: {}
 
 - type: entity
   name: lightning

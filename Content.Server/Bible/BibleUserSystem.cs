@@ -1,8 +1,8 @@
+using Content.Shared.Timing.Components; // IS14-change: upstream namespace move
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Goobstation.Common.Religion;
 using Content.Goobstation.Shared.Bible;
-using Content.Server.Ghost.Roles.Events;
 using Content.Server.Popups;
 using Content.Shared._Shitmed.Damage;
 using Content.Shared._Shitmed.Targeting;
@@ -10,7 +10,7 @@ using Content.Shared.ActionBlocker;
 using Content.Shared.Actions;
 using Content.Shared.Bible;
 using Content.Shared.Bible.Components;
-using Content.Shared.Damage;
+using Content.Shared.Damage.Systems;
 using Content.Shared.Ghost.Roles.Components;
 using Content.Shared.IdentityManagement;
 using Content.Shared.Interaction;
@@ -23,6 +23,8 @@ using Content.Shared.Verbs;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Player;
 using Robust.Shared.Random;
+using Content.Shared.Ghost;
+using Content.Shared.Timing.Systems;
 
 namespace Content.Server.Bible
 {
@@ -49,7 +51,6 @@ namespace Content.Server.Bible
             SubscribeLocalEvent<SummonableComponent, SummonActionEvent>(OnSummon);
             SubscribeLocalEvent<FamiliarComponent, MobStateChangedEvent>(OnFamiliarDeath);
             SubscribeLocalEvent<FamiliarComponent, GhostRoleSpawnerUsedEvent>(OnSpawned);
-
         }
 
         private readonly Queue<EntityUid> _addQueue = new();
@@ -106,36 +107,38 @@ namespace Content.Server.Bible
                 return;
 
             if (args.Target == null || args.Target == args.User || !_mobStateSystem.IsAlive(args.Target.Value))
-                return; // STOP WITH USELESS BRACES!! - Goobstation
+            {
+                return;
+            }
 
             if (!HasComp<BibleUserComponent>(args.User))
             {
-                _popupSystem.PopupEntity(Loc.GetString("bible-sizzle"), args.User, args.User);
+                _popupSystem.PopupEntity(Loc.GetString("bible-sizzle", ("bible", uid)), args.User, args.User); // Goob - Fix (missing loc argument)
 
                 _audio.PlayPvs(component.SizzleSoundPath, args.User);
-                _damageableSystem.TryChangeDamage(args.User, component.DamageOnUntrainedUse, true, origin: uid, targetPart: TargetBodyPart.All, ignoreBlockers: true);
+                _damageableSystem.TryChangeDamage(args.User, component.DamageOnUntrainedUse, true, origin: uid, targetPart: TargetBodyPart.All, ignoreBlockers: true); // Goob - shitmed targeting
                 _delay.TryResetDelay((uid, useDelay));
 
                 return;
             }
 
+            // Goob start - Wraith
+            var ev = new BibleSmiteUsed(args.User);
+            RaiseLocalEvent(args.Target.Value, ref ev);
+            // Goob end
+
             var userEnt = Identity.Entity(args.User, EntityManager);
             var targetEnt = Identity.Entity(args.Target.Value, EntityManager);
-
-            // Goobstation - Wraith - Start
-            var ev = new BibleSmiteUsed();
-            RaiseLocalEvent(args.Target.Value, ref ev);
-            // Goobstation - Wraith - End
 
             // This only has a chance to fail if the target is not wearing anything on their head and is not a familiar.
             if (!_invSystem.TryGetSlotEntity(args.Target.Value, "head", out _) && !HasComp<FamiliarComponent>(args.Target.Value))
             {
                 if (_random.Prob(component.FailChance))
                 {
-                    var othersFailMessage = Loc.GetString(component.LocPrefix + "-heal-fail-others", ("user", userEnt), ("target", targetEnt), ("bible", uid));
+                    var othersFailMessage = Loc.GetString(component.HealFailOthersText ?? component.LocPrefix + "-heal-fail-others", ("user", userEnt), ("target", targetEnt), ("bible", uid)); // IS14-change: optional Wizards override.
                     _popupSystem.PopupEntity(othersFailMessage, args.User, Filter.PvsExcept(args.User), true, PopupType.SmallCaution);
 
-                    var selfFailMessage = Loc.GetString(component.LocPrefix + "-heal-fail-self", ("target", targetEnt), ("bible", uid));
+                    var selfFailMessage = Loc.GetString(component.HealFailSelfText ?? component.LocPrefix + "-heal-fail-self", ("user", userEnt), ("target", targetEnt), ("bible", uid)); // IS14-change: pass the book, as in Wizards.
                     _popupSystem.PopupEntity(selfFailMessage, args.User, args.User, PopupType.MediumCaution);
 
                     _audio.PlayPvs(component.BibleHitSound, args.User);
@@ -147,22 +150,18 @@ namespace Content.Server.Bible
 
             string othersMessage;
             string selfMessage;
-            // Goob start damagesystem update required
-            var damage = _damageableSystem.TryChangeDamage(args.Target.Value,
-                component.Damage,
-                true,
-                origin: uid,
-                targetPart: TargetBodyPart.All,
-                ignoreBlockers: true,
-                splitDamage: SplitDamageBehavior.SplitEnsureAll);
 
-            if (damage == null || damage.Empty) // Goob end damagesystemupdate required
+            if (_damageableSystem.TryChangeDamage(args.Target.Value, component.Damage, true, origin: uid,
+                targetPart: TargetBodyPart.All, ignoreBlockers: true, splitDamage: SplitDamageBehavior.SplitEnsureAll)) // Woundmed
             {
-                othersMessage = Loc.GetString(component.LocPrefix + "-heal-success-others", ("user", userEnt), ("target", targetEnt), ("bible", uid));
-                selfMessage = Loc.GetString(component.LocPrefix + "-heal-success-self", ("target", targetEnt), ("bible", uid));
+                othersMessage = Loc.GetString(component.HealSuccessOthersText ?? component.LocPrefix + "-heal-success-others", ("user", userEnt), ("target", targetEnt), ("bible", uid)); // IS14-change
+                selfMessage = Loc.GetString(component.HealSuccessSelfText ?? component.LocPrefix + "-heal-success-self", ("target", targetEnt), ("bible", uid)); // IS14-change
 
                 _audio.PlayPvs(component.HealSoundPath, args.User);
                 _delay.TryResetDelay((uid, useDelay));
+                // IS14-change: Wizards books can specify a success effect; Goob defaults stay unchanged.
+                if (component.HealingLightEffect is { } effect)
+                    Spawn(effect, Transform(args.Target.Value).Coordinates);
             }
             else
             {
@@ -229,7 +228,7 @@ namespace Content.Server.Bible
         /// <summary>
         /// When the familiar spawns, set its source to the bible.
         /// </summary>
-        private void OnSpawned(EntityUid uid, FamiliarComponent component, GhostRoleSpawnerUsedEvent args)
+        private void OnSpawned(EntityUid uid, FamiliarComponent component, ref GhostRoleSpawnerUsedEvent args)
         {
             var parent = Transform(args.Spawner).ParentUid;
             if (!TryComp<SummonableComponent>(parent, out var summonable))

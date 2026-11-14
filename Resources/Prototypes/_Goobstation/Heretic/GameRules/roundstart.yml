@@ -13,22 +13,17 @@
     - HereticSacrificeObjective
     - HereticSacrificeHeadObjective
   - type: AntagSelection
-    selectionTime: IntraPlayerSpawn
+    selectionTime: JobsAssigned
     agentName: heretic-roundend-name
-    definitions:
-    - prefRoles: [ Heretic ]
-      max: 3
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14HereticAntag06078a414
+      range:
+        max: 3
+        min: 1
       playerRatio: 15
       chaosScore: 250
-      lateJoinAdditional: true
-      jobBlacklist: [ Chaplain, ] # GOOBSTATION
-      skills: # CorvaxGoob-Skills
-      - All
-      blacklist:
-        components:
-        - CommandStaff
-      mindRoles:
-      - MindRoleHeretic
+    lateJoinAdditional: true
   - type: Tag
     tags:
       - RoundstartAntag
@@ -46,21 +41,16 @@
     - HereticSacrificeObjective
     - HereticSacrificeHeadObjective
   - type: AntagSelection
-    selectionTime: IntraPlayerSpawn
+    selectionTime: JobsAssigned
     agentName: heretic-roundend-name
-    definitions:
-    - prefRoles: [ Heretic ]
-      max: 2
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14CalmHereticAntag0c17a9c3a
+      range:
+        max: 2
+        min: 1
       playerRatio: 20
-      lateJoinAdditional: true
-      jobBlacklist: [ Chaplain ] # GOOBSTATION
-      skills: # CorvaxGoob-Skills
-      - All
-      blacklist:
-        components:
-        - CommandStaff
-      mindRoles:
-      - MindRoleHeretic
+    lateJoinAdditional: true
   - type: Tag
     tags:
       - CalmAntag

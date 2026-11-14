@@ -1,3 +1,4 @@
+using Content.Shared.Timing.Components; // IS14-change: upstream namespace move
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Shared._EinsteinEngines.TelescopicBaton;
@@ -5,6 +6,7 @@ using Content.Shared.Item.ItemToggle;
 using Content.Shared.Item.ItemToggle.Components;
 using Content.Shared.Timing;
 using Content.Shared.Weapons.Melee.Events;
+using Content.Shared.Timing.Systems;
 
 namespace Content.Server._EinsteinEngines.TelescopicBaton;
 

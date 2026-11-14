@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # Does not inherit from simplemob
+
 - type: entity
   abstract: true
   name: GuardianBase
@@ -100,7 +101,7 @@
       damage:
         types:
           Blunt: 20
-          Structural: 20
+          Structural: 9 # Activate Star Platinum's signature move: Digging a hole
     - type: MeleeSpeech
     - type: UserInterface
       interfaces:
@@ -116,6 +117,7 @@
     - type: ActionGrant
       actions:
         - ActionSelfToggleGuardian
+        - ActionTelepathyGuardian
     - type: Targeting
     # </Goobstation>
 
@@ -242,8 +244,6 @@
           map: [ "enum.DamageStateVisualLayers.BaseUnshaded" ]
           color: "#8adaff"
           shader: unshaded
-    - type: Body
-      prototype: Primate
     - type: Tag
       tags:
         - CannotSuicide
@@ -251,16 +251,10 @@
     - type: Inventory
       templateId: holoclown
     - type: Hands
+      startingHands:
+        hand_left:
+          location: Left
     - type: ComplexInteraction
-    - type: Clumsy
-      gunShootFailDamage:
-        types:
-          Blunt: 5
-          Piercing: 4
-          Heat: 3
-      catchingFailDamage:
-        types:
-          Blunt: 1
     - type: MeleeWeapon
       angle: 30
       animation: WeaponArcFist
@@ -275,9 +269,6 @@
     - type: RandomMetadata
       nameSegments:
       - NamesClown
-    - type: NpcFactionMember
-      factions:
-        - Syndicate
     - type: HTN
       rootTask:
         task: SimpleHumanoidHostileCompound
@@ -293,20 +284,8 @@
     useDelay: 2
     checkCanInteract: false
     checkConsciousness: false
+  - type: Sprite
+    layers:
+    - texture: Interface/Actions/manifest.png
   - type: InstantAction
     event: !type:GuardianToggleActionEvent
-
-# Goobstation
-- type: entity
-  parent: BaseMentalAction
-  id: ActionSelfToggleGuardian
-  name: Recall Self
-  description: Recalls yourself back into your host's body
-  components:
-  - type: Action
-    icon: Interface/Actions/manifest.png
-    useDelay: 2
-    checkCanInteract: false
-    checkConsciousness: false
-  - type: InstantAction
-    event: !type:GuardianToggleSelfActionEvent # can only recall

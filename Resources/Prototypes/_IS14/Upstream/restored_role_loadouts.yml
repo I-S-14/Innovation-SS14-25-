@@ -1,0 +1,165 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: ad9cfe0c41:Resources/Prototypes/Loadouts/role_loadouts.yml
+- type: roleLoadout
+  id: JobLawyer
+  groups:
+  - Inventory
+  - GroupTankHarness
+  - Glasses
+  - Survival
+  - Trinkets
+  - Animals
+  - GroupSpeciesBreathTool
+  - LawyerEnvirohelm
+  - LawyerEnvirosuit
+  - LawyerEnvirogloves
+- type: roleLoadout
+  id: JobHeadOfSecurity
+  groups:
+  - Inventory
+  - SurvivalSecurity
+  - Trinkets
+  - HeadofSecurityJobTrinkets
+  - Animals
+  - GroupSpeciesBreathToolSecurity
+  - HeadofSecurityEnvirohelm
+  - HeadofSecurityEnvirosuit
+  - HeadofSecurityEnvirogloves
+  - HeadofSecurityGloves
+- type: roleLoadout
+  id: JobWarden
+  groups:
+  - Inventory
+  - SurvivalSecurity
+  - Trinkets
+  - WardenJobTrinkets
+  - Animals
+  - GroupSpeciesBreathToolSecurity
+  - WardenEnvirohelm
+  - WardenEnvirosuit
+  - WardenEnvirogloves
+- type: roleLoadout
+  id: JobSecurityOfficer
+  groups:
+  - Inventory
+  - SurvivalSecurity
+  - Trinkets
+  - SecurityJobTrinkets
+  - Animals
+  - GroupSpeciesBreathToolSecurity
+  - SecurityOfficerEnvirohelm
+  - SecurityOfficerEnvirosuit
+  - SecurityOfficerEnvirogloves
+- type: roleLoadout
+  id: JobDetective
+  groups:
+  - Inventory
+  - SurvivalSecurity
+  - Trinkets
+  - DetectiveJobTrinkets
+  - Animals
+  - GroupSpeciesBreathToolSecurity
+  - DetectiveEnvirohelm
+  - DetectiveEnvirosuit
+  - DetectiveEnvirogloves
+  - DetectiveGloves
+- type: roleLoadout
+  id: JobSecurityCadet
+  groups:
+  - Inventory
+  - SurvivalSecurity
+  - Trinkets
+  - Animals
+  - GroupSpeciesBreathToolSecurity
+  - SecurityCadetEnvirohelm
+  - SecurityCadetEnvirosuit
+  - SecurityCadetEnvirogloves
+- type: roleLoadout
+  id: JobZookeeper
+  groups:
+  - Inventory
+  - GroupTankHarness
+  - CommonBackpack
+  - Glasses
+  - Survival
+  - Trinkets
+  - Animals
+  - GroupSpeciesBreathTool
+  - ZookeeperEnvirohelm
+  - ZookeeperEnvirosuit
+  - ZookeeperEnvirogloves
+- type: roleLoadout
+  id: JobBoxer
+  groups:
+  - Inventory
+  - GroupTankHarness
+  - Glasses
+  - Survival
+  - Trinkets
+  - Animals
+  - GroupSpeciesBreathTool
+  - BoxerEnvirohelm
+  - BoxerEnvirosuit
+- type: roleLoadout
+  id: RoleSurvivalVoxSupport
+  groups:
+  - GroupSpeciesBreathTool
+  - GroupTankHarness
+- type: roleLoadout
+  id: RoleSurvivalVoxTank
+  groups:
+  - GroupEVATankVox
+- type: roleLoadout
+  id: RoleSurvivalStandard
+  groups:
+  - Survival
+  - GroupSpeciesBreathTool
+  - GroupTankHarness
+- type: roleLoadout
+  id: RoleSurvivalClown
+  groups:
+  - SurvivalClown
+  - GroupTankHarness
+- type: roleLoadout
+  id: RoleSurvivalExtended
+  groups:
+  - SurvivalExtended
+  - GroupSpeciesBreathTool
+  - GroupTankHarness
+- type: roleLoadout
+  id: RoleSurvivalMedical
+  groups:
+  - SurvivalMedical
+  - GroupSpeciesBreathToolMedical
+  - GroupTankHarness
+- type: roleLoadout
+  id: RoleSurvivalSecurity
+  groups:
+  - SurvivalSecurity
+  - GroupSpeciesBreathToolSecurity
+  - GroupTankHarness
+- type: roleLoadout
+  id: RoleSurvivalSyndicate
+  groups:
+  - SurvivalSyndicate
+  - GroupSpeciesBreathTool
+  - GroupTankHarness
+- type: roleLoadout
+  id: RoleSurvivalNukie
+  groups:
+  - SurvivalSyndicate
+  - GroupSpeciesBreathTool
+  - GroupPocketTankDouble
+- type: roleLoadout
+  id: RoleSurvivalEVA
+  groups:
+  - GroupEVATank
+  - SurvivalExtended
+- type: roleLoadout
+  id: RoleSurvivalMilitaryDouble
+  groups:
+  - SurvivalMilitaryDouble
+- type: roleLoadout
+  id: RoleSurvivalSpaceNinja
+  groups:
+  - GroupEVATank

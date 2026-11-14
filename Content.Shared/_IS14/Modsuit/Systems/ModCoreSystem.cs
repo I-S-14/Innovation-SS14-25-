@@ -62,7 +62,7 @@ public sealed class ModCoreSystem : EntitySystem
     private void OnPry(Entity<ModCoreSlotComponent> ent, ref ChassisPryEvent args)
     {
         if (args.Handled
-            || !_itemSlots.TryGetSlot(ent, ent.Comp.SlotId, out var slot)
+            || !_itemSlots.TryGetSlot(ent.Owner, ent.Comp.SlotId, out var slot)
             || slot.Item is not { } core
             || slot.ContainerSlot is not { } container)
             return;
@@ -153,7 +153,7 @@ public sealed class ModCoreSystem : EntitySystem
     /// </summary>
     public Entity<ModCoreComponent>? GetCore(Entity<ModCoreSlotComponent> ent)
     {
-        if (!_itemSlots.TryGetSlot(ent, ent.Comp.SlotId, out var slot)
+        if (!_itemSlots.TryGetSlot(ent.Owner, ent.Comp.SlotId, out var slot)
             || slot.Item is not { } item
             || !TryComp<ModCoreComponent>(item, out var core))
             return null;
@@ -170,7 +170,7 @@ public sealed class ModCoreSystem : EntitySystem
         if (!Resolve(core, ref core.Comp, false))
             return null;
 
-        return _itemSlots.TryGetSlot(core, core.Comp.CellSlotId, out var slot) ? slot.Item : null;
+        return _itemSlots.TryGetSlot(core.Owner, core.Comp.CellSlotId, out var slot) ? slot.Item : null;
     }
 
     /// <summary>
@@ -180,7 +180,7 @@ public sealed class ModCoreSystem : EntitySystem
     public bool TryEjectCell(Entity<PowerCellSlotComponent?> core, EntityUid user)
     {
         return Resolve(core, ref core.Comp, false)
-               && _itemSlots.TryGetSlot(core, core.Comp.CellSlotId, out var slot)
+               && _itemSlots.TryGetSlot(core.Owner, core.Comp.CellSlotId, out var slot)
                && _itemSlots.TryEjectToHands(core, slot, user, excludeUserAudio: true);
     }
 
@@ -191,7 +191,7 @@ public sealed class ModCoreSystem : EntitySystem
     public bool TryInsertCell(Entity<PowerCellSlotComponent?> core, EntityUid user)
     {
         return Resolve(core, ref core.Comp, false)
-               && _itemSlots.TryGetSlot(core, core.Comp.CellSlotId, out var slot)
+               && _itemSlots.TryGetSlot(core.Owner, core.Comp.CellSlotId, out var slot)
                && _itemSlots.TryInsertFromHand(core, slot, user, excludeUserAudio: true);
     }
 

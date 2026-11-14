@@ -10,6 +10,9 @@
   - Medical
   flavor: medicine
   color: "#081a80"
+  puddleSpriteSet: Acid # Goob
+  puddleColor: "#081a8080" # Goob
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Medicine:
       effects:
@@ -19,7 +22,6 @@
       - !type:ModifyStatusEffect
         effectProto: StatusEffectWoozy
         time: 20.0
-
 - type: reagent
   id: Dylovene
   name: reagent-name-dylovene
@@ -28,6 +30,7 @@
   physicalDesc: reagent-physical-desc-translucent
   flavor: medicine
   color: "#3a1d8a"
+  puddleSpriteSet: Shiny # Goob
   metabolisms:
     Medicine:
       effects:
@@ -88,6 +91,8 @@
   physicalDesc: reagent-physical-desc-chalky
   flavor: medicine
   color: "#64ffe6"
+  puddleSpriteSet: Splotchy # Goob
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Medicine:
       effects:
@@ -105,7 +110,6 @@
         damage:
           types:
             Poison: -3
-
 - type: reagent
   id: Ethylredoxrazine
   name: reagent-name-ethylredoxrazine
@@ -224,6 +228,8 @@
   physicalDesc: reagent-physical-desc-fizzy
   flavor: medicine
   color: "#0091ff"
+  puddleSpriteSet: Acid # Goob
+  puddleColor: "#0091ffCC" # Goob
   plantMetabolism:
   - !type:PlantAdjustToxins
     amount: -5
@@ -239,25 +245,36 @@
           - !type:TemperatureCondition
             # this is a little arbitrary but they gotta be pretty cold
             max: 213.0
-          scaleByTemperature: # Shitmed Change
-            min: 100.0
-            max: 213.0
-            scale: 1.6
+          #scaleByTemperature: # Shitmed Change # TODO SHITMED add properly for EvenHealthChange
+          #  min: 100.0
+          #  max: 213.0
+          #  scale: 1.6
           damage:
           # todo scale with temp like SS13
-            Airloss: -3
-            Brute: -3 # Goob
-            Burn: -3 # Goob
-            Toxin: -2
-        - !type:GenericStatusEffect # Mono edit
+          # Goob - Cryo buff till temp scaling is implemented
+            Airloss: -9 # Goob - Cryobuff
+            Brute: -9 # Goob - Cryobuff
+            Burn: -9 # Goob - Cryobuff
+            Toxin: -6 # Goob - Cryobuff
+          # Omu Start -- add bloddloss back to cryox
+        - !type:ModifyBloodLevel
           conditions:
-          - !type:MetabolizerTypeCondition
-            type:
-            - Hydrakin # i hate them
           - !type:TemperatureCondition
             max: 213.0
-          key: ForcedSleep
-          component: ForcedSleeping
+          amount: 8
+        - !type:ModifyBleed
+          conditions:
+          - !type:TemperatureCondition
+            max: 213.0
+          amount: -1
+          #Omu End
+        - !type:ModifyStatusEffect # goob
+          conditions:
+          - !type:MetabolizerTypeCondition # Fuck you
+            type: [Hydrakin]
+          - !type:TemperatureCondition
+            max: 213.0
+          effectProto: StatusEffectForcedSleeping
           type: Add
 
 - type: reagent
@@ -285,14 +302,13 @@
                 Cellular: -2
             groups: # Frontier
                 Brute: 1 # Frontier
-        - !type:GenericStatusEffect # Mono edit
+        - !type:ModifyStatusEffect # goob
           conditions:
           - !type:MetabolizerTypeCondition # Fuck you
             type: [Hydrakin]
           - !type:TemperatureCondition
             max: 213.0
-          key: ForcedSleep
-          component: ForcedSleeping
+          effectProto: StatusEffectForcedSleeping
           type: Add
 
 - type: reagent
@@ -303,6 +319,8 @@
   physicalDesc: reagent-physical-desc-translucent
   flavor: medicine
   color: "#215263"
+  puddleSpriteSet: Shiny # Goob
+  puddleColor: "#21526370" # Goob
   metabolisms:
     Medicine:
       effects:
@@ -451,6 +469,7 @@
   physicalDesc: reagent-physical-desc-odorless
   flavor: medicine
   color: "#d2fffa"
+  puddleSpriteSet: Shiny # Goob
   metabolisms:
     Medicine:
       effects:
@@ -644,6 +663,7 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: medicine
   color: "#bf3d19"
+  puddleSpriteSet: Splotchy # Goob
   metabolisms:
     Medicine:
       effects:
@@ -653,7 +673,8 @@
             Heat: -0.5
             Shock: -0.5
             Cold: -0.5 # Was .33, Buffed due to limb damage changes(GoobStation)
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: -10
         conditions:
         - !type:ReagentCondition
@@ -679,6 +700,7 @@
   physicalDesc: reagent-physical-desc-pungent
   flavor: medicine
   color: "#ff7db5"
+  puddleSpriteSet: Splotchy # Goob
   metabolisms:
     Medicine:
       effects:
@@ -791,7 +813,9 @@
   plantMetabolism:
     - !type:PlantAdjustToxins
       amount: 6
-    - !type:PlantPhalanximine
+    - !type:PlantChangeTraits
+      trait: PlantTraitUnviable
+      type: Remove
       minScale: 4
   metabolisms:
     Medicine:
@@ -918,12 +942,12 @@
   physicalDesc: reagent-physical-desc-pulpy
   flavor: medicine
   color: "#FFE774"
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Medicine:
       effects:
       - !type:ModifyBleed
         amount: -0.5
-
 - type: reagent
   id: Saline
   name: reagent-name-saline
@@ -932,21 +956,28 @@
   physicalDesc: reagent-physical-desc-salty
   flavor: salty
   color: "#0064C8"
+  puddleSpriteSet: Water # Goob
   metabolisms:
     Drink:
       effects:
-        - !type:SatiateThirst
+        - !type:Satiate
+          satiationType: Thirst
           conditions: # DeltaV nerf of saline for Feroxi
           - !type:MetabolizerTypeCondition
             type: [ Feroxi ]
             inverted: true
           factor: 6
-        - !type:SatiateThirst # DeltaV nerf of saline for Feroxi
+        - !type:Satiate # DeltaV nerf of saline for Feroxi
+          satiationType: Thirst
           conditions:
           - !type:MetabolizerTypeCondition
             type: [ Feroxi ]
           factor: 2
         - !type:ModifyBloodLevel
+          conditions: # Goob start - Afterlight synths
+          - !type:MetabolizerTypeCondition
+            type: [ Synth ]
+            inverted: true # Goob end
           amount: 12 # Goobstation - buffed by two times due to shitmed changes
 
 - type: reagent
@@ -1004,6 +1035,7 @@
   physicalDesc: reagent-physical-desc-pungent
   flavor: medicine
   color: "#d49a2f"
+  puddleSpriteSet: Splotchy # Goob
   metabolisms:
     Poison:
       effects:
@@ -1035,6 +1067,7 @@
   physicalDesc: reagent-physical-desc-viscous
   flavor: medicine
   color: "#ba7d7d"
+  puddleSpriteSet: Acid # Goob
   metabolisms:
     Medicine:
       effects:
@@ -1047,9 +1080,48 @@
         - !type:ReagentCondition
           reagent: TranexamicAcid
           min: 15
+# CorvaxGoob start
+        - !type:MobStateCondition
+          mobstate: Alive
         damage:
           types:
             Bloodloss: 3
+      - !type:HealthChange
+        conditions:
+        - !type:ReagentCondition
+          reagent: TranexamicAcid
+          min: 15
+        - !type:MobStateCondition
+          mobstate: Critical
+# CorvaxGoob end
+        damage:
+          types:
+            Bloodloss: 3
+# CorvaxGoob start
+  reactiveEffects:
+    Acidic:
+      methods: [ Touch ]
+      effects:
+      - !type:ModifyBleed
+        amount: -1.0
+        conditions:
+        - !type:HasComponentOnEquipmentCondition
+          components:
+          - type: PressureProtection
+          inverted: true
+      - !type:HealthChange
+        ignoreResistances: false
+        ignoreBlockers: false
+        damage:
+          types:
+            Caustic: 0.1
+        conditions:
+        - !type:HasComponentOnEquipmentCondition
+          components:
+          - type: PressureProtection
+          inverted: true
+
+# CorvaxGoob end
 
 - type: reagent
   id: Tricordrazine
@@ -1085,14 +1157,13 @@
   physicalDesc: reagent-physical-desc-oily
   flavor: medicine
   color: "#2690b5"
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Medicine:
       effects:
-      # what the hell, this isn't satiating at all!!
-      - !type:SatiateHunger
+      - !type:Satiate
+        satiationType: Hunger
         factor: -1
-
-  # Should heal quite literally everything, use in very small amounts
 - type: reagent
   id: Omnizine
   name: reagent-name-omnizine
@@ -1101,6 +1172,7 @@
   physicalDesc: reagent-physical-desc-soothing
   flavor: medicine
   color: "#fcf7f9"
+  puddleSpriteSet: Shiny # Goob
   metabolisms:
     Medicine:
       effects:
@@ -1121,11 +1193,77 @@
             Blunt: -3 # Was 2, Buffed due to limb damage changes(GoobStation)
             Slash: -3 # Was 2, Buffed due to limb damage changes(GoobStation)
             Piercing: -3 # Was 2, Buffed due to limb damage changes(GoobStation)
-      - !type:ImmunityModifier #Goobstation
+      - !type:ImmunityModifier # Goobstation
         gainRateModifier: 0.0011 #3x stronger than Immurin
         strengthModifier: 0.0088888888888 #Twice as strong
         statusLifetime: 3
 
+- type: reagent
+  id: ApotheosoticEnzymes
+  name: reagent-name-apotheosotic-enzymes
+  group: Medicine
+  desc: reagent-desc-apotheosotic-enzymes
+  physicalDesc: reagent-physical-desc-sticky
+  flavor: magical
+  color: "#faf5ef"
+  # IS14: retain Goob organ metabolism and reagent effects.
+  metabolisms:
+    Medicine:
+      effects:
+      - !type:EvenHealthChange
+        conditions:
+        - !type:ReagentCondition
+          reagent: Omnizine
+          max: 0
+        damage:
+          Burn: -2
+          Toxin: -2
+          Airloss: -2
+          Brute: -2
+      - !type:HealthChange
+        damage:
+          types:
+            Cellular: 0.5
+      - !type:HealthChange
+        conditions:
+        - !type:ReagentCondition
+          reagent: ApotheosoticExtract
+          min: 30
+        damage:
+          types:
+            Caustic: 2
+            Poison: 2
+- type: reagent
+  id: ApotheosoticExtract
+  name: reagent-name-apotheosotic-extract
+  group: Medicine
+  desc: reagent-desc-apotheosotic-extract
+  physicalDesc: reagent-physical-desc-chalky
+  flavor: chalky
+  color: "#fffff0"
+  # IS14: retain Goob organ metabolism and reagent effects.
+  metabolisms:
+    Medicine:
+      effects:
+      - !type:EvenHealthChange
+        conditions:
+        - !type:ReagentCondition
+          reagent: ApotheosoticExtract
+          max: 5
+        damage:
+          Burn: -1
+          Toxin: -1
+          Airloss: -1
+          Brute: -1
+      - !type:HealthChange
+        conditions:
+        - !type:ReagentCondition
+          reagent: ApotheosoticExtract
+          min: 5
+        damage:
+          types:
+            Caustic: 2
+            Poison: 2
 - type: reagent
   id: Ultravasculine
   name: reagent-name-ultravasculine
@@ -1134,6 +1272,7 @@
   physicalDesc: reagent-physical-desc-thick-and-grainy
   flavor: medicine
   color: "#520e30"
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Medicine:
       effects:
@@ -1183,7 +1322,6 @@
           min: 1
         reagent: Ultravasculine
         amount: 0.5
-
 - type: reagent
   id: Oculine
   name: reagent-name-oculine
@@ -1192,11 +1330,13 @@
   physicalDesc: reagent-physical-desc-translucent
   flavor: medicine
   color: "#404040"
+  puddleSpriteSet: Shiny # Goob
+  puddleColor: "#40404050" # Goob
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Medicine:
       effects:
-      - !type:EyeDamage
-
+      - !type:EyeDamage ''
 - type: reagent
   id: Cognizine
   name: reagent-name-cognizine
@@ -1205,6 +1345,7 @@
   physicalDesc: reagent-physical-desc-enigmatic
   flavor: magical
   color: "#b50ee8"
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Medicine:
       effects:
@@ -1213,7 +1354,6 @@
         - !type:ReagentCondition
           reagent: Cognizine
           min: 5
-
 - type: reagent
   id: Ethyloxyephedrine
   name: reagent-name-ethyloxyephedrine
@@ -1222,10 +1362,11 @@
   physicalDesc: reagent-physical-desc-shiny
   flavor: medicine
   color: "#d5d5e4"
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Medicine:
       effects:
-      - !type:Jitter
+      - !type:Jitter ''
       - !type:GenericStatusEffect
         key: Stutter
         component: StutteringAccent
@@ -1243,7 +1384,6 @@
         messages: ["ethyloxyephedrine-effect-feeling-awake", "ethyloxyephedrine-effect-clear-mind"]
         type: Local
         probability: 0.1
-
 - type: reagent
   id: Diphenylmethylamine
   name: reagent-name-diphenylmethylamine
@@ -1252,6 +1392,7 @@
   physicalDesc: reagent-physical-desc-glowing
   flavor: medicine
   color: "#b0abaa"
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Medicine:
       effects:
@@ -1269,7 +1410,6 @@
         messages: ["ethyloxyephedrine-effect-feeling-awake", "ethyloxyephedrine-effect-clear-mind"]
         type: Local
         probability: 0.1
-
 - type: reagent
   id: Sigynate
   name: reagent-name-sigynate
@@ -1429,18 +1569,20 @@
             Poison: 4 # Goob
 
 - type: reagent
+  parent: Water # so basic physical properties (e.g recognizability, slippage, evaporation, thirst-quenching) are identical to Water
   id: Holywater
   name: reagent-name-holywater
   group: Medicine
   desc: reagent-desc-holywater
-  evaporationSpeed: 0.3
   physicalDesc: reagent-physical-desc-holy
   flavor: holy
   color: "#91C3F7"
+  puddleSpriteSet: Water # Goob
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 3
     Medicine:
       effects:
@@ -1468,11 +1610,6 @@
     #    damage:
     #      types:
     #        Holy: 0.5
-  plantMetabolism:
-  - !type:PlantAdjustWater
-    amount: 1
-  tileReactions:
-  - !type:ExtinguishTileReaction { }
 
 - type: reagent
   id: Pyrazine
@@ -1606,6 +1743,7 @@
   flavor: medicine
   color: "#0cbfe9"
   worksOnTheDead: true
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Medicine:
       effects:
@@ -1627,7 +1765,6 @@
         damage:
           Brute: -4
           Burn: -4
-
 - type: reagent
   id: Necrosol
   name: reagent-name-necrosol
@@ -1672,16 +1809,14 @@
               Brute: -5.0
               Burn: -5.0
               Toxin: -5.0
-        - !type:GenericStatusEffect # Mono edit
+        - !type:ModifyStatusEffect # goob
           conditions:
           - !type:MetabolizerTypeCondition # Fuck you
             type: [Hydrakin]
           - !type:TemperatureCondition
-            max: 217.15
-          key: ForcedSleep
-          component: ForcedSleeping
+            max: 213.0
+          effectProto: StatusEffectForcedSleeping
           type: Add
-
 
 - type: reagent
   id : Aloxadone
@@ -1695,7 +1830,8 @@
   metabolisms:
     Medicine:
       effects:
-      - !type:EvenHealthChange
+      # - !type:EvenHealthChange # Goob, return Aloxadone to its pre-upstream strength
+      - !type:HealthChange
         conditions:
         - !type:TemperatureCondition
           max: 213.0
@@ -1704,16 +1840,19 @@
           max: 213.0
           scale: 1.6
         damage: # Goobstation - Cryo rebalance
-          Burn: -10.0
-      - !type:GenericStatusEffect # Mono edit
+          # Burn: -10.0
+          types: # Goob start; return Aloxadone to its pre-upstream strength
+            Heat: -10.0
+            Cold: -10.0
+            Shock: -10.0
+            Caustic: -10.0 # Goob end
+      - !type:ModifyStatusEffect # goob
         conditions:
-        - !type:MetabolizerTypeCondition
-          type:
-          - Hydrakin # i hate them
+        - !type:MetabolizerTypeCondition # Fuck you
+          type: [Hydrakin]
         - !type:TemperatureCondition
           max: 213.0
-        key: ForcedSleep
-        component: ForcedSleeping
+        effectProto: StatusEffectForcedSleeping
         type: Add
 
 - type: reagent
@@ -1724,6 +1863,7 @@
   physicalDesc: reagent-physical-desc-opaque
   flavor: sweet
   color: "#A0A0A0"
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Medicine:
       effects:
@@ -1734,9 +1874,8 @@
           min: 15
         type: Local
         visualType: Medium
-        messages: [ "mannitol-effect-enlightened" ]
+        messages: ["mannitol-effect-enlightened"]
         probability: 0.2
-
 - type: reagent
   id: Psicodine
   name: reagent-name-psicodine
@@ -1792,6 +1931,7 @@
   physicalDesc: reagent-physical-desc-grainy
   flavor: medicine
   color: "#baa15d"
+  puddleSpriteSet: Powder # Goob
   metabolisms:
     Medicine:
       effects:
@@ -1824,6 +1964,8 @@
   physicalDesc: reagent-physical-desc-crystalline
   flavor: medicine
   color: "#27870a"
+  puddleSpriteSet: Powder # Goob
+  puddleColor: "#27870a50" # Goob
   metabolisms:
     Medicine:
       effects:
@@ -1849,9 +1991,9 @@
       - !type:AdjustReagent
         reagent: Ephedrine
         amount: -3.0
-      - !type:AdjustReagent
-        reagent: Stimulants
-        amount: -1.0 #Goobstation edit
+      #- !type:AdjustReagent # CorvaxGoob edit: Галоперидол больше не выводит гиперизин. 
+      #  reagent: Stimulants
+      #  amount: -1.0 #Goobstation edit
       - !type:AdjustReagent
         reagent: THC
         amount: -3.0
@@ -1867,27 +2009,33 @@
       - !type:AdjustReagent
         reagent: MindbreakerToxin
         amount: -3.0
+      #CorvaxGoob start
+      - !type:AdjustReagent
+        reagent: Aranesp
+        amount: -3.0
+      #CorvaxGoob end
 
 - type: reagent
-  id: Warfarin
-  name: reagent-name-warfarin
+  id: Heparin
+  name: reagent-name-heparin
   group: Medicine
-  desc: reagent-desc-warfarin
+  desc: reagent-desc-heparin
   physicalDesc: reagent-physical-desc-thin
   allowedDepartments:
   - Medical
   flavor: medicine
   color: "#d0e21b"
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Medicine:
-      effects: # One day this could be useful for treating blood clots, if we get those
+      effects:
       - !type:ModifyStatusEffect
         effectProto: StatusEffectAnticoagulant
-        time: 30 # 10 bleed ticks, you bleed every 3 seconds by default.
+        time: 30
         type: Update
       - !type:ModifyBleed
         conditions:
         - !type:ReagentCondition
-          reagent: Warfarin
+          reagent: Heparin
           min: 15
         amount: 0.25

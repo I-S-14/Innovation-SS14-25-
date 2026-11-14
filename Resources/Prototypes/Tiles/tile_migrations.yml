@@ -4,13 +4,85 @@
   id: FloorBasaslt
   target: FloorBasalt
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 - type: tileAlias
   id: FloorAsteroidCoarseSand1
   target: FloorAsteroidCoarseSand0
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 - type: tileAlias
   id: FloorAsteroidCoarseSand2
   target: FloorAsteroidCoarseSand0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # 2023-08-21
 # Asteroid coarse sand has been nuked since it was made to fit in with the old CEV-Eris style rocks. This tile alias is inevitably not enough to fix every instance of it appearing since the tile is so common, but it's the only reasonable way forward since it's not the default anymore.
@@ -19,37 +91,253 @@
   id: FloorAsteroidSandRocks
   target: FloorAsteroidSand
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 - type: tileAlias
   id: FloorAsteroidSandRocksRed
   target: FloorAsteroidSandRed
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 - type: tileAlias
   id: FloorAsteroidSandPebbles
   target: FloorAsteroidSand
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 - type: tileAlias
   id: FloorAsteroidIronsand1
   target: FloorAsteroidIronsand
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 - type: tileAlias
   id: FloorAsteroidIronsand2
   target: FloorAsteroidIronsand
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 - type: tileAlias
   id: FloorAsteroidIronsand3
   target: FloorAsteroidIronsand
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 - type: tileAlias
   id: FloorAsteroidIronsand4
   target: FloorAsteroidIronsand
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 - type: tileAlias
   id: FloorAsteroidCoarseSand0
   target: FloorAsteroidSand
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 - type: tileAlias
   id: FloorAsteroidCoarseSandDug
   target: FloorAsteroidSandDug
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # 2023-09-09
 
@@ -57,9 +345,57 @@
   id: FloorGlassAlt
   target: FloorGlass
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 - type: tileAlias
   id: FloorRGlassAlt
   target: FloorRGlass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # 2024-11-15
 # Burnt tiles now exist, but they don't use the tiles system. They're decals.
@@ -69,9 +405,57 @@
   id: PlatingBurnt
   target: PlatingDamaged
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 - type: tileAlias
   id: FloorSteelBurnt
   target: FloorSteelDamaged
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # 2025-12-12 Corvax
 
@@ -79,34 +463,1020 @@
   id: FloorConcreteOutside
   target: FloorConcrete
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 - type: tileAlias
   id: FloorConcreteOutsideMono
   target: FloorConcreteMono
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 - type: tileAlias
   id: FloorConcreteOutsideSmooth
   target: FloorConcreteSmooth
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 - type: tileAlias
   id: FloorGrayConcreteOutside
   target: FloorGrayConcrete
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 - type: tileAlias
   id: FloorGrayConcreteOutsideMono
   target: FloorGrayConcreteMono
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
 - type: tileAlias
   id: FloorGrayConcreteOutsideSmooth
   target: FloorGrayConcreteSmooth
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  
 - type: tileAlias
   id: FloorOldConcreteOutside
   target: FloorOldConcrete
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 - type: tileAlias
   id: FloorOldConcreteOutsideMono
   target: FloorOldConcreteMono
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
 - type: tileAlias
   id: FloorOldConcreteOutsideSmooth
   target: FloorOldConcreteSmooth
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 2026/07/22
+# The respritening! With this one simple trick, i give 200 mappers a collective aneurysm.
+
+- type: tileAlias
+  id: FloorBrassReebe
+  target: FloorSteelDamaged
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- type: tileAlias
+  id: FloorBrassFilled
+  target: FloorSteelDamaged
+
+
+# IS14: PlatingBrass is a retained tile, including axe deconstruction; do not remap it.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- type: tileAlias
+  id: FloorPlasmaMarble
+  target: FloorMarble
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- type: tileAlias
+  id: FloorSteelSlatsContinuous
+  target: FloorSteelVerticalSlatsBordered
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- type: tileAlias
+  id: FloorDarkSlatsContinuous
+  target: FloorDarkVerticalSlatsBordered
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- type: tileAlias
+  id: FloorWhiteSlatsContinuous
+  target: FloorWhiteVerticalSlatsBordered
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- type: tileAlias
+  id: TrainLattice
+  target: Lattice
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 2026/07/28
+# More respritening
+- type: tileAlias
+  id: FloorGrassLight
+  target: FloorGrass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- type: tileAlias
+  id: FloorIronsandTile
+  target: FloorAsteroidIronsand
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- type: tileAlias
+  id: IronsandPacked
+  target: FloorAsteroidIronsand
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- type: tileAlias
+  id: IronsandPaved
+  target: FloorAsteroidIronsand
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- type: tileAlias
+  id: PlatingIronsand
+  target: Plating
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# IS14-change: FloorCaveDrought is retained as a distinct tile for maps and biomes.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# IS14: retained red sand must keep its own tile ID when maps load.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- type: tileAlias
+  id: FloorAsteroidSandRed
+  target: FloorAsteroidSand
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- type: tileAlias
+  id: FloorAsteroidSandDug
+  target: FloorAsteroidSand
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- type: tileAlias
+  id: FloorAsteroidSandDugBorderless
+  target: FloorAsteroidSandBorderless
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# IS14: retained low-desert terrain must keep its own tile ID when maps load.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- type: tileAlias
+  id: FloorAsteroidSandUnvariantizedBorderless
+  target: FloorAsteroidSand
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- type: tileAlias
+  id: FloorAsteroidSandUnvariantized
+  target: FloorAsteroidSand
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- type: tileAlias
+  id: FloorAsteroidIronsandUnvariantized
+  target: FloorAsteroidIronsand
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- type: tileAlias
+  id: FloorAsteroidIronsandUnvariantizedBorderless
+  target: FloorAsteroidIronsand
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- type: tileAlias
+  id: FloorSnowDug
+  target: FloorSnow
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- type: tileAlias
+  id: FloorXenoborg
+  target: FloorExoBorg
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- type: tileAlias
+  id: FloorXeno
+  target: FloorExoViscera
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- type: tileAlias
+  id: FloorXenoSteel
+  target: FloorExoHull
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- type: tileAlias
+  id: FloorXenoSteelCorner
+  target: FloorExoCornerSW
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- type: tileAlias
+  id: FloorXenoMaint
+  target: FloorExoTechmaint
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- type: tileAlias
+  id: FloorAsphalt
+  target: FloorConcrete

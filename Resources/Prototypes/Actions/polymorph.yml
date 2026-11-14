@@ -6,10 +6,15 @@
   name: Revert
   description: Revert back into your original form.
   components:
-  - type: ConfirmableAction
-    popup: revert-polymorph-action-popup
   - type: InstantAction
     event: !type:RevertPolymorphActionEvent
+
+- type: entity
+  parent: ActionRevertPolymorph
+  id: ActionRevertPolymorphConfirm
+  components:
+  - type: ConfirmableAction
+    popup: revert-polymorph-action-popup
 
 - type: entity
   abstract: true
@@ -30,9 +35,10 @@
   description: Polymorphs you into a Spider.
   components:
   - type: Action
-    icon:
-      sprite: Mobs/Animals/spider.rsi
-      state: tarantula
+  - type: Sprite
+    sprite: Mobs/Animals/Spiders/tarantulaspider.rsi
+    layers:
+    - state: idle
   - type: InstantAction
     event: !type:PolymorphActionEvent
       protoId: WizardSpider
@@ -48,6 +54,10 @@
     icon:
       sprite: _Goobstation/Wizard/actions.rsi # Goob edit
       state: immrod # Goob edit
+  - type: Sprite
+    sprite: Objects/Fun/immovable_rod.rsi
+    layers:
+    - state: icon
   - type: InstantAction
     event: !type:PolymorphSpellEvent # Goob edit
       protoId: WizardRod
@@ -64,7 +74,6 @@
       4: ActionPolymorphWizardRodIV
       5: ActionPolymorphWizardRodV
 
-
 - type: entity
   parent: BaseActionPolymorph
   id: ActionPolymorphJaunt
@@ -74,14 +83,15 @@
   - type: Magic
     requiresClothes: true # Goobstation
     school: Translocation # Goobstation
-  - type: Sprite # Goobstation - for apprentices
-    sprite: _Goobstation/Wizard/actions.rsi
-    state: jaunt
   - type: Action
     useDelay: 30
     icon:
       sprite: _Goobstation/Wizard/actions.rsi # Goob edit
       state: jaunt
+  - type: Sprite
+    sprite: Objects/Magic/magicactions.rsi
+    layers:
+    - state: jaunt
   - type: InstantAction
     event: !type:PolymorphSpellEvent # Goob edit
       protoId: Jaunt

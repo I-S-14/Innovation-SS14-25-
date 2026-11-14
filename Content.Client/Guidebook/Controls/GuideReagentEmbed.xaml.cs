@@ -217,7 +217,7 @@ public sealed partial class GuideReagentEmbed : BoxContainer, IDocumentTag, ISea
             {
                 description.PushNewline();
                 description.AddMarkupPermissive(
-                    _contraband.GenerateDepartmentExamineMessage(reagent.AllowedDepartments, reagent.AllowedJobs, ContrabandItemType.Reagent));
+                    _contraband.GenerateDepartmentExamineMessage(reagent.AllowedDepartments, reagent.AllowedJobs, Color.Yellow, ContrabandItemType.Reagent));
             }
             // Other contraband text
             else if (reagent.ContrabandSeverity != null &&

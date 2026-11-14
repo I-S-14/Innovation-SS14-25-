@@ -1,15 +1,18 @@
 // SPDX-License-Identifier: MIT
 
+using Content.Shared._CorvaxGoob.AppearanceConverter;
 using Content.Shared.Humanoid;
 using Robust.Shared.Serialization;
+using Robust.Shared.Enums;
 
 namespace Content.Shared.StationRecords;
 
 /// <summary>
 ///     General station record. Indicates the crewmember's name and job.
 /// </summary>
+[DataDefinition]
 [Serializable, NetSerializable]
-public sealed record GeneralStationRecord
+public sealed partial record GeneralStationRecord : StationRecord
 {
     /// <summary>
     ///     Name tied to this station record.
@@ -53,9 +56,7 @@ public sealed record GeneralStationRecord
     public Sex Sex = Sex.Unsexed;
 
     /// <summary>
-    ///     The priority to display this record at.
-    ///     This is taken from the 'weight' of a job prototype,
-    ///     usually.
+    ///     The priority to display this record at, taken from the station's job-weight profile.
     /// </summary>
     [DataField]
     public int DisplayPriority;
@@ -71,4 +72,18 @@ public sealed record GeneralStationRecord
     /// </summary>
     [DataField]
     public string? DNA;
+
+    /// <summary>
+    ///     Полное описание раундстарт внешности
+    /// </summary>
+    [DataField]
+    public AppearanceConverterVisualTransformProfile? Visual;
+
+    // IS14-merge: restored member lost in the upstream merge
+    /// <summary>
+    ///     Gender identity tied to this station record.
+    /// </summary>
+    /// <remarks>Sex should be placed in a medical record, not a general record.</remarks>
+    [DataField]
+    public Gender Gender = Gender.Epicene;
 }

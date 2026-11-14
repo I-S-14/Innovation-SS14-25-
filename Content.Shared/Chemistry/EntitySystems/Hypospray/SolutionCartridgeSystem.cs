@@ -27,8 +27,8 @@ public sealed class SolutionCartridgeSystem : EntitySystem
     private void OnCartridgeInserted(Entity<InjectorComponent> ent, ref EntInsertedIntoContainerMessage args)
     {
         if (!TryComp<SolutionCartridgeComponent>(args.Entity, out var cartridge)
-        || !TryComp(ent, out SolutionContainerManagerComponent? manager)
-        || !_solution.TryGetSolution((ent, manager), cartridge.TargetSolution, out var solutionEntity))
+        || !TryComp(ent, out SolutionManagerComponent? manager)
+        || !_solution.TryGetSolution((ent.Owner, manager), cartridge.TargetSolution, out var solutionEntity))
             return;
 
         if (_timing.ApplyingState)
@@ -40,8 +40,8 @@ public sealed class SolutionCartridgeSystem : EntitySystem
     private void OnCartridgeRemoved(Entity<InjectorComponent> ent, ref EntRemovedFromContainerMessage args)
     {
         if (!TryComp<SolutionCartridgeComponent>(args.Entity, out var cartridge)
-        || !TryComp(ent, out SolutionContainerManagerComponent? manager)
-        || !_solution.TryGetSolution((ent, manager), cartridge.TargetSolution, out var solutionEntity))
+        || !TryComp(ent, out SolutionManagerComponent? manager)
+        || !_solution.TryGetSolution((ent.Owner, manager), cartridge.TargetSolution, out var solutionEntity))
             return;
 
         if (_timing.ApplyingState)

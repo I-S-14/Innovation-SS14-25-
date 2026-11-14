@@ -2,6 +2,7 @@
 
 using Robust.Shared.Map;
 using Robust.Shared.Utility;
+using Content.Shared.NPC;
 
 namespace Content.Server.NPC.Pathfinding;
 

@@ -1,0 +1,16 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: 5327c414c5:Resources/Prototypes/Entities/Clothing/Hands/gloves.yml
+- type: entity
+  parent: ClothingHandsGlovesBoxingBlue
+  id: ClothingHandsGlovesBoxingRigged
+  suffix: Rigged
+  components:
+  - type: StaminaDamageOnHit
+    damage: '25'
+  - type: MeleeWeapon
+    attackRate: '1.4'
+    damage:
+      types:
+        Blunt: '8'
+    bluntStaminaDamageFactor: '0.0'
+    mustBeEquippedToUse: 'true'

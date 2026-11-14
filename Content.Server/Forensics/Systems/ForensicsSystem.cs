@@ -110,7 +110,7 @@ namespace Content.Server.Forensics
             Dirty(uid, updatecomp);
         }
 
-        private void OnBeingGibbed(EntityUid uid, ForensicsComponent component, BeingGibbedEvent args)
+        private void OnBeingGibbed(EntityUid uid, ForensicsComponent component, ref BeingGibbedEvent args)
         {
             string dna = Loc.GetString("forensics-dna-unknown");
 
@@ -184,7 +184,7 @@ namespace Content.Server.Forensics
         public List<(string, TimeSpan)> GetSolutionsDNA(EntityUid uid) // Goobstation
         {
             List<(string, TimeSpan)> list = new(); // Goobstation
-            if (TryComp<SolutionContainerManagerComponent>(uid, out var comp))
+            if (TryComp<SolutionManagerComponent>(uid, out var comp))
             {
                 foreach (var (_, soln) in _solutionContainerSystem.EnumerateSolutions((uid, comp)))
                 {

@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Server.Fluids.Components;
+using Content.Shared._Funkystation.WallStains; // Goob
 using Content.Server.Spreader;
-using Content.Goobstation.Common.Footprints;
 using Content.Shared.Chemistry;
 using Content.Shared.Chemistry.Components;
-using Content.Shared.Chemistry.Components.SolutionManager;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Chemistry.Reaction;
 using Content.Shared.Database;
@@ -22,8 +21,9 @@ using Robust.Shared.Collections;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Player;
-using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
+using Content.Shared.Chemistry.Components.SolutionManager;
+using Robust.Shared.Prototypes;
 
 namespace Content.Server.Fluids.EntitySystems;
 
@@ -32,34 +32,38 @@ namespace Content.Server.Fluids.EntitySystems;
 /// </summary>
 public sealed partial class PuddleSystem : SharedPuddleSystem
 {
-    [Dependency] private readonly SharedMapSystem _map = default!;
+    //IS14-change start: restore declarations used by merged implementation.
+    [Dependency] private EntityQuery<EvaporationSparkleComponent> _evaporationSparklesQuery = default!;
+    //IS14-change end
+
+    //IS14-change start: retain fork fields lost during merge.
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly EntityLookupSystem _lookup = default!;
-    [Dependency] private readonly SharedColorFlashEffectSystem _color = default!;
-    [Dependency] private readonly SharedSolutionContainerSystem _solutionContainerSystem = default!;
-    [Dependency] private readonly SharedTransformSystem _transform = default!;
-    [Dependency] private readonly TurfSystem _turf = default!;
+    //IS14-change end
+
+    [Dependency] private SharedMapSystem _map = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private EntityLookupSystem _lookup = default!;
+    [Dependency] private SharedColorFlashEffectSystem _color = default!;
+    [Dependency] private SharedSolutionContainerSystem _solutionContainerSystem = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private TurfSystem _turf = default!;
 
 
-    [ValidatePrototypeId<ReagentPrototype>]
-    private const string Blood = "Blood";
+    private static readonly ProtoId<ReagentPrototype> Blood = "Blood";
 
-    [ValidatePrototypeId<ReagentPrototype>]
-    private const string Slime = "Slime";
+    private static readonly ProtoId<ReagentPrototype> Slime = "Slime";
 
-    [ValidatePrototypeId<ReagentPrototype>]
-    private const string CopperBlood = "CopperBlood";
+    private static readonly ProtoId<ReagentPrototype> CopperBlood = "CopperBlood";
 
-    [ValidatePrototypeId<ReagentPrototype>] // goobstation
-    private const string BloodChangeling = "BloodChangeling"; // goobstation
+     // goobstation
+    private static readonly ProtoId<ReagentPrototype> BloodChangeling = "BloodChangeling"; // goobstation
 
-    [ValidatePrototypeId<ReagentPrototype>] // goobstation
-    private const string BlackBlood = "BlackBlood"; // goobstation
+     // goobstation
+    private static readonly ProtoId<ReagentPrototype> BlackBlood = "BlackBlood"; // goobstation
 
     private static string[] _standoutReagents = [Blood, Slime, CopperBlood, BloodChangeling, BlackBlood]; // goobstation - added BloodChangeling, BlackBlood
 
-    private EntityQuery<PuddleComponent> _puddleQuery;
+    [Dependency] private EntityQuery<PuddleComponent> _puddleQuery = default!; //IS14-change: initialize retained query.
 
     /*
      * TODO: Need some sort of way to do blood slash / vomit solution spill on its own
@@ -70,8 +74,6 @@ public sealed partial class PuddleSystem : SharedPuddleSystem
     public override void Initialize()
     {
         base.Initialize();
-
-        _puddleQuery = GetEntityQuery<PuddleComponent>();
 
         SubscribeLocalEvent<PuddleComponent, SpreadNeighborsEvent>(OnPuddleSpread);
         SubscribeLocalEvent<PuddleComponent, SlipEvent>(OnPuddleSlip);
@@ -173,7 +175,7 @@ public sealed partial class PuddleSystem : SharedPuddleSystem
                     break;
             }
 
-            // If there is nothing left to overflow from our tile, then we'll stop this tile being a active spreader
+            // If there is nothing left to overflow from our tile, then we'll stop this tile being an active spreader
             if (overflow.Volume == FixedPoint2.Zero)
             {
                 RemCompDeferred<ActiveEdgeSpreaderComponent>(entity);
@@ -327,20 +329,13 @@ public sealed partial class PuddleSystem : SharedPuddleSystem
         Solution addedSolution,
         bool sound = true,
         bool checkForOverflow = true,
-        PuddleComponent? puddleComponent = null,
-        SolutionContainerManagerComponent? sol = null)
+        PuddleComponent? puddleComponent = null)
     {
-        if (!Resolve(puddleUid, ref puddleComponent, ref sol))
+        if (!Resolve(puddleUid, ref puddleComponent))
             return false;
 
-        _solutionContainerSystem.EnsureAllSolutions((puddleUid, sol));
-
-        if (addedSolution.Volume == 0 ||
-            !_solutionContainerSystem.ResolveSolution(puddleUid, puddleComponent.SolutionName,
-                ref puddleComponent.Solution))
-        {
+        if (addedSolution.Volume == 0 || !_solutionContainerSystem.ResolveSolution(puddleUid, puddleComponent.SolutionName, ref puddleComponent.Solution))
             return false;
-        }
 
         _solutionContainerSystem.AddSolution(puddleComponent.Solution.Value, addedSolution);
 
@@ -477,8 +472,11 @@ public sealed partial class PuddleSystem : SharedPuddleSystem
                 PopupType.SmallCaution);
         }
 
-        _color.RaiseEffect(spilled.GetColor(_prototypeManager), targets,
+        _color.RaiseEffect(spilled.GetColor(ProtoMan), targets,
             Filter.Pvs(entity, entityManager: EntityManager));
+
+        var wallSplash = new SplashOnWallEvent(coordinates, spilled.Clone()); // Goob
+        RaiseLocalEvent(ref wallSplash); // Goob
 
         return TrySpillAt(coordinates, spilled, out puddleUid, sound);
     }
@@ -556,27 +554,19 @@ public sealed partial class PuddleSystem : SharedPuddleSystem
 
         // Get normalized co-ordinate for spill location and spill it in the centre
         // TODO: Does SnapGrid or something else already do this?
-        var anchored = _map.GetAnchoredEntitiesEnumerator(gridId, mapGrid, tileRef.GridIndices);
-        var puddleQuery = GetEntityQuery<PuddleComponent>();
-        var sparklesQuery = GetEntityQuery<EvaporationSparkleComponent>();
-        var footprintQuery = GetEntityQuery<FootprintComponent>(); // Corvax-Next-Footprints
+        var anchored = _map.GetAnchoredEntities(gridId, mapGrid, tileRef.GridIndices);
 
         while (anchored.MoveNext(out var ent))
         {
             // If there's existing sparkles then delete it
-            if (sparklesQuery.TryGetComponent(ent, out var sparkles))
+            if (_evaporationSparklesQuery.TryGetComponent(ent, out var sparkles))
             {
                 QueueDel(ent.Value);
                 continue;
             }
 
-            if (!puddleQuery.TryGetComponent(ent, out var puddle))
+            if (!_puddleQuery.TryGetComponent(ent, out var puddle))
                 continue;
-
-            // Corvax-Next-Footprints-Start
-            if (footprintQuery.HasComp(ent))
-                continue;
-            // Corvax-Next-Footprints-End
 
             if (TryAddSolution(ent.Value, solution.SplitSolution(solution.Volume), sound, puddleComponent: puddle)) // goobstation
             {
@@ -610,19 +600,11 @@ public sealed partial class PuddleSystem : SharedPuddleSystem
         if (!TryComp<MapGridComponent>(tile.GridUid, out var grid))
             return false;
 
-        var anc = _map.GetAnchoredEntitiesEnumerator(tile.GridUid, grid, tile.GridIndices);
-        var puddleQuery = GetEntityQuery<PuddleComponent>();
-        var footprintQuery = GetEntityQuery<FootprintComponent>(); // Corvax-Next-Footprints
-
+        var anc = _map.GetAnchoredEntities(tile.GridUid, grid, tile.GridIndices);
         while (anc.MoveNext(out var ent))
         {
-            if (!puddleQuery.HasComponent(ent.Value))
+            if (!_puddleQuery.HasComponent(ent.Value))
                 continue;
-
-            // Corvax-Next-Footprints-Start
-            if (footprintQuery.HasComponent(ent.Value))
-                continue;
-            // Corvax-Next-Footprints-End
 
             puddleUid = ent.Value;
             return true;

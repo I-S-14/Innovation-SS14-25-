@@ -1,12 +1,21 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+using System.Text;
+
 namespace Content.Shared.Atmos;
 
 public readonly record struct GasMixtureStringRepresentation(float TotalMoles, float Temperature, float Pressure, Dictionary<string, float> MolesPerGas) : IFormattable
 {
     public override string ToString()
     {
-        return $"{Temperature}K {Pressure} kPa";
+        var stringBuilder = new StringBuilder();
+        foreach (var (gas, moles) in MolesPerGas)
+        {
+            stringBuilder.Append($"{gas}: {moles}, ");
+        }
+        var result = stringBuilder.ToString();
+
+        return $"{Temperature} K, {Pressure} kPa, {result}Total Moles: {TotalMoles}";
     }
 
     public string ToString(string? format, IFormatProvider? formatProvider)

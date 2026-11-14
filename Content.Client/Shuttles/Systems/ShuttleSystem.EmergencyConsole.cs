@@ -80,6 +80,5 @@ public sealed class EmergencyShuttleOverlay : Overlay
 
         args.WorldHandle.SetTransform(_transformSystem.GetWorldMatrix(xform));
         args.WorldHandle.DrawRect(Position.Value, Color.Red.WithAlpha(100));
-        args.WorldHandle.SetTransform(Matrix3x2.Identity);
     }
 }

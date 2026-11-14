@@ -1,3 +1,4 @@
+using Robust.Shared.Prototypes;
 using Content.Shared._CorvaxGoob;
 using Robust.Client.ResourceManagement;
 using Robust.Shared.Audio;
@@ -10,6 +11,10 @@ namespace Content.Client._CorvaxGoob.TTS;
 
 public sealed partial class TTSSystem
 {
+    //IS14-change start: typed prototype IDs required by the upstream analyzer.
+    private static readonly ProtoId<AudioPresetPrototype> CompatibilityTTSCommunicationAudioPresetId = "TTSCommunication";
+    //IS14-change end
+
     private float _announcementsVolume = 0.0f;
 
     private void OnAnnouncementsVolumeChanged(float volume)
@@ -43,7 +48,7 @@ public sealed partial class TTSSystem
             var effect = _audio.CreateEffect();
             var aux = _audio.CreateAuxiliary();
 
-            if (!_prototypeManager.TryIndex<AudioPresetPrototype>("TTSCommunication", out var prototype))
+            if (!_prototypeManager.TryIndex<AudioPresetPrototype>(CompatibilityTTSCommunicationAudioPresetId, out var prototype))
                 return;
 
             AddComp<AudioPresetComponent>(aux.Entity);

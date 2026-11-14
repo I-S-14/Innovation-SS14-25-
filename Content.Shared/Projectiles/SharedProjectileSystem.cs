@@ -10,7 +10,7 @@ using Content.Shared.Inventory;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Tag;
 using Content.Shared.Throwing;
-using Content.Shared.Weapons.Ranged.Components;
+using Content.Shared.Whitelist;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Map;
 using Robust.Shared.Network;
@@ -20,7 +20,9 @@ using Robust.Shared.Physics.Events;
 using Robust.Shared.Physics.Systems;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
+using Robust.Shared.Timing;
 using Robust.Shared.Utility;
+using Content.Shared.Weapons.Ranged.Components;
 
 namespace Content.Shared.Projectiles;
 
@@ -28,14 +30,13 @@ public abstract partial class SharedProjectileSystem : EntitySystem
 {
     public const string ProjectileFixture = "projectile";
 
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
-    [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
-    [Dependency] private readonly SharedHandsSystem _hands = default!;
-    [Dependency] private readonly SharedPhysicsSystem _physics = default!;
-    [Dependency] private readonly SharedTransformSystem _transform = default!;
-    [Dependency] private readonly TagSystem _tag = default!;
-
-    private static readonly ProtoId<TagPrototype> GunCanAimShooterTag = "GunCanAimShooter";
+    [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private SharedDoAfterSystem _doAfter = default!;
+    [Dependency] private SharedHandsSystem _hands = default!;
+    [Dependency] private SharedPhysicsSystem _physics = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private EntityWhitelistSystem _whitelist = null!;
 
     public override void Initialize()
     {
@@ -50,6 +51,7 @@ public abstract partial class SharedProjectileSystem : EntitySystem
         SubscribeLocalEvent<EmbeddableProjectileComponent, ComponentShutdown>(OnEmbeddableCompShutdown);
 
         SubscribeLocalEvent<EmbeddedContainerComponent, EntityTerminatingEvent>(OnEmbeddableTermination);
+        SubscribeLocalEvent<ComplexProjectileDamageComponent, BeforeProjectileHitEvent>(OnBeforeComplexProjectileHit);
     }
 
     private void OnEmbedActivate(Entity<EmbeddableProjectileComponent> embeddable, ref ActivateInWorldEvent args)
@@ -93,12 +95,12 @@ public abstract partial class SharedProjectileSystem : EntitySystem
         if (!embeddable.Comp.EmbedOnThrow)
             return;
 
-        EmbedAttach(embeddable, args.Target, null, embeddable.Comp);
+        EmbedAttach(embeddable, args.Target, null, embeddable.Comp, args.Component.Thrower); // Trauma - thrower predicted it
     }
 
     private void OnEmbedProjectileHit(Entity<EmbeddableProjectileComponent> embeddable, ref ProjectileHitEvent args)
     {
-        EmbedAttach(embeddable, args.Target, args.Shooter, embeddable.Comp);
+        EmbedAttach(embeddable, args.Target, args.Shooter, embeddable.Comp, args.Shooter); // Trauma - shooter predicted it
 
         // Raise a specific event for projectiles.
         if (!TryComp<ProjectileComponent>(embeddable, out var projectile))
@@ -108,7 +110,8 @@ public abstract partial class SharedProjectileSystem : EntitySystem
         RaiseLocalEvent(embeddable, ref ev);
     }
 
-    private void EmbedAttach(EntityUid uid, EntityUid target, EntityUid? user, EmbeddableProjectileComponent component)
+    private void EmbedAttach(EntityUid uid, EntityUid target, EntityUid? user, EmbeddableProjectileComponent component,
+        EntityUid? predictingUser = null) // Trauma
     {
         TryComp<PhysicsComponent>(uid, out var physics);
         _physics.SetLinearVelocity(uid, Vector2.Zero, body: physics);
@@ -124,7 +127,7 @@ public abstract partial class SharedProjectileSystem : EntitySystem
             _transform.SetLocalPosition(uid, xform.LocalPosition + rotation.RotateVec(component.Offset), xform);
         }
 
-        _audio.PlayPredicted(component.Sound, uid, null);
+        _audio.PlayPredicted(component.Sound, uid, predictingUser); // Trauma - whoever predicted the hit already played it
         component.EmbeddedIntoUid = target;
         var ev = new EmbedEvent(user, target);
         RaiseLocalEvent(uid, ref ev);
@@ -136,6 +139,7 @@ public abstract partial class SharedProjectileSystem : EntitySystem
         DebugTools.AssertEqual(embeddedContainer.EmbeddedObjects.Contains(uid), false);
 
         embeddedContainer.EmbeddedObjects.Add(uid);
+        Dirty(target, embeddedContainer); // Trauma - so prediction resets it
     }
 
     public void EmbedDetach(EntityUid uid, EmbeddableProjectileComponent? component, EntityUid? user = null)
@@ -158,7 +162,7 @@ public abstract partial class SharedProjectileSystem : EntitySystem
 
         if (component.DeleteOnRemove)
         {
-            PredictedQueueDel(uid);
+            QueueDel(uid);
             return;
         }
 
@@ -199,6 +203,24 @@ public abstract partial class SharedProjectileSystem : EntitySystem
         DetachAllEmbedded(container);
     }
 
+    private void OnBeforeComplexProjectileHit(Entity<ComplexProjectileDamageComponent> ent, ref BeforeProjectileHitEvent args)
+    {
+        foreach (var option in ent.Comp.DamageOptions)
+        {
+            if (!_whitelist.CheckBoth(args.Target, option.Blacklist, option.Whitelist))
+                continue;
+            args.Damage = option.Damage;
+            return;
+        }
+    }
+
+    [SubscribeLocalEvent]
+    private void OnBeingShot(Entity<ProjectileComponent> entity, ref ProjectileShotEvent args)
+    {
+        entity.Comp.WhenToStopIgnoringShooter = _timing.CurTime + entity.Comp.DelayToAcknowledgeShooter;
+        Dirty(entity);
+    }
+
     public void DetachAllEmbedded(Entity<EmbeddedContainerComponent> container)
     {
         foreach (var embedded in container.Comp.EmbeddedObjects)
@@ -212,23 +234,8 @@ public abstract partial class SharedProjectileSystem : EntitySystem
 
     private void PreventCollision(EntityUid uid, ProjectileComponent component, ref PreventCollideEvent args)
     {
-        // Goobstation - Crawling fix
-        if (TryComp<RequireProjectileTargetComponent>(args.OtherEntity, out var requireTarget) && requireTarget.IgnoreThrow && requireTarget.Active)
-            return;
-
-        if (component.IgnoredEntities.Contains(args.OtherEntity))
-        {
-            args.Cancelled = true;
-            return;
-        }
-
-        if ((component.Shooter == args.OtherEntity || component.Weapon == args.OtherEntity) &&
-            component.Weapon != null && _tag.HasTag(component.Weapon.Value, GunCanAimShooterTag) &&
-            TryComp(uid, out TargetedProjectileComponent? targeted) && targeted.Target == args.OtherEntity)
-            return;
-        // /Goobstation
-
-        if (component.IgnoreShooter && (args.OtherEntity == component.Shooter || args.OtherEntity == component.Weapon))
+        if (_timing.CurTime < component.WhenToStopIgnoringShooter
+            && (args.OtherEntity == component.Shooter || args.OtherEntity == component.Weapon))
         {
             args.Cancelled = true;
         }
@@ -280,14 +287,25 @@ public record struct ProjectileReflectAttemptEvent(EntityUid ProjUid, Projectile
 }
 
 /// <summary>
+/// Raised when a projectile is shot
+/// </summary>
+[ByRefEvent]
+public record struct ProjectileShotEvent;
+
+/// <summary>
 /// Raised when a projectile hits an entity
 /// </summary>
 [ByRefEvent]
 public record struct ProjectileHitEvent(DamageSpecifier Damage, EntityUid Target, EntityUid? Shooter = null);
 
-// CorvaxGoob
 /// <summary>
-/// Вызывается после попадания и просчёта урона
+/// Raised before a projectile hits an entity
+/// </summary>
+[ByRefEvent]
+public record struct BeforeProjectileHitEvent(DamageSpecifier Damage, EntityUid Target, EntityUid? Shooter = null);
+
+/// <summary>
+/// Raised after a projectile hit and its damage were processed. (IS14/Goob)
 /// </summary>
 [ByRefEvent]
 public record struct AfterProjectileHitEvent(DamageSpecifier Damage, DamageSpecifier? ModifiedDamage, EntityUid Target, EntityUid? Shooter = null);

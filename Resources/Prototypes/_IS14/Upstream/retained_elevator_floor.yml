@@ -1,0 +1,10 @@
+# IS14: retain Goob floor identity and item drop with current Wizards artwork.
+# Mechanics from accepted Goob 5327c414c5:Resources/Prototypes/Tiles/floors.yml.
+- type: tile
+  id: FloorElevatorShaft
+  parent: FloorDark
+  name: tiles-elevator-shaft
+  footstepSounds:
+    collection: FootstepHull
+  tileRipResistance: 4500
+  itemDrop: FloorTileItemElevatorShaft

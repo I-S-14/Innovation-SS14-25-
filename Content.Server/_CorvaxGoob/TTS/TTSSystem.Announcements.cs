@@ -7,6 +7,7 @@ using Content.Shared.Station.Components;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Player;
+using Content.Shared.Station.Systems;
 
 namespace Content.Server._CorvaxGoob.TTS;
 public sealed partial class TTSSystem

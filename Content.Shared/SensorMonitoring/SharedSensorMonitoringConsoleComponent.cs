@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Robust.Shared.Serialization;
+using Content.Shared.DeviceNetwork;
+using ConsoleUIState = Content.Shared.SensorMonitoring.SensorMonitoringConsoleBoundInterfaceState;
 
 namespace Content.Shared.SensorMonitoring;
 
@@ -15,7 +17,7 @@ public sealed class SensorMonitoringConsoleBoundInterfaceState : BoundUserInterf
     {
         public int NetId;
         public string Name = "";
-        public string Address = "";
+        public LocDeviceAddress Address ;
         public SensorDeviceType DeviceType;
 
         public SensorStream[] Streams = Array.Empty<SensorStream>();

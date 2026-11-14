@@ -20,7 +20,7 @@ namespace Content.Client.UserInterface.Controls.FancyTree;
 [GenerateTypedNameReferences]
 public sealed partial class FancyTree : Control
 {
-    [Dependency] private readonly IResourceCache _resCache = default!;
+    [Dependency] private IResourceCache _resCache = default!;
 
     public const string StylePropertyLineWidth = "LineWidth";
     public const string StylePropertyLineColor = "LineColor";
@@ -157,7 +157,7 @@ public sealed partial class FancyTree : Control
         SetSelectedIndex(item.Index);
     }
 
-    public void SetSelectedIndex(int? value)
+    public void SetSelectedIndex(int? value, bool invokeEvent = true)
     {
         if (value == null || value < 0 || value >= Items.Count)
             value = null;
@@ -176,7 +176,8 @@ public sealed partial class FancyTree : Control
                 newSelection.SetExpanded(true);
         }
 
-        OnSelectedItemChanged?.Invoke(newSelection);
+        if (invokeEvent)
+            OnSelectedItemChanged?.Invoke(newSelection);
     }
 
     /// <summary>

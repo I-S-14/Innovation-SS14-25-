@@ -1,3 +1,4 @@
+using Content.Shared.Antag;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Text;
@@ -19,13 +20,13 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Goobstation.Server.Changeling.GameTicking.Rules;
 
-public sealed class ChangelingRuleSystem : GameRuleSystem<ChangelingRuleComponent>
+public sealed partial class ChangelingRuleSystem : ServerGameRuleSystem<ChangelingRuleComponent>
 {
-    [Dependency] private readonly MindSystem _mind = default!;
-    [Dependency] private readonly AntagSelectionSystem _antag = default!;
-    [Dependency] private readonly SharedRoleSystem _role = default!;
-    [Dependency] private readonly NpcFactionSystem _npcFaction = default!;
-    [Dependency] private readonly ObjectivesSystem _objective = default!;
+    [Dependency] private MindSystem _mind = default!;
+    [Dependency] private AntagSelectionSystem _antag = default!;
+    [Dependency] private SharedRoleSystem _role = default!;
+    [Dependency] private NpcFactionSystem _npcFaction = default!;
+    [Dependency] private ObjectivesSystem _objective = default!;
 
     public readonly SoundSpecifier BriefingSound = new SoundPathSpecifier("/Audio/_Goobstation/Ambience/Antag/changeling_start.ogg");
 
@@ -39,7 +40,7 @@ public sealed class ChangelingRuleSystem : GameRuleSystem<ChangelingRuleComponen
 
     public readonly int StartingCurrency = 12;
 
-    [ValidatePrototypeId<EntityPrototype>] EntProtoId mindRole = "MindRoleChangeling";
+    EntProtoId mindRole = "MindRoleChangeling";
 
     public override void Initialize()
     {
@@ -65,7 +66,7 @@ public sealed class ChangelingRuleSystem : GameRuleSystem<ChangelingRuleComponen
 
         // briefing
         // Everypony has a metadata component, why are you trycomp'ing it?
-        if (TryComp<MetaDataComponent>(target, out var metaData))
+        if (TryComp(target, out MetaDataComponent? metaData))
         {
             var briefing = Loc.GetString("changeling-role-greeting", ("name", metaData?.EntityName ?? "Unknown"));
             var briefingShort = Loc.GetString("changeling-role-greeting-short", ("name", metaData?.EntityName ?? "Unknown"));
@@ -106,7 +107,7 @@ public sealed class ChangelingRuleSystem : GameRuleSystem<ChangelingRuleComponen
             if (!_mind.TryGetMind(ling.Owner, out var mindId, out var mind))
                 continue;
 
-            if (!TryComp<MetaDataComponent>(ling.Owner, out var metaData))
+            if (!TryComp(ling.Owner, out MetaDataComponent? metaData))
                 continue;
 
             if (ling.TotalAbsorbedEntities > mostAbsorbed)

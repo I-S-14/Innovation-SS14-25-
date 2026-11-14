@@ -5,14 +5,14 @@ using Robust.Shared.Serialization;
 namespace Content.Shared._CorvaxGoob.Botany.PlantAnalyzer;
 
 [Serializable, NetSerializable]
-public sealed class PlantAnalyzerScannedUserMessage(NetEntity? targetEntity, bool? scanMode, PlantAnalyzerPlantData? plantData, PlantAnalyzerTrayData? trayData, PlantAnalyzerTolerancesData? tolerancesData, PlantAnalyzerProduceData? produceData, TimeSpan? printReadyAt) : BoundUserInterfaceMessage
+public sealed class CorvaxPlantAnalyzerScannedUserMessage(NetEntity? targetEntity, bool? scanMode, CorvaxPlantAnalyzerPlantData? plantData, CorvaxPlantAnalyzerTrayData? trayData, CorvaxPlantAnalyzerTolerancesData? tolerancesData, CorvaxPlantAnalyzerProduceData? produceData, TimeSpan? printReadyAt) : BoundUserInterfaceMessage
 {
     public readonly NetEntity? TargetEntity = targetEntity;
     public bool? ScanMode = scanMode;
-    public PlantAnalyzerPlantData? PlantData = plantData;
-    public PlantAnalyzerTrayData? TrayData = trayData;
-    public PlantAnalyzerTolerancesData? TolerancesData = tolerancesData;
-    public PlantAnalyzerProduceData? ProduceData = produceData;
+    public CorvaxPlantAnalyzerPlantData? PlantData = plantData;
+    public CorvaxPlantAnalyzerTrayData? TrayData = trayData;
+    public CorvaxPlantAnalyzerTolerancesData? TolerancesData = tolerancesData;
+    public CorvaxPlantAnalyzerProduceData? ProduceData = produceData;
     public readonly TimeSpan? PrintReadyAt = printReadyAt;
 }
 
@@ -20,7 +20,7 @@ public sealed class PlantAnalyzerScannedUserMessage(NetEntity? targetEntity, boo
 /// Everything that is kept independed of a given plant/seed.
 /// </summary>
 [Serializable, NetSerializable]
-public sealed class PlantAnalyzerTrayData(float waterLevel, float nutritionLevel, float toxins, float pestLevel, float weedLevel, List<string>? chemicals)
+public sealed class CorvaxPlantAnalyzerTrayData(float waterLevel, float nutritionLevel, float toxins, float pestLevel, float weedLevel, List<string>? chemicals)
 {
     public float WaterLevel = waterLevel;
     public float NutritionLevel = nutritionLevel;
@@ -36,7 +36,7 @@ public sealed class PlantAnalyzerTrayData(float waterLevel, float nutritionLevel
 /// Which is most of the "Tolerances" reagion plus the gases it may need.
 /// </summary>
 [Serializable, NetSerializable]
-public sealed class PlantAnalyzerTolerancesData(float nutrientConsumption, float waterConsumption, float idealHeat, float heatTolerance, float idealLight, float lightTolerance, float toxinsTolerance, float lowPressureTolerance, float highPressureTolerance, float pestTolerance, float weedTolerance, List<Gas> consumeGasses)
+public sealed class CorvaxPlantAnalyzerTolerancesData(float nutrientConsumption, float waterConsumption, float idealHeat, float heatTolerance, float? idealLight, float? lightTolerance, float toxinsTolerance, float lowPressureTolerance, float highPressureTolerance, float pestTolerance, float weedTolerance, List<Gas> consumeGasses)
 {
     public float WaterConsumption = waterConsumption;
     public float NutrientConsumption = nutrientConsumption;
@@ -47,8 +47,8 @@ public sealed class PlantAnalyzerTolerancesData(float nutrientConsumption, float
     public float PressureTolerance = (lowPressureTolerance + highPressureTolerance) / 2 - lowPressureTolerance;
     public float IdealHeat = idealHeat;
     public float HeatTolerance = heatTolerance;
-    public float IdealLight = idealLight;
-    public float LightTolerance = lightTolerance;
+    public float? IdealLight = idealLight;
+    public float? LightTolerance = lightTolerance;
     public List<Gas> ConsumeGasses = consumeGasses;
 }
 
@@ -56,7 +56,7 @@ public sealed class PlantAnalyzerTolerancesData(float nutrientConsumption, float
 /// Information about the plant inside the tray.
 /// </summary>
 [Serializable, NetSerializable]
-public sealed class PlantAnalyzerPlantData(string seedDisplayName, float health, float endurance, float age, float lifespan, bool dead, bool viable, bool mutating, bool kudzu)
+public sealed class CorvaxPlantAnalyzerPlantData(string seedDisplayName, float health, float endurance, float age, float lifespan, bool dead, bool viable, bool mutating, bool kudzu)
 {
     public string SeedDisplayName = seedDisplayName;
     public float Health = health;
@@ -73,7 +73,7 @@ public sealed class PlantAnalyzerPlantData(string seedDisplayName, float health,
 /// Information about the output of a plant (produce and gas).
 /// </summary>
 [Serializable, NetSerializable]
-public sealed class PlantAnalyzerProduceData(int yield, float potency, List<string> chemicals, List<EntProtoId> produce, List<Gas> exudeGasses, bool seedless)
+public sealed class CorvaxPlantAnalyzerProduceData(int yield, float potency, List<string> chemicals, List<EntProtoId> produce, List<Gas> exudeGasses, bool seedless)
 {
     public int Yield = yield;
     public string Potency = ObscurePotency(potency);
@@ -103,6 +103,6 @@ public sealed class PlantAnalyzerProduceData(int yield, float potency, List<stri
 }
 
 [Serializable, NetSerializable]
-public sealed class PlantAnalyzerPrintMessage : BoundUserInterfaceMessage
+public sealed class CorvaxPlantAnalyzerPrintMessage : BoundUserInterfaceMessage
 {
 }

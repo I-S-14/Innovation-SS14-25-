@@ -5,7 +5,7 @@
   components:
   - type: Objective
     difficulty: 1.5
-    issuer: objective-issuer-cosmiccult
+    issuer: IS14ObjectiveIssuerCosmiccult
   - type: RoleRequirement
     roles:
     - CosmicCultRole
@@ -17,7 +17,7 @@
   components:
   - type: Objective
     difficulty: 1.5
-    issuer: objective-issuer-cosmiccult
+    issuer: IS14ObjectiveIssuerCosmiccult
   - type: RoleRequirement
     roles:
     - CosmicColossusRole

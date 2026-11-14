@@ -2,7 +2,7 @@
 
 - type: entity
   abstract: true
-  parent: BaseItem
+  parent: BaseSheet
   id: SheetMetalBase
   description: A sheet of metal, used often on the station in various applications.
   components:
@@ -10,9 +10,6 @@
     sprite: Objects/Materials/Sheets/metal.rsi
   - type: Item
     sprite: Objects/Materials/Sheets/metal.rsi
-    size: Normal
-  - type: StaticPrice
-    price: 0
   - type: Tag
     tags:
     - Sheet
@@ -20,20 +17,7 @@
     - ConstructionMaterial
     - DroneUsable # Goobstation
   - type: Damageable
-    damageContainer: Inorganic
     damageModifierSet: Metallic
-  - type: Destructible
-    thresholds:
-    - trigger:
-        !type:DamageTrigger
-        damage: 100
-      behaviors:
-      - !type:DoActsBehavior
-        acts: [ "Destruction" ]
-  - type: SolutionContainerManager
-    solutions:
-      steel:
-        canReact: false
   - type: GuideHelp
     guides:
     - ExpandingRepairingStation
@@ -62,9 +46,17 @@
       map: ["base"]
   - type: Item
     heldPrefix: steel
-  - type: Appearance
   - type: Extractable
     grindableSolutionName: steel
+  # Goob start - Afterlight synths
+  - type: Edible
+    requiresSpecialDigestion: true
+    solution: steel
+  - type: FlavorProfile
+    flavors:
+    - metallic
+  - type: BadFood
+  # Goob end
   - type: SolutionContainerManager
     solutions:
       steel:
@@ -80,7 +72,14 @@
     - Sheet
     - Metal
     - Steel
-    - ConstructionMaterial # CorvaxGoob
+    - ConstructionMaterial # Goob
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Iron
+        Quantity: 9
+      - ReagentId: Carbon
+        Quantity: 1
 
 - type: entity
   parent: SheetSteel
@@ -113,7 +112,6 @@
   description: A sheet of brass, primarily used by clockwork enthusiasts and the remnants of Ratvarian cults.
   suffix: Full
   components:
-  - type: Material
   - type: PhysicalComposition
     materialComposition:
       Brass: 100
@@ -131,20 +129,22 @@
       map: ["base"]
   - type: Item
     heldPrefix: brass
-  - type: Appearance
-  - type: FloorTile
-    outputs:
-    - PlatingBrass
   - type: Extractable
     grindableSolutionName: brass
-  - type: SolutionContainerManager
-    solutions:
-      brass:
-        reagents:
-        - ReagentId: Zinc
-          Quantity: 3.3
-        - ReagentId: Copper
-          Quantity: 6.7
+  # Goob start - Afterlight synths
+  - type: Edible
+    requiresSpecialDigestion: true
+    solution: brass
+  - type: FlavorProfile
+    flavors:
+    - metallic
+  - type: BadFood
+  # Goob end
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: Brass
+        Quantity: 10
 
 - type: entity
   parent: SheetBrass
@@ -176,7 +176,6 @@
   name: plasteel
   suffix: Full
   components:
-  - type: Material
   - type: PhysicalComposition
     materialComposition:
       Plasteel: 100
@@ -194,20 +193,16 @@
       map: ["base"]
   - type: Item
     heldPrefix: plasteel
-  - type: Appearance
-  - type: Extractable
-    grindableSolutionName: plasteel
-  - type: SolutionContainerManager
-    solutions:
-      plasteel:
-        reagents:
-        - ReagentId: Plasma
-          Quantity: 10
-        - ReagentId: Iron
-          Quantity: 9
-        - ReagentId: Carbon
-          Quantity: 1
-        canReact: false
+  - type: Solution
+    solution:
+      maxVol: 20
+      reagents:
+      - ReagentId: Plasma
+        Quantity: 10
+      - ReagentId: Iron
+        Quantity: 9
+      - ReagentId: Carbon
+        Quantity: 1
 
 - type: entity
   parent: SheetPlasteel
@@ -232,4 +227,3 @@
   - type: Stack
     stackType: Plasteel
     count: 1
-

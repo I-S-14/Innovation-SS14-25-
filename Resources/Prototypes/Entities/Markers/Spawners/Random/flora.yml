@@ -1,5 +1,20 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
+- type: entityTable
+  id: FloraTreeTable
+  table: !type:GroupSelector
+    children:
+    - id: ShadowTree
+      weight: 5
+    - !type:GroupSelector
+      weight: 95
+      prob: 0.95
+      children:
+      - id: FloraTreeLarge
+      - id: FloraTreeConifer
+      - id: FloraTreeSnow
+      - id: FloraTree
+
 - type: entity
   id: RandomFloraTree
   name: random tree spawner
@@ -10,13 +25,6 @@
       - state: red
       - sprite: Objects/Decoration/Flora/flora_trees.rsi
         state: tree01
-  - type: RandomSpawner
-    prototypes:
-      - FloraTreeLarge
-      - FloraTreeConifer
-      - FloraTreeSnow
-      - FloraTree
-    chance: 0.95
-    rarePrototypes:
-      - ShadowTree
-    rareChance: 0.05
+  - type: EntityTableSpawner
+    table: !type:NestedSelector
+      tableId: FloraTreeTable

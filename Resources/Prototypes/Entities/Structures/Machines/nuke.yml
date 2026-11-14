@@ -68,7 +68,7 @@
     radius: 4
     energy: 2.0
     color: "#FF4020"
-    mask: /Textures/Effects/LightMasks/double_cone.png
+    lightMask: ConeDouble
   - type: RotatingLight
     speed: 120
   - type: NavMapBeacon
@@ -94,6 +94,7 @@
     alertLevelOnDeactivate: red # CorvaxGoob-Announcements
     alertLevelOnOverride: omicron # Goobstation
   - type: InteractionOutline
+  - type: ESForcedFacingUi # Goob
   - type: ActivatableUI
     key: enum.NukeUiKey.Key
   - type: UserInterface
@@ -109,19 +110,13 @@
     containers:
       Nuke: !type:ContainerSlot
   - type: StealTarget
-    stealGroup: NuclearBomb
-  - type: Tag
-    tags:
-    - GhostOnlyWarp
+    stealGroup:
+    - NuclearBomb
   - type: WarpPoint
     follow: true
-    location: nuclear bomb
-    blacklist:
-      tags:
-      - GhostOnlyWarp
+    location: location-nuclear-bomb
   - type: FTLSmashImmune
   - type: SupermatterImmune # Goobstation
-
 
 - type: entity
   parent: NuclearBomb
@@ -134,7 +129,7 @@
     bodyType: Dynamic
 
 - type: entity
-  parent: StorageTank
+  parent: StorageTankBig
   id: NuclearBombKeg
   name: nuclear fission explosive
   suffix: keg
@@ -180,12 +175,11 @@
         - MachineMask
         layer:
         - WallLayer
-  - type: SolutionContainerManager
-    solutions:
-      tank:
-        reagents:
-        - ReagentId: NuclearCola
-          Quantity: 3000
+  - type: Solution
+    solution:
+      reagents:
+      - ReagentId: NuclearCola
+        Quantity: 3840
   - type: ReagentTank
     transferAmount: 100
   - type: StaticPrice

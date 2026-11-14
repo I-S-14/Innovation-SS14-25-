@@ -15,13 +15,15 @@ using Robust.Shared.Audio.Systems;
 using Robust.Shared.Prototypes;
 using System.Linq;
 using Content.Shared.Repairable;
+using Content.Shared.Damage.Systems;
+using Content.Shared.Damage.Components;
 
 namespace Content.Goobstation.Server.NPC.HTN.PrimitiveTasks.Operators.Specific;
 
 public sealed partial class WeldbotWeldOperator : HTNOperator
 {
-    [Dependency] private readonly IEntityManager _entMan = default!;
-    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
+    [Dependency] private IEntityManager _entMan = default!;
+    [Dependency] private IPrototypeManager _prototypeManager = default!;
     private RepairableSystem _repairableSystem = default!;
     private ChatSystem _chat = default!;
     private WeldbotSystem _weldbot = default!;
@@ -37,9 +39,10 @@ public sealed partial class WeldbotWeldOperator : HTNOperator
     [DataField(required: true)]
     public string TargetKey = string.Empty;
 
-    public override void Initialize(IEntitySystemManager sysManager)
+    public override void Initialize(IDependencyCollection deps)
     {
-        base.Initialize(sysManager);
+        base.Initialize(deps);
+        var sysManager = deps.Resolve<IEntitySystemManager>();
         _chat = sysManager.GetEntitySystem<ChatSystem>();
         _weldbot = sysManager.GetEntitySystem<WeldbotSystem>();
         _audio = sysManager.GetEntitySystem<SharedAudioSystem>();
@@ -73,11 +76,11 @@ public sealed partial class WeldbotWeldOperator : HTNOperator
 
         if (botComp.IsEmagged)
         {
-            _damageableSystem.TryChangeDamage(target, -botComp.DamageAmount, true, false, damage);
+            _damageableSystem.ChangeDamage((target, damage), -botComp.DamageAmount, true, false);
         }
         else
         {
-            _repairableSystem.ApplyRepairs((target, repairComp), owner);
+            _repairableSystem.RepairAllDamage(target, owner);
         }
 
         _audio.PlayPvs(botComp.WeldSound, target);

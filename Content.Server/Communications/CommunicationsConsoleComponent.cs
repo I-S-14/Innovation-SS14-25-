@@ -2,6 +2,7 @@
 
 using Content.Shared.Communications;
 using Robust.Shared.Audio;
+using Content.Server.UserInterface;
 
 namespace Content.Server.Communications
 {

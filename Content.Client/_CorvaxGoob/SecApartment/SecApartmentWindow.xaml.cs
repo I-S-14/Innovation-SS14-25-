@@ -1,3 +1,4 @@
+using Content.Client.GameTicking; // IS14-change: ticker namespace move
 using System.Linq;
 using System.Numerics;
 using Content.Client.GameTicking.Managers;
@@ -19,7 +20,6 @@ using Robust.Shared.Utility;
 
 namespace Content.Client._CorvaxGoob.SecApartment;
 
-[Virtual]
 [GenerateTypedNameReferences]
 public sealed partial class SecApartmentWindow : BaseWindow
 {

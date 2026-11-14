@@ -14,6 +14,7 @@ using Content.Shared.Silicons.Borgs.Components;
 using Content.Shared.Silicons.Laws.Components;
 using Robust.Shared.Containers;
 using Robust.Shared.Prototypes;
+using Content.Shared.Antag;
 using Content.Shared._IS14.Cyborgs.Components; // IS14-change
 
 namespace Content.Server._DV.CosmicCult.Abilities;

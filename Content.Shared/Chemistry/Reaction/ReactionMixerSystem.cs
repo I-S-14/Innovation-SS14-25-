@@ -13,11 +13,10 @@ namespace Content.Shared.Chemistry.Reaction;
 
 public sealed partial class ReactionMixerSystem : EntitySystem
 {
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] private readonly SharedSolutionContainerSystem _solutionContainer = default!;
-    [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
-    [Dependency] private readonly INetManager _net = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private SharedSolutionContainerSystem _solutionContainer = default!;
+    [Dependency] private SharedDoAfterSystem _doAfter = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
 
     public override void Initialize()
     {
@@ -42,9 +41,6 @@ public sealed partial class ReactionMixerSystem : EntitySystem
         if (!CanMix(ent.AsNullable(), ent))
             return;
 
-        if (_net.IsServer) // Cannot cancel predicted audio.
-            ent.Comp.AudioStream = _audio.PlayPvs(ent.Comp.MixingSound, ent)?.Entity;
-
         var doAfterArgs = new DoAfterArgs(EntityManager,
             args.User,
             ent.Comp.TimeToMix,
@@ -60,7 +56,8 @@ public sealed partial class ReactionMixerSystem : EntitySystem
             BreakOnMove = true
         };
 
-        _doAfter.TryStartDoAfter(doAfterArgs);
+        if (_doAfter.TryStartDoAfter(doAfterArgs))
+            ent.Comp.AudioStream = _audio.PlayPredicted(ent.Comp.MixingSound, ent, args.User)?.Entity ?? ent.Comp.AudioStream;
     }
 
     private void OnAfterInteract(Entity<ReactionMixerComponent> ent, ref AfterInteractEvent args)
@@ -71,12 +68,11 @@ public sealed partial class ReactionMixerSystem : EntitySystem
         if (!CanMix(ent.AsNullable(), args.Target.Value))
             return;
 
-        if (_net.IsServer) // Cannot cancel predicted audio.
-            ent.Comp.AudioStream = _audio.PlayPvs(ent.Comp.MixingSound, ent)?.Entity;
-
         var doAfterArgs = new DoAfterArgs(EntityManager, args.User, ent.Comp.TimeToMix, new ReactionMixDoAfterEvent(), ent, args.Target.Value, ent);
 
-        _doAfter.TryStartDoAfter(doAfterArgs);
+        if (_doAfter.TryStartDoAfter(doAfterArgs))
+            ent.Comp.AudioStream = _audio.PlayPredicted(ent.Comp.MixingSound, ent, args.User)?.Entity ?? ent.Comp.AudioStream;
+
         args.Handled = true;
     }
 
@@ -93,7 +89,7 @@ public sealed partial class ReactionMixerSystem : EntitySystem
         if (!TryMix(ent.AsNullable(), args.Target.Value))
             return;
 
-        _popup.PopupClient(
+        _popup.PopupEntity(
             Loc.GetString(ent.Comp.MixMessage,
                 ("mixed", Identity.Entity(args.Target.Value, EntityManager)),
                 ("mixer", Identity.Entity(ent.Owner, EntityManager))),

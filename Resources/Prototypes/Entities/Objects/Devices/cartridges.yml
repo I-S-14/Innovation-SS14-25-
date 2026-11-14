@@ -138,7 +138,8 @@
       state: watchdog
   - type: WantedListCartridge
   - type: StealTarget
-    stealGroup: WantedListCartridge
+    stealGroup:
+    - WantedListCartridge
 
 - type: entity
   parent: BasePDACartridge

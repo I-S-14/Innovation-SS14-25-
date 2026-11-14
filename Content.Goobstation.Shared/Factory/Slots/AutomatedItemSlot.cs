@@ -50,7 +50,7 @@ public sealed partial class AutomatedItemSlot : AutomationSlot
     public override bool CanInsert(EntityUid item)
     {
         return base.CanInsert(item) &&
-            _slots.CanInsert(Owner, usedUid: item, user: null, Slot);
+            _slots.CanInsert(Owner, Slot, item, null);
     }
 
     public override EntityUid? GetItem(EntityUid? filter)

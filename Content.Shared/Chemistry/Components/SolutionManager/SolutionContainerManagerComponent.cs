@@ -6,11 +6,14 @@ using Robust.Shared.GameStates;
 
 namespace Content.Shared.Chemistry.Components.SolutionManager;
 
-/// <summary>
-/// <para>A map of the solution entities contained within this entity.</para>
-/// <para>Every solution entity this maps should have a <see cref="SolutionComponent"/> to track its state and a <see cref="ContainedSolutionComponent"/> to track its container.</para>
-/// </summary>
-[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
+/// <remarks>
+/// Exists for simple backwards compatibility.
+/// On <see cref="MapInitEvent"/> this component will transfer all its data where it can to a <see cref="SolutionManagerComponent"/>
+/// Then it will delete itself.
+/// This component will be deleted in the indeterminate future.
+/// </remarks>
+[Obsolete]
+[RegisterComponent]
 [Access(typeof(SharedSolutionContainerSystem))]
 public sealed partial class SolutionContainerManagerComponent : Component
 {
@@ -24,7 +27,7 @@ public sealed partial class SolutionContainerManagerComponent : Component
     /// The names of each solution container attached to this entity.
     /// Actually accessing them must be done via <see cref="ContainerManagerComponent"/>.
     /// </summary>
-    [DataField, AutoNetworkedField]
+    [DataField]
     public HashSet<string> Containers = new(DefaultCapacity);
 
     /// <summary>
@@ -33,6 +36,11 @@ public sealed partial class SolutionContainerManagerComponent : Component
     /// <remarks>
     /// Should be null after mapinit.
     /// </remarks>
-    [DataField, AutoNetworkedField]
-    public Dictionary<string, Solution>? Solutions = null;
+    [DataField]
+    public Dictionary<string, Solution>? Solutions;
+
+    //IS14-change: prevent recursive/repeated conversion when a MapInit consumer
+    // requests its solution before this compatibility component's own callback.
+    internal bool Migrating;
+    internal bool Migrated;
 }

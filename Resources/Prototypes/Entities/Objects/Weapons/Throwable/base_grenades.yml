@@ -1,8 +1,9 @@
-- type: entity # Starts fuse after taking 10 damage.
-  parent: BaseItem
+- type: entity
   abstract: true
+  parent: BaseItem
   id: GrenadeBase
   components:
+  - type: ExplosionEffect # Goob
   - type: Sprite
     sprite: Objects/Weapons/Grenades/grenade.rsi
     layers:
@@ -14,9 +15,6 @@
     quickEquip: false
     slots:
     - Belt
-  - type: TriggerOnUse
-  - type: TimerTrigger
-    delay: 3
   - type: Damageable
     damageContainer: Inorganic
   - type: Destructible
@@ -31,12 +29,6 @@
         acts: ["Destruction"] # Goobstation End
   - type: Appearance
   - type: AnimationPlayer
-  - type: GenericVisualizer
-    visuals:
-      enum.Trigger.TriggerVisuals.VisualState:
-        enum.ConstructionVisuals.Layer:
-          Primed: { state: primed }
-          Unprimed: { state: icon }
   - type: Tag
     tags:
     - Grenade # Goobstation
@@ -52,17 +44,23 @@
         restitution: 0.3
         friction: 0.2
 
-- type: entity # Starts fuse after taking 10 damage, instantly detonates/activates after taking 45 damage.
+- type: entity
+  abstract: true
+  parent: [ GrenadeBase, VolatileGrenadeBase ]
+  id: ImpactGrenadeBase
+  components:
+  - type: TriggerOnLand
+  - type: LandAtCursor
+  - type: TriggerOnCollide
+    fixtureID: fix1
+    maxTriggers: 1
+
+- type: entity # Instantly detonates/activates after taking 45 damage.
   abstract: true
   id: VolatileGrenadeBase
   components:
   - type: Destructible
     thresholds:
-    - trigger:
-        !type:DamageTrigger
-        damage: 10
-      behaviors:
-      - !type:TimerStartBehavior
     - trigger: # immediately explode
         !type:DamageTrigger
         damage: 45
@@ -72,17 +70,12 @@
       - !type:DoActsBehavior
         acts: ["Destruction"]
 
-- type: entity # Starts fuse after taking 10 damage, is destroyed without activating/detonating after taking 45 damage.
+- type: entity # Is destroyed without activating/detonating after taking 45 damage.
   abstract: true
   id: FragileGrenadeBase
   components:
   - type: Destructible
     thresholds:
-    - trigger:
-        !type:DamageTrigger
-        damage: 10
-      behaviors:
-      - !type:TimerStartBehavior
     - trigger: # Disappear
         !type:DamageTrigger
         damage: 45

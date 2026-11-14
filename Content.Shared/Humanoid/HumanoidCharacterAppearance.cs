@@ -7,6 +7,7 @@ using Content.Shared.Humanoid.Prototypes;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Serialization;
+using static Content.Shared.Preferences.HumanoidCharacterProfile;
 
 namespace Content.Shared.Humanoid;
 

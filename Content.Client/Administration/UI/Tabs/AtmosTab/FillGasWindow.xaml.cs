@@ -10,6 +10,10 @@ using Robust.Client.Player;
 using Robust.Client.UserInterface.Controls;
 using Robust.Client.UserInterface.CustomControls;
 using Robust.Shared.Map.Components;
+using System.Collections.Generic;
+using Robust.Shared.GameObjects;
+using Robust.Shared.IoC;
+using Robust.Shared.Map;
 
 namespace Content.Client.Administration.UI.Tabs.AtmosTab
 {

@@ -6,6 +6,10 @@
   components:
   - type: Sprite
     sprite: _EinsteinEngines/Objects/Tanks/emergency.rsi
+    layers:
+    - state: icon
+  - type: MaxPressureVisuals
+    integrityColor: "#ff4500"
   - type: Item
     sprite: _EinsteinEngines/Objects/Tanks/emergency.rsi
   - type: Clothing
@@ -40,6 +44,10 @@
   components:
   - type: Sprite
     sprite: _EinsteinEngines/Objects/Tanks/regular.rsi
+    layers:
+    - state: icon
+  - type: MaxPressureVisuals
+    integrityColor: "#ff4500"
   - type: Item
     sprite: _EinsteinEngines/Objects/Tanks/regular.rsi
   - type: Clothing
@@ -74,6 +82,10 @@
   components:
   - type: Sprite
     sprite: _EinsteinEngines/Objects/Tanks/double-emergency.rsi
+    layers:
+    - state: icon
+  - type: MaxPressureVisuals
+    integrityColor: "#ff4500"
   - type: Item
     sprite: _EinsteinEngines/Objects/Tanks/double-emergency.rsi
   - type: Clothing

@@ -21,7 +21,6 @@ public abstract partial class SharedHandsSystem
 {
     private void InitializeRelay()
     {
-        SubscribeLocalEvent<HandsComponent, GetEyeOffsetRelayedEvent>(RelayEvent);
         SubscribeLocalEvent<HandsComponent, GetEyePvsScaleRelayedEvent>(RelayEvent);
         SubscribeLocalEvent<HandsComponent, RefreshMovementSpeedModifiersEvent>(RelayEvent);
         SubscribeLocalEvent<HandsComponent, CheckMagicItemEvent>(RelayEvent); // goob edit - heretics
@@ -30,6 +29,7 @@ public abstract partial class SharedHandsSystem
         SubscribeLocalEvent<HandsComponent, SurgeryIgnorePreviousStepsEvent>(RelayEvent); // goob edit - heretics
 
         // By-ref events.
+        SubscribeLocalEvent<HandsComponent, GetEyeOffsetRelayedEvent>(RefRelayEvent);
         SubscribeLocalEvent<HandsComponent, ExtinguishEvent>(RefRelayEvent);
         SubscribeLocalEvent<HandsComponent, ProjectileReflectAttemptEvent>(RefRelayEvent);
         SubscribeLocalEvent<HandsComponent, HitScanReflectAttemptEvent>(RefRelayEvent);

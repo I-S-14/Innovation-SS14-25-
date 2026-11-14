@@ -14,9 +14,10 @@ namespace Content.Shared.NPC.Systems;
 /// </summary>
 public sealed partial class NpcFactionSystem : EntitySystem
 {
-    [Dependency] private readonly EntityLookupSystem _lookup = default!;
-    [Dependency] private readonly IPrototypeManager _proto = default!;
-    [Dependency] private readonly SharedTransformSystem _xform = default!;
+    [Dependency] private EntityLookupSystem _lookup = default!;
+    [Dependency] private SharedTransformSystem _xform = default!;
+
+    private EntityQuery<StealthComponent> _stealthQuery; // Goobstation
 
     /// <summary>
     /// To avoid prototype mutability we store an intermediary data class that gets used instead.
@@ -32,6 +33,8 @@ public sealed partial class NpcFactionSystem : EntitySystem
 
         InitializeException();
         RefreshFactions();
+
+        _stealthQuery = GetEntityQuery<StealthComponent>(); // Goobstation
     }
 
     private void OnProtoReload(PrototypesReloadedEventArgs obj)
@@ -107,7 +110,7 @@ public sealed partial class NpcFactionSystem : EntitySystem
     /// </summary>
     public void AddFaction(Entity<NpcFactionMemberComponent?> ent, [ForbidLiteral] string faction, bool dirty = true)
     {
-        if (!_proto.HasIndex<NpcFactionPrototype>(faction))
+        if (!ProtoMan.HasIndex<NpcFactionPrototype>(faction))
         {
             Log.Error($"Unable to find faction {faction}");
             return;
@@ -130,7 +133,7 @@ public sealed partial class NpcFactionSystem : EntitySystem
 
         foreach (var faction in factions)
         {
-            if (!_proto.HasIndex(faction))
+            if (!ProtoMan.HasIndex(faction))
             {
                 Log.Error($"Unable to find faction {faction}");
                 continue;
@@ -148,7 +151,7 @@ public sealed partial class NpcFactionSystem : EntitySystem
     /// </summary>
     public void RemoveFaction(Entity<NpcFactionMemberComponent?> ent, [ForbidLiteral] string faction, bool dirty = true)
     {
-        if (!_proto.HasIndex<NpcFactionPrototype>(faction))
+        if (!ProtoMan.HasIndex<NpcFactionPrototype>(faction))
         {
             Log.Error($"Unable to find faction {faction}");
             return;
@@ -188,14 +191,14 @@ public sealed partial class NpcFactionSystem : EntitySystem
             // otherwise having multiple factions is strictly negative
             .Where(target => !IsEntityFriendly((ent, ent.Comp1), target));
         if (!Resolve(ent, ref ent.Comp2, false))
-            return hostiles.Where(target => !TryComp<StealthComponent>(target, out var stealth) || !stealth.Enabled); // Goobstation - Filter out stealthed entities
+            return hostiles.Where(target => !_stealthQuery.TryComp(target, out var stealth) || !stealth.Enabled); // Goobstation - Filter out stealthed entities
 
         // ignore anything from enemy faction that we are explicitly friendly towards
         var faction = (ent.Owner, ent.Comp2);
         return hostiles
             .Union(GetHostiles(faction))
             .Where(target => !IsIgnored(faction, target))
-            .Where(target => !TryComp<StealthComponent>(target, out var stealth) || !stealth.Enabled); // Goobstation - Filter out stealthed entities
+            .Where(target => !_stealthQuery.TryComp(target, out var stealth) || !stealth.Enabled); // Goobstation - Filter out stealthed entities
     }
 
     public IEnumerable<EntityUid> GetNearbyFriendlies(Entity<NpcFactionMemberComponent?> ent, float range)
@@ -311,7 +314,7 @@ public sealed partial class NpcFactionSystem : EntitySystem
 
     private void RefreshFactions()
     {
-        _factions = _proto.EnumeratePrototypes<NpcFactionPrototype>().ToFrozenDictionary(
+        _factions = ProtoMan.EnumeratePrototypes<NpcFactionPrototype>().ToFrozenDictionary(
             faction => faction.ID,
             faction =>  new FactionData
             {

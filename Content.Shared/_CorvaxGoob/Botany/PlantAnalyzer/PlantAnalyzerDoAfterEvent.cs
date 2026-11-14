@@ -4,4 +4,4 @@ using Robust.Shared.Serialization;
 namespace Content.Shared._CorvaxGoob.Botany.PlantAnalyzer;
 
 [Serializable, NetSerializable]
-public sealed partial class PlantAnalyzerDoAfterEvent : SimpleDoAfterEvent;
+public sealed partial class CorvaxPlantAnalyzerDoAfterEvent : SimpleDoAfterEvent;

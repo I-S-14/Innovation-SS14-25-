@@ -35,9 +35,3 @@
   name: Qwertyquerty - Starlight
   path:
     path: /Audio/Ambience/starlight.ogg # Goobstation
-
-- type: jukebox
-  id: sunset
-  name: PigeonBeans - Sunset
-  path:
-    path: /Audio/Jukebox/sunset.ogg

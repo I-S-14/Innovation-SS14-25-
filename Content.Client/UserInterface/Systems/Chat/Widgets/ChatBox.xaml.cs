@@ -1,8 +1,5 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
-
-using Content.Goobstation.Common.CCVar;
-using Robust.Shared.Configuration;
+using Content.Client.UserInterface.Controls;
+using Content.Client.UserInterface.RichText;
 using Content.Client.UserInterface.Systems.Chat.Controls;
 using Content.Shared.Chat;
 using Content.Shared.Input;
@@ -16,19 +13,19 @@ using Robust.Shared.Input;
 using Robust.Shared.Player;
 using Robust.Shared.Utility;
 using static Robust.Client.UserInterface.Controls.LineEdit;
+using Content.Goobstation.Common.CCVar;
+using Robust.Shared.Configuration;
 
 namespace Content.Client.UserInterface.Systems.Chat.Widgets;
 
 [GenerateTypedNameReferences]
 [Virtual]
-public partial class ChatBox : UIWidget
+public partial class ChatBox : UIWidget, IEntityLinkClickHandler
 {
-    // <Trauma>
+    [Dependency] private IEntityManager _entManager = default!;
+    [Dependency] private ILogManager _log = default!;
     [Dependency] private readonly IConfigurationManager _cfg = default!;
     [Dependency] private readonly ILocalizationManager _loc = default!;
-    // </Trauma>
-    [Dependency] private readonly IEntityManager _entManager = default!;
-    [Dependency] private readonly ILogManager _log = default!;
 
     private readonly ISawmill _sawmill;
     private readonly ChatUIController _controller;
@@ -46,7 +43,6 @@ public partial class ChatBox : UIWidget
     {
         RobustXamlLoader.Load(this);
         _sawmill = _log.GetSawmill("chat");
-        _loc = IoCManager.Resolve<ILocalizationManager>();
 
         ChatInput.Input.OnTextEntered += OnTextEntered;
         ChatInput.Input.OnKeyBindDown += OnInputKeyBindDown;
@@ -81,7 +77,7 @@ public partial class ChatBox : UIWidget
         }
 
         if (msg is { Read: false, AudioPath: { } })
-            _entManager.System<AudioSystem>().PlayGlobal(msg.AudioPath, Filter.Local(), false, AudioParams.Default.WithVolume(msg.AudioVolume));
+            _entManager.System<AudioSystem>().PlayGlobal(msg.AudioPath, Filter.Local(), false, AudioParams.Default.AddVolume(msg.AudioVolume));
 
         msg.Read = true;
 
@@ -135,6 +131,20 @@ public partial class ChatBox : UIWidget
         }
     }
     */
+
+    /// <summary>
+    /// Calls update function on every child <see cref="TextLinkLabel"/> in the ChatBox's OutputPanel "Contents"
+    /// </summary>
+    public void UpdateTextLinkLabelProperties(SharedChatSystem _sharedChatSys)
+    {
+        foreach (var contentsChild in Contents.Children)
+        {
+            if (contentsChild is TextLinkLabel textLinkLabel)
+            {
+                textLinkLabel.UpdateLabelProperties(_sharedChatSys);
+            }
+        }
+    }
 
     /*
     private void OnChannelFilter(ChatChannel channel, bool active)
@@ -215,6 +225,15 @@ public partial class ChatBox : UIWidget
         ChatInput.ChannelSelector.Select(toSelect);
     }
 
+    /// <summary>
+    /// Sends a message to the server when this chat message is clicked.
+    /// </summary>
+    /// <param name="netEntity">Target entity of our event</param>
+    public void HandleClick(NetEntity netEntity)
+    {
+        _entManager.RaisePredictiveEvent(new ChatLinkClickedRequestEvent(netEntity));
+    }
+
     private void OnInputKeyBindDown(GUIBoundKeyEventArgs args)
     {
         if (args.Function == EngineKeyFunctions.TextReleaseFocus)
@@ -246,18 +265,27 @@ public partial class ChatBox : UIWidget
 
         // Warn typing indicator about change
         _controller.NotifyChatTextChange();
+
+        // Update the typing preview speech bubble above character's head.
+        _controller.UpdateTypingPreview(this);
     }
 
     private void OnFocusEnter(LineEditEventArgs args)
     {
         // Warn typing indicator about focus
         _controller.NotifyChatFocus(true);
+
+        // Update the typing preview speech bubble above character's head.
+        _controller.UpdateTypingPreview(this);
     }
 
     private void OnFocusExit(LineEditEventArgs args)
     {
         // Warn typing indicator about focus
         _controller.NotifyChatFocus(false);
+
+        // Remove the typing preview when the chat box loses focus
+        _controller.ClearTypingPreview();
     }
 
     protected override void Dispose(bool disposing)

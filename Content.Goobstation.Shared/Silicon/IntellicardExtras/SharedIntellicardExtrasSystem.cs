@@ -23,15 +23,15 @@ public sealed partial class IntellicardDoAfterEvent : SimpleDoAfterEvent;
 
 public abstract partial class SharedIntellicardExtrasSystem : EntitySystem
 {
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] private readonly ItemSlotsSystem _slots = default!;
-    [Dependency] private readonly SharedMindSystem _mind = default!;
-    [Dependency] private readonly MetaDataSystem _metaData = default!;
-    [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
-    [Dependency] private readonly NameModifierSystem _nameMod = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
-    [Dependency] private readonly INetManager _net = default!;
-    [Dependency] private readonly SharedEyeSystem _eye = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private ItemSlotsSystem _slots = default!;
+    [Dependency] private SharedMindSystem _mind = default!;
+    [Dependency] private MetaDataSystem _metaData = default!;
+    [Dependency] private SharedDoAfterSystem _doAfter = default!;
+    [Dependency] private NameModifierSystem _nameMod = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private INetManager _net = default!;
+    [Dependency] private SharedEyeSystem _eye = default!;
 
     private static readonly EntProtoId DefaultAi = "StationAiBrain";
     private readonly ProtoId<ChatNotificationPrototype> _downloadChatNotificationPrototype = "IntellicardDownload";
@@ -72,7 +72,7 @@ public abstract partial class SharedIntellicardExtrasSystem : EntitySystem
             return;
         }
 
-        var cardHasAi = _slots.CanEject(ent.Owner, args.User, cardAiHolder.Slot);
+        var cardHasAi = _slots.CanEject(ent.Owner, cardAiHolder.Slot, args.User);
         var brainHasAi = targetMindContainer!.Mind is { };
 
         if (cardHasAi && brainHasAi)
@@ -129,7 +129,7 @@ public abstract partial class SharedIntellicardExtrasSystem : EntitySystem
             return;
 
         // get mind status of both
-        var cardHasAi = _slots.CanEject(cardUid, args.User, cardAiHolder.Slot) && cardMindContainer is { } && cardMindContainer.Mind is { };
+        var cardHasAi = _slots.CanEject(cardUid, cardAiHolder.Slot, args.User) && cardMindContainer is { } && cardMindContainer.Mind is { };
         var targetHasAi = targetMindContainer.Mind is { };
 
         // Card -> Brain

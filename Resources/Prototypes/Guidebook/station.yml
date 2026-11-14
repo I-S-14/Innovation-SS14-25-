@@ -6,8 +6,9 @@
   text: "/ServerInfo/Guidebook/SpaceStation14.xml"
   children:
   - Jobs
-  - Survival
   - Antagonists
+  - SpaceLaw
+  - Survival
   - Glossary
   - MartialArts # Goobstation - idk where to put it
   # - SOP # Goobstation - Make it look good. # CorvaxGoob
@@ -16,6 +17,20 @@
   id: Glossary
   name: guide-entry-glossary
   text: "/ServerInfo/Guidebook/Glossary.xml"
+
+- type: guideEntry
+  id: SpaceLaw
+  name: guide-entry-rules-space-law
+  priority: 1
+  text: "/ServerInfo/Guidebook/ServerRules/SpaceLaw/SpaceLaw.xml"
+  children:
+  - SpaceLawCrimeList
+
+- type: guideEntry
+  id: SpaceLawCrimeList
+  name: guide-entry-rules-sl-crime-list
+  priority: 5
+  text: "/ServerInfo/Guidebook/ServerRules/SpaceLaw/SLCrimeList.xml"
 
 - type: guideEntry
   id: Survival

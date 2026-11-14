@@ -90,7 +90,8 @@
   - type: Clothing
     sprite: Clothing/Ears/Headsets/medical.rsi
   - type: StealTarget
-    stealGroup: ClothingHeadsetAltMedical
+    stealGroup:
+    - ClothingHeadsetAltMedical
 
 - type: entity
   parent: [ClothingHeadsetAltLoudspeaker, BaseCommandContraband] # goob

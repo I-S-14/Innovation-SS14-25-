@@ -1,3 +1,4 @@
+using Content.Shared.Ghost.Systems; // IS14-change: upstream namespace move
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Client.Stylesheets;
@@ -8,15 +9,16 @@ using Robust.Client.UserInterface.Controls;
 using Robust.Client.UserInterface.XAML;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
+using System;
 
 namespace Content.Client.Voting.UI
 {
     [GenerateTypedNameReferences]
     public sealed partial class VotePopup : Control
     {
-        [Dependency] private readonly IGameTiming _gameTiming = default!;
-        [Dependency] private readonly IVoteManager _voteManager = default!;
-        [Dependency] private readonly IEntityNetworkManager _net = default!;
+        [Dependency] private IGameTiming _gameTiming = default!;
+        [Dependency] private IVoteManager _voteManager = default!;
+        [Dependency] private IEntityNetworkManager _net = default!;
 
         private readonly VoteManager.ActiveVote _vote;
         private readonly Button[] _voteButtons;

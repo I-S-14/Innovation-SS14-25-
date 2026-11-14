@@ -2,6 +2,7 @@
 
 using Content.Shared._IS14.Cyborgs.Components;
 using Content.Shared.Damage;
+using Content.Shared.Damage.Systems;
 using Content.Shared.Mobs;
 
 namespace Content.Shared._IS14.Cyborgs.Systems;

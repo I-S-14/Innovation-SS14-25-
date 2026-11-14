@@ -4,6 +4,7 @@ using Content.Server._NF.Speech.Components;
 using Content.Server.Speech.EntitySystems;
 using System.Text.RegularExpressions;
 using Content.Shared.Speech;
+using Content.Shared.Speech.EntitySystems;
 
 namespace Content.Server._NF.Speech.EntitySystems;
 
@@ -37,7 +38,7 @@ public sealed class StreetpunkAccentSystem : EntitySystem
         return msg;
     }
 
-    private void OnAccentGet(EntityUid uid, StreetpunkAccentComponent component, AccentGetEvent args)
+    private void OnAccentGet(EntityUid uid, StreetpunkAccentComponent component, ref AccentGetEvent args)
     {
         args.Message = Accentuate(args.Message, component);
     }

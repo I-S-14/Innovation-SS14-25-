@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Shared.Whitelist;
+using Robust.Shared.Collections;
 
 namespace Content.Server.NPC.Components;
 /// <summary>

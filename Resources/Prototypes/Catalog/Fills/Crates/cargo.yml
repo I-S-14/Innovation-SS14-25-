@@ -8,8 +8,12 @@
   components:
   - type: EntityTableContainerFill
     containers:
-      entity_storage:
-        id: ClothingOuterHardsuitLuxury
+      entity_storage: !type:AllSelector
+        children:
+        - id: ClothingOuterHardsuitLuxury
+        - id: ClothingMaskBreath
+        - id: OxygenTankFilled
+        - id: NitrogenTankFilled
 
 - type: entity
   parent: CrateGenericSteel
@@ -22,7 +26,6 @@
       entity_storage:
         id: ParcelWrap
         amount: 3
-
 
 - type: entity
   parent: CratePrivateSecure
@@ -113,6 +116,8 @@
       weight: 0.01
     - id: WeaponLauncherPirateCannon
       weight: 0.1
+    - id: Throngler
+      weight: 0.001
     - id: WeaponPistolCHIMP
       weight: 0.1
     - id: WeaponSniperMosin

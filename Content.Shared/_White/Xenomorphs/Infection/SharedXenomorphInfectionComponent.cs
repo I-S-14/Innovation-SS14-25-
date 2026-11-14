@@ -1,4 +1,4 @@
-using Content.Shared._White.StatusIcon;
+using Content.Shared.StatusIcon;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 
@@ -11,7 +11,7 @@ public abstract partial class SharedXenomorphInfectionComponent : Component
     /// A set of prototype IDs for status icons representing different growth stages of the infection.
     /// </summary>
     [DataField]
-    public Dictionary<int, ProtoId<InfectionIconPrototype>> InfectedIcons = new();
+    public Dictionary<int, ProtoId<StatusIconPrototype>> InfectedIcons = new();
 
     /// <summary>
     /// Current stage of infection development.

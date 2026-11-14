@@ -1,0 +1,64 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: bd217732d1:Resources/Prototypes/StatusIcon/job.yml
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconNinja
+  icon:
+    sprite: &id001 /Textures/Interface/Misc/job_icons.rsi
+    state: Ninja
+  jobName: job-name-ninja
+  isCrewJob: false
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconPirate
+  icon:
+    sprite: *id001
+    state: Pirate
+  jobName: job-name-pirate
+  isCrewJob: false
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconSyndicateCommander
+  icon:
+    sprite: *id001
+    state: SyndicateCommander
+  jobName: job-name-syndicate-commander
+  isCrewJob: false
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconSyndicateCorpsman
+  icon:
+    sprite: *id001
+    state: SyndicateCorpsman
+  jobName: job-name-syndicate-corpsman
+  isCrewJob: false
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconSyndicateOperative
+  icon:
+    sprite: *id001
+    state: SyndicateOperative
+  jobName: job-name-syndicate-operative
+  isCrewJob: false
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconWizard
+  icon:
+    sprite: *id001
+    state: Wizard
+  jobName: job-name-wizard
+  isCrewJob: false
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconCBURN
+  icon:
+    sprite: *id001
+    state: CBURN
+  jobName: job-name-cburn
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconDeathSquad
+  icon:
+    sprite: *id001
+    state: DeathSquad
+  jobName: job-name-deathsquad

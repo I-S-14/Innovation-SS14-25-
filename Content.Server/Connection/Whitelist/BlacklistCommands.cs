@@ -8,10 +8,10 @@ using Robust.Shared.Console;
 namespace Content.Server.Connection.Whitelist;
 
 [AdminCommand(AdminFlags.Ban)]
-public sealed class AddBlacklistCommand : LocalizedCommands
+public sealed partial class AddBlacklistCommand : LocalizedCommands
 {
-    [Dependency] private readonly IPlayerLocator _playerLocator = default!;
-    [Dependency] private readonly IServerDbManager _db = default!;
+    [Dependency] private IPlayerLocator _playerLocator = default!;
+    [Dependency] private IServerDbManager _db = default!;
 
     public override string Command => "blacklistadd";
 
@@ -63,10 +63,13 @@ public sealed class AddBlacklistCommand : LocalizedCommands
 }
 
 [AdminCommand(AdminFlags.Ban)]
-public sealed class RemoveBlacklistCommand : LocalizedCommands
+public sealed partial class RemoveBlacklistCommand : LocalizedCommands
 {
+    //IS14-change start: restore declarations used by merged implementation.
     [Dependency] private readonly IPlayerLocator _playerLocator = default!;
     [Dependency] private readonly IServerDbManager _db = default!;
+    //IS14-change end
+
 
     public override string Command => "blacklistremove";
 

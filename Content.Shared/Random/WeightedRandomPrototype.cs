@@ -13,6 +13,6 @@ public sealed partial class WeightedRandomPrototype : IWeightedRandomPrototype
     [IdDataField]
     public string ID { get; private set; } = default!;
 
-    [DataField("weights")]
+    [DataField(required: true)]
     public Dictionary<string, float> Weights { get; private set; } = new();
 }

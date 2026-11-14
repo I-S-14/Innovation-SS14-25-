@@ -1,6 +1,6 @@
 // Licensed under IS14's EULA, see EULA.txt for more information.
 
-using Content.Server.Antag;
+using Content.Shared.Antag;
 using Content.Shared.Random.Helpers;
 using Robust.Shared.Random;
 
@@ -22,6 +22,6 @@ public sealed class CyborgRandomAntagSpawnerSystem : EntitySystem
         if (args.Handled || ent.Comp.Prototypes.Count == 0)
             return;
 
-        args.Entity = Spawn(_random.Pick(ent.Comp.Prototypes));
+        args.Entity = Spawn(_random.Pick(ent.Comp.Prototypes), args.Coords);
     }
 }

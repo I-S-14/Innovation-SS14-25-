@@ -1,19 +1,29 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Shared.Whitelist;
+using Content.Shared.DeviceNetwork;
 using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Radio;
 
+/// <summary>
+/// Defines a radio channel and its transmission properties.
+/// </summary>
 [Prototype]
 public sealed partial class RadioChannelPrototype : IPrototype
 {
+    [IdDataField, ViewVariables]
+    public string ID { get; private set; } = default!;
+
     /// <summary>
     /// Human-readable name for the channel.
     /// </summary>
-    [DataField("name")]
+    [DataField]
     public LocId Name { get; private set; } = string.Empty;
 
+    /// <summary>
+    /// The localized display name of this channel.
+    /// </summary>
     [ViewVariables(VVAccess.ReadOnly)]
     public string LocalizedName => Loc.GetString(Name);
 
@@ -23,14 +33,17 @@ public sealed partial class RadioChannelPrototype : IPrototype
     [DataField("keycode")]
     public char KeyCode { get; private set; } = '\0';
 
-    [DataField("frequency")]
-    public int Frequency { get; private set; } = 0;
-
-    [DataField("color")]
+    /// <summary>
+    /// Color used to display the channel.
+    /// </summary>
+    [DataField]
     public Color Color { get; private set; } = Color.Lime;
 
-    [IdDataField, ViewVariables]
-    public string ID { get; private set; } = default!;
+    /// <summary>
+    /// The device network frequency used by this channel.
+    /// </summary>
+    [DataField]
+    public DeviceFrequency Frequency { get; private set; } = 1;
 
     // CorvaxGoob-Anonymous-Radio-Start
     /// <summary>
@@ -41,18 +54,19 @@ public sealed partial class RadioChannelPrototype : IPrototype
     // CorvaxGoob-Anonymous-Radio-End
 
     /// <summary>
-    /// If channel is long range it doesn't require telecommunication server
-    /// and messages can be sent across different stations
+    /// Whether the channel can transmit across different stations without a telecommunications server.
     /// </summary>
-    [DataField("longRange"), ViewVariables]
-    public bool LongRange = false;
+    [DataField]
+    public bool LongRange;
 
+    // IS14-merge: restored from Goob/IS14 version
+    [DataField]
+    public EntityWhitelist? ReceiveWhitelist = null;
+
+    // IS14-merge: restored from Goob/IS14 version
     /// <summary>
     /// Whitelist for entities that can send or receive this radio channel messages
     /// </summary>
     [DataField]
     public EntityWhitelist? SendWhitelist = null;
-
-    [DataField]
-    public EntityWhitelist? ReceiveWhitelist = null;
 }

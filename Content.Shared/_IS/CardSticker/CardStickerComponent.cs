@@ -8,6 +8,6 @@ namespace Content.Shared._IS.CardSticker;
 [RegisterComponent]
 public sealed partial class CardStickerComponent : Component
 {
-    [DataField(readOnly: true, required: true)]
+    [DataField(required: true)]
     public ProtoId<CardStickerPrototype> CardStickerProto;
 }

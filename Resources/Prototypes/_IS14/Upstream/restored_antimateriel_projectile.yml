@@ -1,0 +1,16 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: 5327c414c5:Resources/Prototypes/Entities/Objects/Weapons/Guns/Ammunition/Projectiles/antimateriel.yml
+- type: entity
+  categories: [HideSpawnMenu]
+  parent: BaseBullet
+  id: BulletAntiMateriel
+  name: bullet (.60 anti-materiel)
+  components:
+  - type: Projectile
+    damage:
+      types:
+        Piercing: '75'
+      armorPenetration: '0.5'
+    penetrationThreshold: '100'
+  - type: StaminaDamageOnCollide
+    damage: '115'

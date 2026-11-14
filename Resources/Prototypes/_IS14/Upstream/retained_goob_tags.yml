@@ -1,0 +1,12 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: 5327c414c5:Resources/Prototypes/tags.yml
+- type: Tag
+  id: BotanyHoe
+- type: Tag
+  id: ConveyorAssembly
+- type: Tag
+  id: NinjaBombingTargetBlocker
+- type: Tag
+  id: PlantSampleTaker
+- type: Tag
+  id: SecurePlasmaWindoor

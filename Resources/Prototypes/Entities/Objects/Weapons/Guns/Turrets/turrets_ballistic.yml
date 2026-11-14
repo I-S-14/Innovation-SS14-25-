@@ -10,14 +10,17 @@
     - Syndicate
 
 - type: entity
-  parent: BaseWeaponBallisticTurret
+  parent: [ BaseWeaponBallisticTurretIndestructible, StructureHealthMachineWeak ]
   id: WeaponTurretSyndicateDisposable
   name: disposable ballistic turret
   suffix: Syndicate, Disposable
   components:
+  - type: ExplosionEffect # Goob
   - type: NpcFactionMember
     factions:
     - Syndicate
+  - type: Damageable
+    damageModifierSet: SteelMod
   - type: Destructible
     thresholds:
     - trigger:
@@ -50,6 +53,7 @@
     qualityNeeded: "Anchoring"
     doAfterDelay: 3
   - type: TriggerOnEmptyGunshot
+
 # Goobstation - no
 #  - type: ExplodeOnTrigger
 #  - type: Explosive
@@ -87,7 +91,7 @@
     - AllHostile
 
 - type: entity
-  parent: BaseWeaponBallisticTurret
+  parent: [ BaseWeaponBallisticTurretIndestructible, StructureHealthMachine ]
   id: WeaponTurretXeno
   name: xeno turret
   suffix: Xeno
@@ -115,18 +119,16 @@
       SoundTargetInLOS: !type:SoundPathSpecifier
         path: /Audio/Animals/snake_hiss.ogg
   - type: Damageable
-    damageContainer: Biological
+    damageContainer: StructuralBiological
   - type: Destructible
     thresholds:
     - trigger:
         !type:DamageTrigger
-        damage: 100
+        damage: 175
       behaviors:
-      - !type:DoActsBehavior
-        acts: [ "Destruction" ]
       - !type:PlaySoundBehavior
         sound:
-          path: /Audio/Effects/gib1.ogg
+          collection: gib
       - !type:SpawnEntitiesBehavior
         spawn:
           FoodMeatXeno:

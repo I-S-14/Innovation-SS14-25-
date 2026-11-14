@@ -1,2 +1,2 @@
-cmd-endround-desc = Ends the round and moves the server to PostRound.
+cmd-endround-desc = Завершает раунд и переводит сервер в состояние PostRound.
 cmd-endround-help = Usage: endround

@@ -161,6 +161,8 @@ public sealed partial class MeleeWeaponComponent : Component
     /// We don't connect it with attack range, because different weapons have different sprites,
     /// and this value should be adjusted manually for every weapon ideally
     /// </summary>
+    // IS14: prototype-only visual setting; Goob already uses all 32 delta-network fields.
+    // Clients read the same prototype, and no runtime code changes this offset.
     [DataField]
     public float AnimationOffset = 1f;
 
@@ -173,7 +175,7 @@ public sealed partial class MeleeWeaponComponent : Component
     [DataField("soundSwing"), AutoNetworkedField]
     public SoundSpecifier SwingSound { get; set; } = new SoundPathSpecifier("/Audio/Weapons/punchmiss.ogg")
     {
-        Params = AudioParams.Default.WithVolume(-3f).WithVariation(0.025f),
+        Params = AudioParams.Default.AddVolume(-3f).WithVariation(0.025f),
     };
 
     // We do not predict the below sounds in case the client thinks but the server disagrees. If this were the case

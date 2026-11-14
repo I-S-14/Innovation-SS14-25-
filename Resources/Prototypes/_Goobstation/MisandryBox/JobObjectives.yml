@@ -6,7 +6,7 @@
   id: BaseBlueshieldObjective
   components:
   - type: Objective
-    issuer: objective-issuer-nanotrasen
+    issuer: IS14ObjectiveIssuerNanotrasen
   - type: NotJobRequirement
     jobs:
     - BlueshieldOfficer

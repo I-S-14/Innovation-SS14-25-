@@ -1,0 +1,14 @@
+# IS14: custom Slasher suits must not inherit grey recoloring/trinket layers.
+# Keep all Slasher behavior; children supply their own complete uniform artwork.
+- type: entity
+  abstract: true
+  parent: ClothingUniformSlasher
+  id: IS14SlasherCustomUniformBase
+  components:
+  - type: Sprite
+    layers:
+    - state: icon
+  - type: Item
+    inhandVisuals: {}
+  - type: Clothing
+    clothingVisuals: {}

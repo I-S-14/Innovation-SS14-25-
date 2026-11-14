@@ -1,3 +1,4 @@
+using ProjectileShotEvent = Content.Shared._Lavaland.Weapons.Ranged.Events.ProjectileShotEvent; // IS14-change: retain Lavaland upgrade event
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Server.Atmos.EntitySystems;
@@ -11,6 +12,7 @@ using Content.Shared.Weapons.Melee.Events;
 using Content.Shared.Weapons.Ranged.Systems;
 using Content.Shared.Projectiles;
 using Content.Shared.Wieldable;
+using Content.Shared.Damage.Systems;
 
 namespace Content.Server._Lavaland.Pressure;
 

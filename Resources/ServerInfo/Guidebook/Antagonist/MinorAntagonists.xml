@@ -69,7 +69,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
   <Box>
     <GuideEntityEmbed Entity="MobAdultSlimesBlueAngry" Caption=""/>
-    <GuideEntityEmbed Entity="MobGiantSpiderAngry" Caption=""/>
+    <GuideEntityEmbed Entity="MobGiantSpiderTarantulaAngry" Caption=""/>
   </Box>
 
   У слаймов и пауков нет выдающихся особенностей, но они время от времени [color=cyan]заполоняют станцию[/color]. И те, и другие будут преследовать и атаковать всё, что увидят.

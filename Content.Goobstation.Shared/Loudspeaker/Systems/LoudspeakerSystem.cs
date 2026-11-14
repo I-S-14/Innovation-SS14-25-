@@ -11,11 +11,11 @@ using Robust.Shared.Utility;
 
 namespace Content.Goobstation.Shared.Loudspeaker.Systems;
 
-public sealed class LoudSpeakerSystem : EntitySystem
+public sealed partial class LoudSpeakerSystem : EntitySystem
 {
 
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
 
     public override void Initialize()
     {
@@ -41,17 +41,17 @@ public sealed class LoudSpeakerSystem : EntitySystem
         if (!args.SlotFlags.HasFlag(comp.RequiredSlot))
             return;
 
-        EnsureComp<LoudspeakerHolderComponent>(args.Equipee).Loudspeakers.Add(uid);
+        EnsureComp<LoudspeakerHolderComponent>(args.EquipTarget).Loudspeakers.Add(uid);
     }
 
     private void OnUnequipped(EntityUid uid, LoudspeakerComponent comp, GotUnequippedEvent args)
     {
-        if (!TryComp<LoudspeakerHolderComponent>(args.Equipee, out var holder))
+        if (!TryComp<LoudspeakerHolderComponent>(args.EquipTarget, out var holder))
             return;
 
         holder.Loudspeakers.Remove(uid);
 
-        DoRemovalCheck(args.Equipee, holder);
+        DoRemovalCheck(args.EquipTarget, holder);
     }
 
     private void OnEquippedHands(EntityUid uid, LoudspeakerComponent comp, GotEquippedHandEvent args)
@@ -98,6 +98,7 @@ public sealed class LoudSpeakerSystem : EntitySystem
             if (speechEv.SpeechSounds != null)
             {
                 args.SpeechSoundProtoId = speechEv.SpeechSounds;
+                args.Handled = true;
                 return;
             }
 
@@ -106,10 +107,10 @@ public sealed class LoudSpeakerSystem : EntitySystem
 
     private void OnExamined(Entity<LoudspeakerComponent> ent, ref ExaminedEvent args)
     {
-        var state = ent.Comp.IsActive ? "on" : "off";
+        var state = ent.Comp.IsActive ? "loudspeaker-state-on" : "loudspeaker-state-off"; // CorvaxGoob Localization
 
         var message = ent.Comp.CanToggle
-            ? Loc.GetString("loudspeaker-examine-toggleable", ("state", state))
+            ? Loc.GetString("loudspeaker-examine-toggleable", ("state", Loc.GetString(state))) // CorvaxGoob Localization
             : Loc.GetString("loudspeaker-examine-generic");
 
         args.PushMarkup(message);
@@ -151,10 +152,10 @@ public sealed class LoudSpeakerSystem : EntitySystem
 
     private void ToggleLoudspeakerEffect(EntityUid user, Entity<LoudspeakerComponent> loudspeaker)
     {
-        var state = !loudspeaker.Comp.IsActive ? "on" : "off";
+        var state = !loudspeaker.Comp.IsActive ? "loudspeaker-state-on" : "loudspeaker-state-off"; // CorvaxGoob Localization
 
         _audio.PlayPredicted(loudspeaker.Comp.ToggleSound, user, user);
-        _popup.PopupClient(Loc.GetString("loudspeaker-toggle-popup", ("state", state)), user, user);
+        _popup.PopupClient(Loc.GetString("loudspeaker-toggle-popup", ("state", Loc.GetString(state))), user, user); // CorvaxGoob Localization
     }
 
     #endregion

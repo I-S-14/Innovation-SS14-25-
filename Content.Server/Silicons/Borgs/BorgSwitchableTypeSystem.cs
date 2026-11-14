@@ -4,7 +4,6 @@ using Content.Server.Inventory;
 using Content.Shared.Radio.Components;
 using Content.Shared._CorvaxNext.Silicons.Borgs.Components;
 using Content.Shared.Inventory;
-using Content.Shared.Radio.Components;
 using Content.Shared.Silicons.Borgs;
 using Content.Shared.Silicons.Borgs.Components;
 using Robust.Shared.Prototypes;
@@ -17,8 +16,8 @@ namespace Content.Server.Silicons.Borgs;
 /// </summary>
 public sealed partial class BorgSwitchableTypeSystem : SharedBorgSwitchableTypeSystem // DeltaV: Made partial
 {
-    [Dependency] private readonly BorgSystem _borgSystem = default!;
-    [Dependency] private readonly ServerInventorySystem _inventorySystem = default!;
+    [Dependency] private BorgSystem _borgSystem = default!;
+    [Dependency] private ServerInventorySystem _inventorySystem = default!;
 
     protected override void SelectBorgModule(Entity<BorgSwitchableTypeComponent> ent, ProtoId<BorgTypePrototype> borgType, ProtoId<BorgSubtypePrototype> borgSubtype)
     {
@@ -87,7 +86,7 @@ public sealed partial class BorgSwitchableTypeSystem : SharedBorgSwitchableTypeS
         // End DeltaV Code
 
         // Configure special components
-        if (Prototypes.Resolve(ent.Comp.SelectedBorgType, out var previousPrototype))
+        if (ProtoMan.Resolve(ent.Comp.SelectedBorgType, out var previousPrototype))
         {
             if (previousPrototype.AddComponents is { } removeComponents)
                 EntityManager.RemoveComponents(ent, removeComponents);

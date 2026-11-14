@@ -1,0 +1,11 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: 5327c414c5:Resources/Prototypes/Catalog/Cargo/cargo_food.yml
+- type: cargoProduct
+  id: FoodBarSupply
+  icon:
+    sprite: Objects/Consumable/Drinks/beerglass.rsi
+    state: icon
+  product: CrateFoodBarSupply
+  cost: 750
+  category: cargoproduct-category-name-food
+  group: market

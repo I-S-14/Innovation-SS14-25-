@@ -1,8 +1,0 @@
-# SPDX-License-Identifier: MIT
-
-- type: entityList
-  id: tools
-  entities:
-  - WelderExperimental
-  - ToolDebug
-  - Multitool

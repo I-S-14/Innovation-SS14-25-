@@ -18,7 +18,7 @@ public sealed class EncryptionHolderRequiresLockSystem : EntitySystem
         SubscribeLocalEvent<EncryptionHolderRequiresLockComponent, LockToggledEvent>(LockToggled);
 
     }
-    private void LockToggled(EntityUid uid, EncryptionHolderRequiresLockComponent component, LockToggledEvent args)
+    private void LockToggled(EntityUid uid, EncryptionHolderRequiresLockComponent component, ref LockToggledEvent args)
     {
         if (!TryComp<LockComponent>(uid, out var lockComp)
             || !TryComp<EncryptionKeyHolderComponent>(uid, out var keyHolder))

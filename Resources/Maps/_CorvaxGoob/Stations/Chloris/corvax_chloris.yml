@@ -124606,7 +124606,7 @@ entities:
       enabled: False
       text: Где-то хуй пойми где
     - type: WarpPoint
-      location: Где-то хуй пойми где
+      location: is14-map-warp-9c031c353916
 - proto: DefaultStationBeaconAI
   entities:
   - uid: 18726
@@ -124955,7 +124955,7 @@ entities:
     - type: NavMapBeacon
       text: Зона доставки мед
     - type: WarpPoint
-      location: Зона доставки мед
+      location: is14-map-warp-6811c9c0fa87
 - proto: DefaultStationBeaconMedical
   entities:
   - uid: 18777
@@ -125043,7 +125043,7 @@ entities:
     - type: NavMapBeacon
       text: Токсикология
     - type: WarpPoint
-      location: Токсикология
+      location: is14-map-warp-3c23a84f17a6
   - uid: 18789
     components:
     - type: Transform
@@ -125057,7 +125057,7 @@ entities:
     - type: NavMapBeacon
       text: Лаборатория исследования Венеры-2
     - type: WarpPoint
-      location: Лаборатория исследования Венеры-2
+      location: is14-map-warp-cfb2c8c38ff3
   - uid: 18791
     components:
     - type: Transform
@@ -125066,7 +125066,7 @@ entities:
     - type: NavMapBeacon
       text: Ксенобиология
     - type: WarpPoint
-      location: Ксенобиология
+      location: is14-map-warp-40efbcdca97d
   - uid: 18792
     components:
     - type: Transform
@@ -125075,7 +125075,7 @@ entities:
     - type: NavMapBeacon
       text: Канистры
     - type: WarpPoint
-      location: Канистры
+      location: is14-map-warp-2a89d1f5d688
 - proto: DefaultStationBeaconSecurity
   entities:
   - uid: 18793
@@ -125091,7 +125091,7 @@ entities:
     - type: NavMapBeacon
       text: Комната казни и карцер
     - type: WarpPoint
-      location: Комната казни и карцер
+      location: is14-map-warp-805030faaaeb
   - uid: 18795
     components:
     - type: Transform
@@ -125100,7 +125100,7 @@ entities:
     - type: NavMapBeacon
       text: Брифрум
     - type: WarpPoint
-      location: Брифрум
+      location: is14-map-warp-13a4ab7c0919
 - proto: DefaultStationBeaconServerRoom
   entities:
   - uid: 18796
@@ -125134,7 +125134,7 @@ entities:
     - type: NavMapBeacon
       text: Юго-запад панели
     - type: WarpPoint
-      location: Юго-запад панели
+      location: is14-map-warp-51ad93dfb00e
   - uid: 18800
     components:
     - type: Transform
@@ -125143,7 +125143,7 @@ entities:
     - type: NavMapBeacon
       text: Северо-запад панели
     - type: WarpPoint
-      location: Северо-запад панели
+      location: is14-map-warp-f77f9561716a
   - uid: 18801
     components:
     - type: Transform
@@ -125152,7 +125152,7 @@ entities:
     - type: NavMapBeacon
       text: Северо-восток панели
     - type: WarpPoint
-      location: Северо-восток панели
+      location: is14-map-warp-e9efe9044111
   - uid: 18802
     components:
     - type: Transform
@@ -125161,7 +125161,7 @@ entities:
     - type: NavMapBeacon
       text: Юго-восток панели
     - type: WarpPoint
-      location: Юго-восток панели
+      location: is14-map-warp-9d3832c5fc05
 - proto: DefaultStationBeaconSupply
   entities:
   - uid: 18803

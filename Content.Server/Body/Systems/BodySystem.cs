@@ -2,7 +2,6 @@
 
 using System.Numerics;
 using Content.Server.Body.Components;
-using System.Numerics;
 using Content.Server.Ghost;
 using Content.Server.Humanoid;
 using Content.Shared._Shitmed.Body.Part;
@@ -21,14 +20,12 @@ using Robust.Shared.Timing;
 
 // Shitmed Change
 using System.Linq;
-using Content.Shared.Body.Events;
 using Content.Shared.Gibbing.Events;
 
 namespace Content.Server.Body.Systems;
 
 public sealed partial class BodySystem : SharedBodySystem // Shitmed change: made partial
 {
-    [Dependency] private readonly BloodstreamSystem _bloodstream = default!; // Shitmed Change
     [Dependency] private readonly GhostSystem _ghostSystem = default!;
     [Dependency] private readonly IGameTiming _gameTiming = default!;
     [Dependency] private readonly HumanoidAppearanceSystem _humanoidSystem = default!;
@@ -180,14 +177,14 @@ public sealed partial class BodySystem : SharedBodySystem // Shitmed change: mad
         return gibs;
     }
 
-    public override bool BurnPart(EntityUid partId, BodyPartComponent? part = null)
+    public override EntityUid? TryBurnPart(Entity<BodyPartComponent> part,
+        bool destroyWholeIfRoot = true)
     {
-        if (!Resolve(partId, ref part, logMissing: false)
-            || TerminatingOrDeleted(partId)
-            || EntityManager.IsQueuedForDeletion(partId))
-            return false;
+        if (TerminatingOrDeleted(part)
+            || EntityManager.IsQueuedForDeletion(part))
+            return null;
 
-        return base.BurnPart(partId, part);
+        return base.TryBurnPart(part, destroyWholeIfRoot);
     }
 
     protected override void ApplyPartMarkings(EntityUid target, BodyPartAppearanceComponent component)

@@ -115,7 +115,7 @@
   - type: MultipleTool
     statusShowBehavior: true
     entries:
-    - behavior: Prying
+    - behavior: [ Prying ]
       sprite:
         sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
         state: toolkit_engiborg_crowbar
@@ -123,7 +123,7 @@
         path: /Audio/Items/crowbar.ogg
       changeSound:
         path: /Audio/Items/change_drill.ogg
-    - behavior: Screwing
+    - behavior: [ Screwing ]
       sprite:
         sprite: _IS14/Objects/Specific/Cyborgs/items_cyborg.rsi
         state: toolkit_engiborg_screwdriver

@@ -28,13 +28,10 @@
     - XenomorphSurviveObjective
   - type: AntagSelection
     agentName: xenomorph-round-end-agent-name
-    definitions:
-    - spawnerPrototype: SpawnPointGhostXenomorph
-      min: 2
-      max: 4
-      pickPlayer: false
-      briefing:
-        text: xenomorph-role-greeting
-        color: "#8c3986"
-      mindRoles:
-      - MindRoleXenomorph
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14XenomorphsInfestationAntag0bdf1b3e8
+      range:
+        max: 4
+        min: 2
+      playerRatio: 10

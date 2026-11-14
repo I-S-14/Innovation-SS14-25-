@@ -4,15 +4,16 @@ using System.Numerics;
 using Content.Shared.Salvage.Fulton;
 using Robust.Shared.Map;
 using Robust.Shared.Random;
+using Robust.Shared.Containers;
 
 namespace Content.Server.Salvage;
 
 /// <summary>
 /// Transports attached entities to the linked beacon after a timer has elapsed.
 /// </summary>
-public sealed class FultonSystem : SharedFultonSystem
+public sealed partial class FultonSystem : SharedFultonSystem
 {
-    [Dependency] private readonly IRobustRandom _random = default!;
+    [Dependency] private IRobustRandom _random = default!;
 
     public override void Initialize()
     {

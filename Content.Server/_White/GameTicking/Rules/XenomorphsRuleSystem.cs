@@ -1,3 +1,4 @@
+using Content.Shared.RoundEnd;
 using System.Linq;
 using Content.Server._White.GameTicking.Rules.Components;
 using Content.Server.Antag;
@@ -25,6 +26,10 @@ using Robust.Shared.Utility;
 using Robust.Server.Audio; // Goobstation - Play music on announcement
 using Content.Server.Ghost.Roles.Components;
 using Content.Shared.Station.Components;
+using Content.Shared.Antag;
+using Content.Shared.GameTicking;
+using Content.Shared.GameTicking.Rules;
+using Content.Shared.Station.Systems;
 
 namespace Content.Server._White.GameTicking.Rules;
 
@@ -32,7 +37,7 @@ public sealed class XenomorphsRuleSystem : GameRuleSystem<XenomorphsRuleComponen
 {
     private static readonly EntProtoId XenomorphSpawnerProto = "SpawnPointGhostXenomorph";
 
-    [Dependency] private readonly GameTicker _gameTicker = default!;
+    [Dependency] private readonly Content.Server.GameTicking.ServerGameTicker _gameTicker = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly IPrototypeManager _protoManager = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
@@ -63,7 +68,7 @@ public sealed class XenomorphsRuleSystem : GameRuleSystem<XenomorphsRuleComponen
     private void AfterAntagEntitySelected(
         EntityUid uid,
         XenomorphsRuleComponent component,
-        AfterAntagEntitySelectedEvent args
+        ref AfterAntagEntitySelectedEvent args
     )
     {
         if (args.Session == null || !Exists(args.EntityUid))
@@ -75,7 +80,7 @@ public sealed class XenomorphsRuleSystem : GameRuleSystem<XenomorphsRuleComponen
     private void OnXenomorphInit(EntityUid uid, XenomorphComponent component, ComponentInit args)
     {
         var query = QueryActiveRules();
-        while (query.MoveNext(out _, out var xenomorphsRule, out _))
+        while (query.MoveNext(out _, out var xenomorphsRule, out _, out _))
         {
             xenomorphsRule.Xenomorphs.Add(uid);
         }
@@ -91,7 +96,7 @@ public sealed class XenomorphsRuleSystem : GameRuleSystem<XenomorphsRuleComponen
             return;
 
         var query = QueryActiveRules();
-        while (query.MoveNext(out _, out _, out var xenomorphsRule, out _))
+        while (query.MoveNext(out _, out var xenomorphsRule, out _, out _))
         {
             if (!xenomorphsRule.Xenomorphs.Contains(uid))
                 continue;
@@ -113,7 +118,7 @@ public sealed class XenomorphsRuleSystem : GameRuleSystem<XenomorphsRuleComponen
     )
     {
         var query = QueryActiveRules();
-        while (query.MoveNext(out _, out _, out var xenomorphsRule, out _))
+        while (query.MoveNext(out _, out var xenomorphsRule, out _, out _))
         {
             if (xenomorphsRule.Xenomorphs.Remove(uid))
                 xenomorphsRule.Xenomorphs.Add(args.EvolvedInto);
@@ -128,7 +133,7 @@ public sealed class XenomorphsRuleSystem : GameRuleSystem<XenomorphsRuleComponen
         var correctStation = false;
 
         var query = QueryActiveRules();
-        while (query.MoveNext(out var uid, out _, out var xenomorphs, out _))
+        while (query.MoveNext(out var uid, out var xenomorphs, out _, out _))
         {
             foreach (var grid in GetStationGrids())
             {
@@ -152,7 +157,7 @@ public sealed class XenomorphsRuleSystem : GameRuleSystem<XenomorphsRuleComponen
             return;
 
         var query = QueryActiveRules();
-        while (query.MoveNext(out var uid, out _, out var xenomorphs, out _))
+        while (query.MoveNext(out var uid, out var xenomorphs, out _, out _))
         {
             OnRoundEnd(xenomorphs);
             ForceEndSelf(uid);
@@ -245,6 +250,8 @@ public sealed class XenomorphsRuleSystem : GameRuleSystem<XenomorphsRuleComponen
         if (!component.Announced && component.AnnouncementTime <= _timing.CurTime)
         {
             component.Announced = true;
+
+            RaiseLocalEvent(new XenomorphsAnnouncedEvent());
 
             if (!string.IsNullOrEmpty(component.Announcement))
                 _chat.DispatchGlobalAnnouncement(Loc.GetString(component.Announcement), component.Sender != null ? Loc.GetString(component.Sender) : null, colorOverride: component.AnnouncementColor);

@@ -30,23 +30,24 @@ namespace Content.Goobstation.Shared.Clothing.Systems;
 /// <summary>
 ///     System used for sealable clothing (like modsuits)
 /// </summary>
-public abstract class SharedSealableClothingSystem : EntitySystem
+public abstract partial class SharedSealableClothingSystem : EntitySystem
 {
-    [Dependency] private readonly INetManager _netManager = default!;
-    [Dependency] private readonly ActionBlockerSystem _actionBlockerSystem = default!;
-    [Dependency] private readonly ActionContainerSystem _actionContainerSystem = default!;
-    [Dependency] private readonly ComponentTogglerSystem _componentTogglerSystem = default!;
-    [Dependency] private readonly SharedActionsSystem _actionsSystem = default!;
-    [Dependency] private readonly SharedAppearanceSystem _appearanceSystem = default!;
-    [Dependency] private readonly SharedAudioSystem _audioSystem = default!;
-    [Dependency] private readonly SharedDoAfterSystem _doAfterSystem = default!;
-    [Dependency] private readonly SharedInteractionSystem _interactionSystem = default!;
-    [Dependency] private readonly SharedPopupSystem _popupSystem = default!;
-    [Dependency] private readonly PowerCellSystem _powerCellSystem = default!;
-    [Dependency] private readonly ToggleableClothingSystem _toggleableSystem = default!;
-    [Dependency] private readonly SharedContainerSystem _containerSystem = default!;
-    [Dependency] private readonly InventorySystem _inventorySystem = default!;
-    [Dependency] private readonly SharedTransformSystem _transformSystem = default!;
+    [Dependency] private INetManager _netManager = default!;
+    [Dependency] private ActionBlockerSystem _actionBlockerSystem = default!;
+    [Dependency] private ActionContainerSystem _actionContainerSystem = default!;
+    [Dependency] private ComponentTogglerSystem _componentTogglerSystem = default!;
+    [Dependency] private HideLayerClothingSystem _hideLayer = default!;
+    [Dependency] private SharedActionsSystem _actionsSystem = default!;
+    [Dependency] private SharedAppearanceSystem _appearanceSystem = default!;
+    [Dependency] private SharedAudioSystem _audioSystem = default!;
+    [Dependency] private SharedDoAfterSystem _doAfterSystem = default!;
+    [Dependency] private SharedInteractionSystem _interactionSystem = default!;
+    [Dependency] private SharedPopupSystem _popupSystem = default!;
+    [Dependency] private PowerCellSystem _powerCellSystem = default!;
+    [Dependency] private ToggleableClothingSystem _toggleableSystem = default!;
+    [Dependency] private SharedContainerSystem _containerSystem = default!;
+    [Dependency] private InventorySystem _inventorySystem = default!;
+    [Dependency] private SharedTransformSystem _transformSystem = default!;
 
     public override void Initialize()
     {
@@ -85,7 +86,13 @@ public abstract class SharedSealableClothingSystem : EntitySystem
     /// <param name="args"></param>
     private void OnPartSealingComplete(Entity<SealableClothingComponent> part, ref ClothingPartSealCompleteEvent args)
     {
+        if (!args.IsSealed)
+            _hideLayer.SetWearerLayersHidden(part, false);
+
         _componentTogglerSystem.ToggleComponent(part, args.IsSealed);
+
+        if (args.IsSealed)
+            _hideLayer.SetWearerLayersHidden(part, true);
     }
 
     /// <summary>
@@ -423,7 +430,9 @@ public abstract class SharedSealableClothingSystem : EntitySystem
                 return false;
             }
 
-            comp.ProcessQueue.Enqueue(EntityManager.GetNetEntity(sealeable));
+            //IS14-change start
+            comp.ProcessQueue.Enqueue(GetNetEntity(sealeable));
+            //IS14-change end
         }
 
         comp.IsInProcess = true;
@@ -453,7 +462,9 @@ public abstract class SharedSealableClothingSystem : EntitySystem
                 return;
             }
 
-            var processingPart = EntityManager.GetEntity(comp.ProcessQueue.Dequeue());
+            //IS14-change start
+            var processingPart = GetEntity(comp.ProcessQueue.Dequeue());
+            //IS14-change end
             Dirty(control);
 
             if (!TryComp<SealableClothingComponent>(processingPart, out var sealableComponent) || !comp.IsInProcess)
@@ -623,7 +634,7 @@ public abstract class SharedSealableClothingSystem : EntitySystem
         // Cancel if the control unit is sealed.
         if (TryComp<SealableClothingControlComponent>(toggleableEnt, out var controlSeal) && controlSeal.IsCurrentlySealed || controlSeal!.IsInProcess)
         {
-            _popupSystem.PopupClient(Loc.GetString("sealable-clothing-sealed-toggle-fail"), toggleableEnt, args.Unequipee);
+            _popupSystem.PopupClient(Loc.GetString("sealable-clothing-sealed-toggle-fail"), toggleableEnt, args.User);
             args.Cancel();
             return;
         }
@@ -636,7 +647,7 @@ public abstract class SharedSealableClothingSystem : EntitySystem
         {
             if (!TryComp<SealableClothingComponent>(partUid, out var partSeal) || !partSeal.IsSealed)
                 continue;
-            _popupSystem.PopupClient(Loc.GetString("sealable-clothing-sealed-toggle-fail"), toggleableEnt, args.Unequipee);
+            _popupSystem.PopupClient(Loc.GetString("sealable-clothing-sealed-toggle-fail"), toggleableEnt, args.User);
             args.Cancel();
             return;
         }
@@ -693,7 +704,7 @@ public readonly record struct ClothingPartSealCompleteEvent(bool IsSealed)
     public readonly bool IsSealed = IsSealed;
 }
 
-public sealed class ClothingSealAttemptEvent(EntityUid user) : CancellableEntityEventArgs
+public sealed partial class ClothingSealAttemptEvent(EntityUid user) : CancellableEntityEventArgs
 {
     public EntityUid User = user;
 }

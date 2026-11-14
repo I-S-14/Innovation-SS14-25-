@@ -60,7 +60,7 @@ namespace Content.Shared.Eye.Blinding.Systems
             _statusEffectsSystem.TryAddStatusEffect(args.User, TemporaryBlindnessSystem.BlindingStatusEffect,
                 statusTimeSpan, false, TemporaryBlindnessSystem.BlindingStatusEffect);
         }
-        private void OnWelderToggled(EntityUid uid, RequiresEyeProtectionComponent component, ItemToggledEvent args)
+        private void OnWelderToggled(EntityUid uid, RequiresEyeProtectionComponent component, ref ItemToggledEvent args)
         {
             component.Toggled = args.Activated;
             Dirty(uid, component);

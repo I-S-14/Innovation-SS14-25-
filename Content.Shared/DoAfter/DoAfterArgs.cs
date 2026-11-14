@@ -56,18 +56,10 @@ public sealed partial class DoAfterArgs
     public bool Hidden;
 
     /// <summary>
-    /// Goobstation
-    /// Whether the delay multiplier event should be raised
+    ///     String that will be added to the examine window of the entity.
     /// </summary>
     [DataField]
-    public bool MultiplyDelay = true;
-
-    /// <summary>
-    /// Goobstation
-    /// If not null, progress bar will use this color.
-    /// </summary>
-    [DataField]
-    public Color? ColorOverride;
+    public string? ExamineText;
 
     #region Event options
     /// <summary>
@@ -106,6 +98,18 @@ public sealed partial class DoAfterArgs
     /// </summary>
     [DataField]
     public bool NeedHand;
+
+    /// <summary>
+    /// Whether or not this do after requires your active hand to be empty,
+    /// </summary>
+    [DataField]
+    public bool NeedFreeHand;
+
+    /// <summary>
+    /// Whether or not this do after requires you to have any empty hand,
+    /// </summary>
+    [DataField]
+    public bool NeedAnyFreeHand;
 
     /// <summary>
     ///     Whether we need to keep our active hand as is (i.e. can't change hand or change item). This also covers
@@ -152,6 +156,9 @@ public sealed partial class DoAfterArgs
     /// </summary>
     [DataField]
     public bool BreakOnDamage;
+
+    [DataField]
+    public bool FaceTarget = true; // Goob
 
     /// <summary>
     ///     Threshold for user damage. This damage has to be dealt in a single event, not over time.
@@ -279,9 +286,12 @@ public sealed partial class DoAfterArgs
         Target = other.Target;
         Used = other.Used;
         Hidden = other.Hidden;
+        ExamineText = other.ExamineText;
         EventTarget = other.EventTarget;
         Broadcast = other.Broadcast;
         NeedHand = other.NeedHand;
+        NeedFreeHand = other.NeedFreeHand;
+        NeedAnyFreeHand = other.NeedAnyFreeHand;
         BreakOnHandChange = other.BreakOnHandChange;
         BreakOnDropItem = other.BreakOnDropItem;
         BreakOnMove = other.BreakOnMove;
@@ -295,6 +305,7 @@ public sealed partial class DoAfterArgs
         BlockDuplicate = other.BlockDuplicate;
         CancelDuplicate = other.CancelDuplicate;
         DuplicateCondition = other.DuplicateCondition;
+        FaceTarget = other.FaceTarget; // Goob
         ShowTo = other.ShowTo; // Goobstation - Show doAfter popup to another entity
 
         MultiplyDelay = other.MultiplyDelay; // Goobstation
@@ -309,6 +320,22 @@ public sealed partial class DoAfterArgs
 
         Event = other.Event.Clone();
     }
+
+    // IS14-merge: restored from Goob/IS14 version
+    /// <summary>
+    /// Goobstation
+    /// If not null, progress bar will use this color.
+    /// </summary>
+    [DataField]
+    public Color? ColorOverride;
+
+    // IS14-merge: restored from Goob/IS14 version
+    /// <summary>
+    /// Goobstation
+    /// Whether the delay multiplier event should be raised
+    /// </summary>
+    [DataField]
+    public bool MultiplyDelay = true;
 }
 
 /// <summary>

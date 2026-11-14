@@ -1,0 +1,14 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: 5327c414c5:Resources/Prototypes/Tiles/planet.yml
+- type: tile
+  id: FloorLowDesert
+  name: tiles-low-desert-floor
+  sprite: /Textures/Tiles/Planet/Desert/low_desert.png
+  variants: '6'
+  placementVariants:
+  - '1.0'
+  - '1.0'
+  - '1.0'
+  - '1.0'
+  - '1.0'
+  - '1.0'

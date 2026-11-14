@@ -1,3 +1,4 @@
+using Content.Shared.Speech.EntitySystems;
 using Content.Goobstation.Common.Speech;
 using Content.Server.Speech.EntitySystems;
 using Content.Shared.Speech;
@@ -5,11 +6,11 @@ using Robust.Shared.Random;
 
 namespace Content.Goobstation.Server.Speech;
 
-public sealed class BritishAccentSystem : EntitySystem
+public sealed partial class BritishAccentSystem : EntitySystem
 {
     //shamelessly stolen from the dementia accent
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly ReplacementAccentSystem _replacement = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private ReplacementAccentSystem _replacement = default!;
 
     public override void Initialize()
     {
@@ -17,7 +18,7 @@ public sealed class BritishAccentSystem : EntitySystem
         SubscribeLocalEvent<BritishAccentComponent, AccentGetEvent>(OnAccent);
     }
 
-    private void OnAccent(EntityUid uid, BritishAccentComponent component, AccentGetEvent args)
+    private void OnAccent(EntityUid uid, BritishAccentComponent component, ref AccentGetEvent args)
     {
         var message = args.Message;
 

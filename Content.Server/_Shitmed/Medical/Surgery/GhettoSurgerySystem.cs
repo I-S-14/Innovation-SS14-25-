@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-using Content.Server.Kitchen.Components;
 using Content.Shared._Shitmed.Medical.Surgery.Tools;
 using Content.Shared.Kitchen.Components;
 using Robust.Shared.Audio;

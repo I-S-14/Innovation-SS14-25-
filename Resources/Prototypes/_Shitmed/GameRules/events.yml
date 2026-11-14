@@ -26,73 +26,26 @@
   - type: AntagLoadProfileRule
     speciesHardOverride: Abductor
   - type: AntagSelection
-    definitions:
-    - spawnerPrototype: LoneAbductorSpawner
-      min: 1
-      max: 1
-      pickPlayer: false
-      startingGear: LoneAbductorGear
-      skills: # CorvaxGoob-Skills
-      - All
-      briefing:
-        text: abductor-role-greeting
-        color: Green
-        sound: /Audio/_Shitmed/Misc/abductor.ogg
-      components:
-      - type: Abductor
-      - type: ActionGrant
-        actions:
-          - ActionReturnToShip
-      - type: GhostRole
-        name: abductor-lone-ghost-role-name
-        description: abductor-lone-ghost-role-desc
-        rules: abductors-ghost-role-rules
-        mindRoles:
-        - MindRoleLoneAbductor
-        raffle:
-          settings: default
-      - type: GhostTakeoverAvailable
-      - type: NpcFactionMember
-        factions:
-          - SimpleHostile
-      - type: RandomMetadata
-        nameSegments:
-          - AbductorScientistPrefix
-          - AbductorNames
-        nameFormat: name-format-standard
-      - type: Tag
-        tags:
-          - Abductor
-          - AbductorScientist
-          - CanPilot
-          - FootstepSound
-          - DoorBumpOpener
-      - type: AbductorScientist
-      - type: SurgeryIgnoreClothing
-      - type: Sanitized
-      - type: SurgerySpeedModifier
-        speedModifier: 1.5
-      #CorvaxGoob-AbductorFixImmunity start
-      - type: PressureImmunity
-      - type: SpecialHighTempImmunity
-      - type: SpecialLowTempImmunity
-      #CorvaxGoob-AbductorFixImmunity end
-      mindRoles:
-      - MindRoleLoneAbductor
-
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14LoneAbductorSpawnAntag0d03bb4e8
+      range:
+        max: 1
+        min: 1
+      playerRatio: 10
 - type: entity
   parent: BaseGameRule
   id: AbductorVictim
   components:
   - type: AbductorVictimRule
   - type: AntagSelection
-    definitions:
-    - mindRoles:
-      - MindRoleAbductorVictim
-      briefing:
-        text: abductor-victim-role-greeting
-        color: Red
-        sound: /Audio/_Shitmed/Misc/abducted.ogg
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14AbductorVictimAntag08bb180b6
+      range:
+        max: 1
+        min: 1
+      playerRatio: 10
   - type: AntagRandomObjectives
     maxDifficulty: 1
     sets:
@@ -125,103 +78,16 @@
   - type: AntagLoadProfileRule
     speciesHardOverride: Abductor
   - type: AntagSelection
-    definitions:
-    - spawnerPrototype: AbductorScientistSpawner
-      min: 1
-      max: 1
-      pickPlayer: false
-      startingGear: AbductorScientistGear
-      skills: # CorvaxGoob-Skills
-      - All
-      briefing:
-        text: abductor-role-greeting
-        color: Green
-        sound: /Audio/_Shitmed/Misc/abductor.ogg
-      components:
-      - type: Abductor
-      - type: ActionGrant
-        actions:
-          - ActionReturnToShip
-      - type: GhostRole
-        name: abductor-scientist-ghost-role-name
-        description: abductor-scientist-ghost-role-desc
-        rules: abductors-ghost-role-rules
-        mindRoles:
-        - MindRoleAbductorScientist
-        raffle:
-          settings: default
-      - type: GhostTakeoverAvailable
-      - type: NpcFactionMember
-        factions:
-          - SimpleHostile
-      - type: RandomMetadata
-        nameSegments:
-          - AbductorScientistPrefix
-          - AbductorNames
-        nameFormat: name-format-standard
-      - type: Tag
-        tags:
-          - Abductor
-          - AbductorScientist
-          - CanPilot
-          - FootstepSound
-          - DoorBumpOpener
-      - type: AbductorScientist
-      - type: SurgeryIgnoreClothing
-      - type: Sanitized
-      - type: SurgerySpeedModifier
-        speedModifier: 1.5
-      #CorvaxGoob-AbductorFixImmunity start
-      - type: PressureImmunity
-      - type: SpecialHighTempImmunity
-      - type: SpecialLowTempImmunity
-      #CorvaxGoob-AbductorFixImmunity end
-      mindRoles:
-      - MindRoleAbductorScientist
-    - spawnerPrototype: AbductorAgentSpawner
-      min: 1
-      max: 1
-      pickPlayer: false
-      startingGear: AbductorAgentGear
-      skills: # CorvaxGoob-Skills
-      - All
-      briefing:
-        text: abductor-role-greeting
-        color: Green
-        sound: /Audio/_Shitmed/Misc/abductor.ogg
-      components:
-      - type: Abductor
-      - type: ActionGrant
-        actions:
-          - ActionReturnToShip
-      - type: GhostRole
-        name: abductor-agent-ghost-role-name
-        description: abductor-agent-ghost-role-desc
-        rules: abductors-ghost-role-rules
-        mindRoles:
-        - MindRoleAbductorAgent
-        raffle:
-          settings: default
-      - type: GhostTakeoverAvailable
-      - type: NpcFactionMember
-        factions:
-          - SimpleHostile
-      - type: RandomMetadata
-        nameSegments:
-          - AbductorAgentPrefix
-          - AbductorNames
-        nameFormat: name-format-standard
-      - type: Tag
-        tags:
-          - Abductor
-          - CanPilot
-          - FootstepSound
-          - DoorBumpOpener
-      - type: AbductorScientist # Should be removed when we have proper teleportation system
-      #CorvaxGoob-AbductorFixImmunity start
-      - type: PressureImmunity
-      - type: SpecialHighTempImmunity
-      - type: SpecialLowTempImmunity
-      #CorvaxGoob-AbductorFixImmunity end
-      mindRoles:
-      - MindRoleAbductorAgent
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14DuoAbductorSpawnAntag0862217be
+      range:
+        max: 1
+        min: 1
+      playerRatio: 10
+    - !type:LinearAntagCount
+      proto: IS14DuoAbductorSpawnAntag135f1dc38
+      range:
+        max: 1
+        min: 1
+      playerRatio: 10

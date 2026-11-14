@@ -7,6 +7,7 @@
   physicalDesc: reagent-physical-desc-acidic
   flavor: bitter
   color: "#AF14B7"
+  puddleSpriteSet: Acid # Goob
   boilingPoint: 55.5
   meltingPoint: -50.0
 
@@ -17,29 +18,32 @@
   physicalDesc: reagent-physical-desc-acidic
   flavor: bitter
   color: "#E7EA91"
+  puddleSpriteSet: Acid # Goob
   boilingPoint: 55.5
   meltingPoint: -50.0
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Poison:
       effects:
       - !type:HealthChange
         conditions:
-        - !type:MetabolizerTypeCondition # Goobstation - Yowie
-          type: [ Yowie ]
+        - !type:MetabolizerTypeCondition
+          type: [Yowie]
           inverted: true
         damage:
           types:
             Caustic: 1
-            Poison: 2 # Phenol is definitely not safe
-
+            Poison: 2
 - type: reagent
   id: Charcoal
   name: reagent-name-charcoal
   desc: reagent-desc-charcoal
   physicalDesc: reagent-physical-desc-porous
   color: "#22282b"
+  puddleSpriteSet: Powder # Goob
   boilingPoint: 4200.0
   meltingPoint: 3550.0
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Medicine:
       effects:
@@ -50,13 +54,13 @@
       - !type:CleanBloodstream
         excluded: Charcoal
         cleanseRate: 3
-
 - type: reagent
   id: Ash
   name: reagent-name-ash
   desc: reagent-desc-ash
   physicalDesc: reagent-physical-desc-powdery
   color: white
+  puddleSpriteSet: Powder # Goob
 
 - type: reagent
   id: Lye
@@ -65,6 +69,8 @@
   flavor: alkaline
   physicalDesc: reagent-physical-desc-alkaline
   color: "#e5420b"
+  puddleSpriteSet: Shiny # Goob
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Poison:
       effects:
@@ -72,13 +78,13 @@
         damage:
           types:
             Caustic: 1
-
 - type: reagent
   id: SodiumCarbonate
   name: reagent-name-sodium-carbonate
   desc: reagent-desc-sodium-carbonate
   physicalDesc: reagent-physical-desc-powdery
   color: white
+  puddleSpriteSet: Powder # Goob
 
 - type: reagent
   id: Artifexium
@@ -89,6 +95,7 @@
   allowedDepartments:
   - Science
   color: "#776291"
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Poison:
       effects:
@@ -126,22 +133,28 @@
   allowedJobs:
   - Chemist
   color: "#E7EA91"
+  puddleSpriteSet: Acid # Goob
   boilingPoint: 353.2
   meltingPoint: 278.7
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Poison:
       effects:
       - !type:HealthChange
+        conditions:
+        - !type:MetabolizerTypeCondition
+          type: [Synth]
+          inverted: true
         damage:
           types:
-            Cellular: 1 #it's a carcinogen, reckon this is fine
-
+            Cellular: 1
 - type: reagent
   id: Hydroxide
   name: reagent-name-hydroxide
   desc: reagent-desc-hydroxide
   physicalDesc: reagent-physical-desc-alkaline
   color: "white"
+  puddleSpriteSet: Shiny # Goob
   boilingPoint: 1661.0
   meltingPoint: 596.0
 
@@ -151,15 +164,17 @@
   desc: reagent-desc-sodium-hydroxide
   physicalDesc: reagent-physical-desc-alkaline
   color: "white"
+  puddleSpriteSet: Shiny # Goob
   boilingPoint: 1661.0
   meltingPoint: 596.0
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Poison:
       effects:
       - !type:HealthChange
         conditions:
-        - !type:MetabolizerTypeCondition # Goobstation - Yowie
-          type: [ Yowie ]
+        - !type:MetabolizerTypeCondition
+          type: [Yowie]
           inverted: true
         damage:
           types:
@@ -170,7 +185,7 @@
         conditions:
         - !type:ReagentCondition
           reagent: SodiumHydroxide
-        - !type:MetabolizerTypeCondition # Goobstation - Yowie
+        - !type:MetabolizerTypeCondition
           type:
           - Yowie
           inverted: true
@@ -178,7 +193,6 @@
           reagent: SodiumHydroxide
           min: 5
         probability: 0.1
-
 - type: reagent
   id: Fersilicite
   name: reagent-name-fersilicite
@@ -196,17 +210,18 @@
   flavor: bitter
   physicalDesc: reagent-physical-desc-grainy
   color: "#F0F0F0"
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Poison:
       effects:
-      - !type:SatiateThirst
-        factor: -5 # This is basically industrial dessicant
+      - !type:Satiate
+        satiationType: Thirst
+        factor: -5
       - !type:PopupMessage
         visualType: MediumCaution
         type: Local
-        messages: [ "generic-reagent-effect-parched" ]
+        messages: ["generic-reagent-effect-parched"]
         probability: 0.1
-
 - type: reagent
   id: Cellulose
   name: reagent-name-cellulose
@@ -214,6 +229,7 @@
   desc: reagent-desc-cellulose
   flavor: bitter
   color: "#E6E6DA"
+  puddleSpriteSet: Powder # Goob
   physicalDesc: reagent-physical-desc-crystalline
 
 - type: reagent
@@ -224,6 +240,7 @@
   flavor: tingly
   physicalDesc: reagent-physical-desc-refreshing
   color: "#bf1365"
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Medicine:
       effects:

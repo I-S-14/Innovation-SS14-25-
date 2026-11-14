@@ -102,7 +102,12 @@
         map: ["enum.GunVisualLayers.Base"]
       - state: mag-0
         map: ["enum.GunVisualLayers.Mag"]
+  - type: GunWieldBonus
+    minAngle: -20
+    maxAngle: -16
   - type: Gun
+    angleIncrease: 1.5
+    angleDecay: 9.5
     soundGunshot:
       path: /Audio/Weapons/Guns/Gunshots/rifle2.ogg
   - type: ChamberMagazineAmmoProvider
@@ -188,6 +193,9 @@
   id: WeaponRifleLecter
   description: A military-grade assault rifle that's seen more wars than you can remember. The full-size package and steady recoil of the Lecter help it excel at one thing—pinpoint accuracy. Feeds from .20 Rifle magazines. # Goobstation
   components:
+  - type: Tag
+    tags:
+    - WeaponRifleLecter # Goobstation - S.E.C. cyborg lethal module
   - type: Sprite
     sprite: Objects/Weapons/Guns/Rifles/lecter.rsi
     layers:
@@ -197,6 +205,9 @@
         map: ["enum.GunVisualLayers.Mag"]
   - type: Clothing
     sprite: Objects/Weapons/Guns/Rifles/lecter.rsi
+  - type: GunWieldBonus
+    minAngle: -20
+    maxAngle: -18
   - type: Gun
     fireRate: 5 # Goobstation?
     soundGunshot:
@@ -305,13 +316,13 @@
         whitelist:
           tags:
           - CartridgeLightRifle # Goob
-  - type: SpeedModifiedOnWield
-    walkModifier: 0.8
-    sprintModifier: 0.8
   - type: CursorOffsetRequiresWield
   - type: EyeCursorOffset
     maxOffset: 3.5 # Goob
     pvsIncrease: 0.2
+  - type: SpeedModifiedOnWield
+    walkModifier: 0.8
+    sprintModifier: 0.8
   - type: ContainerContainer
     containers:
       gun_magazine: !type:ContainerSlot

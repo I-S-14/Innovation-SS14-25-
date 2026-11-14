@@ -2,7 +2,6 @@
 
 using Content.Server.Administration.Logs;
 using Content.Server.Atmos.EntitySystems;
-using Content.Server.Atmos.Piping.Components;
 using Content.Server.Atmos.Piping.Unary.EntitySystems;
 using Content.Server.Medical.Components;
 using Content.Server.NodeContainer.EntitySystems;
@@ -13,26 +12,29 @@ using Content.Shared.Actions; // Shitmed Change
 using Content.Shared.UserInterface;
 using Content.Shared.Body.Components;
 using Content.Shared.Chemistry.EntitySystems;
+using Content.Shared.Atmos.Components;
+using Content.Shared.Damage.Systems;
 using Content.Shared.Medical.Cryogenics;
 using Content.Shared.MedicalScanner;
 using Content.Shared.Temperature.Components;
-using Content.Shared.UserInterface;
 using Content.Shared.Verbs;
 using Content.Shared.Bed.Sleep; // Shitmed Change
 using Robust.Server.GameObjects;
 using Robust.Shared.Containers;
 
+using Content.Server.Atmos.Piping.Components;
+
 namespace Content.Server.Medical;
 
 public sealed partial class CryoPodSystem : SharedCryoPodSystem
 {
-    [Dependency] private readonly AtmosphereSystem _atmosphereSystem = default!;
     [Dependency] private readonly SharedActionsSystem _actionsSystem = default!;
-    [Dependency] private readonly GasCanisterSystem _gasCanisterSystem = default!;
-    [Dependency] private readonly NodeContainerSystem _nodeContainer = default!;
     [Dependency] private readonly SharedUserInterfaceSystem _uiSystem = default!;
     [Dependency] private readonly SharedSolutionContainerSystem _solutionContainerSystem = default!;
     [Dependency] private readonly SleepingSystem _sleepingSystem = default!; // Shitmed change
+    [Dependency] private AtmosphereSystem _atmosphereSystem = default!;
+    [Dependency] private GasCanisterSystem _gasCanisterSystem = default!;
+    [Dependency] private NodeContainerSystem _nodeContainer = default!;
 
     public override void Initialize()
     {

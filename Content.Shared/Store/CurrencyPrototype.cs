@@ -3,7 +3,6 @@
 using Content.Goobstation.Maths.FixedPoint;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.Dictionary;
 
 namespace Content.Shared.Store;
 
@@ -16,7 +15,6 @@ namespace Content.Shared.Store;
 [DataDefinition]
 public sealed partial class CurrencyPrototype : IPrototype
 {
-    [ViewVariables]
     [IdDataField]
     public string ID { get; private set; } = default!;
 

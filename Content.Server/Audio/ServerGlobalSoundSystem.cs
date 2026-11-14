@@ -1,26 +1,41 @@
+using Content.Shared.Station.Systems;
 // SPDX-License-Identifier: AGPL-3.0-or-later
-
-using Content.Server.Station.Systems;
 using Content.Shared.Audio;
+using JetBrains.Annotations;
 using Robust.Shared.Audio;
-using Robust.Shared.Audio.Systems;
 using Robust.Shared.Console;
 using Robust.Shared.Player;
+using Content.Server.Station.Systems;
+using Robust.Shared.Audio.Systems;
 
 namespace Content.Server.Audio;
 
-public sealed class ServerGlobalSoundSystem : SharedGlobalSoundSystem
+/// <inheritdoc/>
+public sealed partial class ServerGlobalSoundSystem : GlobalSoundSystem
 {
-    [Dependency] private readonly IConsoleHost _conHost = default!;
-    [Dependency] private readonly StationSystem _stationSystem = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
+    //IS14-change start: retain fork fields lost during merge.
 
+    [Dependency] private readonly SharedAudioSystem _audio = default!;
+    [Dependency] private readonly StationSystem _stationSystem = default!;
+    //IS14-change end
+
+    [Dependency] private IConsoleHost _conHost = default!;
+
+    /// <inheritdoc/>
     public override void Shutdown()
     {
         base.Shutdown();
         _conHost.UnregisterCommand("playglobalsound");
     }
 
+    /// <summary>
+    /// Plays an admin sound for the selected players and optionally records it for replay.
+    /// </summary>
+    /// <param name="playerFilter">Players who should receive the sound.</param>
+    /// <param name="specifier">Resolved sound to play.</param>
+    /// <param name="audioParams">Optional parameters controlling playback.</param>
+    /// <param name="replay">Whether the network event should be recorded for replay.</param>
+    [PublicAPI]
     public void PlayAdminGlobal(Filter playerFilter, ResolvedSoundSpecifier specifier, AudioParams? audioParams = null, bool replay = true)
     {
         var msg = new AdminSoundEvent(specifier, audioParams);
@@ -34,14 +49,14 @@ public sealed class ServerGlobalSoundSystem : SharedGlobalSoundSystem
         return stationFilter;
     }
 
-    public void PlayGlobalOnStation(EntityUid source, ResolvedSoundSpecifier specifier, AudioParams? audioParams = null)
+    public new void PlayGlobalOnStation(EntityUid source, ResolvedSoundSpecifier specifier, AudioParams? audioParams = null)
     {
         var msg = new GameGlobalSoundEvent(specifier, audioParams);
         var filter = GetStationAndPvs(source);
         RaiseNetworkEvent(msg, filter);
     }
 
-    public void StopStationEventMusic(EntityUid source, StationEventMusicType type)
+    public new void StopStationEventMusic(EntityUid source, StationEventMusicType type)
     {
         // TODO REPLAYS
         // these start & stop events are gonna be a PITA

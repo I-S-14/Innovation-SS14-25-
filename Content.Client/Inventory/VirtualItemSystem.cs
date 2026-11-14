@@ -6,7 +6,7 @@ using Content.Shared.Inventory.VirtualItem;
 
 namespace Content.Client.Inventory;
 
-public sealed class VirtualItemSystem : SharedVirtualItemSystem
+public sealed partial class VirtualItemSystem : SharedVirtualItemSystem
 {
     public override void Initialize()
     {

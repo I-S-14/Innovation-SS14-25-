@@ -1,22 +1,26 @@
+using Content.Shared.Ghost.Systems; // IS14-change: upstream namespace move
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Linq;
 using Content.Server.GameTicking;
 using Content.Shared.Administration;
-using Content.Shared.Ghost;
+using Content.Shared.Ghost.Components;
 using Content.Shared.Mind;
 using Robust.Server.GameObjects;
 using Robust.Server.Player;
 using Robust.Shared.Console;
 using Robust.Shared.Player;
+using Content.Server.Ghost;
+using Content.Server.Mind;
+using Content.Shared.Ghost;
 
 namespace Content.Server.Administration.Commands;
 
 [AdminCommand(AdminFlags.Admin)]
-public sealed class AGhostCommand : LocalizedCommands
+public sealed partial class AGhostCommand : LocalizedCommands
 {
-    [Dependency] private readonly IEntityManager _entities = default!;
-    [Dependency] private readonly ISharedPlayerManager _playerManager = default!;
+    [Dependency] private IEntityManager _entities = default!;
+    [Dependency] private ISharedPlayerManager _playerManager = default!;
 
     public override string Command => "aghost";
     public override string Help => "aghost";
@@ -74,7 +78,7 @@ public sealed class AGhostCommand : LocalizedCommands
         var metaDataSystem = _entities.System<MetaDataSystem>();
         var ghostSystem = _entities.System<SharedGhostSystem>();
         var transformSystem = _entities.System<TransformSystem>();
-        var gameTicker = _entities.System<GameTicker>();
+        var gameTicker = _entities.System<ServerGameTicker>();
 
         if (!mindSystem.TryGetMind(player, out var mindId, out var mind))
         {
@@ -94,11 +98,14 @@ public sealed class AGhostCommand : LocalizedCommands
 
         var canReturn = mind.CurrentEntity != null
                         && !_entities.HasComponent<GhostComponent>(mind.CurrentEntity);
-        var coordinates = player!.AttachedEntity != null
-            ? _entities.GetComponent<TransformComponent>(player.AttachedEntity.Value).Coordinates
-            : gameTicker.GetObserverSpawnPoint();
-        var ghost = _entities.SpawnEntity(GameTicker.AdminObserverPrototypeName, coordinates);
-        transformSystem.AttachToGridOrMap(ghost, _entities.GetComponent<TransformComponent>(ghost));
+
+        if (player!.AttachedEntity == null
+            || !transformSystem.TryGetMapOrGridCoordinates(player.AttachedEntity.Value, out var coordinates))
+        {
+            coordinates = gameTicker.GetObserverSpawnPoint();
+        }
+
+        var ghost = _entities.SpawnEntity(ServerGameTicker.AdminObserverPrototypeName, coordinates.Value);
 
         if (canReturn)
         {

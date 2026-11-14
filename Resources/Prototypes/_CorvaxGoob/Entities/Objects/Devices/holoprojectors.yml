@@ -1,3 +1,19 @@
+﻿- type: entity
+  parent: Holoprojector
+  id: RadiationBlockingProjector
+  name: radiation barrier projector
+  description: Stop the deadly radiation from a delamination or meltdown, at least for a little while.
+  components:
+  - type: HolosignProjector
+    signProto: HolosignRadiationBlocking
+    chargeUse: 60
+  - type: Sprite
+    sprite: _CorvaxGoob/Objects/Devices/Holoprojectors/radiation.rsi
+    state: icon
+  - type: Tag
+    tags:
+      - HolofanProjector
+
 - type: entity
   parent: Holoprojector
   id: HoloprojectorCrate
@@ -7,7 +23,7 @@
   - type: HolosignProjector
     signProto: CrateHolographic
     chargeUse: 300
-    anchorOnSpawn: false
+    # IS14: current HolosignSystem uses the spawned prototype's anchoring; the crate is movable.
   - type: Sprite
     sprite: _CorvaxGoob/Objects/Devices/Holoprojectors/cargo.rsi
     state: icon

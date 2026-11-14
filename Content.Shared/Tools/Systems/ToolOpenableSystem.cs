@@ -9,10 +9,10 @@ using Content.Shared.Verbs;
 
 namespace Content.Shared.Tools.EntitySystems;
 
-public sealed class ToolOpenableSystem : EntitySystem
+public sealed partial class ToolOpenableSystem : EntitySystem
 {
-    [Dependency] private readonly SharedToolSystem _tool = default!;
-    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
+    [Dependency] private SharedToolSystem _tool = default!;
+    [Dependency] private SharedAppearanceSystem _appearance = default!;
 
     public override void Initialize()
     {
@@ -53,7 +53,7 @@ public sealed class ToolOpenableSystem : EntitySystem
         if (toolToToggle == null || neededToolQuantity == null)
             return false;
 
-        return _tool.UseTool(toolToToggle.Value, user, entity, time, neededToolQuantity, evt);
+        return _tool.UseTool(toolToToggle.Value, user, entity, time, neededToolQuantity.Value, evt);
     }
 
     private void OnOpenableStateToggled(Entity<ToolOpenableComponent> entity, ref ToolOpenableDoAfterEventToggleOpen args)
@@ -136,7 +136,7 @@ public sealed class ToolOpenableSystem : EntitySystem
 
             // If neededQual is null you don't need a tool to open / close.
             if (neededQual != null &&
-                (item == null || !_tool.HasQuality(item.Value, neededQual)))
+                (item == null || !_tool.HasQuality(item.Value, neededQual.Value)))
             {
                 toggleVerb.Disabled = true;
                 toggleVerb.Message = Loc.GetString("tool-openable-component-verb-cant-close", ("name", name));
@@ -161,7 +161,7 @@ public sealed class ToolOpenableSystem : EntitySystem
                 toggleVerb.Act = () => ToggleState(entity);
                 args.Verbs.Add(toggleVerb);
             }
-            else if (item != null && _tool.HasQuality(item.Value, neededQual))
+            else if (item != null && neededQual != null && _tool.HasQuality(item.Value, neededQual.Value))
             {
                 toggleVerb.Act = () => TryOpenClose(entity, item, user);
                 args.Verbs.Add(toggleVerb);

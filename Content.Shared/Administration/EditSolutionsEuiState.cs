@@ -13,7 +13,7 @@ namespace Content.Shared.Administration
         public readonly List<(string, NetEntity)>? Solutions;
         public readonly GameTick Tick;
 
-        public EditSolutionsEuiState(NetEntity target, List<(string, NetEntity)>? solutions, GameTick tick)
+        public EditSolutionsEuiState(NetEntity target, List<(string, NetEntity)> solutions, GameTick tick)
         {
             Target = target;
             Solutions = solutions;

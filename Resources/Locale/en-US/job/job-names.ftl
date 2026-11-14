@@ -31,84 +31,82 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 # IS14 Edit - Custom role names
-job-name-warden = LRR Chief
-job-name-security = Militiaman
-job-name-cadet = Cadet
-job-name-hos = Militia Chief
-job-name-detective = Investigator
-job-name-brigmedic = Medical Officer
-job-name-borg = Cyborg
-job-name-scientist = Research Associate
-job-name-research-assistant = Lab Assistant
-job-name-rd = RIC Director
-job-name-psychologist = Psychologist
-job-name-intern = Intern
-job-name-doctor = Doctor
-job-name-paramedic = Paramedic
-job-name-cmo = Chief Medical Specialist
-job-name-chemist = Pharmacist
-job-name-technical-assistant = Junior Engineering Specialist
-job-name-engineer = Engineering Specialist
 job-name-atmostech = Atmospheric Technician
-job-name-hop = Head of Personnel Department
-job-name-captain = Captain
-job-name-serviceworker = Service Employee
-job-name-centcomoff = MOKO Inspector
-job-name-cburn = Centcomm Quarantine Officer
-job-name-deathsquad = Deathsquad Operative
-job-name-reporter = Correspondent
-job-name-musician = Musician
-job-name-librarian = Librarian
-job-name-lawyer = Legal Officer
-job-name-mime = Mime
-job-name-ce = Chief Engineering Specialist
-job-name-janitor = Sanitation Specialist
-job-name-chaplain = Chaplain
-job-name-botanist = Hydroponic Technician
 job-name-bartender = Bartender
-## goob edit - epic passengers
-job-name-passenger = Handyman
-job-name-salvagespec = Expeditioner
-job-name-station-ai = Station AI
-job-name-qm = ESO Director
+job-name-borg = Cyborg
+job-name-botanist = Hydroponic Technician
+job-name-brigmedic = Medical Officer
+job-name-cadet = Cadet
+job-name-captain = Captain
 job-name-cargotech = Loader
+job-name-cburn = Centcomm Quarantine Officer
+job-name-ce = Chief Engineering Specialist
 job-name-chef = Cook
+job-name-chaplain = Chaplain
+job-name-chemist = Pharmacist
 job-name-clown = Clown
-job-name-ertleader = ERT Leader
-job-name-ertchaplain = ERT Chaplain
-job-name-ertengineer = ERT Engineer
-job-name-ertsecurity = ERT Security
-job-name-ertmedic = ERT Medic
-job-name-ertjanitor = ERT Janitor
-job-name-boxer = Martial Arts Master
-job-name-pilot = Space Security Officer
-job-name-zookeeper = Zookeeper
-job-name-visitor = Visitor
-# Viro
-job-name-virologist = Virologist
 job-name-cluwne = Cluwne
-
 # event-resctricted jobs
 job-name-security-clown = Security Clown
 job-name-command-maid = Command Maid
 job-name-party-maker = Party Maker
-
+job-name-cmo = Chief Medical Specialist
+job-name-deathsquad = Deathsquad Operative
+job-name-detective = Investigator
+job-name-doctor = Doctor
+job-name-engineer = Engineering Specialist
+job-name-ertchaplain = ERT Chaplain
+job-name-ertengineer = ERT Engineer
+job-name-ertjanitor = ERT Janitor
+job-name-ertleader = ERT Leader
+job-name-ertmedic = ERT Medic
+job-name-ertsecurity = ERT Security
+job-name-hop = Head of Personnel Department
+job-name-hos = Militia Chief
+job-name-intern = Intern
+job-name-janitor = Sanitation Specialist
+job-name-lawyer = Legal Officer
+job-name-librarian = Librarian
+job-name-mime = Mime
+job-name-musician = Musician
+job-name-paramedic = Paramedic
+## goob edit - epic passengers
+job-name-passenger = Handyman
+job-name-psychologist = Psychologist
+job-name-qm = ESO Director
+job-name-rd = RIC Director
+job-name-reporter = Correspondent
+job-name-research-assistant = Lab Assistant
+job-name-salvagespec = Expeditioner
+job-name-scientist = Research Associate
+job-name-security = Militiaman
+job-name-serviceworker = Service Employee
+job-name-centcomoff = MOKO Inspector
+job-name-station-ai = Station AI
+job-name-technical-assistant = Junior Engineering Specialist
+job-name-tram-driver = Tram Driver
+job-name-visitor = Visitor
+job-name-warden = LRR Chief
 # unused jobs
 # these are required for the agent ID job icon tooltips
 # I am keeping them for roleplaying opportunities
 job-name-geneticist = Geneticist
+job-name-boxer = Martial Arts Master
+job-name-pilot = Space Security Officer
 job-name-no-id = No ID
 job-name-prisoner = Prisoner
 job-name-roboticist = Roboticist
-job-name-syndicate = Syndicate
 job-name-unknown = Unknown
+job-name-sus = Sus
+# Viro
+job-name-virologist = Virologist
+job-name-zookeeper = Zookeeper
+job-name-syndicate = Syndicate
 job-name-zombie = Zombie
-
-# Job titles
-job-title-visitor = Visitor
 job-title-cluwne = Cluwne
 job-title-universal = Universal
-
+# Job titles
+job-title-visitor = Visitor
 # Role timers - Make these alphabetical or I cut you
 # IS14 Edit - Custom role names
 JobAtmosphericTechnician = Atmospheric Technician

@@ -1,5 +1,7 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
+// <Goob>
+using Content.Goobstation.Common.Traitor;
+using Robust.Shared.Prototypes;
+// </Goob>
 using Content.Server.Administration;
 using Content.Shared.Administration;
 using Robust.Server.Player;
@@ -9,10 +11,12 @@ using Robust.Shared.Player;
 namespace Content.Server.Traitor.Uplink.Commands;
 
 [AdminCommand(AdminFlags.Admin)]
-public sealed class AddUplinkCommand : LocalizedEntityCommands
+public sealed partial class AddUplinkCommand : LocalizedEntityCommands
 {
-    [Dependency] private readonly UplinkSystem _uplinkSystem = default!;
-    [Dependency] private readonly IPlayerManager _playerManager = default!;
+    [Dependency] private UplinkSystem _uplinkSystem = default!;
+    [Dependency] private IPlayerManager _playerManager = default!;
+
+    private static readonly ProtoId<UplinkPreferencePrototype> PdaPreference = "UplinkPda"; // Goob
 
     public override string Command => "adduplink";
 
@@ -75,7 +79,7 @@ public sealed class AddUplinkCommand : LocalizedEntityCommands
         }
 
         // Finally add uplink
-        if (!_uplinkSystem.AddUplinkAutoDetect(user, 100, uplinkEntity: uplinkEntity)) // Goob edit - 100 TC
+        if (!_uplinkSystem.AddUplink(user, 100, PdaPreference, out _, out _, uplinkEntity: uplinkEntity, giveDiscounts: isDiscounted)) // Goob
             shell.WriteLine(Loc.GetString("add-uplink-command-error-2"));
     }
 

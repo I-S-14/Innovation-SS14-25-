@@ -12,16 +12,16 @@ using Robust.Shared.Timing;
 
 namespace Content.Goobstation.Shared.PassiveConsumable;
 
-public sealed class PassiveConsumableSystem : EntitySystem
+public sealed partial class PassiveConsumableSystem : EntitySystem
 {
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] private readonly IngestionSystem _ingestion = default!;
-    [Dependency] private readonly SharedSolutionContainerSystem _solution = default!;
-    [Dependency] private readonly StomachSystem _stomach = default!;
-    [Dependency] private readonly ReactiveSystem _reactive = default!;
-    [Dependency] private readonly SharedBodySystem _body = default!;
-    [Dependency] private readonly FlavorProfileSystem _flavor = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private IngestionSystem _ingestion = default!;
+    [Dependency] private SharedSolutionContainerSystem _solution = default!;
+    [Dependency] private StomachSystem _stomach = default!;
+    [Dependency] private ReactiveSystem _reactive = default!;
+    [Dependency] private SharedBodySystem _body = default!;
+    [Dependency] private FlavorProfileSystem _flavor = default!;
+    [Dependency] private IGameTiming _timing = default!;
 
     public override void Initialize()
     {
@@ -111,7 +111,7 @@ public sealed class PassiveConsumableSystem : EntitySystem
 
         foreach (var organ in stomachs)
         {
-            if (!_stomach.CanTransferSolution(organ.Owner, split, organ.Comp1)
+            if (!_stomach.CanTransferSolution((organ.Owner, organ.Comp1, null), split)
                 || !_solution.ResolveSolution(organ.Owner, StomachSystem.DefaultSolutionName, ref organ.Comp1.Solution, out var stomachSol)
                 || stomachSol.AvailableVolume <= highestAvailable)
                 continue;
@@ -128,7 +128,7 @@ public sealed class PassiveConsumableSystem : EntitySystem
         }
 
         _reactive.DoEntityReaction(wearer, solution, ReactionMethod.Ingestion);
-        _stomach.TryTransferSolution(bestStomachUid.Value, split, bestStomach);
+        _stomach.TryTransferSolution((bestStomachUid.Value, bestStomach, null), split);
 
         if (soln.Value.Comp.Solution.Volume > FixedPoint2.Zero)
             return false;

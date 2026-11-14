@@ -1,32 +1,36 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+using Robust.Shared.Audio.Systems;
+using Robust.Shared.Serialization;
+using System.Diagnostics.CodeAnalysis;
 using Content.Shared.Chemistry.EntitySystems;
-using Content.Shared.Damage;
+using Content.Shared.Damage.Components;
+using Content.Shared.Damage.Systems;
 using Content.Shared.DoAfter;
 using Content.Shared.Emag.Components;
 using Content.Shared.Emag.Systems;
 using Content.Shared.Interaction;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
+using Content.Shared.Mobs.Systems;
 using Content.Shared.NPC.Components;
 using Content.Shared.Popups;
-using Robust.Shared.Audio.Systems;
-using Robust.Shared.Serialization;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Content.Shared.Silicons.Bots;
 
 /// <summary>
 /// Handles emagging medibots and provides api.
 /// </summary>
-public sealed class MedibotSystem : EntitySystem
+public sealed partial class MedibotSystem : EntitySystem
 {
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
-    [Dependency] private readonly EmagSystem _emag = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private EmagSystem _emag = default!;
     [Dependency] private SharedInteractionSystem _interaction = default!;
     [Dependency] private SharedSolutionContainerSystem _solutionContainer = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private SharedDoAfterSystem _doAfter = default!;
+    [Dependency] private DamageableSystem _damageable = default!;
+    [Dependency] private MobStateSystem _mobState = default!;
 
     public override void Initialize()
     {
@@ -91,34 +95,40 @@ public sealed class MedibotSystem : EntitySystem
     /// </summary>
     public bool CheckInjectable(Entity<MedibotComponent?> medibot, EntityUid target, bool manual = false)
     {
-        if (!Resolve(medibot, ref medibot.Comp, false)) return false;
+        if (!Resolve(medibot, ref medibot.Comp, false))
+            return false;
 
         if (HasComp<NPCRecentlyInjectedComponent>(target))
         {
-            _popup.PopupClient(Loc.GetString("medibot-recently-injected"), medibot, medibot);
+            _popup.PopupEntity(Loc.GetString("medibot-recently-injected"), medibot, medibot);
             return false;
         }
 
-        if (!TryComp<MobStateComponent>(target, out var mobState)) return false;
-        if (!TryComp<DamageableComponent>(target, out var damageable)) return false;
-        if (!_solutionContainer.TryGetInjectableSolution(target, out _, out _)) return false;
+        if (!TryComp<MobStateComponent>(target, out var mobState))
+            return false;
 
-        if (mobState.CurrentState != MobState.Alive && mobState.CurrentState != MobState.Critical)
+        if (!TryComp<DamageableComponent>(target, out var damageable))
+            return false;
+
+        if (!_solutionContainer.TryGetInjectableSolution(target, out _, out _))
+            return false;
+
+        if (_mobState.IsDead(target))
         {
-            _popup.PopupClient(Loc.GetString("medibot-target-dead"), medibot, medibot);
+            _popup.PopupEntity(Loc.GetString("medibot-target-dead"), medibot, medibot);
             return false;
         }
 
-        var total = damageable.TotalDamage;
+        //IS14-change: retain Goob's automatic treatment thresholds using the current damage API.
+        var total = _damageable.GetTotalDamage((target, damageable));
         if (total == 0 && !HasComp<EmaggedComponent>(medibot))
         {
-            _popup.PopupClient(Loc.GetString("medibot-target-healthy"), medibot, medibot);
+            _popup.PopupEntity(Loc.GetString("medibot-target-healthy"), medibot, medibot);
             return false;
         }
 
-        if (!TryGetTreatment(medibot.Comp, mobState.CurrentState, out var treatment) || !treatment.IsValid(total) && !manual) return false;
-
-        return true;
+        return TryGetTreatment(medibot.Comp, mobState.CurrentState, out var treatment)
+               && (manual || treatment.IsValid(total)); //IS14-change
     }
 
     /// <summary>
@@ -128,17 +138,20 @@ public sealed class MedibotSystem : EntitySystem
     {
         if (!Resolve(medibot, ref medibot.Comp, false)) return false;
 
+        //IS14-change: recheck at injection time as another bot may have finished first.
+        if (HasComp<NPCRecentlyInjectedComponent>(target)) return false;
+
         if (!_interaction.InRangeUnobstructed(medibot.Owner, target)) return false;
 
         if (!TryComp<MobStateComponent>(target, out var mobState)) return false;
         if (!TryGetTreatment(medibot.Comp, mobState.CurrentState, out var treatment)) return false;
         if (!_solutionContainer.TryGetInjectableSolution(target, out var injectable, out _)) return false;
 
-        EnsureComp<NPCRecentlyInjectedComponent>(target);
+        EnsureComp<NPCRecentlyInjectedComponent>(target); //IS14-change: retain the Goob one-minute reinjection cooldown.
         _solutionContainer.TryAddReagent(injectable.Value, treatment.Reagent, treatment.Quantity, out _);
 
         _popup.PopupEntity(Loc.GetString("injector-component-feel-prick-message"), target, target);
-        _popup.PopupClient(Loc.GetString("medibot-target-injected"), medibot, medibot);
+        _popup.PopupEntity(Loc.GetString("medibot-target-injected"), medibot, medibot);
 
         _audio.PlayPredicted(medibot.Comp.InjectSound, medibot, medibot);
 

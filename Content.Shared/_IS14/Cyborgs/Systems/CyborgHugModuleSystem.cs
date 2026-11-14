@@ -13,7 +13,8 @@ using Content.Shared.Interaction.Events;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Popups;
 using Content.Shared.PowerCell;
-using Content.Shared.Timing;
+using Content.Shared.Timing.Components;
+using Content.Shared.Timing.Systems;
 using Robust.Shared.Audio.Systems;
 
 namespace Content.Shared._IS14.Cyborgs.Systems;

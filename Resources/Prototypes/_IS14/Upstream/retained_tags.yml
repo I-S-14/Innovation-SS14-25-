@@ -1,0 +1,6 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: 5327c414c5:Resources/Prototypes/tags.yml
+- type: Tag
+  id: GhostOnlyWarp
+- type: Tag
+  id: Wall

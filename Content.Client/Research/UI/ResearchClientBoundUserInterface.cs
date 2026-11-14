@@ -2,6 +2,7 @@
 
 using Content.Shared.Research.Components;
 using Robust.Client.UserInterface;
+using Robust.Client.GameObjects;
 
 namespace Content.Client.Research.UI
 {

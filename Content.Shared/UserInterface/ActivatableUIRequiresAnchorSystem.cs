@@ -7,9 +7,9 @@ namespace Content.Shared.UserInterface;
 /// <summary>
 /// <see cref="ActivatableUIRequiresAnchorComponent"/>
 /// </summary>
-public sealed class ActivatableUIRequiresAnchorSystem : EntitySystem
+public sealed partial class ActivatableUIRequiresAnchorSystem : EntitySystem
 {
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
 
     public override void Initialize()
     {
@@ -39,7 +39,7 @@ public sealed class ActivatableUIRequiresAnchorSystem : EntitySystem
 
         if (ent.Comp.Popup != null && !args.Silent)
         {
-            _popup.PopupClient(Loc.GetString(ent.Comp.Popup), args.User);
+            _popup.PopupEntity(Loc.GetString(ent.Comp.Popup), args.User, args.User);
         }
 
         args.Cancel();

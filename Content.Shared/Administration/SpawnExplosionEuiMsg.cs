@@ -4,6 +4,7 @@ using Content.Shared.Eui;
 using Robust.Shared.Serialization;
 using Robust.Shared.Map;
 using Content.Shared.Explosion.Components;
+using Content.Shared.Explosion;
 
 namespace Content.Shared.Administration;
 

@@ -1,10 +1,9 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
+using Content.Shared._Shitmed.Targeting;
 using Content.Shared.Damage.Components;
 using Content.Shared.Mobs.Components;
 using Robust.Shared.Timing;
-using Content.Shared._Shitmed.Targeting; // Shitmed Change
-namespace Content.Shared.Damage;
+
+namespace Content.Shared.Damage.Systems;
 
 public sealed class PassiveDamageSystem : EntitySystem
 {
@@ -16,11 +15,25 @@ public sealed class PassiveDamageSystem : EntitySystem
         base.Initialize();
 
         SubscribeLocalEvent<PassiveDamageComponent, MapInitEvent>(OnPendingMapInit);
+        SubscribeLocalEvent<PassiveDamageComponent, DamageDealtEvent>(OnDamageTaken);
     }
 
     private void OnPendingMapInit(EntityUid uid, PassiveDamageComponent component, MapInitEvent args)
     {
-        component.NextDamage = _timing.CurTime + TimeSpan.FromSeconds(1f);
+        component.NextDamage = _timing.CurTime + TimeSpan.FromSeconds(component.Interval);
+        Dirty(uid, component);
+    }
+
+    //IS14-change: retain Wizards' interruption window alongside Goob healing.
+    private void OnDamageTaken(Entity<PassiveDamageComponent> ent, ref DamageDealtEvent args)
+    {
+        if (ent.Comp.IntervalHaltOnDamageTaken <= TimeSpan.Zero || !args.Damage.AnyPositive())
+            return;
+        var next = _timing.CurTime + ent.Comp.IntervalHaltOnDamageTaken;
+        if (next <= ent.Comp.NextDamage)
+            return;
+        ent.Comp.NextDamage = next;
+        Dirty(ent);
     }
 
     // Every tick, attempt to damage entities
@@ -41,19 +54,22 @@ public sealed class PassiveDamageSystem : EntitySystem
                 continue;
 
             // Set the next time they can take damage
-            comp.NextDamage = curTime + TimeSpan.FromSeconds(1f);
+            comp.NextDamage = curTime + TimeSpan.FromSeconds(comp.Interval);
+            Dirty(uid, comp);
 
             // Goobstation
             if (comp.AllowedStates == null || !TryComp<MobStateComponent>(uid, out var mobState))
             {
-                _damageable.TryChangeDamage(uid, comp.Damage, true, false, damage);
-                return;
+                _damageable.TryChangeDamage(uid, comp.Damage, true, false);
+                continue; //IS14-change: process other due entities in the same tick.
             }
 
             // Damage them
             foreach (var allowedState in comp.AllowedStates)
-                if (allowedState == mobState.CurrentState)
-                    _damageable.TryChangeDamage(uid, comp.Damage, true, false, damage, targetPart: TargetBodyPart.All, splitDamage: comp.SplitBehavior); // Shitmed Change
+            {
+                if(allowedState == mobState.CurrentState)
+                    _damageable.ChangeDamage((uid, damage), comp.Damage, true, false, targetPart: TargetBodyPart.All, splitDamage: comp.SplitBehavior); // Goob - Shitmed Change
+            }
         }
     }
 }

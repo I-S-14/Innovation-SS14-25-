@@ -32,10 +32,10 @@ public sealed partial class SharedModsuitSystem
             || (args.SlotFlags & control.RequiredSlot) == 0)
             return;
 
-        _actions.AddAction(args.Equipee, ref ent.Comp.DeployActionEntity, ent.Comp.DeployAction, ent);
-        _actions.AddAction(args.Equipee, ref ent.Comp.SealActionEntity, ent.Comp.SealAction, ent);
-        _actions.AddAction(args.Equipee, ref ent.Comp.ModulesActionEntity, ent.Comp.ModulesAction, ent);
-        _actions.AddAction(args.Equipee, ref ent.Comp.PanelActionEntity, ent.Comp.PanelAction, ent);
+        _actions.AddAction(args.EquipTarget, ref ent.Comp.DeployActionEntity, ent.Comp.DeployAction, ent);
+        _actions.AddAction(args.EquipTarget, ref ent.Comp.SealActionEntity, ent.Comp.SealAction, ent);
+        _actions.AddAction(args.EquipTarget, ref ent.Comp.ModulesActionEntity, ent.Comp.ModulesAction, ent);
+        _actions.AddAction(args.EquipTarget, ref ent.Comp.PanelActionEntity, ent.Comp.PanelAction, ent);
 
         Dirty(ent);
     }

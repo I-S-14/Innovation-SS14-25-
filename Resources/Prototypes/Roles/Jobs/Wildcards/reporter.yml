@@ -9,11 +9,11 @@
   icon: "JobIconReporter"
   #goobcoins: 15 #Goob content Corvax-Goob-coins
   supervisors: job-supervisors-hop
+  guides: [ Service ] # TODO: should have a more specific guidebook page instead of using the department itself
   access:
   - Service
   - Maintenance
   - Journalism # goob
-  weight: 10 # IS14-edit
 
 - type: startingGear
   id: ReporterGear

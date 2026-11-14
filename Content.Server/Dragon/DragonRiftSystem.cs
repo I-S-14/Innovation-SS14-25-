@@ -1,36 +1,38 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+using System.Numerics;
 using Content.Server.Chat.Systems;
 using Content.Server.NPC;
 using Content.Server.NPC.Systems;
-using Content.Server.Pinpointer;
-using Content.Shared.Damage;
+using Content.Shared.Damage.Components;
 using Content.Shared.Dragon;
+using Content.Shared.EntityTable;
 using Content.Shared.Examine;
+using Content.Shared.Pinpointer;
 using Content.Shared.Sprite;
+using Robust.Shared.Audio.Systems;
+using Robust.Shared.GameStates;
 using Robust.Shared.Map;
 using Robust.Shared.Player;
 using Robust.Shared.Serialization.Manager;
-using System.Numerics;
-using Robust.Shared.Audio.Systems;
-using Robust.Shared.GameStates;
 using Robust.Shared.Random; // Goobstation - Buff carp rift
 using Robust.Shared.Utility;
+using Content.Server.Pinpointer;
 
 namespace Content.Server.Dragon;
 
 /// <summary>
 /// Handles events for rift entities and rift updating.
 /// </summary>
-public sealed class DragonRiftSystem : EntitySystem
+public sealed partial class DragonRiftSystem : EntitySystem
 {
-    [Dependency] private readonly ChatSystem _chat = default!;
-    [Dependency] private readonly DragonSystem _dragon = default!;
     [Dependency] private readonly IRobustRandom _random = default!; // Goobstation - Buff carp rift
-    [Dependency] private readonly ISerializationManager _serManager = default!;
-    [Dependency] private readonly NavMapSystem _navMap = default!;
-    [Dependency] private readonly NPCSystem _npc = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
+    [Dependency] private ChatSystem _chat = default!;
+    [Dependency] private DragonSystem _dragon = default!;
+    [Dependency] private ISerializationManager _serManager = default!;
+    [Dependency] private NavMapSystem _navMap = default!;
+    [Dependency] private NPCSystem _npc = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
 
     public override void Initialize()
     {
@@ -94,16 +96,19 @@ public sealed class DragonRiftSystem : EntitySystem
                 comp.SpawnAccumulator -= comp.SpawnCooldown;
                 var ent = Spawn(_random.Prob(comp.StrongSpawnChance) ? comp.SpawnPrototypeStrong : comp.SpawnPrototype, xform.Coordinates); // Goobstation - Buff carp rift
 
-                // Update their look to match the leader.
-                if (TryComp<RandomSpriteComponent>(comp.Dragon, out var randomSprite))
                 {
-                    var spawnedSprite = EnsureComp<RandomSpriteComponent>(ent);
-                    _serManager.CopyTo(randomSprite, ref spawnedSprite, notNullableOverride: true);
-                    Dirty(ent, spawnedSprite);
-                }
 
-                if (comp.Dragon != null)
-                    _npc.SetBlackboard(ent, NPCBlackboard.FollowTarget, new EntityCoordinates(comp.Dragon.Value, Vector2.Zero));
+                    // Update their look to match the leader.
+                    if (TryComp<RandomSpriteComponent>(comp.Dragon, out var randomSprite))
+                    {
+                        var spawnedSprite = EnsureComp<RandomSpriteComponent>(ent);
+                        _serManager.CopyTo(randomSprite, ref spawnedSprite, notNullableOverride: true);
+                        Dirty(ent, spawnedSprite);
+                    }
+
+                    if (comp.Dragon != null)
+                        _npc.SetBlackboard(ent, NPCBlackboard.FollowTarget, new EntityCoordinates(comp.Dragon.Value, Vector2.Zero));
+                }
             }
         }
     }

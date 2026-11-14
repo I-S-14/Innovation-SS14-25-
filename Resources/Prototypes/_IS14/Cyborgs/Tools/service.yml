@@ -54,7 +54,6 @@
       components:
       - type: Tag
         tags:
-        - Hoe
         - BotanyHoe
       - type: MeleeWeapon
         wideAnimationRotation: 135

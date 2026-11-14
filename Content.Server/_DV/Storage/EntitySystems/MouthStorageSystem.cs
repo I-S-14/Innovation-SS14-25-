@@ -6,6 +6,7 @@ using Content.Shared._DV.Storage.EntitySystems;
 using Content.Shared.Nutrition;
 using Content.Shared.Speech;
 using Content.Shared.Storage;
+using Content.Shared.Speech.EntitySystems;
 
 namespace Content.Server._DV.Storage.EntitySystems;
 
@@ -21,14 +22,14 @@ public sealed class MouthStorageSystem : SharedMouthStorageSystem
     }
 
     // Force you to mumble if you have items in your mouth
-    private void OnAccent(EntityUid uid, MouthStorageComponent component, AccentGetEvent args)
+    private void OnAccent(EntityUid uid, MouthStorageComponent component, ref AccentGetEvent args)
     {
         if (IsMouthBlocked(component))
             args.Message = _replacement.ApplyReplacements(args.Message, "mumble");
     }
 
     // Attempting to eat or drink anything with items in your mouth won't work
-    private void OnIngestAttempt(EntityUid uid, MouthStorageComponent component, IngestionAttemptEvent args)
+    private void OnIngestAttempt(EntityUid uid, MouthStorageComponent component, ref IngestionAttemptEvent args)
     {
         if (!IsMouthBlocked(component))
             return;

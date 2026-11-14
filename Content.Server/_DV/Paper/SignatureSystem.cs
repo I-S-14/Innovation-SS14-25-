@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+using Robust.Shared.Prototypes;
 using Content.Goobstation.Common.Paper;
 using Content.Goobstation.Shared.Devil;
 using Content.Server.Access.Systems;
@@ -7,18 +8,22 @@ using Content.Server.Popups;
 using Content.Shared.Paper;
 using Content.Shared._IS14.Paper; //IS14-change: signature placement
 using System.Numerics; //IS14-change: signature placement
-using static Content.Shared.Paper.PaperComponent; //IS14-change: PaperUiKey
 using Content.Server.Paper;
 using Content.Shared.Popups;
 using Content.Shared.Tag;
 using Content.Shared.Verbs;
 using Robust.Server.Audio;
 using Robust.Shared.Player;
+using static Content.Shared.Paper.PaperComponent;
 
 namespace Content.Server._DV.Paper;
 
 public sealed class SignatureSystem : EntitySystem
 {
+    //IS14-change start: typed prototype IDs required by the upstream analyzer.
+    private static readonly ProtoId<TagPrototype> CompatibilityWriteTagId = "Write";
+    //IS14-change end
+
     [Dependency] private readonly AudioSystem _audio = default!;
     [Dependency] private readonly IdCardSystem _idCard = default!;
     [Dependency] private readonly PaperSystem _paper = default!;
@@ -40,7 +45,7 @@ public sealed class SignatureSystem : EntitySystem
         if (!args.CanAccess || !args.CanInteract)
             return;
 
-        if (args.Using is not {} pen || !_tags.HasTag(pen, "Write"))
+        if (args.Using is not {} pen || !_tags.HasTag(pen, CompatibilityWriteTagId))
             return;
 
         var user = args.User;

@@ -2,6 +2,7 @@
 
 using Content.Shared.Administration;
 using JetBrains.Annotations;
+using Robust.Shared.Console;
 
 namespace Content.Server.Administration
 {

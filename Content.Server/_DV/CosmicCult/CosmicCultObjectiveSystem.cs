@@ -68,7 +68,7 @@ public sealed class CosmicCultObjectiveSystem : EntitySystem
         }
         else
         {
-            description = Loc.GetString("objective-condition-effigy", ("location", warp.Location));
+            description = Loc.GetString("objective-condition-effigy", ("location", Loc.GetString(warp.Location))); //IS14-change: resolve LocId.
         }
         _metaData.SetEntityDescription(uid, description, args.Meta);
     }

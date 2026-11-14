@@ -66,7 +66,7 @@
   - type: Clothing
     sprite: _IS14/Clothing/Neck/Command/HosMilitia/hos_militia_cloak.rsi
   - type: StealTarget
-    stealGroup: HeadCloak
+    stealGroup: [HeadCloak]
 
 - type: entity
   parent: ClothingOuterHardsuitBase

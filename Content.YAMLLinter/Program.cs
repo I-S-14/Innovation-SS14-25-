@@ -2,30 +2,48 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Content.IntegrationTests;
+using Content.IntegrationTests.Utility;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Reflection;
 using Robust.Shared.Serialization.Markdown.Validation;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 using Robust.UnitTesting;
+using Robust.UnitTesting.Pool;
 
 namespace Content.YAMLLinter
 {
     internal static class Program
     {
-        private static async Task<int> Main(string[] _)
+        private static ExternalTestContext TestContext = new("YAML Linter", StreamWriter.Null);
+
+        private static async Task<int> Main(string[] args)
         {
+            //IS14-change start: expose startup diagnostics when inheritance fails before validation.
+            if (args.Contains("--verbose-startup"))
+                TestContext = new ExternalTestContext("YAML Linter", Console.Out);
+            //IS14-change end
+            GameDataScrounger.NoScrounging = true; // Ugly hack for YAML Linter.
             PoolManager.Startup();
+            // IS14: diagnose incomplete shared/client/server ports without starting a game pair.
+            if (args.Contains("--audit-system-dependencies"))
+            {
+                var result = _IS14.SystemDependencyAudit.Run();
+                PoolManager.Shutdown();
+                return result;
+            }
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
             var (errors, fieldErrors) = await RunValidation();
 
-            var count = errors.Count + fieldErrors.Count;
+            //IS14-change: the dictionary counts files, not diagnostics within each file.
+            var count = errors.Values.Sum(nodes => nodes.Count) + fieldErrors.Count;
 
             if (count == 0)
             {
@@ -49,6 +67,7 @@ namespace Content.YAMLLinter
                 Console.WriteLine(error);
             }
 
+            Console.WriteLine($"Affected prototype files: {errors.Count}."); //IS14-change: retain the old metric explicitly.
             Console.WriteLine($"{count} errors found in {(int) stopwatch.Elapsed.TotalMilliseconds} ms.");
             PoolManager.Shutdown();
             return -1;
@@ -57,7 +76,7 @@ namespace Content.YAMLLinter
         private static async Task<(Dictionary<string, HashSet<ErrorNode>> YamlErrors, List<string> FieldErrors)>
             ValidateClient()
         {
-            await using var pair = await PoolManager.GetServerClient();
+            await using var pair = await PoolManager.GetServerClient(testContext: TestContext);
             var client = pair.Client;
             var result = await ValidateInstance(client);
             await pair.CleanReturnAsync();
@@ -67,7 +86,7 @@ namespace Content.YAMLLinter
         private static async Task<(Dictionary<string, HashSet<ErrorNode>> YamlErrors, List<string> FieldErrors)>
             ValidateServer()
         {
-            await using var pair = await PoolManager.GetServerClient();
+            await using var pair = await PoolManager.GetServerClient(testContext: TestContext);
             var server = pair.Server;
             var result = await ValidateInstance(server);
             await pair.CleanReturnAsync();
@@ -179,7 +198,7 @@ namespace Content.YAMLLinter
         private static async Task<(Assembly[] clientAssemblies, Assembly[] serverAssemblies)>
             GetClientServerAssemblies()
         {
-            await using var pair = await PoolManager.GetServerClient();
+            await using var pair = await PoolManager.GetServerClient(testContext: TestContext);
 
             var result = (GetAssemblies(pair.Client), GetAssemblies(pair.Server));
 

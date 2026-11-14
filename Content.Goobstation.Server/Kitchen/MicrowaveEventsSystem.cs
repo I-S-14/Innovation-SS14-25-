@@ -1,6 +1,7 @@
+using Content.Shared.Kitchen.Components;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-using Content.Server.Kitchen.Components;
+
 using Robust.Shared.Containers;
 
 namespace Content.Goobstation.Server.Kitchen;
@@ -9,8 +10,9 @@ namespace Content.Goobstation.Server.Kitchen;
 /// Prevents automation taking items out of an active microwave.
 /// Only exists because microwave supercode only prevents it in interaction, not attempt events.
 /// </summary>
-public sealed class MicrowaveEventsSystem : EntitySystem
+public sealed partial class MicrowaveEventsSystem : EntitySystem
 {
+    [Dependency] private Robust.Shared.Timing.IGameTiming _timing = default!;
     public override void Initialize()
     {
         base.Initialize();
@@ -20,7 +22,7 @@ public sealed class MicrowaveEventsSystem : EntitySystem
 
     private void OnRemoveAttempt(Entity<ActiveMicrowaveComponent> ent, ref ContainerIsRemovingAttemptEvent args)
     {
-        if (ent.Comp.CookTimeRemaining > 0)
+        if (ent.Comp.CookTimeEnd > _timing.CurTime)
             args.Cancel();
     }
 }

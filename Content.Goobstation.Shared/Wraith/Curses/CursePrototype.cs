@@ -35,18 +35,6 @@ public sealed partial class CursePrototype : IPrototype
     public float Update;
 
     [DataField]
-    public ProtoId<CurseStatusIconPrototype>? StatusIcon;
+    public ProtoId<StatusIconPrototype>? StatusIcon;
 }
 
-[Prototype]
-public sealed partial class CurseStatusIconPrototype : StatusIconPrototype, IInheritingPrototype
-{
-    /// <inheritdoc />
-    [ParentDataField(typeof(AbstractPrototypeIdArraySerializer<CurseStatusIconPrototype>))]
-    public string[]? Parents { get; private set; }
-
-    /// <inheritdoc />
-    [NeverPushInheritance]
-    [AbstractDataField]
-    public bool Abstract { get; private set; }
-}

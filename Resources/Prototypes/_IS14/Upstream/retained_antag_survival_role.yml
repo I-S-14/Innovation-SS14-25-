@@ -1,0 +1,8 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: bd217732d1:Resources/Prototypes/Loadouts/RoleLoadouts/role_loadouts.yml
+- type: roleLoadout
+  id: RoleSurvivalExtendedAntag
+  groups:
+  - SurvivalExtendedAntag
+  - GroupSpeciesBreathTool
+  - GroupTankHarness

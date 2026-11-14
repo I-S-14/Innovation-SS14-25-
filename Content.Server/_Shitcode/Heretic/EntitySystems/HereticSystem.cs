@@ -43,6 +43,7 @@ using Content.Shared.Mobs.Components;
 using Content.Shared.NPC.Prototypes;
 using Content.Shared.NPC.Systems;
 using Content.Server.Hands.Systems;
+using Content.Shared.Antag;
 
 namespace Content.Server.Heretic.EntitySystems;
 
@@ -233,7 +234,7 @@ public sealed partial class HereticSystem : SharedHereticSystem
         var (mindId, heretic, store, mind) = ent;
         var uid = user ?? mind.CurrentEntity;
 
-        _store.TryAddCurrency(new Dictionary<string, FixedPoint2> { { "KnowledgePoint", amount } }, mindId, store);
+        _store.TryAddCurrency(new Dictionary<Robust.Shared.Prototypes.ProtoId<Content.Shared.Store.CurrencyPrototype>, FixedPoint2> { { "KnowledgePoint", amount } }, mindId, store);
         _store.UpdateUserInterface(uid, mindId, store);
 
         if (_mind.TryGetObjectiveComp<HereticKnowledgeConditionComponent>(mindId, out var objective, mind))

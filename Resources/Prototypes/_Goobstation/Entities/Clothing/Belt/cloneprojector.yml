@@ -120,9 +120,11 @@
     - type: Absorbable
     - type: Fingerprint
     - type: Perishable
-    - type: Hunger
-    - type: Thirst
-    - type: FootprintOwner
+    - type: Satiation
+      satiations: {}
+    - type: SatiationSpeedModifier
+      satiations: {}
+    - type: CorvaxFootprintOwner
     - type: ItemSlots # No infinite batteries.
 
 - type: entity
@@ -136,7 +138,7 @@
   - type: Clothing
     sprite: _Goobstation/Clothing/Belt/geminiprojector.rsi
   - type: StealTarget
-    stealGroup: ClothingBeltGeminiHoloProjector
+    stealGroup: [ClothingBeltGeminiHoloProjector]
   - type: CloneProjector
     clonedItemBlacklist:
       components:
@@ -153,6 +155,10 @@
     tags:
       - HighRiskItem
       - ClothingBeltGeminiHoloProjector
+# CorvaxGoob-start:
+  - type: CargoSellBlacklist
+  - type: SupermatterImmune
+# CorvaxGoob-end.
 
 - type: entity
   parent: [ ClothingBeltBaseCloneProjector, BaseCentcommContraband ]

@@ -1,0 +1,44 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: bd217732d1:Resources/Prototypes/StatusIcon/job.yml
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconERTLeader
+  icon:
+    sprite: &id001 /Textures/_IS14/Interface/JobIcons/ert.rsi
+    state: ERTLeader
+  jobName: job-name-ertleader
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconERTChaplain
+  icon:
+    sprite: *id001
+    state: ERTChaplain
+  jobName: job-name-ertchaplain
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconERTEngineer
+  icon:
+    sprite: *id001
+    state: ERTEngineer
+  jobName: job-name-ertengineer
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconERTSecurity
+  icon:
+    sprite: *id001
+    state: ERTSecurity
+  jobName: job-name-ertsecurity
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconERTMedic
+  icon:
+    sprite: *id001
+    state: ERTMedical
+  jobName: job-name-ertmedic
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconERTJanitor
+  icon:
+    sprite: *id001
+    state: ERTJanitor
+  jobName: job-name-ertjanitor

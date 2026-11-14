@@ -1,0 +1,291 @@
+# Implants
+
+- type: listing
+  id: UplinkStorageImplanter
+  name: uplink-storage-implanter-name
+  description: uplink-storage-implanter-desc
+  icon: { sprite: /Textures/Clothing/Back/Backpacks/backpack.rsi, state: icon }
+  productEntity: StorageImplanter
+  cost:
+    Telecrystal: 40 # goob
+  categories:
+    - UplinkImplants
+  conditions:
+    - !type:StoreWhitelistCondition
+      blacklist:
+        tags:
+          - NukeOpsUplink
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- type: listing
+  id: UplinkFreedomImplanter
+  name: uplink-freedom-implanter-name
+  description: uplink-freedom-implanter-desc
+  icon: { sprite: /Textures/Actions/Implants/implants.rsi, state: freedom }
+  productEntity: FreedomImplanter
+  cost:
+    Telecrystal: 18 # goob - not quite worth any more than that
+  categories:
+    - UplinkImplants
+
+
+
+
+
+
+
+
+
+
+
+
+
+- type: listing
+  id: UplinkScramImplanter
+  name: uplink-scram-implanter-name
+  description: uplink-scram-implanter-desc
+  icon: { sprite: /Textures/Structures/Specific/anomaly.rsi, state: anom4 }
+  productEntity: ScramImplanter
+  cost:
+    Telecrystal: 15 # goob - can be useful, but does nothing on its own
+  categories:
+    - UplinkImplants
+
+
+
+
+
+
+
+
+
+
+
+
+- type: listing
+  id: UplinkDnaScramblerImplant
+  name: uplink-dna-scrambler-implanter-name
+  description: uplink-dna-scrambler-implanter-desc
+  icon: { sprite: /Textures/Mobs/Species/Human/parts.rsi, state: full }
+  productEntity: DnaScramblerImplanter
+  cost:
+    Telecrystal: 25 # goob
+  categories:
+    - UplinkImplants
+
+
+
+
+
+
+
+
+
+
+
+- type: listing
+  id: UplinkEmpImplanter
+  name: uplink-emp-implanter-name
+  description: uplink-emp-implanter-desc
+  icon: { sprite: /Textures/Effects/emp.rsi, state: emp_disable }
+  productEntity: EmpImplanter
+  cost:
+    Telecrystal: 10 # goob
+  categories:
+    - UplinkImplants
+
+
+
+
+
+
+
+
+
+- type: listing
+  id: UplinkRadioImplanter
+  name: uplink-radio-implanter-name
+  description: uplink-radio-implanter-desc
+  icon: { sprite: /Textures/Objects/Devices/encryption_keys.rsi, state: synd_label }
+  productEntity: RadioImplanter
+  cost:
+    Telecrystal: 7 # goob - Syndicate Radio Price Adjust
+  categories:
+  - UplinkImplants
+  conditions:
+  - !type:StoreWhitelistCondition
+    blacklist:
+      tags:
+      - ContravendUplink
+
+
+
+
+
+
+
+
+- type: listing
+  id: UplinkMicroBombImplanter
+  name: uplink-micro-bomb-implanter-name
+  description: uplink-micro-bomb-implanter-desc
+  icon: { sprite: /Textures/Actions/Implants/implants.rsi, state: explosive }
+  productEntity: MicroBombImplanter
+  cost:
+    Telecrystal: 20 # goob
+  categories:
+  - UplinkImplants
+  #Goobstation
+  conditions:
+  - !type:StoreWhitelistCondition
+    blacklist:
+      tags:
+      - ContractorUplink
+  # goob - traitor suicide implants
+  #- !type:StoreWhitelistCondition
+  #  whitelist:
+  #    tags:
+  #    - NukeOpsUplink
+  #- !type:BuyerWhitelistCondition
+  #  blacklist:
+  #    components:
+  #    - SurplusBundle
+
+
+
+
+
+
+
+
+- type: listing
+  id: UplinkMacroBombImplanter
+  name: uplink-macro-bomb-implanter-name
+  description: uplink-macro-bomb-implanter-desc
+  icon: { sprite: /Textures/Actions/Implants/implants.rsi, state: explosive }
+  productEntity: MacroBombImplanter
+  cost:
+    Telecrystal: 65 # goob
+  categories:
+    - UplinkImplants
+  restockTime: 1800
+#Goobstation
+  conditions:
+  - !type:StoreWhitelistCondition
+    blacklist:
+      tags:
+      - ContractorUplink
+      - NukeOpsUplink
+
+
+
+
+
+
+- type: listing
+  id: UplinkDeathAcidifierImplanter
+  name: uplink-death-acidifier-implant-name
+  description: uplink-death-acidifier-implant-desc
+  icon: { sprite: /Textures/Objects/Magic/magicactions.rsi, state: gib }
+  productEntity: DeathAcidifierImplanter
+  cost:
+    Telecrystal: 20 # goob # goob - traitor suicide implants
+  categories:
+    - UplinkImplants
+  #Goobstation
+  conditions:
+  - !type:StoreWhitelistCondition
+    blacklist:
+      tags:
+      - ContractorUplink
+  # goob - traitor suicide implants
+  #conditions:
+  #  - !type:StoreWhitelistCondition
+  #    whitelist:
+  #      tags:
+  #        - NukeOpsUplink
+
+
+
+
+
+- type: listing
+  id: UplinkUplinkImplanter # uplink uplink real
+  name: uplink-uplink-implanter-name
+  description: uplink-uplink-implanter-desc
+  icon: { sprite: /Textures/Objects/Devices/communication.rsi, state: radio }
+  productEntity: UplinkImplanter
+  cost:
+    Telecrystal: 10 # goob
+  categories:
+  - UplinkImplants
+  #Goobstation
+  conditions:
+  - !type:StoreWhitelistCondition
+    blacklist:
+      tags:
+      - ContractorUplink
+      - NukeOpsUplink
+
+
+
+
+
+- type: listing
+  id: UplinkDeathRattle
+  name: uplink-deathrattle-implant-name
+  description: uplink-deathrattle-implant-desc
+  productEntity: BoxDeathRattleImplants
+  cost:
+    Telecrystal: 20 # goob
+  categories:
+  - UplinkImplants
+  conditions:
+    - !type:StoreWhitelistCondition
+      whitelist:
+        tags:
+          - NukeOpsUplink
+    - !type:BuyerWhitelistCondition
+      blacklist:
+        components:
+          - SurplusBundle
+
+
+
+- type: listing
+  id: UplinkFakeMindshield
+  name: uplink-fake-mindshield-name
+  description: uplink-fake-mindshield-desc
+  icon: { sprite: Interface/Actions/actions_fakemindshield.rsi, state: icon-on }
+  productEntity: FakeMindShieldImplanter
+  cost:
+    Telecrystal: 15 # goob, I don't like security so x4 instead of x5
+  categories:
+  - UplinkImplants
+
+
+- type: listing
+  id: UplinkVoiceMaskImplant
+  name: uplink-voice-mask-implanter-name
+  description: uplink-voice-mask-implanter-desc
+  icon: { sprite: Interface/Actions/voice-mask.rsi, state: icon }
+  productEntity: VoiceMaskImplanter
+  #discountCategory: usualDiscounts
+  #discountDownTo:
+  #  Telecrystal: 1
+  cost:
+    Telecrystal: 20 # Goob
+  categories:
+  - UplinkImplants

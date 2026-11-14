@@ -1,0 +1,10 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: 5327c414c5:Resources/Prototypes/Loadouts/Jobs/Medical/medical_doctor.yml
+- type: loadout
+  id: MedicalHud
+  equipment:
+    eyes: ClothingEyesHudMedical
+- type: loadout
+  id: MedicalEyePatchHud
+  equipment:
+    eyes: ClothingEyesEyepatchHudMedical

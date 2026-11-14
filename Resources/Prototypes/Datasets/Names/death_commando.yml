@@ -1,5 +1,17 @@
-﻿- type: localizedDataset
+- type: localizedDataset
   id: NamesDeathCommando
   values:
     prefix: names-death-commando-dataset-
     count: 158
+
+- type: localizedDataset
+  id: NamesDeathCommandoFirst
+  values:
+    prefix: names-death-commando-first-dataset-
+    count: 62
+
+- type: localizedDataset
+  id: NamesDeathCommandoLast
+  values:
+    prefix: names-death-commando-last-dataset-
+    count: 58

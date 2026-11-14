@@ -17,15 +17,13 @@ using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Content.Server.Inventory;
 using Content.Shared.Hands.EntitySystems;
+using Content.Shared.Zombies; // Goob
 
 namespace Content.Server._Starlight.VentCrawling;
 public sealed class VentCrawlerTubeSystem : EntitySystem
 {
-    [Dependency] private readonly IMapManager _mapManager = default!;
-    [Dependency] private readonly SharedMapSystem _mapSystem = default!;
     [Dependency] private readonly SharedVentCrawableSystem _ventCrawableSystem = default!;
     [Dependency] private readonly SharedContainerSystem _containerSystem = default!;
-    [Dependency] private readonly VentCrawlerTubeSystem _VentCrawlerTubeSystem = default!;
     [Dependency] private readonly SharedDoAfterSystem _doAfterSystem = default!;
     [Dependency] private readonly PopupSystem _popup = default!;
     [Dependency] private readonly SharedMoverController _mover = default!;
@@ -53,10 +51,12 @@ public sealed class VentCrawlerTubeSystem : EntitySystem
 
     private void AddClimbedVerb(EntityUid uid, VentCrawlerEntryComponent component, GetVerbsEvent<AlternativeVerb> args)
     {
-        if (!TryComp<VentCrawlerComponent>(args.User, out var ventCrawlerComponent) || HasComp<BeingVentCrawlerComponent>(args.User))
+        if (!TryComp<VentCrawlerComponent>(args.User, out var ventCrawlerComponent)
+            || HasComp<BeingVentCrawlerComponent>(args.User)
+            || HasComp<ZombieComponent>(args.User)) // Goob
             return;
 
-        if (TryComp<TransformComponent>(uid, out var transformComponent) && !transformComponent.Anchored)
+        if (TryComp(uid, out TransformComponent? transformComponent) && !transformComponent.Anchored)
             return;
 
         AlternativeVerb verb = new()
@@ -192,7 +192,8 @@ public sealed class VentCrawlerTubeSystem : EntitySystem
         if (!Resolve(uid, ref entry))
             return false;
 
-        if (!TryComp<VentCrawlerComponent>(entity, out var ventCrawlerComponent))
+        if (!TryComp<VentCrawlerComponent>(entity, out var ventCrawlerComponent)
+            || HasComp<ZombieComponent>(entity)) // Goob
             return false;
 
         var holder = Spawn(entry.HolderPrototypeId, Transform(uid).Coordinates);

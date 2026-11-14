@@ -6,13 +6,16 @@ using Content.Shared.Shuttles.Components;
 using Content.Shared.Shuttles.Systems;
 using Robust.Server.GameObjects;
 using Robust.Shared.Map;
+using Content.Server.UserInterface;
+using Content.Shared.PowerCell;
+using Content.Shared.Movement.Components;
 
 namespace Content.Server.Shuttles.Systems;
 
-public sealed class RadarConsoleSystem : SharedRadarConsoleSystem
+public sealed partial class RadarConsoleSystem : SharedRadarConsoleSystem
 {
-    [Dependency] private readonly ShuttleConsoleSystem _console = default!;
-    [Dependency] private readonly UserInterfaceSystem _uiSystem = default!;
+    [Dependency] private ShuttleConsoleSystem _console = default!;
+    [Dependency] private UserInterfaceSystem _uiSystem = default!;
 
     public override void Initialize()
     {

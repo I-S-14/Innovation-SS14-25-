@@ -1,4 +1,5 @@
-﻿using Content.Server._Lavaland.Pressure;
+using ProjectileShotEvent = Content.Shared._Lavaland.Weapons.Ranged.Events.ProjectileShotEvent; // IS14-change: retain Lavaland upgrade event
+using Content.Server._Lavaland.Pressure;
 using Content.Shared._Lavaland.Weapons.Ranged;
 using Content.Shared._Lavaland.Weapons.Ranged.Components;
 using Content.Shared._Lavaland.Weapons.Ranged.Events;

@@ -1,7 +1,7 @@
-using System.Linq;
 using Content.Shared.EntityTable.EntitySelectors;
 using Content.Shared.GameTicking;
 using Robust.Shared.Prototypes;
+using System.Linq;
 
 namespace Content.Shared.EntityTable.Conditions;
 
@@ -47,8 +47,8 @@ public sealed partial class MaxRuleOccurenceCondition : EntityTableCondition
         if (rule == string.Empty)
             return false;
 
-        var gameTicker = entMan.System<SharedGameTicker>();
+        var gameTicker = entMan.System<GameTicker>();
 
-        return gameTicker.AllPreviousGameRules.Count(p => p.Item2 == rule) < Max;
+        return gameTicker.GetOccurrences(rule) < Max;
     }
 }

@@ -3,7 +3,7 @@
 
 - type: guideEntry
   id: IS14Modsuits
-  name: "МОД-костюм"
+  name: is14-upstream-guide-is14modsuits
   priority: 5
   text: "/ServerInfo/_IS14/Guidebook/Modsuit/Modsuit.xml"
   children:
@@ -17,42 +17,42 @@
 
 - type: guideEntry
   id: IS14ModsuitsStart
-  name: "С чего начать"
+  name: is14-upstream-guide-is14modsuitsstart
   priority: 0
   text: "/ServerInfo/_IS14/Guidebook/Modsuit/Start.xml"
 
 - type: guideEntry
   id: IS14ModsuitsAssembly
-  name: "Сборка"
+  name: is14-upstream-guide-is14modsuitsassembly
   priority: 1
   text: "/ServerInfo/_IS14/Guidebook/Modsuit/Assembly.xml"
 
 - type: guideEntry
   id: IS14ModsuitsCore
-  name: "Ядро и питание"
+  name: is14-upstream-guide-is14modsuitscore
   priority: 2
   text: "/ServerInfo/_IS14/Guidebook/Modsuit/Core.xml"
 
 - type: guideEntry
   id: IS14ModsuitsModules
-  name: "Модули и сложность"
+  name: is14-upstream-guide-is14modsuitsmodules
   priority: 3
   text: "/ServerInfo/_IS14/Guidebook/Modsuit/Modules.xml"
 
 - type: guideEntry
   id: IS14ModsuitsAir
-  name: "Баллон и дыхание"
+  name: is14-upstream-guide-is14modsuitsair
   priority: 4
   text: "/ServerInfo/_IS14/Guidebook/Modsuit/Air.xml"
 
 - type: guideEntry
   id: IS14ModsuitsDamage
-  name: "Повреждения и ремонт"
+  name: is14-upstream-guide-is14modsuitsdamage
   priority: 5
   text: "/ServerInfo/_IS14/Guidebook/Modsuit/Damage.xml"
 
 - type: guideEntry
   id: IS14ModsuitsSecurity
-  name: "Замок, провода и взлом"
+  name: is14-upstream-guide-is14modsuitssecurity
   priority: 6
   text: "/ServerInfo/_IS14/Guidebook/Modsuit/Security.xml"

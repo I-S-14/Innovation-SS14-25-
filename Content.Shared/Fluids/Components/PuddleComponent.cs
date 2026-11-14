@@ -27,15 +27,17 @@ namespace Content.Shared.Fluids.Components
         [DataField]
         public float DefaultSlippery = 5.5f;
 
+        // Shitcode I wrote to make this worth with new IconSmooth.
+        // Both need generic visualizers support.
+        [ViewVariables]
+        public string PuddleKey = "direction";
+
+        // Shitcode I wrote to make this worth with new IconSmooth.
+        // Both need generic visualizers support.
+        [DataField, ViewVariables]
+        public string PuddleState = "splat";
+
         [ViewVariables]
         public Entity<SolutionComponent>? Solution;
-
-        // Corvax-Next-Footprints-Start
-        [DataField]
-        public bool AffectsMovement = true;
-
-        [DataField]
-        public bool AffectsSound = true;
-        // Corvax-Next-Footprints-End
     }
 }

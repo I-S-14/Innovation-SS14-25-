@@ -210,5 +210,5 @@ entities:
       pos: 0.5,0.5
       parent: 40932
     - type: WarpPoint
-      location: Шедевролёт
+      location: is14-map-warp-2a6f832ee3eb
 ...

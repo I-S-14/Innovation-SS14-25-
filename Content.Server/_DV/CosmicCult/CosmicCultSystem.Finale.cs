@@ -146,7 +146,7 @@ public sealed partial class CosmicCultSystem : SharedCosmicCultSystem
         {
             _ui.CloseUi(uid.Owner, MonumentKey.Key);
 
-            uiComp.Key = null; //kazne called this the laziest way to disable a UI ever
+            RemCompDeferred<ActivatableUIComponent>(uid);
         }
 
         _appearance.SetData(uid, MonumentVisuals.FinaleReached, 1);

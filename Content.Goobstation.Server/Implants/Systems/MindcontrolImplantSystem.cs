@@ -7,9 +7,9 @@ using Content.Shared.Implants;
 using Robust.Shared.Containers;
 
 namespace Content.Goobstation.Server.Implants.Systems;
-public sealed class MindcontrolImplantSystem : EntitySystem
+public sealed partial class MindcontrolImplantSystem : EntitySystem
 {
-    [Dependency] private readonly MindcontrolSystem _mindcontrol = default!;
+    [Dependency] private MindcontrolSystem _mindcontrol = default!;
     public override void Initialize()
     {
         base.Initialize();
@@ -17,18 +17,15 @@ public sealed class MindcontrolImplantSystem : EntitySystem
         SubscribeLocalEvent<MindcontrolImplantComponent, ImplantImplantedEvent>(OnImplant);
         SubscribeLocalEvent<MindcontrolImplantComponent, EntGotInsertedIntoContainerMessage>(OnInsert);
     }
-    private void OnImplant(EntityUid uid, MindcontrolImplantComponent component, ImplantImplantedEvent args) //called after implanted ?
+    private void OnImplant(EntityUid uid, MindcontrolImplantComponent component, ref ImplantImplantedEvent args) //called after implanted ?
     {
         if (component.ImplanterUid != null)
         {
             component.HolderUid = Transform(component.ImplanterUid.Value).ParentUid;
         }
-        if (args.Implanted != null)
-            EnsureComp<MindcontrolledComponent>(args.Implanted);
+        EnsureComp<MindcontrolledComponent>(args.Implanted);
 
         component.ImplanterUid = null;
-        if (args.Implanted == null)
-            return;
         if (!TryComp<MindcontrolledComponent>(args.Implanted, out var implanted))
             return;
         implanted.Master = component.HolderUid;

@@ -42,7 +42,12 @@
       - !type:DoActsBehavior
         acts: [ "Destruction" ]
   - type: IconSmooth
-    base: mwindow
+    key: walls
+    states:
+    - !type:CornerSpriteSmoothing
+      base: mwindow
+      mask:
+      - walls
   - type: Appearance
   - type: DamageVisuals
     thresholds: [5, 10, 20]
@@ -73,9 +78,12 @@
     - Diagonal
     - Window
   - type: IconSmooth
-    mode: Diagonal
-    key: walls # Corvax-Goob-SmoothWindows
-    base: state
+    key: walls
+    states:
+    - !type:DiagonalSpriteSmoothing
+      base: state
+      mask:
+      - walls
   - type: Icon
     sprite: Structures/Windows/mining_diagonal.rsi
     state: state0

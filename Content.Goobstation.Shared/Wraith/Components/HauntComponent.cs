@@ -1,4 +1,5 @@
 using Content.Goobstation.Maths.FixedPoint;
+using Content.Shared.Flash; // IS14-change: flashing uses status effect entities.
 using Content.Shared.StatusEffect;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
@@ -46,7 +47,7 @@ public sealed partial class HauntComponent : Component
     /// The status effect to flash anyone who gets haunted.
     /// </summary>
     [DataField]
-    public ProtoId<StatusEffectPrototype> FlashedId = "Flashed";
+    public EntProtoId FlashedId = SharedFlashSystem.FlashedKey; // IS14-change: preserve configurable flash with the Wizards API.
 
     /// <summary>
     /// The status effect to make the Wraith corporeal upon using haunt.

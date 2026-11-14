@@ -5,10 +5,10 @@ using Content.Shared.Power.Generator;
 
 namespace Content.Server.Power.Generator;
 
-public sealed class GeneratorSignalControlSystem: EntitySystem
+public sealed partial class GeneratorSignalControlSystem: EntitySystem
 {
-    [Dependency] private readonly GeneratorSystem _generator = default!;
-    [Dependency] private readonly ActiveGeneratorRevvingSystem _revving = default!;
+    [Dependency] private GeneratorSystem _generator = default!;
+    [Dependency] private ActiveGeneratorRevvingSystem _revving = default!;
 
     public override void Initialize()
     {
@@ -19,7 +19,7 @@ public sealed class GeneratorSignalControlSystem: EntitySystem
     /// <summary>
     /// Change the state of the generator depending on what signal is sent.
     /// </summary>
-    private void OnSignalReceived(EntityUid uid, GeneratorSignalControlComponent component, SignalReceivedEvent args)
+    private void OnSignalReceived(EntityUid uid, GeneratorSignalControlComponent component, ref SignalReceivedEvent args)
     {
         if (!TryComp<FuelGeneratorComponent>(uid, out var generator))
             return;

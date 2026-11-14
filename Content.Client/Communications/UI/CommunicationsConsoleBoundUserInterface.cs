@@ -1,8 +1,12 @@
+using System.Linq;
+using Content.Shared.AlertLevel;
+using Content.Shared.Station.Systems;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Shared.CCVar;
 using Content.Shared.Chat;
 using Content.Shared.Communications;
+using Content.Goobstation.Shared.VoiceChat; // Goobstation - Voice chat
 using Robust.Client.UserInterface;
 using Robust.Shared.Configuration;
 
@@ -11,6 +15,8 @@ namespace Content.Client.Communications.UI
     public sealed class CommunicationsConsoleBoundUserInterface : BoundUserInterface
     {
         [Dependency] private readonly IConfigurationManager _cfg = default!;
+        [Dependency] private readonly StationSystem _station = default!;
+        [Dependency] private readonly AlertLevelSystem _alerts = default!;
 
         [ViewVariables]
         private CommunicationsConsoleMenu? _menu;
@@ -28,6 +34,8 @@ namespace Content.Client.Communications.UI
             _menu.OnBroadcast += BroadcastButtonPressed;
             _menu.OnAlertLevel += AlertLevelSelected;
             _menu.OnEmergencyLevel += EmergencyShuttleButtonPressed;
+            _menu.Console = Owner; // Goobstation - Voice chat
+            _menu.OnVoiceBroadcast += () => SendMessage(new VoiceBroadcastToggleMessage()); // Goobstation - Voice chat
         }
 
         public void AlertLevelSelected(string level)
@@ -82,12 +90,22 @@ namespace Content.Client.Communications.UI
                 _menu.CanBroadcast = commsState.CanBroadcast;
                 _menu.CanCall = commsState.CanCall;
                 _menu.CountdownStarted = commsState.CountdownStarted;
-                _menu.AlertLevelSelectable = commsState.AlertLevels != null && !float.IsNaN(commsState.CurrentAlertDelay) && commsState.CurrentAlertDelay <= 0;
-                _menu.CurrentLevel = commsState.CurrentAlert;
                 _menu.CountdownEnd = commsState.ExpectedCountdownEnd;
-
+                var station = _station.GetOwningStation(Owner);
+                if (station is { } stationUid && EntMan.TryGetComponent<AlertLevelComponent>(stationUid, out var alert))
+                {
+                    _menu.AlertLevelSelectable = _alerts.CanChangeAlertLevel((stationUid, alert));
+                    _menu.CurrentLevel = alert.CurrentAlertLevel.Id;
+                    var levels = _alerts.GetSelectableAlertLevels((stationUid, alert)).Select(level => level.Id).ToList();
+                    _menu.UpdateAlertLevels(levels, _menu.CurrentLevel);
+                }
+                else
+                {
+                    _menu.AlertLevelSelectable = false;
+                    _menu.CurrentLevel = "Unknown";
+                    _menu.UpdateAlertLevels(null, _menu.CurrentLevel);
+                }
                 _menu.UpdateCountdown();
-                _menu.UpdateAlertLevels(commsState.AlertLevels, _menu.CurrentLevel);
                 _menu.AlertLevelButton.Disabled = !_menu.AlertLevelSelectable;
                 _menu.EmergencyShuttleButton.Disabled = !_menu.CanCall;
                 _menu.AnnounceButton.Disabled = !_menu.CanAnnounce;

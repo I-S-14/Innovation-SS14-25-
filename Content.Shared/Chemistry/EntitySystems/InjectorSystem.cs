@@ -21,7 +21,9 @@ using Content.Shared.Weapons.Melee.Events;
 using JetBrains.Annotations;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Prototypes;
-using Content.Shared.Chemistry.EntitySystems.Hypospray; // Goob
+using Content.Shared.Chemistry.EntitySystems.Hypospray;
+using Content.Shared._DV.Chemistry.Components;
+using Content.Shared.Timing.Systems;
 
 namespace Content.Shared.Chemistry.EntitySystems;
 
@@ -195,6 +197,14 @@ public sealed partial class InjectorSystem : EntitySystem
     /// </summary>
     private bool TryMobsDoAfter(Entity<InjectorComponent> injector, EntityUid user, EntityUid target)
     {
+        //Checks if target has blockInjection comp - fuck Chitinid, no more hypos for them - also Goob start
+        if (TryComp<BlockInjectionComponent>(target, out var block))
+        {
+            _popup.PopupClient(Loc.GetString(block.DenyMessage), user, user);
+            return false;
+        }
+        //Goob end
+
         if (_useDelay.IsDelayed(injector.Owner) // Check for Delay.
             || !GetMobsDoAfterTime(injector, user, target, out var doAfterTime, out var amount)) // Get the DoAfter time.
             return false;
@@ -655,7 +665,7 @@ public sealed partial class InjectorSystem : EntitySystem
         _forensics.TransferDna(injector, target);
         // Reset the delay, if present.
 
-        _useDelay.TryResetDelay(injector);
+        _useDelay.TryResetDelay(injector.Owner);
 
         // Automatically set syringe to draw after completely draining it.
         if (!_solutionContainer.ResolveSolution(injector.Owner, injector.Comp.SolutionName, ref injector.Comp.Solution, out var solution)

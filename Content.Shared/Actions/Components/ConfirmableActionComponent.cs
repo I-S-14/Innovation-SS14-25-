@@ -66,4 +66,20 @@ public sealed partial class ConfirmableActionComponent : Component
     /// </summary>
     [DataField]
     public bool ShouldCancel = true;
+
+    // IS14-merge: restored member lost in the upstream merge
+    /// <summary>
+    /// If true, this action must be confirmed when toggled.
+    /// True by default.
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public bool ConfirmWhenToggled = true;
+
+    // IS14-merge: restored member lost in the upstream merge
+    /// <summary>
+    /// If true, this action must be confirmed when untoggled.
+    /// True by default.
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public bool ConfirmWhenUntoggled = true;
 }

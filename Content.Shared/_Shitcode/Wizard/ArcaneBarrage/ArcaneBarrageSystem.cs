@@ -10,6 +10,8 @@ using Content.Shared.Weapons.Ranged.Systems;
 using Robust.Shared.Containers;
 using Robust.Shared.Network;
 using Robust.Shared.Timing;
+using Content.Shared.Timing.Systems;
+using Content.Shared.Timing.Components;
 
 namespace Content.Shared._Goobstation.Wizard.ArcaneBarrage;
 

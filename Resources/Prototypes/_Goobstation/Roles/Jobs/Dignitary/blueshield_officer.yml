@@ -2,8 +2,8 @@
 
 - type: job
   id: BlueshieldOfficer
-  name: job-name-bs
-  description: job-description-bs
+  name: job-name-bso
+  description: job-description-bso
   playTimeTracker: JobBlueshieldOfficer
   requirements:
     - !type:DepartmentTimeRequirement
@@ -36,7 +36,6 @@
   # - BlueshieldOfficer SOP Hidden by CorvaxGoob
   - Command
   # - Succession Hidden by CorvaxGoob
-  weight: 20
   startingGear: BlueshieldOfficerGear
   icon: "JobIconBlueshield"
   joinNotifyCrew: true

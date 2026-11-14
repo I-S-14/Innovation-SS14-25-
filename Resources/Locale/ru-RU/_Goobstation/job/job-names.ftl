@@ -12,6 +12,7 @@ job-name-salvagediver = спасатель
 # IS14 Edit
 job-name-ntr = Представитель МЮП
 job-name-bs = Оперативник ГСО
+job-name-bso = Оперативник ГСО
 job-name-overall = общее
 job-name-tider = грейтайд
 job-name-exec = служебный доступ

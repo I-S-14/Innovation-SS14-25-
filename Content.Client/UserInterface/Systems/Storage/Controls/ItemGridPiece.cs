@@ -9,6 +9,8 @@ using Robust.Client.Graphics;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.CustomControls;
 
+using Content.Client._IS14.Atmos; // IS14-change: retained pipe tint for stored item sprites.
+
 namespace Content.Client.UserInterface.Systems.Storage.Controls;
 
 public sealed class ItemGridPiece : Control, IEntityControl
@@ -178,7 +180,10 @@ public sealed class ItemGridPiece : Control, IEntityControl
 
             var sizeDifference = ((boundingGrid.Size + Vector2i.One) * _centerTexture.Size * 2 - sprite.Size) * UIScale;
 
-            var spriteBox = new Box2Rotated(new Box2(0f, sprite.Height * scale, sprite.Width * scale, 0f), -iconRotation, Vector2.Zero);
+            var spriteBox = new Box2Rotated(
+                Box2.FromTwoPoints(Vector2.Zero, new Vector2(sprite.Width * scale, sprite.Height * scale)),
+                -iconRotation,
+                Vector2.Zero);
             var root = spriteBox.CalcBoundingBox().BottomLeft;
             var pos = PixelPosition * 2
                       + (Parent?.GlobalPixelPosition ?? Vector2.Zero)
@@ -187,7 +192,10 @@ public sealed class ItemGridPiece : Control, IEntityControl
 
             handle.SetTransform(pos, iconRotation);
             var box = new UIBox2(root, root + sprite.Size * scale);
-            handle.DrawTextureRect(sprite, box);
+            // IS14-change: Wizards #30645, keep the stored pipe icon in its painted color.
+            var tint = new StoredItemColorEvent();
+            _entityManager.EventBus.RaiseLocalEvent(Entity, tint);
+            handle.DrawTextureRect(sprite, box, tint.Color);
             handle.SetTransform(GlobalPixelPosition, Angle.Zero);
         }
         else

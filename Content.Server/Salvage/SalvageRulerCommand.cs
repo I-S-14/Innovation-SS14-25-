@@ -8,18 +8,17 @@ using Robust.Shared.Map;
 namespace Content.Server.Salvage;
 
 [AdminCommand(AdminFlags.Admin)]
-sealed class SalvageRulerCommand : IConsoleCommand
+sealed partial class SalvageRulerCommand : LocalizedEntityCommands
 {
+    //IS14-change start: retain fork fields lost during merge.
     [Dependency] private readonly IEntityManager _entities = default!;
-    [Dependency] private readonly IMapManager _maps = default!;
+    private SharedMapSystem _mapSystem => _entities.System<SharedMapSystem>();
+    //IS14-change end
 
-    public string Command => "salvageruler";
 
-    public string Description => Loc.GetString("salvage-ruler-command-description");
+    public override string Command => "salvageruler";
 
-    public string Help => Loc.GetString("salvage-ruler-command-help-text", ("command",Command));
-
-    public void Execute(IConsoleShell shell, string argStr, string[] args)
+    public override void Execute(IConsoleShell shell, string argStr, string[] args)
     {
         if (args.Length != 0)
         {
@@ -41,12 +40,12 @@ sealed class SalvageRulerCommand : IConsoleCommand
             return;
         }
 
-        var entityTransform = _entities.GetComponent<TransformComponent>(entity.Value);
+        var entityTransform = EntityManager.GetComponent<TransformComponent>(entity.Value);
         var total = Box2.UnitCentered;
         var first = true;
-        foreach (var mapGrid in _maps.GetAllGrids(entityTransform.MapID))
+        foreach (var mapGrid in _mapSystem.GetAllGrids(entityTransform.MapID))
         {
-            var aabb = _entities.System<SharedTransformSystem>().GetWorldMatrix(mapGrid).TransformBox(mapGrid.Comp.LocalAABB);
+            var aabb = EntityManager.System<SharedTransformSystem>().GetWorldMatrix(mapGrid).TransformBox(mapGrid.Comp.LocalAABB);
             if (first)
             {
                 total = aabb;

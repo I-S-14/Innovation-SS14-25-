@@ -3,6 +3,7 @@
 using Content.Shared.Construction;
 using JetBrains.Annotations;
 using Robust.Server.GameObjects;
+using Content.Server.Construction.Components;
 
 namespace Content.Server.Construction.Completions;
 

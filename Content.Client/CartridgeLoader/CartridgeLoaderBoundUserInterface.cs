@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+using Content.Client.CartridgeLoader.Cartridges; // Goobstation - fix-crew-manifest-open-refresh
 using Content.Client.UserInterface.Fragments;
 using Content.Shared.CartridgeLoader;
 using Robust.Client.UserInterface;
@@ -41,15 +42,28 @@ public abstract class CartridgeLoaderBoundUserInterface : BoundUserInterface
 
         var activeUI = _entManager.GetEntity(loaderUiState.ActiveUI);
 
+        // Goobstation Start - fix-crew-manifest-open-refresh
+        // A reopened PDA reuses its BUI, so refresh the attached manifest without recreating its controls.
+        if (_activeProgram == activeUI && _activeUiFragment is not null)
+        {
+            if (_activeCartridgeUI is CrewManifestUi && activeUI is { } activeProgram)
+                SendCartridgeUiReadyEvent(activeProgram);
+
+            return;
+        }
+        // Goobstation End
+
         _activeProgram = activeUI;
 
         var ui = RetrieveCartridgeUI(activeUI);
         var comp = RetrieveCartridgeComponent(activeUI);
         var control = ui?.GetUIFragmentRoot();
 
-        //Prevent the same UI fragment from getting disposed and attached multiple times
+        /* Goobstation Edit - fix-crew-manifest-open-refresh
+		//Prevent the same UI fragment from getting disposed and attached multiple times
         if (_activeUiFragment?.GetType() == control?.GetType())
             return;
+		*/
 
         if (_activeUiFragment is not null)
             DetachCartridgeUI(_activeUiFragment);
@@ -68,7 +82,7 @@ public abstract class CartridgeLoaderBoundUserInterface : BoundUserInterface
     protected void ActivateCartridge(EntityUid cartridgeUid)
     {
         var message = new CartridgeLoaderUiMessage(_entManager.GetNetEntity(cartridgeUid), CartridgeUiMessageAction.Activate);
-        SendMessage(message);
+        SendPredictedMessage(message);
     }
 
     protected void DeactivateActiveCartridge()
@@ -77,19 +91,19 @@ public abstract class CartridgeLoaderBoundUserInterface : BoundUserInterface
             return;
 
         var message = new CartridgeLoaderUiMessage(_entManager.GetNetEntity(_activeProgram.Value), CartridgeUiMessageAction.Deactivate);
-        SendMessage(message);
+        SendPredictedMessage(message);
     }
 
     protected void InstallCartridge(EntityUid cartridgeUid)
     {
         var message = new CartridgeLoaderUiMessage(_entManager.GetNetEntity(cartridgeUid), CartridgeUiMessageAction.Install);
-        SendMessage(message);
+        SendPredictedMessage(message);
     }
 
     protected void UninstallCartridge(EntityUid cartridgeUid)
     {
         var message = new CartridgeLoaderUiMessage(_entManager.GetNetEntity(cartridgeUid), CartridgeUiMessageAction.Uninstall);
-        SendMessage(message);
+        SendPredictedMessage(message);
     }
 
     private List<(EntityUid, CartridgeComponent)> GetCartridgeComponents(List<EntityUid> programs)

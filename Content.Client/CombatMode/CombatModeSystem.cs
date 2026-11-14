@@ -13,7 +13,7 @@ using Robust.Shared.Configuration;
 
 namespace Content.Client.CombatMode;
 
-public sealed class CombatModeSystem : SharedCombatModeSystem
+public sealed partial class CombatModeSystem : SharedCombatModeSystem
 {
     [Dependency] private readonly IOverlayManager _overlayManager = default!;
     [Dependency] private readonly IPlayerManager _playerManager = default!;
@@ -68,11 +68,6 @@ public sealed class CombatModeSystem : SharedCombatModeSystem
     {
         base.SetInCombatMode(entity, value, component);
         UpdateHud(entity);
-    }
-
-    protected override bool IsNpc(EntityUid uid)
-    {
-        return HasComp<HTNComponent>(uid);
     }
 
     private void UpdateHud(EntityUid entity)

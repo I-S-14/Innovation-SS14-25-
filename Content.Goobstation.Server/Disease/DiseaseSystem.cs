@@ -16,8 +16,8 @@ namespace Content.Goobstation.Server.Disease;
 
 public sealed partial class DiseaseSystem : SharedDiseaseSystem
 {
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly ContainerSystem _container = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private ContainerSystem _container = default!;
 
     public override void Initialize()
     {
@@ -204,7 +204,7 @@ public sealed partial class DiseaseSystem : SharedDiseaseSystem
     {
         foreach (var diseaseUid in carrier.Diseases.ContainedEntities)
         {
-            if (!EntityManager.TryGetComponent<DiseaseComponent>(diseaseUid, out var disease)
+            if (!TryComp<DiseaseComponent>(diseaseUid, out var disease)
                 || disease.DiseaseType != args.AffectedType)
                 continue;
 
@@ -224,7 +224,7 @@ public sealed partial class DiseaseSystem : SharedDiseaseSystem
         foreach (var diseaseUid in carrier.Diseases.ContainedEntities)
         {
 
-            if (!EntityManager.TryGetComponent<DiseaseComponent>(diseaseUid, out var disease))
+            if (!TryComp<DiseaseComponent>(diseaseUid, out var disease))
                 continue;
 
             var amt = 1f;

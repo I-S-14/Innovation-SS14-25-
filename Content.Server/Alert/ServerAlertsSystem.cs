@@ -5,7 +5,7 @@ using Robust.Shared.GameStates;
 
 namespace Content.Server.Alert;
 
-internal sealed class ServerAlertsSystem : AlertsSystem
+internal sealed partial class ServerAlertsSystem : AlertsSystem
 {
     public override void Initialize()
     {

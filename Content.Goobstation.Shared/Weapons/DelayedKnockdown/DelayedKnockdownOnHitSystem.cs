@@ -13,15 +13,17 @@ using Content.Shared.Inventory;
 using Content.Shared.StatusEffect;
 using Content.Shared.Stunnable;
 using Content.Shared.Timing;
+using Content.Shared.Timing.Systems;
+using Content.Shared.Timing.Components;
 
 namespace Content.Goobstation.Shared.Weapons.DelayedKnockdown;
 
-public sealed class DelayedKnockdownOnHitSystem : EntitySystem
+public sealed partial class DelayedKnockdownOnHitSystem : EntitySystem
 {
-    [Dependency] private readonly Content.Shared.StatusEffectNew.StatusEffectsSystem _status = default!;
-    [Dependency] private readonly SharedStunSystem _stun = default!;
-    [Dependency] private readonly UseDelaySystem _delay = default!;
-    [Dependency] private readonly ChampionStanceSystem _champion = default!;
+    [Dependency] private Content.Shared.StatusEffectNew.StatusEffectsSystem _status = default!;
+    [Dependency] private SharedStunSystem _stun = default!;
+    [Dependency] private UseDelaySystem _delay = default!;
+    [Dependency] private ChampionStanceSystem _champion = default!;
 
     public override void Initialize()
     {

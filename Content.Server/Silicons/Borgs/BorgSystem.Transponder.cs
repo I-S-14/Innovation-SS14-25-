@@ -1,9 +1,4 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
-using Content.Shared.Containers.ItemSlots;
-using Content.Shared.DeviceNetwork;
-using Content.Shared.Damage;
-using Content.Goobstation.Maths.FixedPoint;
+using Content.Shared.Damage.Components;
 using Content.Shared.Mobs;
 using Content.Shared.Movement.Components;
 using Content.Shared.Popups;
@@ -18,6 +13,8 @@ using Robust.Shared.Player; //Goobstation drone
 using Content.Shared._CorvaxNext.Silicons.Borgs.Components; // Corvax-Next-AiRemoteControl
 using Content.Server.Silicons.Laws;
 using Content.Shared.Silicons.Laws.Components;
+using Content.Goobstation.Maths.FixedPoint;
+using Content.Shared.DeviceNetwork;
 
 namespace Content.Server.Silicons.Borgs;
 
@@ -25,11 +22,6 @@ namespace Content.Server.Silicons.Borgs;
 public sealed partial class BorgSystem
 {
     [Dependency] private readonly SiliconLawSystem _law = default!;
-    private void InitializeTransponder()
-    {
-        SubscribeLocalEvent<BorgTransponderComponent, DeviceNetworkPacketEvent>(OnPacketReceived);
-    }
-
     public void UpdateTransponder(float frameTime)
     {
         var now = _timing.CurTime;
@@ -60,14 +52,14 @@ public sealed partial class BorgSystem
                 chassis.ModuleCount,
                 hasBrain,
                 canDisable,
-                HasComp<AiRemoteControllerComponent>(uid)); // Corvax-Next-AiRemoteControl
+                HasComp<AiRemoteControllerComponent>(uid),
+                chassis.IsLawChangable); // Corvax-Next-AiRemoteControl
 
-            var payload = new NetworkPayload()
+            var payload = new RoboticsCyborgDataPayload
             {
-                [DeviceNetworkConstants.Command] = DeviceNetworkConstants.CmdUpdatedState,
-                [RoboticsConsoleConstants.NET_CYBORG_DATA] = data
+                Data = data,
             };
-            _deviceNetwork.QueuePacket(uid, null, payload, device: device);
+            _deviceNetwork.SendPacket((uid, device), null, ref payload);
 
             comp.NextBroadcast = now + comp.BroadcastDelay;
         }
@@ -87,14 +79,11 @@ public sealed partial class BorgSystem
                 0,
                 hasBrain,
                 false, // Corvax-Next-AiRemoteControl
-                false);
+                false,
+                false); // Corvax-Goob-MutableLaws
 
-            var payload = new NetworkPayload()
-            {
-                [DeviceNetworkConstants.Command] = DeviceNetworkConstants.CmdUpdatedState,
-                [RoboticsConsoleConstants.NET_CYBORG_DATA] = data
-            };
-            _deviceNetwork.QueuePacket(uid, null, payload, device: device);
+            var payload = new RoboticsCyborgDataPayload { Data = data };
+            _deviceNetwork.SendPacket((uid, device), null, ref payload);
 
             comp.NextBroadcast = now + comp.BroadcastDelay;
         }
@@ -119,23 +108,22 @@ public sealed partial class BorgSystem
         _container.Remove(brain, ent.Comp2.BrainContainer);
     }
 
-    private void OnPacketReceived(Entity<BorgTransponderComponent> ent, ref DeviceNetworkPacketEvent args)
+    [SubscribeLocalEvent]
+    private void OnDisable(Entity<BorgTransponderComponent> ent, ref DeviceNetworkPacketEvent<RoboticsCyborgDisablePayload> args)
     {
-        var payload = args.Data;
-        if (!payload.TryGetValue(DeviceNetworkConstants.Command, out string? command))
-            return;
+        Disable(ent);
+    }
 
-        // Corvax-Goob-MutableLaws-Start
-        if (command == RoboticsConsoleConstants.NET_CHANGE_LAWS_COMMAND)
-        {
-            if (payload.TryGetValue(RoboticsConsoleConstants.NET_CIRCUIT_BOARD, out EntityUid circuitBoard))
-                ChangeLaws(ent, circuitBoard);
-        }
-        // Corvax-Goob-MutableLaws-End
-        else if (command == RoboticsConsoleConstants.NET_DISABLE_COMMAND)
-            Disable(ent);
-        else if (command == RoboticsConsoleConstants.NET_DESTROY_COMMAND)
-            Destroy(ent.Owner);
+    [SubscribeLocalEvent]
+    private void OnDestroy(Entity<BorgTransponderComponent> ent, ref DeviceNetworkPacketEvent<RoboticsCyborgDestroyPayload> args)
+    {
+        Destroy(ent.AsNullable());
+    }
+
+    [SubscribeLocalEvent]
+    private void OnChangeLawsPacket(Entity<BorgTransponderComponent> ent, ref DeviceNetworkPacketEvent<RoboticsCyborgChangeLawsPayload> args)
+    {
+        ChangeLaws(ent.Owner, args.Data.CircuitBoard);
     }
 
     // Corvax-Goob-MutableLaws-Start
@@ -237,7 +225,7 @@ public sealed partial class BorgSystem
             return 1;
         }
 
-        return 1 - ((FixedPoint2)(damageable.TotalDamage / threshold)).Float();
+        return 1 - ((FixedPoint2)(_damageable.GetTotalDamage((uid, damageable)) / threshold)).Float();
     }
 
     /// <summary>

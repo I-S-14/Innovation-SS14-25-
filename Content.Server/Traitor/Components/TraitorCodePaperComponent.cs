@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-using Content.Server.Codewords;
+using Content.Shared.Codewords;
 using Robust.Shared.Prototypes;
 
 namespace Content.Server.Traitor.Components;

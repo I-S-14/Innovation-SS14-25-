@@ -3,7 +3,6 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Network;
 using Robust.Shared.Network.Messages;
-using Robust.Shared.Prototypes;
 
 namespace Content.Shared._IS.CardSticker;
 

@@ -1,4 +1,4 @@
-- type: contrabandIcon
+- type: statusIcon
   id: ContrabandIcon
   abstract: true
   priority: 4
@@ -6,14 +6,14 @@
   locationPreference: Right
   isShaded: true
 
-- type: contrabandIcon
+- type: statusIcon
   parent: ContrabandIcon
   id: ContrabandIconContraband
   icon:
     sprite: /Textures/_Goobstation/Interface/Misc/security_icons.rsi
     state: hud_contraband
     
-- type: contrabandIcon
+- type: statusIcon
   parent: ContrabandIcon
   id: ContrabandIconNone
   icon:

@@ -18,6 +18,7 @@ using Robust.Shared.Containers;
 using Robust.Shared.Player;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
+using Content.Shared.Station.Systems;
 
 namespace Content.Server._IS14.OS.Apps;
 
@@ -145,7 +146,7 @@ public sealed class IS14OsMessengerSystem : EntitySystem
         var query = EntityQueryEnumerator<IS14OsMessengerComponent, DeviceNetworkComponent>();
         while (query.MoveNext(out var uid, out _, out var network))
         {
-            if (uid == self || network.Address is not { } address || address == selfAddress)
+            if (uid == self || network.Address == Content.Shared.DeviceNetwork.DeviceAddress.Invalid || Content.Shared.DeviceNetwork.DeviceLocalizationHelpers.GetAddressFromId(network) == selfAddress)
                 continue;
 
             if (_station.GetOwningStation(uid) != station)
@@ -157,7 +158,7 @@ public sealed class IS14OsMessengerSystem : EntitySystem
 
             result.Add(new OsDirectoryEntry
             {
-                Address = address,
+                Address = Content.Shared.DeviceNetwork.DeviceLocalizationHelpers.GetAddressFromId(network),
                 Name = name,
                 Job = GetOwnerJob(uid),
             });
@@ -433,7 +434,7 @@ public sealed class IS14OsMessengerSystem : EntitySystem
         var query = EntityQueryEnumerator<IS14OsMessengerComponent, DeviceNetworkComponent>();
         while (query.MoveNext(out var uid, out _, out var network))
         {
-            if (network.Address == address)
+            if (Content.Shared.DeviceNetwork.DeviceLocalizationHelpers.GetAddressFromId(network) == address)
                 return uid;
         }
 
@@ -442,7 +443,8 @@ public sealed class IS14OsMessengerSystem : EntitySystem
 
     private string? GetAddress(EntityUid uid)
     {
-        return CompOrNull<DeviceNetworkComponent>(uid)?.Address;
+        return TryComp<DeviceNetworkComponent>(uid, out var network)
+            ? Content.Shared.DeviceNetwork.DeviceLocalizationHelpers.GetAddressFromId(network) : null;
     }
 
     private string GetOwnerName(EntityUid uid)

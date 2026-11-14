@@ -1,9 +1,13 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Robust.Client.Graphics;
+using Robust.Shared.Graphics;
 
 namespace Content.Client.Explosion;
 
+/// <summary>
+/// The client side visuals system for explosions.
+/// </summary>
 [RegisterComponent]
 public sealed partial class ExplosionVisualsTexturesComponent : Component
 {

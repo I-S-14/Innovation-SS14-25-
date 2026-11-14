@@ -11,22 +11,20 @@
   id: MobGondola
   description: Having no hands he embodies the Taoist principle of wu-wei (non-action) while his smiling facial expression shows his utter and complete acceptance of the world as it is.
   components:
-  - type: Hunger
-    thresholds:
-      Overfed: 100
-      Okay: 50
-      Peckish: 25
-      Starving: 10
-      Dead: 0
-    baseDecayRate: 0.00925925925926
-  - type: Thirst
-    thresholds:
-      OverHydrated: 200
-      Okay: 150
-      Thirsty: 100
-      Parched: 50
-      Dead: 0
-    baseDecayRate: 0.04
+  - type: Satiation
+    satiations:
+      Hunger:
+        prototype: IS14MobGondolaHunger6a185103
+      Thirst:
+        prototype: IS14MobGondolaThirst847193af
+  - type: SatiationSpeedModifier
+    satiations:
+      Hunger:
+        thresholds:
+          Starving: 0.75
+      Thirst:
+        thresholds:
+          Parched: 0.75
   - type: StatusEffects
     allowed:
       - Stun
@@ -813,10 +811,20 @@
   description: Little walking clown mask and shoes. You want to honk their nose!
   components:
   - type: WaddleAnimation
-  - type: Hunger
-    baseDecayRate: 0
-  - type: Thirst
-    baseDecayRate: 0
+  - type: Satiation
+    satiations:
+      Hunger:
+        prototype: IS14MobClownGoblinHungerf116f955
+      Thirst:
+        prototype: IS14MobClownGoblinThirstd5168eee
+  - type: SatiationSpeedModifier
+    satiations:
+      Hunger:
+        thresholds:
+          Starving: 0.75
+      Thirst:
+        thresholds:
+          Parched: 0.75
   - type: GhostTakeoverAvailable
   - type: GhostRole
     makeSentient: true

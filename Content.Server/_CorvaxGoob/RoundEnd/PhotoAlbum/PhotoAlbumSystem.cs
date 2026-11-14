@@ -1,3 +1,4 @@
+using Robust.Shared.Prototypes;
 using Content.Server._CorvaxGoob.Photo;
 using Content.Server.GameTicking;
 using Content.Server.Popups;
@@ -9,10 +10,15 @@ using Content.Shared.Verbs;
 using Robust.Server.Audio;
 using Robust.Server.Containers;
 using Robust.Server.Player;
+using Content.Shared.GameTicking;
 
 namespace Content.Server._CorvaxGoob.RoundEnd.PhotoAlbum;
 public sealed class PhotoAlbumSystem : EntitySystem
 {
+    //IS14-change start: typed prototype IDs required by the upstream analyzer.
+    private static readonly ProtoId<TagPrototype> CompatibilityWriteTagId = "Write";
+    //IS14-change end
+
     [Dependency] private readonly ContainerSystem _container = default!;
     [Dependency] private readonly IPlayerManager _player = default!;
     [Dependency] private readonly PopupSystem _popup = default!;
@@ -32,7 +38,7 @@ public sealed class PhotoAlbumSystem : EntitySystem
         if (!args.CanAccess || !args.CanInteract || args.Hands == null || entity.Comp.IsSigned)
             return;
 
-        if (args.Using is not { } pen || !_tags.HasTag(pen, "Write"))
+        if (args.Using is not { } pen || !_tags.HasTag(pen, CompatibilityWriteTagId))
             return;
 
         var target = args.Target;
@@ -67,7 +73,7 @@ public sealed class PhotoAlbumSystem : EntitySystem
         _audio.PlayPvs(entity.Comp.SignSound, entity);
     }
 
-    private void OnRoundEndTextAppend(RoundEndTextAppendEvent args)
+    private void OnRoundEndTextAppend(ref RoundEndTextAppendEvent args)
     {
         List<AlbumData>? albums = new();
         var query = EntityQueryEnumerator<PhotoAlbumComponent>();

@@ -163019,7 +163019,7 @@ entities:
       pos: 33.5,141.5
       parent: 1
     - type: WarpPoint
-      location: Центральное Командование
+      location: is14-map-warp-55380a2bf5c4
 - proto: WarpPointBombing
   entities:
   - uid: 22131
@@ -163028,7 +163028,7 @@ entities:
       pos: 73.5,119.5
       parent: 1
     - type: WarpPoint
-      location: Химия
+      location: is14-map-warp-bd77539a283b
   - uid: 22132
     components:
     - type: MetaData
@@ -163037,7 +163037,7 @@ entities:
       pos: 112.5,71.5
       parent: 1
     - type: WarpPoint
-      location: Хранилище
+      location: is14-map-warp-f8f37144a47b
   - uid: 22136
     components:
     - type: MetaData
@@ -163046,14 +163046,14 @@ entities:
       pos: 13.5,97.5
       parent: 1
     - type: WarpPoint
-      location: Телекоммуникация
+      location: is14-map-warp-2a27974738ce
   - uid: 23421
     components:
     - type: Transform
       pos: 152.5,125.5
       parent: 1
     - type: WarpPoint
-      location: Оружейная
+      location: is14-map-warp-be78f06087e7
 - proto: WaterCooler
   entities:
   - uid: 1675

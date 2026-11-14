@@ -9,12 +9,15 @@ using Robust.Shared.Console;
 
 namespace Content.Client.Replay;
 
-public sealed class ReplayToggleScreenshotModeCommand : BaseReplayCommand
+public sealed partial class ReplayToggleScreenshotModeCommand : BaseReplayCommand
 {
-    [Dependency] private readonly IUserInterfaceManager _userInterfaceManager = default!;
-    [Dependency] private readonly ContentReplayPlaybackManager _replayManager = default!;
+    [Dependency] private IUserInterfaceManager _userInterfaceManager = default!;
+    [Dependency] private ContentReplayPlaybackManager _replayManager = default!;
 
     public override string Command => "replay_toggle_screenshot_mode";
+    // IS14: keep the content-specific behavior description separate from engine localization.
+    public override string Description => Loc.GetString("cmd-is14-replay-toggle-screenshot-mode-desc");
+    public override string Help => Loc.GetString("cmd-is14-replay-toggle-screenshot-mode-help");
 
     public override void Execute(IConsoleShell shell, string argStr, string[] args)
     {

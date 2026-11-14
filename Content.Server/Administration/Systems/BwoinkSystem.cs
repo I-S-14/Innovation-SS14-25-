@@ -23,6 +23,7 @@ using Content.Shared.Players.RateLimiting;
 using JetBrains.Annotations;
 using Robust.Server.Player;
 using Robust.Shared;
+using Robust.Shared.Asynchronous;
 using Robust.Shared.Configuration;
 using Robust.Shared.Enums;
 using Robust.Shared.Network;
@@ -37,17 +38,18 @@ namespace Content.Server.Administration.Systems
     {
         private const string RateLimitKey = "AdminHelp";
 
-        [Dependency] private readonly IPlayerManager _playerManager = default!;
-        [Dependency] private readonly IAdminManager _adminManager = default!;
-        [Dependency] private readonly IConfigurationManager _config = default!;
-        [Dependency] private readonly IGameTiming _timing = default!;
-        [Dependency] private readonly IPlayerLocator _playerLocator = default!;
-        [Dependency] private readonly GameTicker _gameTicker = default!;
-        [Dependency] private readonly SharedMindSystem _minds = default!;
-        [Dependency] private readonly IAfkManager _afkManager = default!;
-        [Dependency] private readonly IServerDbManager _dbManager = default!;
-        [Dependency] private readonly PlayerRateLimitManager _rateLimit = default!;
         [Dependency] private readonly IServerPreferencesManager _preferencesManager = default!;
+        [Dependency] private readonly ITaskManager _taskManager = default!;
+        [Dependency] private IPlayerManager _playerManager = default!;
+        [Dependency] private IAdminManager _adminManager = default!;
+        [Dependency] private IConfigurationManager _config = default!;
+        [Dependency] private IGameTiming _timing = default!;
+        [Dependency] private IPlayerLocator _playerLocator = default!;
+        [Dependency] private ServerGameTicker _gameTicker = default!;
+        [Dependency] private SharedMindSystem _minds = default!;
+        [Dependency] private IAfkManager _afkManager = default!;
+        [Dependency] private IServerDbManager _dbManager = default!;
+        [Dependency] private PlayerRateLimitManager _rateLimit = default!;
 
         [GeneratedRegex(@"^https://(?:(?:canary|ptb)\.)?discord\.com/api/webhooks/(\d+)/((?!.*/).*)$")]
         private static partial Regex DiscordRegex();
@@ -98,7 +100,8 @@ namespace Content.Server.Administration.Systems
             Subs.CVar(_config, CCVars.DiscordAHelpAvatar, OnAvatarChanged, true);
             Subs.CVar(_config, CVars.GameHostName, OnServerNameChanged, true);
             Subs.CVar(_config, CCVars.AdminAhelpOverrideClientName, OnOverrideChanged, true);
-            _sawmill = IoCManager.Resolve<ILogManager>().GetSawmill("AHELP");
+            Subs.CVar(_config, CCVars.AhelpQuickInfoStartWordSize, v => _startWordMinSize = v, true);
+            _sawmill = LogManager.GetSawmill("AHELP");
 
             var defaultParams = new AHelpMessageParams(
                 string.Empty,
@@ -356,7 +359,7 @@ namespace Content.Server.Administration.Systems
             {
                 // TODO: Ideally, CVar validation during setting should be better integrated
                 Log.Warning("Webhook URL does not appear to be valid. Using anyways...");
-                await GetWebhookData(url); // Frontier - Support for Custom URLS, we still want to see if theres Webhook data available
+                _webhookData = await GetWebhookData(url); // Frontier - Support for Custom URLS, we still want to see if theres Webhook data available
                 return;
             }
 
@@ -367,7 +370,7 @@ namespace Content.Server.Administration.Systems
             }
 
             // Fire and forget
-            await GetWebhookData(url); // Frontier - Support for Custom URLS
+            _webhookData = await GetWebhookData(url); // Frontier - Support for Custom URLS
         }
 
         private async Task<WebhookData?> GetWebhookData(string url)
@@ -529,6 +532,8 @@ namespace Content.Server.Administration.Systems
             }
 
             _relayMessages[userId] = existingEmbed;
+            _taskManager.RunOnMainThread(() =>
+                RaiseLocalEvent(new CorvaxAHelpRelayChangedEvent(userId))); // Corvax-API
 
             // Actually do the on call relay last, we just need to grab it before we dequeue every message above.
             if (onCallRelay &&
@@ -742,7 +747,7 @@ namespace Content.Server.Administration.Systems
             var playSound = (bwoinkParams.SenderAdmin == null || bwoinkParams.Message.PlaySound) && !bwoinkParams.Message.AdminOnly;
             var msg = new BwoinkTextMessage(bwoinkParams.Message.UserId, bwoinkParams.SenderId, bwoinkText, playSound: playSound, adminOnly: bwoinkParams.Message.AdminOnly);
 
-            LogBwoink(msg);
+
 
             var admins = GetTargetAdmins();
 

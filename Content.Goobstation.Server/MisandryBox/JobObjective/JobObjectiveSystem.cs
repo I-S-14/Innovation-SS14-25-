@@ -1,4 +1,5 @@
-﻿using System.Linq;
+using Content.Shared.GameTicking.Events;
+using System.Linq;
 using Content.Goobstation.Shared.MisandryBox.JobObjective;
 using Content.Server.GameTicking;
 using Content.Server.GameTicking.Events;
@@ -10,11 +11,11 @@ using Robust.Shared.Map;
 
 namespace Content.Goobstation.Server.MisandryBox.JobObjective;
 
-public sealed class JobObjectiveSystem : EntitySystem
+public sealed partial class JobObjectiveSystem : EntitySystem
 {
-    [Dependency] private readonly MindSystem _mind = default!;
-    [Dependency] private readonly ObjectivesSystem _obj = default!;
-    [Dependency] private readonly GameTicker _ticker = default!;
+    [Dependency] private MindSystem _mind = default!;
+    [Dependency] private ObjectivesSystem _obj = default!;
+    [Dependency] private Content.Server.GameTicking.ServerGameTicker _ticker = default!;
 
     private const string Rule = "JobObjectiveRule";
 

@@ -1,4 +1,4 @@
-﻿- type: antag
+- type: antag
   id: Survivor
   name: roles-antag-survivor-name
   antagonist: true
@@ -17,4 +17,4 @@
   #  time: 5h
   #guides: [ Wizard ]
 
-# See wizard_startinggear for wiz start gear options
+# IS14-change: the shared Wizard entry is adapted in _IS14/Upstream/retained_wizard_entry.yml.

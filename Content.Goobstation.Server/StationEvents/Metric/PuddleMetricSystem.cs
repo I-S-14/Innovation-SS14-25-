@@ -2,7 +2,7 @@
 
 using System.Linq;
 using Content.Goobstation.Server.StationEvents.Metric.Components;
-using Content.Server.Chemistry.Containers.EntitySystems;
+
 using Content.Shared.Chemistry.Components.SolutionManager;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Goobstation.Maths.FixedPoint;
@@ -16,9 +16,9 @@ namespace Content.Goobstation.Server.StationEvents.Metric;
 ///
 ///   Jani - JaniMetricComponent.Puddles points per BaselineQty of various substances
 /// </summary>
-public sealed class PuddleMetricSystem : ChaosMetricSystem<PuddleMetricComponent>
+public sealed partial class PuddleMetricSystem : ChaosMetricSystem<PuddleMetricComponent>
 {
-    [Dependency] private readonly SharedSolutionContainerSystem _solutionContainerSystem = default!;
+    [Dependency] private SharedSolutionContainerSystem _solutionContainerSystem = default!;
 
     private static readonly Gauge PuddlesTotal = Metrics.CreateGauge(
         "game_director_metric_puddle_total",
@@ -36,7 +36,7 @@ public sealed class PuddleMetricSystem : ChaosMetricSystem<PuddleMetricComponent
     protected override ChaosMetrics CalculateChaos(EntityUid uid, PuddleMetricComponent component, CalculateChaosEvent args)
     {
         // Add up the pain of all the puddles
-        var query = EntityQueryEnumerator<PuddleComponent, SolutionContainerManagerComponent>();
+        var query = EntityQueryEnumerator<PuddleComponent, SolutionManagerComponent>();
         double messChaos = 0;
         var puddleCount = 0;
         double totalPuddleVolume = 0;

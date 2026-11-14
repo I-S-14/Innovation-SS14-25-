@@ -1,13 +1,10 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
+using System.Linq;
 using Content.Shared.Store;
 using Content.Shared.Store.Components;
 using Robust.Shared.Prototypes;
 
 namespace Content.Server.Store.Conditions;
 
-// goob edit - fuck newstore
-// do not touch unless you want to shoot yourself in the leg
 public sealed partial class BuyBeforeCondition : ListingCondition
 {
     /// <summary>
@@ -35,47 +32,17 @@ public sealed partial class BuyBeforeCondition : ListingCondition
         if (!args.EntityManager.TryGetComponent<StoreComponent>(args.StoreEntity, out var storeComp))
             return false;
 
-        var allListings = storeComp.Listings;
+        var allListings = storeComp.FullListingsCatalog;
 
-        var purchasesFound = false;
+        if (Blacklist != null && allListings.Any(listing => Blacklist.Contains(listing.ID) && listing.PurchaseAmount > 0))
+            return false;
 
-        if (Blacklist != null)
-        {
-            foreach (var blacklistListing in Blacklist)
-            {
-                foreach (var listing in allListings)
-                {
-                    if (listing.ID == blacklistListing.Id && listing.PurchaseAmount > 0)
-                        return false;
-                }
-            }
-        }
-
-        if (Whitelist == null) // Goobstation
+        if (Whitelist == null || Whitelist.Count == 0)
             return true;
 
-        foreach (var requiredListing in Whitelist)
-        {
-            foreach (var listing in allListings)
-            {
-                if (listing.ID == requiredListing.Id)
-                {
-                    purchasesFound = listing.PurchaseAmount > 0;
+        bool Purchased(ProtoId<ListingPrototype> id) =>
+            allListings.Any(listing => listing.ID == id && listing.PurchaseAmount > 0);
 
-                    // Goobstation
-                    switch (purchasesFound)
-                    {
-                        case true when !WhitelistRequireAll:
-                            return true;
-                        case false when WhitelistRequireAll:
-                            return false;
-                    }
-
-                    break;
-                }
-            }
-        }
-
-        return purchasesFound;
+        return WhitelistRequireAll ? Whitelist.All(Purchased) : Whitelist.Any(Purchased);
     }
 }

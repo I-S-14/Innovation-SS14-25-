@@ -8,7 +8,8 @@ using Content.Shared.PowerCell;
 using Content.Shared.Speech.EntitySystems;
 using Content.Shared.StatusEffect;
 using Content.Shared.Stunnable;
-using Content.Shared.Timing;
+using Content.Shared.Timing.Components;
+using Content.Shared.Timing.Systems;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Network;
 
@@ -22,7 +23,7 @@ public sealed class CyborgHarmAlarmSystem : EntitySystem
     [Dependency] private readonly SharedJitteringSystem _jitter = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly PowerCellSystem _powerCell = default!;
-    [Dependency] private readonly SharedStutteringSystem _stutter = default!;
+    [Dependency] private readonly StutteringSystem _stutter = default!;
     [Dependency] private readonly SharedStunSystem _stun = default!;
     [Dependency] private readonly UseDelaySystem _useDelay = default!;
 

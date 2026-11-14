@@ -14,7 +14,6 @@ public sealed class ModuleClothingSlotsSystem : ModuleBehaviourSystem<ModuleClot
 {
     [Dependency] private readonly ClothingSystem _clothing = default!;
     [Dependency] private readonly InventorySystem _inventory = default!;
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
 
     public override void Initialize()
     {

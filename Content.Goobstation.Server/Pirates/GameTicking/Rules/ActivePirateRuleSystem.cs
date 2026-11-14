@@ -1,7 +1,10 @@
+using Content.Shared.NPC.Prototypes;
+using Content.Shared.GameTicking;
+using Content.Shared.Roles;
+using Content.Shared.Antag;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Goobstation.Common.Pirates;
-using Content.Goobstation.Shared.Pirates.Roles;
 using Content.Goobstation.Shared.Pirates.Roles;
 using Content.Server.Antag;
 using Content.Server.GameTicking;
@@ -15,12 +18,16 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Goobstation.Server.Pirates.GameTicking.Rules;
 
-public sealed partial class ActivePirateRuleSystem : GameRuleSystem<ActivePirateRuleComponent>
+public sealed partial class ActivePirateRuleSystem : ServerGameRuleSystem<ActivePirateRuleComponent>
 {
-    [Dependency] private readonly MindSystem _mind = default!;
-    [Dependency] private readonly RoleSystem _role = default!;
-    [Dependency] private readonly AntagSelectionSystem _antag = default!;
-    [Dependency] private readonly NpcFactionSystem _npcFaction = default!;
+    //IS14-change start: typed IDs preserve the retained Goob prototypes.
+    private static readonly ProtoId<NpcFactionPrototype> CompatibilityPirateFactionNpcFactionId = "PirateFaction";
+    //IS14-change end
+
+    [Dependency] private MindSystem _mind = default!;
+    [Dependency] private RoleSystem _role = default!;
+    [Dependency] private AntagSelectionSystem _antag = default!;
+    [Dependency] private NpcFactionSystem _npcFaction = default!;
 
     private static readonly SoundSpecifier BriefingSound = new SoundPathSpecifier("/Audio/Ambience/Antag/pirate_start.ogg");
     private static readonly EntProtoId MindRole = "MindRolePirate";
@@ -73,7 +80,7 @@ public sealed partial class ActivePirateRuleSystem : GameRuleSystem<ActivePirate
         var briefing = Loc.GetString("antag-pirate-briefing");
         _antag.SendBriefing(target, briefing, Color.OrangeRed, BriefingSound);
 
-        _npcFaction.AddFaction(target, "PirateFaction"); // yaml fucking sucks!!!
+        _npcFaction.AddFaction(target, CompatibilityPirateFactionNpcFactionId); // yaml fucking sucks!!!
 
         return true;
     }

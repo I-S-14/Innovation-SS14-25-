@@ -1,0 +1,346 @@
+# IS14: retained Goob rat king; Hunger/Thirst migrated to Satiation.
+# Source: 5327c414c5:Resources/Prototypes/Entities/Mobs/NPCs/regalrat.yml
+- type: entity
+  name: rat king
+  id: MobRatKing
+  parent: [SimpleMobBase, MobCombat]
+  description: He's da rat. He make da roolz.
+  components:
+  - type: VentCrawler
+  - type: CombatMode
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 4.00
+    baseSprintSpeed: 5.00
+  - type: InputMover
+  - type: MobMover
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+  - type: Reactive
+    groups:
+      Flammable: [Touch]
+      Extinguish: [Touch]
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: Sprite
+    drawdepth: SmallMobs
+    sprite: Mobs/Animals/regalrat.rsi
+    layers:
+    - map: ["enum.DamageStateVisualLayers.Base"]
+      state: regalrat
+    - map: ["enum.DamageStateVisualLayers.BaseUnshaded"]
+      state: eyes
+      shader: unshaded
+  - type: TypingIndicator
+    proto: regal
+  - type: Physics
+    bodyType: KinematicController
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeCircle
+          radius: 0.3
+        density: 230
+        mask:
+        - SmallMobMask
+        layer:
+        - SmallMobLayer
+  - type: MobState
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      200: Dead
+  - type: MeleeWeapon
+    altDisarm: false
+    soundHit:
+      path: /Audio/Weapons/Xeno/alien_claw_flesh1.ogg
+    angle: 0
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Slash: 12
+        Piercing: 8
+  - type: TTS
+    voice: Rat
+  - type: Body
+    prototype: RatKing
+    requiredLegs: 0
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: regalrat
+        BaseUnshaded: eyes
+      Critical:
+        Base: critical
+      Dead:
+        Base: dead
+  - type: GhostRole
+    makeSentient: true
+    name: ghost-role-information-rat-king-name
+    description: ghost-role-information-rat-king-description
+    rules: ghost-role-information-antagonist-rules
+    mindRoles:
+    - MindRoleGhostRoleSoloAntagonistGoob
+    raffle:
+      settings: default
+  - type: GhostTakeoverAvailable
+  - type: Tag
+    tags:
+    - CannotSuicide
+    - FootstepSound
+  - type: NoSlip
+  - type: Rummager
+  - type: RatKing
+    hungerPerArmyUse: 25
+    hungerPerDomainUse: 50
+  - type: MobsterAccent
+  - type: Speech
+    speechVerb: SmallMob
+  - type: LanguageKnowledge
+    speaks:
+    - TauCetiBasic
+    - Mouse
+    understands:
+    - TauCetiBasic
+    - Mouse
+  - type: Butcherable
+    spawned:
+    - id: ClothingHeadHatFancyCrown
+      amount: 1
+  - type: MobPrice
+    price: 2500
+  - type: RandomMetadata
+    nameSegments:
+    - NamesRegalratKingdom
+    - NamesRegalratTitle
+    nameFormat: name-format-regal-rat
+  - type: GuideHelp
+    guides:
+    - MinorAntagonists
+  - type: Grammar
+    attributes:
+      gender: male
+  - type: Sharp
+  - type: NightVision
+    color: "#d14343"
+    activateSound: null
+    deactivateSound: null
+  - type: Insulated
+    coefficient: 0.5
+  - type: CombatPower
+    factor: 2
+  - type: PassiveDamage
+    allowedStates:
+    - Alive
+    damage:
+      types:
+        Poison: -0.5
+      groups:
+        Brute: -0.3
+        Burn: -0.3
+  - type: Satiation
+    satiations:
+      Hunger:
+        prototype: IS14RatKingHunger
+      Thirst:
+        prototype: IS14RatKingThirst
+- type: entity
+  id: MobRatKingBuff
+  parent: MobRatKing
+  suffix: Buff
+  components:
+  - type: Sprite
+    sprite: Mobs/Animals/buffrat.rsi
+    scale: 1.2, 1.2
+    layers:
+    - map: ["enum.DamageStateVisualLayers.Base"]
+      state: regalrat
+    - map: ["enum.DamageStateVisualLayers.BaseUnshaded"]
+      state: eyes
+      shader: unshaded
+  - type: MobState
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      350: Dead
+  - type: MeleeWeapon
+    altDisarm: false
+    soundHit:
+      path: /Audio/Weapons/Xeno/alien_claw_flesh2.ogg
+    angle: 0
+    attackRate: 0.75
+    animation: WeaponArcFist
+    damage:
+      types:
+        Blunt: 66
+  - type: SlowOnDamage
+    speedModifierThresholds:
+      200: 0.7
+      250: 0.5
+  - type: GuideHelp
+    guides:
+    - MinorAntagonists
+- type: entity
+  name: rat servant
+  id: MobRatServant
+  parent: [SimpleMobBase, MobCombat]
+  description: He's da mini rat. He don't make da roolz.
+  categories: [HideSpawnMenu]
+  components:
+  - type: VentCrawler
+  - type: CombatMode
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 4.0
+    baseSprintSpeed: 4.0
+  - type: InputMover
+  - type: MobMover
+  - type: HTN
+    rootTask:
+      task: RatServantCompound
+    blackboard:
+      IdleRange: !type:Single '3.5'
+      FollowCloseRange: !type:Single '2.0'
+      FollowRange: !type:Single '3.0'
+  - type: Reactive
+    groups:
+      Flammable: [Touch]
+      Extinguish: [Touch]
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: Sprite
+    drawdepth: SmallMobs
+    sprite: Mobs/Animals/rat.rsi
+    layers:
+    - map: ["enum.DamageStateVisualLayers.Base", "movement"]
+      state: rat
+    - map: ["enum.DamageStateVisualLayers.BaseUnshaded"]
+      state: eyes
+      shader: unshaded
+  - type: Insulated
+  - type: LanguageKnowledge
+    speaks:
+    - Mouse
+    understands:
+    - Mouse
+    - TauCetiBasic
+  - type: PassiveDamage
+    allowedStates:
+    - Alive
+    damage:
+      groups:
+        Brute: -0.1
+        Burn: -0.1
+  - type: SpriteMovement
+    movementLayers:
+      movement:
+        state: rat-moving
+    noMovementLayers:
+      movement:
+        state: rat
+  - type: Physics
+    bodyType: KinematicController
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeCircle
+          radius: 0.2
+        density: 15
+        mask:
+        - SmallMobMask
+        layer:
+        - SmallMobLayer
+  - type: MobState
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      15: Dead
+  - type: Bloodstream
+    bloodReferenceSolution:
+      reagents:
+      - ReagentId: Blood
+        Quantity: 10
+  - type: Destructible
+    thresholds:
+    - trigger: !type:DamageTrigger
+        damage: 15
+      behaviors:
+      - !type:GibBehavior
+        gibContents: Skip
+        recursive: false
+  - type: Stamina
+    baseCritThreshold: 60
+    animationThreshold: 30
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/bladeslice.ogg
+    angle: 0
+    animation: WeaponArcClaw
+    damage:
+      types:
+        Slash: 5
+        Piercing: 3
+  - type: Body
+    prototype: Rat
+    requiredLegs: 0
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: rat
+        BaseUnshaded: eyes
+      Critical:
+        Base: dead
+      Dead:
+        Base: splat
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatRat
+      amount: 1
+  - type: Vocal
+    sounds:
+      Male: Mouse
+      Female: Mouse
+      Unsexed: Mouse
+    wilhelmProbability: 0.001
+  - type: Tag
+    tags:
+    - CannotSuicide
+    - FootstepSound
+  - type: NoSlip
+  - type: MobPrice
+    price: 500
+  - type: MobsterAccent
+    isBoss: false
+  - type: Speech
+    speechVerb: SmallMob
+  - type: GuideHelp
+    guides:
+    - MinorAntagonists
+  - type: FireVisuals
+    sprite: Mobs/Effects/onfire.rsi
+    normalState: Mouse_burning
+  - type: FelinidFood
+  - type: Edible
+  - type: Item
+    size: Tiny
+  - type: NightVision
+    color: "#808080"
+    activateSound: null
+    deactivateSound: null
+  - type: Satiation
+    satiations:
+      Hunger:
+        prototype: IS14RatServantHunger
+      Thirst:
+        prototype: IS14RatKingThirst
+- type: entityTable
+  id: RatKingLoot
+  table: !type:GroupSelector
+    children:
+    - id: RandomSpawner100
+      weight: 66
+    - id: FoodCheese
+      weight: 28
+    - id: IngotGold1
+      weight: 5

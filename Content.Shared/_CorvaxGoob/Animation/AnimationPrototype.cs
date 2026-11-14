@@ -4,8 +4,7 @@ using Robust.Shared.Serialization;
 
 namespace Content.Shared._CorvaxGoob.Animation;
 
-[Prototype("animation")]
-[Serializable, NetSerializable, DataDefinition]
+[Prototype]
 public sealed partial class AnimationPrototype : IPrototype
 {
     [IdDataField] public string ID { get; private set; } = default!;

@@ -4,20 +4,21 @@ using Content.Shared._EinsteinEngines.Language; // Goob Station - Revolutionary 
 using Robust.Shared.GameStates;
 using Content.Shared.StatusIcon;
 using Robust.Shared.Prototypes;
+using Content.Shared.Antag;
 
 namespace Content.Shared.Revolutionary.Components;
 
 /// <summary>
 /// Component used for marking a Head Rev for conversion and winning/losing.
 /// </summary>
-[RegisterComponent, NetworkedComponent, Access(typeof(SharedRevolutionarySystem))]
+[RegisterComponent, NetworkedComponent, Access(typeof(RevolutionarySystem))]
 public sealed partial class HeadRevolutionaryComponent : Component
 {
     /// <summary>
     /// The status icon corresponding to the head revolutionary.
     /// </summary>
     [DataField, ViewVariables(VVAccess.ReadWrite)]
-    public ProtoId<FactionIconPrototype> StatusIcon { get; set; } = "HeadRevolutionaryFaction";
+    public ProtoId<StatusIconPrototype> StatusIcon { get; set; } = "HeadRevolutionaryFaction";
 
     /// <summary>
     /// How long the stun will last after the user is converted.

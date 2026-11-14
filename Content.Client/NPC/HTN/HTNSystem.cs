@@ -6,7 +6,7 @@ using Robust.Client.ResourceManagement;
 
 namespace Content.Client.NPC.HTN;
 
-public sealed class HTNSystem : EntitySystem
+public sealed partial class HTNSystem : EntitySystem
 {
     /*
      * Mainly handles clientside debugging for HTN NPCs.

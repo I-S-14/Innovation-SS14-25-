@@ -1,7 +1,7 @@
 {
   "version": 1,
   "license": "CC0-1.0",
-  "copyright": "Created by rolfero (github) for Space Station 14",
+  "copyright": "Created by rolfero (github) for Space Station 14 | Legacy states: (CC0-1.0) Created by rolfero (github) for Space Station 14",
   "size": {
     "x": 4,
     "y": 6
@@ -116,27 +116,81 @@
       "name": "z"
     },
     {
-      "name": "exclamation"
+      "name": "angle-l"
     },
     {
-      "name": "question"
+      "name": "angle-r"
     },
     {
-      "name": "star"
+      "name": "apostrophe"
     },
     {
-      "name": "plus"
+      "name": "backslash"
     },
     {
-      "name": "dash"
+      "name": "bracket-l"
+    },
+    {
+      "name": "bracket-r"
+    },
+    {
+      "name": "caret"
     },
     {
       "name": "colon"
     },
     {
-      "name": "blank"
+      "name": "comma"
     },
-	  {
+    {
+      "name": "dash"
+    },
+    {
+      "name": "equals"
+    },
+    {
+      "name": "exclamation"
+    },
+    {
+      "name": "hash"
+    },
+    {
+      "name": "paren-l"
+    },
+    {
+      "name": "paren-r"
+    },
+    {
+      "name": "percent"
+    },
+    {
+      "name": "period"
+    },
+    {
+      "name": "plus"
+    },
+    {
+      "name": "question"
+    },
+    {
+      "name": "quotation"
+    },
+    {
+      "name": "semicolon"
+    },
+    {
+      "name": "slash"
+    },
+    {
+      "name": "speso"
+    },
+    {
+      "name": "star"
+    },
+    {
+      "name": "underscore"
+    },
+    {
       "name": "а"
     },
     {
@@ -153,9 +207,6 @@
     },
     {
       "name": "е"
-    },
-    {
-      "name": "ё"
     },
     {
       "name": "ж"
@@ -234,6 +285,9 @@
     },
     {
       "name": "я"
+    },
+    {
+      "name": "ё"
     }
   ]
 }

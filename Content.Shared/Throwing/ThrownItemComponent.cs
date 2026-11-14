@@ -3,6 +3,7 @@
 using System.Numerics;
 using Robust.Shared.GameStates;
 using Robust.Shared.Timing;
+using Robust.Shared.Serialization;
 
 namespace Content.Shared.Throwing
 {

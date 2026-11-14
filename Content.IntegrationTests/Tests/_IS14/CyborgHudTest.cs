@@ -23,6 +23,8 @@ namespace Content.IntegrationTests.Tests._IS14;
 [TestOf(typeof(CyborgHudUIController))]
 public sealed class CyborgHudTest
 {
+    private static readonly ProtoId<CyborgModelPrototype> MedicalModel = "IS14CyborgModelMedical";
+
     [Test]
     public async Task HudShowsSlotsAndDeploysTools()
     {
@@ -118,7 +120,7 @@ public sealed class CyborgHudTest
         var sEntMan = server.ResolveDependency<IEntityManager>();
         var playerMan = server.ResolveDependency<IPlayerManager>();
         var session = playerMan.GetSessionById(client.Session!.UserId);
-        var model = server.ResolveDependency<IPrototypeManager>().Index<CyborgModelPrototype>("IS14CyborgModelMedical");
+        var model = server.ResolveDependency<IPrototypeManager>().Index(MedicalModel);
         var skin = model.Skins[^1];
 
         EntityUid cyborg = default;

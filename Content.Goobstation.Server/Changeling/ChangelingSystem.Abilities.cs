@@ -53,9 +53,14 @@ namespace Content.Goobstation.Server.Changeling;
 
 public sealed partial class ChangelingSystem
 {
+    //IS14-change start: typed IDs preserve the retained Goob prototypes.
+    private static readonly EntProtoId CompatibilityActionLayEggEntityId = "ActionLayEgg";
+    private static readonly ProtoId<ReagentPrototype> CompatibilityPolytrinicAcidReagentId = "PolytrinicAcid";
+    //IS14-change end
+
     #region Dependencies
-    [Dependency] private readonly StatusEffectsSystem _statusEffects = default!;
-    [Dependency] private readonly WeldableSystem _weldable = default!; //for biodegrade unweld
+    [Dependency] private StatusEffectsSystem _statusEffects = default!;
+    [Dependency] private WeldableSystem _weldable = default!; //for biodegrade unweld
     #endregion
 
     public void SubscribeAbilities()
@@ -232,7 +237,7 @@ public sealed partial class ChangelingSystem
 
         if (TryComp<StoreComponent>(args.User, out var store))
         {
-            _store.TryAddCurrency(new Dictionary<string, FixedPoint2> { { "EvolutionPoint", bonusEvolutionPoints } }, args.User, store);
+            _store.TryAddCurrency(new Dictionary<Robust.Shared.Prototypes.ProtoId<Content.Shared.Store.CurrencyPrototype>, FixedPoint2> { { "EvolutionPoint", bonusEvolutionPoints } }, args.User, store);
             _store.UpdateUserInterface(args.User, args.User, store);
         }
 
@@ -276,7 +281,7 @@ public sealed partial class ChangelingSystem
         if (!TryComp<EdibleComponent>(target, out var food))
             return;
 
-        if (!TryComp<SolutionContainerManagerComponent>(target, out var solMan))
+        if (!TryComp<SolutionManagerComponent>(target, out var solMan))
             return;
 
         var totalFood = FixedPoint2.New(0);
@@ -319,7 +324,7 @@ public sealed partial class ChangelingSystem
         if (args.Cancelled)
             return;
 
-        if (!TryComp<SolutionContainerManagerComponent>(target, out var solMan))
+        if (!TryComp<SolutionManagerComponent>(target, out var solMan))
             return;
 
         var totalFood = FixedPoint2.New(0);
@@ -597,7 +602,7 @@ public sealed partial class ChangelingSystem
             return;
 
         var target = args.Target;
-        var fakeArmblade = EntityManager.SpawnEntity(FakeArmbladePrototype, Transform(target).Coordinates);
+        var fakeArmblade = Spawn(FakeArmbladePrototype, Transform(target).Coordinates);
 
         var handsValid = _hands.TryForcePickupAnyHand(target, fakeArmblade);
 
@@ -713,17 +718,17 @@ public sealed partial class ChangelingSystem
         }
 
         if (TryComp<EnsnareableComponent>(uid, out var ensnareable) &&
-            ensnareable.IsEnsnared && ensnareable.Container.ContainedEntities.Count > 0)
+            ensnareable.IsEnsnared && ensnareable.Container is { } snareContainer && snareContainer.ContainedEntities.Count > 0)
         {
-            var bola = ensnareable.Container.ContainedEntities[0];
-            _snare.ForceFree(bola, Comp<EnsnaringComponent>(bola));
+            var bola = snareContainer.ContainedEntities[0];
+            _snare.ForceFree((bola, Comp<EnsnaringComponent>(bola)));
             QueueDel(bola);
         }
 
         // Goobstation start unwelds containers containing changelling.
         var parent = Transform(uid).ParentUid;
 
-        if (parent != null && TryComp<WeldableComponent>(parent, out var weldable))
+        if (TryComp<WeldableComponent>(parent, out var weldable))
         {
             if (weldable.IsWelded)
             {
@@ -733,7 +738,7 @@ public sealed partial class ChangelingSystem
         // Goobstation end
 
         var soln = new Solution();
-        soln.AddReagent("PolytrinicAcid", 10f);
+        soln.AddReagent(CompatibilityPolytrinicAcidReagentId, 10f);
 
         if (_pull.IsPulled(uid))
         {
@@ -835,7 +840,7 @@ public sealed partial class ChangelingSystem
             slope: 4,
             maxTileIntensity: 2);
 
-        _actions.AddAction((EntityUid) newUid, "ActionLayEgg");
+        _actions.AddAction((EntityUid) newUid, CompatibilityActionLayEggEntityId);
 
         PlayMeatySound((EntityUid) newUid, comp);
 

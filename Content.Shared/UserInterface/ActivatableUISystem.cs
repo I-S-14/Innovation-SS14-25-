@@ -2,7 +2,7 @@
 
 using Content.Shared.ActionBlocker;
 using Content.Shared.Administration.Managers;
-using Content.Shared.Ghost;
+using Content.Shared.Ghost.Components;
 using Content.Shared.Hands;
 using Content.Shared.Hands.Components;
 using Content.Shared.Hands.EntitySystems;
@@ -13,17 +13,18 @@ using Content.Shared.Verbs;
 using Content.Shared.Whitelist;
 using Robust.Shared.Audio.Components;
 using Robust.Shared.Utility;
+using Content.Shared.Ghost;
 
 namespace Content.Shared.UserInterface;
 
 public sealed partial class ActivatableUISystem : EntitySystem
 {
-    [Dependency] private readonly ISharedAdminManager _adminManager = default!;
-    [Dependency] private readonly ActionBlockerSystem _blockerSystem = default!;
-    [Dependency] private readonly SharedUserInterfaceSystem _uiSystem = default!;
-    [Dependency] private readonly SharedPopupSystem _popupSystem = default!;
-    [Dependency] private readonly SharedHandsSystem _hands = default!;
-    [Dependency] private readonly EntityWhitelistSystem _whitelistSystem = default!;
+    [Dependency] private ISharedAdminManager _adminManager = default!;
+    [Dependency] private ActionBlockerSystem _blockerSystem = default!;
+    [Dependency] private SharedUserInterfaceSystem _uiSystem = default!;
+    [Dependency] private SharedPopupSystem _popupSystem = default!;
+    [Dependency] private SharedHandsSystem _hands = default!;
+    [Dependency] private EntityWhitelistSystem _whitelistSystem = default!;
 
     public override void Initialize()
     {
@@ -36,6 +37,7 @@ public sealed partial class ActivatableUISystem : EntitySystem
         SubscribeLocalEvent<ActivatableUIComponent, HandDeselectedEvent>(OnHandDeselected);
         SubscribeLocalEvent<ActivatableUIComponent, GotUnequippedHandEvent>(OnHandUnequipped);
         SubscribeLocalEvent<ActivatableUIComponent, BoundUIClosedEvent>(OnUIClose);
+        SubscribeLocalEvent<ActivatableUIComponent, BoundUserInterfaceMessageAttempt>(OnBoundInterfaceOpenAttempt);
         SubscribeLocalEvent<ActivatableUIComponent, GetVerbsEvent<ActivationVerb>>(GetActivationVerb);
         SubscribeLocalEvent<ActivatableUIComponent, GetVerbsEvent<Verb>>(GetVerb);
 
@@ -77,7 +79,7 @@ public sealed partial class ActivatableUISystem : EntitySystem
 
         args.Verbs.Add(new ActivationVerb
         {
-            Act = () => InteractUI(args.User, uid, component),
+            Act = () => InteractUI(args.User, (uid, component)), // Goob
             Priority = component.VerbPriority, //IS14-change
             Text = Loc.GetString(component.VerbText),
             // TODO VERB ICON find a better icon
@@ -92,7 +94,7 @@ public sealed partial class ActivatableUISystem : EntitySystem
 
         args.Verbs.Add(new Verb
         {
-            Act = () => InteractUI(args.User, uid, component),
+            Act = () => InteractUI(args.User, (uid, component)), // Goob
             Text = Loc.GetString(component.VerbText),
             // TODO VERB ICON find a better icon
             Icon = new SpriteSpecifier.Texture(new ResPath("/Textures/Interface/VerbIcons/settings.svg.192dpi.png")),
@@ -106,7 +108,7 @@ public sealed partial class ActivatableUISystem : EntitySystem
 
         args.Verbs.Add(new AlternativeVerb
         {
-            Act = () => InteractUI(args.User, uid, component),
+            Act = () => InteractUI(args.User, (uid, component)), // Goob
             Priority = component.VerbPriority, //IS14-change
             Text = Loc.GetString(component.VerbText),
             // TODO VERB ICON find a better icon
@@ -168,7 +170,7 @@ public sealed partial class ActivatableUISystem : EntitySystem
         if (component.RequiredItems != null)
             return;
 
-        args.Handled = InteractUI(args.User, uid, component);
+        args.Handled = InteractUI(args.User, uid, component, ref args.InteractionParticle); // Goob
     }
 
     private void OnInteractUsing(EntityUid uid, ActivatableUIComponent component, InteractUsingEvent args)
@@ -185,7 +187,7 @@ public sealed partial class ActivatableUISystem : EntitySystem
         if (_whitelistSystem.IsWhitelistFail(component.RequiredItems, args.Used))
             return;
 
-        args.Handled = InteractUI(args.User, uid, component);
+        args.Handled = InteractUI(args.User, uid, component, ref args.InteractionParticle); // Goob
     }
 
     private void OnUIClose(EntityUid uid, ActivatableUIComponent component, BoundUIClosedEvent args)
@@ -201,13 +203,14 @@ public sealed partial class ActivatableUISystem : EntitySystem
         SetCurrentSingleUser(uid, null, component);
     }
 
-    private bool InteractUI(EntityUid user, EntityUid uiEntity, ActivatableUIComponent aui)
+    private bool InteractUI(EntityUid user, EntityUid uiEntity, ActivatableUIComponent aui, ref bool interactionParticle) // Goob
     {
         if (aui.Key == null || !_uiSystem.HasUi(uiEntity, aui.Key))
             return false;
 
         if (_uiSystem.IsUiOpen(uiEntity, aui.Key, user))
         {
+            interactionParticle = false; // Goob
             _uiSystem.CloseUi(uiEntity, aui.Key, user);
             return true;
         }
@@ -242,7 +245,7 @@ public sealed partial class ActivatableUISystem : EntitySystem
         if (aui.SingleUser && aui.CurrentSingleUser != null && user != aui.CurrentSingleUser)
         {
             var message = Loc.GetString("machine-already-in-use", ("machine", uiEntity));
-            _popupSystem.PopupClient(message, uiEntity, user);
+            _popupSystem.PopupEntity(message, uiEntity, user);
 
             if (_uiSystem.IsUiOpen(uiEntity, aui.Key))
                 return true;
@@ -277,6 +280,7 @@ public sealed partial class ActivatableUISystem : EntitySystem
         //Let the component know a user opened it so it can do whatever it needs to do
         var aae = new AfterActivatableUIOpenEvent(user);
         RaiseLocalEvent(uiEntity, aae);
+        interactionParticle = aae.InteractionParticle; // Goob
 
         return true;
     }
@@ -338,5 +342,15 @@ public sealed partial class ActivatableUISystem : EntitySystem
             return false;
 
         return true;
+    }
+
+    private void OnBoundInterfaceOpenAttempt(Entity<ActivatableUIComponent> ent,
+        ref BoundUserInterfaceMessageAttempt args)
+    {
+        if (args.Message is not OpenBoundInterfaceMessage || ent.Comp.Key != args.UiKey)
+            return;
+
+        if (!RaiseCanOpenEventChecks(args.Actor, ent.Owner))
+            args.Cancel();
     }
 }

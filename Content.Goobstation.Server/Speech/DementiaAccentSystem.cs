@@ -1,3 +1,4 @@
+using Content.Shared.Speech.EntitySystems;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Goobstation.Common.Speech;
@@ -7,10 +8,10 @@ using Robust.Shared.Random;
 
 namespace Content.Goobstation.Server.Speech;
 
-public sealed class DementiaAccentSystem : EntitySystem
+public sealed partial class DementiaAccentSystem : EntitySystem
 {
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly ReplacementAccentSystem _replacement = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private ReplacementAccentSystem _replacement = default!;
 
     public override void Initialize()
     {
@@ -18,7 +19,7 @@ public sealed class DementiaAccentSystem : EntitySystem
         SubscribeLocalEvent<DementiaAccentComponent, AccentGetEvent>(OnAccent);
     }
 
-    private void OnAccent(EntityUid uid, DementiaAccentComponent component, AccentGetEvent args)
+    private void OnAccent(EntityUid uid, DementiaAccentComponent component, ref AccentGetEvent args)
     {
         var message = args.Message;
 

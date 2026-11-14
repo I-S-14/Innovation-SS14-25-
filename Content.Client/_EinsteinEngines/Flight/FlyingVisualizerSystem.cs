@@ -13,7 +13,6 @@ namespace Content.Client._EinsteinEngines.Flight;
 public sealed class FlyingVisualizerSystem : EntitySystem
 {
     [Dependency] private readonly IPrototypeManager _protoMan = default!;
-    [Dependency] private readonly SpriteSystem _spriteSystem = default!;
     public override void Initialize()
     {
         base.Initialize();
@@ -43,9 +42,6 @@ public sealed class FlyingVisualizerSystem : EntitySystem
 
         if (animateLayer && layer is not null)
             entity.Comp.LayerSetShader(layer.Value, shader);
-
-        //entity.Comp.GetScreenTexture = shader is not null;
-        entity.Comp.RaiseShaderEvent = shader is not null;
     }
 
     /// <summary>

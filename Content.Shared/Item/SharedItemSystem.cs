@@ -9,25 +9,29 @@ using Content.Shared.Item.ItemToggle.Components;
 using Content.Shared.Storage;
 using Content.Shared.Storage.EntitySystems;
 using JetBrains.Annotations;
-using Robust.Shared.Collections;
 using Robust.Shared.Containers;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
+using Robust.Shared.Collections;
 
 namespace Content.Shared.Item;
 
-public abstract class SharedItemSystem : EntitySystem
+public abstract partial class SharedItemSystem : EntitySystem
 {
+    [Dependency] private SharedHandsSystem _handsSystem = default!;
+    [Dependency] protected SharedContainerSystem Container = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!; // Goobstation
     [Dependency] private readonly SharedStorageSystem _storage = default!; // Goobstation
     [Dependency] private readonly InventorySystem _inventory = default!; // Goobstation
-    [Dependency] private readonly IPrototypeManager _prototype = default!;
-    [Dependency] private   readonly SharedHandsSystem _handsSystem = default!;
-    [Dependency] protected readonly SharedContainerSystem Container = default!;
+
+    private readonly List<ItemSizePrototype> _sortedSizes = [];
 
     public override void Initialize()
     {
         base.Initialize();
+
+        ProtoMan.PrototypesReloaded += OnPrototypesReloaded;
+
         SubscribeLocalEvent<ItemComponent, GetVerbsEvent<InteractionVerb>>(AddPickupVerb);
         SubscribeLocalEvent<ItemComponent, InteractHandEvent>(OnHandInteract);
         SubscribeLocalEvent<ItemComponent, AfterAutoHandleStateEvent>(OnItemAutoState);
@@ -35,6 +39,26 @@ public abstract class SharedItemSystem : EntitySystem
         SubscribeLocalEvent<ItemComponent, ExaminedEvent>(OnExamine);
 
         SubscribeLocalEvent<ItemToggleSizeComponent, ItemToggledEvent>(OnItemToggle);
+
+        UpdatePrototypeCache();
+    }
+
+    public override void Shutdown()
+    {
+        ProtoMan.PrototypesReloaded -= OnPrototypesReloaded;
+    }
+
+    public void OnPrototypesReloaded(PrototypesReloadedEventArgs args)
+    {
+        if (args.WasModified<ItemSizePrototype>())
+            UpdatePrototypeCache();
+    }
+
+    private void UpdatePrototypeCache()
+    {
+        _sortedSizes.Clear();
+        _sortedSizes.AddRange(ProtoMan.EnumeratePrototypes<ItemSizePrototype>());
+        _sortedSizes.Sort();
     }
 
     private void OnItemAutoState(EntityUid uid, ItemComponent component, ref AfterAutoHandleStateEvent args)
@@ -154,7 +178,59 @@ public abstract class SharedItemSystem : EntitySystem
 
     public ItemSizePrototype GetSizePrototype(ProtoId<ItemSizePrototype> id)
     {
-        return _prototype.Index(id);
+        return ProtoMan.Index(id);
+    }
+
+    /// <summary>
+    /// Returns the prototype of the smallest size
+    /// </summary>
+    [PublicAPI]
+    public ItemSizePrototype GetSmallestSize()
+    {
+        return _sortedSizes[0];
+    }
+
+    /// <summary>
+    /// Returns the prototype of the largest size
+    /// </summary>
+    [PublicAPI]
+    public ItemSizePrototype GetLargestSize()
+    {
+        return _sortedSizes[^1];
+    }
+
+    /// <summary>
+    /// Returns a size prototype that is "one" smaller than the size prototype given
+    /// </summary>
+    /// <returns>null if the size is the smallest</returns>
+    [PublicAPI]
+    public ItemSizePrototype? GetSizeSmaller(ProtoId<ItemSizePrototype> size)
+    {
+        var index = _sortedSizes.FindIndex(sizePrototype => sizePrototype.ID == size);
+        if (index == -1)
+        {
+            Log.Error($"Size prototype: {size} not found in _sortedSizes");
+            return null;
+        }
+
+        return index > 0 ? _sortedSizes[index - 1] : null;
+    }
+
+    /// <summary>
+    /// Returns a size prototype that is "one" bigger than the size prototype given
+    /// </summary>
+    /// <returns>null if the size is the largest</returns>
+    [PublicAPI]
+    public ItemSizePrototype? GetSizeBigger(ProtoId<ItemSizePrototype> size)
+    {
+        var index = _sortedSizes.FindIndex(sizePrototype => sizePrototype.ID == size);
+        if (index == -1)
+        {
+            Log.Error($"Size prototype: {size} not found in _sortedSizes");
+            return null;
+        }
+
+        return index < _sortedSizes.Count - 1 ? _sortedSizes[index + 1] : null;
     }
 
     /// <summary>
@@ -241,7 +317,7 @@ public abstract class SharedItemSystem : EntitySystem
     /// <summary>
     /// Used to update the Item component on item toggle (specifically size).
     /// </summary>
-    private void OnItemToggle(EntityUid uid, ItemToggleSizeComponent itemToggleSize, ItemToggledEvent args)
+    private void OnItemToggle(EntityUid uid, ItemToggleSizeComponent itemToggleSize, ref ItemToggledEvent args)
     {
         if (!TryComp(uid, out ItemComponent? item))
             return;
@@ -315,5 +391,26 @@ public abstract class SharedItemSystem : EntitySystem
         }
 
         Dirty(uid, item);
+    }
+
+    /// <summary>
+    /// Sorts two protos by <see cref="ItemComponent"/> size, from smallest to largest.
+    /// </summary>
+    /// <param name="a">The first proto.</param>
+    /// <param name="b">The second proto.</param>
+    /// <returns> Less than 0 if a is smaller, greater than 0 if a is larger,
+    /// 0 if they are the same or either proto doesn't have an <see cref="ItemComponent"/>.</returns>
+    [PublicAPI]
+    public int CompareSize(EntProtoId a, EntProtoId b)
+    {
+        var protoA = ProtoMan.Index(a);
+        var protoB = ProtoMan.Index(b);
+        if (!protoA.TryComp<ItemComponent>(out var compA, Factory) ||
+            !protoB.TryComp<ItemComponent>(out var compB, Factory))
+        {
+            return 0;
+        }
+
+        return ProtoMan.Index(compA.Size).CompareTo(ProtoMan.Index(compB.Size));
     }
 }

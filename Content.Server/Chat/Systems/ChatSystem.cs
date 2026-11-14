@@ -6,12 +6,10 @@ using Content.Goobstation.Shared.Loudspeaker.Events; // goob - loudspeakers
 using Content.Server._CorvaxGoob.Announcer;
 using Content.Server._EinsteinEngines.Language; // Einstein Engines - Language
 using Content.Server._Goobstation.Wizard.Systems;
+using System.Globalization;
 using Content.Server.Administration.Logs;
 using Content.Server.Administration.Managers;
 using Content.Server.Chat.Managers;
-using Content.Server.GameTicking;
-using Content.Server.Speech.EntitySystems;
-using Content.Server.Speech.Prototypes;
 using Content.Server.Station.Systems;
 using Content.Shared._CorvaxGoob.Chat;
 using Content.Shared._EinsteinEngines.Language; // Einstein Engines - Language
@@ -21,40 +19,42 @@ using Content.Shared.ActionBlocker;
 using Content.Shared.Administration;
 using Content.Shared.CCVar;
 using Content.Shared.Chat;
-using Content.Shared.Database;
 using Content.Shared.Examine;
-using Content.Shared.Ghost;
-using Content.Shared.IdentityManagement;
+using Content.Shared.GameTicking;
+using Content.Shared.Ghost.Components;
 using Content.Shared.Mobs.Systems;
-using Content.Shared.Players;
 using Content.Shared.Players.RateLimiting;
-using Content.Shared.Radio;
-using Content.Shared.Station.Components;
-using Content.Shared.Whitelist;
+using Content.Shared.Speech.EntitySystems;
 using Robust.Server.Player;
-using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Configuration;
 using Robust.Shared.Console;
-using Robust.Shared.Network;
 using Robust.Shared.Player;
-using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Replays;
 using Robust.Shared.Utility;
 using System.Collections.Immutable; // Goobstation - Starlight collective mind port
-using System.Collections.Immutable; // Goobstation - Starlight collective mind port
-using System.Globalization;
-using System.Globalization;
 using System.Linq;
-using System.Linq;
-using System.Text;
 using System.Text;
 using Content.Shared._RMC14.CCVar;
 
 // Goob start - the blind dont see
 using Content.Shared.Eye.Blinding.Components;
 using Content.Shared.Traits.Assorted;
+using Content.Server.GameTicking;
+using Content.Server.Speech.EntitySystems;
+using Content.Shared.Database;
+using Content.Shared.Ghost;
+using Content.Shared.IdentityManagement;
+using Content.Shared.Players;
+using Content.Shared.Radio;
+using Content.Shared.Station.Components;
+using Content.Shared.Whitelist;
+using Robust.Shared.Audio;
+using Robust.Shared.Network;
+using Robust.Shared.Prototypes;
+using Content.Shared.Speech.Prototypes;
+using Content.Shared.Station.Systems;
 // Goob end
 
 namespace Content.Server.Chat.Systems;
@@ -78,7 +78,6 @@ public sealed partial class ChatSystem : SharedChatSystem
     [Dependency] private readonly ActionBlockerSystem _actionBlocker = default!;
     [Dependency] private readonly StationSystem _stationSystem = default!;
     [Dependency] private readonly MobStateSystem _mobStateSystem = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly AnnouncerSystem _announcer = default!;
     [Dependency] private readonly ReplacementAccentSystem _wordreplacement = default!;
     [Dependency] private readonly ExamineSystemShared _examineSystem = default!;
@@ -88,13 +87,13 @@ public sealed partial class ChatSystem : SharedChatSystem
     [Dependency] private readonly CollectiveMindUpdateSystem _collectiveMind = default!; // Goobstation - Starlight collective mind port
     [Dependency] private readonly LanguageSystem _language = default!; // Einstein Engines - Language
 
-    public const int VoiceRange = 10; // how far voice goes in world units
-    public const int WhisperClearRange = 2; // how far whisper goes while still being understandable, in world units
-    public const int WhisperMuffledRange = 5; // how far whisper goes at all, in world units
+    public new const int VoiceRange = 10; // how far voice goes in world units
+    public new const int WhisperClearRange = 2; // how far whisper goes while still being understandable, in world units
+    public new const int WhisperMuffledRange = 5; // how far whisper goes at all, in world units
     //public static readonly SoundSpecifier DefaultAnnouncementSound
     //   = new SoundPathSpecifier("/Audio/Announcements/announce.ogg"); // CorvaxGoob-Announcements
 
-    public const string DefaultAnnouncementSound = "/Audio/_CorvaxGoob/Announcements/announce.ogg"; // CorvaxGoob-Announcements
+    public new const string DefaultAnnouncementSound = "/Audio/_CorvaxGoob/Announcements/announce.ogg"; // CorvaxGoob-Announcements
     public const string CentComAnnouncementSound = "/Audio/_CorvaxGoob/Announcements/centcomm.ogg"; // CorvaxGoob-Announcements
     public const float DefaultObfuscationFactor = 0.2f; // Percentage of symbols in a whispered message that can be seen even by "far" listeners
     public readonly Color DefaultSpeakColor = Color.White; // Einstein Engines - Language
@@ -110,6 +109,7 @@ public sealed partial class ChatSystem : SharedChatSystem
     private bool _critLoocEnabled;
     private bool _DeadchatEnabled = true; // RMC14
     private readonly bool _adminLoocEnabled = true;
+
 
     public override void Initialize()
     {
@@ -189,7 +189,7 @@ public sealed partial class ChatSystem : SharedChatSystem
         string? nameOverride = null,
         bool checkRadioPrefix = true,
         bool ignoreActionBlocker = false,
-        Color? colorOverride = null, // Goobstation
+        Color? colorOverride = null,
         LanguagePrototype? languageOverride = null, // Einstein Engines - Language
         bool forced = false // goobstation
         )
@@ -209,7 +209,7 @@ public sealed partial class ChatSystem : SharedChatSystem
         string? nameOverride = null,
         bool checkRadioPrefix = true,
         bool ignoreActionBlocker = false,
-        Color? colorOverride = null, // Goobstation
+        Color? colorOverride = null,
         LanguagePrototype? languageOverride = null, // Einstein Engines - Language
         bool forced = false // goobstation
         )
@@ -305,7 +305,8 @@ public sealed partial class ChatSystem : SharedChatSystem
         {
             if (TryProccessCollectiveMindMessage(source, message, out var modMessage, out var channel))
             {
-                modMessage = FormattedMessage.RemoveMarkupOrThrow(modMessage); // Sanitize it so markup cannot be shown.
+                // Goob - Fix (malformed markup throws)
+                modMessage = FormattedMessage.RemoveMarkupPermissive(modMessage); // Sanitize it so markup cannot be shown.
 
                 if (collective != null && collective.RespectAccents)
                 {
@@ -397,12 +398,13 @@ public sealed partial class ChatSystem : SharedChatSystem
         string? sender = null,
         bool playSound = true,
         SoundSpecifier? announcementSound = null,
-        Color? colorOverride = null
+        Color? colorOverride = null,
+        string? signature = null
         )
     {
         sender ??= Loc.GetString("chat-manager-sender-announcement");
 
-        var wrappedMessage = Loc.GetString("chat-manager-sender-announcement-wrap-message", ("sender", sender), ("message", FormattedMessage.EscapeText(message)));
+        var wrappedMessage = WrapAnnouncement(sender, message, signature); // IS14-change: preserve signed announcements
         _chatManager.ChatMessageToAll(ChatChannel.Radio, message, wrappedMessage, default, false, true, colorOverride);
         if (playSound)
         {
@@ -421,7 +423,7 @@ public sealed partial class ChatSystem : SharedChatSystem
             sound.Params = sound.Params.WithVolume(-2);
             SendGlobalSound(sound, Filter.Broadcast());
 
-            //_audio.PlayGlobal(announcementSound ?? DefaultAnnouncementSound, Filter.Broadcast(), true, AudioParams.Default.WithVolume(-2f));
+            //_audio.PlayGlobal(announcementSound ?? new SoundPathSpecifier(DefaultAnnouncementSound), Filter.Broadcast(), true, AudioParams.Default.WithVolume(-2f));
             // CorvaxGoob-Announcements-Volume-End
         }
         _adminLogger.Add(LogType.Chat, LogImpact.Low, $"Global station announcement from {sender}: {message}");
@@ -435,20 +437,21 @@ public sealed partial class ChatSystem : SharedChatSystem
         string? sender = null,
         bool playSound = true,
         SoundSpecifier? announcementSound = null,
-        Color? colorOverride = null)
+        Color? colorOverride = null,
+        string? signature = null)
     {
         sender ??= Loc.GetString("chat-manager-sender-announcement");
 
-        var wrappedMessage = Loc.GetString("chat-manager-sender-announcement-wrap-message", ("sender", sender), ("message", FormattedMessage.EscapeText(message)));
+        var wrappedMessage = WrapAnnouncement(sender, message, signature); // IS14-change: preserve signed announcements
         _chatManager.ChatMessageToManyFiltered(filter, ChatChannel.Radio, message, wrappedMessage, source ?? default, false, true, colorOverride);
         if (playSound)
         {
             // CorvaxGoob-Announcements-Volume-Start
             var sound = announcementSound ?? new SoundPathSpecifier(DefaultAnnouncementSound);
             sound.Params = sound.Params.WithVolume(-2);
-            SendGlobalSound(sound, Filter.Broadcast());
+            SendGlobalSound(sound, filter);
 
-            //_audio.PlayGlobal(announcementSound ?? DefaultAnnouncementSound, filter, true, AudioParams.Default.WithVolume(-2f));
+            //_audio.PlayGlobal(announcementSound ?? new SoundPathSpecifier(DefaultAnnouncementSound), filter, true, AudioParams.Default.WithVolume(-2f));
             // CorvaxGoob-Announcements-Volume-End
         }
         _adminLogger.Add(LogType.Chat, LogImpact.Low, $"Station Announcement from {sender}: {message}");
@@ -461,11 +464,12 @@ public sealed partial class ChatSystem : SharedChatSystem
         string? sender = null,
         bool playDefaultSound = true,
         SoundSpecifier? announcementSound = null,
-        Color? colorOverride = null)
+        Color? colorOverride = null,
+        string? signature = null)
     {
         sender ??= Loc.GetString("chat-manager-sender-announcement");
 
-        var wrappedMessage = Loc.GetString("chat-manager-sender-announcement-wrap-message", ("sender", sender), ("message", FormattedMessage.EscapeText(message)));
+        var wrappedMessage = WrapAnnouncement(sender, message, signature); // IS14-change: preserve signed announcements
         var station = _stationSystem.GetOwningStation(source);
 
         if (station == null)
@@ -487,7 +491,7 @@ public sealed partial class ChatSystem : SharedChatSystem
             sound.Params = sound.Params.WithVolume(-2);
             SendGlobalSound(sound, filter);
 
-            //_audio.PlayGlobal(announcementSound ?? DefaultAnnouncementSound, filter, true, AudioParams.Default.WithVolume(-2f));
+            //_audio.PlayGlobal(announcementSound ?? new SoundPathSpecifier(DefaultAnnouncementSound), filter, true, AudioParams.Default.WithVolume(-2f));
             // CorvaxGoob-Announcements-Volume-End
         }
 
@@ -588,14 +592,16 @@ public sealed partial class ChatSystem : SharedChatSystem
         LanguagePrototype language, // Einstein Engines - Language
         bool hideLog = false,
         bool ignoreActionBlocker = false,
-        Color? colorOverride = null // Goobstation
+        Color? colorOverride = null,
+        string? signature = null // Goobstation
         )
     {
         if (!_actionBlocker.CanSpeak(source) && !ignoreActionBlocker)
             return;
 
         // The Original Message [-] Einstein Engines - Language
-        var message = FormattedMessage.RemoveMarkupOrThrow(originalMessage);  // Remove markup before transforming.
+        // Goob - Fix (malformed markup throws)
+        var message = FormattedMessage.RemoveMarkupPermissive(originalMessage);  // Remove markup before transforming.
         message = FormattedMessage.EscapeText(message); // Escape after removing markup
         message = TransformSpeech(source, message, language);
 
@@ -696,14 +702,15 @@ public sealed partial class ChatSystem : SharedChatSystem
         LanguagePrototype language, // Einstein Engines - Language
         bool hideLog = false,
         bool ignoreActionBlocker = false,
-        Color? colorOverride = null // Goobstation
+        Color? colorOverride = null,
+        string? signature = null // Goobstation
         )
     {
         if (!_actionBlocker.CanSpeak(source) && !ignoreActionBlocker)
             return;
 
         // Goob edit start
-        var message = FormattedMessage.RemoveMarkupOrThrow(originalMessage);
+        var message = FormattedMessage.RemoveMarkupPermissive(originalMessage); // Goob - Fix (malformed markup throws)
         message = FormattedMessage.EscapeText(message);
         message = TransformSpeech(source, message, language); // Einstein Engines - Language
         // Goob edit end
@@ -751,10 +758,9 @@ public sealed partial class ChatSystem : SharedChatSystem
                 continue; // Won't get logged to chat, and ghosts are too far away to see the pop-up, so we just won't send it to them.
 
             // Goob edit start
-            if (TryComp<DeafComponent>(listener, out var modifier) && language.SpeechOverride.RequireSpeech)
-                continue; // blocks anyone with the deaf component from hearing.
-            if (HasComp<PermanentBlindnessComponent>(listener) || HasComp<TemporaryBlindnessComponent>(listener))
-                continue; // block blind people from seeing subtle sign language gestures
+            var evSight = new ChatMessageOverrideInRange(language.SpeechOverride.RequireSpeech, language.SpeechOverride.RequireSight);
+            RaiseLocalEvent(listener, ref evSight);
+            if (evSight.Cancelled) continue;
             // Goob edit end
 
             // Einstein Engines - Language begin
@@ -842,7 +848,7 @@ public sealed partial class ChatSystem : SharedChatSystem
         var wrappedMessage = Loc.GetString("chat-manager-entity-me-wrap-message",
             ("entityName", name),
             ("entity", ent),
-            ("message", FormattedMessage.RemoveMarkupOrThrow(action)));
+            ("message", FormattedMessage.RemoveMarkupPermissive(action))); // Goob - Fix (malformed markup throws)
 
         if (checkEmote && !TryEmoteChatInput(source, action, forced)) // goob edit
             return;
@@ -1154,16 +1160,18 @@ public sealed partial class ChatSystem : SharedChatSystem
        /// <summary>
     ///     Wraps a message sent by the specified entity into an "x says y" string.
     /// </summary>
-    public string WrapPublicMessage(EntityUid source, string name, string message, LanguagePrototype? language = null, Color? colorOverride = null)
+    public string WrapPublicMessage(EntityUid source, string name, string message, LanguagePrototype? language = null, Color? colorOverride = null,
+        string? signature = null)
     {
-        var wrapId = GetSpeechVerb(source, message).Bold ? "chat-manager-entity-say-bold-wrap-message" : "chat-manager-entity-say-wrap-message";
+        var wrapId = GetSpeechVerbWithOverride(source, message).Bold ? "chat-manager-entity-say-bold-wrap-message" : "chat-manager-entity-say-wrap-message"; // Goob
         return WrapMessage(wrapId, InGameICChatType.Speak, source, name, message, language, colorOverride);
     }
 
     /// <summary>
     ///     Wraps a message whispered by the specified entity into an "x whispers y" string.
     /// </summary>
-    public string WrapWhisperMessage(EntityUid source, LocId defaultWrap, string entityName, string message, LanguagePrototype? language = null, Color? colorOverride = null)
+    public string WrapWhisperMessage(EntityUid source, LocId defaultWrap, string entityName, string message, LanguagePrototype? language = null, Color? colorOverride = null,
+        string? signature = null)
     {
         return WrapMessage(defaultWrap, InGameICChatType.Whisper, source, entityName, message, language, colorOverride);
     }
@@ -1173,7 +1181,7 @@ public sealed partial class ChatSystem : SharedChatSystem
     /// </summary>
     public string WrapMessage(LocId wrapId, InGameICChatType chatType, EntityUid source, string entityName, string message, LanguagePrototype? language, Color? colorOverride)
     {
-        var speech = GetSpeechVerb(source, message);
+        var speech = GetSpeechVerbWithOverride(source, message); // Goob - keep voice mask verb override
         language ??= _language.GetLanguage(source);
 
         // Goobstation - Bolded Language Overrides begin
@@ -1256,7 +1264,8 @@ public sealed partial class ChatSystem : SharedChatSystem
             if (player.AttachedEntity is not { Valid: true } playerEntity)
                 continue;
 
-            var transformEntity = xforms.GetComponent(playerEntity);
+            if (!xforms.TryGetComponent(playerEntity, out var transformEntity)) // Goob
+                continue;
 
             if (transformEntity.MapID != sourceMapId)
                 continue;

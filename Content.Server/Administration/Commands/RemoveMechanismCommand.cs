@@ -2,13 +2,14 @@
 
 using Content.Shared.Administration;
 using Robust.Shared.Console;
+using Content.Server.Body.Systems;
 
 namespace Content.Server.Administration.Commands
 {
     [AdminCommand(AdminFlags.Admin)]
-    public sealed class RemoveMechanismCommand : IConsoleCommand
+    public sealed partial class RemoveMechanismCommand : IConsoleCommand
     {
-        [Dependency] private readonly IEntityManager _entManager = default!;
+        [Dependency] private IEntityManager _entManager = default!;
 
         public string Command => "rmmechanism";
         public string Description => "Removes a given entity from it's containing bodypart, if any.";

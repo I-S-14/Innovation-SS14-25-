@@ -11,8 +11,20 @@
     species: Moth
     hideLayersOnEquip:
     - HeadTop
-  - type: Hunger
-  - type: Thirst
+  - type: Satiation
+    satiations:
+      Hunger:
+        prototype: NormalSatiationHunger
+      Thirst:
+        prototype: NormalSatiationThirst
+  - type: SatiationSpeedModifier
+    satiations:
+      Hunger:
+        thresholds:
+          Starving: 0.75
+      Thirst:
+        thresholds:
+          Parched: 0.75
   - type: Icon
     sprite: Mobs/Species/Moth/parts.rsi
     state: full
@@ -62,6 +74,10 @@
       Male: MaleMoth
       Female: FemaleMoth
       Unsexed: UnisexMoth
+  # Corvaxgoob - start
+  - type: ReplacementAccent
+    accent: moth
+  # Corvaxgoob - end
   - type: MovementSpeedModifier
     baseWeightlessAcceleration: 3 # Goobstation value
     baseWeightlessFriction: 1
@@ -91,6 +107,7 @@
     noRot: true
     drawdepth: Mobs
     layers:
+      - map: [ "enum.HumanoidVisualLayers.TailBehind" ] # Floof
       - map: [ "enum.HumanoidVisualLayers.Groin" ]
       - map: [ "enum.HumanoidVisualLayers.Chest" ]
       - map: [ "enum.HumanoidVisualLayers.Head" ]
@@ -120,7 +137,9 @@
       - map: [ "outerClothing" ]
       - map: [ "belt" ] #Goobedit - Belts over outerwear
       - map: [ "enum.HumanoidVisualLayers.Tail" ] #in the utopian future we should probably have a wings enum inserted here so everyhting doesn't break
+      - map: [ "enum.HumanoidVisualLayers.TailBehindBackpack" ] # imp
       - map: [ "back" ]
+      - map: [ "enum.HumanoidVisualLayers.TailOversuit" ] # Floof
       - map: [ "neck" ]
       - map: [ "enum.HumanoidVisualLayers.Face" ] # Goobstation?
       - map: [ "enum.HumanoidVisualLayers.SnoutCover" ]
@@ -205,6 +224,22 @@
         - MobLayer
   - type: DashAction # Goobstation - dark souls moths
     actionProto: ActionDashMoth
+  - type: Reactive # Goobstation - pest spray makes bugs scream
+    groups:
+      Flammable: [ Touch ]
+      Extinguish: [ Touch ]
+      Acidic: [Touch, Ingestion, Eyes]
+    reactions:
+    - reagents: [ Water, SpaceCleaner ]
+      methods: [ Touch ]
+      effects:
+      - !type:WashCreamPie
+    - reagents: [ PestKiller ]
+      methods: [ Touch ]
+      effects:
+      - !type:Emote
+        emote: Scream
+        probability: 0.3
   - type: CosmicMarkVisuals # DeltaV - cosmic cult
     subtleState: moth
 

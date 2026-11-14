@@ -1,7 +1,7 @@
+using Content.Goobstation.Shared.Communications; // IS14-change: upstream namespace move
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Linq;  // goob - intermap transmitters
-using Content.Goobstation.Shared.Communications; // goob - intermap transmitters
 using Content.Goobstation.Shared.Loudspeaker.Events; // goob - loudspeakers
 using Content.Server.Administration.Logs;
 using Content.Server.Chat.Systems;
@@ -12,11 +12,11 @@ using Content.Shared.Database;
 using Content.Shared._EinsteinEngines.Language;
 using Content.Shared.Radio;
 using Content.Shared.Radio.Components;
+using Content.Shared.Radio.EntitySystems;
 using Content.Shared.Speech;
 using Robust.Shared.Map;
 using Robust.Shared.Network;
 using Robust.Shared.Player;
-using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Replays;
 using Robust.Shared.Utility;
@@ -25,28 +25,26 @@ using Content.Shared.Chat.RadioIconsEvents; // Goobstation
 using Content.Shared.Whitelist; // Goobstation
 using Content.Shared.StatusIcon; // Goobstation
 using Content.Goobstation.Shared.Radio; // Goobstation
+using Robust.Shared.Prototypes;
 
 namespace Content.Server.Radio.EntitySystems;
 
-/// <summary>
-///     This system handles intrinsic radios and the general process of converting radio messages into chat messages.
-/// </summary>
-public sealed partial class RadioSystem : EntitySystem
+/// <inheritdoc/>
+public sealed partial class RadioSystem : SharedRadioSystem
 {
-    [Dependency] private readonly INetManager _netMan = default!;
-    [Dependency] private readonly IReplayRecordingManager _replay = default!;
-    [Dependency] private readonly IAdminLogManager _adminLogger = default!;
     [Dependency] private readonly IPrototypeManager _prototype = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly ChatSystem _chat = default!;
     [Dependency] private readonly RadioJobIconSystem _radioIconSystem = default!; // Goobstation - radio icons
     [Dependency] private readonly LanguageSystem _language = default!; // Einstein Engines - Language
     [Dependency] private readonly EntityWhitelistSystem _whitelist = default!; // Goobstation - Whitelisted radio channels
+    [Dependency] private INetManager _netMan = default!;
+    [Dependency] private IReplayRecordingManager _replay = default!;
+    [Dependency] private IAdminLogManager _adminLogger = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private ChatSystem _chat = default!;
+    [Dependency] private EntityQuery<TelecomExemptComponent> _exemptQuery = default!;
 
     // set used to prevent radio feedback loops.
     private readonly HashSet<string> _messages = new();
-
-    private EntityQuery<TelecomExemptComponent> _exemptQuery;
 
     public override void Initialize()
     {
@@ -55,7 +53,6 @@ public sealed partial class RadioSystem : EntitySystem
         SubscribeLocalEvent<IntrinsicRadioTransmitterComponent, EntitySpokeEvent>(OnIntrinsicSpeak);
         SubscribeLocalEvent<IntrinsicRadioReceiverComponent, RadioReceiveAttemptEvent>(OnIntrinsicReceiveAttempt); // Goobstation
 
-        _exemptQuery = GetEntityQuery<TelecomExemptComponent>();
     }
 
     private void OnIntrinsicSpeak(EntityUid uid, IntrinsicRadioTransmitterComponent component, EntitySpokeEvent args)
@@ -77,7 +74,7 @@ public sealed partial class RadioSystem : EntitySystem
             var listener = component.Owner;
             var msg = args.OriginalChatMsg;
 
-            if (listener != null && !_language.CanUnderstand(listener, args.Language.ID))
+            if (!_language.CanUnderstand(listener, args.Language.ID))
                 msg = args.LanguageObfuscatedChatMsg;
 
             _netMan.ServerSendMessage(new MsgChatMessage { Message = msg }, actor.PlayerSession.Channel);
@@ -144,10 +141,10 @@ public sealed partial class RadioSystem : EntitySystem
         }
 
         var name = evt.VoiceName;
-        name = FormattedMessage.EscapeText(name);
+        name = _chat.ChatNameLinks ? $"[textlink=\"{FormattedMessage.EscapeStringParameter(name)}\" entity=\"{GetNetEntity(messageSource)}\" color=\"{channel.Color.ToHex()}\"]" : FormattedMessage.EscapeText(name);
 
         SpeechVerbPrototype speech;
-        if (evt.SpeechVerb != null && _prototype.Resolve(evt.SpeechVerb, out var evntProto))
+        if (evt.SpeechVerb != null && ProtoMan.Resolve(evt.SpeechVerb, out var evntProto))
             speech = evntProto;
         else
             speech = _chat.GetSpeechVerb(messageSource, message);
@@ -353,6 +350,8 @@ public sealed partial class RadioSystem : EntitySystem
 
         return Loc.GetString(wrapId,
             ("color", channel.Color),
+            ("channelId", channel.ID), // Goob
+            ("languageOverride", language.SpeechOverride.Color is null ? "none" : languageColor.ToHex()), // Goob
             ("languageColor", languageColor),
             ("fontType", language.SpeechOverride.FontId ?? speech.FontId),
             ("fontSize", loudSpeakFont ?? language.SpeechOverride.FontSize ?? speech.FontSize), // goob edit - "loudSpeakFont"
@@ -364,6 +363,46 @@ public sealed partial class RadioSystem : EntitySystem
             ("language", languageDisplay));
     }
     // Einstein Engines - Language end
+
+    // Goobstation - Voice chat
+    public void GetVoiceReceivers(EntityUid radioSource, RadioChannelPrototype channel, List<EntityUid> receivers)
+    {
+        var sendAttemptEv = new RadioSendAttemptEvent(channel, radioSource);
+        RaiseLocalEvent(ref sendAttemptEv);
+        RaiseLocalEvent(radioSource, ref sendAttemptEv);
+        if (sendAttemptEv.Cancelled)
+            return;
+
+        var sourceMapId = Transform(radioSource).MapID;
+        var hasActiveServer = HasActiveServer(sourceMapId, channel.ID);
+        var sourceServerExempt = _exemptQuery.HasComp(radioSource);
+
+        var radioQuery = EntityQueryEnumerator<ActiveRadioComponent, TransformComponent>();
+        while (radioQuery.MoveNext(out var receiver, out var radio, out var transform))
+        {
+            if (!radio.ReceiveAllChannels)
+            {
+                if (!radio.Channels.Contains(channel.ID) || (TryComp<IntercomComponent>(receiver, out var intercom) &&
+                                                             !intercom.SupportedChannels.Contains(channel.ID)))
+                    continue;
+            }
+
+            if (!channel.LongRange && transform.MapID != sourceMapId && !radio.GlobalReceive
+                && !(HasActiveTransmitter(transform.MapID) && HasActiveTransmitter(sourceMapId)))
+                continue;
+
+            if (!channel.LongRange && !sourceServerExempt && !hasActiveServer)
+                continue;
+
+            var attemptEv = new RadioReceiveAttemptEvent(channel, radioSource, receiver);
+            RaiseLocalEvent(ref attemptEv);
+            RaiseLocalEvent(receiver, ref attemptEv);
+            if (attemptEv.Cancelled)
+                continue;
+
+            receivers.Add(receiver);
+        }
+    }
 
     /// <inheritdoc cref="TelecomServerComponent"/>
     private bool HasActiveServer(MapId mapId, string channelId)

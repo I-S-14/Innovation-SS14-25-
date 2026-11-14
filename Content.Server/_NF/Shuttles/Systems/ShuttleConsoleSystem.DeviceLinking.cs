@@ -1,3 +1,4 @@
+using Content.Shared.DeviceLinking.Components; // IS14-change: upstream namespace move
 // Monolith - This file is licensed under AGPLv3
 // Copyright (c) 2025 Monolith
 // See AGPLv3.txt for details.
@@ -8,6 +9,7 @@ using Content.Shared._NF.Shuttles.Events;
 using Content.Shared.DeviceLinking;
 using Content.Shared.Shuttles.BUIStates;
 using Content.Shared.Shuttles.Components;
+using Content.Shared.DeviceLinking.Systems;
 
 namespace Content.Server.Shuttles.Systems;
 

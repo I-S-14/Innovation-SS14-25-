@@ -44,7 +44,9 @@
     whitelist:
       components:
       - GasTank
-      - XenoVacuumTank # Goobstation
+      - XenoVacuumTank #Goobstation
+      tags:
+      - NozzleBackTank # Goobstation
 
 # for clothing that has a single item slot to insert and alt click out.
 # inheritors add a whitelisted slot named item
@@ -53,6 +55,7 @@
   id: ClothingSlotBase
   components:
   - type: ItemSlots
+    allowSmartEquip: true
   - type: ContainerContainer
     containers:
       item: !type:ContainerSlot
@@ -80,3 +83,32 @@
   - type: ItemToggle
     onUse: false # can't really wear it like that
   - type: ToggleClothing
+
+- type: entity
+  abstract: true
+  id: TemperatureProtectionMinimal # Really light jackets and hoods.
+  components:
+  - type: TemperatureProtection
+    heatingCoefficient: '0.8'
+    coolingCoefficient: '0.8'
+- type: entity
+  abstract: true
+  id: TemperatureProtection # Winter coats and environmentally sealed helmets
+  components:
+  - type: TemperatureProtection
+    heatingCoefficient: '0.6'
+    coolingCoefficient: '0.6'
+- type: entity
+  abstract: true
+  id: TemperatureProtectionGood # EVA suits and basic hardsuits
+  components:
+  - type: TemperatureProtection
+    heatingCoefficient: '0.05'
+    coolingCoefficient: '0.05'
+- type: entity
+  abstract: true
+  id: TemperatureProtectionGreat # Fire-retardant suits
+  components:
+  - type: TemperatureProtection
+    heatingCoefficient: '0.01'
+    coolingCoefficient: '0.01'

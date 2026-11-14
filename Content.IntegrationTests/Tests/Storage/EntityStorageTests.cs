@@ -1,14 +1,16 @@
 // SPDX-License-Identifier: MIT
 
+using Content.IntegrationTests.Fixtures;
 using Content.Server.Storage.EntitySystems;
 using Content.Shared.Damage;
+using Content.Shared.Damage.Systems;
 using Robust.Shared.Containers;
 using Robust.Shared.GameObjects;
 
 namespace Content.IntegrationTests.Tests.Storage;
 
 [TestFixture]
-public sealed class EntityStorageTests
+public sealed class EntityStorageTests : GameTest
 {
     [TestPrototypes]
     private const string Prototypes = @"
@@ -32,7 +34,7 @@ public sealed class EntityStorageTests
     [Test]
     public async Task TestContainerDestruction()
     {
-        await using var pair = await PoolManager.GetServerClient();
+        var pair = Pair;
         var server = pair.Server;
         var map = await pair.CreateTestMap();
 
@@ -77,7 +79,5 @@ public sealed class EntityStorageTests
         await server.WaitRunTicks(5);
         Assert.That(server.EntMan.Deleted(box));
         Assert.That(server.EntMan.Deleted(crowbar), Is.False);
-
-        await pair.CleanReturnAsync();
     }
 }

@@ -1,4 +1,104 @@
 - type: entity
+  parent: BaseComputerAiAccess
+  id: NuclearReactorMonitor
+  name: nuclear reactor monitor
+  description: A device that monitors the state of a connected nuclear reactor.
+  components:
+  - type: ApcPowerReceiver
+    powerLoad: 500
+  - type: PointLight
+    radius: 1.5
+    energy: 1.6
+    color: "#c9c042"
+  - type: Sprite
+    sprite: Structures/Machines/computers.rsi
+    layers:
+    - map: ["enum.ComputerVisualLayers.Frame"]
+      state: computer
+    - map: ["enum.ComputerVisualLayers.Screen"]
+      state: power_monitor
+  - type: ComputerVisuals # IS14: retain the custom states with modern layer keys.
+    stateFrame: computer
+    stateKeyboard: null
+    stateScreen: power_monitor
+    stateKeys: null
+    statePanel: null
+  - type: NuclearReactorMonitor
+  - type: ActivatableUI
+    key: enum.NuclearReactorUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.NuclearReactorUiKey.Key:
+        type: NuclearReactorBoundUserInterface
+  - type: AccessReader
+    access: [["Engineering"]]
+  - type: Lock
+    unlockOnClick: false
+  - type: DeviceList
+  - type: DeviceNetwork
+    deviceNetId: Wireless
+  - type: DeviceLinkSink
+    ports:
+      - NuclearReactorDataReceiver
+  - type: Computer
+    board: NuclearReactorMonitorComputerCircuitboard
+  - type: ContainerContainer
+    containers:
+      board: !type:Container
+      machine_board: !type:Container
+      machine_parts: !type:Container
+
+- type: entity
+  parent: BaseComputerAiAccess
+  id: GasTurbineMonitor
+  name: gas turbine monitor
+  description: A device that monitors the state of a connected gas turbine.
+  components:
+  - type: ApcPowerReceiver
+    powerLoad: 500
+  - type: PointLight
+    radius: 1.5
+    energy: 1.6
+    color: "#c9c042"
+  - type: Sprite
+    sprite: Structures/Machines/computers.rsi
+    layers:
+    - map: ["enum.ComputerVisualLayers.Frame"]
+      state: computer
+    - map: ["enum.ComputerVisualLayers.Screen"]
+      state: turbinecomp
+  - type: ComputerVisuals # IS14: retain the custom states with modern layer keys.
+    stateFrame: computer
+    stateKeyboard: null
+    stateScreen: turbinecomp
+    stateKeys: null
+    statePanel: null
+  - type: GasTurbineMonitor
+  - type: ActivatableUI
+    key: enum.TurbineUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.TurbineUiKey.Key:
+        type: TurbineBoundUserInterface
+  - type: AccessReader
+    access: [["Engineering"]]
+  - type: Lock
+    unlockOnClick: false
+  - type: DeviceList
+  - type: DeviceNetwork
+    deviceNetId: Wireless
+  - type: DeviceLinkSink
+    ports:
+      - GasTurbineDataReceiver
+  - type: Computer
+    board: GasTurbineMonitorComputerCircuitboard
+  - type: ContainerContainer
+    containers:
+      board: !type:Container
+      machine_board: !type:Container
+      machine_parts: !type:Container
+
+- type: entity
   parent: BaseComputerShuttle
   id: ComputerShuttleRemoteControlSystem
   name: shuttle remote control system console
@@ -22,15 +122,21 @@
     maxRange: 256
   - type: Sprite
     layers:
-    - map: ["computerLayerBody"]
+    - map: ["enum.ComputerVisualLayers.Frame"]
       state: computer
-    - map: ["computerLayerKeyboard"]
+    - map: ["enum.ComputerVisualLayers.Keyboard"]
       state: generic_keyboard
-    - map: ["computerLayerScreen"]
+    - map: ["enum.ComputerVisualLayers.Screen"]
       state: teleport
-    - map: ["computerLayerKeys"]
+    - map: ["enum.ComputerVisualLayers.Keys"]
       state: generic_keys
     - map: [ "enum.WiresVisualLayers.MaintenancePanel" ]
       state: generic_panel_open
+  - type: ComputerVisuals # IS14: retain the custom states with modern layer keys.
+    stateFrame: computer
+    stateKeyboard: generic_keyboard
+    stateScreen: teleport
+    stateKeys: generic_keys
+    statePanel: generic_panel_open
   - type: Computer
     board: ShuttleRemoteControlSystemCircuitboard

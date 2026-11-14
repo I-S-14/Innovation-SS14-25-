@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Content.Goobstation.Shared.Disease.Components;
 using Content.Shared.Damage;
+using Content.Shared.Damage.Components;
 using Content.Shared.Flash;
 using Content.Shared.Flash.Components;
 using Content.Shared.Humanoid;
@@ -22,17 +23,17 @@ namespace Content.Goobstation.Shared.Disease.Systems;
 
 public partial class SharedDiseaseSystem
 {
-    [Dependency] private readonly EntityLookupSystem _lookup = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
-    [Dependency] private readonly SharedFlashSystem _flash = default!;
-    [Dependency] private readonly SharedMapSystem _map = default!;
-    [Dependency] private readonly SharedMeleeWeaponSystem _melee = default!;
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] private readonly StatusEffectsSystem _status = default!;
-    [Dependency] private readonly SharedStunSystem _stun = default!;
-    [Dependency] private readonly IMapManager _mapMan = default!;
-    [Dependency] private readonly TileSystem _tile = default!;
-    [Dependency] private readonly MovementModStatusSystem _movemod = default!;
+    [Dependency] private EntityLookupSystem _lookup = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private SharedFlashSystem _flash = default!;
+    [Dependency] private SharedMapSystem _map = default!;
+    [Dependency] private SharedMeleeWeaponSystem _melee = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private StatusEffectsSystem _status = default!;
+    [Dependency] private Content.Shared.StatusEffectNew.StatusEffectsSystem _statusNew = default!; // IS14-merge
+    [Dependency] private SharedStunSystem _stun = default!;
+    [Dependency] private TileSystem _tile = default!;
+    [Dependency] private MovementModStatusSystem _movemod = default!;
 
     public float MaxEffectSeverity = 1f; // magic numbers are EVIL and BAD
 
@@ -54,10 +55,14 @@ public partial class SharedDiseaseSystem
         foreach (var (compName, _) in ent.Comp.Components)
         {
             if (!Factory.TryGetRegistration(compName, out var registration)
-                || EntityManager.HasComponent(args.Ent, registration.Type))
+                //IS14-change start
+                || HasComp(args.Ent, registration.Type))
+                //IS14-change end
                 continue;
             var component = _factory.GetComponent(registration.Type);
-            EntityManager.AddComponent(args.Ent, component);
+            //IS14-change start
+            AddComp(args.Ent, component);
+            //IS14-change end
         }
     }
 
@@ -66,7 +71,9 @@ public partial class SharedDiseaseSystem
         foreach (var (compName, _) in ent.Comp.Components)
         {
             if (Factory.TryGetRegistration(compName, out var registration))
-                EntityManager.RemoveComponent(args.Ent, registration.Type);
+                //IS14-change start
+                RemComp(args.Ent, registration.Type);
+                //IS14-change end
         }
     }
 
@@ -149,7 +156,7 @@ public partial class SharedDiseaseSystem
             return;
 
         // migrate this to new status effects once flashes are
-        _status.TryAddStatusEffect<FlashedComponent>(args.Ent, _flash.FlashedKey.Id, ent.Comp.Duration * GetScale(args, ent.Comp), true);
+        _statusNew.TryAddStatusEffectDuration(args.Ent, SharedFlashSystem.FlashedKey, ent.Comp.Duration * GetScale(args, ent.Comp)); // IS14-merge: wizden flash is a status effect entity
         _movemod.TryUpdateMovementSpeedModDuration(args.Ent.Owner,  MovementModStatusSystem.FlashSlowdown, ent.Comp.Duration * GetScale(args, ent.Comp), ent.Comp.SlowTo, ent.Comp.SlowTo);
 
         if (ent.Comp.StunDuration != null)
@@ -173,7 +180,7 @@ public partial class SharedDiseaseSystem
             return;
         var xform = Transform(args.Ent);
         var mapPos = _transform.GetMapCoordinates(xform);
-        if (!_mapMan.TryFindGridAt(mapPos, out var gridUid, out var grid))
+        if (!_map.TryFindGridAt(mapPos, out var gridUid, out var grid))
             return;
         for (var i = 0; i < ent.Comp.Attempts; i++)
         {

@@ -11,9 +11,20 @@
     - HeadTop
     #undergarmentTop:
     #undergarmentBottom: todo marty bottom needs adjusting
-  - type: Hunger
-    baseDecayRate: 0.0467 #needs to eat more to survive
-  - type: Thirst
+  - type: Satiation
+    satiations:
+      Hunger:
+        prototype: IS14BaseMobChitinidHungereeb6ed16
+      Thirst:
+        prototype: NormalSatiationThirst
+  - type: SatiationSpeedModifier
+    satiations:
+      Hunger:
+        thresholds:
+          Starving: 0.75
+      Thirst:
+        thresholds:
+          Parched: 0.75
   - type: UnpoweredFlashlight
   - type: PointLight
     enabled: false
@@ -88,6 +99,8 @@
       - map: [ "enum.HumanoidVisualLayers.LArm" ]
       - map: [ "enum.HumanoidVisualLayers.RLeg" ]
       - map: [ "enum.HumanoidVisualLayers.LLeg" ]
+      - map: [ "enum.HumanoidVisualLayers.UndergarmentBottom" ] # Goobstation
+      - map: [ "enum.HumanoidVisualLayers.UndergarmentTop" ] # Goobstation
       - map: [ "jumpsuit" ]
       - map: [ "enum.HumanoidVisualLayers.LHand" ]
       - map: [ "enum.HumanoidVisualLayers.RHand" ]
@@ -135,6 +148,22 @@
     item: Chitzite
     action: ActionChitzite
     coughPopup: chitzite-cough
+  - type: Reactive # Goobstation - pest spray makes bugs scream
+    groups:
+      Flammable: [ Touch ]
+      Extinguish: [ Touch ]
+      Acidic: [Touch, Ingestion, Eyes]
+    reactions:
+    - reagents: [ Water, SpaceCleaner ]
+      methods: [ Touch ]
+      effects:
+      - !type:WashCreamPie
+    - reagents: [ PestKiller ]
+      methods: [ Touch ]
+      effects:
+      - !type:Emote
+        emote: Scream
+        probability: 0.3
   - type: CosmicMarkVisuals
     subtleState: moth
 

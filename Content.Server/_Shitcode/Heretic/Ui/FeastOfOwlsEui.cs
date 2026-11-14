@@ -1,3 +1,4 @@
+using Content.Shared.Antag; // IS14-change: upstream namespace move
 using Content.Server.Antag;
 using Content.Server.EUI;
 using Content.Server.GameTicking.Rules;

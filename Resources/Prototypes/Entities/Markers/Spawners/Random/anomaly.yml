@@ -29,7 +29,8 @@
     - id: RandomRockAnomalySpawner
     - id: AnomalyLiquid
     - id: AnomalyFlora
-    - id: AnomalyShadow
+    - id: AnomalyShadow # Goobstation - Make shadow anom rarer
+      weight: .2
     - id: AnomalyTech
     #- id: AnomalySanta // CorvaxGoob edit
     #  weight: .4 #  Make more common in december
@@ -54,7 +55,6 @@
     - AnomalyRockGold
     - AnomalyRockQuartz
     - AnomalyRockUranium
-    - AnomalyRockBananium
     chance: 1
     offset: 0.15
 

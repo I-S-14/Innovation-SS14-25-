@@ -7,7 +7,7 @@ namespace Content.Goobstation.Server.RandomChanceSpawner;
 
 public sealed partial class RandomChanceSpawnerSystem : EntitySystem
 {
-    [Dependency] private readonly IRobustRandom _random = default!;
+    [Dependency] private IRobustRandom _random = default!;
 
     public override void Initialize()
     {
@@ -21,6 +21,6 @@ public sealed partial class RandomChanceSpawnerSystem : EntitySystem
             if (kvp.Value >= _random.NextFloat(0.0f, 1.0f))
                 Spawn(kvp.Key, Transform(ent).Coordinates);
         }
-        EntityManager.QueueDeleteEntity(ent);
+        QueueDel(ent);
     }
 }

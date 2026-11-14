@@ -18,6 +18,10 @@
   - type: GuideHelp
     guides:
     - DragonKungFu
+# CorvaxGoob-start:
+  - type: CargoSellBlacklist
+  - type: SupermatterImmune
+# CorvaxGoob-end.
 
 - type: entity
   parent: [BaseItem, BaseCentcommContraband]
@@ -44,7 +48,7 @@
   - type: DeviceNetwork
     deviceNetId: Wireless
     receiveFrequencyId: CrewMonitor
-  - type: WirelessNetworkConnection
+  - type: WirelessNetwork
     range: 500
   - type: StationLimitedNetwork
   - type: StaticPrice

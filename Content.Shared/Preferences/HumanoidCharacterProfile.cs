@@ -70,6 +70,14 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Serialization;
 using Robust.Shared.Utility;
+using System.IO;
+using Content.Shared.Chat.Prototypes;
+using Content.Shared.EntityEffects.Effects;
+using Content.Shared.Speech.Components;
+using Robust.Shared.Serialization.Manager;
+using Robust.Shared.Serialization.Markdown;
+using Robust.Shared;
+using YamlDotNet.RepresentationModel;
 
 namespace Content.Shared.Preferences
 {
@@ -90,7 +98,7 @@ namespace Content.Shared.Preferences
         private Dictionary<ProtoId<JobPrototype>, JobPriority> _jobPriorities = new()
         {
             {
-                SharedGameTicker.FallbackOverflowJob, JobPriority.High
+                GameTicker.FallbackOverflowJob, JobPriority.High
             }
         };
 
@@ -907,5 +915,8 @@ namespace Content.Shared.Preferences
         {
             return new HumanoidCharacterProfile(this);
         }
+
+    // IS14-merge: restored member lost in the upstream merge
+        public static readonly ProtoId<SpeciesPrototype> DefaultSpecies = "Human";
     }
 }

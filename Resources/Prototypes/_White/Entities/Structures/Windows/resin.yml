@@ -44,5 +44,9 @@
         acts: [ "Destruction" ]
   - type: IconSmooth
     key: walls
-    base: membrane
+    states:
+    - !type:CornerSpriteSmoothing
+      base: membrane
+      mask:
+      - walls
   - type: Appearance

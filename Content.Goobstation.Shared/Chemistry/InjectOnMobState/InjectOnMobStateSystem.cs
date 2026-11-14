@@ -6,10 +6,10 @@ using Robust.Shared.Timing;
 
 namespace Content.Goobstation.Shared.Chemistry.InjectOnMobState;
 
-public sealed class InjectOnMobStateSystem : EntitySystem
+public sealed partial class InjectOnMobStateSystem : EntitySystem
 {
-    [Dependency] private readonly SharedSolutionContainerSystem _solutionContainers = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private SharedSolutionContainerSystem _solutionContainers = default!;
+    [Dependency] private IGameTiming _timing = default!;
 
     public override void Initialize()
     {
@@ -26,7 +26,7 @@ public sealed class InjectOnMobStateSystem : EntitySystem
         if (ent.Comp.NextUse > _timing.CurTime)
             return;
 
-        if (!HasComp<SolutionContainerManagerComponent>(ent))
+        if (!HasComp<SolutionManagerComponent>(ent))
             return;
 
         if (!_solutionContainers.TryGetInjectableSolution(ent.Owner, out var targetSoln, out var targetSolution))

@@ -56,7 +56,7 @@ public abstract partial class SharedCryoPodSystem : EntitySystem
     private EntityQuery<BloodstreamComponent> _bloodstreamQuery;
     private EntityQuery<ItemSlotsComponent> _itemSlotsQuery;
     private EntityQuery<FitsInDispenserComponent> _dispenserQuery;
-    private EntityQuery<SolutionContainerManagerComponent> _solutionContainerQuery;
+    private EntityQuery<SolutionManagerComponent> _solutionContainerQuery;
 
     public override void Initialize()
     {
@@ -77,7 +77,7 @@ public abstract partial class SharedCryoPodSystem : EntitySystem
         _bloodstreamQuery = GetEntityQuery<BloodstreamComponent>();
         _itemSlotsQuery = GetEntityQuery<ItemSlotsComponent>();
         _dispenserQuery = GetEntityQuery<FitsInDispenserComponent>();
-        _solutionContainerQuery = GetEntityQuery<SolutionContainerManagerComponent>();
+        _solutionContainerQuery = GetEntityQuery<SolutionManagerComponent>();
 
         InitializeInsideCryoPod();
     }
@@ -100,7 +100,7 @@ public abstract partial class SharedCryoPodSystem : EntitySystem
             if (!_itemSlotsQuery.TryComp(uid, out var itemSlotsComponent))
                 continue;
 
-            var container = _itemSlots.GetItemOrNull(uid, cryoPod.SolutionContainerName, itemSlotsComponent);
+            var container = _itemSlots.GetItemOrNull((uid, itemSlotsComponent), cryoPod.SolutionContainerName);
             var patient = cryoPod.BodyContainer.ContainedEntity;
             if (container != null
                 && container.Value.Valid

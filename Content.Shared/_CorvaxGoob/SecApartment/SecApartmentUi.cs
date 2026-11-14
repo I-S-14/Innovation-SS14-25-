@@ -1,6 +1,6 @@
-using Content.Shared.Medical.SuitSensor;
 using Content.Shared.SecApartment;
 using Robust.Shared.Serialization;
+using Content.Shared.Medical.SuitSensors;
 
 namespace Content.Shared._CorvaxGoob.SecApartment;
 

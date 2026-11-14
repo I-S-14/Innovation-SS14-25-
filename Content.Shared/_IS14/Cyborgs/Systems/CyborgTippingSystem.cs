@@ -167,7 +167,7 @@ public sealed class CyborgTippingSystem : EntitySystem
         ent.Comp.AutoRightAt = _timing.CurTime + ent.Comp.AutoRightTime;
         Dirty(ent);
         UpdateAlert(ent);
-        _movementSpeed.RefreshMovementSpeedModifiers(ent);
+        _movementSpeed.RefreshMovementSpeedModifiers(ent.Owner);
 
         var name = Identity.Name(ent, EntityManager);
         if (tipped)

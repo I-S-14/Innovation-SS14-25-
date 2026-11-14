@@ -21,7 +21,9 @@ namespace Content.Server.Light.EntitySystems
         private void OnInteractUsing(EntityUid uid, MatchboxComponent component, InteractUsingEvent args)
         {
             if (!args.Handled
-                && EntityManager.TryGetComponent(args.Used, out MatchstickComponent? matchstick)
+                //IS14-change start
+                && TryComp(args.Used, out MatchstickComponent? matchstick)
+                //IS14-change end
                 && matchstick.CurrentState == SmokableState.Unlit)
             {
                 _stickSystem.Ignite((args.Used, matchstick), args.User);

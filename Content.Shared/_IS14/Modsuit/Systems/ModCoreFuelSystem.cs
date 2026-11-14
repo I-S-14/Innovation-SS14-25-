@@ -25,7 +25,6 @@ namespace Content.Shared._IS14.Modsuit.Systems;
 public sealed class ModCoreFuelSystem : EntitySystem
 {
     [Dependency] private readonly INetManager _net = default!;
-    [Dependency] private readonly ItemSlotsSystem _itemSlots = default!;
     [Dependency] private readonly ModCoreSystem _core = default!;
     [Dependency] private readonly ChassisPowerSystem _power = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;

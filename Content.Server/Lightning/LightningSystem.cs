@@ -2,7 +2,7 @@
 
 using System.Linq;
 using Content.Server.Beam;
-using Content.Server.Beam.Components;
+using Content.Shared.Beam.Components;
 using Content.Server.Lightning.Components;
 using Content.Shared.Lightning;
 using Content.Shared.Physics;
@@ -23,7 +23,7 @@ namespace Content.Server.Lightning;
 
 //I redesigned so that lightning branches can only be created from the point where the lightning struck, no more collide checks
 //and the number of these branches is explicitly controlled in the new function.
-public sealed class LightningSystem : SharedLightningSystem
+public sealed partial class LightningSystem : SharedLightningSystem
 {
     [Dependency] private readonly BeamSystem _beam = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
@@ -127,7 +127,7 @@ public sealed class LightningSystem : SharedLightningSystem
 
         int shootedCount = 0;
         int count = -1;
-        while(shootedCount < boltCount)
+        while (shootedCount < boltCount)
         {
             count++;
 

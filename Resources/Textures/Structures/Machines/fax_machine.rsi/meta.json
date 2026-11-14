@@ -1,7 +1,7 @@
 {
   "version": 1,
   "license": "CC-BY-SA-3.0",
-  "copyright": "Taken from TauCetiClassic at commit https://github.com/TauCetiStation/TauCetiClassic/tree/23b5c47245804dd24507b75f250de5e87d34e294, inserting_squackroach by dootythefrooty",
+  "copyright": "Taken from TauCetiClassic at commit https://github.com/TauCetiStation/TauCetiClassic/tree/23b5c47245804dd24507b75f250de5e87d34e294 and modified by AsnDen (github) | Legacy states: (CC-BY-SA-3.0) Taken from TauCetiClassic at commit https://github.com/TauCetiStation/TauCetiClassic/tree/23b5c47245804dd24507b75f250de5e87d34e294, inserting_squackroach by dootythefrooty",
   "size": {
     "x": 32,
     "y": 32
@@ -79,7 +79,47 @@
       ]
     },
     {
-      "name": "inserting_mothroach_mustard",
+      "name": "inserting_mouse",
+      "delays": [
+        [
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ]
+      ]
+    },
+    {
+      "name": "printing",
+      "delays": [
+        [
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ]
+      ]
+    },
+    {
+      "name": "inserting_mothroach_cecropia",
       "delays": [
         [
           0.2,
@@ -117,25 +157,6 @@
       ]
     },
     {
-      "name": "inserting_mothroach_cecropia",
-      "delays": [
-        [
-          0.2,
-          0.2,
-          0.2,
-          0.2,
-          0.2,
-          0.2,
-          0.2,
-          0.2,
-          0.2,
-          0.2,
-          0.2,
-          0.2
-        ]
-      ]
-    },
-    {
       "name": "inserting_mothroach_lunar",
       "delays": [
         [
@@ -155,30 +176,9 @@
       ]
     },
     {
-      "name": "inserting_mouse",
+      "name": "inserting_mothroach_mustard",
       "delays": [
         [
-          0.2,
-          0.2,
-          0.2,
-          0.2,
-          0.2,
-          0.2,
-          0.2,
-          0.2,
-          0.2,
-          0.2,
-          0.2,
-          0.2
-        ]
-      ]
-    },
-    {
-      "name": "printing",
-      "delays": [
-        [
-          0.2,
-          0.2,
           0.2,
           0.2,
           0.2,

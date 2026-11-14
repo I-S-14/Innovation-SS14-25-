@@ -1,3 +1,4 @@
+using Content.Shared.Flash;
 using Content.Goobstation.Shared.Wraith.Components;
 using Content.Goobstation.Shared.Wraith.Events;
 using Content.Goobstation.Shared.Wraith.WraithPoints;
@@ -15,14 +16,15 @@ namespace Content.Goobstation.Shared.Wraith.Systems;
 //Partially ported from Impstation
 public sealed partial class HauntSystem : EntitySystem
 {
-    [Dependency] private readonly SharedInteractionSystem _interact = default!;
-    [Dependency] private readonly StatusEffectsSystem _statusEffectsOld = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly WraithPointsSystem _wraithPointsSystem = default!;
-    [Dependency] private readonly EntityLookupSystem _lookup = default!;
-    [Dependency] private readonly SharedActionsSystem _actions = default!;
-    [Dependency] private readonly SharedPopupSystem _popupSystem = default!;
-    [Dependency] private readonly MobStateSystem _mobState = default!;
+    [Dependency] private SharedInteractionSystem _interact = default!;
+    [Dependency] private StatusEffectsSystem _statusEffectsOld = default!;
+    [Dependency] private Content.Shared.StatusEffectNew.StatusEffectsSystem _statusNew = default!; // IS14-merge
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private WraithPointsSystem _wraithPointsSystem = default!;
+    [Dependency] private EntityLookupSystem _lookup = default!;
+    [Dependency] private SharedActionsSystem _actions = default!;
+    [Dependency] private SharedPopupSystem _popupSystem = default!;
+    [Dependency] private MobStateSystem _mobState = default!;
 
     private EntityQuery<HauntedComponent> _hauntQuery;
     private EntityQuery<WraithAbsorbableComponent> _wraithAbsorbableQuery;
@@ -113,10 +115,7 @@ public sealed partial class HauntSystem : EntitySystem
         _statusEffects.Clear();
         _lookup.GetEntitiesInRange(Transform(ent.Owner).Coordinates, 3f, _statusEffects);
         foreach (var entity in _statusEffects)
-            _statusEffectsOld.TryAddStatusEffect<FlashedComponent>(entity,
-                ent.Comp.FlashedId,
-                ent.Comp.HauntFlashDuration,
-                true);
+            _statusNew.TryAddStatusEffectDuration(entity, ent.Comp.FlashedId, ent.Comp.HauntFlashDuration); // IS14-change: respect the migrated configurable status effect entity.
 
         // we don't have corporeal so add it
         _statusEffectsOld.TryAddStatusEffect<CorporealComponent>(ent.Owner, ent.Comp.CorporealEffect, ent.Comp.HauntCorporealDuration, true);

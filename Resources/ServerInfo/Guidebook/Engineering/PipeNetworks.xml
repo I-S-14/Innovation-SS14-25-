@@ -32,12 +32,12 @@ SPDX-License-Identifier: AGPL-3.0-or-later
   - [textlink="Клапаны" link="Valves"].
   - [textlink="Радиаторы" link="Radiators"].
 
-  Пример разделения одной трубной сети на две отдельные с помощью [textlink="насоса" link="Pumps"] показан ниже:
+  An example of a pipenet being separated into two, distinct pipenets by a [textlink="pump" link="Pumps"] is shown below:
 
   <Box>
     <GuideEntityEmbed Entity="GasPipeStraight" Caption="Pipenet 1" Rotation="90"/>
     <GuideEntityEmbed Entity="GasPipeStraight" Caption="" Rotation="90"/>
-    <GuideEntityEmbed Entity="GasPressurePump" Caption="Разделитель сети" Rotation="90"/>
+    <GuideEntityEmbed Entity="GasPressurePump" Caption="Network Separator" Rotation="90"/>
     <GuideEntityEmbed Entity="GasPipeStraight" Caption="" Rotation="90"/>
     <GuideEntityEmbed Entity="GasPipeStraight" Caption="Pipenet 2" Rotation="90"/>
   </Box>

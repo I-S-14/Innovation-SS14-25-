@@ -20,9 +20,9 @@ using Robust.Shared.Network;
 using Robust.Shared.Player;
 using Robust.Shared.Replays;
 using Robust.Shared.Utility;
+using Content.Corvax.Interfaces.Shared;
 // using Content.Server._RMC14.LinkAccount; // RMC - Patreon // CorvaxGoob-Coins
 // using Content.Server._RMC14.LinkAccount; CorvaxGoob-Coins
-using Content.Corvax.Interfaces.Shared; // RMC - Patreon
 
 namespace Content.Server.Chat.Managers;
 
@@ -31,6 +31,10 @@ namespace Content.Server.Chat.Managers;
 /// </summary>
 internal sealed partial class ChatManager : IChatManager
 {
+    //IS14-change start: restore declarations used by merged implementation.
+    private SharedChatSystem _chatSystem = default!;
+    //IS14-change end
+
     private static readonly Dictionary<string, string> PatronOocColors = new()
     {
         // I had plans for multiple colors and those went nowhere so...
@@ -54,7 +58,7 @@ internal sealed partial class ChatManager : IChatManager
     [Dependency] private readonly ILogManager _logManager = default!;
     //[Dependency] private readonly LinkAccountManager _linkAccount = default!; // RMC - Patreon // CorvaxGoob-Coins
 
-    private ISawmill _sawmill = default!;
+private ISawmill? _sawmill = default!;
 
     /// <summary>
     /// The maximum length a player-sent message can be sent
@@ -77,6 +81,8 @@ internal sealed partial class ChatManager : IChatManager
 
         _sawmill = _logManager.GetSawmill("SERVER");
 
+        _chatSystem = _entityManager.System<SharedChatSystem>();
+
         RegisterRateLimits();
     }
 
@@ -96,10 +102,10 @@ internal sealed partial class ChatManager : IChatManager
         DispatchServerAnnouncement(Loc.GetString(val ? "chat-manager-admin-ooc-chat-enabled-message" : "chat-manager-admin-ooc-chat-disabled-message"));
     }
 
-        public void DeleteMessagesBy(NetUserId uid)
-        {
-            if (!_players.TryGetValue(uid, out var user))
-                return;
+    public void DeleteMessagesBy(NetUserId uid)
+    {
+        if (!_players.TryGetValue(uid, out var user))
+            return;
 
         var msg = new MsgDeleteChatMessagesBy { Key = user.Key, Entities = user.Entities };
         _netManager.ServerSendToAll(msg);
@@ -120,13 +126,21 @@ internal sealed partial class ChatManager : IChatManager
 
     #region Server Announcements
 
-    public void DispatchServerAnnouncement(string message, Color? colorOverride = null)
+    public void DispatchServerAnnouncement(string message, Color? colorOverride = null, ICommonSession? sender = null)
     {
         var wrappedMessage = Loc.GetString("chat-manager-server-wrap-message", ("message", FormattedMessage.EscapeText(message)));
         ChatMessageToAll(ChatChannel.Server, message, wrappedMessage, EntityUid.Invalid, hideChat: false, recordReplay: true, colorOverride: colorOverride);
-        _sawmill.Info(message);
 
-        _adminLogger.Add(LogType.Chat, LogImpact.Low, $"Server announcement: {message}");
+        // _sawmill might have not been initialized when DispatchServerAnnouncement is called
+        // during server setup when some cvars are changed
+        _sawmill?.Info(message);
+
+        if (sender is null) //just so that log search works...
+            _adminLogger.Add(LogType.Chat, LogImpact.Low,
+                $"Server announcement from SYSTEM: {message}");
+        else
+            _adminLogger.Add(LogType.Chat, LogImpact.Low,
+                $"Server announcement from {sender:Player}: {message}");
     }
 
     public void DispatchServerMessage(ICommonSession player, string message, bool suppressLog = false)
@@ -220,8 +234,24 @@ internal sealed partial class ChatManager : IChatManager
 
     public void SendHookAdmin(string sender, string message)
     {
+        //IS14-change start
+        // Preserve Wizards a9f36e6592: external admin chat is admin-only too.
+        var clients = _adminManager.ActiveAdmins.Select(p => p.Channel);
         var wrappedMessage = Loc.GetString("chat-manager-send-hook-admin-wrap-message", ("senderName", sender), ("message", FormattedMessage.EscapeText(message)));
-        ChatMessageToAll(ChatChannel.AdminChat, message, wrappedMessage, source: EntityUid.Invalid, hideChat: false, recordReplay: false);
+        foreach (var client in clients)
+        {
+            ChatMessageToOne(
+                ChatChannel.AdminChat,
+                message,
+                wrappedMessage,
+                source: EntityUid.Invalid,
+                hideChat: false,
+                client: client,
+                recordReplay: false,
+                audioPath: _netConfigManager.GetClientCVar(client, CCVars.AdminChatSoundPath),
+                audioVolume: _netConfigManager.GetClientCVar(client, CCVars.AdminChatSoundVolume));
+        }
+        //IS14-change end
         _adminLogger.Add(LogType.Chat, LogImpact.Low, $"Hook admin from {sender}: {message}");
     }
 
@@ -287,20 +317,21 @@ internal sealed partial class ChatManager : IChatManager
         /* CorvaxGoob-Revert : DB conflicts
         // RMC - Heavily modified for patreon.
         if (_netConfigManager.GetClientCVar(player.Channel, CCVars.ShowOocPatronColor) &&
-            _linkAccount.GetPatron(player)?.Tier is { } tier)
+            _linkAccount.GetPatron(player)?.Tier != null) // Goob
         {
-            if (tier.Icon != null)
+            var patronColor = colorOverride?.ToHex() ?? "#aa00ff"; // Goob - admin ooc color overrides patron color
+            if (_linkAccount.GetOocIcon(player.UserId) is { } oocIcon) // Goob
             {
                 wrappedMessage = Loc.GetString("chat-manager-send-ooc-patron-wrap-message",
-                    ("tierIcon", tier.Icon),
-                    ("patronColor", "#aa00ff"),
+                    ("tierIcon", oocIcon), // Goob
+                    ("patronColor", patronColor), // Goob
                     ("playerName", player.Name),
                     ("message", FormattedMessage.EscapeText(message)));
             }
             else
             {
                 wrappedMessage = Loc.GetString("chat-manager-send-ooc-patron-wrap-message-no-icon",
-                    ("patronColor", "#aa00ff"),
+                    ("patronColor", patronColor), // Goob
                     ("playerName", player.Name),
                     ("message", FormattedMessage.EscapeText(message)));
             }
@@ -328,10 +359,11 @@ internal sealed partial class ChatManager : IChatManager
             return;
         }
 
+        var playerName = _chatSystem.ChatNameLinks && player.AttachedEntity is {} attachedEntity ? $"[textlink=\"{FormattedMessage.EscapeStringParameter(player.Name)}\" entity=\"{_entityManager.GetNetEntity(attachedEntity)}\" color=\"{ChatChannel.AdminChat.TextColor().ToHex()}\"]" : FormattedMessage.EscapeText(player.Name);
         var clients = _adminManager.ActiveAdmins.Select(p => p.Channel);
         var wrappedMessage = Loc.GetString("chat-manager-send-admin-chat-wrap-message",
                                         ("adminChannelName", Loc.GetString("chat-manager-admin-channel-name")),
-                                        ("playerName", player.Name), ("message", FormattedMessage.EscapeText(message)));
+                                        ("playerName", playerName), ("message", FormattedMessage.EscapeText(message)));
 
         foreach (var client in clients)
         {

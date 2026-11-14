@@ -20,8 +20,8 @@ namespace Content.Server.ParticleAccelerator.EntitySystems;
 
 public sealed partial class ParticleAcceleratorSystem
 {
-    [Dependency] private readonly IAdminManager _adminManager = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
+    [Dependency] private IAdminManager _adminManager = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
 
     private void InitializeControlBoxSystem()
     {
@@ -68,9 +68,11 @@ public sealed partial class ParticleAcceleratorSystem
 
         var strength = comp.SelectedStrength;
 
-        FireEmitter(_multipartMachine.GetPartEntity(machine, AcceleratorParts.PortEmitter)!.Value, strength);
-        FireEmitter(_multipartMachine.GetPartEntity(machine, AcceleratorParts.ForeEmitter)!.Value, strength);
-        FireEmitter(_multipartMachine.GetPartEntity(machine, AcceleratorParts.StarboardEmitter)!.Value, strength);
+        foreach (var part in new[] { AcceleratorParts.PortEmitter, AcceleratorParts.ForeEmitter, AcceleratorParts.StarboardEmitter }) // Goob
+        {
+            if (_multipartMachine.GetPartEntity(machine, part) is { } emitter)
+                FireEmitter(emitter, strength);
+        }
     }
 
     public void SwitchOn(EntityUid uid, EntityUid? user = null, ParticleAcceleratorControlBoxComponent? comp = null)
@@ -192,7 +194,7 @@ public sealed partial class ParticleAcceleratorSystem
                     _audio.PlayGlobal("/Audio/Misc/adminlarm.ogg",
                         Filter.Empty().AddPlayers(_adminManager.ActiveAdmins),
                         false,
-                        AudioParams.Default.WithVolume(-8f));
+                        AudioParams.Default.AddVolume(-8f));
                     comp.EffectCooldown = _gameTiming.CurTime + comp.CooldownDuration;
                 }
             }

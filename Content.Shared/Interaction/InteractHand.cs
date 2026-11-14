@@ -4,23 +4,11 @@ using JetBrains.Annotations;
 
 namespace Content.Shared.Interaction;
 
-public sealed class InteractHandEventArgs : EventArgs, ITargetedInteractEventArgs
-{
-    public InteractHandEventArgs(EntityUid user, EntityUid target)
-    {
-        User = user;
-        Target = target;
-    }
-
-    public EntityUid User { get; }
-    public EntityUid Target { get; }
-}
-
 /// <summary>
 ///     Raised directed on a target entity when it is interacted with by a user with an empty hand.
 /// </summary>
 [PublicAPI]
-public sealed class InteractHandEvent : HandledEntityEventArgs, ITargetedInteractEventArgs
+public sealed class InteractHandEvent : HandledEntityEventArgs
 {
     /// <summary>
     ///     Entity that triggered the interaction.
@@ -31,6 +19,8 @@ public sealed class InteractHandEvent : HandledEntityEventArgs, ITargetedInterac
     ///     Entity that was interacted on.
     /// </summary>
     public EntityUid Target { get; }
+
+    public bool InteractionParticle = true; // Goob
 
     public InteractHandEvent(EntityUid user, EntityUid target)
     {
@@ -43,7 +33,7 @@ public sealed class InteractHandEvent : HandledEntityEventArgs, ITargetedInterac
 /// Raised directed on the user when they interact with an entity with an empty hand.
 /// </summary>
 [PublicAPI]
-public sealed class UserInteractHandEvent : HandledEntityEventArgs, ITargetedInteractEventArgs
+public sealed class UserInteractHandEvent : HandledEntityEventArgs
 {
     /// <summary>
     ///     Entity that triggered the interaction.

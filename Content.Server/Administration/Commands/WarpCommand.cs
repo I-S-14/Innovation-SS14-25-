@@ -4,20 +4,21 @@ using System.Linq;
 using System.Numerics;
 using Content.Shared.Administration;
 using Content.Shared.Follower;
-using Content.Shared.Ghost;
+using Content.Shared.Ghost.Components;
 using Content.Shared.Warps;
 using Robust.Shared.Console;
 using Robust.Shared.Enums;
 using Robust.Shared.Map;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Systems;
+using Content.Shared.Ghost;
 
 namespace Content.Server.Administration.Commands
 {
     [AdminCommand(AdminFlags.Admin)]
-    public sealed class WarpCommand : IConsoleCommand
+    public sealed partial class WarpCommand : IConsoleCommand
     {
-        [Dependency] private readonly IEntityManager _entManager = default!;
+        [Dependency] private IEntityManager _entManager = default!;
 
         public string Command => "warp";
         public string Description => "Teleports you to predefined areas on the map.";
@@ -136,7 +137,7 @@ namespace Content.Server.Administration.Commands
             var query = _entManager.AllEntityQueryEnumerator<WarpPointComponent, MetaDataComponent>();
             while (query.MoveNext(out _, out var warp, out var meta))
             {
-                points.Add(warp.Location ?? meta.EntityName);
+                points.Add(warp.Location == null ? meta.EntityName : Loc.GetString(warp.Location)); //IS14-change: Location is a LocId.
             }
 
             points.Sort();
@@ -149,7 +150,7 @@ namespace Content.Server.Administration.Commands
             var query = _entManager.AllEntityQueryEnumerator<WarpPointComponent, MetaDataComponent, TransformComponent>();
             while (query.MoveNext(out var uid, out var warp, out var meta, out var xform))
             {
-                if (name == (warp.Location ?? meta.EntityName))
+                if (name == (warp.Location == null ? meta.EntityName : Loc.GetString(warp.Location))) //IS14-change
                     points.Add((xform.Coordinates, warp.Follow));
             }
 

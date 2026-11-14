@@ -233,6 +233,7 @@
     - FitsInDispenser
   pickupPrototypes:
   - FoodPlate
+  - FoodPlateSmall
   - FoodPlatePlastic
   - FoodPlateSmallPlastic
   - FoodPlateTin

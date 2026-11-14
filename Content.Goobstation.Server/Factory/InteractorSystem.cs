@@ -1,3 +1,5 @@
+using Content.Shared.Timing.Components;
+using Content.Shared.Timing.Systems;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Goobstation.Shared.Factory;
@@ -6,9 +8,9 @@ using Content.Shared.Timing;
 
 namespace Content.Goobstation.Server.Factory;
 
-public sealed class InteractorSystem : SharedInteractorSystem
+public sealed partial class InteractorSystem : SharedInteractorSystem
 {
-    [Dependency] private readonly UseDelaySystem _useDelay = default!;
+    [Dependency] private UseDelaySystem _useDelay = default!;
 
     private EntityQuery<ConstructionComponent> _constructionQuery;
     private EntityQuery<UseDelayComponent> _useDelayQuery;

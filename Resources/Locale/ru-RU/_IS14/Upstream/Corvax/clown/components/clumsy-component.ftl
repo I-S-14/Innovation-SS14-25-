@@ -1,0 +1,6 @@
+# Translations from space-syndicate/space-station-14, commit 6041191c48f5f75a6284b65bcabd913e186bd442.
+# Existing IS14 translations take precedence.
+
+clumsy-grab-fail-message-user = { CAPITALIZE(THE($item)) } выскальзывает из ваших рук...
+
+clumsy-grab-fail-message-others = { CAPITALIZE(THE($item)) } выскальзывает из их рук...

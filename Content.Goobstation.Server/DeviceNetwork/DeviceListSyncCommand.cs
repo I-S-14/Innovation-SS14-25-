@@ -1,3 +1,4 @@
+using Content.Shared.DeviceConfigurator.Components;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Server.Administration;
@@ -13,12 +14,12 @@ namespace Content.Goobstation.Server.DeviceNetwork;
 /// </summary>
 
 [AdminCommand(AdminFlags.Mapping)]
-public sealed class DeviceListSyncCommand : LocalizedCommands
+public sealed partial class DeviceListSyncCommand : LocalizedCommands
 {
-    [Dependency] private readonly IEntityManager _entityManager = default!;
+    [Dependency] private IEntityManager _entityManager = default!;
     public override string Command => "synchronizedevicelists";
 
-    public override async void Execute(IConsoleShell shell, string argStr, string[] args)
+    public override void Execute(IConsoleShell shell, string argStr, string[] args)
     {
         if (args.Length > 0)
         {
@@ -31,14 +32,8 @@ public sealed class DeviceListSyncCommand : LocalizedCommands
 
         while (deviceListQuery.MoveNext(out var listEnt, out var listComp))
         {
-            foreach (var device in listComp.Devices)
-            {
-                if (!_entityManager.TryGetComponent(device, out DeviceNetworkComponent? networkComp) || networkComp.DeviceLists.Contains(listEnt))
-                    continue;
-
-                networkComp.DeviceLists.Add(listEnt);
-                updatedDevices++;
-            }
+            updatedDevices += _entityManager.System<Content.Shared.DeviceConfigurator.Systems.DeviceListSystem>()
+                .SynchronizeMembership((listEnt, listComp));
         }
 
         shell.WriteLine($"Successfully synchronized {updatedDevices} devices.");

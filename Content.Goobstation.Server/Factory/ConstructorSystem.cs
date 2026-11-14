@@ -8,10 +8,10 @@ using Robust.Shared.Maths;
 
 namespace Content.Goobstation.Server.Factory;
 
-public sealed class ConstructorSystem : SharedConstructorSystem
+public sealed partial class ConstructorSystem : SharedConstructorSystem
 {
-    [Dependency] private readonly ConstructionSystem _construction = default!;
-    [Dependency] private readonly StartableMachineSystem _machine = default!;
+    [Dependency] private ConstructionSystem _construction = default!;
+    [Dependency] private StartableMachineSystem _machine = default!;
 
     private EntityQuery<ActiveDoAfterComponent> _activeQuery;
 
@@ -49,7 +49,8 @@ public sealed class ConstructorSystem : SharedConstructorSystem
         var completed = proto.Type switch
         {
             ConstructionType.Structure => await _construction.TryStartStructureConstruction(uid, id, OutputPosition(ent), Angle.Zero),
-            ConstructionType.Item => await _construction.TryStartItemConstruction(id, uid)
+            ConstructionType.Item => await _construction.TryStartItemConstruction(id, uid),
+            _ => false
         };
 
         if (completed)

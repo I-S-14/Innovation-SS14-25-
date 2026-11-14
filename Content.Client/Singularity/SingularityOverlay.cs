@@ -1,20 +1,23 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+using System.Numerics;
+using Content.Shared.CCVar;
 using Content.Shared.Singularity.Components;
 using Robust.Client.Graphics;
 using Robust.Client.UserInterface.CustomControls;
+using Robust.Shared.Configuration;
 using Robust.Shared.Enums;
 using Robust.Shared.Prototypes;
-using System.Numerics;
 
 namespace Content.Client.Singularity
 {
-    public sealed class SingularityOverlay : Overlay, IEntityEventSubscriber
+    public sealed partial class SingularityOverlay : Overlay, IEntityEventSubscriber
     {
         private static readonly ProtoId<ShaderPrototype> Shader = "Singularity";
 
-        [Dependency] private readonly IEntityManager _entMan = default!;
-        [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
+        [Dependency] private IEntityManager _entMan = default!;
+        [Dependency] private IPrototypeManager _prototypeManager = default!;
+        [Dependency] private IConfigurationManager _configManager = default!;
         private SharedTransformSystem? _xformSystem = null;
 
         /// <summary>
@@ -25,10 +28,15 @@ namespace Content.Client.Singularity
 
         private const float MaxDistance = 20f;
 
+        private const float MinDistance = 1f;// Corvaxgoob-fix
+        private const float MaxDeformation = 2048f; // Corvaxgoob-fix
+
         public override OverlaySpace Space => OverlaySpace.WorldSpace;
         public override bool RequestScreenTexture => true;
 
         private readonly ShaderInstance _shader;
+
+        private bool _reducedMotion;
 
         public SingularityOverlay()
         {
@@ -37,6 +45,8 @@ namespace Content.Client.Singularity
             _shader.SetParameter("maxDistance", MaxDistance * EyeManager.PixelsPerMeter);
             _entMan.EventBus.SubscribeEvent<PixelToMapEvent>(EventSource.Local, this, OnProjectFromScreenToMap);
             ZIndex = 101; // Should be drawn after the placement overlay so admins placing items near the singularity can tell where they're going.
+
+            _configManager.OnValueChanged(CCVars.DisableSinguloWarp, (b) => { _reducedMotion = b; }, invokeImmediately: true);
         }
 
         private readonly Vector2[] _positions = new Vector2[MaxCount];
@@ -46,6 +56,8 @@ namespace Content.Client.Singularity
 
         protected override bool BeforeDraw(in OverlayDrawArgs args)
         {
+            if (_reducedMotion)
+                return false;
             if (args.Viewport.Eye == null)
                 return false;
             if (_xformSystem is null && !_entMan.TrySystem(out _xformSystem))
@@ -96,7 +108,6 @@ namespace Content.Client.Singularity
             var worldHandle = args.WorldHandle;
             worldHandle.UseShader(_shader);
             worldHandle.DrawRect(args.WorldAABB, Color.White);
-            worldHandle.UseShader(null);
         }
 
         /// <summary>
@@ -104,6 +115,8 @@ namespace Content.Client.Singularity
         /// </summary>
         private void OnProjectFromScreenToMap(ref PixelToMapEvent args)
         {   // Mostly copypasta from the singularity shader.
+            if (_reducedMotion)
+                return;
             if (args.Viewport.Eye == null)
                 return;
             var maxDistance = MaxDistance * EyeManager.PixelsPerMeter;
@@ -122,7 +135,9 @@ namespace Content.Client.Singularity
                 var localPosition = _positions[i];
                 localPosition.Y = args.Viewport.Size.Y - localPosition.Y;
                 var delta = args.VisiblePosition - localPosition;
-                var distance = (delta / (args.Viewport.RenderScale * args.Viewport.Eye.Scale)).Length();
+                var distance = MathF.Max(
+                    (delta / (args.Viewport.RenderScale * args.Viewport.Eye.Scale)).Length(),
+                    MinDistance); // Corvaxgoob-fix
 
                 var deformation = _intensities[i] / MathF.Pow(distance, _falloffPowers[i]);
 
@@ -136,6 +151,8 @@ namespace Content.Client.Singularity
 
                 if (deformation > 0.8)
                     deformation = MathF.Pow(deformation, 0.3f);
+
+                deformation = MathF.Min(deformation, MaxDeformation); // Corvaxgoob-fix
 
                 finalCoords -= delta * deformation;
             }

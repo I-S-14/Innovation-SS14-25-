@@ -1,9 +1,11 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 - type: entity
-  id: LockerBase
-  parent: ClosetBase
   abstract: true
+  # IS14-change: share locker mechanics without forcing the weak 60-damage threshold
+  # onto retained secure variants. Ordinary LockerBase below keeps its original health.
+  parent: [ ClosetBase, BaseStructureHealth ]
+  id: IS14LockerBaseCommon
   components:
   - type: AccessReader
   - type: Lock
@@ -27,30 +29,6 @@
       sprite: Structures/Storage/closet_labels.rsi
       offset: "-0.065,0"
       map: ["enum.PaperLabelVisuals.Layer"]
-  - type: Destructible
-    thresholds:
-    - trigger:
-        !type:DamageTrigger
-        damage: 100
-      behaviors:
-        - !type:DoActsBehavior
-          acts: [ "Destruction" ]
-    - trigger:
-        !type:DamageTrigger
-        damage: 50
-      behaviors:
-      - !type:DoActsBehavior
-        acts: ["Destruction"]
-      - !type:PlaySoundBehavior
-        sound:
-          collection: MetalBreak
-          params:
-            volume: -6
-      - !type:SpawnEntitiesBehavior
-        spawn:
-          SheetSteel1:
-            min: 1
-            max: 2
   - type: Construction
     graph: ClosetSteelSecure
     node: done
@@ -62,29 +40,22 @@
   - type: RecyclableOnUnlock
   - type: Paintable
     group: Locker
+  - type: Damageable
+    damageModifierSet: PlasteelMod
+  - type: StaticPrice
+    price: 300
 
 - type: entity
-  id: LockerBaseSecure
-  parent: LockerBase
   abstract: true
+  parent: [ IS14LockerBaseCommon, StructureHealthContainerWeak ]
+  id: LockerBase
   components:
-  - type: Damageable
-    damageContainer: StructuralInorganic
-    damageModifierSet: StructuralMetallic
   - type: Destructible
     thresholds:
     - trigger:
         !type:DamageTrigger
-        damage: 300
+        damage: 60
       behaviors:
-      - !type:DoActsBehavior
-        acts: ["Destruction"]
-    - trigger:
-        !type:DamageTrigger
-        damage: 150
-      behaviors:
-      - !type:DoActsBehavior
-        acts: ["Destruction"]
       - !type:PlaySoundBehavior
         sound:
           collection: MetalBreak

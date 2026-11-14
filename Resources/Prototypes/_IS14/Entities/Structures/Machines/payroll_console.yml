@@ -12,7 +12,7 @@
   - type: PointLight
     color: "#3ab77a"
   - type: Computer
-    board: ComputerBroken
+    board: null # No dedicated board exists; a whole broken computer is not a circuit board.
   - type: ActivatableUIRequiresAccess
   - type: ActivatableUI
     key: enum.PayrollConsoleUiKey.Key

@@ -7,13 +7,17 @@ using Content.Shared.Access.Systems;
 using Content.Shared.Doors.Electronics;
 using Robust.Server.GameObjects;
 using Robust.Shared.Prototypes;
+using Content.Server.Doors.Electronics;
+using Content.Shared.DeviceNetwork.Components;
+using Content.Shared.Doors;
+using Content.Shared.Interaction;
 
 namespace Content.Server.Doors.Electronics;
 
-public sealed class DoorElectronicsSystem : EntitySystem
+public sealed partial class DoorElectronicsSystem : EntitySystem
 {
-    [Dependency] private readonly UserInterfaceSystem _uiSystem = default!;
-    [Dependency] private readonly AccessReaderSystem _accessReader = default!;
+    [Dependency] private UserInterfaceSystem _uiSystem = default!;
+    [Dependency] private AccessReaderSystem _accessReader = default!;
 
     public override void Initialize()
     {

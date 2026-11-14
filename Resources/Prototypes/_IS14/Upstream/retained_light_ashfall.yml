@@ -1,0 +1,12 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: 5327c414c5:Resources/Prototypes/weather.yml
+- type: weather
+  id: AshfallLight
+  sprite:
+    sprite: /Textures/Effects/weather.rsi
+    state: ashfall_light
+  sound:
+    path: /Audio/Effects/Weather/snowstorm_weak.ogg
+    params:
+      loop: true
+      volume: -6

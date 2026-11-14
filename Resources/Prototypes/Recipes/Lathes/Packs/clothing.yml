@@ -45,6 +45,26 @@
   - ClothingUniformJumpsuitCommandGeneric
 
 - type: latheRecipePack
+  id: ClothingDresses
+  recipes:
+  - ClothingUniformJumpskirtBlackElegantDress
+  - ClothingUniformJumpskirtBlueElegantDress
+  - ClothingUniformJumpskirtBlueTurtleneckDress
+  - ClothingUniformJumpskirtCyanStripedDress
+  - ClothingUniformJumpskirtGreenElegantDress
+  - ClothingUniformJumpskirtGreenStripedDress
+  - ClothingUniformJumpskirtGreenTurtleneckDress
+  - ClothingUniformJumpskirtOrangeStripedDress
+  - ClothingUniformJumpskirtPinkStripedDress
+  - ClothingUniformJumpskirtPurpleElegantDress
+  - ClothingUniformJumpskirtPurpleTurtleneckDress
+  - ClothingUniformJumpskirtRedElegantDress
+  - ClothingUniformJumpskirtRedStripedDress
+  - ClothingUniformJumpskirtRedTurtleneckDress
+  - ClothingUniformJumpskirtYellowOldDress
+  - ClothingUniformJumpskirtYellowTurtleneckDress
+
+- type: latheRecipePack
   id: ClothingEngineering
   recipes:
   - ClothingHeadHatBeretEngineering
@@ -182,6 +202,7 @@
   - ClothingNeckTieRed
   - ClothingNeckTieDet
   - ClothingNeckTieSci
+  - ClothingNeckTieSerious
 
 - type: latheRecipePack
   id: Scarves

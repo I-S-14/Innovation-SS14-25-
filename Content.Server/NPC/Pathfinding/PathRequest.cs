@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Robust.Shared.Map;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
+using Content.Shared.NPC;
 
 namespace Content.Server.NPC.Pathfinding;
 

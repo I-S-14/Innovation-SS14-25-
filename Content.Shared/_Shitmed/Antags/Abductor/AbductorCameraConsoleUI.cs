@@ -2,7 +2,8 @@
 
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
-using static Content.Shared.Pinpointer.SharedNavMapSystem;
+using Content.Shared.Pinpointer;
+using static Content.Shared.Pinpointer.NavMapSystem;
 
 namespace Content.Shared._Shitmed.Antags.Abductor;
 

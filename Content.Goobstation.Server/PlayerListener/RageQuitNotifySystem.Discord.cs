@@ -1,3 +1,4 @@
+using GameTicker = Content.Server.GameTicking.ServerGameTicker;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Goobstation.Common.CCVar;
@@ -9,8 +10,8 @@ namespace Content.Goobstation.Server.PlayerListener;
 
 public sealed partial class RageQuitNotifySystem
 {
-    [Dependency] private readonly DiscordWebhook _discord = default!;
-    [Dependency] private readonly GameTicker _ticker = default!;
+    [Dependency] private DiscordWebhook _discord = default!;
+    [Dependency] private Content.Server.GameTicking.ServerGameTicker _ticker = default!;
     private WebhookData? _webhook;
 
     private void InitializeDiscord()

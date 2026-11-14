@@ -11,9 +11,9 @@
   recognizable: true
   metabolisms:
     Drink:
-      metabolismRate: 0.05 # Goobstation: Very slow metabolism
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:ModifyStatusEffect
         effectProto: StatusEffectDrowsiness
@@ -22,42 +22,9 @@
       - !type:AdjustReagent
         reagent: Theobromine
         amount: 0.05
-      - !type:Jitter # Goobstation: Coffee causes jitteriness and alters speed
-        conditions:
-        - !type:ReagentCondition
-          reagent: Coffee
-          min: 25
-      - !type:MovementSpeedModifier
-        walkSpeedModifier: 1.1
-        sprintSpeedModifier: 1.1
-        conditions:
-        - !type:ReagentCondition
-          reagent: Coffee
-          min: 25
-          max: 99
-      - !type:GenericStatusEffect
-        key: Stutter
-        component: StutteringAccent
-        conditions:
-        - !type:ReagentCondition
-          reagent: Coffee
-          min: 75
-      - !type:MovementSpeedModifier # Goobstation: Drinking too much causes chest pain and slows you down
-        walkSpeedModifier: 0.70
-        sprintSpeedModifier: 0.70
-        conditions:
-        - !type:ReagentCondition
-          reagent: Coffee
-          min: 100
-      - !type:PopupMessage
-        visualType: Medium
-        messages: ["ephedrine-effect-tight-pain", "ephedrine-effect-heart-pounds"]
-        type: Local
-        probability: 0.1
-        conditions:
-        - !type:ReagentCondition
-          reagent: Coffee
-          min: 100
+      - !type:AdjustReagent # Goobstation: Caffeine
+        reagent: Caffeine
+        amount: 0.5
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/coffeeglass.rsi
     state: icon_empty
@@ -74,15 +41,16 @@
   flavor: chocolate
   color: "#664300"
   recognizable: true
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Theobromine
         amount: 0.05
-
 - type: reagent
   id: Cream
   name: reagent-name-cream
@@ -91,12 +59,14 @@
   physicalDesc: reagent-physical-desc-creamy
   flavor: creamy
   color: "#DFD7AF"
+  puddleColor: "#DFD7AFCC" # Goob
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 1
-
 - type: reagent
   id: CoconutWater
   name: reagent-name-coconut-water
@@ -105,12 +75,15 @@
   physicalDesc: reagent-physical-desc-milky
   flavor: nutty
   color: "#f4eadb"
+  puddleSpriteSet: Shiny # Goob
+  puddleColor: "#f4eadbCC" # Goob
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
-        factor: 4 # Coconut water is 94% water
-
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 4
 - type: reagent
   id: CreamOfCoconut
   name: reagent-name-cream-of-coconut
@@ -119,12 +92,14 @@
   physicalDesc: reagent-physical-desc-syrupy
   flavor: creamy
   color: "#FFEABF"
+  puddleColor: "#FFEABFCC" # Goob
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
-
 - type: reagent
   id: CafeLatte
   name: reagent-name-cafe-latte
@@ -139,16 +114,17 @@
   metamorphicMaxFillLevels: 1
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:ModifyStatusEffect
         effectProto: StatusEffectDrowsiness
         time: 2
         type: Remove
-
 - type: reagent
   id: GreenTea
   name: reagent-name-green-tea
@@ -157,6 +133,7 @@
   physicalDesc: reagent-physical-desc-aromatic
   flavor: tea
   color: "#7EB626"
+  puddleColor: "#7EB62680" # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/greenteaglass.rsi
     state: icon_empty
@@ -195,10 +172,12 @@
   metamorphicMaxFillLevels: 5
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Theobromine
@@ -207,7 +186,6 @@
         effectProto: StatusEffectDrowsiness
         time: 2
         type: Remove
-
 - type: reagent
   id: IcedGreenTea
   name: reagent-name-iced-green-tea
@@ -237,15 +215,16 @@
   metamorphicMaxFillLevels: 6
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Theobromine
         amount: 0.05
-
 - type: reagent
   id: JuiceBerryPoison
   parent: BaseJuice
@@ -258,7 +237,8 @@
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
     Poison:
       effects:
       - !type:HealthChange
@@ -285,12 +265,13 @@
   metamorphicMaxFillLevels: 6
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
-
 - type: reagent
   id: Milk
   name: reagent-name-milk
@@ -308,7 +289,8 @@
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 4
       - !type:HealthChange
         conditions:
@@ -329,6 +311,12 @@
   desc: reagent-desc-milk-goat
 
 - type: reagent
+  id: MilkSheep
+  parent: Milk
+  name: reagent-name-milk-sheep
+  desc: reagent-desc-milk-sheep
+
+- type: reagent
   id: MilkOat
   name: reagent-name-milk-oat
   #group: Drinks - Goob: Drinks guidebook split
@@ -337,12 +325,13 @@
   flavor: oats
   color: "#DEDACD"
   recognizable: true
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 4
-
 - type: reagent
   id: MilkSoy
   parent: MilkOat
@@ -360,25 +349,27 @@
   physicalDesc: reagent-physical-desc-putrid
   flavor: terrible
   color: "#faffba"
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: -2
-
 - type: reagent
   id: Nothing
+  puddleSpriteSet: Water # Goob
   name: reagent-name-nothing
   desc: reagent-desc-nothing
   #group: Drinks - Goob: Drinks guidebook split
   physicalDesc: reagent-physical-desc-nothing
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
-        # TODO heal mimes
-
 - type: reagent
   id: NuclearCola
   parent: BaseSoda
@@ -388,6 +379,7 @@
   physicalDesc: reagent-physical-desc-fizzy
   flavor: atomiccola
   color: "#100800"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/nuclear_colaglass.rsi
     state: icon_empty
@@ -397,7 +389,8 @@
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 6
       - !type:ModifyStatusEffect
         effectProto: StatusEffectDrowsiness
@@ -423,6 +416,7 @@
   physicalDesc: reagent-physical-desc-fizzy
   flavor: fizzy
   color: "#619494"
+  puddleSpriteSet: Shiny # Goob
   fizziness: 0.8
 
 - type: reagent
@@ -439,16 +433,17 @@
   metamorphicMaxFillLevels: 1
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:ModifyStatusEffect
         effectProto: StatusEffectDrowsiness
         time: 2
         type: Remove
-
 - type: reagent
   id: Tea
   name: reagent-name-tea
@@ -458,10 +453,12 @@
   flavor: tea
   color: "#8a5a3a"
   recognizable: true
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Theobromine
@@ -481,6 +478,7 @@
   physicalDesc: reagent-physical-desc-fizzy
   flavor: tonicwater
   color: "#0064C8"
+  puddleSpriteSet: Shiny # Goob
   fizziness: 0.4
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/tonicglass.rsi
@@ -490,15 +488,17 @@
   metamorphicChangeColor: false
 
 - type: reagent
+  parent: BaseDrink
   id: Water
   name: reagent-name-water
-  parent: BaseDrink
   desc: reagent-desc-water
   evaporationSpeed: 0.3
   absorbent: true
   physicalDesc: reagent-physical-desc-translucent
   flavor: water
   color: "#75b1f0"
+  puddleSpriteSet: Water # Goob
+  puddleColor: "#ffffff" # Goob
   recognizable: true
   boilingPoint: 100.0
   meltingPoint: 0.0
@@ -506,7 +506,8 @@
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 4
     Gas: # DeltaV - Feroxi get to breathe with this too!
       effects:
@@ -522,7 +523,8 @@
         conditions:
         - !type:MetabolizerTypeCondition
           type: [ Feroxi ]
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         conditions:
         - !type:MetabolizerTypeCondition
           type: [ Feroxi ]
@@ -531,7 +533,8 @@
         conditions:
         - !type:MetabolizerTypeCondition
           type: [ FeroxiDehydrated ]
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         conditions:
         - !type:MetabolizerTypeCondition
           type: [ FeroxiDehydrated ]
@@ -562,6 +565,7 @@
   physicalDesc: reagent-physical-desc-frosty
   flavor: cold
   color: "#bed8e6"
+  puddleSpriteSet: Splotchy # Goob
   recognizable: true
   meltingPoint: 0.0
   boilingPoint: 100.0
@@ -569,8 +573,29 @@
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 3 # Slightly worse for quenching thirst than just straight water
+# CorvaxGoob start
+      - !type:AdjustTemperature
+        conditions:
+        - !type:TemperatureCondition
+          min: 273.15
+        amount: -500
+  reactiveEffects:
+    Acidic:
+      methods: [ Touch ]
+      effects:
+      - !type:AdjustTemperature
+        conditions:
+        - !type:TemperatureCondition
+          min: 273.15
+        - !type:HasComponentOnEquipmentCondition
+          components:
+          - type: PressureProtection
+          inverted: true
+        amount: -500
+# CorvaxGoob end
   plantMetabolism:
   - !type:PlantAdjustWater
     amount: 1 # The internet tells me I should avoid watering plants with ice, but mostly because of temperature, so this value being the same as water should probably be fine?
@@ -589,12 +614,14 @@
   physicalDesc: reagent-physical-desc-wormy
   flavor: cheapnoodles
   color: "#664300"
+  puddleSpriteSet: Shiny # Goob
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Food:
       effects:
-      - !type:SatiateHunger
+      - !type:Satiate
+        satiationType: Hunger
         factor: 1
-
 - type: reagent
   id: HotRamen
   name: reagent-name-hot-ramen
@@ -603,12 +630,14 @@
   physicalDesc: reagent-physical-desc-wormy
   flavor: cheapnoodles
   color: "#664300"
+  puddleSpriteSet: Shiny # Goob
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Food:
       effects:
-      - !type:SatiateHunger
+      - !type:Satiate
+        satiationType: Hunger
         factor: 4
-
 - type: reagent
   id: ArnoldPalmer
   name: reagent-name-arnold-palmer
@@ -617,21 +646,23 @@
   physicalDesc: reagent-physical-desc-sweet
   flavor: arnoldpalmer
   color: "#d8cc5d"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/arnoldpalmer.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 4
       - !type:AdjustReagent
         reagent: Theobromine
         amount: 0.05
-
 - type: reagent
   id: Pilk
   name: reagent-name-pilk
@@ -640,11 +671,13 @@
   physicalDesc: reagent-physical-desc-creamy
   flavor: pilk
   color: "#e7c69f"
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-        - !type:SatiateThirst
-          factor: 1
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 1
   fizziness: 0.3
 
 - type: reagent
@@ -696,12 +729,13 @@
   physicalDesc: reagent-physical-desc-murky
   flavor: mopwata
   color: "#59502b"
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 0.6
-
 - type: reagent
   id: Tortuga
   name: reagent-name-tortuga

@@ -8,6 +8,7 @@ using Content.Server.DoAfter;
 using Content.Server.NPC.Components;
 using Content.Server.NPC.Events;
 using Content.Server.NPC.Pathfinding;
+using Content.Shared.Access.Systems;
 using Content.Shared.CCVar;
 using Content.Shared.Climbing.Systems;
 using Content.Shared.CombatMode;
@@ -44,6 +45,8 @@ namespace Content.Server.NPC.Systems;
 
 public sealed partial class NPCSteeringSystem : SharedNPCSteeringSystem
 {
+    [Dependency] private Content.Shared.Access.Systems.AccessReaderSystem _access = default!;
+
     private static readonly Gauge ActiveSteeringGauge = Metrics.CreateGauge(
         "npc_steering_active_count",
         "Amount of NPCs trying to actively do steering");
@@ -73,8 +76,8 @@ public sealed partial class NPCSteeringSystem : SharedNPCSteeringSystem
     [Dependency] private readonly SharedMoverController _mover = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly SharedCombatModeSystem _combat = default!;
-    [Dependency] protected readonly IGameTiming Timing = default!; // Tile Movement Change
-    [Dependency] protected readonly SharedPhysicsSystem PhysicsSystem = default!; // Tile Movement Change
+    [Dependency] private readonly IGameTiming Timing = default!; // Tile Movement Change
+    [Dependency] private readonly SharedPhysicsSystem PhysicsSystem = default!; // Tile Movement Change
     [Dependency] private readonly SharedGravitySystem _gravity = default!; // Tile Movement Change
     private TimeSpan CurrentTime => PhysicsSystem.EffectiveCurTime ?? Timing.CurTime; // Tile Movement Change
     private EntityQuery<FixturesComponent> _fixturesQuery;
@@ -98,8 +101,6 @@ public sealed partial class NPCSteeringSystem : SharedNPCSteeringSystem
     public static readonly Vector2[] Directions = new Vector2[InterestDirections];
 
     private readonly HashSet<ICommonSession> _subscribedSessions = new();
-
-    private object _obstacles = new();
 
     private int _activeSteeringCount;
 
@@ -393,7 +394,7 @@ public sealed partial class NPCSteeringSystem : SharedNPCSteeringSystem
         }
 
         // Avoid static objects like walls
-        CollisionAvoidance(uid, offsetRot, worldPos, agentRadius, layer, mask, xform, danger);
+        CollisionAvoidance(uid, steering, offsetRot, worldPos, agentRadius, layer, mask, xform, danger);
         DebugTools.Assert(!float.IsNaN(danger[0]));
 
         Separation(uid, offsetRot, worldPos, agentRadius, layer, mask, body, xform, danger);

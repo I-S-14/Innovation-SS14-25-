@@ -13,8 +13,8 @@ using Content.Shared.Administration.Components;
 using Content.Shared.Administration.Logs;
 using Content.Shared.CombatMode;
 using Content.Shared.Damage;
+using Content.Shared.Damage.Components;
 using Content.Shared.Damage.Events;
-using Content.Shared.Damage.Components; // DeltaV - Melee Stamina Resistance Override
 using Content.Shared.Damage.Systems;
 using Content.Shared.Database;
 using Content.Goobstation.Maths.FixedPoint;
@@ -58,13 +58,15 @@ using ItemToggleMeleeWeaponComponent = Content.Shared.Item.ItemToggle.Components
 
 namespace Content.Shared.Weapons.Melee;
 
-public abstract class SharedMeleeWeaponSystem : EntitySystem
+public abstract partial class SharedMeleeWeaponSystem : EntitySystem // Goob - partial
 {
+    //IS14-change start: typed IDs for the retained behavior.
+    private static readonly ProtoId<TagPrototype> WideSwingIgnoreTag = "WideSwingIgnore";
+    //IS14-change end
+
     [Dependency] protected readonly IGameTiming Timing = default!;
-    [Dependency] protected readonly IMapManager MapManager = default!;
-    [Dependency] private   readonly INetManager _netMan = default!;
+    [Dependency] protected readonly SharedMapSystem MapSystem = default!;
     [Dependency] private   readonly IPrototypeManager _protoManager = default!;
-    [Dependency] private   readonly IRobustRandom _random = default!;
     [Dependency] protected readonly ISharedAdminLogManager AdminLogger = default!;
     [Dependency] protected readonly ActionBlockerSystem Blocker = default!;
     [Dependency] protected readonly DamageableSystem Damageable = default!;
@@ -156,6 +158,9 @@ public abstract class SharedMeleeWeaponSystem : EntitySystem
 
     private void OnMeleeShotAttempted(EntityUid uid, MeleeWeaponComponent comp, ref ShotAttemptedEvent args)
     {
+        if (args.User == uid) // CorvaxGoob - FireOnDrop
+            return;
+
         if (comp.NextAttack > Timing.CurTime)
             args.Cancel();
     }
@@ -183,6 +188,7 @@ public abstract class SharedMeleeWeaponSystem : EntitySystem
             return;
 
         _damageExamine.AddDamageExamine(args.Message, Damageable.ApplyUniversalAllModifiers(damageSpec), Loc.GetString("damage-melee"));
+        AddArmorPenetrationExamine(args.Message, damageSpec); // Goob
     }
     private void OnMeleeSelected(EntityUid uid, MeleeWeaponComponent component, HandSelectedEvent args)
     {
@@ -438,7 +444,7 @@ public abstract class SharedMeleeWeaponSystem : EntitySystem
         return AttemptAttack(user,
             weaponUid,
             weapon,
-            new HeavyAttackEvent(GetNetEntity(weaponUid), GetNetEntityList(targets), GetNetCoordinates(coordinates)),
+            new HeavyAttackEvent(GetNetEntity(weaponUid), new HashSet<NetEntity>(GetNetEntityList(targets)), GetNetCoordinates(coordinates)),
             null);
     }
 
@@ -692,17 +698,22 @@ public abstract class SharedMeleeWeaponSystem : EntitySystem
         RaiseLocalEvent(target.Value, attackedEvent);
         var modifiedDamage = DamageSpecifier.ApplyModifierSets(damage + hitEvent.BonusDamage + attackedEvent.BonusDamage, hitEvent.ModifiersList);
         modifiedDamage = DamageSpecifier.ApplyModifierSets(modifiedDamage, attackedEvent.ModifiersList); // Goobstation
-		
-            // CorvaxGoob-changes-start:
-            if (component.BypassFlatReductions)
-                modifiedDamage.BypassFlatReductions = true;
-            // CorvaxGoob-changes-end
 
-        var damageResult = Damageable.TryChangeDamage(target, modifiedDamage, origin: user, partMultiplier: component.ClickPartDamageMultiplier); // Shitmed Change
+        // CorvaxGoob-changes-start
+        if (component.BypassFlatReductions)
+            modifiedDamage.BypassFlatReductions = true;
+        // CorvaxGoob-changes-end
+
+        // Goob - this is moved to hit variable so we do event after damage but before everything else
+        var hit = Damageable.TryChangeDamage(
+            target.Value, modifiedDamage, out var damageResult, origin:user,
+            ignoreResistances: resistanceBypass, partMultiplier: component.ClickPartDamageMultiplier); // Goob - Shitmed Change
+        // Goob start - Martial Arts
         var comboEv = new ComboAttackPerformedEvent(user, target.Value, meleeUid, ComboAttackType.Harm);
         RaiseLocalEvent(user, comboEv);
+        // Goob end
 
-        if (damageResult is {Empty: false})
+        if (hit)
         {
             // If the target has stamina and is taking blunt damage, they should also take stamina damage based on their blunt to stamina factor
             if (damageResult.DamageDict.TryGetValue("Blunt", out var bluntDamage))
@@ -733,9 +744,10 @@ public abstract class SharedMeleeWeaponSystem : EntitySystem
 
         _meleeSound.PlayHitSound(target.Value, user, GetHighestDamageSound(modifiedDamage, _protoManager), hitEvent.HitSoundOverride, component);
 
-        if (damageResult?.GetTotal() > FixedPoint2.Zero)
+        if (damageResult.GetTotal() > FixedPoint2.Zero)
         {
             DoDamageEffect(targets, user, targetXform);
+            DoMeleeScreenshake(user, targets); // Goob
         }
     }
 
@@ -827,6 +839,9 @@ public abstract class SharedMeleeWeaponSystem : EntitySystem
                 !damageQuery.HasComponent(entity))
                 continue;
 
+            if (IsHeavyAttackTargetBlocked(entity, user, meleeUid)) // Goob
+                continue;
+
             // Goobstation start
             var beforeEvent = new BeforeHarmfulActionEvent(user, HarmfulActionType.Harm);
             RaiseLocalEvent(entity, beforeEvent);
@@ -879,23 +894,31 @@ public abstract class SharedMeleeWeaponSystem : EntitySystem
             var attackedEvent = new AttackedEvent(meleeUid, user, GetCoordinates(ev.Coordinates));
             RaiseLocalEvent(entity, attackedEvent);
             var modifiedDamage = DamageSpecifier.ApplyModifierSets(damage + hitEvent.BonusDamage + attackedEvent.BonusDamage, hitEvent.ModifiersList);
-            modifiedDamage = DamageSpecifier.ApplyModifierSets(modifiedDamage, attackedEvent.ModifiersList); // Goobstation
+
+            // Goob start - shitmed
+            modifiedDamage = DamageSpecifier.ApplyModifierSets(modifiedDamage, attackedEvent.ModifiersList);
 
             // CorvaxGoob-changes-start
             if (component.BypassFlatReductions)
                 modifiedDamage.BypassFlatReductions = true;
-            // CorvaxGoob-changes-end		
+            // CorvaxGoob-changes-end
 
-            foreach (var type in modifiedDamage.DamageDict.Keys) // Goobstation
+            foreach (var type in modifiedDamage.DamageDict.Keys)
             {
                 if (!modifiedDamage.WoundSeverityMultipliers.TryAdd(type, component.HeavyAttackWoundMultiplier))
                     modifiedDamage.WoundSeverityMultipliers[type] *= component.HeavyAttackWoundMultiplier;
             }
-            var damageResult = Damageable.TryChangeDamage(entity, modifiedDamage, origin: user, ignoreResistances: resistanceBypass, partMultiplier: component.HeavyPartDamageMultiplier); // Shitmed Change
+            // Goob end
+
+
+            // Goob start - Martial Arts
             var comboEv = new ComboAttackPerformedEvent(user, entity, meleeUid, ComboAttackType.HarmLight);
             RaiseLocalEvent(user, comboEv);
+            // Goob end
 
-            if (damageResult != null && damageResult.GetTotal() > FixedPoint2.Zero)
+            var damageResult = Damageable.ChangeDamage(entity, modifiedDamage, origin: user, ignoreResistances: resistanceBypass, partMultiplier: component.HeavyPartDamageMultiplier); // Goob - Shitmed Change
+
+            if (damageResult.GetTotal() > FixedPoint2.Zero)
             {
                 // If the target has stamina and is taking blunt damage, they should also take stamina damage based on their blunt to stamina factor
                 if (damageResult.DamageDict.TryGetValue("Blunt", out var bluntDamage))
@@ -932,6 +955,8 @@ public abstract class SharedMeleeWeaponSystem : EntitySystem
             _meleeSound.PlayHitSound(target, user, GetHighestDamageSound(appliedDamage, _protoManager), hitEvent.HitSoundOverride, component);
         }
 
+        DoMeleeScreenshake(user, targets); // Goob
+
         if (appliedDamage.GetTotal() > FixedPoint2.Zero)
         {
             DoDamageEffect(targets, user, Transform(targets[0]));
@@ -965,7 +990,7 @@ public abstract class SharedMeleeWeaponSystem : EntitySystem
                 range,
                 ignore,
                 false)
-                .Where(x => !_tag.HasTag(x.HitEntity, "WideSwingIgnore")) // Goobstation
+                .Where(x => !_tag.HasTag(x.HitEntity, WideSwingIgnoreTag)) // Goobstation
                 .ToList();
 
             if (res.Count != 0)
@@ -1095,7 +1120,7 @@ public abstract class SharedMeleeWeaponSystem : EntitySystem
         // Goobstation end
 
         PhysicalShove(user, target);
-        Interaction.DoContactInteraction(user, target);
+        Interaction.DoContactInteraction(user, target, null, true); // Goob
 
         if (MobState.IsIncapacitated(target))
             return true;
@@ -1222,7 +1247,7 @@ public abstract class SharedMeleeWeaponSystem : EntitySystem
     /// <summary>
     /// Used to update the MeleeWeapon component on item toggle.
     /// </summary>
-    private void OnItemToggle(EntityUid uid, ItemToggleMeleeWeaponComponent itemToggleMelee, ItemToggledEvent args)
+    private void OnItemToggle(EntityUid uid, ItemToggleMeleeWeaponComponent itemToggleMelee, ref ItemToggledEvent args)
     {
         if (!TryComp(uid, out MeleeWeaponComponent? meleeWeapon))
             return;

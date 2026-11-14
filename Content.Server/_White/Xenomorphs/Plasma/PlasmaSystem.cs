@@ -22,7 +22,7 @@ public sealed class PlasmaSystem : SharedPlasmaSystem
         SubscribeLocalEvent<PlasmaGainModifierComponent, ItemRemovedEvent>(OnItemRemoved);
     }
 
-    private void OnItemPlaced(EntityUid uid, PlasmaGainModifierComponent component, ItemPlacedEvent args)
+    private void OnItemPlaced(EntityUid uid, PlasmaGainModifierComponent component, ref ItemPlacedEvent args)
     {
         if (!TryComp<XenomorphComponent>(args.OtherEntity, out var xenomorph) || xenomorph.OnWeed)
             return;
@@ -30,7 +30,7 @@ public sealed class PlasmaSystem : SharedPlasmaSystem
         xenomorph.OnWeed = true;
     }
 
-    private void OnItemRemoved(EntityUid uid, PlasmaGainModifierComponent component, ItemRemovedEvent args)
+    private void OnItemRemoved(EntityUid uid, PlasmaGainModifierComponent component, ref ItemRemovedEvent args)
     {
         if (!TryComp<XenomorphComponent>(args.OtherEntity, out var xenomorph) || !xenomorph.OnWeed)
             return;

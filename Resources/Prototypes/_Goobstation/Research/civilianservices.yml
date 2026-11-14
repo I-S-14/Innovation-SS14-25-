@@ -14,6 +14,7 @@
   - PrescriptionGlasses
   - EnvirosuitExtinguisherRefill
   - TinfoilHats
+  - CrewMonitoringComputerCircuitboard
   position: 3,4
   technologyPrerequisites:
   - AdvancedEntertainment
@@ -38,7 +39,7 @@
   name: research-technology-rescue
   icon:
     sprite: Objects/Specific/Medical/handheldcrewmonitor.rsi
-    state: scanner
+    state: icon # IS14: use the current crew monitor resprite.
   discipline: CivilianServices
   tier: 1
   cost: 7500

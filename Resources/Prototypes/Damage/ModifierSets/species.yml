@@ -1,0 +1,23 @@
+# These are modifier sets used for humanoids
+
+#region Standard round-start
+
+- type: damageModifierSet
+  id: Scale # Skin tougher, bones weaker, strong stomachs, cold-blooded (kindof)
+  coefficients:
+    Cold: 1.3
+  ignoreArmorPierceFlags: All # Goobstation
+
+# hurt a lot by blunt, immune to a good amount of other stuff because they're a cookie
+- type: damageModifierSet
+  id: Gingerbread
+  coefficients:
+    Blunt: 1.5
+    # Cold: 0.0 # Goobstation - Prevents gingerbread from being immune to Cosmic Cultist damage
+    Radiation: 0.5
+    Asphyxiation: 0.0
+    Bloodloss: 0.0
+    # Cellular: 0.0 # Goobstation - changelings
+  ignoreArmorPierceFlags: All # Goobstation
+
+#endregion

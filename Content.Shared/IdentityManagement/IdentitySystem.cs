@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using Content.Goobstation.Common.Identity;
 using Content.Shared.Access.Systems;
 using Content.Shared.Administration.Logs;
@@ -279,6 +280,23 @@ public sealed class IdentitySystem : EntitySystem
     }
 
     #endregion
+
+    // IS14-merge: restored member lost in the upstream merge
+    /// <summary>
+    /// Attempts to get a display name and ID title for the given entity.
+    /// For example "Urist McHands (Captain)" for players or "Robby (SI-123)" for silicons.
+    /// </summary>
+    /// <param name="target"> The entity to find the name for.</param>
+    /// <param name="whileInteractingWith"> The entity being used to request the target's name.</param>
+    /// <param name="forLogging"> For special IDs that don't leave behind a log trail; It compares to<c>IdCardComponent.BypassLogging</c>.</param> // TODO: This should not be here.
+    /// <returns> A string of the name and ID or null if no valid identity or no ID card was found.</returns>
+    [PublicAPI]
+    public string? GetIdentityShortInfo(EntityUid target, EntityUid? whileInteractingWith = null, bool forLogging = false)
+    {
+        var tryGetIdentityShortInfoEvent = new TryGetIdentityShortInfoEvent(target, whileInteractingWith, forLogging);
+        RaiseLocalEvent(target, tryGetIdentityShortInfoEvent, true);
+        return tryGetIdentityShortInfoEvent.Title;
+    }
 }
 
 /// <summary>

@@ -55,6 +55,7 @@ using Content.Shared._Shitcode.Roles;
 using Content.Shared.Administration.Systems;
 using Content.Shared.Roles.Components;
 using Content.Shared.Temperature.Components;
+using Content.Shared.Antag;
 
 namespace Content.Server.Heretic.EntitySystems;
 
@@ -94,6 +95,17 @@ public sealed class GhoulSystem : EntitySystem
 
         SubscribeLocalEvent<HereticMinionComponent, AttackAttemptEvent>(OnTryAttack);
         SubscribeLocalEvent<HereticMinionComponent, TakeGhostRoleEvent>(OnTakeGhostRole);
+        SubscribeLocalEvent<HereticMinionComponent, ComponentShutdown>(OnMinionShutdown);
+    }
+
+    private void OnMinionShutdown(Entity<HereticMinionComponent> ent, ref ComponentShutdown args)
+    {
+        var query = EntityQueryEnumerator<HereticComponent>();
+        while (query.MoveNext(out var mind, out var heretic))
+        {
+            if (heretic.Minions.Remove(ent))
+                Dirty(mind, heretic);
+        }
     }
 
     private void OnGetBriefing(Entity<GhoulRoleComponent> ent, ref GetBriefingEvent args)
@@ -143,8 +155,8 @@ public sealed class GhoulSystem : EntitySystem
     {
         RemComp<RespiratorComponent>(ent);
         RemComp<BarotraumaComponent>(ent);
-        RemComp<HungerComponent>(ent);
-        RemComp<ThirstComponent>(ent);
+        RemComp<SatiationComponent>(ent);
+        RemComp<SatiationComponent>(ent);
         RemComp<ReproductiveComponent>(ent);
         RemComp<ReproductivePartnerComponent>(ent);
         RemComp<TemperatureComponent>(ent);

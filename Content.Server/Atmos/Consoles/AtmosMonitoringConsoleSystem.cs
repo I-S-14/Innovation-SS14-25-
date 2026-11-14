@@ -1,9 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-
-using Content.Server.Atmos.Components;
-using Content.Server.Atmos.Piping.Components;
-using Content.Server.DeviceNetwork.Components;
-using Content.Server.NodeContainer;
+using Content.Shared._IS14.Atmos; // IS14-change: shared pipe colors retain console notifications.
 using Content.Server.NodeContainer.EntitySystems;
 using Content.Server.NodeContainer.NodeGroups;
 using Content.Server.NodeContainer.Nodes;
@@ -20,16 +16,20 @@ using Robust.Shared.Timing;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Content.Server.Atmos.EntitySystems;
+using Content.Shared.DeviceNetwork;
 using Content.Shared.DeviceNetwork.Components;
 using Content.Shared.NodeContainer;
+using Content.Server.Atmos.Components;
+using Content.Server.DeviceNetwork.Components;
+using Content.Server.NodeContainer;
 
 namespace Content.Server.Atmos.Consoles;
 
-public sealed class AtmosMonitoringConsoleSystem : SharedAtmosMonitoringConsoleSystem
+public sealed partial class AtmosMonitoringConsoleSystem : SharedAtmosMonitoringConsoleSystem
 {
-    [Dependency] private readonly UserInterfaceSystem _userInterfaceSystem = default!;
-    [Dependency] private readonly SharedMapSystem _sharedMapSystem = default!;
-    [Dependency] private readonly IGameTiming _gameTiming = default!;
+    [Dependency] private UserInterfaceSystem _userInterfaceSystem = default!;
+    [Dependency] private SharedMapSystem _sharedMapSystem = default!;
+    [Dependency] private IGameTiming _gameTiming = default!;
 
     // Private variables
     // Note: this data does not need to be saved
@@ -77,12 +77,12 @@ public sealed class AtmosMonitoringConsoleSystem : SharedAtmosMonitoringConsoleS
         InitializeAtmosMonitoringConsole(uid, component);
     }
 
-    private void OnEntityNodeGroupsRebuilt(EntityUid uid, AtmosMonitoringConsoleDeviceComponent component, NodeGroupsRebuilt args)
+    private void OnEntityNodeGroupsRebuilt(EntityUid uid, AtmosMonitoringConsoleDeviceComponent component, ref NodeGroupsRebuilt args)
     {
         InitializeAtmosMonitoringDevice(uid, component);
     }
 
-    private void OnEntityPipeColorChanged(EntityUid uid, AtmosMonitoringConsoleDeviceComponent component, AtmosPipeColorChangedEvent args)
+    private void OnEntityPipeColorChanged(EntityUid uid, AtmosMonitoringConsoleDeviceComponent component, ref AtmosPipeColorChangedEvent args)
     {
         InitializeAtmosMonitoringDevice(uid, component);
     }
@@ -214,7 +214,7 @@ public sealed class AtmosMonitoringConsoleSystem : SharedAtmosMonitoringConsoleS
 
         // Otherwise use its base name and network address
         else if (TryComp<DeviceNetworkComponent>(uid, out var deviceNet))
-            address = deviceNet.Address;
+            address = DeviceLocalizationHelpers.GetAddressFromId(deviceNet);
 
         // Entry for unpowered devices
         if (TryComp<ApcPowerReceiverComponent>(uid, out var apcPowerReceiver) && !apcPowerReceiver.Powered)
@@ -376,7 +376,7 @@ public sealed class AtmosMonitoringConsoleSystem : SharedAtmosMonitoringConsoleS
         // Remove all stale values for the tile
         foreach (var (index, atmosPipeData) in chunk.AtmosPipeData)
         {
-            var mask = (ulong)SharedNavMapSystem.AllDirMask << tileIdx * SharedNavMapSystem.Directions;
+            var mask = (ulong)NavMapSystem.AllDirMask << tileIdx * NavMapSystem.Directions;
             chunk.AtmosPipeData[index] = atmosPipeData & ~mask;
         }
 
@@ -438,7 +438,7 @@ public sealed class AtmosMonitoringConsoleSystem : SharedAtmosMonitoringConsoleS
             var pipeDirection = pipeNode.CurrentPipeDirection;
 
             chunk.AtmosPipeData.TryGetValue(subnet, out var atmosPipeData);
-            atmosPipeData |= (ulong)pipeDirection << tileIdx * SharedNavMapSystem.Directions;
+            atmosPipeData |= (ulong)pipeDirection << tileIdx * NavMapSystem.Directions;
             chunk.AtmosPipeData[subnet] = atmosPipeData;
         }
     }

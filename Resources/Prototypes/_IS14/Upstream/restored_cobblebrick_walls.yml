@@ -1,0 +1,47 @@
+# IS14: retained Goob paintable walls; inherit current WallCobblebrick smoothing.
+# Source: 5327c414c5:Resources/Prototypes/Entities/Structures/Walls/walls.yml
+- type: entity
+  parent: WallCobblebrick
+  id: WallBasaltCobblebrick
+  name: basalt brick wall
+  components:
+  - type: Sprite
+    sprite: Structures/Walls/cobblebrick_basalt.rsi
+  - type: Icon
+    sprite: Structures/Walls/cobblebrick_basalt.rsi
+- type: entity
+  parent: WallCobblebrick
+  id: WallAsteroidCobblebrick
+  name: asteroid stone brick wall
+  components:
+  - type: Sprite
+    sprite: Structures/Walls/cobblebrick_asteroid.rsi
+  - type: Icon
+    sprite: Structures/Walls/cobblebrick_asteroid.rsi
+- type: entity
+  parent: WallCobblebrick
+  id: WallSandCobblebrick
+  name: sandstone brick wall
+  components:
+  - type: Sprite
+    sprite: Structures/Walls/cobblebrick_sand.rsi
+  - type: Icon
+    sprite: Structures/Walls/cobblebrick_sand.rsi
+- type: entity
+  parent: WallCobblebrick
+  id: WallChromiteCobblebrick
+  name: chromite brick wall
+  components:
+  - type: Sprite
+    sprite: Structures/Walls/cobblebrick_chromite.rsi
+  - type: Icon
+    sprite: Structures/Walls/cobblebrick_chromite.rsi
+- type: entity
+  parent: WallCobblebrick
+  id: WallAndesiteCobblebrick
+  name: andesite brick wall
+  components:
+  - type: Sprite
+    sprite: Structures/Walls/cobblebrick_andesite.rsi
+  - type: Icon
+    sprite: Structures/Walls/cobblebrick_andesite.rsi

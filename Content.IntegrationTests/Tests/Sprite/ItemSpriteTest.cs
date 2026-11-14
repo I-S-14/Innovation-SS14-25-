@@ -2,6 +2,7 @@
 
 #nullable enable
 using System.Collections.Generic;
+using Content.IntegrationTests.Fixtures;
 using Content.Shared.Item;
 using Robust.Client.GameObjects;
 using Robust.Shared.GameObjects;
@@ -24,7 +25,7 @@ namespace Content.IntegrationTests.Tests.Sprite;
 /// <see cref="Ignored"/>
 /// </remarks>
 [TestFixture]
-public sealed class PrototypeSaveTest
+public sealed class PrototypeSaveTest : GameTest
 {
     private static readonly HashSet<string> Ignored = new()
     {
@@ -37,9 +38,9 @@ public sealed class PrototypeSaveTest
     [Test]
     public async Task AllItemsHaveSpritesTest()
     {
-        var settings = new PoolSettings() { Connected = true }; // client needs to be in-game
-        await using var pair = await PoolManager.GetServerClient(settings);
+        var pair = Pair;
         List<EntityPrototype> badPrototypes = [];
+        List<(EntityPrototype Prototype, EntityUid Entity)> spawned = [];
 
         await pair.Client.WaitPost(() =>
         {
@@ -47,6 +48,16 @@ public sealed class PrototypeSaveTest
             {
                 var dummy = pair.Client.EntMan.Spawn(proto.ID);
                 pair.Client.EntMan.RunMapInit(dummy, pair.Client.MetaData(dummy));
+                spawned.Add((proto, dummy));
+            }
+        });
+
+        //IS14-change: appearance-driven sprites (including ID cards) update on the next frame.
+        await pair.Client.WaitRunTicks(2);
+        await pair.Client.WaitPost(() =>
+        {
+            foreach (var (proto, dummy) in spawned)
+            {
                 var spriteComponent = pair.Client.EntMan.GetComponentOrNull<SpriteComponent>(dummy);
                 if (spriteComponent?.Icon == null)
                     badPrototypes.Add(proto);
@@ -61,7 +72,5 @@ public sealed class PrototypeSaveTest
                 Assert.Fail($"Item prototype has no sprite: {proto.ID}. It should probably either be marked as abstract, not be an item, or have a valid sprite");
             }
         });
-
-        await pair.CleanReturnAsync();
     }
 }

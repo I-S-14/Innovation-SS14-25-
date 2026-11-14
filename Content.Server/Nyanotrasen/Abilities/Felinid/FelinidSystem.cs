@@ -12,7 +12,7 @@ using Content.Shared.IdentityManagement;
 using Content.Shared.Nutrition.Components;
 using Content.Shared.Nutrition.EntitySystems;
 using Content.Server.Body.Components;
-using Content.Server.Chemistry.Containers.EntitySystems;
+using Content.Shared.Chemistry.EntitySystems;
 using Content.Server.Medical;
 using Content.Server.Nutrition.Components;
 using Content.Server.Popups;
@@ -22,6 +22,7 @@ using Robust.Shared.Random;
 using Robust.Shared.Prototypes;
 using Content.Shared.Charges.Systems;
 using Content.Shared.Medical;
+using Content.Server.Chemistry.EntitySystems;
 
 namespace Content.Server.Nyanotrasen.Abilities.Felinid;
 
@@ -35,7 +36,6 @@ public sealed partial class FelinidSystem : EntitySystem
     [Dependency] private readonly IRobustRandom _robustRandom = default!;
     [Dependency] private readonly PopupSystem _popupSystem = default!;
     [Dependency] private readonly InventorySystem _inventorySystem = default!;
-    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly SharedChargesSystem _sharedChargesSystem = default!;
 
@@ -107,7 +107,9 @@ public sealed partial class FelinidSystem : EntitySystem
     private void OnHairball(EntityUid uid, FelinidComponent component, HairballActionEvent args)
     {
         if (_inventorySystem.TryGetSlotEntity(uid, "mask", out var maskUid) &&
-        EntityManager.TryGetComponent<IngestionBlockerComponent>(maskUid, out var blocker) &&
+        //IS14-change start
+        TryComp<IngestionBlockerComponent>(maskUid, out var blocker) &&
+        //IS14-change end
         blocker.Enabled)
         {
             _popupSystem.PopupEntity(Loc.GetString("hairball-mask", ("mask", maskUid)), uid, uid);
@@ -126,17 +128,19 @@ public sealed partial class FelinidSystem : EntitySystem
         if (component.EatActionTarget == null)
             return;
 
-        if (!TryComp<HungerComponent>(uid, out var hunger))
+        if (!TryComp<SatiationComponent>(uid, out var hunger))
             return;
 
-        if (hunger.CurrentThreshold == Shared.Nutrition.Components.HungerThreshold.Overfed)
+        if (_hungerSystem.GetHungerThreshold(uid, comp: hunger) == Content.Shared.Nutrition.EntitySystems.HungerThreshold.Overfed)
         {
             _popupSystem.PopupEntity(Loc.GetString("ingestion-other-cannot-ingest-any-more"), uid, uid, Shared.Popups.PopupType.SmallCaution);
             return;
         }
 
         if (_inventorySystem.TryGetSlotEntity(uid, "mask", out var maskUid) &&
-        EntityManager.TryGetComponent<IngestionBlockerComponent>(maskUid, out var blocker) &&
+        //IS14-change start
+        TryComp<IngestionBlockerComponent>(maskUid, out var blocker) &&
+        //IS14-change end
         blocker.Enabled)
         {
             _popupSystem.PopupEntity(Loc.GetString("hairball-mask", ("mask", maskUid)), uid, uid, Shared.Popups.PopupType.SmallCaution);
@@ -151,7 +155,7 @@ public sealed partial class FelinidSystem : EntitySystem
         Del(component.EatActionTarget.Value);
         component.EatActionTarget = null;
 
-        _audio.PlayPvs("/Audio/_DV/Items/eatfood.ogg", uid, AudioHelpers.WithVariation(0.15f));
+        _audio.PlayPvs("/Audio/_Goobstation/Heretic/eatfood.ogg", uid, AudioHelpers.WithVariation(0.15f)); // IS14: use the retained eating sound.
 
         _hungerSystem.ModifyHunger(uid, 50f, hunger);
 
@@ -161,7 +165,9 @@ public sealed partial class FelinidSystem : EntitySystem
 
     private void SpawnHairball(EntityUid uid, FelinidComponent component)
     {
-        var hairball = EntityManager.SpawnEntity(component.HairballPrototype, Transform(uid).Coordinates);
+        //IS14-change start
+        var hairball = Spawn(component.HairballPrototype, Transform(uid).Coordinates);
+        //IS14-change end
         var hairballComp = Comp<HairballComponent>(hairball);
 
         if (TryComp<BloodstreamComponent>(uid, out var bloodstream) && bloodstream.BloodSolution.HasValue)
@@ -174,7 +180,7 @@ public sealed partial class FelinidSystem : EntitySystem
             }
         }
     }
-    private void OnHairballHit(EntityUid uid, HairballComponent component, ThrowDoHitEvent args)
+    private void OnHairballHit(EntityUid uid, HairballComponent component, ref ThrowDoHitEvent args)
     {
         if (HasComp<FelinidComponent>(args.Target) || !HasComp<StatusEffectsComponent>(args.Target))
             return;

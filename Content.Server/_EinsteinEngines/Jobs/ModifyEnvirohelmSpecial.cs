@@ -20,11 +20,9 @@ public sealed partial class ModifyEnvirohelmSpecial : JobSpecial
     [DataField(required: true)]
     public ProtoId<EntityPrototype> PowerCell { get; private set; }
 
-    [ValidatePrototypeId<SpeciesPrototype>]
-    private const string Species = "Plasmaman";
+    private static readonly ProtoId<SpeciesPrototype> Species = "Plasmaman";
 
-    [ValidatePrototypeId<TagPrototype>]
-    private const string Tag = "Envirohelm";
+    private static readonly ProtoId<TagPrototype> Tag = "Envirohelm";
 
     private const string Slot = "head";
 
@@ -43,12 +41,12 @@ public sealed partial class ModifyEnvirohelmSpecial : JobSpecial
 
         var itemSlotsSystem = entMan.System<ItemSlotsSystem>();
 
-        if (itemSlotsSystem.GetItemOrNull(envirohelm, ItemSlot, itemSlotsComp) is { } powerCellToDelete)
+        if (itemSlotsSystem.GetItemOrNull((envirohelm, itemSlotsComp), ItemSlot) is { } powerCellToDelete)
             entMan.DeleteEntity(powerCellToDelete);
 
         var powerCell = entMan.Spawn(PowerCell);
 
-        if (!itemSlotsSystem.TryInsert(envirohelm, ItemSlot, powerCell, null, itemSlotsComp, excludeUserAudio: true))
+        if (!itemSlotsSystem.TryInsert((envirohelm, itemSlotsComp), ItemSlot, powerCell, null, excludeUserAudio: true))
             entMan.DeleteEntity(powerCell);
     }
 }

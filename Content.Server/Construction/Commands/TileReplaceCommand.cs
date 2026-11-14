@@ -9,10 +9,10 @@ using Robust.Shared.Map.Components;
 namespace Content.Server.Construction.Commands;
 
 [AdminCommand(AdminFlags.Mapping)]
-public sealed class TileReplaceCommand : IConsoleCommand
+public sealed partial class TileReplaceCommand : IConsoleCommand
 {
-    [Dependency] private readonly IEntityManager _entManager = default!;
-    [Dependency] private readonly ITileDefinitionManager _tileDef = default!;
+    [Dependency] private IEntityManager _entManager = default!;
+    [Dependency] private ITileDefinitionManager _tileDef = default!;
 
     // ReSharper disable once StringLiteralTypo
     public string Command => "tilereplace";
@@ -74,15 +74,15 @@ public sealed class TileReplaceCommand : IConsoleCommand
         var mapSystem = _entManager.System<SharedMapSystem>();
 
         var changed = 0;
+        var changes = new List<(Vector2i GridIndices, Tile Tile)>();
         foreach (var tile in mapSystem.GetAllTiles(gridId.Value, grid))
         {
-            var tileContent = tile.Tile;
-            if (tileContent.TypeId == tileA.TileId)
-            {
-                mapSystem.SetTile(gridId.Value, grid, tile.GridIndices, new Tile(tileB.TileId));
-                changed++;
-            }
+            if (tile.Tile.TypeId == tileA.TileId)
+                changes.Add((tile.GridIndices, new Tile(tileB.TileId)));
         }
+
+        mapSystem.SetTiles(gridId.Value, grid, changes);
+        changed = changes.Count;
 
         shell.WriteLine($"Changed {changed} tiles.");
     }

@@ -53,7 +53,6 @@ namespace Content.Shared.Input
         public static readonly BoundKeyFunction TryPullObject = "TryPullObject";
         public static readonly BoundKeyFunction MovePulledObject = "MovePulledObject";
         public static readonly BoundKeyFunction ReleasePulledObject = "ReleasePulledObject";
-        public static readonly BoundKeyFunction MouseMiddle = "MouseMiddle";
         public static readonly BoundKeyFunction RotateObjectClockwise = "RotateObjectClockwise";
         public static readonly BoundKeyFunction RotateObjectCounterclockwise = "RotateObjectCounterclockwise";
         public static readonly BoundKeyFunction FlipObject = "FlipObject";
@@ -72,6 +71,9 @@ namespace Content.Shared.Input
         public static readonly BoundKeyFunction ZoomIn = "ZoomIn";
         public static readonly BoundKeyFunction ResetZoom = "ResetZoom";
         public static readonly BoundKeyFunction ResistGrab = "ResistGrab"; // Goobstation - Grab Intent
+        public static readonly BoundKeyFunction VoicePushToTalk = "VoicePushToTalk"; // Goobstation - Voice chat
+        public static readonly BoundKeyFunction VoicePushToTalkRadio = "VoicePushToTalkRadio"; // Goobstation - Voice chat
+        public static readonly BoundKeyFunction NamePeek = "NamePeek"; // Goob
 
         // Shitmed Change Start
         public static readonly BoundKeyFunction TargetHead = "TargetHead";

@@ -13,14 +13,17 @@ using Robust.Client.UserInterface.XAML;
 using Robust.Shared.Input;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
+using Robust.Client.ResourceManagement;
+using Robust.Client.UserInterface;
+using Robust.Shared.Map;
 
 namespace Content.Client.CartridgeLoader.Cartridges;
 
 [GenerateTypedNameReferences]
 public sealed partial class WantedListUiFragment : BoxContainer
 {
-    [Dependency] private readonly IEntitySystemManager _entitySystem = default!;
-    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
+    [Dependency] private IEntitySystemManager _entitySystem = default!;
+    [Dependency] private IPrototypeManager _prototypeManager = default!;
     private readonly SpriteSystem _spriteSystem;
 
     private string? _selectedTargetName;
@@ -216,7 +219,7 @@ public sealed partial class WantedListUiFragment : BoxContainer
                 _ => record.Status.ToString(),
             };
 
-            if (_prototypeManager.TryIndex<SecurityIconPrototype>(proto, out var prototype))
+            if (_prototypeManager.TryIndex<StatusIconPrototype>(proto, out var prototype))
             {
                 rect.Texture = _spriteSystem.Frame0(prototype.Icon);
             }

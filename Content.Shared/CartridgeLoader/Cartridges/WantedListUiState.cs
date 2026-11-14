@@ -2,6 +2,7 @@
 
 using Content.Shared.CriminalRecords.Systems;
 using Robust.Shared.Serialization;
+using Content.Shared.CriminalRecords;
 
 namespace Content.Shared.CartridgeLoader.Cartridges;
 

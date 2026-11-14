@@ -2,6 +2,7 @@
 
 using Content.Shared.Weapons.Ranged.Systems;
 using Robust.Shared.GameStates;
+using Content.Shared.Timing;
 
 namespace Content.Shared.Weapons.Ranged.Components;
 

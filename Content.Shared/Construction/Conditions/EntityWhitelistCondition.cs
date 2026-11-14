@@ -3,6 +3,7 @@
 using Content.Shared.Whitelist;
 using Robust.Shared.Map;
 using Robust.Shared.Utility;
+using Content.Shared.Construction.EntitySystems;
 
 namespace Content.Shared.Construction.Conditions;
 

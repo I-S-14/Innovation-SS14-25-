@@ -10,7 +10,7 @@ using Content.Shared.Eui;
 
 namespace Content.Server.Administration.UI
 {
-    public sealed class AdminAnnounceEui : BaseEui
+    public sealed partial class AdminAnnounceEui : BaseEui
     {
         [Dependency] private readonly IAdminManager _adminManager = default!;
         [Dependency] private readonly IChatManager _chatManager = default!;
@@ -50,7 +50,7 @@ namespace Content.Server.Administration.UI
                     switch (doAnnounce.AnnounceType)
                     {
                         case AdminAnnounceType.Server:
-                            _chatManager.DispatchServerAnnouncement(doAnnounce.Announcement);
+                            _chatManager.DispatchServerAnnouncement(doAnnounce.Announcement, sender: Player);
                             break;
                         // TODO: Per-station announcement support
                         case AdminAnnounceType.Station:

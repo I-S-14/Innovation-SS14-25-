@@ -1,0 +1,41 @@
+# IS14: preserve common vendor features without regular vending inventory on the points shop.
+- type: entity
+  id: BaseIS14ShopVendingMachine
+  parent: BaseVendingMachine
+  abstract: true
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/VendingMachines/vendomat.rsi
+    snapCardinals: false
+  - type: ESForcedFacingUi
+  - type: UserInterface
+    interfaces:
+      enum.VendingMachineUiKey.Key:
+        type: VendingMachineKeypadBoundUserInterface
+      enum.WiresUiKey.Key:
+        type: WiresBoundUserInterface
+  - type: TTS
+    voice: TrainingRobot
+  - type: IntrinsicRadioTransmitter
+    channels:
+    - Binary
+  - type: ActiveRadio
+    channels:
+    - Binary
+    - Common
+  - type: IntellicardableMind
+  - type: PointLight
+    enabled: false
+    castShadows: false
+    radius: 2
+    energy: 1.5
+    lightMask: ConeSingle
+    autoRot: true
+  - type: LanguageSpeaker
+  - type: LanguageKnowledge
+    speaks:
+    - TauCetiBasic
+    - RobotTalk
+    understands:
+    - TauCetiBasic
+    - RobotTalk

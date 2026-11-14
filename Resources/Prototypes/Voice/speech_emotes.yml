@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # vocal emotes
+
 - type: emote
   id: Scream
   name: chat-emote-name-scream
@@ -18,10 +19,6 @@
     - shrieks
     - shrieking
     - shrieked
-    - screech
-    - screeches
-    - screeching
-    - screeched
     - yell
     - yells
     - yelled
@@ -175,6 +172,9 @@
     tags:
     - SiliconEmotes
   chatMessages: ["chat-emote-msg-squish"]
+  event: !type:JiggleEmoteEvent # Goobstation
+    pulses:
+    - impulse: 0,-40
   chatTriggers:
     - squish
     - squishing
@@ -190,6 +190,8 @@
   available: false
   icon: Interface/Emotes/chitter.png
   whitelist:
+    tags: 
+    - HarpyEmotes # Omu, allow harpy to chitter
     components:
     - Vocal
   blacklist:
@@ -211,6 +213,8 @@
   available: false
   icon: Interface/Emotes/squeak.png
   whitelist:
+    tags: 
+    - HarpyEmotes # Omu, allow harpy to squeak
     components:
       - Vocal
   blacklist:
@@ -232,6 +236,8 @@
   available: false
   icon: Interface/Emotes/click.png
   whitelist:
+    tags: 
+    - HarpyEmotes # Omu, allow harpy to click
     components:
     - Vocal
   blacklist:
@@ -500,6 +506,12 @@
   - deathgasp
 
 - type: emote
+  id: KoboldDeathgasp
+  name: chat-emote-name-deathgasp
+  icon: Interface/Emotes/deathgasp.png
+  chatMessages: ["chat-emote-msg-deathgasp-kobold"]
+
+- type: emote
   id: MonkeyDeathgasp
   name: chat-emote-name-deathgasp
   icon: Interface/Emotes/deathgasp.png
@@ -542,6 +554,7 @@
   whitelist:
     tags:
     - ReptilianEmotes # Goob - restrict wehs to the OG lizz
+    - HarpyEmotes # Goob - harpy can also weh
   blacklist:
     tags:
     - SiliconEmotes
@@ -555,6 +568,12 @@
   category: Vocal
   icon: Interface/Emotes/hew.png
   chatMessages: ["chat-emote-msg-hew"]
+  whitelist:
+    tags:
+      - HarpyEmotes # Omu, allow harpy to hew
+  chatTriggers: # Omu, allow harpy to hew
+    - hew 
+    - hews
 
 - type: emote
   id: Chirp
@@ -592,6 +611,7 @@
     - Explosive
     tags:
     - SiliconEmotes
+    - HarpyEmotes # Goob - more harpy emotes
   chatTriggers:
     - beep
     - beeps
@@ -612,6 +632,7 @@
     - Silicon
     tags:
     - SiliconEmotes
+    - HarpyEmotes # Goob - more harpy emotes
   chatTriggers:
     - chime
     - chimes
@@ -632,6 +653,7 @@
     - Silicon
     tags:
     - SiliconEmotes
+    - HarpyEmotes # Goob - more harpy emotes
   chatTriggers:
     - buzztwice
     - buzzstwice
@@ -663,6 +685,7 @@
     - Silicon
     tags:
     - SiliconEmotes
+    - HarpyEmotes # Goob - more harpy emotes
   chatTriggers:
     - ping
     - pings

@@ -4,6 +4,7 @@ using Content.Shared.Ninja.Systems;
 using Content.Shared.Objectives.Components;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Audio;
 
 namespace Content.Shared.Ninja.Components;
 

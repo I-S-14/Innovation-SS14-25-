@@ -6,7 +6,7 @@ using Content.Shared.Destructible.Thresholds.Triggers;
 namespace Content.Server.Destructible.Thresholds;
 
 [DataDefinition]
-public sealed partial class DamageThreshold
+public sealed partial class DamageThreshold : IComparable<DamageThreshold>
 {
     /// <summary>
     /// Whether or not this threshold was triggered in the previous call to
@@ -33,8 +33,8 @@ public sealed partial class DamageThreshold
     /// The condition that decides if this threshold has been reached.
     /// Gets evaluated each time the entity's damage changes.
     /// </summary>
-    [DataField]
-    public IThresholdTrigger? Trigger;
+    [DataField(required: true)]
+    public IThresholdTrigger Trigger;
 
     /// <summary>
     /// Behaviors to activate once this threshold is triggered.
@@ -42,4 +42,9 @@ public sealed partial class DamageThreshold
     /// </summary>
     [DataField]
     public List<IThresholdBehavior> Behaviors = new();
+
+    public int CompareTo(DamageThreshold? other)
+    {
+        return Trigger.CompareTo(other?.Trigger);
+    }
 }

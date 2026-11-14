@@ -8,7 +8,8 @@ using Content.Server.Atmos.Components;
 using Content.Shared._Goobstation.Wizard.Spellblade;
 using Content.Shared.Alert;
 using Content.Shared.Atmos;
-using Content.Shared.Damage;
+using Content.Shared.Damage.Components;
+using Content.Shared.Damage.Systems;
 using Content.Shared.Database;
 using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.Inventory;
@@ -21,14 +22,14 @@ using Content.Goobstation.Common.Atmos;
 
 namespace Content.Server.Atmos.EntitySystems
 {
-    public sealed class BarotraumaSystem : EntitySystem
+    public sealed partial class BarotraumaSystem : EntitySystem
     {
-        [Dependency] private readonly AtmosphereSystem _atmosphereSystem = default!;
-        [Dependency] private readonly DamageableSystem _damageableSystem = default!;
-        [Dependency] private readonly AlertsSystem _alertsSystem = default!;
-        [Dependency] private readonly IAdminLogManager _adminLogger= default!;
-        [Dependency] private readonly InventorySystem _inventorySystem = default!;
         [Dependency] private readonly SpellbladeSystem _spellblade = default!; // Goobstation
+        [Dependency] private AtmosphereSystem _atmosphereSystem = default!;
+        [Dependency] private DamageableSystem _damageableSystem = default!;
+        [Dependency] private AlertsSystem _alertsSystem = default!;
+        [Dependency] private IAdminLogManager _adminLogger = default!;
+        [Dependency] private InventorySystem _inventorySystem = default!;
         private const float UpdateTimer = 1f;
         private float _timer;
 
@@ -43,20 +44,25 @@ namespace Content.Server.Atmos.EntitySystems
             SubscribeLocalEvent<PressureImmunityComponent, ComponentRemove>(OnPressureImmuneRemove);
         }
 
-        private void OnPressureImmuneInit(EntityUid uid, PressureImmunityComponent pressureImmunity, ComponentInit args)
+        private void OnPressureImmuneInit(EntityUid uid, PressureImmunityComponent comp, ComponentInit args)
+        {
+            RefreshPressureImmunity(uid);
+        }
+
+        private void OnPressureImmuneRemove(EntityUid uid, PressureImmunityComponent comp, ComponentRemove args)
         {
             if (TryComp<BarotraumaComponent>(uid, out var barotrauma))
             {
-                barotrauma.HasImmunity = true;
+                var ev = new RefreshPressureImmunityEvent();
+                RaiseLocalEvent(uid, ref ev);
+                barotrauma.HasImmunity = ev.IsImmune;
             }
         }
 
-        private void OnPressureImmuneRemove(EntityUid uid, PressureImmunityComponent pressureImmunity, ComponentRemove args)
+        [SubscribeLocalEvent]
+        private void OnBarotraumaInit(Entity<BarotraumaComponent> ent, ref MapInitEvent args)
         {
-            if (TryComp<BarotraumaComponent>(uid, out var barotrauma))
-            {
-                barotrauma.HasImmunity = false;
-            }
+            RefreshPressureImmunity(ent, ent.Comp);
         }
 
         // Goobstation - Modsuits - Update component state on toggle
@@ -93,17 +99,17 @@ namespace Content.Server.Atmos.EntitySystems
 
         private void OnPressureProtectionEquipped(EntityUid uid, PressureProtectionComponent pressureProtection, GotEquippedEvent args)
         {
-            if (TryComp<BarotraumaComponent>(args.Equipee, out var barotrauma) && barotrauma.ProtectionSlots.Contains(args.Slot))
+            if (TryComp<BarotraumaComponent>(args.EquipTarget, out var barotrauma) && barotrauma.ProtectionSlots.Contains(args.Slot))
             {
-                UpdateCachedResistances(args.Equipee, barotrauma);
+                UpdateCachedResistances(args.EquipTarget, barotrauma);
             }
         }
 
         private void OnPressureProtectionUnequipped(EntityUid uid, PressureProtectionComponent pressureProtection, GotUnequippedEvent args)
         {
-            if (TryComp<BarotraumaComponent>(args.Equipee, out var barotrauma) && barotrauma.ProtectionSlots.Contains(args.Slot))
+            if (TryComp<BarotraumaComponent>(args.EquipTarget, out var barotrauma) && barotrauma.ProtectionSlots.Contains(args.Slot))
             {
-                UpdateCachedResistances(args.Equipee, barotrauma);
+                UpdateCachedResistances(args.EquipTarget, barotrauma);
             }
         }
 
@@ -197,6 +203,19 @@ namespace Content.Server.Atmos.EntitySystems
             return Math.Max(modified, Atmospherics.OneAtmosphere);
         }
 
+        /// <summary>
+        /// Refreshes whether the entity is immune to pressure damage.
+        /// </summary>
+        public void RefreshPressureImmunity(EntityUid uid, BarotraumaComponent? barotrauma = null)
+        {
+            if (!Resolve(uid, ref barotrauma, false))
+                return;
+
+            var ev = new RefreshPressureImmunityEvent();
+            RaiseLocalEvent(uid, ref ev);
+            barotrauma.HasImmunity = ev.IsImmune || HasComp<PressureImmunityComponent>(uid);
+        }
+
         public bool TryGetPressureProtectionValues(
             EntityUid ent, // Goob edit
             [NotNullWhen(true)] out float? highMultiplier,
@@ -248,9 +267,10 @@ namespace Content.Server.Atmos.EntitySystems
             while (enumerator.MoveNext(out var uid, out var barotrauma, out var damageable))
             {
                 var totalDamage = FixedPoint2.Zero;
-                foreach (var (damageType, _) in barotrauma.Damage.DamageDict)
+                var damageSpecifier = _damageableSystem.GetAllDamage((uid, damageable));
+                foreach (var (barotraumaDamageType, _) in barotrauma.Damage.DamageDict)
                 {
-                    if (!damageable.Damage.DamageDict.TryGetValue(damageType, out var damage))
+                    if (!damageSpecifier.DamageDict.TryGetValue(barotraumaDamageType, out var damage))
                         continue;
 
                     totalDamage += damage;

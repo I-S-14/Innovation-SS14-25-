@@ -161,7 +161,7 @@
 
 - type: entity
   id: NukeBot
-  parent: MobGunbotBase
+  parent: IS14RetainedGunbotBase # IS14-change: preserve this variant's own destruction threshold.
   name: syndicate gunbot
   description: An older model of the syndicate assault borg, specialized for close quarter combat.
   components:

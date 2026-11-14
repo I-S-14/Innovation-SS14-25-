@@ -4,6 +4,9 @@
   suffix: Empty
   parent: SprayBottle
   components:
+  - type: SolutionContainerVisuals
+    maxFillLevels: 1
+    inHandsMaxFillLevels: 0
   - type: Sprite
     sprite: _Goobstation/Objects/Medical/Stypticspray.rsi
     state: icon
@@ -17,6 +20,9 @@
   suffix: Empty
   parent: SprayBottle
   components:
+  - type: SolutionContainerVisuals
+    maxFillLevels: 1
+    inHandsMaxFillLevels: 0
   - type: Sprite
     sprite: _Goobstation/Objects/Medical/Silverspray.rsi
     state: icon

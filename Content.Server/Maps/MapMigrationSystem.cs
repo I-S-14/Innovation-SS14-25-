@@ -17,12 +17,9 @@ namespace Content.Server.Maps;
 /// <summary>
 ///     Performs basic map migration operations by listening for engine <see cref="MapLoaderSystem"/> events.
 /// </summary>
-public sealed class MapMigrationSystem : EntitySystem
+public sealed partial class MapMigrationSystem : EntitySystem
 {
-#if DEBUG
-    [Dependency] private readonly IPrototypeManager _protoMan = default!;
-#endif
-    [Dependency] private readonly IResourceManager _resMan = default!;
+    [Dependency] private IResourceManager _resMan = default!;
 
     private const string MigrationFile = "/migration.yml";
 
@@ -40,7 +37,7 @@ public sealed class MapMigrationSystem : EntitySystem
         {
             var newId = ((ValueDataNode) node).Value;
             if (!string.IsNullOrEmpty(newId) && newId != "null")
-                DebugTools.Assert(_protoMan.HasIndex<EntityPrototype>(newId), $"{newId} is not an entity prototype.");
+                DebugTools.Assert(ProtoMan.HasIndex<EntityPrototype>(newId), $"{newId} is not an entity prototype.");
         }
 #endif
     }

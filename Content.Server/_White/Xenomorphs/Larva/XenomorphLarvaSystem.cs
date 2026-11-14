@@ -12,18 +12,23 @@ using Robust.Server.Containers;
 using Robust.Shared.Containers;
 using Robust.Shared.Player;
 using Content.Shared.Damage; // Omu
-using Content.Shared._Shitmed.Targeting; // Omu
+using Content.Goobstation.Maths.FixedPoint;
+using Content.Shared.Damage.Components;
+using Content.Shared.Mobs.Systems;
+using Content.Shared.Mobs;
+using Content.Shared._Shitmed.Targeting;
+using Content.Shared.Damage.Systems; // Omu
 
 namespace Content.Server._White.Xenomorphs.Larva;
 
 public sealed class XenomorphLarvaSystem : EntitySystem
 {
-    [Dependency] private readonly BodySystem _body = default!;
     [Dependency] private readonly ContainerSystem _container = default!;
     [Dependency] private readonly DoAfterSystem _doAfter = default!;
     [Dependency] private readonly JitteringSystem _jitter = default!;
     [Dependency] private readonly PopupSystem _popup = default!;
     [Dependency] private readonly DamageableSystem _damageableSystem = default!; // Omu
+    [Dependency] private readonly MobThresholdSystem _threshold = default!; // Goob
 
     public override void Initialize()
     {
@@ -45,7 +50,7 @@ public sealed class XenomorphLarvaSystem : EntitySystem
             RemComp<XenomorphLarvaVictimComponent>(component.Victim.Value);
     }
 
-    private void OnTakeGhostRole(EntityUid uid, XenomorphLarvaComponent component, TakeGhostRoleEvent args)
+    private void OnTakeGhostRole(EntityUid uid, XenomorphLarvaComponent component, ref TakeGhostRoleEvent args)
     {
         if (component.Victim is not {} victim)
             return;
@@ -82,6 +87,14 @@ public sealed class XenomorphLarvaSystem : EntitySystem
         var damage = new DamageSpecifier(); // Omu start
         damage.DamageDict.Add("Blunt", 120);
         damage.DamageDict.Add("Piercing", 80);
-        _damageableSystem.TryChangeDamage(uid: victim, damage: damage, ignoreResistances: true, interruptsDoAfters: false, targetPart: TargetBodyPart.Chest);
+        if (_threshold.TryGetThresholdForState(victim, MobState.Dead, out var dead) // Goob - don't gib small mobs
+            && TryComp<DamageableComponent>(victim, out var damageable))
+        {
+            var needed = dead.Value - damageable.TotalDamage + 10;
+            var total = damage.GetTotal();
+            if (needed < total)
+                damage *= FixedPoint2.Max(needed, 0) / total;
+        }
+        _damageableSystem.TryChangeDamage(victim, damage: damage, ignoreResistances: true, interruptsDoAfters: false, targetPart: TargetBodyPart.Chest);
     }
 }

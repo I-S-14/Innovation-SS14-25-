@@ -112,10 +112,10 @@ public sealed class PricingSystem : EntitySystem
         args.Price += (component.Price - partPenalty) * (_mobStateSystem.IsAlive(uid, state) ? 1.0 : component.DeathPenalty);
     }
 
-    private double GetSolutionPrice(Entity<SolutionContainerManagerComponent> entity)
+    private double GetSolutionPrice(Entity<SolutionManagerComponent> entity)
     {
         if (Comp<MetaDataComponent>(entity).EntityLifeStage < EntityLifeStage.MapInitialized)
-            return GetSolutionPrice(entity.Comp);
+            return 0;
 
         var price = 0.0;
 
@@ -135,13 +135,13 @@ public sealed class PricingSystem : EntitySystem
         return price;
     }
 
-    private double GetSolutionPrice(SolutionContainerManagerComponent component)
+    private double GetSolutionPrice(EntityPrototype prototype)
     {
         var price = 0.0;
 
-        foreach (var (_, prototype) in _solutionContainerSystem.EnumerateSolutions(component))
+        foreach (var (_, solution) in _solutionContainerSystem.EnumerateSolutions(prototype))
         {
-            foreach (var (reagent, quantity) in prototype.Contents)
+            foreach (var (reagent, quantity) in solution.Contents)
             {
                 if (!_prototypeManager.TryIndex<ReagentPrototype>(reagent.Prototype, out var reagentProto))
                     continue;
@@ -301,7 +301,7 @@ public sealed class PricingSystem : EntitySystem
     {
         var price = 0.0;
 
-        if (TryComp<SolutionContainerManagerComponent>(uid, out var solComp))
+        if (TryComp<SolutionManagerComponent>(uid, out var solComp))
         {
             price += GetSolutionPrice((uid, solComp));
         }
@@ -313,10 +313,10 @@ public sealed class PricingSystem : EntitySystem
     {
         var price = 0.0;
 
-        if (prototype.Components.TryGetValue(Factory.GetComponentName<SolutionContainerManagerComponent>(), out var solManager))
+        if (prototype.Components.TryGetValue(Factory.GetComponentName<SolutionManagerComponent>(), out var solManager))
         {
-            var solComp = (SolutionContainerManagerComponent) solManager.Component;
-            price += GetSolutionPrice(solComp);
+            var solComp = (SolutionManagerComponent) solManager.Component;
+            price += GetSolutionPrice(prototype);
         }
 
         return price;

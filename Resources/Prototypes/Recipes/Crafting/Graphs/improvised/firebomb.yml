@@ -39,7 +39,7 @@
         solution: drink
         reagent:
           ReagentId: WeldingFuel
-        quantity: 30
+        quantity: 40
       steps:
       - tool: Screwing
         doAfter: 1
@@ -59,7 +59,7 @@
         solution: drink
         reagent:
           ReagentId: WeldingFuel
-        quantity: 30
+        quantity: 40
       steps:
       - material: Cable
         amount: 5

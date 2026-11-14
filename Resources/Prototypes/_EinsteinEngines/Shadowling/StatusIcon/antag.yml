@@ -1,4 +1,4 @@
-- type: factionIcon
+- type: statusIcon
   id: ShadowlingFaction
   priority: 11
   showTo:
@@ -10,7 +10,7 @@
     sprite: /Textures/_EinsteinEngines/Interface/Misc/job_icons.rsi
     state: Shadowling
 
-- type: factionIcon
+- type: statusIcon
   id: ThrallFaction
   priority: 11
   showTo:

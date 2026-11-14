@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # -- Melee --
 # Selects a target in melee and tries to attack it.
+
 - type: htnCompound
   id: MeleeCombatCompound
   branches:
@@ -154,7 +155,6 @@
         shutdownState: TaskFinished
     - !type:HTNPrimitiveTask
       operator: !type:EscapeOperator
-        targetKey: Target
       preconditions:
       - !type:InContainerPrecondition
         isInContainer: true

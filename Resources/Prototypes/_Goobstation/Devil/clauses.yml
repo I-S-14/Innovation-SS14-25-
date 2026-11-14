@@ -85,9 +85,10 @@
   name: Обжорство # CorvaxGoob devil fix
   clauseWeight: -10
   removedComponents:
-  - type: Hunger
-  - type: Thirst
-
+  - type: Satiation
+    satiations: {}
+  - type: SatiationSpeedModifier
+    satiations: {}
 - type: clause
   id: fearofdrowning
   name: Потребность в дыхании # CorvaxGoob devil fix

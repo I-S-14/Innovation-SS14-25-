@@ -10,6 +10,7 @@ using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Map;
 using Robust.Shared.Timing;
+using Content.Shared.Station.Systems;
 
 namespace Content.Server._IS14.Economy.EconomyMonitor;
 
@@ -17,8 +18,6 @@ public sealed class EconomyMonitorSystem : EntitySystem
 {
     [Dependency] private readonly UserInterfaceSystem _ui = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly StationSystem _station = default!;
-    [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly PaperSystem _paper = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly MetaDataSystem _metaData = default!;
@@ -85,7 +84,7 @@ public sealed class EconomyMonitorSystem : EntitySystem
     private void OnTransaction(EconomyTransactionEvent ev)
     {
         NetCoordinates? location = null;
-        if (ev.SourceEntity.HasValue && TryComp<TransformComponent>(ev.SourceEntity.Value, out var xform))
+        if (ev.SourceEntity.HasValue && TryComp(ev.SourceEntity.Value, out TransformComponent? xform))
             location = GetNetCoordinates(xform.Coordinates);
 
         var serverQuery = EntityQueryEnumerator<EconomyMonitorServerComponent>();

@@ -2,6 +2,7 @@
 
 using Content.Shared.Hands.Components;
 using Content.Server.Hands.Systems;
+using Content.Shared.Hands.EntitySystems;
 
 namespace Content.Server.NPC.HTN.Preconditions;
 
@@ -10,7 +11,8 @@ namespace Content.Server.NPC.HTN.Preconditions;
 /// </summary>
 public sealed partial class ActiveHandEntityPrecondition : HTNPrecondition
 {
-    [Dependency] private readonly IEntityManager _entManager = default!;
+    [Dependency] private IEntityManager _entManager = default!;
+    [Dependency] private SharedHandsSystem _handsSystem = default!;
 
     public override bool IsMet(NPCBlackboard blackboard)
     {
@@ -20,6 +22,6 @@ public sealed partial class ActiveHandEntityPrecondition : HTNPrecondition
             return false;
         }
 
-        return !_entManager.System<HandsSystem>().HandIsEmpty(owner, activeHand);
+        return !_handsSystem.HandIsEmpty(owner, activeHand);
     }
 }

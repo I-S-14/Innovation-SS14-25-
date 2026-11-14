@@ -12,7 +12,8 @@ using Content.Shared.Actions.Components;
 using Content.Shared.Buckle;
 using Content.Shared.Buckle.Components;
 using Content.Shared.Coordinates;
-using Content.Shared.Damage;
+using Content.Shared.Damage.Components;
+using Content.Shared.Damage.Systems;
 using Content.Shared.Destructible;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.IdentityManagement;
@@ -32,6 +33,8 @@ using Robust.Server.Containers;
 using Robust.Server.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Physics;
+using Robust.Shared.Physics.Components;
+using Robust.Shared.Physics.Systems;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Serialization.Manager;
@@ -71,6 +74,7 @@ public sealed partial class PolymorphSystem : EntitySystem
     [Dependency] private readonly SharedMindSystem _mindSystem = default!;
     [Dependency] private readonly MetaDataSystem _metaData = default!;
     [Dependency] private readonly TagSystem _tag = default!; // goob edit
+    [Dependency] private readonly SharedPhysicsSystem _physics = default!; // Goobstation
 
     // Shitmed Deps
     [Dependency] private readonly SharedBodySystem _body = default!;
@@ -251,9 +255,14 @@ public sealed partial class PolymorphSystem : EntitySystem
                     return null;
             }
 
-            proto = entities.Pick(_random);
+            proto = entities.Pick(_random).Id;
         }
         var child = Spawn(proto, _transform.GetMapCoordinates(uid, targetTransformComp), rotation: _transform.GetWorldRotation(uid));
+
+        if (configuration.AllowMovement
+            && TryComp<PhysicsComponent>(child, out var childPhysics)
+            && childPhysics.BodyType is not (Robust.Shared.Physics.BodyType.KinematicController or Robust.Shared.Physics.BodyType.Kinematic))
+            _physics.SetBodyType(child, Robust.Shared.Physics.BodyType.KinematicController, body: childPhysics);
 
         _mindSystem.MakeSentient(child, configuration.AllowMovement);
         // Goob edit end
@@ -279,6 +288,10 @@ public sealed partial class PolymorphSystem : EntitySystem
             _mobThreshold.GetScaledDamage(uid, child, out var damage, out var woundableDamage) &&
             damage != null)
         {
+            // Goob start - shitmed
+            // TODO: i am pretty sure this is broken, people have been ending up with 2k damage for some reason
+            // when unpolymorphing. i also think the damage sometimes just doesnt transfer such as with zombies
+            // TODO: also this code can be better or have a helper function and moved
             if (TryComp<BodyComponent>(child, out var childBody)
                 && childBody.BodyType == Shared._Shitmed.Body.BodyType.Complex // Too lazy to come up with a new name lmfao
                 && _body.TryGetRootPart(child, out var rootPart, childBody))
@@ -292,16 +305,17 @@ public sealed partial class PolymorphSystem : EntitySystem
                     if (woundableDamage is not null)
                     {
                         if (woundableDamage.TryGetValue(target, out var wounds))
-                            _damageable.SetDamage(woundable, woundable.Comp2, wounds);
+                            _damageable.SetDamage((woundable, woundable.Comp2), wounds);
                     }
                     else
                     {
-                        _damageable.SetDamage(woundable, woundable.Comp2, damage / count);
+                        _damageable.SetDamage((woundable, woundable.Comp2), damage / count);
                     }
                 }
-
             }
-            _damageable.SetDamage(child, damageChild, damage);
+            // Goob end
+
+            _damageable.SetDamage((child, damageChild), damage);
         }
 
         // DeltaV - Drop MindContainer entities on polymorph
@@ -315,7 +329,7 @@ public sealed partial class PolymorphSystem : EntitySystem
             {
                 if (TryComp(child, out InventoryComponent? inventory2))
                 {
-                    _inventory.TransferEntityInventories((uid, inventory1), (child, inventory2), false);
+                    _inventory.TransferEntityInventories((uid, inventory1), (child, inventory2), true); //Goob edit
                     foreach (var hand in _hands.EnumerateHeld(uid))
                     {
                         _hands.TryDrop(uid, hand, checkActionBlocker: false);
@@ -356,6 +370,8 @@ public sealed partial class PolymorphSystem : EntitySystem
             }
         }
 
+        TransferStorage(uid, child, configuration.Inventory); // Goobstation
+
         if (configuration.TransferName && TryComp(uid, out MetaDataComponent? targetMeta))
         {
             // Goob edit start
@@ -378,7 +394,9 @@ public sealed partial class PolymorphSystem : EntitySystem
 
                 var type = registration.Type;
 
-                if (!EntityManager.TryGetComponent(uid, type, out var component))
+                //IS14-change start
+                if (!TryComp(uid, type, out var component))
+                //IS14-change end
                     continue;
 
                 var newComp = _compFact.GetComponent(type);
@@ -396,7 +414,9 @@ public sealed partial class PolymorphSystem : EntitySystem
 
                 object? temp = (Component) newComp;
                 _serialization.CopyTo(component, ref temp, notNullableOverride: true);
-                EntityManager.AddComponent(child, (Component) temp!, true);
+                //IS14-change start
+                AddComp(child, (Component) temp!, true);
+                //IS14-change end
             }
         }
 
@@ -483,6 +503,10 @@ public sealed partial class PolymorphSystem : EntitySystem
             _mobThreshold.GetScaledDamage(uid, parent, out var damage, out var woundableDamage) &&
             damage != null)
         {
+            // Goob start - shitmed
+            // TODO: i am pretty sure this is broken, people have been ending up with 2k damage for some reason
+            // when unpolymorphing. i also think the damage sometimes just doesnt transfer such as with zombies
+            // TODO: also this code can be better or have a helper function and moved
             if (TryComp<BodyComponent>(parent, out var parentBody)
                 && parentBody.BodyType == Shared._Shitmed.Body.BodyType.Complex // Too lazy to come up with a new name lmfao
                 && _body.TryGetRootPart(parent, out var rootPart, parentBody))
@@ -496,16 +520,17 @@ public sealed partial class PolymorphSystem : EntitySystem
                     if (woundableDamage is not null)
                     {
                         if (woundableDamage.TryGetValue(target, out var wounds))
-                            _damageable.SetDamage(woundable, woundable.Comp2, wounds);
+                            _damageable.SetDamage((woundable, woundable.Comp2), wounds);
                     }
                     else
                     {
-                        _damageable.SetDamage(woundable, woundable.Comp2, damage / count);
+                        _damageable.SetDamage((woundable, woundable.Comp2), damage / count);
                     }
                 }
-
             }
-            _damageable.SetDamage(parent, damageParent, damage);
+            // Goob end
+
+            _damageable.SetDamage((parent, damageParent), damage);
         }
 
         if (component.Configuration.Inventory == PolymorphInventoryChange.Transfer)
@@ -533,6 +558,8 @@ public sealed partial class PolymorphSystem : EntitySystem
             }
         }
 
+        TransferStorage(uid, parent, component.Configuration.Inventory); // Goobstation
+
         _tag.AddTag(uid, SharedBindSoulSystem.IgnoreBindSoulTag); // Goobstation
 
         if (_mindSystem.TryGetMind(uid, out var mindId, out var mind))
@@ -543,8 +570,15 @@ public sealed partial class PolymorphSystem : EntitySystem
         if (TryComp<PolymorphableComponent>(parent, out var polymorphableComponent))
             polymorphableComponent.LastPolymorphEnd = _gameTiming.CurTime;
 
+        var reinserted = !component.Configuration.AttachToGridOrMap
+            && _container.TryGetContainingContainer((uid, uidXform, null), out var cont)
+            && !_hands.IsHolding(cont.Owner, uid)
+            && _container.Remove(uid, cont)
+            && _container.Insert(parent, cont);
+
         // if an item polymorph was picked up, put it back down after reverting
-        _transform.AttachToGridOrMap(parent, parentXform);
+        if (!reinserted)
+            _transform.AttachToGridOrMap(parent, parentXform);
 
         // Raise an event to inform anything that wants to know about the entity swap
         var ev = new PolymorphedEvent(uid, parent, true);
@@ -639,7 +673,9 @@ public sealed partial class PolymorphSystem : EntitySystem
         if (old == @new)
             return null;
 
-        if (!EntityManager.TryGetComponent(old, compType, out var comp))
+        //IS14-change start
+        if (!TryComp(old, compType, out var comp))
+        //IS14-change end
             return null;
 
         if (transfer)
@@ -647,7 +683,9 @@ public sealed partial class PolymorphSystem : EntitySystem
             var newComp = (Component) _compFact.GetComponent(compType);
             var temp = (object) newComp;
             _serialization.CopyTo(comp, ref temp, notNullableOverride: true);
-            EntityManager.AddComponent(@new, (Component) temp!, true);
+            //IS14-change start
+            AddComp(@new, (Component) temp!, true);
+            //IS14-change end
             return temp as IComponent;
         }
 

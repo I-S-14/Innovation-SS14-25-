@@ -5,14 +5,15 @@ using Content.Shared.Hands.Components;
 using Content.Shared.Interaction;
 using Robust.Shared.Containers;
 using Robust.Shared.Map;
+using Content.Shared.Inventory.VirtualItem;
 
 namespace Content.Shared.Verbs
 {
-    public abstract class SharedVerbSystem : EntitySystem
+    public abstract partial class SharedVerbSystem : EntitySystem
     {
-        [Dependency] private readonly SharedInteractionSystem _interactionSystem = default!;
-        [Dependency] private readonly ActionBlockerSystem _actionBlockerSystem = default!;
-        [Dependency] protected readonly SharedContainerSystem ContainerSystem = default!;
+        [Dependency] private SharedInteractionSystem _interactionSystem = default!;
+        [Dependency] private ActionBlockerSystem _actionBlockerSystem = default!;
+        [Dependency] protected SharedContainerSystem ContainerSystem = default!;
 
         public override void Initialize()
         {
@@ -173,7 +174,7 @@ namespace Content.Shared.Verbs
 
             // Perform any contact interactions
             if (verb.DoContactInteraction ?? (verb.DefaultDoContactInteraction && _interactionSystem.InRangeUnobstructed(user, target)))
-                _interactionSystem.DoContactInteraction(user, target);
+                _interactionSystem.DoContactInteraction(user, target, null, true); // Goob
         }
     }
 

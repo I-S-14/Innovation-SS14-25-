@@ -1,3 +1,4 @@
+using Content.Shared.Ghost.Components;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Linq;
@@ -7,6 +8,7 @@ using Content.Shared._EinsteinEngines.Silicon.Components;
 using Content.Shared._Shitmed.Damage;
 using Content.Shared._Shitmed.Targeting;
 using Content.Shared.Damage;
+using Content.Shared.Damage.Systems;
 using Content.Shared.Examine;
 using Content.Shared.Ghost;
 using Content.Shared.Mobs.Components;
@@ -19,11 +21,11 @@ namespace Content.Goobstation.Server.Religion.OnPray.HealNearOnPray;
 
 public sealed partial class HealNearOnPraySystem : EntitySystem
 {
-    [Dependency] private readonly DamageableSystem _damageable = default!;
-    [Dependency] private readonly EntityLookupSystem _lookup = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
-    [Dependency] private readonly MobStateSystem _mobState = default!;
-    [Dependency] private readonly ExamineSystemShared _occlusion = default!;
+    [Dependency] private DamageableSystem _damageable = default!;
+    [Dependency] private EntityLookupSystem _lookup = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private MobStateSystem _mobState = default!;
+    [Dependency] private ExamineSystemShared _occlusion = default!;
 
     private EntityQuery<SpectralComponent> _spectralQuery;
     private EntityQuery<CorporealComponent> _corporealQuery;
@@ -42,7 +44,7 @@ public sealed partial class HealNearOnPraySystem : EntitySystem
     {
         var lookup = _lookup.GetEntitiesInRange(args.User, comp.Range);
         var canTarget = new HashSet<EntityUid>(lookup
-            .Where(entity => entity != null && _occlusion.InRangeUnOccluded(uid, entity, comp.Range))
+            .Where(entity => _occlusion.InRangeUnOccluded(uid, entity, comp.Range))
             .Select(entity => entity));
 
         foreach (var entity in canTarget.Where(HasComp<MobStateComponent>))

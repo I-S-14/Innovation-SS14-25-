@@ -6,6 +6,10 @@
   components:
   - type: Sprite
     sprite: _DV/Objects/Tanks/water_vapor.rsi
+    layers:
+    - state: icon
+  - type: MaxPressureVisuals
+    integrityColor: "#ff4500"
   - type: Item
     sprite: _DV/Objects/Tanks/water_vapor.rsi
   - type: Clothing
@@ -19,6 +23,10 @@
   components:
   - type: Sprite
     sprite: _DV/Objects/Tanks/emergency_water_vapor.rsi
+    layers:
+    - state: icon
+  - type: MaxPressureVisuals
+    integrityColor: "#ff4500"
   - type: Item
     sprite: _DV/Objects/Tanks/emergency_water_vapor.rsi
   - type: Clothing
@@ -32,6 +40,10 @@
   components:
   - type: Sprite
     sprite: _DV/Objects/Tanks/emergency_extended_water_vapor.rsi
+    layers:
+    - state: icon
+  - type: MaxPressureVisuals
+    integrityColor: "#ff4500"
   - type: Item
     sprite: _DV/Objects/Tanks/emergency_extended_water_vapor.rsi
   - type: Clothing
@@ -45,6 +57,10 @@
   components:
   - type: Sprite
     sprite: _DV/Objects/Tanks/emergency_double_water_vapor.rsi
+    layers:
+    - state: icon
+  - type: MaxPressureVisuals
+    integrityColor: "#ff4500"
   - type: Item
     sprite: _DV/Objects/Tanks/emergency_double_water_vapor.rsi
   - type: Clothing

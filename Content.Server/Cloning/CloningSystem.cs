@@ -57,7 +57,7 @@ public sealed partial class CloningSystem : SharedCloningSystem
     /// <summary>
     ///     Spawns a clone of the given humanoid mob at the specified location or in nullspace.
     /// </summary>
-    public bool TryCloning(EntityUid original, MapCoordinates? coords, ProtoId<CloningSettingsPrototype> settingsId, [NotNullWhen(true)] out EntityUid? clone)
+    public override bool TryCloning(EntityUid original, MapCoordinates? coords, ProtoId<CloningSettingsPrototype> settingsId, [NotNullWhen(true)] out EntityUid? clone)
     {
         clone = null;
         if (!_prototype.Resolve(settingsId, out var settings))
@@ -94,7 +94,7 @@ public sealed partial class CloningSystem : SharedCloningSystem
 
         // Add equipment first so that SetEntityName also renames the ID card.
         if (settings.CopyEquipment != null)
-            CopyEquipment(original, clone.Value, settings.CopyEquipment.Value, settings.Whitelist, settings.Blacklist);
+            CopyEquipment(original, clone.Value, settings.CopyEquipment.Value, settings.Whitelist, settings.Blacklist, settings.MakeEquipmentUnremoveable, settings.CopyStorage, settings.InternalContentsUnremoveable);
 
         // Copy storage on the mob itself as well.
         // This is needed for slime storage.
@@ -185,7 +185,9 @@ public sealed partial class CloningSystem : SharedCloningSystem
 
             // If the original does not have the component, then the clone shouldn't have it either.
             RemComp(clone, componentRegistration.Type);
-            if (EntityManager.TryGetComponent(original, componentRegistration.Type, out var sourceComp)) // Does the original have this component?
+            //IS14-change start
+            if (TryComp(original, componentRegistration.Type, out var sourceComp)) // Does the original have this component?
+            //IS14-change end
             {
                 CopyComp(original, clone, sourceComp);
             }
@@ -212,6 +214,11 @@ public sealed partial class CloningSystem : SharedCloningSystem
     ///     Copies the equipment the original has to the clone.
     ///     This uses the original prototype of the items, so any changes to components that are done after spawning are lost!
     /// </summary>
+    //IS14-change start: dispatch shared callers to the retained Goob implementation.
+    public override void CopyEquipment(Entity<InventoryComponent?> original, Entity<InventoryComponent?> clone, SlotFlags slotFlags, EntityWhitelist? whitelist = null, EntityWhitelist? blacklist = null)
+        => CopyEquipment(original, clone, slotFlags, whitelist, blacklist, false, true, false);
+    //IS14-change end
+
     public void CopyEquipment(Entity<InventoryComponent?> original, Entity<InventoryComponent?> clone, SlotFlags slotFlags, EntityWhitelist? whitelist = null, EntityWhitelist? blacklist = null, bool makeUnremoveable = false, bool copyStorage = true, bool internalContentsUnremoveable = false) // Goob edit
     {
         if (!Resolve(original, ref original.Comp) || !Resolve(clone, ref clone.Comp))
@@ -223,7 +230,7 @@ public sealed partial class CloningSystem : SharedCloningSystem
         var slotEnumerator = _inventory.GetSlotEnumerator(original, slotFlags);
         while (slotEnumerator.NextItem(out var item, out var slot))
         {
-            var cloneItem = CopyItem(item, coords, whitelist, blacklist);
+            var cloneItem = CopyItem(item, coords, whitelist, blacklist, copyStorage);
 
             // Goob edit start
             if (cloneItem == null)
@@ -308,6 +315,11 @@ public sealed partial class CloningSystem : SharedCloningSystem
     ///     This is not perfect and only considers item in storage containers.
     ///     Some components have their own additional spawn logic on map init, so we cannot just copy all containers.
     /// </remarks>
+    //IS14-change start: shared callers must not use the empty base implementation.
+    public override EntityUid? CopyItem(EntityUid original, EntityCoordinates coords, EntityWhitelist? whitelist = null, EntityWhitelist? blacklist = null)
+        => CopyItem(original, coords, whitelist, blacklist, true);
+    //IS14-change end
+
     public EntityUid? CopyItem(EntityUid original, EntityCoordinates coords, EntityWhitelist? whitelist = null, EntityWhitelist? blacklist = null, bool copyStorage = true) // Goob edit
     {
         // we use a whitelist and blacklist to be sure to exclude any problematic entities
@@ -352,7 +364,7 @@ public sealed partial class CloningSystem : SharedCloningSystem
     ///     The storage grids should have the same shape or it will drop on the floor.
     ///     Basically the same as CopyItem, but we don't copy the outermost container.
     /// </summary>
-    public void CopyStorage(Entity<StorageComponent?> original, Entity<StorageComponent?> target, EntityWhitelist? whitelist = null, EntityWhitelist? blacklist = null)
+    public override void CopyStorage(Entity<StorageComponent?> original, Entity<StorageComponent?> target, EntityWhitelist? whitelist = null, EntityWhitelist? blacklist = null)
     {
         if (!Resolve(original, ref original.Comp, false) || !Resolve(target, ref target.Comp, false))
             return;
@@ -381,7 +393,7 @@ public sealed partial class CloningSystem : SharedCloningSystem
     /// <param name="copyStorage">If true will copy storage of the implants (E.g storage implant)</param>
     /// <param name="whitelist">Whitelist for the storage copy (If copyStorage is true)</param>
     /// <param name="blacklist">Blacklist for the storage copy (If copyStorage is true)</param>
-    public void CopyImplants(Entity<ImplantedComponent?> original, EntityUid target, bool copyStorage = false, EntityWhitelist? whitelist = null, EntityWhitelist? blacklist = null)
+    public override void CopyImplants(Entity<ImplantedComponent?> original, EntityUid target, bool copyStorage = false, EntityWhitelist? whitelist = null, EntityWhitelist? blacklist = null)
     {
         if (!Resolve(original, ref original.Comp, false))
             return; // they don't have any implants to copy!

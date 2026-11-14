@@ -6,8 +6,20 @@
   id: BaseMobSlimePerson
   abstract: true
   components:
-  - type: Hunger
-  - type: Thirst
+  - type: Satiation
+    satiations:
+      Hunger:
+        prototype: NormalSatiationHunger
+      Thirst:
+        prototype: NormalSatiationThirst
+  - type: SatiationSpeedModifier
+    satiations:
+      Hunger:
+        thresholds:
+          Starving: 0.75
+      Thirst:
+        thresholds:
+          Parched: 0.75
   - type: Icon
     sprite: Mobs/Species/Slime/parts.rsi
     state: full
@@ -52,6 +64,11 @@
     allowedEmotes: ['Squish', 'Bubble', 'Pop'] # Imp: add Bubble, Pop
   - type: TypingIndicator
     proto: slime
+  - type: Jiggle # Goobstation
+  - type: SlimeRegrowth # Goobstation
+    damage:
+      types:
+        Blunt: 35
   - type: Vocal
     sounds:
       Male: MaleSlime
@@ -114,7 +131,7 @@
         - !type:HasComponentOnEquipmentCondition # goob edit - make suits protect slimes from water damage
           components:
           - type: PressureProtection
-          invert: true
+          inverted: true
       - !type:PopupMessage
         type: Local
         visualType: Large
@@ -124,8 +141,8 @@
         - !type:HasComponentOnEquipmentCondition # goob edit - make suits protect slimes from water damage
           components:
           - type: PressureProtection
-          invert: true
-  - type: Butcherable # CorvaxGoob organ resprite
+          inverted: true
+  - type: Butcherable
     butcheringType: Spike
     spawned:
     - id: FoodMeatSlimeMeat

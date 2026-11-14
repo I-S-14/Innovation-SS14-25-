@@ -28,7 +28,8 @@ public sealed partial class StationAiSystem
             Event = new StationAiLightEvent()
             {
                 Enabled = !toggle.Activated
-            }
+            },
+            Order = 4,
         });
     }
 }

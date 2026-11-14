@@ -1,0 +1,165 @@
+# Job
+
+- type: listing
+  id: UplinkClusterBananaPeel
+  name: uplink-cluster-banana-peel-name
+  description: uplink-cluster-banana-peel-desc
+  productEntity: ClusterBananaPeel
+  cost:
+    Telecrystal: 18 # goob
+  categories:
+  - UplinkJob
+  conditions:
+  - !type:BuyerJobCondition
+    whitelist:
+    - Clown
+
+
+
+
+
+
+
+
+
+- type: listing
+  id: UplinkHoloclownKit
+  name: uplink-holoclown-kit-name
+  description: uplink-holoclown-kit-desc
+  icon: { sprite: /Textures/Objects/Fun/figurines.rsi, state: holoclown }
+  productEntity: BoxHoloclown
+  cost:
+    Telecrystal: 60 # goob
+  categories:
+  - UplinkJob
+  conditions:
+  - !type:BuyerJobCondition
+    whitelist:
+    - Clown
+
+
+
+
+
+
+
+
+
+- type: listing
+  id: UplinkChimpUpgradeKit
+  name: uplink-chimp-upgrade-kit-name
+  description: uplink-chimp-upgrade-kit-desc
+  productEntity: WeaponPistolCHIMPUpgradeKit
+  cost:
+    Telecrystal: 10 # goob - Weak but very cheap
+  categories:
+  - UplinkJob
+  conditions:
+    - !type:BuyerDepartmentCondition
+      whitelist:
+      - Science
+
+
+
+
+
+
+
+
+
+- type: listing
+  id: UplinkSyndicateSpongeBox
+  name: uplink-syndicate-sponge-box-name
+  description: uplink-syndicate-sponge-box-desc
+  icon: { sprite:  Objects/Misc/monkeycube.rsi, state: box}
+  productEntity: SyndicateSpongeBox
+  cost:
+    Telecrystal: 35 # goob
+  categories:
+  - UplinkJob
+  conditions:
+  - !type:BuyerJobCondition # We can't use BuyerDepartmentCondition here since Chef can also get this
+    whitelist:
+    - Scientist
+    - ResearchDirector
+    - Chef
+
+
+
+
+
+
+- type: listing
+  id: UplinkCaneBlade
+  name: uplink-cane-blade-name
+  description: uplink-cane-blade-desc
+  icon: { sprite:  Objects/Weapons/Melee/cane.rsi, state: cane}
+  productEntity: CaneSheathFilled
+  cost:
+    Telecrystal: 40 # E-sword sidegrade - goob
+  categories:
+  - UplinkJob
+  conditions:
+  - !type:BuyerJobCondition
+    whitelist:
+    - Librarian
+  #- !type:BuyerWhitelistCondition
+  #  blacklist:
+  #    components:
+  #    - SurplusBundle
+
+
+
+
+
+- type: listing
+  id: UplinkCombatBakery
+  name: uplink-combat-bakery-name
+  description: uplink-combat-bakery-desc
+  icon: { sprite:  Objects/Consumable/Food/Baked/bread.rsi, state: baguette}
+  productEntity: CombatBakeryKit
+  cost:
+    Telecrystal: 20 # goob
+  categories:
+  - UplinkJob
+  conditions:
+  - !type:BuyerJobCondition
+    whitelist:
+    - Chef
+    - Mime
+
+
+
+- type: listing
+  id: UplinkAcolyteArmor
+  name: uplink-acolyte-armor-name
+  description: uplink-acolyte-armor-desc
+  icon: { sprite: Clothing/OuterClothing/Armor/cult_armour.rsi, state: icon}
+  productEntity: ClothingBackpackDuffelAcolyteBundle
+  cost:
+    Telecrystal: 20 # Goobstation
+  categories:
+  - UplinkJob
+  conditions:
+  - !type:BuyerJobCondition
+    whitelist:
+    - Chaplain
+
+
+- type: listing
+  id: UplinkSawAdvanced
+  name: uplink-saw-advanced-name
+  description: uplink-saw-advanced-desc
+  icon: { sprite:  Objects/Specific/Medical/Surgery/saw.rsi, state: advanced}
+  productEntity: SawAdvanced
+  #discountCategory: rareDiscounts
+  #discountDownTo:
+  #  Telecrystal: 5
+  cost:
+    Telecrystal: 15 # Goob
+  categories:
+  - UplinkJob
+  conditions:
+  - !type:BuyerJobCondition
+    whitelist:
+    - MedicalDoctor

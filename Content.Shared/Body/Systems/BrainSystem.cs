@@ -5,10 +5,12 @@ using Content.Shared._Shitmed.Body.Organ;
 using Content.Shared.Body.Components;
 using Content.Shared.Body.Events;
 using Content.Shared.Ghost;
+using Content.Shared.Holopad;
 using Content.Shared.Mind;
 using Content.Shared.Mind.Components;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Pointing;
+using Content.Shared.Ghost.Components;
 
 namespace Content.Shared.Body.Systems
 {
@@ -118,7 +120,8 @@ namespace Content.Shared.Body.Systems
         // Shitmed Change End
         private void OnPointAttempt(Entity<BrainComponent> ent, ref PointAttemptEvent args)
         {
-            args.Cancel();
+            if (!HasComp<HolopadUserComponent>(ent)) // Goobstation.
+                args.Cancel();
         }
     }
 }

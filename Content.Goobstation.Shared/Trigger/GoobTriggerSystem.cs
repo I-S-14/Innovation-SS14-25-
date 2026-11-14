@@ -10,14 +10,14 @@ using Robust.Shared.Random;
 
 namespace Content.Goobstation.Shared.Trigger;
 
-public sealed class GoobTriggerSystem : EntitySystem
+public sealed partial class GoobTriggerSystem : EntitySystem
 {
-    [Dependency] private readonly SharedStunSystem _stun = default!;
-    [Dependency] private readonly SharedEnsnareableSystem _snare = default!;
-    [Dependency] private readonly EntityTableSystem _entityTable = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly SharedTransformSystem _transform = default!;
-    [Dependency] private readonly INetManager _net = default!;
+    [Dependency] private SharedStunSystem _stun = default!;
+    [Dependency] private SharedEnsnareableSystem _snare = default!;
+    [Dependency] private EntityTableSystem _entityTable = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private INetManager _net = default!;
 
     public override void Initialize()
     {
@@ -41,11 +41,11 @@ public sealed class GoobTriggerSystem : EntitySystem
             return;
 
         if (!TryComp<EnsnareableComponent>(target, out var ensnareable) || !ensnareable.IsEnsnared ||
-            ensnareable.Container.ContainedEntities.Count <= 0)
+            ensnareable.Container!.ContainedEntities.Count <= 0)
             return;
 
-        var bola = ensnareable.Container.ContainedEntities[0];
-        _snare.ForceFree(bola, Comp<EnsnaringComponent>(bola));
+        var bola = ensnareable.Container!.ContainedEntities[0];
+        _snare.ForceFree((bola, Comp<EnsnaringComponent>(bola)));
         args.Handled = true;
     }
 
@@ -73,7 +73,7 @@ public sealed class GoobTriggerSystem : EntitySystem
             return;
 
         var xform = Transform(target.Value);
-        var spawns = _entityTable.GetSpawns(ent.Comp.Table, _random.GetRandom()).ToList();
+        var spawns = _entityTable.GetSpawns(ent.Comp.Table, _random).ToList();
 
         if (ent.Comp.UseMapCoords)
         {
@@ -82,7 +82,9 @@ public sealed class GoobTriggerSystem : EntitySystem
             {
                 foreach (var spawn in spawns)
                 {
-                    EntityManager.PredictedSpawn(spawn, mapCoords);
+                    //IS14-change start
+                    PredictedSpawn(spawn, mapCoords);
+                    //IS14-change end
                 }
             }
             else if (_net.IsServer)

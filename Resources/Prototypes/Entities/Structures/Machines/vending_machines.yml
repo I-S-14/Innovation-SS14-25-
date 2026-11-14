@@ -1,16 +1,18 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 # base
+
 - type: entity
-  id: VendingMachine
-  parent: BaseMachinePowered
+  abstract: true
+  parent: [BaseMachinePowered, BaseMachineDestructible]
+  id: BaseVendingMachine
   name: vending machine
   description: Just add capitalism!
-  abstract: true
   components:
   - type: ActionGrant
     actions:
     - ActionVendingThrow
+    - ActionOpenVendingMachineInterface
   - type: StationAiWhitelist
   - type: AmbientOnPowered
   - type: AmbientSound
@@ -20,8 +22,8 @@
     sound:
       path: /Audio/Ambience/Objects/vending_machine_hum.ogg
   - type: Sprite
-    sprite: Structures/Machines/VendingMachines/empty.rsi
-    snapCardinals: false
+    sprite: Structures/Machines/VendingMachines/vendomat.rsi
+    snapCardinals: true
   - type: Physics
     bodyType: Static
   - type: Transform
@@ -29,32 +31,27 @@
   - type: Fixtures
     fixtures:
       fix1:
-        shape:
-          !type:PhysShapeAabb
+        shape: !type:PhysShapeAabb
           bounds: "-0.25,-0.45,0.25,0.45"
         mask:
         - MachineMask
         layer:
         - MachineLayer
         density: 200
+  - type: Damageable
+    damageModifierSet: GlassReinforcedMod
   - type: Destructible
     thresholds:
-    - trigger: # Excess damage, don't do anything
-        !type:DamageTrigger
-        damage: 200
+    - trigger: !type:DamageTrigger
+        damage: 175
       behaviors:
       - !type:PlaySoundBehavior
         sound:
           collection: MetalGlassBreak
-      - !type:DoActsBehavior
-        acts: [ "Destruction" ]
-    - trigger:
-        !type:DamageTrigger
-        damage: 100
+    - trigger: !type:DamageTrigger
+        damage: 75
       behaviors:
-      - !type:DoActsBehavior
-        acts: ["Breakage"]
-      - !type:EjectVendorItems
+      - !type:EjectVendorItems ''
   - type: Repairable
     doAfterDelay: 8
   - type: ActivatableUI
@@ -64,6 +61,7 @@
     interfaces:
       enum.VendingMachineUiKey.Key:
         type: VendingMachineBoundUserInterface
+        requireInputValidation: false
       enum.WiresUiKey.Key:
         type: WiresBoundUserInterface
   - type: WiresPanel
@@ -73,8 +71,6 @@
   - type: Anchorable
   - type: TypingIndicator
     proto: robot
-  - type: TTS # CorvaxGoob-TTS
-    voice: TrainingRobot
   - type: Speech
     speechVerb: Robotic
     speechSounds: Vending
@@ -87,19 +83,13 @@
     messageSet: SpookySpeakerMessagesGeneric
     speakChance: 0.2
   - type: IntrinsicRadioReceiver
-  #- type: IntrinsicRadioTransmitter
-  #  channels:
-  #  - Binary # Goobstation - replaced with collective mind
+  - type: IntrinsicRadioTransmitter
+    channels:
+    - Service
   - type: ActiveRadio
     channels:
-    # - Binary # Goobstation - replaced with collective mind
     - Common
-  # Goobstation
-  - type: CollectiveMind
-    defaultChannel: Binary
-    channels:
-    - Binary
-  - type: IntellicardableMind # Goobstation - intellicard on more AIs
+    - Service
   - type: DoAfter
   - type: Electrified
     enabled: false
@@ -107,33 +97,72 @@
   - type: PointLight
     enabled: false
     castShadows: false
-    radius: 2
-    energy: 1.5
-    mask: /Textures/Effects/LightMasks/cone.png
-    autoRot: true
+    radius: 1.5
   - type: LitOnPowered
   - type: ApcPowerReceiver
     powerLoad: 200
   - type: Actions
   - type: SentienceTarget
     flavorKind: station-event-random-sentience-flavor-mechanical
-    weight: 0.025 # fuck you in particular (it now needs 40 vending machines to be as likely as 1 interesting animal)
+    weight: 0.025
   - type: StaticPrice
     price: 100
   - type: Appearance
   - type: WiresVisuals
-  - type: LanguageSpeaker # Einstein Engines - Languages
-  - type: LanguageKnowledge # Einstein Engines - Languages
+  - type: Input
+    context: "human"
+  - type: Examiner
+
+- type: entity
+  id: VendingMachine
+  parent: BaseVendingMachine
+  abstract: true
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/VendingMachines/vendomat.rsi
+    snapCardinals: false
+  - type: ESForcedFacingUi
+  - type: UserInterface
+    interfaces:
+      enum.VendingMachineUiKey.Key:
+        type: VendingMachineKeypadBoundUserInterface
+      enum.WiresUiKey.Key:
+        type: WiresBoundUserInterface
+  - type: TTS
+    voice: TrainingRobot
+  - type: IntrinsicRadioTransmitter
+    channels:
+    - Binary
+  - type: ActiveRadio
+    channels:
+    - Binary
+    - Common
+  - type: IntellicardableMind
+  - type: PointLight
+    enabled: false
+    castShadows: false
+    radius: 2
+    energy: 1.5
+    lightMask: ConeSingle
+    autoRot: true
+  - type: LanguageSpeaker
+  - type: LanguageKnowledge
     speaks:
     - TauCetiBasic
     - RobotTalk
     understands:
     - TauCetiBasic
     - RobotTalk
+  - type: VendingMachine
+    offState: 'off'
+    brokenState: broken
+    normalState: normal-unshaded
+    dispenseOnHitChance: '0.25'
+    dispenseOnHitThreshold: '2'
 
 - type: entity
+  parent: [ BaseWallmountMachine, StructureHealthMachineWeak ]
   id: VendingMachineWallmount
-  parent: BaseWallmountMachine
   name: vending machine
   abstract: true
   components:
@@ -145,38 +174,32 @@
     enabled: false
     sound:
       path: /Audio/Ambience/Objects/vending_machine_hum.ogg
+  - type: Damageable
+    damageModifierSet: GlassReinforcedMod
   - type: Destructible
     thresholds:
     - trigger:
         !type:DamageTrigger
         damage: 100
       behaviors:
-      - !type:DoActsBehavior
-        acts: ["Breakage"]
-      - !type:EjectVendorItems
-    - trigger:
-        !type:DamageTrigger
-        damage: 200
-      behaviors:
-      - !type:SpawnEntitiesBehavior
-        spawn:
-          SheetSteel1:
-            min: 1
-            max: 1
-      - !type:DoActsBehavior
-        acts: [ "Destruction" ]
       - !type:PlaySoundBehavior
         sound:
           collection: MetalGlassBreak
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:EjectVendorItems ''
   - type: Repairable
     doAfterDelay: 8
+  - type: ESForcedFacingUi # Goob
   - type: ActivatableUI
     key: enum.VendingMachineUiKey.Key
   - type: ActivatableUIRequiresPower
   - type: UserInterface
     interfaces:
       enum.VendingMachineUiKey.Key:
-        type: VendingMachineBoundUserInterface
+        type: VendingMachineKeypadBoundUserInterface # Goob
       enum.WiresUiKey.Key:
         type: WiresBoundUserInterface
   - type: WiresPanel
@@ -190,6 +213,13 @@
   - type: LitOnPowered
   - type: Appearance
   - type: WiresVisuals
+  - type: VendingMachine
+    dispenseOnHitChance: '0.25'
+    dispenseOnHitThreshold: '2'
+    offState: 'off'
+    brokenState: broken
+    normalState: normal-unshaded
+    denyState: deny-unshaded
   - type: Electrified
     enabled: false
     usesApcPower: true
@@ -198,14 +228,14 @@
 # Vending machines
 
 - type: entity
-  parent: VendingMachine
+  parent: BaseVendingMachine
   id: VendingMachineCondiments
   name: condiment station
   description: Slather these thick gooey substances on your food for a full flavor effect.
   components:
   - type: VendingMachine
     pack: CondimentInventory
-    offState: off
+    offState: 'off'
   - type: Sprite
     sprite: Structures/Machines/VendingMachines/condiments.rsi
     drawdepth: SmallObjects
@@ -238,9 +268,6 @@
   components:
   - type: VendingMachine
     pack: AmmoVendInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
   - type: DatasetVocalizer
     dataset: CondimentVendAds
   - type: SpeakOnUIClosed
@@ -264,11 +291,8 @@
   components:
   - type: VendingMachine
     pack: BoozeOMatInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
     denyState: deny-unshaded
-    loopDeny: false
+    loopDeny: false # IS14-change: actual VendingMachineComponent DataField name.
   - type: DatasetVocalizer
     dataset: BoozeOMatAds
   - type: SpeakOnUIClosed
@@ -298,11 +322,8 @@
   components:
   - type: VendingMachine
     pack: BoozeOMatInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
     denyState: deny-unshaded
-    loopDeny: false
+    loopDeny: false # IS14-change: actual VendingMachineComponent DataField name.
   - type: DatasetVocalizer
     dataset: BruiseOMatAds
   - type: SpeakOnUIClosed
@@ -332,9 +353,6 @@
   components:
   - type: VendingMachine
     pack: PTechInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
     ejectState: eject-unshaded
     denyState: deny-unshaded
   - type: Sprite
@@ -352,7 +370,7 @@
     radius: 1
     energy: 2.0
     color: "#ffb0b0"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: AccessReader
     access: [["HeadOfPersonnel"]]
@@ -370,10 +388,8 @@
   components:
   - type: VendingMachine
     pack: ChefvendInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
     ejectState: eject-unshaded
+  - type: AntiRottingContainer # CorvaxGoob - Vending Return
   - type: DatasetVocalizer
     dataset: ChefvendAds
   - type: SpeakOnUIClosed
@@ -394,7 +410,7 @@
     radius: 1.5
     energy: 3.0
     color: "#4b93ad"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
 
 - type: entity
@@ -405,11 +421,6 @@
   components:
   - type: VendingMachine
     pack: CigaretteMachineInventory
-    dispenseOnHitChance: 0.25
-    dispenseOnHitThreshold: 2
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
     ejectState: eject-unshaded
     denyState: deny-unshaded
   - type: DatasetVocalizer
@@ -441,9 +452,6 @@
   components:
   - type: VendingMachine
     pack: ClothesMateInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
     denyState: deny-unshaded
   - type: DatasetVocalizer
     dataset: ClothesMateAds
@@ -463,7 +471,7 @@
     radius: 1.8
     energy: 3.0
     color: "#3db83b"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: Tag
     tags:
@@ -477,9 +485,6 @@
   components:
   - type: VendingMachine
     pack: WinterDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
     denyState: deny-unshaded
   - type: DatasetVocalizer
     dataset: ClothesMateAds
@@ -499,7 +504,7 @@
     radius: 1.8
     energy: 3.0
     color: "#3db83b"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: Tag
     tags:
@@ -513,17 +518,12 @@
   components:
   - type: VendingMachine
     pack: HotDrinksMachineInventory
-    dispenseOnHitChance: 0.25
-    dispenseOnHitThreshold: 2
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
+    initialStockQuality: '0.33'
+    ejectDelay: '5'
+    soundVend: /Audio/Machines/machine_vend_hot_drink.ogg
     ejectState: eject-unshaded
     denyState: deny-unshaded
     screenState: screen
-    ejectDelay: 5
-    soundVend: /Audio/Machines/machine_vend_hot_drink.ogg
-    initialStockQuality: 0.33
   - type: DatasetVocalizer
     dataset: HotDrinksMachineAds
   - type: SpeakOnUIClosed
@@ -546,7 +546,7 @@
     radius: 1.5
     energy: 2.0
     color: "#ad7c4b"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: Transform
     noRot: false
@@ -562,15 +562,10 @@
   components:
   - type: VendingMachine
     pack: RobustSoftdrinksInventory
-    dispenseOnHitChance: 0.25
-    dispenseOnHitThreshold: 2
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
+    initialStockQuality: '0.33'
+    ejectDelay: '1.9'
     ejectState: eject-unshaded
     denyState: deny-unshaded
-    ejectDelay: 1.9
-    initialStockQuality: 0.33
   - type: DatasetVocalizer
     dataset: RobustSoftdrinksAds
   - type: SpeakOnUIClosed
@@ -590,7 +585,7 @@
     radius: 1.5
     energy: 3.0
     color: "#3c5eb5"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: Transform
     noRot: false
@@ -617,7 +612,7 @@
     radius: 1.5
     energy: 3.0
     color: "#423438"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
 
 - type: entity
@@ -640,7 +635,7 @@
     radius: 1.5
     energy: 3.0
     color: "#A50824"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
 
 - type: entity
@@ -667,7 +662,7 @@
     radius: 1.5
     energy: 3.0
     color: "#44964A"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
 
 - type: entity
@@ -696,7 +691,7 @@
     radius: 1.5
     energy: 3.0
     color: "#CBC6BE"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: Transform
     noRot: false
@@ -728,7 +723,7 @@
     radius: 1.5
     energy: 3.0
     color: "#D3A44D"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: Transform
     noRot: true
@@ -741,15 +736,10 @@
   components:
   - type: VendingMachine
     pack: ShamblersJuiceInventory
-    dispenseOnHitChance: 0.25
-    dispenseOnHitThreshold: 2
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
+    initialStockQuality: '0.33'
+    ejectDelay: '1.9'
     ejectState: eject-unshaded
     denyState: deny-unshaded
-    ejectDelay: 1.9
-    initialStockQuality: 0.33
   - type: DatasetVocalizer
     dataset: RobustSoftdrinksAds
   - type: Sprite
@@ -766,7 +756,7 @@
     radius: 1.5
     energy: 3.0
     color: "#66538F"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
 
 - type: entity
@@ -777,15 +767,10 @@
   components:
   - type: VendingMachine
     pack: PwrGameInventory
-    dispenseOnHitChance: 0.25
-    dispenseOnHitThreshold: 2
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
+    initialStockQuality: '0.33'
+    ejectDelay: '1.9'
     ejectState: eject-unshaded
     denyState: deny-unshaded
-    ejectDelay: 1.9
-    initialStockQuality: 0.33
   - type: DatasetVocalizer
     dataset: RobustSoftdrinksAds
   - type: SpeakOnUIClosed
@@ -804,7 +789,7 @@
     radius: 1.5
     energy: 3.0
     color: "#6927C5"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
 
 - type: entity
@@ -815,15 +800,10 @@
   components:
   - type: VendingMachine
     pack: DrGibbInventory
-    dispenseOnHitChance: 0.25
-    dispenseOnHitThreshold: 2
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
+    initialStockQuality: '0.33'
+    ejectDelay: '1.9'
     ejectState: eject-unshaded
     denyState: deny-unshaded
-    ejectDelay: 1.9
-    initialStockQuality: 0.33
   - type: DatasetVocalizer
     dataset: DrGibbAds
   - type: SpeakOnUIClosed
@@ -842,7 +822,7 @@
     radius: 1.5
     energy: 3.0
     color: "#D82929"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
 
 - type: entity
@@ -863,15 +843,10 @@
       map: [ "enum.WiresVisualLayers.MaintenancePanel" ]
   - type: VendingMachine
     pack: SmiteInventory
-    dispenseOnHitChance: 0.25
-    dispenseOnHitThreshold: 2
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
+    initialStockQuality: '0.33'
+    ejectDelay: '1.9'
     ejectState: eject-unshaded
     denyState: deny-unshaded
-    ejectDelay: 1.9
-    initialStockQuality: 0.33
   - type: DatasetVocalizer
     dataset: SmiteAds
   - type: SpeakOnUIClosed
@@ -889,7 +864,7 @@
   components:
   - type: VendingMachine
     pack: DinnerwareInventory
-    offState: off
+    offState: 'off'
     brokenState: broken
     normalState: normal-unshaded
     ejectState: eject-unshaded
@@ -915,7 +890,7 @@
     radius: 1.5
     energy: 3.0
     color: "#4b93ad"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: Transform
     noRot: false
@@ -955,7 +930,7 @@
     radius: 1.5
     energy: 3.0
     color: "#9a18d6"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: Transform
     noRot: false
@@ -995,7 +970,7 @@
     radius: 1.5
     energy: 3.0
     color: "#6148c7"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
 
 - type: entity
@@ -1006,9 +981,6 @@
   components:
   - type: VendingMachine
     pack: EngiVendInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
     ejectState: eject-unshaded
     denyState: deny-unshaded
   - type: Sprite
@@ -1028,7 +1000,7 @@
     radius: 1.5
     energy: 3.0
     color: "#b89e2a"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: Transform
     noRot: false
@@ -1038,6 +1010,7 @@
   - type: Tag
     tags:
     - DroneUsable # Goobstation
+  - type: AmbientMusicMarkerEngineering
 
 - type: entity
   parent: VendingMachine
@@ -1047,12 +1020,12 @@
   components:
   - type: VendingMachine
     pack: NanoMedCivilianInventory
-    offState: off # Goob
+    offState: 'off'
     brokenState: broken
     normalState: normal-unshaded
     ejectState: eject-unshaded
     denyState: deny-unshaded
-    ejectDelay: 0.6
+    ejectDelay: '0.6'
   - type: DatasetVocalizer
     dataset: NanoMedAds
   - type: SpeakOnUIClosed
@@ -1072,7 +1045,7 @@
     radius: 1.5
     energy: 3.0
     color: "#9dc5c9"
-    mask: /Textures/Effects/LightMasks/cone.png # Goobstation
+    lightMask: ConeSingle # Goobstation
     autoRot: true # Goobstation
   - type: GuideHelp
     guides:
@@ -1082,6 +1055,7 @@
   - type: Rotatable
     rotateWhileAnchored: false
     rotateWhilePulling: true # Goobstation End
+  - type: AmbientMusicMarkerMedical
 
 - type: entity
   parent: VendingMachineMedicalBase
@@ -1091,7 +1065,7 @@
   components:
   - type: VendingMachine
     pack: NanoMedPlusInventory
-    offState: off
+    offState: 'off'
   - type: Sprite
     layers:
     - state: "off"
@@ -1112,9 +1086,6 @@
   components:
   - type: VendingMachine
     pack: NutriMaxInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
     ejectState: eject-unshaded
     denyState: deny-unshaded
   - type: DatasetVocalizer
@@ -1137,7 +1108,7 @@
     radius: 1.5
     energy: 3.0
     color: "#326e3f"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
 
 - type: entity
@@ -1148,9 +1119,6 @@
   components:
   - type: VendingMachine
     pack: SecTechInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
     ejectState: eject-unshaded
     denyState: deny-unshaded
   - type: DatasetVocalizer
@@ -1174,7 +1142,7 @@
     radius: 1
     energy: 2.0
     color: "#78645c"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: GuideHelp
     guides:
@@ -1186,7 +1154,6 @@
     rotateWhileAnchored: false
     rotateWhilePulling: true
 
-
 - type: entity
   parent: VendingMachine
   id: VendingMachineSeedsUnlocked
@@ -1196,9 +1163,6 @@
   components:
   - type: VendingMachine
     pack: MegaSeedServitorInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
     ejectState: eject-unshaded
     denyState: deny-unshaded
   - type: DatasetVocalizer
@@ -1219,7 +1183,7 @@
     radius: 1.5
     energy: 3.0
     color: "#326e3f"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
 
 - type: entity
@@ -1238,14 +1202,14 @@
   components:
   - type: VendingMachine
     pack: GetmoreChocolateCorpInventory
-    dispenseOnHitChance: 0.25
-    dispenseOnHitThreshold: 2
-    offState: off
+    dispenseOnHitChance: '0.25'
+    dispenseOnHitThreshold: '2'
+    offState: 'off'
     brokenState: broken
     normalState: normal-unshaded
     ejectState: eject-unshaded
     denyState: deny-unshaded
-    initialStockQuality: 0.25 # Corvax-Goob-VendomatsTweak
+    initialStockQuality: '0.25'
   - type: DatasetVocalizer
     dataset: GetmoreChocolateCorpAds
   - type: SpeakOnUIClosed
@@ -1265,7 +1229,7 @@
     radius: 1.5
     energy: 3.0
     color: "#c73434"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: Transform
     noRot: false
@@ -1281,11 +1245,6 @@
   components:
   - type: VendingMachine
     pack: SustenanceInventory
-    dispenseOnHitChance: 0.25
-    dispenseOnHitThreshold: 2
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
     ejectState: eject-unshaded
     denyState: deny-unshaded
   - type: Sprite
@@ -1302,7 +1261,7 @@
     radius: 1.5
     energy: 3.0
     color: "#737785"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
 
 - type: entity
@@ -1324,7 +1283,7 @@
     radius: 1.5
     energy: 3.0
     color: "#3c5eb5"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
 
 - type: entity
@@ -1346,7 +1305,7 @@
     radius: 1.5
     energy: 3.0
     color: "#CE3401"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
 
 - type: entity
@@ -1368,7 +1327,7 @@
     radius: 1.5
     energy: 3.0
     color: "#5F6A1C"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
 
 - type: entity
@@ -1390,7 +1349,7 @@
     radius: 1.5
     energy: 3.0
     color: "#207E79"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
 
 - type: entity
@@ -1402,14 +1361,9 @@
   components:
   - type: VendingMachine
     pack: BodaInventory
-    dispenseOnHitChance: 0.25
-    dispenseOnHitThreshold: 2
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
+    initialStockQuality: '0.33'
     ejectState: eject-unshaded
     denyState: deny-unshaded
-    initialStockQuality: 0.33
   - type: DatasetVocalizer
     dataset: BodaAds
   - type: SpeakOnUIClosed
@@ -1429,7 +1383,7 @@
     radius: 1.5
     energy: 3.0
     color: "#389690"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: Transform
     noRot: false
@@ -1446,9 +1400,6 @@
   components:
   - type: VendingMachine
     pack: AutoDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
     ejectState: eject-unshaded
     denyState: deny-unshaded
     screenState: screen
@@ -1474,7 +1425,7 @@
     radius: 1.5
     energy: 3.0
     color: "#c73434"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: Transform
     noRot: false
@@ -1493,9 +1444,6 @@
   components:
   - type: VendingMachine
     pack: VendomatInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
     ejectState: eject-unshaded
     denyState: deny-unshaded
   - type: DatasetVocalizer
@@ -1517,7 +1465,7 @@
     radius: 1.5
     energy: 3.0
     color: "#9dc5c9"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: Transform
     noRot: false
@@ -1533,9 +1481,6 @@
   components:
   - type: VendingMachine
     pack: RoboticsInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
     ejectState: eject-unshaded
     denyState: deny-unshaded
   - type: DatasetVocalizer
@@ -1559,7 +1504,7 @@
     radius: 1.5
     energy: 3.0
     color: "#B0ADA9"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: Transform
     noRot: false
@@ -1578,9 +1523,6 @@
   components:
   - type: VendingMachine
     pack: YouToolInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
     ejectState: eject-unshaded
     denyState: deny-unshaded
   - type: Sprite
@@ -1598,7 +1540,7 @@
     radius: 1.5
     energy: 3.0
     color: "#d4ab33"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: Transform
     noRot: false
@@ -1617,11 +1559,8 @@
   components:
   - type: VendingMachine
     pack: GoodCleanFunInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
+    ejectDelay: '1.8'
     ejectState: eject-unshaded
-    ejectDelay: 1.8
   - type: DatasetVocalizer
     dataset: GoodCleanFunAds
   - type: SpeakOnUIClosed
@@ -1641,7 +1580,7 @@
     radius: 1.5
     energy: 3.0
     color: "#326e3f"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: Transform
     noRot: false
@@ -1683,7 +1622,7 @@
     radius: 1.5
     energy: 3.0
     color: "#ffe599"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: Transform
     noRot: false
@@ -1692,17 +1631,11 @@
     rotateWhilePulling: true
 
 - type: entity
-  parent: VendingMachine
+  parent: BaseIS14ShopVendingMachine
   id: VendingMachineSalvage
   name: Salvage Vendor
   description: A dwarf's best friend!
   components:
-  #- type: VendingMachine # DeltaV: Use mining points instead of limited stock
-  #  pack: SalvageEquipmentInventory
-  #  offState: off
-  #  brokenState: broken
-  #  normalState: normal-unshaded
-  #  denyState: deny-unshaded
   - type: Sprite
     sprite: Structures/Machines/VendingMachines/mining.rsi
     layers:
@@ -1717,16 +1650,16 @@
     radius: 1.5
     energy: 3.0
     color: "#b89f25"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
-  - type: ShopVendor # DeltaV
+  - type: ShopVendor
     pack: SalvageVendorInventory
     offState: off
     brokenState: broken
     normalState: normal-unshaded
     denyState: deny-unshaded
-  - type: PointsVendor # DeltaV
-  - type: UserInterface # DeltaV: Replace vending machine BUI with shop vendor
+  - type: PointsVendor
+  - type: UserInterface
     interfaces:
       enum.VendingMachineUiKey.Key:
         type: ShopVendorBoundUserInterface
@@ -1734,20 +1667,27 @@
         type: WiresBoundUserInterface
       enum.MiningVoucherUiKey.Key:
         type: MiningVoucherBoundUserInterface
-  - type: MiningVendor # Lavaland Change
+  - type: MiningVendor
     kits:
     - MiningCombat
     - MiningExtraction
     - MiningSurvival
     - MiningMedical
-    #- MiningDrone
-  - type: Wires # DeltaV: Use shop vendor wires layout
+  - type: Wires
     layoutId: ShopVendor
   - type: AccessReader
     access: [["Salvage"]]
   - type: GuideHelp
     guides:
     - Salvage
+
+- type: entity
+  parent: VendingMachineSalvage
+  id: VendingMachineSalvageCargo
+  suffix: Cargo Access
+  components:
+  - type: AccessReader
+    access: [["Salvage"], ["Cargo"]]
 
 - type: entity
   parent: VendingMachine
@@ -1781,7 +1721,7 @@
     radius: 1.5
     energy: 3.0
     color: "#d4ab33"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
 
 # job clothing
@@ -1794,9 +1734,6 @@
   components:
   - type: VendingMachine
     pack: HyDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
   - type: DatasetVocalizer
     dataset: HyDrobeAds
   - type: SpeakOnUIClosed
@@ -1826,9 +1763,6 @@
   components:
   - type: VendingMachine
     pack: LawDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
   - type: DatasetVocalizer
     dataset: LawDrobeAds
   - type: SpeakOnUIClosed
@@ -1854,9 +1788,6 @@
   components:
   - type: VendingMachine
     pack: SecDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
   - type: DatasetVocalizer
     dataset: SecDrobeAds
   - type: SpeakOnUIClosed
@@ -1886,9 +1817,6 @@
   components:
   - type: VendingMachine
     pack: BarDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
   - type: DatasetVocalizer
     dataset: BarDrobeAds
   - type: SpeakOnUIClosed
@@ -1913,9 +1841,6 @@
   components:
   - type: VendingMachine
     pack: PietyVendInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
     denyState: deny-unshaded
   - type: Sprite
     sprite: Structures/Machines/VendingMachines/chapdrobe.rsi
@@ -1933,7 +1858,7 @@
     radius: 1.5
     energy: 3.0
     color: "#CCCCCC" #The holy C
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
 
 - type: entity
@@ -1944,9 +1869,6 @@
   components:
   - type: VendingMachine
     pack: CargoDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
   - type: DatasetVocalizer
     dataset: CargoDrobeAds
   - type: SpeakOnUIClosed
@@ -1976,9 +1898,6 @@
   components:
   - type: VendingMachine
     pack: MediDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
   - type: DatasetVocalizer
     dataset: MediDrobeAds
   - type: SpeakOnUIClosed
@@ -2004,9 +1923,6 @@
   components:
   - type: VendingMachine
     pack: ChemDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
   - type: DatasetVocalizer
     dataset: ChemDrobeAds
   - type: SpeakOnUIClosed
@@ -2023,6 +1939,7 @@
       map: ["enum.WiresVisualLayers.MaintenancePanel"]
   - type: AccessReader
     access: [["Chemistry"]]
+  - type: AmbientMusicMarkerMedical
 
 - type: entity
   parent: VendingMachine
@@ -2032,9 +1949,6 @@
   components:
   - type: VendingMachine
     pack: CuraDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
   - type: DatasetVocalizer
     dataset: CuraDrobeAds
   - type: SpeakOnUIClosed
@@ -2060,9 +1974,6 @@
   components:
   - type: VendingMachine
     pack: AtmosDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
   - type: DatasetVocalizer
     dataset: AtmosDrobeAds
   - type: SpeakOnUIClosed
@@ -2083,6 +1994,7 @@
     color: "#b89e2a"
   - type: AccessReader
     access: [["Engineering"]]
+  - type: AmbientMusicMarkerEngineering
 
 - type: entity
   parent: VendingMachine
@@ -2092,9 +2004,6 @@
   components:
   - type: VendingMachine
     pack: EngiDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
   - type: DatasetVocalizer
     dataset: EngiDrobeAds
   - type: SpeakOnUIClosed
@@ -2115,6 +2024,7 @@
     color: "#b89e2a"
   - type: AccessReader
     access: [["Engineering"]]
+  - type: AmbientMusicMarkerEngineering
 
 - type: entity
   parent: VendingMachine
@@ -2124,9 +2034,6 @@
   components:
   - type: VendingMachine
     pack: ChefDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
   - type: DatasetVocalizer
     dataset: ChefDrobeAds
   - type: SpeakOnUIClosed
@@ -2152,9 +2059,6 @@
   components:
   - type: VendingMachine
     pack: DetDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
   - type: DatasetVocalizer
     dataset: DetDrobeAds
   - type: SpeakOnUIClosed
@@ -2180,9 +2084,6 @@
   components:
   - type: VendingMachine
     pack: JaniDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
   - type: DatasetVocalizer
     dataset: JaniDrobeAds
   - type: SpeakOnUIClosed
@@ -2197,14 +2098,14 @@
       shader: unshaded
     - state: panel
       map: ["enum.WiresVisualLayers.MaintenancePanel"]
-  - type: AccessReader
-    access: [["Janitor"]]
   - type: PointLight
     radius: 1.5
     energy: 3.0
     color: "#6927C5"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
+  - type: AccessReader
+    access: [["Janitor"]]
 
 - type: entity
   parent: VendingMachine
@@ -2214,9 +2115,6 @@
   components:
   - type: VendingMachine
     pack: SciDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
   - type: DatasetVocalizer
     dataset: SciDrobeAds
   - type: SpeakOnUIClosed
@@ -2242,9 +2140,6 @@
   components:
   - type: VendingMachine
     pack: SyndieDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
   - type: DatasetVocalizer
     dataset: SyndieDrobeAds
   - type: SpeakOnUIClosed
@@ -2274,9 +2169,6 @@
   components:
   - type: VendingMachine
     pack: RoboDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
   - type: DatasetVocalizer
     dataset: RoboDrobeAds
   - type: SpeakOnUIClosed
@@ -2302,9 +2194,6 @@
   components:
   - type: VendingMachine
     pack: GeneDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
   - type: DatasetVocalizer
     dataset: GeneDrobeAds
   - type: SpeakOnUIClosed
@@ -2321,6 +2210,7 @@
       map: ["enum.WiresVisualLayers.MaintenancePanel"]
   - type: AccessReader
     access: [["Medical"]]
+  - type: AmbientMusicMarkerMedical
 
 - type: entity
   parent: VendingMachine
@@ -2330,9 +2220,6 @@
   components:
   - type: VendingMachine
     pack: ViroDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
   - type: DatasetVocalizer
     dataset: ViroDrobeAds
   - type: SpeakOnUIClosed
@@ -2349,6 +2236,7 @@
       map: ["enum.WiresVisualLayers.MaintenancePanel"]
   - type: AccessReader
     access: [["Medical"]]
+  - type: AmbientMusicMarkerMedical
 
 - type: entity
   parent: VendingMachine
@@ -2358,9 +2246,6 @@
   components:
   - type: VendingMachine
     pack: CentDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
   - type: Sprite
     sprite: Structures/Machines/VendingMachines/centdrobe.rsi
     layers:
@@ -2375,7 +2260,7 @@
     radius: 1.5
     energy: 3.0
     color: "#48CF48"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: AccessReader
     access: [["CentralCommand"]]
@@ -2388,15 +2273,10 @@
   components:
   - type: VendingMachine
     pack: HappyHonkDispenserInventory
-    dispenseOnHitChance: 0.25
-    dispenseOnHitThreshold: 2
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
-    denyState: deny-unshaded
-    ejectDelay: 1.9
+    initialStockQuality: '1.0'
+    ejectDelay: '1.9'
     soundVend: /Audio/Items/bikehorn.ogg
-    initialStockQuality: 1.0 # Nobody knows how Honk does it, but their vending machines always seem well-stocked...
+    denyState: deny-unshaded
   - type: Sprite
     sprite: Structures/Machines/VendingMachines/happyhonk.rsi
     layers:
@@ -2411,7 +2291,7 @@
     radius: 1.5
     energy: 3.0
     color: "#3c5eb5"
-    mask: /Textures/Effects/LightMasks/cone.png
+    lightMask: ConeSingle
     autoRot: true
   - type: DatasetVocalizer
     dataset: HappyHonkAds
@@ -2430,9 +2310,6 @@
   components:
   - type: VendingMachine
     pack: PrideDrobeInventory
-    offState: off
-    brokenState: broken
-    normalState: normal-unshaded
   - type: DatasetVocalizer
     dataset: PrideDrobeAds
   - type: SpeakOnUIClosed
@@ -2456,7 +2333,7 @@
 # Gas Tank Dispenser
 
 - type: entity
-  parent: VendingMachine
+  parent: BaseVendingMachine
   id: VendingMachineTankDispenserEVA
   suffix: EVA [O2, N2]
   name: gas tank dispenser
@@ -2469,7 +2346,7 @@
     state: dispenser
 
 - type: entity
-  parent: VendingMachine
+  parent: BaseVendingMachine
   id: VendingMachineTankDispenserEngineering
   suffix: ENG [O2, Plasma]
   name: gas tank dispenser
@@ -2491,11 +2368,11 @@
   components:
   - type: VendingMachine
     pack: ChemVendInventory
-    offState: off
+    offState: 'off'
     brokenState: broken
     normalState: normal
     denyState: deny
-  # ejectDelay: 2 Goobstation - No reason for the eject delay to be 2 seconds
+    ejectDelay: '2'
   - type: Sprite
     sprite: Structures/Machines/VendingMachines/chemvend.rsi
     layers:
@@ -2511,6 +2388,15 @@
     guides:
     - Chemicals
     - Chemist
+  - type: AmbientMusicMarkerMedical
+
+- type: entity
+  parent: VendingMachineChemicals
+  id: VendingMachineChemicalsMed
+  suffix: Medical Access
+  components:
+  - type: AccessReader
+    access: [["Chemistry"], ["Medical"]]
 
 - type: entity
   parent: VendingMachineChemicals
@@ -2520,11 +2406,9 @@
   components:
   - type: VendingMachine
     pack: ChemVendInventorySyndicate
-    offState: off
-    brokenState: broken
+    ejectDelay: '2'
     normalState: normal
     denyState: deny
-    ejectDelay: 2
   - type: AccessReader
     access: [["SyndicateAgent"]]
 
@@ -2537,7 +2421,7 @@
   components:
   - type: VendingMachine
     pack: NanoMedCivilianWallInventory
-    offState: off # Goob
+    offState: 'off'
     brokenState: broken
     normalState: normal-unshaded
     denyState: deny-unshaded
@@ -2567,7 +2451,7 @@
   components:
   - type: VendingMachine
     pack: NanoMedInventory
-    offState: off
+    offState: 'off'
   - type: Sprite
     sprite: Structures/Machines/VendingMachines/wallmed.rsi
     layers:

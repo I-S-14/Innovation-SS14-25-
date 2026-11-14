@@ -1,8 +1,10 @@
+using Content.Shared.Timing.Components; // IS14-change: upstream namespace move
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Shared.Cargo.Components;
 using Content.Shared.Timing;
 using Content.Shared.Cargo.Systems;
+using Content.Shared.Timing.Systems;
 
 namespace Content.Client.Cargo.Systems;
 

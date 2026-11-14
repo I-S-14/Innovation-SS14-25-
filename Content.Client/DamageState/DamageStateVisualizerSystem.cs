@@ -6,7 +6,7 @@ using DrawDepth = Content.Shared.DrawDepth.DrawDepth;
 
 namespace Content.Client.DamageState;
 
-public sealed class DamageStateVisualizerSystem : VisualizerSystem<DamageStateVisualsComponent>
+public sealed partial class DamageStateVisualizerSystem : VisualizerSystem<DamageStateVisualsComponent>
 {
     [Dependency] private readonly SpriteSystem _sprite = default!;
 
@@ -14,31 +14,27 @@ public sealed class DamageStateVisualizerSystem : VisualizerSystem<DamageStateVi
     {
         var sprite = args.Sprite;
 
-        if (sprite == null || !AppearanceSystem.TryGetData<MobState>(uid, MobStateVisuals.State, out var data, args.Component))
-        {
+        if (sprite == null || !args.TryGetData<MobState>(MobStateVisuals.State, out var data))
             return;
-        }
 
         if (!component.States.TryGetValue(data, out var layers))
-        {
             return;
-        }
 
         // Brain no worky rn so this was just easier.
         foreach (var key in new[] { DamageStateVisualLayers.Base, DamageStateVisualLayers.BaseUnshaded })
         {
-            if (!_sprite.LayerMapTryGet((uid, sprite), key, out _, false)) continue;
+            if (!SpriteSystem.LayerMapTryGet((uid, sprite), key, out var layerIndex, false)) continue;
 
-            _sprite.LayerSetVisible((uid, sprite), key, false);
+            SpriteSystem.LayerSetVisible((uid, sprite), layerIndex, false);
         }
 
         foreach (var (key, state) in layers)
         {
             // Inheritance moment.
-            if (!_sprite.LayerMapTryGet((uid, sprite), key, out _, false)) continue;
+            if (!SpriteSystem.LayerMapTryGet((uid, sprite), key, out var layerIndex, false)) continue;
 
-            _sprite.LayerSetVisible((uid, sprite), key, true);
-            _sprite.LayerSetRsiState((uid, sprite), key, state);
+            SpriteSystem.LayerSetVisible((uid, sprite), layerIndex, true);
+            SpriteSystem.LayerSetRsiState((uid, sprite), layerIndex, state);
         }
 
         // So they don't draw over mobs anymore

@@ -10,11 +10,11 @@ using Robust.Shared.Serialization.Manager;
 namespace Content.Goobstation.Shared.Wraith.Systems;
 public sealed partial class PossessObjectSystem : EntitySystem
 {
-    [Dependency] private readonly ISerializationManager _seriMan = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] private readonly SharedMindSystem _mind = default!;
-    [Dependency] private readonly WraithPossessedSystem _possessed = default!;
+    [Dependency] private ISerializationManager _seriMan = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private SharedMindSystem _mind = default!;
+    [Dependency] private WraithPossessedSystem _possessed = default!;
     public override void Initialize()
     {
         base.Initialize();
@@ -62,7 +62,9 @@ public sealed partial class PossessObjectSystem : EntitySystem
             var component = (Component) Factory.GetComponent(name);
             var temp = (object) component;
             _seriMan.CopyTo(data.Component, ref temp);
-            EntityManager.AddComponent(target, (Component) temp!);
+            //IS14-change start
+            AddComp(target, (Component) temp!);
+            //IS14-change end
         }
     }
 

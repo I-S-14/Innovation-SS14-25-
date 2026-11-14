@@ -7,7 +7,7 @@
   components:
   - type: Objective
     difficulty: 1.5
-    issuer: objective-issuer-wizard-federation
+    issuer: IS14ObjectiveIssuerWizardFederation
     icon:
       sprite: Clothing/Head/Hats/wizardhat.rsi
       state: icon

@@ -42,6 +42,9 @@ public sealed class InternalsSystem : SharedInternalsSystem
         if (component.GasTankEntity != null)
             return; // already connected
 
+        if (!HasComp<RespiratorComponent>(uid)) // Goob
+            return;
+
         // Can the entity breathe the air it is currently exposed to?
         if (_respirator.CanMetabolizeInhaledAir(uid))
             return;
@@ -62,7 +65,7 @@ public sealed class InternalsSystem : SharedInternalsSystem
         if (AreInternalsWorking(ent))
         {
             var gasTank = Comp<GasTankComponent>(ent.Comp.GasTankEntity!.Value);
-            args.Gas = _gasTank.RemoveAirVolume((ent.Comp.GasTankEntity.Value, gasTank), args.Respirator.BreathVolume);
+            args.Gas = _gasTank.RemoveAirOutput((ent.Comp.GasTankEntity.Value, gasTank), args.Respirator.BreathVolume);
             // TODO: Should listen to gas tank updates instead I guess?
             _alerts.ShowAlert(ent.Owner, ent.Comp.InternalsAlert, GetSeverity(ent));
         }

@@ -15,6 +15,7 @@ using Content.Shared.UserInterface;
 using Content.Shared.Weapons.Melee;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Prototypes;
+using Content.Shared.Timing.Systems;
 
 namespace Content.Shared._Goobstation.Wizard.Spellblade;
 

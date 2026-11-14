@@ -1,3 +1,4 @@
+using Content.Shared.Speech.EntitySystems;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Server.Speech.EntitySystems;
@@ -6,10 +7,10 @@ using Robust.Shared.Random;
 
 namespace Content.Goobstation.Server.Speech;
 
-public sealed class OhioAccentSystem : EntitySystem
+public sealed partial class OhioAccentSystem : EntitySystem
 {
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly ReplacementAccentSystem _replacement = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private ReplacementAccentSystem _replacement = default!;
 
     public override void Initialize()
     {
@@ -17,7 +18,7 @@ public sealed class OhioAccentSystem : EntitySystem
         SubscribeLocalEvent<Common.Speech.OhioAccentComponent, AccentGetEvent>(OnAccent);
     }
 
-    private void OnAccent(EntityUid uid, Common.Speech.OhioAccentComponent component, AccentGetEvent args)
+    private void OnAccent(EntityUid uid, Common.Speech.OhioAccentComponent component, ref AccentGetEvent args)
     {
         var message = args.Message;
 

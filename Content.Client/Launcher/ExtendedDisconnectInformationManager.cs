@@ -1,6 +1,11 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Robust.Shared.Network;
+using System;
+using Robust.Client;
+using Robust.Client.UserInterface;
+using Robust.Shared.IoC;
+using Robust.Shared.Log;
 
 namespace Content.Client.Launcher;
 
@@ -9,9 +14,9 @@ namespace Content.Client.Launcher;
 /// But honestly, given that content might have additional flags (i.e. hide disconnect button for bans)?
 /// This is responsible for collecting any extended disconnect information.
 /// </summary>
-public sealed class ExtendedDisconnectInformationManager
+public sealed partial class ExtendedDisconnectInformationManager
 {
-    [Dependency] private readonly IClientNetManager _clientNetManager = default!;
+    [Dependency] private IClientNetManager _clientNetManager = default!;
 
     private NetDisconnectedArgs? _lastNetDisconnectedArgs = null;
 

@@ -127,6 +127,7 @@
   - type: Cyborg
     model: IS14CyborgModelDerelictSyndicate
     inherentRadioChannels:
+    - Binary
     - Syndicate
   - type: NukeOperative
   - type: StartIonStormed

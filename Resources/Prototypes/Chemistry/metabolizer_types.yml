@@ -45,3 +45,7 @@
 - type: metabolizerType
   id: Arachnid
   name: metabolizer-type-arachnid
+
+- type: metabolizerType
+  id: Changeling
+  name: metabolizer-type-changeling

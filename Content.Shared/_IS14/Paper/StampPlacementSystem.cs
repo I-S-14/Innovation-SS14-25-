@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Numerics;
+using Content.Goobstation.Common.Paper;
 using Content.Shared._IS14.CCVar;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Paper;
@@ -90,6 +91,10 @@ public sealed class StampPlacementSystem : EntitySystem
         _popup.PopupClient(stampPaperSelfMessage, args.Actor, args.Actor);
 
         _audio.PlayPredicted(stampComp.Sound, entity.Owner, args.Actor);
+
+        // Goob hooks (achievements) listen for this on the stamping player.
+        var stampedEv = new PaperStampedEvent(entity.Owner);
+        RaiseLocalEvent(args.Actor, ref stampedEv);
 
         _paper.UpdateUserInterface(entity);
     }

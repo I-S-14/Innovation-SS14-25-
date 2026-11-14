@@ -1,13 +1,13 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
+using Content.Server.Fluids.EntitySystems;
 using Content.Server.Objectives.Components;
 using Content.Server.Objectives.Systems;
 using Content.Server.Popups;
 using Content.Shared.Actions;
+using Content.Shared.Chemistry.Components;
 using Content.Shared.Dragon;
+using Content.Shared.Gibbing;
 using Content.Shared.Maps;
 using Content.Shared.Mind;
-using Content.Shared.Mind.Components;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Movement.Systems;
@@ -16,35 +16,29 @@ using Content.Shared.Zombies;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
-using Content.Shared.Sprite; // Goobstation
-using Content.Server.Stunnable; // Goobstation
-using Content.Shared.Chemistry.Components; // Goobstation
-using Content.Shared.Devour.Components; // Goobstation
-using Content.Shared.NPC.Components; // Goobstation
-using Robust.Shared.Serialization.Manager; // Goobstation
-using Content.Server.Body.Systems;
-using Content.Shared.Damage; // Goobstation
+using Content.Server.Roles;
+using Content.Shared.Mind.Components;
+using Content.Shared.Gibbing.Systems;
 
 namespace Content.Server.Dragon;
 
 public sealed partial class DragonSystem : EntitySystem
 {
-    [Dependency] private readonly CarpRiftsConditionSystem _carpRifts = default!;
-    [Dependency] private readonly MovementSpeedModifierSystem _movement = default!;
-    [Dependency] private readonly NpcFactionSystem _faction = default!;
-    [Dependency] private readonly PopupSystem _popup = default!;
-    [Dependency] private readonly SharedActionsSystem _actions = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
-    [Dependency] private readonly SharedTransformSystem _transform = default!;
-    [Dependency] private readonly SharedMapSystem _map = default!;
-    [Dependency] private readonly MobStateSystem _mobState = default!;
-    [Dependency] private readonly EntityLookupSystem _lookup = default!; // Goobstation
-    [Dependency] private readonly StunSystem _stun = default!; // Goobstation
-    [Dependency] private readonly ISerializationManager _serManager = default!; // Goobstation
-    [Dependency] private readonly DamageableSystem _damage = default!; // Goobstation
-    [Dependency] private readonly TurfSystem _turf = default!;
+    [Dependency] private CarpRiftsConditionSystem _carpRifts = default!;
+    [Dependency] private SharedMindSystem _mind = default!;
+    [Dependency] private MovementSpeedModifierSystem _movement = default!;
+    [Dependency] private NpcFactionSystem _faction = default!;
+    [Dependency] private PopupSystem _popup = default!;
+    [Dependency] private SharedActionsSystem _actions = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private SharedMapSystem _map = default!;
+    [Dependency] private MobStateSystem _mobState = default!;
+    [Dependency] private TurfSystem _turf = default!;
+    [Dependency] private Content.Shared.Body.Systems.SharedBodySystem _gibbing = default!;
+    [Dependency] private SmokeSystem _smoke = default!;
 
-    private EntityQuery<CarpRiftsConditionComponent> _objQuery;
+    [Dependency] private EntityQuery<CarpRiftsConditionComponent> _carpRiftsConditionQuery = default!;
 
     /// <summary>
     /// Minimum distance between 2 rifts allowed.
@@ -58,34 +52,14 @@ public sealed partial class DragonSystem : EntitySystem
 
     private const int RiftsAllowed = 3;
 
-    public override void Initialize()
-    {
-        base.Initialize();
-
-        _objQuery = GetEntityQuery<CarpRiftsConditionComponent>();
-
-        SubscribeLocalEvent<DragonComponent, MapInitEvent>(OnInit);
-        SubscribeLocalEvent<DragonComponent, ComponentShutdown>(OnShutdown);
-        SubscribeLocalEvent<DragonComponent, DragonSpawnRiftActionEvent>(OnSpawnRift);
-        SubscribeLocalEvent<DragonComponent, RefreshMovementSpeedModifiersEvent>(OnDragonMove);
-        SubscribeLocalEvent<DragonComponent, MobStateChangedEvent>(OnMobStateChanged);
-        SubscribeLocalEvent<DragonComponent, EntityZombifiedEvent>(OnZombified);
-        SubscribeLocalEvent<DragonComponent, DragonRoarActionEvent>(OnDragonRoar); // Goobstation
-        SubscribeLocalEvent<DragonComponent, DragonSpawnCarpHordeActionEvent>(OnRiseFish); // Goobstation
-    }
-
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
 
-        var query = EntityQueryEnumerator<DragonComponent, TransformComponent>(); // Goobstation - added Transform and Devourer components
-        while (query.MoveNext(out var uid, out var comp, out var xform)) // Goobstation - added Transform and Devourer components
+        var query = EntityQueryEnumerator<DragonComponent>();
+        while (query.MoveNext(out var uid, out var comp))
         {
-            // Goobstation start
-            // Heal the dragon a bit if it's near the carp rift.
-            if (_lookup.GetEntitiesInRange<DragonRiftComponent>(xform.Coordinates, comp.CarpRiftHealingRange).Count > 0)
-                _damage.TryChangeDamage(uid, comp.CarpRiftHealing * frameTime, true, false);
-            // Goobstation end
+            GoobHealDragonIfNearRift((uid, comp), frameTime); // Goob - dragon heal
 
             if (comp.WeakenedAccumulator > 0f)
             {
@@ -118,28 +92,34 @@ public sealed partial class DragonSystem : EntitySystem
             if (!_mobState.IsDead(uid))
                 comp.RiftAccumulator += frameTime;
 
-            // Delete it, naughty dragon!
+            // Gib it, naughty dragon!
             if (comp.RiftAccumulator >= comp.RiftMaxAccumulator)
             {
-                Roar(uid, comp);
-                QueueDel(uid);
+                Roar(uid, comp, Transform(uid).Coordinates);
+                var smoke = Spawn(comp.SmokePrototype, Transform(uid).Coordinates);
+                if (TryComp<SmokeComponent>(smoke, out var smokeComp))
+                    _smoke.StartSmoke(smoke, comp.SmokeSolution, smokeComp.Duration, smokeComp.SpreadAmount, smokeComp);
+                _gibbing.GibBody(uid);
             }
         }
     }
 
+    [SubscribeLocalEvent]
     private void OnInit(EntityUid uid, DragonComponent component, MapInitEvent args)
     {
         Roar(uid, component);
         _actions.AddAction(uid, ref component.SpawnRiftActionEntity, component.SpawnRiftAction);
-        _actions.AddAction(uid, ref component.SpawnCarpsActionEntity, component.SpawnCarpsAction); // Goobstation
-        _actions.AddAction(uid, ref component.RoarActionEntity, component.RoarAction); // Goobstation
+
+        GoobOnInit(uid, component, args); // Goob - new actions. TODO move
     }
 
+    [SubscribeLocalEvent]
     private void OnShutdown(EntityUid uid, DragonComponent component, ComponentShutdown args)
     {
         DeleteRifts(uid, false, component);
     }
 
+    [SubscribeLocalEvent]
     private void OnSpawnRift(EntityUid uid, DragonComponent component, DragonSpawnRiftActionEvent args)
     {
         if (component.Weakened)
@@ -179,8 +159,10 @@ public sealed partial class DragonSystem : EntitySystem
             }
         }
 
+        var position = _transform.GetWorldPosition(xform);
+
         // cant put a rift on solars
-        foreach (var tile in _map.GetTilesIntersecting(xform.GridUid.Value, grid, new Circle(_transform.GetWorldPosition(xform), RiftTileRadius), false))
+        foreach (var tile in _map.GetTilesIntersecting(xform.GridUid.Value, grid, new Circle(position, RiftTileRadius), false))
         {
             if (!_turf.IsSpace(tile))
                 continue;
@@ -189,12 +171,14 @@ public sealed partial class DragonSystem : EntitySystem
             return;
         }
 
-        var carpUid = Spawn(component.RiftPrototype, _transform.GetMapCoordinates(uid, xform: xform));
+        var carpUid = Spawn(component.RiftPrototype, new MapCoordinates(position, xform.MapID), rotation: Transform(xform.GridUid.Value).LocalRotation);
+
         component.Rifts.Add(carpUid);
         Comp<DragonRiftComponent>(carpUid).Dragon = uid;
     }
 
     // TODO: just make this a move speed modifier component???
+    [SubscribeLocalEvent]
     private void OnDragonMove(EntityUid uid, DragonComponent component, RefreshMovementSpeedModifiersEvent args)
     {
         if (component.Weakened)
@@ -203,6 +187,7 @@ public sealed partial class DragonSystem : EntitySystem
         }
     }
 
+    [SubscribeLocalEvent]
     private void OnMobStateChanged(EntityUid uid, DragonComponent component, MobStateChangedEvent args)
     {
         // Deletes all rifts after dying
@@ -216,16 +201,22 @@ public sealed partial class DragonSystem : EntitySystem
         DeleteRifts(uid, false, component);
     }
 
+    [SubscribeLocalEvent]
     private void OnZombified(Entity<DragonComponent> ent, ref EntityZombifiedEvent args)
     {
         // prevent carp attacking zombie dragon
         _faction.AddFaction(ent.Owner, ent.Comp.Faction);
     }
 
-    private void Roar(EntityUid uid, DragonComponent comp)
+    private void Roar(EntityUid uid, DragonComponent comp, EntityCoordinates? coords = null)
     {
         if (comp.SoundRoar != null)
-            _audio.PlayPvs(comp.SoundRoar, uid);
+        {
+            if (coords != null)
+                _audio.PlayPvs(comp.SoundRoar, coords.Value);
+            else
+                _audio.PlayPvs(comp.SoundRoar, uid);
+        }
     }
 
     /// <summary>
@@ -247,13 +238,12 @@ public sealed partial class DragonSystem : EntitySystem
         comp.Rifts.Clear();
 
         // stop here if not trying to reset the objective's rift count
-        if (!resetRole || !TryComp<MindContainerComponent>(uid, out var mindContainer) || !mindContainer.HasMind)
+        if (!resetRole || !_mind.TryGetMind(uid, out _, out var mind))
             return;
 
-        var mind = Comp<MindComponent>(mindContainer.Mind.Value);
         foreach (var objId in mind.Objectives)
         {
-            if (_objQuery.TryGetComponent(objId, out var obj))
+            if (_carpRiftsConditionQuery.TryGetComponent(objId, out var obj))
             {
                 _carpRifts.ResetRifts(objId, obj);
                 break;
@@ -269,13 +259,12 @@ public sealed partial class DragonSystem : EntitySystem
         if (!Resolve(uid, ref comp))
             return;
 
-        if (!TryComp<MindContainerComponent>(uid, out var mindContainer) || !mindContainer.HasMind)
+        if (!_mind.TryGetMind(uid, out _, out var mind))
             return;
 
-        var mind = Comp<MindComponent>(mindContainer.Mind.Value);
         foreach (var objId in mind.Objectives)
         {
-            if (_objQuery.TryGetComponent(objId, out var obj))
+            if (_carpRiftsConditionQuery.TryGetComponent(objId, out var obj))
             {
                 _carpRifts.RiftCharged(objId, obj);
                 break;
@@ -291,57 +280,11 @@ public sealed partial class DragonSystem : EntitySystem
         if (!Resolve(uid, ref comp))
             return;
 
+        DeleteRifts(uid, true, comp); // Goob
+
         // We can't predict the rift being destroyed anyway so no point adding weakened to shared.
         comp.WeakenedAccumulator = comp.WeakenedDuration;
         _movement.RefreshMovementSpeedModifiers(uid);
         _popup.PopupEntity(Loc.GetString("carp-rift-destroyed"), uid, uid);
     }
-    #region Goobstation
-
-    private void OnRiseFish(EntityUid uid, DragonComponent component, DragonSpawnCarpHordeActionEvent args)
-    {
-        if (args.Handled)
-            return;
-
-        Roar(uid, component);
-        var xform = Transform(uid);
-        for (int i = 0; i < component.CarpAmount; i++)
-        {
-            var ent = Spawn(component.CarpProtoId, xform.Coordinates);
-
-            // Update their look to match the leader.
-            if (TryComp<RandomSpriteComponent>(uid, out var randomSprite))
-            {
-                var spawnedSprite = EnsureComp<RandomSpriteComponent>(ent);
-                _serManager.CopyTo(randomSprite, ref spawnedSprite, notNullableOverride: true);
-                Dirty(ent, spawnedSprite);
-            }
-        }
-
-        args.Handled = true;
-    }
-
-    private void OnDragonRoar(EntityUid uid, DragonComponent component, DragonRoarActionEvent args)
-    {
-        if (args.Handled)
-            return;
-
-        Roar(uid, component);
-
-        // TODO: add pushing (like from push horn but stronger) after upstream is merged
-
-        var xform = Transform(uid);
-        var nearMobs = _lookup.GetEntitiesInRange<NpcFactionMemberComponent>(xform.Coordinates, component.RoarRange, LookupFlags.Uncontained);
-        foreach (var mob in nearMobs)
-        {
-            if (_faction.IsEntityFriendly(uid, (mob.Owner, mob.Comp)))
-                continue;
-
-            _stun.TryUpdateStunDuration (mob, TimeSpan.FromSeconds(component.RoarStunTime));
-        }
-
-        args.Handled = true;
-    }
-
-    #endregion
 }

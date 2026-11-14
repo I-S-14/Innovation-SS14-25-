@@ -2,7 +2,8 @@
 
 - type: entity
   id: DimensionPot
-  parent: PottedPlantBase
+  # IS14-change: do not inherit the ordinary furniture destruction threshold.
+  parent: IS14PottedPlantBaseCommon
   suffix: Dimension
   components:
   - type: Sprite
@@ -45,7 +46,16 @@
   - type: PocketDimension
   # no (easily) deleting items with it
   - type: Destructible
-    thresholds: []
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 2000000
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 2000000
   # nuh uh
   - type: CargoSellBlacklist
   - type: Portal

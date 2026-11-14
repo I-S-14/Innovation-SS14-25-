@@ -153,6 +153,7 @@ public sealed class ToggleableClothingSystem : EntitySystem
             BreakOnDamage = true,
             BreakOnMove = true,
             DistanceThreshold = 2,
+            FaceTarget = false, // Goob
         };
 
         if (!_doAfter.TryStartDoAfter(args))
@@ -182,6 +183,7 @@ public sealed class ToggleableClothingSystem : EntitySystem
             BreakOnDamage = true,
             BreakOnMove = true,
             DistanceThreshold = 2,
+            FaceTarget = false, // Goob
         };
 
         if (!_doAfter.TryStartDoAfter(args))
@@ -265,7 +267,9 @@ public sealed class ToggleableClothingSystem : EntitySystem
         if (GetAttachedToggleStatus(args.UnEquipTarget, toggleable, true) == ToggleableClothingAttachedStatus.NoneToggled)
             return;
 
-        _popupSystem.PopupClient(Loc.GetString("toggleable-clothing-remove-all-attached-first"), args.Unequipee, args.Unequipee);
+                //IS14-change start
+                _popupSystem.PopupClient(Loc.GetString("toggleable-clothing-remove-all-attached-first"), args.UnEquipTarget, args.User);
+                //IS14-change end
 
         args.Cancel();
     }
@@ -279,6 +283,9 @@ public sealed class ToggleableClothingSystem : EntitySystem
 
         // If it's a part of PVS departure then don't handle it.
         if (_timing.ApplyingState)
+            return;
+
+        if (_transferringInventory.Contains(args.EquipTarget)) // Goobstation
             return;
 
         _clothing.SetEquippedPrefix(toggleable, null);
@@ -301,7 +308,7 @@ public sealed class ToggleableClothingSystem : EntitySystem
             {
                 if (comp.Container.Contains(partUid))
                     continue;
-                _inventorySystem.TryUnequip(args.Equipee, slot, force: true, triggerHandContact: true);
+                _inventorySystem.TryUnequip(args.EquipTarget, slot, force: true, triggerHandContact: true);
                 // unnecessary for gibbing behaviour fix
                 // but this makes it so that if you unequip and there's items stored
                 // it doesn't just eat the items
@@ -310,7 +317,7 @@ public sealed class ToggleableClothingSystem : EntitySystem
                 !Deleted(stored))
                 {
                     _containerSystem.TryRemoveFromContainer(stored);             // pop it out
-                    _inventorySystem.TryEquip(args.Equipee, stored, slot,    // put it on
+                    _inventorySystem.TryEquip(args.EquipTarget, stored, slot,    // put it on
                         force: true, triggerHandContact: true);
                 }
                 _containerSystem.Insert(partUid, comp.Container); // instant insert we dont wait for OnAttachedUnequip
@@ -318,7 +325,7 @@ public sealed class ToggleableClothingSystem : EntitySystem
             }
             if (affectedParts.Count > 0)
             {
-                var ev = new ToggledBackClothingFullUnequipAndInsertedEvent(toggleable.Owner, args.Equipee, affectedParts);
+                var ev = new ToggledBackClothingFullUnequipAndInsertedEvent(toggleable.Owner, args.EquipTarget, affectedParts);
                 RaiseLocalEvent(toggleable.Owner, ref ev);
             }
             return;
@@ -329,7 +336,7 @@ public sealed class ToggleableClothingSystem : EntitySystem
             if (comp.Container.Contains(partUid) || string.IsNullOrEmpty(slot))
                 continue;
 
-            _inventorySystem.TryUnequip(args.Equipee, slot, force: true, triggerHandContact: true);
+            _inventorySystem.TryUnequip(args.EquipTarget, slot, force: true, triggerHandContact: true);
         }
     }
 
@@ -374,13 +381,15 @@ public sealed class ToggleableClothingSystem : EntitySystem
             return;
 
         var attachedEnt = new Entity<AttachedClothingComponent>(args.Equipment, attachedComp);
-        if (args.UnEquipTarget != args.Unequipee)
+        //IS14-change start
+        if (args.User != args.UnEquipTarget)
         {
-            StartAttachedDoAfter(args.Unequipee, attachedEnt, args.UnEquipTarget);
+            StartAttachedDoAfter(args.User, attachedEnt, args.UnEquipTarget);
             args.Cancel(); // Cancel original unequip, DoAfter will handle it
         }
         else
-            UnequipClothing(args.Unequipee, new Entity<ToggleableClothingComponent>(toggleable, toggleableComp), args.UnEquipTarget, args.Slot);
+            args.Cancel(); // Goob - attempt events are also raised by CanUnequip queries (e.g. building the context menu), so retracting here unequipped the part
+        //IS14-change end
     }
 
     private void OnRemoveAttached(Entity<AttachedClothingComponent> attached, ref ComponentRemove args)
@@ -422,6 +431,9 @@ public sealed class ToggleableClothingSystem : EntitySystem
         if (_timing.ApplyingState)
             return;
 
+        if (_transferringInventory.Contains(args.EquipTarget)) // Goobstation
+            return;
+
         if (comp.LifeStage > ComponentLifeStage.Running)
             return;
 
@@ -442,7 +454,7 @@ public sealed class ToggleableClothingSystem : EntitySystem
         if (TryComp<ClothingComponent>(comp.AttachedUid, out var clothingComp) &&
         (clothingComp.Slots & SlotFlags.BACK) != 0)
         {
-            var ev = new OnToggleableUnequipAttemptEvent(comp.AttachedUid, attached.Owner, args.Equipee, false);
+            var ev = new OnToggleableUnequipAttemptEvent(comp.AttachedUid, attached.Owner, args.EquipTarget, false);
             RaiseLocalEvent(comp.AttachedUid, ev);
             // I fucking hate these naming schemes but im not changing them at this point
             // AttachedUid = Toggleable Part
@@ -451,7 +463,7 @@ public sealed class ToggleableClothingSystem : EntitySystem
         }
 
         // Handle re-equipping contained items
-        UnequipClothing(args.Equipee, (comp.AttachedUid, toggleableComp), attached.Owner, slot);
+        UnequipClothing(args.EquipTarget, (comp.AttachedUid, toggleableComp), attached.Owner, slot);
 
         if (toggleableComp.Container != null)
             _containerSystem.Insert(attached.Owner, toggleableComp.Container);
@@ -568,6 +580,22 @@ public sealed class ToggleableClothingSystem : EntitySystem
             }
         }
     }
+
+    // <Goobstation>
+    private readonly HashSet<EntityUid> _transferringInventory = new();
+
+    /// <summary>
+    ///     While set, deployed pieces stay deployed when unequipped, so a whole-inventory
+    ///     transfer (e.g. polymorph) carries the worn state over to the new body as-is.
+    /// </summary>
+    public void SetInventoryTransferring(EntityUid wearer, bool transferring)
+    {
+        if (transferring)
+            _transferringInventory.Add(wearer);
+        else
+            _transferringInventory.Remove(wearer);
+    }
+    // </Goobstation>
 
     private bool CanToggleClothing(EntityUid user, Entity<ToggleableClothingComponent> toggleable, bool multiple)
     {

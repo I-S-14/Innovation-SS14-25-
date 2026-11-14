@@ -6,12 +6,13 @@ using Content.Shared.StatusIcon; // Goobstation
 using Content.Shared.VoiceMask;
 using Robust.Client.UserInterface;
 using Robust.Shared.Prototypes;
+using Robust.Client.GameObjects;
 
 namespace Content.Client.VoiceMask;
 
-public sealed class VoiceMaskBoundUserInterface : BoundUserInterface
+public sealed partial class VoiceMaskBoundUserInterface : BoundUserInterface
 {
-    [Dependency] private readonly IPrototypeManager _protomanager = default!;
+    [Dependency] private IPrototypeManager _protomanager = default!;
 
     [ViewVariables]
     private VoiceMaskNameChangeWindow? _window;

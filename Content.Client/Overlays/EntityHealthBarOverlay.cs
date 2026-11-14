@@ -6,6 +6,8 @@ using Content.Client.UserInterface.Systems;
 using Content.Shared._Shitmed.Medical.Surgery.Consciousness.Components; // Shitmed Change
 using Content.Shared.Damage;
 using Content.Goobstation.Maths.FixedPoint;
+using Content.Shared.Damage.Components;
+using Content.Shared.Damage.Systems;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
@@ -33,11 +35,12 @@ public sealed class EntityHealthBarOverlay : Overlay
     private readonly StatusIconSystem _statusIconSystem;
     private readonly SpriteSystem _spriteSystem;
     private readonly ProgressColorSystem _progressColor;
+    private readonly DamageableSystem _damageable;
 
 
     public override OverlaySpace Space => OverlaySpace.WorldSpaceBelowFOV;
     public HashSet<string> DamageContainers = new();
-    public ProtoId<HealthIconPrototype>? StatusIcon;
+    public ProtoId<StatusIconPrototype>? StatusIcon;
 
     public EntityHealthBarOverlay(IEntityManager entManager, IPrototypeManager prototype)
     {
@@ -49,6 +52,7 @@ public sealed class EntityHealthBarOverlay : Overlay
         _statusIconSystem = _entManager.System<StatusIconSystem>();
         _spriteSystem = _entManager.System<SpriteSystem>();
         _progressColor = _entManager.System<ProgressColorSystem>();
+        _damageable = _entManager.System<DamageableSystem>();
     }
 
     protected override void Draw(in OverlayDrawArgs args)
@@ -61,18 +65,19 @@ public sealed class EntityHealthBarOverlay : Overlay
         var handle = args.WorldHandle;
         var rotation = args.Viewport.Eye?.Rotation ?? Angle.Zero;
         var xformQuery = _entManager.GetEntityQuery<TransformComponent>();
+        var spriteQuery = _entManager.GetEntityQuery<SpriteComponent>();
 
         const float scale = 1f;
         var scaleMatrix = Matrix3Helpers.CreateScale(new Vector2(scale, scale));
         var rotationMatrix = Matrix3Helpers.CreateRotation(-rotation);
         _prototype.Resolve(StatusIcon, out var statusIcon);
 
-        var query = _entManager.AllEntityQueryEnumerator<MobThresholdsComponent, MobStateComponent, DamageableComponent, SpriteComponent>();
+        var query = _entManager.AllEntityQueryEnumerator<MobThresholdsComponent, MobStateComponent, DamageableComponent, DamageableComponent>();
         while (query.MoveNext(out var uid,
             out var mobThresholdsComponent,
             out var mobStateComponent,
             out var damageableComponent,
-            out var spriteComponent))
+            out var injurableComponent))
         {
             if (statusIcon != null && !_statusIconSystem.IsVisible((uid, _entManager.GetComponent<MetaDataComponent>(uid)), statusIcon))
                 continue;
@@ -82,11 +87,15 @@ public sealed class EntityHealthBarOverlay : Overlay
                 xform.MapID != args.MapId)
                 continue;
 
-            if (damageableComponent.DamageContainerID == null || !DamageContainers.Contains(damageableComponent.DamageContainerID))
+            if (injurableComponent.DamageContainerID == null || !DamageContainers.Contains(injurableComponent.DamageContainerID))
+                continue;
+
+            if (!spriteQuery.TryGetComponent(uid, out var sprite))
                 continue;
 
             // we use the status icon component bounds if specified otherwise use sprite
-            var bounds = _entManager.GetComponentOrNull<StatusIconComponent>(uid)?.Bounds ?? _spriteSystem.GetLocalBounds((uid, spriteComponent));
+            var bounds = _entManager.GetComponentOrNull<StatusIconComponent>(uid)?.Bounds ?? _spriteSystem.GetLocalBounds(
+                (uid, sprite));
             var worldPos = _transform.GetWorldPosition(xform, xformQuery);
 
             if (!bounds.Translated(worldPos).Intersects(args.WorldAABB))
@@ -107,7 +116,7 @@ public sealed class EntityHealthBarOverlay : Overlay
             var yOffset = bounds.Height * EyeManager.PixelsPerMeter / 2 - 3f;
             var widthOfMob = bounds.Width * EyeManager.PixelsPerMeter;
 
-            var position = new Vector2(-widthOfMob / EyeManager.PixelsPerMeter / 2, yOffset / EyeManager.PixelsPerMeter);
+            var position = new Vector2(sprite.Offset.X - widthOfMob / EyeManager.PixelsPerMeter / 2, sprite.Offset.Y + yOffset / EyeManager.PixelsPerMeter);
             var color = GetProgressColor(deathProgress.ratio, deathProgress.inCrit);
 
             // Hardcoded width of the progress bar because it doesn't match the texture.
@@ -128,8 +137,6 @@ public sealed class EntityHealthBarOverlay : Overlay
             pixelDarken = pixelDarken.Translated(position);
             handle.DrawRect(pixelDarken, Black.WithAlpha(128));
         }
-
-        handle.SetTransform(Matrix3x2.Identity);
     }
 
     /// <summary>

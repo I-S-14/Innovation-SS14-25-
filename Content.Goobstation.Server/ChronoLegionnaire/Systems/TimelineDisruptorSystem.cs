@@ -14,13 +14,13 @@ using Robust.Shared.Timing;
 
 namespace Content.Goobstation.Server.ChronoLegionnaire.Systems;
 
-public sealed class TimelineDisruptorSystem : SharedTimelineDisruptorSystem
+public sealed partial class TimelineDisruptorSystem : SharedTimelineDisruptorSystem
 {
-    [Dependency] private readonly AppearanceSystem _appearanceSystem = default!;
-    [Dependency] private readonly SharedAudioSystem _audioSystem = default!;
-    [Dependency] private readonly ContainerSystem _containerSystem = default!;
-    [Dependency] private readonly ItemSlotsSystem _itemSlotsSystem = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private AppearanceSystem _appearanceSystem = default!;
+    [Dependency] private SharedAudioSystem _audioSystem = default!;
+    [Dependency] private ContainerSystem _containerSystem = default!;
+    [Dependency] private ItemSlotsSystem _itemSlotsSystem = default!;
+    [Dependency] private IGameTiming _timing = default!;
     public override void Initialize()
     {
         base.Initialize();
@@ -41,7 +41,7 @@ public sealed class TimelineDisruptorSystem : SharedTimelineDisruptorSystem
         if (args.Handled || !args.Complex)
             return;
 
-        if (!_itemSlotsSystem.TryGetSlot(ent, comp.DisruptionSlot, out var disruptionSlot))
+        if (!_itemSlotsSystem.TryGetSlot(ent.Owner, comp.DisruptionSlot, out var disruptionSlot))
             return;
 
         if (disruptionSlot.ContainerSlot == null || disruptionSlot.ContainerSlot.ContainedEntities.Count == 0)
@@ -101,7 +101,7 @@ public sealed class TimelineDisruptorSystem : SharedTimelineDisruptorSystem
         Dirty(uid, disruptor);
     }
 
-    protected void StopDisrupting(Entity<TimelineDisruptorComponent> ent)
+    private void StopDisrupting(Entity<TimelineDisruptorComponent> ent)
     {
         var (_, disruptor) = ent;
 
@@ -120,7 +120,7 @@ public sealed class TimelineDisruptorSystem : SharedTimelineDisruptorSystem
 
         Dirty(ent, disruptor);
 
-        if (!_itemSlotsSystem.TryGetSlot(ent, disruptor.DisruptionSlot, out var disruptionSlot))
+        if (!_itemSlotsSystem.TryGetSlot(ent.Owner, disruptor.DisruptionSlot, out var disruptionSlot))
             return;
 
         EntityUid? cage = disruptionSlot.ContainerSlot!.ContainedEntity;

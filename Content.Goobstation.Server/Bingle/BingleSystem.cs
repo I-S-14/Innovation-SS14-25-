@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+using Robust.Shared.Prototypes;
 using System.Numerics;
 using Content.Goobstation.Common.Bingle;
 using Content.Goobstation.Shared.Bingle;
@@ -17,12 +18,16 @@ using Robust.Shared.Map;
 
 namespace Content.Goobstation.Server.Bingle;
 
-public sealed class BingleSystem : EntitySystem
+public sealed partial class BingleSystem : EntitySystem
 {
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] private readonly PolymorphSystem _polymorph = default!;
-    [Dependency] private readonly AppearanceSystem _appearance = default!;
-    [Dependency] private readonly SharedActionsSystem _actions = default!;
+    //IS14-change start: typed IDs preserve the retained Goob prototypes.
+    private static readonly EntProtoId CompatibilityActionBingleUpgradeEntityId = "ActionBingleUpgrade";
+    //IS14-change end
+
+    [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private PolymorphSystem _polymorph = default!;
+    [Dependency] private AppearanceSystem _appearance = default!;
+    [Dependency] private SharedActionsSystem _actions = default!;
     public override void Initialize()
     {
         base.Initialize();
@@ -67,7 +72,7 @@ public sealed class BingleSystem : EntitySystem
         if (component.Upgraded)
             return;
 
-        _actions.AddAction(uid, "ActionBingleUpgrade", uid);
+        _actions.AddAction(uid, CompatibilityActionBingleUpgradeEntityId, uid);
 
         _popup.PopupEntity(Loc.GetString("bingle-upgrade-success"), uid, uid);
         component.Upgraded = true;

@@ -1,5 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+using Robust.Client.GameObjects;
+using Robust.Shared.GameObjects;
+using Robust.Shared.IoC;
 namespace Content.Client.Markers
 {
     [RegisterComponent]

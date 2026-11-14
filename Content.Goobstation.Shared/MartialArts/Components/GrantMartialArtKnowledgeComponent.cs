@@ -80,7 +80,7 @@ public sealed partial class GrantSleepingCarpComponent : GrantMartialArtKnowledg
     public int CurrentUses = 0;
 
     [DataField]
-    public ProtoId<FactionIconPrototype> IconToAdd = "SleepingCarpFaction";
+    public ProtoId<StatusIconPrototype> IconToAdd = "SleepingCarpFaction";
 
     [DataField]
     public ProtoId<NpcFactionPrototype> FactionToAdd = "Dragon";

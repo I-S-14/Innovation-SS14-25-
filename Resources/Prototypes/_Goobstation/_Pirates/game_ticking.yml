@@ -35,20 +35,13 @@
     speciesOverride: Human
     alwaysUseSpeciesOverride: true
   - type: AntagSelection
-    definitions:
-    - spawnerPrototype: SpawnPointPirateCaptain
-      pickPlayer: false
-      min: 5
-      max: 5
-      mindRoles:
-      - MindRolePirate
-      skills: # CorvaxGoob-Skills
-      - All
-      startingGear: PirateGear
-      components:
-      - type: RandomMetadata
-        nameSegments:
-        - NamesDeathCommando
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14PiratesSpawnAntag002d6d241
+      range:
+        max: 5
+        min: 5
+      playerRatio: 10
   - type: Tag
     tags:
     - MidroundAntag

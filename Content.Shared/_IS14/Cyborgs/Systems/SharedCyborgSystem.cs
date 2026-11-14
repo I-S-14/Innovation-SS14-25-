@@ -78,7 +78,7 @@ public abstract partial class SharedCyborgSystem : EntitySystem
         InitializeSlots();
         InitializeExamine();
 
-        SubscribeLocalEvent<TryGetIdentityShortInfoEvent>(OnTryGetIdentityShortInfo);
+        SubscribeLocalEvent<CyborgComponent, TryGetIdentityShortInfoEvent>(OnTryGetIdentityShortInfo);
         SubscribeLocalEvent<CyborgComponent, ComponentStartup>(OnStartup);
         SubscribeLocalEvent<CyborgComponent, MapInitEvent>(OnMapInit);
         SubscribeLocalEvent<CyborgComponent, EntInsertedIntoContainerMessage>(OnInserted);
@@ -99,12 +99,12 @@ public abstract partial class SharedCyborgSystem : EntitySystem
     }
 
     // Cyborgs go by their name instead of a job title.
-    private void OnTryGetIdentityShortInfo(TryGetIdentityShortInfoEvent args)
+    private void OnTryGetIdentityShortInfo(Entity<CyborgComponent> ent, ref TryGetIdentityShortInfoEvent args)
     {
-        if (args.Handled || !HasComp<CyborgComponent>(args.ForActor))
+        if (args.Handled || !HasComp<CyborgComponent>(args.Target))
             return;
 
-        args.Title = Name(args.ForActor).Trim();
+        args.Title = Name(args.Target).Trim();
         args.Handled = true;
     }
 

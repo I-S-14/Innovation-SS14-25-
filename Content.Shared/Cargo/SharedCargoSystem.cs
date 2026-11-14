@@ -4,11 +4,12 @@ using Content.Shared.Access.Components;
 using Content.Shared.Access.Systems;
 using Content.Shared.Cargo.Components;
 using Content.Shared.Cargo.Prototypes;
-using JetBrains.Annotations;
+using Content.Shared.Containers; // CorvaxGoob-CargoFeatures
 using Content.Shared.IdentityManagement;
 using Content.Shared.Item;
 using Content.Shared.Prototypes;
 using Content.Shared.Storage.Components;
+using JetBrains.Annotations;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
 using Robust.Shared.Timing;
@@ -234,14 +235,15 @@ public abstract class SharedCargoSystem : EntitySystem
     {
         var access = Proto.Index<CargoAccountPrototype>(entity.Comp.Account).SecureCrateOrderAccess;
 
-        if (productProto.HasComponent<StorageFillComponent>())
+        if (productProto.HasComp<StorageFillComponent>(EntityManager.ComponentFactory)
+            || productProto.HasComp<EntityTableContainerFillComponent>(EntityManager.ComponentFactory))
         {
             if (productProto.TryGetComponent<AccessReaderComponent>(out var reader)
             && access is not null
             && !AccessReader.AreAccessTagsAllowed(access, reader))
                 return false;
         }
-        else if (!productProto.HasComponent<ItemComponent>())
+        else if (!productProto.HasComp<ItemComponent>(EntityManager.ComponentFactory))
             return false;
 
         return true;

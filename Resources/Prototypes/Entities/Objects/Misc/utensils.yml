@@ -29,6 +29,7 @@
     price: 0
   - type: Tag
     tags:
+    - Dinnerware
     - Plastic
     - Trash
   - type: MeleeWeapon
@@ -47,7 +48,7 @@
   components:
   - type: Tag
     tags:
-    - Hoe
+    - Dinnerware
     - Metal
   - type: Sprite
     state: fork
@@ -88,6 +89,7 @@
   components:
   - type: Tag
     tags:
+    - Dinnerware
     - Metal
   - type: Sprite
     state: spoon
@@ -145,9 +147,11 @@
     - Knife
   - type: Tag
     tags:
-    - Plastic
-    - Trash
+    - Dinnerware
     - Knife
+    - Plastic
+    - ToyKnife
+    - Trash
   - type: Fixtures
     fixtures:
       fix1:
@@ -158,7 +162,10 @@
         - ItemMask
         restitution: 0.3
         friction: 0.2
-
+  - type: Tool
+    speedModifier: 0.15
+    qualities:
+    - Slicing
 
 - type: entity
   parent: UtensilBase

@@ -18,21 +18,10 @@
     - CosmicConversionObjective
     - CosmicEntropyObjective
   - type: AntagSelection
-    definitions:
-    - prefRoles: [ CosmicAntagCultist ]
-      min: 2
-      max: 6
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14CosmicCultAntag01348a7d2
+      range:
+        max: 6
+        min: 2
       playerRatio: 10
-      jobBlacklist: [ Chaplain ] # GOOBSTATION
-      skills: # CorvaxGoob-Skills
-      - All
-      blacklist:
-        components:
-        - CommandStaff # GOOBSTATION
-        - AntagImmune
-        - BibleUser
-      components:
-      - type: CosmicCult
-      - type: WeakToHoly # GOOBSTATION
-      mindRoles:
-      - MindRoleCosmicCult

@@ -2,14 +2,16 @@
 
 using Content.Server.StationEvents.Events;
 using Content.Shared.Storage;
+using Content.Shared.EntityTable.EntitySelectors;
 
 namespace Content.Server.StationEvents.Components;
 
 [RegisterComponent, Access(typeof(ImmovableRodRule))]
 public sealed partial class ImmovableRodRuleComponent : Component
 {
-    ///     List of possible rods and spawn probabilities.
+    /// <summary>
+    /// List of possible rods and spawn probabilities.
     /// </summary>
-    [DataField]
-    public List<EntitySpawnEntry> RodPrototypes = new();
+    [DataField(required: true)]
+    public EntityTableSelector RodPrototypes = default!;
 }

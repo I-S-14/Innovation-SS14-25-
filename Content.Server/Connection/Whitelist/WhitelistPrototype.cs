@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Robust.Shared.Prototypes;
+using System.Threading.Tasks;
+using Robust.Shared.Network;
 
 namespace Content.Server.Connection.Whitelist;
 

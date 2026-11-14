@@ -1,4 +1,5 @@
 using Content.Goobstation.Shared.Xenobiology.Components;
+using Content.Goobstation.Shared.Xenobiology.Systems;
 using Content.Server.NPC;
 using Content.Server.NPC.HTN;
 using Content.Server.NPC.HTN.PrimitiveTasks;
@@ -8,18 +9,23 @@ namespace Content.Goobstation.Server.Xenobiology.HTN;
 
 public sealed partial class EatCorpseOperator : HTNOperator
 {
-    [Dependency] private readonly IEntityManager _entManager = default!;
+    [Dependency] private IEntityManager _entManager = default!;
     private EatCorpseSystem _eatCorpse = default!;
     private SharedDoAfterSystem _doAfter = default!;
+
+    private EntityQuery<CorpseEaterComponent> _corpseQuery;
 
     [DataField]
     public string CorpseKey = string.Empty;
 
-    public override void Initialize(IEntitySystemManager sysManager)
+    public override void Initialize(IDependencyCollection deps)
     {
-        base.Initialize(sysManager);
+        base.Initialize(deps);
+        var sysManager = deps.Resolve<IEntitySystemManager>();
         _eatCorpse = sysManager.GetEntitySystem<EatCorpseSystem>();
         _doAfter = sysManager.GetEntitySystem<SharedDoAfterSystem>();
+
+        _corpseQuery = _entManager.GetEntityQuery<CorpseEaterComponent>();
     }
 
     public override HTNOperatorStatus Update(NPCBlackboard blackboard, float frameTime)
@@ -29,7 +35,7 @@ public sealed partial class EatCorpseOperator : HTNOperator
         var owner = blackboard.GetValue<EntityUid>(NPCBlackboard.Owner);
         var target = blackboard.GetValue<EntityUid>(CorpseKey);
 
-        if (!_entManager.TryGetComponent<CorpseEaterComponent>(owner, out var eater))
+        if (!_corpseQuery.TryComp(owner, out var eater))
             return HTNOperatorStatus.Failed;
 
         if (eater.LastDoAfterId is { } doAfterId)

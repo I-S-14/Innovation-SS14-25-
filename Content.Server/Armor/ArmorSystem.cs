@@ -3,15 +3,17 @@
 using Content.Server.Cargo.Systems;
 using Content.Shared.Armor;
 using Content.Shared.Cargo;
-using Robust.Shared.Prototypes;
 using Content.Shared.Damage.Prototypes;
+using Robust.Shared.Prototypes;
 
 namespace Content.Server.Armor;
 
 /// <inheritdoc/>
-public sealed class ArmorSystem : SharedArmorSystem
+public sealed partial class ArmorSystem : SharedArmorSystem
 {
+    //IS14-change start: retain fork fields lost during merge.
     [Dependency] private readonly IPrototypeManager _protoManager = default!;
+    //IS14-change end
 
     public override void Initialize()
     {
@@ -28,9 +30,9 @@ public sealed class ArmorSystem : SharedArmorSystem
             args.Price += component.PriceMultiplier * damageType.ArmorPriceCoefficient * 45 * (1 - modifier.Value); // Shitmed Change
         }
 
-        foreach (var modifier in component.Modifiers.FlatReduction)
+        foreach (var modifier in component.Modifiers.FlatReductions)
         {
-            var damageType = _protoManager.Index<DamageTypePrototype>(modifier.Key);
+            var damageType = ProtoMan.Index<DamageTypePrototype>(modifier.Key);
             args.Price += component.PriceMultiplier * damageType.ArmorPriceFlat * modifier.Value;
         }
     }

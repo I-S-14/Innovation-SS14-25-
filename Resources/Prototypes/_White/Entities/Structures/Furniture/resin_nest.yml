@@ -13,7 +13,11 @@
     state: full
   - type: IconSmooth
     key: full
-    base: resin_nest
+    states:
+    - !type:CornerSpriteSmoothing
+      base: resin_nest
+      mask:
+      - full
   - type: Fixtures
     fixtures:
       fix1:

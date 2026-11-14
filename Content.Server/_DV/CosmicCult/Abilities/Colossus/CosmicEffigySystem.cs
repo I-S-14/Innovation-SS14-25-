@@ -18,7 +18,6 @@ public sealed class CosmicEffigySystem : EntitySystem
     [Dependency] private readonly ActionsSystem _actions = default!;
     [Dependency] private readonly CodeConditionSystem _codeCondition = default!;
     [Dependency] private readonly EntityLookupSystem _lookup = default!;
-    [Dependency] private readonly ITileDefinitionManager _tileDef = default!;
     [Dependency] private readonly PopupSystem _popup = default!;
     [Dependency] private readonly SharedMapSystem _map = default!;
     [Dependency] private readonly SharedMindSystem _mind = default!;
@@ -88,7 +87,7 @@ public sealed class CosmicEffigySystem : EntitySystem
         if (xform.MapID != targetXform.MapID || (_transform.GetWorldPosition(xform) - _transform.GetWorldPosition(targetXform)).LengthSquared() > 15 * 15)
         {
             if (TryComp<WarpPointComponent>(obj.EffigyTarget, out var warp) && warp.Location is not null)
-                _popup.PopupEntity(Loc.GetString("ghost-role-colossus-effigy-error-location", ("LOCATION", warp.Location)), ent, ent);
+                _popup.PopupEntity(Loc.GetString("ghost-role-colossus-effigy-error-location", ("LOCATION", Loc.GetString(warp.Location))), ent, ent); //IS14-change: resolve LocId.
             return false;
         }
 

@@ -71,9 +71,9 @@
       guides: [ Supermatter, Power ]
     - type: WarpPoint
       follow: true
-      location: supermatter
+      location: is14-upstream-warp-supermatter
     - type: StealTarget
-      stealGroup: SupermatterSliver # uses to verify sm existense on map
+      stealGroup: [SupermatterSliver] # uses to verify sm existense on map
     - type: PhysicsGunBlacklist
     - type: LanguageSpeaker # Einstein Engines - Language
     - type: LanguageKnowledge # Einstein Engines - Language

@@ -1,0 +1,6 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: 5327c414c5:Resources/Prototypes/Damage/modifier_sets.yml
+- type: damageModifierSet
+  id: PotassiumIodide
+  coefficients:
+    Radiation: 0.1

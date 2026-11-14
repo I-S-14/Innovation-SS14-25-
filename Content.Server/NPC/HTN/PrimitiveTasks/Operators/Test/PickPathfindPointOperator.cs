@@ -9,8 +9,8 @@ namespace Content.Server.NPC.HTN.PrimitiveTasks.Operators.Test;
 
 public sealed partial class PickPathfindPointOperator : HTNOperator
 {
-    [Dependency] private readonly IEntityManager _entManager = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
+    [Dependency] private IEntityManager _entManager = default!;
+    [Dependency] private IRobustRandom _random = default!;
 
     public override async Task<(bool Valid, Dictionary<string, object>? Effects)> Plan(NPCBlackboard blackboard,
         CancellationToken cancelToken)
@@ -26,7 +26,7 @@ public sealed partial class PickPathfindPointOperator : HTNOperator
 
         var points = new List<TransformComponent>();
 
-        foreach (var (point, pointXform) in _entManager.EntityQuery<NPCPathfindPointComponent, TransformComponent>(true))
+        foreach (var (_, pointXform) in _entManager.EntityQuery<NPCPathfindPointComponent, TransformComponent>(true))
         {
             if (gridUid != pointXform.GridUid)
                 continue;

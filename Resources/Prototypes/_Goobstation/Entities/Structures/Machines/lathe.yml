@@ -40,6 +40,8 @@
     - MiscSignallersStatic
     - NailgunStatic
     - NailsStatic
+    - ReactorPartsBasic
+    - GlassStaticPack # CorvaxGoob
     dynamicPacks:
     - ConstructionBagOfHolding
     - AdvancedTools
@@ -57,9 +59,19 @@
     - BluespaceTheory
     - ScienceClothing
     - UpgradeKits
+    - AdvancedEmitters        # Omu - advanced emitters
     # CorvaxGoob Packs
     - WorkBeltsSharedDynamic # WorkBelts-Techfab
     - WokrBeltsEngDynamic # WorkBelts-Techfab
+    # Nuclear Reactor Packs
+    - ReactorCircuitboards
+    - ReactorFuelRods
+    - ReactorControlRods
+    - ReactorGasChannels
+    - ReactorHeatExchangers
+    - GasTurbineBlades
+    - GasTurbineStators
+    - NuclearSafetyTools
   - type: EmagLatheRecipes
     emagStaticPacks:
     - NailgunEvilStatic
@@ -73,6 +85,22 @@
         - RawMaterial
         - Ingot
         - SheetPlasma
+  # CorvaxGoob-start
+  - type: LatheAnnouncing
+    channels: [Engineering]
+  - type: BlueprintReceiver
+    whitelist:
+      tags:
+      - BlueprintEngineeringTechFab
+  - type: ContainerContainer
+    containers:
+      machine_board: !type:Container
+      machine_parts: !type:Container
+      blueprint: !type:Container
+  - type: EmptyOnMachineDeconstruct
+    containers:
+    - blueprint
+  # CorvaxGoob-end
 
 - type: entity
   id: CargoTechFab
@@ -102,6 +130,7 @@
     - ToolsStatic
     - SharedBoardsStatic
     - CargoBoardsStatic
+    - CargoBoardsStaticGoob
     - CablesStatic
     - PartsStatic
     - LatheMiscStatic
@@ -112,6 +141,7 @@
     dynamicPacks:
     - AdvancedTools
     - Mining
+    - MiningLavaland # Lavaland Change
     - PowerCells
     - Equipment
     # - ServiceWeapons
@@ -143,6 +173,22 @@
         - RawMaterial
         - Ingot
         - SheetPlasma
+  # CorvaxGoob-start
+  - type: LatheAnnouncing
+    channels: [Supply]
+  - type: BlueprintReceiver
+    whitelist:
+      tags:
+      - BlueprintCargoTechFab
+  - type: ContainerContainer
+    containers:
+      machine_board: !type:Container
+      machine_parts: !type:Container
+      blueprint: !type:Container
+  - type: EmptyOnMachineDeconstruct
+    containers:
+    - blueprint
+  # CorvaxGoob-end
 
 - type: entity
   id: ScienceTechFab
@@ -238,6 +284,22 @@
         - RawMaterial
         - Ingot
         - SheetPlasma
+  # CorvaxGoob-start
+  - type: LatheAnnouncing
+    channels: [Science]
+  - type: BlueprintReceiver
+    whitelist:
+      tags:
+      - BlueprintScienceTechFab
+  - type: ContainerContainer
+    containers:
+      machine_board: !type:Container
+      machine_parts: !type:Container
+      blueprint: !type:Container
+  - type: EmptyOnMachineDeconstruct
+    containers:
+    - blueprint
+  # CorvaxGoob-end
 
 - type: entity
   id: ServiceTechFab
@@ -305,6 +367,22 @@
         - RawMaterial
         - Ingot
         - SheetPlasma
+  # CorvaxGoob-start
+  - type: LatheAnnouncing
+    channels: [Service]
+  - type: BlueprintReceiver
+    whitelist:
+      tags:
+      - BlueprintServiceTechFab
+  - type: ContainerContainer
+    containers:
+      machine_board: !type:Container
+      machine_parts: !type:Container
+      blueprint: !type:Container
+  - type: EmptyOnMachineDeconstruct
+    containers:
+    - blueprint
+  # CorvaxGoob-end
 
 - type: entity
   id: ERTTechFab

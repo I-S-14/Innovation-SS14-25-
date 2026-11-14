@@ -20,6 +20,7 @@
   - Brutepack
   - Ointment
   - Gauze
+  - SynthBloodpack # Goob - Afterlight synths
 
 - type: latheRecipePack
   id: BasicChemistryStatic
@@ -93,6 +94,7 @@
   - MedkitBrute
   - MedkitAdvanced
   - MedkitRadiation
+
 #  - MedkitCombat #goob - Move combat kit to research
 
 - type: latheRecipePack

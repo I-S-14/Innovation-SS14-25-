@@ -14,7 +14,6 @@
   startingGear: WardenHelperGear
   icon: "JobIconWardenHelper"
   supervisors: job-supervisors-hos
-  weight: 5
   canBeAntag: false
   skills: # CorvaxGoob-Skills
   - Shooting

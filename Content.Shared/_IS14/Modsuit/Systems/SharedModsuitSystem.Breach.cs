@@ -415,17 +415,17 @@ public sealed partial class SharedModsuitSystem
         if (!ent.Comp.Deployed)
             return;
 
-        if (args.Unequipee == args.UnEquipTarget)
+        if (args.User == args.UnEquipTarget)
         {
             args.Cancel();
-            _popup.PopupClient(Loc.GetString("modsuit-breach-fold-instead"), ent, args.Unequipee);
+            _popup.PopupClient(Loc.GetString("modsuit-breach-fold-instead"), ent, args.User);
             return;
         }
 
         if (!IsSubdued(args.UnEquipTarget))
         {
             args.Cancel();
-            _popup.PopupClient(Loc.GetString("modsuit-breach-not-subdued"), ent, args.Unequipee);
+            _popup.PopupClient(Loc.GetString("modsuit-breach-not-subdued"), ent, args.User);
         }
     }
 

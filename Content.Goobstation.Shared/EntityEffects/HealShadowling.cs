@@ -9,6 +9,7 @@ using Content.Shared._Shitmed.Targeting;
 using Content.Shared.Chemistry.Components.SolutionManager;
 using JetBrains.Annotations;
 using Robust.Shared.Prototypes;
+using Content.Shared.Damage.Systems;
 
 namespace Content.Goobstation.Shared.EntityEffects;
 
@@ -16,11 +17,11 @@ namespace Content.Goobstation.Shared.EntityEffects;
 /// HealthChange but unique to Shadowlings and Thralls
 /// </summary>
 public sealed partial class HealShadowlingSystem
-    : EntityEffectSystem<SolutionContainerManagerComponent, HealShadowling>
+    : EntityEffectSystem<SolutionManagerComponent, HealShadowling>
 {
-    [Dependency] private readonly DamageableSystem _damage = default!;
+    [Dependency] private DamageableSystem _damage = default!;
 
-    protected override void Effect(Entity<SolutionContainerManagerComponent> entity, ref EntityEffectEvent<HealShadowling> args)
+    protected override void Effect(Entity<SolutionManagerComponent> entity, ref EntityEffectEvent<HealShadowling> args)
     {
         // If slings get custom organs, I will remove all of this code tbf
         if (!HasComp<ShadowlingComponent>(entity.Owner) &&

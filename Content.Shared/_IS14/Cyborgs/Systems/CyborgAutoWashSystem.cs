@@ -1,7 +1,6 @@
 // Licensed under IS14's EULA, see EULA.txt for more information.
 
 using System.Diagnostics.CodeAnalysis;
-using Content.Goobstation.Common.Footprints;
 using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared._IS14.Cyborgs.Components;
 using Content.Shared.Chemistry.Components;
@@ -36,7 +35,6 @@ public sealed class CyborgAutoWashSystem : EntitySystem
     [Dependency] private readonly SharedSolutionContainerSystem _solution = default!;
 
     private readonly HashSet<Entity<PuddleComponent>> _puddles = new();
-    private readonly HashSet<EntityUid> _onTile = new();
 
     public override void Initialize()
     {
@@ -145,14 +143,7 @@ public sealed class CyborgAutoWashSystem : EntitySystem
         ent.Comp.LastTile = tile;
         var coords = _transform.ToMapCoordinates(args.NewPosition);
 
-        // Footprints are their own entities, the mop cleans them the same way.
-        _onTile.Clear();
-        _lookup.GetEntitiesInRange(coords.MapId, coords.Position, 0.45f, _onTile, LookupFlags.Uncontained);
-        foreach (var uid in _onTile)
-        {
-            RaiseLocalEvent(uid, new FootprintCleanEvent());
-        }
-
+        // The legacy footprint subsystem is disabled, as in SharedAbsorbentSystem.
         _puddles.Clear();
         _lookup.GetEntitiesInRange(coords, 0.45f, _puddles);
         if (_puddles.Count == 0)

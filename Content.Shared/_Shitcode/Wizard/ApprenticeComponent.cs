@@ -10,5 +10,5 @@ namespace Content.Shared._Goobstation.Wizard;
 public sealed partial class ApprenticeComponent : Component
 {
     [DataField]
-    public ProtoId<FactionIconPrototype> StatusIcon = "ApprenticeFaction";
+    public ProtoId<StatusIconPrototype> StatusIcon = "ApprenticeFaction";
 }

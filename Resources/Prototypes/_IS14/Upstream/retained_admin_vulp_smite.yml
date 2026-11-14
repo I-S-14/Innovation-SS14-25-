@@ -1,0 +1,10 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: bd217732d1:Resources/Prototypes/Polymorphs/admin.yml
+- type: polymorph
+  id: AdminVulpSmite
+  configuration:
+    entity: MobVulpkanin
+    forced: true
+    transferName: true
+    inventory: Transfer
+    ignoreAllowRepeatedMorphs: true

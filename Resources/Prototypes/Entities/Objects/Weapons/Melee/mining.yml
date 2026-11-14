@@ -17,6 +17,7 @@
     attackRate: 0.7
     animationRotation: -45 # WWDP
     wideAnimationRotation: -135
+    heavyStaminaCost: 0 # Lavaland Change
     soundHit:
       path: "/Audio/Weapons/smash.ogg"
       params:
@@ -27,10 +28,9 @@
   - type: Wieldable
   - type: IncreaseDamageOnWield
     damage:
-      groups:
-        Brute: 10
       types:
-        Structural: 30
+        Piercing: 10
+        Structural: 9
   - type: Item
     size: Normal
     shape:

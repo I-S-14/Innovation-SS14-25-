@@ -14,11 +14,17 @@
   text: "/ServerInfo/Guidebook/NewPlayer/Controls/Controls.xml"
   children:
   - Radio
+  - CommunicationChannels # CorvaxGoob - available-radio-channels-guide
 
 - type: guideEntry
   id: Radio
   name: guide-entry-radio
   text: "/ServerInfo/Guidebook/NewPlayer/Controls/Radio.xml" 
+
+- type: guideEntry
+  id: Writing
+  name: guide-entry-writing
+  text: "/ServerInfo/Guidebook/Writing.xml"
 
 - type: guideEntry
   id: CharacterCreation

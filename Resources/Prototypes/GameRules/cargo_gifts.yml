@@ -155,9 +155,9 @@
     description: cargo-gift-cleaning
     dest: cargo-gift-dest-janitor
     gifts:
-      ServiceJanitorial: 2
-      ServiceLightsReplacement: 2
-      ServiceJanitorBiosuit: 1
+      JanitorialSupplies: 2
+      JanitorialLightsReplacement: 2
+      JanitorialBiosuit: 1
 
 - type: entity
   id: GiftsMedical
@@ -204,7 +204,7 @@
     description: cargo-gift-space-protection
     dest: cargo-gift-dest-supp
     gifts:
-      EmergencyInternalsLarge: 2
+      EmergencyEVA: 2
       EmergencyInflatablewall: 1
       EmergencyAdvancedKit: 1
       MedicalBiosuit: 1

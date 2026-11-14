@@ -2,6 +2,7 @@
 
 using Content.Shared.Objectives.Components;
 using Robust.Shared.Prototypes;
+using Content.Server.Antag;
 
 namespace Content.Server.Antag.Components;
 

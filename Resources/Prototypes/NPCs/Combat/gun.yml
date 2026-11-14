@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # Tries to shoot a target at range.
+
 - type: htnCompound
   id: GunCombatCompound
   branches:
@@ -55,6 +56,7 @@
               rangeKey: InteractRange
           operator: !type:InteractWithOperator
             targetKey: Target
+
 # TODO: Prioritise ammo for weapon we have equipped, otherwise grab anything if we don't have any.
 # TODO: Only works on ballistic
 
@@ -93,7 +95,6 @@
       tasks:
         - !type:HTNCompoundTask
           task: GunCombatCompound
-
 
 - type: htnCompound
   id: RangedCombatCompound
@@ -242,5 +243,3 @@
           preconditions:
             - !type:ActiveHandEntityPrecondition
           operator: !type:DropOperator
-
-# TODO: Reload a nearby gun

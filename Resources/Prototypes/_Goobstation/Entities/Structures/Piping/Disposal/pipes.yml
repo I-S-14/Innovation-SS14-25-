@@ -13,7 +13,8 @@
     - map: [ "pipe" ]
       state: conpipe-blocker
   - type: DisposalTube
-    containerId: DisposalBlocker
+    # IS14-change: preserve both Goob transit ports in the current tube model.
+    exits: [South, North]
   - type: DisposalBlocker
   - type: ContainerContainer
     containers:

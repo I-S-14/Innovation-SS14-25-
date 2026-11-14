@@ -1,0 +1,95 @@
+# IS14: retained Goob floor inventory; accepted snapshot 5327c414c5.
+# Current Wizards artwork with original floor mechanics and drops.
+- type: tile
+  id: FloorSteelOffset
+  itemDrop: FloorTileItemSteelOffset
+  parent: FloorSteel
+  name: tiles-steel-floor-offset
+  tileRipResistance: 4500
+- type: tile
+  id: FloorSteelDiagonalMini
+  itemDrop: FloorTileItemSteelDiagonalMini
+  parent: FloorSteel
+  name: tiles-steel-floor-diagonal-mini
+  tileRipResistance: 4500
+- type: tile
+  id: FloorSteelDiagonal
+  itemDrop: FloorTileItemSteelDiagonal
+  parent: FloorSteel
+  name: tiles-steel-floor-diagonal
+  tileRipResistance: 4500
+- type: tile
+  id: FloorIronsandConcrete
+  itemDrop: FloorTileItemIronsandConcrete
+  parent: FloorAsteroidIronsand
+  name: tiles-ironsand-concrete-tile
+  baseTurf: Plating
+  isSubfloor: false
+  deconstructTools:
+  - Prying
+  footstepSounds:
+    collection: FootstepTile
+  heatCapacity: 10000
+  weather: false
+  edgeSprites: {}
+  edgeSpritePriority: 0
+  tileRipResistance: 125
+- type: tile
+  id: FloorIronsandConcreteMono
+  itemDrop: FloorTileItemIronsandConcreteMono
+  parent: FloorAsteroidIronsand
+  name: tiles-ironsand-concrete-slab
+  baseTurf: Plating
+  isSubfloor: false
+  deconstructTools:
+  - Prying
+  footstepSounds:
+    collection: FootstepTile
+  heatCapacity: 10000
+  weather: false
+  edgeSprites: {}
+  edgeSpritePriority: 0
+  tileRipResistance: 125
+- type: tile
+  id: FloorIronsandConcreteSmooth
+  itemDrop: FloorTileItemIronsandConcreteSmooth
+  parent: FloorAsteroidIronsand
+  name: tiles-ironsand-concrete-smooth
+  baseTurf: Plating
+  isSubfloor: false
+  deconstructTools:
+  - Prying
+  footstepSounds:
+    collection: FootstepTile
+  heatCapacity: 10000
+  weather: false
+  edgeSprites: {}
+  edgeSpritePriority: 0
+  tileRipResistance: 125
+- type: tile
+  id: FloorLightAstroGrass
+  itemDrop: FloorTileItemLightAstroGrass
+  parent: FloorAstroGrass
+  name: tiles-light-astro-grass
+  baseTurf: Plating
+  isSubfloor: false
+  deconstructTools:
+  - Cutting
+  tileRipResistance: 125
+  weather: true
+- type: tile
+  id: FloorUraniumMarble
+  itemDrop: FloorTileItemUraniumMarble
+  parent: FloorDarkMarble
+  name: tiles-uranium-marble
+  friction: 0.8
+  footstepSounds:
+    collection: FootstepTile
+  tileRipResistance: 4500
+- type: tile
+  id: FloorDarkSquiggly
+  itemDrop: FloorTileItemDarkSquiggly
+  parent: FloorExoHorizontal
+  name: tiles-dark-squiggly
+  allowRotationMirror: true
+  tileRipResistance: 4500

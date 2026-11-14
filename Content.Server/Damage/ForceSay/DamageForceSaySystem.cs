@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.Bed.Sleep;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Events;
 using Content.Shared.Damage.ForceSay;
-using Content.Goobstation.Maths.FixedPoint;
+using Content.Shared.Damage.Systems;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Stunnable;
@@ -84,7 +85,7 @@ public sealed class DamageForceSaySystem : EntitySystem
         nextCrit.Timeout = _timing.CurTime + TimeSpan.FromMilliseconds(actor.PlayerSession.Ping * 3);
     }
 
-    private void OnSleep(EntityUid uid, DamageForceSayComponent component, SleepStateChangedEvent args)
+    private void OnSleep(EntityUid uid, DamageForceSayComponent component, ref SleepStateChangedEvent args)
     {
         if (!args.FellAsleep)
             return;

@@ -32,7 +32,7 @@ public sealed class XenomorphInfectionSystem : EntitySystem
             RemComp<XenomorphInfectedComponent>(component.Infected.Value);
     }
 
-    private void OnOrganAddedToBody(EntityUid uid, XenomorphInfectionComponent component, OrganAddedToBodyEvent args)
+    private void OnOrganAddedToBody(EntityUid uid, XenomorphInfectionComponent component, ref OrganAddedToBodyEvent args)
     {
         var xenomorphInfected = EnsureComp<XenomorphInfectedComponent>(args.Body);
         xenomorphInfected.Infection = uid;
@@ -42,7 +42,7 @@ public sealed class XenomorphInfectionSystem : EntitySystem
         component.Infected = args.Body;
     }
 
-    private void OnOrganRemovedFromBody(EntityUid uid, XenomorphInfectionComponent component, OrganRemovedFromBodyEvent args)
+    private void OnOrganRemovedFromBody(EntityUid uid, XenomorphInfectionComponent component, ref OrganRemovedFromBodyEvent args)
     {
         RemComp<XenomorphPreventSuicideComponent>(args.OldBody);
         RemComp<XenomorphInfectedComponent>(args.OldBody);

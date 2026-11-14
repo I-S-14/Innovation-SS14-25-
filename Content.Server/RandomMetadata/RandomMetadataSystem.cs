@@ -8,11 +8,14 @@ using Robust.Shared.Random;
 
 namespace Content.Server.RandomMetadata;
 
-public sealed class RandomMetadataSystem : EntitySystem
+public sealed partial class RandomMetadataSystem : EntitySystem
 {
+    //IS14-change start: retain fork fields lost during merge.
     [Dependency] private readonly IPrototypeManager _prototype = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly MetaDataSystem _metaData = default!;
+    //IS14-change end
+
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private MetaDataSystem _metaData = default!;
 
     private readonly List<(string, object)> _outputSegments = new();
 
@@ -64,7 +67,7 @@ public sealed class RandomMetadataSystem : EntitySystem
         _outputSegments.Clear();
         for (var i = 0; i < segments.Count; ++i)
         {
-            var localizedProto = _prototype.Index(segments[i]);
+            var localizedProto = ProtoMan.Index(segments[i]);
             _outputSegments.Add(($"part{i}", _random.Pick(localizedProto)));
         }
 

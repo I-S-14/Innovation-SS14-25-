@@ -8,13 +8,11 @@
       min: 240
       max: 420
   - type: AntagSelection
-    definitions:
-    - prefRoles: [ Traitor ]
-      max: 3
+    antags:
+    - !type:LinearAntagCount
+      proto: IS14SubgamemodeTraitorAntag0ecdea7fb
+      range:
+        max: 3
+        min: 1
       playerRatio: 10
-      blacklist:
-        components:
-        - AntagImmune
-      lateJoinAdditional: true
-      mindRoles:
-      - MindRoleTraitor
+    lateJoinAdditional: true

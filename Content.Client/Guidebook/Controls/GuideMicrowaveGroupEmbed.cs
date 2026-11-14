@@ -17,7 +17,8 @@ namespace Content.Client.Guidebook.Controls;
 [UsedImplicitly]
 public sealed partial class GuideMicrowaveGroupEmbed : BoxContainer, IDocumentTag
 {
-    [Dependency] private readonly IPrototypeManager _prototype = default!;
+    [Dependency] private ILogManager _logManager = default!;
+    [Dependency] private IPrototypeManager _prototype = default!;
 
     public GuideMicrowaveGroupEmbed()
     {
@@ -48,9 +49,9 @@ public sealed partial class GuideMicrowaveGroupEmbed : BoxContainer, IDocumentTa
 
     private void CreateEntries(string group)
     {
-        var prototypes = _prototype.EnumeratePrototypes<FoodRecipePrototype>()
+        var prototypes = _prototype.EnumeratePrototypes<MicrowaveMealRecipePrototype>()
             .Where(p => p.Group.Equals(group))
-            .OrderBy(p => p.Name);
+            .OrderBy(p => _prototype.Index<EntityPrototype>(p.Result).Name);
 
         foreach (var recipe in prototypes)
         {

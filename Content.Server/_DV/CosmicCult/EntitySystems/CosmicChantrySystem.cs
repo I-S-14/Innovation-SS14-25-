@@ -11,6 +11,8 @@ using Robust.Shared.Audio.Systems;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
+using Content.Shared.Antag;
+using Content.Shared.Pinpointer;
 
 namespace Content.Server._DV.CosmicCult.EntitySystems;
 

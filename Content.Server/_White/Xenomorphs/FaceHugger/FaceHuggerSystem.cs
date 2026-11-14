@@ -2,7 +2,6 @@ using Content.Server.Body.Systems;
 using Content.Server.Popups;
 using Content.Server.Stunnable;
 using Content.Shared.Clothing.Components;
-using Content.Shared.Damage;
 using Content.Shared.Hands;
 using Content.Shared.IdentityManagement;
 using Content.Shared.Inventory;
@@ -19,7 +18,7 @@ using Robust.Shared.Random;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 using Content.Shared._White.Xenomorphs.Infection;
-using Content.Shared.Body.Components; // Goobstation start
+using Content.Shared.Body.Components;
 using Content.Shared.Chemistry;
 using Content.Shared.Chemistry.Components;
 using Content.Shared.Chemistry.EntitySystems;
@@ -30,8 +29,9 @@ using Content.Shared._White.Xenomorphs.FaceHugger;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Throwing;
 using Content.Shared.Atmos.Components;
-using Content.Shared.Nutrition.Components; // Goobstation end
-using Content.Goobstation.Shared.Xenomorph; // Omu
+using Content.Shared.Nutrition.Components;
+using Content.Goobstation.Shared.Xenomorph;
+using Content.Shared.Damage.Systems;
 
 namespace Content.Server._White.Xenomorphs.FaceHugger;
 
@@ -94,21 +94,21 @@ public sealed class FaceHuggerSystem : EntitySystem
     {
         if (args.Slot != component.Slot
             || _mobState.IsDead(uid)
-            || _entityWhitelist.IsWhitelistPass(component.Blacklist, args.Equipee))
+            || _entityWhitelist.IsWhitelistPass(component.Blacklist, args.EquipTarget))
             return;
-        _popup.PopupEntity(Loc.GetString("xenomorphs-face-hugger-equip", ("equipment", uid)), uid, args.Equipee);
+        _popup.PopupEntity(Loc.GetString("xenomorphs-face-hugger-equip", ("equipment", uid)), uid, args.EquipTarget);
         _popup.PopupEntity(
             Loc.GetString("xenomorphs-face-hugger-equip-other",
                 ("equipment", uid),
-                ("target", Identity.Entity(args.Equipee, EntityManager))),
+                ("target", Identity.Entity(args.EquipTarget, EntityManager))),
             uid,
-            Filter.PvsExcept(args.Equipee),
+            Filter.PvsExcept(args.EquipTarget),
             true);
 
-        _stun.TryKnockdown(args.Equipee, component.KnockdownTime, true);
+        _stun.TryKnockdown(args.EquipTarget, component.KnockdownTime, true);
 
         if (component.InfectionPrototype.HasValue)
-            EnsureComp<XenomorphPreventSuicideComponent>(args.Equipee); //Prevent suicide for infected
+            EnsureComp<XenomorphPreventSuicideComponent>(args.EquipTarget); //Prevent suicide for infected
 
         if (!component.InfectionPrototype.HasValue)
             return;
@@ -120,14 +120,14 @@ public sealed class FaceHuggerSystem : EntitySystem
         FaceHuggerComponent component,
         BeingUnequippedAttemptEvent args)
     {
-        if (component.Slot != args.Slot || args.Unequipee != args.UnEquipTarget ||
-            !component.InfectionPrototype.HasValue || _mobState.IsDead(uid) || HasComp<FacehuggerImmuneComponent>(args.Unequipee)) // Omu, add check for FacehuggerImmune
+        if (component.Slot != args.Slot || args.User != args.UnEquipTarget ||
+            !component.InfectionPrototype.HasValue || _mobState.IsDead(uid) || HasComp<FacehuggerImmuneComponent>(args.UnEquipTarget)) // Omu, add check for FacehuggerImmune
             return;
 
         _popup.PopupEntity(
             Loc.GetString("xenomorphs-face-hugger-unequip", ("equipment", Identity.Entity(uid, EntityManager))),
             uid,
-            args.Unequipee);
+            args.UnEquipTarget);
         args.Cancel();
     }
 
@@ -344,7 +344,7 @@ public sealed class FaceHuggerSystem : EntitySystem
     /// </summary>
     public void InjectChemicals(EntityUid uid, FaceHuggerComponent component, EntityUid target)
     {
-        if (!CanInject(uid, component, target))
+        if (component.SleepChemAmount <= 0 || !CanInject(uid, component, target))
             return;
 
         var sleepChem = CreateSleepChemicalSolution(component, component.SleepChemAmount);
@@ -397,7 +397,7 @@ public sealed class FaceHuggerSystem : EntitySystem
     /// Marks the facehugger as being in flight to track its state.
     /// Goobstation
     /// </summary>
-    private void OnThrown(EntityUid uid, ThrowableFacehuggerComponent component, ThrowEvent args)
+    private void OnThrown(EntityUid uid, ThrowableFacehuggerComponent component, ref ThrowEvent args)
     {
         // Mark the facehugger as flying to track its airborne state
         component.IsFlying = true;
@@ -411,7 +411,7 @@ public sealed class FaceHuggerSystem : EntitySystem
     /// Handles the facehugger's collision with a target after being thrown.
     /// Attempts to attach to a valid target if conditions are met.
     /// </summary>
-    private void OnThrowDoHit(EntityUid uid, ThrowableFacehuggerComponent component, ThrowDoHitEvent args)
+    private void OnThrowDoHit(EntityUid uid, ThrowableFacehuggerComponent component, ref ThrowDoHitEvent args)
     {
         // Only process if the facehugger was actually thrown (not just dropped)
         if (!component.IsFlying)

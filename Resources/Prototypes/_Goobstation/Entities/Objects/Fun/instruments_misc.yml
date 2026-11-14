@@ -10,9 +10,9 @@
     program: 62
   - type: SwappableInstrument
     instrumentList:
-      "Synth": { 62: 0 }
-      "Friend": { 2: 0 }
-      "Overdriven": { 29: 0 }
+      is14-instrument-style-synth: { 62: 0 }
+      is14-instrument-style-friend: { 2: 0 }
+      is14-instrument-style-overdriven: { 29: 0 }
   - type: Item
     size: Small
   - type: Clothing

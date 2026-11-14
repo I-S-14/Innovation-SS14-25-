@@ -8,12 +8,13 @@ using Robust.Client.ResourceManagement;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Physics.Components;
+using Content.Client.Shuttles.UI;
 
 namespace Content.Client.Shuttles.Systems;
 
 public sealed partial class ShuttleSystem
 {
-    [Dependency] private readonly IResourceCache _resource = default!;
+    [Dependency] private IResourceCache _resource = default!;
 
     /// <summary>
     /// Gets the parallax to use for the specified map or uses the fallback if not available.

@@ -23,9 +23,9 @@ using Content.Shared.Examine;
 using Content.Goobstation.Maths.FixedPoint;
 using Content.Shared.IdentityManagement;
 using Content.Shared.Verbs;
-using Robust.Shared.Utility;
 using Content.Shared.HealthExaminable;
 using Robust.Shared.Prototypes;
+using Content.Shared.Damage.Components;
 
 namespace Content.Server._Shitmed.PartStatus;
 
@@ -34,7 +34,6 @@ public sealed class PartStatusSystem : EntitySystem
     [Dependency] private readonly WoundSystem _woundSystem = default!;
     [Dependency] private readonly BodySystem _bodySystem = default!;
     [Dependency] private readonly MobStateSystem _mobStateSystem = default!;
-    [Dependency] private readonly TraumaSystem _trauma = default!;
     [Dependency] private readonly IChatManager _chat = default!;
     [Dependency] private readonly IPrototypeManager _proto = default!;
     [Dependency] private readonly ExamineSystemShared _examineSystem = default!;
@@ -136,9 +135,10 @@ public sealed class PartStatusSystem : EntitySystem
 
         foreach (var woundable in _woundSystem.GetAllWoundableChildren(rootPart))
         {
-            if (!TryComp<BodyPartComponent>(woundable, out var bodyPartComponent) ||
-                !TryComp<BoneComponent>(woundable.Comp.Bone.ContainedEntities.FirstOrNull(), out var bone))
+            if (!TryComp<BodyPartComponent>(woundable, out var bodyPartComponent))
                 continue;
+
+            TryComp<BoneComponent>(woundable.Comp.Bone.ContainedEntities.FirstOrNull(), out var bone);
 
             var partName = bodyPartComponent.ParentSlot?.Id ?? bodyPartComponent.PartType.ToString().ToLower();
             var (damageSeverities, isBleeding) = AnalyzeWounds(woundable);
@@ -149,7 +149,7 @@ public sealed class PartStatusSystem : EntitySystem
                 partName,
                 woundable.Comp.WoundableSeverity,
                 damageSeverities,
-                bone.BoneSeverity,
+                bone?.BoneSeverity ?? BoneSeverity.Normal,
                 isBleeding));
         }
 

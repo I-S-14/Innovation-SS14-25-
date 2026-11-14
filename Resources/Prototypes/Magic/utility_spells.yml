@@ -14,9 +14,10 @@
     icon:
       sprite: _Goobstation/Wizard/actions.rsi # Goob edit
       state: charge # Goob edit
-  - type: Sprite # Goobstation - for apprentices
-    sprite: _Goobstation/Wizard/actions.rsi
-    state: charge
+  - type: Sprite
+    sprite: Objects/Weapons/Guns/Basic/wands.rsi
+    layers:
+    - state: nothing
   - type: Magic # Goobstation
     requiresSpeech: true
     school: Transmutation

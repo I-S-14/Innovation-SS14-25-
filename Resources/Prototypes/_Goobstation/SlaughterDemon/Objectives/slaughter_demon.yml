@@ -6,7 +6,7 @@
   components:
   - type: Objective
     difficulty: 1.5
-    issuer: objective-issuer-slaughter-satan
+    issuer: IS14ObjectiveIssuerSlaughterSatan
 
 - type: entity
   parent: BaseObjective
@@ -14,7 +14,7 @@
   components:
   - type: Objective
     difficulty: 1.5
-    issuer: objective-issuer-slaughter-bubblegum
+    issuer: IS14ObjectiveIssuerSlaughterBubblegum
   - type: SlaughterBaseObjective
 
 # Major Objectives
@@ -23,7 +23,7 @@
   id: SlaughterKillTheWizardObjective
   components:
   - type: Objective
-    issuer: objective-condition-kill-wizard-first
+    issuer: IS14ObjectiveIssuerSlaughterWizardFirst # IS14-change: typed issuer, retained EN/RU text.
     icon:
       sprite: Clothing/Head/Hats/wizardhat.rsi
       state: icon
@@ -38,7 +38,7 @@
   id: SlaughterKillEveryoneObjective
   components:
   - type: Objective
-    issuer: objective-issuer-slaughter-satan
+    issuer: IS14ObjectiveIssuerSlaughterSatan
     icon:
       sprite: Structures/Furniture/Altars/Cults/fangs.rsi
       state: blood
@@ -52,7 +52,7 @@
   id: SlaughterHugAndTickleObjective
   components:
   - type: Objective
-    issuer: objective-issuer-slaughter-devil
+    issuer: IS14ObjectiveIssuerSlaughterDevil
     icon:
       sprite: Objects/Consumable/Food/Baked/cake.rsi
       state: clown

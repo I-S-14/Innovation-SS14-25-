@@ -4,13 +4,14 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Content.Goobstation.Common.Interactions;
 using Content.Shared._Shitcode.Heretic.Components;
+using Content.Shared._ST.Interaction; // Goob
 using Content.Shared.ActionBlocker;
 using Content.Shared.Administration.Logs;
 using Content.Shared.CCVar;
 using Content.Shared.Chat;
 using Content.Shared.CombatMode;
 using Content.Shared.Database;
-using Content.Shared.Ghost;
+using Content.Shared.Ghost.Components;
 using Content.Shared.Hands;
 using Content.Shared.Hands.Components;
 using Content.Shared.Hands.EntitySystems;
@@ -29,7 +30,8 @@ using Content.Shared.Popups;
 using Content.Shared.Storage;
 using Content.Shared.Strip;
 using Content.Shared.Tag;
-using Content.Shared.Timing;
+using Content.Shared.Timing.Components;
+using Content.Shared.Timing.Systems;
 using Content.Shared.UserInterface;
 using Content.Shared.Verbs;
 using Content.Shared.Wall;
@@ -38,9 +40,7 @@ using Robust.Shared.Containers;
 using Robust.Shared.Input;
 using Robust.Shared.Input.Binding;
 using Robust.Shared.Map;
-using Robust.Shared.Network;
 using Robust.Shared.Physics;
-using Robust.Shared.Physics.Collision.Shapes;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Systems;
 using Robust.Shared.Player;
@@ -48,6 +48,10 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
+using Content.Shared.Ghost;
+using Content.Shared.Timing;
+using Robust.Shared.Network;
+using Robust.Shared.Physics.Collision.Shapes;
 
 namespace Content.Shared.Interaction
 {
@@ -57,40 +61,42 @@ namespace Content.Shared.Interaction
     [UsedImplicitly]
     public abstract partial class SharedInteractionSystem : EntitySystem
     {
-        [Dependency] private readonly IGameTiming _gameTiming = default!;
-        [Dependency] private readonly IMapManager _mapManager = default!;
-        [Dependency] private readonly ISharedAdminLogManager _adminLogger = default!;
-        [Dependency] private readonly ISharedChatManager _chat = default!;
-        [Dependency] private readonly ActionBlockerSystem _actionBlockerSystem = default!;
-        [Dependency] private readonly EntityLookupSystem _lookup = default!;
-        [Dependency] private readonly SharedHandsSystem _hands = default!;
-        [Dependency] private readonly InventorySystem _inventory = default!;
-        [Dependency] private readonly PullingSystem _pullSystem = default!;
-        [Dependency] private readonly RotateToFaceSystem _rotateToFaceSystem = default!;
-        [Dependency] private readonly SharedContainerSystem _containerSystem = default!;
-        [Dependency] private readonly SharedPhysicsSystem _broadphase = default!;
-        [Dependency] private readonly SharedTransformSystem _transform = default!;
-        [Dependency] private readonly SharedVerbSystem _verbSystem = default!;
-        [Dependency] private readonly SharedPopupSystem _popupSystem = default!;
-        [Dependency] private readonly SharedUserInterfaceSystem _ui = default!;
-        [Dependency] private readonly SharedStrippableSystem _strippable = default!;
-        [Dependency] private readonly SharedPlayerRateLimitManager _rateLimit = default!;
-        [Dependency] private readonly TagSystem _tagSystem = default!;
-        [Dependency] private readonly UseDelaySystem _useDelay = default!;
+    //IS14-change start: typed IDs for the retained behavior.
+    private static readonly ProtoId<TagPrototype> CantInteractTag = "CantInteract";
+    //IS14-change end
 
-        // <Trauma>
-        private EntityQuery<TargetInteractionRelayComponent> _targetRelayQuery;
-        // </Trauma>
-        private EntityQuery<IgnoreUIRangeComponent> _ignoreUiRangeQuery;
-        private EntityQuery<FixturesComponent> _fixtureQuery;
-        private EntityQuery<ItemComponent> _itemQuery;
-        private EntityQuery<PhysicsComponent> _physicsQuery;
-        private EntityQuery<HandsComponent> _handsQuery;
-        private EntityQuery<InteractionRelayComponent> _relayQuery;
-        private EntityQuery<CombatModeComponent> _combatQuery;
-        private EntityQuery<WallMountComponent> _wallMountQuery;
-        private EntityQuery<UseDelayComponent> _delayQuery;
-        private EntityQuery<ActivatableUIComponent> _uiQuery;
+        [Dependency] private IGameTiming _gameTiming = default!;
+        [Dependency] private ISharedAdminLogManager _adminLogger = default!;
+        [Dependency] private ISharedChatManager _chat = default!;
+        [Dependency] private ActionBlockerSystem _actionBlockerSystem = default!;
+        [Dependency] private EntityLookupSystem _lookup = default!;
+        [Dependency] private SharedHandsSystem _hands = default!;
+        [Dependency] private InventorySystem _inventory = default!;
+        [Dependency] private PullingSystem _pullSystem = default!;
+        [Dependency] private RotateToFaceSystem _rotateToFaceSystem = default!;
+        [Dependency] private SharedContainerSystem _containerSystem = default!;
+        [Dependency] private SharedMapSystem _map = default!;
+        [Dependency] private SharedPhysicsSystem _broadphase = default!;
+        [Dependency] private SharedTransformSystem _transform = default!;
+        [Dependency] private SharedVerbSystem _verbSystem = default!;
+        [Dependency] private SharedPopupSystem _popupSystem = default!;
+        [Dependency] private SharedUserInterfaceSystem _ui = default!;
+        [Dependency] private SharedStrippableSystem _strippable = default!;
+        [Dependency] private SharedPlayerRateLimitManager _rateLimit = default!;
+        [Dependency] private TagSystem _tagSystem = default!;
+        [Dependency] private UseDelaySystem _useDelay = default!;
+
+        [Dependency] private EntityQuery<IgnoreUIRangeComponent> _ignoreUiRangeQuery = default!;
+        [Dependency] private EntityQuery<FixturesComponent> _fixtureQuery = default!;
+        [Dependency] private EntityQuery<ItemComponent> _itemQuery = default!;
+        [Dependency] private EntityQuery<PhysicsComponent> _physicsQuery = default!;
+        [Dependency] private EntityQuery<HandsComponent> _handsQuery = default!;
+        [Dependency] private EntityQuery<InteractionRelayComponent> _relayQuery = default!;
+        [Dependency] private EntityQuery<CombatModeComponent> _combatQuery = default!;
+        [Dependency] private EntityQuery<WallMountComponent> _wallMountQuery = default!;
+        [Dependency] private EntityQuery<UseDelayComponent> _delayQuery = default!;
+        [Dependency] private EntityQuery<ActivatableUIComponent> _uiQuery = default!;
+        [Dependency] private EntityQuery<TargetInteractionRelayComponent> _targetRelayQuery = default!; // Trauma
 
         /// <summary>
         /// The collision mask used by default for
@@ -109,20 +115,6 @@ namespace Content.Shared.Interaction
 
         public override void Initialize()
         {
-            // <Trauma>
-            _targetRelayQuery = GetEntityQuery<TargetInteractionRelayComponent>();
-            // </Trauma>
-            _ignoreUiRangeQuery = GetEntityQuery<IgnoreUIRangeComponent>();
-            _fixtureQuery = GetEntityQuery<FixturesComponent>();
-            _itemQuery = GetEntityQuery<ItemComponent>();
-            _physicsQuery = GetEntityQuery<PhysicsComponent>();
-            _handsQuery = GetEntityQuery<HandsComponent>();
-            _relayQuery = GetEntityQuery<InteractionRelayComponent>();
-            _combatQuery = GetEntityQuery<CombatModeComponent>();
-            _wallMountQuery = GetEntityQuery<WallMountComponent>();
-            _delayQuery = GetEntityQuery<UseDelayComponent>();
-            _uiQuery = GetEntityQuery<ActivatableUIComponent>();
-
             SubscribeLocalEvent<BoundUserInterfaceCheckRangeEvent>(HandleUserInterfaceRangeCheck);
 
             // TODO make this a broadcast event subscription again when engine has updated.
@@ -153,8 +145,6 @@ namespace Content.Shared.Interaction
                     CCVars.InteractionRateLimitAnnounceAdminsDelay,
                     RateLimitAlertAdmins)
             );
-
-            InitializeBlocking();
         }
 
         private void RateLimitAlertAdmins(ICommonSession session)
@@ -175,26 +165,13 @@ namespace Content.Shared.Interaction
         {
             _uiQuery.TryComp(ev.Target, out var aUiComp);
 
-            // CorvaxGoob-GhostUIViewing-Start
-            if (TryComp<GhostComponent>(ev.Actor, out var ghost) && !ghost.CanGhostInteract) // Полностью игнорить если не гост или который может прямо взамоимодействовать с UI
-            {
-                if (ev.Message is not OpenBoundInterfaceMessage // Проверяем если не банальное открытие 
-                    || !ghost.CanGhostOpenUI
-                    || aUiComp is not null && (aUiComp.SingleUser || aUiComp.BlockSpectators)) // Доп проверки
-                    ev.Cancel();
-
-                return;
-            }
-            // CorvaxGoob-GhostUIViewing-End
-
-            // _uiQuery.TryComp(ev.Target, out var aUiComp); CorvaxGoob-GhostUIViewing : смещено повыше
             if (!_actionBlockerSystem.CanInteract(ev.Actor, ev.Target))
             {
                 // We permit ghosts to open uis unless explicitly blocked
                 if (ev.Message is not OpenBoundInterfaceMessage
                     // || !HasComp<GhostComponent>(ev.Actor) // CorvaxGoob-GhostUIGuest
                     // || aUiComp?.BlockSpectators == true // CorvaxGoob-GhostUIGuest
-                    || _tagSystem.HasTag(ev.Actor, "CantInteract")) // Shitmed change
+                    || _tagSystem.HasTag(ev.Actor, CantInteractTag)) // Shitmed change
                 {
                     ev.Cancel();
                     return;
@@ -203,8 +180,11 @@ namespace Content.Shared.Interaction
 
             var range = _ui.GetUiRange(ev.Target, ev.UiKey);
 
-            // As long as range>0, the UI frame updates should have auto-closed the UI if it is out of range.
-            DebugTools.Assert(range <= 0 || UiRangeCheck(ev.Actor, ev.Target, range));
+            if (range > 0 && !UiRangeCheck(ev.Actor, ev.Target, range))
+            {
+                ev.Cancel();
+                return;
+            }
 
             if (range <= 0 && !IsAccessible(ev.Actor, ev.Target))
             {
@@ -213,6 +193,10 @@ namespace Content.Shared.Interaction
             }
 
             if (aUiComp == null)
+                return;
+
+            // Key shouldn't ever be null.
+            if (!aUiComp.Key.Equals(ev.UiKey))
                 return;
 
             if (aUiComp.SingleUser && aUiComp.CurrentSingleUser != null && aUiComp.CurrentSingleUser != ev.Actor)
@@ -268,7 +252,7 @@ namespace Content.Shared.Interaction
             if (!item.DeleteOnDrop)
                 RemCompDeferred<UnremoveableComponent>(uid);
             else
-                PredictedQueueDel(uid);
+                QueueDel(uid);
         }
 
         private void OnUnequipHand(EntityUid uid, UnremoveableComponent item, GotUnequippedHandEvent args)
@@ -279,7 +263,7 @@ namespace Content.Shared.Interaction
             if (!item.DeleteOnDrop)
                 RemCompDeferred<UnremoveableComponent>(uid);
             else
-                PredictedQueueDel(uid);
+                QueueDel(uid);
         }
 
         private void OnDropped(EntityUid uid, UnremoveableComponent item, DroppedEvent args)
@@ -292,7 +276,7 @@ namespace Content.Shared.Interaction
             if (!item.DeleteOnDrop)
                 RemCompDeferred<UnremoveableComponent>(uid);
             else
-                PredictedQueueDel(uid);
+                QueueDel(uid);
         }
 
         private bool HandleTryPullObject(ICommonSession? session, EntityCoordinates coords, EntityUid uid)
@@ -583,7 +567,7 @@ namespace Content.Shared.Interaction
             RaiseLocalEvent(user, userMessage, true);
 
             _adminLogger.Add(LogType.InteractHand, LogImpact.Low, $"{user} interacted with {target}");
-            DoContactInteraction(user, target, message);
+            DoContactInteraction(user, target, null, true, message, message.InteractionParticle); // Goob
             if (message.Handled || userMessage.Handled)
                 return true; // Goobstation
 
@@ -629,7 +613,7 @@ namespace Content.Shared.Interaction
                 RaiseLocalEvent(target.Value, rangedMsg, true);
 
                 // We contact the USED entity, but not the target.
-                DoContactInteraction(user, used, rangedMsg);
+                DoContactInteraction(user, used, null, true, rangedMsg); // Goob
                 if (rangedMsg.Handled)
                     return;
             }
@@ -668,7 +652,7 @@ namespace Content.Shared.Interaction
         public float UnobstructedDistance(
             MapCoordinates origin,
             MapCoordinates other,
-            int collisionMask = (int) InRangeUnobstructedMask,
+            int collisionMask = (int)InRangeUnobstructedMask,
             Ignored? predicate = null)
         {
             var dir = other.Position - origin.Position;
@@ -740,7 +724,7 @@ namespace Content.Shared.Interaction
                 length = MaxRaycastRange;
             }
 
-            var ray = new CollisionRay(origin.Position, dir.Normalized(), (int) collisionMask);
+            var ray = new CollisionRay(origin.Position, dir.Normalized(), (int)collisionMask);
             var rayResults = _broadphase.IntersectRayWithPredicate(origin.MapId, ray, length, predicate.Invoke, false).ToList();
 
             return rayResults.Count == 0;
@@ -893,7 +877,7 @@ namespace Content.Shared.Interaction
             if (!inRange && popup && _gameTiming.IsFirstTimePredicted)
             {
                 var message = Loc.GetString("interaction-system-user-interaction-cannot-reach");
-                _popupSystem.PopupClient(message, origin, origin);
+                _popupSystem.PopupEntity(message, origin, origin);
             }
 
             return inRange;
@@ -963,8 +947,8 @@ namespace Content.Shared.Interaction
                     ignoreAnchored = angleDelta < wallMount.Arc / 2 || Math.Tau - angleDelta < wallMount.Arc / 2;
                 }
 
-                if (ignoreAnchored && _mapManager.TryFindGridAt(targetCoords, out _, out var grid))
-                    ignored.UnionWith(grid.GetAnchoredEntities(targetCoords));
+                if (ignoreAnchored && _map.TryFindGridAt(targetCoords, out var gridUid, out var grid))
+                    ignored.UnionWith(_map.GetAnchoredEntities((gridUid, grid), targetCoords));
             }
 
             Ignored combinedPredicate = e => e == target || (predicate?.Invoke(e) ?? false) || ignored.Contains(e);
@@ -1069,7 +1053,7 @@ namespace Content.Shared.Interaction
                 return false;
 
             // We contact the USED entity, but not the target.
-            DoContactInteraction(user, used, ev);
+            DoContactInteraction(user, used, null, true, ev); // Goob
             return ev.Handled;
         }
 
@@ -1121,8 +1105,8 @@ namespace Content.Shared.Interaction
             var userInteractUsingEvent = new UserInteractUsingEvent(user, used, target, clickLocation);
             RaiseLocalEvent(user, userInteractUsingEvent, true);
 
-            DoContactInteraction(user, used, interactUsingEvent);
-            DoContactInteraction(user, target, interactUsingEvent);
+            DoContactInteraction(user, used, null, true, interactUsingEvent, interactUsingEvent.InteractionParticle); // Goob
+            DoContactInteraction(user, target, used, true, interactUsingEvent, interactUsingEvent.InteractionParticle); // Goob
             // Contact interactions are currently only used for forensics, so we don't raise used -> target
             if (interactUsingEvent.Handled || userInteractUsingEvent.Handled)
                 return true;
@@ -1154,10 +1138,10 @@ namespace Content.Shared.Interaction
 
             var afterInteractEvent = new AfterInteractEvent(user, used, target, clickLocation, canReach);
             RaiseLocalEvent(used, afterInteractEvent);
-            DoContactInteraction(user, used, afterInteractEvent);
+            DoContactInteraction(user, used, null, true, afterInteractEvent, afterInteractEvent.SpawnInteractionParticles); // Goob
             if (canReach)
             {
-                DoContactInteraction(user, target, afterInteractEvent);
+                DoContactInteraction(user, target, used, true, afterInteractEvent, afterInteractEvent.SpawnInteractionParticles); // Goob
                 // Contact interactions are currently only used for forensics, so we don't raise used -> target
             }
 
@@ -1171,10 +1155,10 @@ namespace Content.Shared.Interaction
             var afterInteractUsingEvent = new AfterInteractUsingEvent(user, used, target, clickLocation, canReach);
             RaiseLocalEvent(target.Value, afterInteractUsingEvent);
 
-            DoContactInteraction(user, used, afterInteractUsingEvent);
+            DoContactInteraction(user, used, null, true, afterInteractUsingEvent, afterInteractUsingEvent.SpawnInteractionParticles); // Goob
             if (canReach)
             {
-                DoContactInteraction(user, target, afterInteractUsingEvent);
+                DoContactInteraction(user, target, used, true, afterInteractUsingEvent, afterInteractUsingEvent.SpawnInteractionParticles); // Goob
                 // Contact interactions are currently only used for forensics, so we don't raise used -> target
             }
 
@@ -1237,12 +1221,12 @@ namespace Content.Shared.Interaction
             RaiseLocalEvent(used, activateMsg, true);
             if (activateMsg.Handled)
             {
-                DoContactInteraction(user, used);
+                DoContactInteraction(user, used, null, true, interactionParticles: activateMsg.InteractionParticle); // Goob
                 if (!activateMsg.WasLogged)
                     _adminLogger.Add(LogType.InteractActivate, LogImpact.Low, $"{ToPrettyString(user):user} activated {ToPrettyString(used):used}");
 
                 if (delayComponent != null)
-                    _useDelay.TryResetDelay(used, component: delayComponent);
+                    _useDelay.TryResetDelay((used, delayComponent));
                 return true;
             }
 
@@ -1252,10 +1236,10 @@ namespace Content.Shared.Interaction
             if (!userEv.Handled)
                 return false;
 
-            DoContactInteraction(user, used);
+            DoContactInteraction(user, used, null, true); // Goob
             // Still need to call this even without checkUseDelay in case this gets relayed from Activate.
             if (delayComponent != null)
-                _useDelay.TryResetDelay(used, component: delayComponent);
+                _useDelay.TryResetDelay((used, delayComponent));
 
             _adminLogger.Add(LogType.InteractActivate, LogImpact.Low, $"{ToPrettyString(user):user} activated {ToPrettyString(used):used}");
             return true;
@@ -1301,7 +1285,7 @@ namespace Content.Shared.Interaction
             RaiseLocalEvent(used, useMsg, true);
             if (useMsg.Handled)
             {
-                DoContactInteraction(user, used, useMsg);
+                DoContactInteraction(user, used, null, true, useMsg, interactionParticleType: StellarInteractionParticleType.InHand); // Goob
                 if (delayComponent != null && useMsg.ApplyDelay)
                     _useDelay.TryResetDelay((used, delayComponent));
                 return true;
@@ -1337,9 +1321,6 @@ namespace Content.Shared.Interaction
             if (IsDeleted(user) || IsDeleted(item))
                 return;
 
-            var dropMsg = new DroppedEvent(user);
-            RaiseLocalEvent(item, dropMsg, true);
-
             // If the dropper is rotated then use their targetrelativerotation as the drop rotation
             var rotation = Angle.Zero;
 
@@ -1348,7 +1329,10 @@ namespace Content.Shared.Interaction
                 rotation = mover.TargetRelativeRotation;
             }
 
-            Transform(item).LocalRotation = rotation;
+            _transform.SetLocalRotationNoLerp(item, rotation);
+
+            var dropMsg = new DroppedEvent(user);
+            RaiseLocalEvent(item, dropMsg, true);
         }
         #endregion
 
@@ -1499,7 +1483,7 @@ namespace Content.Shared.Interaction
                 return;
 
             if (!TryComp(uidB, out MetaDataComponent? metaB) || metaB.EntityPaused)
-                return ;
+                return;
 
             // TODO Struct event
             var ev = new ContactInteractionEvent(uidB.Value);

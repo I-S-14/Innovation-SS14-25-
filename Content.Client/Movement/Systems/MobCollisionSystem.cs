@@ -1,17 +1,17 @@
 using System.Numerics;
 using Content.Shared.CCVar;
-using Content.Shared.Movement.Components;
 using Content.Shared.Movement.Systems;
 using Robust.Client.Player;
-using Robust.Shared.Physics.Components;
 using Robust.Shared.Timing;
+using Content.Shared.Movement.Components;
+using Robust.Shared.Physics.Components;
 
 namespace Content.Client.Movement.Systems;
 
-public sealed class MobCollisionSystem : SharedMobCollisionSystem
+public sealed partial class MobCollisionSystem : SharedMobCollisionSystem
 {
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly IPlayerManager _player = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private IPlayerManager _player = default!;
 
     public override void Update(float frameTime)
     {

@@ -1,30 +1,31 @@
 // SPDX-License-Identifier: MIT
 
+using Content.Shared.Radiation.Systems;
+
 namespace Content.Shared.Radiation.Components;
 
 /// <summary>
-///     Irradiate all objects in range.
+/// Irradiate all objects in range.
 /// </summary>
-[RegisterComponent]
+[RegisterComponent, AutoGenerateComponentState]
+[Access(typeof(SharedRadiationSystem))]
 public sealed partial class RadiationSourceComponent : Component
 {
     /// <summary>
-    ///     Radiation intensity in center of the source in rads per second.
-    ///     From there radiation rays will travel over distance and loose intensity
-    ///     when hit radiation blocker.
+    /// Radiation intensity in center of the source in rads per second.
+    /// From there radiation rays will travel over distance and loose intensity
+    /// when hit radiation blocker.
     /// </summary>
-    [ViewVariables(VVAccess.ReadWrite)]
-    [DataField("intensity")]
+    [DataField, AutoNetworkedField]
     public float Intensity = 1;
 
     /* Goobstation disabled and replaced with the one below
     /// <summary>
-    ///     Defines how fast radiation rays will loose intensity
-    ///     over distance. The bigger the value, the shorter range
-    ///     of radiation source will be.
+    /// Defines how fast radiation rays will loose intensity
+    /// over distance. The bigger the value, the shorter range
+    /// of radiation source will be.
     /// </summary>
-    [ViewVariables(VVAccess.ReadWrite)]
-    [DataField("slope")]
+    [DataField, AutoNetworkedField]
     public float Slope = 0.5f;
     */
 
@@ -49,6 +50,6 @@ public sealed partial class RadiationSourceComponent : Component
     [DataField("terminalDecayDistance")]
     public float TerminalDecayDistance = 15;
 
-    [DataField, ViewVariables(VVAccess.ReadWrite)]
+    [DataField, AutoNetworkedField]
     public bool Enabled = true;
 }

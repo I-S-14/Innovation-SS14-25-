@@ -3,6 +3,8 @@
 using System.Linq;
 using Content.Shared.Weapons.Ranged.Components;
 using Content.Shared.Weapons.Ranged.Events;
+using Robust.Shared.Containers;
+using Robust.Shared.Network;
 
 namespace Content.Shared.Weapons.Ranged.Systems;
 
@@ -27,8 +29,7 @@ public partial class SharedGunSystem
 
             var ammoEnt = container.ContainedEntities[0];
 
-            if (_netManager.IsServer)
-                Containers.Remove(ammoEnt, container);
+            Containers.Remove(ammoEnt, container); // Trauma - predicted
 
             args.Ammo.Add((ammoEnt, EnsureShootable(ammoEnt)));
         }

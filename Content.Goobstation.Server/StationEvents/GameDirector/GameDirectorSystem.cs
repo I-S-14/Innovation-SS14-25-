@@ -23,18 +23,18 @@ namespace Content.Goobstation.Server.StationEvents.GameDirector;
 ///   good or bad events to nudge it in the correct direction.
 /// </summary>
 [UsedImplicitly]
-public sealed partial class GameDirectorSystem : GameRuleSystem<GameDirectorComponent>
+public sealed partial class GameDirectorSystem : ServerGameRuleSystem<GameDirectorComponent>
 {
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly EventManagerSystem _event = default!;
-    [Dependency] private readonly IAdminLogManager _adminLogger = default!;
-    [Dependency] private readonly IPlayerManager _playerManager = default!;
-    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
-    [Dependency] private readonly IComponentFactory _factory = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly ILogManager _log = default!;
-    [Dependency] private readonly IChatManager _chat = default!;
-    [Dependency] private readonly IConfigurationManager _configManager = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private EventManagerSystem _event = default!;
+    [Dependency] private IAdminLogManager _adminLogger = default!;
+    [Dependency] private IPlayerManager _playerManager = default!;
+    [Dependency] private IPrototypeManager _prototypeManager = default!;
+    [Dependency] private IComponentFactory _factory = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private ILogManager _log = default!;
+    [Dependency] private IChatManager _chat = default!;
+    [Dependency] private IConfigurationManager _configManager = default!;
     private ISawmill _sawmill = default!;
     private int _gameDirectorDebugPlayerCount;
 
@@ -79,7 +79,7 @@ public sealed partial class GameDirectorSystem : GameRuleSystem<GameDirectorComp
         if (scheduler.Stories is not { Length: > 0 })
         {
             // No stories (e.g. dummy game rule for printing metrics), end game rule now
-            GameTicker.EndGameRule(uid, gameRule);
+            GameTicker.EndGameRule((uid, gameRule));
             return;
         }
         // Decide what story beat to work with (which sets chaos goals)

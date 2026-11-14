@@ -1,15 +1,17 @@
+using Content.Shared.DeviceLinking.Payloads;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Shared.DeviceLinking;
 using Content.Shared.DeviceLinking.Events;
 using Content.Shared.Power.EntitySystems;
+using Content.Shared.DeviceLinking.Systems;
 
 namespace Content.Goobstation.Shared.Factory;
 
-public sealed class StartableMachineSystem : EntitySystem
+public sealed partial class StartableMachineSystem : EntitySystem
 {
-    [Dependency] private readonly SharedDeviceLinkSystem _device = default!;
-    [Dependency] private readonly SharedPowerReceiverSystem _power = default!;
+    [Dependency] private DeviceLinkSystem _device = default!;
+    [Dependency] private SharedPowerReceiverSystem _power = default!;
 
     private EntityQuery<StartableMachineComponent> _query;
 
@@ -21,6 +23,7 @@ public sealed class StartableMachineSystem : EntitySystem
 
         SubscribeLocalEvent<StartableMachineComponent, ComponentInit>(OnInit);
         SubscribeLocalEvent<StartableMachineComponent, SignalReceivedEvent>(OnSignalReceived);
+        SubscribeLocalEvent<StartableMachineComponent, SignalReceivedEvent<LogicStatePayload>>(OnLogicSignalReceived); // IS14-merge: wizden typed payloads
     }
 
     public override void Update(float frameTime)
@@ -50,15 +53,28 @@ public sealed class StartableMachineSystem : EntitySystem
         }
         else if (args.Port == ent.Comp.AutoStartPort)
         {
-            var state = SignalState.Momentary;
-            args.Data?.TryGetValue<SignalState>("logic_state", out state);
-            ent.Comp.AutoStart = state switch
-            {
-                SignalState.Momentary => !ent.Comp.AutoStart,
-                SignalState.High => true,
-                SignalState.Low => false
-            };
+            SetAutoStart(ent, SignalState.Momentary);
         }
+    }
+
+    // IS14-merge: logic state now arrives as a typed payload event instead of the payload dictionary
+    private void OnLogicSignalReceived(Entity<StartableMachineComponent> ent, ref SignalReceivedEvent<LogicStatePayload> args)
+    {
+        if (args.Port == ent.Comp.StartPort)
+            TryStart((ent, ent.Comp));
+        else if (args.Port == ent.Comp.AutoStartPort)
+            SetAutoStart(ent, args.Data.State);
+    }
+
+    private void SetAutoStart(Entity<StartableMachineComponent> ent, SignalState state)
+    {
+        ent.Comp.AutoStart = state switch
+        {
+            SignalState.Momentary => !ent.Comp.AutoStart,
+            SignalState.High => true,
+            SignalState.Low => false,
+            _ => ent.Comp.AutoStart
+        };
     }
 
     #region Public API

@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # Chessboard item (normal in game item you can hold in your hand)
+
 - type: entity
   parent: BaseBoardEntity
   id: ChessBoard

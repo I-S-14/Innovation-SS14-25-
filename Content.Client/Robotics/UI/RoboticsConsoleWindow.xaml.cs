@@ -2,6 +2,7 @@
 
 using Content.Client.Stylesheets;
 using Content.Client.UserInterface.Controls;
+using Content.Shared.DeviceNetwork;
 using Content.Shared.Lock;
 using Content.Shared.Robotics;
 using Content.Shared.Robotics.Components;
@@ -16,17 +17,17 @@ namespace Content.Client.Robotics.UI;
 [GenerateTypedNameReferences]
 public sealed partial class RoboticsConsoleWindow : FancyWindow
 {
-    [Dependency] private readonly IEntityManager _entMan = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private IEntityManager _entMan = default!;
+    [Dependency] private IGameTiming _timing = default!;
     private readonly LockSystem _lock;
     private readonly SpriteSystem _sprite;
 
-    public Action<string>? OnChangeLawsPressed; // Corvax-Goob-MutableLaws
-    public Action<string>? OnDisablePressed;
-    public Action<string>? OnDestroyPressed;
+    public Action<LocDeviceAddress>? OnChangeLawsPressed; // Corvax-Goob-MutableLaws
+    public Action<LocDeviceAddress>? OnDisablePressed;
+    public Action<LocDeviceAddress>? OnDestroyPressed;
 
-    private string? _selected;
-    private Dictionary<string, CyborgControlData> _cyborgs = new();
+    private LocDeviceAddress? _selected;
+    private Dictionary<LocDeviceAddress, CyborgControlData> _cyborgs = new();
 
     public EntityUid Entity;
 
@@ -42,7 +43,7 @@ public sealed partial class RoboticsConsoleWindow : FancyWindow
 
         Cyborgs.OnItemSelected += args =>
         {
-            if (Cyborgs[args.ItemIndex].Metadata is not string address)
+            if (Cyborgs[args.ItemIndex].Metadata is not LocDeviceAddress address)
                 return;
 
             _selected = address;
@@ -58,16 +59,16 @@ public sealed partial class RoboticsConsoleWindow : FancyWindow
         // Corvax-Goob-MutableLaws-Start
         ChangeLawsButton.OnPressed += _ =>
         {
-            OnChangeLawsPressed?.Invoke(_selected!);
+            OnChangeLawsPressed?.Invoke(_selected!.Value);
         };
         // Corvax-Goob-MutableLaws-End
         DisableButton.OnPressed += _ =>
         {
-            OnDisablePressed?.Invoke(_selected!);
+            OnDisablePressed?.Invoke(_selected!.Value);
         };
         DestroyButton.OnPressed += _ =>
         {
-            OnDestroyPressed?.Invoke(_selected!);
+            OnDestroyPressed?.Invoke(_selected!.Value);
         };
 
         // cant put multiple styles in xaml for some reason
@@ -90,18 +91,20 @@ public sealed partial class RoboticsConsoleWindow : FancyWindow
 
         // Corvax-Next-AiRemoteControl-Start
         var isAiControllable = false;
+        var isLawChangable = false; // CorvaxGoob-MutableLaws
 
         if (_selected != null)
         {
-            _cyborgs.TryGetValue(_selected, out var data);
+            _cyborgs.TryGetValue(_selected.Value, out var data);
             isAiControllable = data.IsAiControllable;
+            isLawChangable = data.IsLawChangable; // Corvax-Goob-MutableLaws
         }
         // Corvax-Next-AiRemoteControl-End
 
         var hasCyborgs = _cyborgs.Count > 0;
         NoCyborgs.Visible = !hasCyborgs;
         CyborgsContainer.Visible = hasCyborgs;
-        ChangeLawsButton.Disabled = !state.HasCircuitBoard; // Corvax-Goob-MutableLaws
+        ChangeLawsButton.Disabled = !state.HasCircuitBoard || !isLawChangable; // Corvax-Goob-MutableLaws
         PopulateCyborgs();
 
         PopulateData();

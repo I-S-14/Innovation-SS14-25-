@@ -43,7 +43,7 @@ public sealed partial class CyborgHudGui : BoxContainer
         RobustXamlLoader.Load(this);
 
         // Sits right of the bar: flat edge towards the buttons, like the upstream left-hand panel.
-        StatusPanel.SetSide(HandUILocation.Left);
+        StatusPanel.SetSide(HandLocation.Left);
 
         StoreButton.SetBackground("store");
         StoreButton.OnPressed += _ => StorePressed?.Invoke();

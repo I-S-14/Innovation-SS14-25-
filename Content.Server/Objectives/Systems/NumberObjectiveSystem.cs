@@ -3,16 +3,17 @@
 using Content.Server.Objectives.Components;
 using Content.Shared.Objectives.Components;
 using Robust.Shared.Random;
+using Robust.Shared.GameObjects;
 
 namespace Content.Server.Objectives.Systems;
 
 /// <summary>
 /// Provides API for other components, handles picking the count and setting the title and description.
 /// </summary>
-public sealed class NumberObjectiveSystem : EntitySystem
+public sealed partial class NumberObjectiveSystem : EntitySystem
 {
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly MetaDataSystem _metaData = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private MetaDataSystem _metaData = default!;
 
     public override void Initialize()
     {
@@ -24,7 +25,7 @@ public sealed class NumberObjectiveSystem : EntitySystem
 
     private void OnAssigned(EntityUid uid, NumberObjectiveComponent comp, ref ObjectiveAssignedEvent args)
     {
-        comp.Target = _random.Next(comp.Min, comp.Max);
+        comp.Target = _random.Next(comp.Min, comp.Max + 1);
     }
 
     private void OnAfterAssign(EntityUid uid, NumberObjectiveComponent comp, ref ObjectiveAfterAssignEvent args)

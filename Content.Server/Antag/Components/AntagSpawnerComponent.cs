@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Robust.Shared.Prototypes;
+using Content.Server.Antag;
 
 namespace Content.Server.Antag.Components;
 

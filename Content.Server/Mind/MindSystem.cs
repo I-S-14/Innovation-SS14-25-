@@ -4,7 +4,7 @@ using Content.Server.Administration.Logs;
 using Content.Server.GameTicking;
 using Content.Server.Ghost;
 using Content.Shared.Database;
-using Content.Shared.Ghost;
+using Content.Shared.Ghost.Components;
 using Content.Shared.Mind;
 using Content.Shared.Mind.Components;
 using Content.Shared.Players;
@@ -19,17 +19,18 @@ using Content.Shared._Goobstation.Wizard.BindSoul;
 using Content.Shared.Tag;
 
 // Goobstation
-using Content.Shared._Goobstation.Wizard.BindSoul;
 using Content.Shared.Mobs.Components;
 using Content.Goobstation.Shared.Mind.Components;
 using Content.Goobstation.Shared.MisandryBox.Thunderdome;
 
+using Content.Shared.GameTicking;
+using Content.Shared.Ghost;
 
 namespace Content.Server.Mind;
 
-public sealed class MindSystem : SharedMindSystem
+public sealed partial class MindSystem : SharedMindSystem
 {
-    [Dependency] private readonly GameTicker _gameTicker = default!;
+    [Dependency] private readonly Content.Server.GameTicking.ServerGameTicker _gameTicker = default!;
     [Dependency] private readonly IAdminLogManager _adminLogger = default!;
     [Dependency] private readonly IPlayerManager _players = default!;
     [Dependency] private readonly GhostSystem _ghosts = default!;
@@ -37,14 +38,7 @@ public sealed class MindSystem : SharedMindSystem
     [Dependency] private readonly PvsOverrideSystem _pvsOverride = default!;
     [Dependency] private readonly TagSystem _tag = default!; // Goobstation
 
-    public override void Initialize()
-    {
-        base.Initialize();
-
-        SubscribeLocalEvent<MindContainerComponent, EntityTerminatingEvent>(OnMindContainerTerminating);
-        SubscribeLocalEvent<MindComponent, ComponentShutdown>(OnMindShutdown);
-    }
-
+    [SubscribeLocalEvent]
     private void OnMindShutdown(EntityUid uid, MindComponent mind, ComponentShutdown args)
     {
         if (mind.UserId is {} user)
@@ -61,6 +55,8 @@ public sealed class MindSystem : SharedMindSystem
         mind.OwnedEntity = null;
     }
 
+    // TODO: This should not run on EntityTerminatingEvent, instead we should detach the mind and then queue transferring it.
+    [SubscribeLocalEvent]
     private void OnMindContainerTerminating(EntityUid uid, MindContainerComponent component, ref EntityTerminatingEvent args)
     {
         if (!TryGetMind(uid, out var mindId, out var mind, component))
@@ -69,8 +65,7 @@ public sealed class MindSystem : SharedMindSystem
         // If the player is currently visiting some other entity, simply attach to that entity.
         if (mind.VisitingEntity is {Valid: true} visiting
             && visiting != uid
-            && !Deleted(visiting)
-            && !Terminating(visiting))
+            && !TerminatingOrDeleted(visiting))
         {
             TransferTo(mindId, visiting, mind: mind);
             if (TryComp(visiting, out GhostComponent? ghostComp))
@@ -89,8 +84,7 @@ public sealed class MindSystem : SharedMindSystem
             // Log these to make sure they're not causing the GameTicker round restart bugs...
             Log.Debug($"Entity \"{ToPrettyString(uid)}\" for {mind.CharacterName} was deleted, spawned \"{ToPrettyString(ghost)}\".");
         else
-            // This should be an error, if it didn't cause tests to start erroring when they delete a player.
-            Log.Warning($"Entity \"{ToPrettyString(uid)}\" for {mind.CharacterName} was deleted, and no applicable spawn location is available.");
+            Log.Error($"Entity \"{ToPrettyString(uid)}\" for {mind.CharacterName} was deleted, and no applicable spawn location is available.");
     }
 
     public override bool TryGetMind(NetUserId user, [NotNullWhen(true)] out EntityUid? mindId, [NotNullWhen(true)] out MindComponent? mind)
@@ -156,7 +150,7 @@ public sealed class MindSystem : SharedMindSystem
     {
         base.UnVisit(mindId, mind);
 
-        if (!Resolve(mindId, ref mind))
+        if (!Resolve(mindId, ref mind, false)) // Goob - Fix (deleted mind)
             return;
 
         if (mind.VisitingEntity == null)
@@ -193,12 +187,12 @@ public sealed class MindSystem : SharedMindSystem
         MindContainerComponent? component = null;
         var alreadyAttached = false;
 
-        if (entity != null)
+        if (entity != null && !TerminatingOrDeleted(entity))
         {
             component = EnsureComp<MindContainerComponent>(entity.Value);
 
-            if (component.HasMind)
-                _ghosts.OnGhostAttempt(component.Mind.Value, false);
+            if (TryGetMind(entity.Value, out var entityMindId, out _) && entityMindId != mindId)
+                _ghosts.OnGhostAttempt(entityMindId, false);
 
             if (TryComp<ActorComponent>(entity.Value, out var actor))
             {
@@ -232,7 +226,7 @@ public sealed class MindSystem : SharedMindSystem
                 ? _transform.ToMapCoordinates(_gameTicker.GetObserverSpawnPoint())
                 : _transform.GetMapCoordinates(mind.OwnedEntity.Value);
 
-            entity = Spawn(GameTicker.ObserverPrototypeName, position);
+            entity = Spawn(ServerGameTicker.ObserverPrototypeName, position);
             component = EnsureComp<MindContainerComponent>(entity.Value);
             var ghostComponent = Comp<GhostComponent>(entity.Value);
             _ghosts.SetCanReturnToBody((entity.Value, ghostComponent), false);
@@ -241,12 +235,18 @@ public sealed class MindSystem : SharedMindSystem
         var oldEntity = mind.OwnedEntity;
         if (TryComp(oldEntity, out MindContainerComponent? oldContainer))
         {
-            oldContainer.Mind = null;
-            mind.OwnedEntity = null;
             Entity<MindComponent> mindEnt = (mindId, mind);
             Entity<MindContainerComponent> containerEnt = (oldEntity.Value, oldContainer);
-            RaiseLocalEvent(oldEntity.Value, new MindRemovedMessage(mindEnt, containerEnt));
-            RaiseLocalEvent(mindId, new MindGotRemovedEvent(mindEnt, containerEnt));
+
+            RaiseLocalEvent(oldEntity.Value, new BeforeMindRemovedMessage(mindEnt, containerEnt, entity));
+            RaiseLocalEvent(mindId, new BeforeMindGotRemovedEvent(mindEnt, containerEnt, entity));
+
+            oldContainer.Mind = null;
+            oldContainer.HasMind = false;
+            mind.OwnedEntity = entity;
+
+            RaiseLocalEvent(oldEntity.Value, new MindRemovedMessage(mindEnt, containerEnt, entity));
+            RaiseLocalEvent(mindId, new MindGotRemovedEvent(mindEnt, containerEnt, entity));
             Dirty(oldEntity.Value, oldContainer);
         }
 
@@ -257,6 +257,11 @@ public sealed class MindSystem : SharedMindSystem
             // Yes this control flow sucks.
             mind.VisitingEntity = null;
             RemComp<VisitingMindComponent>(entity!.Value);
+            // If you are transferring to your own ghost then you can no longer return to body
+            if (TryComp(entity.Value, out GhostComponent? ghostComponent))
+            {
+                _ghosts.SetCanReturnToBody((entity.Value, ghostComponent), false);
+            }
         }
         else if (mind.VisitingEntity != null
               && (ghostCheckOverride // to force mind transfer, for example from ControlMobVerb
@@ -277,13 +282,19 @@ public sealed class MindSystem : SharedMindSystem
 
         if (entity != null)
         {
+            if (component!.Mind.HasValue && TryComp(component!.Mind.Value, out MindComponent? newMind))
+            {
+                TransferTo(component!.Mind.Value, newMind?.VisitingEntity);
+            }
             component!.Mind = mindId;
+            component.LastMind = mindId;
+            component.HasMind = true;
             mind.OwnedEntity = entity;
             mind.OriginalOwnedEntity ??= GetNetEntity(mind.OwnedEntity);
             Entity<MindComponent> mindEnt = (mindId, mind);
             Entity<MindContainerComponent> containerEnt = (entity.Value, component);
-            RaiseLocalEvent(entity.Value, new MindAddedMessage(mindEnt, containerEnt));
-            RaiseLocalEvent(mindId, new MindGotAddedEvent(mindEnt, containerEnt));
+            RaiseLocalEvent(entity.Value, new MindAddedMessage(mindEnt, containerEnt, oldEntity));
+            RaiseLocalEvent(mindId, new MindGotAddedEvent(mindEnt, containerEnt, oldEntity));
             Dirty(entity.Value, component);
         }
     }

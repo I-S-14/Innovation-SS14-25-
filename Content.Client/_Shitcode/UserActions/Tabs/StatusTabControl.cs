@@ -1,3 +1,4 @@
+using Content.Client.GameTicking; // IS14-change: ticker namespace move
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Linq;
@@ -20,8 +21,6 @@ namespace Content.Client._Shitcode.UserActions.Tabs;
 public sealed partial class StatusTabControl : BaseTabControl
 {
     [Dependency] private readonly IEntityManager _entManager = default!;
-    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
-    [Dependency] private readonly ISharedPlayerManager _playerManager = default!;
     [Dependency] private readonly IGameTiming _gameTiming = default!;
 
     private ClientGameTicker? _gameTicker;

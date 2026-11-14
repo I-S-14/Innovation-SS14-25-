@@ -1,7 +1,7 @@
 {
   "version": 1,
   "license": "CC-BY-SA-3.0",
-  "copyright": "tgstation at 986af32e22a88dae14fd147d812a5a4d27c1bc30 | stimpen sprites made by PuroSlavKing (Github) for Space Station 14. Nearly all resprited by joshepvodka, in-hand sprites by SeamLesss (github)",
+  "copyright": "tgstation at 986af32e22a88dae14fd147d812a5a4d27c1bc30 | stimpen sprites made by PuroSlavKing (Github) for Space Station 14. Nearly all resprited by joshepvodka, in-hand sprites by SeamLesss (github) | Additional legacy states (CC-BY-SA-3.0): tgstation at 986af32e22a88dae14fd147d812a5a4d27c1bc30 | stimpen sprites made by PuroSlavKing (Github) for Space Station 14. Nearly all resprited by joshepvodka, in-hand sprites by SeamLesss (github) | Legacy states: (CC-BY-SA-3.0) tgstation at 986af32e22a88dae14fd147d812a5a4d27c1bc30 | stimpen sprites made by PuroSlavKing (Github) for Space Station 14. Nearly all resprited by joshepvodka, in-hand sprites by SeamLesss (github)",
   "size": {
     "x": 32,
     "y": 32
@@ -44,19 +44,10 @@
       "name": "morphen_empty"
     },
     {
-      "name": "oxapen"
-    },
-    {
-      "name": "oxapen_empty"
-    },
-    {
       "name": "penacid"
     },
     {
       "name": "penacid_empty"
-    },
-    {
-      "name": "salacid"
     },
     {
       "name": "bicpen"
@@ -71,31 +62,16 @@
       "name": "dermpen_empty"
     },
     {
-      "name": "salacid_empty"
-    },
-    {
       "name": "salpen"
     },
     {
       "name": "salpen_empty"
     },
     {
-      "name": "atropen"
-    },
-    {
-      "name": "atropen_empty"
-    },
-    {
       "name": "arithpen"
     },
     {
       "name": "arithpen_empty"
-    },
-    {
-      "name": "advcombatpen"
-    },
-    {
-      "name": "advcombatpen_empty"
     },
     {
       "name": "punctpen"
@@ -140,7 +116,13 @@
       "directions": 4
     },
     {
+      "name": "advcombatpen"
+    },
+    {
       "name": "livepen"
+    },
+    {
+      "name": "advcombatpen_empty"
     },
     {
       "name": "livepen_empty"

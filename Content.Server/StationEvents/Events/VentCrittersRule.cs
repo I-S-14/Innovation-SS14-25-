@@ -1,3 +1,5 @@
+using Content.Shared.Station.Components;
+using Content.Shared.Antag;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Server.Antag;
@@ -6,7 +8,6 @@ using Content.Server.Pinpointer;
 using Content.Server.StationEvents.Components;
 using Content.Shared.EntityTable;
 using Content.Shared.GameTicking.Components;
-using Content.Shared.Station.Components;
 using Content.Shared.Storage;
 using Robust.Shared.Map;
 using Robust.Shared.Player;
@@ -31,7 +32,7 @@ public sealed class VentCrittersRule : StationEventSystem<VentCrittersRuleCompon
     [Dependency] private readonly AntagSelectionSystem _antag = default!;
     [Dependency] private readonly EntityTableSystem _entityTable = default!;
     [Dependency] private readonly ISharedPlayerManager _player = default!;
-    [Dependency] private readonly NavMapSystem _navMap = default!;
+    [Dependency] private readonly ServerNavMapSystem _navMap = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
 
     private List<EntityCoordinates> _locations = new();
@@ -64,7 +65,7 @@ public sealed class VentCrittersRule : StationEventSystem<VentCrittersRuleCompon
 
         var players = _antag.GetTotalPlayerCount(_player.Sessions);
         var min = comp.Min * players / comp.PlayerRatio;
-        var max = comp.Max * players / comp.PlayerRatio;
+        var max = Math.Max(comp.Max * players / comp.PlayerRatio, min); // Goob - Fix (min above max)
         var count = Math.Max(RobustRandom.Next(min, max), 1);
         Log.Info($"Spawning {count} critters for {ToPrettyString(uid):rule}");
         for (int i = 0; i < count; i++)

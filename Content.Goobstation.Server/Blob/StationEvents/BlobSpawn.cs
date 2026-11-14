@@ -1,9 +1,11 @@
+using Robust.Shared.Prototypes;
+using Content.Shared.Ghost;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Linq;
 using Content.Goobstation.Common.Blob;
 using Content.Server.Nyanotrasen.Abilities.Felinid;
-using Content.Server.Ghost.Roles.Events;
+
 using Content.Server.Nutrition.Components;
 using Content.Server.Station.Components;
 using Content.Server.StationEvents.Components;
@@ -17,10 +19,14 @@ using Robust.Shared.Random;
 
 namespace Content.Goobstation.Server.Blob.StationEvents;
 
-public sealed class BlobSpawnRule : StationEventSystem<BlobSpawnRuleComponent>
+public sealed partial class BlobSpawnRule : StationEventSystem<BlobSpawnRuleComponent>
 {
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly IPlayerManager _playerSystem = default!;
+    //IS14-change start: typed IDs preserve the retained Goob prototypes.
+    private static readonly EntProtoId CompatibilityBlobRuleEntityId = "BlobRule";
+    //IS14-change end
+
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private IPlayerManager _playerSystem = default!;
 
     public override void Initialize()
     {
@@ -70,12 +76,12 @@ public sealed class BlobSpawnRule : StationEventSystem<BlobSpawnRuleComponent>
         }
 
         // start blob rule incase it isn't, for the sweet greentext
-        GameTicker.StartGameRule("BlobRule");
+        GameTicker.StartGameRule(CompatibilityBlobRuleEntityId);
     }
 
     // Because GameRule spawns just a GhostRoleSpawner, we can't just remove components
     // right away, and need to track the event when entity is spawned.
-    private void OnSpawned(EntityUid uid, BlobCarrierComponent component, GhostRoleSpawnerUsedEvent args)
+    private void OnSpawned(EntityUid uid, BlobCarrierComponent component, ref GhostRoleSpawnerUsedEvent args)
     {
         var carrier = args.Spawned;
         if (!TryComp<BlobCarrierComponent>(carrier, out _))

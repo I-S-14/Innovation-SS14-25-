@@ -12,6 +12,7 @@ using Content.Shared.Station.Components;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
+using Content.Shared.Station.Systems;
 
 namespace Content.Server._DV.CosmicCult.Abilities;
 
@@ -20,7 +21,6 @@ public sealed class CosmicMonumentSystem : EntitySystem
     [Dependency] private readonly ActionsSystem _actions = default!;
     [Dependency] private readonly CosmicCultRuleSystem _cultRule = default!;
     [Dependency] private readonly EntityLookupSystem _lookup = default!;
-    [Dependency] private readonly ITileDefinitionManager _tileDef = default!;
     [Dependency] private readonly MonumentSystem _monument = default!;
     [Dependency] private readonly PopupSystem _popup = default!;
     [Dependency] private readonly SharedMapSystem _map = default!;
@@ -71,12 +71,11 @@ public sealed class CosmicMonumentSystem : EntitySystem
 
     private void OnCosmicMoveMonument(Entity<CosmicCultLeadComponent> uid, ref EventCosmicMoveMonument args)
     {
-
-        args.Handled = true;
         if (_cultRule.AssociatedGamerule(uid) is not { } cult
             || !VerifyPlacement(uid, out var pos))
             return;
 
+        args.Handled = true;
         cult.Comp.MonumentMoved = true;
         var leadQuery = EntityQueryEnumerator<CosmicCultLeadComponent>(); // If there are ever multiple leaders for some reason, they all use the action once it's used.
         while (leadQuery.MoveNext(out var lead, out var leadComp))

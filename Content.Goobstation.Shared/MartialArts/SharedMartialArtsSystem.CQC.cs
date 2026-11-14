@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+using Robust.Shared.Prototypes;
 using System.Linq;
 using Content.Goobstation.Common.Grab;
 using Content.Goobstation.Common.MartialArts;
@@ -28,6 +29,10 @@ namespace Content.Goobstation.Shared.MartialArts;
 
 public partial class SharedMartialArtsSystem
 {
+    //IS14-change start: typed IDs for retained behavior.
+    private static readonly ProtoId<DamageTypePrototype> CqcBluntDamageType = "Blunt";
+    //IS14-change end
+
     private void InitializeCqc()
     {
         SubscribeLocalEvent<CanPerformComboComponent, CqcSlamPerformedEvent>(OnCQCSlam);
@@ -126,7 +131,7 @@ public partial class SharedMartialArtsSystem
                 {
                     _pulling.TryStopPull(args.Target, pullable);
 
-                    var blunt = new DamageSpecifier(_proto.Index<DamageTypePrototype>("Blunt"), damageToKill.Value);
+                    var blunt = new DamageSpecifier(_proto.Index<DamageTypePrototype>(CqcBluntDamageType), damageToKill.Value);
                     _damageable.TryChangeDamage(args.Target, blunt, true, targetPart: TargetBodyPart.Chest);
 
                     var (partType, symmetry) = _body.ConvertTargetBodyPart(targeting.Target);

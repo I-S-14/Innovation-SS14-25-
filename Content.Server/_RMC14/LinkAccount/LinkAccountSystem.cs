@@ -74,7 +74,7 @@ public sealed class LinkAccountSystem : EntitySystem
             _nextLobbyMessageTime = _timing.RealTime + _lobbyMessageInitialDelay;
     }
 
-    private void OnRoundEndTextAppend(RoundEndTextAppendEvent ev)
+    private void OnRoundEndTextAppend(ref RoundEndTextAppendEvent ev)
     {
         if (_nextNTShoutout != null)
         {

@@ -185,7 +185,9 @@ public abstract class SharedGrapplingGunHunterSystem : EntitySystem
         if (component.Target != null)
             return;
 
-        if (!EntityManager.EntityExists(args.Embedded) || args.Embedded == gun)
+        //IS14-change start
+        if (!Exists(args.Embedded) || args.Embedded == gun)
+        //IS14-change end
             return;
 
         if (!HasComp<MobStateComponent>(args.Embedded))
@@ -196,7 +198,9 @@ public abstract class SharedGrapplingGunHunterSystem : EntitySystem
 
         if (TryComp<GrapplingHookedHunterComponent>(args.Embedded, out var existingHooked))
         {
-            if (existingHooked.Hook is not { } existingHook || !EntityManager.EntityExists(existingHook))
+            //IS14-change start
+            if (existingHooked.Hook is not { } existingHook || !Exists(existingHook))
+            //IS14-change end
             {
                 RemCompDeferred<GrapplingHookedHunterComponent>(args.Embedded);
             }
@@ -342,7 +346,9 @@ public abstract class SharedGrapplingGunHunterSystem : EntitySystem
 
     public void HandleEntityEnteredPortal(EntityUid subject)
     {
-        if (!EntityManager.EntityExists(subject))
+        //IS14-change start
+        if (!Exists(subject))
+        //IS14-change end
             return;
 
         if (TryComp<GrapplingHookedHunterComponent>(subject, out var hooked) &&
@@ -411,7 +417,9 @@ public abstract class SharedGrapplingGunHunterSystem : EntitySystem
                 continue;
             }
 
-            if (!EntityManager.EntityExists(component.Projectile.Value))
+            //IS14-change start
+            if (!Exists(component.Projectile.Value))
+            //IS14-change end
             {
                 ReturnHook((uid, component), null);
                 continue;
@@ -441,7 +449,9 @@ public abstract class SharedGrapplingGunHunterSystem : EntitySystem
                 continue;
             }
 
-            if (!EntityManager.EntityExists(component.HookedTarget.Value))
+            //IS14-change start
+            if (!Exists(component.HookedTarget.Value))
+            //IS14-change end
             {
                 ReturnHook((uid, component), null);
                 continue;
@@ -512,7 +522,9 @@ public abstract class SharedGrapplingGunHunterSystem : EntitySystem
             _joints.RemoveJoint(uid, GrapplingJoint);
         }
 
-        if (target is { } targetUid && EntityManager.EntityExists(targetUid) &&
+        //IS14-change start
+        if (target is { } targetUid && Exists(targetUid) &&
+        //IS14-change end
             TryComp<GrapplingHookedHunterComponent>(targetUid, out var hooked) &&
             hooked.Gun == uid)
         {
@@ -524,7 +536,9 @@ public abstract class SharedGrapplingGunHunterSystem : EntitySystem
         else
             _appearance.SetData(uid, SharedTetherGunSystem.TetherVisualsStatus.Key, showLoaded);
 
-        if (_netManager.IsServer && projectile is { } proj && EntityManager.EntityExists(proj))
+        //IS14-change start
+        if (_netManager.IsServer && projectile is { } proj && Exists(proj))
+        //IS14-change end
         {
             QueueDel(proj);
         }

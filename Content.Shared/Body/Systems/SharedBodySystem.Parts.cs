@@ -23,6 +23,7 @@ using Robust.Shared.Random;
 
 // Goobstation
 using Content.Shared.Destructible;
+using Content.Shared.Random.Helpers;
 
 namespace Content.Shared.Body.Systems;
 
@@ -58,7 +59,7 @@ public partial class SharedBodySystem
             // For whatever reason this slot is initialized properly on the server, but not on the client.
             // This seems to be an issue due to wiz-merge, on my old branch it was properly instantiating
             // ItemInsertionSlot's container on both ends. It does show up properly on ItemSlotsComponent though.
-            _slots.AddItemSlot(ent, ent.Comp.ContainerName, ent.Comp.ItemInsertionSlot);
+            _slots.AddItemSlot(ent.Owner, ent.Comp.ContainerName, ent.Comp.ItemInsertionSlot);
             Dirty(ent, ent.Comp);
         }
 
@@ -79,7 +80,7 @@ public partial class SharedBodySystem
     private void OnBodyPartRemove(Entity<BodyPartComponent> ent, ref ComponentRemove args)
     {
         if (ent.Comp.PartType == BodyPartType.Chest)
-            _slots.RemoveItemSlot(ent, ent.Comp.ItemInsertionSlot);
+            _slots.RemoveItemSlot(ent.Owner, ent.Comp.ItemInsertionSlot);
     }
 
     /// <summary>
@@ -1108,7 +1109,9 @@ public partial class SharedBodySystem
             return attackerComp.Target;
 
         var totalWeight = targetComp.TargetOdds[attackerComp.Target].Values.Sum();
-        var randomValue = _random.NextFloat() * totalWeight;
+        // i think this is the way to do predicted random
+        var random = SharedRandomExtensions.PredictedRandom(_timing, GetNetEntity(target));
+        var randomValue = random.NextFloat() * totalWeight;
 
         foreach (var (part, weight) in targetComp.TargetOdds[attackerComp.Target])
         {
@@ -1132,7 +1135,10 @@ public partial class SharedBodySystem
             return targetPart;
 
         var totalWeight = targetComp.TargetOdds[targetPart].Values.Sum();
-        var randomValue = _random.NextFloat() * totalWeight;
+
+        // i think this is the way to do predicted random
+        var random = SharedRandomExtensions.PredictedRandom(_timing, GetNetEntity(target));
+        var randomValue = random.NextFloat() * totalWeight;
 
         foreach (var (part, weight) in targetComp.TargetOdds[targetPart])
         {
@@ -1150,7 +1156,10 @@ public partial class SharedBodySystem
         if (children.Count == 0)
             return TargetBodyPart.Chest;
 
-        return GetTargetBodyPart(_random.PickAndTake(children));
+        // i think this is the way to do predicted random
+        var random = SharedRandomExtensions.PredictedRandom(_timing, GetNetEntity(target));
+
+        return GetTargetBodyPart(random.PickAndTake(children));
     }
 
     public TargetBodyPart GetRandomBodyPart(EntityUid target,

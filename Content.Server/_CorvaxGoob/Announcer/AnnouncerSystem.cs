@@ -5,6 +5,7 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using Content.Shared.GameTicking;
 
 namespace Content.Server._CorvaxGoob.Announcer;
 
@@ -25,9 +26,19 @@ public sealed class AnnouncerSystem : EntitySystem
     {
         base.Initialize();
 
+        // IS14: apply retained announcer recordings to Wizards alert levels.
+        SubscribeLocalEvent<Content.Shared.AlertLevel.AlertLevelSoundEvent>(OnAlertLevelSound);
+
         Subs.CVar(_configManager, CCCVars.CalendarAnnouncerEnabled, value => _enabled = value, true);
 
         SubscribeLocalEvent<GameRunLevelChangedEvent>(OnGameRunLevelChanged);
+    }
+
+    private void OnAlertLevelSound(ref Content.Shared.AlertLevel.AlertLevelSoundEvent args)
+    {
+        if (TryGetAnnouncerToday(out var announcer)
+            && args.Prototype.AnnouncersAudio.TryGetValue(announcer.ID, out var sound))
+            args.Sound = sound;
     }
 
     /// <summary>

@@ -2,6 +2,7 @@
 
 - type: job
   id: HeadOfPersonnel
+  canBeAntag: false # IS14: retain original role restriction.
   name: job-name-hop
   description: job-description-hop
   playTimeTracker: JobHeadOfPersonnel
@@ -30,17 +31,15 @@
       species:
       - Abductor
   #goobcoins: 40 #Goob content Corvax-Goob-coins
+  startingGear: HoPGear
+  icon: "JobIconHeadOfPersonnel"
+  supervisors: job-supervisors-captain
   guides: # goobstation
   - Command
   # - Succession Hidden by CorvaxGoob
   # - StandardProcedures SOP Hidden by CorvaxGoob
   # - HeadOfPersonnel SOP Hidden by CorvaxGoob
   - Writing
-  weight: 20
-  startingGear: HoPGear
-  icon: "JobIconHeadOfPersonnel"
-  supervisors: job-supervisors-captain
-  canBeAntag: false
   access:
   - Command
   - HeadOfPersonnel

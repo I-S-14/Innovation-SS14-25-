@@ -55,6 +55,8 @@ public sealed partial class TestPair
         mapData.CGridUid = ToClientUid(mapData.Grid);
         mapData.CGridCoords = new EntityCoordinates(mapData.CGridUid, 0, 0);
 
+        TestMap = mapData;
+
         return mapData;
     }
 

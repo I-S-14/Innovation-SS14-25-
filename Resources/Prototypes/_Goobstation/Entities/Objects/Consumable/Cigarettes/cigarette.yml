@@ -5,12 +5,12 @@
   parent: Cigarette
   name: cigarette
   components:
-  - type: SolutionContainerManager
-    solutions:
-      smokable:
-        maxVol: 10
   - type: RefillableSolution # it would make more sense for all cigerattes to work like this.
     solution: smokable
+  - type: Solution
+    solution:
+      maxVol: 10
+      reagents: []
 
 - type: entity
   id: ECigarette
@@ -20,10 +20,6 @@
   components:
   - type: Cigar
     selfIgniting: true
-  - type: SolutionContainerManager
-    solutions:
-      smokable:
-        maxVol: 20
   - type: Tag
     tags:
       - Trash
@@ -43,6 +39,10 @@
     solution: smokable
   - type: DrawableSolution
     solution: smokable
+  - type: Solution
+    solution:
+      maxVol: 20
+      reagents: []
 
 - type: entity
   id: CryostasisCigarette
@@ -52,11 +52,6 @@
   components:
   - type: Cigar
     selfIgniting: true
-  - type: SolutionContainerManager
-    solutions:
-      smokable:
-        maxVol: 20
-        canReact: false
   - type: Tag
     tags:
       - Trash
@@ -76,3 +71,8 @@
     solution: smokable
   - type: DrawableSolution
     solution: smokable
+  - type: Solution
+    solution:
+      maxVol: 20
+      canReact: false
+      reagents: []

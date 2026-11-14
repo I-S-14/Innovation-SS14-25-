@@ -1,5 +1,6 @@
 # Items in this table are generally useless. They don't help in most situations and aren't interesting to serious people.
 # If you're wondering if an entity should go in this table, ask your inner child / local clown.
+
 - type: entityTable # size 2x4 or 3x3  # price 100
   id: AllToysTable
   table: !type:GroupSelector
@@ -131,6 +132,13 @@
       - id: PlushieLizardJobZookeeper
       - id: PlushieLizardJobMultiweh
         weight: 0.5 # 1 in >800
+      # GoobStation - New extra lizards
+      - id: PlushieLizardJobBlueshieldOfficer
+      - id: PlushieLizardJobBrigmedic
+      - id: PlushieLizardJobCentCommOfficial
+      - id: PlushieLizardJobNanotrasenRepresentative
+      - id: PlushieLizardJobShaftMiner
+      - id: PlushieLizardJobVirologist
 
 # Figurines representing all your favorite coworkers
 - type: entityTable # size 1x2  # price 75
@@ -304,6 +312,7 @@
     - id: NukeDiskFake
     - id: DiceBag
     - id: SpectralLocator
+    - id: Magic9Ball
     - id: BarberScissors
     - id: SprayFlowerPin
     - id: ClothingShoesSkates
@@ -327,8 +336,6 @@
       - id: Football
       - id: BeachBall
       - id: TennisBall
-        amount: 2
-      - id: TennisBallGoob # Goob
         amount: 2
     - !type:GroupSelector # PAIs are basically toys
       children:

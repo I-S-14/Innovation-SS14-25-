@@ -1,3 +1,4 @@
+using Content.Shared.Speech.Components; // IS14-change: upstream namespace move
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Server.Administration.Managers;
@@ -148,7 +149,8 @@ public sealed partial class ZombieSystem
             Forced = true,
             Inventory = PolymorphInventoryChange.Transfer,
             RevertOnCrit = false,
-            RevertOnDeath = false
+            RevertOnDeath = false,
+            IgnoreAllowRepeatedMorphs = true, // Goob - zombify already-polymorphed mobs like upgraded bingles
         };
 
         if (_polymorph.PolymorphEntity(target, polyConfig) is not { } zombie)
@@ -198,8 +200,7 @@ public sealed partial class ZombieSystem
         //get diseases, breath, be thirst, be hungry, die in space, get double sentience, have offspring or be paraplegic.
         RemComp<RespiratorComponent>(target);
         RemComp<BarotraumaComponent>(target);
-        RemComp<HungerComponent>(target);
-        RemComp<ThirstComponent>(target);
+        RemComp<SatiationComponent>(target);
         RemComp<ReproductiveComponent>(target);
         RemComp<ReproductivePartnerComponent>(target);
         RemComp<LegsParalyzedComponent>(target);
@@ -211,7 +212,7 @@ public sealed partial class ZombieSystem
         if (TryComp<ZombieAccentOverrideComponent>(target, out var accent))
             accentType = accent.Accent;
 
-        EnsureComp<ReplacementAccentComponent>(target).Accent = accentType;
+        EntityManager.System<Content.Shared.Speech.EntitySystems.ReplacementAccentSystem>().ApplyAccent(target, accentType);
 
         //This is needed for stupid entities that fuck up combat mode component
         //in an attempt to make an entity not attack. This is the easiest way to do it.
@@ -313,8 +314,7 @@ public sealed partial class ZombieSystem
             tempComp.ColdDamage.ClampMax(0);
 
         //Heals the zombie from all the damage it took while human
-        if (TryComp<DamageableComponent>(target, out var damageablecomp))
-            _damageable.SetAllDamage(target, damageablecomp, 0);
+        _damageable.ClearAllDamage(target);
         _mobState.ChangeMobState(target, MobState.Alive);
 
         _faction.ClearFactions(target, dirty: false);

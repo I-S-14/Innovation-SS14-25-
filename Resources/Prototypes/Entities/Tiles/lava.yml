@@ -45,19 +45,17 @@
   - type: SyncSprite
   - type: Clickable
   - type: Sprite
-    sprite: Tiles/Planet/lava.rsi
+    sprite: Tiles/TileEntities/liquid-lava.rsi
     drawdepth: BelowFloor
-    layers:
-      - state: lava
-        shader: unshaded
   - type: Icon
-    sprite: Tiles/Planet/lava.rsi
+    sprite: Tiles/TileEntities/liquid-lava.rsi
     state: full
   - type: IconSmooth
-    key: floor
-    additionalKeys:
-    - walls
-    base: lava
+    key: lava
+    states:
+    - !type:CornerSpriteSmoothing
+      mask: [ lava, walls ]
+      base: water
   - type: Physics
     bodyType: Static
   - type: Fixtures
@@ -89,3 +87,5 @@
       - HideContextMenu
   - type: CosmicCorruptible # DeltaV - Cosmic Cult
     convertTo: FloorCosmicDecay
+  - type: PlacementReplacement
+    key: tileOverlay

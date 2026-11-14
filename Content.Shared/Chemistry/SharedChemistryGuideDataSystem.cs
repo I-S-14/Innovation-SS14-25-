@@ -1,18 +1,16 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Shared.Chemistry.Reagent;
-using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
+using Robust.Shared.Prototypes;
 
 namespace Content.Shared.Chemistry;
 
 /// <summary>
 /// This handles the chemistry guidebook and caching it.
 /// </summary>
-public abstract class SharedChemistryGuideDataSystem : EntitySystem
+public abstract partial class SharedChemistryGuideDataSystem : EntitySystem
 {
-    [Dependency] protected readonly IPrototypeManager PrototypeManager = default!;
-
     protected readonly Dictionary<string, ReagentGuideEntry> Registry = new();
 
     public IReadOnlyDictionary<string, ReagentGuideEntry> ReagentGuideRegistry => Registry;

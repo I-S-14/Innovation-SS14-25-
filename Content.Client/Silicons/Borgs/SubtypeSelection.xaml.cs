@@ -11,7 +11,7 @@ using Robust.Shared.Prototypes;
 namespace Content.Client.Silicons.Borgs;
 
 [GenerateTypedNameReferences]
-public partial class SubtypeSelection : Control
+public sealed partial class SubtypeSelection : Control
 {
     public event Action? SubtypeSelected;
 

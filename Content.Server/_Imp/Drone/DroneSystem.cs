@@ -1,3 +1,4 @@
+using Content.Shared.Ghost.Components; // IS14-change: upstream namespace move
 //using Content.Server._Impstation.Drone.Components;
 using Content.Server.Body.Systems;
 using Content.Server.Ghost.Roles.Components;
@@ -30,7 +31,6 @@ namespace Content.Server._Imp.Drone
 {
     public sealed class DroneSystem : SharedDroneSystem
     {
-        [Dependency] private readonly AlertsSystem _alerts = default!;
         [Dependency] private readonly BodySystem _bodySystem = default!;
         [Dependency] private readonly EntityLookupSystem _lookup = default!;
         [Dependency] private readonly EntityWhitelistSystem _whitelist = default!;
@@ -62,8 +62,6 @@ namespace Content.Server._Imp.Drone
 
         private void OnMapInit(Entity<DroneComponent> ent, ref MapInitEvent args)
         {
-            UpdateBatteryAlert(ent);
-
             if (!TryComp<MindContainerComponent>(ent.Owner, out var mind) || !mind.HasMind)
                 _powerCell.SetDrawEnabled(ent.Owner, false);
         }
@@ -123,12 +121,10 @@ namespace Content.Server._Imp.Drone
             }
         }
 
-        private void OnPowerCellChanged(EntityUid uid, DroneComponent component, PowerCellChangedEvent args)
+        private void OnPowerCellChanged(EntityUid uid, DroneComponent component, ref PowerCellChangedEvent args)
         {
         	if (TerminatingOrDeleted(uid))
         		return;
-
-            UpdateBatteryAlert((uid, component));
 
             // if we run out of charge & the drone isn't being deleted, kill the drone
             if (!_powerCell.HasDrawCharge(uid))
@@ -191,51 +187,6 @@ namespace Content.Server._Imp.Drone
 
             var state = new DroneBuiState(chargePercent, hasBattery);
             _ui.SetUiState(uid, DroneUiKey.Key, state);
-        }
-
-        private void UpdateBatteryAlert(Entity<DroneComponent> ent)
-        {
-            if (!TryComp<PowerCellSlotComponent>(ent, out var slotComponent))
-                return;
-
-            if (!_powerCell.TryGetBatteryFromSlot(ent.Owner,out var battery ))
-            {
-                _alerts.ClearAlert(ent.Owner, ent.Comp.BatteryAlert);
-                _alerts.ShowAlert(ent.Owner, ent.Comp.NoBatteryAlert);
-                return;
-            }
-
-            var chargePercent = new short();
-            if (_battery.TryGetBatteryComponent(ent.Owner, out var batteryComponent, out var _))
-                chargePercent = (short) MathF.Round(batteryComponent.LastCharge / batteryComponent.MaxCharge * 10f);
-
-            if (chargePercent == 5 && chargePercent < ent.Comp.LastChargePercent)
-            {
-                if (_gameTiming.CurTime >= ent.Comp.NextProximityAlert)
-                {
-                    _popupSystem.PopupEntity(Loc.GetString("drone-med-battery"), ent.Owner, ent.Owner, PopupType.MediumCaution);
-                    ent.Comp.NextProximityAlert = _gameTiming.CurTime + ent.Comp.ProximityDelay;
-                }
-            }
-
-            if (chargePercent == 2 && chargePercent < ent.Comp.LastChargePercent)
-            {
-                if (_gameTiming.CurTime >= ent.Comp.NextProximityAlert)
-                {
-                    _popupSystem.PopupEntity(Loc.GetString("drone-low-battery"), ent.Owner, ent.Owner, PopupType.LargeCaution);
-                    ent.Comp.NextProximityAlert = _gameTiming.CurTime + ent.Comp.ProximityDelay;
-                }
-            }
-
-            // we make sure 0 only shows if they have absolutely no battery.
-            // also account for floating point imprecision
-            if (chargePercent == 0 && _powerCell.HasDrawCharge(ent.Owner))
-                chargePercent = 1;
-
-            ent.Comp.LastChargePercent = chargePercent;
-
-            _alerts.ClearAlert(ent.Owner, ent.Comp.NoBatteryAlert);
-            _alerts.ShowAlert(ent.Owner, ent.Comp.BatteryAlert, chargePercent);
         }
 
         private bool NonDronesInRange(EntityUid uid, DroneComponent component)

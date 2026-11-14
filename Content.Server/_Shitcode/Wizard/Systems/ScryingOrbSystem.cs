@@ -1,3 +1,4 @@
+using Content.Shared.Ghost.Components; // IS14-change: upstream namespace move
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Shared._Goobstation.Wizard.ScryingOrb;
@@ -10,6 +11,7 @@ using Content.Shared.Mind;
 using Content.Shared.Verbs;
 using Robust.Server.Player;
 using Robust.Shared.Prototypes;
+using Content.Shared.Ghost.Systems;
 
 namespace Content.Server._Goobstation.Wizard.Systems;
 
@@ -38,7 +40,7 @@ public sealed class ScryingOrbSystem : SharedScryingOrbSystem
 
     private void OnUnequip(Entity<ScryingOrbComponent> ent, ref GotUnequippedEvent args)
     {
-        AttemptDisableXRay(args.Equipee);
+        AttemptDisableXRay(args.EquipTarget);
     }
 
     private void OnUnequipHand(Entity<ScryingOrbComponent> ent, ref GotUnequippedHandEvent args)
@@ -48,10 +50,10 @@ public sealed class ScryingOrbSystem : SharedScryingOrbSystem
 
     private void OnEquip(Entity<ScryingOrbComponent> ent, ref GotEquippedEvent args)
     {
-        if (!TryComp(args.Equipee, out EyeComponent? eye))
+        if (!TryComp(args.EquipTarget, out EyeComponent? eye))
             return;
 
-        _eye.SetVisibilityMask(args.Equipee, eye.VisibilityMask | (int) VisibilityFlags.Ghost, eye);
+        _eye.SetVisibilityMask(args.EquipTarget, eye.VisibilityMask | (int) VisibilityFlags.Ghost, eye);
     }
 
     private void OnEquipHand(Entity<ScryingOrbComponent> ent, ref GotEquippedHandEvent args)

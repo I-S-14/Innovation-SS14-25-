@@ -9,20 +9,22 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: absinthe
   color: "#33EE00"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/absintheglass.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: true
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.3
-    Narcotic: # The green fairy
-      metabolismRate : 0.01
+    Narcotic:
+      metabolismRate: 0.01
       effects:
       - !type:AdjustReagent
         reagent: Ethanol
@@ -45,7 +47,6 @@
         - !type:ReagentCondition
           reagent: Absinthe
           min: 10
-
 - type: reagent
   id: Ale
   name: reagent-name-ale
@@ -54,6 +55,7 @@
   physicalDesc: reagent-physical-desc-bubbly
   flavor: ale
   color: "#663100"
+  puddleSpriteSet: Shiny # Goob
   recognizable: true
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/aleglass.rsi
@@ -71,6 +73,8 @@
   physicalDesc: reagent-physical-desc-bubbly
   flavor: beer
   color: "#e3e77b"
+  puddleSpriteSet: Shiny # Goob
+  puddleColor: "#e3e77b7C" # Goob
   recognizable: true
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/beerglass.rsi
@@ -88,21 +92,23 @@
   physicalDesc: reagent-physical-desc-aromatic
   flavor: bluecuracao
   color: "#0099FF"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/curacaoglass.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: true
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.1
-
 - type: reagent
   id: Cognac
   name: reagent-name-cognac
@@ -111,6 +117,7 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: cognac
   color: "#AB3C05"
+  puddleSpriteSet: Shiny # Goob
   recognizable: true
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/cognacglass.rsi
@@ -118,15 +125,16 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: true
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.2
-
 - type: reagent
   id: DeadRum
   name: reagent-name-dead-rum
@@ -135,21 +143,23 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: rum
   color: "#664300"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/rumglass.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.2
-
 - type: reagent
   id: Ethanol
   name: reagent-name-ethanol
@@ -158,6 +168,7 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: alcohol
   color: "#b05b3c"
+  puddleSpriteSet: Shiny # Goob
   boilingPoint: 78.2
   meltingPoint: -114.1
   metabolisms:
@@ -174,10 +185,12 @@
           - Dwarf
           - Yowie  # Goobstation - Yowie
           - Cybernetic # Shitmed - Cybernetic Organs
+          - Oni # Goobstation, fixes Oni taking base ethanol poisoning on top of their specific ethanol poisoning
+          - Synth # Goob - Afterlight synths
           inverted: true
         damage:
           types:
-            Poison: 0.1
+            Poison: 1 # 0.1 # Goob; pre-upstream life-threatening ethanol poisoning damage
             # dwarves take less toxin damage and heal a marginal amount of brute
 # Goobstation Start
 #      - !type:HealthChange
@@ -209,7 +222,8 @@
           type: [ Dwarf ]
         damage:
           groups:
-            Brute: -0.1
+            Brute: -1
+            Burn: -1
       - !type:ModifyBloodLevel
         conditions:
         - !type:ReagentCondition
@@ -243,6 +257,7 @@
           - Dwarf
           - Cybernetic # Shitmed - Cybernetic Organs
           - Yowie # Goobstation - Yowie
+          - Synth # Goob - Afterlight synths
           inverted: true
       - !type:Drunk
         boozePower: 2
@@ -255,6 +270,8 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: gin
   color: "#664300"
+  puddleSpriteSet: Shiny # Goob
+  puddleColor: "#664300CC" # Goob
   recognizable: true
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/ginvodkaglass.rsi
@@ -262,15 +279,16 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.2
-
 - type: reagent
   id: CoffeeLiqueur
   name: reagent-name-coffeeliqueur
@@ -282,6 +300,22 @@
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/coffeeliqueurglass.rsi
     state: icon_empty
+  metabolisms: # Goobstation: Caffeine
+    Drink:
+      effects:
+      - !type:Satiate  # Goobstation: Caffeine
+        satiationType: Thirst
+        factor: 2
+      - !type:ModifyStatusEffect
+        effectProto: StatusEffectDrowsiness
+        time: 2
+        type: Remove
+      - !type:AdjustReagent  # Goobstation: Caffeine
+        reagent: Theobromine
+        amount: 0.05
+      - !type:AdjustReagent # Goobstation: Caffeine
+        reagent: Caffeine
+        amount: 0.2
   metamorphicMaxFillLevels: 3
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: true
@@ -294,6 +328,7 @@
   physicalDesc: reagent-physical-desc-sweet
   flavor: watermelon
   color: "#00FF33"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/emeraldglass.rsi
     state: icon_empty
@@ -309,6 +344,7 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: bitter
   color: "#7E4043"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/wineglass.rsi
     state: icon_empty
@@ -324,6 +360,7 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: bitter
   color: "#990066"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/pwineglass.rsi
     state: icon_empty
@@ -333,7 +370,8 @@
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
@@ -358,6 +396,7 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: rum
   color: "#f09f42"
+  puddleSpriteSet: Shiny # Goob
   recognizable: true
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/rumglass.rsi
@@ -365,15 +404,16 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.2
-
 - type: reagent
   id: Sake
   name: reagent-name-sake
@@ -382,21 +422,23 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: sake
   color: "#DDDDDD"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/sakeglass.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.2
-
 - type: reagent
   id: Tequila
   name: reagent-name-tequila
@@ -405,21 +447,23 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: tequila
   color: "#d7d1d155"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/tequillaglass.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 3
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.2
-
 - type: reagent
   id: Vermouth
   name: reagent-name-vermouth
@@ -428,6 +472,8 @@
   physicalDesc: reagent-physical-desc-aromatic
   flavor: vermouth
   color: "#91FF91"
+  puddleSpriteSet: Shiny # Goob
+  puddleColor: "#91FF9140" # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/vermouthglass.rsi
     state: icon_empty
@@ -443,6 +489,7 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: vodka
   color: "#d1d1d155"
+  puddleSpriteSet: Shiny # Goob
   recognizable: true
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/ginvodkaglass.rsi
@@ -450,15 +497,16 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.2
-
 - type: reagent
   id: Whiskey
   name: reagent-name-whiskey
@@ -467,6 +515,8 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: whiskey
   color: "#ee7732"
+  puddleSpriteSet: Shiny # Goob
+  puddleColor: "#ee7732CC" # Goob
   recognizable: true
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/whiskeyglass.rsi
@@ -474,15 +524,16 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.2
-
 - type: reagent
   id: Wine
   name: reagent-name-wine
@@ -491,6 +542,7 @@
   physicalDesc: reagent-physical-desc-translucent
   flavor: shittywine
   color: "#7E4043"
+  puddleSpriteSet: Shiny # Goob
   recognizable: true
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/wineglass.rsi
@@ -507,6 +559,7 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: champagne
   color: "#FCFCEE"
+  puddleSpriteSet: Shiny # Goob
   recognizable: true
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/champagneglass.rsi
@@ -514,10 +567,12 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: true
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 3
       - !type:AdjustReagent
         reagent: Ethanol
@@ -534,6 +589,7 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: acidspit
   color: "#365000"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/acidspitglass.rsi
     state: icon_empty
@@ -564,6 +620,7 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: alliescocktail
   color: "#00664d"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/alliescocktail.rsi
     state: icon_empty
@@ -579,6 +636,7 @@
   physicalDesc: reagent-physical-desc-aromatic
   flavor: aloe
   color: "#192c00"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/aloe.rsi
     state: icon_empty
@@ -594,6 +652,7 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: amasec
   color: "#124da7"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/amasecglass.rsi
     state: icon_empty
@@ -609,6 +668,7 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: andalusia
   color: "#665700"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/andalusia.rsi
     state: icon_empty
@@ -627,21 +687,23 @@
   physicalDesc: reagent-physical-desc-translucent
   flavor: antifreeze
   color: "#ff7d63"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/antifreeze.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 5
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.15
-
 - type: reagent
   id: AtomicBomb
   name: reagent-name-atomic-bomb
@@ -650,16 +712,19 @@
   physicalDesc: reagent-physical-desc-cloudy
   flavor: atomicbomb
   color: "#666300"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/atomicbombglass.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 5
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
@@ -667,7 +732,6 @@
       - !type:AdjustReagent
         reagent: Uranium
         amount: 0.05
-
 - type: reagent
   id: B52
   name: reagent-name-b52
@@ -676,21 +740,23 @@
   physicalDesc: reagent-physical-desc-bubbly
   flavor: b52
   color: "#664300"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/b52glass.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.15
-
 - type: reagent
   id: BahamaMama
   name: reagent-name-bahama-mama
@@ -744,16 +810,19 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: beepsky
   color: "#664300"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/beepskysmashglass.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
@@ -768,21 +837,23 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: blackrussian
   color: "#360000"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/blackrussianglass.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.2
-
 - type: reagent
   id: BloodyMary
   name: reagent-name-bloody-mary
@@ -791,6 +862,7 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: bloodymary
   color: "#df6a50"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/bloodymaryglass.rsi
     state: icon_empty
@@ -821,21 +893,23 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: bravebull
   color: "#664300"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/bravebullglass.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.2
-
 - type: reagent
   id: Bronx
   name: reagent-name-bronx
@@ -844,6 +918,7 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: bronx
   color: "#d68829"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/bronx.rsi
     state: icon_empty
@@ -859,21 +934,23 @@
   physicalDesc: reagent-physical-desc-milky
   flavor: coconutrum
   color: "#cccbc8"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/coconutrum.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.2
-
 - type: reagent
   id: Cosmopolitan
   name: reagent-name-cosmopolitan
@@ -882,21 +959,23 @@
   physicalDesc: reagent-physical-desc-citric
   flavor: cosmopolitan
   color: "#f73030"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/cosmopolitan.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 3
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.15
-
 - type: reagent
   id: CrushDepth
   name: reagent-name-crush-depth
@@ -920,16 +999,19 @@
   physicalDesc: reagent-physical-desc-bubbly
   flavor: cubalibre
   color: "#3E1B00"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/cubalibreglass.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 5
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
@@ -959,6 +1041,7 @@
   physicalDesc: reagent-physical-desc-ferrous
   flavor: demonsblood
   color: "#a70000"
+  puddleSpriteSet: Blood # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/demonsblood.rsi
     state: icon_empty
@@ -981,6 +1064,7 @@
   physicalDesc: reagent-physical-desc-ferrous
   flavor: devilskiss
   color: "#ff0033"
+  puddleSpriteSet: Blood # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/devilskiss.rsi
     state: icon_empty
@@ -1002,18 +1086,22 @@
   physicalDesc: reagent-physical-desc-soothing
   flavor: medicine
   color: "#FF8CFF"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/doctorsdelightglass.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 5
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
-      - !type:SatiateHunger
+      - !type:Satiate
+        satiationType: Hunger
         factor: -2
       - !type:AdjustReagent
         reagent: Ethanol
@@ -1025,7 +1113,6 @@
             Brute: -1
             Airloss: -1
             Toxin: -1
-
 - type: reagent
   id: DriestMartini
   name: reagent-name-driest-martini
@@ -1034,21 +1121,23 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: driestmartini
   color: "#2E6671"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/driestmartiniglass.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 3
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.15
-
 - type: reagent
   id: Eggnog
   name: reagent-name-eggnog
@@ -1103,21 +1192,23 @@
   physicalDesc: reagent-physical-desc-volatile
   flavor: gargleblaster
   color: "#9cc8b4"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/gargleblasterglass.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 5
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.2
-
 - type: reagent
   id: GinFizz
   name: reagent-name-gin-fizz
@@ -1126,16 +1217,19 @@
   physicalDesc: reagent-physical-desc-fizzy
   flavor: ginfizz
   color: "#664300"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/ginfizzglass.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 6
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
@@ -1150,16 +1244,19 @@
   physicalDesc: reagent-physical-desc-fizzy
   flavor: gintonic
   color: "#004166"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/gintonicglass.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 6
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
@@ -1174,21 +1271,23 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: gildlager
   color: "#FFFF91"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/gildlagerglass.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 3
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: true
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.2
-
 - type: reagent
   id: Grog
   name: reagent-name-grog
@@ -1197,6 +1296,7 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: grog
   color: "#e3e77b"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/beerstein.rsi
     state: icon_empty
@@ -1212,6 +1312,7 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: hippiesdelight
   color: "#6eaa0c"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/hippiesdelightglass.rsi
     state: icon_empty
@@ -1236,6 +1337,7 @@
   physicalDesc: reagent-physical-desc-bubbly
   flavor: icedbeer
   color: "#664300"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/iced_beerglass.rsi
     state: icon_empty
@@ -1261,7 +1363,8 @@
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
@@ -1281,15 +1384,16 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.2
-
 - type: reagent
   id: IrishCoffee
   name: reagent-name-irish-coffee
@@ -1304,15 +1408,16 @@
   metamorphicMaxFillLevels: 3
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.15
-
 - type: reagent
   id: JackRose
   name: reagent-name-jack-rose
@@ -1351,6 +1456,7 @@
   physicalDesc: reagent-physical-desc-bubbly
   flavor: kalimotxo
   color: "#360606"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/kalimotxo.rsi
     state: icon_empty
@@ -1366,21 +1472,23 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: longisland
   color: "#664300"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/longislandicedteaglass.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 6
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.15
-
 - type: reagent
   id: Manhattan
   name: reagent-name-manhattan
@@ -1435,6 +1543,7 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: margarita
   color: "#8CFF8C"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/margaritaglass.rsi
     state: icon_empty
@@ -1450,21 +1559,23 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: martini
   color: "#664300"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/martiniglass.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 3
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.15
-
 - type: reagent
   id: Mead
   name: reagent-name-mead
@@ -1473,6 +1584,8 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: mead
   color: "#664300"
+  puddleSpriteSet: Shiny # Goob
+  puddleColor: "#664300CC" # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/beerstein.rsi
     state: icon_empty
@@ -1489,6 +1602,7 @@
   physicalDesc: reagent-physical-desc-refreshing
   flavor: mojito
   color: "#3ea99888"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/mojito.rsi
     state: icon_empty
@@ -1520,21 +1634,23 @@
   physicalDesc: reagent-physical-desc-pungent
   flavor: moonshine
   color: "#d1d7d155"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/moonshineglass.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 6
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.25
-
 - type: reagent
   id: Neurotoxin
   name: reagent-name-neurotoxin
@@ -1543,6 +1659,7 @@
   physicalDesc: reagent-physical-desc-pungent
   flavor: neurotoxin
   color: "#2E2E61"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/neurotoxinglass.rsi
     state: icon_empty
@@ -1552,7 +1669,8 @@
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
@@ -1576,21 +1694,23 @@
   physicalDesc: reagent-physical-desc-refreshing
   flavor: painkiller
   color: "#e6cb47"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/painkiller.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 6
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.2
-
 - type: reagent
   id: Patron
   name: reagent-name-patron
@@ -1599,21 +1719,23 @@
   physicalDesc: reagent-physical-desc-metallic
   flavor: patron
   color: "#585840"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/patronglass.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 3
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: true
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.2
-
 - type: reagent
   id: RedMead
   name: reagent-name-red-mead
@@ -1622,21 +1744,23 @@
   physicalDesc: reagent-physical-desc-ferrous
   flavor: redmead
   color: "#bc5550"
+  puddleSpriteSet: Blood # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/red_meadglass.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 5
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.2
-
 - type: reagent
   id: PinaColada
   name: reagent-name-pina-colada
@@ -1651,15 +1775,16 @@
   metamorphicMaxFillLevels: 6
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.2
-
 - type: reagent
   id: Radler
   name: reagent-name-radler
@@ -1683,6 +1808,7 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: sbiten
   color: "#004166"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/sbitenglass.rsi
     state: icon_empty
@@ -1704,15 +1830,16 @@
   metamorphicMaxFillLevels: 6
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.07
-
 - type: reagent
   id: CogChamp
   name: reagent-name-cogchamp
@@ -1727,18 +1854,19 @@
   metamorphicMaxFillLevels: 3
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-        - !type:GenericStatusEffect
-          key: RatvarianLanguage
-          component: RatvarianLanguage
-        - !type:SatiateThirst
-          factor: 2
-        - !type:AdjustReagent
-          reagent: Ethanol
-          amount: 0.15
-
+      - !type:GenericStatusEffect
+        key: RatvarianLanguage
+        component: RatvarianLanguage
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 2
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.15
 - type: reagent
   id: Silencer
   name: reagent-name-silencer
@@ -1747,21 +1875,23 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: nothing
   color: "#878787"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/silencerglass.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 6
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
       - !type:GenericStatusEffect
         key: Muted
         component: Muted
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
-
 - type: reagent
   id: Singulo
   name: reagent-name-singulo
@@ -1839,15 +1969,16 @@
   metamorphicMaxFillLevels: 5
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.15
-
 - type: reagent
   id: TheMartinez
   name: reagent-name-the-martinez
@@ -1878,10 +2009,12 @@
   metamorphicMaxFillLevels: 2
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
@@ -1889,7 +2022,6 @@
       - !type:AdjustReagent
         reagent: Uranium
         amount: 0.05
-
 - type: reagent
   id: ToxinsSpecial
   name: reagent-name-toxins-special
@@ -1898,6 +2030,7 @@
   physicalDesc: reagent-physical-desc-pungent
   flavor: toxinsspecial
   color: "#665c00"
+  puddleColor: "#665c0055" # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/toxinsspecialglass.rsi
     state: icon_empty
@@ -1928,21 +2061,23 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: vodkamartini
   color: "#004666"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/martiniglass.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 3
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.15
-
 - type: reagent
   id: VodkaTonic
   name: reagent-name-vodka-tonic
@@ -1951,16 +2086,19 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: vodkatonic
   color: "#0064C8"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/vodkatonicglass.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 5
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
@@ -1975,16 +2113,19 @@
   physicalDesc: reagent-physical-desc-bubbly
   flavor: whiskeycola
   color: "#3E1B00"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/whiskeycolaglass.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
@@ -1999,16 +2140,19 @@
   physicalDesc: reagent-physical-desc-fizzy
   flavor: whiskeycola
   color: "#533600"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/whiskeysodaglass.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
@@ -2016,21 +2160,23 @@
   fizziness: 0.4
 
 - type: reagent
+  parent: BaseAlcohol
   id: WhiteGilgamesh
   name: reagent-name-white-gilgamesh
-  parent: BaseAlcohol # Goob - It's alcoholic
   desc: reagent-desc-white-gilgamesh
   physicalDesc: reagent-physical-desc-creamy
   flavor: white-gilgamesh
   color: "#e5d27e"
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-        - !type:SatiateThirst
-          factor: 1
-        - !type:AdjustReagent
-          reagent: Ethanol
-          amount: 0.15
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 1
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.15
   fizziness: 0.5
 
 - type: reagent
@@ -2041,21 +2187,23 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: whiterussian
   color: "#A68340"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/whiterussianglass.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.15
-
 - type: reagent
   id: VodkaRedBool
   name: reagent-name-vodka-red-bool
@@ -2064,27 +2212,30 @@
   physicalDesc: reagent-physical-desc-bubbly
   flavor: vodkaredbool
   color: "#c4c27655"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/ginvodkaglass.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: true
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-        - !type:SatiateThirst
-          factor: 1
-        - !type:AdjustReagent
-          reagent: Ethanol
-          amount: 0.10
-        - !type:AdjustReagent
-          reagent: Theobromine
-          amount: 0.05
-        - !type:ModifyStatusEffect
-          effectProto: StatusEffectDrowsiness
-          time: 1
-          type: Remove
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 1
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.10
+      - !type:AdjustReagent
+        reagent: Theobromine
+        amount: 0.05
+      - !type:ModifyStatusEffect
+        effectProto: StatusEffectDrowsiness
+        time: 1
+        type: Remove
   fizziness: 0.25
 
 - type: reagent
@@ -2101,21 +2252,23 @@
   metamorphicMaxFillLevels: 2
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-        - !type:SatiateThirst
-          factor: 1
-        - !type:AdjustReagent
-          reagent: Ethanol
-          amount: 0.15
-        - !type:AdjustReagent
-          reagent: Theobromine
-          amount: 0.05
-        - !type:ModifyStatusEffect
-          effectProto: StatusEffectDrowsiness
-          time: 1
-          type: Remove
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 1
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.15
+      - !type:AdjustReagent
+        reagent: Theobromine
+        amount: 0.05
+      - !type:ModifyStatusEffect
+        effectProto: StatusEffectDrowsiness
+        time: 1
+        type: Remove
   fizziness: 0.15
 
 - type: reagent
@@ -2126,27 +2279,30 @@
   physicalDesc: reagent-physical-desc-bubbly
   flavor: irishbool
   color: "#71672e99"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/beerglass.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 6
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: true
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-        - !type:SatiateThirst
-          factor: 1
-        - !type:AdjustReagent
-          reagent: Ethanol
-          amount: 0.10
-        - !type:AdjustReagent
-          reagent: Theobromine
-          amount: 0.05
-        - !type:ModifyStatusEffect
-          effectProto: StatusEffectDrowsiness
-          time: 1
-          type: Remove
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 1
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.10
+      - !type:AdjustReagent
+        reagent: Theobromine
+        amount: 0.05
+      - !type:ModifyStatusEffect
+        effectProto: StatusEffectDrowsiness
+        time: 1
+        type: Remove
   fizziness: 0.15
 
 - type: reagent
@@ -2163,21 +2319,23 @@
   metamorphicMaxFillLevels: 3
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-        - !type:SatiateThirst
-          factor: 1
-        - !type:AdjustReagent
-          reagent: Ethanol
-          amount: 0.15
-        - !type:AdjustReagent
-          reagent: Theobromine
-          amount: 0.05
-        - !type:ModifyStatusEffect
-          effectProto: StatusEffectDrowsiness
-          time: 1
-          type: Remove
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 1
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.15
+      - !type:AdjustReagent
+        reagent: Theobromine
+        amount: 0.05
+      - !type:ModifyStatusEffect
+        effectProto: StatusEffectDrowsiness
+        time: 1
+        type: Remove
   fizziness: 0.25
 
 - type: reagent
@@ -2188,27 +2346,30 @@
   physicalDesc: reagent-physical-desc-sweet
   flavor: watermelonwakeup
   color: "#d49dca"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/champagneglass.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: true
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-        - !type:SatiateThirst
-          factor: 1
-        - !type:AdjustReagent
-          reagent: Ethanol
-          amount: 0.07
-        - !type:AdjustReagent
-          reagent: Theobromine
-          amount: 0.05
-        - !type:ModifyStatusEffect
-          effectProto: StatusEffectDrowsiness
-          time: 1
-          type: Remove
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 1
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.07
+      - !type:AdjustReagent
+        reagent: Theobromine
+        amount: 0.05
+      - !type:ModifyStatusEffect
+        effectProto: StatusEffectDrowsiness
+        time: 1
+        type: Remove
   fizziness: 0.15
 
 - type: reagent
@@ -2219,27 +2380,30 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: rubberneck
   color: "#f0d74a"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/rubberneck.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 3
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-        - !type:SatiateThirst
-          factor: 1
-        - !type:AdjustReagent
-          reagent: Ethanol
-          amount: 0.15
-        - !type:AdjustReagent
-          reagent: Theobromine
-          amount: 0.05
-        - !type:ModifyStatusEffect
-          effectProto: StatusEffectDrowsiness
-          time: 1
-          type: Remove
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 1
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.15
+      - !type:AdjustReagent
+        reagent: Theobromine
+        amount: 0.05
+      - !type:ModifyStatusEffect
+        effectProto: StatusEffectDrowsiness
+        time: 1
+        type: Remove
   fizziness: 0.25
 
 - type: reagent
@@ -2256,15 +2420,16 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.2
-
 - type: reagent
   id: Caipirinha
   name: reagent-name-caipirinha
@@ -2273,21 +2438,23 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: caipirinha
   color: "#E6EE9C"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/caipirinha.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 5
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.1
-
 - type: reagent
   id: MoscowMule
   name: reagent-name-moscow-mule
@@ -2296,16 +2463,19 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: moscowmule
   color: "#CECBAD"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/moscowmule.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 3
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
@@ -2313,7 +2483,6 @@
       - !type:AdjustReagent
         reagent: Copper
         amount: 0.05
-
 - type: reagent
   id: Mimeosa
   name: reagent-name-mimeosa
@@ -2322,24 +2491,26 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: mimeosa
   color: "#939393"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/mimeosa.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
       - !type:GenericStatusEffect
         key: Muted
         component: Muted
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.07
-
 - type: reagent
   id: Mimosa
   name: reagent-name-mimosa
@@ -2348,21 +2519,23 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: mimosa
   color: "#FFCA48"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/mimosa.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.07
-
 - type: reagent
   id: Mayojito
   name: reagent-name-mayojito
@@ -2371,12 +2544,14 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: mayojito
   color: "#6FBE44"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/mayojito.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 5
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
@@ -2390,12 +2565,12 @@
         damage:
           types:
             Poison: .5
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 1
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.15
-
 - type: reagent
   id: DeathInTheAfternoon
   name: reagent-name-death-in-the-afternoon
@@ -2410,15 +2585,16 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.3
-
 - type: reagent
   id: Empress75
   name: reagent-name-empress-75
@@ -2427,21 +2603,23 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: empress75
   color: "#900296"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/empress75.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.3
-
 - type: reagent
   id: EspressoMartini
   name: reagent-name-espresso-martini
@@ -2450,21 +2628,23 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: espressomartini
   color: "#170a0c"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/espressomartini.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 6
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.2
-
 - type: reagent
   id: Daiquiri
   name: reagent-name-daiquiri
@@ -2473,21 +2653,23 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: daiquiri
   color: "#DAC865"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/daiquiri.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 3
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.1
-
 - type: reagent
   id: TheSunAlsoRises
   name: reagent-name-the-sun-also-rises
@@ -2496,21 +2678,23 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: thesunalsorises
   color: "#DCE2DE"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/thesunalsorises.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.3
-
 - type: reagent
   id: WhiskeySour
   name: reagent-name-whiskey-sour
@@ -2519,21 +2703,23 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: whiskeysour
   color: "#8B7941"
+  puddleSpriteSet: Shiny # Goob
   metamorphicSprite:
     sprite: Objects/Consumable/Drinks/whiskeysour.rsi
     state: icon_empty
   metamorphicMaxFillLevels: 5
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 2
       - !type:AdjustReagent
         reagent: Ethanol
         amount: 0.2
-
 - type: reagent
   id: ZombieCocktail
   name: reagent-name-zombiecocktail
@@ -2548,15 +2734,16 @@
   metamorphicMaxFillLevels: 4
   metamorphicFillBaseName: fill-
   metamorphicChangeColor: false
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Drink:
       effects:
-        - !type:SatiateThirst
-          factor: 1
-        - !type:AdjustReagent
-          reagent: Ethanol
-          amount: 0.25
-
+      - !type:Satiate
+        satiationType: Thirst
+        factor: 1
+      - !type:AdjustReagent
+        reagent: Ethanol
+        amount: 0.25
 - type: reagent
   id: BacchusBlessing
   name: reagent-name-bacchus-blessing
@@ -2574,7 +2761,8 @@
   metabolisms:
     Drink:
       effects:
-      - !type:SatiateThirst
+      - !type:Satiate
+        satiationType: Thirst
         factor: 3
       - !type:AdjustReagent
         reagent: Ethanol

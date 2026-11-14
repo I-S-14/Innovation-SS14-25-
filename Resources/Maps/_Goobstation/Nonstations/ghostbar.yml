@@ -43085,7 +43085,7 @@ entities:
       pos: 19.5,9.5
       parent: 4
     - type: WarpPoint
-      location: Ghost Bar
+      location: is14-map-warp-c3f24397fc5b
 - proto: WaterTankHighCapacity
   entities:
   - uid: 1535

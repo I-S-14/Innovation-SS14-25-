@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
 using Content.Shared.ActionBlocker;
 using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Hands.Components;
@@ -20,16 +18,16 @@ namespace Content.Shared.Interaction;
 /// <summary>
 /// This handles smart equipping or inserting/ejecting from slots through keybinds--generally shift+E and shift+B
 /// </summary>
-public sealed class SmartEquipSystem : EntitySystem
+public sealed partial class SmartEquipSystem : EntitySystem
 {
-    [Dependency] private readonly SharedHandsSystem _hands = default!;
-    [Dependency] private readonly SharedStorageSystem _storage = default!;
-    [Dependency] private readonly InventorySystem _inventory = default!;
-    [Dependency] private readonly ItemSlotsSystem _slots = default!;
-    [Dependency] private readonly SharedContainerSystem _container = default!;
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] private readonly ActionBlockerSystem _actionBlocker = default!;
-    [Dependency] private readonly EntityWhitelistSystem _whitelistSystem = default!;
+    [Dependency] private SharedHandsSystem _hands = default!;
+    [Dependency] private SharedStorageSystem _storage = default!;
+    [Dependency] private InventorySystem _inventory = default!;
+    [Dependency] private ItemSlotsSystem _slots = default!;
+    [Dependency] private SharedContainerSystem _container = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private ActionBlockerSystem _actionBlocker = default!;
+    [Dependency] private EntityWhitelistSystem _whitelistSystem = default!;
 
     /// <inheritdoc/>
     public override void Initialize()
@@ -95,14 +93,14 @@ public sealed class SmartEquipSystem : EntitySystem
 
         if (!TryComp<InventoryComponent>(uid, out var inventory) || !_inventory.HasSlot(uid, equipmentSlot, inventory))
         {
-            _popup.PopupClient(Loc.GetString("smart-equip-missing-equipment-slot", ("slotName", equipmentSlot)), uid, uid);
+            _popup.PopupEntity(Loc.GetString("smart-equip-missing-equipment-slot", ("slotName", equipmentSlot)), uid, uid);
             return;
         }
 
         // early out if we have an item and cant drop it at all
         if (handItem != null && !_hands.CanDropHeld(uid, hands.ActiveHandId))
         {
-            _popup.PopupClient(Loc.GetString("smart-equip-cant-drop"), uid, uid);
+            _popup.PopupEntity(Loc.GetString("smart-equip-cant-drop"), uid, uid);
             return;
         }
 
@@ -113,14 +111,13 @@ public sealed class SmartEquipSystem : EntitySystem
         // 1) doesn't have an item
         //    - with hand item: try to put it in the slot
         //    - without hand item: fail
-        // CorvaxGoob edit start
-        // 2) has an item, and that item is an item slots holder
-        //    - with hand item: get the highest priority item slot with a valid whitelist and try to insert it
-        //    - without hand item: get the highest priority item slot with an item and try to eject it
-        // 3) has an item, and that item is a storage item
+        // 2) has an item, and that item is a storage item
         //    - with hand item: try to put it in storage
         //    - without hand item: try to take the last stored item and put it in our hands
-        // CorvaxGoob edit end
+        // 3) has an item, and that item is an item slots holder
+        //    - without hand item: get the highest priority item slot with an item and try to eject it
+        //    - with hand item: if AllowSmartEquip is enabled, get the highest priority item slot with a valid whitelist
+        //          and try to insert it. If not, go to step 4.
         // 4) has an item, with no special storage components
         //    - with hand item: fail
         //    - without hand item: try to put the item into your hand
@@ -133,48 +130,59 @@ public sealed class SmartEquipSystem : EntitySystem
         {
             if (handItem == null)
             {
-                _popup.PopupClient(emptyEquipmentSlotString, uid, uid);
+                _popup.PopupEntity(emptyEquipmentSlotString, uid, uid);
                 return;
             }
 
             if (!_inventory.CanEquip(uid, handItem.Value, equipmentSlot, out var reason))
             {
-                _popup.PopupClient(Loc.GetString(reason), uid, uid);
+                _popup.PopupEntity(Loc.GetString(reason), uid, uid);
                 return;
             }
 
-            _hands.TryDrop((uid, hands), hands.ActiveHandId!);
             _inventory.TryEquip(uid, handItem.Value, equipmentSlot, predicted: true, checkDoafter:true);
             return;
         }
 
-        // CorvaxGoob edit start
-
-        // case 2 (itemslot item):
-        if (TryComp<ItemSlotsComponent>(slotItem, out var slots))
+        // case 2 (storage item):
+        if (TryComp<StorageComponent>(slotItem, out var storage))
         {
-            if (handItem == null)
+            switch (handItem)
             {
-                ItemSlot? toEjectFrom = null;
-
-                foreach (var slot in slots.Slots.Values)
-                {
-                    if (slot.HasItem && slot.Priority > (toEjectFrom?.Priority ?? int.MinValue))
-                        toEjectFrom = slot;
-                }
-
-                if (toEjectFrom == null)
-                {
-                    if (!HasComp<StorageComponent>(slotItem))
-                    {
-                        _popup.PopupClient(emptyEquipmentSlotString, uid, uid);
-                        return;
-                    }
-                }
-                else if (_slots.TryEjectToHands(slotItem, toEjectFrom, uid, excludeUserAudio: true))
+                case null when storage.Container.ContainedEntities.Count == 0:
+                    _popup.PopupEntity(emptyEquipmentSlotString, uid, uid);
+                    return;
+                case null:
+                    var removing = storage.Container.ContainedEntities[^1];
+                    _container.RemoveEntity(slotItem, removing);
+                    _hands.TryPickup(uid, removing, handsComp: hands);
                     return;
             }
 
+            if (!_storage.CanInsert(slotItem, handItem.Value, out var reason))
+            {
+                if (reason != null)
+                    _popup.PopupEntity(Loc.GetString(reason), uid, uid);
+
+                return;
+            }
+
+            _storage.Insert(slotItem, handItem.Value, out var stacked, out _, user: uid);
+
+            // if the hand item stacked with the things in inventory, but there's no more space left for the rest
+            // of the stack, place the stack back in hand rather than dropping it on the floor
+            if (stacked != null && !_storage.CanInsert(slotItem, handItem.Value, out _))
+            {
+                if (TryComp<StackComponent>(handItem.Value, out var handStack) && handStack.Count > 0)
+                    _hands.TryPickup(uid, handItem.Value, handsComp: hands);
+            }
+
+            return;
+        }
+
+        // case 3 (itemslot item):
+        if (TryComp<ItemSlotsComponent>(slotItem, out var slots))
+        {
             if (handItem != null)
             {
                 ItemSlot? toInsertTo = null;
@@ -189,58 +197,38 @@ public sealed class SmartEquipSystem : EntitySystem
                     }
                 }
 
-                if (toInsertTo != null)
+                if (toInsertTo == null)
                 {
-                    _slots.TryInsertFromHand(slotItem, toInsertTo, uid, hands, excludeUserAudio: true);
+                    _popup.PopupEntity(Loc.GetString("smart-equip-no-valid-item-slot-insert", ("item", handItem.Value)),
+                        uid,
+                        uid);
                     return;
                 }
 
-                if (!HasComp<StorageComponent>(slotItem))
-                {
-                    _popup.PopupClient(Loc.GetString("smart-equip-no-valid-item-slot-insert", ("item", handItem.Value)), uid, uid);
-                    return;
-                }
-            }
-        }
-
-        // case 3 (storage item):
-        if (TryComp<StorageComponent>(slotItem, out var storage))
-        {
-            switch (handItem)
-            {
-                case null when storage.Container.ContainedEntities.Count == 0:
-                    _popup.PopupClient(emptyEquipmentSlotString, uid, uid);
-                    return;
-                case null:
-                    var removing = storage.Container.ContainedEntities[^1];
-                    _container.RemoveEntity(slotItem, removing);
-                    _hands.TryPickup(uid, removing, handsComp: hands);
-                    return;
-            }
-
-            if (!_storage.CanInsert(slotItem, handItem.Value, out var reason))
-            {
-                if (reason != null)
-                    _popup.PopupClient(Loc.GetString(reason), uid, uid);
-
+                _slots.TryInsertFromHand(slotItem, toInsertTo, (uid, hands), excludeUserAudio: true);
                 return;
             }
 
-            _hands.TryDrop((uid, hands), hands.ActiveHandId!);
-            _storage.Insert(slotItem, handItem.Value, out var stacked, out _, user: uid);
-
-            // if the hand item stacked with the things in inventory, but there's no more space left for the rest
-            // of the stack, place the stack back in hand rather than dropping it on the floor
-            if (stacked != null && !_storage.CanInsert(slotItem, handItem.Value, out _))
+            if (slots.AllowSmartEquip)
             {
-                if (TryComp<StackComponent>(handItem.Value, out var handStack) && handStack.Count > 0)
-                    _hands.TryPickup(uid, handItem.Value, handsComp: hands);
+                ItemSlot? toEjectFrom = null;
+
+                foreach (var slot in slots.Slots.Values)
+                {
+                    if (slot.HasItem && slot.Priority > (toEjectFrom?.Priority ?? int.MinValue))
+                        toEjectFrom = slot;
+                }
+
+                if (toEjectFrom == null)
+                {
+                    _popup.PopupEntity(emptyEquipmentSlotString, uid, uid);
+                    return;
+                }
+
+                _slots.TryEjectToHands(slotItem, toEjectFrom, uid, excludeUserAudio: true);
+                return;
             }
-
-            return;
         }
-
-        // CorvaxGoob edit end
 
         // case 4 (just an item):
         if (handItem != null)
@@ -248,7 +236,7 @@ public sealed class SmartEquipSystem : EntitySystem
 
         if (!_inventory.CanUnequip(uid, equipmentSlot, out var inventoryReason))
         {
-            _popup.PopupClient(Loc.GetString(inventoryReason), uid, uid);
+            _popup.PopupEntity(Loc.GetString(inventoryReason), uid, uid);
             return;
         }
 

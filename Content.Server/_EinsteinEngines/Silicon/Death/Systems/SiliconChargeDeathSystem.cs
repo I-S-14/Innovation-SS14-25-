@@ -19,14 +19,13 @@ using Content.Shared.Popups;
 using Content.Shared.Power.Components;
 using Content.Shared.Standing;
 using Content.Shared.Stunnable;
+using Content.Shared.Radio;
 // Goobstation End - Energycrit
 
 namespace Content.Server._EinsteinEngines.Silicon.Death;
 
 public sealed class SiliconDeathSystem : SharedSiliconDeathSystem
 {
-    [Dependency] private readonly SleepingSystem _sleep = default!;
-    [Dependency] private readonly StatusEffectsSystem _status = default!;
     [Dependency] private readonly SiliconChargeSystem _silicon = default!;
     [Dependency] private readonly HumanoidAppearanceSystem _humanoidAppearanceSystem = default!;
     // Goobstation Start - Energycrit

@@ -10,15 +10,16 @@ namespace Content.Goobstation.Server.Blob;
 
 public sealed partial class BlobPodZombifyOperator : HTNOperator
 {
-    [Dependency] private readonly IEntityManager _entManager = default!;
+    [Dependency] private IEntityManager _entManager = default!;
     private BlobPodSystem _blobPodSystem = default!;
 
     [DataField("zombifyKey")]
     public string ZombifyKey = string.Empty;
 
-    public override void Initialize(IEntitySystemManager sysManager)
+    public override void Initialize(IDependencyCollection deps)
     {
-        base.Initialize(sysManager);
+        base.Initialize(deps);
+        var sysManager = deps.Resolve<IEntitySystemManager>();
         _blobPodSystem = sysManager.GetEntitySystem<BlobPodSystem>();
     }
 

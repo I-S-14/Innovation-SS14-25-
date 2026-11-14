@@ -1,0 +1,9 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: 5327c414c5:Resources/Prototypes/Tiles/plating.yml
+- type: tile
+  id: PlatingBrass
+  parent: BasePlating
+  name: tiles-brass-plating
+  sprite: /Textures/Tiles/Misc/clockwork/clockwork_floor.png
+  deconstructTools: [Axing]
+  deconstructTimeMultiplier: '5'

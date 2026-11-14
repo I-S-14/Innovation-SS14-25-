@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Shared.Storage;
+using Content.Server.GameTicking.Rules;
 
 namespace Content.Server.GameTicking.Rules.Components;
 

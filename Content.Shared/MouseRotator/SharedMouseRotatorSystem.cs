@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+using Content.Shared._ES.Interaction.ForcedFacing; // Goob
 using Content.Shared.Interaction;
 
 namespace Content.Shared.MouseRotator;
@@ -8,9 +9,9 @@ namespace Content.Shared.MouseRotator;
 /// This handles rotating an entity based on mouse location
 /// </summary>
 /// <see cref="MouseRotatorComponent"/>
-public abstract class SharedMouseRotatorSystem : EntitySystem
+public abstract partial class SharedMouseRotatorSystem : EntitySystem
 {
-    [Dependency] private readonly RotateToFaceSystem _rotate = default!;
+    [Dependency] private RotateToFaceSystem _rotate = default!;
 
     public override void Initialize()
     {
@@ -29,7 +30,7 @@ public abstract class SharedMouseRotatorSystem : EntitySystem
         var query = EntityQueryEnumerator<MouseRotatorComponent, TransformComponent>();
         while (query.MoveNext(out var uid, out var rotator, out var xform))
         {
-            if (rotator.GoalRotation == null)
+            if (rotator.GoalRotation == null || HasComp<ESForcedFacingComponent>(uid)) // Goob
                 continue;
 
             if (_rotate.TryRotateTo(

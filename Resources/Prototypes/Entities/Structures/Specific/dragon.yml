@@ -8,6 +8,7 @@
     mode: SnapgridCenter
   components:
   - type: DragonRift
+    spawn: MobCarpDragon # IS14: Goob rifts retain their separate strong-spawn probability.
   - type: Transform
     anchored: true
   - type: Physics
@@ -34,8 +35,8 @@
     # only show after making the announcement at 50%
     enabled: false
   - type: Damageable
-    damageContainer: Inorganic
     damageModifierSet: Metallic
+    damageContainer: Inorganic
   - type: Destructible
     thresholds:
     - trigger:
@@ -47,3 +48,24 @@
   - type: EmitSoundOnSpawn
     sound:
       path: /Audio/Weapons/Guns/Gunshots/rocket_launcher.ogg
+
+- type: entity
+  abstract: true
+  id: MobDragonBrood
+  components:
+  - type: GhostTakeoverAvailable
+  - type: HTN
+    rootTask:
+      task: DragonCarpCompound
+  - type: Flammable
+    damage:
+      types: { }
+  - type: Temperature
+  - type: TemperatureDamage
+    heatDamageThreshold: 1200
+  - type: GhostRole
+    allowMovement: true
+    allowSpeech: true
+    makeSentient: true
+    mindRoles:
+    - MindRoleGhostRoleTeamAntagonistFlock

@@ -1,0 +1,43 @@
+# IS14: Goob 5327c414c5 behavior for variants whose art has no visor/opened states.
+# Canonical Wizards helmets and foldable clown wigs retain their current behavior.
+- type: entity
+  abstract: true
+  parent: [ClothingHeadHelmetArmoredBase, BaseSecurityContraband, ClothingHeadHelmetBaseFoldable]
+  id: IS14LegacySecurityHelmetBase
+  name: helmet
+  description: Standard security gear. Protects the head from impacts.
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Helmets/security.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Helmets/security.rsi
+  - type: Tag
+    tags:
+    - WhitelistChameleon
+    - SecurityHelmet
+
+- type: entity
+  abstract: true
+  parent: ClothingMaskBase
+  id: IS14LegacyClownMaskBase
+  name: clown wig and mask
+  description: A true prankster's facial attire. A clown is incomplete without his wig and mask.
+  components:
+  - type: Sprite
+    sprite: Clothing/Mask/clown.rsi
+  - type: Clothing
+    sprite: Clothing/Mask/clown.rsi
+  - type: BreathMask
+  - type: IdentityBlocker
+  - type: Tag
+    tags:
+    - ClownMask
+    - WhitelistChameleon
+    - IPCMaskWearable
+    - Mask
+  - type: HideLayerClothing
+    slots:
+    - Snout
+  - type: SpeakFontOverride
+    fontId: MSComicSans
+    color: "#e93790"

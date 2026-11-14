@@ -517,7 +517,7 @@ public sealed class CyborgTest
             damageSys.TryChangeDamage(uid, Blunt(20), ignoreResistances: true, canMiss: false);
             Assert.That(cyborg.BrokenSlots, Is.EqualTo(3), "critical damage takes every slot");
 
-            damageSys.SetAllDamage(uid, damageable, 0);
+            damageSys.SetAllDamage((uid, damageable), 0);
             Assert.That(cyborg.BrokenSlots, Is.Zero, "repairs bring every slot back");
 
             entMan.DeleteEntity(uid);

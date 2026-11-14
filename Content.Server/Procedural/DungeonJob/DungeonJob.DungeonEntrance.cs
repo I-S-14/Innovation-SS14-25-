@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using Content.Shared.Maps;
 using Content.Shared.Procedural;
 using Content.Shared.Procedural.PostGeneration;
-using Content.Shared.Storage;
 using Robust.Shared.Random;
+using Content.Shared.Storage;
 
 namespace Content.Server.Procedural.DungeonJob;
 
@@ -14,7 +14,7 @@ public sealed partial class DungeonJob
     /// <summary>
     /// <see cref="DungeonEntranceDunGen"/>
     /// </summary>
-    private async Task PostGen(DungeonEntranceDunGen gen, Dungeon dungeon, HashSet<Vector2i> reservedTiles, Random random)
+    private async Task PostGen(DungeonEntranceDunGen gen, Dungeon dungeon, HashSet<Vector2i> reservedTiles, IRobustRandom random)
     {
         var rooms = new List<DungeonRoom>(dungeon.Rooms);
         var roomTiles = new List<Vector2i>();

@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Robust.Client.UserInterface;
+using Robust.Client.GameObjects;
+using Robust.Shared.GameObjects;
+using Robust.Shared.ViewVariables;
 using static Content.Shared.Arcade.SharedSpaceVillainArcadeComponent;
 
 namespace Content.Client.Arcade.UI;

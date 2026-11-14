@@ -12,7 +12,8 @@
   metabolisms:
     Food:
       effects:
-      - !type:SatiateHunger
+      - !type:Satiate
+        satiationType: Hunger
 #        conditions: i majorly cannot be assed to fix this specifically
 #        - !type:MetabolizerTypeCondition
 #          type: [ Plant ]

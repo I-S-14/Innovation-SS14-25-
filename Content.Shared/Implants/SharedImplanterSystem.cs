@@ -3,7 +3,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Content.Shared.Containers.ItemSlots;
-using Content.Shared.Damage;
+using Content.Shared.Damage.Systems;
 using Content.Shared.DoAfter;
 using Content.Shared.Examine;
 using Content.Shared.Forensics;
@@ -22,7 +22,7 @@ using Robust.Shared.Utility;
 
 namespace Content.Shared.Implants;
 
-public abstract class SharedImplanterSystem : EntitySystem
+public abstract partial class SharedImplanterSystem : EntitySystem
 {
     [Dependency] private readonly SharedContainerSystem _container = default!;
     [Dependency] private readonly ItemSlotsSystem _itemSlots = default!;

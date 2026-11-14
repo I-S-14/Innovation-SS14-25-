@@ -1,0 +1,17 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: 5327c414c5:Resources/Prototypes/Stacks/Tiles/four_square.yml
+- type: stack
+  parent: BaseTileStack
+  id: FloorTileElevatorShaft
+  name: stack-elevator-shaft-tile
+  spawn: FloorTileItemElevatorShaft
+- type: stack
+  parent: BaseTileStack
+  id: FloorTileMiningDark
+  name: stack-dark-mining-floor-tile
+  spawn: FloorTileItemMiningDark
+- type: stack
+  parent: BaseTileStack
+  id: FloorTileMiningLight
+  name: stack-light-mining-floor-tile
+  spawn: FloorTileItemMiningLight

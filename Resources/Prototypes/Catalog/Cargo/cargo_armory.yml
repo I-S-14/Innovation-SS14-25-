@@ -21,6 +21,16 @@
   group: market
 
 - type: cargoProduct
+  id: ArmoryMosin
+  icon:
+    sprite: Objects/Weapons/Guns/Snipers/bolt_gun_wood.rsi
+    state: base
+  product: CrateArmoryMosin
+  cost: 3500
+  category: cargoproduct-category-name-armory
+  group: market
+
+- type: cargoProduct
   id: SecurityRiot
   icon:
     sprite: Clothing/OuterClothing/Armor/riot.rsi
@@ -63,7 +73,7 @@
 - type: cargoProduct
   id: ArmoryPistol
   icon:
-    sprite: Objects/Weapons/Guns/Pistols/mk58.rsi
+    sprite: _Goobstation/Objects/Weapons/Guns/Pistols/mk58.rsi #GoobStation Resprite
     state: icon
   product: CrateArmoryPistols
   cost: 3200 # Goobstation # they're kinda bad compared to the other guns so should be cheap

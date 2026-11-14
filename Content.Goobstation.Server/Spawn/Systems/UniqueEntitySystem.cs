@@ -1,3 +1,4 @@
+using Content.Shared.Station.Systems;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Goobstation.Server.Spawn.Components;
@@ -7,7 +8,7 @@ namespace Content.Goobstation.Server.Spawn.Systems;
 
 public sealed partial class UniqueEntitySystem : EntitySystem
 {
-    [Dependency] private readonly StationSystem _station = default!;
+    [Dependency] private StationSystem _station = default!;
 
     public override void Initialize()
     {

@@ -1,3 +1,5 @@
+using Content.Shared.GameTicking;
+using Content.Shared.Antag;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Goobstation.Shared.Shadowling;
@@ -20,14 +22,14 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Goobstation.Server.Shadowling.Rules;
 
-public sealed class ShadowlingRuleSystem : GameRuleSystem<ShadowlingRuleComponent>
+public sealed partial class ShadowlingRuleSystem : ServerGameRuleSystem<ShadowlingRuleComponent>
 {
-    [Dependency] private readonly SharedRoleSystem _role = default!;
-    [Dependency] private readonly AntagSelectionSystem _antag = default!;
-    [Dependency] private readonly MindSystem _mind = default!;
-    [Dependency] private readonly MobStateSystem _mob = default!;
-    [Dependency] private readonly NpcFactionSystem _npc = default!;
-    [Dependency] private readonly RoundEndSystem _roundEndSystem = default!; //CorvaxGoob edit
+    [Dependency] private SharedRoleSystem _role = default!;
+    [Dependency] private AntagSelectionSystem _antag = default!;
+    [Dependency] private MindSystem _mind = default!;
+    [Dependency] private MobStateSystem _mob = default!;
+    [Dependency] private NpcFactionSystem _npc = default!;
+    [Dependency] private RoundEndSystem _roundEndSystem = default!; //CorvaxGoob edit
     private readonly SoundSpecifier _briefingSound = new SoundPathSpecifier("/Audio/_EinsteinEngines/Shadowling/shadowling.ogg");
 
     private readonly EntProtoId _mindRole = "MindRoleShadowling";
@@ -50,7 +52,7 @@ public sealed class ShadowlingRuleSystem : GameRuleSystem<ShadowlingRuleComponen
     private void OnDeath(ShadowlingDeathEvent args)
     {
         var rulesQuery = QueryActiveRules();
-        while (rulesQuery.MoveNext(out _, out var shadowling, out _))
+        while (rulesQuery.MoveNext(out _, out var shadowling, out _, out _))
         {
             var shadowlingCount = 0;
             var shadowlingDead = 0;
@@ -71,7 +73,7 @@ public sealed class ShadowlingRuleSystem : GameRuleSystem<ShadowlingRuleComponen
     private void OnAscend(ShadowlingAscendEvent args)
     {
         var rulesQuery = QueryActiveRules();
-        while (rulesQuery.MoveNext(out _, out var shadowling, out _))
+        while (rulesQuery.MoveNext(out _, out var shadowling, out _, out _))
         {
             shadowling.WinCondition = ShadowlingWinCondition.Win;
             _roundEndSystem.EndRound(); //CorvaxGoob edit

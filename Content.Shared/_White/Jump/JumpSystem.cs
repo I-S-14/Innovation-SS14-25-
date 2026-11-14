@@ -48,7 +48,7 @@ public sealed class JumpSystem : EntitySystem
         args.Handled = true;
     }
 
-    private void OnStopThrow(EntityUid uid, JumpComponent component, StopThrowEvent args) =>
+    private void OnStopThrow(EntityUid uid, JumpComponent component, ref StopThrowEvent args) =>
         _appearance.SetData(uid, JumpVisuals.Jumping, false);
 
     private void OnThrowDoHit(EntityUid uid, JumpComponent component, ref ThrowAttemptEvent args)

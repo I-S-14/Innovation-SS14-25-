@@ -7,6 +7,7 @@ using Content.Shared._Starlight.VentCrawling;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Systems;
 using Robust.Shared.Containers;
+using Content.Shared.Zombies; // Goob
 
 namespace Content.Server._Starlight.VentCrawling;
 
@@ -21,7 +22,20 @@ public sealed class VentCrawableSystem : EntitySystem
         base.Initialize();
 
         SubscribeLocalEvent<VentCrawlerHolderComponent, VentCrawlingExitEvent>(OnVentCrawlingExitEvent);
+        SubscribeLocalEvent<VentCrawlerComponent, EntityZombifiedEvent>(OnZombified); // Goob
     }
+
+    // Goob start
+    private void OnZombified(Entity<VentCrawlerComponent> ent, ref EntityZombifiedEvent args)
+    {
+        if (!_containerSystem.TryGetContainingContainer((ent.Owner, null, null), out var container)
+            || !HasComp<VentCrawlerHolderComponent>(container.Owner))
+            return;
+
+        var ev = new VentCrawlingExitEvent();
+        RaiseLocalEvent(container.Owner, ref ev);
+    }
+    // Goob end
 
     /// <summary>
     /// Exits the vent craws for the specified VentCrawlerHolderComponent, removing it and any contained entities from the craws.
@@ -66,10 +80,14 @@ public sealed class VentCrawableSystem : EntitySystem
                 Dirty(entity , ventCrawComp);
             }
 
-            if (EntityManager.TryGetComponent(entity, out PhysicsComponent? physics))
+            //IS14-change start
+            if (TryComp(entity, out PhysicsComponent? physics))
+            //IS14-change end
                 _physicsSystem.WakeBody(entity, body: physics);
         }
 
-        EntityManager.DeleteEntity(uid);
+        //IS14-change start
+        Del(uid);
+        //IS14-change end
     }
 }

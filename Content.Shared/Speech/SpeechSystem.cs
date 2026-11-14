@@ -2,7 +2,7 @@
 
 namespace Content.Shared.Speech
 {
-    public sealed class SpeechSystem : EntitySystem
+    public sealed partial class SpeechSystem : EntitySystem
     {
         public override void Initialize()
         {

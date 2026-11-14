@@ -3,23 +3,8 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
 <Document>
-  # Silicon Rule 8 - Your HUD determines who is crew
-  Unless a law redefines the definition of crew, then anyone who the HUD indicates to you has a job, including passengers, is a crewmember. You cannot do something that causes someone to not be considered crew, but you can allow someone else to do something that causes someone to not be crew.
+  # Правило синтетиков 8 — определяйте экипаж по своему интерфейсу
+  Если законы не задают другое определение экипажа, членом экипажа считается любой, у кого интерфейс показывает действительную станционную должность, включая пассажиров. При стандартном наборе законов это обозначается зелёной рамкой вокруг значка должности. Вы не можете сами лишить кого-либо статуса члена экипажа, но можете позволить другому существу это сделать.
 
-  Under the default cyborg lawset you cannot harm any crew without an order from the AI, regardless of the harm they may bring to others.
-
-  Crew is ANYONE with a job icon including:
-  - Changelings
-  - Nuclear Operatives
-  - Heretics
-  - Zombies
-  Note: This list is not exhaustive and includes ANY being bearing a job icon
-
-  Not Crew:
-  - A captain who has lost their ID and icon
-  - An invisible person who due to being invisible has no icon
-
-  Icons that are not job icons:
-  - Empty grey square, such as those on syndicate IDs
-  - A question mark that indicates lack of ID
+  После любого изменения законов зелёная рамка сменяется жёлтой. Это означает, что определение экипажа в ваших законах [italic]могло[/italic] измениться. Определяйте состав экипажа, руководствуясь действующими законами и своим толкованием.
 </Document>

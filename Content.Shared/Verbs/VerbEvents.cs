@@ -5,6 +5,7 @@ using Content.Shared.Hands.Components;
 using Content.Shared.Interaction;
 using Robust.Shared.Serialization;
 using Robust.Shared.Utility;
+using Robust.Shared.Containers;
 
 namespace Content.Shared.Verbs
 {

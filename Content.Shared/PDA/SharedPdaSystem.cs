@@ -1,15 +1,17 @@
 // SPDX-License-Identifier: MIT
 
 using Content.Shared.Access.Components;
+using Content.Shared.Access.Systems;
 using Content.Shared.Containers.ItemSlots;
 using Robust.Shared.Containers;
 
 namespace Content.Shared.PDA
 {
-    public abstract class SharedPdaSystem : EntitySystem
+    public abstract partial class SharedPdaSystem : EntitySystem
     {
-        [Dependency] protected readonly ItemSlotsSystem ItemSlotsSystem = default!;
-        [Dependency] protected readonly SharedAppearanceSystem Appearance = default!;
+        [Dependency] protected ItemSlotsSystem ItemSlotsSystem = default!;
+        [Dependency] protected SharedAppearanceSystem Appearance = default!;
+        [Dependency] private SharedJobStatusSystem _jobStatus = default!;
 
         public override void Initialize()
         {
@@ -51,6 +53,7 @@ namespace Content.Shared.PDA
                 pda.ContainedPen = args.Entity;
 
             UpdatePdaAppearance(uid, pda);
+            UpdateJobStatus(uid);
         }
 
         protected virtual void OnItemRemoved(EntityUid uid, PdaComponent pda, EntRemovedFromContainerMessage args)
@@ -62,6 +65,7 @@ namespace Content.Shared.PDA
                 pda.ContainedPen = null;
 
             UpdatePdaAppearance(uid, pda);
+            UpdateJobStatus(uid);
         }
 
         private void OnGetAdditionalAccess(EntityUid uid, PdaComponent component, ref GetAdditionalAccessEvent args)
@@ -77,10 +81,32 @@ namespace Content.Shared.PDA
             Appearance.SetData(uid, PdaVisuals.PenInserted, pda.ContainedPen != null);
         }
 
+        // update the status icon of the player that has the pda currently equipped
+        private void UpdateJobStatus(EntityUid uid)
+        {
+            // Only the player who has the pda currently equipped can insert or remove Ids
+            var parent = Transform(uid).ParentUid;
+            _jobStatus.UpdateStatus(parent);
+        }
+
         public virtual void UpdatePdaUi(EntityUid uid, PdaComponent? pda = null)
         {
             // This does nothing yet while I finish up PDA prediction
             // Overriden by the server
+        }
+
+        /// <summary>
+        /// Sets the owner of a PDA to a given entity, with a given name.
+        /// </summary>
+        /// <param name="uid">Pda Entity</param>
+        /// <param name="pda">Pda Component</param>
+        /// <param name="owner">New entity owner of the PDA, this is probably an ID card</param>
+        /// <param name="ownerName">Name of the new owner, this is probably the name on the ID card</param>
+        public void SetOwner(EntityUid uid, PdaComponent pda, EntityUid owner, string ownerName)
+        {
+            pda.OwnerName = ownerName;
+            pda.PdaOwner = owner;
+            UpdatePdaUi(uid, pda);
         }
     }
 }

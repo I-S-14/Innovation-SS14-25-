@@ -68,7 +68,7 @@ public sealed partial class IngestionSystem : EntitySystem
     {
         base.Initialize();
 
-        SubscribeLocalEvent<EdibleComponent, ComponentInit>(OnEdibleInit);
+        SubscribeLocalEvent<EdibleComponent, MapInitEvent>(OnEdibleInit); //IS14-change: solution entities require MapInit.
 
         // Interactions
         SubscribeLocalEvent<EdibleComponent, UseInHandEvent>(OnUseEdibleInHand, after: [typeof(OpenableSystem), typeof(InventorySystem), typeof(ActivatableUISystem)]);
@@ -137,7 +137,7 @@ public sealed partial class IngestionSystem : EntitySystem
         return ingestionEv.Handled;
     }
 
-    private void OnEdibleInit(Entity<EdibleComponent> entity, ref ComponentInit args)
+    private void OnEdibleInit(Entity<EdibleComponent> entity, ref MapInitEvent args)
     {
         // Beakers, Soap and other items have drainable, and we should be able to eat that solution.
         // This ensures that tests fail when you configured the yaml from and EdibleComponent uses the wrong solution,
@@ -379,7 +379,7 @@ public sealed partial class IngestionSystem : EntitySystem
         var afterEv = new IngestedEvent(args.User, entity, split, forceFed);
         RaiseLocalEvent(food, ref afterEv);
 
-        _stomach.TryTransferSolution(stomachToUse.Value.Owner, split, stomachToUse);
+        _stomach.TryTransferSolution((stomachToUse.Value.Owner, stomachToUse.Value.Comp, null), split); // IS14-merge
 
         if (!afterEv.Destroy)
         {
@@ -430,6 +430,7 @@ public sealed partial class IngestionSystem : EntitySystem
             // do-after will stop if item is dropped when trying to feed someone else
             // or if the item started out in the user's own hands
             NeedHand = forceFeed || _hands.IsHolding(user, food),
+            FaceTarget = false, // Goob
         };
 
         return doAfterArgs;

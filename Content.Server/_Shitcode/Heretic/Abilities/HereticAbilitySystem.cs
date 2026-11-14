@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+using Content.Shared.Bed.Sleep;
 using System.Linq;
 using Content.Goobstation.Common.Weapons.DelayedKnockdown;
 using Content.Goobstation.Shared.Overlays;
@@ -61,11 +62,16 @@ using Content.Shared.Heretic.Prototypes;
 using Content.Shared.Tag;
 using Content.Shared.Temperature.Components;
 using Robust.Server.Containers;
+using Content.Shared.Station.Systems;
 
 namespace Content.Server.Heretic.Abilities;
 
 public sealed partial class HereticAbilitySystem : SharedHereticAbilitySystem
 {
+    //IS14-change start: typed prototype IDs required by the upstream analyzer.
+    private static readonly ProtoId<TagPrototype> CompatibilityHereticBladeBladeTagId = "HereticBladeBlade";
+    //IS14-change end
+
     // keeping track of all systems in a single file
     [Dependency] private readonly StoreSystem _store = default!;
     [Dependency] private readonly HandsSystem _hands = default!;
@@ -80,16 +86,16 @@ public sealed partial class HereticAbilitySystem : SharedHereticAbilitySystem
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly SharedBodySystem _body = default!;
-    [Dependency] private readonly PhysicsSystem _phys = default!;
     [Dependency] private readonly SharedStunSystem _stun = default!;
     [Dependency] private readonly ThrowingSystem _throw = default!;
     [Dependency] private readonly SharedUserInterfaceSystem _ui = default!;
     [Dependency] private readonly StationSystem _station = default!;
-    [Dependency] private readonly IMapManager _mapMan = default!;
+    [Dependency] private readonly SharedMapSystem _mapSystem = default!;
     [Dependency] private readonly ITileDefinitionManager _tileDefinitionManager = default!;
     [Dependency] private readonly IComponentFactory _compFactory = default!;
     [Dependency] private readonly ProtectiveBladeSystem _pblade = default!;
     [Dependency] private readonly StatusEffectsSystem _statusEffect = default!;
+    [Dependency] private readonly Content.Shared.StatusEffectNew.StatusEffectsSystem _statusNew = default!;
     [Dependency] private readonly BloodstreamSystem _blood = default!;
     [Dependency] private readonly SharedSolutionContainerSystem _solution = default!;
     [Dependency] private readonly ContainerSystem _container = default!;
@@ -226,10 +232,12 @@ public sealed partial class HereticAbilitySystem : SharedHereticAbilitySystem
             var success = false;
             foreach (var blade in blades)
             {
-                if (!EntityManager.EntityExists(blade))
+                //IS14-change start
+                if (!Exists(blade))
+                //IS14-change end
                     continue;
 
-                if (!_tag.HasTag(blade, "HereticBladeBlade"))
+                if (!_tag.HasTag(blade, CompatibilityHereticBladeBladeTagId))
                     continue;
 
                 if (TryComp(blade, out MansusInfusedComponent? infused) &&
@@ -311,7 +319,7 @@ public sealed partial class HereticAbilitySystem : SharedHereticAbilitySystem
             var isOnStation = targetStation != null && targetStation == ownStation;
 
             var ang = Angle.Zero;
-            if (_mapMan.TryFindGridAt(_transform.GetMapCoordinates(Transform(uid)), out var grid, out var _))
+            if (_mapSystem.TryFindGridAt(_transform.GetMapCoordinates(Transform(uid)), out var grid, out var _))
                 ang = Transform(grid).LocalRotation;
 
             var vector = targetMapCoords.Position - ourMapCoords.Position;
@@ -549,7 +557,7 @@ public sealed partial class HereticAbilitySystem : SharedHereticAbilitySystem
                 _statusEffect.TryRemoveTime(uid, "KnockedDown", reduction, status);
 
                 _statusEffect.TryRemoveStatusEffect(uid, "Pacified", status);
-                _statusEffect.TryRemoveStatusEffect(uid, "ForcedSleep", status);
+                _statusNew.TryRemoveStatusEffect(uid, SleepingSystem.StatusEffectForcedSleeping);
                 _statusEffect.TryRemoveStatusEffect(uid, "SlowedDown", status);
                 _statusEffect.TryRemoveStatusEffect(uid, "BlurryVision", status);
                 _statusEffect.TryRemoveStatusEffect(uid, "TemporaryBlindness", status);

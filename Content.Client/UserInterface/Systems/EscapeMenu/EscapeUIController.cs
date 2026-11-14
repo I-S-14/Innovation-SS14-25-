@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+using Content.Client.FeedbackPopup;
 using Content.Client.Gameplay;
 using Content.Client.UserInterface.Controls;
 using Content.Client.UserInterface.Systems.Guidebook;
@@ -29,12 +30,14 @@ using Content.Shared.Preferences;
 using Content.Client.Guidebook;
 using Content.Client.Lobby.UI;
 using Content.Client.Players.PlayTimeTracking;
+// using Content.Goobstation.Common.CCVar; // Goobstation - Voice chat // CorvaxGoob: voice chat removed
 
 namespace Content.Client.UserInterface.Systems.EscapeMenu;
 
 [UsedImplicitly]
-public sealed class EscapeUIController : UIController, IOnStateEntered<GameplayState>, IOnStateExited<GameplayState>
+public sealed partial class EscapeUIController : UIController, IOnStateEntered<GameplayState>, IOnStateExited<GameplayState>
 {
+    [Dependency] private readonly FeedbackPopupUIController _feedback = default!;
     [Dependency] private readonly IClientConsoleHost _console = default!;
     [Dependency] private readonly IConfigurationManager _cfg = default!;
     [Dependency] private readonly ChangelogUIController _changelog = default!;
@@ -107,6 +110,12 @@ public sealed class EscapeUIController : UIController, IOnStateEntered<GameplayS
         _escapeWindow.OnClose += DeactivateButton;
         _escapeWindow.OnOpen += ActivateButton;
 
+        _escapeWindow.FeedbackButton.OnPressed += _ =>
+        {
+            CloseEscapeWindow();
+            _feedback.ToggleWindow();
+        };
+
         _escapeWindow.ChangelogButton.OnPressed += _ =>
         {
             CloseEscapeWindow();
@@ -152,6 +161,12 @@ public sealed class EscapeUIController : UIController, IOnStateEntered<GameplayS
             _console.ExecuteCommand("quit");
         };
 
+        _escapeWindow.AdminRemarksButton.OnPressed += _ =>
+        {
+            CloseEscapeWindow();
+            _console.ExecuteCommand("adminremarks");
+        };
+
         _escapeWindow.WikiButton.OnPressed += _ =>
         {
             _uri.OpenUri(_cfg.GetCVar(CCVars.InfoLinksWiki));
@@ -162,8 +177,19 @@ public sealed class EscapeUIController : UIController, IOnStateEntered<GameplayS
             _guidebook.ToggleGuidebook();
         };
 
+        /* CorvaxGoob: voice chat removed
+        _escapeWindow.VoiceChatButton.OnPressed += _ => // Goobstation - Voice chat
+        {
+            CloseEscapeWindow();
+            _console.ExecuteCommand("voicechat");
+        };
+        */
+
         // Hide wiki button if we don't have a link for it.
         _escapeWindow.WikiButton.Visible = _cfg.GetCVar(CCVars.InfoLinksWiki) != "";
+        // _cfg.OnValueChanged(GoobCVars.VoiceChatEnabled, OnVoiceChatEnabledChanged, true); // Goobstation - Voice chat // CorvaxGoob: voice chat removed
+
+        _cfg.OnValueChanged(CCVars.SeeOwnNotes, OnSeeOwnNotesChanged, true);
 
         CommandBinds.Builder
             .Bind(EngineKeyFunctions.EscapeMenu,
@@ -173,6 +199,8 @@ public sealed class EscapeUIController : UIController, IOnStateEntered<GameplayS
 
     public void OnStateExited(GameplayState state)
     {
+        _cfg.UnsubValueChanged(CCVars.SeeOwnNotes, OnSeeOwnNotesChanged);
+
         if (_escapeWindow != null)
         {
             _escapeWindow.Dispose();
@@ -180,9 +208,18 @@ public sealed class EscapeUIController : UIController, IOnStateEntered<GameplayS
         }
 
         CloseCharacterSetup(); // Goobstation - Character customization in escape menu
+        // _cfg.UnsubValueChanged(GoobCVars.VoiceChatEnabled, OnVoiceChatEnabledChanged); // Goobstation - Voice chat // CorvaxGoob: voice chat removed
 
         CommandBinds.Unregister<EscapeUIController>();
     }
+
+    /* CorvaxGoob: voice chat removed
+    private void OnVoiceChatEnabledChanged(bool enabled) // Goobstation - Voice chat
+    {
+        if (_escapeWindow != null)
+            _escapeWindow.VoiceChatButton.Visible = enabled;
+    }
+    */
 
     private void EscapeButtonOnOnPressed(ButtonEventArgs obj)
     {
@@ -336,5 +373,10 @@ public sealed class EscapeUIController : UIController, IOnStateEntered<GameplayS
         };
 
         savePanel.OpenCentered();
+    }
+    private void OnSeeOwnNotesChanged(bool enabled)
+    {
+        if (_escapeWindow != null)
+            _escapeWindow.AdminRemarksButton.Visible = enabled;
     }
 }

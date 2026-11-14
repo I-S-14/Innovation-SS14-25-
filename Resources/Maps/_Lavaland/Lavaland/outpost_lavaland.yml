@@ -13210,7 +13210,7 @@ entities:
       pos: 12.5,1.5
       parent: 1
     - type: WarpPoint
-      location: lavaland
+      location: is14-map-warp-0122ff803f95
 - proto: WaterCooler
   entities:
   - uid: 2065

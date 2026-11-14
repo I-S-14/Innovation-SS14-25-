@@ -8,6 +8,7 @@ using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
+using Content.Shared.DeviceLinking.Systems;
 
 namespace Content.Server._CorvaxNext.ExecutionChair
 {

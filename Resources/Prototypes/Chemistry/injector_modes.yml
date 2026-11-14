@@ -1,4 +1,4 @@
-﻿## Abstracts
+## Abstracts
 - type: injectorMode
   abstract: true
   id: BaseInjectMode
@@ -48,7 +48,8 @@
   - 5
   - 10
   - 15
-  - 50
+  - 30
+  - 60
 
 - type: injectorMode
   parent: [ BaseSyringeMode, BaseInjectMode ]
@@ -65,14 +66,6 @@
 - type: injectorMode
   parent: [ BaseBluespaceSyringeMode, BaseDrawMode ]
   id: BluespaceSyringeDrawMode
-
-- type: injectorMode
-  parent: [ BaseCryostasisSyringeMode, BaseInjectMode ]
-  id: CryostasisSyringeInjectMode
-
-- type: injectorMode
-  parent: [ BaseCryostasisSyringeMode, BaseDrawMode ]
-  id: CryostasisSyringeDrawMode
 
 ## Dropper
 - type: injectorMode
@@ -152,3 +145,23 @@
 - type: injectorMode
   parent: [ BaseAdvancedJetInjectorMode, BaseDynamicMode ]
   id: AdvancedJetInjectorDynamicMode
+
+  # Goob start
+  # BSO combat injector's modes
+- type: injectorMode
+  abstract: true
+  id: BaseCombatInjectorMode
+  mobTime: 1 # Attempt to match the previous injector speed
+  transferAmounts:
+  - 3
+  - 5
+
+- type: injectorMode
+  parent: [BaseCombatInjectorMode, BaseDynamicMode]
+  id: CombatInjectorDynamicMode
+
+- type: injectorMode
+  parent: [BaseCombatInjectorMode, BaseInjectMode]
+  id: CombatInjectorInjectMode
+
+  # Goob end

@@ -1,0 +1,9 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: 5327c414c5:Resources/Prototypes/Entities/Structures/Walls/asteroid.yml
+- type: entity
+  id: AsteroidRockBananiumCrab
+  parent: AsteroidRockBananium
+  suffix: Bananium Crab
+  components:
+  - type: OreVein
+    currentOre: OreBananiumCrab

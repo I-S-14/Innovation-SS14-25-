@@ -71,6 +71,7 @@ public abstract partial class SharedStaminaSystem : EntitySystem
     {
         base.Initialize();
 
+        InitializePowerCompat(); //IS14-change
         InitializeModifier();
         InitializeResistance();
 
@@ -179,7 +180,7 @@ public abstract partial class SharedStaminaSystem : EntitySystem
         // Goobstation - Martial Arts
         if (TryComp<MartialArtsKnowledgeComponent>(args.User, out var knowledgeComp)
             && TryComp<MartialArtBlockedComponent>(args.Weapon, out var blockedComp)
-            && knowledgeComp.MartialArtsForm == blockedComp.Form)
+            && knowledgeComp.MartialArtsForm == blockedComp.Form && blockedComp.StaminaDmgBlock)
             return;
         // Goobstation
 
@@ -226,7 +227,7 @@ public abstract partial class SharedStaminaSystem : EntitySystem
                 damageOvertime *= component.LightAttackOvertimeDamageMultiplier;
             }
 
-            TakeStaminaDamage(ent, damageImmediate / toHit.Count, comp, source: args.User, with: args.Weapon, sound: component.Sound, immediate: true);
+            TakeStaminaDamage(ent, damageImmediate / toHit.Count, comp, source: args.User, with: args.Weapon, sound: component.Sound, immediate: true, ignoreResist: true); // Goob: IgnoreResist: true, we already calculated resists
             TakeOvertimeStaminaDamage(ent, damageOvertime);
         }
     }
@@ -244,7 +245,7 @@ public abstract partial class SharedStaminaSystem : EntitySystem
         TakeStaminaDamage(args.Embedded, component.Damage, stamina, source: uid);
     }
 
-    private void OnThrowHit(EntityUid uid, StaminaDamageOnCollideComponent component, ThrowDoHitEvent args)
+    private void OnThrowHit(EntityUid uid, StaminaDamageOnCollideComponent component, ref ThrowDoHitEvent args)
     {
         OnCollide(uid, component, args.Target);
     }
@@ -271,7 +272,7 @@ public abstract partial class SharedStaminaSystem : EntitySystem
         damage *= hitEvent.Value;
         overtime *= hitEvent.Value;
 
-        TakeStaminaDamage(target, damage, source: uid, sound: component.Sound);
+        TakeStaminaDamage(target, damage, source: uid, sound: component.Sound, ignoreResist: true); // Goob: Ignore resists, we calculated this already.
         TakeOvertimeStaminaDamage(target, overtime); // Goobstation
     }
 
@@ -487,7 +488,8 @@ public abstract partial class SharedStaminaSystem : EntitySystem
                 TakeStaminaDamage(
                     uid,
                     comp.AfterCritical ? -comp.Decay * comp.AfterCritDecayMultiplier : -comp.Decay, // Recover faster after crit
-                    comp);
+                    comp,
+                    ignoreResist: true); // Goob end; ignoreResist: true allows for natural regen to work as intended
 
             Dirty(uid, comp);
         }

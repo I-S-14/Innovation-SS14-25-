@@ -6,7 +6,7 @@ namespace Content.Shared._IS14.Economy;
 /// Defines starting balance and salary for a job.
 /// The prototype ID must match the corresponding JobPrototype ID.
 /// </summary>
-[Prototype("jobEconomy")]
+[Prototype]
 public sealed partial class JobEconomyPrototype : IPrototype
 {
     [IdDataField]

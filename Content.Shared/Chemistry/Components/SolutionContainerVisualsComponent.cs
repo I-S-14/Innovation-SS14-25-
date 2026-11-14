@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Robust.Shared.Utility;
+using Content.Shared.Hands.Components;
 
 namespace Content.Shared.Chemistry.Components
 {
@@ -31,7 +32,7 @@ namespace Content.Shared.Chemistry.Components
         public LocId MetamorphicNameFull = "transformable-container-component-glass";
 
         /// <summary>
-        /// Which solution of the SolutionContainerManagerComponent to represent.
+        /// Which solution of the SolutionManagerComponent to represent.
         /// If not set, will work as default.
         /// </summary>
         [DataField]

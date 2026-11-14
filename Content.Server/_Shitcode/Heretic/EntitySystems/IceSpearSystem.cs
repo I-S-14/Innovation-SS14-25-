@@ -1,3 +1,4 @@
+using Content.Shared.Ghost.Components; // IS14-change: upstream namespace move
 using Content.Goobstation.Common.Religion;
 using Content.Server.Damage.Systems;
 using Content.Server.Temperature.Components;

@@ -25,7 +25,7 @@ public sealed class ShuttleDroneLinkSystem : EntitySystem
     {
         if (ev.SourcePort != RemoteDroneSourcePort || ev.SinkPort != RemoteDroneSinkPort || HasComp<DroneConsoleComponent>(ev.Sink))
         {
-            ev.Cancel();
+            ev.Cancelled = true;
             return;
         }
     }

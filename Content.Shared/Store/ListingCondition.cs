@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using JetBrains.Annotations;
+using Robust.Shared.Serialization;
 
 namespace Content.Shared.Store;
 
@@ -16,6 +17,12 @@ public abstract partial class ListingCondition
     /// </summary>
     /// <returns>Whether or not the listing can be purchased</returns>
     public abstract bool Condition(ListingConditionArgs args);
+
+    /// <summary>
+    /// If true, then this conditions will cause the listing to be locked instead of disappearing from the shop UI.
+    /// </summary>
+    [DataField]
+    public bool Lock;
 }
 
 /// <param name="Buyer">Either the account owner, user, or an inanimate object (e.g., surplus bundle)</param>

@@ -150,7 +150,7 @@
   - type: MaterialEnergy
     materialWhiteList: [Plasma]
   - type: BatteryAmmoProvider
-    proto: BulletPlasmaCutterStrong
+    proto: BulletPlasmaRifle
     fireCost: 100
   - type: WeaponRandomExplode
     explosionChance: 0.05 # 1d20 roll
@@ -227,6 +227,10 @@
         whitelist:
           tags:
             - EnergySpeedloader
+# CorvaxGoob-start:
+  - type: CargoSellBlacklist
+  - type: SupermatterImmune
+# CorvaxGoob-end.
 
 - type: entity
   name: advanced disabler
@@ -421,7 +425,7 @@
     - Sidearm
     - WeaponEnergyGunLawbringer
   - type: StealTarget
-    stealGroup: WeaponEnergyGunLawbringer
+    stealGroup: [WeaponEnergyGunLawbringer]
   - type: RestrictById
     restrictMelee: true
     restrictRanged: true
@@ -448,6 +452,10 @@
   - type: BatterySelfRecharger
     autoRechargeRate: 50
     autoRechargePauseTime: 40
+# CorvaxGoob-start:
+  - type: CargoSellBlacklist
+  - type: SupermatterImmune
+# CorvaxGoob-end.
 
 - type: entity
   name: Ion Rifle

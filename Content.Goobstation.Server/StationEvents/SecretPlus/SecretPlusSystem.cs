@@ -1,3 +1,8 @@
+using Content.Shared.Antag.Selectors;
+using Content.Shared.Ghost.Components;
+using Content.Shared.Antag.Components;
+using GameTicker = Content.Server.GameTicking.ServerGameTicker;
+using Content.Shared.Antag;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using System.Linq;
@@ -32,7 +37,7 @@ namespace Content.Goobstation.Server.StationEvents.SecretPlus;
 /// <summary>
 ///   Temporary class for caching data.
 /// </summary>
-public sealed class SelectedEvent
+public sealed partial class SelectedEvent
 {
     /// <summary>
     ///   The station event prototype
@@ -48,7 +53,7 @@ public sealed class SelectedEvent
         EvComp = evComp;
     }
 }
-public sealed class PlayerCount
+public sealed partial class PlayerCount
 {
     public int Players;
     public int Ghosts;
@@ -58,21 +63,21 @@ public sealed class PlayerCount
 ///   A scheduler which keeps track of a 'chaos score' which it tries to get closer to 0.
 /// </summary>
 [UsedImplicitly]
-public sealed class SecretPlusSystem : GameRuleSystem<SecretPlusComponent>
+public sealed partial class SecretPlusSystem : ServerGameRuleSystem<SecretPlusComponent>
 {
-    [Dependency] private readonly AntagSelectionSystem _antagSelection = default!;
-    [Dependency] private readonly EventManagerSystem _event = default!;
-    [Dependency] private readonly IAdminLogManager _adminLogger = default!;
-    [Dependency] private readonly IComponentFactory _factory = default!;
-    [Dependency] private readonly IChatManager _chat = default!;
-    [Dependency] private readonly IConfigurationManager _cfg = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly ILogManager _log = default!;
-    [Dependency] private readonly IPlayerManager _playerManager = default!;
-    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly TagSystem _tag = default!;
-    [Dependency] private readonly GameTicker _ticker = default!;
+    [Dependency] private AntagSelectionSystem _antagSelection = default!;
+    [Dependency] private EventManagerSystem _event = default!;
+    [Dependency] private IAdminLogManager _adminLogger = default!;
+    [Dependency] private IComponentFactory _factory = default!;
+    [Dependency] private IChatManager _chat = default!;
+    [Dependency] private IConfigurationManager _cfg = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private ILogManager _log = default!;
+    [Dependency] private IPlayerManager _playerManager = default!;
+    [Dependency] private IPrototypeManager _prototypeManager = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private TagSystem _tag = default!;
+    [Dependency] private Content.Server.GameTicking.ServerGameTicker _ticker = default!;
 
     // cvars
     private float _minimumTimeUntilFirstEvent;
@@ -313,24 +318,32 @@ public sealed class SecretPlusSystem : GameRuleSystem<SecretPlusComponent>
     /// </summary>
     private void StartRule(Entity<SecretPlusComponent> scheduler, string rule, bool doStart = true, int? players = null)
     {
-        var ruleUid = _ticker.AddGameRule(rule);
+        if (_ticker.AddGameRule(rule) is not { } ruleUid)
+            return;
 
-        scheduler.Comp.ChaosScore += GetChaosScore(ruleUid, players)!.Value;
+        if (!doStart && TryComp<GameRuleComponent>(ruleUid, out var ruleComp))
+            ruleComp.CancelPresetOnTooFewPlayers = false;
+
+        scheduler.Comp.ChaosScore += GetChaosScore(ruleUid.AsNullable(), players)!.Value;
 
         // if we hijack playercount, also hijack how many antags we pick
         if (players != null && TryComp<AntagSelectionComponent>(ruleUid, out var selection))
         {
-            // i love C#
-            for (var i = 0; i < selection.Definitions.Count; i++)
+            var counts = new List<AntagCountSelector>();
+            var running = 0;
+            foreach (var selector in selection.Antags)
             {
-                var def = selection.Definitions[i];
-                def.Min = def.Max = _antagSelection.GetTargetAntagCount((ruleUid, selection), players, def);
-                selection.Definitions[i] = def;
+                var count = _antagSelection.GetTargetAntagCount(selector, players.Value, ref running);
+                if (count <= 0)
+                    continue;
+                counts.Add(new FixedAntagCount { Proto = selector.Proto, PlayerRatio = selector.PlayerRatio,
+                    Count = count, ChaosScore = selector.ChaosScore });
             }
+            _antagSelection.SetAntagCounts((ruleUid.Owner, selection), counts.ToArray());
         }
 
         if (doStart)
-            _ticker.StartGameRule(ruleUid);
+            _ticker.StartGameRule(ruleUid.AsNullable());
     }
 
     /// <summary>
@@ -371,13 +384,14 @@ public sealed class SecretPlusSystem : GameRuleSystem<SecretPlusComponent>
             var any = false;
             var score = 0f;
 
-            foreach (var def in selection.Definitions)
+            var runningCount = 0;
+            foreach (var def in selection.Antags)
             {
+                var count = _antagSelection.GetTargetAntagCount(def, players ?? GetTotalPlayerCount(_playerManager.Sessions), ref runningCount);
                 if (def.ChaosScore == null)
                     continue;
 
                 any = true;
-                var count = _antagSelection.GetTargetAntagCount((rule, selection), players ?? GetTotalPlayerCount(_playerManager.Sessions), def);
                 score += def.ChaosScore.Value * count;
             }
 
@@ -398,13 +412,14 @@ public sealed class SecretPlusSystem : GameRuleSystem<SecretPlusComponent>
             var any = false;
             var score = 0f;
 
-            foreach (var def in selection.Definitions)
+            var runningCount = 0;
+            foreach (var def in selection.Antags)
             {
+                var count = _antagSelection.GetTargetAntagCount(def, players ?? GetTotalPlayerCount(_playerManager.Sessions), ref runningCount);
                 if (def.ChaosScore == null)
                     continue;
 
                 any = true;
-                var count = _antagSelection.GetTargetAntagCount((EntityUid.Invalid, selection), players ?? GetTotalPlayerCount(_playerManager.Sessions), def);
                 score += def.ChaosScore.Value * count;
             }
 

@@ -1,8 +1,8 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
-
 using Content.Client.Eye;
+using Content.Shared.DeviceNetwork;
 using Content.Shared.SurveillanceCamera;
 using Robust.Client.UserInterface;
+using Robust.Shared.Prototypes;
 
 namespace Content.Client.SurveillanceCamera.UI;
 
@@ -30,17 +30,27 @@ public sealed class SurveillanceCameraMonitorBoundUserInterface : BoundUserInter
         _window = this.CreateWindow<SurveillanceCameraMonitorWindow>();
 
         _window.CameraSelected += OnCameraSelected;
+        _window.SubnetOpened += OnSubnetRequest;
         _window.CameraRefresh += OnCameraRefresh;
         _window.SubnetRefresh += OnSubnetRefresh;
         _window.CameraSwitchTimer += OnCameraSwitchTimer;
         _window.CameraDisconnect += OnCameraDisconnect;
 
-        _window.SetEntity(Owner); // Goobstation
+        var xform = EntMan.GetComponent<TransformComponent>(Owner);
+        var gridUid = xform.GridUid;
+
+        if (gridUid is not null)
+            _window?.SetMap(gridUid.Value);
     }
 
-    private void OnCameraSelected(string address)
+    private void OnCameraSelected(DeviceAddress address, ProtoId<DeviceFrequencyPrototype>? subnet)
     {
-        SendMessage(new SurveillanceCameraMonitorSwitchMessage(address));
+        SendMessage(new SurveillanceCameraMonitorSwitchMessage(address, subnet));
+    }
+
+    private void OnSubnetRequest(ProtoId<DeviceFrequencyPrototype> subnet)
+    {
+        SendMessage(new SurveillanceCameraMonitorSubnetRequestMessage(subnet));
     }
 
     private void OnCameraSwitchTimer()
@@ -72,13 +82,9 @@ public sealed class SurveillanceCameraMonitorBoundUserInterface : BoundUserInter
 
         var active = EntMan.GetEntity(cast.ActiveCamera);
 
-        EntMan.TryGetComponent<TransformComponent>(Owner, out var xform); // Goobstation
-        var monitor = Owner; // Goobstation
-        var monitorCoords = xform?.Coordinates; // Goobstation
-
         if (active == null)
         {
-            _window.UpdateState(null, cast.ActiveAddress, cast.Cameras, cast.MobileCameras, monitor, monitorCoords); // Goobstation
+            _window.UpdateState(null, cast.Subnets, cast.ActiveAddress, cast.ActiveSubnet, cast.Cameras);
 
             if (_currentCamera != null)
             {
@@ -103,7 +109,7 @@ public sealed class SurveillanceCameraMonitorBoundUserInterface : BoundUserInter
 
             if (EntMan.TryGetComponent<EyeComponent>(active, out var eye))
             {
-                _window.UpdateState(eye.Eye, cast.ActiveAddress, cast.Cameras, cast.MobileCameras, monitor, monitorCoords); // Goobstation
+                _window.UpdateState(eye.Eye, cast.Subnets, cast.ActiveAddress, cast.ActiveSubnet, cast.Cameras);
             }
         }
     }
@@ -116,11 +122,6 @@ public sealed class SurveillanceCameraMonitorBoundUserInterface : BoundUserInter
         {
             _eyeLerpingSystem.RemoveEye(_currentCamera.Value);
             _currentCamera = null;
-        }
-
-        if (disposing)
-        {
-            _window?.Dispose();
         }
     }
 }

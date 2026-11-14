@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Robust.Shared.Audio;
+using Content.Server.NPC.Systems;
 
 namespace Content.Server.NPC.Components;
 

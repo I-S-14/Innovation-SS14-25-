@@ -134,16 +134,22 @@
   - type: Sprite
     sprite: _Mono/Structures/Machines/computers.rsi
     layers:
-    - map: ["computerLayerBody"]
+    - map: ["enum.ComputerVisualLayers.Frame"]
       state: computer_not_rot
-    - map: ["computerLayerKeyboard"]
+    - map: ["enum.ComputerVisualLayers.Keyboard"]
       state: gunnery_keyboard
-    - map: ["computerLayerScreen"]
+    - map: ["enum.ComputerVisualLayers.Screen"]
       state: gunnery_screen
-    - map: ["computerLayerKeys"]
+    - map: ["enum.ComputerVisualLayers.Keys"]
       state: gunnery_keys
     - map: [ "enum.WiresVisualLayers.MaintenancePanel" ]
       state: generic_panel_open
+  - type: ComputerVisuals # IS14: retain the custom states with modern layer keys.
+    stateFrame: computer_not_rot
+    stateKeyboard: gunnery_keyboard
+    stateScreen: gunnery_screen
+    stateKeys: gunnery_keys
+    statePanel: generic_panel_open
   - type: FireControlConsole
   - type: ActivatableUI
     blockSpectators: true # CorvaxGoob-GhostUIViewing

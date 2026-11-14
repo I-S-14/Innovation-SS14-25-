@@ -20,7 +20,7 @@
   - type: Physics
     bodyType: Static
   - type: WarpPoint
-    location: bingle pit
+    location: is14-upstream-warp-binglepit
   - type: Fixtures
     fixtures:
       fix1:

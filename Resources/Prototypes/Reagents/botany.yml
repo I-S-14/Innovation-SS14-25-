@@ -11,14 +11,15 @@
   plantMetabolism:
     - !type:PlantAdjustNutrition
       amount: 2
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Food:
       effects:
-      - !type:SatiateHunger
+      - !type:Satiate
+        satiationType: Hunger
         conditions:
         - !type:MetabolizerTypeCondition
           type: [Plant]
-
 - type: reagent
   id: Left4Zed
   name: reagent-name-left4-zed
@@ -26,6 +27,7 @@
   desc: reagent-desc-left4-zed
   flavor: bitter
   color: "#5b406c"
+  puddleSpriteSet: Shiny # Goob
   physicalDesc: reagent-physical-desc-heterogeneous
   plantMetabolism:
     - !type:PlantAdjustNutrition
@@ -35,10 +37,12 @@
     - !type:PlantAdjustMutationMod
       probability: 0.3
       amount: 0.4
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Medicine:
       effects:
-      - !type:SatiateHunger
+      - !type:Satiate
+        satiationType: Hunger
         conditions:
         - !type:MetabolizerTypeCondition
           type: [Plant]
@@ -49,6 +53,19 @@
         conditions:
         - !type:MetabolizerTypeCondition
           type: [Plant]
+- type: reagent
+  id: MutagenicFertilizer
+  name: reagent-name-mutagenic-fertilizer
+  group: Botanical
+  desc: reagent-desc-mutagenic-fertilizer
+  physicalDesc: reagent-physical-desc-clumpy
+  flavor: earthy
+  color: "#759923"
+  recognizable: false
+  plantMetabolism:
+  - !type:PlantAdjustMutationLevel
+    amount: 1
+    mutationTable: FarmingPlantMutations
 
 - type: reagent
   id: PestKiller
@@ -57,12 +74,15 @@
   desc: reagent-desc-pest-killer
   flavor: bitter
   color: "#9e9886"
+  puddleSpriteSet: Acid # Goob
+  puddleColor: "#9e9880CC" # Goob
   physicalDesc: reagent-physical-desc-bubbling
   plantMetabolism:
     - !type:PlantAdjustToxins
       amount: 4
     - !type:PlantAdjustPests
       amount: -6
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Medicine:
       effects:
@@ -73,7 +93,6 @@
         conditions:
         - !type:MetabolizerTypeCondition
           type: [Plant]
-
 - type: reagent
   id: PlantBGone
   name: reagent-name-plant-b-gone
@@ -81,6 +100,8 @@
   desc: reagent-desc-plant-b-gone
   flavor: bitter
   color: "#49002E"
+  puddleSpriteSet: Acid # Goob
+  puddleColor: "#49002E80" # Goob
   physicalDesc: reagent-physical-desc-bubbling
   plantMetabolism:
     - !type:PlantAdjustToxins
@@ -91,6 +112,10 @@
       amount: -20
     - !type:PlantAdjustMutationMod
       amount: 0.1
+    - !type:PlantChangeTraits
+      trait: PlantTraitKudzu
+      type: Remove
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Medicine:
       effects:
@@ -104,7 +129,6 @@
         conditions:
         - !type:MetabolizerTypeCondition
           type: [Plant]
-
 - type: reagent
   id: RobustHarvest
   name: reagent-name-robust-harvest
@@ -112,6 +136,7 @@
   desc: reagent-desc-robust-harvest
   flavor: bitter
   color: "#3e901c"
+  puddleSpriteSet: Shiny # Goob
   physicalDesc: reagent-physical-desc-robust
   plantMetabolism:
     - !type:PlantAdjustNutrition
@@ -123,6 +148,7 @@
       probability: 0.025
       amount: 1
     - !type:RobustHarvest {}
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Poison:
       effects:
@@ -153,12 +179,11 @@
       - !type:Polymorph
         prototype: TreeMorph
         conditions:
-          - !type:MetabolizerTypeCondition
-            type: [Plant]
-          - !type:ReagentCondition
-            reagent: RobustHarvest
-            min: 80
-
+        - !type:MetabolizerTypeCondition
+          type: [Plant]
+        - !type:ReagentCondition
+          reagent: RobustHarvest
+          min: 80
 - type: reagent
   id: Sedin
   name: reagent-name-sedin
@@ -182,12 +207,14 @@
   desc: reagent-desc-weed-killer
   flavor: bitter
   color: "#968395"
+  puddleSpriteSet: Acid # Goob
   physicalDesc: reagent-physical-desc-bubbling
   plantMetabolism:
     - !type:PlantAdjustToxins
       amount: 4
     - !type:PlantAdjustWeeds
       amount: -6
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Poison:
       effects:
@@ -198,7 +225,6 @@
         conditions:
         - !type:MetabolizerTypeCondition
           type: [Plant]
-
 - type: reagent
   id: Ammonia
   name: reagent-name-ammonia
@@ -207,6 +233,7 @@
   physicalDesc: reagent-physical-desc-pungent
   flavor: bitter
   color: "#77b58e"
+  puddleSpriteSet: Shiny # Goob
   boilingPoint: -33.0
   meltingPoint: -77.7
   plantMetabolism:
@@ -214,6 +241,7 @@
     amount: 1
   - !type:PlantAdjustHealth
     amount: 0.5
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Poison:
       effects:
@@ -228,7 +256,7 @@
         - !type:MetabolizerTypeCondition
           type:
           - Rat
-          - Yowie # Goobstation - Yowie
+          - Yowie
           inverted: true
         - !type:ReagentCondition
           reagent: Ammonia
@@ -241,7 +269,7 @@
         probability: 0.12
         conditions:
         - !type:MetabolizerTypeCondition
-          type: [ Rat, Vox, Yowie ] # Goobstation Yowie
+          type: [Rat, Vox, Yowie]
           inverted: true
         - !type:ReagentCondition
           reagent: Ammonia
@@ -249,7 +277,7 @@
       - !type:PopupMessage
         type: Local
         visualType: Medium
-        messages: [ "ammonia-smell" ]
+        messages: ["ammonia-smell"]
         probability: 0.1
         conditions:
         - !type:ReagentCondition
@@ -258,7 +286,7 @@
       - !type:HealthChange
         conditions:
         - !type:MetabolizerTypeCondition
-          type: [ Rat ]
+          type: [Rat]
         - !type:ReagentCondition
           reagent: Ammonia
           min: 1
@@ -273,17 +301,15 @@
         amount: 1
         conditions:
         - !type:MetabolizerTypeCondition
-          type: [ Rat ]
+          type: [Rat]
         - !type:ReagentCondition
           reagent: Ammonia
           min: 1
-      - !type:Oxygenate # ammonia displaces nitrogen in vox blood
+      - !type:Oxygenate
         conditions:
         - !type:MetabolizerTypeCondition
-          type: [ Vox ]
+          type: [Vox]
         factor: -4
-
-
 - type: reagent
   id: Diethylamine
   name: reagent-name-diethylamine
@@ -292,6 +318,7 @@
   physicalDesc: reagent-physical-desc-strong-smelling
   flavor: bitter
   color: "#a1000b"
+  puddleSpriteSet: Shiny # Goob
   boilingPoint: 55.5
   meltingPoint: -50.0
   plantMetabolism:
@@ -306,6 +333,7 @@
     probability: 0.2
     amount: 1
   - !type:PlantDiethylamine {}
+  # IS14: retain Goob organ metabolism and reagent effects.
   metabolisms:
     Poison:
       effects:

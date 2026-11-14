@@ -10,14 +10,15 @@ using Robust.Client.UserInterface.Controls;
 using Robust.Client.UserInterface.CustomControls;
 using Robust.Client.UserInterface.XAML;
 using Robust.Shared.Prototypes;
+using Content.Client.UserInterface.Controls;
 
 namespace Content.Client.Administration.UI.SetOutfit
 {
     [GenerateTypedNameReferences]
     public sealed partial class SetOutfitMenu : DefaultWindow
     {
-        [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
-        [Dependency] private readonly IClientConsoleHost _consoleHost = default!;
+        [Dependency] private IPrototypeManager _prototypeManager = default!;
+        [Dependency] private IClientConsoleHost _consoleHost = default!;
 
         public NetEntity? TargetEntityId { get; set; }
         private StartingGearPrototype? _selectedOutfit;

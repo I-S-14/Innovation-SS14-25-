@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 #EVA Helmet
+
 - type: entity
   parent: ClothingHeadEVAHelmetBase
   id: ClothingHeadHelmetEVA
@@ -16,12 +17,12 @@
     - WhitelistChameleon
     - CorgiWearable
 
-#Large EVA Helmet
+#Emergency pressure suit helmet
 - type: entity
   parent: ClothingHeadEVAHelmetBase
   id: ClothingHeadHelmetEVALarge
-  name: EVA helmet
-  description: An old-but-gold helmet designed for extravehicular activites.
+  name: emergency helmet
+  description: Hard to believe this cheap-looking thing is airtight, but it is.
   components:
   - type: Sprite
     sprite: Clothing/Head/Helmets/eva_large.rsi
@@ -68,6 +69,18 @@
   - type: Clothing
     sprite: Clothing/Head/Helmets/cosmonaut.rsi
 
+#Ancient Void Helmet
+- type: entity
+  parent: ClothingHeadEVAHelmetBase
+  id: ClothingHeadHelmetAncient
+  name: NTSRA void helmet
+  description: An ancient space helmet, designed by the NTSRA branch of CentComm.
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Helmets/ancientvoidsuit.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Helmets/ancientvoidsuit.rsi
+
 #Paramedic Void Helmet
 - type: entity
   parent: ClothingHeadHardsuitWithLightBase # goobstation - why didnt this have a light
@@ -76,32 +89,23 @@
   description: A void helmet made for paramedics.
   components:
   - type: Sprite
-    sprite: Clothing/Head/Hardsuits/paramedhelm.rsi #corvaxGoob
-  - type: Clothing
-    sprite: Clothing/Head/Hardsuits/paramedhelm.rsi #corvaxGoob
-    equippedState: off-equipped-head # CorvaxGoob
-#  - type: HandheldLight #Goob
-#    addPrefix: false
+    sprite: Clothing/Head/Hardsuits/paramedhelm.rsi
+    layers:
+    - state: icon
+    - state: light-overlay
+      visible: false
+      shader: unshaded
+      map: [ "light" ]
   - type: ToggleableVisuals
     spriteLayer: light
-#    clothingVisuals: # Goobstaion
-#      head:
-#      - state: equipped-head-light
-#      head-vox:
-#      - state: equipped-head-light-vox
-#      head-dog:
-#      - state: equipped-head-light-dog
-#  - type: Clothing
-#    clothingVisuals:
-#      head:
-#      - state: equipped-head
-#      head-vox:
-#      - state: equipped-head-vox
-#      head-dog:
-#      - state: equipped-head-dog
-  - type: TemperatureProtection
-    heatingCoefficient: 0.1
-    coolingCoefficient: 0.1
+    clothingVisuals:
+      head:
+      - state: equipped-head-light
+        shader: unshaded
+  - type: Clothing
+    clothingVisuals:
+      head:
+      - state: equipped-head
   - type: Armor
     # Goob Start
     coverage:
@@ -124,19 +128,5 @@
     color: "#3385cc" # goobstation
   - type: Tag
     tags:
-    - CorgiWearable
     - HelmetEVA
     - WhitelistChameleon
-
-
-#Ancient Void Helmet
-- type: entity
-  parent: ClothingHeadEVAHelmetBase
-  id: ClothingHeadHelmetAncient
-  name: NTSRA void helmet
-  description: An ancient space helmet, designed by the NTSRA branch of CentComm.
-  components:
-  - type: Sprite
-    sprite: Clothing/Head/Helmets/ancientvoidsuit.rsi
-  - type: Clothing
-    sprite: Clothing/Head/Helmets/ancientvoidsuit.rsi

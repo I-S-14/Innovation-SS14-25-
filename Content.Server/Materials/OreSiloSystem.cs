@@ -1,18 +1,19 @@
-using Content.Server.Pinpointer;
 using Content.Shared.IdentityManagement;
 using Content.Shared.Materials.OreSilo;
+using Content.Shared.Pinpointer;
 using Robust.Server.GameStates;
 using Robust.Shared.Player;
+using Content.Server.Pinpointer;
 
 namespace Content.Server.Materials;
 
 /// <inheritdoc/>
-public sealed class OreSiloSystem : SharedOreSiloSystem
+public sealed partial class OreSiloSystem : SharedOreSiloSystem
 {
-    [Dependency] private readonly EntityLookupSystem _entityLookup = default!;
-    [Dependency] private readonly NavMapSystem _navMap = default!;
-    [Dependency] private readonly PvsOverrideSystem _pvsOverride = default!;
-    [Dependency] private readonly SharedUserInterfaceSystem _userInterface = default!;
+    [Dependency] private EntityLookupSystem _entityLookup = default!;
+    [Dependency] private NavMapSystem _navMap = default!;
+    [Dependency] private PvsOverrideSystem _pvsOverride = default!;
+    [Dependency] private SharedUserInterfaceSystem _userInterface = default!;
 
     private const float OreSiloPreloadRangeSquared = 225f; // ~1 screen
 
@@ -27,6 +28,9 @@ public sealed class OreSiloSystem : SharedOreSiloSystem
             return;
         _clientLookup.Clear();
         _clientInformation.Clear();
+
+        if (ent.Comp.Clients.RemoveWhere(c => TerminatingOrDeleted(c) || !HasComp<OreSiloClientComponent>(c)) > 0) // Goob
+            Dirty(ent);
 
         var xform = Transform(ent);
 

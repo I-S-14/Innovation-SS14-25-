@@ -1,6 +1,6 @@
+using static Content.Shared.Arcade.SharedSpaceVillainArcadeComponent;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-using static Content.Shared.Arcade.SharedSpaceVillainArcadeComponent;
 
 namespace Content.Server.Arcade.SpaceVillain;
 

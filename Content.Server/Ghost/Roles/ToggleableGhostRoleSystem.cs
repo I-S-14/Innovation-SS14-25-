@@ -14,11 +14,11 @@ namespace Content.Server.Ghost.Roles;
 /// <summary>
 /// This handles logic and interaction related to <see cref="ToggleableGhostRoleComponent"/>
 /// </summary>
-public sealed class ToggleableGhostRoleSystem : EntitySystem
+public sealed partial class ToggleableGhostRoleSystem : EntitySystem
 {
-    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] private readonly SharedMindSystem _mind = default!;
+    [Dependency] private SharedAppearanceSystem _appearance = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private SharedMindSystem _mind = default!;
 
     /// <inheritdoc/>
     public override void Initialize()
@@ -46,12 +46,12 @@ public sealed class ToggleableGhostRoleSystem : EntitySystem
     // Goobstation
     private void OnActivateInWorld(EntityUid uid, ToggleableGhostRoleComponent component, ActivateInWorldEvent args)
     {
-        if (args.Handled)
+        if (args.Handled || !args.Complex) // Goob - check complex
             return;
 
         args.Handled = true;
 
-        ActivateGhostRole((uid, component));
+        TryActivate(uid, component, args.User); // Goob - TryActivate instead of ActivateGhostRole
     }
 
     public void ActivateGhostRole(Entity<ToggleableGhostRoleComponent?> ent)
@@ -110,7 +110,7 @@ public sealed class ToggleableGhostRoleSystem : EntitySystem
 
     private void AddWipeVerb(EntityUid uid, ToggleableGhostRoleComponent component, GetVerbsEvent<ActivationVerb> args)
     {
-        if (!args.CanAccess || !args.CanComplexInteract) // Goobstation - replace hands check with CanComplexInteract
+        if (!args.CanAccess || !args.CanComplexInteract || !component.CanBeWiped) // Goobstation - replace hands check with CanComplexInteract, add wipe prevention
             return;
 
         if (TryComp<MindContainerComponent>(uid, out var mind) && mind.HasMind)

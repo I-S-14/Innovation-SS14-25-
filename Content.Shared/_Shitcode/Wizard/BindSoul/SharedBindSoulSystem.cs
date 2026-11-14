@@ -7,6 +7,7 @@ using Content.Shared.Actions;
 using Content.Shared.Actions.Components;
 using Content.Shared.Body.Systems;
 using Content.Shared.Damage;
+using Content.Shared.Damage.Components;
 using Content.Shared.Examine;
 using Content.Shared.Ghost;
 using Content.Shared.Gibbing.Events;
@@ -24,6 +25,7 @@ using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Systems;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Spawners;
+using Content.Shared.Ghost.Components;
 
 namespace Content.Shared._Goobstation.Wizard.BindSoul;
 
@@ -41,7 +43,6 @@ public abstract class SharedBindSoulSystem : EntitySystem
     [Dependency] private   readonly SharedBodySystem _body = default!;
     [Dependency] private   readonly SharedPhysicsSystem _physics = default!;
     [Dependency] private   readonly SharedGravitySystem _gravity = default!;
-    [Dependency] private   readonly IPrototypeManager _proto = default!;
     [Dependency] private   readonly INetManager _net = default!;
 
     public static readonly ProtoId<TagPrototype> IgnoreBindSoulTag = "IgnoreBindSoul"; // Goobstation

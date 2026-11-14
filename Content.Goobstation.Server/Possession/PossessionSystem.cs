@@ -1,3 +1,5 @@
+using Robust.Shared.Prototypes;
+using Content.Shared.Ghost.Components;
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 using Content.Goobstation.Common.Magic;
@@ -39,19 +41,23 @@ namespace Content.Goobstation.Server.Possession;
 
 public sealed partial class PossessionSystem : EntitySystem
 {
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly MobStateSystem _mobState = default!;
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] private readonly SharedMindSystem _mind = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
-    [Dependency] private readonly StunSystem _stun = default!;
-    [Dependency] private readonly SharedTransformSystem _transform = default!;
-    [Dependency] private readonly ContainerSystem _container = default!;
-    [Dependency] private readonly ISharedAdminLogManager _admin = default!;
-    [Dependency] private readonly ActionsSystem _action = default!;
-    [Dependency] private readonly PolymorphSystem _polymorph = default!;
-    [Dependency] private readonly TagSystem _tag = default!;
-    [Dependency] private readonly FollowerSystem _follower = default!;
+    //IS14-change start: typed IDs preserve the retained Goob prototypes.
+    private static readonly ProtoId<TagPrototype> CompatibilityCannotSuicideAnyTagId = "CannotSuicideAny";
+    //IS14-change end
+
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private MobStateSystem _mobState = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private SharedMindSystem _mind = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private StunSystem _stun = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private ContainerSystem _container = default!;
+    [Dependency] private ISharedAdminLogManager _admin = default!;
+    [Dependency] private ActionsSystem _action = default!;
+    [Dependency] private PolymorphSystem _polymorph = default!;
+    [Dependency] private TagSystem _tag = default!;
+    [Dependency] private FollowerSystem _follower = default!;
 
     public override void Initialize()
     {
@@ -90,7 +96,7 @@ public sealed partial class PossessionSystem : EntitySystem
 
         _action.AddAction(possessed, ref possessed.Comp.ActionEntity, possessed.Comp.EndPossessionAction);
 
-        _tag.AddTag(possessed, "CannotSuicideAny");
+        _tag.AddTag(possessed, CompatibilityCannotSuicideAnyTagId);
 
         possessed.Comp.PossessedContainer = _container.EnsureContainer<Container>(possessed, "PossessedContainer");
     }
@@ -118,7 +124,7 @@ public sealed partial class PossessionSystem : EntitySystem
         if (possessed.Comp.PolymorphEntity && HasComp<PolymorphedEntityComponent>(possessed))
             _polymorph.Revert(possessed.Owner);
 
-        _tag.RemoveTag(possessed, "CannotSuicideAny");
+        _tag.RemoveTag(possessed, CompatibilityCannotSuicideAnyTagId);
 
         // Remove associated components.
         if (!possessed.Comp.WasPacified)

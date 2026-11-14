@@ -1,3 +1,4 @@
+using Content.Shared.GameTicking;
 using Content.Server.GameTicking;
 using Content.Goobstation.Common.StationReport;
 using Content.Shared.Paper;
@@ -16,7 +17,7 @@ public sealed class StationReportSystem : EntitySystem
         SubscribeLocalEvent<RoundEndTextAppendEvent>(OnRoundEndTextAppend);
     }
 
-    private void OnRoundEndTextAppend(RoundEndTextAppendEvent args)
+    private void OnRoundEndTextAppend(ref RoundEndTextAppendEvent args)
     {
         //locates the first entity with StationReportComponent then stops
         string? stationReportText = null;

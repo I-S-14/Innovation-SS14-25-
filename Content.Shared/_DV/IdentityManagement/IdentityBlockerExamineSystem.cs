@@ -3,7 +3,7 @@ using Content.Shared.IdentityManagement.Components;
 
 namespace Content.Shared.IdentityManagement;
 
-public class IdentityBlockerExamineSystem : EntitySystem
+public sealed class IdentityBlockerExamineSystem : EntitySystem
 {
     public override void Initialize()
     {

@@ -34,19 +34,24 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Goobstation.Server.Blob;
 
-public sealed class ZombieBlobSystem : SharedZombieBlobSystem
+public sealed partial class ZombieBlobSystem : SharedZombieBlobSystem
 {
-    [Dependency] private readonly NpcFactionSystem _faction = default!;
-    [Dependency] private readonly NPCSystem _npc = default!;
-    [Dependency] private readonly MindSystem _mind = default!;
-    [Dependency] private readonly TagSystem _tagSystem = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
-    [Dependency] private readonly IChatManager _chatMan = default!;
-    [Dependency] private readonly SharedPhysicsSystem _physics = default!;
-    [Dependency] private readonly TriggerSystem _trigger = default!;
-    [Dependency] private readonly InventorySystem _inventory = default!;
-    [Dependency] private readonly SharedUserInterfaceSystem _ui = default!;
-    [Dependency] private readonly IPlayerManager _player = default!;
+    //IS14-change start: typed IDs preserve the retained Goob prototypes.
+    private static readonly ProtoId<TagPrototype> CompatibilityBlobMobTagId = "BlobMob";
+    private static readonly ProtoId<NpcFactionPrototype> CompatibilityBlobNpcFactionId = "Blob";
+    //IS14-change end
+
+    [Dependency] private NpcFactionSystem _faction = default!;
+    [Dependency] private NPCSystem _npc = default!;
+    [Dependency] private MindSystem _mind = default!;
+    [Dependency] private TagSystem _tagSystem = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private IChatManager _chatMan = default!;
+    [Dependency] private SharedPhysicsSystem _physics = default!;
+    [Dependency] private TriggerSystem _trigger = default!;
+    [Dependency] private InventorySystem _inventory = default!;
+    [Dependency] private SharedUserInterfaceSystem _ui = default!;
+    [Dependency] private IPlayerManager _player = default!;
 
     private const int ClimbingCollisionGroup = (int) (CollisionGroup.BlobImpassable);
 
@@ -120,13 +125,13 @@ public sealed class ZombieBlobSystem : SharedZombieBlobSystem
             oldFactions.Add(factionId);
             _faction.RemoveFaction(uid, factionId);
         }
-        _faction.AddFaction(uid, "Blob");
+        _faction.AddFaction(uid, CompatibilityBlobNpcFactionId);
         component.OldFactions = oldFactions;
 
         // var accent = EnsureComp<ReplacementAccentComponent>(uid); // Languages - No need for accents.
         // accent.Accent = "genericAggressive";
 
-        _tagSystem.AddTag(uid, "BlobMob");
+        _tagSystem.AddTag(uid, CompatibilityBlobMobTagId);
 
         EnsureComp<PressureImmunityComponent>(uid);
 
@@ -193,7 +198,7 @@ public sealed class ZombieBlobSystem : SharedZombieBlobSystem
             temperatureDamageComponent.ColdDamageThreshold = component.OldColdDamageThreshold.Value;
         }
 
-        _tagSystem.RemoveTag(uid, "BlobMob");
+        _tagSystem.RemoveTag(uid, CompatibilityBlobMobTagId);
 
         /*
         var mindComp = EnsureComp<MindContainerComponent>(uid);
@@ -210,7 +215,7 @@ public sealed class ZombieBlobSystem : SharedZombieBlobSystem
         {
             _faction.AddFaction(uid, factionId);
         }
-        _faction.RemoveFaction(uid, "Blob");
+        _faction.RemoveFaction(uid, CompatibilityBlobNpcFactionId);
 
         if (TryComp<FixturesComponent>(uid, out var fixtures))
         {

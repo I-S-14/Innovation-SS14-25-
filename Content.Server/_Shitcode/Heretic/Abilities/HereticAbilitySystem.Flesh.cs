@@ -15,6 +15,7 @@ using Content.Shared.Chemistry.Components.SolutionManager;
 using Content.Shared.Cloning;
 using Content.Shared.Coordinates;
 using Content.Shared.Damage;
+using Content.Shared.Damage.Systems;
 using Content.Shared.Hands.Components;
 using Content.Shared.Heretic;
 using Content.Shared.Interaction.Components;
@@ -162,9 +163,9 @@ public sealed partial class HereticAbilitySystem
         var solName = StomachSystem.DefaultSolutionName;
 
         var fleshStomach = SpawnAttachedTo(null, ent.Owner.ToCoordinates());
-        var solutionContainer = EnsureComp<SolutionContainerManagerComponent>(fleshStomach);
-        _solution.EnsureSolutionPrototype((fleshStomach, solutionContainer), solName, 1984, null, out _);
-        _solution.EnsureAllSolutions((fleshStomach, solutionContainer));
+        var solutionContainer = EnsureComp<SolutionManagerComponent>(fleshStomach);
+        _solution.EnsureSolution((fleshStomach, solutionContainer), solName, out var stomachSolution);
+        _solution.SetCapacity(stomachSolution, 1984);
         stomach = EnsureComp<StomachComponent>(fleshStomach);
         stomach.DigestionDelay = TimeSpan.FromSeconds(5);
         organ = EnsureComp<OrganComponent>(fleshStomach);

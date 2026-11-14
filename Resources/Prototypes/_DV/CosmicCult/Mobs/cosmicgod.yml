@@ -95,7 +95,7 @@
     blacklist:
       tags:
       - GhostOnlyWarp
-    location: The Unknown
+    location: is14-upstream-warp-mobcosmicgod
   - type: CosmicGod
   - type: CosmicCultExamine
     cultistText: cosmic-examine-text-god

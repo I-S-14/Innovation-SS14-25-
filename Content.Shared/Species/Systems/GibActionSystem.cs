@@ -4,20 +4,21 @@ using Content.Shared._Goobstation.Heretic.Components; // Goobstation
 using Content.Shared.Species.Components;
 using Content.Shared.Actions;
 using Content.Shared.Body.Systems;
+using Content.Shared.Gibbing;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Popups;
 using Robust.Shared.Prototypes;
+using Content.Shared.Gibbing.Systems;
 
 
 namespace Content.Shared.Species;
 
 public sealed partial class GibActionSystem : EntitySystem
 {
-    [Dependency] private readonly SharedActionsSystem _actionsSystem = default!;
     [Dependency] private readonly SharedBodySystem _bodySystem = default!;
-    [Dependency] private readonly IPrototypeManager _protoManager = default!;
-    [Dependency] private readonly SharedPopupSystem _popupSystem = default!;
+    [Dependency] private SharedActionsSystem _actionsSystem = default!;
+    [Dependency] private SharedPopupSystem _popupSystem = default!;
 
     public override void Initialize()
     {
@@ -33,9 +34,8 @@ public sealed partial class GibActionSystem : EntitySystem
         if (!TryComp<MobStateComponent>(uid, out var mobState))
             return;
 
-        if (!_protoManager.TryIndex<EntityPrototype>(comp.ActionPrototype, out var actionProto))
+        if (!ProtoMan.TryIndex<EntityPrototype>(comp.ActionPrototype, out var actionProto))
             return;
-
 
         foreach (var allowedState in comp.AllowedStates)
         {
@@ -48,6 +48,11 @@ public sealed partial class GibActionSystem : EntitySystem
         }
 
         // If they aren't given the action, remove it.
+        // Goob - Fix (action not attached)
+        if (_actionsSystem.GetAction(comp.ActionEntity, false) is not { } action
+            || action.Comp.AttachedEntity != uid)
+            return;
+
         _actionsSystem.RemoveAction(uid, comp.ActionEntity);
     }
 
@@ -62,8 +67,8 @@ public sealed partial class GibActionSystem : EntitySystem
         // Goobstation end
 
         // When they use the action, gib them.
-        _popupSystem.PopupClient(Loc.GetString(comp.PopupText, ("name", uid)), uid, uid);
-        _bodySystem.GibBody(uid, true);
+        _popupSystem.PopupClient(Loc.GetString(comp.PopupText, ("name", args.Performer)), args.Performer, args.Performer); // Goob
+        _bodySystem.GibBody(args.Performer, true); // Goob - the action container can be a polymorph's stored original in nullspace
     }
 
 

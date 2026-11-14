@@ -4,6 +4,7 @@ using Content.Server.Power.EntitySystems;
 using Content.Shared.Power;
 using Content.Shared.Sound;
 using Content.Shared.Sound.Components;
+using Content.Server.Power.Components;
 
 namespace Content.Server.Sound;
 

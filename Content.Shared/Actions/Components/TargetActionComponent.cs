@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: MIT
 
 using Content.Shared.Actions;
-﻿using Content.Shared.Interaction;
-﻿using Robust.Shared.GameStates;
 using Content.Shared.Interaction;
 using Content.Shared.Physics;
 using Robust.Shared.GameStates;
@@ -47,6 +45,20 @@ public sealed partial class TargetActionComponent : Component
     /// </summary>
     [DataField]
     public CollisionGroup AccessMask = SharedInteractionSystem.InRangeUnobstructedMask;
+
+    /// <summary>
+    ///     Whether the action system should block this action if the user does not have line of sight to the
+    ///     target (i.e. the target is behind an opaque occluder, such as a wall). Unlike <see cref="CheckCanAccess"/>,
+    ///     this uses the same occluder-based visibility check as examining, so it ignores things like closed
+    ///     containers or interaction blockers and is meant for long-range "you can see it, so you can target it"
+    ///     abilities (e.g. teleports).
+    /// </summary>
+    /// <remarks>
+    ///     Uses <see cref="Range"/> as the maximum raycast distance if it is positive; otherwise falls back to
+    ///     <see cref="SharedInteractionSystem.MaxRaycastRange"/>.
+    /// </remarks>
+    [DataField]
+    public bool CheckCanSee;
 
     /// <summary>
     ///     The allowed range for a target to be. If zero or negative, the range check is skipped,

@@ -1,11 +1,13 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # All consoles
+
 - type: navMapBlip
   id: NavMapConsole
   blinks: true
   color: Cyan
   texturePaths:
   - "/Textures/Interface/NavMap/beveled_circle.png"
+
 
 # Atmos monitoring console
 - type: navMapBlip
@@ -16,6 +18,7 @@
   - "/Textures/Interface/NavMap/beveled_star.png"
   placement: Offset
 
+
 - type: navMapBlip
   id: GasVentOpening
   scale: 0.75
@@ -23,12 +26,14 @@
   texturePaths:
   - "/Textures/Interface/NavMap/beveled_square.png"
 
+
 - type: navMapBlip
   id: GasVentScrubber
   scale: 0.75
   color: LightGray
   texturePaths:
   - "/Textures/Interface/NavMap/beveled_circle.png"
+
 
 - type: navMapBlip
   id: GasFlowRegulator
@@ -41,6 +46,7 @@
   - "/Textures/Interface/NavMap/beveled_arrow_west.png"
   placement: Offset
 
+
 - type: navMapBlip
   id: GasValve
   scale: 0.6667
@@ -52,12 +58,14 @@
   - "/Textures/Interface/NavMap/beveled_diamond_east_west.png"
   placement: Offset
 
+
 - type: navMapBlip
   id: Thermoregulator
   scale: 0.75
   color: LightGray
   texturePaths:
   - "/Textures/Interface/NavMap/beveled_hexagon.png"
+
 
 - type: navMapBlip
   id: GasPipeManifold

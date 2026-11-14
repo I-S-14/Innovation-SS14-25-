@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+using Robust.Shared.Serialization;
+
 namespace Content.Shared.Security;
 
 /// <summary>
@@ -18,6 +20,7 @@ namespace Content.Shared.Security;
 /// Dangerous - the person is highly dangerous and may resist arrest
 /// Demote - The person is about to be demoted
 /// </summary>
+[Serializable, NetSerializable]
 public enum SecurityStatus : byte
 {
     None,

@@ -10,7 +10,7 @@ namespace Content.Shared._Shitcode.Heretic.Components;
 public sealed partial class StarGazerComponent : Component
 {
     [DataField]
-    public ProtoId<FactionIconPrototype> MasterIcon = "GhoulHereticMaster";
+    public ProtoId<StatusIconPrototype> MasterIcon = "GhoulHereticMaster";
 
     [DataField]
     public float MaxDistance = 20f;

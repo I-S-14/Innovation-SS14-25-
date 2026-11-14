@@ -3,7 +3,7 @@
 using System.Linq;
 using System.Numerics;
 using Content.Client.CrewManifest;
-using Content.Client.GameTicking.Managers;
+using Content.Client.GameTicking;
 using Content.Client.Lobby;
 using Content.Client.UserInterface.Controls;
 using Content.Client.Players.PlayTimeTracking;
@@ -19,18 +19,19 @@ using Robust.Shared.Configuration;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
 using static Robust.Client.UserInterface.Controls.BoxContainer;
+using Content.Client.GameTicking.Managers;
 
 namespace Content.Client.LateJoin
 {
-    public sealed class LateJoinGui : DefaultWindow
+    public sealed partial class LateJoinGui : DefaultWindow
     {
-        [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
-        [Dependency] private readonly IClientConsoleHost _consoleHost = default!;
-        [Dependency] private readonly IConfigurationManager _configManager = default!;
-        [Dependency] private readonly IEntitySystemManager _entitySystem = default!;
-        [Dependency] private readonly JobRequirementsManager _jobRequirements = default!;
-        [Dependency] private readonly IClientPreferencesManager _preferencesManager = default!;
-        [Dependency] private readonly ILogManager _logManager = default!;
+        [Dependency] private IPrototypeManager _prototypeManager = default!;
+        [Dependency] private IClientConsoleHost _consoleHost = default!;
+        [Dependency] private IConfigurationManager _configManager = default!;
+        [Dependency] private IEntitySystemManager _entitySystem = default!;
+        [Dependency] private JobRequirementsManager _jobRequirements = default!;
+        [Dependency] private IClientPreferencesManager _preferencesManager = default!;
+        [Dependency] private ILogManager _logManager = default!;
 
         public event Action<(NetEntity, string)> SelectedId;
 
@@ -187,7 +188,13 @@ namespace Content.Client.LateJoin
                         jobsAvailable.Add(_prototypeManager.Index<JobPrototype>(jobId));
                     }
 
-                    jobsAvailable.Sort(JobUIComparer.Instance);
+                    if (JobUIComparer.TryCreate(
+                            _prototypeManager,
+                            _gameTicker.JobWeightsByStation.GetValueOrDefault(id),
+                            out var comparer))
+                    {
+                        jobsAvailable.Sort(comparer);
+                    }
 
                     // Do not display departments with no jobs available.
                     if (jobsAvailable.Count == 0)

@@ -135,7 +135,9 @@ public sealed class AiRemoteControlSystem : SharedAiRemoteControlSystem
 
         _userInterface.TryToggleUi(uid, RemoteDeviceUiKey.Key, actor.PlayerSession);
 
-        var query = EntityManager.EntityQueryEnumerator<AiRemoteControllerComponent>();
+        //IS14-change start
+        var query = EntityQueryEnumerator<AiRemoteControllerComponent>();
+        //IS14-change end
         var remoteDevices = new List<RemoteDevicesData>();
 
         while (query.MoveNext(out var queryUid, out var comp))

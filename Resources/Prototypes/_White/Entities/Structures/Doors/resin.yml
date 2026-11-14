@@ -31,7 +31,7 @@
         - AirlockLayer
   - type: IconSmooth
     key: walls
-    mode: NoSprite
+    states: []
   - type: Door
     canPry: false
     crushDamage:

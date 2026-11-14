@@ -1,3 +1,4 @@
+using Content.Shared.StatusIcon;
 using Content.Client.Overlays;
 using Content.Goobstation.Shared.Disease;
 using Content.Goobstation.Shared.Disease.Components;
@@ -10,9 +11,9 @@ namespace Content.Goobstation.Client.Disease;
 /// <summary>
 /// Shows icons on infected mobs.
 /// </summary>
-public sealed class ShowDiseaseIconsSystem : EquipmentHudSystem<ShowDiseaseIconsComponent>
+public sealed partial class ShowDiseaseIconsSystem : EquipmentHudSystem<ShowDiseaseIconsComponent>
 {
-    [Dependency] private readonly IPrototypeManager _proto = default!;
+    [Dependency] private IPrototypeManager _proto = default!;
 
     private float? LowThreshold, MediumThreshold, HighThreshold;
 
@@ -64,7 +65,7 @@ public sealed class ShowDiseaseIconsSystem : EquipmentHudSystem<ShowDiseaseIcons
             args.StatusIcons.Add(diseaseIcon);
     }
 
-    private DiseaseIconPrototype? DecideDiseaseIcon(Entity<DiseaseCarrierComponent> entity)
+    private StatusIconPrototype? DecideDiseaseIcon(Entity<DiseaseCarrierComponent> entity)
     {
         var carrier = entity.Comp;
         var total = 0f;

@@ -136,7 +136,11 @@
     state: full
   - type: IconSmooth
     key: decay
-    base: decay
+    states:
+    - !type:CornerSpriteSmoothing
+      base: decay
+      mask:
+      - decay
   - type: Tag
     tags:
       - HideContextMenu
@@ -166,7 +170,11 @@
     state: full
   - type: IconSmooth
     key: floor
-    base: void
+    states:
+    - !type:CornerSpriteSmoothing
+      base: void
+      mask:
+      - floor
   - type: Tag
     tags:
       - HideContextMenu

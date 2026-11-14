@@ -6,7 +6,6 @@ using Content.Shared._Goobstation.Wizard.EventSpells;
 using Content.Server.Administration.Logs;
 using Content.Server.Chat.Managers;
 using Content.Server.GameTicking;
-using Content.Server.Ghost.Roles.Events;
 using Content.Shared._Lavaland.Movement;
 using Content.Shared.Chat;
 using Content.Shared.GameTicking;
@@ -17,6 +16,7 @@ using Content.Shared.GameTicking.Components;
 using Robust.Server.Audio;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
+using Content.Shared.Ghost;
 
 namespace Content.Server._Goobstation.Wizard.Systems;
 
@@ -81,7 +81,7 @@ public sealed class GlobalTileMovementSystem : EntitySystem
         }
     }
 
-    private void OnGhostRoleSpawnerUsed(GhostRoleSpawnerUsedEvent args)
+    private void OnGhostRoleSpawnerUsed(ref GhostRoleSpawnerUsedEvent args)
     {
         if (!GlobalTileMovementIsActive())
             return;

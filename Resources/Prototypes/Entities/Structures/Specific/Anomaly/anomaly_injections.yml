@@ -270,7 +270,7 @@
     ports:
       - Pulse
       - Timer
-  - type: WirelessNetworkConnection
+  - type: WirelessNetwork
     range: 10
   - type: DeviceNetwork
     deviceNetId: Wireless

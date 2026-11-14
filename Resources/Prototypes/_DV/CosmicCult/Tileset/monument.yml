@@ -101,7 +101,7 @@
     guides:
     - CosmicCult
   - type: WarpPoint
-    location: The Monument
+    location: is14-upstream-warp-monumentcosmiccultbase
     blacklist:
       tags:
       - GhostOnlyWarp

@@ -1,3 +1,4 @@
+using Content.Shared.VoiceMask;
 using Content.Goobstation.Shared.IntrinsicVoiceModulator.VoiceMask;
 using Content.Server.VoiceMask;
 using Content.Shared.Chat.RadioIconsEvents;
@@ -13,10 +14,10 @@ namespace Content.Goobstation.Server.IntrinsicVoiceModulator.VoiceMask;
 /// </summary>
 public sealed partial class VoiceMaskSystemGoob : EntitySystem
 {
-    [Dependency] private readonly SharedJobSystem _job = default!;
-    [Dependency] private readonly SharedPopupSystem _popupSystem = default!;
-    [Dependency] private readonly IPrototypeManager _proto = default!;
-    [Dependency] private readonly VoiceMaskSystem _voicemask = default!;
+    [Dependency] private SharedJobSystem _job = default!;
+    [Dependency] private SharedPopupSystem _popupSystem = default!;
+    [Dependency] private IPrototypeManager _proto = default!;
+    [Dependency] private VoiceMaskSystem _voicemask = default!;
 
     public override void Initialize()
     {

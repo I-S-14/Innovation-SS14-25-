@@ -3,7 +3,7 @@ using Robust.Shared.Utility;
 
 namespace Content.Shared._IS.CardSticker;
 
-[Prototype("cardSticker")]
+[Prototype]
 public sealed partial class CardStickerPrototype : IPrototype
 {
     [IdDataField] public string ID { get; private set; } = default!;

@@ -1,0 +1,142 @@
+# IS14: restore definitions lost during upstream file moves.
+# Source: 5327c414c5:Resources/Prototypes/GameRules/unknown_shuttles.yml
+- type: entityTable
+  id: UnknownShuttlesFriendlyTable
+  table: !type:AllSelector
+    children:
+    - id: UnknownShuttleCargoLost
+    - id: UnknownShuttleTravelingCuisine
+    - id: UnknownShuttleDisasterEvacPod
+    - id: UnknownShuttleHonki
+    - id: UnknownShuttleNTQuark
+    - id: UnknownShuttleCruiser
+    - id: UnknownShuttleCryptid
+    - id: UnknownShuttleEternal
+    - id: UnknownShuttleFlatline
+    - id: UnknownShuttleGym
+    - id: UnknownShuttleNTIncorporation
+    - id: UnknownShuttleJoe
+    - id: UnknownShuttleLambordeere
+    - id: UnknownShuttleMeatZone
+    - id: UnknownShuttleMicroshuttle
+    - id: UnknownShuttleSpacebus
+- type: entity
+  parent: BaseUnknownShuttleRule
+  id: UnknownShuttleCargoLost
+  components:
+  - type: StationEvent
+    maxOccurrences: 2
+  - type: LoadMapRule
+    gridPath: /Maps/Shuttles/ShuttleEvent/lost_cargo.yml
+- type: entity
+  parent: BaseUnknownShuttleRule
+  id: UnknownShuttleTravelingCuisine
+  components:
+  - type: StationEvent
+    startAnnouncement: station-event-unknown-shuttle-incoming
+    maxOccurrences: 2
+  - type: LoadMapRule
+    gridPath: /Maps/Shuttles/ShuttleEvent/traveling_china_cuisine.yml
+- type: entity
+  parent: BaseUnknownShuttleRule
+  id: UnknownShuttleDisasterEvacPod
+  components:
+  - type: StationEvent
+    startAnnouncement: station-event-unknown-shuttle-incoming
+    maxOccurrences: 3
+  - type: LoadMapRule
+    gridPath: /Maps/Shuttles/ShuttleEvent/disaster_evacpod.yml
+- type: entity
+  id: UnknownShuttleCruiser
+  parent: BaseUnknownShuttleRule
+  components:
+  - type: StationEvent
+    startAnnouncement: station-event-unknown-shuttle-incoming
+    weight: 2
+  - type: LoadMapRule
+    gridPath: /Maps/Shuttles/ShuttleEvent/cruiser.yml
+- type: entity
+  id: UnknownShuttleCryptid
+  parent: BaseUnknownShuttleRule
+  components:
+  - type: StationEvent
+    startAnnouncement: station-event-unknown-shuttle-incoming
+  - type: LoadMapRule
+    gridPath: /Maps/Shuttles/ShuttleEvent/cryptid.yml
+- type: entity
+  id: UnknownShuttleEternal
+  parent: BaseUnknownShuttleRule
+  components:
+  - type: StationEvent
+    startAnnouncement: station-event-unknown-shuttle-incoming
+  - type: LoadMapRule
+    gridPath: /Maps/Shuttles/ShuttleEvent/eternal.yml
+- type: entity
+  id: UnknownShuttleFlatline
+  parent: BaseUnknownShuttleRule
+  components:
+  - type: StationEvent
+    startAnnouncement: station-event-unknown-shuttle-incoming
+  - type: LoadMapRule
+    gridPath: /Maps/Shuttles/ShuttleEvent/flatline.yml
+- type: entity
+  id: UnknownShuttleGym
+  parent: BaseUnknownShuttleRule
+  components:
+  - type: StationEvent
+    startAnnouncement: station-event-unknown-shuttle-incoming
+    weight: 5
+  - type: LoadMapRule
+    gridPath: /Maps/Shuttles/ShuttleEvent/gym.yml
+- type: entity
+  id: UnknownShuttleNTIncorporation
+  parent: BaseUnknownShuttleRule
+  components:
+  - type: StationEvent
+    startAnnouncement: station-event-unknown-shuttle-incoming
+    weight: 2
+    earliestStart: 45
+  - type: LoadMapRule
+    gridPath: /Maps/Shuttles/ShuttleEvent/incorporation.yml
+- type: entity
+  id: UnknownShuttleJoe
+  parent: BaseUnknownShuttleRule
+  components:
+  - type: StationEvent
+    startAnnouncement: station-event-unknown-shuttle-incoming
+  - type: LoadMapRule
+    gridPath: /Maps/Shuttles/ShuttleEvent/joe.yml
+- type: entity
+  id: UnknownShuttleLambordeere
+  parent: BaseUnknownShuttleRule
+  components:
+  - type: StationEvent
+    startAnnouncement: station-event-unknown-shuttle-incoming
+  - type: LoadMapRule
+    gridPath: /Maps/Shuttles/ShuttleEvent/lambordeere.yml
+- type: entity
+  id: UnknownShuttleMeatZone
+  parent: BaseUnknownShuttleRule
+  components:
+  - type: StationEvent
+    startAnnouncement: station-event-unknown-shuttle-incoming
+  - type: LoadMapRule
+    gridPath: /Maps/Shuttles/ShuttleEvent/meatzone.yml
+- type: entity
+  id: UnknownShuttleMicroshuttle
+  parent: BaseUnknownShuttleRule
+  components:
+  - type: StationEvent
+    startAnnouncement: station-event-unknown-shuttle-incoming
+    weight: 11
+    maxOccurrences: 4
+  - type: LoadMapRule
+    gridPath: /Maps/Shuttles/ShuttleEvent/microshuttle.yml
+- type: entity
+  id: UnknownShuttleSpacebus
+  parent: BaseUnknownShuttleRule
+  components:
+  - type: StationEvent
+    startAnnouncement: station-event-unknown-shuttle-incoming
+  - type: LoadMapRule
+    gridPath: /Maps/Shuttles/ShuttleEvent/spacebus.yml
