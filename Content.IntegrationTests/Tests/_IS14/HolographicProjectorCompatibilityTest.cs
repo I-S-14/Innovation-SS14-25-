@@ -12,6 +12,8 @@ public sealed class HolographicProjectorCompatibilityTest
     [TestCase("HoloprojectorCrate", "CrateHolographic", false)]
     [TestCase("RadiationBlockingProjector", "HolosignRadiationBlocking", true)]
     [TestCase("HoloprojectorSecurityAdvanced", "HolosignSecurityAdvanced", true)]
+    [TestCase("HoloprojectorXenoField", "XenoborgDeflectorField", true)]
+    [TestCase("IS14CyborgToolXenoHoloprojectorXenoField", "XenoborgDeflectorField", true)]
     public async Task UsingTheProjectorKeepsTheProjectionAnchoringAndConsumesOneCharge(
         string prototype, string projectionId, bool anchored)
     {

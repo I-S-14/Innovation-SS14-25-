@@ -19,6 +19,10 @@ namespace Content.Shared._IS14.Cyborgs.Components;
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState(true), AutoGenerateComponentPause]
 public sealed partial class CyborgComponent : Component
 {
+    /// <summary>Machines such as the mothership keep their lathe visuals while using the cyborg HUD.</summary>
+    [DataField]
+    public bool ManageAppearance = true;
+
     #region Brain
 
     [DataField]

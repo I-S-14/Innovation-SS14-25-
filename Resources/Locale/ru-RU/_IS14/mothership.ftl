@@ -1,0 +1,15 @@
+mothership-model-name = Материнское ядро
+mothership-model-description = Неподвижное производственное ядро ксеноборгов.
+mothership-eye-title = Сеть наблюдения ксеноборгов
+mothership-eye-ship = Глаз на корабле
+mothership-eye-return = Вернуться к ядру
+mothership-eye-jump = Перейти
+mothership-eye-follow = Следовать
+mothership-eye-following = Слежение: { $name }
+mothership-eye-free = Свободный глаз — корабль и зоны обзора ксеноборгов
+mothership-eye-home = Зрение ядра
+ent-IS14ActionMothershipEye = Сеть наблюдения ксеноборгов
+    .desc = Перемещайте глаз по кораблю и зонам обзора ксеноборгов. Переходите между боргами или следуйте за ними.
+ent-IS14ActionMothershipLathe = Производство материнского ядра
+    .desc = Открыть интерфейс печати шасси, модулей и оборудования.
+ent-IS14MothershipEye = глаз материнского ядра

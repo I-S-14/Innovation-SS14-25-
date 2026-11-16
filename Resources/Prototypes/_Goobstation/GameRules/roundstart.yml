@@ -267,8 +267,10 @@
     gridPath: /Maps/Shuttles/mothership.yml
   - type: AntagMultipleRoleSpawner
     antagRoleToPrototypes:
-      MothershipCore: [ MothershipCore ]
-      Xenoborg: [ IS14XenoborgEngi, IS14XenoborgHeavy, IS14XenoborgScout, IS14XenoborgStealth ]
+      #IS14-change start - keys must match the selected antag specifiers.
+      IS14XenoborgsAntag07e1eb851: [ MothershipCore ]
+      IS14XenoborgsAntag1dfef93a5: [ IS14XenoborgEngi, IS14XenoborgHeavy, IS14XenoborgScout, IS14XenoborgStealth ]
+      #IS14-change end
     pickAndTake: true
   - type: AntagSelection
     selectionTime: PrePlayerSpawn

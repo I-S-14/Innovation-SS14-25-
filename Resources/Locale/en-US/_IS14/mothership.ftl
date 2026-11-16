@@ -1,0 +1,10 @@
+mothership-model-name = Mothership core
+mothership-model-description = Stationary xenoborg fabrication core.
+mothership-eye-title = Xenoborg observation network
+mothership-eye-ship = Ship eye
+mothership-eye-return = Return to core
+mothership-eye-jump = Jump
+mothership-eye-follow = Follow
+mothership-eye-following = Following: { $name }
+mothership-eye-free = Free eye — ship and xenoborg vision
+mothership-eye-home = Core vision

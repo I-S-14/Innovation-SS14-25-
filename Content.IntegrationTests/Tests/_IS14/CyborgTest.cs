@@ -49,6 +49,50 @@ namespace Content.IntegrationTests.Tests._IS14;
 [TestOf(typeof(SharedCyborgSystem))]
 public sealed class CyborgTest
 {
+    [TestCase("Engi", "DoorControl")]
+    [TestCase("Engi", "DeflectorField")]
+    [TestCase("Engi", "Zap")]
+    [TestCase("Engi", "OilGun")]
+    [TestCase("Engi", "NaniteGun")]
+    [TestCase("Heavy", "GuidedMissileLauncher")]
+    [TestCase("Heavy", "Rocket")]
+    [TestCase("Heavy", "BurstFireLaser")]
+    [TestCase("Heavy", "HeavyRadioactive")]
+    [TestCase("Scout", "Jump")]
+    [TestCase("Scout", "BioKinfe")]
+    public async Task XenoborgPrintedUpgrades(string chassis, string module)
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true });
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+        var entities = server.ResolveDependency<IEntityManager>();
+        await server.WaitAssertion(() =>
+        {
+            var recipe = server.ResolveDependency<IPrototypeManager>()
+                .Index<Content.Shared.Research.Prototypes.LatheRecipePrototype>("XenoborgModule" + module + "Recipe");
+            var board = entities.SpawnEntity(recipe.Result, map.GridCoords);
+            var upgrade = entities.GetComponent<CyborgUpgradeComponent>(board);
+            var uid = entities.SpawnEntity("IS14Xenoborg" + chassis + "Printed", map.GridCoords);
+            var borg = entities.GetComponent<CyborgComponent>(uid);
+            var system = entities.System<SharedCyborgSystem>();
+            var user = entities.SpawnEntity(null, map.GridCoords);
+            entities.System<LockSystem>().Unlock(uid, null);
+            Assert.That(entities.System<SharedWiresSystem>()
+                .TogglePanel(uid, entities.GetComponent<WiresPanelComponent>(uid), true));
+            Assert.That(system.TryInstallUpgrade((uid, borg), (board, upgrade), user));
+            Assert.That(borg.UpgradeContainer.Contains(board));
+            foreach (var tool in upgrade.Tools)
+                Assert.That(borg.ToolContainer.ContainedEntities.Any(e =>
+                    entities.GetComponent<MetaDataComponent>(e).EntityPrototype?.ID == tool.Id),
+                    $"Missing tool {tool}");
+            foreach (var component in upgrade.AddComponents.Values)
+                Assert.That(entities.HasComponent(uid, component.Component.GetType()));
+            Assert.That(system.TryRemoveUpgrade((uid, borg), board, user));
+            foreach (var component in upgrade.AddComponents.Values)
+                Assert.That(entities.HasComponent(uid, component.Component.GetType()), Is.False);
+        });
+        await pair.CleanReturnAsync();
+    }
     private const string NoModelProto = "IS14CyborgNT";
     private const string EngineeringProto = "IS14CyborgNTEngineering";
     private static readonly ProtoId<CyborgModelPrototype> EngineeringModel = "IS14CyborgModelEngineering";
@@ -638,6 +682,15 @@ public sealed class CyborgTest
             var cyborg = entMan.GetComponent<CyborgComponent>(uid);
             Assert.That(cyborg.Model, Is.Not.Null);
             var model = protoMan.Index(cyborg.Model!.Value);
+
+            var core = entMan.SpawnEntity("MothershipCore", map.GridCoords);
+            var locks = entMan.System<LockSystem>();
+            Assert.That(locks.IsLocked(uid), Is.True);
+            Assert.That(locks.TryUnlock(uid, core), Is.True, "mothership must unlock IS14 xenoborgs");
+            Assert.That(locks.IsLocked(uid), Is.False);
+            Assert.That(locks.TryLock(uid, core), Is.True, "mothership must lock IS14 xenoborgs");
+            Assert.That(locks.IsLocked(uid), Is.True);
+            entMan.DeleteEntity(core);
 
             var transmitter = entMan.GetComponent<IntrinsicRadioTransmitterComponent>(uid);
             var active = entMan.GetComponent<ActiveRadioComponent>(uid);

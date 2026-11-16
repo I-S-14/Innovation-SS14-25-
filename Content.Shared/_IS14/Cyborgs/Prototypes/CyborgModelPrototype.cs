@@ -31,6 +31,10 @@ public sealed partial class CyborgModelPrototype : IPrototype, IInheritingProtot
     [DataField]
     public LocId? Description;
 
+    /// <summary>Localized model name in the grammatical form used by the module installation hint.</summary>
+    [DataField]
+    public LocId? ModuleFitName;
+
     /// <summary>
     /// Whether the model shows up in the model selection menu.
     /// Syndicate and event models are applied directly and stay hidden.

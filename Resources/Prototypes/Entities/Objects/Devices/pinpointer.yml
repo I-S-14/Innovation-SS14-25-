@@ -133,11 +133,17 @@
       visible: false
   - type: Icon
     state: pinpointer-xenoborg
+  #IS14-change start - selectable core/xenoborg targets, using the standard tracking arrow.
   - type: Pinpointer
-    whitelist: # Goob edit: pinpointer whitelist
-      components:
-      - MothershipCore
-    targetName: the Mothership # Goob edit
+    whitelist: null
+    canTargetMultiple: true
+    targetName: the Mothership
+  - type: MothershipPinpointer
+  - type: UserInterface
+    interfaces:
+      enum.MothershipPinpointerUiKey.Key:
+        type: MothershipPinpointerBoundUserInterface
+  #IS14-change end
 
 - type: entity
   parent: BaseItem

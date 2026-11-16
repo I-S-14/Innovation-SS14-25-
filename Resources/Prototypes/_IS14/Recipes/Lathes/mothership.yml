@@ -1,0 +1,11 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+
+- type: latheRecipe
+  parent: MMI
+  id: IS14MothershipMMI
+  materials:
+    Steel: 1500
+    Glass: 1000
+    Plastic: 1000
+    Gold: 500
+    Silver: 500

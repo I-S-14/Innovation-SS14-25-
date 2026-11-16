@@ -4,6 +4,9 @@
   id: XenoborgMachines
   recipes:
   - XenoborgExtractorRecipe
+  #IS14-change start - the core must fabricate interfaces for harvested brains.
+  - IS14MothershipMMI
+  #IS14-change end
 
 - type: latheRecipePack
   id: EmptyXenoborgs

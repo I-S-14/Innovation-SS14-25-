@@ -1,0 +1,70 @@
+# Licensed under IS14's EULA, see EULA.txt for more information.
+
+- type: cyborgSkin
+  id: IS14CyborgSkinMothership
+  name: mothership-model-name
+  sprite: Mobs/Silicon/mothership_core.rsi
+  bodyState: core-idle
+  eyesState: core-e
+  noHat: true
+
+- type: cyborgModel
+  id: IS14CyborgModelMothership
+  name: mothership-model-name
+  description: mothership-model-description
+  selectable: false
+  skins: [IS14CyborgSkinMothership]
+  basicTools:
+  - IS14CyborgToolFlash
+  - IS14CyborgToolOmnitool
+  - IS14CyborgToolXenoDoorRemoteXenoborg
+  - IS14CyborgToolXenoAccessConfiguratorXenoborg
+  pickupStacks: [Steel, Glass, Plastic, Plasteel, Gold, Silver, Plasma, Uranium, Cable, CableMV, CableHV, XenoborgCrystal]
+  pickupWhitelist:
+    components:
+    - Brain
+    - BorgBrain
+    - CyborgUpgrade
+    - PowerCell
+
+- type: entity
+  parent: [Incorporeal, BaseMob]
+  id: IS14MothershipEye
+  name: mothership eye
+  categories: [HideSpawnMenu, DoNotMap]
+  components:
+  - type: Eye
+    drawFov: true
+  - type: Visibility
+    layer: 2 # Ghost, like StationAiHolo.
+  - type: Sprite
+    sprite: Mobs/Silicon/station_ai.rsi
+    layers:
+    - state: ai_camera
+      shader: unshaded
+  - type: Tag
+    tags: [CantInteract]
+
+- type: entity
+  parent: BaseAGhostAction
+  id: IS14ActionMothershipEye
+  name: Xenoborg observation network
+  description: Move an eye around the ship or through xenoborg vision. Jump between xenoborgs or follow one.
+  components:
+  - type: Action
+    icon: { sprite: Interface/Actions/actions_borg.rsi, state: xenoborg-camera-computer }
+    priority: -6
+  - type: InstantAction
+    event: !type:ToggleIntrinsicUIEvent { key: enum.MothershipEyeUiKey.Key }
+
+- type: entity
+  parent: BaseAGhostAction
+  id: IS14ActionMothershipLathe
+  name: Mothership production
+  description: Open the core's fabricator.
+  components:
+  - type: Action
+    icon: { sprite: Interface/Actions/actions_borg.rsi, state: xenoborg-construction-module }
+    priority: -6
+  - type: InstantAction
+    event: !type:ToggleIntrinsicUIEvent { key: enum.LatheUiKey.Key }
