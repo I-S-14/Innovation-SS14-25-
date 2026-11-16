@@ -268,22 +268,22 @@
   - type: AntagMultipleRoleSpawner
     antagRoleToPrototypes:
       #IS14-change start - keys must match the selected antag specifiers.
-      IS14XenoborgsAntag07e1eb851: [ MothershipCore ]
-      IS14XenoborgsAntag1dfef93a5: [ IS14XenoborgEngi, IS14XenoborgHeavy, IS14XenoborgScout, IS14XenoborgStealth ]
+      IS14MothershipCoreAntag: [ MothershipCore ]
+      IS14XenoborgsAntag: [ IS14XenoborgEngi, IS14XenoborgHeavy, IS14XenoborgScout, IS14XenoborgStealth ]
       #IS14-change end
     pickAndTake: true
   - type: AntagSelection
     selectionTime: PrePlayerSpawn
     antags:
     - !type:LinearAntagCount
-      proto: IS14XenoborgsAntag07e1eb851
+      proto: IS14MothershipCoreAntag
       range:
         max: 1
         min: 1
       playerRatio: 10
       chaosScore: 200
     - !type:LinearAntagCount
-      proto: IS14XenoborgsAntag1dfef93a5
+      proto: IS14XenoborgsAntag
       range:
         max: 4
         min: 4

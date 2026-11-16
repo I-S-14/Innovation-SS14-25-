@@ -84,12 +84,21 @@ namespace Content.Server.Lathe
             SubscribeLocalEvent<LatheComponent, LatheMoveRequestMessage>(OnLatheMoveRequestMessage);
             SubscribeLocalEvent<LatheComponent, LatheAbortFabricationMessage>(OnLatheAbortFabricationMessage);
 
-            SubscribeLocalEvent<LatheComponent, BeforeActivatableUIOpenEvent>((u, c, _) => UpdateUserInterfaceState(u, c));
+            //IS14-change: intrinsic actions also open lathes, without BeforeActivatableUIOpenEvent.
+            SubscribeLocalEvent<LatheComponent, BoundUIOpenedEvent>(OnUiOpened);
             SubscribeLocalEvent<LatheComponent, MaterialAmountChangedEvent>(OnMaterialAmountChanged);
             SubscribeLocalEvent<TechnologyDatabaseComponent, LatheGetRecipesEvent>(OnGetRecipes);
             SubscribeLocalEvent<EmagLatheRecipesComponent, LatheGetRecipesEvent>(GetEmagLatheRecipes);
             SubscribeLocalEvent<LatheHeatProducingComponent, LatheStartPrintingEvent>(OnHeatStartPrinting);
         }
+        //IS14-change start - populate the initial state regardless of how the interface was opened.
+        private void OnUiOpened(Entity<LatheComponent> ent, ref BoundUIOpenedEvent args)
+        {
+            if (args.UiKey is LatheUiKey.Key)
+                UpdateUserInterfaceState(ent.Owner, ent.Comp);
+        }
+        //IS14-change end
+
         public override void Update(float frameTime)
         {
             var query = EntityQueryEnumerator<LatheProducingComponent, LatheComponent>();

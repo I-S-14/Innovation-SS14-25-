@@ -7,7 +7,7 @@
     whitelist:
     - Xenoborg
     #IS14-change start - retained antag selection specifier
-    - IS14XenoborgsAntag1dfef93a5
+    - IS14XenoborgsAntag
     #IS14-change end
   - type: SpawnPoint
   - type: Sprite
@@ -25,7 +25,7 @@
     whitelist:
     - MothershipCore
     #IS14-change start - retained antag selection specifier
-    - IS14XenoborgsAntag07e1eb851
+    - IS14MothershipCoreAntag
     #IS14-change end
   - type: SpawnPoint
   - type: Sprite

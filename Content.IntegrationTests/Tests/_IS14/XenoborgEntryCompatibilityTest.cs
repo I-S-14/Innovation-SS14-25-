@@ -33,8 +33,8 @@ public sealed class XenoborgEntryCompatibilityTest : AntagTest
         var spawners = SEntMan.EntityQuery<GhostRoleAntagSpawnerComponent>()
             .Where(c => c.Rule == rule.Value.Owner).ToArray();
         Assert.That(spawners.Length, Is.EqualTo(5));
-        Assert.That(spawners.Count(c => c.Definition?.Id == "IS14XenoborgsAntag07e1eb851"), Is.EqualTo(1));
-        Assert.That(spawners.Count(c => c.Definition?.Id == "IS14XenoborgsAntag1dfef93a5"), Is.EqualTo(4));
+        Assert.That(spawners.Count(c => c.Definition?.Id == "IS14MothershipCoreAntag"), Is.EqualTo(1));
+        Assert.That(spawners.Count(c => c.Definition?.Id == "IS14XenoborgsAntag"), Is.EqualTo(4));
 
         foreach (var spawner in spawners)
         {
@@ -42,7 +42,7 @@ public sealed class XenoborgEntryCompatibilityTest : AntagTest
             Assert.That(Server.System<GhostRoleSystem>().Takeover(ServerSession!, ghostRole.Identifier), Is.True);
             var body = ServerSession!.AttachedEntity!.Value;
             Assert.That(grids.MapGrids, Does.Contain(SEntMan.GetComponent<TransformComponent>(body).GridUid));
-            if (spawner.Definition?.Id == "IS14XenoborgsAntag07e1eb851")
+            if (spawner.Definition?.Id == "IS14MothershipCoreAntag")
                 Assert.That(SEntMan.HasComponent<MothershipCoreComponent>(body), Is.True);
             else
             {

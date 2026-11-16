@@ -37,7 +37,7 @@ public sealed class MothershipEyeTest : AntagTest
     {
         STicker.StartGameRule("Xenoborgs", out var rule);
         var spawner = SEntMan.EntityQuery<GhostRoleAntagSpawnerComponent>().Single(c =>
-            c.Rule == rule!.Value.Owner && c.Definition?.Id == "IS14XenoborgsAntag07e1eb851");
+            c.Rule == rule!.Value.Owner && c.Definition?.Id == "IS14MothershipCoreAntag");
         var role = SEntMan.GetComponent<GhostRoleComponent>(spawner.Owner);
         Assert.That(Server.System<GhostRoleSystem>().Takeover(ServerSession!, role.Identifier), Is.True);
         var core = ServerSession!.AttachedEntity!.Value;

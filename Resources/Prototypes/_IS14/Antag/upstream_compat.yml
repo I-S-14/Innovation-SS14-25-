@@ -1285,7 +1285,7 @@
   - MindRoleNukeops
   lateJoinAdditional: false
 - type: antagSpecifier
-  id: IS14XenoborgsAntag07e1eb851
+  id: IS14MothershipCoreAntag
   prefRoles: [MothershipCore]
   fallbackRoles: [Xenoborg]
   spawnerPrototype: SpawnPointGhostRoleMothershipCore
@@ -1293,7 +1293,7 @@
   - MindRoleMothershipCore
   lateJoinAdditional: false
 - type: antagSpecifier
-  id: IS14XenoborgsAntag1dfef93a5
+  id: IS14XenoborgsAntag
   prefRoles: [Xenoborg]
   fallbackRoles: [MothershipCore]
   spawnerPrototype: SpawnPointGhostRoleXenoborg

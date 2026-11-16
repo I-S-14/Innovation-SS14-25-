@@ -97,7 +97,8 @@ public sealed class MothershipEyeSystem : EntitySystem
         ent.Comp.AddedVisibilityMask = (int) VisibilityFlags.Ghost & ~coreEye.VisibilityMask;
         _eyes.SetVisibilityMask(ent.Owner, coreEye.VisibilityMask | ent.Comp.AddedVisibilityMask, coreEye);
         _eyes.SetTarget(ent.Owner, eye);
-        _eyes.SetDrawFov(ent.Owner, true);
+        // Camera coverage is masked by the overlay, not the remote eye's wall occlusion.
+        _eyes.SetDrawFov(ent.Owner, false);
         _mover.SetRelay(ent.Owner, eye);
         return true;
     }

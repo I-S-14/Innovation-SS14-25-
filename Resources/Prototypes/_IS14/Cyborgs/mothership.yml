@@ -34,7 +34,7 @@
   categories: [HideSpawnMenu, DoNotMap]
   components:
   - type: Eye
-    drawFov: true
+    drawFov: false
   - type: Visibility
     layer: 2 # Ghost, like StationAiHolo.
   - type: Sprite

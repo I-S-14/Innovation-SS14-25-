@@ -38,6 +38,7 @@ public sealed partial class StationAiOverlay : Overlay //goob edit
     private readonly OverlayResourceCache<CachedResources> _resources = new();
 
     private ProtoId<ShaderPrototype> _activeShader = CameraStaticShader;
+    [ViewVariables] public ProtoId<ShaderPrototype> StaticShader => _activeShader; //IS14-change: inspect the selected noise mode.
     private float _updateRate = 1f / 30f;
     private float _accumulator;
 
