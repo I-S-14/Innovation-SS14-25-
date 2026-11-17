@@ -9,13 +9,15 @@
 - type: entity
   parent: IS14VendingMachineBase
   id: IS14VendingMachineMilicia
-  name: MilicVend
-  description: Автомат снаряжения милиции.
+  name: "militia equipment vendor"
+  description: "Provides everything an officer needs for an arrest: cable ties, batons, batteries, and furry handcuffs."
   components:
   - type: IS14VendingMachine
+    ejectState: eject-unshaded
+    ejectDelay: 0.825
     revenueAccount: StationSecurity
     tabs:
-    - name: Форма
+    - name: is14-vending-tab-uniforms
       inventory:
       - itemId: ClothingBackpackSecurity
         price: 200
@@ -29,7 +31,7 @@
       - itemId: ClothingShoesBootsJack
         price: 150
         stock: 3
-    - name: Спецсредства
+    - name: is14-vending-tab-security-equipment
       access: [ Security ]
       inventory:
       - itemId: Handcuffs
@@ -49,17 +51,21 @@
     sprite: _IS14/Structures/Machines/Vends/milicia.rsi
 
 # ─── Общий ──────────────────────────────────────────────────────────────────
+  - type: PointLight
+    color: "#79d7ff"
 
 - type: entity
   parent: IS14VendingMachineBase
   id: IS14VendingMachineObshiy
-  name: Vend
-  description: Автомат товаров общего назначения.
+  name: "Voznesenskoye automated tailor"
+  description: "Sells clothing from the second-latest fashion collection."
   components:
   - type: IS14VendingMachine
+    ejectState: eject-unshaded
+    ejectDelay: 1.675
     revenueAccount: StationService
     tabs:
-    - name: Товары
+    - name: is14-vending-tab-goods
       inventory:
       - itemId: FoodSnackChocolate
         price: 30
@@ -103,17 +109,21 @@
     sprite: _IS14/Structures/Machines/Vends/obshiy.rsi
 
 # ─── Юрист ──────────────────────────────────────────────────────────────────
+  - type: PointLight
+    color: "#ff6666"
 
 - type: entity
   parent: IS14VendingMachineBase
   id: IS14VendingMachineUr
-  name: LawVend
-  description: Автомат для юристов.
+  name: "legal supplies vendor"
+  description: "Stores and sells stationery, and also serves as a printer, copier, scanner, and shredder."
   components:
   - type: IS14VendingMachine
+    ejectState: eject-unshaded
+    ejectDelay: 1.675
     revenueAccount: StationService
     tabs:
-    - name: Товары
+    - name: is14-vending-tab-goods
       inventory:
       - itemId: ClothingUniformJumpsuitLawyerBlue
         price: 150
@@ -160,17 +170,19 @@
     sprite: _IS14/Structures/Machines/Vends/ur.rsi
 
 # ─── Экспедиция ─────────────────────────────────────────────────────────────
+  - type: PointLight
+    color: "#e6b28a"
 
 - type: entity
   parent: IS14VendingMachineBase
   id: IS14VendingMachineExpeditionGear
-  name: ExpGear
-  description: Базовое снаряжение экспедиций.
+  name: "expedition equipment vendor"
+  description: "Basic expedition equipment."
   components:
   - type: IS14VendingMachine
     revenueAccount: StationCargo
     tabs:
-    - name: Снаряжение
+    - name: is14-vending-tab-equipment
       inventory:
       - itemId: Pickaxe
         price: 150
@@ -203,17 +215,19 @@
     pack: IS14ExpGearVendGoodbyes
   - type: Sprite
     sprite: _IS14/Structures/Machines/Vends/expgear.rsi
+  - type: PointLight
+    color: "#79baff"
 
 - type: entity
   parent: IS14VendingMachineBase
   id: IS14VendingMachineExp
-  name: ExpVend
-  description: Продвинутое снаряжение экспедиций.
+  name: "advanced expedition vendor"
+  description: "Advanced expedition equipment."
   components:
   - type: IS14VendingMachine
     revenueAccount: StationCargo
     tabs:
-    - name: Расходники
+    - name: is14-vending-tab-supplies
       inventory:
       - itemId: Flare
         price: 30
@@ -221,7 +235,7 @@
       - itemId: OreBag
         price: 100
         stock: 3
-    - name: Снаряжение
+    - name: is14-vending-tab-equipment
       access: [ Salvage ]
       inventory:
       - itemId: WeaponGrapplingGun
@@ -247,17 +261,21 @@
     sprite: _IS14/Structures/Machines/Vends/exp.rsi
 
 # ─── Медицина ───────────────────────────────────────────────────────────────
+  - type: PointLight
+    color: "#79baff"
 
 - type: entity
   parent: IS14VendingMachineBase
   id: IS14VendingMachineChem
-  name: ChemVend
-  description: Автомат реагентов для химиков.
+  name: "chemistry department vendor"
+  description: "Contains the necessary chemicals, flasks, and labels for forms and price tags."
   components:
   - type: IS14VendingMachine
+    ejectState: eject-unshaded
+    ejectDelay: 1.675
     revenueAccount: StationMedical
     tabs:
-    - name: Реагенты
+    - name: is14-vending-tab-reagents
       access: [ Chemistry ]
       inventory:
       - itemId: Jug
@@ -336,17 +354,21 @@
     pack: IS14ChemVendGoodbyes
   - type: Sprite
     sprite: _IS14/Structures/Machines/Vends/chem.rsi
+  - type: PointLight
+    color: "#ffa85c"
 
 - type: entity
   parent: IS14VendingMachineBase
   id: IS14VendingMachineMed
-  name: MedVend
-  description: Автомат медикаментов.
+  name: "medical equipment vendor"
+  description: "Provides first aid supplies for a nominally exorbitant fee."
   components:
   - type: IS14VendingMachine
+    ejectState: eject-unshaded
+    ejectDelay: 0.825
     revenueAccount: StationMedical
     tabs:
-    - name: Базовое
+    - name: is14-vending-tab-basic
       inventory:
       - itemId: Gauze
         price: 60
@@ -366,7 +388,7 @@
       - itemId: Syringe
         price: 50
         stock: 5
-    - name: Продвинутое
+    - name: is14-vending-tab-advanced
       access: [ Medical ]
       inventory:
       - itemId: HandheldHealthAnalyzer
@@ -396,17 +418,19 @@
     sprite: _IS14/Structures/Machines/Vends/med.rsi
 
 # ─── Сервис ─────────────────────────────────────────────────────────────────
+  - type: PointLight
+    color: "#76ed72"
 
 - type: entity
   parent: IS14VendingMachineBase
   id: IS14VendingMachineCigs
-  name: CigsVend
-  description: Автомат сигарет.
+  name: "cigarette vendor"
+  description: "Economic reforms ended the sale of individual cigarettes from these machines. Pensioners handle that business now."
   components:
   - type: IS14VendingMachine
     revenueAccount: StationService
     tabs:
-    - name: Товары
+    - name: is14-vending-tab-goods
       inventory:
       - itemId: CigPackGreen
         price: 60
@@ -460,17 +484,19 @@
     pack: IS14CigsVendGoodbyes
   - type: Sprite
     sprite: _IS14/Structures/Machines/Vends/cigs.rsi
+  - type: PointLight
+    color: "#ff7373"
 
 - type: entity
   parent: IS14VendingMachineBase
   id: IS14VendingMachinekofee
-  name: KofeeVend
-  description: Автомат горячих напитков.
+  name: "coffee vendor"
+  description: "Looking at it, you hear a persistent voice in your head saying, \"Let's go have some coffee!\""
   components:
   - type: IS14VendingMachine
     revenueAccount: StationService
     tabs:
-    - name: Напитки
+    - name: is14-vending-tab-drinks
       inventory:
       - itemId: DrinkHotCoffee
         price: 20
@@ -497,17 +523,19 @@
     pack: IS14KofeeVendGoodbyes
   - type: Sprite
     sprite: _IS14/Structures/Machines/Vends/kofee.rsi
+  - type: PointLight
+    color: "#e9b67d"
 
 - type: entity
   parent: IS14VendingMachineBase
   id: IS14VendingMachineFood
-  name: FoodVend
-  description: Автомат снеков.
+  name: "snack vendor"
+  description: "Sells Jack bars, chips, sunflower seeds, and other snacks. There is a 13% chance of the food jamming the machine."
   components:
   - type: IS14VendingMachine
     revenueAccount: StationService
     tabs:
-    - name: Снеки
+    - name: is14-vending-tab-snacks
       inventory:
       - itemId: FoodSnackRaisins
         price: 30
@@ -543,3 +571,5 @@
     pack: IS14FoodVendGoodbyes
   - type: Sprite
     sprite: _IS14/Structures/Machines/Vends/food.rsi
+  - type: PointLight
+    color: "#ff7373"

@@ -8,7 +8,8 @@ name: Publish Testing
 
 concurrency:
   group: publish-testing
-  cancel-in-progress: true
+  # A cancellation during container replacement could interrupt a rollback.
+  cancel-in-progress: false
 
 on:
   workflow_dispatch:
@@ -21,11 +22,11 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: ${{ vars.ECONOMY_EDITOR_RUNNER || 'self-hosted' }}
 
     steps:
     - name: Install dependencies
-      run: sudo apt-get install -y python3-paramiko python3-lxml
+      run: sudo apt-get install -y python3-paramiko python3-lxml python3-yaml
 
     - uses: actions/checkout@v4.2.2
       with:
@@ -45,6 +46,13 @@ jobs:
         cd RobustToolbox
         git fetch --depth=1
 
+    - name: Check EconomyEditor testing deployment configuration
+      env:
+        ECONOMY_EDITOR_TOKEN: ${{ secrets.ECONOMY_EDITOR_TESTING_TOKEN || secrets.ECONOMY_EDITOR_TOKEN }}
+        ECONOMY_EDITOR_BIND_ADDRESS: ${{ vars.ECONOMY_EDITOR_BIND_ADDRESS || '127.0.0.1' }}
+        ECONOMY_EDITOR_PORT: ${{ vars.ECONOMY_EDITOR_TESTING_PORT || '5188' }}
+      run: python3 Tools/EconomyEditor/scripts/deploy.py --preflight --channel testing
+
     - name: Install dependencies
       run: dotnet restore
 
@@ -57,7 +65,32 @@ jobs:
     - name: Package client
       run: dotnet run --project Content.Packaging client --no-wipe-release
 
+    - name: Build testing EconomyEditor with a fresh game snapshot
+      id: economy_editor
+      env:
+        ECONOMY_EDITOR_IMAGE: is14-economy-editor-testing:${{ github.sha }}
+      run: sh Tools/EconomyEditor/scripts/ci_build.sh
+
+    - name: Save EconomyEditor deployment manifest
+      uses: actions/upload-artifact@v4
+      with:
+        name: economy-editor-testing-${{ github.sha }}
+        path: ${{ steps.economy_editor.outputs.manifest }}
+        if-no-files-found: error
+
     - name: Publish version
       run: python3 Tools/publish_multi_request.py --fork-id "${{ inputs.fork_id }}"
       env:
         PUBLISH_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
+
+    - name: Deploy testing EconomyEditor
+      env:
+        ECONOMY_EDITOR_TOKEN: ${{ secrets.ECONOMY_EDITOR_TESTING_TOKEN || secrets.ECONOMY_EDITOR_TOKEN }}
+        ECONOMY_EDITOR_BIND_ADDRESS: ${{ vars.ECONOMY_EDITOR_BIND_ADDRESS || '127.0.0.1' }}
+        ECONOMY_EDITOR_PORT: ${{ vars.ECONOMY_EDITOR_TESTING_PORT || '5188' }}
+        ECONOMY_EDITOR_IMAGE: ${{ steps.economy_editor.outputs.image }}
+        ECONOMY_EDITOR_CATALOG_VERSION: ${{ steps.economy_editor.outputs.catalog-version }}
+      run: >-
+        python3 Tools/EconomyEditor/scripts/deploy.py --channel testing
+        --image "$ECONOMY_EDITOR_IMAGE" --commit "$GITHUB_SHA"
+        --catalog-version "$ECONOMY_EDITOR_CATALOG_VERSION"

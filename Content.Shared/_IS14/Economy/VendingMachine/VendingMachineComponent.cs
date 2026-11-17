@@ -59,6 +59,14 @@ public sealed partial class IS14VendingMachineComponent : Component
     [DataField]
     public string DenyState = "deny-unshaded";
 
+    /// <summary>Optional dispensing animation; null keeps vendors without this RSI state unchanged.</summary>
+    [DataField]
+    public string? EjectState;
+
+    /// <summary>Duration of one dispensing animation, matching its RSI frame delays.</summary>
+    [DataField]
+    public TimeSpan EjectDelay = TimeSpan.FromSeconds(1.2);
+
     /// <summary>How long the deny screen state is shown.</summary>
     [DataField]
     public TimeSpan DenyDelay = TimeSpan.FromSeconds(2.0);
@@ -70,4 +78,15 @@ public sealed partial class IS14VendingMachineComponent : Component
     /// <summary>Server: game time when the current deny animation ends.</summary>
     [ViewVariables]
     public TimeSpan DenyEnd;
+
+    [ViewVariables]
+    public TimeSpan EjectEnd;
+
+    /// <summary>Increments on each purchase, including repeated purchases during the same animation.</summary>
+    [ViewVariables]
+    public uint EjectSequence;
+
+    /// <summary>Client-side last observed purchase sequence, used to restart the sprite animation.</summary>
+    [ViewVariables]
+    public uint LastEjectSequence;
 }

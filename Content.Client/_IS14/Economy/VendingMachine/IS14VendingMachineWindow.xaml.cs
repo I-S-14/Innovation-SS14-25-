@@ -94,7 +94,7 @@ public sealed partial class IS14VendingMachineWindow : DefaultWindow
             var tab = state.Tabs[i];
             var btn = new IS14VendingTabButton
             {
-                Text = tab.Name,
+                Text = Loc.TryGetString(tab.Name, out var tabName) ? tabName : tab.Name,
                 Locked = !tab.HasAccess,
             };
             if (!tab.HasAccess)

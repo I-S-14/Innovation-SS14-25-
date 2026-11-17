@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "license": "All Rights Reserved",
+  "copyright": "Source sprites supplied in Resources/codex; author not specified.",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "icon"
+    },
+    {
+      "name": "unlit"
+    },
+    {
+      "name": "unlit-building",
+      "delays": [
+        [
+          0.5,
+          0.3,
+          0.375,
+          0.3,
+          0.6
+        ]
+      ]
+    },
+    {
+      "name": "inserting",
+      "delays": [
+        [
+          0.18,
+          0.08,
+          0.06,
+          0.06,
+          0.06,
+          0.06,
+          0.1,
+          0.19
+        ]
+      ]
+    },
+    {
+      "name": "panel"
+    },
+    {
+      "name": "cover"
+    }
+  ]
+}
