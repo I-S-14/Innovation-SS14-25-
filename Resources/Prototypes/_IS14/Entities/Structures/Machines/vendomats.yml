@@ -13,6 +13,8 @@
   description: "Provides everything an officer needs for an arrest: cable ties, batons, batteries, and furry handcuffs."
   components:
   - type: IS14VendingMachine
+    ejectState: eject-unshaded
+    ejectDelay: 0.825
     revenueAccount: StationSecurity
     tabs:
     - name: is14-vending-tab-uniforms
@@ -59,6 +61,8 @@
   description: "Sells clothing from the second-latest fashion collection."
   components:
   - type: IS14VendingMachine
+    ejectState: eject-unshaded
+    ejectDelay: 1.675
     revenueAccount: StationService
     tabs:
     - name: is14-vending-tab-goods
@@ -115,6 +119,8 @@
   description: "Stores and sells stationery, and also serves as a printer, copier, scanner, and shredder."
   components:
   - type: IS14VendingMachine
+    ejectState: eject-unshaded
+    ejectDelay: 1.675
     revenueAccount: StationService
     tabs:
     - name: is14-vending-tab-goods
@@ -265,6 +271,8 @@
   description: "Contains the necessary chemicals, flasks, and labels for forms and price tags."
   components:
   - type: IS14VendingMachine
+    ejectState: eject-unshaded
+    ejectDelay: 1.675
     revenueAccount: StationMedical
     tabs:
     - name: is14-vending-tab-reagents
@@ -356,6 +364,8 @@
   description: "Provides first aid supplies for a nominally exorbitant fee."
   components:
   - type: IS14VendingMachine
+    ejectState: eject-unshaded
+    ejectDelay: 0.825
     revenueAccount: StationMedical
     tabs:
     - name: is14-vending-tab-basic

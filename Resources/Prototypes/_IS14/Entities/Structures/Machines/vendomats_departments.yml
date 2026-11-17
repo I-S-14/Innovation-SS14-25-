@@ -8,6 +8,8 @@
   description: "All equipment dispensed is deducted from your pension payments."
   components:
   - type: IS14VendingMachine
+    ejectState: eject-unshaded
+    ejectDelay: 1.675
     revenueAccount: StationTreasury
     tabs:
     - name: is14-vending-tab-goods
@@ -147,6 +149,8 @@
   description: "Offers advanced equipment at unaffordable prices."
   components:
   - type: IS14VendingMachine
+    ejectState: eject-unshaded
+    ejectDelay: 1.675
     revenueAccount: StationTreasury
     tabs:
     - name: is14-vending-tab-goods
@@ -238,6 +242,8 @@
   description: "Dispenses jumpsuits that are already wrinkled and stained with dust."
   components:
   - type: IS14VendingMachine
+    ejectState: eject-unshaded
+    ejectDelay: 1.675
     revenueAccount: StationCargo
     tabs:
     - name: is14-vending-tab-goods
@@ -299,6 +305,8 @@
   description: "Stocks useful items such as a keg claw, a replacement pallet jack handle, and a tank road wheel."
   components:
   - type: IS14VendingMachine
+    ejectState: eject-unshaded
+    ejectDelay: 0.825
     revenueAccount: StationCargo
     tabs:
     - name: is14-vending-tab-goods
@@ -373,6 +381,8 @@
   description: "Dispenses a selection of tools for enthusiastically poking alien artifacts."
   components:
   - type: IS14VendingMachine
+    ejectState: eject-unshaded
+    ejectDelay: 1.675
     revenueAccount: StationResearch
     tabs:
     - name: is14-vending-tab-goods
@@ -434,6 +444,8 @@
   description: "Equipped with a scrap metal detector for material shortages. Can also serve as a mech component."
   components:
   - type: IS14VendingMachine
+    ejectState: eject-unshaded
+    ejectDelay: 1.675
     revenueAccount: StationResearch
     tabs:
     - name: is14-vending-tab-goods
@@ -504,6 +516,8 @@
   description: "Supplies staff with one-size-fits-all uniforms designed to accommodate horizontal growth."
   components:
   - type: IS14VendingMachine
+    ejectState: eject-unshaded
+    ejectDelay: 1.675
     revenueAccount: StationSecurity
     tabs:
     - name: is14-vending-tab-goods
@@ -631,6 +645,8 @@
   description: "Dispenses medical coats, masks, and shoe covers for an additional fee."
   components:
   - type: IS14VendingMachine
+    ejectState: eject-unshaded
+    ejectDelay: 1.675
     revenueAccount: StationMedical
     tabs:
     - name: is14-vending-tab-goods
@@ -716,6 +732,8 @@
   description: "Sells engineering department tools at inflated prices."
   components:
   - type: IS14VendingMachine
+    ejectState: eject-unshaded
+    ejectDelay: 0.825
     revenueAccount: StationEngineering
     tabs:
     - name: is14-vending-tab-goods
@@ -768,6 +786,8 @@
   description: "Dispenses workwear resistant to heat, thanks to the ubiquitous nitrogen stains."
   components:
   - type: IS14VendingMachine
+    ejectState: eject-unshaded
+    ejectDelay: 1.675
     revenueAccount: StationEngineering
     tabs:
     - name: is14-vending-tab-goods
@@ -826,6 +846,8 @@
   description: "Dispenses engineering workwear pre-stained with fuel oil."
   components:
   - type: IS14VendingMachine
+    ejectState: eject-unshaded
+    ejectDelay: 1.675
     revenueAccount: StationEngineering
     tabs:
     - name: is14-vending-tab-goods

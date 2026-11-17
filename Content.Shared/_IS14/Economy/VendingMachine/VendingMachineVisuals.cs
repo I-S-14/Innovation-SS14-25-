@@ -6,6 +6,7 @@ namespace Content.Shared._IS14.Economy.VendingMachine;
 public enum IS14VendingMachineVisuals : byte
 {
     VisualState,
+    EjectSequence,
 }
 
 [Serializable, NetSerializable]
@@ -15,4 +16,5 @@ public enum IS14VendingMachineVisualState : byte
     Off,
     Broken,
     Deny,
+    Eject,
 }

@@ -27,7 +27,7 @@ public sealed class IS14VendingMachineVisualsSystem : VisualizerSystem<IS14Vendi
         }
 
         var sprite = new Entity<SpriteComponent?>(uid, args.Sprite);
-        var screenVisible = state is IS14VendingMachineVisualState.Normal or IS14VendingMachineVisualState.Deny;
+        var screenVisible = state is IS14VendingMachineVisualState.Normal or IS14VendingMachineVisualState.Deny or IS14VendingMachineVisualState.Eject;
 
         // Light behaviours enable their light on every loop. Stop the behaviour
         // before disabling the light so unpowered or broken vendors stay dark.
@@ -56,8 +56,20 @@ public sealed class IS14VendingMachineVisualsSystem : VisualizerSystem<IS14Vendi
 
             if (screenVisible)
             {
-                SpriteSystem.LayerSetRsiState(sprite, screenLayer,
-                    state == IS14VendingMachineVisualState.Deny ? comp.DenyState : comp.NormalState);
+                var screenState = state switch
+                {
+                    IS14VendingMachineVisualState.Deny => comp.DenyState,
+                    IS14VendingMachineVisualState.Eject => comp.EjectState ?? comp.NormalState,
+                    _ => comp.NormalState,
+                };
+                SpriteSystem.LayerSetRsiState(sprite, screenLayer, screenState);
+                if (state == IS14VendingMachineVisualState.Eject &&
+                    args.TryGetData<uint>(IS14VendingMachineVisuals.EjectSequence, out var sequence) &&
+                    sequence != comp.LastEjectSequence)
+                {
+                    SpriteSystem.LayerSetAnimationTime(sprite, screenLayer, 0f);
+                    comp.LastEjectSequence = sequence;
+                }
             }
         }
     }

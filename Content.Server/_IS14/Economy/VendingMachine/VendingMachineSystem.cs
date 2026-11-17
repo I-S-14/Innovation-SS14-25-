@@ -57,7 +57,7 @@ public sealed class VendingMachineSystem : EntitySystem
         });
     }
 
-    /// <summary>Reverts expired deny animations back to the normal screen.</summary>
+    /// <summary>Reverts expired deny and dispensing animations back to the normal screen.</summary>
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
@@ -66,11 +66,19 @@ public sealed class VendingMachineSystem : EntitySystem
         var query = EntityQueryEnumerator<IS14VendingMachineComponent>();
         while (query.MoveNext(out var uid, out var comp))
         {
-            if (comp.DenyEnd == TimeSpan.Zero || now < comp.DenyEnd)
-                continue;
-
-            comp.DenyEnd = TimeSpan.Zero;
-            UpdateVisualState((uid, comp));
+            var changed = false;
+            if (comp.DenyEnd != TimeSpan.Zero && now >= comp.DenyEnd)
+            {
+                comp.DenyEnd = TimeSpan.Zero;
+                changed = true;
+            }
+            if (comp.EjectEnd != TimeSpan.Zero && now >= comp.EjectEnd)
+            {
+                comp.EjectEnd = TimeSpan.Zero;
+                changed = true;
+            }
+            if (changed)
+                UpdateVisualState((uid, comp));
         }
     }
 
@@ -81,6 +89,8 @@ public sealed class VendingMachineSystem : EntitySystem
 
     private void OnPowerChanged(Entity<IS14VendingMachineComponent> ent, ref PowerChangedEvent args)
     {
+        if (!args.Powered)
+            ent.Comp.EjectEnd = TimeSpan.Zero;
         UpdateVisualState(ent);
     }
 
@@ -88,6 +98,7 @@ public sealed class VendingMachineSystem : EntitySystem
     {
         ent.Comp.Broken = true;
         ent.Comp.DenyEnd = TimeSpan.Zero;
+        ent.Comp.EjectEnd = TimeSpan.Zero;
         _ui.CloseUi(ent.Owner, IS14VendingMachineUiKey.Key);
         UpdateVisualState(ent);
     }
@@ -169,6 +180,14 @@ public sealed class VendingMachineSystem : EntitySystem
             _transform.SetCoordinates(item, Transform(buyer).Coordinates);
 
         _audio.PlayPvs(ent.Comp.BuySound, ent.Owner);
+        if (ent.Comp.EjectState != null && ent.Comp.EjectDelay > TimeSpan.Zero)
+        {
+            ent.Comp.DenyEnd = TimeSpan.Zero;
+            ent.Comp.EjectEnd = _timing.CurTime + ent.Comp.EjectDelay;
+            ent.Comp.EjectSequence++;
+            _appearance.SetData(ent.Owner, IS14VendingMachineVisuals.EjectSequence, ent.Comp.EjectSequence);
+            UpdateVisualState(ent);
+        }
         UpdateUiState(ent, buyer);
     }
 
@@ -185,6 +204,7 @@ public sealed class VendingMachineSystem : EntitySystem
             return;
 
         ent.Comp.DenyEnd = _timing.CurTime + ent.Comp.DenyDelay;
+        ent.Comp.EjectEnd = TimeSpan.Zero;
         UpdateVisualState(ent);
     }
 
@@ -198,6 +218,8 @@ public sealed class VendingMachineSystem : EntitySystem
             state = IS14VendingMachineVisualState.Off;
         else if (ent.Comp.DenyEnd != TimeSpan.Zero && _timing.CurTime < ent.Comp.DenyEnd)
             state = IS14VendingMachineVisualState.Deny;
+        else if (ent.Comp.EjectState != null && ent.Comp.EjectEnd != TimeSpan.Zero && _timing.CurTime < ent.Comp.EjectEnd)
+            state = IS14VendingMachineVisualState.Eject;
 
         _appearance.SetData(ent.Owner, IS14VendingMachineVisuals.VisualState, state);
     }
