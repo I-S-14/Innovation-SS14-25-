@@ -1,0 +1,14 @@
+services:
+  economy-editor:
+    build:
+      context: ../..
+      dockerfile: Tools/EconomyEditor/Dockerfile
+    ports:
+      - "127.0.0.1:5187:8080"
+    environment:
+      EDITOR_TOKEN: ${EDITOR_TOKEN:?Set a shared editor access key}
+    volumes:
+      - economy-projects:/data
+    restart: unless-stopped
+volumes:
+  economy-projects:

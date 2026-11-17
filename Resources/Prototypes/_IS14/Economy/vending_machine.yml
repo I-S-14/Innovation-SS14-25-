@@ -4,8 +4,8 @@
 # Fork machines live in _IS14/Entities/Structures/Machines/vendomats.yml.
 - type: entity
   id: IS14VendingMachineBase
-  name: Торговый автомат
-  description: Продаёт разные вещи за кредиты.
+  name: vending machine
+  description: Sells various goods for credits.
   parent: BaseMachinePowered
   abstract: true
   components:
@@ -52,19 +52,30 @@
         acts: [ "Breakage" ]
   - type: AmbientOnPowered
   - type: AmbientSound
-    volume: -9
-    range: 3
+    volume: 4
+    range: 4
     enabled: false
     sound:
-      path: /Audio/Ambience/Objects/vending_machine_hum.ogg
+      path: /Audio/Ambience/Objects/light_hum.ogg
   - type: LitOnPowered
   - type: PointLight
     enabled: false
-    radius: 2
-    energy: 1.6
-    color: "#4b93ad"
-    mask: /Textures/Effects/LightMasks/cone.png
-    autoRot: true
+    radius: 1.6
+    energy: 0.95
+    falloff: 4
+    color: "#79baff"
+    castShadows: false
+  - type: LightBehaviour
+    behaviours:
+    - !type:RandomizeBehaviour
+      id: screen-flicker
+      property: Energy
+      interpolate: Linear
+      minDuration: 0.25
+      maxDuration: 0.8
+      startValue: 0.8
+      endValue: 1.1
+      isLooped: true
   - type: InteractionOutline
   - type: Fixtures
     fixtures:

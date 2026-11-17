@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ассортимент — IS14</title><link rel="stylesheet" href="/style.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Редактор ассортимента IS14"><span class="brand-mark">И</span><span>ИННОВАЦИЯ <small>БЮРО СНАБЖЕНИЯ</small></span></a>
+    <span class="environment">ЭКОНОМИКА / АССОРТИМЕНТ</span>
+    <nav><button id="projects-button">Проекты <span id="project-count"></span></button><button id="import-button">Импорт</button><button id="json-button" title="Скачать резервную копию проекта">JSON ↓</button></nav>
+    <input id="import-file" type="file" accept="application/json,.json" hidden>
+  </header>
+  <div id="notice" class="notice" role="status" hidden></div>
+  <div id="restore-banner" class="restore-banner" hidden>Есть несохранённый локальный черновик. <button id="restore-button">Восстановить</button><button id="discard-restore">Убрать</button></div>
+  <main id="workspace" class="workspace" aria-busy="true">
+    <aside class="sidebar">
+      <div class="sidebar-heading"><span class="eyebrow">ОБОРУДОВАНИЕ</span><span id="vendor-count" class="count">—</span></div>
+      <h1>Автоматы</h1>
+      <label class="search-field"><span>⌕</span><input id="vendor-search" type="search" placeholder="Найти автомат" aria-label="Найти автомат"></label>
+      <div id="vendors" class="vendor-list"><p class="muted">Загрузка каталога…</p></div>
+      <footer class="snapshot-info"><span class="live-dot"></span> Снимок игровых данных <strong id="catalog-version">—</strong><small id="catalog-date"></small></footer>
+    </aside>
+    <section class="main-area">
+      <div class="project-bar">
+        <div><span class="eyebrow">РАБОЧИЙ ПРОЕКТ</span><div class="project-name"><input id="project-title" value="Новый ассортимент" maxlength="150" aria-label="Название проекта"><span id="dirty-indicator" class="dirty-dot" hidden title="Есть несохранённые изменения"></span></div></div>
+        <label class="author-field">Автор<input id="project-author" placeholder="Ваше имя" maxlength="150"></label>
+        <button id="copy-project-button" class="icon-button" title="Создать копию проекта">Копия</button><button id="save-button" class="primary">Сохранить проект</button><button id="export-button" class="export">Экспорт для игры ↗</button>
+      </div>
+      <div id="stale-banner" class="stale-banner" hidden></div>
+      <div class="vendor-heading"><canvas id="vendor-icon" width="64" height="64" aria-hidden="true"></canvas><div><div class="eyebrow" id="department-name">ВЫБЕРИТЕ АВТОМАТ</div><h2 id="vendor-name">Ассортимент</h2><code id="vendor-id"></code></div><button id="settings-button" class="settings-button">Параметры автомата ⚙</button></div>
+      <div class="editor-columns">
+        <section class="catalog-panel" aria-labelledby="catalog-heading">
+          <div class="panel-heading"><h3 id="catalog-heading">Каталог предметов</h3><span id="result-count" class="muted"></span></div>
+          <label class="search-field large"><span>⌕</span><input id="item-search" type="search" placeholder="Название или ID прототипа…" aria-label="Поиск предметов"></label>
+          <div class="catalog-filters"><select id="category-filter" aria-label="Категория"><option value="">Все категории</option><option value="clothing">Одежда</option><option value="tools">Инструменты</option><option value="medical">Медицина</option><option value="food">Еда и напитки</option><option value="weapons">Оружие</option><option value="ammo">Боеприпасы</option><option value="materials">Материалы</option><option value="storage">Хранение</option><option value="other">Прочее</option></select><label><input id="hidden-filter" type="checkbox"> Скрытые</label><label><input id="non-items-filter" type="checkbox"> Все сущности</label></div>
+          <p class="catalog-hint">Нажмите на предмет или перетащите его в ассортимент.</p>
+          <div id="items" class="item-grid"></div><div class="pagination"><button id="prev-page" aria-label="Предыдущая страница">←</button><span id="page-label">—</span><button id="next-page" aria-label="Следующая страница">→</button></div>
+        </section>
+        <section class="assortment-panel" aria-labelledby="assortment-heading">
+          <div class="panel-heading"><h3 id="assortment-heading">Наполнение автомата</h3><button id="add-tab-button" class="text-button">＋ Вкладка</button></div>
+          <div id="tabs" class="tabs" role="tablist" aria-label="Вкладки автомата"></div>
+          <div class="tab-actions"><span id="access-summary"></span><button id="edit-tab-button" class="text-button">Настроить вкладку</button><button id="bulk-price-button" class="text-button">Цены ±%</button></div>
+          <div class="inventory-heading"><span>ПРЕДМЕТ</span><span>ЦЕНА, КР.</span><span>ЗАПАС</span><span></span></div>
+          <div id="inventory" class="inventory" aria-label="Ассортимент выбранной вкладки"></div>
+          <div class="inventory-total"><span id="inventory-count">0 позиций</span><div>Стоимость всего запаса<strong id="inventory-value">0 <small>кр.</small></strong></div></div>
+          <label class="notes-label">Заметки к проекту<textarea id="project-notes" rows="2" maxlength="20000" placeholder="Что изменено и почему; вопросы к обсуждению…"></textarea></label>
+        </section>
+      </div>
+    </section>
+  </main>
+  <dialog id="modal"><div class="dialog-heading"><h2 id="modal-title"></h2><button id="close-modal" aria-label="Закрыть">×</button></div><div id="modal-content"></div></dialog>
+  <template id="empty-inventory"><div class="empty-state"><span class="empty-symbol">＋</span><h4>Здесь пока ничего нет</h4><p>Добавьте товары из каталога слева.<br>Для каждого можно задать цену и начальный запас.</p></div></template>
+</body>
+</html>

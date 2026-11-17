@@ -20,6 +20,9 @@
   <ItemGroup>
     <PackageReference Include="NUnit" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="../Tools/EconomyEditor/Contracts.cs" Link="EconomyEditor/Contracts.cs" />
+  </ItemGroup>
 
   <Import Project="..\RobustToolbox\MSBuild\Robust.Properties.targets" />
 

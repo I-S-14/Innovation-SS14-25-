@@ -6,12 +6,27 @@
   name: engineering techfab
   description: Prints equipment and circuitboards for use by engineering department.
   components:
+  - type: LitOnPowered
+  - type: PointLight
+    enabled: false
+    radius: 1.5
+    energy: 0.9
+    falloff: 4
+    color: "#ffd260"
+    castShadows: false
+  - type: AmbientOnPowered
+  - type: AmbientSound
+    enabled: false
+    volume: 4
+    range: 4
+    sound:
+      path: /Audio/Ambience/Objects/emf_buzz.ogg
   - type: Sprite
-    sprite: Structures/Machines/techfab.rsi
+    sprite: _IS14/Structures/Machines/Techfabs/engineering.rsi
     layers:
     - state: icon
       map: ["enum.LatheVisualLayers.IsRunning"]
-    - state: engi
+    - state: cover
     - state: unlit
       shader: unshaded
       map: ["enum.PowerDeviceVisualLayers.Powered"]
@@ -24,6 +39,8 @@
   - type: Lathe
     idleState: icon
     runningState: icon
+    unlitIdleState: unlit
+    unlitRunningState: unlit-building
     staticPacks:
     - SharedBoardsStatic
     - EngineeringBoardsStatic
@@ -108,12 +125,27 @@
   name: cargo techfab
   description: Prints equipment and circuitboards for use by cargo department.
   components:
+  - type: LitOnPowered
+  - type: PointLight
+    enabled: false
+    radius: 1.5
+    energy: 0.9
+    falloff: 4
+    color: "#79aaff"
+    castShadows: false
+  - type: AmbientOnPowered
+  - type: AmbientSound
+    enabled: false
+    volume: 4
+    range: 4
+    sound:
+      path: /Audio/Ambience/Objects/emf_buzz.ogg
   - type: Sprite
-    sprite: Structures/Machines/techfab.rsi
+    sprite: _IS14/Structures/Machines/Techfabs/cargo.rsi
     layers:
     - state: icon
       map: ["enum.LatheVisualLayers.IsRunning"]
-    - state: cargo
+    - state: cover
     - state: unlit
       shader: unshaded
       map: ["enum.PowerDeviceVisualLayers.Powered"]
@@ -126,6 +158,8 @@
   - type: Lathe
     idleState: icon
     runningState: icon
+    unlitIdleState: unlit
+    unlitRunningState: unlit-building
     staticPacks:
     - ToolsStatic
     - SharedBoardsStatic
@@ -196,12 +230,27 @@
   name: science techfab
   description: Prints equipment and circuitboards for use by science department.
   components:
+  - type: LitOnPowered
+  - type: PointLight
+    enabled: false
+    radius: 1.5
+    energy: 0.9
+    falloff: 4
+    color: "#79d7ff"
+    castShadows: false
+  - type: AmbientOnPowered
+  - type: AmbientSound
+    enabled: false
+    volume: 4
+    range: 4
+    sound:
+      path: /Audio/Ambience/Objects/emf_buzz.ogg
   - type: Sprite
-    sprite: Structures/Machines/techfab.rsi
+    sprite: _IS14/Structures/Machines/Techfabs/science.rsi
     layers:
     - state: icon
       map: ["enum.LatheVisualLayers.IsRunning"]
-    - state: sci
+    - state: cover
     - state: unlit
       shader: unshaded
       map: ["enum.PowerDeviceVisualLayers.Powered"]
@@ -214,6 +263,8 @@
   - type: Lathe
     idleState: icon
     runningState: icon
+    unlitIdleState: unlit
+    unlitRunningState: unlit-building
     staticPacks:
     - SharedBoardsStatic
     - EngineeringBoardsStatic
@@ -307,8 +358,23 @@
   name: service techfab
   description: Prints equipment and circuitboards for use by service department.
   components:
+  - type: LitOnPowered
+  - type: PointLight
+    enabled: false
+    radius: 1.5
+    energy: 0.9
+    falloff: 4
+    color: "#a1ed83"
+    castShadows: false
+  - type: AmbientOnPowered
+  - type: AmbientSound
+    enabled: false
+    volume: 4
+    range: 4
+    sound:
+      path: /Audio/Ambience/Objects/emf_buzz.ogg
   - type: Sprite
-    sprite: Structures/Machines/techfab.rsi
+    sprite: _IS14/Obsolette/Structures/Machines/techfab.rsi
     layers:
     - state: icon
       map: ["enum.LatheVisualLayers.IsRunning"]
@@ -390,8 +456,23 @@
   name: ERT techfab
   description: Standard-issue ammunition and gear for Emergency Response Team deployments. Fast, basic, reliable.
   components:
+    - type: LitOnPowered
+    - type: PointLight
+      enabled: false
+      radius: 1.5
+      energy: 0.9
+      falloff: 4
+      color: "#ff9988"
+      castShadows: false
+    - type: AmbientOnPowered
+    - type: AmbientSound
+      enabled: false
+      volume: 4
+      range: 4
+      sound:
+        path: /Audio/Ambience/Objects/emf_buzz.ogg
     - type: Sprite
-      sprite: Structures/Machines/techfab.rsi
+      sprite: _IS14/Obsolette/Structures/Machines/techfab.rsi
       layers:
         - state: icon
           map: ["enum.LatheVisualLayers.IsRunning"]

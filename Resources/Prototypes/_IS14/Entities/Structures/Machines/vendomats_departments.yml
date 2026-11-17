@@ -1,0 +1,887 @@
+# Department vending machines using the IS14 paid vending system.
+# Initial stock follows the corresponding upstream vendor; each item costs 100 credits.
+
+- type: entity
+  parent: IS14VendingMachineBase
+  id: IS14VendingMachineCaptain
+  name: "captain equipment vendor"
+  description: "All equipment dispensed is deducted from your pension payments."
+  components:
+  - type: IS14VendingMachine
+    revenueAccount: StationTreasury
+    tabs:
+    - name: is14-vending-tab-goods
+      inventory:
+      - itemId: ClothingHeadsetAltCommand
+        price: 100
+        stock: 1
+      - itemId: ClothingHeadHatCaptain
+        price: 100
+        stock: 1
+      - itemId: ClothingHeadHatCapcap
+        price: 100
+        stock: 1
+      - itemId: ClothingHeadCaptainHat
+        price: 100
+        stock: 1
+      - itemId: ClothingEyesGlassesSunglasses
+        price: 100
+        stock: 1
+      - itemId: ClothingEyesGlassesCommand
+        price: 100
+        stock: 1
+      - itemId: ClothingNeckCloakCap
+        price: 100
+        stock: 1
+      - itemId: ClothingNeckCloakCapFormal
+        price: 100
+        stock: 1
+      - itemId: ClothingNeckCaptainWide
+        price: 100
+        stock: 1
+      - itemId: ClothingNeckMantleCap
+        price: 100
+        stock: 1
+      - itemId: ClothingOuterWinterCap
+        price: 100
+        stock: 1
+      - itemId: ClothingOuterArmorCaptainCarapace
+        price: 100
+        stock: 1
+      - itemId: ClothingOuterCoatCaptain
+        price: 100
+        stock: 1
+      - itemId: ClothingUniformJumpsuitCaptain
+        price: 100
+        stock: 1
+      - itemId: ClothingUniformJumpskirtCaptain
+        price: 100
+        stock: 1
+      - itemId: ClothingUniformJumpsuitCapFormal
+        price: 100
+        stock: 1
+      - itemId: ClothingUniformJumpskirtCapFormalDress
+        price: 100
+        stock: 1
+      - itemId: ClothingHandsGlovesCaptain
+        price: 100
+        stock: 1
+      - itemId: ClothingHeadHatBeretCaptainWhite
+        price: 100
+        stock: 1
+      - itemId: ClothingHeadHatCapcapWhite
+        price: 100
+        stock: 1
+      - itemId: ClothingNeckCloakRoyalCaptain
+        price: 100
+        stock: 1
+      - itemId: ClothingNeckWhiteMantleCaptain
+        price: 100
+        stock: 1
+      - itemId: ClothingUniformJumpskirtWhiteCaptain
+        price: 100
+        stock: 1
+      - itemId: ClothingUniformJumpsuitWhiteCaptain
+        price: 100
+        stock: 1
+      - itemId: ClothingHandsGlovesCaptainWhite
+        price: 100
+        stock: 1
+      - itemId: ClothingBeltWhiteSheath
+        price: 100
+        stock: 1
+      - itemId: ClothingHeadHatBeretSheriff
+        price: 100
+        stock: 1
+      - itemId: ClothingHeadHatCapcapSheriff
+        price: 100
+        stock: 1
+      - itemId: ClothingUniformJumpsuitSheriff
+        price: 100
+        stock: 1
+      - itemId: ClothingHandsGlovesSheriff
+        price: 100
+        stock: 1
+      - itemId: ClothingBeltSheriffSheath
+        price: 100
+        stock: 1
+      - itemId: ClothingEyesGlassesGarGiga
+        price: 100
+        stock: 1
+      - itemId: ClothingUniformJumpsuitCommandCaptain
+        price: 100
+        stock: 1
+      - itemId: ClothingBackpackCaptain
+        price: 100
+        stock: 1
+      - itemId: ClothingBackpackDuffelCaptain
+        price: 100
+        stock: 1
+      - itemId: ClothingBackpackSatchelCaptain
+        price: 100
+        stock: 1
+      - itemId: MedalCase
+        price: 100
+        stock: 1
+      - itemId: FlippoEngravedLighter
+        price: 100
+        stock: 1
+      - itemId: ToyFigurineCaptain
+        price: 100
+        stock: 1
+      - itemId: RubberStampCaptain
+        price: 100
+        stock: 1
+      - itemId: PaperCaptainsThoughts
+        price: 100
+        stock: 5
+  - type: Sprite
+    sprite: _IS14/Structures/Machines/Vends/captain.rsi
+  - type: PointLight
+    color: "#ff6666"
+
+- type: entity
+  parent: IS14VendingMachineBase
+  id: IS14VendingMachineMoko
+  name: "MOKO equipment vendor"
+  description: "Offers advanced equipment at unaffordable prices."
+  components:
+  - type: IS14VendingMachine
+    revenueAccount: StationTreasury
+    tabs:
+    - name: is14-vending-tab-goods
+      inventory:
+      - itemId: ClothingBackpackMessengerCentcomm
+        price: 100
+        stock: 2
+      - itemId: ClothingShoesBootsLaceup
+        price: 100
+        stock: 3
+      - itemId: ClothingShoesBootsJack
+        price: 100
+        stock: 3
+      - itemId: ClothingHandsGlovesCombat
+        price: 100
+        stock: 3
+      - itemId: ClothingEyesGlassesSunglasses
+        price: 100
+        stock: 3
+      - itemId: ClothingUniformJumpsuitCentcomOfficer
+        price: 100
+        stock: 3
+      - itemId: ClothingUniformJumpsuitCentcomOfficial
+        price: 100
+        stock: 3
+      - itemId: ClothingUniformJumpskirtCentcomPencilSkirt
+        price: 100
+        stock: 3
+      - itemId: ClothingUniformJumpsuitCentcomAgent
+        price: 100
+        stock: 3
+      - itemId: ClothingUniformJumpsuitCentcomFormal
+        price: 100
+        stock: 3
+      - itemId: ClothingUniformJumpskirtCentcomFormalDress
+        price: 100
+        stock: 3
+      - itemId: ClothingUniformJumpsuitCasualCentcom
+        price: 100
+        stock: 3
+      - itemId: ClothingHeadHatCentcom
+        price: 100
+        stock: 3
+      - itemId: ClothingHeadHatCentcomcap
+        price: 100
+        stock: 3
+      - itemId: ClothingMaskGasCentcom
+        price: 100
+        stock: 3
+      - itemId: ClothingHeadsetCentCom
+        price: 100
+        stock: 3
+      - itemId: ClothingOuterWinterCentcom
+        price: 100
+        stock: 3
+      - itemId: ClothingOuterCoatExpensive
+        price: 100
+        stock: 1
+      - itemId: ClothingOuterArmoredJacketCentralCommand
+        price: 100
+        stock: 2
+      - itemId: ClothingNeckScarfStripedCentcom
+        price: 100
+        stock: 3
+      - itemId: ClothingNeckCloakCentcom
+        price: 100
+        stock: 3
+      - itemId: ClothingNeckCloakHighCommand
+        price: 100
+        stock: 3
+      - itemId: ClothingNeckCloakHighCommandCape
+        price: 100
+        stock: 2
+      - itemId: ClothingNeckCloakCentComPoncho
+        price: 100
+        stock: 3
+      - itemId: ClothingNeckMantleEpaulettes
+        price: 100
+        stock: 1
+  - type: Sprite
+    sprite: _IS14/Structures/Machines/Vends/moko.rsi
+  - type: PointLight
+    color: "#ffd260"
+
+- type: entity
+  parent: IS14VendingMachineBase
+  id: IS14VendingMachineCargoClothing
+  name: "cargo clothing vendor"
+  description: "Dispenses jumpsuits that are already wrinkled and stained with dust."
+  components:
+  - type: IS14VendingMachine
+    revenueAccount: StationCargo
+    tabs:
+    - name: is14-vending-tab-goods
+      inventory:
+      - itemId: ClothingBackpackCargo
+        price: 100
+        stock: 3
+      - itemId: ClothingBackpackSatchelCargo
+        price: 100
+        stock: 3
+      - itemId: ClothingBackpackDuffelCargo
+        price: 100
+        stock: 3
+      - itemId: ClothingBackpackMessengerCargo
+        price: 100
+        stock: 3
+      - itemId: ClothingUniformJumpsuitCargo
+        price: 100
+        stock: 3
+      - itemId: ClothingUniformJumpskirtCargo
+        price: 100
+        stock: 3
+      - itemId: ClothingShoesColorBlack
+        price: 100
+        stock: 3
+      - itemId: ClothingHandsGlovesFingerless
+        price: 100
+        stock: 3
+      - itemId: ClothingHeadHatCargosoft
+        price: 100
+        stock: 3
+      - itemId: ClothingHeadBandBrown
+        price: 100
+        stock: 3
+      - itemId: ClothingHeadsetCargo
+        price: 100
+        stock: 3
+      - itemId: ClothingOuterWinterCargo
+        price: 100
+        stock: 2
+      - itemId: ClothingNeckScarfStripedBrown
+        price: 100
+        stock: 3
+      - itemId: ClothingShoesBootsWinterCargo
+        price: 100
+        stock: 2
+      - itemId: MailBag
+        price: 100
+        stock: 2
+  - type: Sprite
+    sprite: _IS14/Structures/Machines/Vends/cargo_clothing.rsi
+  - type: PointLight
+    color: "#79aaff"
+
+- type: entity
+  parent: IS14VendingMachineBase
+  id: IS14VendingMachineCargoEquipment
+  name: "cargo equipment vendor"
+  description: "Stocks useful items such as a keg claw, a replacement pallet jack handle, and a tank road wheel."
+  components:
+  - type: IS14VendingMachine
+    revenueAccount: StationCargo
+    tabs:
+    - name: is14-vending-tab-goods
+      inventory:
+      - itemId: Crowbar
+        price: 100
+        stock: 2
+      - itemId: Pickaxe
+        price: 100
+        stock: 4
+      - itemId: OreBag
+        price: 100
+        stock: 4
+      - itemId: Flare
+        price: 100
+        stock: 4
+      - itemId: FlashlightLantern
+        price: 100
+        stock: 2
+      - itemId: HandheldGPSBasic
+        price: 100
+        stock: 2
+      - itemId: RadioHandheld
+        price: 100
+        stock: 2
+      - itemId: WeaponGrapplingGun
+        price: 100
+        stock: 4
+      - itemId: WeaponProtoKineticAccelerator
+        price: 100
+        stock: 4
+      - itemId: SeismicCharge
+        price: 100
+        stock: 2
+      - itemId: FultonBeacon
+        price: 100
+        stock: 1
+      - itemId: Fulton
+        price: 100
+        stock: 2
+      - itemId: ClothingOuterHardsuitSpatio
+        price: 100
+        stock: 2
+  - type: Sprite
+    sprite: _IS14/Structures/Machines/Vends/cargo_equipment.rsi
+  - type: PointLight
+    color: "#79aaff"
+
+- type: entity
+  parent: IS14VendingMachineBase
+  id: IS14VendingMachineWater
+  name: "water vendor"
+  description: "A little rusty, but it can dispense a faceted glass for an extra fee."
+  components:
+  - type: IS14VendingMachine
+    revenueAccount: StationService
+    tabs:
+    - name: is14-vending-tab-goods
+      inventory:
+      - itemId: DrinkSodaWaterCan
+        price: 100
+        stock: 10
+  - type: Sprite
+    sprite: _IS14/Structures/Machines/Vends/water.rsi
+  - type: PointLight
+    color: "#ff7373"
+
+- type: entity
+  parent: IS14VendingMachineBase
+  id: IS14VendingMachineScienceClothing
+  name: "research equipment vendor"
+  description: "Dispenses a selection of tools for enthusiastically poking alien artifacts."
+  components:
+  - type: IS14VendingMachine
+    revenueAccount: StationResearch
+    tabs:
+    - name: is14-vending-tab-goods
+      inventory:
+      - itemId: ClothingBackpackScience
+        price: 100
+        stock: 3
+      - itemId: ClothingBackpackSatchelScience
+        price: 100
+        stock: 3
+      - itemId: ClothingBackpackDuffelScience
+        price: 100
+        stock: 3
+      - itemId: ClothingBackpackMessengerScience
+        price: 100
+        stock: 3
+      - itemId: ClothingUniformJumpsuitScientist
+        price: 100
+        stock: 3
+      - itemId: ClothingUniformJumpskirtScientist
+        price: 100
+        stock: 3
+      - itemId: ClothingUniformJumpsuitScientistFormal
+        price: 100
+        stock: 3
+      - itemId: ClothingOuterCoatRnd
+        price: 100
+        stock: 3
+      - itemId: ClothingShoesColorWhite
+        price: 100
+        stock: 3
+      - itemId: ClothingNeckTieSci
+        price: 100
+        stock: 3
+      - itemId: ClothingHeadsetScience
+        price: 100
+        stock: 3
+      - itemId: ClothingMaskGas
+        price: 100
+        stock: 3
+      - itemId: ClothingOuterWinterSci
+        price: 100
+        stock: 2
+      - itemId: ClothingNeckScarfStripedPurple
+        price: 100
+        stock: 3
+      - itemId: ClothingShoesBootsWinterSci
+        price: 100
+        stock: 2
+  - type: Sprite
+    sprite: _IS14/Structures/Machines/Vends/science_clothing.rsi
+  - type: PointLight
+    color: "#79d7ff"
+
+- type: entity
+  parent: IS14VendingMachineBase
+  id: IS14VendingMachineRobotics
+  name: "robotics equipment vendor"
+  description: "Equipped with a scrap metal detector for material shortages. Can also serve as a mech component."
+  components:
+  - type: IS14VendingMachine
+    revenueAccount: StationResearch
+    tabs:
+    - name: is14-vending-tab-goods
+      inventory:
+      - itemId: CableApcStack
+        price: 100
+        stock: 4
+      - itemId: SciFlash
+        price: 100
+        stock: 4
+      - itemId: ProximitySensor
+        price: 100
+        stock: 3
+      - itemId: ClothingEyesHudDiagnostic
+        price: 100
+        stock: 2
+      - itemId: ClothingEyesEyepatchHudDiag
+        price: 100
+        stock: 2
+      - itemId: RemoteSignaller
+        price: 100
+        stock: 3
+      - itemId: Igniter
+        price: 100
+        stock: 3
+      - itemId: HandheldHealthAnalyzer
+        price: 100
+        stock: 3
+      - itemId: Scalpel
+        price: 100
+        stock: 2
+      - itemId: SawElectric
+        price: 100
+        stock: 2
+      - itemId: Bonesetter
+        price: 100
+        stock: 2
+      - itemId: MedicalStitches
+        price: 100
+        stock: 2
+      - itemId: NitrousOxideTankFilled
+        price: 100
+        stock: 2
+      - itemId: ClothingMaskBreathMedical
+        price: 100
+        stock: 5
+      - itemId: ClothingHeadHatWeldingMaskFlame
+        price: 100
+        stock: 1
+      - itemId: Welder
+        price: 100
+        stock: 1
+      - itemId: Screwdriver
+        price: 100
+        stock: 2
+      - itemId: Crowbar
+        price: 100
+        stock: 2
+  - type: Sprite
+    sprite: _IS14/Structures/Machines/Vends/robotics.rsi
+  - type: PointLight
+    color: "#ff7373"
+
+- type: entity
+  parent: IS14VendingMachineBase
+  id: IS14VendingMachineSecurityClothing
+  name: "militia clothing vendor"
+  description: "Supplies staff with one-size-fits-all uniforms designed to accommodate horizontal growth."
+  components:
+  - type: IS14VendingMachine
+    revenueAccount: StationSecurity
+    tabs:
+    - name: is14-vending-tab-goods
+      inventory:
+      - itemId: ClothingBackpackSecurity
+        price: 100
+        stock: 3
+      - itemId: ClothingBackpackSatchelSecurity
+        price: 100
+        stock: 3
+      - itemId: ClothingBackpackDuffelSecurity
+        price: 100
+        stock: 3
+      - itemId: ClothingBackpackMessengerSecurity
+        price: 100
+        stock: 3
+      - itemId: ClothingUniformJumpsuitSec
+        price: 100
+        stock: 3
+      - itemId: ClothingShoesBootsJack
+        price: 100
+        stock: 3
+      - itemId: ClothingHeadHatBeretSecurity
+        price: 100
+        stock: 3
+      - itemId: ClothingHeadHatSecsoft
+        price: 100
+        stock: 3
+      - itemId: ClothingHeadBandRed
+        price: 100
+        stock: 3
+      - itemId: ClothingHeadHatBeretBrigmedic
+        price: 100
+        stock: 1
+      - itemId: SurveillanceWirelessCameraBodySecurity
+        price: 100
+        stock: 5
+      - itemId: ClothingMaskGasSecurity
+        price: 100
+        stock: 5
+      - itemId: ClothingMaskNeckGaiterRed
+        price: 100
+        stock: 3
+      - itemId: ClothingHandsGlovesColorBlack
+        price: 100
+        stock: 3
+      - itemId: ClothingHandsGlovesFingerless
+        price: 100
+        stock: 3
+      - itemId: ClothingUniformJumpskirtSec
+        price: 100
+        stock: 3
+      - itemId: ClothingUniformJumpsuitSecGrey
+        price: 100
+        stock: 3
+      - itemId: ClothingUniformJumpskirtSecGrey
+        price: 100
+        stock: 3
+      - itemId: ClothingUniformJumpsuitSecBlue
+        price: 100
+        stock: 3
+      - itemId: ClothingUniformJumpsuitBrigmedic
+        price: 100
+        stock: 1
+      - itemId: ClothingUniformJumpskirtBrigmedic
+        price: 100
+        stock: 1
+      - itemId: ClothingHeadsetAltSecurityRegular
+        price: 100
+        stock: 3
+      - itemId: ClothingOuterWinterSec
+        price: 100
+        stock: 2
+      - itemId: ClothingOuterWinterSecArmored
+        price: 100
+        stock: 2
+      - itemId: ClothingOuterArmorBasic
+        price: 100
+        stock: 2
+      - itemId: ClothingOuterCoatAMG
+        price: 100
+        stock: 1
+      - itemId: ClothingNeckScarfStripedRed
+        price: 100
+        stock: 3
+      - itemId: ClothingOuterArmorBasicSlim
+        price: 100
+        stock: 2
+      - itemId: ClothingEyesBlindfold
+        price: 100
+        stock: 1
+      - itemId: ClothingShoesBootsCombat
+        price: 100
+        stock: 1
+      - itemId: ClothingShoesBootsWinterSec
+        price: 100
+        stock: 2
+      - itemId: ClothingShoesWinterCombatBoots
+        price: 100
+        stock: 2
+      - itemId: ClothingHeadHelmetJustice
+        price: 100
+        stock: 1
+      - itemId: ClothingHeadHatUshankaSecurity
+        price: 100
+        stock: 3
+      - itemId: ClothingHeadHelmetBasic
+        price: 100
+        stock: 2
+      - itemId: ClothingHeadHelmetBasicAlt
+        price: 100
+        stock: 2
+      - itemId: ClothingUniformJumpsuitDSS
+        price: 100
+        stock: 3
+  - type: Sprite
+    sprite: _IS14/Structures/Machines/Vends/security_clothing.rsi
+  - type: PointLight
+    color: "#79d7ff"
+
+- type: entity
+  parent: IS14VendingMachineBase
+  id: IS14VendingMachineMedicalClothing
+  name: "medical clothing vendor"
+  description: "Dispenses medical coats, masks, and shoe covers for an additional fee."
+  components:
+  - type: IS14VendingMachine
+    revenueAccount: StationMedical
+    tabs:
+    - name: is14-vending-tab-goods
+      inventory:
+      - itemId: ClothingBackpackDuffelMedical
+        price: 100
+        stock: 4
+      - itemId: ClothingBackpackMedical
+        price: 100
+        stock: 4
+      - itemId: ClothingBackpackSatchelMedical
+        price: 100
+        stock: 4
+      - itemId: ClothingBackpackMessengerMedical
+        price: 100
+        stock: 4
+      - itemId: ClothingUniformJumpsuitMedicalDoctor
+        price: 100
+        stock: 4
+      - itemId: ClothingUniformJumpskirtMedicalDoctor
+        price: 100
+        stock: 4
+      - itemId: ClothingBeltMedical
+        price: 100
+        stock: 4
+      - itemId: ClothingHeadHatBeretMedic
+        price: 100
+        stock: 4
+      - itemId: ClothingHeadNurseHat
+        price: 100
+        stock: 4
+      - itemId: ClothingOuterCoatLab
+        price: 100
+        stock: 4
+      - itemId: ClothingShoesColorWhite
+        price: 100
+        stock: 4
+      - itemId: ClothingHandsGlovesLatex
+        price: 100
+        stock: 4
+      - itemId: ClothingHandsGlovesNitrile
+        price: 100
+        stock: 2
+      - itemId: ClothingHeadsetMedical
+        price: 100
+        stock: 4
+      - itemId: ClothingOuterWinterMed
+        price: 100
+        stock: 2
+      - itemId: ClothingOuterHospitalGown
+        price: 100
+        stock: 5
+      - itemId: UniformScrubsColorGreen
+        price: 100
+        stock: 4
+      - itemId: UniformScrubsColorBlue
+        price: 100
+        stock: 4
+      - itemId: UniformScrubsColorPurple
+        price: 100
+        stock: 4
+      - itemId: ClothingHeadHatSurgcapGreen
+        price: 100
+        stock: 4
+      - itemId: ClothingHeadHatSurgcapBlue
+        price: 100
+        stock: 4
+      - itemId: ClothingHeadHatSurgcapPurple
+        price: 100
+        stock: 4
+      - itemId: ClothingShoesBootsWinterMed
+        price: 100
+        stock: 2
+  - type: Sprite
+    sprite: _IS14/Structures/Machines/Vends/medical_clothing.rsi
+  - type: PointLight
+    color: "#76ed72"
+
+- type: entity
+  parent: IS14VendingMachineBase
+  id: IS14VendingMachineEngineeringEquipment
+  name: "engineering equipment vendor"
+  description: "Sells engineering department tools at inflated prices."
+  components:
+  - type: IS14VendingMachine
+    revenueAccount: StationEngineering
+    tabs:
+    - name: is14-vending-tab-goods
+      inventory:
+      - itemId: ClothingEyesGlassesMeson
+        price: 100
+        stock: 4
+      - itemId: ClothingEyesGlassesThermal
+        price: 100
+        stock: 4
+      - itemId: ClothingEyesHudDiagnostic
+        price: 100
+        stock: 4
+      - itemId: ClothingHeadHatWelding
+        price: 100
+        stock: 6
+      - itemId: CrowbarYellow
+        price: 100
+        stock: 8
+      - itemId: Multitool
+        price: 100
+        stock: 4
+      - itemId: NetworkConfigurator
+        price: 100
+        stock: 5
+      - itemId: Floodlight
+        price: 100
+        stock: 1
+      - itemId: PowerCellMedium
+        price: 100
+        stock: 5
+      - itemId: ClothingHandsGlovesColorYellow
+        price: 100
+        stock: 12
+      - itemId: BoxInflatable
+        price: 100
+        stock: 2
+      - itemId: ClothingHeadHatCone
+        price: 100
+        stock: 4
+  - type: Sprite
+    sprite: _IS14/Structures/Machines/Vends/engineering_equipment.rsi
+  - type: PointLight
+    color: "#ffd260"
+
+- type: entity
+  parent: IS14VendingMachineBase
+  id: IS14VendingMachineAtmosClothing
+  name: "atmospherics clothing vendor"
+  description: "Dispenses workwear resistant to heat, thanks to the ubiquitous nitrogen stains."
+  components:
+  - type: IS14VendingMachine
+    revenueAccount: StationEngineering
+    tabs:
+    - name: is14-vending-tab-goods
+      inventory:
+      - itemId: ClothingBackpackDuffelAtmospherics
+        price: 100
+        stock: 2
+      - itemId: ClothingBackpackSatchelAtmospherics
+        price: 100
+        stock: 2
+      - itemId: ClothingBackpackAtmospherics
+        price: 100
+        stock: 2
+      - itemId: ClothingBackpackMessengerAtmospherics
+        price: 100
+        stock: 2
+      - itemId: ClothingUniformJumpsuitAtmos
+        price: 100
+        stock: 3
+      - itemId: ClothingUniformJumpskirtAtmos
+        price: 100
+        stock: 3
+      - itemId: ClothingUniformJumpsuitAtmosCasual
+        price: 100
+        stock: 3
+      - itemId: ClothingAtmosphericsOveralls
+        price: 100
+        stock: 3
+      - itemId: ClothingShoesColorWhite
+        price: 100
+        stock: 3
+      - itemId: ClothingHeadsetEngineering
+        price: 100
+        stock: 2
+      - itemId: ClothingHeadHelmetFire
+        price: 100
+        stock: 2
+      - itemId: ClothingOuterSuitFire
+        price: 100
+        stock: 2
+      - itemId: ClothingOuterWinterAtmos
+        price: 100
+        stock: 2
+      - itemId: ClothingNeckScarfStripedLightBlue
+        price: 100
+        stock: 3
+  - type: Sprite
+    sprite: _IS14/Structures/Machines/Vends/atmos_clothing.rsi
+  - type: PointLight
+    color: "#ffd260"
+
+- type: entity
+  parent: IS14VendingMachineBase
+  id: IS14VendingMachineEngineeringClothing
+  name: "engineering clothing vendor"
+  description: "Dispenses engineering workwear pre-stained with fuel oil."
+  components:
+  - type: IS14VendingMachine
+    revenueAccount: StationEngineering
+    tabs:
+    - name: is14-vending-tab-goods
+      inventory:
+      - itemId: ClothingBackpackDuffelEngineering
+        price: 100
+        stock: 3
+      - itemId: ClothingBackpackSatchelEngineering
+        price: 100
+        stock: 3
+      - itemId: ClothingBackpackEngineering
+        price: 100
+        stock: 3
+      - itemId: ClothingBackpackMessengerEngineering
+        price: 100
+        stock: 3
+      - itemId: ClothingUniformJumpsuitEngineering
+        price: 100
+        stock: 3
+      - itemId: ClothingUniformJumpskirtEngineering
+        price: 100
+        stock: 3
+      - itemId: ClothingUniformJumpsuitEngineeringHazard
+        price: 100
+        stock: 3
+      - itemId: ClothingUniformJumpsuitCasualEngineer
+        price: 100
+        stock: 3
+      - itemId: ClothingShoesColorBlack
+        price: 100
+        stock: 3
+      - itemId: ClothingOuterVestHazard
+        price: 100
+        stock: 3
+      - itemId: ClothingShoesBootsWork
+        price: 100
+        stock: 3
+      - itemId: ClothingHeadHatHardhatYellow
+        price: 100
+        stock: 3
+      - itemId: ClothingHeadHatHardhatOrange
+        price: 100
+        stock: 3
+      - itemId: ClothingHeadsetEngineering
+        price: 100
+        stock: 3
+      - itemId: ClothingOuterWinterEngi
+        price: 100
+        stock: 2
+      - itemId: ClothingNeckScarfStripedOrange
+        price: 100
+        stock: 3
+      - itemId: ClothingShoesBootsWinterEngi
+        price: 100
+        stock: 2
+  - type: Sprite
+    sprite: _IS14/Structures/Machines/Vends/engineering_clothing.rsi
+  - type: PointLight
+    color: "#ffd260"

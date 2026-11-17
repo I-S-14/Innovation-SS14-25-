@@ -1,20 +1,25 @@
 {
   "version": 1,
   "license": "All Rights Reserved",
-  "copyright": "made for innovation station by melvilla (discord)",
+  "copyright": "Source sprites supplied in Resources/codex; author not specified.",
   "size": {
     "x": 32,
-    "y": 46
+    "y": 32
   },
   "states": [
+    {
+      "name": "off"
+    },
     {
       "name": "normal-unshaded",
       "delays": [
         [
-          0.5,
-          0.5,
-          0.5,
-          0.5
+          0.775,
+          0.3,
+          0.375,
+          0.675,
+          0.325,
+          0.45
         ]
       ]
     },
@@ -22,15 +27,11 @@
       "name": "deny-unshaded",
       "delays": [
         [
-          0.5,
-          0.5,
-          0.5,
-          0.5
+          0.175,
+          0.35,
+          0.2
         ]
       ]
-    },
-    {
-      "name": "off"
     },
     {
       "name": "broken"

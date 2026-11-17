@@ -495,12 +495,27 @@
   name: security techfab
   description: Prints equipment and circuitboards for use by security crew. #Goobstation - Circuitboards description
   components:
+  - type: LitOnPowered
+  - type: PointLight
+    enabled: false
+    radius: 1.5
+    energy: 0.9
+    falloff: 4
+    color: "#79d7ff"
+    castShadows: false
+  - type: AmbientOnPowered
+  - type: AmbientSound
+    enabled: false
+    volume: 4
+    range: 4
+    sound:
+      path: /Audio/Ambience/Objects/emf_buzz.ogg
   - type: Sprite
-    sprite: Structures/Machines/techfab.rsi
+    sprite: _IS14/Structures/Machines/Techfabs/security.rsi
     layers:
     - state: icon
       map: ["enum.LatheVisualLayers.IsRunning"]
-    - state: sec
+    - state: cover
     - state: unlit
       shader: unshaded
       map: ["enum.PowerDeviceVisualLayers.Powered"]
@@ -513,6 +528,8 @@
   - type: Lathe
     idleState: icon
     runningState: icon
+    unlitIdleState: unlit
+    unlitRunningState: unlit-building
     staticPacks:
     - SecurityEquipmentStatic
     - SecurityPracticeStatic
@@ -584,8 +601,23 @@
   name: ammo techfab
   description: Prints the bare minimum of bullets that any budget military or armory could need. Nothing fancy.
   components:
+    - type: LitOnPowered
+    - type: PointLight
+      enabled: false
+      radius: 1.5
+      energy: 0.9
+      falloff: 4
+      color: "#ffd260"
+      castShadows: false
+    - type: AmbientOnPowered
+    - type: AmbientSound
+      enabled: false
+      volume: 4
+      range: 4
+      sound:
+        path: /Audio/Ambience/Objects/emf_buzz.ogg
     - type: Sprite
-      sprite: Structures/Machines/techfab.rsi
+      sprite: _IS14/Obsolette/Structures/Machines/techfab.rsi
       layers:
         - state: icon
           map: ["enum.LatheVisualLayers.IsRunning"]
@@ -620,12 +652,27 @@
   name: medical techfab
   description: Prints equipment and circuitboards for use by the medbay.
   components:
+  - type: LitOnPowered
+  - type: PointLight
+    enabled: false
+    radius: 1.5
+    energy: 0.9
+    falloff: 4
+    color: "#76ed72"
+    castShadows: false
+  - type: AmbientOnPowered
+  - type: AmbientSound
+    enabled: false
+    volume: 4
+    range: 4
+    sound:
+      path: /Audio/Ambience/Objects/emf_buzz.ogg
   - type: Sprite
-    sprite: Structures/Machines/techfab.rsi
+    sprite: _IS14/Structures/Machines/Techfabs/medical.rsi
     layers:
     - state: icon
       map: ["enum.LatheVisualLayers.IsRunning"]
-    - state: med
+    - state: cover
     - state: unlit
       shader: unshaded
       map: ["enum.PowerDeviceVisualLayers.Powered"]
@@ -636,6 +683,8 @@
   - type: Lathe
     idleState: icon
     runningState: icon
+    unlitIdleState: unlit
+    unlitRunningState: unlit-building
     staticPacks:
     - TopicalsStatic
     - ChemistryStatic

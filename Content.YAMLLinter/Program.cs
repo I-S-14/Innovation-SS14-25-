@@ -30,6 +30,17 @@ namespace Content.YAMLLinter
             //IS14-change end
             GameDataScrounger.NoScrounging = true; // Ugly hack for YAML Linter.
             PoolManager.Startup();
+            if (Array.IndexOf(args, "--export-economy-catalog") is var exportIndex && exportIndex >= 0)
+            {
+                try
+                {
+                    if (exportIndex + 1 >= args.Length)
+                        throw new ArgumentException("--export-economy-catalog requires an output directory.");
+                    await _IS14.EconomyCatalogExport.Run(args[exportIndex + 1], TestContext);
+                    return 0;
+                }
+                finally { PoolManager.Shutdown(); }
+            }
             // IS14: diagnose incomplete shared/client/server ports without starting a game pair.
             if (args.Contains("--audit-system-dependencies"))
             {

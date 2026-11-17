@@ -1,0 +1,10 @@
+is14-vending-tab-uniforms = Uniforms
+is14-vending-tab-security-equipment = Security equipment
+is14-vending-tab-goods = Goods
+is14-vending-tab-equipment = Equipment
+is14-vending-tab-supplies = Supplies
+is14-vending-tab-reagents = Reagents
+is14-vending-tab-basic = Basic
+is14-vending-tab-advanced = Advanced
+is14-vending-tab-drinks = Drinks
+is14-vending-tab-snacks = Snacks
