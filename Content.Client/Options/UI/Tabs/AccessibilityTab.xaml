@@ -51,10 +51,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                 <CheckBox Name="EnableChatTypingPreview" Text="{Loc 'ui-options-chat-preview'}" />
                 <ui:OptionSlider Name="PreviewBubbleBackgroundOpacitySlider" Title="{Loc 'ui-options-preview-bubble-background-opacity'}" />
                 <ui:OptionSlider Name="VacuumOverlayIntensityOpacitySlider" Title="{Loc 'ui-options-vacuum-overlay-intensity'}" />
-                <CheckBox Name="AutoFillHighlightsCheckBox" Text="{Loc 'ui-options-auto-fill-highlights'}" />
-                <ui:OptionColorSlider Name="HighlightsColorSlider"
-                    Title="{Loc 'ui-options-highlights-color'}"
-                    Example="{Loc 'ui-options-highlights-color-example'}"/>
+                <!--IS14-change: auto-fill is configured below; highlight color is in CustomizationTab. -->
                 <Label Text="{Loc 'ui-options-accessibility-header-content'}"
                        StyleClasses="LabelKeyText"/>
                 <CheckBox Name="CensorNudityCheckBox" Text="{Loc 'ui-options-censor-nudity'}" />
