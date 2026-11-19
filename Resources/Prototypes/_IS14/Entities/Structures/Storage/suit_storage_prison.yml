@@ -9,6 +9,7 @@
     noRot: true
     layers:
     - state: base
+      map: [ "enum.StorageVisualLayers.Base" ]
     - state: door
       map: ["enum.StorageVisualLayers.Door"]
     - state: welded
