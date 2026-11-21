@@ -4,6 +4,11 @@
   name: azure water
   description: A real thirst quencher. Corals are not included!
   components:
+  # This RSI contains a full tile, not the directional water0..water7 corners.
+  # Clear states as well: IconSmooth initializes corner layers even when disabled.
+  - type: IconSmooth
+    enabled: false
+    states: []
   - type: Sprite
     sprite: _CorvaxGoob/Tiles/Planet/azure_water.rsi
     drawdepth: BelowFloor
