@@ -7,9 +7,21 @@
   - type: VoiceChatEffect # Goobstation - Voice chat
     effect: Robot
   - type: InputMover # needs this to pilot the mothership
-  - type: BlockMovement # They should never be moving!
-    blockInteraction: false
-    blockUse: false
+  #IS14-change start - the body is stationary; movement can be relayed to the remote eye.
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 0
+    baseSprintSpeed: 0
+  - type: MothershipEye
+  - type: Cyborg
+    model: IS14CyborgModelMothership
+    defaultSkin: IS14CyborgSkinMothership
+    manageAppearance: false
+    canOpenSelfUi: true
+    inherentRadioChannels: [Mothership, Xenoborg, Binary]
+  - type: PowerCellDraw
+    drawRate: 0.6
+    enabled: false
+  #IS14-change end
   - type: Appearance
   - type: WiresVisuals
   - type: Fixtures
@@ -89,8 +101,7 @@
     maxIntensity: 100
     intensitySlope: 2
     totalIntensity: 200
-  - type: SurveillanceCameraSpeaker
-  - type: SurveillanceCameraMonitor
+  #IS14-change: MothershipEye replaces the fixed surveillance-camera viewer.
   - type: RoboticsConsole
     allowBorgControl: false
     radioChannel: Xenoborg
@@ -106,6 +117,16 @@
   - type: ActivatableUIRequiresPower
   - type: UserInterface
     interfaces:
+      #IS14-change start
+      enum.CyborgUiKey.Model:
+        type: CyborgModelBoundUserInterface
+      enum.CyborgUiKey.Skin:
+        type: CyborgSkinBoundUserInterface
+      enum.CyborgUiKey.Maintenance:
+        type: CyborgMaintenanceBoundUserInterface
+      enum.MothershipEyeUiKey.Key:
+        type: MothershipEyeBoundUserInterface
+      #IS14-change end
       enum.SiliconLawsUiKey.Key:
         type: SiliconLawBoundUserInterface
         requireInputValidation: false
@@ -113,8 +134,6 @@
         type: RadarConsoleBoundUserInterface
       enum.RoboticsConsoleUiKey.Key:
         type: RoboticsConsoleBoundUserInterface
-      enum.SurveillanceCameraMonitorUiKey.Key:
-        type: SurveillanceCameraMonitorBoundUserInterface
       enum.LatheUiKey.Key:
         type: LatheBoundUserInterface
       enum.ResearchClientUiKey.Key:
@@ -170,22 +189,14 @@
     showInHands: false
     disableExplosionRecursion: true
     canBeStripped: false
-  - type: BorgChassis
-    canOpenSelfUi: true
-    maxModules: 2
-    hasMindState: core-e
-    noMindState: core-e
-    moduleWhitelist:
-      tags:
-      - MothershipModule
-  - type: ContainerFill
-    containers:
-      borg_module:
-      - MothershipModule
+  #IS14-change start - tools, OS and maintenance are provided by the IS14 cyborg system.
   - type: ContainerContainer
     containers:
       cell_slot: !type:ContainerSlot { }
-      borg_module: !type:Container { }
+      cyborg_brain: !type:ContainerSlot { }
+      cyborg_tools: !type:Container { }
+      cyborg_upgrades: !type:Container { }
+  #IS14-change end
   - type: PowerCellSlot
     cellSlotId: cell_slot
   - type: ItemSlots
@@ -221,14 +232,21 @@
     whitelist:
       components:
       - BorgChassis
+      #IS14-change start - IS14 xenoborgs use Cyborg instead of BorgChassis.
+      - Xenoborg
+      #IS14-change end
   - type: IntrinsicUI
     uis:
+      #IS14-change start
+      enum.MothershipEyeUiKey.Key:
+        toggleAction: IS14ActionMothershipEye
+      enum.LatheUiKey.Key:
+        toggleAction: IS14ActionMothershipLathe
+      #IS14-change end
       enum.RadarConsoleUiKey.Key:
         toggleAction: ActionAGhostShowRadar
       enum.RoboticsConsoleUiKey.Key:
         toggleAction: ActionXenoborgControlMonitor
-      enum.SurveillanceCameraMonitorUiKey.Key:
-        toggleAction: ActionXenoborgCameraMonitor
   - type: ShowElectrocutionHUD
   - type: PowerMonitoringCableNetworks
   - type: RadarConsole

@@ -126,8 +126,11 @@ public sealed partial class RoboticsConsoleSystem : SharedRoboticsConsoleSystem
         if (!data.IsLawChangable)
             return;
 
-        if (!_slots.TryGetSlot(ent.Owner, ent.Comp.CircuitBoardItemSlot, out var slot) || slot.Item is null)
+        //IS14-change start - xenoborg consoles have no law board slot.
+        if (!TryComp<ItemSlotsComponent>(ent, out var itemSlots) ||
+            !_slots.TryGetSlot((ent.Owner, itemSlots), ent.Comp.CircuitBoardItemSlot, out var slot) || slot.Item is null)
             return;
+        //IS14-change end
         // Corvax-Next-AiRemoteControl-Start
         if (data.IsAiControllable)
             return;
@@ -202,8 +205,11 @@ public sealed partial class RoboticsConsoleSystem : SharedRoboticsConsoleSystem
             if (_deviceNetworkComp.TryComp(uid, out var device))
                 cyborgs.Add(device, data);
         }
-        var state = new RoboticsConsoleState(cyborgs, ent.Comp.AllowBorgControl,
-            _slots.TryGetSlot(ent.Owner, ent.Comp.CircuitBoardItemSlot, out var slot) && slot.HasItem);
+        //IS14-change start - the law board slot is optional (absent on xenoborg consoles).
+        var hasLawBoard = TryComp<ItemSlotsComponent>(ent, out var itemSlots) &&
+            _slots.TryGetSlot((ent.Owner, itemSlots), ent.Comp.CircuitBoardItemSlot, out var slot) && slot.HasItem;
+        var state = new RoboticsConsoleState(cyborgs, ent.Comp.AllowBorgControl, hasLawBoard);
+        //IS14-change end
 
         _ui.SetUiState(ent.Owner, RoboticsConsoleUiKey.Key, state);
     }

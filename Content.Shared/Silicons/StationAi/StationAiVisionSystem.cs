@@ -159,15 +159,20 @@ public sealed partial class StationAiVisionSystem : EntitySystem
     /// Gets a byond-equivalent for tiles in the specified worldAABB.
     /// </summary>
     /// <param name="expansionSize">How much to expand the bounds before to find vision intersecting it. Makes this the largest vision size + 1 tile.</param>
-    public void GetView(Entity<BroadphaseComponent, MapGridComponent> grid, Box2Rotated worldBounds, HashSet<Vector2i> visibleTiles, float expansionSize = 8.5f)
+    //IS14-change: additional private sources reuse the camera visibility calculation without joining its network.
+    public void GetView(Entity<BroadphaseComponent, MapGridComponent> grid, Box2Rotated worldBounds,
+        HashSet<Vector2i> visibleTiles, float expansionSize = 8.5f,
+        IReadOnlyList<Entity<StationAiVisionComponent>>? additionalSources = null)
     {
         lock (_lock) // Goob - Fix (parallel access race)
         {
-            GetViewUnlocked(grid, worldBounds, visibleTiles, expansionSize);
+            GetViewUnlocked(grid, worldBounds, visibleTiles, expansionSize, additionalSources);
         }
     }
 
-    private void GetViewUnlocked(Entity<BroadphaseComponent, MapGridComponent> grid, Box2Rotated worldBounds, HashSet<Vector2i> visibleTiles, float expansionSize)
+    private void GetViewUnlocked(Entity<BroadphaseComponent, MapGridComponent> grid, Box2Rotated worldBounds,
+        HashSet<Vector2i> visibleTiles, float expansionSize,
+        IReadOnlyList<Entity<StationAiVisionComponent>>? additionalSources)
     {
         _viewportTiles.Clear();
         _opaque.Clear();
@@ -197,8 +202,21 @@ public sealed partial class StationAiVisionSystem : EntitySystem
             _job.Data.Add(seed);
         }
 
-        if (_seeds.Count == 0)
+        //IS14-change start - these sources are private to this view, not registered camera entities.
+        if (additionalSources != null)
+        {
+            foreach (var source in additionalSources)
+            {
+                if (!TryComp<TransformComponent>(source.Owner, out var xform) ||
+                    xform.MapID != Transform(grid.Owner).MapID ||
+                    !worldBounds.Enlarged(source.Comp.Range).Contains(_xforms.GetWorldPosition(xform)))
+                    continue;
+                _job.Data.Add(source);
+            }
+        }
+        if (_job.Data.Count == 0)
             return;
+        //IS14-change end
 
         // Get viewport tiles
         var tileEnumerator = _maps.GetLocalTilesIntersecting(grid, grid, localAabb, ignoreEmpty: false);

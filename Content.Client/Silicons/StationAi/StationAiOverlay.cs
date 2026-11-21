@@ -4,6 +4,7 @@ using System.Numerics;
 using Content.Client.Graphics;
 using Content.Shared.CCVar;
 using Content.Shared.Silicons.StationAi;
+using Content.Shared.StationAi; //IS14-change: private mothership vision sources.
 using Robust.Client.Graphics;
 using Robust.Client.Player;
 using Robust.Shared.Configuration;
@@ -37,17 +38,28 @@ public sealed partial class StationAiOverlay : Overlay //goob edit
     private readonly OverlayResourceCache<CachedResources> _resources = new();
 
     private ProtoId<ShaderPrototype> _activeShader = CameraStaticShader;
+    [ViewVariables] public ProtoId<ShaderPrototype> StaticShader => _activeShader; //IS14-change: inspect the selected noise mode.
     private float _updateRate = 1f / 30f;
     private float _accumulator;
 
     private EntityUid _lastGridUid = EntityUid.Invalid; // goobstation - off grid vision fix
 
-    public StationAiOverlay()
+    //IS14-change start - share the renderer with the mothership's eye without granting AI controls.
+    private readonly EntityUid? _viewEntity;
+    private readonly Func<IReadOnlyList<Entity<StationAiVisionComponent>>>? _viewSources;
+
+    public StationAiOverlay() : this(null, null) { }
+
+    public StationAiOverlay(EntityUid? viewEntity,
+        Func<IReadOnlyList<Entity<StationAiVisionComponent>>>? viewSources)
     {
+        _viewEntity = viewEntity;
+        _viewSources = viewSources;
         IoCManager.InjectDependencies(this);
         _cfg.OnValueChanged(CCVars.DisableAiStatic, OnAiStaticChanged, invokeImmediately: true);
 
     }
+    //IS14-change end
 
     private void OnAiStaticChanged(bool toggle)
     {
@@ -72,7 +84,7 @@ public sealed partial class StationAiOverlay : Overlay //goob edit
 
         var worldBounds = args.WorldBounds;
 
-        var playerEnt = _player.LocalEntity;
+        var playerEnt = _viewEntity ?? _player.LocalEntity; //IS14-change: draw around the remote eye.
 
         // Shitmed - Starlight Abductors Change Start
         if (_entManager.TryGetComponent(playerEnt, out StationAiOverlayComponent? stationAiOverlay)
@@ -114,7 +126,9 @@ public sealed partial class StationAiOverlay : Overlay //goob edit
             {
                 _accumulator = MathF.Max(0f, _accumulator + _updateRate);
                 _visibleTiles.Clear();
-                _entManager.System<StationAiVisionSystem>().GetView((gridUid, broadphase, grid), worldBounds, _visibleTiles);
+                //IS14-change: the core and xenoborg cameras also reveal tiles in this private view.
+                _entManager.System<StationAiVisionSystem>().GetView((gridUid, broadphase, grid), worldBounds,
+                    _visibleTiles, additionalSources: _viewSources?.Invoke());
             }
 
             var gridMatrix = xforms.GetWorldMatrix(gridUid);
@@ -155,8 +169,19 @@ public sealed partial class StationAiOverlay : Overlay //goob edit
             worldHandle.RenderInRenderTarget(res.StaticTexture!,
             () =>
             {
-                worldHandle.SetTransform(Matrix3x2.Identity);
-                worldHandle.DrawRect(worldBounds, Color.Black);
+                //IS14-change start - off-grid mothership vision is static rather than an unmasked view.
+                if (_viewEntity != null)
+                {
+                    worldHandle.SetTransform(invMatrix);
+                    worldHandle.UseShader(_proto.Index(_activeShader).Instance());
+                    worldHandle.DrawRect(worldBounds, Color.White);
+                }
+                else
+                {
+                    worldHandle.SetTransform(Matrix3x2.Identity);
+                    worldHandle.DrawRect(worldBounds, Color.Black);
+                }
+                //IS14-change end
             }, Color.Black);
         }
 
@@ -169,7 +194,7 @@ public sealed partial class StationAiOverlay : Overlay //goob edit
         worldHandle.DrawTextureRect(res.StaticTexture!.Texture, worldBounds);
 
         // goobstation - AI machine view
-        if (grid != null && broadphase != null)
+        if (_viewEntity == null && grid != null && broadphase != null) //IS14-change: machine outlines belong to station AI.
             DrawAiMachineView(in args, worldHandle, gridUid, grid);
 
         worldHandle.SetTransform(Matrix3x2.Identity);
@@ -179,6 +204,7 @@ public sealed partial class StationAiOverlay : Overlay //goob edit
 
     protected override void DisposeBehavior()
     {
+        _cfg.UnsubValueChanged(CCVars.DisableAiStatic, OnAiStaticChanged); //IS14-change: eyes can be reopened repeatedly.
         _resources.Dispose();
 
         base.DisposeBehavior();

@@ -3,6 +3,7 @@
 using System.Linq;
 using Content.Shared._IS14.Cyborgs.Components;
 using Content.Shared.Examine;
+using Content.Shared.Localizations;
 
 namespace Content.Shared._IS14.Cyborgs.Systems;
 
@@ -11,6 +12,19 @@ public abstract partial class SharedCyborgSystem
     private void InitializeExamine()
     {
         SubscribeLocalEvent<CyborgComponent, ExaminedEvent>(OnExamined);
+        SubscribeLocalEvent<CyborgUpgradeComponent, ExaminedEvent>(OnUpgradeExamined);
+    }
+
+    private void OnUpgradeExamined(Entity<CyborgUpgradeComponent> ent, ref ExaminedEvent args)
+    {
+        var models = ent.Comp.Models.Select(id => _proto.Index(id)).ToArray();
+        if (models.Length == 0 || models.Any(model => model.ModuleFitName == null))
+            return;
+
+        var types = ContentLocalizationManager.FormatList(
+            models.Select(model => Loc.GetString(model.ModuleFitName!.Value)).ToList());
+        using (args.PushGroup(nameof(CyborgUpgradeComponent)))
+            args.PushMarkup(Loc.GetString("borg-module-fit", ("types", types)));
     }
 
     // The model and the upgrade boards, readable from up close like tg's borg examine.

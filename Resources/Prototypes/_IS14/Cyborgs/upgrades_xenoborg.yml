@@ -16,7 +16,7 @@
   parent: IS14BaseCyborgUpgradeXenoborg
   id: IS14CyborgUpgradeXenoborgDoorControl
   name: door control xenoborg module
-  description: A door remote and an access configurator for the engi xenoborg.
+  description: A door remote, a xenoborg authentication disruptor and an access configurator for the engi xenoborg.
   components:
   - type: Sprite
     layers:
@@ -28,6 +28,9 @@
     tools:
     - IS14CyborgToolXenoDoorRemoteXenoborg
     - IS14CyborgToolXenoAccessConfiguratorXenoborg
+    - IS14CyborgToolXenoXenoborgAccessBreaker
+    replaces:
+    - IS14CyborgToolXenoAccessBreaker
 
 - type: entity
   parent: IS14BaseCyborgUpgradeXenoborg
@@ -82,3 +85,199 @@
     - IS14CyborgToolXenoSuperCloakingDevice
     replaces:
     - IS14CyborgToolXenoCloakingDevice
+
+- type: entity
+  parent: IS14BaseCyborgUpgradeXenoborg
+  id: IS14CyborgUpgradeXenoborgDeflectorField
+  name: deflector field xenoborg module
+  description: Module with a self-recharging deflector field projector.
+  components:
+  - type: Sprite
+    layers:
+    - state: xenoborg_engi
+    - state: icon-xenoborg-shield
+  - type: CyborgUpgrade
+    models:
+    - IS14CyborgModelXenoborgEngi
+    tools:
+    - IS14CyborgToolXenoHoloprojectorXenoField
+
+- type: entity
+  parent: IS14BaseCyborgUpgradeXenoborg
+  id: IS14CyborgUpgradeXenoborgZap
+  name: zap xenoborg module
+  description: Module that disables the grounding of the xenoborg, making them electrified. Shocking!
+  components:
+  - type: Sprite
+    layers:
+    - state: xenoborg_engi
+    - state: icon-xenoborg-zap
+  - type: CyborgUpgrade
+    models:
+    - IS14CyborgModelXenoborgEngi
+    addComponents:
+    - type: Electrified
+      requirePower: false
+      shockDamage: 15
+      shockDelay: 6
+      shockTime: 0.25
+
+- type: entity
+  parent: IS14BaseCyborgUpgradeXenoborg
+  id: IS14CyborgUpgradeXenoborgOilGun
+  name: oil gun xenoborg module
+  description: Module with a gun that shoots ampoules filled with flammable oil.
+  components:
+  - type: Sprite
+    layers:
+    - state: xenoborg_engi
+    - state: icon-xenoborg-oil
+  - type: CyborgUpgrade
+    models:
+    - IS14CyborgModelXenoborgEngi
+    tools:
+    - IS14CyborgToolXenoWeaponOilGun
+
+- type: entity
+  parent: IS14BaseCyborgUpgradeXenoborg
+  id: IS14CyborgUpgradeXenoborgNaniteGun
+  name: nanite gun xenoborg module
+  description: Module that allows Xenoborgs to have a crystal firing nanite gun.
+  components:
+  - type: Sprite
+    layers:
+    - state: xenoborg_engi
+    - state: icon-xenoborg-nanite-gun
+  - type: CyborgUpgrade
+    models:
+    - IS14CyborgModelXenoborgEngi
+    tools:
+    - IS14CyborgToolXenoWeaponNaniteGun
+
+- type: entity
+  parent: IS14BaseCyborgUpgradeXenoborg
+  id: IS14CyborgUpgradeXenoborgGuidedMissileLauncher
+  name: guided missile launcher xenoborg module
+  description: Module with guided missile launcher and a range finder to set targets.
+  components:
+  - type: Sprite
+    layers:
+    - state: xenoborg_heavy
+    - state: icon-xenoborg-guided-missile
+  - type: CyborgUpgrade
+    models:
+    - IS14CyborgModelXenoborgHeavy
+    tools:
+    - IS14CyborgToolXenoWeaponGuidedMissileLauncherXenoborg
+    - IS14CyborgToolXenoWeaponRangeFinderXenoborg
+    addComponents:
+    - type: SimpleSpriteOverlay
+      overlaySprite:
+        sprite: Mobs/Silicon/chassis.rsi
+        state: xenoborg_heavy_missile_launcher
+
+- type: entity
+  parent: IS14BaseCyborgUpgradeXenoborg
+  id: IS14CyborgUpgradeXenoborgRocket
+  name: rocket module
+  description: A module with a rocket launcher designed to destroy structures.
+  components:
+  - type: Sprite
+    layers:
+    - state: xenoborg_heavy
+    - state: icon-xenoborg-rocket
+  - type: CyborgUpgrade
+    models:
+    - IS14CyborgModelXenoborgHeavy
+    tools:
+    - IS14CyborgToolXenoWeaponRocketLauncherXenoborg
+    - IS14CyborgToolXenoWeaponRocketLauncherXenoborg
+    addComponents:
+    - type: SimpleSpriteOverlay
+      overlaySprite:
+        sprite: Mobs/Silicon/rockets.rsi
+        state: heavy_xenoborg_rockets
+
+- type: entity
+  parent: IS14BaseCyborgUpgradeXenoborg
+  id: IS14CyborgUpgradeXenoborgBurstFireLaser
+  name: burst fire laser xenoborg module
+  description: Module with a burst fire incendiary laser.
+  components:
+  - type: Sprite
+    layers:
+    - state: xenoborg_heavy
+    - state: icon-xenoborg-laser3
+  - type: CyborgUpgrade
+    models:
+    - IS14CyborgModelXenoborgHeavy
+    tools:
+    - IS14CyborgToolXenoWeaponBurstFireLaserXenoborg
+    replaces:
+    - IS14CyborgToolXenoWeaponLaserGunXenoborg
+
+- type: entity
+  parent: IS14BaseCyborgUpgradeXenoborg
+  id: IS14CyborgUpgradeXenoborgHeavyRadioactive
+  name: radioactive xenoborg module
+  description: Module that causes a xenoborg to emanate radioactive energy.
+  components:
+  - type: Sprite
+    layers:
+    - state: xenoborg_heavy
+    - state: icon-xenoborg-radioactive
+  - type: CyborgUpgrade
+    models:
+    - IS14CyborgModelXenoborgHeavy
+    addComponents:
+    - type: SimpleSpriteOverlay
+      overlaySprite:
+        sprite: Mobs/Silicon/chassis.rsi
+        state: xenoborg_heavy_rad
+      shader: unshaded
+    - type: RadiationSource
+      intensity: 4
+      # IS14-change: the retained Goob radiation model uses terminalDecay*, not slope.
+    - type: AmbientSound
+      range: 6
+      volume: -3
+      sound:
+        path: /Audio/Ambience/Objects/xenoborg_radioactive.ogg
+
+- type: entity
+  parent: IS14BaseCyborgUpgradeXenoborg
+  id: IS14CyborgUpgradeXenoborgJump
+  name: xenoborg jump module
+  description: Module that allows a xenoborg to jump forward.
+  components:
+  - type: Sprite
+    layers:
+    - state: xenoborg_scout
+    - state: icon-xenoborg-jump
+
+  - type: CyborgUpgrade
+    models:
+    - IS14CyborgModelXenoborgScout
+    addComponents:
+    - type: JumpAbility
+      action: ActionJumpBoost
+      jumpDistance: 4
+      jumpSound: /Audio/Effects/stealthoff.ogg
+
+- type: entity
+  parent: IS14BaseCyborgUpgradeXenoborg
+  id: IS14CyborgUpgradeXenoborgBioKinfe
+  name: bio knife xenoborg module
+  description: Module with an bio knife.
+  components:
+  - type: Sprite
+    layers:
+    - state: xenoborg_scout
+    - state: icon-xenoborg-sword2
+  - type: CyborgUpgrade
+    models:
+    - IS14CyborgModelXenoborgScout
+    tools:
+    - IS14CyborgToolXenoXenoborgBioKnife
+    replaces:
+    - IS14CyborgToolXenoKukriKnife

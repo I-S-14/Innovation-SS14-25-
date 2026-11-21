@@ -1,0 +1,14 @@
+mothership-pinpointer-title = Цель пинпоинтера
+mothership-pinpointer-select = Выбрать цель
+mothership-pinpointer-core = Материнское ядро: { $name }
+mothership-pinpointer-tracking = Цель: { $name }
+mothership-pinpointer-unavailable = Цель недоступна
+mothership-pinpointer-off = Выключить
+mothership-pinpointer-disabled = Пинпоинтер выключен
+mothership-pinpointer-subtitle = Навигационная связь · терминал наведения
+mothership-pinpointer-uplink = НАВЕДЕНИЕ
+mothership-pinpointer-targets = СИГНАЛЫ В СЕТИ · { $count }
+mothership-pinpointer-locked = Цель захвачена · наведение активно
+mothership-pinpointer-selected = Захвачена
+mothership-pinpointer-acquire = Навести
+mothership-pinpointer-hint = Выберите сигнал ядра или ксеноборга. Пинпоинтер будет указывать только на выбранную цель.

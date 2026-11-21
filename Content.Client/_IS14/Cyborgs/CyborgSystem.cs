@@ -175,6 +175,9 @@ public sealed class CyborgSystem : SharedCyborgSystem
 
     private void UpdateAppearance(Entity<CyborgComponent> ent)
     {
+        if (!ent.Comp.ManageAppearance)
+            return;
+
         if (!TryComp<SpriteComponent>(ent, out var sprite) || GetSkin(ent.Comp) is not { } skin)
             return;
 

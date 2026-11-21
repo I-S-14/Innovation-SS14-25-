@@ -13,6 +13,12 @@
   categories:
   - Robotics
   completetime: 10
+  #IS14-change start - 90 steel, 30 glass and 30 plastic sheets for every chassis.
+  materials:
+    Steel: 9000
+    Glass: 3000
+    Plastic: 3000
+  #IS14-change end
 
 - type: latheRecipe
   abstract: true
@@ -38,8 +44,6 @@
   #IS14-change start - xenoborgs on the tgstation-style cyborg system
   result: IS14XenoborgEngiPrinted
   #IS14-change end
-  materials:
-    XenoborgCrystal: 100
 
 - type: latheRecipe
   parent: BaseXenoborgRecipe
@@ -47,9 +51,6 @@
   #IS14-change start - xenoborgs on the tgstation-style cyborg system
   result: IS14XenoborgHeavyPrinted
   #IS14-change end
-  materials:
-    Steel: 1000 # goob - swapped
-    Plasteel: 2000 # goob - swapped
 
 - type: latheRecipe
   parent: BaseXenoborgRecipe
@@ -57,8 +58,6 @@
   #IS14-change start - xenoborgs on the tgstation-style cyborg system
   result: IS14XenoborgScoutPrinted
   #IS14-change end
-  materials:
-    XenoborgCrystal: 100
 
 - type: latheRecipe
   parent: BaseXenoborgRecipe
@@ -66,8 +65,6 @@
   #IS14-change start - xenoborgs on the tgstation-style cyborg system
   result: IS14XenoborgStealthPrinted
   #IS14-change end
-  materials:
-    XenoborgCrystal: 100
 
 # modules
 
@@ -85,28 +82,36 @@
 - type: latheRecipe
   parent: BaseXenoborgModulesRecipe
   id: XenoborgModuleDeflectorFieldRecipe
-  result: XenoborgModuleDeflectorField
+  #IS14-change start - modules for the IS14 cyborg system
+  result: IS14CyborgUpgradeXenoborgDeflectorField
+  #IS14-change end
   materials:
     XenoborgCrystal: 100
 
 - type: latheRecipe
   parent: BaseXenoborgModulesRecipe
   id: XenoborgModuleZapRecipe
-  result: XenoborgModuleZap
+  #IS14-change start - modules for the IS14 cyborg system
+  result: IS14CyborgUpgradeXenoborgZap
+  #IS14-change end
   materials:
     XenoborgCrystal: 100
 
 - type: latheRecipe
   parent: BaseXenoborgModulesRecipe
   id: XenoborgModuleOilGunRecipe
-  result: XenoborgModuleOilGun
+  #IS14-change start - modules for the IS14 cyborg system
+  result: IS14CyborgUpgradeXenoborgOilGun
+  #IS14-change end
   materials:
     XenoborgCrystal: 300
 
 - type: latheRecipe
   parent: BaseXenoborgModulesRecipe
   id: XenoborgModuleNaniteGunRecipe
-  result: XenoborgModuleNaniteGun
+  #IS14-change start - modules for the IS14 cyborg system
+  result: IS14CyborgUpgradeXenoborgNaniteGun
+  #IS14-change end
   materials:
     XenoborgCrystal: 200
 
@@ -124,28 +129,36 @@
 - type: latheRecipe
   parent: BaseXenoborgModulesRecipe
   id: XenoborgModuleGuidedMissileLauncherRecipe
-  result: XenoborgModuleGuidedMissileLauncher
+  #IS14-change start - modules for the IS14 cyborg system
+  result: IS14CyborgUpgradeXenoborgGuidedMissileLauncher
+  #IS14-change end
   materials:
     XenoborgCrystal: 300
 
 - type: latheRecipe
   parent: BaseXenoborgModulesRecipe
   id: XenoborgModuleRocketRecipe
-  result: XenoborgModuleRocket
+  #IS14-change start - modules for the IS14 cyborg system
+  result: IS14CyborgUpgradeXenoborgRocket
+  #IS14-change end
   materials:
     XenoborgCrystal: 400
 
 - type: latheRecipe
   parent: BaseXenoborgModulesRecipe
   id: XenoborgModuleBurstFireLaserRecipe
-  result: XenoborgModuleBurstFireLaser
+  #IS14-change start - modules for the IS14 cyborg system
+  result: IS14CyborgUpgradeXenoborgBurstFireLaser
+  #IS14-change end
   materials:
     XenoborgCrystal: 200
 
 - type: latheRecipe
   parent: BaseXenoborgModulesRecipe
   id: XenoborgModuleHeavyRadioactiveRecipe
-  result: XenoborgModuleHeavyRadioactive
+  #IS14-change start - modules for the IS14 cyborg system
+  result: IS14CyborgUpgradeXenoborgHeavyRadioactive
+  #IS14-change end
   materials:
     XenoborgCrystal: 100
 
@@ -163,14 +176,18 @@
 - type: latheRecipe
   parent: BaseXenoborgModulesRecipe
   id: XenoborgModuleJumpRecipe
-  result: XenoborgModuleJump
+  #IS14-change start - modules for the IS14 cyborg system
+  result: IS14CyborgUpgradeXenoborgJump
+  #IS14-change end
   materials:
     XenoborgCrystal: 100
 
 - type: latheRecipe
   parent: BaseXenoborgModulesRecipe
   id: XenoborgModuleBioKinfeRecipe
-  result: XenoborgModuleBioKinfe
+  #IS14-change start - modules for the IS14 cyborg system
+  result: IS14CyborgUpgradeXenoborgBioKinfe
+  #IS14-change end
   materials:
     XenoborgCrystal: 200
 

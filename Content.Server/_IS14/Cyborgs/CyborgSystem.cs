@@ -25,7 +25,7 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Server._IS14.Cyborgs;
 
-public sealed class CyborgSystem : SharedCyborgSystem
+public sealed partial class CyborgSystem : SharedCyborgSystem
 {
     [Dependency] private readonly IBanManager _banManager = default!;
 

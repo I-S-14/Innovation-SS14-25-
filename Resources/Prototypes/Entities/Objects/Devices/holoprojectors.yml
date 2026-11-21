@@ -153,7 +153,9 @@
   #      name: power-cell-slot-component-slot-name-default
 
 - type: entity
-  parent: [ BaseXenoborgContraband, HolofanProjectorBorg ]
+  #IS14-change start - use the power-cell projector, not the charge-based atmos holofan.
+  parent: [ BaseXenoborgContraband, HoloprojectorBorg ]
+  #IS14-change end
   id: HoloprojectorXenoField
   name: Xenoborg deflector field projector
   description: An alien device, projecting fields that deflect projectiles.

@@ -11,6 +11,12 @@ namespace Content.Shared.StationAi;
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState, Access(typeof(SharedStationAiSystem))]
 public sealed partial class StationAiVisionComponent : Component
 {
+    //IS14-change start - private view seeds need not expose a xenoborg camera to the station AI.
+    [Access(Other = AccessPermissions.ReadExecute)]
+    public static Entity<StationAiVisionComponent> CreateViewSource(EntityUid owner, float range) =>
+        new(owner, new StationAiVisionComponent { Owner = owner, Range = range });
+    //IS14-change end
+
     /// <summary>
     /// Determines whether the entity is actively providing vision to the station AI.
     /// </summary>

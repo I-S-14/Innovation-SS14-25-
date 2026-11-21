@@ -33,6 +33,11 @@
   categories: [ HideSpawnMenu ]
 
 - type: entity
+  parent: [IS14BaseCyborgTool, XenoborgAccessBreaker]
+  id: IS14CyborgToolXenoXenoborgAccessBreaker
+  categories: [ HideSpawnMenu ]
+
+- type: entity
   parent: [IS14BaseCyborgTool, SelfRechargingFireExtinguisher]
   id: IS14CyborgToolXenoSelfRechargingFireExtinguisher
   categories: [ HideSpawnMenu ]
@@ -130,4 +135,46 @@
 - type: entity
   parent: [IS14BaseCyborgTool, SuperCloakingDevice]
   id: IS14CyborgToolXenoSuperCloakingDevice
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, HoloprojectorXenoField]
+  id: IS14CyborgToolXenoHoloprojectorXenoField
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, WeaponOilGun]
+  id: IS14CyborgToolXenoWeaponOilGun
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, WeaponNaniteGun]
+  id: IS14CyborgToolXenoWeaponNaniteGun
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, WeaponGuidedMissileLauncherXenoborg]
+  id: IS14CyborgToolXenoWeaponGuidedMissileLauncherXenoborg
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, WeaponRangeFinderXenoborg]
+  id: IS14CyborgToolXenoWeaponRangeFinderXenoborg
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, WeaponRocketLauncherXenoborg]
+  id: IS14CyborgToolXenoWeaponRocketLauncherXenoborg
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [IS14BaseCyborgTool, WeaponBurstFireLaserXenoborg]
+  id: IS14CyborgToolXenoWeaponBurstFireLaserXenoborg
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: CyborgBatteryStatus
+
+- type: entity
+  parent: [IS14BaseCyborgTool, XenoborgBioKnife]
+  id: IS14CyborgToolXenoXenoborgBioKnife
   categories: [ HideSpawnMenu ]
