@@ -1,0 +1,871 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+- type: entity
+  parent: CrateBaseLockBox
+  id: IS14CrateExport
+  categories: []
+  components:
+  - type: OverrideSell
+    overrideAccount: Cargo
+  - type: Icon
+    sprite: _IS14/Structures/Storage/Crates/export.rsi
+    state: icon
+  - type: Sprite
+    sprite: _IS14/Structures/Storage/Crates/export.rsi
+    layers:
+    - state: base
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: overlay
+    - state: closed
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: overlay-closed
+      map: [lid_overlay]
+    - state: welded
+      visible: false
+      map: ["enum.WeldableLayers.BaseWelded"]
+    - state: locked
+      shader: unshaded
+      map: ["enum.LockVisualLayers.Lock"]
+    - state: paper
+      sprite: Structures/Storage/Crates/labels.rsi
+      map: ["enum.PaperLabelVisuals.Layer"]
+  - type: Paintable
+    group: null
+
+- type: entity
+  parent: CrateEngineeringSecure
+  id: IS14CrateEngineeringSecure
+  categories: []
+  components:
+  - type: Icon
+    sprite: _IS14/Structures/Storage/Crates/engineering_secure.rsi
+    state: icon
+  - type: Sprite
+    sprite: _IS14/Structures/Storage/Crates/engineering_secure.rsi
+    layers:
+    - state: base
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: closed
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: welded
+      visible: false
+      map: ["enum.WeldableLayers.BaseWelded"]
+    - state: locked
+      shader: unshaded
+      map: ["enum.LockVisualLayers.Lock"]
+    - state: paper
+      sprite: Structures/Storage/Crates/labels.rsi
+      map: ["enum.PaperLabelVisuals.Layer"]
+  - type: Paintable
+    group: null
+
+- type: entity
+  parent: CrateEngineering
+  id: IS14CrateEngineering
+  categories: []
+  components:
+  - type: Icon
+    sprite: _IS14/Structures/Storage/Crates/engineering.rsi
+    state: icon
+  - type: Sprite
+    sprite: _IS14/Structures/Storage/Crates/engineering.rsi
+    layers:
+    - state: base
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: closed
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: welded
+      visible: false
+      map: ["enum.WeldableLayers.BaseWelded"]
+    - state: paper
+      sprite: Structures/Storage/Crates/labels.rsi
+      map: ["enum.PaperLabelVisuals.Layer"]
+  - type: Paintable
+    group: null
+
+- type: entity
+  parent: CrateRadiation
+  id: IS14CrateRadiation
+  categories: []
+  components:
+  - type: Icon
+    sprite: _IS14/Structures/Storage/Crates/radiation.rsi
+    state: icon
+  - type: Sprite
+    sprite: _IS14/Structures/Storage/Crates/radiation.rsi
+    layers:
+    - state: base
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: closed
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: welded
+      visible: false
+      map: ["enum.WeldableLayers.BaseWelded"]
+    - state: paper
+      sprite: Structures/Storage/Crates/labels.rsi
+      map: ["enum.PaperLabelVisuals.Layer"]
+  - type: Paintable
+    group: null
+
+- type: entity
+  parent: CrateElectrical
+  id: IS14CrateElectrical
+  categories: []
+  components:
+  - type: Icon
+    sprite: _IS14/Structures/Storage/Crates/electrical.rsi
+    state: icon
+  - type: Sprite
+    sprite: _IS14/Structures/Storage/Crates/electrical.rsi
+    layers:
+    - state: base
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: closed
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: welded
+      visible: false
+      map: ["enum.WeldableLayers.BaseWelded"]
+    - state: paper
+      sprite: Structures/Storage/Crates/labels.rsi
+      map: ["enum.PaperLabelVisuals.Layer"]
+  - type: Paintable
+    group: null
+
+- type: entity
+  parent: CrateCommandSecure
+  id: IS14CrateCommandSecure
+  categories: []
+  components:
+  - type: Icon
+    sprite: _IS14/Structures/Storage/Crates/command_secure.rsi
+    state: icon
+  - type: Sprite
+    sprite: _IS14/Structures/Storage/Crates/command_secure.rsi
+    layers:
+    - state: base
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: closed
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: welded
+      visible: false
+      map: ["enum.WeldableLayers.BaseWelded"]
+    - state: locked
+      shader: unshaded
+      map: ["enum.LockVisualLayers.Lock"]
+    - state: paper
+      sprite: Structures/Storage/Crates/labels.rsi
+      map: ["enum.PaperLabelVisuals.Layer"]
+  - type: Paintable
+    group: null
+
+- type: entity
+  parent: CrateGenericSteel
+  id: IS14CrateCommand
+  categories: []
+  components:
+  - type: Icon
+    sprite: _IS14/Structures/Storage/Crates/command.rsi
+    state: icon
+  - type: Sprite
+    sprite: _IS14/Structures/Storage/Crates/command.rsi
+    layers:
+    - state: base
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: closed
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: welded
+      visible: false
+      map: ["enum.WeldableLayers.BaseWelded"]
+    - state: paper
+      sprite: Structures/Storage/Crates/labels.rsi
+      map: ["enum.PaperLabelVisuals.Layer"]
+  - type: Paintable
+    group: null
+
+- type: entity
+  parent: CrateMedicalSecure
+  id: IS14CrateMedicalSecure
+  categories: []
+  components:
+  - type: Icon
+    sprite: _IS14/Structures/Storage/Crates/medical_secure.rsi
+    state: icon
+  - type: Sprite
+    sprite: _IS14/Structures/Storage/Crates/medical_secure.rsi
+    layers:
+    - state: base
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: closed
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: welded
+      visible: false
+      map: ["enum.WeldableLayers.BaseWelded"]
+    - state: locked
+      shader: unshaded
+      map: ["enum.LockVisualLayers.Lock"]
+    - state: paper
+      sprite: Structures/Storage/Crates/labels.rsi
+      map: ["enum.PaperLabelVisuals.Layer"]
+  - type: Paintable
+    group: null
+
+- type: entity
+  parent: CrateMedical
+  id: IS14CrateMedical
+  categories: []
+  components:
+  - type: Icon
+    sprite: _IS14/Structures/Storage/Crates/medical.rsi
+    state: icon
+  - type: Sprite
+    sprite: _IS14/Structures/Storage/Crates/medical.rsi
+    layers:
+    - state: base
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: closed
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: welded
+      visible: false
+      map: ["enum.WeldableLayers.BaseWelded"]
+    - state: paper
+      sprite: Structures/Storage/Crates/labels.rsi
+      map: ["enum.PaperLabelVisuals.Layer"]
+  - type: Paintable
+    group: null
+
+- type: entity
+  parent: CrateChemistrySecure
+  id: IS14CrateChemistrySecure
+  categories: []
+  components:
+  - type: Icon
+    sprite: _IS14/Structures/Storage/Crates/chemistry_secure.rsi
+    state: icon
+  - type: Sprite
+    sprite: _IS14/Structures/Storage/Crates/chemistry_secure.rsi
+    layers:
+    - state: base
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: closed
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: welded
+      visible: false
+      map: ["enum.WeldableLayers.BaseWelded"]
+    - state: locked
+      shader: unshaded
+      map: ["enum.LockVisualLayers.Lock"]
+    - state: paper
+      sprite: Structures/Storage/Crates/labels.rsi
+      map: ["enum.PaperLabelVisuals.Layer"]
+  - type: Paintable
+    group: null
+
+- type: entity
+  parent: CrateSurgery
+  id: IS14CrateSurgery
+  categories: []
+  components:
+  - type: Icon
+    sprite: _IS14/Structures/Storage/Crates/surgery.rsi
+    state: icon
+  - type: Sprite
+    sprite: _IS14/Structures/Storage/Crates/surgery.rsi
+    layers:
+    - state: base
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: closed
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: welded
+      visible: false
+      map: ["enum.WeldableLayers.BaseWelded"]
+    - state: paper
+      sprite: Structures/Storage/Crates/labels.rsi
+      map: ["enum.PaperLabelVisuals.Layer"]
+  - type: Paintable
+    group: null
+
+- type: entity
+  parent: CrateSecgear
+  id: IS14CrateSecuritySecure
+  categories: []
+  components:
+  - type: Icon
+    sprite: _IS14/Structures/Storage/Crates/security_secure.rsi
+    state: icon
+  - type: Sprite
+    sprite: _IS14/Structures/Storage/Crates/security_secure.rsi
+    layers:
+    - state: base
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: closed
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: welded
+      visible: false
+      map: ["enum.WeldableLayers.BaseWelded"]
+    - state: locked
+      shader: unshaded
+      map: ["enum.LockVisualLayers.Lock"]
+    - state: paper
+      sprite: Structures/Storage/Crates/labels.rsi
+      map: ["enum.PaperLabelVisuals.Layer"]
+  - type: Paintable
+    group: null
+
+- type: entity
+  parent: CrateWeaponSecure
+  id: IS14CrateWeaponSecureAlt
+  categories: []
+  components:
+  - type: Icon
+    sprite: _IS14/Structures/Storage/Crates/weapon_secure_alt.rsi
+    state: icon
+  - type: Sprite
+    sprite: _IS14/Structures/Storage/Crates/weapon_secure_alt.rsi
+    layers:
+    - state: base
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: closed
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: welded
+      visible: false
+      map: ["enum.WeldableLayers.BaseWelded"]
+    - state: locked
+      shader: unshaded
+      map: ["enum.LockVisualLayers.Lock"]
+    - state: paper
+      sprite: Structures/Storage/Crates/labels.rsi
+      map: ["enum.PaperLabelVisuals.Layer"]
+  - type: Paintable
+    group: null
+
+- type: entity
+  parent: CrateWeaponSecure
+  id: IS14CrateWeaponSecure
+  categories: []
+  components:
+  - type: Icon
+    sprite: _IS14/Structures/Storage/Crates/weapon_secure.rsi
+    state: icon
+  - type: Sprite
+    sprite: _IS14/Structures/Storage/Crates/weapon_secure.rsi
+    layers:
+    - state: base
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: closed
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: welded
+      visible: false
+      map: ["enum.WeldableLayers.BaseWelded"]
+    - state: locked
+      shader: unshaded
+      map: ["enum.LockVisualLayers.Lock"]
+    - state: paper
+      sprite: Structures/Storage/Crates/labels.rsi
+      map: ["enum.PaperLabelVisuals.Layer"]
+  - type: Paintable
+    group: null
+
+- type: entity
+  parent: CrateGenericSteel
+  id: IS14CrateSecurity
+  categories: []
+  components:
+  - type: Icon
+    sprite: _IS14/Structures/Storage/Crates/security.rsi
+    state: icon
+  - type: Sprite
+    sprite: _IS14/Structures/Storage/Crates/security.rsi
+    layers:
+    - state: base
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: closed
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: welded
+      visible: false
+      map: ["enum.WeldableLayers.BaseWelded"]
+    - state: paper
+      sprite: Structures/Storage/Crates/labels.rsi
+      map: ["enum.PaperLabelVisuals.Layer"]
+  - type: Paintable
+    group: null
+
+- type: entity
+  parent: CrateScienceSecure
+  id: IS14CrateScienceSecure
+  categories: []
+  components:
+  - type: Icon
+    sprite: _IS14/Structures/Storage/Crates/science_secure.rsi
+    state: icon
+  - type: Sprite
+    sprite: _IS14/Structures/Storage/Crates/science_secure.rsi
+    layers:
+    - state: base
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: closed
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: welded
+      visible: false
+      map: ["enum.WeldableLayers.BaseWelded"]
+    - state: locked
+      shader: unshaded
+      map: ["enum.LockVisualLayers.Lock"]
+    - state: paper
+      sprite: Structures/Storage/Crates/labels.rsi
+      map: ["enum.PaperLabelVisuals.Layer"]
+  - type: Paintable
+    group: null
+
+- type: entity
+  parent: CratePlasma
+  id: IS14CratePlasma
+  categories: []
+  components:
+  - type: Icon
+    sprite: _IS14/Structures/Storage/Crates/plasma.rsi
+    state: icon
+  - type: Sprite
+    sprite: _IS14/Structures/Storage/Crates/plasma.rsi
+    layers:
+    - state: base
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: closed
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: welded
+      visible: false
+      map: ["enum.WeldableLayers.BaseWelded"]
+    - state: locked
+      shader: unshaded
+      map: ["enum.LockVisualLayers.Lock"]
+    - state: paper
+      sprite: Structures/Storage/Crates/labels.rsi
+      map: ["enum.PaperLabelVisuals.Layer"]
+  - type: Paintable
+    group: null
+
+- type: entity
+  parent: CrateScience
+  id: IS14CrateScience
+  categories: []
+  components:
+  - type: Icon
+    sprite: _IS14/Structures/Storage/Crates/science.rsi
+    state: icon
+  - type: Sprite
+    sprite: _IS14/Structures/Storage/Crates/science.rsi
+    layers:
+    - state: base
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: closed
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: welded
+      visible: false
+      map: ["enum.WeldableLayers.BaseWelded"]
+    - state: paper
+      sprite: Structures/Storage/Crates/labels.rsi
+      map: ["enum.PaperLabelVisuals.Layer"]
+  - type: Paintable
+    group: null
+
+- type: entity
+  parent: CrateInternals
+  id: IS14CrateInternals
+  categories: []
+  components:
+  - type: Icon
+    sprite: _IS14/Structures/Storage/Crates/internals.rsi
+    state: icon
+  - type: Sprite
+    sprite: _IS14/Structures/Storage/Crates/internals.rsi
+    layers:
+    - state: base
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: closed
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: welded
+      visible: false
+      map: ["enum.WeldableLayers.BaseWelded"]
+    - state: paper
+      sprite: Structures/Storage/Crates/labels.rsi
+      map: ["enum.PaperLabelVisuals.Layer"]
+  - type: Paintable
+    group: null
+
+- type: entity
+  parent: CrateHydroSecure
+  id: IS14CrateHydroSecure
+  categories: []
+  components:
+  - type: Icon
+    sprite: _IS14/Structures/Storage/Crates/hydro_secure.rsi
+    state: icon
+  - type: Sprite
+    sprite: _IS14/Structures/Storage/Crates/hydro_secure.rsi
+    layers:
+    - state: base
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: closed
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: welded
+      visible: false
+      map: ["enum.WeldableLayers.BaseWelded"]
+    - state: locked
+      shader: unshaded
+      map: ["enum.LockVisualLayers.Lock"]
+    - state: paper
+      sprite: Structures/Storage/Crates/labels.rsi
+      map: ["enum.PaperLabelVisuals.Layer"]
+  - type: Paintable
+    group: null
+
+- type: entity
+  parent: CrateHydroponics
+  id: IS14CrateHydroponics
+  categories: []
+  components:
+  - type: Icon
+    sprite: _IS14/Structures/Storage/Crates/hydroponics.rsi
+    state: icon
+  - type: Sprite
+    sprite: _IS14/Structures/Storage/Crates/hydroponics.rsi
+    layers:
+    - state: base
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: closed
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: welded
+      visible: false
+      map: ["enum.WeldableLayers.BaseWelded"]
+    - state: paper
+      sprite: Structures/Storage/Crates/labels.rsi
+      map: ["enum.PaperLabelVisuals.Layer"]
+  - type: Paintable
+    group: null
+
+- type: entity
+  parent: CrateFreezer
+  id: IS14CrateFreezer
+  categories: []
+  components:
+  - type: Icon
+    sprite: _IS14/Structures/Storage/Crates/freezer.rsi
+    state: icon
+  - type: Sprite
+    sprite: _IS14/Structures/Storage/Crates/freezer.rsi
+    layers:
+    - state: base
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: closed
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: welded
+      visible: false
+      map: ["enum.WeldableLayers.BaseWelded"]
+    - state: paper
+      sprite: Structures/Storage/Crates/labels.rsi
+      map: ["enum.PaperLabelVisuals.Layer"]
+  - type: Paintable
+    group: null
+
+- type: entity
+  parent: CrateSecure
+  id: IS14CrateServiceSecure
+  categories: []
+  components:
+  - type: Icon
+    sprite: _IS14/Structures/Storage/Crates/service_secure.rsi
+    state: icon
+  - type: Sprite
+    sprite: _IS14/Structures/Storage/Crates/service_secure.rsi
+    layers:
+    - state: base
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: closed
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: welded
+      visible: false
+      map: ["enum.WeldableLayers.BaseWelded"]
+    - state: locked
+      shader: unshaded
+      map: ["enum.LockVisualLayers.Lock"]
+    - state: paper
+      sprite: Structures/Storage/Crates/labels.rsi
+      map: ["enum.PaperLabelVisuals.Layer"]
+  - type: Paintable
+    group: null
+  - type: AccessReader
+    access: [["Service"]]
+
+- type: entity
+  parent: CrateGenericSteel
+  id: IS14CrateService
+  categories: []
+  components:
+  - type: Icon
+    sprite: _IS14/Structures/Storage/Crates/service.rsi
+    state: icon
+  - type: Sprite
+    sprite: _IS14/Structures/Storage/Crates/service.rsi
+    layers:
+    - state: base
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: closed
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: welded
+      visible: false
+      map: ["enum.WeldableLayers.BaseWelded"]
+    - state: paper
+      sprite: Structures/Storage/Crates/labels.rsi
+      map: ["enum.PaperLabelVisuals.Layer"]
+  - type: Paintable
+    group: null
+
+- type: entity
+  parent: CratePlastic
+  id: IS14CratePlastic
+  categories: []
+  components:
+  - type: Icon
+    sprite: _IS14/Structures/Storage/Crates/plastic.rsi
+    state: icon
+  - type: Sprite
+    sprite: _IS14/Structures/Storage/Crates/plastic.rsi
+    layers:
+    - state: base
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: closed
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: welded
+      visible: false
+      map: ["enum.WeldableLayers.BaseWelded"]
+    - state: paper
+      sprite: Structures/Storage/Crates/labels.rsi
+      map: ["enum.PaperLabelVisuals.Layer"]
+  - type: Paintable
+    group: null
+
+- type: entity
+  parent: CrateGenericSteel
+  id: IS14CrateLottery
+  categories: []
+  components:
+  - type: Icon
+    sprite: _IS14/Structures/Storage/Crates/lottery.rsi
+    state: icon
+  - type: Sprite
+    sprite: _IS14/Structures/Storage/Crates/lottery.rsi
+    layers:
+    - state: base
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: closed
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: welded
+      visible: false
+      map: ["enum.WeldableLayers.BaseWelded"]
+    - state: paper
+      sprite: Structures/Storage/Crates/labels.rsi
+      map: ["enum.PaperLabelVisuals.Layer"]
+  - type: Paintable
+    group: null
+
+- type: entity
+  parent: CrateSecure
+  id: IS14CrateCargoSecure
+  categories: []
+  components:
+  - type: Icon
+    sprite: _IS14/Structures/Storage/Crates/cargo_secure.rsi
+    state: icon
+  - type: Sprite
+    sprite: _IS14/Structures/Storage/Crates/cargo_secure.rsi
+    layers:
+    - state: base
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: closed
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: welded
+      visible: false
+      map: ["enum.WeldableLayers.BaseWelded"]
+    - state: locked
+      shader: unshaded
+      map: ["enum.LockVisualLayers.Lock"]
+    - state: paper
+      sprite: Structures/Storage/Crates/labels.rsi
+      map: ["enum.PaperLabelVisuals.Layer"]
+  - type: Paintable
+    group: null
+  - type: AccessReader
+    access: [["Cargo"]]
+
+- type: entity
+  parent: CrateGenericSteel
+  id: IS14CrateCargo
+  categories: []
+  components:
+  - type: Icon
+    sprite: _IS14/Structures/Storage/Crates/cargo.rsi
+    state: icon
+  - type: Sprite
+    sprite: _IS14/Structures/Storage/Crates/cargo.rsi
+    layers:
+    - state: base
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: closed
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: welded
+      visible: false
+      map: ["enum.WeldableLayers.BaseWelded"]
+    - state: paper
+      sprite: Structures/Storage/Crates/labels.rsi
+      map: ["enum.PaperLabelVisuals.Layer"]
+  - type: Paintable
+    group: null
+
+# Department color from the supplied palette: #FFBD1F.
+- type: entity
+  parent: IS14CrateExport
+  id: IS14CrateExportEngineering
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: overlay
+      color: "#FFBD1F"
+    - state: closed
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: overlay-closed
+      color: "#FFBD1F"
+      map: [lid_overlay]
+    - state: welded
+      visible: false
+      map: ["enum.WeldableLayers.BaseWelded"]
+    - state: locked
+      shader: unshaded
+      map: ["enum.LockVisualLayers.Lock"]
+    - state: paper
+      sprite: Structures/Storage/Crates/labels.rsi
+      map: ["enum.PaperLabelVisuals.Layer"]
+  - type: OverrideSell
+    overrideAccount: Engineering
+  - type: AccessReader
+    access: [["Engineering"]]
+
+# Department color from the supplied palette: #D2D2D2.
+- type: entity
+  parent: IS14CrateExport
+  id: IS14CrateExportScience
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: overlay
+      color: "#D2D2D2"
+    - state: closed
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: overlay-closed
+      color: "#D2D2D2"
+      map: [lid_overlay]
+    - state: welded
+      visible: false
+      map: ["enum.WeldableLayers.BaseWelded"]
+    - state: locked
+      shader: unshaded
+      map: ["enum.LockVisualLayers.Lock"]
+    - state: paper
+      sprite: Structures/Storage/Crates/labels.rsi
+      map: ["enum.PaperLabelVisuals.Layer"]
+  - type: OverrideSell
+    overrideAccount: Science
+  - type: AccessReader
+    access: [["Research"]]
+
+# Department color from the supplied palette: #3D8EA7.
+- type: entity
+  parent: IS14CrateExport
+  id: IS14CrateExportSecurity
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: overlay
+      color: "#3D8EA7"
+    - state: closed
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: overlay-closed
+      color: "#3D8EA7"
+      map: [lid_overlay]
+    - state: welded
+      visible: false
+      map: ["enum.WeldableLayers.BaseWelded"]
+    - state: locked
+      shader: unshaded
+      map: ["enum.LockVisualLayers.Lock"]
+    - state: paper
+      sprite: Structures/Storage/Crates/labels.rsi
+      map: ["enum.PaperLabelVisuals.Layer"]
+  - type: OverrideSell
+    overrideAccount: Security
+  - type: AccessReader
+    access: [["Security"]]
+
+# Department color from the supplied palette: #23A610.
+- type: entity
+  parent: IS14CrateExport
+  id: IS14CrateExportMedical
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: overlay
+      color: "#23A610"
+    - state: closed
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: overlay-closed
+      color: "#23A610"
+      map: [lid_overlay]
+    - state: welded
+      visible: false
+      map: ["enum.WeldableLayers.BaseWelded"]
+    - state: locked
+      shader: unshaded
+      map: ["enum.LockVisualLayers.Lock"]
+    - state: paper
+      sprite: Structures/Storage/Crates/labels.rsi
+      map: ["enum.PaperLabelVisuals.Layer"]
+  - type: OverrideSell
+    overrideAccount: Medical
+  - type: AccessReader
+    access: [["Medical"]]
+
+# Department color from the supplied palette: #629A5D.
+- type: entity
+  parent: IS14CrateExport
+  id: IS14CrateExportService
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+      map: ["enum.StorageVisualLayers.Base"]
+    - state: overlay
+      color: "#629A5D"
+    - state: closed
+      map: ["enum.StorageVisualLayers.Door"]
+    - state: overlay-closed
+      color: "#629A5D"
+      map: [lid_overlay]
+    - state: welded
+      visible: false
+      map: ["enum.WeldableLayers.BaseWelded"]
+    - state: locked
+      shader: unshaded
+      map: ["enum.LockVisualLayers.Lock"]
+    - state: paper
+      sprite: Structures/Storage/Crates/labels.rsi
+      map: ["enum.PaperLabelVisuals.Layer"]
+  - type: OverrideSell
+    overrideAccount: Service
+  - type: AccessReader
+    access: [["Service"]]

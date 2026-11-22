@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "IS14 resprites supplied in Resources/codex; based on Space Station 14 crates by EmoGarbage404.",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "base"
+    },
+    {
+      "name": "closed"
+    },
+    {
+      "name": "icon"
+    },
+    {
+      "name": "locked"
+    },
+    {
+      "name": "open"
+    },
+    {
+      "name": "overlay-closed"
+    },
+    {
+      "name": "overlay"
+    },
+    {
+      "name": "unlocked"
+    },
+    {
+      "name": "welded"
+    }
+  ]
+}
