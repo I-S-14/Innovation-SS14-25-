@@ -114,6 +114,8 @@
   parent: [ BaseStationTile, FloorPlanetGrass ]
   id: FloorAstroGrass
   name: tiles-astro-grass
+  # IS14: grass edges must not overlap station floors (priority 0 or higher).
+  edgeSpritePriority: 0
   footstepSounds:
     collection: FootstepGrass
   itemDrop: FloorTileItemAstroGrass
@@ -125,6 +127,7 @@
   parent: [ BaseStationTile, FloorGrass ]
   id: FloorMowedAstroGrass
   name: tiles-mowed-astro-grass
+  edgeSpritePriority: 0
   footstepSounds:
     collection: FootstepGrass
   itemDrop: FloorTileItemMowedAstroGrass
@@ -135,6 +138,7 @@
   parent: [ BaseStationTile, FloorGrassJungle ]
   id: FloorJungleAstroGrass
   name: tiles-jungle-astro-grass
+  edgeSpritePriority: 0
   footstepSounds:
     collection: FootstepGrass
   itemDrop: FloorTileItemJungleAstroGrass
@@ -149,6 +153,7 @@
   parent: [ BaseStationTile, FloorGrassDark ]
   id: FloorDarkAstroGrass
   name: tiles-dark-astro-grass
+  edgeSpritePriority: 0
   footstepSounds:
     collection: FootstepGrass
   itemDrop: FloorTileItemDarkAstroGrass

@@ -124,13 +124,7 @@
           ShardGlass:
             min: 1
             max: 2
-  - type: IconSmooth
-    key: walls
-    states:
-    - !type:CornerSpriteSmoothing
-      base: window
-      mask:
-      - walls
+
 - type: entity
   parent: Window
   id: TintedWindow
