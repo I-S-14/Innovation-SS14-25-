@@ -6,6 +6,9 @@
   - type: AntagGridSpawnPoint
     whitelist:
     - Xenoborg
+    #IS14-change start - retained antag selection specifier
+    - IS14XenoborgsAntag
+    #IS14-change end
   - type: SpawnPoint
   - type: Sprite
     layers:
@@ -21,6 +24,9 @@
   - type: AntagGridSpawnPoint
     whitelist:
     - MothershipCore
+    #IS14-change start - retained antag selection specifier
+    - IS14MothershipCoreAntag
+    #IS14-change end
   - type: SpawnPoint
   - type: Sprite
     layers:

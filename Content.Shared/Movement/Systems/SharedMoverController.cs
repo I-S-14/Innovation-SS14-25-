@@ -732,6 +732,12 @@ public abstract partial class SharedMoverController : VirtualController
 
     private void OnCanMove(Entity<InputMoverComponent> entity, ref UpdateCanMoveEvent args)
     {
+        //IS14-change start - the static mothership body must still send input to its movable eye.
+        if (TryComp<Content.Shared._IS14.Cyborgs.MothershipEyeComponent>(entity, out var mothership) &&
+            mothership.Eye is { } eye && RelayQuery.TryComp(entity, out var relay) && relay.RelayEntity == eye)
+            return;
+        //IS14-change end
+
         // If we don't have a physics component, or have a static body type then we can't move.
         if (!PhysicsQuery.TryComp(entity, out var body) || body.BodyType == BodyType.Static)
             args.Cancel();

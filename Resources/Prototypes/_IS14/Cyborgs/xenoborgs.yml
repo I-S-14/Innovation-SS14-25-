@@ -47,6 +47,7 @@
 # Models. Not selectable: the chassis decides.
 - type: cyborgModel
   id: IS14CyborgModelXenoborgEngi
+  moduleFitName: xenoborg-type-engi
   hudIcon: engineer
   name: cyborg-model-xenoborg-engi
   description: cyborg-model-xenoborg-engi-desc
@@ -59,7 +60,6 @@
   - IS14CyborgToolRCD
   - IS14CyborgToolRPD
   - IS14CyborgToolWelder
-  - IS14CyborgToolOmnitool
   - IS14CyborgToolOmnitool
   - IS14CyborgToolTrayScanner
   - IS14CyborgToolGasAnalyzer
@@ -97,6 +97,7 @@
 
 - type: cyborgModel
   id: IS14CyborgModelXenoborgHeavy
+  moduleFitName: xenoborg-type-heavy
   hudIcon: security
   name: cyborg-model-xenoborg-heavy
   description: cyborg-model-xenoborg-heavy-desc
@@ -107,17 +108,15 @@
   - IS14CyborgToolXenoXenoborgMaterialBag
   - IS14CyborgToolXenoPinpointerMothership
   - IS14CyborgToolXenoHandheldGPSBasic
-  - IS14CyborgToolXenoCrowbar
-  - IS14CyborgToolXenoWrench
-  - IS14CyborgToolXenoScrewdriver
-  - IS14CyborgToolXenoWirecutter
-  - IS14CyborgToolXenoMultitool
+  - IS14CyborgToolFlash
+  - IS14CyborgToolOmnitool
   - IS14CyborgToolXenoRefuelingWelder
   - IS14CyborgToolXenoWeaponLaserGunXenoborg
   - IS14CyborgToolXenoXenoborgRadioJammer
 
 - type: cyborgModel
   id: IS14CyborgModelXenoborgScout
+  moduleFitName: xenoborg-type-scout
   hudIcon: miner
   name: cyborg-model-xenoborg-scout
   description: cyborg-model-xenoborg-scout-desc
@@ -128,11 +127,8 @@
   - IS14CyborgToolXenoXenoborgMaterialBag
   - IS14CyborgToolXenoPinpointerMothership
   - IS14CyborgToolXenoHandheldGPSBasic
-  - IS14CyborgToolXenoCrowbar
-  - IS14CyborgToolXenoWrench
-  - IS14CyborgToolXenoScrewdriver
-  - IS14CyborgToolXenoWirecutter
-  - IS14CyborgToolXenoMultitool
+  - IS14CyborgToolFlash
+  - IS14CyborgToolOmnitool
   - IS14CyborgToolXenoRefuelingWelder
   - IS14CyborgToolXenoKukriKnife
   - IS14CyborgToolXenoJetpackXenoborg
@@ -142,6 +138,7 @@
 
 - type: cyborgModel
   id: IS14CyborgModelXenoborgStealth
+  moduleFitName: xenoborg-type-stealth
   hudIcon: standard
   name: cyborg-model-xenoborg-stealth
   description: cyborg-model-xenoborg-stealth-desc
@@ -152,11 +149,8 @@
   - IS14CyborgToolXenoXenoborgMaterialBag
   - IS14CyborgToolXenoPinpointerMothership
   - IS14CyborgToolXenoHandheldGPSBasic
-  - IS14CyborgToolXenoCrowbar
-  - IS14CyborgToolXenoWrench
-  - IS14CyborgToolXenoScrewdriver
-  - IS14CyborgToolXenoWirecutter
-  - IS14CyborgToolXenoMultitool
+  - IS14CyborgToolFlash
+  - IS14CyborgToolOmnitool
   - IS14CyborgToolXenoRefuelingWelder
   - IS14CyborgToolXenoNocturineHypo
   - IS14CyborgToolXenoChameleonProjectorNoBattery

@@ -1,0 +1,14 @@
+mothership-pinpointer-title = Pinpointer target
+mothership-pinpointer-select = Select target
+mothership-pinpointer-core = Mothership core: { $name }
+mothership-pinpointer-tracking = Target: { $name }
+mothership-pinpointer-unavailable = Target unavailable
+mothership-pinpointer-off = Switch off
+mothership-pinpointer-disabled = Pinpointer switched off
+mothership-pinpointer-subtitle = Navigation uplink · guidance terminal
+mothership-pinpointer-uplink = GUIDANCE
+mothership-pinpointer-targets = NETWORK SIGNALS · { $count }
+mothership-pinpointer-locked = Target acquired · guidance active
+mothership-pinpointer-selected = Acquired
+mothership-pinpointer-acquire = Acquire
+mothership-pinpointer-hint = Select a core or xenoborg signal. The pinpointer will track only the selected target.
