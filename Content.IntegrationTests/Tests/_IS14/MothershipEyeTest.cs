@@ -17,12 +17,15 @@ using Content.Shared.Movement.Systems;
 using Content.Shared.Silicons.Borgs.Components;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
+using Robust.Shared.Prototypes;
 
 namespace Content.IntegrationTests.Tests._IS14;
 
 [TestFixture]
 public sealed class MothershipEyeTest : AntagTest
 {
+    private static readonly EntProtoId XenoborgRule = "Xenoborgs";
+
     public override PoolSettings PoolSettings => new()
     {
         Dirty = true,
@@ -35,7 +38,7 @@ public sealed class MothershipEyeTest : AntagTest
     [RunOnSide(Side.Server)]
     public void CoreKeepsCyborgBodyWhileEyeJumpsFollowsAndReturnsOnLostCoverage()
     {
-        STicker.StartGameRule("Xenoborgs", out var rule);
+        STicker.StartGameRule(XenoborgRule, out var rule);
         var spawner = SEntMan.EntityQuery<GhostRoleAntagSpawnerComponent>().Single(c =>
             c.Rule == rule!.Value.Owner && c.Definition?.Id == "IS14MothershipCoreAntag");
         var role = SEntMan.GetComponent<GhostRoleComponent>(spawner.Owner);

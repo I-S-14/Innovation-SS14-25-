@@ -207,7 +207,7 @@ public sealed partial class StationAiVisionSystem : EntitySystem
         {
             foreach (var source in additionalSources)
             {
-                if (!TryComp<TransformComponent>(source.Owner, out var xform) ||
+                if (!TryComp(source.Owner, out TransformComponent? xform) ||
                     xform.MapID != Transform(grid.Owner).MapID ||
                     !worldBounds.Enlarged(source.Comp.Range).Contains(_xforms.GetWorldPosition(xform)))
                     continue;

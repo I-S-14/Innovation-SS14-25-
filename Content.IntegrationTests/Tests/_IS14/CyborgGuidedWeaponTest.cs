@@ -1,5 +1,7 @@
 // Licensed under IS14's EULA, see EULA.txt for more information.
 
+#nullable enable
+
 using System.Linq;
 using System.Numerics;
 using Content.Server.Physics.Components;

@@ -8,12 +8,15 @@ using Content.Shared.Antag.Components;
 using Content.Shared.GameTicking;
 using Content.Shared.Xenoborgs.Components;
 using Robust.Shared.GameObjects;
+using Robust.Shared.Prototypes;
 
 namespace Content.IntegrationTests.Tests._IS14;
 
 [TestFixture]
 public sealed class XenoborgEntryCompatibilityTest : AntagTest
 {
+    private static readonly EntProtoId XenoborgRule = "Xenoborgs";
+
     public override PoolSettings PoolSettings => new()
     {
         Dirty = true,
@@ -26,7 +29,7 @@ public sealed class XenoborgEntryCompatibilityTest : AntagTest
     [RunOnSide(Side.Server)]
     public void XenoborgRuleLoadsMothershipAndSpawnsPlayableIS14Roles()
     {
-        Assert.That(STicker.StartGameRule("Xenoborgs", out var rule), Is.True);
+        Assert.That(STicker.StartGameRule(XenoborgRule, out var rule), Is.True);
         var grids = SEntMan.GetComponent<RuleGridsComponent>(rule!.Value.Owner);
         Assert.That(grids.MapGrids, Is.Not.Empty);
 
