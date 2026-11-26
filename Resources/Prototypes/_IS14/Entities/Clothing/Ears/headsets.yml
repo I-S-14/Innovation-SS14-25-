@@ -1,0 +1,341 @@
+- type: entity
+  parent: ClothingHeadset
+  id: ClothingHeadsetIS14Command
+  name: command headset
+  description: The ostentatious earpiece marks its wearer as a senior official.
+  components:
+  - type: ContainerFill
+    containers:
+      key_slots:
+      - EncryptionKeyIS14Command
+      - EncryptionKeyIS14Common
+  - type: Sprite
+    sprite: _IS14/Clothing/Ears/Headsets/command.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Ears/Headsets/command.rsi
+
+- type: entity
+  parent: ClothingHeadsetAlt
+  id: ClothingHeadsetIS14ResearchDirector
+  name: research director's over-ear headset
+  description: Produces a perfectly natural electrical spark when charged.
+  components:
+  - type: ContainerFill
+    containers:
+      key_slots:
+      - EncryptionKeyIS14Science
+      - EncryptionKeyIS14Command
+      - EncryptionKeyIS14Common
+  - type: Sprite
+    sprite: _IS14/Clothing/Ears/Headsets/researchdirector.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Ears/Headsets/researchdirector.rsi
+
+- type: entity
+  parent: ClothingHeadsetAlt
+  id: ClothingHeadsetIS14ChiefMedicalOfficer
+  name: chief medical officer's over-ear headset
+  description: Constantly slips out of place during surgery.
+  components:
+  - type: ContainerFill
+    containers:
+      key_slots:
+      - EncryptionKeyIS14Medical
+      - EncryptionKeyIS14Command
+      - EncryptionKeyIS14Common
+  - type: Sprite
+    sprite: _IS14/Clothing/Ears/Headsets/chiefmedicalofficer.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Ears/Headsets/chiefmedicalofficer.rsi
+
+- type: entity
+  parent: ClothingHeadsetAlt
+  id: ClothingHeadsetIS14ChiefEngineer
+  name: chief engineer's over-ear headset
+  description: The reused materials are quite noticeable.
+  components:
+  - type: ContainerFill
+    containers:
+      key_slots:
+      - EncryptionKeyIS14Engineering
+      - EncryptionKeyIS14Command
+      - EncryptionKeyIS14Common
+  - type: Sprite
+    sprite: _IS14/Clothing/Ears/Headsets/chiefengineer.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Ears/Headsets/chiefengineer.rsi
+
+- type: entity
+  parent: ClothingHeadsetAlt
+  id: ClothingHeadsetIS14CommandAlt
+  name: command over-ear headset
+  description: Features built-in ear warmers.
+  components:
+  - type: ContainerFill
+    containers:
+      key_slots:
+      - EncryptionKeyIS14Captain
+  - type: Sprite
+    sprite: _IS14/Clothing/Ears/Headsets/commandalt.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Ears/Headsets/commandalt.rsi
+
+- type: entity
+  parent: ClothingHeadsetAlt
+  id: ClothingHeadsetIS14HeadOfMilitia
+  name: head of militia's over-ear headset
+  description: The flashing light was removed from the design to cut costs.
+  components:
+  - type: ContainerFill
+    containers:
+      key_slots:
+      - EncryptionKeyIS14Militia
+      - EncryptionKeyIS14Command
+      - EncryptionKeyIS14Common
+  - type: Sprite
+    sprite: _IS14/Clothing/Ears/Headsets/headofmilitia.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Ears/Headsets/headofmilitia.rsi
+
+- type: entity
+  parent: ClothingHeadsetAlt
+  id: ClothingHeadsetIS14HeadOfSupply
+  name: expedition and supply director's over-ear headset
+  description: A special dial increases the volume of issued orders.
+  components:
+  - type: ContainerFill
+    containers:
+      key_slots:
+      - EncryptionKeyIS14Supply
+      - EncryptionKeyIS14Command
+      - EncryptionKeyIS14Common
+  - type: Sprite
+    sprite: _IS14/Clothing/Ears/Headsets/headofsupply.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Ears/Headsets/headofsupply.rsi
+
+- type: entity
+  parent: ClothingHeadset
+  id: ClothingHeadsetIS14Engineering
+  name: engineering headset
+  description: Repair instructions are engraved on the side of the headset.
+  components:
+  - type: ContainerFill
+    containers:
+      key_slots:
+      - EncryptionKeyIS14Engineering
+      - EncryptionKeyIS14Common
+  - type: Sprite
+    sprite: _IS14/Clothing/Ears/Headsets/engineering.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Ears/Headsets/engineering.rsi
+
+- type: entity
+  parent: ClothingHeadset
+  id: ClothingHeadsetIS14Medical
+  name: medical headset
+  description: Inspect the earpieces before putting it on.
+  components:
+  - type: ContainerFill
+    containers:
+      key_slots:
+      - EncryptionKeyIS14Medical
+      - EncryptionKeyIS14Common
+  - type: Sprite
+    sprite: _IS14/Clothing/Ears/Headsets/medical.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Ears/Headsets/medical.rsi
+
+- type: entity
+  parent: ClothingHeadset
+  id: ClothingHeadsetIS14MedicalOfficer
+  name: medical officer headset
+  description: Combines the defects of militia and medical headsets.
+  components:
+  - type: ContainerFill
+    containers:
+      key_slots:
+      - EncryptionKeyIS14Militia
+      - EncryptionKeyIS14Medical
+      - EncryptionKeyIS14Common
+  - type: Sprite
+    sprite: _IS14/Clothing/Ears/Headsets/medicalofficer.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Ears/Headsets/medicalofficer.rsi
+
+- type: entity
+  parent: ClothingHeadset
+  id: ClothingHeadsetIS14Militia
+  name: militia headset
+  description: Sometimes protects the wearer's ears from a kick.
+  components:
+  - type: ContainerFill
+    containers:
+      key_slots:
+      - EncryptionKeyIS14Militia
+      - EncryptionKeyIS14Common
+  - type: Sprite
+    sprite: _IS14/Clothing/Ears/Headsets/militia.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Ears/Headsets/militia.rsi
+
+- type: entity
+  parent: ClothingHeadset
+  id: ClothingHeadsetIS14MOKO
+  name: MOKO headset
+  description: Helps identify the most senior official in a crowd of personnel.
+  components:
+  - type: ContainerFill
+    containers:
+      key_slots:
+      - EncryptionKeyIS14MOKO
+  - type: Sprite
+    sprite: _IS14/Clothing/Ears/Headsets/moko.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Ears/Headsets/moko.rsi
+
+- type: entity
+  parent: ClothingHeadset
+  id: ClothingHeadsetIS14Science
+  name: research center headset
+  description: Features a built-in AI voice assistant (a laborer).
+  components:
+  - type: ContainerFill
+    containers:
+      key_slots:
+      - EncryptionKeyIS14Science
+      - EncryptionKeyIS14Common
+  - type: Sprite
+    sprite: _IS14/Clothing/Ears/Headsets/science.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Ears/Headsets/science.rsi
+
+- type: entity
+  parent: ClothingHeadset
+  id: ClothingHeadsetIS14Worker
+  name: worker headset
+  description: Awkward but necessary, it is always threatening to fall out.
+  components:
+  - type: ContainerFill
+    containers:
+      key_slots:
+      - EncryptionKeyIS14Common
+  - type: Sprite
+    sprite: _IS14/Clothing/Ears/Headsets/worker.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Ears/Headsets/worker.rsi
+
+- type: entity
+  parent: ClothingHeadset
+  id: ClothingHeadsetIS14Service
+  name: service headset
+  description: Barely noticeable to customers, just as intended.
+  components:
+  - type: ContainerFill
+    containers:
+      key_slots:
+      - EncryptionKeyIS14Service
+      - EncryptionKeyIS14Common
+  - type: Sprite
+    sprite: _IS14/Clothing/Ears/Headsets/service.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Ears/Headsets/service.rsi
+
+- type: entity
+  parent: ClothingHeadset
+  id: ClothingHeadsetIS14StateProtection
+  name: state protection service operative headset
+  description: Tuned to the frequency of the department head under protection.
+  components:
+  - type: ContainerFill
+    containers:
+      key_slots:
+      - EncryptionKeyIS14Command
+      - EncryptionKeyIS14Militia
+      - EncryptionKeyIS14Common
+  - type: Sprite
+    sprite: _IS14/Clothing/Ears/Headsets/stateprotection.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Ears/Headsets/stateprotection.rsi
+
+- type: entity
+  parent: ClothingHeadset
+  id: ClothingHeadsetIS14CRB
+  name: CRB agent headset
+  description: Tuned to all underground channels and several adult broadcasts.
+  components:
+  - type: ContainerFill
+    containers:
+      key_slots:
+      - EncryptionKeyIS14Captain
+      - EncryptionKeySyndie
+  - type: Sprite
+    sprite: _IS14/Clothing/Ears/Headsets/crb.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Ears/Headsets/crb.rsi
+
+- type: entity
+  parent: ClothingHeadset
+  id: ClothingHeadsetIS14Supply
+  name: expedition and supply headset
+  description: Sometimes produces interference near abandoned facilities.
+  components:
+  - type: ContainerFill
+    containers:
+      key_slots:
+      - EncryptionKeyIS14Supply
+      - EncryptionKeyIS14Common
+  - type: Sprite
+    sprite: _IS14/Clothing/Ears/Headsets/supply.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Ears/Headsets/supply.rsi
+
+- type: entity
+  parent: ClothingHeadset
+  id: ClothingHeadsetIS14JusticeRepresentative
+  name: justice ministry representative headset
+  description: Designed by law students to help each other during exams.
+  components:
+  - type: ContainerFill
+    containers:
+      key_slots:
+      - EncryptionKeyIS14Legal
+      - EncryptionKeyIS14Command
+      - EncryptionKeyIS14Common
+  - type: Sprite
+    sprite: _IS14/Clothing/Ears/Headsets/justicerepresentative.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Ears/Headsets/justicerepresentative.rsi
+
+- type: entity
+  parent: ClothingHeadset
+  id: ClothingHeadsetIS14Legal
+  name: legal department headset
+  description: Directly connected to the judge's headset to suggest how to handle the accused.
+  components:
+  - type: ContainerFill
+    containers:
+      key_slots:
+      - EncryptionKeyIS14Legal
+      - EncryptionKeyIS14Common
+  - type: Sprite
+    sprite: _IS14/Clothing/Ears/Headsets/legal.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Ears/Headsets/legal.rsi
+
+- type: entity
+  parent: ClothingHeadsetAlt
+  id: ClothingHeadsetIS14JusticeRepresentativeAlt
+  name: justice ministry representative over-ear headset
+  description: High noise cancellation helps the wearer tune out their surroundings.
+  components:
+  - type: ContainerFill
+    containers:
+      key_slots:
+      - EncryptionKeyIS14Legal
+      - EncryptionKeyIS14Command
+      - EncryptionKeyIS14Common
+  - type: Sprite
+    sprite: _IS14/Clothing/Ears/Headsets/justicerepresentativealt.rsi
+  - type: Clothing
+    sprite: _IS14/Clothing/Ears/Headsets/justicerepresentativealt.rsi
