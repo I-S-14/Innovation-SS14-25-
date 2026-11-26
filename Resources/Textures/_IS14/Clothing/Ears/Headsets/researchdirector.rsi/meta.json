@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "license": "All Rights Reserved",
+  "copyright": "Provided in Resources/codex for Innovation Station 14; author not specified.",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "alt-equipped-EARS",
+      "directions": 4
+    },
+    {
+      "name": "icon_alt",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ]
+      ]
+    }
+  ]
+}

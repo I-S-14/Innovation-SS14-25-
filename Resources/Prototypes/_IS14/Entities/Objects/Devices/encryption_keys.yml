@@ -1,0 +1,215 @@
+- type: entity
+  parent: EncryptionKeyStationMaster
+  id: EncryptionKeyIS14Captain
+  name: captain encryption key
+  description: Intended for communication within command.
+  components:
+  - type: EncryptionKey
+    channels:
+    - Common
+    - Command
+    - Engineering
+    - Medical
+    - Science
+    - Security
+    - Service
+    - Supply
+    - Legal
+    defaultChannel: Command
+  - type: Item
+    sprite: _IS14/Objects/Devices/EncryptionKeys/captain.rsi
+  - type: Sprite
+    sprite: _IS14/Objects/Devices/EncryptionKeys/captain.rsi
+    layers:
+    - state: crypt_red
+    - state: cap_label
+
+- type: entity
+  parent: EncryptionKeyEngineering
+  id: EncryptionKeyIS14Engineering
+  name: engineering encryption key
+  description: Includes a translator from profanity into Galactic Common.
+  components:
+  - type: EncryptionKey
+    channels:
+    - Engineering
+    defaultChannel: Engineering
+  - type: Item
+    sprite: _IS14/Objects/Devices/EncryptionKeys/engineering.rsi
+  - type: Sprite
+    sprite: _IS14/Objects/Devices/EncryptionKeys/engineering.rsi
+    layers:
+    - state: crypt_gold
+    - state: eng_label
+
+- type: entity
+  parent: EncryptionKeyCommand
+  id: EncryptionKeyIS14Command
+  name: command encryption key
+  description: Intended for communication within command, unlike the captain's version.
+  components:
+  - type: EncryptionKey
+    channels:
+    - Command
+    defaultChannel: Command
+  - type: Item
+    sprite: _IS14/Objects/Devices/EncryptionKeys/command.rsi
+  - type: Sprite
+    sprite: _IS14/Objects/Devices/EncryptionKeys/command.rsi
+    layers:
+    - state: crypt_black
+    - state: com_label
+
+- type: entity
+  parent: EncryptionKeySecurity
+  id: EncryptionKeyIS14Militia
+  name: militia encryption key
+  description: Veterans engrave icons, domes and other symbols on these keys.
+  components:
+  - type: EncryptionKey
+    channels:
+    - Security
+    defaultChannel: Security
+  - type: Item
+    sprite: _IS14/Objects/Devices/EncryptionKeys/militia.rsi
+  - type: Sprite
+    sprite: _IS14/Objects/Devices/EncryptionKeys/militia.rsi
+    layers:
+    - state: crypt_blue
+    - state: sec_label
+
+- type: entity
+  parent: EncryptionKeyCargo
+  id: EncryptionKeyIS14Supply
+  name: expedition and supply encryption key
+  description: Gets reception even in the parking lot.
+  components:
+  - type: EncryptionKey
+    channels:
+    - Supply
+    defaultChannel: Supply
+  - type: Item
+    sprite: _IS14/Objects/Devices/EncryptionKeys/supply.rsi
+  - type: Sprite
+    sprite: _IS14/Objects/Devices/EncryptionKeys/supply.rsi
+    layers:
+    - state: crypt_blue
+    - state: cargo_label
+
+- type: entity
+  parent: EncryptionKeyMedical
+  id: EncryptionKeyIS14Medical
+  name: medical encryption key
+  description: Noticeably soaked in ethyl alcohol.
+  components:
+  - type: EncryptionKey
+    channels:
+    - Medical
+    defaultChannel: Medical
+  - type: Item
+    sprite: _IS14/Objects/Devices/EncryptionKeys/medical.rsi
+  - type: Sprite
+    sprite: _IS14/Objects/Devices/EncryptionKeys/medical.rsi
+    layers:
+    - state: crypt_green
+    - state: med_label
+
+- type: entity
+  parent: EncryptionKeyScience
+  id: EncryptionKeyIS14Science
+  name: research center encryption key
+  description: Made on site, with reception limited to the site as well.
+  components:
+  - type: EncryptionKey
+    channels:
+    - Science
+    defaultChannel: Science
+  - type: Item
+    sprite: _IS14/Objects/Devices/EncryptionKeys/science.rsi
+  - type: Sprite
+    sprite: _IS14/Objects/Devices/EncryptionKeys/science.rsi
+    layers:
+    - state: crypt_silver
+    - state: sci_label
+
+- type: entity
+  parent: EncryptionKeyCommon
+  id: EncryptionKeyIS14Common
+  name: common encryption key
+  description: Supplies the wearer's communicator with an endless stream of useless information.
+  components:
+  - type: EncryptionKey
+    channels:
+    - Common
+    defaultChannel: Common
+  - type: Item
+    sprite: _IS14/Objects/Devices/EncryptionKeys/common.rsi
+  - type: Sprite
+    sprite: _IS14/Objects/Devices/EncryptionKeys/common.rsi
+    layers:
+    - state: crypt_black
+    - state: common_label
+
+- type: entity
+  parent: EncryptionKeyService
+  id: EncryptionKeyIS14Service
+  name: service encryption key
+  description: Transmits rumors at the speed of sound.
+  components:
+  - type: EncryptionKey
+    channels:
+    - Service
+    defaultChannel: Service
+  - type: Item
+    sprite: _IS14/Objects/Devices/EncryptionKeys/service.rsi
+  - type: Sprite
+    sprite: _IS14/Objects/Devices/EncryptionKeys/service.rsi
+    layers:
+    - state: crypt_palegreen
+    - state: service_label
+
+- type: entity
+  parent: EncryptionKeyCentCom
+  id: EncryptionKeyIS14MOKO
+  name: MOKO encryption key
+  description: Can listen in on any staff frequency.
+  components:
+  - type: EncryptionKey
+    channels:
+    - Common
+    - Command
+    - Engineering
+    - Medical
+    - Science
+    - Security
+    - Service
+    - Supply
+    - Legal
+    - CentCom
+    - Syndicate
+    defaultChannel: CentCom
+  - type: Item
+    sprite: _IS14/Objects/Devices/EncryptionKeys/moko.rsi
+  - type: Sprite
+    sprite: _IS14/Objects/Devices/EncryptionKeys/moko.rsi
+    layers:
+    - state: crypt_goldandred
+    - state: MOKO_label
+
+- type: entity
+  parent: EncryptionKeyLegal
+  id: EncryptionKeyIS14Legal
+  name: legal department encryption key
+  description: Lets the judge, lawyer and IVK discuss their salaries.
+  components:
+  - type: EncryptionKey
+    channels:
+    - Legal
+    defaultChannel: Legal
+  - type: Item
+    sprite: _IS14/Objects/Devices/EncryptionKeys/legal.rsi
+  - type: Sprite
+    sprite: _IS14/Objects/Devices/EncryptionKeys/legal.rsi
+    layers:
+    - state: crypt_orange
+    - state: lawyer_label
